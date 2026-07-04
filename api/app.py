@@ -144,6 +144,62 @@ def contacts():
     return {"contacts": world.store.recipients()}
 
 
+class RolloutReq(BaseModel):
+    world_id: str = "generic"
+    action_plan: list[dict]          # [{actor_id, title, domain?, hour?}, ...]
+    horizon: int | None = None
+    n_samples: int = 200
+    as_of: float | None = None
+
+
+# Domains/horizons that have a validated state-transition backtest (exp005). Everything else is
+# labeled 'unvalidated' by the honesty gate. HN one-step is the only backtested cell today.
+_VALIDATED = {"hn": {"grade": "C", "horizon": 1}}
+
+
+@app.post("/v1/rollout")
+def rollout_ep(req: RolloutReq):
+    """Multi-step state evolution -> a DISTRIBUTION of futures (audit C.8). Distinct from /predict
+    (one-step calibrated). Honesty gate: 'validated' only where a backtest exists, else labeled
+    unvalidated with a warning."""
+    import time as _t
+
+    from swm.state.factors import build_hn_registry, tag_topic
+    from swm.state.state import Action, WorldState
+    from swm.state.trajectory import rollout as _rollout
+    from swm.state.transition import PriorHead, TransitionModel
+
+    reg = build_hn_registry()
+    model = TransitionModel(reg, PriorHead())          # prior head => unvalidated by construction
+    t0 = req.as_of or _t.time()
+    initial = WorldState(timestamp=t0)
+    plan = []
+    for i, a in enumerate(req.action_plan):
+        title = a.get("title", "")
+        plan.append(Action(
+            action_id=f"plan-{i}", actor_id=a.get("actor_id", "anon"),
+            content_features={"title_len": min(1.0, len(title) / 80),
+                              "is_show": 1.0 if title.lower().startswith("show hn") else 0.0,
+                              "is_ask": 1.0 if title.lower().startswith("ask hn") else 0.0,
+                              "is_text": 1.0 if not a.get("domain") else 0.0,
+                              "topic": tag_topic(title)},
+            timing={"hour": a.get("hour", 12), "weekday": a.get("weekday", 2), "ts": t0 + i * 86400},
+            meta={"domain": a.get("domain", ""), "title": title}))
+    v = _VALIDATED.get(req.world_id)
+    ro = _rollout(model, initial, plan, n_samples=req.n_samples,
+                  validated_grade=v["grade"] if v else None,
+                  validated_horizon=v["horizon"] if v else 0, domain=req.world_id)
+    return {
+        "report_type": ro.report_type,              # always "simulation" (never "prediction")
+        "calibration_grade": ro.calibration_grade,  # "unvalidated" unless backtested
+        "warning": ro.warning,
+        "world_id": req.world_id, "horizon": ro.steps, "n_samples": ro.n_samples,
+        "as_of": t0, "trajectory_distribution": ro.per_step,
+        "note": "SIMULATION: a distribution of plausible futures, not a prediction. "
+                "Use /predict for one-step calibrated prediction.",
+    }
+
+
 @app.get("/", response_class=HTMLResponse)
 def dashboard():
     return (Path(__file__).parent / "dashboard.html").read_text()
