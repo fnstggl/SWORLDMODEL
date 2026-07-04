@@ -49,8 +49,10 @@ def fetch(n: int, start: str, end: str, seed: int = 0) -> None:
     rng = random.Random(seed)
     stories, tried = [], 0
     seen = set()
+    Path("data").mkdir(exist_ok=True)
+    last_write = 0
     while len(stories) < n and tried < 80 * n:
-        batch = [rng.randrange(id0, id1) for _ in range(200)]
+        batch = [rng.randrange(id0, id1) for _ in range(300)]
         tried += len(batch)
         for it in _pool().map(lambda i: _get(f"item/{i}.json"), batch):
             if (it and it.get("type") == "story" and not it.get("deleted") and not it.get("dead")
@@ -64,12 +66,13 @@ def fetch(n: int, start: str, end: str, seed: int = 0) -> None:
                                 "is_text": not url})
                 if len(stories) >= n:
                     break
-        if tried % 2000 < 200:
-            print(f"  {len(stories)}/{n} kept after {tried} tried")
+        print(f"  {len(stories)}/{n} kept after {tried} tried", flush=True)
+        if len(stories) - last_write >= 300:        # incremental write: survive a timeout
+            Path(SAMPLE_PATH).write_text(json.dumps(sorted(stories, key=lambda s: s["ts"])))
+            last_write = len(stories)
     stories.sort(key=lambda s: s["ts"])
-    Path("data").mkdir(exist_ok=True)
     Path(SAMPLE_PATH).write_text(json.dumps(stories))
-    print(f"wrote {len(stories)} time-ordered stories -> {SAMPLE_PATH}")
+    print(f"wrote {len(stories)} time-ordered stories -> {SAMPLE_PATH}", flush=True)
 
 
 def _action(s: dict, i: int) -> Action:
