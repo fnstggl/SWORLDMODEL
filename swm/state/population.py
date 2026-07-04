@@ -93,6 +93,34 @@ class PopulationState:
             self.domain_reputation.setdefault(domain, Posterior(0.0, 1.0)).observe(
                 dv, reputation_weight)
 
+    # ---- serialization (for persisting a fitted world) ----
+    def to_dict(self) -> dict:
+        def pd(p: Posterior) -> list[float]:
+            return [p.mean, p.n]
+        return {
+            "timestamp": self.timestamp,
+            "base_rate": pd(self.base_rate),
+            "subgroups": {k: [sg.rate.mean, sg.rate.n, sg.n] for k, sg in self.subgroups.items()},
+            "topic_salience": {k: pd(p) for k, p in self.topic_salience.items()},
+            "domain_reputation": {k: pd(p) for k, p in self.domain_reputation.items()},
+            "competition": pd(self.competition),
+            "drift": self.drift,
+            "n_observed": self.n_observed,
+        }
+
+    @classmethod
+    def from_dict(cls, d: dict) -> "PopulationState":
+        s = cls(timestamp=d["timestamp"])
+        s.base_rate = Posterior(*d["base_rate"])
+        s.subgroups = {k: SubgroupPrior(rate=Posterior(m, n), n=cnt)
+                       for k, (m, n, cnt) in d["subgroups"].items()}
+        s.topic_salience = {k: Posterior(*v) for k, v in d["topic_salience"].items()}
+        s.domain_reputation = {k: Posterior(*v) for k, v in d["domain_reputation"].items()}
+        s.competition = Posterior(*d["competition"])
+        s.drift = d.get("drift", {})
+        s.n_observed = d.get("n_observed", 0)
+        return s
+
     def uncertainty_summary(self) -> dict[str, float]:
         return {
             "base_rate": self.base_rate.uncertainty,

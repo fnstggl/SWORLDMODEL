@@ -57,6 +57,39 @@ class AggregateWorld:
         self.transition.head = OutcomeHead(thresholds=self.thresholds).fit(X, scores)
         return self
 
+    # ---- persistence (so /v1/rollout uses the REAL fitted state-sensitive head, not a prior) ----
+    def save(self, path) -> None:
+        import json
+        from pathlib import Path
+        if self.transition.head is None:
+            raise ValueError("world not fitted; nothing to save")
+        Path(path).parent.mkdir(parents=True, exist_ok=True)
+        Path(path).write_text(json.dumps({
+            "domain": self.domain, "thresholds": list(self.thresholds),
+            "target_threshold": self.target_threshold, "use_incentives": self.use_incentives,
+            "exclude": list(self.transition.exclude), "grade": self.grade,
+            "head": self.transition.head.to_dict(),
+            "drift": self.transition.drift.to_dict(),
+            "pop": self.pop.to_dict(),
+        }, indent=1))
+
+    @classmethod
+    def load(cls, path) -> "AggregateWorld":
+        import json
+        from pathlib import Path
+        from swm.transition.transition_head import OutcomeHead
+        d = json.loads(Path(path).read_text())
+        tr = AggregateTransition(thresholds=tuple(d["thresholds"]),
+                                 use_incentives=d["use_incentives"], exclude=tuple(d["exclude"]))
+        tr.head = OutcomeHead.from_dict(d["head"])
+        if isinstance(d.get("drift"), dict) and "fast_halflife" in d["drift"]:
+            tr.drift = DriftTracker.from_dict(d["drift"])
+        w = cls(domain=d["domain"], thresholds=tuple(d["thresholds"]),
+                target_threshold=d["target_threshold"], use_incentives=d["use_incentives"],
+                transition=tr, pop=PopulationState.from_dict(d["pop"]))
+        w.grade = d["grade"]
+        return w
+
     def predict(self, action: Action) -> dict:
         pred = self.transition.predict(self.pop, action)
         pred["report_type"] = "prediction"

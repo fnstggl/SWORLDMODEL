@@ -1,0 +1,52 @@
+{
+ "note": "SYNTHETIC estimator validation; real individual claim is BLOCKED-ON-PRIVATE-DATA",
+ "n": 6000,
+ "n_contacts": 300,
+ "test_base_rate": 0.3694,
+ "segment_rate": 0.3586,
+ "arms": {
+  "segment": {
+   "log_loss": 0.6588,
+   "brier": 0.233,
+   "ece": 0.0092
+  },
+  "no_pooling": {
+   "log_loss": 0.6307,
+   "brier": 0.2203,
+   "ece": 0.0885
+  },
+  "partial_pooling": {
+   "log_loss": 0.6062,
+   "brier": 0.2098,
+   "ece": 0.0262
+  },
+  "+message": {
+   "log_loss": 0.589,
+   "brier": 0.2025,
+   "ece": 0.0281
+  }
+ },
+ "by_evidence_bucket": {
+  "cold(<3)": {
+   "n": 62,
+   "partial_pooling": 0.5427,
+   "no_pooling": 0.5365,
+   "segment": 0.5764
+  },
+  "warm(3-15)": {
+   "n": 412,
+   "partial_pooling": 0.6048,
+   "no_pooling": 0.6131,
+   "segment": 0.6432
+  },
+  "hot(15+)": {
+   "n": 1326,
+   "partial_pooling": 0.6097,
+   "no_pooling": 0.6405,
+   "segment": 0.6676
+  }
+ },
+ "raw_llm": "BLOCKED: needs an LLM/agent predictor over the same rows",
+ "raw_llm_context": "BLOCKED: needs an LLM/agent predictor + as-of history",
+ "verdict": "partial pooling beats BOTH segment and no-pooling"
+}

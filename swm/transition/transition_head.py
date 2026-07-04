@@ -50,6 +50,18 @@ class OutcomeHead:
         return {"thresholds": {thr: t[thr] for thr in self.thresholds},
                 "band_probs": [b / s for b in bands]}
 
+    def to_dict(self) -> dict:
+        return {"thresholds": list(self.thresholds),
+                "models": {str(thr): (m.to_dict() if m else None)
+                           for thr, m in self.models.items()}}
+
+    @classmethod
+    def from_dict(cls, d: dict) -> "OutcomeHead":
+        h = cls(thresholds=tuple(d["thresholds"]))
+        h.models = {int(thr): (LogisticReadout.from_dict(md) if md else None)
+                    for thr, md in d["models"].items()}
+        return h
+
 
 @dataclass
 class PriorHead:

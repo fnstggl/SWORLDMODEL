@@ -94,3 +94,15 @@ class DriftTracker:
             "fast_mean": round(self.fast, 4) if self.fast is not None else 0.0,
             "slow_mean": round(self.slow, 4) if self.slow is not None else 0.0,
         }
+
+    def to_dict(self) -> dict:
+        return {"fast_halflife": self.fast_halflife, "slow_halflife": self.slow_halflife,
+                "fast": self.fast, "slow": self.slow, "_var": self._var, "_mean": self._mean,
+                "_n": self._n, "cusum_pos": self.cusum_pos, "cusum_neg": self.cusum_neg}
+
+    @classmethod
+    def from_dict(cls, d: dict) -> "DriftTracker":
+        t = cls(fast_halflife=d["fast_halflife"], slow_halflife=d["slow_halflife"])
+        t.fast, t.slow, t._var, t._mean, t._n = d["fast"], d["slow"], d["_var"], d["_mean"], d["_n"]
+        t.cusum_pos, t.cusum_neg = d["cusum_pos"], d["cusum_neg"]
+        return t
