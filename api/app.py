@@ -226,6 +226,78 @@ def rollout_ep(req: RolloutReq):
     }
 
 
+class SimulateReq(BaseModel):
+    title: str
+    domain: str = ""
+    author_rep: float = 0.0          # as-of author reputation (centered log mean past score)
+    features: dict = {}              # optional LLM-extracted action features
+    n_samples: int = 200
+
+
+def _load_sim_engine():
+    from swm.simulation.engine import HNSimulationEngine
+    p = _MODELS_DIR / "hn_simulation.json"
+    if p.exists():
+        try:
+            return HNSimulationEngine.load(p)
+        except Exception:
+            return None
+    return None
+
+
+@app.post("/v1/simulate")
+def simulate_ep(req: SimulateReq):
+    """REAL multi-step, multi-actor simulation (Phase 6): 8 HN community segments react over steps,
+    world state (score/exposure/social-proof/front-page/novelty) updates each step, and P(hit) is
+    the FRACTION OF SIMULATED TRAJECTORIES that cross — not a classifier over initial features.
+    Returns stepwise state, segment reactions, uncertainty by horizon, and the outcome distribution.
+    Uses the fitted+graded engine (models/hn_simulation.json) when present, else a default engine
+    labeled 'unvalidated'."""
+    import json as _json
+    from pathlib import Path as _P
+
+    from swm.simulation.engine import HNSimulationEngine
+    from swm.simulation.world_rollout import WorldRollout
+    from swm.state.factors import tag_topic
+
+    eng = _load_sim_engine()
+    gp = _MODELS_DIR / "hn_simulation_grade.json"
+    if eng is not None and gp.exists():
+        grade = _json.loads(gp.read_text())
+        validated = True
+    else:
+        eng = eng or HNSimulationEngine()
+        grade = {"grade": "unvalidated", "note": "no fitted engine; qualitative simulation"}
+        validated = False
+
+    topic = tag_topic(req.title)
+    feats = {**req.features, f"topic_{topic}": 1.0,
+             "title_len": min(1.0, len(req.title) / 80),
+             f"cat_{req.features.get('cat', 'Other')}": 1.0}
+    ctx = {"exposure_mult": 1.0, "state_boost": req.author_rep}
+    # one recorded trajectory (stepwise events + segment reactions) + the distribution
+    import random as _r
+    _, st = eng._trajectory(feats, req.author_rep, ctx, _r.Random(0), record=True)
+    ro = WorldRollout(eng).rollout(feats, author_rep=req.author_rep, ctx=ctx, n_samples=req.n_samples)
+    reactions = {}
+    for rx in st.reactions:
+        reactions[rx.actor_id] = reactions.get(rx.actor_id, 0.0) + rx.intensity
+    return {
+        "report_type": "simulation",
+        "calibration_grade": grade.get("grade"),
+        "validated": validated,
+        "title": req.title, "topic": topic,
+        "p_hit": ro["p_hit"], "p_hit_raw": ro["p_hit_raw"],
+        "outcome_distribution_bands": ro["band_probs"],   # [<10,10-39,40-99,100-299,300+]
+        "uncertainty_by_horizon": ro["per_step"],         # per-timestep score interval
+        "final_interval80": ro["final_interval80"],
+        "example_trajectory": {"steps": [snap for snap in [st.snapshot()]],
+                               "segment_upvotes": {k: round(v, 1) for k, v in reactions.items()}},
+        "note": "P(hit) is the fraction of simulated multi-step trajectories that cross the "
+                "front-page cascade — derived from the trajectory distribution, not a classifier.",
+    }
+
+
 @app.get("/", response_class=HTMLResponse)
 def dashboard():
     return (Path(__file__).parent / "dashboard.html").read_text()

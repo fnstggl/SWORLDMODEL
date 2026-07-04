@@ -99,10 +99,11 @@ def build_records():
 
 # ------------------------------------------------------------------ simulation engine fit
 def _sim_ctx(rec):
-    return {"exposure_mult": 1.0 + 0.25 * max(-1.0, min(2.0, rec["domain_rep"]))}
+    return {"exposure_mult": 1.0 + 0.25 * max(-1.0, min(2.0, rec["domain_rep"])),
+            "state_boost": max(-1.5, min(3.0, rec["author_rep"] + rec["domain_rep"]))}
 
 
-def fit_simulation(train, *, n_traj=26, seed=0):
+def fit_simulation(train, *, n_traj=26, seed=0, search_state_coupling=False, base=None):
     """Coordinate search over the few key dynamics params to minimize train log loss of the
     trajectory-derived P(hit); then a Platt readout on the simulated probability."""
     rng = random.Random(seed)
@@ -119,13 +120,15 @@ def fit_simulation(train, *, n_traj=26, seed=0):
             ps.append(min(1 - 1e-3, max(1e-3, s["p_hit_raw"])))
         return log_loss(y, ps)
 
-    p = PolicyParams()
+    p = base or PolicyParams()
     grid = {
         "new_page_exposure": [30, 45, 60, 80],
         "frontpage_threshold": [6, 8, 11, 15],
         "frontpage_multiplier": [20, 30, 45],
         "author_rep_gain": [0.3, 0.6, 1.0],
     }
+    if search_state_coupling:
+        grid["state_fp_gain"] = [0.0, 2.0, 4.0, 6.0]      # iteration fix: couple state to front-page
     best = p
     best_loss = loss(p)
     for _ in range(2):                          # 2 coordinate passes
@@ -232,6 +235,13 @@ def run():
 
     Path("experiments/results").mkdir(parents=True, exist_ok=True)
     Path(RESULT).write_text(json.dumps(out, indent=1))
+    # persist the fitted engine + its grade so /v1/rollout can run the REAL simulation
+    ece = out["overall"]["simulation"]["ece"]
+    grade = "A" if ece < 0.05 else "B" if ece < 0.10 else "C" if ece < 0.15 else "F"
+    eng.save("models/hn_simulation.json")
+    Path("models/hn_simulation_grade.json").write_text(json.dumps(
+        {"grade": grade, "ece": ece, "overall_log_loss": out["overall"]["simulation"]["log_loss"],
+         "note": "graded on the temporal HN test holdout (simulation tier)"}, indent=1))
     _print(out)
     return out
 

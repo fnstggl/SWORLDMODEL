@@ -75,7 +75,11 @@ class HNSimulationEngine:
             # front-page transition depends on EARLY velocity: only attempted in the first
             # `fp_window` steps. A post that hasn't crossed by then dies in /new (exposure collapses).
             if not st.on_front_page:
-                if step < p.fp_window and rng.random() < frontpage_prob(score, p):
+                # state coupling: a reputable author/domain gets an effective early-velocity boost,
+                # so state-rich posts cross to the front page more reliably (the mechanism by which
+                # entity/context state is supposed to help the simulation).
+                eff_score = score + p.state_fp_gain * ctx.get("state_boost", 0.0)
+                if step < p.fp_window and rng.random() < frontpage_prob(eff_score, p):
                     st.on_front_page = True
                     st.exposure_pool *= p.frontpage_multiplier
                     for seg in segs:
@@ -125,6 +129,26 @@ class HNSimulationEngine:
             p_hit = _SIG(a * _LOGIT(p_hit) + b)
         sim["p_hit"] = p_hit
         return sim
+
+    # ---------------- persistence ----------------
+    def save(self, path) -> None:
+        import json
+        from pathlib import Path
+        Path(path).parent.mkdir(parents=True, exist_ok=True)
+        Path(path).write_text(json.dumps({
+            "params": self.params.to_dict(), "readout": list(self.readout) if self.readout else None,
+            "thresholds": list(self.thresholds), "default_author_rep": self.default_author_rep,
+        }, indent=1))
+
+    @classmethod
+    def load(cls, path) -> "HNSimulationEngine":
+        import json
+        from pathlib import Path
+        d = json.loads(Path(path).read_text())
+        eng = cls(params=PolicyParams.from_dict(d["params"]), thresholds=tuple(d["thresholds"]),
+                  default_author_rep=d.get("default_author_rep", 0.0))
+        eng.readout = tuple(d["readout"]) if d.get("readout") else None
+        return eng
 
     # ---------------- calibration readout (reads only the simulated outcome) ----------------
     def fit_readout(self, raws: list[float], y: list[int]) -> "HNSimulationEngine":

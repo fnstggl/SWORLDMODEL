@@ -44,6 +44,7 @@ class PolicyParams:
     social_proof_scale: float = 40.0        # score at which social proof ~saturates
     novelty_decay: float = 0.5              # novelty multiplier per step
     author_rep_gain: float = 0.5
+    state_fp_gain: float = 0.0              # reputation boost to the front-page transition (state coupling)
 
     def to_dict(self) -> dict:
         return asdict(self)
