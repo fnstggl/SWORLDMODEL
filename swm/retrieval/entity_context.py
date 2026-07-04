@@ -23,7 +23,10 @@ class EntityContext:
         if self.store is None:
             raise ValueError("EntityContext.from_store needs an AsOfStore")
         items = self.store.query(as_of=as_of, kind="entity_event", entities=(entity_id,))
-        self.store.assert_no_leak(as_of, items)
+        # STRICT gate for an entity's OWN history used to predict that entity: an event dated
+        # exactly at as_of could be the label itself, so exclude ties (the store's news gate is
+        # inclusive; entity-history must be strict).
+        items = [it for it in items if it.timestamp < as_of]
         return self._features([(it.timestamp, it.score) for it in items], as_of)
 
     def from_pairs(self, pairs: list[tuple[float, float]], as_of: float) -> dict:

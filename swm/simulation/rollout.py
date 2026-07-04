@@ -77,32 +77,42 @@ def simulate(transition: AggregateTransition, initial: PopulationState, action_p
 
 
 def calibration_by_horizon(build_transition, sequences: list[list[tuple[Action, float]]], *,
-                           target_threshold: int = 40, n_samples: int = 40, seed: int = 0) -> dict:
+                           target_threshold: int = 40, n_samples: int = 40, seed: int = 0,
+                           initial_pop: PopulationState | None = None) -> dict:
     """Compare teacher-forced vs free-running calibration per horizon.
 
-    build_transition() -> a FRESH fitted AggregateTransition (so each sequence starts from the same
-    trained head but an independent state). sequences: held-out per-entity (Action, magnitude)
-    lists, each starting from a cold population state. Returns per-horizon log-loss + ECE for both
-    regimes.
+    build_transition() -> a FRESH AggregateTransition fitted on the TRAINING slice (so each sequence
+    starts from the same trained head but an independent state). `sequences` MUST be HELD-OUT
+    per-entity (Action, magnitude) lists (e.g. test-slice authors) — the caller owns that split.
+    `initial_pop` is the WARM population state after training; pass it so eval-time state features
+    match the trained regime (a cold start mismatches the train feature distribution). Returns
+    per-horizon log-loss + ECE for teacher-forced (state advanced by ACTUAL outcomes, an upper
+    bound) vs free-running (state advanced by the model's own SAMPLED outcomes, the real regime).
     """
     import copy
     thr = target_threshold
     tf: dict[int, list[tuple[int, float]]] = {}   # teacher-forced: horizon -> (y, p)
     fr: dict[int, list[tuple[int, float]]] = {}   # free-running
+
+    def _start_pop(seq):
+        if initial_pop is not None:
+            p = copy.deepcopy(initial_pop)
+            p.timestamp = seq[0][0].timing.get("ts", p.timestamp)
+            return p
+        return PopulationState(timestamp=seq[0][0].timing.get("ts", 0.0))
+
     for seq in sequences:
         if len(seq) < 2:
             continue
         base_tr = build_transition()
-        # teacher-forced pass
-        pop = PopulationState(timestamp=seq[0][0].timing.get("ts", 0.0))
+        pop = _start_pop(seq)
         tr = copy.deepcopy(base_tr)
         for h, (action, mag) in enumerate(seq):
             p = tr.predict(pop, action)["thresholds"].get(thr, 0.0)
             tf.setdefault(h, []).append((1 if mag >= thr else 0, min(1 - 1e-6, max(1e-6, p))))
             tr.transition(pop, action, mag)                      # ACTUAL outcome
-        # free-running pass: same predictions scored vs actual, but state advanced by SAMPLED outcomes
         rng = random.Random(seed)
-        pop = PopulationState(timestamp=seq[0][0].timing.get("ts", 0.0))
+        pop = _start_pop(seq)
         tr = copy.deepcopy(base_tr)
         for h, (action, mag) in enumerate(seq):
             p = tr.predict(pop, action)["thresholds"].get(thr, 0.0)

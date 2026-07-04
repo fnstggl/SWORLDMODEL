@@ -62,11 +62,27 @@ def _score(y, p):
             "ece": round(expected_calibration_error(y, p), 4)}
 
 
-def _run_arm(train, test, sources, seg_rate, prior_strength, mfn):
+def _run_arm(train, test, sources, seg_rate, prior_strength, mfn, raw_empirical=False):
+    """raw_empirical=True is a TRUE no-shrinkage baseline: predict each contact's running empirical
+    reply rate (Laplace(1,1)-smoothed), bypassing the fitted head entirely — so 'no_pooling' really
+    is the per-person empirical rate, not a recalibrated logistic over it."""
+    preds, y, ncat = [], [], []
+    if raw_empirical:
+        hist: dict[str, list[float]] = {}
+        # warm the per-person counts on the train stream (as-of: counts precede each prediction)
+        for cid, _mf, o in train:
+            hist.setdefault(cid, [0.0, 0.0])
+            hist[cid][0] += o; hist[cid][1] += 1
+        for cid, mf, o in test:
+            s, n = hist.get(cid, [0.0, 0.0])
+            preds.append((s + 1.0) / (n + 2.0))       # Laplace-smoothed empirical rate
+            y.append(o)
+            ncat.append("cold(<3)" if n < 3 else "warm(3-15)" if n < 15 else "hot(15+)")
+            hist.setdefault(cid, [0.0, 0.0]); hist[cid][0] += o; hist[cid][1] += 1
+        return preds, y, ncat
     m = IndividualTransition(message_feature_names=mfn, segment_rate=seg_rate,
                              prior_strength=prior_strength, sources=sources)
     m.fit_stream(train, segment_rate=seg_rate)
-    preds, y, ncat = [], [], []
     for cid, mf, o in test:
         p = m.person(cid)
         preds.append(m.predict(cid, mf)["p_mean"])
@@ -95,7 +111,8 @@ def run():
     }
     results, preds_by_arm = {}, {}
     for name, (sources, ps) in arms.items():
-        preds, yy, ncat = _run_arm(train, test, sources, seg_rate, ps, mfn)
+        preds, yy, ncat = _run_arm(train, test, sources, seg_rate, ps, mfn,
+                                   raw_empirical=(name == "no_pooling"))
         results[name] = _score(yy, preds)
         preds_by_arm[name] = (preds, ncat)
         print(f"  {name:<16} log loss {results[name]['log_loss']:.4f}  brier {results[name]['brier']:.4f}"

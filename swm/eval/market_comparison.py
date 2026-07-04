@@ -61,11 +61,13 @@ def retrieval_gap(truth: list[dict], no_retrieval: dict[str, float],
                   with_retrieval: dict[str, float], *, market_key: str = "market_at_T") -> dict:
     """Does as-of retrieval close the gap to the market? Compare the two prediction arms' Brier to
     the market's, overall and on the market-uncertain (information-symmetric) subset."""
-    a = compare(truth, no_retrieval, market_key=market_key)["segments"]
-    b = compare(truth, with_retrieval, market_key=market_key)["segments"]
+    a = {r["segment"]: r for r in compare(truth, no_retrieval, market_key=market_key)["segments"]}
+    b = {r["segment"]: r for r in compare(truth, with_retrieval, market_key=market_key)["segments"]}
     out = {}
-    for ra, rb in zip(a, b):
-        seg = ra["segment"]
+    for seg in a:                        # key by segment name, not position (arms may differ)
+        if seg not in b:
+            continue
+        ra, rb = a[seg], b[seg]
         out[seg] = {
             "n": ra["n"],
             "no_retrieval_brier": ra["model_brier"],

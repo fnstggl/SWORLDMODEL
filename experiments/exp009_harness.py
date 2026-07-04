@@ -143,15 +143,17 @@ def _live_tiers(stories, common):
     common_ids = {s["id"] for s in common}
     y = [1 if s["score"] >= THR else 0 for s in common]
 
-    # --- structured: logistic on as-of retrieval features, trained on train slice ---
-    Xtr = [[_asof_features(records_all, s)[k] for k in _FEAT_ORDER] for s in train]
-    ytr = [1 if s["score"] >= THR else 0 for s in train]
+    # --- structured: logistic on as-of retrieval features. Fit on the FIRST 80% of train only, so
+    #     the Platt layer below is fit on data genuinely held out from struct's fit window. ---
+    fit_slice = train[:int(0.8 * len(train))]
+    val = train[int(0.8 * len(train)):]
+    Xtr = [[_asof_features(records_all, s)[k] for k in _FEAT_ORDER] for s in fit_slice]
+    ytr = [1 if s["score"] >= THR else 0 for s in fit_slice]
     struct = LogisticReadout(epochs=300).fit(Xtr, ytr)
     struct_p = [struct.predict_proba([_asof_features(records_all, s)[k] for k in _FEAT_ORDER])
                 for s in common]
 
-    # --- calibrated: Platt layer fit on the last 20% of TRAIN (held-out from struct fit window) ---
-    val = train[int(0.8 * len(train)):]
+    # --- calibrated: Platt layer fit on the held-out last 20% of TRAIN (unseen by struct) ---
     val_p = [struct.predict_proba([_asof_features(records_all, s)[k] for k in _FEAT_ORDER]) for s in val]
     val_y = [1 if s["score"] >= THR else 0 for s in val]
     platt = _fit_platt(val_y, val_p) if len(set(val_y)) == 2 else None

@@ -44,6 +44,7 @@ class HierarchicalPosterior:
     _sum: float = 0.0          # sum of observed values (individual evidence)
     _w: float = 0.0            # total observation weight (individual evidence)
     population_mean: float | None = None   # optional deeper level for two-stage pooling
+    population_strength: float | None = None  # evidence weight of the population prior on the segment
 
     def observe(self, value: float, weight: float = 1.0) -> "HierarchicalPosterior":
         self._sum += value * weight
@@ -56,12 +57,15 @@ class HierarchicalPosterior:
 
     @property
     def _prior_mean(self) -> float:
-        # two-stage: the segment prior can itself be shrunk toward the population mean.
+        # two-stage: the segment prior is itself shrunk toward the population mean, weighted by
+        # each level's evidence. segment carries `prior_strength`; population carries
+        # `population_strength` (default = prior_strength). Unlike the old code, the weights do NOT
+        # cancel — a heavier population_strength pulls the prior toward the population.
         if self.population_mean is None:
             return self.segment_mean
-        # segment carries its own weight = prior_strength; pool it half-way to population.
+        ps = self.prior_strength if self.population_strength is None else self.population_strength
         return (self.segment_mean * self.prior_strength
-                + self.population_mean * self.prior_strength) / (2 * self.prior_strength)
+                + self.population_mean * ps) / (self.prior_strength + ps)
 
     @property
     def mean(self) -> float:

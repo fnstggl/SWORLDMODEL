@@ -126,16 +126,21 @@ def run() -> None:
         print(f"  top {int(row['k']*100):>2}%  model {row['model']:.3f}  random {row['random']:.3f}  oracle {row['oracle']:.3f}")
     print(f"  lift@20% over random {dl['lift_over_baseline_at_target_k']:+.3f}")
 
-    # (C) multi-step: per-author held-out sequences, free-running vs teacher-forced
+    # (C) multi-step: per-author HELD-OUT sequences (test slice only), free-running vs teacher-forced,
+    #     started from the WARM trained population (fitted `pop`) so features match the trained regime.
     from collections import defaultdict
     by_author = defaultdict(list)
-    for action, mag in samples:
+    for action, mag in test:                       # TEST slice only -> genuinely held out
         by_author[action.actor_id].append((action, mag))
-    seqs = [v for v in by_author.values() if len(v) >= 4][:120]
+    seqs = [v for v in by_author.values() if len(v) >= 3][:150]
+    warm = AggregateWorld(domain="hn", target_threshold=thr).fit_stream(samples[:cut])
     def build_tr():
-        w = AggregateWorld(domain="hn", target_threshold=thr).fit_stream(samples[:cut])
-        return w.transition
-    ch = calibration_by_horizon(build_tr, seqs, target_threshold=thr, n_samples=30)
+        return AggregateWorld(domain="hn", target_threshold=thr).fit_stream(samples[:cut]).transition
+    ch = calibration_by_horizon(build_tr, seqs, target_threshold=thr, n_samples=30,
+                                initial_pop=warm.pop)
+    ch["note"] = ("sequences are test-slice authors only (held out); started from the warm trained "
+                  "population; teacher-forced=state advanced by actual outcomes, free-running=by "
+                  "the model's own sampled outcomes")
     print("\n== (C) multi-step calibration by horizon (per-author) ==")
     print("  teacher-forced:", [(r["horizon"], r["log_loss"], r["ece"]) for r in ch["teacher_forced"]])
     print("  free-running:  ", [(r["horizon"], r["log_loss"], r["ece"]) for r in ch["free_running"]])
