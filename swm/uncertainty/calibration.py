@@ -1,10 +1,22 @@
-"""Calibrated uncertainty: ensembles + conformal (audit C.9).
+"""Calibration grading (audit C.9, E.2).
 
-Aleatoric from the predictive distribution (Beta/Dirichlet or quantile head); epistemic from deep
-ensembles / conformal prediction for distribution-free coverage. Ships an interval + calibration
-grade per prediction; per-segment reliability is monitored.
+Grades a model's calibration on held-out data so every prediction can carry an honest badge.
+The grade is computed on the backtest, stored with the world version, and echoed on every
+API response — a prediction without a grade is not allowed out the door.
+"""
+from __future__ import annotations
 
-Stub — see docs/social-world-model-audit.md for the design. Not yet implemented."""
+from swm.eval.metrics import expected_calibration_error
 
-#: build-order and design are in docs/social-world-model-audit.md
-IMPLEMENTED = False  # flip to True as this module lands; see the audit for its spec
+
+def calibration_grade(y_true: list[int], p_pred: list[float]) -> dict:
+    """A (ECE<0.05), B (<0.10), C (<0.15), F otherwise — with the number, never just the letter."""
+    if len(y_true) < 30:
+        return {"grade": "ungraded", "ece": None,
+                "note": f"only {len(y_true)} labeled outcomes; need >= 30 to grade"}
+    ece = expected_calibration_error(y_true, p_pred)
+    grade = "A" if ece < 0.05 else "B" if ece < 0.10 else "C" if ece < 0.15 else "F"
+    return {"grade": grade, "ece": round(ece, 4), "n": len(y_true)}
+
+
+IMPLEMENTED = True

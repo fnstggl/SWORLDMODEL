@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>sworldmodel — will they reply?</title>
+<style>
+  :root { --bg:#f4f1ea; --card:#fffdf8; --ink:#26221a; --mut:#7a7264; --acc:#b4552d; --ok:#3d6b4f; --line:#e3ddd0; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.5 Georgia,'Times New Roman',serif; }
+  .wrap { max-width:1060px; margin:0 auto; padding:28px 20px 60px; }
+  h1 { font-size:26px; margin:0 0 2px; } h1 em { color:var(--acc); font-style:italic; }
+  .sub { color:var(--mut); margin:0 0 24px; font-size:13.5px; }
+  .grid { display:grid; grid-template-columns: 1.4fr 1fr; gap:18px; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:18px 20px; }
+  .card h2 { font-size:15px; margin:0 0 12px; letter-spacing:.02em; }
+  label { display:block; font-size:12.5px; color:var(--mut); margin:10px 0 4px; }
+  input, textarea, select { width:100%; font:inherit; font-size:14px; padding:8px 10px; border:1px solid var(--line); border-radius:7px; background:#fff; color:var(--ink); }
+  textarea { min-height:110px; resize:vertical; }
+  button { font:inherit; font-size:14px; padding:8px 16px; border:0; border-radius:7px; background:var(--ink); color:var(--bg); cursor:pointer; margin-top:12px; }
+  button.secondary { background:transparent; color:var(--ink); border:1px solid var(--line); }
+  .big { font-size:42px; font-weight:bold; letter-spacing:-.01em; }
+  .interval { color:var(--mut); font-size:13px; }
+  .tag { display:inline-block; font-size:10.5px; letter-spacing:.08em; text-transform:uppercase; padding:2px 8px; border-radius:99px; border:1px solid var(--line); color:var(--mut); margin-left:8px; vertical-align:middle; }
+  .tag.pred { border-color:var(--ok); color:var(--ok); }
+  .tag.ins  { border-color:var(--acc); color:var(--acc); }
+  .bar { height:10px; background:var(--line); border-radius:99px; overflow:hidden; margin:10px 0 4px; position:relative; }
+  .bar > i { display:block; height:100%; background:var(--ok); border-radius:99px; }
+  .bar > s { position:absolute; top:0; height:100%; background:rgba(61,107,79,.25); }
+  .drv { font-size:13px; margin:3px 0; display:flex; justify-content:space-between; }
+  .drv b.neg { color:var(--acc); } .drv b.pos { color:var(--ok); }
+  .fact { margin:10px 0; font-size:13.5px; }
+  .fact .u { color:var(--mut); font-size:12px; }
+  .voi { border-left:3px solid var(--acc); padding:10px 14px; margin-top:14px; background:rgba(180,85,45,.05); border-radius:0 8px 8px 0; }
+  .voi p { margin:0 0 8px; }
+  .chips button { margin:2px 6px 2px 0; padding:5px 12px; font-size:13px; }
+  .draft { border:1px solid var(--line); border-radius:8px; padding:10px 12px; margin:8px 0; font-size:13.5px; }
+  .draft .r { color:var(--mut); font-size:12px; margin-top:4px; }
+  .grade { font-size:12.5px; color:var(--mut); margin-top:10px; }
+  .grade b { color:var(--ink); }
+  pre { background:#efeadf; padding:10px; border-radius:8px; overflow-x:auto; font-size:12px; }
+  .muted { color:var(--mut); font-size:13px; }
+  @media (max-width:840px){ .grid{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Will they <em>reply</em>?</h1>
+  <p class="sub">Calibrated per-person message-outcome prediction. Green badges are backtested <b>predictions</b>; orange are believable <b>insights</b> — the UI never blurs the two.</p>
+
+  <div class="grid">
+    <div>
+      <div class="card">
+        <h2>Draft <span class="tag pred">prediction</span></h2>
+        <label>Contact</label>
+        <select id="contact"></select>
+        <label>Channel</label>
+        <select id="channel"><option value="email">email</option><option value="text">text</option></select>
+        <label>Message draft</label>
+        <textarea id="draft" placeholder="Hey — quick question about..."></textarea>
+        <button onclick="predict()">Predict reply</button>
+        <button class="secondary" onclick="suggest()">Suggest drafts for a goal…</button>
+        <div id="result"></div>
+      </div>
+
+      <div class="card" style="margin-top:18px">
+        <h2>Goal → ranked drafts <span class="tag ins">insight</span>→<span class="tag pred">prediction</span></h2>
+        <label>Goal</label>
+        <input id="goal" placeholder="get a 15-minute intro call next week">
+        <div id="drafts" class="muted">Drafts are generated (insight); the ranking is scored by the fitted model (prediction).</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <h2>Persona posterior <span class="tag ins">insight</span></h2>
+        <p class="muted">Inferred from their own messages + outcomes. It's a guess — correct it.</p>
+        <div id="persona"></div>
+        <div id="voi"></div>
+      </div>
+
+      <div class="card" style="margin-top:18px">
+        <h2>Backtest <span class="tag pred">prediction</span></h2>
+        <p class="muted">Temporal holdout; the ladder must beat the segment rung or the person-model is dead weight (exp001).</p>
+        <button class="secondary" onclick="backtest()">Run / show ladder</button>
+        <div id="bt"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const $ = id => document.getElementById(id);
+const api = (p, body) => fetch('/v1/'+p, body ? {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)} : {}).then(r=>r.json());
+
+async function loadContacts(){
+  const d = await api('contacts');
+  $('contact').innerHTML = (d.contacts||[]).map(c=>`<option>${c}</option>`).join('') || '<option value="">(import data first)</option>';
+  if (d.contacts?.length) loadPersona();
+}
+async function loadPersona(){
+  const id = $('contact').value; if(!id) return;
+  const d = await api('persona/'+encodeURIComponent(id));
+  const p = d.persona;
+  const f = (name, obj, fmt) => `<div class="fact"><b>${name}</b>: ${fmt} <span class="u">±unc ${obj.uncertainty ?? ''}</span></div>`;
+  $('persona').innerHTML =
+    `<div class="fact"><b>responsiveness</b>: ${(p.responsiveness.mean*100).toFixed(0)}% <span class="u">[${(p.responsiveness.interval80[0]*100).toFixed(0)}–${(p.responsiveness.interval80[1]*100).toFixed(0)}%, n≈${p.responsiveness.n_effective}]</span></div>`
+    + f('verbosity (log-words)', p.verbosity_logwords, p.verbosity_logwords.mean)
+    + f('formality (0–1)', p.formality, p.formality.mean)
+    + f('latency (log-sec)', p.latency_logsec, p.latency_logsec.mean)
+    + `<div class="fact u">evidence: ${p.evidence.sends} sends, ${p.evidence.replies} replies</div>`;
+}
+async function predict(){
+  const d = await api('predict', {contact_id:$('contact').value, text:$('draft').value, channel:$('channel').value});
+  if (d.error) { $('result').innerHTML = `<p class="muted">${d.error}</p>`; return; }
+  const lo=d.p_interval80[0]*100, hi=d.p_interval80[1]*100, m=d.p_mean*100;
+  $('result').innerHTML = `
+    <div class="big">${m.toFixed(0)}%</div>
+    <div class="bar"><i style="width:${m}%"></i><s style="left:${lo}%;width:${hi-lo}%"></s></div>
+    <div class="interval">80% interval ${lo.toFixed(0)}–${hi.toFixed(0)}% · model ${d.model_version}</div>
+    <div style="margin-top:10px">${d.drivers.map(x=>`<div class="drv"><span>${x.feature}</span><b class="${x.contribution<0?'neg':'pos'}">${x.contribution>0?'+':''}${x.contribution}</b></div>`).join('')}</div>
+    <div class="grade">calibration: <b>${d.calibration.grade}</b> (ECE ${d.calibration.ece ?? 'n/a'}) — ${d.calibration.note ?? ''}</div>`;
+  elicit();
+}
+async function elicit(){
+  const d = await api('elicit', {contact_id:$('contact').value, draft_text:$('draft').value, channel:$('channel').value});
+  $('voi').innerHTML = d.question ? `
+    <div class="voi"><p><b>One question would sharpen this:</b><br>${d.question}</p>
+    <div class="chips">${d.answers.map(a=>`<button class="secondary" onclick="answer('${d.factor}','${a}')">${a}</button>`).join('')}</div>
+    <p class="u" style="font-size:11.5px;margin-top:6px">moves prediction by up to ${(d.prediction_spread*100).toFixed(0)} pts</p></div>` : '';
+}
+async function answer(factor, a){
+  await api('correct', {contact_id:$('contact').value, factor, answer:a});
+  await loadPersona(); await predict();
+}
+async function suggest(){
+  const goal = $('goal').value || 'get a reply';
+  $('drafts').innerHTML = '<p class="muted">generating…</p>';
+  const d = await api('suggest', {contact_id:$('contact').value, goal, channel:$('channel').value});
+  if (d.ranking?.error) { $('drafts').innerHTML = `<p class="muted">${d.ranking.error}</p>`; return; }
+  $('drafts').innerHTML = d.ranking.ranked.map((r,i)=>`
+    <div class="draft"><b>#${i+1} · ${(r.p_mean*100).toFixed(0)}%</b> <span class="u">[${(r.p_interval80[0]*100).toFixed(0)}–${(r.p_interval80[1]*100).toFixed(0)}%]</span><br>${r.text}
+    <div class="r">${(d.drafts.find(x=>x.text===r.text)||{}).rationale||''}</div></div>`).join('');
+}
+async function backtest(){
+  const d = await api('backtest', {});
+  $('bt').innerHTML = d.error ? `<p class="muted">${d.error}</p>` : `
+    <pre>${d.rungs.map(r=>`${r.name.padEnd(14)} logloss ${r.log_loss}  ece ${r.ece}  uplift@20 ${r.uplift_at_20}`).join('\n')}
+verdict: ${d.verdict}
+p(L3 beats L2): ${1-d.bootstrap_p_L3_beats_L2}
+noise floor (brier): ${d.noise_floor?.noise_floor_brier ?? 'n/a'}</pre>`;
+}
+$('contact').addEventListener('change', loadPersona);
+loadContacts();
+</script>
+</body>
+</html>
