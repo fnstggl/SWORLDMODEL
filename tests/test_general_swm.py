@@ -227,6 +227,22 @@ def test_run_benchmark_verdict():
     assert res.tiers["individual_world"]["status"].startswith("BLOCKED")
 
 
+def test_aggregate_world_serialization_roundtrip(tmp_path):
+    """Persisting a fitted world and reloading it must reproduce predictions EXACTLY — the
+    guarantee the /v1/rollout honesty fix relies on (real state-sensitive head, not PriorHead)."""
+    aw = AggregateWorld(domain="hn").fit_stream(_agg_samples())
+    a = Action(action_id="q", actor_id="u1", content_features={"title_len": 0.5, "topic": "ai"},
+               timing={"hour": 12, "weekday": 2, "ts": 1_700_100_000},
+               meta={"domain": "good.com", "title": "ai q"})
+    p1 = aw.predict(a)["thresholds"][40]
+    path = tmp_path / "w.json"
+    aw.grade = {"grade": "B", "ece": 0.03}
+    aw.save(path)
+    w2 = AggregateWorld.load(path)
+    assert abs(w2.predict(a)["thresholds"][40] - p1) < 1e-9   # exact roundtrip incl. drift state
+    assert w2.grade["grade"] == "B"
+
+
 def test_market_comparison_and_retrieval_gap():
     truth = [{"id": f"m{i}", "resolution": i % 2, "market_at_T": 0.5, "bettors": 10 + i}
              for i in range(20)]
