@@ -46,23 +46,26 @@ cannot hand-pick the config per domain in production. It stays within ~0.003 of 
 config everywhere and adapts automatically. The same mechanism unifies the aggregate regime (fuse
 simulation-p + LLM-p + evidence → meta), replacing the hand-set HN hybrid gate.
 
-## So what IS the highest-leverage lever now? (ranked, honest)
+## So what IS the highest-leverage lever now? (ranked — and UPDATED by EXP-019)
 Since more model complexity is no longer the answer, the remaining error is **aleatoric noise** +
-**semantic content understanding** + **missing deep state**. The real levers:
+**semantic content understanding** + **missing deep state**. I tested the content-richness lever
+directly (EXP-019) and it **failed on entity-driven outcomes** — which reranks the list. The honest,
+measured ranking:
 
-1. **Content richness — LLM-extracted semantic features → the world model** (cheapest concrete next).
-   Our individual datasets used only shallow message features (title length, is-bug). The cold/
-   content-dominated regime — where we lose to the LLM — is precisely where rich semantic features of
-   the action help. Proven to help modestly on HN (EXP-013). Generalize it: run the feature-extractor
-   swarm over GitHub/Enron messages, feed the features to the world model (not as its probability),
-   and the combiner will use them where state is thin. This attacks our single largest error slice.
-
-2. **Deeper-state / proprietary repeat-entity data — the actual moat.** The world model's edge is
+1. **Deeper-state / proprietary repeat-entity data — THE lever (promoted after EXP-019).** The world
+   model's edge is
    largest and grows monotonically with entity-history depth, and it beats a raw LLM given the same
    info *because it models the state precisely* (GitHub deep-repo: log loss halved; beats LLM+context
    0.258 vs 0.304). The highest-value data is a domain with **deep entity state the LLM has no prior
    over** — a company's own CRM/email/support history. There, entity-state modeling wins biggest and
    the moat is real. This is a data-acquisition step, not a modeling one.
+
+2. **Content richness — LLM semantic features → world model — DEMOTED (EXP-019 disconfirmed it).**
+   Tested directly: on GitHub issue-response, semantic features (clarity/actionability/…) did NOT help
+   (Δ −0.003 overall and on the cold slice). Entity-driven outcomes ("will they respond/reply") are
+   dominated by WHO, not the message's semantic quality. Content richness helps **only** where the
+   outcome is genuinely content-driven (post virality/engagement — HN, where it did lift modestly). So
+   it is a secondary lever for aggregate content outcomes, a non-lever for individual response outcomes.
 
 3. **Aggregate simulation realism** (large-scale regime): fit segment affinities/weights from data
    (currently hand-set priors), add second-order dynamics (comment/controversy re-exposure), and
@@ -72,10 +75,13 @@ Since more model complexity is no longer the answer, the remaining error is **al
    because segment + message already capture most of what's observable for a cold entity. Revisit when
    entities carry richer observable features.
 
-## Bottom line
-The next highest-leverage step is **not** more simulation machinery and **not** a fancier fusion — we
-measured both to diminishing returns. It is **richer content representation (LLM semantic features →
-world model) for the cold regime, and deeper-state proprietary data for the warm regime** — i.e.,
-better *inputs to the state*, not a bigger model on top of it. The learned combiner is kept as the
-general auto-adapting predictor (generality over per-domain tuning); the accuracy frontier is now
-data and representation, exactly where the honest version of this project was always going to land.
+## Bottom line (updated after EXP-019)
+The next highest-leverage step is **not** more simulation machinery, **not** a fancier fusion, and —
+tested and disconfirmed — **not** a richer content encoder for the individual-response outcomes that
+matter most. All three hit diminishing returns or failed on measurement. The measured answer is
+**deeper entity-state DATA**: the world model's edge is entity-state-driven and grows with history
+depth, and no amount of content richness substitutes for it on entity-driven outcomes. The frontier
+for hyper-individualized accuracy is proprietary repeat-entity outcome logs (CRM/email/support); for
+large-scale accuracy it is aggregate-simulation realism within the aleatoric ceiling. The learned
+combiner is kept as the general auto-adapting predictor. This is the honest, measured conclusion —
+including the parts where my own top hypothesis was wrong.
