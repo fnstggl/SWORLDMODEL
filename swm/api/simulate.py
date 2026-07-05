@@ -32,6 +32,7 @@ import math
 from dataclasses import asdict, dataclass, field
 
 from swm.uncertainty.calibration import calibration_grade
+from swm.uncertainty.conformal import ConformalBinary
 from swm.variables.schema import NAMES
 from swm.worlds.variable_world import VariableWorld
 
@@ -51,6 +52,8 @@ class Prediction:
     reason: str                     # why this regime / confidence / abstention
     calibration: dict               # the model's calibration badge from fit() (grade + ECE + n)
     provenance: dict                # VariableMap.provenance_report()
+    prediction_set: list = field(default_factory=list)   # conformal set over {0,1}, guaranteed coverage
+    coverage_target: float = None   # 1 - alpha: the conformal coverage guarantee (None if uncalibrated)
     drivers: list = field(default_factory=list)   # top variables that moved this prediction
 
     def as_dict(self) -> dict:
@@ -65,6 +68,8 @@ class Simulator:
     calibration: dict = field(default_factory=lambda: {"grade": "ungraded", "ece": None})
     base_rate: float = 0.3
     train_support: dict = field(default_factory=dict)   # regime -> fraction of training stream in it
+    conformal_alpha: float = 0.1                        # target miscoverage for prediction sets
+    conformal: ConformalBinary = None                   # type: ignore; fitted on the grading tail
 
     def __post_init__(self):
         if self.world is None:
@@ -81,6 +86,8 @@ class Simulator:
             self.calibration = calibration_grade(y, preds)
             self.calibration.update({"log_loss": badge["log_loss"], "brier": badge["brier"],
                                      "uplift@20": badge["uplift@20"], "n_test": badge["n_test"]})
+            # conformal calibration on the same held-out tail -> guaranteed-coverage prediction sets
+            self.conformal = ConformalBinary(alpha=self.conformal_alpha).fit(preds, y)
         # deploy model: fit on the full stream so entity history is maximally current
         self.world = VariableWorld(platform=self.platform).fit_stream(insts)
         self.base_rate = self.world.global_rate
@@ -133,9 +140,12 @@ class Simulator:
             reason += f"; abstaining — shrunk toward base rate {self.base_rate:.3f} (treat as weak)"
         else:
             p = raw_p
-        return Prediction(p=round(min(1 - 1e-6, max(1e-6, p)), 6), confidence=conf, regime=regime,
-                          abstain=abstain, reason=reason, calibration=dict(self.calibration),
-                          provenance=vm.provenance_report(), drivers=vm.explain(top=6))
+        p = round(min(1 - 1e-6, max(1e-6, p)), 6)
+        pset = self.conformal.predict_set(p) if self.conformal else []
+        ctarget = round(1 - self.conformal_alpha, 3) if self.conformal else None
+        return Prediction(p=p, confidence=conf, regime=regime, abstain=abstain, reason=reason,
+                          calibration=dict(self.calibration), provenance=vm.provenance_report(),
+                          prediction_set=pset, coverage_target=ctarget, drivers=vm.explain(top=6))
 
     def observe(self, entity_id, action, outcome) -> None:
         """Feed a realized outcome back so the entity's as-of state stays current (online use)."""

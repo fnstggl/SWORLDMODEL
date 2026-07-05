@@ -31,6 +31,7 @@ INCENTIVE = "incentive"
 STATE = "state"
 PLATFORM = "platform"
 MESSAGE_FIT = "message_fit"
+PERSONA = "persona"        # deep stable traits inferred from a person's writing history (the "interview")
 
 # provenance ranks (higher = more trusted); used to resolve conflicts and weight the readout
 PROVENANCE_RANK = {"user": 3, "data": 3, "llm": 2, "heuristic": 1, "prior": 0}
@@ -87,6 +88,40 @@ _SPECS: list[VariableSpec] = [
     VariableSpec("pushiness", MESSAGE_FIT, "how aggressive/salesy (suppresses response)"),
     VariableSpec("ask_directness", MESSAGE_FIT, "explicit specific ask vs vague"),
     VariableSpec("length_fit", MESSAGE_FIT, "message length vs their inferred preference"),
+    # PERSONA — the deep, stable traits a person's WRITING HISTORY reveals (our scalable analog of the
+    # 2-hour interview in Generative-Agent SOTA). Inferred multi-pass over the as-of corpus; confidence
+    # grows with corpus depth + internal consistency. These are the "everything we model about them".
+    # Big Five
+    VariableSpec("trait_openness", PERSONA, "openness to experience / intellectual curiosity"),
+    VariableSpec("trait_conscientiousness", PERSONA, "diligence, follow-through, thoroughness"),
+    VariableSpec("trait_extraversion", PERSONA, "social energy / assertive engagement"),
+    VariableSpec("trait_agreeableness", PERSONA, "warmth, cooperativeness vs antagonism"),
+    VariableSpec("trait_emotional_stability", PERSONA, "calm/even vs reactive/volatile"),
+    # epistemic / cognitive style
+    VariableSpec("epistemic_rigor", PERSONA, "reliance on evidence, logic, sourcing vs assertion"),
+    VariableSpec("intellectual_humility", PERSONA, "willingness to concede / update / say 'I might be wrong'"),
+    VariableSpec("analytical_style", PERSONA, "analytical/systematic vs intuitive/associative"),
+    VariableSpec("certainty_disposition", PERSONA, "how confidently/absolutely they assert claims"),
+    # communication style
+    VariableSpec("verbosity", PERSONA, "characteristic length/elaboration of their writing"),
+    VariableSpec("politeness_disposition", PERSONA, "respectful/civil vs combative/dismissive tone"),
+    VariableSpec("emotional_expressiveness", PERSONA, "affect and emotion shown in writing", signed=False),
+    VariableSpec("humor_disposition", PERSONA, "use of humor/irony/levity"),
+    # social / interpersonal orientation
+    VariableSpec("combativeness", PERSONA, "eagerness to confront/argue vs seek common ground"),
+    VariableSpec("empathy_display", PERSONA, "perspective-taking / acknowledging others' views"),
+    VariableSpec("status_orientation", PERSONA, "concern with standing/being-right vs truth-seeking"),
+    # values / worldview axes (drive opinion & stance outcomes)
+    VariableSpec("value_individualism", PERSONA, "individualist vs collectivist leaning", signed=True,
+                 default=0.0),
+    VariableSpec("value_traditionalism", PERSONA, "traditional vs progressive/novel leaning", signed=True,
+                 default=0.0),
+    VariableSpec("risk_tolerance", PERSONA, "comfort with risk/uncertainty vs caution"),
+    VariableSpec("moral_absolutism", PERSONA, "rule/principle-driven vs pragmatic/consequentialist"),
+    # domain footprint
+    VariableSpec("expertise_breadth", PERSONA, "range of domains they engage competently"),
+    VariableSpec("topical_focus", PERSONA, "specialist (narrow) vs generalist (broad) engagement"),
+    VariableSpec("persistence", PERSONA, "tenacity in sustained back-and-forth"),
 ]
 
 SPECS: dict[str, VariableSpec] = {s.name: s for s in _SPECS}
