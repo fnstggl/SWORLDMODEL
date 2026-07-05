@@ -22,9 +22,10 @@ from swm.transition.response_model import ResponseConfig, ResponseModel
 
 # the improvement ladder: each rung adds ONE upgrade on top of the previous
 LADDER = [
-    ("segment_only", ResponseConfig(use_pooled_rate=False, use_message=False, readout="pooled")),
-    ("pooled_rate", ResponseConfig(readout="pooled")),
-    ("+message(logistic)", ResponseConfig(readout="logistic")),
+    ("segment_only", ResponseConfig(use_pooled_rate=False, use_message=False, use_recency=False,
+                                    readout="pooled")),
+    ("pooled_rate", ResponseConfig(use_recency=False, readout="pooled")),
+    ("+message(logistic)", ResponseConfig(use_recency=False, readout="logistic")),
     ("+recency", ResponseConfig(readout="logistic", use_recency=True)),
     ("+multilevel", ResponseConfig(readout="logistic", use_recency=True, use_multilevel=True)),
     ("+state_feats", ResponseConfig(readout="logistic", use_recency=True, use_multilevel=True,
@@ -58,6 +59,21 @@ def _fit_predict(samples, mfn, cfg, cut):
     return preds, y, depths
 
 
+def _stacked(samples, mfn, cut):
+    """The learned evidence-aware combiner (stacking) — fit meta-learner on a held-out tail of TRAIN."""
+    from swm.transition.stacked_response import StackedResponseModel
+    train, test = samples[:cut], samples[cut:]
+    gr = (sum(o for *_, o in train) + 1) / (len(train) + 2)
+    m = StackedResponseModel(message_feature_names=mfn).fit_stream(train, global_rate=gr)
+    preds, y, depths = [], [], []
+    for eid, seg, mf, o in test:
+        e = m._ent.get(eid)
+        depths.append(e.n if e else 0)
+        preds.append(m.predict(eid, seg, mf)); y.append(int(o))
+        m.observe(eid, seg, o)
+    return preds, y, depths
+
+
 def run_ladder(samples, mfn, *, name="dataset", split=0.7):
     n = len(samples)
     cut = int(split * n)
@@ -79,6 +95,16 @@ def run_ladder(samples, mfn, *, name="dataset", split=0.7):
         if s["log_loss"] < best_ll:
             best_ll, best_name = s["log_loss"], rung
             depth_cache = (preds, y, depths)          # slice on the BEST config (not the overfit GBDT)
+    # the learned combiner (stacking) — the highest-leverage fusion of state-model + content prior
+    sp, sy, sd = _stacked(samples, mfn, cut)
+    ss = _score(sy, sp)
+    print(f"  {'STACKED_combiner':<22}{ss['log_loss']:>9.4f}{ss['brier']:>8.4f}{ss['ece']:>7.4f}"
+          f"{ss['uplift@20']:>8.3f}{best_ll - ss['log_loss']:>+8.4f}"
+          f"{'  <-- vs best single' }")
+    rows["STACKED_combiner"] = ss
+    if ss["log_loss"] < best_ll:
+        best_ll, best_name, depth_cache = ss["log_loss"], "STACKED_combiner", (sp, sy, sd)
+
     # depth slices on the BEST config
     if depth_cache:
         preds, y, depths = depth_cache

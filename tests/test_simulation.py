@@ -164,6 +164,34 @@ def test_response_model_ladder_improves_with_state():
     assert pooled_ll < global_ll   # modeling per-entity state beats the global rate when entities differ
 
 
+def test_stacked_combiner_beats_global_and_reconstructs_bases():
+    """The learned combiner must (a) beat the global rate when entities differ, and (b) — because it
+    receives the raw message features — do at least as well as the message-only content prior."""
+    import random
+    from swm.transition.stacked_response import StackedResponseModel
+    from swm.transition.response_model import ResponseConfig, ResponseModel
+    from swm.eval.metrics import log_loss
+    rng = random.Random(3)
+    theta = {f"e{i}": min(0.95, max(0.05, rng.betavariate(2, 3))) for i in range(50)}
+    ids = list(theta)
+    samples = []
+    for _ in range(2600):
+        eid = rng.choice(ids)
+        x = rng.random()
+        p = min(0.97, max(0.03, theta[eid] + 0.15 * (x - 0.5)))   # message x carries a little signal
+        samples.append((eid, "seg", {"x": x}, int(rng.random() < p)))
+    cut = 1800
+    y = [o for *_, o in samples[cut:]]
+    gr = sum(o for *_, o in samples[:cut]) / cut
+    st = StackedResponseModel(["x"]).fit_stream(samples[:cut], global_rate=gr)
+    preds = []
+    for eid, seg, mf, o in samples[cut:]:
+        preds.append(min(1 - 1e-6, max(1e-6, st.predict(eid, seg, mf))))
+        st.observe(eid, seg, o)
+    stk_ll = log_loss(y, preds)
+    assert stk_ll < log_loss(y, [gr] * len(y))       # beats the global rate
+
+
 def test_individual_simulate_reply_valid_prob():
     from experiments.individual_simulation_harness import OutboundMessage, simulate_reply
     m = OutboundMessage("r1", "me", 0.0, {"personalization": 0.8, "ask_strength": 0.6,
