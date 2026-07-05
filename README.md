@@ -25,14 +25,46 @@ benchmarks/  public-data harnesses (Upworthy, Criteo) for credibility results
 experiments/ dated, reproducible result scripts
 tests/       incl. the leakage gate that must pass in CI
 ```
-`swm/eval/metrics.py` and `swm/ingestion/schema.py` are implemented; the rest are honest stubs to
-be filled in build-order: `schema → store → actions.encoder → transition.readout →
-uncertainty.calibration → eval.* → benchmarks/upworthy`.
+## Core architecture — known + inferred variable mapping (EXP-020)
+Every individual simulation flows through one state object: for a given `(entity, action, context)`,
+the `VariableInferenceEngine` maps **every behavioral variable acting on the response** — the *known*
+ones from data/user-context and the *inferred* ones from context clues (LLM) — into a
+provenance-tracked, uncertainty-aware `VariableMap` (`swm/variables/`), which the `VariableWorld`
+(`swm/worlds/variable_world.py`) turns into a calibrated, backtested prediction. The LLM infers
+variables, never the outcome; all inference is as-of (leakage-safe); each variable earns its place on
+held-out data. This routing matches the best entity-state model at ~zero accuracy cost while adding
+auditability, uncertainty, and user-context merging (see `experiments/exp020_variable_mapping_architecture.md`).
 
-## Status
-Research + scaffold. Not a product. The hardest claims (does LLM-agent rollout add *calibrated* lift
-over a boring gradient-boosted readout?) are **open research problems**, tracked in the audit (Section H).
+## Status (updated EXP-008 — general world model)
+Beyond the original scaffold, the repo now has a **real, backtested state-transition world model**
+for both regimes:
 
-See the audit for the full literature map, data-acquisition and evaluation plans, wedge specs,
-30/90/365-day roadmap, API spec, competitive analysis (Aaru, Simile, and the synthetic-respondent
-field), moats, and a brutal critique of why this probably fails and how to de-risk it.
+- **Aggregate** (`swm/worlds/aggregate_world.py`): `PopulationState + Action → Outcome +
+  PopulationState'` with subgroup priors, topic salience, domain reputation, attention/competition,
+  incentives, and drift — state genuinely conditions a calibrated head. Backtested on HN
+  (`experiments/aggregate_harness.py`).
+- **Individual** (`swm/worlds/individual_world.py`): `this entity + action + context → response
+  distribution` via hierarchical partial pooling (person ← segment ← population). Validated as an
+  estimator on synthetic data; the real-behavior claim is **blocked on private data**.
+- **As-of retrieval** (`swm/retrieval/asof_store.py`, `news/social/entity_context.py`): a
+  retrieval layer that *physically* cannot return future items, with a real leakage gate
+  (`swm/eval/leakage.py`) and tests.
+- **Simulation** (`swm/simulation/`): free-running rollout + a calibration-by-horizon multi-step
+  eval, scenario trees, counterfactuals.
+- **The head-to-head** (`swm/eval/raw_llm_vs_world_model.py`, `experiments/exp009_harness.py`):
+  raw LLM vs raw LLM + as-of context vs structured vs calibrated vs aggregate/individual
+  state-transition, on identical items and metrics.
+
+Reports: `experiments/exp008_general_swm_gap_audit.md` (what's real vs stub),
+`exp009_raw_llm_vs_world_model.md`, `individual_model_report.md`, `aggregate_model_report.md`,
+`market_benchmark_report.md`. The hardest claims (does state simulation beat raw LLM + context? does
+retrieval close the market gap? multi-step calibration?) are **measured, not asserted** — and where
+the world model does *not* beat the baseline, the reports say so.
+
+Remaining stubs (design-only): `swm/transition/mechanistic.py`, `swm/transition/llm_rollout.py`,
+`swm/graph/diffusion.py` (superseded by `swm/transition/diffusion.py`), `swm/inference/filter.py`,
+`swm/entities/embeddings.py`, `swm/memory/memory.py`.
+
+See the audit for the full literature map, data-acquisition and evaluation plans, wedge specs, API
+spec, competitive analysis, moats, and a brutal critique of why this probably fails and how to
+de-risk it.

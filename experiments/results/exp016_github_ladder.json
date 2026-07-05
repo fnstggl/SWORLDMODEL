@@ -1,0 +1,89 @@
+{
+ "name": "github",
+ "n": 15262,
+ "base_rate": 0.1415,
+ "ladder": {
+  "segment_only": {
+   "n": 4579,
+   "pos": 602,
+   "log_loss": 0.333,
+   "brier": 0.0982,
+   "ece": 0.0221,
+   "uplift@20": 0.1677
+  },
+  "pooled_rate": {
+   "n": 4579,
+   "pos": 602,
+   "log_loss": 0.333,
+   "brier": 0.0982,
+   "ece": 0.0221,
+   "uplift@20": 0.1677
+  },
+  "+message(logistic)": {
+   "n": 4579,
+   "pos": 602,
+   "log_loss": 0.3126,
+   "brier": 0.0945,
+   "ece": 0.0325,
+   "uplift@20": 0.2048
+  },
+  "+recency": {
+   "n": 4579,
+   "pos": 602,
+   "log_loss": 0.3094,
+   "brier": 0.0939,
+   "ece": 0.0256,
+   "uplift@20": 0.2102
+  },
+  "+multilevel": {
+   "n": 4579,
+   "pos": 602,
+   "log_loss": 0.3052,
+   "brier": 0.0926,
+   "ece": 0.0252,
+   "uplift@20": 0.231
+  },
+  "+state_feats": {
+   "n": 4579,
+   "pos": 602,
+   "log_loss": 0.3052,
+   "brier": 0.0926,
+   "ece": 0.0245,
+   "uplift@20": 0.231
+  },
+  "+interactions": {
+   "n": 4579,
+   "pos": 602,
+   "log_loss": 0.3154,
+   "brier": 0.0953,
+   "ece": 0.0221,
+   "uplift@20": 0.2201
+  },
+  "+gbdt_readout": {
+   "n": 4579,
+   "pos": 602,
+   "log_loss": 0.3228,
+   "brier": 0.0952,
+   "ece": 0.0386,
+   "uplift@20": 0.196
+  },
+  "+calibration": {
+   "n": 4579,
+   "pos": 602,
+   "log_loss": 0.3146,
+   "brier": 0.095,
+   "ece": 0.0357,
+   "uplift@20": 0.196
+  },
+  "STACKED_combiner": {
+   "n": 4579,
+   "pos": 602,
+   "log_loss": 0.3028,
+   "brier": 0.0917,
+   "ece": 0.026,
+   "uplift@20": 0.2332
+  }
+ },
+ "best": "STACKED_combiner",
+ "best_log_loss": 0.3028
+}

@@ -1,0 +1,50 @@
+{
+ "target": "HN P(score>=40)",
+ "n": 100,
+ "base_rate": 0.08,
+ "tiers": {
+  "raw_llm": {
+   "log_loss": 0.2859,
+   "brier": 0.0773,
+   "ece": 0.0195,
+   "uplift@10": -0.08,
+   "uplift@20": -0.03
+  },
+  "raw_llm_context": {
+   "log_loss": 0.2996,
+   "brier": 0.0805,
+   "ece": 0.0546,
+   "uplift@10": -0.08,
+   "uplift@20": 0.02
+  },
+  "structured": {
+   "log_loss": 0.3262,
+   "brier": 0.0902,
+   "ece": 0.0727,
+   "uplift@10": -0.08,
+   "uplift@20": -0.03
+  },
+  "calibrated": {
+   "log_loss": 0.2781,
+   "brier": 0.0736,
+   "ece": 0.0098,
+   "uplift@10": 0.02,
+   "uplift@20": -0.03
+  },
+  "aggregate_world": {
+   "log_loss": 0.2842,
+   "brier": 0.075,
+   "ece": 0.0244,
+   "uplift@10": -0.08,
+   "uplift@20": -0.03
+  },
+  "individual_world": {
+   "log_loss": 0.2792,
+   "brier": 0.0736,
+   "ece": 0.0095,
+   "uplift@10": 0.02,
+   "uplift@20": 0.02
+  }
+ },
+ "verdict": "world model BEATS raw LLM + context on log loss; vs raw LLM (input-only): world better; retrieval did not help the raw LLM"
+}
