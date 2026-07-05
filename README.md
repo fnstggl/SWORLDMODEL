@@ -25,6 +25,16 @@ benchmarks/  public-data harnesses (Upworthy, Criteo) for credibility results
 experiments/ dated, reproducible result scripts
 tests/       incl. the leakage gate that must pass in CI
 ```
+## Core architecture — known + inferred variable mapping (EXP-020)
+Every individual simulation flows through one state object: for a given `(entity, action, context)`,
+the `VariableInferenceEngine` maps **every behavioral variable acting on the response** — the *known*
+ones from data/user-context and the *inferred* ones from context clues (LLM) — into a
+provenance-tracked, uncertainty-aware `VariableMap` (`swm/variables/`), which the `VariableWorld`
+(`swm/worlds/variable_world.py`) turns into a calibrated, backtested prediction. The LLM infers
+variables, never the outcome; all inference is as-of (leakage-safe); each variable earns its place on
+held-out data. This routing matches the best entity-state model at ~zero accuracy cost while adding
+auditability, uncertainty, and user-context merging (see `experiments/exp020_variable_mapping_architecture.md`).
+
 ## Status (updated EXP-008 — general world model)
 Beyond the original scaffold, the repo now has a **real, backtested state-transition world model**
 for both regimes:
