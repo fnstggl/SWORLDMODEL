@@ -1,0 +1,80 @@
+{
+ "dataset": "kalshi",
+ "n_test": 760,
+ "n_train": 640,
+ "llm_impact_coverage": 0.543,
+ "raw_impact_scale": 0.25,
+ "gate_scale": 0.2,
+ "flat_threshold": 0.02,
+ "n_event_driven": 52,
+ "tiers_all": {
+  "persistence": {
+   "mae": 0.0603,
+   "da3": 0.379,
+   "da_nonflat": 0.0,
+   "corr": 0.0
+  },
+  "state+cheap_event": {
+   "mae": 0.0703,
+   "da3": 0.38,
+   "da_nonflat": 0.337,
+   "corr": 0.116
+  },
+  "llm_impact_raw": {
+   "mae": 0.0594,
+   "da3": 0.426,
+   "da_nonflat": 0.123,
+   "corr": 0.159
+  },
+  "state+llm_impact": {
+   "mae": 0.0811,
+   "da3": 0.345,
+   "da_nonflat": 0.475,
+   "corr": 0.181
+  },
+  "gated_llm_impact": {
+   "mae": 0.0618,
+   "da3": 0.416,
+   "da_nonflat": 0.11,
+   "corr": 0.144
+  }
+ },
+ "tiers_event_driven": {
+  "persistence": {
+   "mae": 0.0896,
+   "da3": 0.25,
+   "da_nonflat": 0.0,
+   "corr": 0.0
+  },
+  "state+cheap_event": {
+   "mae": 0.1066,
+   "da3": 0.212,
+   "da_nonflat": 0.231,
+   "corr": 0.151
+  },
+  "llm_impact_raw": {
+   "mae": 0.0826,
+   "da3": 0.635,
+   "da_nonflat": 0.846,
+   "corr": 0.255
+  },
+  "state+llm_impact": {
+   "mae": 0.1071,
+   "da3": 0.577,
+   "da_nonflat": 0.769,
+   "corr": 0.251
+  },
+  "gated_llm_impact": {
+   "mae": 0.1071,
+   "da3": 0.577,
+   "da_nonflat": 0.769,
+   "corr": 0.25
+  }
+ },
+ "event_subset_gated_beats_persistence": {
+  "mae": false,
+  "da3": true
+ },
+ "full_gated_mae_vs_persistence": 0.0015,
+ "full_gated_da_vs_persistence": 0.037
+}

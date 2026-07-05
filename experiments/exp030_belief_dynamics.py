@@ -89,41 +89,61 @@ def run():
     cov = sum(1 for r in test if r.get("_impact", 0.0) != 0.0) / max(1, len(test))
 
     imp_fn = lambda r: r.get("_impact", 0.0)
-    tiers = {}
-    tiers["persistence"] = _metrics(test, [0.0] * len(test))
-
-    # state-only and cheap-event models reuse the same regressor; toggle features by zeroing the impact
-    st_only = BeliefTransition(event_impact_fn=lambda r: 0.0).fit(train)
-    # state_only: also blank the cheap-salience by using only state feature slots? keep cheap-event as its own tier
-    tiers["state+cheap_event"] = _metrics(test, [st_only.predict_change(r) for r in test])
-
-    full = BeliefTransition(event_impact_fn=imp_fn).fit(train)
-    tiers["state+llm_impact"] = _metrics(test, [full.predict_change(r) for r in test])
-
-    # raw LLM impact -> Δ, scale tuned on TRAIN only (no test leakage)
+    # tune the raw-impact scale and the gate_scale on TRAIN only (no test leakage)
     best_s, best_e = 0.05, 1e9
     for s in (0.02, 0.05, 0.1, 0.15, 0.25):
         e = sum(abs((r["history"][-1]["p"] + s * r["_impact"]) - r["target"]["p"]) for r in train) / len(train)
         if e < best_e:
             best_e, best_s = e, s
-    tiers["llm_impact_raw"] = _metrics(test, [best_s * r["_impact"] for r in test])
+    best_g, best_ge = 0.5, 1e9
+    for g in (0.2, 0.35, 0.5, 0.7):
+        m = BeliefTransition(event_impact_fn=imp_fn, gate_by_impact=True, gate_scale=g).fit(train)
+        e = sum(abs(m.predict_belief(r) - r["target"]["p"]) for r in train) / len(train)
+        if e < best_ge:
+            best_ge, best_g = e, g
 
-    out = {"dataset": "kalshi", "n_test": len(test), "n_train": len(train), "llm_impact_coverage": round(cov, 3),
-           "raw_impact_scale": best_s, "flat_threshold": FLAT, "tiers": tiers}
+    st_only = BeliefTransition(event_impact_fn=lambda r: 0.0).fit(train)
+    full = BeliefTransition(event_impact_fn=imp_fn).fit(train)
+    gated = BeliefTransition(event_impact_fn=imp_fn, gate_by_impact=True, gate_scale=best_g).fit(train)
+
+    def tierset(rows):
+        return {
+            "persistence": _metrics(rows, [0.0] * len(rows)),
+            "state+cheap_event": _metrics(rows, [st_only.predict_change(r) for r in rows]),
+            "llm_impact_raw": _metrics(rows, [best_s * r["_impact"] for r in rows]),
+            "state+llm_impact": _metrics(rows, [full.predict_change(r) for r in rows]),
+            "gated_llm_impact": _metrics(rows, [gated.predict_change(r) for r in rows]),
+        }
+
+    tiers = tierset(test)
+    # event-driven subset: transitions where the LLM judged a real event (|impact| >= τ) — the paper's
+    # "attributed subset", where dynamics should win over the persistence null.
+    tau_ev = 0.15
+    ev = [r for r in test if abs(r.get("_impact", 0.0)) >= tau_ev]
+    tiers_ev = tierset(ev) if len(ev) >= 20 else {}
+
     base = tiers["persistence"]
-    print(f"EXP-030 belief dynamics (SWM-Bench/Kalshi) — n_test={len(test)}, LLM impact cov {cov:.0%}")
+    out = {"dataset": "kalshi", "n_test": len(test), "n_train": len(train),
+           "llm_impact_coverage": round(cov, 3), "raw_impact_scale": best_s, "gate_scale": best_g,
+           "flat_threshold": FLAT, "n_event_driven": len(ev), "tiers_all": tiers, "tiers_event_driven": tiers_ev}
+    print(f"EXP-030 belief dynamics (SWM-Bench/Kalshi) — n_test={len(test)}, LLM impact cov {cov:.0%}, "
+          f"gate_scale {best_g}")
+    print(f"  --- FULL test set (n={len(test)}) ---")
     print(f"  {'tier':<20} {'MAE':>7} {'DA3':>6} {'DA_nonflat':>11} {'corr':>7}")
     for k, v in tiers.items():
-        flag = ""
-        if k != "persistence":
-            flag = "  <- beats persistence DA" if v["da3"] > base["da3"] else ""
-        print(f"  {k:<20} {v['mae']:>7} {v['da3']:>6} {v['da_nonflat']:>11} {v['corr']:>7}{flag}")
-    win = tiers["state+llm_impact"]
-    out["beats_persistence_da"] = win["da3"] > base["da3"]
-    out["mae_vs_persistence"] = round(win["mae"] - base["mae"], 4)
-    print(f"  full operator: DA3 {win['da3']} vs persistence {base['da3']} "
-          f"({'WIN' if out['beats_persistence_da'] else 'no DA gain'}); "
-          f"MAE {win['mae']} vs {base['mae']} (Δ {out['mae_vs_persistence']:+.4f})")
+        print(f"  {k:<20} {v['mae']:>7} {v['da3']:>6} {v['da_nonflat']:>11} {v['corr']:>7}")
+    if tiers_ev:
+        b2 = tiers_ev["persistence"]
+        print(f"  --- EVENT-DRIVEN subset (|impact|>={tau_ev}, n={len(ev)}) ---")
+        for k, v in tiers_ev.items():
+            print(f"  {k:<20} {v['mae']:>7} {v['da3']:>6} {v['da_nonflat']:>11} {v['corr']:>7}")
+        out["event_subset_gated_beats_persistence"] = {
+            "mae": tiers_ev["gated_llm_impact"]["mae"] <= b2["mae"],
+            "da3": tiers_ev["gated_llm_impact"]["da3"] > b2["da3"]}
+    out["full_gated_mae_vs_persistence"] = round(tiers["gated_llm_impact"]["mae"] - base["mae"], 4)
+    out["full_gated_da_vs_persistence"] = round(tiers["gated_llm_impact"]["da3"] - base["da3"], 4)
+    print(f"  VERDICT (gated operator vs persistence): full-set MAE Δ {out['full_gated_mae_vs_persistence']:+.4f}, "
+          f"DA3 Δ {out['full_gated_da_vs_persistence']:+.4f}")
     Path("experiments/results").mkdir(parents=True, exist_ok=True)
     Path(RESULT).write_text(json.dumps(out, indent=1))
     print(f"  wrote {RESULT}")

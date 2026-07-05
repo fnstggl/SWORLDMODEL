@@ -105,8 +105,17 @@ class _Ridge:
 
 @dataclass
 class BeliefTransition:
-    """Learned event-conditioned transition: Δ̂ = f(state, event); next belief = clamp(p_t + Δ̂)."""
+    """Learned event-conditioned transition: Δ̂ = f(state, event); next belief = clamp(p_t + Δ̂).
+
+    With `gate_by_impact`, the predicted change is scaled by the event-impact magnitude so that a
+    transition with no relevant event collapses to the persistence/null branch (Δ≈0) — the efficient-
+    market martingale the paper falls back to when no event is attributed. This prevents the operator
+    from injecting spurious movement on quiet periods (which would regress MAE), while still moving
+    decisively when the LLM judges an event to be strong.
+    """
     event_impact_fn: object = None      # optional callable(rec) -> signed impact in [-1,1]
+    gate_by_impact: bool = False        # scale Δ by |impact| so no-event transitions -> persistence
+    gate_scale: float = 0.5             # |impact| at which the gate saturates to 1
     model: _Ridge = None                # type: ignore
 
     def _impact(self, rec):
@@ -116,6 +125,12 @@ class BeliefTransition:
             return self.event_impact_fn(rec)
         except Exception:
             return None
+
+    def _gate(self, rec):
+        if not self.gate_by_impact:
+            return 1.0
+        imp = self._impact(rec) or 0.0
+        return min(1.0, abs(imp) / max(1e-9, self.gate_scale))
 
     def fit(self, records, l2=1.0):
         X, y = [], []
@@ -128,7 +143,7 @@ class BeliefTransition:
         return self
 
     def predict_change(self, rec) -> float:
-        return self.model.predict(featurize(rec, self._impact(rec)))
+        return self._gate(rec) * self.model.predict(featurize(rec, self._impact(rec)))
 
     def predict_belief(self, rec) -> float:
         p = float(rec["history"][-1]["p"]) if rec.get("history") else 0.5
