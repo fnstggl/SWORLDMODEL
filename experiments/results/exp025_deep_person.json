@@ -1,0 +1,86 @@
+{
+ "n_authors": 160,
+ "n_instances": 1808,
+ "persona_source": "LLM agent swarm",
+ "llm_coverage": 1.0,
+ "author_rate_base": 0.6538,
+ "top_trait_correlations": [
+  [
+   0.348,
+   "intellectual_humility"
+  ],
+  [
+   -0.323,
+   "certainty_disposition"
+  ],
+  [
+   0.262,
+   "politeness_disposition"
+  ],
+  [
+   0.212,
+   "value_traditionalism"
+  ],
+  [
+   0.18,
+   "trait_agreeableness"
+  ],
+  [
+   -0.16,
+   "expertise_breadth"
+  ]
+ ],
+ "person_level_unseen_authors": {
+  "humility_only": {
+   "gain": 0.0517,
+   "acc": 0.6771
+  },
+  "persuasion_traits": {
+   "gain": 0.0485,
+   "acc": 0.6458
+  },
+  "all_23_traits": {
+   "gain": -0.0337,
+   "acc": 0.5833
+  }
+ },
+ "depth_curve_persuasion_traits": {
+  "2": {
+   "gain": 0.0229,
+   "acc": 0.6302
+  },
+  "4": {
+   "gain": 0.0339,
+   "acc": 0.6302
+  },
+  "8": {
+   "gain": 0.0664,
+   "acc": 0.6823
+  },
+  "all": {
+   "gain": 0.0485,
+   "acc": 0.6458
+  }
+ },
+ "per_instance_delta": {
+  "base_rate": {
+   "log_loss": 0.6358,
+   "brier": 0.2218,
+   "ece": 0.0155,
+   "uplift@20": 0.0563
+  },
+  "behavioral": {
+   "log_loss": 0.6239,
+   "brier": 0.2167,
+   "ece": 0.0127,
+   "uplift@20": 0.1021
+  },
+  "deep_persona_full": {
+   "log_loss": 0.6395,
+   "brier": 0.2222,
+   "ece": 0.065,
+   "uplift@20": 0.0654
+  }
+ },
+ "per_instance_deep_vs_behavioral": -0.0156
+}

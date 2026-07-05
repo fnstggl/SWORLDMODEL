@@ -10,7 +10,8 @@ from swm.worlds.variable_world import VariableWorld
 
 def test_schema_covers_all_determinant_categories():
     cats = set(BY_CATEGORY)
-    assert cats == {"disposition", "relational", "incentive", "state", "platform", "message_fit"}
+    assert cats == {"disposition", "relational", "incentive", "state", "platform", "message_fit",
+                    "persona"}
     assert len(NAMES) >= 20
 
 

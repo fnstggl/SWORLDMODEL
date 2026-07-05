@@ -65,5 +65,16 @@ def test_prediction_is_serializable_and_auditable():
     a = Action(action_id="x", actor_id="s", channel="email", timing={"ts": 2000},
                meta={"text": "quick q?"})
     d = sim.simulate("e1", a).as_dict()
-    for k in ("p", "confidence", "regime", "abstain", "reason", "calibration", "provenance", "drivers"):
+    for k in ("p", "confidence", "regime", "abstain", "reason", "calibration", "provenance",
+              "prediction_set", "coverage_target", "drivers"):
         assert k in d
+
+
+def test_prediction_carries_conformal_set_with_coverage():
+    sim = Simulator(platform="email", conformal_alpha=0.1).fit(_stream(n=1200))
+    a = Action(action_id="x", actor_id="s", channel="email", timing={"ts": 3000},
+               meta={"text": "hey, got a sec?"})
+    r = sim.simulate("e0", a)
+    assert r.coverage_target == 0.9
+    assert set(r.prediction_set).issubset({0, 1})
+    assert sim.conformal is not None
