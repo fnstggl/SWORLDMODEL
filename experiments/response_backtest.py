@@ -78,9 +78,8 @@ def run_ladder(samples, mfn, *, name="dataset", split=0.7):
         prev = s["log_loss"]
         if s["log_loss"] < best_ll:
             best_ll, best_name = s["log_loss"], rung
-        if rung == "+calibration" or rung == "+gbdt_readout":
-            depth_cache = (preds, y, depths)
-    # depth slices on the best-ish (gbdt) config
+            depth_cache = (preds, y, depths)          # slice on the BEST config (not the overfit GBDT)
+    # depth slices on the BEST config
     if depth_cache:
         preds, y, depths = depth_cache
         print("  by entity-history depth (does state help more with evidence?):")

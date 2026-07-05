@@ -97,7 +97,7 @@ def fetch(cap_messages=120000, timeout=600):
     return msgs
 
 
-def load_samples(window_days=14, cap=42000):
+def load_samples(window_days=14, cap=16000):
     if not Path(CACHE).exists():
         fetch()
     msgs = json.loads(Path(CACHE).read_text())

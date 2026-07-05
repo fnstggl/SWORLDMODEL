@@ -31,8 +31,8 @@ _SIG = lambda z: 1.0 / (1.0 + math.exp(-max(-35, min(35, z))))  # noqa: E731
 @dataclass
 class ResponseConfig:
     use_pooled_rate: bool = True
-    use_multilevel: bool = False
-    use_recency: bool = False
+    use_multilevel: bool = False       # domain-specific: helps where the segment is informative (validate)
+    use_recency: bool = True           # universal free win across GitHub/StackExchange/Enron (default on)
     use_state_features: bool = False
     use_interactions: bool = False
     use_message: bool = True
