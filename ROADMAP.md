@@ -123,10 +123,14 @@ never a single predicted reality.
   to beat persistence with a real future-event model.
 - **Data-blocked**: #5 (individual temporal — gated panels), long-horizon (months/years — SWM-Bench caps
   at ~16 days; need longer trajectories).
-- **The efficiency ceiling is real.** Where the belief source is efficient (liquid markets), even a
-  perfect event model only helps *at* events; the honest product is calibrated probabilities + pivotal
-  conditionals, not a crystal ball. Where the source is *inefficient* (slow social attitudes, niche
-  questions), the model can add more — and that is where a general SWM is most differentiated.
+- **The efficiency ceiling is real — but direction is still forecastable.** Where the belief source is
+  efficient (liquid markets) you cannot beat its *probability* on the point (EXP-033/035). BUT the
+  *direction* implied by that probability is correct at the calibration rate — EXP-036: the lean predicts
+  the move direction at 0.6–0.8 (0.85 on confident beliefs), far above chance; momentum is useless. So the
+  honest product is calibrated probabilities + a directional call + pivotal conditionals. For questions
+  with **no market**, the whole game is *inferring the lean (P(outcome)) from the drivers* — the VariableMap
+  applied to the question; the direction then follows. That inference is the highest-leverage open build,
+  and it is where a general SWM is most differentiated from just reading a market.
 
 ## One-line status
 
