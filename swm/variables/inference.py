@@ -39,6 +39,8 @@ _PLATFORM = {
     "hn":     {"platform_response_norm": 0.10, "formality": 0.3, "visibility": 0.9},
     "sms":    {"platform_response_norm": 0.55, "formality": 0.2, "visibility": 0.05},
     "slack":  {"platform_response_norm": 0.45, "formality": 0.3, "visibility": 0.4},
+    "cmv":    {"platform_response_norm": 0.63, "formality": 0.4, "visibility": 0.9},  # r/changemyview delta base
+    "reddit": {"platform_response_norm": 0.20, "formality": 0.3, "visibility": 0.8},
     "generic": {"platform_response_norm": 0.30, "formality": 0.5, "visibility": 0.4},
 }
 
