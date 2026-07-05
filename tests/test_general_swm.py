@@ -243,6 +243,26 @@ def test_aggregate_world_serialization_roundtrip(tmp_path):
     assert w2.grade["grade"] == "B"
 
 
+def test_gdelt_loader_is_leakage_safe():
+    """The GDELT news pipe must refuse untimestamped articles and never surface post-horizon news."""
+    from swm.retrieval.asof_store import AsOfStore, LeakageError
+    from swm.retrieval.gdelt import GDELTLoader, _parse_seendate
+    assert _parse_seendate("20240603T150000Z") is not None
+    assert _parse_seendate("garbage") is None
+    store = AsOfStore()
+    loader = GDELTLoader(store)
+    from swm.retrieval.news_context import reject_untimestamped
+    # untimestamped article is refused
+    with pytest.raises(LeakageError):
+        reject_untimestamped([{"title": "no date", "id": "x"}])
+    # store gate: an article after the horizon is never returned
+    from swm.retrieval.asof_store import ContextItem
+    store.add(ContextItem("past", 100.0, "news", text="early"))
+    store.add(ContextItem("future", 300.0, "news", text="late"))
+    got = store.query(as_of=200.0, kind="news")
+    assert [i.item_id for i in got] == ["past"]
+
+
 def test_market_comparison_and_retrieval_gap():
     truth = [{"id": f"m{i}", "resolution": i % 2, "market_at_T": 0.5, "bettors": 10 + i}
              for i in range(20)]
