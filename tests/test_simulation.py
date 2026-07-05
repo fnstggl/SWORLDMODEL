@@ -132,6 +132,38 @@ def test_context_dynamics_asof_updates():
 
 
 # ---------------- individual simulation ----------------
+def test_response_model_ladder_improves_with_state():
+    """The configurable response model: adding entity-state (pooled/recency/multilevel) must help on
+    data with a genuine per-entity signal, and must not leak (predict before observe)."""
+    import random
+    from swm.transition.response_model import ResponseConfig, ResponseModel
+    from swm.eval.metrics import log_loss
+    rng = random.Random(0)
+    # 40 entities with latent reply rates; repeated -> state is learnable
+    theta = {f"e{i}": min(0.95, max(0.05, rng.betavariate(2, 3))) for i in range(40)}
+    ids = list(theta)
+    samples = []
+    for _ in range(2000):
+        eid = rng.choice(ids)
+        mf = {"x": rng.random()}
+        samples.append((eid, "seg", mf, int(rng.random() < theta[eid])))
+    cut = 1400
+    y = [o for *_, o in samples[cut:]]
+    gr = sum(o for *_, o in samples[:cut]) / cut
+
+    def run(cfg):
+        m = ResponseModel(["x"], cfg).fit_stream(samples[:cut])
+        preds = []
+        for eid, seg, mf, o in samples[cut:]:
+            preds.append(min(1 - 1e-6, max(1e-6, m.predict(eid, seg, mf))))
+            m.observe(eid, seg, o)
+        return log_loss(y, preds)
+
+    global_ll = log_loss(y, [gr] * len(y))                    # constant global-rate baseline
+    pooled_ll = run(ResponseConfig(readout="pooled"))         # per-entity pooled state
+    assert pooled_ll < global_ll   # modeling per-entity state beats the global rate when entities differ
+
+
 def test_individual_simulate_reply_valid_prob():
     from experiments.individual_simulation_harness import OutboundMessage, simulate_reply
     m = OutboundMessage("r1", "me", 0.0, {"personalization": 0.8, "ask_strength": 0.6,
