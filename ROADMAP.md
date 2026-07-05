@@ -51,9 +51,9 @@ extrapolating a belief curve.
 | A. Question intake | ❌ not built | need: LLM parses question → proposition + resolution + horizon + entities. The "front door." |
 | B. State construction | ◑ partial | retrieval scaffolding exists (`swm/retrieval/`); VariableMap/EvidenceFusion build actor state. Missing: auto-retrieve the current belief (market/poll) for an arbitrary proposition, and instantiate the population. |
 | C. Variable mapping | ✅ built | VariableMap + inference + EvidenceFusion + deep per-person inference (EXP-020/25/29). |
-| D. Event model | ❌ not built (the bottleneck) | EXP-033 proves this is THE gap. Need a model of *which events will occur* over the horizon and their impact distribution. Today we only score a *given* event (EXP-030). |
-| E. Rollout engine | ◑ one-step + endogenous | one-step transition (EXP-030), unified individual/aggregate form (EXP-032), endogenous multi-step (EXP-033), bottom-up aggregation (EXP-034). Missing: the loop that samples event paths and composes them. |
-| F. Outcome distribution | ◑ partial | Monte-Carlo band + conformal (one-step) exist. Missing: horizon calibration, pivotal-branch decomposition. |
+| D. Event model | ◑ variance/timing built; direction open | EXP-035: forecasts the *distribution* of belief moves (heteroskedastic variance) — a calibrated predictive distribution that beats persistence 24% / a constant band 14% on CRPS. Key finding: for an efficient series you forecast event *variance/timing*, not *direction* (direction is unforecastable — EXP-033). Open: an event *calendar* (known future dates) to place variance even better; directional forecasting only where the series is inefficient. |
+| E. Rollout engine | ✅ distributional MC built | one-step transition (EXP-030), unified individual/aggregate form (EXP-032), Monte-Carlo distributional rollout with heteroskedastic variance (EXP-035), bottom-up aggregation (EXP-034). Open: pivotal-branch decomposition for multimodal futures; coupling the population rollout to the event rollout. |
+| F. Outcome distribution | ◑ calibrated one-var; multivar open | EXP-035: CRPS-scored, horizon-calibrated interval bands (80% coverage) — a proper predictive distribution per horizon. Open: pivotal-branch conditionals; joint distributions across coupled questions. |
 | G. Decision/action | ❌ not built | counterfactual scaffolding (`swm/simulation/counterfactuals.py`); need action → outcome-distribution → expected-utility argmax. |
 
 ## The hard core: future events and branching realities
@@ -131,6 +131,8 @@ never a single predicted reality.
 ## One-line status
 
 State ✅ · cross-sectional Readout ✅ · one-step event Dynamics ✅ · unified individual/aggregate form ✅ ·
-bottom-up aggregation ✅ — **missing: the future-event model and the Monte-Carlo rollout/decision loop
-that turn these into "ask anything, simulate forward, choose the best action."** That is the build that
-makes it a *general* simulator rather than a set of validated parts.
+bottom-up aggregation ✅ · **calibrated multi-step distributional rollout ✅ (EXP-035)** — **missing: the
+question-intake front door (A/B), pivotal-branch decomposition, and the decision/action layer (G) that
+turn these into "ask anything, simulate forward, choose the best action."** The forecasting core now
+produces calibrated distributions over horizons; what remains is the front door (parse a question →
+construct state) and the back door (outcome distribution → best action).
