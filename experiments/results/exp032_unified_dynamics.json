@@ -1,0 +1,29 @@
+{
+ "dataset": "cmv_persuasion",
+ "n": 1200,
+ "n_test": 360,
+ "tiers": {
+  "base_rate": {
+   "log_loss": 0.644,
+   "brier": 0.2258,
+   "accuracy": 0.6556
+  },
+  "event_impact_only": {
+   "log_loss": 0.6411,
+   "brier": 0.2245,
+   "accuracy": 0.6556
+  },
+  "responsiveness_only": {
+   "log_loss": 0.6219,
+   "brier": 0.2165,
+   "accuracy": 0.6583
+  },
+  "unified(resp x impact)": {
+   "log_loss": 0.6215,
+   "brier": 0.2159,
+   "accuracy": 0.6583
+  }
+ },
+ "unified_vs_impact_only_logloss_gain": 0.0196,
+ "unified_beats_impact_only": true
+}
