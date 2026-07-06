@@ -62,6 +62,13 @@ built and, crucially, in what the no-cheat experiments have proven about what's 
     of crude features (0.112 vs 0.088) but only **13%** of what the market extracts (0.84), and doesn't
     beat the base rate in calibrated prediction. ⇒ Confirms item 8: the bottleneck is semantic stance
     detection against the specific resolution criterion (embeddings / LLM judge), not lexical features.
+12. **The semantic judge closes most of the content gap** (EXP-047): an LLM stance judge, reading only the
+    as-of news for a question's *specific* YES resolution (blind to price and outcome), reaches **0.57
+    market-consistency** (corr with the as-of price it never saw) vs lexical's 0.148 — **3.85×**, most of
+    the way to EXP-037's full-pipeline 0.63. The contamination guard is the market-consistency metric (no
+    outcome, so recall can't inflate it); the clean post-cutoff outcome check is still too small (n=7) for
+    a skill number. ⇒ The item-8 bottleneck is *semantics*, and an LLM judge supplies it. `semantic_stance`
+    is wired for production (Anthropic API backend) behind the same code path used here.
 
 11. **Opinion change decomposes into composition (near-term) + period drift (far-term)** (EXP-046, GSS):
     coupling the compositional rollout (item 9) with a forecast of the composition-removed period residual
