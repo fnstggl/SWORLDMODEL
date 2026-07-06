@@ -20,10 +20,32 @@ built and, crucially, in what the no-cheat experiments have proven about what's 
 4. **Bottom-up aggregation beats top-down** (EXP-034): simulating individuals from VariableMaps and
    aggregating beats modeling the aggregate as one number (~9% overall, ~12% on distinctive groups). ⇒
    Build the population as a set of individuals, not a scalar.
+5. **Grounded-variable simulation beats the crowd composite — and the frontier is estimation, not
+   enumeration** (EXP-040): on a real social outcome (OpinionQA population shares), mapping each person's
+   *real* variables and simulating their answer beats the aggregate composite (individual log-loss
+   0.612 → 0.585; accuracy 0.656 → 0.690), and beats the top-down aggregate by **24%** on distinctive
+   subgroups. **Crucially, "map more variables" only helps once you can *estimate* their joint effect** —
+   naive Bayes over 11 correlated variables (party≈ideology) overfit and was *worse* than one variable
+   (log-loss 0.92 vs 0.60) until regularized. ⇒ The differentiated capability (compute an outcome from its
+   constituents, beating a single aggregate number) is **real**; the binding constraint is variable
+   *estimation quality* (grounding, partial pooling, correlation-aware readouts), not variable count.
 
 Design corollary: the simulator's power comes from (a) **who** is in the population (VariableMaps), (b)
 **what events** will hit and their impact, and (c) honest **uncertainty** over both — *not* from
-extrapolating a belief curve.
+extrapolating a belief curve. And its *edge over the crowd* comes from **well-estimated grounded
+variables** simulated bottom-up, most of all where the population is heterogeneous — not from a longer
+variable list, and not from predicting a market's price (which is a near-martingale — item 3).
+
+## The honest north-star boundary (corrected)
+An earlier framing over-claimed that you "cannot beat a liquid market's probability." That conflated two
+different claims: you cannot predict a liquid market's price *path* (item 3, a near-martingale), but a
+**structural bottom-up simulation is a different information source than the price** — it computes the
+outcome from its constituent decisions, which the crowd's noisy aggregate only approximates. EXP-040 is
+the first direct evidence that this simulation *beats* the aggregate composite on a real outcome. On the
+most liquid mega-markets professional modelers already do this, so the price impounds it and the edge is
+thin; but on the vast space of **off-market / niche / individual-scale** questions no one has run the
+simulation, and grounded bottom-up simulation is both the only method available and the entire value
+proposition. The project's job is that simulation — not a price-prediction heuristic.
 
 ## The target architecture (pipeline), with build status
 
