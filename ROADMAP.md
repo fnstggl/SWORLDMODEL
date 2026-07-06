@@ -30,11 +30,32 @@ built and, crucially, in what the no-cheat experiments have proven about what's 
    constituents, beating a single aggregate number) is **real**; the binding constraint is variable
    *estimation quality* (grounding, partial pooling, correlation-aware readouts), not variable count.
 
+6. **The estimator, not the variable list, is the fix** (EXP-041): a correlation-aware, partially-pooled
+   readout makes "add more variables" safe — where naive Bayes and un-pooled logistic *collapse* as
+   variables grow (log-loss 0.61 → 0.74 / → 0.86), the pooled readout stays flat (0.61 → 0.606) and cuts
+   data-poor-question error **29%** (0.85 → 0.60). Partial pooling toward the prior is the load-bearing
+   piece. ⇒ `swm/variables/pooled_readout.py` is the deployable grounded-variable estimator.
+7. **The forward operator works; its structure earns mechanism, not aggregate accuracy** (EXP-042): on
+   real opinion-change events (CMV), coupling a grounded actor to the event-transition operator beats
+   persistence (+0.025 log-loss) and one-sided baselines, and the **gating mechanism is verified** — the
+   same argument predicts change ~38% more for responsive than entrenched people (slope 0.71 vs 0.51).
+   But the multiplicative coupling doesn't separably beat an additive model at this scale/noise. ⇒ The
+   operator is validated per-step; the interaction is real but needs grounded (low-noise) variables and
+   more data to pay in aggregate.
+8. **Grounding is necessary but not sufficient — content extraction is the frontier** (EXP-043): crude
+   features from the *real* as-of news (volume, result-cue, polarity) also fail to beat the base rate
+   (corr 0.047), even though the market extracts the same articles into a decisive signal (corr 0.84).
+   The LLM gestalt (EXP-037) and shallow real-news reading fail for the same reason from opposite ends. ⇒
+   The bottleneck for question-level forecasting is **reading real content well** (entity-linked,
+   resolution-aware stance detection), not listing or nominally-grounding drivers.
+
 Design corollary: the simulator's power comes from (a) **who** is in the population (VariableMaps), (b)
 **what events** will hit and their impact, and (c) honest **uncertainty** over both — *not* from
 extrapolating a belief curve. And its *edge over the crowd* comes from **well-estimated grounded
 variables** simulated bottom-up, most of all where the population is heterogeneous — not from a longer
-variable list, and not from predicting a market's price (which is a near-martingale — item 3).
+variable list, and not from predicting a market's price (which is a near-martingale — item 3). The three
+concrete frontiers, in order: **estimation** (done — item 6), **grounded low-noise variables** (item 7),
+and **real-content extraction** (item 8, the current bottleneck).
 
 ## The honest north-star boundary (corrected)
 An earlier framing over-claimed that you "cannot beat a liquid market's probability." That conflated two
