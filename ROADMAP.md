@@ -35,6 +35,12 @@ built and, crucially, in what the no-cheat experiments have proven about what's 
    variables grow (log-loss 0.61 → 0.74 / → 0.86), the pooled readout stays flat (0.61 → 0.606) and cuts
    data-poor-question error **29%** (0.85 → 0.60). Partial pooling toward the prior is the load-bearing
    piece. ⇒ `swm/variables/pooled_readout.py` is the deployable grounded-variable estimator.
+   **Refined (EXP-048): modelling the correlation structure beats shrinking it.** Decomposing the
+   correlated variables into orthogonal **latent value factors** (PCA) and estimating on those —
+   double-counting impossible by construction — beats the pooled logistic (log-loss 0.596 vs 0.610, +1.3
+   acc, wins data-poor), self-selects K=3 axes, and yields an interpretable value profile. ⇒
+   `swm/variables/latent_factor_readout.py` is the best self-tuning estimator; the estimation frontier is
+   *structure*, not regularization.
 7. **The forward operator works; its structure earns mechanism, not aggregate accuracy** (EXP-042): on
    real opinion-change events (CMV), coupling a grounded actor to the event-transition operator beats
    persistence (+0.025 log-loss) and one-sided baselines, and the **gating mechanism is verified** — the
