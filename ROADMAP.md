@@ -7,6 +7,19 @@ forward under uncertainty, and return a **calibrated distribution over outcomes*
 to reach a desired outcome. This document maps everything needed to get there, grounded in what we have
 built and, crucially, in what the no-cheat experiments have proven about what's hard.
 
+## Acting on the audit (EXP-053/054)
+The audit's two mandated builds landed, and both gave honest, decisive results:
+- **Mean-field coupling loop** (`swm/simulation/mean_field.py`, EXP-053): makes aggregation non-separable
+  (`∂pᵢ/∂pⱼ ≠ 0`). It **recovers an emergent cascade S-curve a mean-of-independent-predictions cannot**
+  (coupled trajectory MAE 0.015 vs the independent flat 0.60) — genuine simulation of emergence. But on
+  **real GSS aggregate opinion it does NOT beat the independent mean or persistence** — for well-calibrated
+  marginal prediction, compositing suffices, exactly as the audit warned. So: coupling earns the word
+  "simulate" for *dynamics/emergence*, not for beating the marginal number. The honest split is now measured.
+- **Interventional KPI** (Upworthy randomized A/B, EXP-054): the first KPI that tests "what happens if I do
+  X." Our models capture only **9.5% of achievable headline uplift** and rank arms at **chance (CATE-sign
+  0.49)** — reconstruction accuracy did NOT transfer to intervention skill. This is the honest scoreboard
+  going forward (policy-regret + CATE-sign), and the frontier is again *semantic, not lexical*.
+
 ## ⚠️ Simulation audit (see SIMULATION_AUDIT.md) — read this first
 An adversarial 5-lens agent-swarm audit found the shipped pipeline is **~85% compositing, ~15% genuine
 dynamics**, and the flagship `GroundedSimulator.simulate_population` is **100% composite** — a literal mean
