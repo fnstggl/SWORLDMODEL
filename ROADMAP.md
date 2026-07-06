@@ -7,6 +7,17 @@ forward under uncertainty, and return a **calibrated distribution over outcomes*
 to reach a desired outcome. This document maps everything needed to get there, grounded in what we have
 built and, crucially, in what the no-cheat experiments have proven about what's hard.
 
+## The full generative loop is assembled (EXP-057)
+`swm/api/generative_simulator.py` — **one `simulate(question)` call**: identify the deciding agents + map
+their known/inferred variables (LLM) → instantiate `PersonaAgent`s with an LLM persona `position_fn` → run
+`AgentSociety` deliberation → emergent, auditable outcome. Verified two ways: (A) with a **structured**
+position_fn on the Supreme Court it **reproduces EXP-055 exactly** (margin MAE 0.168 vs composite 0.208) —
+the assembly is provably the validated agent simulation; (B) an LLM-persona worked example runs end-to-end
+and produces an **emergent flip** (a committee the naive count fails, deliberation passes, full audit
+trail). The general agent-based social world model exists as one callable. Remaining: a leakage-free skill
+number for the LLM-driven loop (post-cutoff / market-consistency controls) and real retrieval to fill each
+agent's variables from accessible knowledge.
+
 ## Agent-based simulation lands, and the interventional frontier is semantic (EXP-055/056)
 - **`AgentSociety`** (`swm/simulation/agent_society.py`, EXP-055) — the real architecture the thesis wanted:
   persona agents that take positions and INTERACT (influence + homophily + consensus + bounded confidence),
