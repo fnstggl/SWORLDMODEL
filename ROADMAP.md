@@ -49,13 +49,31 @@ built and, crucially, in what the no-cheat experiments have proven about what's 
    The bottleneck for question-level forecasting is **reading real content well** (entity-linked,
    resolution-aware stance detection), not listing or nominally-grounding drivers.
 
+9. **A grounded POPULATION is not a martingale — multi-step forward simulation beats persistence**
+   (EXP-045, GSS 1972–2024, 72,707 respondents, 15 items, 406 rolling-origin forecasts): where a market
+   belief cannot be rolled forward past persistence (item 3), a grounded population *can* — composing the
+   opinion from demographic cells at the target year's composition beats persistence (MAE 0.0264 vs
+   0.0288 overall) and **the edge grows with horizon** (4–7y: 0.0288 vs 0.0419, −31%), with change
+   directional accuracy 0.593 vs 0.480. A population has predictable structure (evolving composition) a
+   price does not. ⇒ The "simulate forward N steps" thesis is validated on real longitudinal data — for
+   outcomes that are the aggregate of a modelable, evolving population, exactly where no market exists.
+10. **Resolution-aware content extraction recovers more signal but not enough — the frontier is semantic**
+    (EXP-044): entity-linked, resolution-aware lexical stance recovers 1.26× the raw outcome-correlation
+    of crude features (0.112 vs 0.088) but only **13%** of what the market extracts (0.84), and doesn't
+    beat the base rate in calibrated prediction. ⇒ Confirms item 8: the bottleneck is semantic stance
+    detection against the specific resolution criterion (embeddings / LLM judge), not lexical features.
+
 Design corollary: the simulator's power comes from (a) **who** is in the population (VariableMaps), (b)
 **what events** will hit and their impact, and (c) honest **uncertainty** over both — *not* from
 extrapolating a belief curve. And its *edge over the crowd* comes from **well-estimated grounded
 variables** simulated bottom-up, most of all where the population is heterogeneous — not from a longer
-variable list, and not from predicting a market's price (which is a near-martingale — item 3). The three
+variable list, and not from predicting a market's price (which is a near-martingale — item 3). The two
+regimes are now cleanly separated by evidence: a **price is a martingale** (item 3, don't roll it
+forward), a **grounded population is not** (item 9, roll it forward — the edge grows with horizon). The
 concrete frontiers, in order: **estimation** (done — item 6), **grounded low-noise variables** (item 7),
-and **real-content extraction** (item 8, the current bottleneck).
+**real-content extraction** (items 8/10, the current bottleneck — now known to require *semantic* stance,
+not lexical), and **coupling population rollout to period/event shocks** (item 9's next step, joining
+EXP-045's compositional dynamics with EXP-042's event operator).
 
 ## The honest north-star boundary (corrected)
 An earlier framing over-claimed that you "cannot beat a liquid market's probability." That conflated two
