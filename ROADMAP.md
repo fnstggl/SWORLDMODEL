@@ -7,6 +7,18 @@ forward under uncertainty, and return a **calibrated distribution over outcomes*
 to reach a desired outcome. This document maps everything needed to get there, grounded in what we have
 built and, crucially, in what the no-cheat experiments have proven about what's hard.
 
+## ⚠️ Simulation audit (see SIMULATION_AUDIT.md) — read this first
+An adversarial 5-lens agent-swarm audit found the shipped pipeline is **~85% compositing, ~15% genuine
+dynamics**, and the flagship `GroundedSimulator.simulate_population` is **100% composite** — a literal mean
+of independent per-person regressions (`∂pᵢ/∂pⱼ = 0`, no agent interaction, no state evolution). The
+genuine dynamics (`UnifiedBeliefDynamics.update_person`, `MultiStepRollout`) are **disconnected** —
+`update_person` has zero call sites; the agent substrate (`actors.py`, `graph/diffusion.py`
+IMPLEMENTED=False) is unwired. The KPIs (MAE-on-share, market-consistency) reward marginal-recovery and
+crowd-mimicry, not simulation. The mandate: **wire a mean-field coupling loop into `simulate_population`
+(rolling `update_person` over the population across sampled events) and hold it to skill-vs-persistence +
+interventional KPIs — or rename the claim.** EXP-051/052 (front door + full-VariableMap) are honest
+assembly/estimation work but do not change this verdict.
+
 ## What the experiments already settled (these constrain the whole design)
 
 1. **State + cross-sectional readout work** (EXP-014/016/021/023/028): mapping a person/population to a
