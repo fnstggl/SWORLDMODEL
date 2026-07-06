@@ -42,6 +42,20 @@ class PostMortemLog:
         self.forecasts[fid] = {"p": float(p), "made_at": made_at, "resolves_at": resolves_at,
                                "outcome": None, "meta": meta or {}}
 
+    def log_forecast(self, fid, forecast, made_at, resolves_at, meta=None):
+        """Log the output of an engine directly — accepts a `QuestionForecast` (`.p_outcome`), a
+        `Prediction`/`Simulator` result (`.p`), or a bare float. This is the wire that turns the
+        engines' own forecasts into a scored, leakage-free track record (not a placeholder market price).
+        """
+        p = getattr(forecast, "p_outcome", getattr(forecast, "p", forecast))
+        m = dict(meta or {})
+        for attr in ("confidence", "regime", "direction"):
+            v = getattr(forecast, attr, None)
+            if v is not None:
+                m.setdefault(attr, v)
+        self.log(fid, float(p), made_at, resolves_at, m)
+        return self
+
     def resolve(self, fid, outcome):
         if fid in self.forecasts:
             self.forecasts[fid]["outcome"] = int(outcome)

@@ -66,6 +66,32 @@ def test_recalibration_does_no_harm_on_small_history():
     assert log.recalibrate(0.7) == 0.7                     # identity
 
 
+def test_log_forecast_accepts_engine_outputs():
+    from dataclasses import dataclass
+
+    @dataclass
+    class _QF:                                             # mimics QuestionForecast
+        p_outcome: float
+        direction: int = 1
+        confidence: float = 0.6
+
+    @dataclass
+    class _Pred:                                           # mimics Simulator's Prediction
+        p: float
+        confidence: float = 0.5
+        regime: str = "inference_driven"
+
+    log = PostMortemLog()
+    log.log_forecast("qf", _QF(0.7), made_at=0, resolves_at=1)
+    log.log_forecast("pr", _Pred(0.3), made_at=0, resolves_at=1)
+    log.log_forecast("raw", 0.55, made_at=0, resolves_at=1)
+    assert log.forecasts["qf"]["p"] == 0.7
+    assert log.forecasts["qf"]["meta"]["confidence"] == 0.6   # carries engine metadata through
+    assert log.forecasts["pr"]["p"] == 0.3
+    assert log.forecasts["pr"]["meta"]["regime"] == "inference_driven"
+    assert log.forecasts["raw"]["p"] == 0.55
+
+
 def test_recalibration_does_no_harm_when_already_calibrated():
     log = _stream(400, lambda p: p)                         # already calibrated -> nothing to fix
     log.fit_recalibration(200)
