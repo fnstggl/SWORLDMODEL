@@ -93,6 +93,17 @@ built and, crucially, in what the no-cheat experiments have proven about what's 
     forecaster should weight the period term **by horizon** (off near-term, on far-term); the individual
     gating mechanism is real per-person but washes out in the aggregate share.
 
+14. **The estimation pieces unify into one self-configuring readout, and the pipeline is assembled**
+    (EXP-050): `GroundedReadout` composes latent factors + LLM prior (projected exactly into factor space
+    as Vᵀ·prior) + reliability weighting (attenuate inferred variables by provenance). Because the pieces
+    help conditionally, `fit_auto` self-selects the winning combination on a train-internal hold-out —
+    compounding (beats every single piece and plain, GSS N=150: 0.607 vs best-single 0.608 vs plain 0.618)
+    without the fixed-recipe regression. `GroundedSimulator` wires it end-to-end: question + population →
+    grounded variables → structured/primed estimation → bottom-up aggregation → calibrated outcome + value
+    decomposition (MAE 0.0045 vs true share; "should marijuana be legal?" predicted 0.336 vs true 0.337).
+    ⇒ For the opinion/behavior domain the simulate-the-event pipeline is now one callable, not a shelf of
+    experiments.
+
 Design corollary: the simulator's power comes from (a) **who** is in the population (VariableMaps), (b)
 **what events** will hit and their impact, and (c) honest **uncertainty** over both — *not* from
 extrapolating a belief curve. And its *edge over the crowd* comes from **well-estimated grounded
