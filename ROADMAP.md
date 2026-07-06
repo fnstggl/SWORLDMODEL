@@ -294,3 +294,14 @@ question-intake front door (A/B), pivotal-branch decomposition, and the decision
 turn these into "ask anything, simulate forward, choose the best action."** The forecasting core now
 produces calibrated distributions over horizons; what remains is the front door (parse a question →
 construct state) and the back door (outcome distribution → best action).
+
+**EXP-058 — retrieval front door + leakage-free live forecaster.** The generative loop (EXP-057) now
+has a real input (`swm/api/retrieval.py`: `web_search_retriever` for prod, `asof_retriever` for
+leakage-free eval) and a forward scoring log (`swm/eval/live_forecast.py`: retrieve → simulate →
+forecast → log to PostMortemLog, scored on resolution). **Settles the cutoff question:** the training
+cutoff limits *memorization*, not *capability* — retrieval supplies current evidence (proven: the
+committed FOMC context is dated June-2026, post-cutoff, incl. new Chair Warsh). The cutoff bites only
+on *measurement*, and only for tests; two clean paths handle it — FORWARD (future event, nothing to
+leak) and AS-OF BACKTEST (`asof_retriever`, evidence pre-dates resolution). In production on the API,
+serving a real user question, there is no leakage to worry about. Live run: P(FOMC hike July-2026) =
+0.333 → leans HOLD, from post-cutoff retrieved evidence, logged for scoring on 2026-07-29.
