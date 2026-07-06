@@ -7,6 +7,22 @@ forward under uncertainty, and return a **calibrated distribution over outcomes*
 to reach a desired outcome. This document maps everything needed to get there, grounded in what we have
 built and, crucially, in what the no-cheat experiments have proven about what's hard.
 
+## Agent-based simulation lands, and the interventional frontier is semantic (EXP-055/056)
+- **`AgentSociety`** (`swm/simulation/agent_society.py`, EXP-055) — the real architecture the thesis wanted:
+  persona agents that take positions and INTERACT (influence + homophily + consensus + bounded confidence),
+  producing emergent outcomes (an influential minority **flips** a vote; deliberation drives **consensus**;
+  bounded confidence sustains **polarization**) — none reachable by a mean of independents. On **real
+  institutional agents (the Supreme Court, 954 cases)** it beats the independent composite on the vote
+  **margin** (MAE 0.168 vs 0.208, −19%): modelling justices as deliberating agents predicts coalition size
+  better than independent voting. **First real-data case where interaction beats compositing** — and it
+  vindicates that institutional events (Fed, courts, awards) ARE populations of modelable agents.
+- **Semantic interventional model** (EXP-056): an LLM picking the causally-better headline captures **36.5%
+  of achievable uplift vs lexical's 14%** (2.6×) on the randomized-A/B KPI — the interventional task was
+  semantic, not hopeless, closing much of the EXP-054 gap. The pattern holds end to end: gestalt fails
+  (EXP-037), lexical fails (044/054), **semantic reading of real content wins** (047/056).
+- **General prior** (Q1 fix): `llm_prior.prior_from_llm` generates the value-axis prior per question via an
+  LLM (wired like `semantic_stance`); the estimator is general, not hardcoded to GSS.
+
 ## Acting on the audit (EXP-053/054)
 The audit's two mandated builds landed, and both gave honest, decisive results:
 - **Mean-field coupling loop** (`swm/simulation/mean_field.py`, EXP-053): makes aggregation non-separable
