@@ -1,0 +1,56 @@
+{
+ "dataset": "kalshi",
+ "n_forecasts": 91,
+ "leakage_free": true,
+ "headline_skill": {
+  "n": 91,
+  "base_rate": 0.2747,
+  "brier": 0.0566,
+  "log_loss": 0.2282,
+  "ece": 0.1687,
+  "directional_accuracy": 0.9659,
+  "leakage_free": true
+ },
+ "real_recalibration": {
+  "n_fit_early": 45,
+  "n_eval_late": 46,
+  "recalibration_deployed": false,
+  "raw": {
+   "n": 46,
+   "base_rate": 0.1957,
+   "brier": 0.0422,
+   "log_loss": 0.206,
+   "ece": 0.1797,
+   "directional_accuracy": 1.0
+  },
+  "recalibrated": {
+   "n": 46,
+   "base_rate": 0.1957,
+   "brier": 0.0422,
+   "log_loss": 0.206,
+   "ece": 0.1797,
+   "directional_accuracy": 1.0
+  }
+ },
+ "controlled_recalibration": {
+  "n": 400,
+  "n_eval_late": 200,
+  "recalibration_deployed": true,
+  "raw": {
+   "n": 200,
+   "base_rate": 0.505,
+   "brier": 0.1759,
+   "log_loss": 0.5357,
+   "ece": 0.1417,
+   "directional_accuracy": 0.8021
+  },
+  "recalibrated": {
+   "n": 200,
+   "base_rate": 0.505,
+   "brier": 0.1602,
+   "log_loss": 0.4926,
+   "ece": 0.0752,
+   "directional_accuracy": 0.8
+  }
+ }
+}
