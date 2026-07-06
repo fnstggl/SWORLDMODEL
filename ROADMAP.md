@@ -68,6 +68,15 @@ built and, crucially, in what the no-cheat experiments have proven about what's 
     of crude features (0.112 vs 0.088) but only **13%** of what the market extracts (0.84), and doesn't
     beat the base rate in calibrated prediction. ⇒ Confirms item 8: the bottleneck is semantic stance
     detection against the specific resolution criterion (embeddings / LLM judge), not lexical features.
+13. **LLM-informed priors make world knowledge worth hundreds of datapoints** (EXP-049): using the LLM's
+    world knowledge as a *prior on the effect coefficients* (a one-hot logistic regularized toward the
+    prior, not toward zero) dominates the data-only estimator at every training size on GSS individual
+    prediction, most where data is scarce — N=50 log-loss 0.619 vs 0.669 (−8%), converging by N=5000. The
+    prior is worth several hundred labeled respondents; it grounds the estimate, carries data-poor cells,
+    and resolves per-question polarity. Honest caveat: the zero-shot prior *alone* underperforms the
+    marginal (direction right, magnitude over-confident) — the value is prior + a little data, not the
+    prior alone. ⇒ `swm/variables/llm_prior.py`; the estimation frontier now has grounding, structure
+    (EXP-048), and world-knowledge priors — the three pieces the bottleneck needed.
 12. **The semantic judge closes most of the content gap** (EXP-047): an LLM stance judge, reading only the
     as-of news for a question's *specific* YES resolution (blind to price and outcome), reaches **0.57
     market-consistency** (corr with the as-of price it never saw) vs lexical's 0.148 — **3.85×**, most of
