@@ -63,6 +63,14 @@ built and, crucially, in what the no-cheat experiments have proven about what's 
     beat the base rate in calibrated prediction. ⇒ Confirms item 8: the bottleneck is semantic stance
     detection against the specific resolution criterion (embeddings / LLM judge), not lexical features.
 
+11. **Opinion change decomposes into composition (near-term) + period drift (far-term)** (EXP-046, GSS):
+    coupling the compositional rollout (item 9) with a forecast of the composition-removed period residual
+    helps *exactly at long horizons* — 4–7y MAE 0.0251 vs compositional-only 0.0288 (−13%) and persistence
+    0.0419 (−40%) — but adds noise near-term, so compositional-only stays best overall. Responsiveness-
+    gating the period shock (the EXP-042 operator at the aggregate) adds nothing. ⇒ A production population
+    forecaster should weight the period term **by horizon** (off near-term, on far-term); the individual
+    gating mechanism is real per-person but washes out in the aggregate share.
+
 Design corollary: the simulator's power comes from (a) **who** is in the population (VariableMaps), (b)
 **what events** will hit and their impact, and (c) honest **uncertainty** over both — *not* from
 extrapolating a belief curve. And its *edge over the crowd* comes from **well-estimated grounded
