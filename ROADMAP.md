@@ -295,6 +295,27 @@ turn these into "ask anything, simulate forward, choose the best action."** The 
 produces calibrated distributions over horizons; what remains is the front door (parse a question →
 construct state) and the back door (outcome distribution → best action).
 
+**EXP-061/062 — Level 3 (large-scale demographic) + Level 2 demographic backdrop, and the RIGHT KPI.**
+Built general (an election is one instance, not the target). `swm/simulation/population_simulator.py`:
+real demographic cells → coupled opinion (mean-field) + participation/turnout coupling (mobilization
+cascade) → pluggable aggregator (`share_aggregator` general; `winner_take_all_aggregator` = electoral
+shape). `swm/eval/population_metrics.py`: the honest KPI suite — **share-RMSE, coupling skill (does
+interaction beat the marginal?), interval coverage** — because log-loss scores a binary label, not a
+continuous share, and can't isolate coupling value. `AgentSociety` gains a `public_field` +
+`public_sensitivity` backdrop (backward compatible). Findings, measured honestly on real data:
+- **Level 3 decisive result (GSS, 1,927 predictions, 15 topics)**: on full-population opinion coupling does
+  NOT beat the marginal — pure conformity skill **−0.000** (identical to the poll average, mean-preserving),
+  bandwagon **−0.15** (worse; most attitudes don't endogenously bandwagon). Coupling only earns its place
+  when the real process has the coupling. Confirms EXP-053 at scale with the proper KPI.
+- **Where it bites (mechanism, real turnout constants)**: participation-weighted mobilization moves the
+  outcome 3–4 pts (can flip a close call) — the general shape of turnout surges/adoption; needs a
+  participation-weighted ground-truth dataset (real election returns+turnout, or an adoption panel) to
+  *score* — named next data step.
+- **Level 2 backdrop (real SCOTUS + real GSS mood, 954 cases)**: neutral-to-harmful (MAE 0.168→0.168 best,
+  worse at high sensitivity) — justices' own records already price public responsiveness; a centrist mood
+  pull is the wrong prior for a lopsided court. Useful null: the backdrop matters where the stakeholder
+  record is ABSENT, not where decades of votes exist.
+
 **EXP-060 — Level-1 individual simulator (the person as a dynamical system).** The three-level framework
 (1: individual · 2: stakeholder group · 3: large-scale demographic) made concrete for Level 1. A person is
 now `IndividualAgent` = a `VariableMap` (who they are) + a mutable STATE (mood/busyness/load/reciprocity)
