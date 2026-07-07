@@ -64,8 +64,10 @@ def _sampler_generic_scm(spec: ModelSpec) -> Sampler:
     else:
         outcome_fn = lambda s: s.get(target, 0.0)
     model = StructuralModel(variables, drift_fn=drift_fn, outcome_fn=outcome_fn)
-    return Sampler(traced=model.simulate_once_traced(spec.horizon, spec.dt), kind="numeric",
-                   default_pred=_event_pred(spec.outcome), aux={"model": model, "target": target})
+    interventions = spec.extra.get("_interventions")             # temporal do-operators (inject_event / policy)
+    return Sampler(traced=model.simulate_once_traced(spec.horizon, spec.dt, interventions=interventions),
+                   kind="numeric", default_pred=_event_pred(spec.outcome),
+                   aux={"model": model, "target": target})
 
 
 def _run_generic_scm(spec: ModelSpec, n: int, seed: int) -> dict:

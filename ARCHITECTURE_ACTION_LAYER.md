@@ -8,6 +8,23 @@ This is a spec, not a summary. It is written to be implemented against.
 
 ---
 
+## Component completion map — all 7 components built
+
+| # | Component | Where | Validated |
+|---|---|---|---|
+| C1 | Typed intervention (parameter / structural / **temporal**) | `swm/decision/action.py`: `set_var`/`shift_var`/`set_message` (param), `set_competitor`/`set_cell` (structural), **`inject_event`** (temporal); engine hook `StructuralModel.simulate_once_traced(interventions=...)` | `test_action_extras.py::test_inject_event_raises_generic_scm_outcome`, `test_action_layer.py` |
+| C2 | Action space + generation (enumerable / **continuous refine** / **LLM propose→mutate**) | `swm/decision/space.py`; `best_action.py::best_continuous` (grid→narrow→repeat), `best_action_generative` (propose→score→mutate→re-score) | `test_action_extras.py::{test_best_continuous_refines_to_profit_max, test_best_action_generative_improves_with_mutation}` |
+| C3 | Nested loop + best-arm racing (confidence / honest tie) | `best_action.py::{race, best_action}` | `test_action_layer.py::{test_race_finds_clear_winner_confidently, test_race_reports_honest_tie_within_noise}` |
+| C4 | Utility + risk (mean / quantile / CVaR / **constrained**) | `swm/decision/utility.py`: `Mean`,`Quantile`,`CVaR`,**`Constrained`** | `test_action_extras.py::test_constrained_prefers_safe_arm_when_risky_violates_cap` |
+| C5 | Navigable per action + contrast + **calibration grade** | `best_action.py` (`navigable`, `contrast`, `DecisionResult.grade()`); `swm/report/navigable.py` | `test_action_extras.py::test_provenance_and_grade`, `test_navigable.py` |
+| C6 | Reflexivity + **sequential policies** | `swm/decision/policy.py`: `Policy`,`best_policy`,`individual_rollout`,`structural_schedule_rollout`; `ActionWorldModel.best_schedule` | `test_policy.py` (all), **EXP-069 Part C on real CMV model** (kind→ask beats pushy→ask, p 0.643 vs 0.572) |
+| C7 | Identifiability honesty + scoreboard + **provenance label** | `swm/eval/policy_regret.py`; `best_action.py::validated_domain` → `DecisionResult.provenance`/`grade()` | `test_policy_regret.py`, **EXP-069 (+22pt re-earned on real CMV; Upworthy on real randomized do(x))** |
+
+Everything is generic over `outcome_fn(action, rng) -> (outcome, factors)` / `rollout_fn(policy, rng)`, so it
+works on any compiled mechanism and on hand-built models — one layer, never per-mechanism.
+
+---
+
 ## 0. Ground truth — what exists, and what this spec adds
 
 **The compiler (Stage ②) IS built** — `swm/api/compiler.py` (`StructuralCompiler`, mechanism library:

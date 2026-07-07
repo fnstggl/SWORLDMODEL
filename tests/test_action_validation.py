@@ -18,3 +18,12 @@ def test_new_action_layer_reproduces_cmv_best_message_lift():
     # and re-earns the causal lift over a random pick (EXP-060: 0.739 vs 0.518)
     assert out["new_layer_precision@1"] - out["random_pick_rate"] > 0.1
     assert out["cate_sign_accuracy"] > 0.5                 # ranks the causally-better argument above chance
+
+
+@pytest.mark.skipif(not os.path.exists(CMV), reason="CMV inference cache not present")
+def test_sequential_best_policy_prefers_kind_opener_on_real_model():
+    from experiments.exp069_action_layer_validation import run_sequential
+    seq = run_sequential()
+    assert seq["picks_kind_opener"] is True               # best_policy chooses the plan with the better opener
+    # the identical ask lands better after the kind opener (state carryover the fitted model expresses)
+    assert seq["same_ask_p_after_kind_opener"] > seq["same_ask_p_after_pushy_opener"]

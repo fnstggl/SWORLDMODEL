@@ -104,12 +104,25 @@ class StructuralModel:
         return f
 
     def simulate_once_traced(self, horizon: float, dt: float = 1.0, *, epistemic: bool = True,
-                             aleatoric: bool = True):
+                             aleatoric: bool = True, interventions=None):
         """Like `simulate_once`, but also returns the EXOGENOUS FACTORS that defined this trajectory's
         'world' — each variable's initial draw (`name@0`, the epistemic world) and its cumulative aleatoric
         shock over the path (`name~shock`, the aleatoric world). These are independent by construction, so
         they are the honest knobs to attribute the outcome to (pivotal-branch analysis in swm.report.
-        navigable). Distribution is identical to `simulate_once`; only the extra trace differs."""
+        navigable). Distribution is identical to `simulate_once`; only the extra trace differs.
+
+        `interventions` is an optional list of `(time, mutator)` scheduled do-operators applied DURING the
+        rollout (a temporal/sequential intervention — an event injected at `time`, or step k of a policy):
+        `mutator(state, rng)` mutates the live state once, the first time the clock reaches `time`. The
+        Wiener diffusion runs between shocks, so state carries forward across steps — this is the substrate
+        for temporal event-injection (Component 1) and sequential policies (Component 6)."""
+        sched = sorted(interventions or [], key=lambda x: x[0])
+
+        def _apply(state, rng, t, cursor):
+            while cursor[0] < len(sched) and sched[cursor[0]][0] <= t + 1e-9:
+                sched[cursor[0]][1](state, rng)
+                cursor[0] += 1
+
         def f(rng):
             factors = {}
             state = {}
@@ -119,6 +132,8 @@ class StructuralModel:
                 if epistemic and v.est_sd > 0:
                     factors[f"{n}@0"] = state[n]
             noise_sum = {n: 0.0 for n in self.variables}
+            cursor = [0]
+            _apply(state, rng, 0.0, cursor)                 # interventions scheduled at t=0
             t = 0.0
             while t < horizon - 1e-9:
                 step = min(dt, horizon - t)
@@ -129,6 +144,7 @@ class StructuralModel:
                     noise_sum[n] += noise
                     state[n] = min(v.hi, max(v.lo, state[n] + drift + noise))
                 t += step
+                _apply(state, rng, t, cursor)               # scheduled shocks that fall in (t-step, t]
             for n, v in self.variables.items():
                 if aleatoric and v.vol > 0:
                     factors[f"{n}~shock"] = noise_sum[n]
