@@ -320,6 +320,8 @@ turn these into "ask anything, simulate forward, choose the best action."** The 
 produces calibrated distributions over horizons; what remains is the front door (parse a question →
 construct state) and the back door (outcome distribution → best action).
 
+**EXP-073 — the best-message ceiling + DeepSeek estimation (answering "why not 90-95%?").** Measured on 64 real mixed-outcome CMV cases (leave-one-OP-out), DeepSeek re-scored all 138 args on richer persuasion dimensions. Findings: (1) 90-95% is NOT achievable -- even overfitting all data with rich features tops out ~0.83, so ~17% of "will THIS message flip THIS person" is genuinely irreducible; (2) real headroom exists -- the ceiling ROSE 0.75->0.83 with DeepSeek features, so better estimation exposes more reducible signal; (3) the bottleneck is DATA not the model -- richer features raised the ceiling but NOT leave-one-out (0.656), because 138 examples is too few to learn an 18-feature mapping. Immediate win: DeepSeek's holistic judgment ranked directly beats the trained pipeline (0.672 vs 0.656) with ZERO training (= the InterventionSelector via the stronger backend). Path to genuinely better: more data (full CMV corpus + more datasets) to reach the ~0.83 ceiling, and chase higher-ceiling mechanisms. Validates the user's more-data+DeepSeek plan; honest target ~0.80 on persuasion, not 0.95. swm/api/deepseek_backend.py wired as default backend.
+
 **EXP-072 — real contagion/tipping test: the coupled dynamic FINALLY beats simple baselines.** The regime
 EXP-070/071 predicted a shared-world model would win: strong endogenous feedback + weak simple baselines.
 Real SSA baby-name shares (481 names, 1880-2008 — pure imitation-driven fashion cascades), forecast H=10yr
