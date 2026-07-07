@@ -320,6 +320,18 @@ turn these into "ask anything, simulate forward, choose the best action."** The 
 produces calibrated distributions over horizons; what remains is the front door (parse a question →
 construct state) and the back door (outcome distribution → best action).
 
+**EXP-071 — environment→individuals→institution on REAL FOMC data (the substrate's next coupling, scored).**
+The coupling EXP-070 pointed to, on real FRED data (FEDFUNDS/CPI/UNRATE, 1985-2026, 494 months, leakage-free,
+40% holdout). Macro pressure → members' desired policy → committee vote → rate move. Three honest findings:
+(1) the environment→decision coupling EARNS its place — Taylor pressure lifts direction 0.641→0.707 over
+always-hold; (2) the middle MEMBER scale does NOT — routing through discrete/saturating voting members
+degrades back to 0.641 (throws away the graded signal); (3) policy INERTIA dominates — a momentum baseline
+crushes every macro model (MAE 0.071 vs 0.177, dir 0.92). Verdict: keep the environment coupling, DROP the
+member scale for FOMC — the discipline working. Across both scored couplings (SCOTUS EXP-070, FOMC EXP-071)
+the individual↔institution scale does not beat simpler baselines (inertia/static ideology); the substrate's
+machinery is real (bank-run cascade) but a shared world wins only where endogenous cross-scale feedback is
+strong AND simple baselines are weak — a measured finding about WHEN to reach for it. 3 tests; data cached.
+
 **EXP-070 — the persistent World substrate (the digital-twin leap), scored.** `swm/world/substrate.py`:
 `Entity` (node: person/institution/population/environment, advanced by its own mechanism step_fn, read by
 readout_fn) + `Coupling` (directed edge wiring one entity's output into another's input) + `World`
