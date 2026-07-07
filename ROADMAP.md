@@ -295,6 +295,19 @@ turn these into "ask anything, simulate forward, choose the best action."** The 
 produces calibrated distributions over horizons; what remains is the front door (parse a question →
 construct state) and the back door (outcome distribution → best action).
 
+**EXP-066 — can the LLM pick the right RATE on its own? (the open measurement, now closed).** External
+model (Qwen-72B, blind) estimates the per-topic year-to-year opinion VOLATILITY for 15 GSS topics (data
+truth 1.5–4.9 pp/yr, with a drift-vs-volatility trap). Findings: (1) SCALE excellent — geo-mean ratio
+LLM/data 0.96, 100% within 2×; (2) per-topic DISCRIMINATION weak — Spearman 0.39 (confuses cumulative drift
+with volatility, e.g. rates marijuana most-volatile); (3) DOWNSTREAM calibration fine — forecasts from LLM
+rates cover 0.798 vs 0.803 from true rates ≈ nominal 0.80, so the weak ranking barely matters; (4) full
+autonomous spec authoring runs but is buggy — Qwen's inflation generic_scm had right structure but a
+malformed mean-reversion equation (equilibrium ~35%, saturated the bound → degenerate P=1.0). Verdict:
+mechanism ✅, rate-scale ✅, rate-ranking ⚠️(harmless), full-equation-authoring ❌ (needs a spec
+validator/repair loop). The core bet largely holds; NEXT concrete build = a spec validator (equilibrium-
+in-bounds / no-saturation / dimensional sanity via simulate-and-check). `swm/api/hf_backend.py` reused
+(token from env only). Full suite 254 (no new py-tests; empirical experiment).
+
 **EXP-065 — spec-quality benchmark + scored validation of the compiler on REAL outcomes.** The direct test
 of the thesis. PART 1 spec quality: (a) mechanism selection graded by an EXTERNAL blind model (Qwen-72B via
 HF) = 15/15 correct on answered (5 hit HF credit limit, not model error) — picking the generative structure
