@@ -295,6 +295,16 @@ turn these into "ask anything, simulate forward, choose the best action."** The 
 produces calibrated distributions over horizons; what remains is the front door (parse a question →
 construct state) and the back door (outcome distribution → best action).
 
+**EXP-067 — spec validator + repair loop (closes the EXP-066 gap: buggy equations).** `swm/api/
+spec_validator.py`: `validate(spec)` runs static + a simulate-and-inspect dynamic pass — equilibrium-out-of-
+bounds/saturation (root-finds where drift=0; flags if outside [lo,hi] — the load-bearing check), degenerate/
+trivial outcome, event-threshold-outside-support, value/volatility sanity, bad equations. `ValidatingCompiler`
+= compile → validate → LLM repair → re-validate (pluggable repair_fn). Demonstrated on Qwen's REAL inflation
+bug: validator flagged saturates_bound + degenerate + trivial; LIVE Qwen repair rewrote the equation to
+proper mean-reversion in 1 round → sane forecast (P=0.92, interval [2.3,5.7]). No false positives (3 clean
+specs → 0 errors); every check fires on targeted broken specs. Pipeline is now question → compile → VALIDATE
+& REPAIR → Monte-Carlo → distribution (generated model tested before trusted). 7 tests; full suite 261.
+
 **EXP-066 — can the LLM pick the right RATE on its own? (the open measurement, now closed).** External
 model (Qwen-72B, blind) estimates the per-topic year-to-year opinion VOLATILITY for 15 GSS topics (data
 truth 1.5–4.9 pp/yr, with a drift-vs-volatility trap). Findings: (1) SCALE excellent — geo-mean ratio
