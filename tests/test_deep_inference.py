@@ -49,3 +49,33 @@ def test_persona_maps_into_schema_persona_category():
     assert set(persona).issubset(set(BY_CATEGORY[PERSONA]))
     for v in persona.values():
         assert "value" in v and "confidence" in v and 0 <= v["confidence"] <= 1
+
+
+def test_persona_to_vars_confidence_blend():
+    from swm.variables.deep_inference import persona_to_vars
+    persona = {"trait_openness": {"value": 1.0, "confidence": 0.8},   # deep, confident -> moves toward 1.0
+               "combativeness": {"value": 1.0, "confidence": 0.1}}    # thin -> stays near the prior
+    prior = {"trait_openness": 0.5, "combativeness": 0.5}
+    v = persona_to_vars(persona, prior=prior)
+    assert v["trait_openness"] > 0.85                                 # high-confidence trait moves
+    assert abs(v["combativeness"] - 0.55) < 0.02                      # low-confidence trait ~ prior
+
+
+def test_vars_asof_is_leakage_free_and_feeds_response_model():
+    from swm.simulation.response_model import quantities
+    store = DeepPersonaStore(engine=DeepInferenceEngine())
+    # an open, humble persona vs a combative, certain one -> different receptivity in the Level-1 model
+    for t in (1, 2, 3):
+        store.add_doc("humble", t, {"trait_openness": {"value": 0.9, "salience": 0.8},
+                                    "intellectual_humility": {"value": 0.9, "salience": 0.8}})
+        store.add_doc("rigid", t, {"combativeness": {"value": 0.9, "salience": 0.8},
+                                   "certainty_disposition": {"value": 0.9, "salience": 0.8}})
+    prior = {"trait_openness": 0.5, "intellectual_humility": 0.5, "combativeness": 0.5,
+             "certainty_disposition": 0.5}
+    hv = store.vars_asof("humble", now=99, prior=prior)
+    rv = store.vars_asof("rigid", now=99, prior=prior)
+    msg = {"clarity": 0.7, "ask_directness": 0.6}
+    assert quantities(hv, {}, msg)["receptivity"] > quantities(rv, {}, msg)["receptivity"]
+    # leakage: as-of before any doc -> empty persona
+    assert store.vars_asof("humble", now=1, prior=prior) == {} or \
+        all(abs(x - prior[k]) < 1e-9 for k, x in store.vars_asof("humble", now=1, prior=prior).items())
