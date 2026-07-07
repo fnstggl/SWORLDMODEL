@@ -124,7 +124,31 @@ def validate(spec: ModelSpec, n: int = 400) -> list:
                                 f"event threshold {ev.get('value')} outside {target}'s [{tv.lo},{tv.hi}] "
                                 f"-> P is trivially 0 or 1", target))
 
-    # --- dynamic: actually simulate and inspect (all mechanisms) ---
+    else:
+        # static numeric-field checks for the payload mechanisms (catches e.g. a categorical string where
+        # a numeric stance/position/strength belongs — a common LLM compilation bug)
+        payload = {"electorate": ("cells", ("stance", "weight", "turnout", "est_sd")),
+                   "committee": ("agents", ("position", "influence", "openness", "conviction")),
+                   "bracket": ("competitors", ("strength", "est_sd"))}.get(spec.mechanism)
+        if payload:
+            key, fields = payload
+            items = spec.extra.get(key, [])
+            if not items:
+                issues.append(Issue("no_payload", "error", f"{spec.mechanism} has no {key}"))
+            for i, it in enumerate(items):
+                for fld in fields:
+                    if fld in it and not _isnum(it[fld]):
+                        issues.append(Issue("non_numeric_field", "error",
+                                            f"{key}[{i}].{fld} = {it[fld]!r} is not numeric", fld))
+
+    # --- dynamic: actually simulate and inspect (skip if static errors already found) ---
+    if not any(i.severity == "error" for i in issues):
+        issues.extend(_dynamic_checks(spec, n))
+    return issues
+
+
+def _dynamic_checks(spec: ModelSpec, n: int) -> list:
+    issues = []
     try:
         out = CompiledModel(spec).run(n=n)
         iv = out.get("interval_80")
@@ -139,6 +163,10 @@ def validate(spec: ModelSpec, n: int = 400) -> list:
     except Exception as e:
         issues.append(Issue("simulation_error", "error", f"spec fails to simulate: {str(e)[:80]}"))
     return issues
+
+
+def _isnum(v) -> bool:
+    return isinstance(v, (int, float)) and not isinstance(v, bool)
 
 
 def build_repair_prompt(spec_json: dict, issues: list) -> str:

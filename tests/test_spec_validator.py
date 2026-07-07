@@ -15,8 +15,8 @@ def test_catches_the_inflation_bug():
              "equations": {"cpi": "0.01*(100 - cpi) - 0.02*(cpi - 3)"},
              "outcome": {"variable": "cpi", "event": {"op": ">", "value": 3}}, "horizon": 12}
     codes = _codes(buggy)
-    assert "saturates_bound" in codes or "equilibrium_out_of_bounds" in codes   # the equation bug is caught
-    assert "degenerate_outcome" in codes or "trivial_event" in codes            # and its downstream effect
+    # the static equation check catches it up-front (and short-circuits the now-redundant dynamic sim)
+    assert "saturates_bound" in codes or "equilibrium_out_of_bounds" in codes
 
 
 def test_clean_spec_passes():
@@ -70,6 +70,31 @@ def test_validating_compiler_repairs_to_clean():
     assert vc.last_report["clean"] and vc.last_report["repairs"] == 1
     out = compiled.run(n=2000)
     assert 0.0 < out["p_event"] < 1.0 and (out["interval_80"][1] - out["interval_80"][0]) > 0.1
+
+
+def test_world_model_self_corrects_by_default():
+    from swm.api.world_model import WorldModel
+
+    buggy = {"mechanism": "generic_scm",
+             "variables": [{"name": "cpi", "value": 4.2, "est_sd": 0.5, "volatility": 0.3, "lo": 0, "hi": 10}],
+             "equations": {"cpi": "0.01*(100 - cpi) - 0.02*(cpi - 3)"},
+             "outcome": {"variable": "cpi", "event": {"op": ">", "value": 3}}, "horizon": 12}
+    fixed = {**buggy, "equations": {"cpi": "-0.3*(cpi - 3)"}}
+
+    class _Stub:
+        def compile(self, q, c="", *, key=None):
+            return CompiledModel(parse_spec(buggy))
+
+    # default (validate=True) + a repair backend -> the front door returns a clean, non-degenerate forecast
+    wm = WorldModel(compiler=_Stub(), repair_fn=lambda prompt: fixed)
+    out = wm.simulate("Will inflation exceed 3%?", key="cpi", n=2000)
+    assert out["validation"]["clean"] and out["validation"]["repairs"] == 1
+    f = out["forecast"]
+    assert 0.0 < f["p_event"] < 1.0 and (f["interval_80"][1] - f["interval_80"][0]) > 0.1
+
+    # validate=False -> the raw path is unchanged (buggy spec passes through, no validation report acted on)
+    raw = WorldModel(compiler=_Stub(), validate=False).simulate("q", key="cpi", n=500)
+    assert raw["validation"] is None and raw["forecast"]["p_event"] == 1.0
 
 
 def test_no_repair_fn_reports_unclean():

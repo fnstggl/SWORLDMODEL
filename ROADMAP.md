@@ -295,6 +295,18 @@ turn these into "ask anything, simulate forward, choose the best action."** The 
 produces calibrated distributions over horizons; what remains is the front door (parse a question →
 construct state) and the back door (outcome distribution → best action).
 
+**EXP-068 — self-correcting front door + scored end-to-end run.** (1) `WorldModel` now wraps its compiler in
+`ValidatingCompiler` by default (`validate=True`): every simulate() validates + repairs the spec before
+running, validation report in the output; `validate=False` keeps the raw path. Also added a `non_numeric_
+field` static check + guarded `run()`. (2) Scored end-to-end on 15 GSS opinion topics (LLM compiled the WHOLE
+spec via Qwen-72B, ~12yr horizon): the validator caught 5/15 malformed specs LIVE (LLM used categorical
+string labels for numeric stances — non_numeric_field, no crash) — self-correction working in the wild. On
+the 10 clean specs: MAE 0.078 vs persistence 0.076 → skill −0.02 (TIES persistence, doesn't beat it),
+coverage 0.50 (over-confident). Honest: decade-horizon opinion is persistence-dominated (per EXP-053/061);
+the world-model's wins are on STRUCTURED questions (EXP-065), not mass opinion. Calibration miss diagnosed to
+mechanism choice (electorate under-propagates variance vs a diffusion) → next build: mechanism selection
+should weigh uncertainty propagation. Full suite 262.
+
 **EXP-067 — spec validator + repair loop (closes the EXP-066 gap: buggy equations).** `swm/api/
 spec_validator.py`: `validate(spec)` runs static + a simulate-and-inspect dynamic pass — equilibrium-out-of-
 bounds/saturation (root-finds where drift=0; flags if outside [lo,hi] — the load-bearing check), degenerate/

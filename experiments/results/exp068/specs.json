@@ -1,0 +1,401 @@
+{
+ "gunlaw": {
+  "mechanism": "electorate",
+  "extra": {
+   "cells": [
+    {
+     "stance": 0.72,
+     "weight": 1,
+     "turnout": 1,
+     "est_sd": 0.05
+    }
+   ]
+  },
+  "outcome": {
+   "variable": "stance",
+   "event": {
+    "op": ">",
+    "value": 0.5
+   }
+  },
+  "horizon": 12,
+  "dt": 1,
+  "rationale": "The stance of the electorate is modeled as a single cell with the initial stance of 72% in favor of requiring a police permit before buying a gun, as of 1972. The model will simulate the evolution of this stance over 12 years to predict the percentage in 1984."
+ },
+ "cappun": {
+  "mechanism": "electorate",
+  "extra": {
+   "cells": [
+    {
+     "stance": 0.66,
+     "weight": 1,
+     "turnout": 1,
+     "est_sd": 0.05
+    }
+   ]
+  },
+  "outcome": {
+   "variable": "stance",
+   "event": {
+    "op": ">",
+    "value": 0.5
+   }
+  },
+  "horizon": 12,
+  "dt": 1,
+  "rationale": "The stance of the electorate on the death penalty for murder is modeled as a single cell with a starting stance of 66% in favor, reflecting the 1974 data. The model will simulate the evolution of this stance over 12 years to estimate the percentage in 1986."
+ },
+ "premarsx": {
+  "mechanism": "electorate",
+  "extra": {
+   "cells": [
+    {
+     "stance": 0.48,
+     "weight": 1,
+     "turnout": 1,
+     "est_sd": 0.05
+    }
+   ]
+  },
+  "outcome": {
+   "variable": "stance",
+   "event": {
+    "op": "=",
+    "value": 0.48
+   }
+  },
+  "horizon": 13,
+  "dt": 1,
+  "rationale": "The stance of the population is modeled as a single cell with a starting stance of 48% in 1972, and we simulate forward to 1985 to see the percentage of US adults who believe premarital sex is not wrong at all."
+ },
+ "homosex": {
+  "mechanism": "electorate",
+  "extra": {
+   "cells": [
+    {
+     "stance": 0.74,
+     "weight": 1,
+     "turnout": 1,
+     "est_sd": 0.05
+    }
+   ]
+  },
+  "outcome": {
+   "variable": "stance",
+   "event": {
+    "op": "=",
+    "value": 0.74
+   }
+  },
+  "horizon": 12,
+  "dt": 1,
+  "rationale": "The stance of the electorate is modeled as a single cell with the initial stance of 74% in 1973. The model will simulate the evolution of this stance over 12 years to estimate the percentage in 1985."
+ },
+ "abany": {
+  "mechanism": "electorate",
+  "extra": {
+   "cells": [
+    {
+     "stance": "legal_any_reason",
+     "weight": 0.38,
+     "turnout": 1.0,
+     "est_sd": 0.05
+    },
+    {
+     "stance": "other",
+     "weight": 0.62,
+     "turnout": 1.0,
+     "est_sd": 0.05
+    }
+   ]
+  },
+  "outcome": {
+   "variable": "legal_any_reason",
+   "event": {
+    "op": ">",
+    "value": 0.38
+   }
+  },
+  "horizon": 12,
+  "dt": 1,
+  "rationale": "The stance 'legal_any_reason' starts at 38% in 1977, and we simulate the change in public opinion over 12 years to 1989. The turnout is assumed to be 100% for simplicity, and the standard deviation reflects the uncertainty in the initial estimate."
+ },
+ "fefam": {
+  "mechanism": "electorate",
+  "extra": {
+   "cells": [
+    {
+     "stance": 0.66,
+     "weight": 1,
+     "turnout": 1,
+     "est_sd": 0.05
+    }
+   ]
+  },
+  "outcome": {
+   "variable": "stance",
+   "event": {
+    "op": ">",
+    "value": 0.5
+   }
+  },
+  "horizon": 13,
+  "dt": 1,
+  "rationale": "The stance represents the percentage of US adults who agree with the statement 'a woman's place is in the home' as of 1977. The model will simulate the evolution of this stance over 13 years to predict the percentage in 1990."
+ },
+ "letdie1": {
+  "mechanism": "electorate",
+  "extra": {
+   "cells": [
+    {
+     "stance": 0.62,
+     "weight": 1,
+     "turnout": 1,
+     "est_sd": 0.05
+    }
+   ]
+  },
+  "outcome": {
+   "variable": "stance",
+   "event": {
+    "op": ">",
+    "value": 0.5
+   }
+  },
+  "horizon": 13,
+  "dt": 1,
+  "rationale": "The stance of the electorate is modeled as a single cell with the initial stance of 62% in 1977, and we simulate forward to 1990 to estimate the percentage of US adults who favor allowing doctors to end a terminally ill patient's life."
+ },
+ "fepol": {
+  "mechanism": "electorate",
+  "extra": {
+   "cells": [
+    {
+     "stance": 0.47,
+     "weight": 1,
+     "turnout": 1,
+     "est_sd": 0.05
+    }
+   ]
+  },
+  "outcome": {
+   "variable": "stance",
+   "event": {
+    "op": "=",
+    "value": 0.47
+   }
+  },
+  "horizon": 12,
+  "dt": 1,
+  "rationale": "The stance represents the percentage of US adults who agree women are not suited for politics, starting from 1974. The model will simulate the change in this percentage over 12 years to estimate the value in 1986."
+ },
+ "grass": {
+  "mechanism": "electorate",
+  "extra": {
+   "cells": [
+    {
+     "stance": 0.19,
+     "weight": 1,
+     "turnout": 1,
+     "est_sd": 0.05
+    }
+   ]
+  },
+  "outcome": {
+   "variable": "stance",
+   "event": {
+    "op": ">",
+    "value": 0.5
+   }
+  },
+  "horizon": 13,
+  "dt": 1,
+  "rationale": "The stance of the electorate on legalizing marijuana is modeled as a single cell with the initial stance of 19% in 1973. The model will simulate the change in this stance over 13 years to predict the percentage in 1986."
+ },
+ "natenvir": {
+  "mechanism": "electorate",
+  "extra": {
+   "cells": [
+    {
+     "stance": 0.65,
+     "weight": 1,
+     "turnout": 1,
+     "est_sd": 0.05
+    }
+   ]
+  },
+  "outcome": {
+   "variable": "stance",
+   "event": {
+    "op": ">",
+    "value": 0.5
+   }
+  },
+  "horizon": 12,
+  "dt": 1,
+  "rationale": "The stance represents the percentage of US adults who believe the US spends too little on the environment. The weight and turnout are set to 1 to represent the entire population of interest. The est_sd reflects the uncertainty in the initial estimate. The horizon is set to 12 years to simulate from 1973 to 1985."
+ },
+ "natfare": {
+  "mechanism": "electorate",
+  "extra": {
+   "cells": [
+    {
+     "stance": "too_little",
+     "weight": 21,
+     "turnout": 1,
+     "est_sd": 2
+    },
+    {
+     "stance": "about_right",
+     "weight": 50,
+     "turnout": 1,
+     "est_sd": 2
+    },
+    {
+     "stance": "too_much",
+     "weight": 29,
+     "turnout": 1,
+     "est_sd": 2
+    }
+   ]
+  },
+  "outcome": {
+   "variable": "too_little",
+   "event": {
+    "op": "=",
+    "value": 0.21
+   }
+  },
+  "horizon": 12,
+  "dt": 1,
+  "rationale": "The electorate mechanism is used to simulate the evolution of public opinion over time. The stance 'too_little' is the focus, with its initial weight set to 21% based on the 1973 data. The simulation will run for 12 years to predict the percentage in 1985."
+ },
+ "natcrime": {
+  "mechanism": "electorate",
+  "extra": {
+   "cells": [
+    {
+     "stance": 0.69,
+     "weight": 1,
+     "turnout": 1,
+     "est_sd": 0.05
+    }
+   ]
+  },
+  "outcome": {
+   "variable": "stance",
+   "event": {
+    "op": "=",
+    "value": 0.69
+   }
+  },
+  "horizon": 12,
+  "dt": 1,
+  "rationale": "The stance of the electorate on the issue of spending on fighting crime is modeled as a single cell with a starting stance of 69% in 1973. The model will simulate the evolution of this stance over 12 years to 1985, assuming a relatively stable opinion with some uncertainty."
+ },
+ "natheal": {
+  "mechanism": "electorate",
+  "extra": {
+   "cells": [
+    {
+     "stance": "too_little",
+     "weight": 63,
+     "turnout": 1,
+     "est_sd": 2
+    },
+    {
+     "stance": "about_right",
+     "weight": 20,
+     "turnout": 1,
+     "est_sd": 2
+    },
+    {
+     "stance": "too_much",
+     "weight": 17,
+     "turnout": 1,
+     "est_sd": 2
+    }
+   ]
+  },
+  "outcome": {
+   "variable": "too_little",
+   "event": {
+    "op": ">",
+    "value": 50
+   }
+  },
+  "horizon": 12,
+  "dt": 1,
+  "rationale": "The electorate mechanism is used to simulate the evolution of public opinion over time. The initial distribution of opinions is based on the 1973 data, and the simulation will run for 12 years to predict the percentage in 1985."
+ },
+ "natrace": {
+  "mechanism": "electorate",
+  "extra": {
+   "cells": [
+    {
+     "stance": "too_little",
+     "weight": 35,
+     "turnout": 1,
+     "est_sd": 2
+    },
+    {
+     "stance": "about_right",
+     "weight": 32.5,
+     "turnout": 1,
+     "est_sd": 2
+    },
+    {
+     "stance": "too_much",
+     "weight": 32.5,
+     "turnout": 1,
+     "est_sd": 2
+    }
+   ]
+  },
+  "outcome": {
+   "variable": "too_little",
+   "event": {
+    "op": "=",
+    "value": 35
+   }
+  },
+  "horizon": 12,
+  "dt": 1,
+  "rationale": "The model simulates the evolution of public opinion over 12 years, from 1973 to 1985, with the initial condition that 35% of US adults believe the US spends too little on improving the conditions of Black Americans. The volatility is set to reflect the gradual change in public opinion over time."
+ },
+ "nateduc": {
+  "mechanism": "electorate",
+  "extra": {
+   "cells": [
+    {
+     "stance": "too_little",
+     "weight": 51,
+     "turnout": 1,
+     "est_sd": 2
+    },
+    {
+     "stance": "about_right",
+     "weight": 24.5,
+     "turnout": 1,
+     "est_sd": 2
+    },
+    {
+     "stance": "too_much",
+     "weight": 24.5,
+     "turnout": 1,
+     "est_sd": 2
+    }
+   ]
+  },
+  "outcome": {
+   "variable": "too_little",
+   "event": {
+    "op": ">",
+    "value": 50
+   }
+  },
+  "horizon": 12,
+  "dt": 1,
+  "rationale": "The electorate mechanism is used to simulate the evolution of public opinion over time. The initial distribution of opinions is based on the 1973 data, and the simulation will run for 12 years to predict the percentage in 1985."
+ }
+}

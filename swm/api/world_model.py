@@ -11,10 +11,17 @@ split and a forecastability verdict — never a false-confident point.
 Both dependencies are pluggable: `retriever` from swm/api/retrieval.py (web search in prod, as-of in eval),
 `compiler` a StructuralCompiler with an LLM or cached backend. The Levels 1-3, the bracket, and the
 generic SCM are the compiler's mechanism library — this is the layer that turns them into "ask anything."
+
+Self-correction is ON by default: the compiler is wrapped in a `ValidatingCompiler`, so every simulate()
+call VALIDATES the compiled spec (simulate-and-inspect) and, if a `repair_fn` is supplied, REPAIRS
+degeneracies (the EXP-067 loop) before running — the generated model is tested before it is trusted. The
+`validation` report rides along in the output. Pass `validate=False` for the raw path.
 """
 from __future__ import annotations
 
 from dataclasses import dataclass
+
+from swm.api.spec_validator import ValidatingCompiler
 
 
 @dataclass
@@ -22,6 +29,15 @@ class WorldModel:
     compiler: object                      # swm.api.compiler.StructuralCompiler
     retriever: object = None              # swm.api.retrieval.Retriever (optional; context can be passed in)
     n: int = 8000
+    validate: bool = True                 # self-correct by default: validate (+ repair if repair_fn) each spec
+    repair_fn: object = None              # LLM backend that fixes a flagged spec (None = validate-only)
+
+    def _compiler(self):
+        if not self.validate:
+            return self.compiler
+        if isinstance(self.compiler, ValidatingCompiler):
+            return self.compiler
+        return ValidatingCompiler(self.compiler, repair_fn=self.repair_fn)
 
     def simulate(self, question: str, *, context: str = "", as_of: str = "", key: str = None,
                  n: int = None) -> dict:
@@ -31,11 +47,17 @@ class WorldModel:
             n_evidence = len(ctx)
         else:
             n_evidence = 0
-        compiled = self.compiler.compile(question, context, key=key)
-        forecast = compiled.run(n=n or self.n)
+        comp = self._compiler()
+        compiled = comp.compile(question, context, key=key)
+        validation = getattr(comp, "last_report", None)
+        try:                                              # a spec validation could not repair may not run
+            forecast = compiled.run(n=n or self.n)
+        except Exception as e:
+            forecast = {"mechanism": compiled.spec.mechanism, "error": str(e)[:120]}
         return {"question": question, "n_evidence": n_evidence,
                 "mechanism": compiled.spec.mechanism, "forecast": forecast,
                 "forecastable": _forecastable(forecast),
+                "validation": validation,
                 "headline": _headline(question, forecast),
                 "spec": {"mechanism": compiled.spec.mechanism,
                          "variables": [(v.name, v.value, v.volatility) for v in compiled.spec.variables],
