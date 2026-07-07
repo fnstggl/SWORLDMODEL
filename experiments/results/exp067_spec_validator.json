@@ -1,0 +1,71 @@
+{
+ "A_real_bug_caught_and_repaired": {
+  "repair_backend": "live-hf",
+  "issues_flagged": [
+   {
+    "code": "saturates_bound",
+    "severity": "error",
+    "message": "CPI_inflation drift never reaches zero in-range -> it saturates the upper bound (no interior equilibrium)",
+    "variable": "CPI_inflation"
+   },
+   {
+    "code": "degenerate_outcome",
+    "severity": "error",
+    "message": "outcome interval collapsed to a point -> no uncertainty (a bound pin or a constant)",
+    "variable": ""
+   },
+   {
+    "code": "trivial_event",
+    "severity": "error",
+    "message": "P(event)=1.0 with no spread -> the event is trivially certain; check bounds/threshold/equation",
+    "variable": ""
+   }
+  ],
+  "buggy_forecast": {
+   "p_event": 1.0,
+   "interval": [
+    10.0,
+    10.0
+   ]
+  },
+  "repaired_clean": true,
+  "repairs": 1,
+  "repaired_equation": {
+   "CPI_inflation": "-0.02 * (CPI_inflation - 3)"
+  },
+  "repaired_forecast": {
+   "p_event": 0.9243,
+   "mean": 3.963,
+   "interval": [
+    2.2782,
+    5.6613
+   ]
+  }
+ },
+ "B_no_false_positives": {
+  "incumbent_scm": {
+   "errors": []
+  },
+  "committee": {
+   "errors": []
+  },
+  "bracket": {
+   "errors": []
+  }
+ },
+ "C_each_check_fires": {
+  "equilibrium_out_of_bounds": [
+   "degenerate_outcome",
+   "equilibrium_out_of_bounds"
+  ],
+  "event_threshold_outside_support": [
+   "event_threshold_outside_support"
+  ],
+  "value_out_of_bounds": [
+   "value_out_of_bounds"
+  ],
+  "volatility_too_large": [
+   "volatility_too_large"
+  ]
+ }
+}
