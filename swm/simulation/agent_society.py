@@ -34,6 +34,7 @@ class PersonaAgent:
     influence: float = 1.0                           # how hard they sway others (status/expertise/size)
     openness: float = 0.3                            # how much they update per round (from the VariableMap)
     conviction: float = 0.4                          # resistance to change (entrenchment)
+    public_sensitivity: float = 0.0                  # accountability to the mass public backdrop (0 = insulated)
 
     def value_vector(self) -> dict:
         return self.variables
@@ -55,6 +56,7 @@ class AgentSociety:
     consensus_pull: float = 0.0     # institutional pressure toward the whole-body mean (deliberative unanimity)
     confidence_bound: float = 0.0   # bounded confidence: ignore agents with similarity below this (0 = off)
     rounds: int = 6
+    public_field: float = None      # coarse mass-public backdrop stance in [0,1] (None = no backdrop)
 
     def set_initial_positions(self, agents, position_fn, proposition):
         for a in agents:
@@ -77,6 +79,10 @@ class AgentSociety:
                 den += w
             social = (num / den) if den else a.position
             target = (1 - self.consensus_pull) * social + self.consensus_pull * body_mean
+            if self.public_field is not None and a.public_sensitivity > 0:
+                # the mass-public backdrop pulls each stakeholder toward it, in proportion to how
+                # accountable/exposed they are to public pressure (Level-2 + demographic backdrop)
+                target = (1 - a.public_sensitivity) * target + a.public_sensitivity * self.public_field
             step = a.openness * (1 - a.conviction) * (target - a.position)         # gated update
             new[i] = _clamp(a.position + step)
         for a, p in zip(agents, new):
