@@ -295,6 +295,19 @@ turn these into "ask anything, simulate forward, choose the best action."** The 
 produces calibrated distributions over horizons; what remains is the front door (parse a question →
 construct state) and the back door (outcome distribution → best action).
 
+**EXP-065 — spec-quality benchmark + scored validation of the compiler on REAL outcomes.** The direct test
+of the thesis. PART 1 spec quality: (a) mechanism selection graded by an EXTERNAL blind model (Qwen-72B via
+HF) = 15/15 correct on answered (5 hit HF credit limit, not model error) — picking the generative structure
+is robust; (b) rate calibration — with the data-measured GSS σ=0.027/yr the 80% interval covers exactly
+0.80, a 2× clock error breaks it (0.98/0.48) — rates are checkable and consequential. PART 2 scored
+validation through the ONE compiler interface on real resolved data: committee/SCOTUS (400 cases) margin MAE
+0.172 BEATS independent 0.215 (reproduces EXP-055); single_agent/CMV best-message precision@1 0.69 vs 0.51 =
++0.18 lift (reproduces EXP-060); electorate/GSS RMSE ties marginal (honest, marginal-dominated). The unified
+front door reproduces every validated per-mechanism result on real outcomes. `swm/api/hf_backend.py`
+(external LLM backend, token from env only), `swm/eval/world_model_bench.py` (uniform scoreboard). 2 tests;
+full suite 254. FRONTIER now isolated: variable/rate ESTIMATION quality, not architecture. Open: automate +
+measure the LLM's rate CHOICE (needs API budget; HF probe was credit-limited).
+
 **EXP-064 — the world-model COMPILER (Stage ②, the keystone): `simulate(question)`.** The front door is
 built. `swm/api/model_spec.py` (spec IR + a whitelisted/safe structural-equation evaluator — no eval() of
 LLM code), `swm/api/compiler.py` (`StructuralCompiler`: question → ModelSpec via pluggable LLM backend;
