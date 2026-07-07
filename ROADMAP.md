@@ -7,6 +7,28 @@ forward under uncertainty, and return a **calibrated distribution over outcomes*
 to reach a desired outcome. This document maps everything needed to get there, grounded in what we have
 built and, crucially, in what the no-cheat experiments have proven about what's hard.
 
+## Calibrated weights + the no-cheat event backtest — the thesis wins on real data (current)
+The disagreement ("model every variable" vs "less is more") is settled empirically, in favor of the thesis
+*conditional on proper calibration*:
+- **The calibration engine** (`swm/variables/bayes_logistic.py`, `calibrated_weights.py`): a weight is a
+  causal elasticity carried WITH uncertainty. Four sources → a `WeightPrior` (mean + CI + provenance: fit /
+  pooling / literature effect-size / LLM-elasticity); a Laplace **posterior over the weights** (per-weight
+  prior precision from the CI); `predict_dist` **integrates weight uncertainty** (unknown weight → wider
+  forecast); **empirical-Bayes** n-adaptive shrinkage (`fit(tune=True)`); variance **triage** and
+  **active-learning** targets (high leverage × high uncertainty = measure next).
+- **The event backtest** (`swm/eval/event_backtest.py`): score any forecaster vs the skeptic's free
+  baselines (persistence/momentum, base rate, market) on historical "predict the future" questions, with an
+  as-of leakage guard. SKILL = 1 − loss/loss_baseline.
+- **EXP-072 (fidelity ladder, OpinionQA)**: adding 12 variables HURTS naive +0.111 log-loss but properly-
+  tuned shrinkage makes it +0.015 (and up to 6 vars it HELPS) — the binding constraint is weight calibration,
+  not count.
+- **EXP-073 (GSS opinion, rolling origin @2006, 133 no-cheat forecasts) — the decisive win**: the calibrated
+  11-variable forward simulation beats persistence **+0.107 skill**, and the linear trend and base rate too
+  (**beats ALL baselines**). Crucially **more calibrated variables flipped a loss into a win** (2 vars
+  −0.032 → 11 vars +0.107). On a modelable evolving population where simple baselines are weak, fidelity
+  buys accuracy — the digital-twin bet pays. (SCOTUS/FOMC didn't clear the bar because their simple
+  baselines — static ideology, policy inertia — are strong; the lesson is *where* to reach for the rich sim.)
+
 ## The action layer, the navigable object, the select loop, and the flagship demotion (current)
 The two core value props are built on the compiler and scored on real data, and the compiler's keystone gap
 is closed:

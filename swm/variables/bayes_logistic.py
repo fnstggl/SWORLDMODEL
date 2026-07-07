@@ -55,9 +55,11 @@ def _matinv(A):
 @dataclass
 class BayesianLogistic:
     """L2-to-prior logistic with a Laplace posterior over the coefficients. `w0` is the prior mean per
-    feature (the elasticity prior; 0 => shrink toward zero, the ordinary ridge). Feature vectors are dense
-    lists; the last coefficient is the intercept (unpenalized)."""
-    l2: float = 1.0                      # prior precision: how hard the data must work to move a weight off w0
+    feature (the elasticity prior; 0 => shrink toward zero, the ordinary ridge). `l2` is the prior PRECISION:
+    a scalar (same for all weights) OR a per-weight list — a weight with a TIGHT prior CI (high precision)
+    shrinks hard toward its prior mean; a weight with a wide/absent prior (low precision) is free to fit.
+    Feature vectors are dense lists; the intercept is unpenalized."""
+    l2: float = 1.0
     epochs: int = 300
     lr: float = 0.3
     w0: list = None                      # prior mean per feature (None => zeros)
@@ -65,10 +67,14 @@ class BayesianLogistic:
     b: float = 0.0
     cov: list = field(default=None)      # posterior covariance (Laplace); diagonal => weight variances
 
+    def _prec(self, d):
+        return list(self.l2) if isinstance(self.l2, (list, tuple)) else [self.l2] * d
+
     def fit(self, X, y):
         n = len(X)
         d = len(X[0]) if n else 0
         w0 = list(self.w0) if self.w0 is not None else [0.0] * d
+        prec = self._prec(d)
         w = list(w0)
         b = math.log((sum(y) + 1) / (n - sum(y) + 1)) if n else 0.0
         for _ in range(self.epochs):
@@ -81,10 +87,10 @@ class BayesianLogistic:
                     gw[j] += e * xi[j]
                 gb += e
             for j in range(d):
-                w[j] -= self.lr * (gw[j] / n + self.l2 * (w[j] - w0[j]) / n)   # shrink toward the prior mean
+                w[j] -= self.lr * (gw[j] / n + prec[j] * (w[j] - w0[j]) / n)   # shrink toward the prior mean
             b -= self.lr * gb / n
         self.w, self.b = w, b
-        # Laplace posterior covariance at the MAP: (XᵀSX + l2·I)⁻¹  (S = diag p(1-p))
+        # Laplace posterior covariance at the MAP: (XᵀSX + diag(prec))⁻¹  (S = diag p(1-p))
         H = [[0.0] * d for _ in range(d)]
         for xi in X:
             p = _sigmoid(b + sum(w[j] * xi[j] for j in range(d)))
@@ -95,7 +101,7 @@ class BayesianLogistic:
                 for c in range(d):
                     H[a][c] += s * xi[a] * xi[c]
         for j in range(d):
-            H[j][j] += self.l2                          # prior precision (per-sample-averaged scale ~ l2)
+            H[j][j] += prec[j]                          # per-weight prior precision (1/prior_var)
         self.cov = _matinv(H) if d else []
         return self
 
