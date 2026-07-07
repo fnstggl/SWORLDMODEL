@@ -1,0 +1,25 @@
+{
+ "experiment": "EXP-069 action layer + scoreboard on real data",
+ "cmv_best_message": {
+  "data": "ChangeMyView (real persuasion; temporal split)",
+  "n_ops": 23,
+  "new_layer_precision@1": 0.7391,
+  "old_path_precision@1": 0.7391,
+  "random_pick_rate": 0.5181,
+  "new_layer_lift": 0.221,
+  "selection_parity_with_old_path": true,
+  "policy_regret": 0.2609,
+  "cate_sign_accuracy": 0.7692
+ },
+ "upworthy_interventional": {
+  "data": "Upworthy randomized headline A/B (real do(x))",
+  "n_test": 1476,
+  "policy_regret_vs_oracle": 0.00391,
+  "model_policy_ctr": 0.01679,
+  "oracle_ctr": 0.0207,
+  "random_ctr": 0.01638,
+  "fraction_achievable_uplift_captured": 0.0963,
+  "cate_sign_accuracy": 0.4927,
+  "note": "lexical headline->CTR policy scored with the NEW policy_regret module on real randomized A/B data; the semantic ceiling (EXP-056) needs an LLM selector \u2014 here the point is the interventional scoreboard runs on genuine do(x) ground truth."
+ }
+}

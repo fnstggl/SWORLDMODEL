@@ -7,6 +7,26 @@ forward under uncertainty, and return a **calibrated distribution over outcomes*
 to reach a desired outcome. This document maps everything needed to get there, grounded in what we have
 built and, crucially, in what the no-cheat experiments have proven about what's hard.
 
+## The action layer, the navigable object, the select loop, and the flagship demotion (current)
+The two core value props are built on the compiler and scored on real data, and the compiler's keystone gap
+is closed:
+- **The general action layer** (`swm/decision/`, `swm/api/action_simulate.py`): `argmax_a E[U|do(a)]` as an
+  inner Monte-Carlo × outer **best-arm racing** loop — typed `do`-operators on the compiled `ModelSpec`,
+  risk objectives (mean/quantile/CVaR), a confident winner *or an honest "tie within noise"*, contrast vs
+  do-nothing. **Re-earned on REAL data (EXP-069): CMV best-message precision@1 0.739 vs 0.518 random =
+  +22pt**, with proven selection parity to the old `best_message` path; Upworthy interventional scoreboard
+  runs on real randomized `do(x)` data (lexical floor 9.6%, semantic ceiling needs an LLM).
+- **The navigable object** (`swm/report/navigable.py`): replaces a scalar with distribution +
+  reducible/irreducible split + automatic **pivotal-branch** discovery ("37%, here's the fork").
+- **The compiler's candidate-and-SELECT loop** (`swm/api/selecting_compiler.py`): EXP-068 added
+  validate→repair for ONE spec; this proposes K candidate structures, scores each on validity × an optional
+  LLM critic (a broken spec can't win on charm), selects the best, and reports cross-candidate **agreement**
+  (the honest "how sure are we of the structure" signal). The verify/select keystone the compiler needed.
+- **Flagship demoted, hard**: `GroundedSimulator.simulate_population` → `IndependentPopulationReadout.
+  predict_share` — a calibrated bottom-up compositor and one leaf in the mechanism library, NOT a
+  simulation. The word "simulate" is reserved for the compiler running the right mechanism
+  (`WorldModel` / `ActionWorldModel`). Old names remain as deprecated back-compat aliases.
+
 ## The full generative loop is assembled (EXP-057)
 `swm/api/generative_simulator.py` — **one `simulate(question)` call**: identify the deciding agents + map
 their known/inferred variables (LLM) → instantiate `PersonaAgent`s with an LLM persona `position_fn` → run

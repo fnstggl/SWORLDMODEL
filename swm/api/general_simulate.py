@@ -4,8 +4,9 @@ The assembled parts finally behind one call. A question arrives; the simulator R
 that actually carries its signal, and fuses whatever evidence is available into one calibrated forecast
 with an auditable breakdown:
 
-  - POPULATION question with a modelled population  → `GroundedSimulator` (EXP-050): map each person's
-    grounded variables, estimate with the unified readout, aggregate bottom-up to the collective outcome.
+  - POPULATION question with a modelled population  → `IndependentPopulationReadout` (EXP-050; the DEMOTED
+    non-interacting leaf — a calibrated compositor, not a simulation): map each person's grounded variables,
+    estimate with the unified readout, aggregate bottom-up independent predictions to the collective share.
   - NOVEL question with as-of NEWS                  → `SemanticStanceJudge` (EXP-047): read the news for
     THIS outcome's specific resolution, turn the stance into P.
   - NOVEL question with world-knowledge only        → `QuestionEngine` (EXP-037): infer the drivers and
@@ -21,7 +22,7 @@ from __future__ import annotations
 import math
 from dataclasses import dataclass, field
 
-from swm.api.grounded_simulate import GroundedSimulator
+from swm.api.grounded_simulate import IndependentPopulationReadout
 from swm.api.question_engine import QuestionEngine
 
 
@@ -57,7 +58,7 @@ class GeneralForecast:
 @dataclass
 class GeneralSimulator:
     """One `answer()` for any social question — routes to simulation / reading / drivers and fuses them."""
-    grounded: GroundedSimulator = None                # type: ignore; a fitted population simulator (optional)
+    grounded: IndependentPopulationReadout = None     # type: ignore; a fitted independent-population readout
     question_engine: QuestionEngine = field(default_factory=QuestionEngine)
     stance_judge: object = None                       # a SemanticStanceJudge (optional)
     stance_scale: float = 1.6                          # how hard a unit of confident stance moves the logit
@@ -68,10 +69,10 @@ class GeneralSimulator:
         sources = {}
         drivers = []
 
-        # 1. population simulation (real bottom-up simulation where a population exists)
+        # 1. independent-population readout (bottom-up compositor where a population exists; NOT a simulation)
         if self.grounded is not None and known_item is not None and population:
-            fc = self.grounded.simulate_population(known_item, population)
-            sources["population_simulation"] = {"p": fc.p_outcome, "weight": max(0.2, fc.confidence)}
+            fc = self.grounded.predict_share(known_item, population)
+            sources["population_readout"] = {"p": fc.p_outcome, "weight": max(0.2, fc.confidence)}
             drivers = fc.value_drivers
 
         # 2. semantic news reading (grounded content for THIS resolution)
