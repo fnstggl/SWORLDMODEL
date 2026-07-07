@@ -123,6 +123,26 @@ class DeepPersonaStore:
         docs = self._docs.get(entity_id, [])
         return sum(1 for ts, _ in docs if now is None or ts is None or ts < now)
 
+    def vars_asof(self, entity_id: str, now, *, prior: dict = None, max_docs: int | None = None) -> dict:
+        """As-of persona flattened to {trait: value} for the Level-1 response model / single_agent spec,
+        confidence-blended toward `prior` (the population) so only well-evidenced traits move the answer."""
+        return persona_to_vars(self.persona_asof(entity_id, now, max_docs=max_docs), prior=prior)
+
+
+def persona_to_vars(persona: dict, *, prior: dict = None) -> dict:
+    """Flatten a synthesized persona into {trait: value} for the response model / single_agent spec. With a
+    `prior` (population means) each trait is shrunk toward its prior by (1 - confidence) — EXP-069 showed
+    this confidence-blend is the best predictor: thin/noisy traits stay near the population value while
+    deep, consistent traits move fully."""
+    out = {}
+    for t, p in persona.items():
+        v = p.get("value", 0.5) if isinstance(p, dict) else p
+        c = p.get("confidence", 0.0) if isinstance(p, dict) else 0.0
+        if prior and t in prior:
+            v = c * v + (1 - c) * prior[t]
+        out[t] = round(float(v), 4)
+    return out
+
 
 # ---- transparent lexical fallback (no API key): coarse per-document persona signals ----------------
 _EVID = re.compile(r"\b(evidence|study|data|source|research|statistic|cite|according to|"

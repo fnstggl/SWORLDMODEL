@@ -295,6 +295,18 @@ turn these into "ask anything, simulate forward, choose the best action."** The 
 produces calibrated distributions over horizons; what remains is the front door (parse a question →
 construct state) and the back door (outcome distribution → best action).
 
+**EXP-069 — deep per-person inference (the interview-gap lever), measured.** Our scalable analog of SOTA's
+2h interview = deep multi-pass inference over a person's writing history (`swm/variables/deep_inference.py`).
+On 160 real CMV authors (8-25 docs each, agent-swarm persona signals): (1) DEPTH HELPS, monotonically —
+predicting a held-out doc's facets from the person's prior docs, MAE drops 0.096→0.084 as history deepens
+1→16 (−13%); the confidence-blend (deep shrunk toward population by 1−confidence) beats the population
+baseline by ~8% and is now the default `persona_to_vars`, wired into the Level-1 response model
+(`DeepPersonaStore.vars_asof`). (2) DOWNSTREAM payoff is outcome-dependent: the arguer's persona does NOT
+beat base-rate at predicting whether a specific argument persuades (0.74 vs 0.66) — that outcome is driven
+by the argument+OP, not the arguer's disposition. Answer to "do we need it?": YES for modeling WHO a person
+is (the individual/single-agent lever), not as a universal multiplier. Improvement modest (~8%) because a
+doc is a noisy trait realization — mirrors why SOTA tops out ~85%. 7 tests; full suite 264.
+
 **EXP-068 — self-correcting front door + scored end-to-end run.** (1) `WorldModel` now wraps its compiler in
 `ValidatingCompiler` by default (`validate=True`): every simulate() validates + repairs the spec before
 running, validation report in the output; `validate=False` keeps the raw path. Also added a `non_numeric_
