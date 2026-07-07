@@ -8,24 +8,27 @@ This is a spec, not a summary. It is written to be implemented against.
 
 ---
 
-## 0. Ground truth — what exists today (adjudicated from code, EXP-063 state)
+## 0. Ground truth — what exists, and what this spec adds
 
-- **The navigable object is not built.** Only `variance_decomposition` in `swm/simulation/structural.py`
-  (the reducible/irreducible split) exists, and it is wired to nothing. No pivotal-branch extraction, no
-  "worlds," no question front door.
-- **The compiler (Stage ②) is not built.** Confirmed: no `compile` step turns a question into a structural
-  model. A human still picks the mechanism. It therefore has no verification/selection loop either.
-- **The action layer today is three narrow, disconnected prototypes:**
-  - `swm/api/individual_simulate.py::best_message` — ranks a *fixed* candidate list on *one* person via a
-    deterministic `response_fn`. No Monte-Carlo, no outcome distribution, no utility beyond `p_respond`, no
-    action generation. Validated (+22pt precision@1 on CMV, EXP-060) but Level-1-only.
-  - `swm/api/intervention_selector.py::select` — an LLM *judges text* and ranks. **No simulation.** The
-    fragile shortcut, not a `do`-operator.
-  - `swm/simulation/counterfactuals.py::best_of` — `do(A)` vs `do(B)` on the aggregate regression head;
-    picks max P(hit) from a fixed list.
+**The compiler (Stage ②) IS built** — `swm/api/compiler.py` (`StructuralCompiler`, mechanism library:
+generic_scm / bracket / committee / electorate / single_agent) + `swm/api/world_model.py`
+(`WorldModel.simulate(question)`), validated in EXP-064/065/066. So the action layer is built **on top of
+the compiler**, not instead of it: an Action is a `do`-operator that transforms the compiled `ModelSpec`,
+and each variant runs through the same mechanism sampler.
 
-None runs the structural engine, generates actions, returns a distribution per action, or generalizes
-across mechanisms. Fixing this fragmentation is the point of this spec.
+Before this spec, the interventional surface was three narrow, disconnected prototypes — `best_message`
+(fixed list, one person, no Monte-Carlo), `intervention_selector` (an LLM judging *text*, not a simulation),
+and `counterfactuals.best_of` (the aggregate regression head). None ran the compiler's mechanisms, generated
+actions, returned a per-action distribution, or generalized. The navigable object did not exist (only the
+`variance_decomposition` primitive). This spec replaces that fragmentation with one generic layer.
+
+**Now built (this PR):**
+- `swm/api/compiler.py` — the mechanism samplers are exposed as a single source of truth (`build_sampler`,
+  `Sampler.traced`), so `_run_*` and the decision/navigable layers share one code path; generic_scm gains an
+  algebraic `outcome.expr` readout (e.g. `profit = price*demand`).
+- `swm/simulation/structural.py::simulate_once_traced` — records each trajectory's exogenous factors.
+- `swm/report/navigable.py`, `swm/decision/{action,space,utility,best_action}.py`,
+  `swm/eval/policy_regret.py`, `swm/api/action_simulate.py` — per §2–§6 below.
 
 ---
 
