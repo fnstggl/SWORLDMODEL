@@ -295,6 +295,19 @@ turn these into "ask anything, simulate forward, choose the best action."** The 
 produces calibrated distributions over horizons; what remains is the front door (parse a question →
 construct state) and the back door (outcome distribution → best action).
 
+**EXP-064 — the world-model COMPILER (Stage ②, the keystone): `simulate(question)`.** The front door is
+built. `swm/api/model_spec.py` (spec IR + a whitelisted/safe structural-equation evaluator — no eval() of
+LLM code), `swm/api/compiler.py` (`StructuralCompiler`: question → ModelSpec via pluggable LLM backend;
+mechanism library dispatch), `swm/api/world_model.py` (`WorldModel.simulate(question)` → retrieve → compile
+→ Monte-Carlo → distribution + reducible/irreducible + forecastability + spec audit). Mechanism library:
+bracket / committee (Level 2) / electorate (Level 3) / single_agent (Level 1) / generic_scm — so Levels 1–3
++ the bracket are now the compiler's library, selected PER QUESTION. EXP-064: one simulate() call handles 5
+question types, each dispatched to its real generative process — NBA→bracket P(OKC)0.36, FOMC→committee
+0.32, referendum→electorate 0.86, incumbent→generic_scm 0.28 (flagged UNFORECASTABLE, irreducible 93%),
+email→single_agent 0.75. 8 tests incl. safe-eval rejecting __import__/attribute access; full suite 252.
+Remaining honest edges: (1) spec quality is the LLM's job — build a spec-quality benchmark (tests the
+"inference is good enough" bet directly); (2) scored validation on forecastable questions.
+
 **EXP-063 — the architectural pivot: structural simulation (see ARCHITECTURE_WORLDMODEL.md).** The NBA miss
 was a MECHANISM bug (deliberation on a competition), not too-few-variables. First-principles reframe: accuracy
 = right causal STRUCTURE + CALIBRATED TIME + honest IRREDUCIBLE uncertainty, NOT variable count (blind
