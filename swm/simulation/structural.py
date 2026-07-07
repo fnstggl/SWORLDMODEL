@@ -103,6 +103,39 @@ class StructuralModel:
             return self.outcome_fn(state) if self.outcome_fn else state
         return f
 
+    def simulate_once_traced(self, horizon: float, dt: float = 1.0, *, epistemic: bool = True,
+                             aleatoric: bool = True):
+        """Like `simulate_once`, but also returns the EXOGENOUS FACTORS that defined this trajectory's
+        'world' — each variable's initial draw (`name@0`, the epistemic world) and its cumulative aleatoric
+        shock over the path (`name~shock`, the aleatoric world). These are independent by construction, so
+        they are the honest knobs to attribute the outcome to (pivotal-branch analysis in swm.report.
+        navigable). Distribution is identical to `simulate_once`; only the extra trace differs."""
+        def f(rng):
+            factors = {}
+            state = {}
+            for n, v in self.variables.items():
+                draw = v.value + (rng.gauss(0, v.est_sd) if epistemic else 0.0)
+                state[n] = min(v.hi, max(v.lo, draw))
+                if epistemic and v.est_sd > 0:
+                    factors[f"{n}@0"] = state[n]
+            noise_sum = {n: 0.0 for n in self.variables}
+            t = 0.0
+            while t < horizon - 1e-9:
+                step = min(dt, horizon - t)
+                rates = self.drift_fn(state, step) if self.drift_fn else {}
+                for n, v in self.variables.items():
+                    drift = rates.get(n, 0.0) * step
+                    noise = (rng.gauss(0, 1) * v.vol * math.sqrt(step)) if aleatoric else 0.0
+                    noise_sum[n] += noise
+                    state[n] = min(v.hi, max(v.lo, state[n] + drift + noise))
+                t += step
+            for n, v in self.variables.items():
+                if aleatoric and v.vol > 0:
+                    factors[f"{n}~shock"] = noise_sum[n]
+            outcome = self.outcome_fn(state) if self.outcome_fn else state
+            return outcome, factors
+        return f
+
 
 def variance_decomposition(model: "StructuralModel", horizon: float, dt: float = 1.0,
                            n: int = 4000) -> dict:
