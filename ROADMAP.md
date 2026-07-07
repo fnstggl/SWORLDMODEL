@@ -295,6 +295,26 @@ turn these into "ask anything, simulate forward, choose the best action."** The 
 produces calibrated distributions over horizons; what remains is the front door (parse a question →
 construct state) and the back door (outcome distribution → best action).
 
+**EXP-060 — Level-1 individual simulator (the person as a dynamical system).** The three-level framework
+(1: individual · 2: stakeholder group · 3: large-scale demographic) made concrete for Level 1. A person is
+now `IndividualAgent` = a `VariableMap` (who they are) + a mutable STATE (mood/busyness/load/reciprocity)
+that evolves as they are contacted (`swm/simulation/individual_agent.py`). Response via a pluggable
+`response_fn` — grounded `StructuredResponseModel` (receptivity × quality interaction + a state gate, zero
+at rest) validated here; `llm_response_fn` (LLM-as-the-person) in production. Front door
+`swm/api/individual_simulate.py`: `predict_response` / `best_message` / `simulate_thread`. Validated on REAL
+ChangeMyView persuasion (1,200 threads, temporal split): (A) person × message interaction beats
+message-only by +0.0144 log-loss; (B) **best_message on a real natural experiment — 23 mixed-outcome OPs,
+model precision@1 0.739 vs 0.518 random = +22-pt causal lift** (the "best email" product working); (C) the
+same ask lands at 0.57 vs 0.64 after a pushy vs kind opener (state carryover a static vector can't express).
+Honest boundary: person×message coefficients are fit; state dynamics are grounded first-principles (CMV is
+one-shot), validated as a mechanism, to be calibrated on threaded reply data (named gap).
+
+**EXP-059 — no-cheat NBA-2026 backtest through the real pipeline.** Stress-tested the end-to-end system on
+an untuned domain with real leakage control (2026 Finals are post-cutoff → winner unknown; as-of Jan-2026
+evidence only). Honest finding: on a competitive (mutually-exclusive) outcome the social-deliberation
+aggregator is the wrong tool (injects 0.18 of spurious conformity); the right aggregator is a competition
+normalization. Point pick OKC 52%, pre-registered. The system's edge is SOCIAL questions, not sports.
+
 **EXP-058 — retrieval front door + leakage-free live forecaster.** The generative loop (EXP-057) now
 has a real input (`swm/api/retrieval.py`: `web_search_retriever` for prod, `asof_retriever` for
 leakage-free eval) and a forward scoring log (`swm/eval/live_forecast.py`: retrieve → simulate →
