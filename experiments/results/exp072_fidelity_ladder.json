@@ -1,0 +1,462 @@
+{
+ "cmv_low_signal": {
+  "data": "ChangeMyView (real, temporal split)",
+  "n_train": 840,
+  "n_test": 360,
+  "n_real_vars": 8,
+  "n_noise_vars": 8,
+  "variable_order": [
+   "trait_openness",
+   "politeness_disposition",
+   "certainty_disposition",
+   "addresses_crux",
+   "clarity",
+   "evidence",
+   "skepticism",
+   "expertise"
+  ],
+  "ladder_summary": {
+   "naive": {
+    "real_only_logloss": 0.6305,
+    "with_noise_logloss": 0.6302,
+    "noise_penalty": -0.0003,
+    "real_only_ece": 0.0135,
+    "with_noise_ece": 0.0424
+   },
+   "calibrated": {
+    "real_only_logloss": 0.6309,
+    "with_noise_logloss": 0.6306,
+    "noise_penalty": -0.0003,
+    "real_only_ece": 0.0163,
+    "with_noise_ece": 0.0336
+   },
+   "uncertainty": {
+    "real_only_logloss": 0.6344,
+    "with_noise_logloss": 0.6351,
+    "noise_penalty": 0.0007,
+    "real_only_ece": 0.0314,
+    "with_noise_ece": 0.0523
+   }
+  },
+  "verdict": {
+   "naive": {
+    "one_var": 0.6351,
+    "full": 0.6302,
+    "best": 0.6287,
+    "full_minus_best": 0.0015,
+    "adding_vars_helped": true,
+    "adding_vars_hurt_vs_best": false
+   },
+   "calibrated": {
+    "one_var": 0.6354,
+    "full": 0.6306,
+    "best": 0.6292,
+    "full_minus_best": 0.0014,
+    "adding_vars_helped": true,
+    "adding_vars_hurt_vs_best": false
+   },
+   "uncertainty": {
+    "one_var": 0.6355,
+    "full": 0.6351,
+    "best": 0.6318,
+    "full_minus_best": 0.0033,
+    "adding_vars_helped": true,
+    "adding_vars_hurt_vs_best": false
+   }
+  },
+  "weight_report_full": [
+   {
+    "name": "trait_openness",
+    "weight": 0.7794,
+    "sd": 0.5255,
+    "snr": 1.48
+   },
+   {
+    "name": "politeness_disposition",
+    "weight": 0.4162,
+    "sd": 0.5741,
+    "snr": 0.72
+   },
+   {
+    "name": "certainty_disposition",
+    "weight": -0.3999,
+    "sd": 0.5272,
+    "snr": 0.76
+   },
+   {
+    "name": "addresses_crux",
+    "weight": 0.2269,
+    "sd": 0.5928,
+    "snr": 0.38
+   },
+   {
+    "name": "clarity",
+    "weight": -0.0883,
+    "sd": 0.6849,
+    "snr": 0.13
+   },
+   {
+    "name": "evidence",
+    "weight": 0.044,
+    "sd": 0.5919,
+    "snr": 0.07
+   },
+   {
+    "name": "skepticism",
+    "weight": -0.1868,
+    "sd": 0.5693,
+    "snr": 0.33
+   },
+   {
+    "name": "expertise",
+    "weight": -0.123,
+    "sd": 0.6296,
+    "snr": 0.2
+   },
+   {
+    "name": "noise_0",
+    "weight": 0.0474,
+    "sd": 0.249,
+    "snr": 0.19
+   },
+   {
+    "name": "noise_1",
+    "weight": -0.0237,
+    "sd": 0.2421,
+    "snr": 0.1
+   },
+   {
+    "name": "noise_2",
+    "weight": -0.3486,
+    "sd": 0.2463,
+    "snr": 1.42
+   },
+   {
+    "name": "noise_3",
+    "weight": -0.0955,
+    "sd": 0.2435,
+    "snr": 0.39
+   },
+   {
+    "name": "noise_4",
+    "weight": -0.2142,
+    "sd": 0.2405,
+    "snr": 0.89
+   },
+   {
+    "name": "noise_5",
+    "weight": 0.2494,
+    "sd": 0.2441,
+    "snr": 1.02
+   },
+   {
+    "name": "noise_6",
+    "weight": -0.0755,
+    "sd": 0.248,
+    "snr": 0.3
+   },
+   {
+    "name": "noise_7",
+    "weight": 0.0431,
+    "sd": 0.2492,
+    "snr": 0.17
+   }
+  ],
+  "variance_triage": [
+   {
+    "name": "noise_2",
+    "share": 0.2756
+   },
+   {
+    "name": "trait_openness",
+    "share": 0.2587
+   },
+   {
+    "name": "noise_5",
+    "share": 0.1448
+   },
+   {
+    "name": "noise_4",
+    "share": 0.1089
+   },
+   {
+    "name": "politeness_disposition",
+    "share": 0.0559
+   },
+   {
+    "name": "certainty_disposition",
+    "share": 0.0501
+   },
+   {
+    "name": "addresses_crux",
+    "share": 0.0366
+   },
+   {
+    "name": "noise_3",
+    "share": 0.0214
+   },
+   {
+    "name": "noise_6",
+    "share": 0.0128
+   },
+   {
+    "name": "expertise",
+    "share": 0.0103
+   }
+  ]
+ },
+ "oqa_high_dim": {
+  "n_questions": 19,
+  "curves": {
+   "naive": [
+    {
+     "k": 1,
+     "log_loss": 0.5797,
+     "ece": 0.1,
+     "acc": 0.7017
+    },
+    {
+     "k": 2,
+     "log_loss": 0.5441,
+     "ece": 0.1251,
+     "acc": 0.7201
+    },
+    {
+     "k": 3,
+     "log_loss": 0.5618,
+     "ece": 0.1421,
+     "acc": 0.7181
+    },
+    {
+     "k": 4,
+     "log_loss": 0.58,
+     "ece": 0.1414,
+     "acc": 0.706
+    },
+    {
+     "k": 5,
+     "log_loss": 0.581,
+     "ece": 0.1542,
+     "acc": 0.7056
+    },
+    {
+     "k": 6,
+     "log_loss": 0.5961,
+     "ece": 0.1441,
+     "acc": 0.7119
+    },
+    {
+     "k": 7,
+     "log_loss": 0.6251,
+     "ece": 0.1797,
+     "acc": 0.6898
+    },
+    {
+     "k": 8,
+     "log_loss": 0.6361,
+     "ece": 0.1708,
+     "acc": 0.6868
+    },
+    {
+     "k": 9,
+     "log_loss": 0.6456,
+     "ece": 0.1804,
+     "acc": 0.687
+    },
+    {
+     "k": 10,
+     "log_loss": 0.644,
+     "ece": 0.1767,
+     "acc": 0.6937
+    },
+    {
+     "k": 11,
+     "log_loss": 0.6515,
+     "ece": 0.1825,
+     "acc": 0.7042
+    },
+    {
+     "k": 12,
+     "log_loss": 0.6555,
+     "ece": 0.1874,
+     "acc": 0.7072
+    }
+   ],
+   "calibrated": [
+    {
+     "k": 1,
+     "log_loss": 0.5783,
+     "ece": 0.1017,
+     "acc": 0.6996
+    },
+    {
+     "k": 2,
+     "log_loss": 0.5433,
+     "ece": 0.1317,
+     "acc": 0.7189
+    },
+    {
+     "k": 3,
+     "log_loss": 0.555,
+     "ece": 0.1327,
+     "acc": 0.7093
+    },
+    {
+     "k": 4,
+     "log_loss": 0.5663,
+     "ece": 0.146,
+     "acc": 0.7058
+    },
+    {
+     "k": 5,
+     "log_loss": 0.566,
+     "ece": 0.1477,
+     "acc": 0.709
+    },
+    {
+     "k": 6,
+     "log_loss": 0.5741,
+     "ece": 0.147,
+     "acc": 0.7176
+    },
+    {
+     "k": 7,
+     "log_loss": 0.5915,
+     "ece": 0.1497,
+     "acc": 0.6946
+    },
+    {
+     "k": 8,
+     "log_loss": 0.5983,
+     "ece": 0.161,
+     "acc": 0.6955
+    },
+    {
+     "k": 9,
+     "log_loss": 0.6048,
+     "ece": 0.1608,
+     "acc": 0.697
+    },
+    {
+     "k": 10,
+     "log_loss": 0.6015,
+     "ece": 0.1494,
+     "acc": 0.7001
+    },
+    {
+     "k": 11,
+     "log_loss": 0.6069,
+     "ece": 0.173,
+     "acc": 0.7093
+    },
+    {
+     "k": 12,
+     "log_loss": 0.6092,
+     "ece": 0.1696,
+     "acc": 0.7089
+    }
+   ],
+   "calibrated_strong": [
+    {
+     "k": 1,
+     "log_loss": 0.5881,
+     "ece": 0.1148,
+     "acc": 0.6803
+    },
+    {
+     "k": 2,
+     "log_loss": 0.5581,
+     "ece": 0.1392,
+     "acc": 0.7145
+    },
+    {
+     "k": 3,
+     "log_loss": 0.5614,
+     "ece": 0.1254,
+     "acc": 0.7151
+    },
+    {
+     "k": 4,
+     "log_loss": 0.5644,
+     "ece": 0.1346,
+     "acc": 0.7072
+    },
+    {
+     "k": 5,
+     "log_loss": 0.5636,
+     "ece": 0.1286,
+     "acc": 0.715
+    },
+    {
+     "k": 6,
+     "log_loss": 0.564,
+     "ece": 0.1247,
+     "acc": 0.7167
+    },
+    {
+     "k": 7,
+     "log_loss": 0.5684,
+     "ece": 0.1286,
+     "acc": 0.7089
+    },
+    {
+     "k": 8,
+     "log_loss": 0.5711,
+     "ece": 0.1274,
+     "acc": 0.702
+    },
+    {
+     "k": 9,
+     "log_loss": 0.5736,
+     "ece": 0.1384,
+     "acc": 0.7026
+    },
+    {
+     "k": 10,
+     "log_loss": 0.5697,
+     "ece": 0.1358,
+     "acc": 0.7078
+    },
+    {
+     "k": 11,
+     "log_loss": 0.5727,
+     "ece": 0.1457,
+     "acc": 0.7088
+    },
+    {
+     "k": 12,
+     "log_loss": 0.5731,
+     "ece": 0.1481,
+     "acc": 0.7095
+    }
+   ]
+  },
+  "verdict": {
+   "naive": {
+    "one_var": 0.5797,
+    "full": 0.6555,
+    "best": 0.5441,
+    "full_minus_best": 0.1114,
+    "adding_vars_helped": false,
+    "adding_vars_hurt_vs_best": true
+   },
+   "calibrated": {
+    "one_var": 0.5783,
+    "full": 0.6092,
+    "best": 0.5433,
+    "full_minus_best": 0.0659,
+    "adding_vars_helped": false,
+    "adding_vars_hurt_vs_best": true
+   },
+   "calibrated_strong": {
+    "one_var": 0.5881,
+    "full": 0.5731,
+    "best": 0.5581,
+    "full_minus_best": 0.015,
+    "adding_vars_helped": true,
+    "adding_vars_hurt_vs_best": true
+   }
+  }
+ },
+ "reconciliation": "naive overfits added variables (OQA: log-loss rises as demographic blocks pile on); calibrated shrinkage absorbs the useless ones so adding variables does not hurt. The binding constraint is weight calibration + uncertainty, not count."
+}
