@@ -129,3 +129,28 @@ class CVaR(Objective):
 
     def ci(self, samples, conf, rng):
         return _bootstrap_ci(samples, self.value, conf, rng)
+
+
+class Constrained(Objective):
+    """Maximize a base objective SUBJECT TO a downside cap: the founder's "highest expected profit that
+    doesn't blow up conversion". `is_disaster(utility_value) -> bool` flags a bad outcome; if the empirical
+    P(disaster) over an arm's samples exceeds `max_disaster_prob`, the arm's score is penalized in proportion
+    to the violation (so a high-mean-but-risky arm loses to a slightly-lower-mean-but-safe one). Reduces to
+    the base objective when the constraint is slack."""
+    def __init__(self, base=None, *, is_disaster, max_disaster_prob=0.1, penalty=10.0):
+        self.base = base or Mean()
+        self.is_disaster = is_disaster
+        self.cap = max_disaster_prob
+        self.penalty = penalty
+        self.name = f"{self.base.name}|P(disaster)<={max_disaster_prob}"
+
+    def _disaster_rate(self, samples):
+        return sum(1 for x in samples if self.is_disaster(x)) / len(samples) if samples else 1.0
+
+    def value(self, samples):
+        v = self.base.value(samples)
+        viol = max(0.0, self._disaster_rate(samples) - self.cap)
+        return v - self.penalty * viol
+
+    def ci(self, samples, conf, rng):
+        return _bootstrap_ci(samples, self.value, conf, rng)

@@ -15,7 +15,12 @@ is closed:
   risk objectives (mean/quantile/CVaR), a confident winner *or an honest "tie within noise"*, contrast vs
   do-nothing. **Re-earned on REAL data (EXP-069): CMV best-message precision@1 0.739 vs 0.518 random =
   +22pt**, with proven selection parity to the old `best_message` path; Upworthy interventional scoreboard
-  runs on real randomized `do(x)` data (lexical floor 9.6%, semantic ceiling needs an LLM).
+  runs on real randomized `do(x)` data (lexical floor 9.6%, semantic ceiling needs an LLM). **All 7 design
+  components are now built** (see `ARCHITECTURE_ACTION_LAYER.md` completion map): typed parameter/structural/
+  **temporal** (`inject_event`) interventions, continuous **refine** + LLM **propose→mutate** generation,
+  best-arm racing, **constrained** risk, navigable + **calibration grade**, **sequential policies**
+  (`best_policy`; person-as-dynamical-system + timed schedules — EXP-069 Part C reproduces the opener→ask
+  state-carryover on the real fitted model), and a **provenance** label (validated vs hypothesis domain).
 - **The navigable object** (`swm/report/navigable.py`): replaces a scalar with distribution +
   reducible/irreducible split + automatic **pivotal-branch** discovery ("37%, here's the fork").
 - **The compiler's candidate-and-SELECT loop** (`swm/api/selecting_compiler.py`): EXP-068 added

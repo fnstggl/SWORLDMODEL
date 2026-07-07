@@ -152,11 +152,47 @@ def run_upworthy() -> dict:
                     "interventional scoreboard runs on genuine do(x) ground truth."}
 
 
+def run_sequential() -> dict:
+    """Part C: the SEQUENTIAL policy layer (best_policy) on the real CMV-fitted person model — does choosing a
+    two-step PLAN (opener → ask) beat choosing a single message? The state the opener leaves behind changes
+    how the identical ask lands (EXP-060 C), so best_policy should prefer the kind opener. This validates the
+    reflexivity/sequence machinery (Component 6) on the real fitted dynamical model, not a synthetic one."""
+    from swm.decision.policy import best_policy, individual_rollout, message_sequences
+    from swm.decision.utility import Mean, identity
+
+    rows = _load_cmv()
+    cut = int(0.7 * len(rows))
+    train_rows = [(r["person"], {}, r["message"], r["y"]) for r in rows[:cut]]
+    # the same fit as EXP-060 C: person×message + a grounded state gate (zero at rest, so the fit is untouched)
+    model = StructuredResponseModel(features=("receptivity", "quality", "interaction"),
+                                    state_gate=True, gate_strength=2.5).fit(train_rows)
+
+    person = {"trait_openness": 0.45, "skepticism": 0.55, "goal_alignment": 0.45, "base_responsiveness": 0.45}
+    ask = {"clarity": 0.8, "ask_directness": 0.8, "personalization": 0.6, "expertise": 0.6, "effort_cost": 0.4}
+    kind = {"clarity": 0.7, "ask_directness": 0.5, "pushiness": 0.1, "personalization": 0.8,
+            "politeness_disposition": 0.9, "effort_cost": 0.3}
+    pushy = {"clarity": 0.5, "ask_directness": 0.6, "pushiness": 0.9, "personalization": 0.1,
+             "politeness_disposition": 0.1, "effort_cost": 0.5}
+
+    rollout = individual_rollout(person, model, gap_steps=0, readout="last", respond="threshold")
+    policies = message_sequences([kind, pushy], ask, opener_labels=["kind", "pushy"])
+    res = best_policy(rollout, policies, identity(), objective=Mean(), max_per_arm=600, seed=0)
+    p_after_kind, _ = rollout(policies[0], __import__("random").Random(0))
+    p_after_pushy, _ = rollout(policies[1], __import__("random").Random(0))
+    return {"data": "ChangeMyView (real fitted person×message model + state gate)",
+            "best_plan": res.best.label, "picks_kind_opener": res.best.label.startswith("kind"),
+            "same_ask_p_after_kind_opener": round(p_after_kind, 4),
+            "same_ask_p_after_pushy_opener": round(p_after_pushy, 4),
+            "reads": "identical closing ask; best_policy prefers the opener whose residue in the person's "
+                     "state makes the ask land better — a plan a single-message layer cannot choose."}
+
+
 def run() -> dict:
     cmv = run_cmv()
     upw = run_upworthy()
+    seq = run_sequential()
     out = {"experiment": "EXP-069 action layer + scoreboard on real data", "cmv_best_message": cmv,
-           "upworthy_interventional": upw}
+           "upworthy_interventional": upw, "sequential_policy": seq}
     Path(RESULT).parent.mkdir(parents=True, exist_ok=True)
     Path(RESULT).write_text(json.dumps(out, indent=1))
 
@@ -171,6 +207,9 @@ def run() -> dict:
           f"{upw['random_ctr']} vs oracle {upw['oracle_ctr']}")
     print(f"     fraction of achievable uplift captured: {upw['fraction_achievable_uplift_captured']}  | "
           f"CATE-sign {upw['cate_sign_accuracy']} (chance 0.5)")
+    print("  C. SEQUENTIAL POLICY (best_policy: opener -> ask) on the real fitted person model")
+    print(f"     best plan: {seq['best_plan']}  | same ask lands p={seq['same_ask_p_after_kind_opener']} after "
+          f"KIND vs p={seq['same_ask_p_after_pushy_opener']} after PUSHY opener (state carryover)")
     print(f"  wrote {RESULT}")
     return out
 

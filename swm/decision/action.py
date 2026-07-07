@@ -103,6 +103,25 @@ def set_cell(cell_id, *, stance=None, turnout=None, label=None) -> Action:
     return Action(label or f"cell:{cell_id}", t, "structural", {"cell_id": cell_id})
 
 
-# ---- escape hatch: any spec -> spec transform (temporal shocks, novel structures) ----
+# ---- temporal / exogenous interventions (an event injected at a time during the rollout) ----
+def inject_event(var, delta, *, time=0.0, label=None) -> Action:
+    """A TEMPORAL do-operator: shock `var` by `delta` at `time` DURING a generic_scm rollout (a jobs report,
+    a launch, a follow-up landing on day 3). Carried in the spec's `_interventions` schedule, which the
+    rollout applies via the diffusion's scheduled-shock hook (StructuralModel.simulate_once_traced). Unlike
+    set_var (which changes the starting value), this fires mid-trajectory and state carries forward from it."""
+    def mutator(state, rng):
+        if var in state:
+            state[var] = state[var] + float(delta)
+    def t(spec):
+        s = copy.deepcopy(spec)
+        s.extra = dict(s.extra)
+        s.extra.setdefault("_interventions", [])
+        s.extra["_interventions"] = list(s.extra["_interventions"]) + [(float(time), mutator)]
+        return s
+    return Action(label or f"event:{var}{'+' if delta >= 0 else ''}{delta}@t{time}", t, "temporal",
+                  {"var": var, "delta": delta, "time": time})
+
+
+# ---- escape hatch: any spec -> spec transform (novel structures) ----
 def custom(label, transform, *, kind="custom", **meta) -> Action:
     return Action(label, transform, kind, meta)

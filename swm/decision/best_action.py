@@ -49,10 +49,29 @@ class DecisionResult:
     navigable: object = None           # NavigableOutcome for the best action
     contrast: dict = None              # deltas vs runner-up and vs baseline (do-nothing)
     total_samples: int = 0
+    provenance: dict = None            # identifiability honesty: is this ranking VALIDATED or a HYPOTHESIS?
+
+    def grade(self) -> str:
+        """A calibration/confidence grade for the recommendation — never a naked 'do B'. Combines whether a
+        winner was resolved (vs a tie), how decisively (win_prob), how much of the outcome spread is
+        irreducible (from the navigable), and whether the ranking is validated on a real domain (provenance).
+        A = confident + validated; through D = a tie / mostly-irreducible / unvalidated hypothesis."""
+        if not self.decided:
+            return "D (tie within noise — get more data or accept the coin flip)"
+        validated = bool(self.provenance and self.provenance.get("status") == "validated")
+        forecastable = getattr(self.navigable, "forecastable", None)
+        if self.win_prob >= 0.9 and validated and forecastable is not False:
+            return "A (decisive, validated)"
+        if self.win_prob >= 0.9:
+            return "B (decisive; unvalidated domain)" if not validated else "B"
+        if self.win_prob >= 0.7:
+            return "C (leaning; not decisive)"
+        return "D (weak edge)"
 
     def as_dict(self):
         return {"best": self.best.as_dict(), "decided": self.decided, "tie_set": self.tie_set,
-                "win_prob": self.win_prob, "objective": self.objective,
+                "win_prob": self.win_prob, "objective": self.objective, "grade": self.grade(),
+                "provenance": self.provenance,
                 "ranking": [a.as_dict() for a in self.ranking], "contrast": self.contrast,
                 "navigable": self.navigable.as_dict() if self.navigable else None,
                 "total_samples": self.total_samples}
@@ -61,9 +80,11 @@ class DecisionResult:
         head = f"BEST: {self.best.label} ({self.objective}={self.best.value:.4f})"
         if not self.decided:
             return head + f" — but TIE within noise at budget: {self.tie_set} (get more data / more signal)"
-        head += f", beats runner-up w.p. {self.win_prob:.0%}"
+        head += f", beats runner-up w.p. {self.win_prob:.0%}  [grade {self.grade()}]"
         if self.contrast and self.contrast.get("vs_baseline"):
             head += f"; {self.contrast['vs_baseline']['delta']:+.4f} vs do-nothing"
+        if self.provenance:
+            head += f"\n  provenance: {self.provenance.get('note', self.provenance.get('status', '?'))}"
         if self.navigable:
             head += f"\n  {self.navigable.summary()}"
         return head
@@ -122,10 +143,12 @@ def _navigable_for(outcome_fn, action, utility, n, seed):
 
 
 def best_action(outcome_fn, actions, utility, *, objective=None, baseline=None, batch=48, max_per_arm=3000,
-                conf=0.9, seed=0, navigate=True, n_navigable=4000) -> DecisionResult:
+                conf=0.9, seed=0, navigate=True, n_navigable=4000, provenance=None) -> DecisionResult:
     """Choose argmax over `actions` of `objective` of `utility(outcome | do(action))`, adaptively.
     `outcome_fn(action, rng) -> (outcome, factors)`. Returns the winner as a navigable object with a
-    confidence statement and contrast vs do-nothing."""
+    confidence statement and contrast vs do-nothing. `provenance` (e.g. `validated_domain('CMV persuasion',
+    0.74)`) rides into the result so the recommendation carries whether its ranking is validated or a
+    hypothesis (Component 7)."""
     objective = objective or Mean()
     acts = list(actions)
     if not acts:
@@ -166,7 +189,69 @@ def best_action(outcome_fn, actions, utility, *, objective=None, baseline=None, 
     return DecisionResult(best=best, ranking=ranked, decided=decided,
                           tie_set=(alive if not decided else [best.label]), win_prob=round(wp, 4),
                           objective=objective.name, navigable=nav, contrast=contrast,
-                          total_samples=sum(len(b) for b in buf.values()))
+                          total_samples=sum(len(b) for b in buf.values()), provenance=provenance)
+
+
+def validated_domain(name, metric=None, *, status="validated") -> dict:
+    """Provenance tag for a recommendation: `validated_domain('CMV persuasion', 0.74)` ->
+    {'status':'validated','note':'validated on CMV persuasion (skill 0.74)'}. Use `status='hypothesis'` for
+    a domain the layer has NOT been backtested on, so the recommendation says so honestly."""
+    note = f"{'validated on' if status == 'validated' else 'HYPOTHESIS on'} {name}"
+    if metric is not None:
+        note += f" (skill {metric})"
+    return {"status": status, "domain": name, "metric": metric, "note": note}
+
+
+def best_continuous(outcome_fn_for, var, lo, hi, utility, *, objective=None, rounds=3, steps=7, shrink=0.34,
+                    baseline=None, seed=0, **kw) -> DecisionResult:
+    """Continuous-parameter optimization (pricing, discount, timing): grid → race → NARROW the range around
+    the winner → repeat (Component 2's 'grid → local refine'). `outcome_fn_for(value) -> outcome_fn` builds
+    the rollout for a parameter value (e.g. sets price=value on the spec). Each round races a fresh grid
+    inside the shrinking window; the final DecisionResult is the last round's, with the refined optimum."""
+    lo, hi = float(lo), float(hi)
+    result = None
+    for r in range(max(1, rounds)):
+        vals = [lo + (hi - lo) * i / (steps - 1) for i in range(steps)] if steps > 1 else [lo]
+        actions = [_ValueArm(var, v, outcome_fn_for(v)) for v in vals]
+
+        def of(arm, rng):
+            return arm.outcome_fn(rng)
+        result = best_action(of, actions, utility, objective=objective, baseline=baseline, seed=seed + r,
+                             navigate=(r == rounds - 1), **kw)
+        best_v = result.best.action.value
+        half = (hi - lo) * shrink / 2.0                      # shrink the window around the current optimum
+        lo, hi = max(lo, best_v - half), min(hi, best_v + half)
+    return result
+
+
+def best_action_generative(outcome_fn, propose_fn, utility, *, mutate_fn=None, rounds=3, k=6, keep=2,
+                           objective=None, baseline=None, seed=0, **kw) -> DecisionResult:
+    """Open-ended action search: PROPOSE k candidate actions (the LLM generator — it has read how people
+    pitch/price/negotiate), SCORE them by simulation (best-arm race), then MUTATE the top `keep` ('shorter',
+    'lead with the ask') and re-score, for `rounds` rounds. Generation is the LLM; selection is always
+    simulation. `propose_fn(seed) -> list[Action]`; `mutate_fn(list[Action], seed) -> list[Action]` (an LLM
+    refinement seam; if None, the pool is fixed and this reduces to one race over the proposals)."""
+    pool = list(propose_fn(seed))
+    result = None
+    for r in range(max(1, rounds)):
+        result = best_action(outcome_fn, pool, utility, objective=objective, baseline=baseline, seed=seed + r,
+                             navigate=(r == rounds - 1), **kw)
+        if mutate_fn is None or r == rounds - 1:
+            break
+        survivors = [a.action for a in result.ranking[:keep]]
+        pool = survivors + list(mutate_fn(survivors, seed + r + 1))    # keep the best, mutate around them
+    return result
+
+
+@dataclass
+class _ValueArm:
+    var: str
+    value: float
+    outcome_fn: object
+
+    @property
+    def label(self):
+        return f"{self.var}={round(self.value, 4)}"
 
 
 def compare_actions(outcome_fn, a, b, utility, *, n=4000, seed=0, objective=None, conf=0.9) -> dict:

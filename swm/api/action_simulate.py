@@ -70,3 +70,13 @@ class ActionWorldModel:
         """do(A) vs do(B) on the compiled world with common-random-numbers pairing."""
         spec = self._spec(question, context, as_of, key)
         return compare_actions(spec_outcome_fn(spec), a, b, utility, **kw)
+
+    def best_schedule(self, question, policies, utility, *, objective=None, context="", as_of="", key=None,
+                      **kw):
+        """SEQUENTIAL decisions over a compiled generic_scm world: choose the best PLAN — a schedule of timed
+        do-operators (a pricing schedule, a launch sequence, timed shocks) — carried through one diffusion.
+        `policies` are `swm.decision.policy.Policy` objects whose steps are timed Actions."""
+        from swm.decision.policy import best_policy, structural_schedule_rollout
+        spec = self._spec(question, context, as_of, key)
+        return best_policy(structural_schedule_rollout(spec), policies, utility,
+                           objective=objective or Mean(), **kw)
