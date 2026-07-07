@@ -295,6 +295,21 @@ turn these into "ask anything, simulate forward, choose the best action."** The 
 produces calibrated distributions over horizons; what remains is the front door (parse a question →
 construct state) and the back door (outcome distribution → best action).
 
+**EXP-063 — the architectural pivot: structural simulation (see ARCHITECTURE_WORLDMODEL.md).** The NBA miss
+was a MECHANISM bug (deliberation on a competition), not too-few-variables. First-principles reframe: accuracy
+= right causal STRUCTURE + CALIBRATED TIME + honest IRREDUCIBLE uncertainty, NOT variable count (blind
+overbuilding compounds estimation error — measured: bandwagon hurt GSS). Built `swm/simulation/structural.py`:
+`montecarlo` (any stochastic simulate_once), `StructuralModel` (calibrated-time diffusion SCM, drift·dt +
+vol·√dt Wiener scaling), `variance_decomposition` (reducible/epistemic vs irreducible/aleatoric = the
+forecastability ceiling). Results: (A) NBA as a Monte-Carlo playoff bracket → favorite ~37% (42% even with
+strengths KNOWN → 58% irreducible playoff variance); the composite's 52% was OVERCONFIDENT, not wrong-by-a-
+little. (B) TIME IS CALIBRATABLE and now checked: real GSS per-year σ=0.031 → 80% interval covers 85% of the
+realized future (nominal 80%); a 2× clock error breaks coverage (100%/53%); engine √dt diffusion matches
+closed form. (C) compiled social SCM (incumbent seat) → distribution + 95% irreducible. Target architecture
+= a world-model COMPILER (question → LLM emits structural model → calibrate → Monte-Carlo → distribution +
+horizon); the Levels 1–3 + bracket are its mechanism library. Runtime built; the missing keystone is Stage ②
+(the compiler). NEXT: build Stage ②.
+
 **EXP-061/062 — Level 3 (large-scale demographic) + Level 2 demographic backdrop, and the RIGHT KPI.**
 Built general (an election is one instance, not the target). `swm/simulation/population_simulator.py`:
 real demographic cells → coupled opinion (mean-field) + participation/turnout coupling (mobilization

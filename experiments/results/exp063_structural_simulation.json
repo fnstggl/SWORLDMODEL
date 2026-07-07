@@ -1,0 +1,51 @@
+{
+ "A_nba_structural": {
+  "champion_distribution": {
+   "OKC Thunder": 0.367,
+   "Cleveland": 0.25,
+   "Denver": 0.104,
+   "Houston": 0.08,
+   "New York": 0.054,
+   "Lakers": 0.035
+  },
+  "favorite": "OKC Thunder",
+  "p_favorite_strengths_known": 0.425,
+  "p_favorite_with_estimate_uncertainty": 0.367,
+  "irreducible_ceiling_note": "even with strengths known EXACTLY the favorite wins only 42% \u2014 the other 58% is irreducible playoff variance no model can remove",
+  "old_composite_said": 0.52,
+  "reframe": "the composite's 52% was overconfident; the structural sim quantifies the real, mostly-irreducible uncertainty of a bracket"
+ },
+ "B_time_calibration": {
+  "sigma_year_real": 0.0312,
+  "interval_coverage_calibrated": {
+   "nominal": 0.8,
+   "empirical": 0.851,
+   "n": 2035
+  },
+  "miscalibrated_clock": {
+   "half_speed_covers": 0.531,
+   "double_speed_covers": 0.998
+  },
+  "engine_matches_diffusion": {
+   "engine_sd_10yr": 0.0987,
+   "closed_form_sd_10yr": 0.0986
+  },
+  "reading": "with the REAL per-year volatility the 80% interval covers ~80% -> time is calibrated; a clock 2x too fast or 2x too slow breaks coverage. The engine's sqrt(dt) diffusion reproduces the closed-form spread."
+ },
+ "C_compiled_social": {
+  "p_incumbent_holds": 0.283,
+  "vote_mean": 0.468,
+  "vote_80pct_interval": [
+   0.375,
+   0.562
+  ],
+  "uncertainty_decomposition": {
+   "total_sd": 0.0567,
+   "irreducible_sd": 0.0553,
+   "reducible_sd": 0.0185,
+   "irreducible_frac": 0.952,
+   "forecastable": false
+  },
+  "reading": "leans loss but genuinely uncertain: the vote interval straddles 0.5 and the spread is ~95% irreducible campaign noise \u2014 the honest output is a wide distribution, not a false-confident point"
+ }
+}
