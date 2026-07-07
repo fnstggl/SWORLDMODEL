@@ -320,6 +320,18 @@ turn these into "ask anything, simulate forward, choose the best action."** The 
 produces calibrated distributions over horizons; what remains is the front door (parse a question →
 construct state) and the back door (outcome distribution → best action).
 
+**EXP-072 — real contagion/tipping test: the coupled dynamic FINALLY beats simple baselines.** The regime
+EXP-070/071 predicted a shared-world model would win: strong endogenous feedback + weak simple baselines.
+Real SSA baby-name shares (481 names, 1880-2008 — pure imitation-driven fashion cascades), forecast H=10yr
+ahead, leakage-free. Models: persistence, trend, and CONTAGION (coupled bandwagon+saturation: growth dragged
+down by its own level → rise, peak, reverse; 2 params fit on train names, scored on test names). Result:
+**at TURNING POINTS (near peak, n=1083) contagion MAE 0.152 beats persistence 0.264 and trend 0.570 — +42%
+skill** — the first real-data case where a coupled non-separable dynamic substantially and cleanly beats the
+simple baselines. Overall +9%. Honestly loses on STABLE (trend better) and RISING (persistence safest) — not
+a universal win, the right tool specifically in the tipping regime. Closes the through-line: SCOTUS/FOMC
+coupling ties (strong simple baselines), contagion coupling WINS (weak baselines + genuine cascade) — the
+complete measured answer to WHEN the shared-world machinery beats separate models. 3 tests; data cached.
+
 **EXP-071 — environment→individuals→institution on REAL FOMC data (the substrate's next coupling, scored).**
 The coupling EXP-070 pointed to, on real FRED data (FEDFUNDS/CPI/UNRATE, 1985-2026, 494 months, leakage-free,
 40% holdout). Macro pressure → members' desired policy → committee vote → rate move. Three honest findings:
