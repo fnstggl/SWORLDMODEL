@@ -1,0 +1,60 @@
+{
+ "A_cross_scale_feedback": {
+  "coupled_world": {
+   "final_state": "FAILED",
+   "bank_distress_trajectory": [
+    0.0,
+    0.0,
+    0.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0,
+    1.0
+   ],
+   "final_rumor": 1.0
+  },
+  "separate_scales": {
+   "final_state": "stable",
+   "bank_distress_trajectory": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+   ],
+   "final_rumor": 0.411
+  },
+  "reads": "identical shock: the COUPLED world cascades to bank FAILURE via rumor->depositors->bank->rumor feedback; with the scales SEPARATE the shock fizzles and the bank stays stable. Cross-scale contagion is not reachable by simulating the scales independently."
+ },
+ "B_real_two_scale_scored": {
+  "separate_static_justices": {
+   "direction_acc": 0.521,
+   "margin_mae": 0.1701,
+   "n": 954
+  },
+  "coupled_asof_drift": {
+   "direction_acc": 0.522,
+   "margin_mae": 0.1816,
+   "n": 954
+  },
+  "margin_improvement": -0.0115,
+  "direction_improvement": 0.001,
+  "verdict": "coupling ties separate here (do not scale up on this case)"
+ }
+}

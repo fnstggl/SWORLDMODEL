@@ -320,6 +320,20 @@ turn these into "ask anything, simulate forward, choose the best action."** The 
 produces calibrated distributions over horizons; what remains is the front door (parse a question →
 construct state) and the back door (outcome distribution → best action).
 
+**EXP-070 — the persistent World substrate (the digital-twin leap), scored.** `swm/world/substrate.py`:
+`Entity` (node: person/institution/population/environment, advanced by its own mechanism step_fn, read by
+readout_fn) + `Coupling` (directed edge wiring one entity's output into another's input) + `World`
+(advance(dt) steps all entities on ONE shared clock; query(); without_couplings() for the ablation;
+rollout/montecarlo_world = question as a query against forward-sims of the shared world). The missing single
+time-axis + cross-scale wiring, vs independent per-question models. (A) Cross-scale feedback demo — a bank-run
+world (rumor→depositors→bank→rumor): identical shock → COUPLED cascades to FAILED, SEPARATE stays stable;
+contagion is emergent, unreachable by independent scales. (B) Real scored two-scale (justices→Court, SCDB,
+leakage-free): individual-scale ideology DRIFT coupled up vs STATIC justices — margin MAE 0.182 coupled vs
+0.170 separate → coupling does NOT beat separate → per the discipline, DO NOT scale up here (consistent with
+EXP-062). The substrate is the machinery; whether to wire any pair of scales is now an empirical question
+with a scoreboard. Next coupling to test: environment→individuals→institution (FOMC macro→members→vote) where
+the feedback A demonstrates is real. 6 tests; full suite 292.
+
 **EXP-069 — deep per-person inference (the interview-gap lever), measured.** Our scalable analog of SOTA's
 2h interview = deep multi-pass inference over a person's writing history (`swm/variables/deep_inference.py`).
 On 160 real CMV authors (8-25 docs each, agent-swarm persona signals): (1) DEPTH HELPS, monotonically —
