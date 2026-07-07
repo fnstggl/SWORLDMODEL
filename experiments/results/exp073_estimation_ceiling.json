@@ -1,0 +1,25 @@
+{
+ "n_mixed_ops": 64,
+ "random_pick_rate": 0.5112,
+ "current_pipeline_trained": {
+  "loocv_precision@1": 0.6562,
+  "in_sample_ceiling": 0.75,
+  "n_features": 8
+ },
+ "deepseek_direct_judgment": {
+  "precision@1": 0.6719,
+  "training": "none \u2014 rank by the LLM's holistic persuasive-force score"
+ },
+ "current_plus_deepseek_features": {
+  "loocv_precision@1": 0.6562,
+  "in_sample_ceiling": 0.8281,
+  "n_features": 18
+ },
+ "findings": {
+  "deepseek_direct_beats_trained_pipeline": 0.0156,
+  "ceiling_lift_from_deepseek_features": 0.0781,
+  "loocv_stuck_despite_higher_ceiling": "the richer features raise the CEILING but leave-one-out does not improve -> 138 examples is too few to LEARN the mapping; the signal exists, we lack DATA to fit it (exactly why more datasets are the next step)",
+  "irreducible_ceiling_estimate": 0.8281,
+  "honest_bound": "even overfitting to ALL data with rich features tops out ~0.83 -> ~17% of persuasion is genuinely irreducible; 90-95% is not achievable for 'will THIS message flip THIS person', but ~0.80 is reachable with more data + the LLM"
+ }
+}
