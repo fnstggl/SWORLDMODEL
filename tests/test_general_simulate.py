@@ -31,11 +31,11 @@ def test_prior_only_when_nothing_fires():
     assert fc.method == "prior_only" and fc.p_outcome == 0.4
 
 
-def test_routes_to_population_simulation():
+def test_routes_to_population_readout():
     sim = GeneralSimulator(grounded=_grounded())
     pop = [{"party": "republican", "ideology": "conservative"}] * 40
     fc = sim.answer("death penalty?", known_item="cappun", population=pop)
-    assert "population_simulation" in fc.sources
+    assert "population_readout" in fc.sources               # the demoted non-interacting leaf (not "simulation")
     assert fc.p_outcome > 0.5                            # conservative population favors it
 
 

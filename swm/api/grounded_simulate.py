@@ -1,21 +1,24 @@
-"""GroundedSimulator — the assembled end-to-end pipeline on a real question.
+"""IndependentPopulationReadout — a DEMOTED library leaf, NOT a simulation.
 
-The whole thesis in one callable: take a real social question and a population, map each person's grounded
-variables onto their latent value profile, estimate their answer with the unified GroundedReadout
-(structure + world-knowledge prior + reliability weighting), and aggregate bottom-up to a calibrated
-outcome — with an auditable value-factor decomposition of *why*.
+⚠️ This is deliberately no longer called "simulate". The simulation audit (SIMULATION_AUDIT.md) established
+that `GroundedSimulator.simulate_population` was `sum(ps)/n` — a mean of INDEPENDENT per-person regressions,
+`∂pᵢ/∂pⱼ = 0`: no agent reads any other, no state, no interaction, no dynamics. It is a well-calibrated
+COMPOSITOR of a fitted logistic readout, not a model of a world. Believable ≠ a simulation.
 
-    question + population
-       │  map grounded variables (VariableMap provenance -> reliability)
-       ▼
-    GroundedReadout: decorrelate -> latent value factors; regularize toward the LLM world-knowledge prior
-       │
-       ▼  simulate each individual -> P(answer)   [+ their value profile]
-    aggregate bottom-up -> P(population outcome)   [+ which value axes drove it]
+Its correct place in the architecture: ONE leaf in the compiler's mechanism library — the "independent /
+non-interacting population" mechanism — invoked ONLY when the compiler determines a question is a
+marginal-recovery problem (e.g. a well-calibrated opinion share where coupling adds nothing, EXP-053/061).
+The word **simulate** is reserved for the compiler selecting and running the RIGHT mechanism, rolling it
+forward at calibrated time, and returning the navigable outcome — see `swm/api/world_model.py` (the front
+door) and `swm/api/action_simulate.py` (the interventional layer). Use those for "simulate the event".
 
-This is the simulate-the-event pipeline for opinion/behavior outcomes, finally assembled with grounded
-variables and a unified estimator — not a price model. `simulate_person` gives an individual's answer +
-value profile; `simulate_population` gives the collective outcome + confidence + the driver axes.
+What this leaf still does well, honestly labeled: map each person's grounded variables onto their latent
+value profile, estimate their answer with the unified `GroundedReadout` (structure + world-knowledge prior +
+reliability weighting), and aggregate bottom-up to a calibrated share — with an auditable value-factor
+decomposition of *why*. `predict_person` gives an individual's answer + value profile; `predict_share` gives
+the collective share + confidence + the driver axes. The historical names `GroundedSimulator` /
+`simulate_population` / `simulate_person` remain as thin back-compat aliases (see bottom of file); they are
+deprecated and carry no claim to being a simulation.
 """
 from __future__ import annotations
 
@@ -39,26 +42,27 @@ class GroundedForecast:
 
 
 @dataclass
-class GroundedSimulator:
-    """A fitted, end-to-end grounded question simulator."""
+class IndependentPopulationReadout:
+    """A fitted, bottom-up INDEPENDENT-population readout (the compiler's non-interacting mechanism leaf).
+    Aggregates independent per-person predictions — no coupling. Not a simulation; see the module docstring."""
     attrs: list = field(default_factory=list)
     provenance: dict = field(default_factory=dict)
     readout: GroundedReadout = None                  # type: ignore
 
-    def fit(self, rows, k=3, **kw) -> "GroundedSimulator":
+    def fit(self, rows, k=3, **kw) -> "IndependentPopulationReadout":
         """rows: {qid, answer_idx, demo}. Fits the unified GroundedReadout on the training population."""
         self.readout = GroundedReadout(attrs=self.attrs, provenance=self.provenance, k=k, **kw).fit(rows)
         return self
 
     # ---- individual ----
-    def simulate_person(self, question, demo) -> dict:
+    def predict_person(self, question, demo) -> dict:
         p = self.readout.predict(question, demo)
         profile = {f"value_factor_{i+1}": round(s, 3) for i, s in enumerate(self.readout._features(demo))} \
             if self.readout.use_factors else {}
         return {"p_answer": round(p, 4), "value_profile": profile}
 
-    # ---- population (bottom-up aggregation) ----
-    def simulate_population(self, question, population, keep_individuals=False) -> GroundedForecast:
+    # ---- population (bottom-up aggregation of INDEPENDENT predictions; ∂pᵢ/∂pⱼ = 0) ----
+    def predict_share(self, question, population, keep_individuals=False) -> GroundedForecast:
         ps = [self.readout.predict(question, d) for d in population]
         n = len(ps)
         p_outcome = sum(ps) / n if n else 0.5
@@ -77,3 +81,16 @@ class GroundedSimulator:
         conf = supported * min(1.0, n / 200.0) ** 0.5
         return GroundedForecast(p_outcome=p_outcome, n=n, confidence=conf, value_drivers=drivers[:3],
                                 per_person=(ps if keep_individuals else []))
+
+    # ---- deprecated aliases (do NOT imply a simulation; kept so existing call sites keep working) ----
+    def simulate_person(self, question, demo) -> dict:
+        return self.predict_person(question, demo)
+
+    def simulate_population(self, question, population, keep_individuals=False) -> GroundedForecast:
+        return self.predict_share(question, population, keep_individuals)
+
+
+# Deprecated name. `GroundedSimulator` was never a simulation (audit: mean of independent regressions). Kept
+# as an alias for back-compat; new code should use IndependentPopulationReadout + predict_share, or the real
+# simulator front doors (WorldModel / ActionWorldModel).
+GroundedSimulator = IndependentPopulationReadout
