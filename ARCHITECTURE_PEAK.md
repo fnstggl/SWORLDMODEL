@@ -1,6 +1,25 @@
 # Architecture for the peak — what still needs to change
 
-> **STATE GROUNDING (highest-leverage next step, built — EXP-082).** With weights calibrated, the largest
+> **GROUNDED FORWARD DYNAMICS — the transition operator (fidelity frontier, built — EXP-083).** State
+> grounding fixes the INITIAL CONDITION; a forecast is initial_condition + TRAJECTORY, and the Monte-Carlo had
+> been rolling variables forward with GUESSED drift/volatility — a grounded present + a random-walk future only
+> MATCHES persistence (markets already price the present). `swm/simulation/transition_operator.py` learns the
+> conditional transition Δstate = B·φ(state) + ε from historical trajectories: φ's linear features give a
+> VAR(1) whose off-diagonals are cross-variable COUPLING and diagonal is mean-reversion vs momentum; a
+> quadratic self-basis learns SATURATING (logistic S-curve) drift. Fit by ridge-to-PERSISTENCE (prior B=0 ⇒
+> random walk) with an empirical-Bayes temper, so thin/random-walk data collapses back to persistence (no
+> hallucinated drift) — the honest null. **Result (no-cheat, horizon-growth backtest): on adoption diffusion,
+> forecasting entirely HELD-OUT technologies, skill vs persistence GROWS with horizon +0.24 (1yr) → +0.55
+> (16yr) — the world-model signature (a nowcast's edge decays; a real dynamics model's edge grows). Against a
+> strong momentum baseline (local linear extrapolation) it starts behind and OVERTAKES at the ~10yr crossover
+> (+0.33 by 16yr) once saturation binds — proof it learned the curvature, not just the trend.** Honest boundary:
+> on non-stationary macro LEVELS (FOMC) the operator does NOT beat persistence out-of-sample — train-era
+> mean-reversion doesn't transfer to the post-2010 ZLB/trending regime — exactly the regime the router assigns
+> to a baseline. Next lever: GROUND the per-series growth rate (the dynamics analog of state grounding) to also
+> win short-horizon. This is the ROADMAP item-9 signature ("a grounded population is not a martingale"), now
+> measured.
+>
+> **STATE GROUNDING (highest-leverage step, built — EXP-082).** With weights calibrated, the largest
 > remaining reducible error is that the compiler fills each variable's VALUE (the current state of the world)
 > from an LLM guess — a calibrated weight on a guessed value is still a guess. `swm/api/state_grounding.py`
 > triages a spec, MEASURES each high-leverage variable's as-of value + CI from real evidence (`DataGrounder`
