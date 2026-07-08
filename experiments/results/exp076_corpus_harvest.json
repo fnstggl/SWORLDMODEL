@@ -1,0 +1,136 @@
+{
+ "sources": [
+  {
+   "source": "GSS",
+   "outcome_class": "conservative_opinion",
+   "fits": 15
+  },
+  {
+   "source": "OpinionQA",
+   "outcome_class": "oqa:<per-question>",
+   "fits": 8
+  },
+  {
+   "source": "CMV",
+   "outcome_class": "persuasion",
+   "fits": 1
+  },
+  {
+   "source": "FOMC",
+   "outcome_class": "rate_hike",
+   "fits": 1
+  },
+  {
+   "source": "Upworthy",
+   "outcome_class": "headline_engagement",
+   "fits": 1
+  },
+  {
+   "source": "stackexchange",
+   "outcome_class": "question_answered",
+   "fits": 1
+  },
+  {
+   "source": "telco_churn",
+   "outcome_class": "customer_churn",
+   "fits": 1
+  },
+  {
+   "source": "globalopinions",
+   "outcome_class": "opinion_consensus",
+   "fits": 1
+  }
+ ],
+ "total_priors": 592,
+ "n_outcome_classes": 15,
+ "outcome_classes": [
+  "conservative opinion",
+  "customer churn",
+  "headline engagement",
+  "opinion consensus",
+  "oqa bighouses w92",
+  "oqa compromiseval w92",
+  "oqa govsize1 w92",
+  "oqa instn lgecrp w92",
+  "oqa openiden w92",
+  "oqa pol1jb w92",
+  "oqa racesurv37 w43",
+  "oqa superpwr w92",
+  "persuasion",
+  "question answered",
+  "rate hike"
+ ],
+ "flagship_elasticities": {
+  "party=republican -> conservative_opinion": {
+   "elasticity": 0.18,
+   "sd": 0.118,
+   "n": 150000
+  },
+  "ideology=liberal -> conservative_opinion": {
+   "elasticity": -0.261,
+   "sd": 0.118,
+   "n": 150000
+  },
+  "attendance=high -> conservative_opinion": {
+   "elasticity": 0.207,
+   "sd": 0.119,
+   "n": 150000
+  },
+  "arg_addresses_crux -> persuasion": {
+   "elasticity": 0.053,
+   "sd": 0.679,
+   "n": 1200
+  },
+  "arg_evidence -> persuasion": {
+   "elasticity": 0.005,
+   "sd": 0.667,
+   "n": 1200
+  },
+  "op_skepticism -> persuasion": {
+   "elasticity": -0.071,
+   "sd": 0.608,
+   "n": 1200
+  },
+  "inflation -> rate_hike": {
+   "elasticity": 0.444,
+   "sd": 0.667,
+   "n": 494
+  },
+  "unemployment -> rate_hike": {
+   "elasticity": -0.575,
+   "sd": 0.323,
+   "n": 494
+  },
+  "curiosity -> headline_engagement": {
+   "elasticity": 0.005,
+   "sd": 0.074,
+   "n": 6000
+  },
+  "has_number -> headline_engagement": {
+   "elasticity": 0.062,
+   "sd": 0.071,
+   "n": 6000
+  },
+  "emotion -> headline_engagement": {
+   "elasticity": 0.019,
+   "sd": 0.171,
+   "n": 6000
+  },
+  "tenure -> customer_churn": {
+   "elasticity": -21.351,
+   "sd": 3.0,
+   "n": 6000
+  },
+  "monthly_charges -> customer_churn": {
+   "elasticity": 134.044,
+   "sd": 3.0,
+   "n": 6000
+  },
+  "contract -> customer_churn": {
+   "elasticity": -1.62,
+   "sd": 3.0,
+   "n": 6000
+  }
+ },
+ "registry_path": "swm/variables/learned_priors.json"
+}

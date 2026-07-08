@@ -1,0 +1,90 @@
+{
+ "training_examples": [
+  {
+   "kind": "population",
+   "baseline_strength": 0.352,
+   "irreducible_frac": 0.5,
+   "y": 1,
+   "domain": "gss_social"
+  },
+  {
+   "kind": "population",
+   "baseline_strength": 0.251,
+   "irreducible_frac": 0.5,
+   "y": 0,
+   "domain": "gss_spend"
+  },
+  {
+   "kind": "diffusion",
+   "baseline_strength": 0.0,
+   "irreducible_frac": 0.5,
+   "y": 1,
+   "domain": "adoption"
+  },
+  {
+   "kind": "referendum",
+   "baseline_strength": 0.0,
+   "irreducible_frac": 0.5,
+   "y": 1,
+   "domain": "referenda"
+  },
+  {
+   "kind": "election",
+   "baseline_strength": 0.017,
+   "irreducible_frac": 0.5,
+   "y": 0,
+   "domain": "senate"
+  },
+  {
+   "kind": "macro",
+   "baseline_strength": 0.37,
+   "irreducible_frac": 0.5,
+   "y": 0,
+   "domain": "fomc"
+  }
+ ],
+ "routes": {
+  "population": {
+   "decision": "rich_sim",
+   "p_fidelity_wins": 0.7455,
+   "kind": "population",
+   "reason": "modelable population/diffusion, weak baseline"
+  },
+  "diffusion": {
+   "decision": "rich_sim",
+   "p_fidelity_wins": 0.8338,
+   "kind": "diffusion",
+   "reason": "modelable population/diffusion, weak baseline"
+  },
+  "institution": {
+   "decision": "baseline",
+   "p_fidelity_wins": 0.349,
+   "kind": "institution",
+   "reason": "strong simple baseline / high irreducibility"
+  },
+  "election": {
+   "decision": "baseline",
+   "p_fidelity_wins": 0.0899,
+   "kind": "election",
+   "reason": "strong simple baseline / high irreducibility"
+  },
+  "macro": {
+   "decision": "baseline",
+   "p_fidelity_wins": 0.0467,
+   "kind": "macro",
+   "reason": "strong simple baseline / high irreducibility"
+  },
+  "referendum": {
+   "decision": "baseline",
+   "p_fidelity_wins": 0.1112,
+   "kind": "referendum",
+   "reason": "strong simple baseline / high irreducibility"
+  },
+  "market": {
+   "decision": "baseline",
+   "p_fidelity_wins": 0.0149,
+   "kind": "market",
+   "reason": "strong simple baseline / high irreducibility"
+  }
+ }
+}

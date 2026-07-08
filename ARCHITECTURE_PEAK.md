@@ -1,5 +1,18 @@
 # Architecture for the peak — what still needs to change
 
+> **STATUS (this session): all six built + validated.** (1) Corpus harvest — **592 elasticities across 15
+> outcome-classes from 8 datasets**, committed to `learned_priors.json`, all sign-correct (inflation→hike
+> +0.44, unemployment→hike −0.58, ideology=liberal→conservative −0.26, tenure→churn −21) — EXP-076.
+> (2) Regime router — routes population/diffusion→rich_sim (0.75–0.83), macro/election/market→baseline
+> (≤0.35), learned from the portfolio + a world-knowledge prior — EXP-078. (3) Adaptive fidelity —
+> `swm/api/adaptive_fidelity.py` variance-triage (invest calibration only in the high-leverage variables).
+> (4) Embedding-keyed registry — `swm/variables/embedding_registry.py` (cross-phrasing transfer, pluggable
+> real-embedding backend). (5) Event model — `swm/simulation/event_model.py`, calibrated on FOMC rate jumps:
+> **82% interval coverage (nominal 90%) vs persistence's 3%** — EXP-077. (6) Full-covariance weight posterior
+> — `bayes_logistic.predict_dist(full_cov=True)`. The sections below are the original design rationale.
+
+
+
 *What the general social world model needs to become as accurate as possible — assessed from what the
 portfolio backtest (EXP-074) and the calibration work (EXP-072/073) actually measured, not from hope.*
 
