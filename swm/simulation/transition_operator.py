@@ -165,46 +165,91 @@ class TransitionOperator:
                 out[j] = min(self.his[j], out[j])
         return out
 
-    def step(self, x, rng, *, noise=True, center=None):
+    def step(self, x, rng, *, noise=True, center=None, gain=None):
         """One calibrated forward step from state vector x -> next state vector. `center` overrides the
-        reversion target (the origin's trailing level for a non-stationary series); defaults to the global mean."""
+        reversion target (the origin's trailing level for a non-stationary series). `gain` (per-variable
+        multiplier) scales the learned drift SHAPE by a series-specific rate grounded from recent data —
+        keeping the pooled curvature but the entity's own velocity (see `ground_gain`)."""
         phi = self._phi(x, center)
-        drift = [sum(self.coef[k][i] * phi[k] for k in range(self.p_feats)) for i in range(len(self.names))]
+        nv = len(self.names)
+        drift = [sum(self.coef[k][i] * phi[k] for k in range(self.p_feats)) for i in range(nv)]
+        if gain is not None:
+            drift = [drift[i] * gain[i] for i in range(nv)]
         if noise:
-            z = [rng.gauss(0, 1) for _ in range(len(self.names))]
-            shock = [sum(self.L[i][k] * z[k] for k in range(i + 1)) for i in range(len(self.names))]
+            z = [rng.gauss(0, 1) for _ in range(nv)]
+            shock = [sum(self.L[i][k] * z[k] for k in range(i + 1)) for i in range(nv)]
         else:
-            shock = [0.0] * len(self.names)
-        return self._clamp([x[i] + drift[i] + shock[i] for i in range(len(self.names))])
+            shock = [0.0] * nv
+        return self._clamp([x[i] + drift[i] + shock[i] for i in range(nv)])
 
     def _center_vec(self, center):
         if center is None:
             return None
         return [float(center[n]) for n in self.names] if isinstance(center, dict) else center
 
-    def mean_path(self, state0, steps, *, center=None):
-        """Deterministic (noise-free) H-step trajectory of the state MEAN — the point forecast."""
+    def _gain_vec(self, gain):
+        if gain is None:
+            return None
+        return [float(gain[n]) for n in self.names] if isinstance(gain, dict) else gain
+
+    def ground_gain(self, history, *, window=6, center=None, clamp=(0.0, 6.0)):
+        """GROUND the per-series growth RATE from recent trajectory — the dynamics analog of state grounding.
+        The pooled operator supplies the drift SHAPE d_pool(x) (the saturation curvature, transferable across
+        series); this measures the entity's OWN rate as the scalar gain γ that best matches its recent observed
+        transitions: γ = Σ(Δ_obs · d_pool) / Σ(d_pool²) over the last `window` steps of the KNOWN history
+        (leakage-free). Then Δ = γ·d_pool(x) climbs at the series' own velocity but still bends to saturation.
+        γ→1 recovers the pooled rate; a near-zero pooled drift (random walk) yields γ=1 (a no-op)."""
         c = self._center_vec(center)
+        hist = history[-(window + 1):]
+        nv = len(self.names)
+        if len(hist) < 2:
+            return {n: 1.0 for n in self.names}
+        num = [0.0] * nv
+        den = [0.0] * nv
+        for t in range(len(hist) - 1):
+            x = [float(hist[t][n]) for n in self.names]
+            phi = self._phi(x, c)
+            for i in range(nv):
+                d = sum(self.coef[k][i] * phi[k] for k in range(self.p_feats))
+                num[i] += (float(hist[t + 1][self.names[i]]) - x[i]) * d
+                den[i] += d * d
+        return {self.names[i]: (min(clamp[1], max(clamp[0], num[i] / den[i])) if den[i] > 1e-12 else 1.0)
+                for i in range(nv)}
+
+    def _relaxed_gain(self, g, k, relax):
+        """Gain at rollout step k, relaxing the grounded per-series gain toward 1 (the pooled rate) as
+        γ_k = 1 + (γ − 1)·relax^k. relax<1 means: trust the entity's OWN measured rate near-term, fall back
+        to the transferable pooled rate long-term (a short window's rate is most informative near-term)."""
+        if g is None or relax is None:
+            return g
+        f = relax ** k
+        return [1.0 + (g[j] - 1.0) * f for j in range(len(g))]
+
+    def mean_path(self, state0, steps, *, center=None, gain=None, gain_relax=None):
+        """Deterministic (noise-free) H-step trajectory of the state MEAN — the point forecast."""
+        c, g = self._center_vec(center), self._gain_vec(gain)
         x = self._clamp([float(state0[n]) for n in self.names])
         path = [dict(zip(self.names, x))]
-        for _ in range(steps):
-            x = self.step(x, None, noise=False, center=c)
+        for k in range(steps):
+            x = self.step(x, None, noise=False, center=c, gain=self._relaxed_gain(g, k, gain_relax))
             path.append(dict(zip(self.names, x)))
         return path
 
-    def rollout(self, state0, steps, *, n=2000, seed=0, center=None):
+    def rollout(self, state0, steps, *, n=2000, seed=0, center=None, gain=None, gain_relax=None):
         """Monte-Carlo H-step forward simulation. Returns, per variable, the predictive mean + 90% interval
         at the terminal step (spread grows like √H by composing H one-step innovations — calibrated time).
         `center` (dict/list) is the fixed reversion target for the horizon — pass the origin's trailing level
-        for a non-stationary series (leakage-free; computed from KNOWN history via `trailing_center`)."""
+        for a non-stationary series (leakage-free; computed from KNOWN history via `trailing_center`). `gain`
+        (dict/list) scales the drift to the entity's own grounded rate (see `ground_gain`); `gain_relax` (<1)
+        blends that grounded rate back toward the pooled rate over the horizon (grounded-short, pooled-long)."""
         rng = random.Random(seed)
-        c = self._center_vec(center)
+        c, g = self._center_vec(center), self._gain_vec(gain)
         nv = len(self.names)
         terminal = [[] for _ in range(nv)]
         for _ in range(n):
             x = self._clamp([float(state0[nm]) for nm in self.names])
-            for _ in range(steps):
-                x = self.step(x, rng, center=c)
+            for k in range(steps):
+                x = self.step(x, rng, center=c, gain=self._relaxed_gain(g, k, gain_relax))
             for j in range(nv):
                 terminal[j].append(x[j])
         out = {}

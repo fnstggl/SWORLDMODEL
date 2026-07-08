@@ -107,3 +107,55 @@ def test_fit_is_deterministic():
     a = TransitionOperator(names=["x"]).fit([series]).coef
     b = TransitionOperator(names=["x"]).fit([series]).coef
     assert a == b
+
+
+def _logistic(r, n, seed, x0=0.03):
+    rng = random.Random(seed)
+    x, s = x0, []
+    for _ in range(n):
+        x = min(0.999, max(0.001, x + r * x * (1 - x) + rng.gauss(0, 0.003)))
+        s.append({"x": x})
+    return s
+
+
+def _ground_at_level(op, series, level=0.3, window=6):
+    """Ground the rate at the SAME curve position for a fair comparison (grounding uses the recent window, so
+    both series must be probed at the same x, not at their end — one may be saturated, the other still flat)."""
+    i = next(k for k, s in enumerate(series) if s["x"] >= level)
+    return op.ground_gain(series[:i + 1], window=window)["x"]
+
+
+def test_grounded_gain_distinguishes_fast_from_slow_series():
+    # pool a FAST and a SLOW logistic diffusion; grounding at the SAME x must recover each one's OWN rate
+    op = TransitionOperator(names=["x"], basis=quadratic_self_basis, los=[0.0], his=[1.0]).fit(
+        [_logistic(0.5, 45, 0), _logistic(0.15, 70, 1)])
+    g_fast = _ground_at_level(op, _logistic(0.5, 45, 2), level=0.3)
+    g_slow = _ground_at_level(op, _logistic(0.15, 70, 3), level=0.3)
+    assert g_fast > g_slow + 0.3                          # grounding recovers the per-series rate difference
+
+
+def test_grounded_gain_beats_pooled_on_held_out_series():
+    # fit the SHAPE on a range of rates, forecast a held-out series with a DISTINCT rate; grounding the rate
+    # from its own recent history must beat the pooled-rate forecast at horizon.
+    train = [_logistic(r, 55, i) for i, r in enumerate([0.2, 0.28, 0.42, 0.5])]
+    op = TransitionOperator(names=["x"], basis=quadratic_self_basis, los=[0.0], his=[1.0]).fit(train)
+    test = _logistic(0.6, 40, 99)                         # faster than anything in train
+    H, pooled_e, grounded_e, k = 6, 0.0, 0.0, 0
+    for i in range(6, len(test) - H):
+        start, truth = {"x": test[i]["x"]}, test[i + H]["x"]
+        gain = op.ground_gain(test[:i + 1], window=6)
+        pooled_e += (op.rollout(start, H, n=250, seed=i)["x"]["mean"] - truth) ** 2
+        grounded_e += (op.rollout(start, H, n=250, seed=i, gain=gain)["x"]["mean"] - truth) ** 2
+        k += 1
+    assert grounded_e < pooled_e                          # the entity's own grounded rate beats the pooled rate
+
+
+def test_grounded_gain_no_blowup_on_random_walk():
+    rng = random.Random(7)
+    x, s = 0.0, []
+    for _ in range(200):
+        x += rng.gauss(0, 1)
+        s.append({"x": x})
+    op = TransitionOperator(names=["x"]).fit([s])         # collapses to ~persistence (drift ≈ 0)
+    g = op.ground_gain(s[-10:], window=6)["x"]
+    assert 0.0 <= g <= 6.0                                # stays within clamp — no division blowup
