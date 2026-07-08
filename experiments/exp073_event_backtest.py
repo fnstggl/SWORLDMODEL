@@ -85,10 +85,10 @@ def _pred_share(g, vocab, attrs, year_rows):
     return sum(g.predict(_encode(r["demo"], attrs, vocab)) for r in year_rows) / len(year_rows)
 
 
-def _forecasts_for(rows_by_item, attrs):
+def _forecasts_for(rows_by_item, attrs, items=None):
     """Return {qid: forecast} and the Question list (baselines) for a given fidelity."""
     forecasts, questions = {}, []
-    for item in ITEMS:
+    for item in (items if items is not None else ITEMS):
         irows = rows_by_item[item]
         by_year = {}
         for r in irows:
