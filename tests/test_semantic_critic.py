@@ -39,26 +39,27 @@ def test_critic_passes_clean_concrete_writing():
     assert c.quality >= 0.7 and not c.flags()
 
 
-# --- em-dash bias (all messages) ------------------------------------------------------------------
+# --- em-dash bias: discourage in the body, allow in a sign-off ------------------------------------
 
-def test_strip_em_dashes_removes_all_dashes():
-    assert "—" not in strip_em_dashes("Peter — the cost is rising — fast.")
-    assert "–" not in strip_em_dashes("inference, not training – most disagree.")
-    assert strip_em_dashes("— Beckett") == "Beckett"                 # sign-off dash dropped
-    assert strip_em_dashes("no dashes here.") == "no dashes here."    # untouched
-
-
-def test_critic_flags_em_dashes():
-    c = SemanticCritic().critique("This is a fine sentence but it has a dash — right here.")
+def test_body_em_dash_is_softly_discouraged_not_hard_flagged():
+    # a body dash lowers naturalness (so the search prefers commas/periods) but does NOT hard-flag it,
+    # so a dash can still survive when it's genuinely the best option.
+    c = SemanticCritic().critique("The cost is rising fast — that's the whole point.")
     assert c.naturalness < 1.0
-    assert any("dash" in r for f in c.flags() for r in f["reasons"])
+    assert not c.flags()                              # soft penalty, not a forced repair
 
 
-def test_constructed_email_has_no_em_dashes():
-    scorer = scorer_from_recipient(SKEPTIC, 0.2)
-    spec = optimize_strategy(scorer)
-    email = construct_email(scorer, spec.strategy)
-    assert "—" not in email.text and "–" not in email.text
+def test_signoff_dash_is_allowed():
+    c = SemanticCritic().critique("I build software that cuts inference cost. Is that wrong? — Beckett")
+    assert c.naturalness == 1.0                        # a sign-off dash is fine
+    assert not any("dash" in r for f in c.flags() for r in f["reasons"])
+
+
+def test_strip_em_dashes_is_available_as_opt_in():
+    # the deterministic stripper still exists for callers who want a hard guarantee; it is NOT applied
+    # by the pipeline by default.
+    assert "—" not in strip_em_dashes("Peter — the cost is rising — fast.")
+    assert strip_em_dashes("— Beckett") == "Beckett"
 
 
 def test_critic_quality_is_min_of_axes():

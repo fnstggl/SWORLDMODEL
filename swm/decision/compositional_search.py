@@ -23,7 +23,6 @@ import math
 import re
 from dataclasses import dataclass, field
 
-from swm.decision.semantic_critic import strip_em_dashes
 from swm.decision.strategy_scorer import MESSAGE_VARS, StrategyScorer
 from swm.variables.schema import spec
 
@@ -114,6 +113,7 @@ SLOT_BANK: dict = {
     ],
     "close": [
         "Beckett",
+        "— Beckett",                                                                 # sign-off dash is fine
         "Thanks, Beckett.",
         "Best regards and looking forward to hearing back from you soon, Beckett.",   # annoying (contrast)
         "",  # allow no close
@@ -186,7 +186,6 @@ def construct_email(scorer: StrategyScorer, spec_strategy: dict, *, proposer=def
         beams = scored[:beam] if scored else beams
 
     chosen, text, score = beams[0]
-    text = strip_em_dashes(text)               # hard guarantee: no em dashes in the final message
     dist = scorer.score_dist(encode_text_to_strategy(text))
     return ConstructedEmail(text=text, strategy=encode_text_to_strategy(text), score=score,
                             mean=dist.mean, lower_bound=dist.lower_bound(q), slots=chosen,
@@ -267,7 +266,6 @@ def polish_email(email: ConstructedEmail, scorer: StrategyScorer, spec_strategy:
         if not changed:
             break
 
-    text = strip_em_dashes(text)               # hard guarantee after any rewrites/swaps
     strat = encode_text_to_strategy(text)
     dist = scorer.score_dist(strat)
     return ConstructedEmail(text=text, strategy=strat, score=dist.lower_bound(q), mean=dist.mean,
