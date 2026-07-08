@@ -142,8 +142,14 @@ replied)` data it fits the same main + interaction elasticities by logistic regr
 offset and an L2 pull **toward the priors** (world knowledge as prior, data as update), then grades on a
 held-out split (ECE/Brier/log-loss/uplift → A/B/C/F). A fitted model is passed to `optimize_message(fit=…)`;
 the objective becomes data-calibrated and the result reports the real grade instead of `unvalidated`.
-Validated as an **estimator** on synthetic data with known ground truth (recovers the weights, calibrated on
-held-out data) — a real grade needs real reply logs, the same stance as `IndividualWorld`.
+
+**Graded on REAL outcomes** (`swm/decision/outcome_import.py`, `experiments/exp087`). The import path takes
+a labeled content→outcome corpus and runs the whole fit-and-grade. Run on the Cornell ConvoKit ChangeMyView
+"winning arguments" corpus (**19,714 real persuasion outcomes**), the general message levers grade **A on
+calibration (ECE 0.022)** and beat chance out of sample: **AUC 0.569, pair-accuracy 0.560** (chance = 0.5)
+on held-out-by-pair data — the fitted weights are sensible (warmth, clarity, proof×skepticism up; pushiness
+down). That is a real held-out signal, not synthetic. A cold-email reply model grades identically on a
+sent→replied corpus; only the dataset changes.
 
 Separately, **body em dashes are discouraged, not banned**: LLMs structurally overuse em dashes and users
 dislike them, so the writer is instructed to prefer commas/periods and the critic applies a soft naturalness
