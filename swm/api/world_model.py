@@ -47,7 +47,12 @@ class WorldModel:
         return ValidatingCompiler(self.compiler, repair_fn=self.repair_fn)
 
     def simulate(self, question: str, *, context: str = "", as_of: str = "", key: str = None,
-                 n: int = None) -> dict:
+                 n: int = None, answers=None) -> dict:
+        # RESUME: answers to a previous needs_user_context ask are folded into the context, so the SAME call
+        # auto-runs the full simulation (no separate "run" step — answering IS the trigger).
+        if answers:
+            context = (_format_answers(answers) + ("\n" + context if context else "")).strip()
+
         # PERSON INTAKE: if the question turns on a specific individual, assemble a dossier; ASK the user when
         # the evidence is too thin (never fabricate a person's disposition), else fold the dossier into context.
         person = None
@@ -59,6 +64,7 @@ class WorldModel:
             if pf.get("mode") == "ask":
                 return {"question": question, "mode": "needs_user_context", "person": pf["person"],
                         "questions": pf["questions"], "forecast": None, "grounding": None,
+                        "resume_hint": "call simulate(question, answers=<your answers>) to auto-run",
                         "headline": f"To simulate this I need your read on {pf['person']} — "
                                     f"{pf.get('reason', 'not enough public evidence to infer honestly')}."}
             if pf.get("person"):
@@ -132,6 +138,24 @@ def general_world_model(*, compile_fn=None, n=8000, ground=True, validate=True, 
         intake = build_person_intake()                    # None if no LLM key -> front door behaves as before
     return WorldModel(compiler=StructuralCompiler(compile_fn), n=n, validate=validate, grounder=grounder,
                       person_intake=intake)
+
+
+def _format_answers(answers) -> str:
+    """Turn a user's answers to the intake questions into a context block the dossier can consume. Accepts a
+    dict {question: answer}, a list of answers (or [question, answer] pairs), or a plain string."""
+    if isinstance(answers, str):
+        return answers.strip()
+    if isinstance(answers, dict):
+        return "\n".join(f"{q} — {a}" for q, a in answers.items() if str(a).strip())
+    if isinstance(answers, (list, tuple)):
+        parts = []
+        for item in answers:
+            if isinstance(item, (list, tuple)) and len(item) == 2:
+                parts.append(f"{item[0]} — {item[1]}")
+            elif str(item).strip():
+                parts.append(str(item).strip())
+        return "\n".join(parts)
+    return str(answers or "").strip()
 
 
 def _forecastable(forecast: dict):
