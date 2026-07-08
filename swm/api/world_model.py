@@ -21,6 +21,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+from swm.api.compiler import CompiledModel
 from swm.api.spec_validator import ValidatingCompiler
 
 
@@ -31,6 +32,9 @@ class WorldModel:
     n: int = 8000
     validate: bool = True                 # self-correct by default: validate (+ repair if repair_fn) each spec
     repair_fn: object = None              # LLM backend that fixes a flagged spec (None = validate-only)
+    grounder: object = None               # swm.api.state_grounding.StateGrounder — auto-grounds the spec's
+    #                                       high-leverage variable VALUES from live evidence before the run.
+    #                                       `general_world_model()` wires the DeepSeek+web general router here.
 
     def _compiler(self):
         if not self.validate:
@@ -50,19 +54,54 @@ class WorldModel:
         comp = self._compiler()
         compiled = comp.compile(question, context, key=key)
         validation = getattr(comp, "last_report", None)
+
+        # AUTO-GROUND: measure the compiled spec's high-leverage variable VALUES from live evidence (triage ->
+        # general router -> value + CI), so the simulation runs on THIS world, not the LLM's guessed state.
+        grounding = None
+        spec = compiled.spec
+        if self.grounder is not None:
+            try:
+                spec, report = self.grounder.ground_spec(spec, question, as_of=(as_of or None))
+                grounding = {"grounded": sum(1 for r in report if r.get("grounded")),
+                             "n_high_leverage": sum(1 for r in report if r.get("high_leverage", True)),
+                             "detail": report}
+            except Exception as e:                        # grounding must never break a run — fall back to spec
+                grounding = {"error": str(e)[:120]}
+                spec = compiled.spec
+
         try:                                              # a spec validation could not repair may not run
-            forecast = compiled.run(n=n or self.n)
+            forecast = CompiledModel(spec).run(n=n or self.n)
         except Exception as e:
-            forecast = {"mechanism": compiled.spec.mechanism, "error": str(e)[:120]}
+            forecast = {"mechanism": spec.mechanism, "error": str(e)[:120]}
         return {"question": question, "n_evidence": n_evidence,
-                "mechanism": compiled.spec.mechanism, "forecast": forecast,
+                "mechanism": spec.mechanism, "forecast": forecast,
                 "forecastable": _forecastable(forecast),
-                "validation": validation,
+                "validation": validation, "grounding": grounding,
                 "headline": _headline(question, forecast),
-                "spec": {"mechanism": compiled.spec.mechanism,
-                         "variables": [(v.name, v.value, v.volatility) for v in compiled.spec.variables],
-                         "equations": compiled.spec.equations, "outcome": compiled.spec.outcome,
-                         "horizon": compiled.spec.horizon, "rationale": compiled.spec.rationale}}
+                "spec": {"mechanism": spec.mechanism,
+                         "variables": [(v.name, v.value, v.volatility) for v in spec.variables],
+                         "equations": spec.equations, "outcome": spec.outcome,
+                         "horizon": spec.horizon, "rationale": spec.rationale}}
+
+
+def general_world_model(*, compile_fn=None, n=8000, ground=True, validate=True) -> WorldModel:
+    """The recommended front door: compile ANY question → auto-GROUND its high-leverage variable values from
+    live evidence (the DeepSeek+web general router, no feeds required) → run the calibrated simulation. This is
+    the end-to-end default — a user asks anything, and the simulation runs on the real current world rather
+    than the LLM's guessed state. Falls back to un-grounded compilation if no LLM key is configured."""
+    from swm.api.compiler import StructuralCompiler
+    if compile_fn is None:
+        from swm.api.deepseek_backend import default_chat_fn
+        compile_fn = default_chat_fn(system="You compile questions into runnable structural simulations. Emit "
+                                            "ONLY the JSON spec.", max_tokens=1200)
+    grounder = None
+    if ground:
+        from swm.api.live_grounding import live_router
+        from swm.api.state_grounding import StateGrounder
+        router = live_router()                            # general DeepSeek+web engine + structured overlays
+        if router.retrieval is not None or router.sources:  # (Coinbase for observable market vars; the LLM
+            grounder = StateGrounder(default=router)         # resolver routes to a feed only when one matches)
+    return WorldModel(compiler=StructuralCompiler(compile_fn), n=n, validate=validate, grounder=grounder)
 
 
 def _forecastable(forecast: dict):
