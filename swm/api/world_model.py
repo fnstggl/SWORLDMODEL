@@ -92,27 +92,6 @@ class WorldModel:
                          "equations": spec.equations, "outcome": spec.outcome,
                          "horizon": spec.horizon, "rationale": spec.rationale}}
 
-
-def general_world_model(*, compile_fn=None, n=8000, ground=True, validate=True) -> WorldModel:
-    """The recommended front door: compile ANY question → auto-GROUND its high-leverage variable values from
-    live evidence (the DeepSeek+web general router, no feeds required) → run the calibrated simulation. This is
-    the end-to-end default — a user asks anything, and the simulation runs on the real current world rather
-    than the LLM's guessed state. Falls back to un-grounded compilation if no LLM key is configured."""
-    from swm.api.compiler import StructuralCompiler
-    if compile_fn is None:
-        from swm.api.deepseek_backend import default_chat_fn
-        compile_fn = default_chat_fn(system="You compile questions into runnable structural simulations. Emit "
-                                            "ONLY the JSON spec.", max_tokens=1200)
-    grounder = None
-    if ground:
-        from swm.api.live_grounding import live_router
-        from swm.api.state_grounding import StateGrounder
-        router = live_router()                            # general DeepSeek+web engine + structured overlays
-        if router.retrieval is not None or router.sources:  # (Coinbase for observable market vars; the LLM
-            grounder = StateGrounder(default=router)         # resolver routes to a feed only when one matches)
-    return WorldModel(compiler=StructuralCompiler(compile_fn), n=n, validate=validate, grounder=grounder)
-
-
     def simulate_forward(self, question: str, events, *, context: str = "", as_of: str = "",
                          b0: float = None, horizon: float = None, continuous_step=None, actions=None,
                          n: int = None) -> dict:
@@ -160,6 +139,26 @@ def general_world_model(*, compile_fn=None, n=8000, ground=True, validate=True) 
                 "forecast": base, "forecastable": base["reducible_frac"] >= 0.1,
                 "best_action": best, "headline": base["headline"],
                 "events": [{"name": e.name, "time": e.time, "labels": e.labels()} for e in calendar.events]}
+
+
+def general_world_model(*, compile_fn=None, n=8000, ground=True, validate=True) -> WorldModel:
+    """The recommended front door: compile ANY question → auto-GROUND its high-leverage variable values from
+    live evidence (the DeepSeek+web general router, no feeds required) → run the calibrated simulation. This is
+    the end-to-end default — a user asks anything, and the simulation runs on the real current world rather
+    than the LLM's guessed state. Falls back to un-grounded compilation if no LLM key is configured."""
+    from swm.api.compiler import StructuralCompiler
+    if compile_fn is None:
+        from swm.api.deepseek_backend import default_chat_fn
+        compile_fn = default_chat_fn(system="You compile questions into runnable structural simulations. Emit "
+                                            "ONLY the JSON spec.", max_tokens=1200)
+    grounder = None
+    if ground:
+        from swm.api.live_grounding import live_router
+        from swm.api.state_grounding import StateGrounder
+        router = live_router()                            # general DeepSeek+web engine + structured overlays
+        if router.retrieval is not None or router.sources:  # (Coinbase for observable market vars; the LLM
+            grounder = StateGrounder(default=router)         # resolver routes to a feed only when one matches)
+    return WorldModel(compiler=StructuralCompiler(compile_fn), n=n, validate=validate, grounder=grounder)
 
 
 def _retrieved_belief(retriever, question: str, as_of: str):
