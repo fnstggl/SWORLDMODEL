@@ -41,11 +41,13 @@ class EmbeddingPriorRegistry:
     _index: list = field(default_factory=list)
 
     def build_index(self):
-        """Embed each stored key's '(variable, outcome-class)' text once for nearest-neighbor search."""
+        """Embed each stored key's '(variable, outcome-class)' text once for nearest-neighbor search. Keys
+        whose embedding is unavailable (embed_fn returns None) are skipped — never mix embedding spaces."""
         self._index = []
         for key, rec in self.base.records.items():
-            text = key.replace("|", " ")
-            self._index.append((key, self.embed_fn(text), rec))
+            emb = self.embed_fn(key.replace("|", " "))
+            if emb is not None:
+                self._index.append((key, emb, rec))
         return self
 
     def get(self, variable, outcome_class, *, min_n=1):
@@ -55,6 +57,8 @@ class EmbeddingPriorRegistry:
         if not self._index:
             self.build_index()
         q = self.embed_fn(f"{variable} {outcome_class}")
+        if q is None:
+            return None
         best_sim, best_rec = self.threshold, None
         for _key, emb, rec in self._index:
             if rec.n < min_n:
