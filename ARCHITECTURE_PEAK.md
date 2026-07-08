@@ -15,9 +15,18 @@
 > (+0.33 by 16yr) once saturation binds — proof it learned the curvature, not just the trend.** Honest boundary:
 > on non-stationary macro LEVELS (FOMC) the operator does NOT beat persistence out-of-sample — train-era
 > mean-reversion doesn't transfer to the post-2010 ZLB/trending regime — exactly the regime the router assigns
-> to a baseline. Next lever: GROUND the per-series growth rate (the dynamics analog of state grounding) to also
-> win short-horizon. This is the ROADMAP item-9 signature ("a grounded population is not a martingale"), now
+> to a baseline. This is the ROADMAP item-9 signature ("a grounded population is not a martingale"), now
 > measured.
+>
+> **GROUNDED PER-SERIES RATE — dynamics analog of state grounding (built — EXP-084).** The pooled operator
+> lost to local linear-extrapolation short-horizon because it climbed at a POOLED rate. `ground_gain` keeps the
+> transferable pooled SHAPE (saturation curvature) but MEASURES each entity's own growth SCALE from its recent
+> trajectory (a per-series gain γ that projects its recent Δ onto the pooled drift — leakage-free), relaxing
+> back toward the pooled rate over the horizon (blend tuned on TRAIN techs only). **Result: the grounded-rate
+> operator now wins/ties at EVERY horizon on held-out technologies — vs persistence +0.52→+0.79, vs linear
+> extrapolation +0.06→+0.71 (the EXP-083 short-horizon deficit, closed), and vs the pooled operator itself
+> +0.16→+0.37.** Grounding the RATE (not just the level) is the lever that makes a world-model beat both the
+> martingale AND the momentum baseline everywhere.
 >
 > **STATE GROUNDING (highest-leverage step, built — EXP-082).** With weights calibrated, the largest
 > remaining reducible error is that the compiler fills each variable's VALUE (the current state of the world)
