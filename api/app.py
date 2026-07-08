@@ -152,149 +152,51 @@ class RolloutReq(BaseModel):
     as_of: float | None = None
 
 
-# A persisted, backtested aggregate world (models/<domain>_aggregate.json) makes a domain's
-# one-step cell 'validated' AND makes the rollout use the real state-sensitive head. Without it we
-# fall back to a state-IGNORING PriorHead, which the honesty gate labels 'unvalidated' — and we say
-# so, rather than stamping a grade the model didn't earn (the EXP-008 audit fix).
-_MODELS_DIR = Path(os.environ.get("SWM_MODELS", "models"))
-
-
-def _load_aggregate_world(world_id: str):
-    from swm.worlds.aggregate_world import AggregateWorld
-    p = _MODELS_DIR / f"{world_id}_aggregate.json"
-    if p.exists():
-        try:
-            return AggregateWorld.load(p)
-        except Exception:
-            return None
-    return None
-
-
-def _make_action(a: dict, t0: float, i: int):
-    from swm.state.factors import tag_topic
-    from swm.state.state import Action
-    title = a.get("title", "")
-    return Action(
-        action_id=f"plan-{i}", actor_id=a.get("actor_id", "anon"),
-        content_features={"title_len": min(1.0, len(title) / 80),
-                          "is_show": 1.0 if title.lower().startswith("show hn") else 0.0,
-                          "is_ask": 1.0 if title.lower().startswith("ask hn") else 0.0,
-                          "is_text": 1.0 if not a.get("domain") else 0.0,
-                          "topic": tag_topic(title)},
-        timing={"hour": a.get("hour", 12), "weekday": a.get("weekday", 2), "ts": t0 + i * 86400},
-        meta={"domain": a.get("domain", ""), "title": title})
+# Domains/horizons that have a validated state-transition backtest (exp005). Everything else is
+# labeled 'unvalidated' by the honesty gate. HN one-step is the only backtested cell today.
+_VALIDATED = {"hn": {"grade": "C", "horizon": 1}}
 
 
 @app.post("/v1/rollout")
 def rollout_ep(req: RolloutReq):
     """Multi-step state evolution -> a DISTRIBUTION of futures (audit C.8). Distinct from /predict
-    (one-step calibrated). Honesty gate: a fitted, backtested world makes horizon 1 'validated' and
-    the rollout state-sensitive; otherwise a state-ignoring PriorHead is used and everything is
-    labeled 'unvalidated' with a warning."""
+    (one-step calibrated). Honesty gate: 'validated' only where a backtest exists, else labeled
+    unvalidated with a warning."""
     import time as _t
 
+    from swm.state.factors import build_hn_registry, tag_topic
+    from swm.state.state import Action, WorldState
+    from swm.state.trajectory import rollout as _rollout
+    from swm.state.transition import PriorHead, TransitionModel
+
+    reg = build_hn_registry()
+    model = TransitionModel(reg, PriorHead())          # prior head => unvalidated by construction
     t0 = req.as_of or _t.time()
-    plan = [_make_action(a, t0, i) for i, a in enumerate(req.action_plan)]
-    world = _load_aggregate_world(req.world_id)
-
-    if world is not None:
-        # REAL fitted, state-sensitive transition; horizon 1 carries the backtest grade.
-        from swm.simulation.rollout import simulate
-        grade_letter = world.grade.get("grade")
-        ro = simulate(world.transition, world.pop, plan, n_samples=req.n_samples,
-                      validated_grade=grade_letter if grade_letter not in (None, "ungraded") else None,
-                      validated_horizon=1, domain=req.world_id)
-        head = "fitted state-transition (state genuinely conditions the prediction)"
-    else:
-        from swm.state.factors import build_hn_registry
-        from swm.state.state import WorldState
-        from swm.state.trajectory import rollout as _rollout
-        from swm.state.transition import PriorHead, TransitionModel
-        model = TransitionModel(build_hn_registry(), PriorHead())  # state-IGNORING => unvalidated
-        ro = _rollout(model, WorldState(timestamp=t0), plan, n_samples=req.n_samples)
-        head = "PriorHead (state-ignoring fallback; no fitted model for this world_id)"
-
+    initial = WorldState(timestamp=t0)
+    plan = []
+    for i, a in enumerate(req.action_plan):
+        title = a.get("title", "")
+        plan.append(Action(
+            action_id=f"plan-{i}", actor_id=a.get("actor_id", "anon"),
+            content_features={"title_len": min(1.0, len(title) / 80),
+                              "is_show": 1.0 if title.lower().startswith("show hn") else 0.0,
+                              "is_ask": 1.0 if title.lower().startswith("ask hn") else 0.0,
+                              "is_text": 1.0 if not a.get("domain") else 0.0,
+                              "topic": tag_topic(title)},
+            timing={"hour": a.get("hour", 12), "weekday": a.get("weekday", 2), "ts": t0 + i * 86400},
+            meta={"domain": a.get("domain", ""), "title": title}))
+    v = _VALIDATED.get(req.world_id)
+    ro = _rollout(model, initial, plan, n_samples=req.n_samples,
+                  validated_grade=v["grade"] if v else None,
+                  validated_horizon=v["horizon"] if v else 0, domain=req.world_id)
     return {
         "report_type": ro.report_type,              # always "simulation" (never "prediction")
-        "calibration_grade": ro.calibration_grade,  # "unvalidated" unless a fitted+graded world exists
+        "calibration_grade": ro.calibration_grade,  # "unvalidated" unless backtested
         "warning": ro.warning,
-        "engine": head,
         "world_id": req.world_id, "horizon": ro.steps, "n_samples": ro.n_samples,
         "as_of": t0, "trajectory_distribution": ro.per_step,
         "note": "SIMULATION: a distribution of plausible futures, not a prediction. "
                 "Use /predict for one-step calibrated prediction.",
-    }
-
-
-class SimulateReq(BaseModel):
-    title: str
-    domain: str = ""
-    author_rep: float = 0.0          # as-of author reputation (centered log mean past score)
-    features: dict = {}              # optional LLM-extracted action features
-    n_samples: int = 200
-
-
-def _load_sim_engine():
-    from swm.simulation.engine import HNSimulationEngine
-    p = _MODELS_DIR / "hn_simulation.json"
-    if p.exists():
-        try:
-            return HNSimulationEngine.load(p)
-        except Exception:
-            return None
-    return None
-
-
-@app.post("/v1/simulate")
-def simulate_ep(req: SimulateReq):
-    """REAL multi-step, multi-actor simulation (Phase 6): 8 HN community segments react over steps,
-    world state (score/exposure/social-proof/front-page/novelty) updates each step, and P(hit) is
-    the FRACTION OF SIMULATED TRAJECTORIES that cross — not a classifier over initial features.
-    Returns stepwise state, segment reactions, uncertainty by horizon, and the outcome distribution.
-    Uses the fitted+graded engine (models/hn_simulation.json) when present, else a default engine
-    labeled 'unvalidated'."""
-    import json as _json
-    from pathlib import Path as _P
-
-    from swm.simulation.engine import HNSimulationEngine
-    from swm.simulation.world_rollout import WorldRollout
-    from swm.state.factors import tag_topic
-
-    eng = _load_sim_engine()
-    gp = _MODELS_DIR / "hn_simulation_grade.json"
-    if eng is not None and gp.exists():
-        grade = _json.loads(gp.read_text())
-        validated = True
-    else:
-        eng = eng or HNSimulationEngine()
-        grade = {"grade": "unvalidated", "note": "no fitted engine; qualitative simulation"}
-        validated = False
-
-    topic = tag_topic(req.title)
-    feats = {**req.features, f"topic_{topic}": 1.0,
-             "title_len": min(1.0, len(req.title) / 80),
-             f"cat_{req.features.get('cat', 'Other')}": 1.0}
-    ctx = {"exposure_mult": 1.0, "state_boost": req.author_rep}
-    # one recorded trajectory (stepwise events + segment reactions) + the distribution
-    import random as _r
-    _, st = eng._trajectory(feats, req.author_rep, ctx, _r.Random(0), record=True)
-    ro = WorldRollout(eng).rollout(feats, author_rep=req.author_rep, ctx=ctx, n_samples=req.n_samples)
-    reactions = {}
-    for rx in st.reactions:
-        reactions[rx.actor_id] = reactions.get(rx.actor_id, 0.0) + rx.intensity
-    return {
-        "report_type": "simulation",
-        "calibration_grade": grade.get("grade"),
-        "validated": validated,
-        "title": req.title, "topic": topic,
-        "p_hit": ro["p_hit"], "p_hit_raw": ro["p_hit_raw"],
-        "outcome_distribution_bands": ro["band_probs"],   # [<10,10-39,40-99,100-299,300+]
-        "uncertainty_by_horizon": ro["per_step"],         # per-timestep score interval
-        "final_interval80": ro["final_interval80"],
-        "example_trajectory": {"steps": [snap for snap in [st.snapshot()]],
-                               "segment_upvotes": {k: round(v, 1) for k, v in reactions.items()}},
-        "note": "P(hit) is the fraction of simulated multi-step trajectories that cross the "
-                "front-page cascade — derived from the trajectory distribution, not a classifier.",
     }
 
 

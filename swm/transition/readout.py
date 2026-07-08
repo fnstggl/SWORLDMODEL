@@ -77,15 +77,6 @@ class LogisticReadout:
         contrib = [(names[j], self.w[j] * xs[j]) for j in range(len(names))]
         return sorted(contrib, key=lambda t: abs(t[1]), reverse=True)[:top]
 
-    def to_dict(self) -> dict:
-        return {"w": self.w, "b": self.b, "mu": self._mu, "sd": self._sd, "l2": self.l2}
-
-    @classmethod
-    def from_dict(cls, d: dict) -> "LogisticReadout":
-        m = cls(l2=d.get("l2", 0.1))
-        m.w, m.b, m._mu, m._sd = d["w"], d["b"], d["mu"], d["sd"]
-        return m
-
 
 @dataclass
 class EnsembleReadout:

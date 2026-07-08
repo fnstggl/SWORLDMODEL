@@ -1,24 +1,10 @@
-"""Upworthy Research Archive harness — the interventional benchmark (audit KPI-A). IMPLEMENTED.
+"""Upworthy Research Archive harness — public credibility result (audit B.7, D).
 
-Randomized headline A/B tests, so the observed CTR difference between arms IS the causal effect of the
-headline — choosing one is a real do(x). The harness lives in:
-  - experiments/datasets_upworthy.py       (loader + committed parsed cache)
-  - experiments/exp054_interventional.py    (policy-value / regret + CATE-sign KPI)
+Headline A/B -> predicted CTR distribution; score with CRPS/log-loss/ECE vs realized rates.
+TREAT AS CONTAMINATED (public since 2021): exclude the flagged ~22% (2013-14 randomization bug)
+and pair the headline claim with a fresh post-cutoff corpus. Data: osf.io/jd64p (CC BY 4.0).
 
-Run: python -m experiments.exp054_interventional
-Data (14 MB, gitignored): curl -sSL -o data/upworthy_exploratory.csv https://osf.io/download/3vqmp/
-Contamination caveat (public since 2021): treat as a MECHANISM benchmark (does the model pick the
-causally-better headline), not a leakage-free skill number.
-"""
-from __future__ import annotations
+Stub — see docs/social-world-model-audit.md for the design. Not yet implemented."""
 
-IMPLEMENTED = True
-
-
-def run():
-    from experiments.exp054_interventional import run as _run
-    return _run()
-
-
-if __name__ == "__main__":
-    run()
+#: build-order and design are in docs/social-world-model-audit.md
+IMPLEMENTED = False  # flip to True as this module lands; see the audit for its spec
