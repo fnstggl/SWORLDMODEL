@@ -83,3 +83,31 @@ this proves **proper calibration is the entire game**, which we only possess in 
 
 The most valuable thing the project has produced: history-as-backtest caught the whole simulation edifice
 being worse than useless on breadth — which no amount of component-level validation ever revealed.
+
+---
+
+# Flywheel turn 2 — the re-architected latent forecaster (EXP-091)
+
+Replaced the discriminative readout with a genuine **latent-state simulation**: base-rate anchor + honest
+uncertainty by construction + time-accurate transitions (horizon = real days to resolution; metric questions
+diffuse a grounded value with vol·√H, event questions move latent log-odds by decaying driver shocks). The LLM
+supplies the outside-view base rate, the state, and honest driver strengths — never the outcome; the
+simulation produces P(YES). Re-run on the SAME 660 clean questions:
+
+| | old readout | **latent (re-arch)** | crowd | base |
+|---|---|---|---|---|
+| log-loss (calibrated) | 0.836 | **0.683** | 0.547 | 0.692 |
+| AUC (discrimination) | 0.509 | **0.552** | 0.789 | 0.5 |
+| coin-flips | (0.02 bug) | **0.5** (3/4) | 0.5 | — |
+
+- **The confidently-wrong disease is cured:** calibrated log-loss ≤ base rate (0.68), no longer worse than a
+  coin toss; coin-flips return 0.5; extreme-prediction rate honest.
+- **Discrimination recovered on modelable categories** (real latent state, not confabulation):
+  **crypto AUC 0.68, economy 0.60, election 0.60** — vs weak/noise on culture/geopolitics (small n).
+- **Still below the crowd (0.79).** The remaining gap is grounding: the backtest HUMBLES metric questions
+  (it cannot ground the live current value without leaking), yet crypto still reaches 0.68 AUC — so wiring the
+  live grounder into the metric branch (trust=high on a grounded current value) is the lever to actually beat
+  the crowd on metric questions in live use.
+
+Verdict: honest calibration + real latent state beats confident confabulation, as predicted. The architecture
+is now sound; the frontier is grounding quality + per-domain calibrated elasticities, not more machinery.
