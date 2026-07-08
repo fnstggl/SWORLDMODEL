@@ -1,0 +1,128 @@
+{
+ "pipeline": "question -> DeepSeek compile -> auto-ground high-leverage vars (general router) -> run",
+ "questions": [
+  {
+   "question": "Will the US unemployment rate be above 4.5% twelve months from now?",
+   "mechanism": "generic_scm",
+   "grounded": 5,
+   "n_high_leverage": 5,
+   "grounded_vars": [
+    {
+     "var": "unemployment_rate",
+     "value": 4.1,
+     "sd": 0.2296,
+     "source": "retrieval"
+    },
+    {
+     "var": "gdp_growth",
+     "value": 3.1,
+     "sd": 0.3827,
+     "source": "retrieval"
+    },
+    {
+     "var": "inflation",
+     "value": 2.6,
+     "sd": 0.2296,
+     "source": "retrieval"
+    },
+    {
+     "var": "fed_funds_rate",
+     "value": 4.25,
+     "sd": 0.1913,
+     "source": "retrieval"
+    },
+    {
+     "var": "labor_force_participation",
+     "value": 62.5,
+     "sd": 0.3827,
+     "source": "retrieval"
+    }
+   ],
+   "headline": "see forecast"
+  },
+  {
+   "question": "Will Bitcoin be above $80,000 by the end of next quarter?",
+   "mechanism": "generic_scm",
+   "grounded": 4,
+   "n_high_leverage": 5,
+   "grounded_vars": [
+    {
+     "var": "BTC_price",
+     "value": 61657.785,
+     "sd": 1057.2368,
+     "source": "coinbase:btc_usd"
+    },
+    {
+     "var": "hash_rate",
+     "value": 600.0,
+     "sd": 153.0612,
+     "source": "retrieval"
+    },
+    {
+     "var": "regulatory_sentiment",
+     "value": 0.5,
+     "sd": 0.2296,
+     "source": "retrieval"
+    },
+    {
+     "var": "macro_risk_appetite",
+     "value": 0.6,
+     "sd": 0.2296,
+     "source": "retrieval"
+    }
+   ],
+   "headline": "see forecast"
+  },
+  {
+   "question": "Will US CPI inflation be below 3% at the end of this year?",
+   "mechanism": "generic_scm",
+   "grounded": 7,
+   "n_high_leverage": 8,
+   "grounded_vars": [
+    {
+     "var": "core_cpi_yoy",
+     "value": 3.3,
+     "sd": 0.2296,
+     "source": "retrieval"
+    },
+    {
+     "var": "headline_cpi_yoy",
+     "value": 2.4,
+     "sd": 0.2296,
+     "source": "retrieval"
+    },
+    {
+     "var": "fed_funds_rate",
+     "value": 4.25,
+     "sd": 0.1913,
+     "source": "retrieval"
+    },
+    {
+     "var": "unemployment_rate",
+     "value": 4.1,
+     "sd": 0.2296,
+     "source": "retrieval"
+    },
+    {
+     "var": "wage_growth_yoy",
+     "value": 4.1,
+     "sd": 0.3827,
+     "source": "retrieval"
+    },
+    {
+     "var": "oil_price_wti",
+     "value": 70.5,
+     "sd": 3.8265,
+     "source": "retrieval"
+    },
+    {
+     "var": "housing_rent_yoy",
+     "value": 5.2,
+     "sd": 0.2296,
+     "source": "retrieval"
+    }
+   ],
+   "headline": "see forecast"
+  }
+ ]
+}

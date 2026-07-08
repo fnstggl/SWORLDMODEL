@@ -1,6 +1,86 @@
 # Architecture for the peak — what still needs to change
 
-> **STATE GROUNDING (highest-leverage next step, built — EXP-082).** With weights calibrated, the largest
+> **END-TO-END: auto-grounded simulation is the default (built — EXP-088).** The capstone — the grounder is now
+> wired into the compiler so an arbitrary user question grounds itself. `general_world_model()` is the single
+> front door: question → DeepSeek compiles a structural spec → `WorldModel.simulate` auto-grounds the spec's
+> high-leverage variable VALUES from live evidence (`StateGrounder(default=live_router())` — the general
+> DeepSeek+web engine + Coinbase overlay, resolver routing each variable to a live feed only when one matches)
+> → the calibrated Monte-Carlo runs on the MEASURED world. Live end-to-end run: "recession?" grounded 5/5
+> drivers (unemployment 4.1%, GDP 3.1%, inflation 2.6%, fed funds 4.25%, participation 62.5%); "BTC > $80k?"
+> grounded 4/5 (**BTC $61.7k via the live Coinbase feed**, hash-rate/sentiment via web); "CPI < 3%?" grounded
+> 7/8 (core/headline CPI, fed funds, wages, oil, rents). Genuinely-latent 0-1 drivers honestly stay at their
+> prior; grounding failure never breaks a run. A user asks anything and the simulation runs on the real current
+> world, not the LLM's guessed state — the whole stack (weights → state → dynamics → coverage → live → general)
+> behind one call.
+>
+> **GROUNDING COVERAGE — ground any question across ALL domains (built — EXP-085).** State grounding and rate
+> grounding proved the lever on committed datasets; coverage turns them into a system that grounds an ARBITRARY
+> question. The architecture is two-tier: `swm/api/grounding_sources.py` has TYPED STRUCTURED SOURCES for the
+> precise-numeric domains (macro/FRED, markets, polls, sports, product analytics, civic indicators) — each a
+> `StructuredSource` with variable aliases + an injectable `fetch`/`fetch_series` backend (live API in prod,
+> committed fixture offline) — and `swm/api/retrieval_grounding.py` is a UNIVERSAL RetrievalGrounder (as-of
+> retrieval + a CALIBRATED LLM value-extractor) for the long tail of any domain. A `GroundingRouter` matches
+> each high-leverage variable to the best structured source (distinctive-content-token recall, no spurious
+> generic-word matches; real-embedder opt-in for synonyms) and falls back to retrieval; being a `Grounder` it
+> drops into `StateGrounder(default=router)` (state layer) and its `ground_series` feeds
+> `TransitionOperator.ground_gain` (rate layer). **Result: across 10 domains / 44 high-leverage variables, 96%
+> grounded (29 structured + 13 retrieval, 2 honestly uncovered); the retrieval grounder's CIs are VALIDATED —
+> an overconfident extractor calibrated from 12%→88% coverage toward the 90% nominal; and grounding THROUGH the
+> router reproduces the lift end-to-end — FOMC direction grounded 0.896 vs guessed 0.313 (state), adoption
+> grounded-rate skill +0.71 vs persistence / +0.30 vs pooled (rate).** Coverage means something because the
+> grounded value still lifts.
+>
+> **LIVE grounding — real backends, LLM-inferred matching (built — EXP-086).** The router now grounds the ACTUAL
+> present over live, keyless backends + a real LLM. `swm/api/live_market.py` is a real-time Coinbase source
+> (spot + daily candles → state AND rate grounding; CI = the instrument's own 1-day volatility);
+> `swm/api/live_search.py` is keyless DuckDuckGo/Wikipedia retrieval; `swm/api/live_grounding.py` wires them
+> with a DeepSeek extractor (evidence + current knowledge → value + confidence → calibrated CI, never zero) and
+> — replacing the brittle hardcoded token matcher — an `LLMResolver` that does LLM-INFERRED variable→series
+> matching (handles synonyms/paraphrase a lexical rule can't: "the price of ether" → eth_usd, "SOL/USD spot" →
+> sol_usd). Live run grounded 8/9 real variables across markets/macro/demography/health/energy — 3 from live
+> Coinbase, 5 from the DeepSeek+web extractor, 1 honestly ungrounded. Everything degrades gracefully (no key ⇒
+> lexical + no retrieval; dead endpoint ⇒ fall through, never crash). Production upgrades on the same
+> interfaces: a keyed equities/macro feed (Twelve Data, FRED) and a keyed search API (Tavily/Brave).
+>
+> **DEEPSEEK + WEB IS THE GENERAL ENGINE (validated — EXP-087).** A general world model can't depend on live
+> feeds — most variables have no dedicated API — so `general_router()` (LLM + web, NO feeds) is the workhorse
+> that grounds ANY variable in ANY domain; structured feeds are an optional precision overlay, not a
+> prerequisite. Validated against 22 known-truth variables across 8 domains (geography, science, biology,
+> politics, sports, economics, demography, history): **grounded 22/22, median relative error ~0, 100% within
+> 5%; and the extractor's CIs are calibrated — 0.864 → 0.909 coverage at a fitted 1.5× multiplier (now the
+> shipped default)**. Honest scope: this validates STABLE/known quantities strongly; fast-moving real-time
+> variables (today's rate, a live poll) are where fresh evidence matters most — the confidence→CI mechanism
+> widens them, and a keyed search API is the upgrade for richer as-of evidence.
+>
+> **GROUNDED FORWARD DYNAMICS — the transition operator (fidelity frontier, built — EXP-083).** State
+> grounding fixes the INITIAL CONDITION; a forecast is initial_condition + TRAJECTORY, and the Monte-Carlo had
+> been rolling variables forward with GUESSED drift/volatility — a grounded present + a random-walk future only
+> MATCHES persistence (markets already price the present). `swm/simulation/transition_operator.py` learns the
+> conditional transition Δstate = B·φ(state) + ε from historical trajectories: φ's linear features give a
+> VAR(1) whose off-diagonals are cross-variable COUPLING and diagonal is mean-reversion vs momentum; a
+> quadratic self-basis learns SATURATING (logistic S-curve) drift. Fit by ridge-to-PERSISTENCE (prior B=0 ⇒
+> random walk) with an empirical-Bayes temper, so thin/random-walk data collapses back to persistence (no
+> hallucinated drift) — the honest null. **Result (no-cheat, horizon-growth backtest): on adoption diffusion,
+> forecasting entirely HELD-OUT technologies, skill vs persistence GROWS with horizon +0.24 (1yr) → +0.55
+> (16yr) — the world-model signature (a nowcast's edge decays; a real dynamics model's edge grows). Against a
+> strong momentum baseline (local linear extrapolation) it starts behind and OVERTAKES at the ~10yr crossover
+> (+0.33 by 16yr) once saturation binds — proof it learned the curvature, not just the trend.** Honest boundary:
+> on non-stationary macro LEVELS (FOMC) the operator does NOT beat persistence out-of-sample — train-era
+> mean-reversion doesn't transfer to the post-2010 ZLB/trending regime — exactly the regime the router assigns
+> to a baseline. This is the ROADMAP item-9 signature ("a grounded population is not a martingale"), now
+> measured.
+>
+> **GROUNDED PER-SERIES RATE — dynamics analog of state grounding (built — EXP-084).** The pooled operator
+> lost to local linear-extrapolation short-horizon because it climbed at a POOLED rate. `ground_gain` keeps the
+> transferable pooled SHAPE (saturation curvature) but MEASURES each entity's own growth SCALE from its recent
+> trajectory (a per-series gain γ that projects its recent Δ onto the pooled drift — leakage-free), relaxing
+> back toward the pooled rate over the horizon (blend tuned on TRAIN techs only). **Result: the grounded-rate
+> operator now wins/ties at EVERY horizon on held-out technologies — vs persistence +0.52→+0.79, vs linear
+> extrapolation +0.06→+0.71 (the EXP-083 short-horizon deficit, closed), and vs the pooled operator itself
+> +0.16→+0.37.** Grounding the RATE (not just the level) is the lever that makes a world-model beat both the
+> martingale AND the momentum baseline everywhere.
+>
+> **STATE GROUNDING (highest-leverage step, built — EXP-082).** With weights calibrated, the largest
 > remaining reducible error is that the compiler fills each variable's VALUE (the current state of the world)
 > from an LLM guess — a calibrated weight on a guessed value is still a guess. `swm/api/state_grounding.py`
 > triages a spec, MEASURES each high-leverage variable's as-of value + CI from real evidence (`DataGrounder`
