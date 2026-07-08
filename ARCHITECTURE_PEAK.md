@@ -29,6 +29,16 @@
 > lexical + no retrieval; dead endpoint ⇒ fall through, never crash). Production upgrades on the same
 > interfaces: a keyed equities/macro feed (Twelve Data, FRED) and a keyed search API (Tavily/Brave).
 >
+> **DEEPSEEK + WEB IS THE GENERAL ENGINE (validated — EXP-087).** A general world model can't depend on live
+> feeds — most variables have no dedicated API — so `general_router()` (LLM + web, NO feeds) is the workhorse
+> that grounds ANY variable in ANY domain; structured feeds are an optional precision overlay, not a
+> prerequisite. Validated against 22 known-truth variables across 8 domains (geography, science, biology,
+> politics, sports, economics, demography, history): **grounded 22/22, median relative error ~0, 100% within
+> 5%; and the extractor's CIs are calibrated — 0.864 → 0.909 coverage at a fitted 1.5× multiplier (now the
+> shipped default)**. Honest scope: this validates STABLE/known quantities strongly; fast-moving real-time
+> variables (today's rate, a live poll) are where fresh evidence matters most — the confidence→CI mechanism
+> widens them, and a keyed search API is the upgrade for richer as-of evidence.
+>
 > **GROUNDED FORWARD DYNAMICS — the transition operator (fidelity frontier, built — EXP-083).** State
 > grounding fixes the INITIAL CONDITION; a forecast is initial_condition + TRAJECTORY, and the Monte-Carlo had
 > been rolling variables forward with GUESSED drift/volatility — a grounded present + a random-walk future only
