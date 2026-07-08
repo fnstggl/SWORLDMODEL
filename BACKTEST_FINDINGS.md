@@ -5,7 +5,26 @@ the model cannot have memorized the outcomes), each with the **crowd probability
 baseline. The world-model forecaster: compile the question as-of → simulate → P(YES) (the LLM states variables
 + a mechanism; the *simulation* produces the probability — the decomposition defense against leakage).
 
-## The result: the simulation architecture is noise on open-domain questions
+## UPDATE — two distinct problems, one was a bug
+
+The first headline ("AUC 0.50, log-loss 1.41") was **two problems stacked**:
+
+1. **A measurement bug (now fixed).** The harness read P(YES) as `p_event = P(readout > 0.5)`, which
+   BINARIZES a `calibrated_readout`'s probability (0.7→1.0, 0.5→0.0). This *manufactured* the extremes and
+   caused the coin-flip 0.02 (the readout correctly computes 0.5, but "> 0.5" is false at exactly 0.5 → 0 →
+   clipped to 0.02). Fixing it (use the readout MEAN) **halved overall log-loss 1.41 → 0.84**, dropped extreme
+   predictions **58% → 10%**, and coin-flips now return **0.5**.
+2. **The real, remaining problem: zero discrimination.** After the fix, **AUC is still 0.509** — the model
+   cannot rank YES above NO better than chance. The raw LLM alone discriminates weakly-but-really (0.559); the
+   readout *washes that out* to 0.51. The crowd is 0.789. Calibration can't fix this (it has no signal to
+   calibrate), so every ablation config, temperature-scaled, only reaches ≈ base-rate and none beats the crowd.
+
+Root cause of (2): for open-domain questions the LLM **invents** variables and elasticities with **zero
+declared uncertainty** (`weight_sd=0, est_sd=0`), so the "simulation" is a static logistic over confabulated
+features taken as certain — no latent state, no transitions, no outside-view anchor, no honest ignorance. See
+the diagnosis at the bottom.
+
+## The result (pre-fix): the simulation architecture is noise on open-domain questions
 
 | Forecaster | log-loss | AUC (discrimination) | skill vs crowd |
 |---|---|---|---|
