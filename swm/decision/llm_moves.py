@@ -24,7 +24,6 @@ import json
 import re
 from dataclasses import dataclass, field
 
-from swm.decision.semantic_critic import strip_em_dashes
 from swm.decision.strategy_scorer import MESSAGE_VARS
 from swm.variables.schema import spec
 
@@ -96,9 +95,9 @@ _ANTI_SLOP = ("Write like a sharp, busy human who respects the reader's time. Ea
               "ecosystem, stack, margin, moat, flywheel), marketing adjectives (exciting, innovative, "
               "revolutionary, game-changing), fake humility ('I'll be brief', 'I'll leave you alone', "
               "'quick question', 'I know you're busy'), name-dropping the reader's own quotes back at them, "
-              "and vague metaphors that don't literally parse. Do NOT use em dashes or en dashes (— –) — "
-              "use a comma or a period instead; they read as AI writing and people dislike them. Plain, "
-              "concrete, specific.")
+              "and vague metaphors that don't literally parse. Avoid em dashes and en dashes (— –) in the "
+              "body: a comma or a period almost always reads better and overusing dashes reads as AI "
+              "writing (a dash in a sign-off like '— Beckett' is fine). Plain, concrete, specific.")
 
 
 def _extract_list(text: str) -> list:
@@ -144,7 +143,7 @@ def llm_proposer(chat_fn, *, recipient_notes: str = "", sender: SenderBrief | No
             f"Return ONLY a JSON array of {k} strings, each a single option for the {slot}. No prose.",
         ])
         try:
-            options = [strip_em_dashes(o) for o in _extract_list(chat_fn(prompt))]
+            options = _extract_list(chat_fn(prompt))
         except Exception:
             options = []
         # allow an empty option for optional slots (brevity), as the offline bank does
@@ -173,7 +172,7 @@ def llm_rewriter(chat_fn, *, recipient_notes: str = "", sender: SenderBrief | No
         ])
         try:
             out = chat_fn(prompt).strip().strip('"').strip()
-            return strip_em_dashes(out.split("\n")[0].strip()) if out else sentence
+            return out.split("\n")[0].strip() if out else sentence
         except Exception:
             return sentence
     return rewrite

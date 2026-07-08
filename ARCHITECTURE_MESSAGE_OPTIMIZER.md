@@ -130,9 +130,11 @@ the objective becomes data-calibrated and the result reports the real grade inst
 Validated as an **estimator** on synthetic data with known ground truth (recovers the weights, calibrated on
 held-out data) — a real grade needs real reply logs, the same stance as `IndividualWorld`.
 
-Separately, **all output is em-dash-free**: LLMs structurally overuse em dashes and users dislike them, so
-the writer is instructed against them, the critic penalizes them, and `strip_em_dashes` deterministically
-removes any that survive — in every message context.
+Separately, **body em dashes are discouraged, not banned**: LLMs structurally overuse em dashes and users
+dislike them, so the writer is instructed to prefer commas/periods and the critic applies a soft naturalness
+penalty to body dashes — which biases the search toward dash-free text but lets a dash survive when it's
+genuinely the best option (far less often than an LLM alone would use one). A **sign-off dash ("— Beckett")
+is exempt**. `strip_em_dashes` remains as an opt-in hard-guarantee utility but is not applied by default.
 
 ## Pipeline & map to the repo
 
