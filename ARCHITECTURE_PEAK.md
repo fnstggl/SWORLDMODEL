@@ -1,5 +1,22 @@
 # Architecture for the peak — what still needs to change
 
+> **GROUNDING COVERAGE — ground any question across ALL domains (built — EXP-085).** State grounding and rate
+> grounding proved the lever on committed datasets; coverage turns them into a system that grounds an ARBITRARY
+> question. The architecture is two-tier: `swm/api/grounding_sources.py` has TYPED STRUCTURED SOURCES for the
+> precise-numeric domains (macro/FRED, markets, polls, sports, product analytics, civic indicators) — each a
+> `StructuredSource` with variable aliases + an injectable `fetch`/`fetch_series` backend (live API in prod,
+> committed fixture offline) — and `swm/api/retrieval_grounding.py` is a UNIVERSAL RetrievalGrounder (as-of
+> retrieval + a CALIBRATED LLM value-extractor) for the long tail of any domain. A `GroundingRouter` matches
+> each high-leverage variable to the best structured source (distinctive-content-token recall, no spurious
+> generic-word matches; real-embedder opt-in for synonyms) and falls back to retrieval; being a `Grounder` it
+> drops into `StateGrounder(default=router)` (state layer) and its `ground_series` feeds
+> `TransitionOperator.ground_gain` (rate layer). **Result: across 10 domains / 44 high-leverage variables, 96%
+> grounded (29 structured + 13 retrieval, 2 honestly uncovered); the retrieval grounder's CIs are VALIDATED —
+> an overconfident extractor calibrated from 12%→88% coverage toward the 90% nominal; and grounding THROUGH the
+> router reproduces the lift end-to-end — FOMC direction grounded 0.896 vs guessed 0.313 (state), adoption
+> grounded-rate skill +0.71 vs persistence / +0.30 vs pooled (rate).** Coverage means something because the
+> grounded value still lifts.
+>
 > **GROUNDED FORWARD DYNAMICS — the transition operator (fidelity frontier, built — EXP-083).** State
 > grounding fixes the INITIAL CONDITION; a forecast is initial_condition + TRAJECTORY, and the Monte-Carlo had
 > been rolling variables forward with GUESSED drift/volatility — a grounded present + a random-walk future only
