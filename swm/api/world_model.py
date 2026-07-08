@@ -47,7 +47,24 @@ class WorldModel:
         return ValidatingCompiler(self.compiler, repair_fn=self.repair_fn)
 
     def simulate(self, question: str, *, context: str = "", as_of: str = "", key: str = None,
-                 n: int = None) -> dict:
+                 n: int = None, answers=None, events=None, b0: float = None, horizon: float = None,
+                 continuous_step=None, actions=None) -> dict:
+        """One call. If a future-event `calendar` is available (passed as `events`, or an `EventCalendar`),
+        this becomes a FORWARD question: roll the belief through sampled event trajectories and return the
+        branching distribution + pivotal forks + (optional) best action — never a false-confident point,
+        never abstention. Otherwise the compiler path runs; a question that turns on a SPECIFIC individual
+        first assembles a dossier and ASKS the user when evidence is thin (answering re-invokes with
+        `answers=` and auto-runs)."""
+        # RESUME: answers to a previous needs_user_context ask are folded into the context, so the SAME call
+        # auto-runs the full simulation (no separate "run" step — answering IS the trigger).
+        if answers:
+            context = (_format_answers(answers) + ("\n" + context if context else "")).strip()
+
+        if events is not None:                            # FORWARD question -> branching-realities rollout
+            return self.simulate_forward(question, events, context=context, as_of=as_of, b0=b0,
+                                         horizon=horizon, continuous_step=continuous_step,
+                                         actions=actions, n=n)
+
         # PERSON INTAKE: if the question turns on a specific individual, assemble a dossier; ASK the user when
         # the evidence is too thin (never fabricate a person's disposition), else fold the dossier into context.
         person = None
@@ -59,6 +76,7 @@ class WorldModel:
             if pf.get("mode") == "ask":
                 return {"question": question, "mode": "needs_user_context", "person": pf["person"],
                         "questions": pf["questions"], "forecast": None, "grounding": None,
+                        "resume_hint": "call simulate(question, answers=<your answers>) to auto-run",
                         "headline": f"To simulate this I need your read on {pf['person']} — "
                                     f"{pf.get('reason', 'not enough public evidence to infer honestly')}."}
             if pf.get("person"):
@@ -104,6 +122,54 @@ class WorldModel:
                          "equations": spec.equations, "outcome": spec.outcome,
                          "horizon": spec.horizon, "rationale": spec.rationale}}
 
+    def simulate_forward(self, question: str, events, *, context: str = "", as_of: str = "",
+                         b0: float = None, horizon: float = None, continuous_step=None, actions=None,
+                         n: int = None) -> dict:
+        """Forward question via the branching-realities rollout. `events` may be an `EventCalendar`, a list
+        of structured event records, or a callable `build(question, context, horizon) -> EventCalendar`
+        (e.g. `EventImpactJudge.build`). Returns the branching distribution + pivotal forks + reducible/
+        irreducible split, and — if `actions` (a list of `(label, apply_fn(b0, calendar)->(b0, calendar))`)
+        is given — the best action by P(desired outcome). Never abstains: past the horizon it returns the
+        full branching distribution and labels which forks are reducible vs irreducible."""
+        from swm.simulation.branching_rollout import forward_forecast
+        from swm.transition.future_events import EventCalendar, events_from_records
+
+        if b0 is None and self.retriever is not None:
+            b0 = _retrieved_belief(self.retriever, question, as_of)
+        b0 = 0.5 if b0 is None else float(b0)
+
+        if callable(getattr(events, "build", None)):
+            horizon = horizon or 6.0
+            calendar = events.build(question, context, horizon)
+        elif isinstance(events, EventCalendar):
+            calendar = events
+        else:
+            calendar = events_from_records(list(events))
+        if horizon is None:
+            horizon = max([e.time for e in calendar.events], default=6.0)
+
+        nn = n or self.n
+        base = forward_forecast(b0, horizon, calendar, continuous_step=continuous_step, n=nn)
+
+        best = None
+        if actions:
+            scored = []
+            for label, apply_fn in actions:
+                ab0, acal = apply_fn(b0, calendar)
+                af = forward_forecast(ab0, horizon, acal, continuous_step=continuous_step, n=nn)
+                scored.append({"action": label, "p_event": af["p_event"],
+                               "interval_80": af["interval_80"], "pivotal_branches": af["pivotal_branches"]})
+            scored.sort(key=lambda r: -r["p_event"])
+            do_nothing = next((s for s in scored if s["action"] in ("do_nothing", "none", "baseline")), None)
+            best = {"best": scored[0], "ranking": scored,
+                    "lift_over_do_nothing": (round(scored[0]["p_event"] - do_nothing["p_event"], 4)
+                                             if do_nothing else None)}
+
+        return {"question": question, "mechanism": "branching", "b0": round(b0, 4), "horizon": horizon,
+                "forecast": base, "forecastable": base["reducible_frac"] >= 0.1,
+                "best_action": best, "headline": base["headline"],
+                "events": [{"name": e.name, "time": e.time, "labels": e.labels()} for e in calendar.events]}
+
 
 def general_world_model(*, compile_fn=None, n=8000, ground=True, validate=True, person=True) -> WorldModel:
     """The recommended front door: compile ANY question → auto-GROUND its high-leverage variable values from
@@ -132,6 +198,37 @@ def general_world_model(*, compile_fn=None, n=8000, ground=True, validate=True, 
         intake = build_person_intake()                    # None if no LLM key -> front door behaves as before
     return WorldModel(compiler=StructuralCompiler(compile_fn), n=n, validate=validate, grounder=grounder,
                       person_intake=intake)
+
+
+def _format_answers(answers) -> str:
+    """Turn a user's answers to the intake questions into a context block the dossier can consume. Accepts a
+    dict {question: answer}, a list of answers (or [question, answer] pairs), or a plain string."""
+    if isinstance(answers, str):
+        return answers.strip()
+    if isinstance(answers, dict):
+        return "\n".join(f"{q} — {a}" for q, a in answers.items() if str(a).strip())
+    if isinstance(answers, (list, tuple)):
+        parts = []
+        for item in answers:
+            if isinstance(item, (list, tuple)) and len(item) == 2:
+                parts.append(f"{item[0]} — {item[1]}")
+            elif str(item).strip():
+                parts.append(str(item).strip())
+        return "\n".join(parts)
+    return str(answers or "").strip()
+
+
+def _retrieved_belief(retriever, question: str, as_of: str):
+    """Best-effort current belief (market/poll price) from retrieval; None if unavailable."""
+    try:
+        ctx = retriever.retrieve(question, as_of=as_of)
+        for it in getattr(ctx, "items", []) or []:
+            sc = getattr(it, "score", None)
+            if isinstance(sc, (int, float)) and 0.0 <= sc <= 1.0:
+                return float(sc)
+    except Exception:
+        pass
+    return None
 
 
 def _forecastable(forecast: dict):
