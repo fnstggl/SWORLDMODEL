@@ -111,3 +111,34 @@ simulation produces P(YES). Re-run on the SAME 660 clean questions:
 
 Verdict: honest calibration + real latent state beats confident confabulation, as predicted. The architecture
 is now sound; the frontier is grounding quality + per-domain calibrated elasticities, not more machinery.
+
+---
+
+# Flywheel turn 3 — full experimentation run (EXP-092/093)
+
+Tried multiple first-principles levers on the same 660 questions; kept only what genuinely helped.
+
+**What worked — as-of STATE grounding (kept).** Leakage-free: fetch the price known ON the question's date
+(Coinbase historical candles) + the asset's realised volatility, trust=high. Sharpened the modelable slice:
+**crypto AUC 0.68 (humbled) → 0.79 (grounded).** The lever is real; the metric branch now simulates the actual
+as-of price path.
+
+**What was marginal — ensembling.** `grounded+direct` (latent + direct-LLM) is the best model-only config
+(+0.02 AUC overall); mixing the model INTO the crowd is WORSE than the crowd alone → defer where a crowd exists.
+
+**What did NOT work — as-of NEWS (information parity via GDELT).** GDELT covers only ~4% of these niche
+prediction-market questions. Public news archives do not contain the specific information the market
+aggregates, so news cannot give parity here.
+
+**The verdict on the founding thesis** ("same info + real simulation beats biased human instinct"):
+- We still do NOT beat the crowd — even grounded, crypto is 0.79 vs the crowd's **0.90**.
+- The reason is precise: we do NOT actually have the same information. For NICHE questions the resolving
+  information is specific/insider/community knowledge that is in no public archive; for LIQUID crypto the
+  market prices the public state efficiently and reads more than price (flow, sentiment).
+- Same-information-superior-computation therefore holds only where information is PUBLIC **and** the market is
+  INEFFICIENT — the modelable-public-state regime (macro series, diffusions, under-traded questions), not
+  liquid markets aggregating private knowledge.
+
+Net: the architecture is sound and honestly calibrated, and as-of state grounding gives real signal where the
+world is public + modelable. Beating a good prediction market is not a machinery problem — it is an
+information-access problem, and for most market questions the market's information is not publicly obtainable.
