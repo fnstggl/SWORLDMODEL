@@ -342,6 +342,21 @@ turn these into "ask anything, simulate forward, choose the best action."** The 
 produces calibrated distributions over horizons; what remains is the front door (parse a question →
 construct state) and the back door (outcome distribution → best action).
 
+**EXP-074 — episodic memory + reflection: situation-conditioned recall beats the global persona.** The
+individual regime carried a person as a global average (persona + state); this adds the Generative-Agents
+recall layer (`swm/memory/`): an episodic stream with recency × importance × relevance retrieval, generative
+reflection that mints reusable abstractions fed back into retrieval, recency-decayed persona synthesis
+(`deep_inference`), and a retrieval-augmented `response_fn` (Beta-Binomial shrinkage toward the person's own
+rate — self-limiting, calibrated by construction). Leakage-safe (strict as-of, `assert_no_leak`). Scored on
+held-out next behavior: (A) history-driven regime — retrieval beats the global persona **+0.055 skill** (log-
+loss 0.681→0.644, better Brier); (B) recency — a *calibrated* half-life (hl=12) beats flat and over-decay
+(hl=3) hurts (the Law-2 lesson); (C) honest negative — where the MESSAGE (not the person) drives the outcome,
+retrieval correctly finds no exploitable signal (self-limiting −0.036), reproducing EXP-069's "persona models
+WHO, not message-driven outcomes"; (D) persona synthesis of a drifting trait tracks the recent value (0.50→
+0.74) vs flat's stale average. ⇒ For the single-individual product (reply/churn/adherence) recall is a real
+lift; next is re-earning it on real threaded reply data through the same harness. `swm/memory/{embeddings,
+memory,retrieval_response}.py`; 19 new tests; full suite 349 (+ the optional-`api` fastapi test).
+
 **EXP-073 — the best-message ceiling + DeepSeek estimation (answering "why not 90-95%?").** Measured on 64 real mixed-outcome CMV cases (leave-one-OP-out), DeepSeek re-scored all 138 args on richer persuasion dimensions. Findings: (1) 90-95% is NOT achievable -- even overfitting all data with rich features tops out ~0.83, so ~17% of "will THIS message flip THIS person" is genuinely irreducible; (2) real headroom exists -- the ceiling ROSE 0.75->0.83 with DeepSeek features, so better estimation exposes more reducible signal; (3) the bottleneck is DATA not the model -- richer features raised the ceiling but NOT leave-one-out (0.656), because 138 examples is too few to learn an 18-feature mapping. Immediate win: DeepSeek's holistic judgment ranked directly beats the trained pipeline (0.672 vs 0.656) with ZERO training (= the InterventionSelector via the stronger backend). Path to genuinely better: more data (full CMV corpus + more datasets) to reach the ~0.83 ceiling, and chase higher-ceiling mechanisms. Validates the user's more-data+DeepSeek plan; honest target ~0.80 on persuasion, not 0.95. swm/api/deepseek_backend.py wired as default backend.
 
 **EXP-072 — real contagion/tipping test: the coupled dynamic FINALLY beats simple baselines.** The regime

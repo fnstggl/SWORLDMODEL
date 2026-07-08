@@ -61,9 +61,16 @@ Reports: `experiments/exp008_general_swm_gap_audit.md` (what's real vs stub),
 retrieval close the market gap? multi-step calibration?) are **measured, not asserted** — and where
 the world model does *not* beat the baseline, the reports say so.
 
+- **Episodic memory + reflection** (`swm/memory/`, EXP-074): the situation-conditioned recall layer for the
+  individual regime — an episodic stream with recency × importance × relevance retrieval (Generative-Agents
+  style), generative reflection that mints reusable abstractions, recency-decayed persona synthesis, and a
+  retrieval-augmented `response_fn` (Beta-Binomial shrinkage toward the person's own rate). Beats the global
+  persona on held-out history-driven behavior (+0.055 skill), leakage-safe, and self-limiting where the
+  message (not the person) drives the outcome.
+
 Remaining stubs (design-only): `swm/transition/mechanistic.py`, `swm/transition/llm_rollout.py`,
 `swm/graph/diffusion.py` (superseded by `swm/transition/diffusion.py`), `swm/inference/filter.py`,
-`swm/entities/embeddings.py`, `swm/memory/memory.py`.
+`swm/entities/embeddings.py`.
 
 See the audit for the full literature map, data-acquisition and evaluation plans, wedge specs, API
 spec, competitive analysis, moats, and a brutal critique of why this probably fails and how to
