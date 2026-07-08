@@ -399,6 +399,37 @@ turn these into "ask anything, simulate forward, choose the best action."** The 
 produces calibrated distributions over horizons; what remains is the front door (parse a question →
 construct state) and the back door (outcome distribution → best action).
 
+**EXP-074 — episodic memory + reflection: situation-conditioned recall beats the global persona.** The
+individual regime carried a person as a global average (persona + state); this adds the Generative-Agents
+recall layer (`swm/memory/`): an episodic stream with recency × importance × relevance retrieval, generative
+reflection that mints reusable abstractions fed back into retrieval, recency-decayed persona synthesis
+(`deep_inference`), and a retrieval-augmented `response_fn` (Beta-Binomial shrinkage toward the person's own
+rate — self-limiting, calibrated by construction). Leakage-safe (strict as-of, `assert_no_leak`). Scored on
+held-out next behavior: (A) history-driven regime — retrieval beats the global persona **+0.055 skill** (log-
+loss 0.681→0.644, better Brier); (B) recency — a *calibrated* half-life (hl=12) beats flat and over-decay
+(hl=3) hurts (the Law-2 lesson); (C) honest negative — where the MESSAGE (not the person) drives the outcome,
+retrieval correctly finds no exploitable signal (self-limiting −0.036), reproducing EXP-069's "persona models
+WHO, not message-driven outcomes"; (D) persona synthesis of a drifting trait tracks the recent value (0.50→
+0.74) vs flat's stale average. ⇒ For the single-individual product (reply/churn/adherence) recall is a real
+lift; next is re-earning it on real threaded reply data through the same harness. `swm/memory/{embeddings,
+memory,retrieval_response}.py`; 19 new tests; full suite 349 (+ the optional-`api` fastapi test).
+
+**EXP-073 — the best-message ceiling + DeepSeek estimation (answering "why not 90-95%?").** Measured on 64 real mixed-outcome CMV cases (leave-one-OP-out), DeepSeek re-scored all 138 args on richer persuasion dimensions. Findings: (1) 90-95% is NOT achievable -- even overfitting all data with rich features tops out ~0.83, so ~17% of "will THIS message flip THIS person" is genuinely irreducible; (2) real headroom exists -- the ceiling ROSE 0.75->0.83 with DeepSeek features, so better estimation exposes more reducible signal; (3) the bottleneck is DATA not the model -- richer features raised the ceiling but NOT leave-one-out (0.656), because 138 examples is too few to learn an 18-feature mapping. Immediate win: DeepSeek's holistic judgment ranked directly beats the trained pipeline (0.672 vs 0.656) with ZERO training (= the InterventionSelector via the stronger backend). Path to genuinely better: more data (full CMV corpus + more datasets) to reach the ~0.83 ceiling, and chase higher-ceiling mechanisms. Validates the user's more-data+DeepSeek plan; honest target ~0.80 on persuasion, not 0.95. swm/api/deepseek_backend.py wired as default backend.
+
+**EXP-074–077 — the data-scaling program: the product KPI at 47x scale + a second domain, and the honest ceiling.** Pulled the FULL paired CMV corpus (4,263 pairs, 31x) and reconstructed per-OP candidate sets at 47x scale (3,051 OPs / 8,106 args), added a second non-debate domain (2,595 Upworthy headline A/B tests, real clicks), trained the learned readout (pure-python logistic, CPU-only) at increasing scales — leakage-free, split by OP/test. Findings: (1) **the KPI framing decides everything** — the academic MATCHED-PAIR task (two args matched on quality, one won) is near-irreducible (lexical 0.60, DeepSeek zero-shot 0.53 ≈ chance; EXP-074), but the PRODUCT task (pick the best of several DIFFERENT candidate messages; EXP-075) climbs with data 0.55→0.63 (+0.115 over random) and holds at scale — the 64-OP number was data-starved, not the ceiling. (2) **0.83 was a mirage**: EXP-076 extracted DeepSeek rich features for all 1,778 args of a 450/200-OP held-out split (coverage guard added after a partial-extraction bug produced a spurious 0.76) — on held-out, DeepSeek features 0.615 and the LLM's holistic judgment used directly with ZERO training 0.640 (best, +0.085 over lexical, more data-efficient), but this lands AT the lexical plateau (~0.63), NOT toward 0.83 — the EXP-073 in-sample 0.83 was overfit; the honest held-out ceiling for best-CMV-argument is ~0.64, and the LLM's direct judgment already reaches it. (3) **the engine is GENERAL** (EXP-077): same recipe transfers to viral-click headlines and climbs with data, but lift is modest (+0.037) — CTR is closer to irreducible (Upworthy's own point), a second measurement of the same law. Net: more data was the right GPU-free lever; the strongest lever is the LLM's holistic judgment (InterventionSelector via the stronger backend); the honest target is "beat baseline by the recoverable margin" (real but modest, domain-specific), not a fixed 0.9. Report: experiments/exp074_077_data_scaling.md. Caches rebuild via experiments/build_scaling_caches.py (public ConvoKit + OSF, no key).
+
+**EXP-072 — real contagion/tipping test: the coupled dynamic FINALLY beats simple baselines.** The regime
+EXP-070/071 predicted a shared-world model would win: strong endogenous feedback + weak simple baselines.
+Real SSA baby-name shares (481 names, 1880-2008 — pure imitation-driven fashion cascades), forecast H=10yr
+ahead, leakage-free. Models: persistence, trend, and CONTAGION (coupled bandwagon+saturation: growth dragged
+down by its own level → rise, peak, reverse; 2 params fit on train names, scored on test names). Result:
+**at TURNING POINTS (near peak, n=1083) contagion MAE 0.152 beats persistence 0.264 and trend 0.570 — +42%
+skill** — the first real-data case where a coupled non-separable dynamic substantially and cleanly beats the
+simple baselines. Overall +9%. Honestly loses on STABLE (trend better) and RISING (persistence safest) — not
+a universal win, the right tool specifically in the tipping regime. Closes the through-line: SCOTUS/FOMC
+coupling ties (strong simple baselines), contagion coupling WINS (weak baselines + genuine cascade) — the
+complete measured answer to WHEN the shared-world machinery beats separate models. 3 tests; data cached.
+
 **EXP-071 — environment→individuals→institution on REAL FOMC data (the substrate's next coupling, scored).**
 The coupling EXP-070 pointed to, on real FRED data (FEDFUNDS/CPI/UNRATE, 1985-2026, 494 months, leakage-free,
 40% holdout). Macro pressure → members' desired policy → committee vote → rate move. Three honest findings:

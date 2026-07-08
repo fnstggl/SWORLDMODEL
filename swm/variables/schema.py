@@ -33,8 +33,11 @@ PLATFORM = "platform"
 MESSAGE_FIT = "message_fit"
 PERSONA = "persona"        # deep stable traits inferred from a person's writing history (the "interview")
 
-# provenance ranks (higher = more trusted); used to resolve conflicts and weight the readout
-PROVENANCE_RANK = {"user": 3, "data": 3, "llm": 2, "heuristic": 1, "prior": 0}
+# provenance ranks (higher = more trusted); used to resolve conflicts and weight the readout.
+# `web` = observed public behavior/statements about the entity, gathered online (public figures). It
+# ranks BELOW your own interaction logs (`data`) and provided facts (`user`) — it is real evidence,
+# not a private log — but ABOVE a bare `llm` prior, because it is grounded in cited external signal.
+PROVENANCE_RANK = {"user": 4, "data": 4, "web": 3, "llm": 2, "heuristic": 1, "prior": 0}
 
 
 @dataclass(frozen=True)
@@ -43,7 +46,7 @@ class VariableSpec:
     category: str
     description: str
     signed: bool = False          # False: [0,1]; True: [-1,1] (a stance/valence axis)
-    allowed_provenance: tuple = ("data", "user", "llm", "heuristic", "prior")
+    allowed_provenance: tuple = ("data", "user", "web", "llm", "heuristic", "prior")
     default: float = 0.5
     prior_confidence: float = 0.15   # confidence of the population prior when nothing is known
 
@@ -88,6 +91,15 @@ _SPECS: list[VariableSpec] = [
     VariableSpec("pushiness", MESSAGE_FIT, "how aggressive/salesy (suppresses response)"),
     VariableSpec("ask_directness", MESSAGE_FIT, "explicit specific ask vs vague"),
     VariableSpec("length_fit", MESSAGE_FIT, "message length vs their inferred preference"),
+    # content-stance choices the SENDER controls (the message optimizer searches over these). Their
+    # effect is recipient-conditioned: credential-signaling flips sign against a prestige-skeptic,
+    # a contrarian pitch pays off with a contrarian recipient (see swm/decision/strategy_scorer.py).
+    VariableSpec("credential_signaling", MESSAGE_FIT, "how much the message parades status/credentials",
+                 default=0.3),
+    VariableSpec("contrarian_pitch", MESSAGE_FIT, "how non-consensus / against-the-grain the thesis is",
+                 default=0.3),
+    VariableSpec("secret_density", MESSAGE_FIT, "presence of a specific, non-obvious claim ('a secret')",
+                 default=0.3),
     # PERSONA — the deep, stable traits a person's WRITING HISTORY reveals (our scalable analog of the
     # 2-hour interview in Generative-Agent SOTA). Inferred multi-pass over the as-of corpus; confidence
     # grows with corpus depth + internal consistency. These are the "everything we model about them".

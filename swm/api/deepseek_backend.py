@@ -1,0 +1,46 @@
+"""DeepSeek LLM backend — the default production model for the compiler and the LLM judges.
+
+Stronger than the free Qwen path used in the earlier experiments (it picks mechanisms and estimates
+variables more reliably). Same pluggable `fn(prompt) -> text` contract as `hf_backend.hf_chat_fn` and the
+`anthropic_*` backends, so it drops into `StructuralCompiler`, the semantic judges, the persona inference,
+etc. The API key is read from the environment ONLY (never stored, never logged); calls are OpenAI-compatible.
+"""
+from __future__ import annotations
+
+import json
+import os
+import urllib.request
+
+DEEPSEEK_URL = "https://api.deepseek.com/chat/completions"
+
+
+def deepseek_chat_fn(model: str = "deepseek-chat", *, system: str = "", max_tokens: int = 800,
+                     temperature: float = 0.0):
+    """Return a callable(prompt) -> text using the DeepSeek API. Reads DEEPSEEK_API_KEY from env only.
+    model: 'deepseek-chat' (flagship V3 chat) or 'deepseek-reasoner' (R1)."""
+    key = os.environ.get("DEEPSEEK_API_KEY", "")
+
+    def fn(prompt: str) -> str:
+        msgs = ([{"role": "system", "content": system}] if system else []) + \
+               [{"role": "user", "content": prompt}]
+        body = json.dumps({"model": model, "messages": msgs, "max_tokens": max_tokens,
+                           "temperature": temperature}).encode()
+        req = urllib.request.Request(DEEPSEEK_URL, data=body,
+                                     headers={"Authorization": f"Bearer {key}",
+                                              "Content-Type": "application/json"})
+        with urllib.request.urlopen(req, timeout=120) as r:
+            data = json.loads(r.read())
+        return data["choices"][0]["message"]["content"]
+    return fn
+
+
+def default_chat_fn(*, system: str = "", max_tokens: int = 800, temperature: float = 0.0):
+    """The standard backend selector, used going forward: DeepSeek if its key is set, else the HF router
+    (Qwen), else None (callers fall back to their cached/committed judgments). One place to change the
+    production model."""
+    if os.environ.get("DEEPSEEK_API_KEY"):
+        return deepseek_chat_fn(system=system, max_tokens=max_tokens, temperature=temperature)
+    if os.environ.get("HF_TOKEN"):
+        from swm.api.hf_backend import hf_chat_fn
+        return hf_chat_fn(system=system, max_tokens=max_tokens, temperature=temperature)
+    return None

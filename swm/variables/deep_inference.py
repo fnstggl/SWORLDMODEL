@@ -48,11 +48,23 @@ def depth_factor(n: int, tau: float = _DEPTH_TAU) -> float:
     return 1.0 - math.exp(-max(0, n) / tau) if n > 0 else 0.0
 
 
+def recency_weight(ts, now, half_life) -> float:
+    """Exponential time-decay of a document's weight toward `now`: a doc `half_life` time-units old counts
+    half as much as a fresh one. People DRIFT — a persona trait from three years ago should not weigh the
+    same as last week. Returns 1.0 (no decay) whenever timing is unavailable or disabled, so the engine is
+    exactly backward-compatible when timestamps/half_life are not supplied."""
+    if half_life is None or half_life <= 0 or ts is None or now is None:
+        return 1.0
+    age = max(0.0, float(now) - float(ts))
+    return 0.5 ** (age / float(half_life))
+
+
 @dataclass
 class DeepInferenceEngine:
     """Aggregates per-document persona signals into an as-of DeepPersona for any prefix of a corpus."""
     deep_infer_fn: object = None            # optional callable(doc_text) -> per-doc signal dict
     tau: float = _DEPTH_TAU
+    half_life: float = None                 # persona-trait recency half-life (timestamp units); None = off
 
     def per_doc(self, text: str) -> dict:
         """Pass A for one document. Returns {trait: {"value":0..1|-1..1, "salience":0..1}}.
@@ -64,16 +76,25 @@ class DeepInferenceEngine:
                 return {}
         return _lexical_persona(text)
 
-    def synthesize(self, doc_signals: list[dict]) -> dict:
+    def synthesize(self, doc_signals: list[dict], *, timestamps: list = None, now=None,
+                   half_life: float = None) -> dict:
         """Passes B+C. doc_signals: list (as-of order) of per-doc signal dicts. Returns a persona dict
-        {trait: {"value":.., "confidence":.., "evidence":..}} routable through VariableMap llm_inference."""
+        {trait: {"value":.., "confidence":.., "evidence":..}} routable through VariableMap llm_inference.
+
+        Each document's contribution is weighted by `salience × recency`: recency is an exponential decay
+        toward `now` at `half_life` (falling back to `self.half_life`). When no timestamps/half_life are
+        supplied the recency weight is 1.0 and behavior is identical to the salience-only version — so this
+        is a strict, backward-compatible extension. Recency shifts the trait VALUE toward recent evidence
+        (people drift); depth/consistency still set CONFIDENCE, so more history is still more certain."""
         persona = {}
         n = len(doc_signals)
         if n == 0:
             return persona
+        hl = half_life if half_life is not None else self.half_life
+        rw = [recency_weight(timestamps[i] if timestamps else None, now, hl) for i in range(n)]
         for trait in PERSONA_VARS:
-            vals, sals = [], []
-            for sig in doc_signals:
+            vals, weights = [], []
+            for i, sig in enumerate(doc_signals):
                 if trait in sig:
                     payload = sig[trait]
                     if isinstance(payload, dict):
@@ -81,13 +102,13 @@ class DeepInferenceEngine:
                     else:
                         v = payload; s = 0.5
                     if v is not None:
-                        vals.append(float(v)); sals.append(max(1e-3, s))
+                        vals.append(float(v)); weights.append(max(1e-3, s) * max(1e-6, rw[i]))
             if not vals:
                 continue
-            sw = sum(sals)
-            mean = sum(v * s for v, s in zip(vals, sals)) / sw
-            # Pass C: consistency = 1 - normalized spread of the (salient) evidence
-            var = sum(s * (v - mean) ** 2 for v, s in zip(vals, sals)) / sw
+            sw = sum(weights)
+            mean = sum(v * w for v, w in zip(vals, weights)) / sw
+            # Pass C: consistency = 1 - normalized spread of the (weighted) evidence
+            var = sum(w * (v - mean) ** 2 for v, w in zip(vals, weights)) / sw
             signed = spec(trait).signed
             spread_scale = 1.0 if signed else 0.5        # max meaningful sd on the trait's range
             consistency = max(0.0, 1.0 - math.sqrt(var) / spread_scale)
@@ -97,9 +118,9 @@ class DeepInferenceEngine:
                               "evidence": f"{eff_n} docs, consistency {consistency:.2f}"}
         return persona
 
-    def infer_persona(self, corpus_texts: list[str]) -> dict:
+    def infer_persona(self, corpus_texts: list[str], *, timestamps: list = None, now=None) -> dict:
         """Convenience: run Pass A over each text then synthesize. corpus_texts must be as-of ordered."""
-        return self.synthesize([self.per_doc(t) for t in corpus_texts])
+        return self.synthesize([self.per_doc(t) for t in corpus_texts], timestamps=timestamps, now=now)
 
 
 @dataclass
@@ -112,12 +133,15 @@ class DeepPersonaStore:
         self._docs.setdefault(entity_id, []).append((ts, signal))
 
     def persona_asof(self, entity_id: str, now, *, max_docs: int | None = None) -> dict:
-        """Synthesize the persona from this entity's documents strictly before `now` (no leakage)."""
+        """Synthesize the persona from this entity's documents strictly before `now` (no leakage), with the
+        engine's recency decay applied toward `now` (recent writing weighs more — people drift)."""
         docs = sorted(self._docs.get(entity_id, []), key=lambda d: (d[0] is None, d[0]))
-        prior = [s for ts, s in docs if now is None or ts is None or ts < now]
+        prior = [(ts, s) for ts, s in docs if now is None or ts is None or ts < now]
         if max_docs is not None:
             prior = prior[-max_docs:]
-        return self.engine.synthesize(prior)
+        sigs = [s for _, s in prior]
+        tss = [ts for ts, _ in prior]
+        return self.engine.synthesize(sigs, timestamps=tss, now=now)
 
     def depth_asof(self, entity_id: str, now) -> int:
         docs = self._docs.get(entity_id, [])

@@ -45,7 +45,14 @@ for both regimes:
   (`experiments/aggregate_harness.py`).
 - **Individual** (`swm/worlds/individual_world.py`): `this entity + action + context → response
   distribution` via hierarchical partial pooling (person ← segment ← population). Validated as an
-  estimator on synthetic data; the real-behavior claim is **blocked on private data**.
+  estimator on synthetic data; a fitted, *graded* readout still needs private labeled sends. But an
+  unknown recipient is **never a hard block** — we **bias to inferring the variables when we're not
+  told them**. With no private history, `World.predict` falls back to an inference-only prediction
+  labeled **`unvalidated`** (honest about provenance, not a refusal), and for a **public figure**
+  `swm/entities/public_figure.py` infers their disposition, status, and even responsiveness by
+  **searching online** (pluggable web + LLM backend, transparent offline fallback) — folding that
+  `web`-provenance evidence into the persona/`VariableMap`. Import labeled sends and `/fit` to upgrade
+  an `unvalidated` inference into a backtested grade.
 - **As-of retrieval** (`swm/retrieval/asof_store.py`, `news/social/entity_context.py`): a
   retrieval layer that *physically* cannot return future items, with a real leakage gate
   (`swm/eval/leakage.py`) and tests.
@@ -61,9 +68,16 @@ Reports: `experiments/exp008_general_swm_gap_audit.md` (what's real vs stub),
 retrieval close the market gap? multi-step calibration?) are **measured, not asserted** — and where
 the world model does *not* beat the baseline, the reports say so.
 
+- **Episodic memory + reflection** (`swm/memory/`, EXP-074): the situation-conditioned recall layer for the
+  individual regime — an episodic stream with recency × importance × relevance retrieval (Generative-Agents
+  style), generative reflection that mints reusable abstractions, recency-decayed persona synthesis, and a
+  retrieval-augmented `response_fn` (Beta-Binomial shrinkage toward the person's own rate). Beats the global
+  persona on held-out history-driven behavior (+0.055 skill), leakage-safe, and self-limiting where the
+  message (not the person) drives the outcome.
+
 Remaining stubs (design-only): `swm/transition/mechanistic.py`, `swm/transition/llm_rollout.py`,
 `swm/graph/diffusion.py` (superseded by `swm/transition/diffusion.py`), `swm/inference/filter.py`,
-`swm/entities/embeddings.py`, `swm/memory/memory.py`.
+`swm/entities/embeddings.py`.
 
 See the audit for the full literature map, data-acquisition and evaluation plans, wedge specs, API
 spec, competitive analysis, moats, and a brutal critique of why this probably fails and how to
