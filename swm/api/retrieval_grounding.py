@@ -125,8 +125,20 @@ def calibrate_extractor(extractor: CalibratedExtractor, labeled,
             "nominal": nominal}
 
 
-def build_retrieval_grounder(search_fn, llm, *, ci_multiplier=1.0, k=6, name="retrieval") -> RetrievalGrounder:
+def build_retrieval_grounder(search_fn, llm, *, ci_multiplier=1.0, k=6, name="retrieval",
+                             anchor=True, ensemble_k=1) -> RetrievalGrounder:
     """Assemble a universal RetrievalGrounder: as-of retrieval + a calibrated LLM value-extractor. Plugs in as
-    the `GroundingRouter` fallback (the long-tail, any-domain grounder)."""
+    the `GroundingRouter` fallback (the long-tail, any-domain grounder).
+
+    `anchor=True` (the DEFAULT) wraps the extractor in the three-pillar `AnchoredExtractor` (EXP-086): the
+    evidence-based value is shrunk toward a reference-class base rate by its calibrated uncertainty, so weak
+    grounding degrades gracefully to the outside view instead of a confident guess — and strong, precise web
+    evidence is left essentially untouched (the shrink self-regulates by sd). `anchor=False` gives the raw
+    evidence extractor (leakage-free backtests isolating a single pillar)."""
     ext = CalibratedExtractor(llm, ci_multiplier=ci_multiplier)
-    return RetrievalGrounder(WebRetriever(search_fn, k=k), ext.extract, name=name)
+    if anchor:
+        from swm.api.anchored_extractor import AnchoredExtractor
+        extract_fn = AnchoredExtractor(ext, ensemble_k=ensemble_k, anchor=True).extract
+    else:
+        extract_fn = ext.extract
+    return RetrievalGrounder(WebRetriever(search_fn, k=k), extract_fn, name=name)
