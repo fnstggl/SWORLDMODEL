@@ -91,6 +91,15 @@ _SPECS: list[VariableSpec] = [
     VariableSpec("pushiness", MESSAGE_FIT, "how aggressive/salesy (suppresses response)"),
     VariableSpec("ask_directness", MESSAGE_FIT, "explicit specific ask vs vague"),
     VariableSpec("length_fit", MESSAGE_FIT, "message length vs their inferred preference"),
+    # content-stance choices the SENDER controls (the message optimizer searches over these). Their
+    # effect is recipient-conditioned: credential-signaling flips sign against a prestige-skeptic,
+    # a contrarian pitch pays off with a contrarian recipient (see swm/decision/strategy_scorer.py).
+    VariableSpec("credential_signaling", MESSAGE_FIT, "how much the message parades status/credentials",
+                 default=0.3),
+    VariableSpec("contrarian_pitch", MESSAGE_FIT, "how non-consensus / against-the-grain the thesis is",
+                 default=0.3),
+    VariableSpec("secret_density", MESSAGE_FIT, "presence of a specific, non-obvious claim ('a secret')",
+                 default=0.3),
     # PERSONA — the deep, stable traits a person's WRITING HISTORY reveals (our scalable analog of the
     # 2-hour interview in Generative-Agent SOTA). Inferred multi-pass over the as-of corpus; confidence
     # grows with corpus depth + internal consistency. These are the "everything we model about them".

@@ -105,6 +105,26 @@ def compare(req: CompareReq):
     return world.compare(req.contact_id, req.texts, channel=req.channel, name=req.name)
 
 
+class OptimizeReq(BaseModel):
+    contact_id: str
+    name: str | None = None          # public-figure to resolve when we have no private history
+    domain: str = ""
+    ask: str = ""
+    n_mc: int = 2000
+
+
+@app.post("/v1/optimize-message")
+def optimize_message_ep(req: OptimizeReq):
+    """Construct the OPTIMAL message by search, not by ranking a few LLM drafts (audit: the message
+    optimizer, ARCHITECTURE_MESSAGE_OPTIMIZER.md). L1 optimizes the strategy in variable space, L2
+    assembles the email move-by-move against the world-model objective, L3 Monte-Carlo evaluates it
+    under the recipient's hidden state. UNVALIDATED: coarse elasticity priors — trust ranking/direction."""
+    from swm.decision.message_pipeline import optimize_for_world
+    result = optimize_for_world(world, req.contact_id, name=req.name, domain=req.domain,
+                                ask=req.ask, n_mc=req.n_mc)
+    return result.summary()
+
+
 @app.post("/v1/suggest")
 def suggest(req: SuggestReq):
     """Drafts are INSIGHT (generated); the ranking over them is PREDICTION (scored by readout)."""
