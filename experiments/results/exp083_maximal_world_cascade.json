@@ -1,0 +1,67 @@
+{
+ "experiment": "Maximal World Part A \u2014 every-person-as-agent cascade vs the mean-field shortcut",
+ "data": "SSA baby-name shares, 481 names 1880-2008, H=10yr, leakage-free (same samples as EXP-072)",
+ "agent_params": {
+  "beta": 2.0,
+  "k": 8.0,
+  "mu": 1.0,
+  "sd": 0.2,
+  "fat": 0.08,
+  "alpha": 0.2
+ },
+ "mean_field_params": {
+  "rho": 0.2,
+  "lambda": 0.02
+ },
+ "ALL": {
+  "label": "ALL test points",
+  "n": 18429,
+  "persistence": 0.1404,
+  "trend": 0.136,
+  "mean_field": 0.1234,
+  "agent_world": 0.1438
+ },
+ "TURNING_POINTS": {
+  "label": "TURNING POINTS (near peak)",
+  "n": 1083,
+  "persistence": 0.2636,
+  "trend": 0.5695,
+  "mean_field": 0.152,
+  "agent_world": 0.1821
+ },
+ "RISING": {
+  "label": "RISING",
+  "n": 1704,
+  "persistence": 0.4408,
+  "trend": 0.6304,
+  "mean_field": 0.4978,
+  "agent_world": 0.5141
+ },
+ "STABLE": {
+  "label": "STABLE",
+  "n": 16108,
+  "persistence": 0.1068,
+  "trend": 0.081,
+  "mean_field": 0.0846,
+  "agent_world": 0.105
+ },
+ "comparisons": {
+  "ALL test points": {
+   "agent_vs_best_simple": -0.0574,
+   "agent_vs_mean_field": -0.1653
+  },
+  "TURNING POINTS (near peak)": {
+   "agent_vs_best_simple": 0.3092,
+   "agent_vs_mean_field": -0.198
+  },
+  "RISING": {
+   "agent_vs_best_simple": -0.1663,
+   "agent_vs_mean_field": -0.0327
+  },
+  "STABLE": {
+   "agent_vs_best_simple": -0.2963,
+   "agent_vs_mean_field": -0.2411
+  }
+ },
+ "verdict_turning": "agent world does NOT beat the mean-field shortcut at turning points"
+}
