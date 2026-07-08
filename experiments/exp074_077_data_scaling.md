@@ -47,13 +47,32 @@ features it now **plateaus around 0.63** — which sets up the next question.
 
 EXP-073 showed DeepSeek's persuasion-grounded features raised the *in-sample* ceiling from 0.75 → 0.83, but
 on 64 OPs the *held-out* number was stuck (too few examples to learn 20 features). The honest open question:
-at larger scale, do they finally pay off on held-out data? We extracted DeepSeek's 10 features for 2,583
-arguments (700 train / 250 test OPs) and compared, on the identical held-out OPs:
+at larger scale, do they finally pay off on held-out data? We extracted DeepSeek's 10 features for all 1,778
+arguments of a **450-train / 200-test** OP subset (a coverage guard enforces that *every* held-out argument
+is scored — a first pass died mid-extraction and produced a spurious 0.76 from unscored defaults; the guard
+now refuses to report a partial set). On the identical held-out OPs:
 
-*(Extraction in progress — DeepSeek is scoring all 2,583 arguments; this section is finalized in the
-follow-up commit once the held-out lexical vs. DeepSeek vs. lexical+DeepSeek comparison completes. The
-prediction from EXP-073: at this scale the richer features should begin to beat the 0.63 lexical plateau on
-held-out data, where 64 OPs could not.)*
+| approach (trained on 450 OPs unless noted) | precision@1 | vs lexical |
+|---|---|---|
+| random pick | 0.512 | — |
+| lexical features only | 0.555 | (baseline, data-starved at this scale) |
+| lexical + DeepSeek (20 features) | 0.600 | +0.045 |
+| **DeepSeek features only** | **0.615** | **+0.060** |
+| **DeepSeek holistic judgment, used directly (NO training)** | **0.640** | **+0.085** |
+
+Two honest reads, and the second one matters most:
+
+**1. DeepSeek's richer reading IS better — and more data-efficient.** At a matched 450-OP scale it beats
+lexical by +0.085, and the LLM's single holistic "persuasive force" score, used directly with *zero
+training*, is the best of all (0.640). This is the same result as EXP-073: the strongest, simplest lever is
+to rank by the LLM's holistic judgment — no learned readout required.
+
+**2. But it does NOT climb toward 0.83 — because 0.83 was never real on held-out.** DeepSeek's 0.640 lands
+essentially *at* lexical's own full-scale plateau (0.632 from EXP-075), not above it, and nowhere near 0.83.
+That 0.83 was an **in-sample overfit artifact** — the honest, leakage-free ceiling for "pick the best CMV
+argument" is **~0.64**, and the LLM's direct judgment already reaches it. This corrects the EXP-073 framing:
+the headroom above 0.63 that the in-sample ceiling implied does not survive contact with held-out data. The
+real win from DeepSeek is *data-efficiency and zero-training simplicity*, not a higher ceiling.
 
 ## Finding 4 (EXP-077): the engine is GENERAL — it transfers to a totally different mechanism
 
@@ -82,13 +101,19 @@ recoverable fraction is real but **domain-specific**, and clicks are a low-signa
    the model picks the better of several real arguments **0.63 vs 0.52 random**, and it climbs with data.
    That is the number your product experience actually rides on, and it is genuinely useful (rank your
    drafts; the top pick beats a coin flip by a wide, real margin).
-2. **90–95% was never on the table, and now we've measured *why* twice.** Matched-pair CMV (0.53) and
-   headline CTR (+3.7) both hit the irreducible wall. The winnable target is "beat baseline by the
-   recoverable margin," which is **large for reasoned persuasion, small for viral clicks** — the model
-   should (and now does) *tell you which regime you're in* rather than promise a fixed accuracy.
-3. **More data was the right lever — no GPU needed.** The whole program is pure-python logistic readouts on
+2. **90–95% was never on the table, and even 0.83 was a mirage.** Matched-pair CMV (0.53) and headline CTR
+   (+3.7) both hit the irreducible wall. And EXP-076 corrected our own earlier optimism: the 0.83 "ceiling"
+   from EXP-073 was in-sample overfitting — on held-out data even DeepSeek's richest reading tops out at
+   **~0.64** for best-CMV-argument, right at the lexical plateau. The honest, winnable target is "beat
+   baseline by the recoverable margin," which is **real but modest** (≈0.64 vs 0.51 on CMV, less on clicks)
+   — the model should *tell you which regime you're in* rather than promise a fixed accuracy.
+3. **The strongest lever is the LLM's holistic judgment, used directly.** DeepSeek ranking candidates by a
+   single "which changes this mind" score (zero training) is the best and simplest approach (0.640) and more
+   data-efficient than a learned lexical readout — this is the `InterventionSelector` pointed through the
+   stronger backend, and it needs no GPU and no training corpus.
+4. **More data was the right lever — no GPU needed.** The whole program is pure-python logistic readouts on
    tabular features, trained on CPU in seconds, and the curve climbs with data exactly as predicted.
-4. **The engine is general.** One recipe, two very different social mechanisms (debate deltas, viral clicks),
+5. **The engine is general.** One recipe, two very different social mechanisms (debate deltas, viral clicks),
    both showing real (if differently-sized) signal that grows with data.
 
 ## Reproducibility

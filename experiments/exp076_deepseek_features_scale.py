@@ -143,7 +143,7 @@ def run():
     p_both, _ = _p1(_train(train, both), test, both)
     p_force = _p1_direct(test, lambda o, i, a: cache.get(_arg_key(o["op_id"], i), {}).get("persuasive_force", 0.5))
 
-    out = {"subset": "700 train / 250 test OPs (aligned to EXP-075 split)",
+    out = {"subset": "450 train / 200 test OPs (aligned to EXP-075 split)",
            "n_args_scored": n_have, "n_args_needed": n_need,
            "kpi": "precision@1 on held-out OPs — top-ranked candidate is a delta winner?",
            "random_pick_baseline": round(rand, 4),
