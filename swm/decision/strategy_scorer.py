@@ -30,10 +30,12 @@ from dataclasses import dataclass, field
 from swm.variables.calibrated_weights import WeightPrior
 from swm.variables.schema import BY_CATEGORY, spec
 
-# The variables the SENDER controls — the search space of the optimizer (everything else is the recipient).
+# The GENERAL, recipient-agnostic message levers the SENDER controls — the universal "physics" of any
+# inbound ask, scored for EVERY message. Recipient-SPECIFIC levers (e.g. a contrarian pitch for Thiel)
+# are added per recipient as situational levers (swm/decision/situational_levers.py), never hardcoded here.
 MESSAGE_VARS = [
-    "personalization", "clarity", "pushiness", "ask_directness", "length_fit",
-    "credential_signaling", "contrarian_pitch", "secret_density",
+    "personalization", "relevance_fit", "clarity", "credibility_proof", "responder_incentive",
+    "ask_directness", "low_effort_ask", "pushiness", "warmth", "length_fit", "credential_signaling",
 ]
 
 
@@ -64,39 +66,41 @@ ELASTICITY_SCALE = 0.5
 
 
 # --- the elasticity priors (signed per-unit logit effects; world knowledge, NOT fitted) -----------
-# MAIN effects: how a message variable moves P(reply) on its own, holding the recipient neutral.
+# MAIN effects: how a GENERAL message lever moves P(reply) on its own, holding the recipient neutral.
 _MAIN: list[WeightPrior] = [
     WeightPrior("personalization", 1.3, 0.6, "llm"),
+    WeightPrior("relevance_fit", 1.4, 0.6, "llm"),            # is the ask actually relevant to them
     WeightPrior("clarity", 0.9, 0.5, "llm"),
+    WeightPrior("credibility_proof", 1.1, 0.6, "llm"),        # evidence/traction backing the claim
+    WeightPrior("responder_incentive", 1.2, 0.6, "llm"),      # what's in it for THEM
     WeightPrior("ask_directness", 0.7, 0.5, "llm"),
-    WeightPrior("length_fit", 1.1, 0.5, "llm"),      # length_fit is already a [0,1] fit-quality
+    WeightPrior("low_effort_ask", 0.9, 0.5, "llm"),           # easy to reply -> more replies
+    WeightPrior("length_fit", 1.1, 0.5, "llm"),               # length_fit is already a [0,1] fit-quality
+    WeightPrior("warmth", 0.5, 0.5, "llm"),
     WeightPrior("pushiness", -1.8, 0.6, "llm"),
-    WeightPrior("credential_signaling", -0.35, 0.6, "llm"),   # mild main cost (busy readers); the action is the interaction
-    WeightPrior("contrarian_pitch", 0.20, 0.6, "llm"),        # risky on its own
-    WeightPrior("secret_density", 0.45, 0.5, "llm"),
+    WeightPrior("credential_signaling", -0.35, 0.6, "llm"),   # mild main cost; the action is the interaction
 ]
 
-# INTERACTION effects: (message_var × recipient_var), signed. This is where the recipient's inferred
-# disposition changes what the optimal message IS. Each is a WeightPrior over the product of the two
-# centered variables. These encode the non-obvious, recipient-specific truths.
+# INTERACTION effects: (general message lever × recipient_var), signed. This is where the recipient's
+# inferred disposition changes what the optimal message IS — the general levers, recipient-conditioned.
 _INTERACTIONS: list[tuple[str, str, WeightPrior]] = [
     # a prestige-skeptic PUNISHES credential parading — the Thiel sign-flip, made mechanical.
     ("credential_signaling", "status_orientation", WeightPrior("cred×statusorient", -2.4, 0.8, "llm")),
     # ...but a status-driven recipient rewards it.
     ("credential_signaling", "status", WeightPrior("cred×status", 0.7, 0.7, "llm")),
-    # a contrarian/skeptic rewards a genuinely contrarian pitch; a consensus-minded one is unmoved/put off.
-    ("contrarian_pitch", "skepticism", WeightPrior("contra×skeptic", 2.0, 0.8, "llm")),
-    # a secret lands harder with someone who values non-obvious truths (skeptics/high-openness).
-    ("secret_density", "skepticism", WeightPrior("secret×skeptic", 0.9, 0.6, "llm")),
-    ("secret_density", "openness_to_outreach", WeightPrior("secret×open", 0.6, 0.6, "llm")),
+    # a skeptic rewards concrete proof/traction over assertion (the general form of "traction for Cuban").
+    ("credibility_proof", "skepticism", WeightPrior("proof×skeptic", 1.3, 0.7, "llm")),
+    # a real payoff for the responder matters more the higher their status (their time is scarce).
+    ("responder_incentive", "status", WeightPrior("incent×status", 0.7, 0.6, "llm")),
+    # a busy / low-attention recipient only engages when the ask is relevant, and rewards low-effort asks.
+    ("relevance_fit", "attention_availability", WeightPrior("rel×attn", 0.6, 0.6, "llm")),
+    ("low_effort_ask", "attention_availability", WeightPrior("effort×attn", 0.6, 0.6, "llm")),
     # personalization compounds with any existing relationship.
     ("personalization", "relationship_strength", WeightPrior("pers×rel", 0.6, 0.5, "llm")),
     # the higher a person's status, the more pushiness costs (they don't chase).
     ("pushiness", "status", WeightPrior("push×status", -1.0, 0.6, "llm")),
     # an unsolicited-outreach-friendly recipient forgives a direct ask.
     ("ask_directness", "openness_to_outreach", WeightPrior("ask×open", 0.6, 0.5, "llm")),
-    # a busy / low-attention recipient punishes effort (long, multi-ask) messages harder — length_fit
-    # already carries the sign; this sharpens it when attention is scarce.
     ("length_fit", "attention_availability", WeightPrior("len×attn", 0.5, 0.5, "llm")),
 ]
 
@@ -151,6 +155,18 @@ def base_logit(base_responsiveness: float, recipient: dict) -> float:
 
 
 @dataclass
+class Lever:
+    """A per-recipient SITUATIONAL lever (proposed by the LLM for this recipient) — a message quality
+    that isn't in the universal set, with its recipient-conditioned elasticity. `value` is scored per
+    message in [0,1] (absence = 0 = no effect); elasticity_mean is the signed per-unit logit effect."""
+    name: str
+    elasticity_mean: float
+    elasticity_sd: float = 0.8
+    description: str = ""
+    evidence: str = ""
+
+
+@dataclass
 class StrategyScorer:
     """P(reply | recipient, strategy) as an elasticity logistic with recipient-conditioned interactions
     and weight-posterior sampling. Construct one per recipient; call `score_dist(strategy)`.
@@ -158,13 +174,18 @@ class StrategyScorer:
     By default the elasticities are the coarse world-knowledge PRIORS (× ELASTICITY_SCALE) and any
     prediction is `unvalidated`. Pass `weights` (a fitted {term: (mean, sd)} from the elasticity-fitting
     harness, ABSOLUTE — no scale) and `grade` to turn it into a data-calibrated scorer that carries a
-    real grade."""
+    real grade. `levers` are per-recipient situational levers added on top of the universal terms."""
     recipient: dict = field(default_factory=dict)       # {var: value} the FIXED recipient state
     base_responsiveness: float = 0.28                   # recipient's inferred base reply rate
     n_weight_samples: int = 160
     seed: int = 0
     weights: dict | None = None                         # fitted {term: (mean, sd)}; overrides priors
     grade: dict | None = None                           # calibration grade of the fitted weights
+    levers: list = field(default_factory=list)          # per-recipient situational Levers
+
+    def optimizable_vars(self) -> list:
+        """The full search space for the optimizer: the general levers + any situational levers."""
+        return list(MESSAGE_VARS) + [lv.name for lv in self.levers]
 
     def _weight_for(self, name: str, prior_mean: float, prior_sd: float):
         """(mean, sd, scale) for a term: the fitted weight (scale 1) if present, else the prior × scale."""
@@ -173,6 +194,14 @@ class StrategyScorer:
             return m, s, 1.0
         return prior_mean, prior_sd, ELASTICITY_SCALE
 
+    def _all_terms(self, strategy: dict) -> list:
+        """Universal terms (main + interactions) + situational lever terms. Lever feature = its raw
+        [0,1] score (centered at 0: absence contributes nothing)."""
+        terms = list(term_features(strategy, self.recipient))
+        for lv in self.levers:
+            terms.append((lv.name, strategy.get(lv.name, 0.0), lv.elasticity_mean, lv.elasticity_sd))
+        return terms
+
     def _base_logit(self) -> float:
         return base_logit(self.base_responsiveness, self.recipient)
 
@@ -180,7 +209,7 @@ class StrategyScorer:
         import random
         rng = random.Random(self.seed)
         base = self._base_logit()
-        terms = term_features(strategy, self.recipient)
+        terms = self._all_terms(strategy)
         mean_logit = base
         drivers = []
         for name, f, pmean, psd in terms:
@@ -198,7 +227,7 @@ class StrategyScorer:
                     m, s, sc = self._weight_for(name, pmean, psd)
                     z += sc * rng.gauss(m, s) * f
             samples.append(_sigmoid(z))
-        return ScoreDist(mean=_sigmoid(mean_logit), samples=samples, drivers=drivers[:12])
+        return ScoreDist(mean=_sigmoid(mean_logit), samples=samples, drivers=drivers[:14])
 
     # convenience
     def mean(self, strategy: dict) -> float:
@@ -210,8 +239,11 @@ class StrategyScorer:
 
 def scorer_from_recipient(recipient_vars: dict, base_responsiveness: float, *,
                           n_weight_samples: int = 160, seed: int = 0,
-                          weights: dict | None = None, grade: dict | None = None) -> StrategyScorer:
+                          weights: dict | None = None, grade: dict | None = None,
+                          levers: list | None = None) -> StrategyScorer:
     """Build a scorer from a recipient's inferred variable values (persona + web/public-figure evidence).
-    Pass fitted `weights`/`grade` from the elasticity-fitting harness to use a data-calibrated objective."""
+    Pass fitted `weights`/`grade` from the elasticity-fitting harness to use a data-calibrated objective,
+    and `levers` (per-recipient situational levers) to add recipient-specific quality dimensions."""
     return StrategyScorer(recipient=dict(recipient_vars), base_responsiveness=base_responsiveness,
-                          n_weight_samples=n_weight_samples, seed=seed, weights=weights, grade=grade)
+                          n_weight_samples=n_weight_samples, seed=seed, weights=weights, grade=grade,
+                          levers=list(levers or []))

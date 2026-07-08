@@ -115,45 +115,57 @@ def optimize_message(recipient: RecipientState, *, proposer=default_proposer, q:
     fit_weights = fit.weights if fit is not None else None
     fit_grade = fit.grade if fit is not None else None
     grade_letter = fit_grade.get("grade") if fit_grade else "unvalidated"
-    scorer = scorer_from_recipient(recipient.vars, recipient.base_mean, seed=seed,
-                                   weights=fit_weights, grade=fit_grade)
+
+    # per-recipient SITUATIONAL levers + the LLM message ENCODER (both live only when a chat_fn is given)
+    levers = []
+    encode_fn = encode_text_to_strategy               # lexical fallback
     rewrite_fn = None
     if chat_fn is not None:
-        from swm.decision.llm_moves import llm_proposer, llm_rewriter, llm_sentence_judge
+        from swm.decision.llm_moves import (llm_message_encoder, llm_proposer, llm_rewriter,
+                                            llm_sentence_judge)
+        from swm.decision.situational_levers import generate_levers
+        levers = generate_levers(chat_fn, recipient.label, recipient.vars,
+                                 evidence=recipient_notes)
+        encode_fn = llm_message_encoder(chat_fn, levers=levers)
         if proposer is default_proposer:
-            proposer = llm_proposer(chat_fn, recipient_notes=recipient_notes, sender=sender_brief)
+            proposer = llm_proposer(chat_fn, recipient_notes=recipient_notes, sender=sender_brief,
+                                    levers=levers)
         if judge_fn is None:
             judge_fn = llm_sentence_judge(chat_fn)
         rewrite_fn = llm_rewriter(chat_fn, recipient_notes=recipient_notes, sender=sender_brief)
+
+    scorer = scorer_from_recipient(recipient.vars, recipient.base_mean, seed=seed,
+                                   weights=fit_weights, grade=fit_grade, levers=levers)
     fast_critic = SemanticCritic()                     # cheap lexical — safe inside the beam search
     final_critic = SemanticCritic(judge_fn=judge_fn)   # LLM if provided, else lexical — the final gate
 
-    # L1 — optimal strategy in variable space (no text)
+    # L1 — optimal strategy in variable space (no text), over the general + situational levers
     spec = optimize_strategy(scorer, q=q, restarts=restarts, seed=seed)
 
     # L2 — assemble the email move-by-move to realize the spec (slop pruned as it builds)
     email = construct_email(scorer, spec.strategy, proposer=proposer, beam=beam, q=q,
-                            critic=fast_critic, context={"recipient": recipient.label})
+                            critic=fast_critic, context={"recipient": recipient.label}, encode_fn=encode_fn)
 
     # CRITIC GATE — the critical evaluator at the end: flag/repair incoherent or annoying lines. With a
     # live LLM, a targeted rewrite (critic reason -> writer) fixes lines whose whole sample-register is
     # slop, and we RANK repairs with the same (LLM) critic that flags — so the ranker isn't blind to the
     # exact issue the gate found.
     email = polish_email(email, scorer, spec.strategy, proposer=proposer, critic=final_critic, q=q,
-                         rewrite_fn=rewrite_fn, rank_critic=(final_critic if chat_fn is not None else None))
+                         rewrite_fn=rewrite_fn, rank_critic=(final_critic if chat_fn is not None else None),
+                         encode_fn=encode_fn)
 
     # L3 — Monte-Carlo evaluate the finalist under recipient hidden state (fitted weights + grade if any)
     evaluation = mc_evaluate(recipient.vars, recipient.base_mean, email.strategy,
                              base_n_effective=recipient.base_n_effective,
                              confidences=recipient.confidences, n_samples=n_mc, seed=seed,
-                             weights=fit_weights, grade=grade_letter)
+                             weights=fit_weights, grade=grade_letter, levers=levers)
 
     # contrast: run naive drafts through the SAME evaluator
     result_baselines = {}
     for label, text in (baselines or _BASELINES).items():
-        mc = mc_evaluate(recipient.vars, recipient.base_mean, encode_text_to_strategy(text),
+        mc = mc_evaluate(recipient.vars, recipient.base_mean, encode_fn(text),
                          base_n_effective=recipient.base_n_effective, confidences=recipient.confidences,
-                         n_samples=n_mc, seed=seed, weights=fit_weights, grade=grade_letter)
+                         n_samples=n_mc, seed=seed, weights=fit_weights, grade=grade_letter, levers=levers)
         result_baselines[label] = {"text": text, "mc": mc}
 
     return OptimizationResult(recipient=recipient.label, spec=spec, email=email, evaluation=evaluation,
