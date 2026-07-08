@@ -67,13 +67,18 @@ class LatentSpec:
     raw: dict = None
 
 
-def build_prompt(question, as_of_ts, horizon_years):
+def build_prompt(question, as_of_ts, horizon_years, news=None):
     date = _dt.datetime.utcfromtimestamp(int(as_of_ts)).strftime("%Y-%m-%d")
     days = int(horizon_years * 365.25)
+    news_block = ""
+    if news:
+        news_block = ("AS-OF NEWS (headlines published on or before today — use them to inform the base rate and "
+                      "drivers; this is the information available now):\n"
+                      + "\n".join(f"  - {h}" for h in news[:6]) + "\n\n")
     return (
         f"You are a careful SUPERFORECASTER assembling the inputs to a SIMULATION — you do NOT state whether it "
         f"happens.\nTODAY IS {date}. The question resolves in about {days} days. Use ONLY information available "
-        f"as of today; do not use knowledge of anything after it.\n\nQUESTION: {question}\n\n"
+        f"as of today; do not use knowledge of anything after it.\n\nQUESTION: {question}\n\n{news_block}"
         f"Give the inputs to simulate it, as JSON:\n"
         f'1. "base_rate": the OUTSIDE-VIEW reference-class base rate — across all similar questions, what '
         f"fraction resolve YES? A fair coin is 0.5; a specific unlikely event is low. When genuinely unsure, "
@@ -155,14 +160,15 @@ def simulate_latent(spec: LatentSpec, horizon_years, *, n=3000, seed=0):
     return acc / n                                                     # E[sigmoid(L)] — integrates uncertainty
 
 
-def latent_forecast(question, as_of_ts, resolve_ts, llm, *, n=3000, seed=0, grounder=None, metric_grounder=None):
+def latent_forecast(question, as_of_ts, resolve_ts, llm, *, n=3000, seed=0, grounder=None, metric_grounder=None,
+                    news=None):
     """Compile the honest simulation inputs (one LLM call, no outcome stated) and run the latent-state sim.
     CLOSE THE LOOP: when a `grounder` is supplied and the question is a metric threshold, MEASURE the current
     value live (Coinbase/web via the router) instead of trusting the LLM's guess — which lets the metric sim be
     both confident AND correct (trust=high), the lever the backtest could not use without leaking. Ungroundable
     ⇒ stays at the LLM's as-of estimate with its honest low trust."""
     hy = max(1e-4, (float(resolve_ts) - float(as_of_ts)) / SECONDS_PER_YEAR)
-    spec = parse_latent(llm(build_prompt(question, as_of_ts, hy)))
+    spec = parse_latent(llm(build_prompt(question, as_of_ts, hy, news=news)))
     if spec is None:
         return None, None
     if spec.kind == "metric" and metric_grounder is not None:
