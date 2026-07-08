@@ -62,6 +62,7 @@ class LatentSpec:
     direction: str = ">"
     annual_vol_pct: float = None
     grounded_conf: str = "low"
+    metric_name: str = None                         # what the metric IS (for live grounding of its value)
     drivers: list = field(default_factory=list)     # [{direction:+/-1, strength:0..1, grounded:bool}]
     raw: dict = None
 
@@ -114,7 +115,7 @@ def parse_latent(txt):
     return LatentSpec(base_rate=br, kind=("metric" if r.get("kind") == "metric" else "event"),
                       current_value=_num("current_value"), threshold=_num("threshold"),
                       direction=("<" if str(r.get("direction")) == "<" else ">"),
-                      annual_vol_pct=_num("annual_vol_pct"),
+                      annual_vol_pct=_num("annual_vol_pct"), metric_name=r.get("metric") or r.get("metric_name"),
                       grounded_conf=str(r.get("grounded_conf", "low")).lower(), drivers=drivers, raw=r)
 
 
@@ -154,10 +155,23 @@ def simulate_latent(spec: LatentSpec, horizon_years, *, n=3000, seed=0):
     return acc / n                                                     # E[sigmoid(L)] — integrates uncertainty
 
 
-def latent_forecast(question, as_of_ts, resolve_ts, llm, *, n=3000, seed=0):
-    """Compile the honest simulation inputs (one LLM call, no outcome stated) and run the latent-state sim."""
+def latent_forecast(question, as_of_ts, resolve_ts, llm, *, n=3000, seed=0, grounder=None):
+    """Compile the honest simulation inputs (one LLM call, no outcome stated) and run the latent-state sim.
+    CLOSE THE LOOP: when a `grounder` is supplied and the question is a metric threshold, MEASURE the current
+    value live (Coinbase/web via the router) instead of trusting the LLM's guess — which lets the metric sim be
+    both confident AND correct (trust=high), the lever the backtest could not use without leaking. Ungroundable
+    ⇒ stays at the LLM's as-of estimate with its honest low trust."""
     hy = max(1e-4, (float(resolve_ts) - float(as_of_ts)) / SECONDS_PER_YEAR)
     spec = parse_latent(llm(build_prompt(question, as_of_ts, hy)))
     if spec is None:
         return None, None
+    if grounder is not None and spec.kind == "metric" and spec.metric_name:
+        try:
+            gv = grounder.ground(spec.metric_name, question=question)
+            if gv is not None and gv.value is not None:
+                spec.current_value, spec.grounded_conf = float(gv.value), "high"   # measured, not guessed
+                spec.raw = {**(spec.raw or {}), "_grounded": {"variable": spec.metric_name,
+                                                              "value": gv.value, "source": gv.source}}
+        except Exception:
+            pass
     return simulate_latent(spec, hy, n=n, seed=seed), spec

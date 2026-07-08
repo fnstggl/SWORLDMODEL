@@ -54,3 +54,14 @@ def test_parse_latent_clamps_and_defaults():
     assert s.base_rate <= 0.98 and s.kind == "event"
     assert s.drivers[0]["direction"] == 1.0 and s.drivers[0]["strength"] == 1.0   # clamped
     assert parse_latent("not json") is None
+
+
+def test_forecaster_front_door_coinflip_and_calibration():
+    from swm.api.forecast import Forecaster
+    f = Forecaster(llm=lambda p: '{"base_rate":0.5,"kind":"event","drivers":[]}', calibration_temp=1.0)
+    r = f("Fair coin?", horizon_days=1)
+    assert abs(r["p_yes"] - 0.5) < 0.03 and r["kind"] == "event" and r["n_drivers"] == 0
+    # calibration_temp < 1 shrinks a confident prediction toward 0.5
+    g = Forecaster(llm=lambda p: '{"base_rate":0.5,"kind":"event",'
+                                 '"drivers":[{"direction":1,"strength":1,"grounded":true}]}', calibration_temp=0.5)
+    assert 0.5 < g("x", horizon_days=30)["p_yes"] < g.__call__("x", horizon_days=30)["p_yes_raw"] + 0.01
