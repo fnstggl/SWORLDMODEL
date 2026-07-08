@@ -258,10 +258,50 @@ def _run_single_agent(spec: ModelSpec, n: int, seed: int) -> dict:
             "interval_80": [round(mc["p05"], 4), round(mc["p95"], 4)]}
 
 
+def _sampler_calibrated_readout(spec: ModelSpec) -> Sampler:
+    """The DEFAULT calibrated mechanism: the outcome is a logistic over the variables, where EACH variable
+    carries its value (with est_sd) AND its elasticity `weight` (with weight_sd). The Monte-Carlo integrates
+    BOTH uncertainties — an unknown variable value OR an unknown weight widens the outcome (honest). Weights
+    come from the LLM/literature as priors and are OVERRIDDEN by the learned registry / a data fit where we
+    have evidence, so every emitted variable arrives with a calibrated weight-with-uncertainty."""
+    import math as _m
+    vs = spec.variables
+    intercept = float(spec.extra.get("intercept", 0.0))
+
+    def traced(rng):
+        factors, z = {}, intercept
+        for v in vs:
+            xv = min(v.hi, max(v.lo, v.value + (rng.gauss(0, v.est_sd) if v.est_sd else 0.0)))
+            w = v.weight if v.weight is not None else 0.0
+            if v.weight_sd:
+                zw = rng.gauss(0, 1)
+                w = w + zw * v.weight_sd                  # integrate the WEIGHT (elasticity) uncertainty
+                factors[f"{v.name}~w"] = zw
+            if v.est_sd:
+                factors[f"{v.name}@0"] = xv
+            z += w * (xv - v.center)
+        return 1.0 / (1.0 + _m.exp(-max(-35.0, min(35.0, z)))), factors
+
+    return Sampler(traced=traced, kind="numeric",
+                   default_pred=(_event_pred(spec.outcome) or (lambda p: p > 0.5)), aux={"vars": vs})
+
+
+def _run_calibrated_readout(spec: ModelSpec, n: int, seed: int) -> dict:
+    s = _sampler_calibrated_readout(spec)
+    mc = montecarlo(s.once, n=n, seed=seed)
+    p_event = prob_of(s.once, s.default_pred, n=n, seed=seed + 1)
+    return {"mechanism": "calibrated_readout", "mean": round(mc["mean"], 4),
+            "interval_80": [round(mc["p05"], 4), round(mc["p95"], 4)], "p_event": round(p_event, 4),
+            "weights": [{"name": v.name, "weight": v.weight, "weight_sd": v.weight_sd,
+                         "source": v.weight_source} for v in spec.variables]}
+
+
 MECHANISMS = {"generic_scm": _run_generic_scm, "bracket": _run_bracket, "committee": _run_committee,
-              "electorate": _run_electorate, "single_agent": _run_single_agent}
+              "electorate": _run_electorate, "single_agent": _run_single_agent,
+              "calibrated_readout": _run_calibrated_readout}
 SAMPLERS = {"generic_scm": _sampler_generic_scm, "bracket": _sampler_bracket, "committee": _sampler_committee,
-            "electorate": _sampler_electorate, "single_agent": _sampler_single_agent}
+            "electorate": _sampler_electorate, "single_agent": _sampler_single_agent,
+            "calibrated_readout": _sampler_calibrated_readout}
 
 
 def build_sampler(spec: ModelSpec) -> Sampler:
@@ -293,12 +333,20 @@ def build_compile_prompt(question: str, context: str = "") -> str:
         "  committee    — a small set of named decision-makers who deliberate (court, board, FOMC)\n"
         "  electorate   — a large population by demographic segment (elections, referenda, mass opinion)\n"
         "  single_agent — one specific person's decision/response\n"
-        "  generic_scm  — coupled quantitative variables evolving over time (economy, approval, prices...)\n\n"
+        "  generic_scm  — coupled quantitative variables evolving over time (economy, approval, prices...)\n"
+        "  calibrated_readout — a binary/proportion outcome pressed on by MANY variables at once (no time "
+        "evolution): each variable carries its value AND its ELASTICITY (signed push on the outcome) with a "
+        "confidence. Use when the answer is a weighted combination of many current pressures.\n\n"
         "For the chosen mechanism emit ONLY JSON. For generic_scm: {\"mechanism\":\"generic_scm\","
         "\"variables\":[{\"name\",\"value\"(now),\"est_sd\"(uncertainty in that estimate),\"volatility\""
         "(how much it really moves per unit time),\"lo\",\"hi\"}],\"equations\":{\"var\":\"drift expression "
         "in terms of the variables\"},\"outcome\":{\"variable\":\"..\",\"event\":{\"op\":\">\",\"value\":0.5}},"
         "\"horizon\":<units>,\"dt\":1,\"rationale\":\"..\"}. "
+        "For calibrated_readout: {\"mechanism\":\"calibrated_readout\",\"variables\":[{\"name\",\"value\"(0..1),"
+        "\"est_sd\",\"weight\"(signed elasticity on the outcome logit),\"weight_sd\"(how sure of that "
+        "elasticity),\"center\"(neutral value,~0.5)}],\"extra\":{\"intercept\":<logit base rate>},"
+        "\"outcome\":{\"event\":{\"op\":\">\",\"value\":0.5}}}. Give EVERY relevant variable with an honest "
+        "weight_sd — an unsure elasticity widens the forecast rather than biasing it.\n"
         "For bracket: extra.competitors[{name,strength(Elo or 0..1),est_sd}], optional extra.groups, "
         "outcome.target. For committee: extra.agents[{id,position,influence,openness,conviction}]. For "
         "electorate: extra.cells[{stance,weight,turnout,est_sd}]. CALIBRATE volatility to the horizon's "

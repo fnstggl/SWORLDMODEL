@@ -7,7 +7,30 @@ forward under uncertainty, and return a **calibrated distribution over outcomes*
 to reach a desired outcome. This document maps everything needed to get there, grounded in what we have
 built and, crucially, in what the no-cheat experiments have proven about what's hard.
 
-## Calibrated weights + the no-cheat event backtest — the thesis wins on real data (current)
+## Portfolio backtest + calibration wired into the compiler + the flywheel ON (current)
+The data-scaling program: calibration made a default of the compiler, mapped across many domains, and fed by
+real data.
+- **Calibration wired into the compiler**: `SpecVar` now carries a `weight`/`weight_sd` (elasticity + CI +
+  provenance); the new `calibrated_readout` mechanism integrates BOTH value and weight uncertainty in the
+  Monte-Carlo (an unknown weight widens, never biases). `swm/api/calibrated_compiler.py` overrides LLM weights
+  with data-learned ones (`apply_registry`) and fits weights from any labeled dataset (`calibrate_from_data`).
+- **The learned-prior registry** (`swm/variables/prior_registry.py`): elasticities from every dataset
+  accumulate, precision-weighted, keyed by (variable, outcome-class) — more data ⇒ tighter transferable priors.
+- **EXP-075 (harvest) — flywheel ON**: 15 GSS items → **59 learned elasticities** committed to
+  `learned_priors.json`, all sign-correct (party=republican +0.18 conservative, ideology=liberal −0.26,
+  attendance=high +0.20); the shared party→conservative elasticity tightens as items accumulate (sd 0.199 →
+  0.151). The compiler consults these so demographic variables arrive pre-calibrated.
+- **EXP-074 (portfolio) — WHERE fidelity wins, 6 real domains no-cheat** (`swm/eval/portfolio.py`; new
+  downloaded domains: OWID adoption, Swiss referenda, MIT Senate): fidelity WINS big on modelable evolving
+  populations/diffusions — **opinion +0.150, adoption +0.316 skill vs persistence** — and adds little where a
+  strong simple baseline exists (senate +0.03, referenda ≈ base-rate, fomc momentum-dominated on direction),
+  and can fail where change is period- not composition-driven (spending −0.04). The empirical rule: reach for
+  the rich sim on modelable populations with weak baselines.
+- **ARCHITECTURE_PEAK.md**: the six changes to peak — (1) run the calibration harvest at corpus scale,
+  (2) a learned regime router, (3) adaptive fidelity via variance triage in the loop, (4) embedding-keyed
+  registry, (5) a validated event model (the real long-horizon gap), (6) full-covariance weight posterior.
+
+## Calibrated weights + the no-cheat event backtest — the thesis wins on real data
 The disagreement ("model every variable" vs "less is more") is settled empirically, in favor of the thesis
 *conditional on proper calibration*:
 - **The calibration engine** (`swm/variables/bayes_logistic.py`, `calibrated_weights.py`): a weight is a

@@ -88,8 +88,10 @@ class CalibratedWeights:
     eb_epochs: int = 200                 # epochs for the empirical-Bayes inner tuning fits (cheaper than final)
     model: BayesianLogistic = None
     temper: float = 1.0
+    n_train: int = 0
 
     def fit(self, X, y, *, tune=True, seed=0):
+        self.n_train = len(X)
         w0 = [p.mean for p in self.priors]
         base_prec = [p.precision() for p in self.priors]
         self.temper = (empirical_bayes_temper(X, y, w0, base_prec, self.temper_grid, seed=seed,

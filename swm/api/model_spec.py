@@ -69,6 +69,11 @@ class SpecVar:
     volatility: float = 0.0        # aleatoric per-unit-time volatility (calibrated to timescale)
     lo: float = 0.0
     hi: float = 1.0
+    # calibrated-readout fields: the variable's ELASTICITY toward the outcome, with uncertainty + provenance
+    weight: float = None          # signed per-unit push on the outcome logit (None => not a readout variable)
+    weight_sd: float = None       # uncertainty in that elasticity (the CI); wide => the model is unsure of it
+    center: float = 0.5           # the neutral value the push is measured from
+    weight_source: str = "llm"    # provenance: llm | literature | registry | fit
 
 
 @dataclass
@@ -91,9 +96,13 @@ class ModelSpec:
 def parse_spec(raw) -> ModelSpec:
     """Tolerant parse of an LLM spec payload (dict or raw JSON string) into a ModelSpec."""
     obj = raw if isinstance(raw, dict) else json.loads(str(raw)[str(raw).find("{"):str(raw).rfind("}") + 1])
+    def _optf(v, k):
+        return float(v[k]) if v.get(k) is not None else None
     variables = [SpecVar(name=v["name"], value=float(v.get("value", 0.5)),
                          est_sd=float(v.get("est_sd", 0.0)), volatility=float(v.get("volatility", 0.0)),
-                         lo=float(v.get("lo", 0.0)), hi=float(v.get("hi", 1.0)))
+                         lo=float(v.get("lo", 0.0)), hi=float(v.get("hi", 1.0)),
+                         weight=_optf(v, "weight"), weight_sd=_optf(v, "weight_sd"),
+                         center=float(v.get("center", 0.5)), weight_source=str(v.get("weight_source", "llm")))
                  for v in obj.get("variables", [])]
     return ModelSpec(mechanism=str(obj.get("mechanism", "generic_scm")), variables=variables,
                      equations={k: str(v) for k, v in (obj.get("equations") or {}).items()},
