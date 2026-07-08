@@ -52,6 +52,20 @@ def _matinv(A):
     return [row[n:] for row in M]
 
 
+def _cholesky(A):
+    """Lower Cholesky factor of a small symmetric PD matrix (for full-covariance posterior sampling)."""
+    n = len(A)
+    L = [[0.0] * n for _ in range(n)]
+    for i in range(n):
+        for j in range(i + 1):
+            s = sum(L[i][k] * L[j][k] for k in range(j))
+            if i == j:
+                L[i][j] = math.sqrt(max(1e-12, A[i][i] - s))
+            else:
+                L[i][j] = (A[i][j] - s) / L[j][j] if L[j][j] > 1e-12 else 0.0
+    return L
+
+
 @dataclass
 class BayesianLogistic:
     """L2-to-prior logistic with a Laplace posterior over the coefficients. `w0` is the prior mean per
@@ -113,16 +127,23 @@ class BayesianLogistic:
         return [math.sqrt(max(0.0, self.cov[j][j])) for j in range(len(self.w))] if self.cov else \
             [float("inf")] * len(self.w)
 
-    def predict_dist(self, x, *, n_samples=200, seed=0) -> dict:
-        """Integrate over WEIGHT uncertainty: sample coefficients from the Laplace posterior (diagonal), push
-        each through the logistic, and return the predictive mean + spread. An uncertain weight -> a wider
-        prediction (reducible/epistemic uncertainty). Reduces to the point prediction as the posterior tightens."""
+    def predict_dist(self, x, *, n_samples=200, seed=0, full_cov=False) -> dict:
+        """Integrate over WEIGHT uncertainty: sample coefficients from the Laplace posterior, push each through
+        the logistic, return the predictive mean + spread. An uncertain weight -> a wider prediction. With
+        `full_cov=True` samples from the FULL joint posterior (Cholesky of the covariance), so CORRELATED
+        weights (the double-counting failure mode) contribute honest joint uncertainty; diagonal otherwise."""
         rng = random.Random(seed)
+        d = len(self.w)
+        L = _cholesky(self.cov) if (full_cov and self.cov) else None
         sd = self.weight_sd()
         ps = []
         for _ in range(n_samples):
-            wj = [self.w[j] + rng.gauss(0, sd[j]) for j in range(len(self.w))]
-            ps.append(_sigmoid(self.b + sum(wj[j] * x[j] for j in range(len(x)))))
+            if L is not None:
+                z = [rng.gauss(0, 1) for _ in range(d)]
+                wj = [self.w[k] + sum(L[k][m] * z[m] for m in range(k + 1)) for k in range(d)]
+            else:
+                wj = [self.w[j] + rng.gauss(0, sd[j]) for j in range(d)]
+            ps.append(_sigmoid(self.b + sum(wj[j] * x[j] for j in range(d))))
         m = sum(ps) / len(ps)
         var = sum((p - m) ** 2 for p in ps) / len(ps)
         return {"p": m, "sd": var ** 0.5, "map": self.predict_proba(x)}

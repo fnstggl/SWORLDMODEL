@@ -7,7 +7,27 @@ forward under uncertainty, and return a **calibrated distribution over outcomes*
 to reach a desired outcome. This document maps everything needed to get there, grounded in what we have
 built and, crucially, in what the no-cheat experiments have proven about what's hard.
 
-## Portfolio backtest + calibration wired into the compiler + the flywheel ON (current)
+## The six peak-architecture builds — all landed + validated (current)
+The full ARCHITECTURE_PEAK.md list, built this session:
+- **#1 Corpus harvest** (`swm/eval/harvest.py`, EXP-076): fit elasticities across **8 datasets** (GSS, OQA,
+  CMV, FOMC, Upworthy, StackExchange, Telco-churn, GlobalOpinions) → **592 learned priors, 15 outcome-classes**
+  committed to `learned_priors.json`, all sign-correct (inflation→hike +0.44, unemployment→hike −0.58,
+  ideology=liberal→conservative −0.26). The flywheel at corpus scale.
+- **#2 Regime router** (`swm/eval/regime_router.py`, EXP-078): a calibrated classifier (fit on the portfolio +
+  a world-knowledge prior) that routes population/diffusion → rich_sim (0.75–0.83) and macro/election/market →
+  baseline (≤0.35) per question. Never lose to a simple baseline by over-simulating.
+- **#3 Adaptive fidelity** (`swm/api/adaptive_fidelity.py`): variance-triage — rank variables by their share
+  of outcome variance so calibration compute goes only to the high-leverage few (makes "model everything"
+  tractable).
+- **#4 Embedding-keyed registry** (`swm/variables/embedding_registry.py`): cross-phrasing elasticity transfer
+  with an sd widened by transfer distance; pluggable real-embedding backend (lexical default offline).
+- **#5 Event model** (`swm/simulation/event_model.py`, EXP-077): calibrated event-hazard + impact places
+  discrete pivotal-event variance over the horizon — on FOMC rate jumps, **82% interval coverage (nominal 90%)
+  vs persistence's 3%**. The first version of the long-horizon frontier.
+- **#6 Full-covariance weight posterior** (`bayes_logistic.predict_dist(full_cov=True)`): honest joint
+  uncertainty for correlated variables via Cholesky sampling.
+
+## Portfolio backtest + calibration wired into the compiler + the flywheel ON
 The data-scaling program: calibration made a default of the compiler, mapped across many domains, and fed by
 real data.
 - **Calibration wired into the compiler**: `SpecVar` now carries a `weight`/`weight_sd` (elasticity + CI +
