@@ -35,6 +35,9 @@ class WorldModel:
     grounder: object = None               # swm.api.state_grounding.StateGrounder — auto-grounds the spec's
     #                                       high-leverage variable VALUES from live evidence before the run.
     #                                       `general_world_model()` wires the DeepSeek+web general router here.
+    person_intake: object = None          # swm.api.person_intake.PersonIntake — for a question that turns on a
+    #                                       SPECIFIC individual, assemble a dossier and ASK the user when the
+    #                                       evidence is too thin, rather than fabricate a forecast (opt-in).
 
     def _compiler(self):
         if not self.validate:
@@ -45,6 +48,24 @@ class WorldModel:
 
     def simulate(self, question: str, *, context: str = "", as_of: str = "", key: str = None,
                  n: int = None) -> dict:
+        # PERSON INTAKE: if the question turns on a specific individual, assemble a dossier; ASK the user when
+        # the evidence is too thin (never fabricate a person's disposition), else fold the dossier into context.
+        person = None
+        if self.person_intake is not None:
+            try:
+                pf = self.person_intake.preflight(question, user_context=context, as_of=(as_of or None))
+            except Exception:
+                pf = {"mode": "proceed", "person": None}
+            if pf.get("mode") == "ask":
+                return {"question": question, "mode": "needs_user_context", "person": pf["person"],
+                        "questions": pf["questions"], "forecast": None, "grounding": None,
+                        "headline": f"To simulate this I need your read on {pf['person']} — "
+                                    f"{pf.get('reason', 'not enough public evidence to infer honestly')}."}
+            if pf.get("person"):
+                person = {k: pf.get(k) for k in ("person", "dossier_strength", "inferred_person_variables")}
+                if pf.get("enriched_context"):
+                    context = pf["enriched_context"]
+
         if self.retriever is not None and not context:
             ctx = self.retriever.retrieve(question, as_of=as_of)
             context = ctx.to_prompt()
@@ -76,7 +97,7 @@ class WorldModel:
         return {"question": question, "n_evidence": n_evidence,
                 "mechanism": spec.mechanism, "forecast": forecast,
                 "forecastable": _forecastable(forecast),
-                "validation": validation, "grounding": grounding,
+                "validation": validation, "grounding": grounding, "person": person,
                 "headline": _headline(question, forecast),
                 "spec": {"mechanism": spec.mechanism,
                          "variables": [(v.name, v.value, v.volatility) for v in spec.variables],
@@ -84,11 +105,15 @@ class WorldModel:
                          "horizon": spec.horizon, "rationale": spec.rationale}}
 
 
-def general_world_model(*, compile_fn=None, n=8000, ground=True, validate=True) -> WorldModel:
+def general_world_model(*, compile_fn=None, n=8000, ground=True, validate=True, person=True) -> WorldModel:
     """The recommended front door: compile ANY question → auto-GROUND its high-leverage variable values from
     live evidence (the DeepSeek+web general router, no feeds required) → run the calibrated simulation. This is
     the end-to-end default — a user asks anything, and the simulation runs on the real current world rather
-    than the LLM's guessed state. Falls back to un-grounded compilation if no LLM key is configured."""
+    than the LLM's guessed state. Falls back to un-grounded compilation if no LLM key is configured.
+
+    `person=True` also wires the PERSON-INTAKE preflight: a question that turns on a specific individual
+    assembles a dossier and, when the evidence is too thin, ASKS the user for their read on that person instead
+    of fabricating a disposition (EXP-089). Disabled automatically if no LLM key is configured."""
     from swm.api.compiler import StructuralCompiler
     if compile_fn is None:
         from swm.api.deepseek_backend import default_chat_fn
@@ -101,7 +126,12 @@ def general_world_model(*, compile_fn=None, n=8000, ground=True, validate=True) 
         router = live_router()                            # general DeepSeek+web engine + structured overlays
         if router.retrieval is not None or router.sources:  # (Coinbase for observable market vars; the LLM
             grounder = StateGrounder(default=router)         # resolver routes to a feed only when one matches)
-    return WorldModel(compiler=StructuralCompiler(compile_fn), n=n, validate=validate, grounder=grounder)
+    intake = None
+    if person:
+        from swm.api.person_intake import build_person_intake
+        intake = build_person_intake()                    # None if no LLM key -> front door behaves as before
+    return WorldModel(compiler=StructuralCompiler(compile_fn), n=n, validate=validate, grounder=grounder,
+                      person_intake=intake)
 
 
 def _forecastable(forecast: dict):
