@@ -7,6 +7,20 @@ forward under uncertainty, and return a **calibrated distribution over outcomes*
 to reach a desired outcome. This document maps everything needed to get there, grounded in what we have
 built and, crucially, in what the no-cheat experiments have proven about what's hard.
 
+## Real semantic embeddings + the continuous (idempotent) harvest (current)
+The two flywheel follow-ups, both built:
+- **Real embeddings** (`swm/variables/embeddings.py`, EXP-080): a production HuggingFace/OpenAI embedder
+  (all-MiniLM-L6-v2) behind the pluggable `embed_fn` seam, with a committed cache (`prior_embeddings.json`,
+  597 keys) so semantic transfer works offline. **Paraphrase probes recover the right elasticity 4/5 with real
+  embeddings vs 1/5 lexical** — "consumer price growth → monetary tightening" finds inflation→rate_hike (+0.44),
+  "joblessness" finds unemployment→rate_hike (−0.57), where lexical finds nothing. True meaning-based transfer
+  across the 592-elasticity corpus.
+- **Continuous harvest** (`experiments/exp081_continuous_harvest.py`): rebuilds the registry FROM SCRATCH over
+  all 8 datasets each run — idempotent (precision-weighted combination would double-count on re-run, so a
+  fresh rebuild is the correct design), refreshes embeddings for new keys, and appends to
+  `harvest_manifest.json`. The entry point a scheduled Routine invokes to keep `learned_priors.json`
+  compounding as data lands (registry now single-counted: party=republican n=60k, was double-counted).
+
 ## The six peak-architecture builds — all landed + validated (current)
 The full ARCHITECTURE_PEAK.md list, built this session:
 - **#1 Corpus harvest** (`swm/eval/harvest.py`, EXP-076): fit elasticities across **8 datasets** (GSS, OQA,
