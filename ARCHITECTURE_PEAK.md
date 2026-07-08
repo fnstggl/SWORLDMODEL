@@ -1,5 +1,17 @@
 # Architecture for the peak — what still needs to change
 
+> **STATE GROUNDING (highest-leverage next step, built — EXP-082).** With weights calibrated, the largest
+> remaining reducible error is that the compiler fills each variable's VALUE (the current state of the world)
+> from an LLM guess — a calibrated weight on a guessed value is still a guess. `swm/api/state_grounding.py`
+> triages a spec, MEASURES each high-leverage variable's as-of value + CI from real evidence (`DataGrounder`
+> for structured series, `RetrievalGrounder` for text), and feeds the grounded spec to the calibrated runtime;
+> ungroundable variables stay at their prior with a wide CI so the forecast widens honestly. Isolated on FOMC
+> direction with the model held FIXED (only the feature VALUES change): **grounded state 89.6% vs guessed state
+> 31.3% (+58pt accuracy, 0.29 log-loss skill)**, and grounding ONLY the single highest-leverage variable
+> (variance triage) captures it all (91.7%). The `ground_spec → compiler` path responds to the world — the
+> grounded readout spec's P(hike) is 0.52 on hike months vs 0.50 on cut months vs a blind 0.48 guess. Knowing
+> what the world currently is, not guessing it, is the lever.
+>
 > **STATUS (this session): all six built + validated.** (1) Corpus harvest — **592 elasticities across 15
 > outcome-classes from 8 datasets**, committed to `learned_priors.json`, all sign-correct (inflation→hike
 > +0.44, unemployment→hike −0.58, ideology=liberal→conservative −0.26, tenure→churn −21) — EXP-076.
