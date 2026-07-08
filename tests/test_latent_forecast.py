@@ -65,3 +65,19 @@ def test_forecaster_front_door_coinflip_and_calibration():
     g = Forecaster(llm=lambda p: '{"base_rate":0.5,"kind":"event",'
                                  '"drivers":[{"direction":1,"strength":1,"grounded":true}]}', calibration_temp=0.5)
     assert 0.5 < g("x", horizon_days=30)["p_yes"] < g.__call__("x", horizon_days=30)["p_yes_raw"] + 0.01
+
+
+def test_asof_crypto_product_detection_and_metric_grounding():
+    from swm.api.asof_market import detect_product
+    assert detect_product("Will Bitcoin be above $65000?") == "BTC-USD"
+    assert detect_product("Will ETH cross 3000") == "ETH-USD"
+    assert detect_product("Will the Lakers win?") is None
+    # a mock metric_grounder overrides current_value + vol and drives the sim (trust=high)
+    from swm.api.latent_forecast import latent_forecast
+    llm = lambda p: '{"base_rate":0.5,"kind":"metric","metric":"BTC price","current_value":1000,' \
+                    '"threshold":2000,"direction":">","annual_vol_pct":10,"grounded_conf":"low"}'
+    mg = type("MG", (), {"ground_metric": lambda self, q, m, a: {"value": 1950.0, "annual_vol_pct": 80.0,
+                                                                 "source": "coinbase_asof:BTC-USD"}})()
+    p, spec = latent_forecast("Will BTC top 2000?", 1_700_000_000, 1_705_000_000, llm, n=3000, metric_grounder=mg)
+    assert spec.current_value == 1950.0 and spec.grounded_conf == "high"   # measured, not the LLM's 1000 guess
+    assert p > 0.3                                                          # near the threshold now -> plausible

@@ -155,7 +155,7 @@ def simulate_latent(spec: LatentSpec, horizon_years, *, n=3000, seed=0):
     return acc / n                                                     # E[sigmoid(L)] — integrates uncertainty
 
 
-def latent_forecast(question, as_of_ts, resolve_ts, llm, *, n=3000, seed=0, grounder=None):
+def latent_forecast(question, as_of_ts, resolve_ts, llm, *, n=3000, seed=0, grounder=None, metric_grounder=None):
     """Compile the honest simulation inputs (one LLM call, no outcome stated) and run the latent-state sim.
     CLOSE THE LOOP: when a `grounder` is supplied and the question is a metric threshold, MEASURE the current
     value live (Coinbase/web via the router) instead of trusting the LLM's guess — which lets the metric sim be
@@ -165,11 +165,21 @@ def latent_forecast(question, as_of_ts, resolve_ts, llm, *, n=3000, seed=0, grou
     spec = parse_latent(llm(build_prompt(question, as_of_ts, hy)))
     if spec is None:
         return None, None
-    if grounder is not None and spec.kind == "metric" and spec.metric_name:
-        try:
+    if spec.kind == "metric" and metric_grounder is not None:
+        try:                                                  # AS-OF grounding: real price + realised vol at as_of
+            g = metric_grounder.ground_metric(question, spec.metric_name, as_of_ts)
+            if g is not None and g.get("value") is not None:
+                spec.current_value, spec.grounded_conf = float(g["value"]), "high"
+                if g.get("annual_vol_pct"):
+                    spec.annual_vol_pct = float(g["annual_vol_pct"])
+                spec.raw = {**(spec.raw or {}), "_grounded": g}
+        except Exception:
+            pass
+    elif grounder is not None and spec.kind == "metric" and spec.metric_name:
+        try:                                                  # live present-grounding (router)
             gv = grounder.ground(spec.metric_name, question=question)
             if gv is not None and gv.value is not None:
-                spec.current_value, spec.grounded_conf = float(gv.value), "high"   # measured, not guessed
+                spec.current_value, spec.grounded_conf = float(gv.value), "high"
                 spec.raw = {**(spec.raw or {}), "_grounded": {"variable": spec.metric_name,
                                                               "value": gv.value, "source": gv.source}}
         except Exception:
