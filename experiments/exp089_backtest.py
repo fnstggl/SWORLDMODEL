@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import json
 import sys
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 from swm.api.resilient_llm import resilient_chat_fn
@@ -45,20 +46,27 @@ def run(max_items=1200, n=2500) -> dict:
     if Path(PRED).exists():
         done = {r["qid"]: r for r in json.loads(Path(PRED).read_text())}
     rows = list(done.values())
-    for i, it in enumerate(items):
-        if it.qid in done:
-            continue
+    todo = [it for it in items if it.qid not in done]
+
+    def _work(it):
         p, meta = forecast_item(it, llm_c, n=n, force_readout=True)
         if p is None:
-            continue
+            return None
         d = direct_estimate(it, llm_d)
-        rows.append({"qid": it.qid, "category": it.category, "cutoff_clean": it.cutoff_clean,
-                     "outcome": it.outcome, "p_model": p, "p_crowd": it.crowd_prob,
-                     "p_direct": d, "mechanism": meta.get("mechanism"), "question": it.question[:120]})
-        if len(rows) % 25 == 0:
-            Path(PRED).write_text(json.dumps(rows))
-            print(f"    {len(rows)} scored  (llm: hf={llm_c.calls['hf']+llm_d.calls['hf']} "
-                  f"ds={llm_c.calls['deepseek']+llm_d.calls['deepseek']} cache={llm_c.calls['cache']+llm_d.calls['cache']})")
+        return {"qid": it.qid, "category": it.category, "cutoff_clean": it.cutoff_clean,
+                "outcome": it.outcome, "p_model": p, "p_crowd": it.crowd_prob, "p_direct": d,
+                "mechanism": meta.get("mechanism"), "question": it.question[:120]}
+
+    with ThreadPoolExecutor(max_workers=10) as ex:              # HF router handles concurrent requests
+        for fut in as_completed([ex.submit(_work, it) for it in todo]):
+            r = fut.result()
+            if r is None:
+                continue
+            rows.append(r)
+            if len(rows) % 25 == 0:
+                Path(PRED).write_text(json.dumps(rows))
+                print(f"    {len(rows)} scored  (llm hf={llm_c.calls['hf']+llm_d.calls['hf']} "
+                      f"ds={llm_c.calls['deepseek']+llm_d.calls['deepseek']} cache={llm_c.calls['cache']+llm_d.calls['cache']})")
     Path(PRED).write_text(json.dumps(rows))
 
     scored = [r for r in rows if r["p_model"] is not None]

@@ -13,6 +13,7 @@ from __future__ import annotations
 import json
 import math
 import sys
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 from swm.api.resilient_llm import resilient_chat_fn
@@ -76,22 +77,25 @@ def run(max_items=700, n=2500) -> dict:
     llm_d = resilient_chat_fn(system="You are a calibrated forecaster. Reply with ONLY compact JSON.",
                               max_tokens=80)
 
-    rows = []
-    for i, it in enumerate(corpus):
+    def _work(it):
         row = {"outcome": it.outcome, "p_crowd": it.crowd_prob, "category": it.category}
-        ok = True
         for name, (kw, _) in CONFIGS.items():
             p, _ = forecast_item(it, llm_c, n=n, **kw)
             if p is None and name == "grounded_readout":
-                ok = False
-                break
+                return None
             row[name] = p
-        if not ok:
-            continue
         row["direct"] = direct_estimate(it, llm_d)
-        rows.append(row)
-        if len(rows) % 25 == 0:
-            print(f"    {len(rows)} items  (cache={llm_c.calls['cache']} hf={llm_c.calls['hf']} ds={llm_c.calls['deepseek']})")
+        return row
+
+    rows = []
+    with ThreadPoolExecutor(max_workers=10) as ex:
+        for fut in as_completed([ex.submit(_work, it) for it in corpus]):
+            r = fut.result()
+            if r is None:
+                continue
+            rows.append(r)
+            if len(rows) % 25 == 0:
+                print(f"    {len(rows)} items  (cache={llm_c.calls['cache']} hf={llm_c.calls['hf']} ds={llm_c.calls['deepseek']})")
 
     # fill Nones for non-primary configs with the grounded value (config produced nothing) so evals are fair
     for r in rows:
