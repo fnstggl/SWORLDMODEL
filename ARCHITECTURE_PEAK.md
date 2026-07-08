@@ -17,6 +17,18 @@
 > grounded-rate skill +0.71 vs persistence / +0.30 vs pooled (rate).** Coverage means something because the
 > grounded value still lifts.
 >
+> **LIVE grounding — real backends, LLM-inferred matching (built — EXP-086).** The router now grounds the ACTUAL
+> present over live, keyless backends + a real LLM. `swm/api/live_market.py` is a real-time Coinbase source
+> (spot + daily candles → state AND rate grounding; CI = the instrument's own 1-day volatility);
+> `swm/api/live_search.py` is keyless DuckDuckGo/Wikipedia retrieval; `swm/api/live_grounding.py` wires them
+> with a DeepSeek extractor (evidence + current knowledge → value + confidence → calibrated CI, never zero) and
+> — replacing the brittle hardcoded token matcher — an `LLMResolver` that does LLM-INFERRED variable→series
+> matching (handles synonyms/paraphrase a lexical rule can't: "the price of ether" → eth_usd, "SOL/USD spot" →
+> sol_usd). Live run grounded 8/9 real variables across markets/macro/demography/health/energy — 3 from live
+> Coinbase, 5 from the DeepSeek+web extractor, 1 honestly ungrounded. Everything degrades gracefully (no key ⇒
+> lexical + no retrieval; dead endpoint ⇒ fall through, never crash). Production upgrades on the same
+> interfaces: a keyed equities/macro feed (Twelve Data, FRED) and a keyed search API (Tavily/Brave).
+>
 > **GROUNDED FORWARD DYNAMICS — the transition operator (fidelity frontier, built — EXP-083).** State
 > grounding fixes the INITIAL CONDITION; a forecast is initial_condition + TRAJECTORY, and the Monte-Carlo had
 > been rolling variables forward with GUESSED drift/volatility — a grounded present + a random-walk future only

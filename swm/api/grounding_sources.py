@@ -80,28 +80,79 @@ class StructuredSource(Grounder):
 
     def ground(self, variable, question=None, as_of=None):
         m = self.match(variable, question)
-        if m is None or self.fetch is None:
+        return self.ground_key(m[0], as_of) if m is not None else None
+
+    def ground_key(self, key, as_of=None):
+        """Ground a KNOWN canonical key directly (used when an LLM resolver has already picked the series)."""
+        if self.fetch is None:
             return None
-        r = self.fetch(m[0], as_of)
-        return GroundedValue(float(r[0]), float(r[1]), f"{self.name}:{m[0]}") if r is not None else None
+        r = self.fetch(key, as_of)
+        return GroundedValue(float(r[0]), float(r[1]), f"{self.name}:{key}") if r is not None else None
 
     def ground_series(self, variable, question=None, as_of=None, window=6):
         m = self.match(variable, question)
-        if m is None or self.fetch_series is None:
+        return self.ground_series_key(m[0], as_of, window) if m is not None else None
+
+    def ground_series_key(self, key, as_of=None, window=6):
+        if self.fetch_series is None:
             return None
-        seq = self.fetch_series(m[0], as_of, window)
-        return (m[0], [float(v) for v in seq]) if seq else None
+        seq = self.fetch_series(key, as_of, window)
+        return (key, [float(v) for v in seq]) if seq else None
+
+    def menu(self):
+        """The source's series menu for an LLM resolver: canonical key + a human description (first alias)."""
+        return [{"source": self.name, "domain": self.domain, "key": k, "describes": ph[0]}
+                for k, ph in self.aliases.items()]
+
+
+@dataclass
+class LLMResolver:
+    """LLM-inferred variable→source matching — the production matcher. Instead of hardcoded token rules, the
+    model reads the variable and the MENU of available series and picks the right one (or none → retrieval).
+    It handles synonyms, paraphrase, and domain reasoning that a lexical rule never will
+    ("joblessness in the eurozone" → the unemployment series). `llm(prompt) -> text` returns JSON
+    {"source","key","confidence"} (source null if nothing fits). `min_conf` gates weak matches to retrieval."""
+    llm: object
+    min_conf: float = 0.5
+
+    def resolve(self, variable, question, sources):
+        menu = [m for s in sources for m in s.menu()]
+        if not menu:
+            return None
+        lines = "\n".join(f'  - source="{m["source"]}" key="{m["key"]}" ({m["domain"]}: {m["describes"]})'
+                          for m in menu)
+        prompt = (f'A forecasting model needs the CURRENT value of this variable: "{variable}".\n'
+                  f'Question context: {question or "(none)"}\n'
+                  f'Here is the menu of available data series:\n{lines}\n\n'
+                  f'Pick the ONE series that measures this exact variable, or none if the menu has no real '
+                  f'match (a different concept that merely shares a word is NOT a match).\n'
+                  f'Return ONLY JSON: {{"source": <name or null>, "key": <key or null>, "confidence": <0..1>}}.')
+        from swm.api.retrieval_grounding import parse_json_lenient
+        try:
+            r = parse_json_lenient(self.llm(prompt))
+        except Exception:
+            return None
+        if not r or not r.get("source") or not r.get("key") or float(r.get("confidence", 0)) < self.min_conf:
+            return None
+        src = next((s for s in sources if s.name == r["source"] and r["key"] in s.aliases), None)
+        return (src, r["key"], float(r["confidence"])) if src is not None else None
 
 
 @dataclass
 class GroundingRouter(Grounder):
     """Routes a variable to the best-matching structured source, falling back to a universal retrieval
     grounder. Being a `Grounder`, it drops straight into `StateGrounder(default=router)` (state layer) and its
-    `ground_series` feeds `TransitionOperator.ground_gain` (rate layer) — one router grounds any question."""
+    `ground_series` feeds `TransitionOperator.ground_gain` (rate layer) — one router grounds any question.
+    `resolver` (an `LLMResolver`) is the production matcher; without it the sources' offline lexical match is
+    used."""
     sources: list = field(default_factory=list)     # list[StructuredSource]
     retrieval: object = None                         # a universal RetrievalGrounder (the long-tail fallback)
+    resolver: object = None                          # optional LLMResolver (LLM-inferred matching)
 
     def _best_source(self, variable, question):
+        if self.resolver is not None:
+            r = self.resolver.resolve(variable, question, self.sources)
+            return (r[0], r[1], r[2]) if r is not None else None
         best = None
         for s in self.sources:
             m = s.match(variable, question)
@@ -112,7 +163,7 @@ class GroundingRouter(Grounder):
     def ground(self, variable, question=None, as_of=None):
         b = self._best_source(variable, question)
         if b is not None:
-            gv = b[0].ground(variable, question, as_of)
+            gv = b[0].ground_key(b[1], as_of)                # honor the resolved key (LLM- or lexical-picked)
             if gv is not None:
                 return gv
         return self.retrieval.ground(variable, question, as_of) if self.retrieval is not None else None
@@ -121,24 +172,20 @@ class GroundingRouter(Grounder):
         """A recent trajectory for RATE grounding, from the best structured source that carries a series."""
         b = self._best_source(variable, question)
         if b is not None:
-            seq = b[0].ground_series(variable, question, as_of, window)
+            seq = b[0].ground_series_key(b[1], as_of, window)
             if seq is not None:
                 return seq
         return None
 
     def route_report(self, variables, question=None, as_of=None):
-        """Which grounder each variable resolves to — the coverage picture for a question."""
+        """Which grounder each variable resolves to — the coverage picture for a question. One grounding call
+        per variable (the resolver, if any, fires once)."""
         out = []
         for v in variables:
-            b = self._best_source(v, question)
             gv = self.ground(v, question, as_of)
-            out.append({"variable": v, "grounded": gv is not None,
-                        "via": (gv.source.split(":")[0] if gv is not None else None),
-                        "kind": ("structured" if b is not None and gv is not None
-                                 and not gv.source.startswith("retrieval")
-                                 else ("retrieval" if gv is not None else None)),
-                        "matched_source": (b[0].name if b is not None else None),
-                        "match_score": round(b[2], 3) if b is not None else None})
+            via = gv.source.split(":")[0] if gv is not None else None
+            kind = ("retrieval" if via == "retrieval" else "structured") if gv is not None else None
+            out.append({"variable": v, "grounded": gv is not None, "via": via, "kind": kind})
         return out
 
     def coverage(self, variables, question=None, as_of=None):
