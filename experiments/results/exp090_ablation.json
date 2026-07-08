@@ -1,0 +1,76 @@
+{
+ "n": 660,
+ "note": "temperature fit on train half, scored on held-out half; skill vs crowd/base",
+ "ablation": {
+  "grounded_readout": {
+   "n_test": 330,
+   "temperature": 0.2,
+   "ll_raw": 1.3193,
+   "ll_calibrated": 0.713,
+   "ll_crowd": 0.4985,
+   "skill_raw_vs_crowd": -1.6464,
+   "skill_cal_vs_crowd": -0.4302,
+   "skill_cal_vs_base": -0.0279
+  },
+  "ungrounded_readout": {
+   "n_test": 330,
+   "temperature": 0.2,
+   "ll_raw": 1.7185,
+   "ll_calibrated": 0.7175,
+   "ll_crowd": 0.4985,
+   "skill_raw_vs_crowd": -2.4471,
+   "skill_cal_vs_crowd": -0.4393,
+   "skill_cal_vs_base": -0.0344
+  },
+  "readout_top3vars": {
+   "n_test": 330,
+   "temperature": 0.2,
+   "ll_raw": 1.229,
+   "ll_calibrated": 0.704,
+   "ll_crowd": 0.4985,
+   "skill_raw_vs_crowd": -1.4653,
+   "skill_cal_vs_crowd": -0.4121,
+   "skill_cal_vs_base": -0.0149
+  },
+  "compiler_mechanism": {
+   "n_test": 330,
+   "temperature": 0.2,
+   "ll_raw": 1.3243,
+   "ll_calibrated": 0.717,
+   "ll_crowd": 0.4985,
+   "skill_raw_vs_crowd": -1.6564,
+   "skill_cal_vs_crowd": -0.4382,
+   "skill_cal_vs_base": -0.0337
+  },
+  "direct_llm": {
+   "n_test": 330,
+   "temperature": 0.2,
+   "ll_raw": 0.8594,
+   "ll_calibrated": 0.6789,
+   "ll_crowd": 0.4985,
+   "skill_raw_vs_crowd": -0.7239,
+   "skill_cal_vs_crowd": -0.3618,
+   "skill_cal_vs_base": 0.0213
+  },
+  "ensemble_model+direct": {
+   "n_test": 330,
+   "temperature": 0.2,
+   "ll_raw": 0.953,
+   "ll_calibrated": 0.6871,
+   "ll_crowd": 0.4985,
+   "skill_raw_vs_crowd": -0.9116,
+   "skill_cal_vs_crowd": -0.3783,
+   "skill_cal_vs_base": 0.0094
+  },
+  "ensemble_model+crowd": {
+   "n_test": 330,
+   "temperature": 0.2,
+   "ll_raw": 0.7324,
+   "ll_calibrated": 0.6515,
+   "ll_crowd": 0.4985,
+   "skill_raw_vs_crowd": -0.4692,
+   "skill_cal_vs_crowd": -0.3069,
+   "skill_cal_vs_base": 0.0607
+  }
+ }
+}
