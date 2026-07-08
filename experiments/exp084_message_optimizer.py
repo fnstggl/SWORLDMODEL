@@ -58,8 +58,14 @@ def main():
     for d in spec.drivers[:8]:
         print(f"     {d['term']:>22}: {d['contribution']:+.3f}")
 
-    print("\n[L2] CONSTRUCTED EMAIL (assembled move-by-move by the search, not written by an LLM)")
+    print("\n[L2] CONSTRUCTED EMAIL (assembled move-by-move, then passed through the critic gate)")
     print("  " + result.email.text.replace(". ", ".\n  "))
+    crit = result.email.critique
+    if crit is not None:
+        print("\n[CRITIC] coherence=%.2f naturalness=%.2f (source=%s)  flags=%d"
+              % (crit.coherence, crit.naturalness, crit.source, len(crit.flags())))
+        for f in crit.flags():
+            print("   ⚠ ", f["issue"], "—", f["sentence"][:70])
 
     print("\n[L3] MONTE-CARLO EVALUATION (fraction of recipient-trajectories that reply)")
     ev = result.evaluation

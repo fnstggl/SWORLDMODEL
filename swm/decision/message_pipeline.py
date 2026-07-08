@@ -12,9 +12,10 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 from swm.decision.compositional_search import (ConstructedEmail, construct_email,
-                                                default_proposer, encode_text_to_strategy)
+                                                default_proposer, encode_text_to_strategy, polish_email)
 from swm.decision.mc_evaluation import MCResult, mc_evaluate
 from swm.decision.message_optimizer import StrategySpec, optimize_strategy
+from swm.decision.semantic_critic import SemanticCritic
 from swm.decision.strategy_scorer import scorer_from_recipient
 
 # recipient variables we derive/assume beyond what the profile provides (email cold-outreach defaults)
@@ -92,16 +93,25 @@ class OptimizationResult:
 
 def optimize_message(recipient: RecipientState, *, proposer=default_proposer, q: float = 0.2,
                      restarts: int = 12, beam: int = 6, n_mc: int = 2000, seed: int = 0,
-                     baselines: dict | None = None) -> OptimizationResult:
-    """Run L1 → L2 → L3 for a recipient and return the constructed email + its evaluated distribution."""
+                     baselines: dict | None = None, judge_fn=None) -> OptimizationResult:
+    """Run L1 → L2 → (critic gate) → L3 for a recipient and return the constructed email + distribution.
+
+    judge_fn — optional LLM sentence judge (see semantic_critic.llm_sentence_judge). When absent, the
+    critic uses its transparent lexical fallback. The critic prunes slop inside the beam search AND runs
+    as a final gate + repair pass, so the output does not read as embellishing/annoying AI slop."""
     scorer = scorer_from_recipient(recipient.vars, recipient.base_mean, seed=seed)
+    fast_critic = SemanticCritic()                     # cheap lexical — safe inside the beam search
+    final_critic = SemanticCritic(judge_fn=judge_fn)   # LLM if provided, else lexical — the final gate
 
     # L1 — optimal strategy in variable space (no text)
     spec = optimize_strategy(scorer, q=q, restarts=restarts, seed=seed)
 
-    # L2 — assemble the email move-by-move to realize the spec
+    # L2 — assemble the email move-by-move to realize the spec (slop pruned as it builds)
     email = construct_email(scorer, spec.strategy, proposer=proposer, beam=beam, q=q,
-                            context={"recipient": recipient.label})
+                            critic=fast_critic, context={"recipient": recipient.label})
+
+    # CRITIC GATE — the critical evaluator at the end: flag/repair incoherent or annoying lines
+    email = polish_email(email, scorer, spec.strategy, proposer=proposer, critic=final_critic, q=q)
 
     # L3 — Monte-Carlo evaluate the finalist under recipient hidden state
     evaluation = mc_evaluate(recipient.vars, recipient.base_mean, email.strategy,

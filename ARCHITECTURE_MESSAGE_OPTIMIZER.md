@@ -53,6 +53,32 @@ times** and score the reply under each draw; `P(reply)` is the **fraction of tra
 an interval. Same machinery as the HN `/v1/simulate` "fraction that cross," repurposed to replies. This is
 where *"we can simulate thousands"* is the entire point.
 
+### L4 — Semantic critic gate (`swm/decision/semantic_critic.py`)
+L1–L3 optimize *strategy*, but the scorer reads only lexical **variables**, so it is blind to two things
+that make an email read as AI slop, and both live *below* the variable resolution:
+
+- **Incoherence / embellishment** — a sentence can be dense with the right markers and still be nonsense.
+  *"most of the AI stack rents margin it should own, and inference is where that flips"* scores high on
+  `secret_density`+`contrarian_pitch` yet doesn't parse: vague referent ("that flips"), an abstract-noun
+  metaphor ("rents margin it should own"), a tryhard opener.
+- **Annoyingness** — *"One line back and I'll leave you alone"* scores as a low-friction ask but reads as a
+  manipulative tic.
+
+Meaning and tone are an LLM's strength and the variable readout's blind spot, so the critic is a separate
+**adversarial** evaluator over the actual text, scoring two axes — **coherence** (concrete, parseable
+claim?) and **naturalness** (not annoying/embellishing?). It runs in two places:
+
+1. **Inside the beam search** — the *cheap lexical* critic penalizes any partial assembly containing a
+   flagged line, so the email is never *built* toward slop.
+2. **As the final gate + repair loop** (`polish_email`) — the *full* critic (LLM `judge_fn` if available,
+   else lexical) flags each line; every flagged move is swapped for the cleanest on-strategy alternative
+   from the proposer, then re-critiqued, up to N rounds. If no clean realization exists, the least-slop
+   version is returned **with its flags surfaced** — honest, not hidden.
+
+The lexical fallback uses a curated slop/annoyance lexicon plus structural incoherence heuristics (vague
+referents, abstract-noun metaphors, buzzword density, missing concrete anchor), and every signal saturates.
+A production `judge_fn` (an LLM sentence judge) replaces it for far higher fidelity.
+
 ## The guardrail (why it's a real optimum, not a Goodhart exploit)
 
 Naively maximizing a flawed proxy finds the proxy's exploits (twelve question marks because
@@ -87,6 +113,7 @@ L1 → L2 → L3`, and runs naive drafts through the **same** evaluator so the l
 - `swm/decision/message_optimizer.py` — L1 strategy search.
 - `swm/decision/compositional_search.py` — L2 beam search + text encoder + sentence bank.
 - `swm/decision/mc_evaluation.py` — L3 recipient-hidden-state Monte Carlo.
+- `swm/decision/semantic_critic.py` — L4 coherence/naturalness critic (beam penalty + final gate + repair).
 - `swm/decision/message_pipeline.py` — end-to-end orchestration.
 - Builds on: `swm/variables/schema.py` (message content-stance variables), `calibrated_weights.WeightPrior`,
   `swm/entities/public_figure.py` (recipient inference), `swm/decision/best_action.py` (best-arm racing —

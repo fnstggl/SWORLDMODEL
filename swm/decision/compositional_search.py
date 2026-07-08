@@ -85,38 +85,36 @@ def encode_text_to_strategy(text: str) -> dict:
 # EARNED by the scorer, not rigged by the bank. A real LLM proposer (propose_fn) drops in here.
 SLOT_BANK: dict = {
     "opener": [
-        "Peter — I read your essay on secrets and definite optimism.",
-        "Peter — loved your take on how the best companies are built on a contrarian truth.",
-        "Hi Mr. Thiel, I hope this email finds you well and that you are having a great week.",
-        "Dear Mr. Thiel, I am a Princeton admit recently featured in the New York Times.",
+        "Peter — I read your essay on secrets.",
+        "Peter — you've written that the best startups are built on a truth few people agree with.",
+        "Hi Mr. Thiel, I hope this email finds you well.",                              # annoying (contrast)
+        "Dear Mr. Thiel, I'm a Princeton admit recently featured in the New York Times.",  # credential (contrast)
         "Peter —",
-        "Hi Peter, quick note.",
     ],
     "hook": [
-        "I'm 17 and I think going to college is the wrong trade right now.",
-        "I'm 17, building in AI infrastructure instead of taking the safe path.",
-        "I've been building since before it was resume material.",
-        "I was valedictorian and have a 4.0, and I've won several prestigious awards.",
+        "I'm 17. I got into Princeton and I don't think I should go.",
+        "I'm 17 and building in AI instead of going to college.",
+        "I was valedictorian with a 4.0 and several awards.",                          # credential (contrast)
         "",  # allow skipping the hook (brevity)
     ],
     "thesis": [
-        "The secret I'm betting on: most of the AI stack rents margin it should own, and inference is where that flips.",
-        "Everyone thinks the moat is the model; I think the conventional wisdom is wrong and it's the inference layer.",
-        "I'm building AI infrastructure that makes inference dramatically cheaper.",
-        "My startup is an exciting, innovative, next-generation AI platform with huge potential.",
-        "The non-obvious truth: the winners will own the layer everyone currently rents.",
+        "I build software that cuts the cost of running large AI models by about 40%.",
+        "The expensive part of AI is shifting from training models to running them, and almost nobody is building for that.",
+        "Most companies rent their AI compute; I think the ones that own it will win, and I'm building that.",
+        "The secret I'm betting on: most of the AI stack rents margin it should own, and inference is where that flips.",  # slop (contrast)
+        "My startup is an exciting next-generation AI platform with huge potential.",  # vague slop (contrast)
     ],
     "ask": [
-        "Is that thesis obviously wrong to you? One line back and I'll leave you alone.",
-        "Would you tell me the fastest way this is wrong?",
-        "Could we set up a 30-minute call at your earliest convenience?",
-        "Please respond ASAP — I'd love to get on your calendar this week.",
-        "I'd love any thoughts you might have whenever you get a chance.",
+        "Do you think that's wrong?",
+        "Would you tell me the fastest way this falls apart?",
+        "Is this a bad idea?",
+        "Could we set up a 30-minute call at your earliest convenience?",             # pushy (contrast)
+        "Is that thesis obviously wrong to you? One line back and I'll leave you alone.",  # annoying (contrast)
     ],
     "close": [
         "— Beckett",
-        "Thanks for your time, Beckett.",
-        "Best regards and looking forward to hearing back from you soon, Beckett.",
+        "Thanks, Beckett.",
+        "Best regards and looking forward to hearing back from you soon, Beckett.",   # annoying (contrast)
         "",  # allow no close
     ],
 }
@@ -135,27 +133,39 @@ def _spec_distance(strat: dict, spec_strategy: dict) -> float:
 class ConstructedEmail:
     text: str
     strategy: dict
-    score: float                # objective value (lower bound − spec penalty) at selection
+    score: float                # objective value (lower bound − spec penalty − slop) at selection
     mean: float                 # scorer mean P(reply) for the assembled text
     lower_bound: float
     slots: dict = field(default_factory=dict)
+    critique: object = None     # SemanticCritic verdict on the final text
 
     def summary(self) -> dict:
-        return {"text": self.text,
-                "encoded_strategy": {k: round(v, 3) for k, v in self.strategy.items()},
-                "reply_mean": round(self.mean, 4), "reply_lower_bound": round(self.lower_bound, 4)}
+        out = {"text": self.text,
+               "encoded_strategy": {k: round(v, 3) for k, v in self.strategy.items()},
+               "reply_mean": round(self.mean, 4), "reply_lower_bound": round(self.lower_bound, 4)}
+        if self.critique is not None:
+            out["critique"] = self.critique.summary()
+        return out
 
 
 def construct_email(scorer: StrategyScorer, spec_strategy: dict, *, proposer=default_proposer,
                     beam: int = 6, q: float = 0.2, spec_penalty: float = 0.15,
-                    context: dict | None = None) -> ConstructedEmail:
+                    critic=None, critic_weight: float = 0.6, context: dict | None = None) -> ConstructedEmail:
     """Beam search over communicative moves. Returns the assembled email the world model scores highest
-    while adhering to the Layer-1 optimal strategy. The email is CONSTRUCTED by the search, not written."""
+    while adhering to the Layer-1 optimal strategy AND passing the semantic critic (coherent, not annoying).
+    The email is CONSTRUCTED by the search, not written. `critic` should be the CHEAP lexical
+    SemanticCritic (no judge_fn) — it prunes slop as the email is built; the LLM critic runs later as a gate."""
     context = context or {}
+    if critic is None:
+        from swm.decision.semantic_critic import SemanticCritic
+        critic = SemanticCritic()          # lexical, cheap — safe to call on every partial assembly
 
     def objective(text):
         strat = encode_text_to_strategy(text)
-        return scorer.lower_bound(strat, q=q) - spec_penalty * _spec_distance(strat, spec_strategy)
+        base = scorer.lower_bound(strat, q=q) - spec_penalty * _spec_distance(strat, spec_strategy)
+        # subtract a slop penalty: a partial assembly with an incoherent/annoying line is pruned even if
+        # its lexical strategy scores well. This is the quality axis the variable readout is blind to.
+        return base - critic_weight * (1.0 - critic.critique(text).quality)
 
     # beams: list of (chosen_slots dict, text, score)
     beams = [({}, "", -1.0)]
@@ -175,4 +185,60 @@ def construct_email(scorer: StrategyScorer, spec_strategy: dict, *, proposer=def
     chosen, text, score = beams[0]
     dist = scorer.score_dist(encode_text_to_strategy(text))
     return ConstructedEmail(text=text, strategy=encode_text_to_strategy(text), score=score,
-                            mean=dist.mean, lower_bound=dist.lower_bound(q), slots=chosen)
+                            mean=dist.mean, lower_bound=dist.lower_bound(q), slots=chosen,
+                            critique=critic.critique(text))
+
+
+def _assemble(slots: dict) -> str:
+    return " ".join(slots[s] for s in SLOTS if slots.get(s)).strip()
+
+
+def _sent_overlap(a: str, b: str) -> bool:
+    a, b = a.strip().lower(), b.strip().lower()
+    return a in b or b in a
+
+
+def polish_email(email: ConstructedEmail, scorer: StrategyScorer, spec_strategy: dict, *,
+                 proposer=default_proposer, critic, q: float = 0.2, rounds: int = 2,
+                 spec_penalty: float = 0.15, critic_weight: float = 0.8) -> ConstructedEmail:
+    """The critical evaluator AT THE END. Run the (LLM, if available) critic on the finalist; for every
+    slot whose sentence the critic flags as incoherent/embellished or annoying, swap in the best
+    alternative move that PASSES the critic and keeps the strategy — then re-critique. Repeat up to
+    `rounds`. Bounds expensive-critic calls to (flagged slots × candidates), not the whole beam tree.
+    If no clean realization exists in the proposer's candidates, the least-slop version is returned with
+    its flags surfaced — honest, not hidden."""
+    slots = dict(email.slots)
+    text = _assemble(slots)
+
+    def strat_value(t):
+        strat = encode_text_to_strategy(t)
+        return scorer.lower_bound(strat, q=q) - spec_penalty * _spec_distance(strat, spec_strategy)
+
+    for _ in range(rounds):
+        crit = critic.critique(text)
+        flagged = {f["sentence"] for f in crit.flags()}
+        if not flagged:
+            break
+        changed = False
+        for slot, chosen in list(slots.items()):
+            if not chosen or not any(_sent_overlap(fs, chosen) for fs in flagged):
+                continue
+            # Rank candidates for THIS slot by (its own cleanliness, then strategy value). Judging the
+            # candidate itself — not the whole-email min — is what lets a repair register even while a
+            # DIFFERENT line is still slop; the other flagged slot is fixed in its own pass.
+            def rank(c):
+                trial = _assemble({**slots, slot: c})
+                cq = critic.critique(c).quality if c else 1.0
+                return (round(cq, 2), strat_value(trial) if trial else -1.0)
+            best_c = max([c for c in proposer(slot, spec_strategy, {})] + [chosen], key=rank)
+            if best_c != chosen and rank(best_c) > rank(chosen):
+                slots[slot] = best_c
+                text = _assemble(slots)
+                changed = True
+        if not changed:
+            break
+
+    strat = encode_text_to_strategy(text)
+    dist = scorer.score_dist(strat)
+    return ConstructedEmail(text=text, strategy=strat, score=dist.lower_bound(q), mean=dist.mean,
+                            lower_bound=dist.lower_bound(q), slots=slots, critique=critic.critique(text))
