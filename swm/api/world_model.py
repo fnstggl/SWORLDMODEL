@@ -40,7 +40,16 @@ class WorldModel:
         return ValidatingCompiler(self.compiler, repair_fn=self.repair_fn)
 
     def simulate(self, question: str, *, context: str = "", as_of: str = "", key: str = None,
-                 n: int = None) -> dict:
+                 n: int = None, events=None, b0: float = None, horizon: float = None,
+                 continuous_step=None, actions=None) -> dict:
+        """One call. If a future-event `calendar` is available (passed as `events`, or an `EventCalendar`),
+        this becomes a FORWARD question: roll the belief through sampled event trajectories and return the
+        branching distribution + pivotal forks + (optional) best action — never a false-confident point,
+        never abstention. Otherwise the existing compiler path runs unchanged."""
+        if events is not None:
+            return self.simulate_forward(question, events, context=context, as_of=as_of, b0=b0,
+                                         horizon=horizon, continuous_step=continuous_step,
+                                         actions=actions, n=n)
         if self.retriever is not None and not context:
             ctx = self.retriever.retrieve(question, as_of=as_of)
             context = ctx.to_prompt()
@@ -63,6 +72,68 @@ class WorldModel:
                          "variables": [(v.name, v.value, v.volatility) for v in compiled.spec.variables],
                          "equations": compiled.spec.equations, "outcome": compiled.spec.outcome,
                          "horizon": compiled.spec.horizon, "rationale": compiled.spec.rationale}}
+
+
+    def simulate_forward(self, question: str, events, *, context: str = "", as_of: str = "",
+                         b0: float = None, horizon: float = None, continuous_step=None, actions=None,
+                         n: int = None) -> dict:
+        """Forward question via the branching-realities rollout. `events` may be an `EventCalendar`, a list
+        of structured event records, or a callable `build(question, context, horizon) -> EventCalendar`
+        (e.g. `EventImpactJudge.build`). Returns the branching distribution + pivotal forks + reducible/
+        irreducible split, and — if `actions` (a list of `(label, apply_fn(b0, calendar)->(b0, calendar))`)
+        is given — the best action by P(desired outcome). Never abstains: past the horizon it returns the
+        full branching distribution and labels which forks are reducible vs irreducible."""
+        from swm.simulation.branching_rollout import forward_forecast
+        from swm.transition.future_events import EventCalendar, events_from_records
+
+        if b0 is None and self.retriever is not None:
+            b0 = _retrieved_belief(self.retriever, question, as_of)
+        b0 = 0.5 if b0 is None else float(b0)
+
+        if callable(getattr(events, "build", None)):
+            horizon = horizon or 6.0
+            calendar = events.build(question, context, horizon)
+        elif isinstance(events, EventCalendar):
+            calendar = events
+        else:
+            calendar = events_from_records(list(events))
+        if horizon is None:
+            horizon = max([e.time for e in calendar.events], default=6.0)
+
+        nn = n or self.n
+        base = forward_forecast(b0, horizon, calendar, continuous_step=continuous_step, n=nn)
+
+        best = None
+        if actions:
+            scored = []
+            for label, apply_fn in actions:
+                ab0, acal = apply_fn(b0, calendar)
+                af = forward_forecast(ab0, horizon, acal, continuous_step=continuous_step, n=nn)
+                scored.append({"action": label, "p_event": af["p_event"],
+                               "interval_80": af["interval_80"], "pivotal_branches": af["pivotal_branches"]})
+            scored.sort(key=lambda r: -r["p_event"])
+            do_nothing = next((s for s in scored if s["action"] in ("do_nothing", "none", "baseline")), None)
+            best = {"best": scored[0], "ranking": scored,
+                    "lift_over_do_nothing": (round(scored[0]["p_event"] - do_nothing["p_event"], 4)
+                                             if do_nothing else None)}
+
+        return {"question": question, "mechanism": "branching", "b0": round(b0, 4), "horizon": horizon,
+                "forecast": base, "forecastable": base["reducible_frac"] >= 0.1,
+                "best_action": best, "headline": base["headline"],
+                "events": [{"name": e.name, "time": e.time, "labels": e.labels()} for e in calendar.events]}
+
+
+def _retrieved_belief(retriever, question: str, as_of: str):
+    """Best-effort current belief (market/poll price) from retrieval; None if unavailable."""
+    try:
+        ctx = retriever.retrieve(question, as_of=as_of)
+        for it in getattr(ctx, "items", []) or []:
+            sc = getattr(it, "score", None)
+            if isinstance(sc, (int, float)) and 0.0 <= sc <= 1.0:
+                return float(sc)
+    except Exception:
+        pass
+    return None
 
 
 def _forecastable(forecast: dict):
