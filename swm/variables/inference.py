@@ -51,7 +51,7 @@ class VariableInferenceEngine:
     llm_infer_fn: object = None       # callable(entity_id, action, context, history) -> inference dict
 
     def infer(self, entity_id: str, action, context=None, *, history=None, user_context=None,
-              llm_inference: dict | None = None) -> VariableMap:
+              llm_inference: dict | None = None, web_inference: dict | None = None) -> VariableMap:
         vm = VariableMap(entity_id=entity_id)
         self._from_history(vm, history)
         self._from_platform(vm, (getattr(action, "channel", None) or self.platform))
@@ -64,6 +64,12 @@ class VariableInferenceEngine:
                 inf = None
         if inf:
             self._apply_llm(vm, inf)
+        # web-sourced evidence about a PUBLIC FIGURE (what they've publicly done / responded to /
+        # said they value). Applied AFTER the llm prior so grounded external signal overrides it, but
+        # BEFORE user context so a fact you tell us still wins. Bias-to-infer: when we're not told a
+        # variable, this is how we fill it for someone we've never messaged.
+        if web_inference:
+            self._apply_web(vm, web_inference)
         vm.merge_user_context(user_context)
         return vm.fill_priors()
 
@@ -128,6 +134,19 @@ class VariableInferenceEngine:
                        confidence=payload.get("confidence", 0.5), evidence=payload.get("evidence", "llm"))
             else:
                 vm.set(name, payload, provenance="llm", confidence=0.5, evidence="llm")
+
+    # ---- web-sourced variables (public-figure evidence) ----
+    def _apply_web(self, vm, inference: dict):
+        """Same payload shape as _apply_llm, but provenance='web' (cited external evidence about the
+        entity's observed public behavior). Default confidence is a touch higher than a bare llm prior
+        because it is grounded in retrieved signal, not pure guesswork."""
+        for name, payload in inference.items():
+            if isinstance(payload, dict):
+                vm.set(name, payload.get("value", 0.5), provenance="web",
+                       confidence=payload.get("confidence", 0.55),
+                       evidence=payload.get("evidence", "web evidence"))
+            else:
+                vm.set(name, payload, provenance="web", confidence=0.55, evidence="web evidence")
 
 
 def _summarize(events: list) -> dict:

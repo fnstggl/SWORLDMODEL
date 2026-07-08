@@ -33,8 +33,11 @@ PLATFORM = "platform"
 MESSAGE_FIT = "message_fit"
 PERSONA = "persona"        # deep stable traits inferred from a person's writing history (the "interview")
 
-# provenance ranks (higher = more trusted); used to resolve conflicts and weight the readout
-PROVENANCE_RANK = {"user": 3, "data": 3, "llm": 2, "heuristic": 1, "prior": 0}
+# provenance ranks (higher = more trusted); used to resolve conflicts and weight the readout.
+# `web` = observed public behavior/statements about the entity, gathered online (public figures). It
+# ranks BELOW your own interaction logs (`data`) and provided facts (`user`) — it is real evidence,
+# not a private log — but ABOVE a bare `llm` prior, because it is grounded in cited external signal.
+PROVENANCE_RANK = {"user": 4, "data": 4, "web": 3, "llm": 2, "heuristic": 1, "prior": 0}
 
 
 @dataclass(frozen=True)
@@ -43,7 +46,7 @@ class VariableSpec:
     category: str
     description: str
     signed: bool = False          # False: [0,1]; True: [-1,1] (a stance/valence axis)
-    allowed_provenance: tuple = ("data", "user", "llm", "heuristic", "prior")
+    allowed_provenance: tuple = ("data", "user", "web", "llm", "heuristic", "prior")
     default: float = 0.5
     prior_confidence: float = 0.15   # confidence of the population prior when nothing is known
 
