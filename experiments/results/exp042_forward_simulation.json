@@ -1,0 +1,55 @@
+{
+ "dataset": "ChangeMyView",
+ "n": 1200,
+ "n_test": 360,
+ "base_rate": 0.6488,
+ "coverage": 1200,
+ "arms": {
+  "persistence": {
+   "log_loss": 0.644,
+   "brier": 0.2258,
+   "ece": 0.0067,
+   "uplift@20": 0.0,
+   "accuracy": 0.6556
+  },
+  "event_only_composite": {
+   "log_loss": 0.638,
+   "brier": 0.2231,
+   "ece": 0.0149,
+   "uplift@20": 0.0944,
+   "accuracy": 0.6556
+  },
+  "person_only": {
+   "log_loss": 0.6254,
+   "brier": 0.2178,
+   "ece": 0.0342,
+   "uplift@20": 0.0944,
+   "accuracy": 0.6583
+  },
+  "additive_feature_soup": {
+   "log_loss": 0.6196,
+   "brier": 0.2154,
+   "ece": 0.0309,
+   "uplift@20": 0.15,
+   "accuracy": 0.6583
+  },
+  "structural_simulation": {
+   "log_loss": 0.6189,
+   "brier": 0.2151,
+   "ece": 0.0272,
+   "uplift@20": 0.15,
+   "accuracy": 0.6583
+  }
+ },
+ "gating_analysis": {
+  "impact_success_slope_high_responsiveness": 0.7091,
+  "impact_success_slope_low_responsiveness": 0.5124,
+  "n_high": 180,
+  "n_low": 180
+ },
+ "interaction_gain_vs_additive": 0.0007,
+ "structural_vs_persistence": 0.0251,
+ "structural_vs_event_only": 0.0191,
+ "coupling_helps": true,
+ "beats_persistence": true
+}

@@ -1,0 +1,32 @@
+{
+ "PART1_does_depth_help": {
+  "n_predictions": 8238,
+  "MAE_population_baseline": 0.0934,
+  "MAE_deep_persona": 0.0907,
+  "MAE_confidence_blend": 0.0856,
+  "persona_beats_population_by": 0.0027,
+  "depth_curve_MAE": {
+   "depth<=1": 0.0956,
+   "depth<=2": 0.0931,
+   "depth<=4": 0.09,
+   "depth<=8": 0.0843,
+   "depth<=16": 0.0835
+  }
+ },
+ "PART2_downstream_payoff": {
+  "n_labeled": 125,
+  "n_test": 50,
+  "base_rate": 0.664,
+  "base_rate_logloss": 0.657,
+  "shallow_1doc": {
+   "log_loss": 0.752,
+   "brier": 0.2659
+  },
+  "deep_full_history": {
+   "log_loss": 0.7386,
+   "brier": 0.2645
+  },
+  "deep_beats_base_logloss": -0.0816,
+  "deep_beats_shallow_logloss": 0.0134
+ }
+}

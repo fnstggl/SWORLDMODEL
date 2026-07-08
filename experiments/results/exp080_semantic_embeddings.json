@@ -1,0 +1,90 @@
+{
+ "n_probes": 5,
+ "corpus_keys_embedded": 597,
+ "new_embeddings": 597,
+ "real_embedding_correct": 4,
+ "lexical_correct": 1,
+ "cache_path": "swm/variables/prior_embeddings.json",
+ "probes": [
+  {
+   "probe": "consumer price growth -> monetary tightening",
+   "expected": "inflation->rate_hike",
+   "expected_elasticity": 0.444,
+   "real_embed": {
+    "transferred": true,
+    "elasticity": 0.444,
+    "correct_sign": true,
+    "src": "transfer(sim=0.52,n=494)"
+   },
+   "lexical": {
+    "transferred": false,
+    "elasticity": null,
+    "correct_sign": false
+   }
+  },
+  {
+   "probe": "joblessness level -> central bank raising interest rates",
+   "expected": "unemployment->rate_hike",
+   "expected_elasticity": -0.575,
+   "real_embed": {
+    "transferred": true,
+    "elasticity": -0.575,
+    "correct_sign": true,
+    "src": "transfer(sim=0.51,n=494)"
+   },
+   "lexical": {
+    "transferred": false,
+    "elasticity": null,
+    "correct_sign": false
+   }
+  },
+  {
+   "probe": "how long the subscriber has stayed -> subscription cancellation",
+   "expected": "tenure->customer_churn",
+   "expected_elasticity": -21.351,
+   "real_embed": {
+    "transferred": false,
+    "elasticity": null,
+    "correct_sign": false,
+    "src": null
+   },
+   "lexical": {
+    "transferred": true,
+    "elasticity": 0.01,
+    "correct_sign": false
+   }
+  },
+  {
+   "probe": "the monthly bill amount -> account cancellation",
+   "expected": "monthly_charges->customer_churn",
+   "expected_elasticity": 134.044,
+   "real_embed": {
+    "transferred": true,
+    "elasticity": 134.044,
+    "correct_sign": true,
+    "src": "transfer(sim=0.52,n=6000)"
+   },
+   "lexical": {
+    "transferred": false,
+    "elasticity": null,
+    "correct_sign": false
+   }
+  },
+  {
+   "probe": "a curiosity-provoking title -> click engagement",
+   "expected": "curiosity->headline_engagement",
+   "expected_elasticity": 0.005,
+   "real_embed": {
+    "transferred": true,
+    "elasticity": 0.005,
+    "correct_sign": true,
+    "src": "transfer(sim=0.78,n=6000)"
+   },
+   "lexical": {
+    "transferred": true,
+    "elasticity": 0.005,
+    "correct_sign": true
+   }
+  }
+ ]
+}

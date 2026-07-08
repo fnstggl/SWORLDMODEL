@@ -1,0 +1,85 @@
+{
+ "A_assembly_correctness_scdb": {
+  "n_cases": 954,
+  "independent_margin_mae": 0.208,
+  "generative_loop_margin_mae": 0.1683,
+  "assembly_reproduces_win": true
+ },
+ "B_worked_llm_example": {
+  "question": "A 9-member standards committee votes on adopting a strict new safety rule. Does it pass?",
+  "n_agents": 9,
+  "independent_p": 0.477,
+  "independent_passes": false,
+  "simulated_p": 0.781,
+  "simulated_passes": true,
+  "trajectory": [
+   0.222,
+   0.444,
+   0.889,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0,
+   1.0
+  ],
+  "emergence": true,
+  "agents": [
+   {
+    "id": "chair",
+    "initial": 0.85,
+    "final": 0.823,
+    "influence": 3.0
+   },
+   {
+    "id": "safety_lead",
+    "initial": 0.9,
+    "final": 0.844,
+    "influence": 2.2
+   },
+   {
+    "id": "eng_1",
+    "initial": 0.38,
+    "final": 0.772,
+    "influence": 1.0
+   },
+   {
+    "id": "eng_2",
+    "initial": 0.35,
+    "final": 0.771,
+    "influence": 1.0
+   },
+   {
+    "id": "eng_3",
+    "initial": 0.37,
+    "final": 0.764,
+    "influence": 1.0
+   },
+   {
+    "id": "ops_1",
+    "initial": 0.3,
+    "final": 0.75,
+    "influence": 0.9
+   },
+   {
+    "id": "ops_2",
+    "initial": 0.32,
+    "final": 0.75,
+    "influence": 0.9
+   },
+   {
+    "id": "junior_1",
+    "initial": 0.4,
+    "final": 0.777,
+    "influence": 0.6
+   },
+   {
+    "id": "junior_2",
+    "initial": 0.42,
+    "final": 0.777,
+    "influence": 0.6
+   }
+  ]
+ },
+ "loop_runs_end_to_end": true
+}
