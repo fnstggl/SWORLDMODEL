@@ -33,6 +33,15 @@ So a user asking about a specific person automatically gets the ask-the-user exp
 exactly what only they know, turns it into a dossier, and simulates the person from measured-quality inferred
 variables — while general questions are untouched.
 
+## Answering auto-runs the simulation (no separate step)
+
+The ask isn't a dead end. `simulate(question, answers=<your answers>)` folds the answers into the context so
+the **same call** proceeds through the dossier → grounded person-variables → calibrated run. Answering *is*
+the trigger. `answers` accepts a plain string, a list, or a `{question: answer}` dict; the ask result carries
+a `resume_hint` telling the caller exactly how to continue. Live round-trip: first call → `needs_user_context`
+(4 questions); second call with the answers → the compiler runs on the user's context, `person = Marcus`,
+forecast produced.
+
 ## What's wired
 
 - `swm/api/person_intake.py` — `PersonIntake` (identify → dossier → ask/proceed) + `build_person_intake()`

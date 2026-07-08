@@ -43,6 +43,33 @@ def test_worldmodel_short_circuits_on_ask():
     assert out["mode"] == "needs_user_context" and out["forecast"] is None and out["questions"]
 
 
+def test_answers_autorun_the_simulation():
+    # answering a needs_user_context ask folds the answers into context -> the SAME call proceeds and RUNS
+    # (no separate step); the compiler sees the answers and the flow does not ask again.
+    class Spec:
+        mechanism = "x"; variables = []; equations = []; outcome = "o"; horizon = 1; rationale = "r"
+    class Compiled:
+        spec = Spec()
+    seen = {}
+    class C:
+        def compile(self, q, ctx, key=None):
+            seen["ctx"] = ctx
+            return Compiled()
+    wm = WorldModel(compiler=C(), validate=False, n=1, person_intake=PersonIntake(llm=_identify_llm(True)))
+    out = wm.simulate("Will Jordan grab coffee?",
+                      answers=["college roommate and close friend", "we text every week"])
+    assert out.get("mode") != "needs_user_context"          # it did NOT ask again — it ran
+    assert "roommate" in seen["ctx"] and out.get("person")   # answers reached the compiler; person grounded
+
+
+def test_format_answers_shapes():
+    from swm.api.world_model import _format_answers
+    assert _format_answers("just text") == "just text"
+    assert "who — friend" in _format_answers({"who": "friend"})
+    assert _format_answers(["a", "b"]) == "a\nb"
+    assert _format_answers([("Q1", "A1")]) == "Q1 — A1"
+
+
 def test_worldmodel_without_intake_unchanged():
     # no person_intake -> the preflight is skipped entirely (existing behavior)
     class Spec:
