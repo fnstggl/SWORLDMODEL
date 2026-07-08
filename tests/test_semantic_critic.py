@@ -7,7 +7,7 @@ the polish gate must rewrite flagged lines out of a constructed email.
 from swm.decision.compositional_search import (ConstructedEmail, construct_email, encode_text_to_strategy,
                                                 polish_email)
 from swm.decision.message_optimizer import optimize_strategy
-from swm.decision.semantic_critic import SemanticCritic
+from swm.decision.semantic_critic import SemanticCritic, strip_em_dashes
 from swm.decision.strategy_scorer import scorer_from_recipient
 
 SKEPTIC = {"status_orientation": 0.85, "skepticism": 0.9, "status": 0.9, "openness_to_outreach": 0.9,
@@ -15,7 +15,7 @@ SKEPTIC = {"status_orientation": 0.85, "skepticism": 0.9, "status": 0.9, "openne
 
 SLOP = "The secret I'm betting on: most of the AI stack rents margin it should own, and inference is where that flips."
 ANNOYING = "Is that thesis obviously wrong to you? One line back and I'll leave you alone."
-CLEAN = ("Peter — I read your essay on secrets. I'm 17 and building in AI instead of going to college. "
+CLEAN = ("Peter, I read your essay on secrets. I'm 17 and building in AI instead of going to college. "
          "I build software that cuts the cost of running large models by about 40%. Do you think that's wrong?")
 
 
@@ -37,6 +37,28 @@ def test_critic_flags_annoying_lines():
 def test_critic_passes_clean_concrete_writing():
     c = SemanticCritic().critique(CLEAN)
     assert c.quality >= 0.7 and not c.flags()
+
+
+# --- em-dash bias (all messages) ------------------------------------------------------------------
+
+def test_strip_em_dashes_removes_all_dashes():
+    assert "—" not in strip_em_dashes("Peter — the cost is rising — fast.")
+    assert "–" not in strip_em_dashes("inference, not training – most disagree.")
+    assert strip_em_dashes("— Beckett") == "Beckett"                 # sign-off dash dropped
+    assert strip_em_dashes("no dashes here.") == "no dashes here."    # untouched
+
+
+def test_critic_flags_em_dashes():
+    c = SemanticCritic().critique("This is a fine sentence but it has a dash — right here.")
+    assert c.naturalness < 1.0
+    assert any("dash" in r for f in c.flags() for r in f["reasons"])
+
+
+def test_constructed_email_has_no_em_dashes():
+    scorer = scorer_from_recipient(SKEPTIC, 0.2)
+    spec = optimize_strategy(scorer)
+    email = construct_email(scorer, spec.strategy)
+    assert "—" not in email.text and "–" not in email.text
 
 
 def test_critic_quality_is_min_of_axes():

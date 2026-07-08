@@ -123,53 +123,80 @@ class ScoreDist:
         return (s[max(0, int(lo * len(s)))], s[min(len(s) - 1, int(hi * len(s)))])
 
 
+# unified term table: (name, message_var, recipient_var|None, prior_mean, prior_sd). Shared by the
+# scorer AND the elasticity-fitting harness so both compute identical features.
+TERMS = ([(wp.name, wp.name, None, wp.mean, wp.sd) for wp in _MAIN]
+         + [(wp.name, mvar, rvar, wp.mean, wp.sd) for mvar, rvar, wp in _INTERACTIONS])
+TERM_NAMES = [t[0] for t in TERMS]
+
+
+def term_features(strategy: dict, recipient: dict) -> list:
+    """Feature value for every term given (strategy, recipient): main = centered message var; interaction
+    = centered message var × centered recipient var. Returns [(name, feature_value, prior_mean, prior_sd)]."""
+    out = []
+    for name, mvar, rvar, mean, sd in TERMS:
+        mf = strategy.get(mvar, _neutral(mvar)) - _neutral(mvar)
+        f = mf if rvar is None else mf * (recipient.get(rvar, _neutral(rvar)) - _neutral(rvar))
+        out.append((name, f, mean, sd))
+    return out
+
+
+def base_logit(base_responsiveness: float, recipient: dict) -> float:
+    """The per-recipient offset: their inferred base reply rate, nudged by the platform response norm."""
+    z = _logit(base_responsiveness)
+    norm = recipient.get("platform_response_norm")
+    if norm is not None:
+        z += 0.4 * (_logit(min(0.95, max(0.02, norm))) - _logit(0.3))
+    return z
+
+
 @dataclass
 class StrategyScorer:
-    """P(reply | recipient, strategy) as an elasticity-prior logistic with recipient-conditioned
-    interactions and weight-posterior sampling. Construct one per recipient; call `score_dist(strategy)`."""
+    """P(reply | recipient, strategy) as an elasticity logistic with recipient-conditioned interactions
+    and weight-posterior sampling. Construct one per recipient; call `score_dist(strategy)`.
+
+    By default the elasticities are the coarse world-knowledge PRIORS (× ELASTICITY_SCALE) and any
+    prediction is `unvalidated`. Pass `weights` (a fitted {term: (mean, sd)} from the elasticity-fitting
+    harness, ABSOLUTE — no scale) and `grade` to turn it into a data-calibrated scorer that carries a
+    real grade."""
     recipient: dict = field(default_factory=dict)       # {var: value} the FIXED recipient state
     base_responsiveness: float = 0.28                   # recipient's inferred base reply rate
     n_weight_samples: int = 160
     seed: int = 0
+    weights: dict | None = None                         # fitted {term: (mean, sd)}; overrides priors
+    grade: dict | None = None                           # calibration grade of the fitted weights
 
-    # cached term list so main + interaction terms share one loop
-    def _terms(self, strategy: dict):
-        terms = []
-        for wp in _MAIN:
-            f = strategy.get(wp.name, _neutral(wp.name)) - _neutral(wp.name)
-            terms.append((wp, f))
-        for mvar, rvar, wp in _INTERACTIONS:
-            mf = strategy.get(mvar, _neutral(mvar)) - _neutral(mvar)
-            rf = self.recipient.get(rvar, _neutral(rvar)) - _neutral(rvar)
-            terms.append((wp, mf * rf))
-        return terms
+    def _weight_for(self, name: str, prior_mean: float, prior_sd: float):
+        """(mean, sd, scale) for a term: the fitted weight (scale 1) if present, else the prior × scale."""
+        if self.weights and name in self.weights:
+            m, s = self.weights[name]
+            return m, s, 1.0
+        return prior_mean, prior_sd, ELASTICITY_SCALE
 
     def _base_logit(self) -> float:
-        # start from the recipient's inferred base reply rate; a platform norm nudge if present.
-        z = _logit(self.base_responsiveness)
-        norm = self.recipient.get("platform_response_norm")
-        if norm is not None:
-            z += 0.4 * (_logit(min(0.95, max(0.02, norm))) - _logit(0.3))
-        return z
+        return base_logit(self.base_responsiveness, self.recipient)
 
     def score_dist(self, strategy: dict) -> ScoreDist:
         import random
         rng = random.Random(self.seed)
         base = self._base_logit()
-        terms = self._terms(strategy)
-        sc = ELASTICITY_SCALE
-        # mean-weight prediction + driver attribution
-        mean_logit = base + sum(sc * wp.mean * f for wp, f in terms)
-        drivers = sorted(
-            [{"term": wp.name, "contribution": round(sc * wp.mean * f, 4)} for wp, f in terms if abs(f) > 1e-9],
-            key=lambda d: abs(d["contribution"]), reverse=True)
-        # ensemble: sample each elasticity from its prior (mean, sd) -> a distribution of P(reply)
+        terms = term_features(strategy, self.recipient)
+        mean_logit = base
+        drivers = []
+        for name, f, pmean, psd in terms:
+            m, _s, sc = self._weight_for(name, pmean, psd)
+            mean_logit += sc * m * f
+            if abs(f) > 1e-9:
+                drivers.append({"term": name, "contribution": round(sc * m * f, 4)})
+        drivers.sort(key=lambda d: abs(d["contribution"]), reverse=True)
+        # ensemble: sample each elasticity from its (fitted or prior) mean/sd -> a distribution of P(reply)
         samples = []
         for _ in range(self.n_weight_samples):
             z = base
-            for wp, f in terms:
+            for name, f, pmean, psd in terms:
                 if f != 0.0:
-                    z += sc * rng.gauss(wp.mean, wp.sd) * f
+                    m, s, sc = self._weight_for(name, pmean, psd)
+                    z += sc * rng.gauss(m, s) * f
             samples.append(_sigmoid(z))
         return ScoreDist(mean=_sigmoid(mean_logit), samples=samples, drivers=drivers[:12])
 
@@ -182,7 +209,9 @@ class StrategyScorer:
 
 
 def scorer_from_recipient(recipient_vars: dict, base_responsiveness: float, *,
-                          n_weight_samples: int = 160, seed: int = 0) -> StrategyScorer:
-    """Build a scorer from a recipient's inferred variable values (persona + web/public-figure evidence)."""
+                          n_weight_samples: int = 160, seed: int = 0,
+                          weights: dict | None = None, grade: dict | None = None) -> StrategyScorer:
+    """Build a scorer from a recipient's inferred variable values (persona + web/public-figure evidence).
+    Pass fitted `weights`/`grade` from the elasticity-fitting harness to use a data-calibrated objective."""
     return StrategyScorer(recipient=dict(recipient_vars), base_responsiveness=base_responsiveness,
-                          n_weight_samples=n_weight_samples, seed=seed)
+                          n_weight_samples=n_weight_samples, seed=seed, weights=weights, grade=grade)

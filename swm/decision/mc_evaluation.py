@@ -40,7 +40,8 @@ class MCResult:
 
 def mc_evaluate(recipient_vars: dict, base_mean: float, strategy: dict, *,
                 base_n_effective: float = 6.0, confidences: dict | None = None,
-                n_samples: int = 2000, seed: int = 0) -> MCResult:
+                n_samples: int = 2000, seed: int = 0, weights: dict | None = None,
+                grade: str = "unvalidated") -> MCResult:
     """Integrate P(reply) over the recipient's hidden state for a fixed message `strategy`.
 
     base_mean / base_n_effective — the recipient's responsiveness posterior (Beta(mean·n, (1-mean)·n)).
@@ -69,7 +70,7 @@ def mc_evaluate(recipient_vars: dict, base_mean: float, strategy: dict, *,
         rvars["attention_availability"] = attention
         timing = rng.choice([0.0, 0.0, 0.0, -0.15, 0.1])   # most sends land on an ordinary day
         scorer = StrategyScorer(recipient=rvars, base_responsiveness=base, n_weight_samples=1,
-                                seed=rng.randint(0, 1_000_000))
+                                seed=rng.randint(0, 1_000_000), weights=weights)
         p = _sigmoid(_logit(scorer.mean(strategy)) + mood + timing)
         per_draw.append(p)
         if rng.random() < p:
@@ -79,4 +80,4 @@ def mc_evaluate(recipient_vars: dict, base_mean: float, strategy: dict, *,
     lo = s[int(0.1 * len(s))]
     hi = s[min(len(s) - 1, int(0.9 * len(s)))]
     return MCResult(p_reply=replied / n_samples, p_mean=sum(per_draw) / len(per_draw),
-                    interval80=(lo, hi), n_samples=n_samples)
+                    interval80=(lo, hi), n_samples=n_samples, grade=grade)

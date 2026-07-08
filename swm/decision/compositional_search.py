@@ -23,6 +23,7 @@ import math
 import re
 from dataclasses import dataclass, field
 
+from swm.decision.semantic_critic import strip_em_dashes
 from swm.decision.strategy_scorer import MESSAGE_VARS, StrategyScorer
 from swm.variables.schema import spec
 
@@ -85,11 +86,11 @@ def encode_text_to_strategy(text: str) -> dict:
 # EARNED by the scorer, not rigged by the bank. A real LLM proposer (propose_fn) drops in here.
 SLOT_BANK: dict = {
     "opener": [
-        "Peter — I read your essay on secrets.",
-        "Peter — you've written that the best startups are built on a truth few people agree with.",
+        "Peter, I read your essay on secrets.",
+        "Peter, you've written that the best startups are built on a truth few people agree with.",
         "Hi Mr. Thiel, I hope this email finds you well.",                              # annoying (contrast)
         "Dear Mr. Thiel, I'm a Princeton admit recently featured in the New York Times.",  # credential (contrast)
-        "Peter —",
+        "Peter,",
     ],
     "hook": [
         "I'm 17. I got into Princeton and I don't think I should go.",
@@ -112,7 +113,7 @@ SLOT_BANK: dict = {
         "Is that thesis obviously wrong to you? One line back and I'll leave you alone.",  # annoying (contrast)
     ],
     "close": [
-        "— Beckett",
+        "Beckett",
         "Thanks, Beckett.",
         "Best regards and looking forward to hearing back from you soon, Beckett.",   # annoying (contrast)
         "",  # allow no close
@@ -185,6 +186,7 @@ def construct_email(scorer: StrategyScorer, spec_strategy: dict, *, proposer=def
         beams = scored[:beam] if scored else beams
 
     chosen, text, score = beams[0]
+    text = strip_em_dashes(text)               # hard guarantee: no em dashes in the final message
     dist = scorer.score_dist(encode_text_to_strategy(text))
     return ConstructedEmail(text=text, strategy=encode_text_to_strategy(text), score=score,
                             mean=dist.mean, lower_bound=dist.lower_bound(q), slots=chosen,
@@ -265,6 +267,7 @@ def polish_email(email: ConstructedEmail, scorer: StrategyScorer, spec_strategy:
         if not changed:
             break
 
+    text = strip_em_dashes(text)               # hard guarantee after any rewrites/swaps
     strat = encode_text_to_strategy(text)
     dist = scorer.score_dist(strat)
     return ConstructedEmail(text=text, strategy=strat, score=dist.lower_bound(q), mean=dist.mean,

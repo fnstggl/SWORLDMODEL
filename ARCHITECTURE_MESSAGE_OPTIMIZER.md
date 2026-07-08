@@ -116,13 +116,23 @@ contrarian is about the claim, not the tone; write plainly") and the targeted re
 
 **The optimizer authors; the LLM writes the parts it's told to and judges its own lines.**
 
-## Honesty
+## Honesty — and how the numbers earn a grade
 
-Everything is **`unvalidated`**. The elasticities are **coarse world-knowledge priors**, not fitted to
-reply outcomes — the analog of `llm_prior.prior_from_llm`, cached for reproducibility. **Trust the ranking
-and the lever directions first; treat the absolute `P(reply)` as a claim to check.** `ELASTICITY_SCALE`
-keeps the level sane but is explicitly not calibrated. Import labeled reply outcomes and fit the
-elasticities (via `swm/variables/calibrated_weights.py`) to earn a real grade.
+By default everything is **`unvalidated`**: the elasticities are **coarse world-knowledge priors**, not
+fitted to reply outcomes (the analog of `llm_prior.prior_from_llm`, cached for reproducibility). Trust the
+ranking and the lever directions first; treat the absolute `P(reply)` as a claim to check.
+
+**The grade is now buildable** (`swm/decision/elasticity_fit.py`). Given labeled `(recipient, strategy,
+replied)` data it fits the same main + interaction elasticities by logistic regression with a per-recipient
+offset and an L2 pull **toward the priors** (world knowledge as prior, data as update), then grades on a
+held-out split (ECE/Brier/log-loss/uplift → A/B/C/F). A fitted model is passed to `optimize_message(fit=…)`;
+the objective becomes data-calibrated and the result reports the real grade instead of `unvalidated`.
+Validated as an **estimator** on synthetic data with known ground truth (recovers the weights, calibrated on
+held-out data) — a real grade needs real reply logs, the same stance as `IndividualWorld`.
+
+Separately, **all output is em-dash-free**: LLMs structurally overuse em dashes and users dislike them, so
+the writer is instructed against them, the critic penalizes them, and `strip_em_dashes` deterministically
+removes any that survive — in every message context.
 
 ## Pipeline & map to the repo
 
@@ -135,7 +145,8 @@ L1 → L2 → L3`, and runs naive drafts through the **same** evaluator so the l
 - `swm/decision/mc_evaluation.py` — L3 recipient-hidden-state Monte Carlo.
 - `swm/decision/semantic_critic.py` — L4 coherence/naturalness/redundancy critic (beam penalty + gate + repair).
 - `swm/decision/llm_moves.py` — live-LLM seams: move proposer, sentence judge, targeted rewriter.
-- `swm/decision/message_pipeline.py` — end-to-end orchestration (offline bank or live LLM via `chat_fn`).
+- `swm/decision/elasticity_fit.py` — fit the elasticities to reply outcomes and grade them (the calibration path).
+- `swm/decision/message_pipeline.py` — end-to-end orchestration (offline bank or live LLM; `fit=` for a graded objective).
 - Builds on: `swm/variables/schema.py` (message content-stance variables), `calibrated_weights.WeightPrior`,
   `swm/entities/public_figure.py` (recipient inference), `swm/decision/best_action.py` (best-arm racing —
   the natural home for racing L3 finalists next).

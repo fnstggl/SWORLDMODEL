@@ -69,6 +69,25 @@ def _sentences(text: str) -> list[str]:
     return [s.strip() for s in re.split(r"(?<=[.!?])\s+", (text or "").strip()) if s.strip()]
 
 
+_EM_DASH = re.compile(r"\s*[—–]\s*")          # em (U+2014) and en (U+2013) dash
+
+
+def strip_em_dashes(text: str) -> str:
+    """Deterministically remove em/en dashes — an LLM structural tic users dislike. This is a HARD
+    guarantee applied to every candidate and every final message, on top of instructing the writer to
+    avoid them (models overuse dashes even when told not to). A dash between clauses becomes a comma;
+    a leading sign-off dash ('— Beckett') is dropped. General across all message contexts."""
+    if not text or ("—" not in text and "–" not in text):
+        return text
+    t = re.sub(r"^\s*[—–]\s*", "", text.strip())      # leading sign-off dash
+    t = _EM_DASH.sub(", ", t)                          # clause dash -> comma
+    t = re.sub(r"\s*,\s*,", ",", t)                    # collapse doubled commas
+    t = re.sub(r"\s+,", ",", t)                        # no space before comma
+    t = re.sub(r",\s*([.!?])", r"\1", t)               # ", ." -> "."
+    t = re.sub(r",\s+([A-Z][a-z]+\s*)$", r", \1", t)   # keep ", Name" sign-off tidy
+    return t.strip()
+
+
 def _sat(n: float, k: float = 1.2) -> float:
     return 1.0 - math.exp(-n / k)
 
@@ -176,10 +195,13 @@ class SemanticCritic:
             reasons = []
             # annoyance
             ann_hits = [p.pattern for p in _ANNOYING_RE if p.search(s)]
-            annoying = len(ann_hits) > 0
-            if annoying:
+            em_dashes = len(re.findall(r"[—–]", s))
+            annoying = len(ann_hits) > 0 or em_dashes > 0
+            if ann_hits:
                 reasons.append("annoying/embellishing phrase: " + ", ".join(ann_hits[:3]))
-            nat = 1.0 - _sat(len(ann_hits))
+            if em_dashes:
+                reasons.append(f"{em_dashes} em/en dash(es): an LLM tic users dislike; use a comma or period")
+            nat = 1.0 - _sat(len(ann_hits) + em_dashes)
             # coherence
             vague = len(_VAGUE_REF.findall(s))
             buzz = len(_BUZZ.findall(s))

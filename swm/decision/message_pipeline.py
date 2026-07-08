@@ -72,11 +72,22 @@ class OptimizationResult:
     email: ConstructedEmail
     evaluation: MCResult
     baselines: dict = field(default_factory=dict)     # label -> {"text":.., "mc": MCResult}
+    grade: dict | None = None                         # calibration grade if a fitted model was used
 
     def summary(self) -> dict:
+        graded = self.grade and self.grade.get("grade") not in (None, "unvalidated", "F")
+        honesty = (
+            f"CALIBRATED (grade {self.grade['grade']}, ECE {self.grade.get('ece')}). The elasticities were "
+            "fit to reply outcomes and graded on a held-out split; the P(reply) carries that grade."
+            if graded else
+            "UNVALIDATED. The objective uses coarse world-knowledge elasticity priors, not a reply-outcome "
+            "backtest. Trust the RANKING and the DIRECTION of the levers; treat the absolute P(reply) as a "
+            "claim to check. Fit the elasticities on labeled reply outcomes (swm/decision/elasticity_fit.py) "
+            "to earn a calibration grade.")
         return {
             "report_type": "prediction",
             "recipient": self.recipient,
+            "calibration_grade": (self.grade or {}).get("grade", "unvalidated"),
             "optimal_strategy_spec": self.spec.summary(),
             "constructed_email": self.email.summary(),
             "evaluation": self.evaluation.summary(),
@@ -84,17 +95,14 @@ class OptimizationResult:
                 k: {"text": v["text"], "reply_mean": round(v["mc"].p_mean, 4),
                     "interval80": [round(v["mc"].interval80[0], 4), round(v["mc"].interval80[1], 4)]}
                 for k, v in self.baselines.items()},
-            "honesty": "UNVALIDATED. The objective uses coarse world-knowledge elasticity priors, not a "
-                       "reply-outcome backtest. Trust the RANKING and the DIRECTION of the levers; treat "
-                       "the absolute P(reply) as a claim to check. Import labeled reply outcomes to fit "
-                       "the elasticities and earn a calibration grade.",
+            "honesty": honesty,
         }
 
 
 def optimize_message(recipient: RecipientState, *, proposer=default_proposer, q: float = 0.2,
                      restarts: int = 12, beam: int = 6, n_mc: int = 2000, seed: int = 0,
                      baselines: dict | None = None, judge_fn=None, chat_fn=None,
-                     sender_brief=None, recipient_notes: str = "") -> OptimizationResult:
+                     sender_brief=None, recipient_notes: str = "", fit=None) -> OptimizationResult:
     """Run L1 → L2 → (critic gate) → L3 for a recipient and return the constructed email + distribution.
 
     chat_fn — optional live LLM `fn(prompt)->text`. When given, it becomes BOTH the move proposer (the LLM
@@ -102,7 +110,13 @@ def optimize_message(recipient: RecipientState, *, proposer=default_proposer, q:
     facts) AND the sentence judge for the critic — turning the offline "no slop" into real, well-written
     text. Without it, the offline sentence bank + lexical critic run. judge_fn/proposer can be set
     explicitly to override. Everything degrades gracefully."""
-    scorer = scorer_from_recipient(recipient.vars, recipient.base_mean, seed=seed)
+    # a fitted elasticity model (FittedElasticities from elasticity_fit.grade_fit) makes the objective
+    # data-calibrated and the reported grade real instead of 'unvalidated'.
+    fit_weights = fit.weights if fit is not None else None
+    fit_grade = fit.grade if fit is not None else None
+    grade_letter = fit_grade.get("grade") if fit_grade else "unvalidated"
+    scorer = scorer_from_recipient(recipient.vars, recipient.base_mean, seed=seed,
+                                   weights=fit_weights, grade=fit_grade)
     rewrite_fn = None
     if chat_fn is not None:
         from swm.decision.llm_moves import llm_proposer, llm_rewriter, llm_sentence_judge
@@ -128,21 +142,22 @@ def optimize_message(recipient: RecipientState, *, proposer=default_proposer, q:
     email = polish_email(email, scorer, spec.strategy, proposer=proposer, critic=final_critic, q=q,
                          rewrite_fn=rewrite_fn, rank_critic=(final_critic if chat_fn is not None else None))
 
-    # L3 — Monte-Carlo evaluate the finalist under recipient hidden state
+    # L3 — Monte-Carlo evaluate the finalist under recipient hidden state (fitted weights + grade if any)
     evaluation = mc_evaluate(recipient.vars, recipient.base_mean, email.strategy,
                              base_n_effective=recipient.base_n_effective,
-                             confidences=recipient.confidences, n_samples=n_mc, seed=seed)
+                             confidences=recipient.confidences, n_samples=n_mc, seed=seed,
+                             weights=fit_weights, grade=grade_letter)
 
     # contrast: run naive drafts through the SAME evaluator
     result_baselines = {}
     for label, text in (baselines or _BASELINES).items():
         mc = mc_evaluate(recipient.vars, recipient.base_mean, encode_text_to_strategy(text),
                          base_n_effective=recipient.base_n_effective, confidences=recipient.confidences,
-                         n_samples=n_mc, seed=seed)
+                         n_samples=n_mc, seed=seed, weights=fit_weights, grade=grade_letter)
         result_baselines[label] = {"text": text, "mc": mc}
 
     return OptimizationResult(recipient=recipient.label, spec=spec, email=email, evaluation=evaluation,
-                              baselines=result_baselines)
+                              baselines=result_baselines, grade=fit_grade)
 
 
 def _recipient_notes(world, contact_id: str, name: str | None) -> str:
