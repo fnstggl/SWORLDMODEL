@@ -89,3 +89,13 @@ def test_extractor_never_reports_zero_sd():
     ext = CalibratedExtractor(lambda p: '{"value": 5.25, "ci95": 0, "confidence": 0.9}')   # zero CI
     r = ext.extract("fed funds rate", None, ["ev"])
     assert r is not None and r["sd"] > 0                                   # floored, never fakes certainty
+
+
+def test_general_router_is_llm_plus_web_only(monkeypatch):
+    # the general engine grounds via LLM + web with NO structured feeds — the universal path
+    import swm.api.live_grounding as lg
+    monkeypatch.setattr(lg, "web_search_fn", lambda k=5: (lambda q, a=None: ["evidence passage"]))
+    r = lg.general_router(llm=lambda p: '{"value": 8.1, "ci95": 0.4, "confidence": 0.8}')
+    assert r.sources == [] and r.resolver is None                         # no feeds, no structured matcher
+    gv = r.ground("world population in billions", question="demography")
+    assert gv is not None and gv.value == 8.1 and gv.source == "retrieval"
