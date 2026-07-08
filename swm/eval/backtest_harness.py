@@ -43,6 +43,10 @@ def _asof_context(item):
 
 
 def _p_from_forecast(fc):
+    # For a calibrated_readout the readout MEAN is P(YES) directly. Using p_event = P(readout > 0.5) is a
+    # category error: it BINARIZES a probability (0.7 -> 1.0, 0.5 -> 0.0), manufacturing false extremes.
+    if fc.get("mechanism") == "calibrated_readout" and fc.get("mean") is not None:
+        return fc["mean"]
     if fc.get("p_event") is not None:
         return fc["p_event"]
     if fc.get("p_target") is not None:
