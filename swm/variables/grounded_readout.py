@@ -30,7 +30,7 @@ from swm.variables.pooled_readout import onehot_vocab
 
 # provenance -> reliability weight (from schema.PROVENANCE_RANK, normalized): grounded facts trusted fully,
 # inferred variables discounted by how noisy their source is.
-RELIABILITY = {"data": 1.0, "user": 1.0, "llm": 0.55, "heuristic": 0.3, "prior": 0.1}
+RELIABILITY = {"data": 1.0, "user": 1.0, "web": 0.75, "llm": 0.55, "heuristic": 0.3, "prior": 0.1}
 
 
 def _sigmoid(z):

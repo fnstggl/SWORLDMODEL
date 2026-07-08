@@ -34,7 +34,12 @@ DB_PATH = os.environ.get("SWM_DB", "data/events.db")
 Path(DB_PATH).parent.mkdir(parents=True, exist_ok=True)
 
 app = FastAPI(title="sworldmodel", version="0.0.1")
-world = World(store=EventStore(DB_PATH))
+# A public-figure resolver is wired in by default so /predict never hard-blocks on an unknown contact:
+# when there's no private history we infer the recipient online. A live web/LLM backend can be injected
+# via env-configured search_fn/infer_fn; absent one, it degrades to the transparent offline fallback.
+from swm.entities.public_figure import default_resolver  # noqa: E402
+
+world = World(store=EventStore(DB_PATH), resolver=default_resolver())
 
 
 class ImportReq(BaseModel):
@@ -46,12 +51,16 @@ class PredictReq(BaseModel):
     contact_id: str
     text: str
     channel: str = "email"
+    name: str | None = None          # public-figure name to resolve when we have no private history
+    domain: str = ""                 # topic/domain of the ask (sharpens the online lookup)
+    ask: str = ""
 
 
 class CompareReq(BaseModel):
     contact_id: str
     texts: list[str]
     channel: str = "email"
+    name: str | None = None
 
 
 class SuggestReq(BaseModel):
@@ -87,12 +96,33 @@ def fit():
 
 @app.post("/v1/predict")
 def predict(req: PredictReq):
-    return world.predict(req.contact_id, req.text, channel=req.channel)
+    return world.predict(req.contact_id, req.text, channel=req.channel, name=req.name,
+                         domain=req.domain, ask=req.ask)
 
 
 @app.post("/v1/compare-actions")
 def compare(req: CompareReq):
-    return world.compare(req.contact_id, req.texts, channel=req.channel)
+    return world.compare(req.contact_id, req.texts, channel=req.channel, name=req.name)
+
+
+class OptimizeReq(BaseModel):
+    contact_id: str
+    name: str | None = None          # public-figure to resolve when we have no private history
+    domain: str = ""
+    ask: str = ""
+    n_mc: int = 2000
+
+
+@app.post("/v1/optimize-message")
+def optimize_message_ep(req: OptimizeReq):
+    """Construct the OPTIMAL message by search, not by ranking a few LLM drafts (audit: the message
+    optimizer, ARCHITECTURE_MESSAGE_OPTIMIZER.md). L1 optimizes the strategy in variable space, L2
+    assembles the email move-by-move against the world-model objective, L3 Monte-Carlo evaluates it
+    under the recipient's hidden state. UNVALIDATED: coarse elasticity priors — trust ranking/direction."""
+    from swm.decision.message_pipeline import optimize_for_world
+    result = optimize_for_world(world, req.contact_id, name=req.name, domain=req.domain,
+                                ask=req.ask, n_mc=req.n_mc)
+    return result.summary()
 
 
 @app.post("/v1/suggest")

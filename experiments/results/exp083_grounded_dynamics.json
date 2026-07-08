@@ -1,0 +1,238 @@
+{
+ "thesis": "a calibrated transition operator beats persistence and the edge GROWS with horizon (world-model signature); a random walk would collapse the operator back to persistence",
+ "interpretation": "PROVEN where dynamics are real and transferable: on adoption diffusion the operator forecasts HELD-OUT technologies with skill vs persistence that GROWS from +0.24 (1yr) to +0.55 (16yr) \u2014 persistence's error compounds while the operator climbs the learned S-curve. Against a strong momentum baseline (local linear extrapolation) the operator is behind at short horizon (it uses a POOLED growth rate, not this tech's local slope) but OVERTAKES at ~10yr once saturation binds (linear overshoots past the ceiling; the operator bends over) \u2014 proof it learned the CURVATURE, not just the trend. On macro LEVELS the operator does NOT beat persistence out-of-sample: the train-era (1985-2010) mean-reversion it calibrates does not transfer to the non-stationary post-2010 (ZLB/trending) regime, and neither a global nor a trailing-mean reversion target rescues it. That is the honest boundary \u2014 macro levels are a regime-shifting near-random-walk, the regime the router assigns to a baseline. The synthetic tests confirm the operator collapses to persistence when the process IS a random walk, so the macro result is a property of the data, not the operator. Next lever: GROUND the growth rate per-series (the dynamics analog of state grounding) to also win short-horizon.",
+ "A_adoption_diffusion": {
+  "train_technologies": 18,
+  "test_technologies": 18,
+  "learned_drift_at_x=0.3": 0.0221,
+  "skill_by_horizon_years": {
+   "1": {
+    "skill_vs_persistence": 0.2383,
+    "skill_vs_linear_extrap": -0.343,
+    "op_rmse": 0.0342,
+    "persistence_rmse": 0.0391,
+    "linear_rmse": 0.0295,
+    "coverage90": 0.95,
+    "n": 585
+   },
+   "3": {
+    "skill_vs_persistence": 0.3231,
+    "skill_vs_linear_extrap": -0.3015,
+    "op_rmse": 0.0829,
+    "persistence_rmse": 0.1007,
+    "linear_rmse": 0.0726,
+    "coverage90": 0.902,
+    "n": 549
+   },
+   "5": {
+    "skill_vs_persistence": 0.3791,
+    "skill_vs_linear_extrap": -0.125,
+    "op_rmse": 0.1166,
+    "persistence_rmse": 0.148,
+    "linear_rmse": 0.1099,
+    "coverage90": 0.885,
+    "n": 513
+   },
+   "8": {
+    "skill_vs_persistence": 0.4572,
+    "skill_vs_linear_extrap": -0.0751,
+    "op_rmse": 0.1458,
+    "persistence_rmse": 0.198,
+    "linear_rmse": 0.1407,
+    "coverage90": 0.852,
+    "n": 460
+   },
+   "12": {
+    "skill_vs_persistence": 0.5244,
+    "skill_vs_linear_extrap": 0.1967,
+    "op_rmse": 0.1654,
+    "persistence_rmse": 0.2399,
+    "linear_rmse": 0.1846,
+    "coverage90": 0.813,
+    "n": 402
+   },
+   "16": {
+    "skill_vs_persistence": 0.5454,
+    "skill_vs_linear_extrap": 0.3299,
+    "op_rmse": 0.1789,
+    "persistence_rmse": 0.2654,
+    "linear_rmse": 0.2186,
+    "coverage90": 0.764,
+    "n": 356
+   }
+  }
+ },
+ "B_macro_coupled": {
+  "n_train_months": 296,
+  "coupling_local": {
+   "intercept_drift": {
+    "inflation": -0.01853,
+    "unemp": 0.00769,
+    "rate": -0.02556
+   },
+   "coupling": {
+    "inflation": {
+     "inflation": -0.03313,
+     "unemp": -0.06824,
+     "rate": 0.0086
+    },
+    "unemp": {
+     "inflation": 0.00643,
+     "unemp": 0.04066,
+     "rate": -0.00493
+    },
+    "rate": {
+     "inflation": -0.01647,
+     "unemp": -0.05185,
+     "rate": 0.01373
+    }
+   },
+   "temper": 0.3,
+   "n_pairs": 295
+  },
+  "skill_global_center": {
+   "1": {
+    "inflation": {
+     "skill_vs_persistence": -0.2252,
+     "coverage90": 0.868
+    },
+    "unemp": {
+     "skill_vs_persistence": -0.0179,
+     "coverage90": 0.817
+    },
+    "rate": {
+     "skill_vs_persistence": -0.3062,
+     "coverage90": 0.954
+    }
+   },
+   "3": {
+    "inflation": {
+     "skill_vs_persistence": -0.31,
+     "coverage90": 0.779
+    },
+    "unemp": {
+     "skill_vs_persistence": -0.0521,
+     "coverage90": 0.692
+    },
+    "rate": {
+     "skill_vs_persistence": -0.3394,
+     "coverage90": 0.897
+    }
+   },
+   "6": {
+    "inflation": {
+     "skill_vs_persistence": -0.3936,
+     "coverage90": 0.724
+    },
+    "unemp": {
+     "skill_vs_persistence": -0.1209,
+     "coverage90": 0.531
+    },
+    "rate": {
+     "skill_vs_persistence": -0.3228,
+     "coverage90": 0.859
+    }
+   },
+   "12": {
+    "inflation": {
+     "skill_vs_persistence": -0.4041,
+     "coverage90": 0.688
+    },
+    "unemp": {
+     "skill_vs_persistence": -0.293,
+     "coverage90": 0.36
+    },
+    "rate": {
+     "skill_vs_persistence": -0.1992,
+     "coverage90": 0.828
+    }
+   },
+   "24": {
+    "inflation": {
+     "skill_vs_persistence": -0.1401,
+     "coverage90": 0.598
+    },
+    "unemp": {
+     "skill_vs_persistence": -0.5529,
+     "coverage90": 0.172
+    },
+    "rate": {
+     "skill_vs_persistence": 0.0083,
+     "coverage90": 0.695
+    }
+   }
+  },
+  "skill_local_center": {
+   "1": {
+    "inflation": {
+     "skill_vs_persistence": -0.2367,
+     "coverage90": 0.883
+    },
+    "unemp": {
+     "skill_vs_persistence": -0.0408,
+     "coverage90": 0.843
+    },
+    "rate": {
+     "skill_vs_persistence": 0.0085,
+     "coverage90": 0.944
+    }
+   },
+   "3": {
+    "inflation": {
+     "skill_vs_persistence": -0.3763,
+     "coverage90": 0.8
+    },
+    "unemp": {
+     "skill_vs_persistence": -0.1299,
+     "coverage90": 0.8
+    },
+    "rate": {
+     "skill_vs_persistence": 0.0315,
+     "coverage90": 0.897
+    }
+   },
+   "6": {
+    "inflation": {
+     "skill_vs_persistence": -0.5368,
+     "coverage90": 0.693
+    },
+    "unemp": {
+     "skill_vs_persistence": -0.2934,
+     "coverage90": 0.734
+    },
+    "rate": {
+     "skill_vs_persistence": 0.0014,
+     "coverage90": 0.833
+    }
+   },
+   "12": {
+    "inflation": {
+     "skill_vs_persistence": -0.8323,
+     "coverage90": 0.602
+    },
+    "unemp": {
+     "skill_vs_persistence": -0.7073,
+     "coverage90": 0.64
+    },
+    "rate": {
+     "skill_vs_persistence": -0.0864,
+     "coverage90": 0.726
+    }
+   },
+   "24": {
+    "inflation": {
+     "skill_vs_persistence": -1.0804,
+     "coverage90": 0.466
+    },
+    "unemp": {
+     "skill_vs_persistence": -1.6374,
+     "coverage90": 0.557
+    },
+    "rate": {
+     "skill_vs_persistence": -0.5222,
+     "coverage90": 0.46
+    }
+   }
+  }
+ }
+}

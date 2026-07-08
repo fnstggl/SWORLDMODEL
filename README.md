@@ -45,7 +45,14 @@ for both regimes:
   (`experiments/aggregate_harness.py`).
 - **Individual** (`swm/worlds/individual_world.py`): `this entity + action + context → response
   distribution` via hierarchical partial pooling (person ← segment ← population). Validated as an
-  estimator on synthetic data; the real-behavior claim is **blocked on private data**.
+  estimator on synthetic data; a fitted, *graded* readout still needs private labeled sends. But an
+  unknown recipient is **never a hard block** — we **bias to inferring the variables when we're not
+  told them**. With no private history, `World.predict` falls back to an inference-only prediction
+  labeled **`unvalidated`** (honest about provenance, not a refusal), and for a **public figure**
+  `swm/entities/public_figure.py` infers their disposition, status, and even responsiveness by
+  **searching online** (pluggable web + LLM backend, transparent offline fallback) — folding that
+  `web`-provenance evidence into the persona/`VariableMap`. Import labeled sends and `/fit` to upgrade
+  an `unvalidated` inference into a backtested grade.
 - **As-of retrieval** (`swm/retrieval/asof_store.py`, `news/social/entity_context.py`): a
   retrieval layer that *physically* cannot return future items, with a real leakage gate
   (`swm/eval/leakage.py`) and tests.

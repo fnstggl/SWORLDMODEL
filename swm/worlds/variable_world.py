@@ -57,9 +57,10 @@ class VariableWorld:
                 "response_rate_lifetime": sum(outs) / len(outs), "recency_days": rec}
 
     def infer(self, entity_id, action, context=None, *, now=None, user_context=None,
-              llm_inference=None) -> VariableMap:
+              llm_inference=None, web_inference=None) -> VariableMap:
         return self.engine.infer(entity_id, action, context, history=self._history(entity_id, now),
-                                 user_context=user_context, llm_inference=llm_inference)
+                                 user_context=user_context, llm_inference=llm_inference,
+                                 web_inference=web_inference)
 
     def _observe(self, entity_id, ts, outcome):
         self._hist.setdefault(entity_id, []).append((ts, outcome))
@@ -85,9 +86,9 @@ class VariableWorld:
         return self
 
     def predict(self, entity_id, action, context=None, *, now=None, user_context=None,
-                llm_inference=None, explain=False):
+                llm_inference=None, web_inference=None, explain=False):
         vm = self.infer(entity_id, action, context, now=now, user_context=user_context,
-                        llm_inference=llm_inference)
+                        llm_inference=llm_inference, web_inference=web_inference)
         p = self.readout.predict_proba(vm.to_features()) if self.readout else self.global_rate
         out = {"p": p, "provenance": vm.provenance_report()}
         if explain:
