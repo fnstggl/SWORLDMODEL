@@ -20,11 +20,32 @@ with extra steps.
 from __future__ import annotations
 
 import json
+import re
 from dataclasses import dataclass
 
 from swm.api.state_grounding import RetrievalGrounder
 
 _Z = {0.9: 1.645, 0.95: 1.96, 0.8: 1.2816}
+
+
+def parse_json_lenient(txt):
+    """Parse an LLM's JSON reply robustly: accept a dict as-is, strip ```json fences, and fall back to the
+    first {...} block. Real models wrap JSON in prose/fences; a brittle json.loads would drop good answers."""
+    if isinstance(txt, dict):
+        return txt
+    if not isinstance(txt, str):
+        return None
+    s = re.sub(r"```(?:json)?|```", "", txt).strip()
+    try:
+        return json.loads(s)
+    except ValueError:
+        m = re.search(r"\{.*\}", s, flags=re.S)
+        if not m:
+            return None
+        try:
+            return json.loads(m.group(0))
+        except ValueError:
+            return None
 
 
 @dataclass
@@ -48,33 +69,30 @@ class CalibratedExtractor:
     llm: object
     ci_multiplier: float = 1.0
     base_ci_frac: float = 0.25
+    evidence_only: bool = False           # True = leakage-free backtests (evidence only); False = present-grounding
 
     def _prompt(self, variable, question, evidence):
-        ev = "\n".join(f"- {p}" for p in (evidence or [])[:6])
+        ev = "\n".join(f"- {p}" for p in (evidence or [])[:6]) or "- (no evidence retrieved)"
+        rule = ("Use ONLY the evidence below (as-of the question date); do NOT use any other knowledge. value "
+                "null if the evidence does not determine it."
+                if self.evidence_only else
+                "Prefer the evidence below; if it is insufficient, use your best current knowledge but LOWER "
+                "the confidence accordingly (and widen ci95). value null only if you truly cannot estimate it.")
         return (f"Question context: {question or ''}\n"
-                f"Extract the CURRENT numeric value of this variable: \"{variable}\".\n"
-                f"Use ONLY the evidence below (as-of the question date); do not use later knowledge.\n{ev}\n\n"
+                f'Extract the CURRENT numeric value of this variable: "{variable}".\n{rule}\n{ev}\n\n'
                 f'Return JSON: {{"value": <number or null>, "ci95": <95% half-width>, '
-                f'"confidence": <0..1>}}. value null if the evidence does not determine it.')
-
-    def _parse(self, r):
-        if isinstance(r, str):
-            try:
-                r = json.loads(r)
-            except ValueError:
-                return None
-        return r if isinstance(r, dict) else None
+                f'"confidence": <0..1>}}.')
 
     def extract(self, variable, question, evidence):
-        r = self._parse(self.llm(self._prompt(variable, question, evidence)))
+        r = parse_json_lenient(self.llm(self._prompt(variable, question, evidence)))
         if r is None or r.get("value") is None:
             return None
         val = float(r["value"])
         ci = r.get("ci95")
-        if ci is None:
+        if ci is None or float(ci) <= 0:                 # missing/zero CI would fake perfect certainty
             conf = float(r.get("confidence", 0.5))
             ci = self.base_ci_frac * (abs(val) + 1e-6) * (1.0 - conf) + 1e-6
-        sd = max(1e-9, float(ci) / 1.96) * self.ci_multiplier
+        sd = max(float(ci) / 1.96, 0.002 * (abs(val) + 1e-6)) * self.ci_multiplier   # floor: never 0
         return {"value": val, "sd": sd}
 
 
