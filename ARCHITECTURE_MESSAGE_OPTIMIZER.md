@@ -90,11 +90,31 @@ Naively maximizing a flawed proxy finds the proxy's exploits (twelve question ma
 - **Validity manifold** — every encoder signal **saturates** (`_sat`): repeating a trick stops paying, and
   `ask_directness` is capped and penalized past ~2 questions. Candidates are well-formed sentences.
 
-## The LLM's job shrinks to three bias-free roles
-1. propose constrained **local** sentence moves at a slot (never a whole email),
-2. render a strategy spec into words when asked,
-3. act as a validity discriminator.
-**The optimizer authors.**
+## The LLM's job shrinks to bias-free roles (`swm/decision/llm_moves.py`)
+
+The LLM never authors the email or picks the winner — the world model + beam search do. It fills three
+constrained seams (all pluggable; a live `chat_fn(prompt)->text` such as
+`swm/api/deepseek_backend.default_chat_fn` drives them, and everything degrades to the offline bank +
+lexical critic when no key is set):
+
+1. **Move proposer** — `spec_to_instructions` translates the L1 strategy vector into plain writing rules
+   ("do not mention schools/awards/press", "lead with the non-consensus claim", "one short sentence, no
+   urgency"); the LLM then writes K candidate sentences for **one slot**, given those rules + the recipient
+   evidence + the sender's real facts (it may not invent beyond them). Called **per beam with the beam's
+   prefix**, so each move continues the draft coherently and never repeats an earlier line. Slot roles are
+   disjoint so the moves compose into one email, not four paraphrases.
+2. **Sentence judge** — the LLM critic behind the L4 gate (coherent?/annoying? per line).
+3. **Targeted rewriter** — when the critic flags a line, its *reason* is fed back to the LLM to rewrite
+   *that line* plainer. This is the generator-level fix: resampling fresh candidates just returns the same
+   slop register, so the repair must instruct the writer, not re-filter it. Repairs are ranked by the same
+   (LLM) critic that flags them, so the ranker isn't blind to the issue the gate found.
+
+A real lesson fell out of building this: **selection-based repair cannot fix a generator whose whole
+candidate distribution is biased** (every sample tryhard/repetitive). You need generator-level correction —
+sharper instructions plus a critic→writer feedback rewrite. That is why the register instruction ("being
+contrarian is about the claim, not the tone; write plainly") and the targeted rewriter both exist.
+
+**The optimizer authors; the LLM writes the parts it's told to and judges its own lines.**
 
 ## Honesty
 
@@ -113,8 +133,9 @@ L1 → L2 → L3`, and runs naive drafts through the **same** evaluator so the l
 - `swm/decision/message_optimizer.py` — L1 strategy search.
 - `swm/decision/compositional_search.py` — L2 beam search + text encoder + sentence bank.
 - `swm/decision/mc_evaluation.py` — L3 recipient-hidden-state Monte Carlo.
-- `swm/decision/semantic_critic.py` — L4 coherence/naturalness critic (beam penalty + final gate + repair).
-- `swm/decision/message_pipeline.py` — end-to-end orchestration.
+- `swm/decision/semantic_critic.py` — L4 coherence/naturalness/redundancy critic (beam penalty + gate + repair).
+- `swm/decision/llm_moves.py` — live-LLM seams: move proposer, sentence judge, targeted rewriter.
+- `swm/decision/message_pipeline.py` — end-to-end orchestration (offline bank or live LLM via `chat_fn`).
 - Builds on: `swm/variables/schema.py` (message content-stance variables), `calibrated_weights.WeightPrior`,
   `swm/entities/public_figure.py` (recipient inference), `swm/decision/best_action.py` (best-arm racing —
   the natural home for racing L3 finalists next).

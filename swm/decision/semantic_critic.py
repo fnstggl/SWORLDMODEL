@@ -73,6 +73,31 @@ def _sat(n: float, k: float = 1.2) -> float:
     return 1.0 - math.exp(-n / k)
 
 
+_STOP = set("a an the and or but if to of in on for with is are was were be been being this that it "
+            "i you he she we they my your our their me him her them as at by from about into so not "
+            "no do does did would could should will can i'm you're it's that's what who how".split())
+
+
+def _content_words(s: str) -> set:
+    return {w for w in re.findall(r"[a-z']+", s.lower()) if w not in _STOP and len(w) > 2}
+
+
+def _redundant_pairs(sents: list, thresh: float = 0.5) -> set:
+    """Indices of sentences that substantially repeat an earlier one (content-word Jaccard) — the
+    cross-slot repetition an independent per-sentence check misses."""
+    red = set()
+    words = [_content_words(s) for s in sents]
+    for i in range(len(sents)):
+        for j in range(i):
+            a, b = words[i], words[j]
+            if not a or not b:
+                continue
+            jac = len(a & b) / len(a | b)
+            if jac >= thresh:
+                red.add(i)
+    return red
+
+
 @dataclass
 class SentenceVerdict:
     sentence: str
@@ -123,10 +148,26 @@ class SemanticCritic:
             return Critique(coherence=0.0, naturalness=1.0, verdicts=[], source="empty")
         if self.judge_fn is not None:
             try:
-                return self._llm_critique(text, sents)
+                crit = self._llm_critique(text, sents)
             except Exception:
-                pass
-        return self._lexical_critique(sents)
+                crit = self._lexical_critique(sents)
+        else:
+            crit = self._lexical_critique(sents)
+        return self._apply_redundancy(crit, sents)
+
+    def _apply_redundancy(self, crit: Critique, sents: list) -> Critique:
+        """Structural cross-slot check (applies to BOTH the LLM and lexical paths): a sentence that
+        substantially repeats an earlier one is marked incoherent (redundant), which drops coherence and
+        lets the gate/repair remove the repetition an independent per-sentence judge can't see."""
+        red = _redundant_pairs(sents)
+        if not red:
+            return crit
+        for i in red:
+            if i < len(crit.verdicts):
+                crit.verdicts[i].coherent = False
+                crit.verdicts[i].reasons.append("redundant — repeats an earlier sentence")
+        crit.coherence = min(crit.coherence, 1.0 - _sat(len(red)))
+        return crit
 
     # ---- offline, transparent ----
     def _lexical_critique(self, sents: list) -> Critique:

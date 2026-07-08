@@ -167,12 +167,14 @@ def construct_email(scorer: StrategyScorer, spec_strategy: dict, *, proposer=def
         # its lexical strategy scores well. This is the quality axis the variable readout is blind to.
         return base - critic_weight * (1.0 - critic.critique(text).quality)
 
-    # beams: list of (chosen_slots dict, text, score)
+    # beams: list of (chosen_slots dict, text, score). Candidates are proposed PER BEAM with the beam's
+    # prefix as context, so a context-aware (LLM) proposer continues each draft coherently and does not
+    # repeat what earlier slots already said. An offline bank ignores the prefix (cheap, unchanged result).
     beams = [({}, "", -1.0)]
     for slot in SLOTS:
-        cands = proposer(slot, spec_strategy, context)
         scored = []
         for chosen, text, _ in beams:
+            cands = proposer(slot, spec_strategy, {**context, "prefix": text, "slot": slot})
             for c in cands:
                 nt = (text + " " + c).strip() if c else text
                 if not nt:
@@ -193,20 +195,36 @@ def _assemble(slots: dict) -> str:
     return " ".join(slots[s] for s in SLOTS if slots.get(s)).strip()
 
 
+def _prefix_before(slots: dict, target: str) -> str:
+    """The assembled text of all slots that come before `target` — the prefix a context-aware proposer
+    should continue from during repair."""
+    out = []
+    for s in SLOTS:
+        if s == target:
+            break
+        if slots.get(s):
+            out.append(slots[s])
+    return " ".join(out).strip()
+
+
 def _sent_overlap(a: str, b: str) -> bool:
     a, b = a.strip().lower(), b.strip().lower()
     return a in b or b in a
 
 
 def polish_email(email: ConstructedEmail, scorer: StrategyScorer, spec_strategy: dict, *,
-                 proposer=default_proposer, critic, q: float = 0.2, rounds: int = 2,
-                 spec_penalty: float = 0.15, critic_weight: float = 0.8) -> ConstructedEmail:
+                 proposer=default_proposer, critic, q: float = 0.2, rounds: int = 3,
+                 spec_penalty: float = 0.15, critic_weight: float = 0.8,
+                 rank_critic=None, rewrite_fn=None) -> ConstructedEmail:
     """The critical evaluator AT THE END. Run the (LLM, if available) critic on the finalist; for every
     slot whose sentence the critic flags as incoherent/embellished or annoying, swap in the best
     alternative move that PASSES the critic and keeps the strategy — then re-critique. Repeat up to
     `rounds`. Bounds expensive-critic calls to (flagged slots × candidates), not the whole beam tree.
     If no clean realization exists in the proposer's candidates, the least-slop version is returned with
     its flags surfaced — honest, not hidden."""
+    if rank_critic is None:
+        from swm.decision.semantic_critic import SemanticCritic
+        rank_critic = SemanticCritic()          # cheap lexical — ranks replacements without LLM calls
     slots = dict(email.slots)
     text = _assemble(slots)
 
@@ -215,22 +233,31 @@ def polish_email(email: ConstructedEmail, scorer: StrategyScorer, spec_strategy:
         return scorer.lower_bound(strat, q=q) - spec_penalty * _spec_distance(strat, spec_strategy)
 
     for _ in range(rounds):
-        crit = critic.critique(text)
+        crit = critic.critique(text)                    # the (possibly LLM) gate finds WHAT'S wrong
         flagged = {f["sentence"] for f in crit.flags()}
         if not flagged:
             break
         changed = False
+        reason_by_sent = {f["sentence"]: f["reasons"] for f in crit.flags()}
         for slot, chosen in list(slots.items()):
             if not chosen or not any(_sent_overlap(fs, chosen) for fs in flagged):
                 continue
-            # Rank candidates for THIS slot by (its own cleanliness, then strategy value). Judging the
-            # candidate itself — not the whole-email min — is what lets a repair register even while a
-            # DIFFERENT line is still slop; the other flagged slot is fixed in its own pass.
+            # Candidate replacements. With a rewrite_fn (live LLM), the focused fix is a TARGETED REWRITE
+            # of the flagged line fed the critic's reason — resampling fresh proposer options just returns
+            # the same slop register. Without it, fall back to fresh proposer candidates.
+            if rewrite_fn is not None:
+                reasons = next((r for fs, r in reason_by_sent.items() if _sent_overlap(fs, chosen)), [])
+                candidates = [rewrite_fn(chosen, reasons, spec_strategy)]
+            else:
+                candidates = list(proposer(slot, spec_strategy, {"prefix": _prefix_before(slots, slot)}))
+            # Rank lexicographically: (candidate cleanliness — fixes independent slop unmasked; then
+            # whole-trial quality — fixes redundancy; then strategy value). Cheap lexical critic ranks.
             def rank(c):
                 trial = _assemble({**slots, slot: c})
-                cq = critic.critique(c).quality if c else 1.0
-                return (round(cq, 2), strat_value(trial) if trial else -1.0)
-            best_c = max([c for c in proposer(slot, spec_strategy, {})] + [chosen], key=rank)
+                cand_clean = rank_critic.critique(c).quality if c else 1.0
+                trial_q = rank_critic.critique(trial).quality if trial else 0.0
+                return (round(cand_clean, 2), round(trial_q, 2), strat_value(trial) if trial else -1.0)
+            best_c = max(candidates + [chosen], key=rank)
             if best_c != chosen and rank(best_c) > rank(chosen):
                 slots[slot] = best_c
                 text = _assemble(slots)

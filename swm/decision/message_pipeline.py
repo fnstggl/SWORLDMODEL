@@ -93,13 +93,24 @@ class OptimizationResult:
 
 def optimize_message(recipient: RecipientState, *, proposer=default_proposer, q: float = 0.2,
                      restarts: int = 12, beam: int = 6, n_mc: int = 2000, seed: int = 0,
-                     baselines: dict | None = None, judge_fn=None) -> OptimizationResult:
+                     baselines: dict | None = None, judge_fn=None, chat_fn=None,
+                     sender_brief=None, recipient_notes: str = "") -> OptimizationResult:
     """Run L1 → L2 → (critic gate) → L3 for a recipient and return the constructed email + distribution.
 
-    judge_fn — optional LLM sentence judge (see semantic_critic.llm_sentence_judge). When absent, the
-    critic uses its transparent lexical fallback. The critic prunes slop inside the beam search AND runs
-    as a final gate + repair pass, so the output does not read as embellishing/annoying AI slop."""
+    chat_fn — optional live LLM `fn(prompt)->text`. When given, it becomes BOTH the move proposer (the LLM
+    writes candidate sentences per slot, constrained by the L1 strategy + recipient evidence + sender
+    facts) AND the sentence judge for the critic — turning the offline "no slop" into real, well-written
+    text. Without it, the offline sentence bank + lexical critic run. judge_fn/proposer can be set
+    explicitly to override. Everything degrades gracefully."""
     scorer = scorer_from_recipient(recipient.vars, recipient.base_mean, seed=seed)
+    rewrite_fn = None
+    if chat_fn is not None:
+        from swm.decision.llm_moves import llm_proposer, llm_rewriter, llm_sentence_judge
+        if proposer is default_proposer:
+            proposer = llm_proposer(chat_fn, recipient_notes=recipient_notes, sender=sender_brief)
+        if judge_fn is None:
+            judge_fn = llm_sentence_judge(chat_fn)
+        rewrite_fn = llm_rewriter(chat_fn, recipient_notes=recipient_notes, sender=sender_brief)
     fast_critic = SemanticCritic()                     # cheap lexical — safe inside the beam search
     final_critic = SemanticCritic(judge_fn=judge_fn)   # LLM if provided, else lexical — the final gate
 
@@ -110,8 +121,12 @@ def optimize_message(recipient: RecipientState, *, proposer=default_proposer, q:
     email = construct_email(scorer, spec.strategy, proposer=proposer, beam=beam, q=q,
                             critic=fast_critic, context={"recipient": recipient.label})
 
-    # CRITIC GATE — the critical evaluator at the end: flag/repair incoherent or annoying lines
-    email = polish_email(email, scorer, spec.strategy, proposer=proposer, critic=final_critic, q=q)
+    # CRITIC GATE — the critical evaluator at the end: flag/repair incoherent or annoying lines. With a
+    # live LLM, a targeted rewrite (critic reason -> writer) fixes lines whose whole sample-register is
+    # slop, and we RANK repairs with the same (LLM) critic that flags — so the ranker isn't blind to the
+    # exact issue the gate found.
+    email = polish_email(email, scorer, spec.strategy, proposer=proposer, critic=final_critic, q=q,
+                         rewrite_fn=rewrite_fn, rank_critic=(final_critic if chat_fn is not None else None))
 
     # L3 — Monte-Carlo evaluate the finalist under recipient hidden state
     evaluation = mc_evaluate(recipient.vars, recipient.base_mean, email.strategy,
@@ -130,8 +145,26 @@ def optimize_message(recipient: RecipientState, *, proposer=default_proposer, q:
                               baselines=result_baselines)
 
 
+def _recipient_notes(world, contact_id: str, name: str | None) -> str:
+    """Compact notes for the LLM proposer: who the recipient is + the web evidence + inferred traits."""
+    prof = world.profile(contact_id)
+    lines = [f"Recipient: {name or contact_id}"]
+    if prof:
+        iv = prof.get("inferred_variables", {})
+        traits = ", ".join(f"{k}={v['value']:.2f}" for k, v in iv.items() if k != "base_responsiveness")
+        if traits:
+            lines.append(f"Inferred disposition (0-1): {traits}")
+        ev = prof.get("evidence")
+        # evidence snippets live on the resolver; summarize what we have
+        lines.append("Note: high status_orientation means they are put off by credential/prestige "
+                     "signaling; high skepticism means they reward a genuinely contrarian, specific claim.")
+    return "\n".join(lines)
+
+
 def optimize_for_world(world, contact_id: str, *, name: str | None = None, domain: str = "",
-                       ask: str = "", **kw) -> OptimizationResult:
-    """Convenience: build the recipient from a World and optimize in one call."""
+                       ask: str = "", sender_brief=None, chat_fn=None, **kw) -> OptimizationResult:
+    """Convenience: build the recipient from a World and optimize in one call. Pass a live `chat_fn`
+    (e.g. swm.api.deepseek_backend.default_chat_fn()) and a `sender_brief` to have the LLM write the moves."""
     rs = recipient_from_world(world, contact_id, name=name, domain=domain, ask=ask)
-    return optimize_message(rs, **kw)
+    notes = _recipient_notes(world, contact_id, name)
+    return optimize_message(rs, sender_brief=sender_brief, chat_fn=chat_fn, recipient_notes=notes, **kw)

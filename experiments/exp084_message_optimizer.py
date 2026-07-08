@@ -16,10 +16,23 @@ from __future__ import annotations
 
 import json
 
+from swm.api.deepseek_backend import default_chat_fn
+from swm.decision.llm_moves import SenderBrief
 from swm.decision.message_pipeline import optimize_for_world
 from swm.entities.public_figure import PublicFigureResolver
 from swm.ingestion.store import EventStore
 from swm.worlds.world import World
+
+# The sender's REAL facts — the LLM proposer may use these and must not invent beyond them.
+THIEL_SENDER = SenderBrief(
+    sender="Beckett",
+    thesis="the expensive part of AI is shifting from training models to running them (inference), and "
+           "almost nobody is building infrastructure for that",
+    ask="a one-line reaction on whether the thesis is wrong",
+    facts=["17 years old", "building AI infrastructure that lowers inference cost",
+           "got into Princeton but questioning whether to go",
+           "previously featured in the NYT for an affordable-housing startup"],
+)
 
 # illustrative web evidence about the recipient (a live search_fn replaces this fixture)
 _EVIDENCE = [
@@ -41,9 +54,15 @@ _EVIDENCE = [
 def main():
     world = World(store=EventStore(":memory:"),
                   resolver=PublicFigureResolver(search_fn=lambda q: _EVIDENCE))
-    result = optimize_for_world(world, "peter_thiel", name="Peter Thiel",
-                                domain="AI infrastructure",
-                                ask="cold outreach from a 17-year-old founder", n_mc=3000)
+    # Live LLM if a backend key is set (DeepSeek): the LLM WRITES the candidate moves and JUDGES them.
+    # Otherwise the offline sentence bank + lexical critic run — same architecture, lower text quality.
+    chat_fn = default_chat_fn(max_tokens=220, temperature=0.2)
+    mode = "LIVE LLM proposer + critic" if chat_fn else "OFFLINE bank + lexical critic (no LLM key set)"
+    print("mode:", mode)
+    result = optimize_for_world(world, "peter_thiel", name="Peter Thiel", domain="AI infrastructure",
+                                ask="cold outreach from a 17-year-old founder",
+                                sender_brief=THIEL_SENDER, chat_fn=chat_fn, beam=3 if chat_fn else 6,
+                                n_mc=2000)
 
     print("=" * 80)
     print("EXP-084  message optimizer — 'what should I actually send Peter Thiel?'")
