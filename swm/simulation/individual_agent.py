@@ -39,15 +39,26 @@ def _clamp(v, signed=False):
 
 @dataclass
 class IndividualAgent:
-    """A person as a stateful agent. `variables` = who they are (stable); `state` = how they are now."""
+    """A person as a stateful agent. `variables` = who they are (stable); `state` = how they are now;
+    `memory` (optional) = their episodic stream — as contacts land, they are written to memory so a
+    situation-conditioned response_fn can recall how this person reacted to similar messages before."""
     agent_id: str
     variables: VariableMap = field(default_factory=VariableMap)
     state: dict = field(default_factory=dict)
     history: list = field(default_factory=list)      # log of (message, responded, p, state-snapshot)
+    memory: object = None                            # optional swm.memory.MemoryStream
+    clock: float = 0.0                               # step clock; ts fallback when a message carries no _as_of
 
     def __post_init__(self):
         for k, base in STATE_BASELINE.items():
             self.state.setdefault(k, self.variables.get(k, base) if k in self.variables.vars else base)
+
+    def remember(self, text: str, *, responded: bool, ts=None, topic: str = "", importance: float = None):
+        """Write a contact episode to this agent's memory stream (no-op if the agent has no memory)."""
+        if self.memory is None:
+            return None
+        return self.memory.record_contact(ts=self.clock if ts is None else ts, text=text,
+                                          responded=responded, topic=topic, importance=importance)
 
     # ---- reading a response THROUGH the current state ------------------------------------------------
     def response_p(self, message: dict, response_fn) -> dict:
@@ -78,6 +89,11 @@ class IndividualAgent:
             s["attention_availability"] = _clamp(s["attention_availability"] - 0.15)
         self.history.append({"message": message, "responded": responded,
                              "p": None if p is None else round(p, 4), "state": dict(s)})
+        if self.memory is not None:                  # accrue episodic memory of the contact + outcome
+            ts = message.get("_as_of", self.clock)
+            self.memory.record_contact(ts=ts, text=str(message.get("text", "")), responded=bool(responded),
+                                       topic=str(message.get("topic", "")))
+        self.clock += 1
         return self
 
     def relax(self, steps: int = 1, rate: float = 0.34) -> "IndividualAgent":
@@ -87,6 +103,7 @@ class IndividualAgent:
             for k, base in STATE_BASELINE.items():
                 signed = k in ("mood_valence", "reciprocity_debt")
                 self.state[k] = _clamp(self.state[k] + rate * (base - self.state[k]), signed=signed)
+            self.clock += 1
         return self
 
     def snapshot(self) -> dict:

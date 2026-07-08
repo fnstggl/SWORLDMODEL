@@ -1,6 +1,35 @@
 """Tests for deep per-person inference — multi-pass synthesis, depth-scaled confidence, as-of/no-leakage."""
-from swm.variables.deep_inference import DeepInferenceEngine, DeepPersonaStore, depth_factor
+from swm.variables.deep_inference import (DeepInferenceEngine, DeepPersonaStore, depth_factor,
+                                          recency_weight)
 from swm.variables.schema import PERSONA, BY_CATEGORY
+
+
+def test_recency_weight_is_off_by_default_and_decays_when_enabled():
+    assert recency_weight(0, 100, None) == 1.0                   # no half_life -> disabled
+    assert recency_weight(None, 100, 10) == 1.0                  # no timestamp -> disabled
+    assert recency_weight(100, 100, 10) == 1.0                   # age 0 -> full weight
+    assert recency_weight(90, 100, 10) == 0.5                    # one half-life old -> half weight
+    assert recency_weight(80, 100, 10) == 0.25                   # two half-lives -> quarter
+
+
+def test_synthesize_is_backward_compatible_without_timestamps():
+    """No timestamps/half_life -> identical to the salience-only behavior (strict extension)."""
+    eng = DeepInferenceEngine()
+    sig = [{"verbosity": {"value": 0.2, "salience": 0.8}},
+           {"verbosity": {"value": 0.8, "salience": 0.8}}]
+    p = eng.synthesize(sig)
+    assert abs(p["verbosity"]["value"] - 0.5) < 1e-9             # equal salience, equal weight -> mean 0.5
+
+
+def test_recency_shifts_value_toward_recent_evidence():
+    """A person who drifted from low to high verbosity: with recency decay, the recent value dominates."""
+    eng = DeepInferenceEngine(half_life=5.0)
+    sig = [{"verbosity": {"value": 0.1, "salience": 0.8}},       # old
+           {"verbosity": {"value": 0.9, "salience": 0.8}}]       # recent
+    flat = eng.synthesize(sig)                                   # no timing -> mean 0.5
+    decayed = eng.synthesize(sig, timestamps=[0, 40], now=40)    # old doc 8 half-lives back
+    assert abs(flat["verbosity"]["value"] - 0.5) < 1e-9
+    assert decayed["verbosity"]["value"] > 0.85                  # recent (0.9) dominates
 
 
 def test_depth_factor_monotone_and_saturating():
