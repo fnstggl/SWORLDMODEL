@@ -33,9 +33,10 @@ class Dossier:
     @property
     def strength(self) -> float:
         """A rough evidence-strength score in [0,1]: user context and history count more than web snippets.
-        Feeds the honest 'do we need to ask the user?' gate and the estimate's confidence."""
-        w = {"user": 1.0, "history": 0.7, "web": 0.4}
-        return min(1.0, sum(w.get(t, 0.3) for t in self.tags) / 3.0)
+        One substantive piece of user context is enough to proceed; the gate fires mainly when the user has
+        told us nothing personal AND the public footprint is thin. Feeds the ask-the-user gate + confidence."""
+        w = {"user": 0.5, "history": 0.3, "web": 0.15}
+        return min(1.0, sum(w.get(t, 0.1) for t in self.tags))
 
 
 @dataclass
