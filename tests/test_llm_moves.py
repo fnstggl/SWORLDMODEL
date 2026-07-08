@@ -30,12 +30,20 @@ def mock_chat(prompt: str) -> str:
 # --- strategy -> instructions ---------------------------------------------------------------------
 
 def test_spec_to_instructions_reflects_the_strategy():
-    lo_cred = spec_to_instructions({**{v: 0.3 for v in MESSAGE_VARS}, "credential_signaling": 0.0,
-                                    "contrarian_pitch": 0.9, "pushiness": 0.0})
-    text = " ".join(lo_cred).lower()
+    rules = spec_to_instructions({**{v: 0.3 for v in MESSAGE_VARS}, "credential_signaling": 0.0,
+                                  "credibility_proof": 0.9, "responder_incentive": 0.9, "pushiness": 0.0})
+    text = " ".join(rules).lower()
     assert "do not mention" in text and ("schools" in text or "titles" in text)  # sign-flip -> writing rule
-    assert "disagree" in text or "contrarian" in text
+    assert "proof" in text or "traction" in text                                 # general lever
+    assert "gets out of engaging" in text or "personally" in text                # responder_incentive
     assert "asap" in text or "no urgency" in text
+
+
+def test_spec_to_instructions_surfaces_situational_levers():
+    from swm.decision.strategy_scorer import Lever
+    lv = Lever("contrarian_thesis", 1.8, 0.7, "make one specific non-consensus claim")
+    rules = spec_to_instructions({**{v: 0.3 for v in MESSAGE_VARS}, "contrarian_thesis": 0.9}, levers=[lv])
+    assert any("non-consensus" in r for r in rules)
 
 
 # --- proposer -------------------------------------------------------------------------------------

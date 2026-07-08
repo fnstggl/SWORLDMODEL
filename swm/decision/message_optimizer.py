@@ -20,11 +20,20 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 from swm.decision.strategy_scorer import MESSAGE_VARS, StrategyScorer
-from swm.variables.schema import spec
+from swm.variables.schema import SPECS, spec
 
 
 def _bounds(name: str) -> tuple[float, float]:
+    # situational levers aren't in the schema; they live in [0,1] like a message-fit quality
+    if name not in SPECS:
+        return (0.0, 1.0)
     return (-1.0, 1.0) if spec(name).signed else (0.0, 1.0)
+
+
+def _neutral_of(name: str) -> float:
+    if name not in SPECS:
+        return 0.0
+    return 0.0 if spec(name).signed else spec(name).default
 
 
 @dataclass
@@ -61,13 +70,13 @@ def optimize_strategy(scorer: StrategyScorer, *, q: float = 0.2, restarts: int =
     """
     import random
     rng = random.Random(seed)
-    vars_ = MESSAGE_VARS
+    vars_ = scorer.optimizable_vars()          # general levers + this recipient's situational levers
 
     def objective(strat):
         return scorer.lower_bound(strat, q=q)
 
     def neutral_start():
-        return {v: (spec(v).default if not spec(v).signed else 0.0) for v in vars_}
+        return {v: _neutral_of(v) for v in vars_}
 
     def random_start():
         out = {}

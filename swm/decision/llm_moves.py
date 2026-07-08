@@ -62,28 +62,38 @@ class SenderBrief:
         return "\n".join(lines)
 
 
-def spec_to_instructions(strategy: dict) -> list[str]:
-    """Turn the optimal strategy vector into natural-language writing constraints for the proposer."""
-    g = lambda n: strategy.get(n, spec(n).default)
+def spec_to_instructions(strategy: dict, levers: list | None = None) -> list[str]:
+    """Turn the optimal strategy vector (general levers + situational levers) into natural-language
+    writing constraints for the proposer."""
+    from swm.variables.schema import SPECS
+    g = lambda n: strategy.get(n, SPECS[n].default if n in SPECS else 0.0)
     rules = []
     if g("personalization") > 0.6:
         rules.append("Reference something specific and real about the recipient (from the notes). No generic flattery.")
+    if g("relevance_fit") > 0.6:
+        rules.append("Make clear, in a few words, why this is relevant to THEM specifically.")
+    if g("credibility_proof") > 0.6:
+        rules.append("Include ONE concrete piece of proof or traction (a real number, metric, or result).")
+    if g("responder_incentive") > 0.6:
+        rules.append("State plainly what the recipient personally gets out of engaging.")
     if g("credential_signaling") < 0.25:
-        rules.append("Do NOT mention schools, degrees, GPA, awards, press features, or titles — they hurt here.")
+        rules.append("Do NOT mention schools, degrees, GPA, awards, press features, or titles; they hurt here.")
     elif g("credential_signaling") > 0.7:
         rules.append("Briefly establish credibility with ONE concrete credential.")
-    if g("contrarian_pitch") > 0.6:
-        rules.append("Lead with a claim most people would disagree with; be specific about the disagreement.")
-    if g("secret_density") > 0.6:
-        rules.append("Include ONE specific, non-obvious insight — a real claim, not a vague teaser.")
     if g("pushiness") < 0.25:
         rules.append("No urgency and no pressure. Never say 'ASAP', 'circling back', 'following up', or 'quick call'.")
-    if g("ask_directness") > 0.6:
-        rules.append("If this is the ask, make it ONE clear, specific, low-effort question.")
+    if g("ask_directness") > 0.6 or g("low_effort_ask") > 0.6:
+        rules.append("End with ONE clear, specific, low-effort ask they can answer in a line.")
     if g("length_fit") > 0.6:
         rules.append("Keep every sentence short and plain. Cut every unnecessary word.")
     if g("clarity") > 0.6:
         rules.append("Every sentence must make a concrete, literally-true claim a skeptic could act on.")
+    if g("warmth") > 0.6:
+        rules.append("Keep a warm, respectful, human tone.")
+    # situational levers the optimizer turned up for THIS recipient
+    for lv in (levers or []):
+        if strategy.get(lv.name, 0.0) > 0.6 and lv.description:
+            rules.append(f"For this recipient specifically: {lv.description}")
     return rules
 
 
@@ -119,13 +129,13 @@ def _extract_list(text: str) -> list:
     return out
 
 
-def llm_proposer(chat_fn, *, recipient_notes: str = "", sender: SenderBrief | None = None):
+def llm_proposer(chat_fn, *, recipient_notes: str = "", sender: SenderBrief | None = None, levers=None):
     """Build propose_fn(slot, spec_strategy, context, k) that asks the LLM for k candidate sentences."""
     sender = sender or SenderBrief()
 
     def propose(slot: str, spec_strategy: dict, context: dict, k: int = 6) -> list:
         role = _SLOT_ROLE.get(slot, "one line of the email")
-        rules = spec_to_instructions(spec_strategy)
+        rules = spec_to_instructions(spec_strategy, levers=levers)
         prefix = (context or {}).get("prefix", "").strip()
         prompt = "\n".join([
             f"Write {k} DISTINCT candidate options for {role}",
@@ -176,6 +186,53 @@ def llm_rewriter(chat_fn, *, recipient_notes: str = "", sender: SenderBrief | No
         except Exception:
             return sentence
     return rewrite
+
+
+def llm_message_encoder(chat_fn, *, levers: list | None = None):
+    """The LLM MESSAGE ENCODER — replaces the hardcoded lexical encoder. A tightly system-prompted LLM
+    reads a message and scores each general lever (and any situational levers) 0..1 with a one-line
+    justification. Returns encode(text) -> {var: value}. Falls back to the lexical encoder on any error,
+    so it degrades gracefully. This is the fix for the 'Wharton'/'reply yes' class of misses: meaning,
+    not keywords."""
+    from swm.decision.compositional_search import encode_text_to_strategy
+    from swm.decision.strategy_scorer import MESSAGE_VARS
+    from swm.variables.schema import spec
+
+    defs = [f"- {v}: {spec(v).description}" for v in MESSAGE_VARS]
+    lever_names = []
+    for lv in (levers or []):
+        defs.append(f"- {lv.name}: {lv.description}")
+        lever_names.append(lv.name)
+    names = list(MESSAGE_VARS) + lever_names
+
+    SYSTEM = ("You score a cold message on how strongly it exhibits each quality below, each 0.0 to 1.0 "
+              "(0 = absent, 1 = strongly present), reading for MEANING not keywords. Be accurate and "
+              "calibrated: a clear imperative ask like \"just reply yes\" is high ask_directness AND high "
+              "low_effort_ask even with no question mark; naming a school/press/accelerator is "
+              "credential_signaling; concrete metrics (users, revenue, growth) are credibility_proof; "
+              "stating what the recipient personally gains is responder_incentive.")
+
+    def encode(text: str) -> dict:
+        prompt = (SYSTEM + "\n\nQualities:\n" + "\n".join(defs) +
+                  f"\n\nMESSAGE:\n\"\"\"\n{text}\n\"\"\"\n\n"
+                  "Return ONLY a JSON object mapping each quality name to its 0..1 score. "
+                  "Names must be exactly: " + ", ".join(names) + ".")
+        try:
+            raw = chat_fn(prompt)
+            m = re.search(r"\{.*\}", raw, re.S)
+            obj = json.loads(m.group(0)) if m else {}
+            out = {}
+            for k in names:
+                v = obj.get(k)
+                out[k] = min(1.0, max(0.0, float(v))) if isinstance(v, (int, float)) else None
+            # fill any missing/invalid from the lexical fallback so the vector is always complete
+            if any(v is None for v in out.values()):
+                lex = encode_text_to_strategy(text, levers=levers)
+                out = {k: (out[k] if out[k] is not None else lex.get(k, 0.3)) for k in names}
+            return out
+        except Exception:
+            return encode_text_to_strategy(text, levers=levers)
+    return encode
 
 
 def llm_sentence_judge(chat_fn):

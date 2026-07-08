@@ -16,11 +16,26 @@ author to a constrained move-proposer. The email is *constructed* by the search,
 
 ## The key first-principles move: optimize in the space the model scores
 
-The world model doesn't score words — it scores a **`VariableMap`** (`personalization`, `ask_directness`,
-`pushiness`, `length_fit`, `clarity`, plus recipient-conditioned content-stance variables:
-`credential_signaling`, `contrarian_pitch`, `secret_density`). That's a ~10-dimensional decision space, not
-a trillion tokens. So we optimize **there**, text-free, and only decode to words at the end. No human draft
-anchors the search → it finds the actual argmax, not a local optimum near someone's guess.
+The world model doesn't score words — it scores a **`VariableMap`**. That's a ~12-dimensional decision
+space, not a trillion tokens. So we optimize **there**, text-free, and only decode to words at the end. No
+human draft anchors the search → it finds the actual argmax, not a local optimum near someone's guess.
+
+**General set + per-recipient situational levers (not a Thiel-indexed hardcode).** The decision space has
+two parts, mirroring the repo's `general + per-question-generated` prior pattern (`llm_prior`,
+`prior_registry`):
+- a **universal** message-fit set scored for *every* message — the physics of any inbound ask:
+  `personalization`, `relevance_fit`, `clarity`, `credibility_proof`, **`responder_incentive`** (what's in
+  it for them), `ask_directness`, `low_effort_ask`, `pushiness`, `warmth`, `length_fit`,
+  `credential_signaling`. Their *effect* is recipient-conditioned via interaction terms (the credential
+  sign-flip; proof×skepticism; incentive×status).
+- **situational levers** the LLM generates *per recipient* (`swm/decision/situational_levers.py`): a
+  contrarian-thesis lever for Thiel, a traction/bluntness lever for Cuban — each with its own
+  recipient-conditioned elasticity. Never hardcoded; offline the model falls back to the universal set.
+
+**The message encoder is an LLM, not keywords** (`swm/decision/llm_moves.llm_message_encoder`). A tightly
+system-prompted model scores each lever 0–1 by *meaning* — so "just reply yes" reads as a real ask (not a
+missing "?") and "Wharton" reads as credential-signaling (not a lexicon miss). The lexical encoder remains
+only as an offline fallback. This closes the class of misses that made an early Cuban prediction wrong.
 
 ## The three layers
 
@@ -146,7 +161,8 @@ L1 → L2 → L3`, and runs naive drafts through the **same** evaluator so the l
 - `swm/decision/compositional_search.py` — L2 beam search + text encoder + sentence bank.
 - `swm/decision/mc_evaluation.py` — L3 recipient-hidden-state Monte Carlo.
 - `swm/decision/semantic_critic.py` — L4 coherence/naturalness/redundancy critic (beam penalty + gate + repair).
-- `swm/decision/llm_moves.py` — live-LLM seams: move proposer, sentence judge, targeted rewriter.
+- `swm/decision/llm_moves.py` — live-LLM seams: message encoder, move proposer, sentence judge, targeted rewriter.
+- `swm/decision/situational_levers.py` — per-recipient LLM-generated levers + recipient-conditioned elasticities.
 - `swm/decision/elasticity_fit.py` — fit the elasticities to reply outcomes and grade them (the calibration path).
 - `swm/decision/message_pipeline.py` — end-to-end orchestration (offline bank or live LLM; `fit=` for a graded objective).
 - Builds on: `swm/variables/schema.py` (message content-stance variables), `calibrated_weights.WeightPrior`,
