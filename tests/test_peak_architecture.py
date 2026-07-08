@@ -84,6 +84,22 @@ def test_interval_coverage():
     assert cov["empirical_coverage"] == 1.0
 
 
+def test_directional_event_model_holds_and_directs():
+    from swm.simulation.directional_event_model import (DirectionalEventModel, calibrated_impact_fn,
+                                                        momentum_evolve)
+    # P(up|move)=0.9 with half the events firing -> a directional UP forecast (holds dominate the rest)
+    up = DirectionalEventModel(list(range(1, 7)),
+                               calibrated_impact_fn(lambda s: 0.9, 0.2, 0.05, p_move=0.5), momentum_evolve())
+    r = up.rollout(1.0, {"recent_move": 0.0}, 6, n=2000)
+    assert r["p_up"] > 0.7 and r["expected_move"] > 0
+    # P(up|move)=0.1 -> directional DOWN
+    dn = DirectionalEventModel(list(range(1, 7)), calibrated_impact_fn(lambda s: 0.1, 0.2, 0.05, p_move=0.5))
+    assert dn.rollout(1.0, {}, 6, n=2000)["expected_move"] < 0
+    # p_move=0 -> every event holds -> no drift at all (the fix for the accumulation bug)
+    hold = DirectionalEventModel(list(range(1, 7)), calibrated_impact_fn(lambda s: 0.9, 0.2, 0.05, p_move=0.0))
+    assert abs(hold.rollout(1.0, {}, 6, n=500)["expected_move"]) < 1e-9
+
+
 # ---- #6 full-covariance posterior ----
 def test_full_covariance_posterior_samples():
     rng = random.Random(0)

@@ -7,8 +7,11 @@
 > (≤0.35), learned from the portfolio + a world-knowledge prior — EXP-078. (3) Adaptive fidelity —
 > `swm/api/adaptive_fidelity.py` variance-triage (invest calibration only in the high-leverage variables).
 > (4) Embedding-keyed registry — `swm/variables/embedding_registry.py` (cross-phrasing transfer, pluggable
-> real-embedding backend). (5) Event model — `swm/simulation/event_model.py`, calibrated on FOMC rate jumps:
-> **82% interval coverage (nominal 90%) vs persistence's 3%** — EXP-077. (6) Full-covariance weight posterior
+> real-embedding backend). (5) Event model — `event_model.py` (calibrated variance: 82% coverage vs
+> persistence 3%, EXP-077) + `directional_event_model.py` (**directional** forecasting, P(move)×P(up|move),
+> fed by the harvested `rate_hike` elasticities — EXP-079: a pivotal FOMC move's direction at **89.6%** through
+> a regime shift where the base rate gets 31%, matching momentum; 6-mo rollout calibrated at 92% coverage;
+> long-horizon directional accumulation across regime shifts is the open frontier). (6) Full-covariance posterior
 > — `bayes_logistic.predict_dist(full_cov=True)`. The sections below are the original design rationale.
 
 
