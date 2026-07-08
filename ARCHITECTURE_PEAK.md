@@ -1,5 +1,18 @@
 # Architecture for the peak — what still needs to change
 
+> **END-TO-END: auto-grounded simulation is the default (built — EXP-088).** The capstone — the grounder is now
+> wired into the compiler so an arbitrary user question grounds itself. `general_world_model()` is the single
+> front door: question → DeepSeek compiles a structural spec → `WorldModel.simulate` auto-grounds the spec's
+> high-leverage variable VALUES from live evidence (`StateGrounder(default=live_router())` — the general
+> DeepSeek+web engine + Coinbase overlay, resolver routing each variable to a live feed only when one matches)
+> → the calibrated Monte-Carlo runs on the MEASURED world. Live end-to-end run: "recession?" grounded 5/5
+> drivers (unemployment 4.1%, GDP 3.1%, inflation 2.6%, fed funds 4.25%, participation 62.5%); "BTC > $80k?"
+> grounded 4/5 (**BTC $61.7k via the live Coinbase feed**, hash-rate/sentiment via web); "CPI < 3%?" grounded
+> 7/8 (core/headline CPI, fed funds, wages, oil, rents). Genuinely-latent 0-1 drivers honestly stay at their
+> prior; grounding failure never breaks a run. A user asks anything and the simulation runs on the real current
+> world, not the LLM's guessed state — the whole stack (weights → state → dynamics → coverage → live → general)
+> behind one call.
+>
 > **GROUNDING COVERAGE — ground any question across ALL domains (built — EXP-085).** State grounding and rate
 > grounding proved the lever on committed datasets; coverage turns them into a system that grounds an ARBITRARY
 > question. The architecture is two-tier: `swm/api/grounding_sources.py` has TYPED STRUCTURED SOURCES for the

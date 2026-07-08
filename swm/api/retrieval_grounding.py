@@ -76,8 +76,10 @@ class CalibratedExtractor:
         rule = ("Use ONLY the evidence below (as-of the question date); do NOT use any other knowledge. value "
                 "null if the evidence does not determine it."
                 if self.evidence_only else
-                "Prefer the evidence below; if it is insufficient, use your best current knowledge but LOWER "
-                "the confidence accordingly (and widen ci95). value null only if you truly cannot estimate it.")
+                "Prefer the evidence below. If it does not contain the number, DO NOT return null — give your "
+                "best current estimate from your own knowledge and LOWER the confidence (widen ci95) to reflect "
+                "the added uncertainty. Return value null ONLY if the variable is not a measurable current "
+                "quantity at all (e.g. a latent index with no real-world scale).")
         return (f"Question context: {question or ''}\n"
                 f'Extract the CURRENT numeric value of this variable: "{variable}".\n{rule}\n{ev}\n\n'
                 f'Return JSON: {{"value": <number or null>, "ci95": <95% half-width>, '
