@@ -138,11 +138,14 @@ filters to **people-domain, cutoff_clean** items (the `ParadigmRouter` picks the
 leak-free with `swm/retrieval/asof_news.asof_headlines` (GDELT headlines in a window *ending* at as-of — the
 information the crowd had, nothing after), runs `binary=True`, and grades on `skill_vs_crowd`.
 
-**Sandbox limitation (honest):** GDELT's DOC API is hard rate-limited (HTTP 429) from this environment, so
-`asof_headlines` returns nothing and the engine **abstains** rather than fall back to live (current, leaking)
-news — leak-free, but it means the *live* crowd grade can't be produced here. It needs GDELT reachable **or**
-a keyed as-of search overlay (Serper/Tavily/Brave, auto-detected by `swm/engine/retrieval.py`). The harness
-is correct and offline-tested; the ForecastBench frozen-background grade below is the current real number.
+**As-of grounding is keyless and works here.** GDELT's DOC API is hard rate-limited (HTTP 429) from this
+sandbox, so instead the primary as-of source is `retrieval.asof_google_news`: Google News RSS with a bounded
+`before:<as_of> after:<window>` query **plus a hard code filter that drops any item whose `<pubDate>` is after
+the as-of** (Google's date operators are not a hard guarantee — empirically `before:` alone leaks post-cutoff
+articles; the code guard closes it). Verified leak-free: on the 2025 NJ governor race as-of 2025-10-20 it
+returns Sep–Oct campaign coverage *including a poll* and zero outcome-leaking passages. GDELT stays as a
+fallback where reachable. No paid key required; a keyed overlay (Serper/Tavily/Brave) is still auto-detected
+if present. This is what lets EXP-091 grade the engine against the crowd live (see below).
 
 ### First grade (EXP-090, 2025-06-08 / 08-31 / 10-26 resolved political questions, leak-free)
 

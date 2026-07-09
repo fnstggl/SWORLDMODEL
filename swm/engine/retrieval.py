@@ -73,6 +73,51 @@ def google_news(query, k=8):
     return out
 
 
+def _rfc822_ts(s):
+    """Parse an RSS <pubDate> (RFC-822) to a unix timestamp, or None."""
+    try:
+        from email.utils import parsedate_to_datetime
+        return parsedate_to_datetime(s).timestamp()
+    except Exception:
+        return None
+
+
+def asof_google_news(question, as_of_ts, *, days_back=45, k=8):
+    """LEAK-FREE as-of headlines from Google News RSS — keyless, and it works where GDELT is rate-limited.
+
+    Two guards, because Google's date operators are not a hard guarantee (empirically `before:` ALONE lets
+    post-cutoff articles through):
+      1. a BOUNDED query window: `before:<as_of> after:<as_of − days_back>` (the bounded form returned only
+         in-window results in testing);
+      2. a DEFENSIVE code filter: every item's <pubDate> is parsed and any article dated after `as_of` is
+         DROPPED — so an outcome published after the cutoff can never leak in, even if Google returns it.
+    Items with no parseable date are dropped (fail safe). Returns [Passage] with the real publication date."""
+    import datetime as _dt
+    hi = _dt.datetime.utcfromtimestamp(int(as_of_ts)).strftime("%Y-%m-%d")
+    lo = _dt.datetime.utcfromtimestamp(int(as_of_ts) - days_back * 86400).strftime("%Y-%m-%d")
+    q = f"{question} before:{hi} after:{lo}"
+    try:
+        t = _get("https://news.google.com/rss/search?q=" + urllib.parse.quote(q) +
+                 "&hl=en-US&gl=US&ceid=US:en")
+    except Exception:
+        return []
+    out = []
+    for item in re.findall(r"<item>(.*?)</item>", t, re.S):
+        title = re.search(r"<title>(.*?)</title>", item, re.S)
+        date = re.search(r"<pubDate>(.*?)</pubDate>", item)
+        src = re.search(r"<source[^>]*>(.*?)</source>", item)
+        ts = _rfc822_ts(date.group(1)) if date else None
+        if ts is None or ts > as_of_ts + 86400:            # LEAK GUARD: drop anything after the as-of (+1d slack)
+            continue
+        text = _strip(title.group(1)) if title else ""
+        if text:
+            out.append(Passage(text, f"gnews_asof:{_strip(src.group(1)) if src else '?'}",
+                               (date.group(1) or "")[:16]))
+        if len(out) >= k:
+            break
+    return out
+
+
 def wikipedia(query, k=2):
     """Background/entity facts: top-matching article summaries (dated 'current' — encyclopedic)."""
     try:

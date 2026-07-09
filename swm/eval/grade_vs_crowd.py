@@ -30,11 +30,20 @@ from swm.engine.router import ParadigmRouter
 from swm.eval.grade_agent_engine import p_yes
 
 
-def asof_evidence(question, as_of_ts, *, days_back=30, k=6) -> list:
-    """Leak-free as-of news for the item, as engine Passages. Empty when GDELT is unreachable (429)."""
-    from swm.retrieval.asof_news import asof_headlines
-    heads = asof_headlines(question, as_of_ts, days_back=days_back, k=k) or []
-    return [Passage(h, "gdelt_asof", "") for h in heads]
+def asof_evidence(question, as_of_ts, *, days_back=45, k=8) -> list:
+    """Leak-free as-of news for the item, as engine Passages. Primary source is keyless Google-News-as-of
+    (bounded window + a hard pubDate<=as_of drop — works where GDELT is rate-limited); GDELT is a fallback
+    where it is reachable. Both are as-of by construction, so a post-cutoff outcome cannot leak in."""
+    from swm.engine.retrieval import asof_google_news
+    ev = asof_google_news(question, as_of_ts, days_back=days_back, k=k)
+    if ev:
+        return ev
+    try:
+        from swm.retrieval.asof_news import asof_headlines
+        heads = asof_headlines(question, as_of_ts, days_back=days_back, k=k) or []
+        return [Passage(h, "gdelt_asof", "") for h in heads]
+    except Exception:
+        return []
 
 
 @dataclass

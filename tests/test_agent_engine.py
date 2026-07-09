@@ -291,6 +291,24 @@ def test_grade_pooled_math_and_registry(tmp_path):
     assert GradeRegistry(path=str(tmp_path / "g.json")).grades["society:event"]["n"] == 6
 
 
+def test_asof_google_news_drops_post_cutoff_items(monkeypatch):
+    # Google's before:/after: is not a hard guarantee, so the code MUST drop any item dated after as_of.
+    import swm.engine.retrieval as R
+    rss = """<rss><channel>
+      <item><title>Campaign heats up</title><pubDate>Mon, 20 Oct 2025 10:00:00 GMT</pubDate>
+        <source>Pre</source></item>
+      <item><title>WINNER DECLARED — leaks the outcome</title><pubDate>Wed, 05 Nov 2025 03:00:00 GMT</pubDate>
+        <source>Post</source></item>
+    </channel></rss>"""
+    monkeypatch.setattr(R, "_get", lambda url, timeout=15: rss)
+    import time
+    as_of = time.mktime(time.strptime("2025-10-25", "%Y-%m-%d"))
+    out = R.asof_google_news("the race", as_of)
+    texts = [p.text for p in out]
+    assert any("Campaign" in t for t in texts)             # pre-cutoff kept
+    assert not any("WINNER" in t for t in texts)           # post-cutoff outcome DROPPED (no leak)
+
+
 def test_grade_vs_crowd_scores_against_the_market(tmp_path):
     from swm.engine.calibrate import GradeRegistry
     from swm.eval.grade_vs_crowd import grade_vs_crowd
