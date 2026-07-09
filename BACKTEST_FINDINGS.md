@@ -142,3 +142,36 @@ aggregates, so news cannot give parity here.
 Net: the architecture is sound and honestly calibrated, and as-of state grounding gives real signal where the
 world is public + modelable. Beating a good prediction market is not a machinery problem — it is an
 information-access problem, and for most market questions the market's information is not publicly obtainable.
+
+---
+
+# Flywheel turn 4 — inner-crowd ensemble + GDELT social-state (EXP-094)
+
+**Inner-crowd (8 diverse personas, extremized log-odds) on the 660.** Simulate the crowd, not one agent.
+
+| category | single-pass | inner-crowd | real crowd |
+|---|---|---|---|
+| crypto | 0.678 | **0.817** | 0.903 |
+| economy | 0.60 | **0.72** | — |
+| election | 0.60 | 0.62 | — |
+| tech | 0.52 | **0.45** | — |
+| sports | 0.54 | 0.52 | — |
+| **overall AUC** | 0.552 | **0.568** | 0.789 |
+
+- **Real win on QUANTITATIVE / modelable domains:** crypto 0.68→0.82 (approaching the crowd's 0.90), economy
+  0.60→0.72. The quant + base-rater + domain-expert personas sharpen exactly where the world is modelable.
+- **Hurts on SOFT domains** (tech 0.52→0.45, sports slightly) — the bull/bear/contrarian speculation injects
+  noise where there is no real structure. So the inner crowd must be applied SELECTIVELY (regime routing).
+- **Extremization tuned to 0.8 (<1 = de-sharpen), not >1** — confirming the personas are CORRELATED (same
+  LLM), so the classic crowd-extremization that helps independent forecasters does not apply; the gain comes
+  from averaging out each persona's framing bias, capped by their shared model.
+- Calibration unchanged (log-loss ≈ 0.683); the gain is discrimination, on the right domains.
+
+Net: a genuine lever where the world is quantitative/modelable (crypto now 0.82 vs crowd 0.90 — the closest
+we've reached), diluted overall by the soft-domain noise → deploy selectively.
+
+**GDELT bulk social-state index (built, demonstrated).** Corrects the earlier "4% coverage" (a rate-limit
+artifact + weakest product). Free bulk daily CAMEO event files → as-of per-country social state (tone,
+Goldstein conflict-cooperation, protest/violence/diplomacy rates + trends), leakage-free, no rate limit.
+Verified as-of Jan 2025: Ukraine/Russia show ~2x US violence, Russia net-conflictual. The vision-aligned
+grounding for the social/geopolitical slice — next: wire it into the forecaster.
