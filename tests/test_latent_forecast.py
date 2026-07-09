@@ -1,0 +1,83 @@
+"""Tests for the re-architected latent-state forecaster — the fixes, verified by construction (no LLM)."""
+from swm.api.latent_forecast import LatentSpec, parse_latent, simulate_latent
+
+
+def test_no_drivers_returns_base_rate_exactly():
+    # the anchor: with no evidence, the forecast IS the reference-class base rate (fixes the coin flip)
+    assert abs(simulate_latent(LatentSpec(base_rate=0.5, kind="event", drivers=[]), 0.01, n=4000) - 0.5) < 0.02
+    # a rare event with no drivers stays near its (shrunk) low base rate — NOT pulled to 0.5
+    p = simulate_latent(LatentSpec(base_rate=0.1, kind="event", drivers=[]), 0.01, n=4000)
+    assert p < 0.35 and p > 0.05
+
+
+def test_drivers_move_but_honest_uncertainty_bounds_it():
+    up = [{"direction": 1.0, "strength": 1.0, "grounded": True}]
+    down = [{"direction": -1.0, "strength": 1.0, "grounded": True}]
+    p_up = simulate_latent(LatentSpec(base_rate=0.5, kind="event", drivers=up), 0.1, n=4000)
+    p_dn = simulate_latent(LatentSpec(base_rate=0.5, kind="event", drivers=down), 0.1, n=4000)
+    assert p_up > 0.5 > p_dn                                  # evidence moves the forecast in the right direction
+    assert p_up < 0.9 and p_dn > 0.1                          # but honest uncertainty keeps it from the extremes
+
+
+def test_ungrounded_driver_is_weaker_than_grounded():
+    g = simulate_latent(LatentSpec(base_rate=0.5, kind="event",
+                                   drivers=[{"direction": 1.0, "strength": 1.0, "grounded": True}]), 0.1, n=6000)
+    u = simulate_latent(LatentSpec(base_rate=0.5, kind="event",
+                                   drivers=[{"direction": 1.0, "strength": 1.0, "grounded": False}]), 0.1, n=6000)
+    assert g > u                                              # a guess is integrated out toward the anchor
+
+
+def test_evidence_decays_over_horizon():
+    d = [{"direction": 1.0, "strength": 1.0, "grounded": True}]
+    near = simulate_latent(LatentSpec(base_rate=0.5, kind="event", drivers=d), 0.05, n=6000)
+    far = simulate_latent(LatentSpec(base_rate=0.5, kind="event", drivers=d), 5.0, n=6000)
+    assert near > far                                         # a far-off event regresses toward the base rate
+    assert abs(far - 0.5) < abs(near - 0.5)
+
+
+def test_metric_threshold_is_time_accurate_and_shrinks_when_unsure():
+    # current 100, threshold 200, "high" confidence, SHORT horizon, low vol -> very unlikely to double
+    short = simulate_latent(LatentSpec(base_rate=0.5, kind="metric", current_value=100.0, threshold=200.0,
+                                       direction=">", annual_vol_pct=30.0, grounded_conf="high"), 0.02, n=6000)
+    # same but a LONG horizon -> far more time to reach the threshold -> higher P (time-accuracy)
+    long = simulate_latent(LatentSpec(base_rate=0.5, kind="metric", current_value=100.0, threshold=200.0,
+                                      direction=">", annual_vol_pct=30.0, grounded_conf="high"), 5.0, n=6000)
+    assert short < long
+    # "low" confidence in the current value shrinks the sim toward the base rate (honest without live grounding)
+    lowconf = simulate_latent(LatentSpec(base_rate=0.5, kind="metric", current_value=100.0, threshold=200.0,
+                                         direction=">", annual_vol_pct=30.0, grounded_conf="low"), 0.02, n=6000)
+    assert lowconf > short                                    # pulled up toward base rate 0.5 from ~0
+
+
+def test_parse_latent_clamps_and_defaults():
+    s = parse_latent('{"base_rate": 1.5, "kind": "event", "drivers": [{"direction": 5, "strength": 9}]}')
+    assert s.base_rate <= 0.98 and s.kind == "event"
+    assert s.drivers[0]["direction"] == 1.0 and s.drivers[0]["strength"] == 1.0   # clamped
+    assert parse_latent("not json") is None
+
+
+def test_forecaster_front_door_coinflip_and_calibration():
+    from swm.api.forecast import Forecaster
+    f = Forecaster(llm=lambda p: '{"base_rate":0.5,"kind":"event","drivers":[]}', calibration_temp=1.0)
+    r = f("Fair coin?", horizon_days=1)
+    assert abs(r["p_yes"] - 0.5) < 0.03 and r["kind"] == "event" and r["n_drivers"] == 0
+    # calibration_temp < 1 shrinks a confident prediction toward 0.5
+    g = Forecaster(llm=lambda p: '{"base_rate":0.5,"kind":"event",'
+                                 '"drivers":[{"direction":1,"strength":1,"grounded":true}]}', calibration_temp=0.5)
+    assert 0.5 < g("x", horizon_days=30)["p_yes"] < g.__call__("x", horizon_days=30)["p_yes_raw"] + 0.01
+
+
+def test_asof_crypto_product_detection_and_metric_grounding():
+    from swm.api.asof_market import detect_product
+    assert detect_product("Will Bitcoin be above $65000?") == "BTC-USD"
+    assert detect_product("Will ETH cross 3000") == "ETH-USD"
+    assert detect_product("Will the Lakers win?") is None
+    # a mock metric_grounder overrides current_value + vol and drives the sim (trust=high)
+    from swm.api.latent_forecast import latent_forecast
+    llm = lambda p: '{"base_rate":0.5,"kind":"metric","metric":"BTC price","current_value":1000,' \
+                    '"threshold":2000,"direction":">","annual_vol_pct":10,"grounded_conf":"low"}'
+    mg = type("MG", (), {"ground_metric": lambda self, q, m, a: {"value": 1950.0, "annual_vol_pct": 80.0,
+                                                                 "source": "coinbase_asof:BTC-USD"}})()
+    p, spec = latent_forecast("Will BTC top 2000?", 1_700_000_000, 1_705_000_000, llm, n=3000, metric_grounder=mg)
+    assert spec.current_value == 1950.0 and spec.grounded_conf == "high"   # measured, not the LLM's 1000 guess
+    assert p > 0.3                                                          # near the threshold now -> plausible

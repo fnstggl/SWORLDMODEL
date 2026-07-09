@@ -16,11 +16,26 @@ author to a constrained move-proposer. The email is *constructed* by the search,
 
 ## The key first-principles move: optimize in the space the model scores
 
-The world model doesn't score words — it scores a **`VariableMap`** (`personalization`, `ask_directness`,
-`pushiness`, `length_fit`, `clarity`, plus recipient-conditioned content-stance variables:
-`credential_signaling`, `contrarian_pitch`, `secret_density`). That's a ~10-dimensional decision space, not
-a trillion tokens. So we optimize **there**, text-free, and only decode to words at the end. No human draft
-anchors the search → it finds the actual argmax, not a local optimum near someone's guess.
+The world model doesn't score words — it scores a **`VariableMap`**. That's a ~12-dimensional decision
+space, not a trillion tokens. So we optimize **there**, text-free, and only decode to words at the end. No
+human draft anchors the search → it finds the actual argmax, not a local optimum near someone's guess.
+
+**General set + per-recipient situational levers (not a Thiel-indexed hardcode).** The decision space has
+two parts, mirroring the repo's `general + per-question-generated` prior pattern (`llm_prior`,
+`prior_registry`):
+- a **universal** message-fit set scored for *every* message — the physics of any inbound ask:
+  `personalization`, `relevance_fit`, `clarity`, `credibility_proof`, **`responder_incentive`** (what's in
+  it for them), `ask_directness`, `low_effort_ask`, `pushiness`, `warmth`, `length_fit`,
+  `credential_signaling`. Their *effect* is recipient-conditioned via interaction terms (the credential
+  sign-flip; proof×skepticism; incentive×status).
+- **situational levers** the LLM generates *per recipient* (`swm/decision/situational_levers.py`): a
+  contrarian-thesis lever for Thiel, a traction/bluntness lever for Cuban — each with its own
+  recipient-conditioned elasticity. Never hardcoded; offline the model falls back to the universal set.
+
+**The message encoder is an LLM, not keywords** (`swm/decision/llm_moves.llm_message_encoder`). A tightly
+system-prompted model scores each lever 0–1 by *meaning* — so "just reply yes" reads as a real ask (not a
+missing "?") and "Wharton" reads as credential-signaling (not a lexicon miss). The lexical encoder remains
+only as an offline fallback. This closes the class of misses that made an early Cuban prediction wrong.
 
 ## The three layers
 
@@ -127,12 +142,20 @@ replied)` data it fits the same main + interaction elasticities by logistic regr
 offset and an L2 pull **toward the priors** (world knowledge as prior, data as update), then grades on a
 held-out split (ECE/Brier/log-loss/uplift → A/B/C/F). A fitted model is passed to `optimize_message(fit=…)`;
 the objective becomes data-calibrated and the result reports the real grade instead of `unvalidated`.
-Validated as an **estimator** on synthetic data with known ground truth (recovers the weights, calibrated on
-held-out data) — a real grade needs real reply logs, the same stance as `IndividualWorld`.
 
-Separately, **all output is em-dash-free**: LLMs structurally overuse em dashes and users dislike them, so
-the writer is instructed against them, the critic penalizes them, and `strip_em_dashes` deterministically
-removes any that survive — in every message context.
+**Graded on REAL outcomes** (`swm/decision/outcome_import.py`, `experiments/exp087`). The import path takes
+a labeled content→outcome corpus and runs the whole fit-and-grade. Run on the Cornell ConvoKit ChangeMyView
+"winning arguments" corpus (**19,714 real persuasion outcomes**), the general message levers grade **A on
+calibration (ECE 0.022)** and beat chance out of sample: **AUC 0.569, pair-accuracy 0.560** (chance = 0.5)
+on held-out-by-pair data — the fitted weights are sensible (warmth, clarity, proof×skepticism up; pushiness
+down). That is a real held-out signal, not synthetic. A cold-email reply model grades identically on a
+sent→replied corpus; only the dataset changes.
+
+Separately, **body em dashes are discouraged, not banned**: LLMs structurally overuse em dashes and users
+dislike them, so the writer is instructed to prefer commas/periods and the critic applies a soft naturalness
+penalty to body dashes — which biases the search toward dash-free text but lets a dash survive when it's
+genuinely the best option (far less often than an LLM alone would use one). A **sign-off dash ("— Beckett")
+is exempt**. `strip_em_dashes` remains as an opt-in hard-guarantee utility but is not applied by default.
 
 ## Pipeline & map to the repo
 
@@ -144,7 +167,8 @@ L1 → L2 → L3`, and runs naive drafts through the **same** evaluator so the l
 - `swm/decision/compositional_search.py` — L2 beam search + text encoder + sentence bank.
 - `swm/decision/mc_evaluation.py` — L3 recipient-hidden-state Monte Carlo.
 - `swm/decision/semantic_critic.py` — L4 coherence/naturalness/redundancy critic (beam penalty + gate + repair).
-- `swm/decision/llm_moves.py` — live-LLM seams: move proposer, sentence judge, targeted rewriter.
+- `swm/decision/llm_moves.py` — live-LLM seams: message encoder, move proposer, sentence judge, targeted rewriter.
+- `swm/decision/situational_levers.py` — per-recipient LLM-generated levers + recipient-conditioned elasticities.
 - `swm/decision/elasticity_fit.py` — fit the elasticities to reply outcomes and grade them (the calibration path).
 - `swm/decision/message_pipeline.py` — end-to-end orchestration (offline bank or live LLM; `fit=` for a graded objective).
 - Builds on: `swm/variables/schema.py` (message content-stance variables), `calibrated_weights.WeightPrior`,

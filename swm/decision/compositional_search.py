@@ -23,62 +23,81 @@ import math
 import re
 from dataclasses import dataclass, field
 
-from swm.decision.semantic_critic import strip_em_dashes
 from swm.decision.strategy_scorer import MESSAGE_VARS, StrategyScorer
 from swm.variables.schema import spec
 
-# --- lexical detectors (saturating) ---------------------------------------------------------------
+# --- lexical detectors (the OFFLINE FALLBACK; the LLM message encoder is the default when a chat_fn is
+#     available — see swm/decision/llm_moves.llm_message_encoder). These are best-effort keyword proxies. ---
 _PUSHY = re.compile(r"\b(urgent|asap|immediately|act now|last chance|final notice|don'?t miss|limited "
                     r"time|just following up|circling back|per my last|quick favou?r|please respond|"
                     r"look forward to hearing|awaiting your|at your earliest)\b", re.I)
 _PERSONAL = re.compile(r"\b(i saw your|i read your|your essay|your work on|your talk|your book|your "
-                       r"post|congrat|loved your|admired your|since you)\b", re.I)
+                       r"post|congrat|loved your|admired your|since you|you (said|wrote|tweeted))\b", re.I)
 _SECOND_PERSON = re.compile(r"\b(you|your|you're|you've)\b", re.I)
-_CREDENTIAL = re.compile(r"\b(princeton|harvard|yale|stanford|mit|ivy|nyt|new york times|featured|"
-                         r"admit|admitted|forbes|valedictorian|gpa|ranked|award|prestigious|honou?rs?|"
-                         r"scholarship|dean's list)\b", re.I)
-_CONTRARIAN = re.compile(r"\b(wrong|most people|everyone (thinks|believes)|disagree|against the grain|"
-                         r"contrarian|consensus|nobody|few people|unpopular|counterintuitive|"
-                         r"conventional wisdom|the mistake)\b", re.I)
-_SECRET = re.compile(r"\b(secret|betting|the real|actually|non[- ]obvious|should own|overlooked|hidden|"
-                     r"the truth|the insight|what no one|underpriced|mispriced)\b", re.I)
+_CREDENTIAL = re.compile(r"\b(princeton|harvard|yale|stanford|mit|wharton|penn|columbia|cornell|brown|"
+                         r"dartmouth|berkeley|oxford|cambridge|ivy|mba|phd|nyt|new york times|forbes|"
+                         r"featured|admit|admitted|valedictorian|gpa|ranked|award|prestigious|honou?rs?|"
+                         r"scholarship|dean's list|y ?combinator|yc|techstars)\b", re.I)
+# proof/traction: numbers with units, growth, revenue, users, press names
+_PROOF = re.compile(r"\b(\d[\d,\.]*\s?(k|m|bn|x|%|percent|users?|customers?|signups?|arr|mrr|revenue|"
+                    r"downloads?)|month over month|mo/m|mom|growing|traction|paying|waitlist|"
+                    r"pilot|contract|LOI)\b", re.I)
+# responder incentive: what's in it for THEM
+_INCENTIVE = re.compile(r"\b(for you|you'?d (get|see)|return|roi|equity|stake|upside|opportunity for you|"
+                        r"get you (involved|in)|invite you|first look|early access|exclusive|we'?d give)\b", re.I)
+_WARMTH = re.compile(r"\b(thanks|thank you|appreciate|hope you|grateful|no pressure|whenever works|"
+                     r"congrats|respect|admire|love what)\b", re.I)
+# an explicit, low-friction, imperative ask ("reply yes", "let me know", "book a time")
+_ASK = re.compile(r"\b(reply|respond|let me know|lmk|book (a )?time|grab (a )?time|say the word|"
+                  r"just reply|reply ['\"]?yes|worth a (call|chat)|open to|are you (free|available)|"
+                  r"can (i|we)|would you|happy to send)\b", re.I)
+_LOW_EFFORT = re.compile(r"\b(reply ['\"]?yes|one word|yes/no|thumbs up|just say|no deck needed|"
+                         r"two minutes|30 seconds|quick yes)\b", re.I)
 _NUMBER = re.compile(r"\b\d+(\.\d+)?\s?(x|%|k|m|bn|billion|million|percent|cents?|ms| x faster)?\b", re.I)
 _QMARK = re.compile(r"\?")
 
 
-def _sat(count: int, k: float = 1.5) -> float:
+def _sat(count: float, k: float = 1.5) -> float:
     """Saturating 0..1 response to a marker count (diminishing returns — anti-Goodhart)."""
     return 1.0 - math.exp(-count / k)
 
 
-def encode_text_to_strategy(text: str) -> dict:
-    """Map an email's text to the message-controllable variable vector the scorer reads."""
+def encode_text_to_strategy(text: str, levers: list | None = None) -> dict:
+    """Lexical FALLBACK encoder: map a message to the general message-lever vector (+ any situational
+    levers by keyword overlap). Best-effort keyword proxy — the LLM encoder is the real one. Fixes the
+    old blind spots: imperative asks (not just '?') count as an ask; the credential lexicon is broad."""
     t = text or ""
-    words = t.split()
-    n = max(1, len(words))
+    n = max(1, len(t.split()))
     sentences = [s for s in re.split(r"[.!?]+", t) if s.strip()]
     avg_sent = n / max(1, len(sentences))
 
     pushy = _sat(len(_PUSHY.findall(t)))
     personal = _sat(len(_PERSONAL.findall(t)) * 1.3 + 0.15 * len(_SECOND_PERSON.findall(t)))
-    asks = len(_QMARK.findall(t))
-    # one clear question is ideal; zero is vague; many is scattershot (saturate then penalize excess)
-    ask_directness = min(1.0, _sat(asks, k=0.8)) * (1.0 if asks <= 2 else 0.7)
-    # length fit: bell centered ~42 words (a crisp cold ask); very long / empty is worse
+    # ask directness: a "?" OR an explicit imperative ask both count (fixes "reply yes" reading as 0)
+    ask_signals = len(_QMARK.findall(t)) + len(_ASK.findall(t))
+    ask_directness = min(1.0, _sat(ask_signals, k=1.0))
     length_fit = math.exp(-((math.log1p(n) - math.log(42)) ** 2) / 1.6)
-    # clarity: short sentences + a concrete number read as clear/actionable
     clarity = min(1.0, 0.35 + 0.4 * (1.0 if _NUMBER.search(t) else 0.0)
                   + 0.25 * (1.0 if avg_sent <= 16 else 0.0))
-    return {
+    out = {
         "personalization": personal,
-        "pushiness": pushy,
-        "ask_directness": ask_directness,
-        "length_fit": length_fit,
+        "relevance_fit": 0.4,                        # not lexically inferable — LLM encoder does this well
         "clarity": clarity,
+        "credibility_proof": _sat(len(_PROOF.findall(t)), k=1.2),
+        "responder_incentive": _sat(len(_INCENTIVE.findall(t)), k=1.0),
+        "ask_directness": ask_directness,
+        "low_effort_ask": _sat(len(_LOW_EFFORT.findall(t)) + 0.3 * len(_ASK.findall(t)), k=1.0),
+        "pushiness": pushy,
+        "warmth": _sat(len(_WARMTH.findall(t)), k=1.2),
+        "length_fit": length_fit,
         "credential_signaling": _sat(len(_CREDENTIAL.findall(t))),
-        "contrarian_pitch": _sat(len(_CONTRARIAN.findall(t))),
-        "secret_density": _sat(len(_SECRET.findall(t))),
     }
+    # situational levers: crude keyword overlap between the lever description and the text (fallback only)
+    for lv in (levers or []):
+        words = [w for w in re.findall(r"[a-z]{4,}", (lv.description or lv.name).lower())]
+        hits = sum(1 for w in set(words) if re.search(r"\b" + re.escape(w) + r"\b", t, re.I))
+        out[lv.name] = _sat(hits, k=1.5)
+    return out
 
 
 # --- the offline proposer: a sentence bank per slot spanning the strategy space --------------------
@@ -114,6 +133,7 @@ SLOT_BANK: dict = {
     ],
     "close": [
         "Beckett",
+        "— Beckett",                                                                 # sign-off dash is fine
         "Thanks, Beckett.",
         "Best regards and looking forward to hearing back from you soon, Beckett.",   # annoying (contrast)
         "",  # allow no close
@@ -151,18 +171,21 @@ class ConstructedEmail:
 
 def construct_email(scorer: StrategyScorer, spec_strategy: dict, *, proposer=default_proposer,
                     beam: int = 6, q: float = 0.2, spec_penalty: float = 0.15,
-                    critic=None, critic_weight: float = 0.6, context: dict | None = None) -> ConstructedEmail:
+                    critic=None, critic_weight: float = 0.6, context: dict | None = None,
+                    encode_fn=None) -> ConstructedEmail:
     """Beam search over communicative moves. Returns the assembled email the world model scores highest
     while adhering to the Layer-1 optimal strategy AND passing the semantic critic (coherent, not annoying).
     The email is CONSTRUCTED by the search, not written. `critic` should be the CHEAP lexical
-    SemanticCritic (no judge_fn) — it prunes slop as the email is built; the LLM critic runs later as a gate."""
+    SemanticCritic (no judge_fn) — it prunes slop as the email is built; the LLM critic runs later as a gate.
+    `encode_fn` maps text->strategy (default lexical; pass the LLM message encoder for accuracy)."""
     context = context or {}
+    encode = encode_fn or encode_text_to_strategy
     if critic is None:
         from swm.decision.semantic_critic import SemanticCritic
         critic = SemanticCritic()          # lexical, cheap — safe to call on every partial assembly
 
     def objective(text):
-        strat = encode_text_to_strategy(text)
+        strat = encode(text)
         base = scorer.lower_bound(strat, q=q) - spec_penalty * _spec_distance(strat, spec_strategy)
         # subtract a slop penalty: a partial assembly with an incoherent/annoying line is pruned even if
         # its lexical strategy scores well. This is the quality axis the variable readout is blind to.
@@ -186,9 +209,9 @@ def construct_email(scorer: StrategyScorer, spec_strategy: dict, *, proposer=def
         beams = scored[:beam] if scored else beams
 
     chosen, text, score = beams[0]
-    text = strip_em_dashes(text)               # hard guarantee: no em dashes in the final message
-    dist = scorer.score_dist(encode_text_to_strategy(text))
-    return ConstructedEmail(text=text, strategy=encode_text_to_strategy(text), score=score,
+    final_strat = encode(text)
+    dist = scorer.score_dist(final_strat)
+    return ConstructedEmail(text=text, strategy=final_strat, score=score,
                             mean=dist.mean, lower_bound=dist.lower_bound(q), slots=chosen,
                             critique=critic.critique(text))
 
@@ -217,13 +240,14 @@ def _sent_overlap(a: str, b: str) -> bool:
 def polish_email(email: ConstructedEmail, scorer: StrategyScorer, spec_strategy: dict, *,
                  proposer=default_proposer, critic, q: float = 0.2, rounds: int = 3,
                  spec_penalty: float = 0.15, critic_weight: float = 0.8,
-                 rank_critic=None, rewrite_fn=None) -> ConstructedEmail:
+                 rank_critic=None, rewrite_fn=None, encode_fn=None) -> ConstructedEmail:
     """The critical evaluator AT THE END. Run the (LLM, if available) critic on the finalist; for every
     slot whose sentence the critic flags as incoherent/embellished or annoying, swap in the best
     alternative move that PASSES the critic and keeps the strategy — then re-critique. Repeat up to
     `rounds`. Bounds expensive-critic calls to (flagged slots × candidates), not the whole beam tree.
     If no clean realization exists in the proposer's candidates, the least-slop version is returned with
     its flags surfaced — honest, not hidden."""
+    encode = encode_fn or encode_text_to_strategy
     if rank_critic is None:
         from swm.decision.semantic_critic import SemanticCritic
         rank_critic = SemanticCritic()          # cheap lexical — ranks replacements without LLM calls
@@ -231,7 +255,7 @@ def polish_email(email: ConstructedEmail, scorer: StrategyScorer, spec_strategy:
     text = _assemble(slots)
 
     def strat_value(t):
-        strat = encode_text_to_strategy(t)
+        strat = encode(t)
         return scorer.lower_bound(strat, q=q) - spec_penalty * _spec_distance(strat, spec_strategy)
 
     for _ in range(rounds):
@@ -267,8 +291,7 @@ def polish_email(email: ConstructedEmail, scorer: StrategyScorer, spec_strategy:
         if not changed:
             break
 
-    text = strip_em_dashes(text)               # hard guarantee after any rewrites/swaps
-    strat = encode_text_to_strategy(text)
+    strat = encode(text)
     dist = scorer.score_dist(strat)
     return ConstructedEmail(text=text, strategy=strat, score=dist.lower_bound(q), mean=dist.mean,
                             lower_bound=dist.lower_bound(q), slots=slots, critique=critic.critique(text))

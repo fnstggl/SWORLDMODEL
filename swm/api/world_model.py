@@ -35,6 +35,9 @@ class WorldModel:
     grounder: object = None               # swm.api.state_grounding.StateGrounder — auto-grounds the spec's
     #                                       high-leverage variable VALUES from live evidence before the run.
     #                                       `general_world_model()` wires the DeepSeek+web general router here.
+    person_intake: object = None          # swm.api.person_intake.PersonIntake — for a question that turns on a
+    #                                       SPECIFIC individual, assemble a dossier and ASK the user when the
+    #                                       evidence is too thin, rather than fabricate a forecast (opt-in).
 
     def _compiler(self):
         if not self.validate:
@@ -44,16 +47,43 @@ class WorldModel:
         return ValidatingCompiler(self.compiler, repair_fn=self.repair_fn)
 
     def simulate(self, question: str, *, context: str = "", as_of: str = "", key: str = None,
-                 n: int = None, events=None, b0: float = None, horizon: float = None,
+                 n: int = None, answers=None, events=None, b0: float = None, horizon: float = None,
                  continuous_step=None, actions=None) -> dict:
         """One call. If a future-event `calendar` is available (passed as `events`, or an `EventCalendar`),
         this becomes a FORWARD question: roll the belief through sampled event trajectories and return the
         branching distribution + pivotal forks + (optional) best action — never a false-confident point,
-        never abstention. Otherwise the existing compiler path runs unchanged."""
-        if events is not None:
+        never abstention. Otherwise the compiler path runs; a question that turns on a SPECIFIC individual
+        first assembles a dossier and ASKS the user when evidence is thin (answering re-invokes with
+        `answers=` and auto-runs)."""
+        # RESUME: answers to a previous needs_user_context ask are folded into the context, so the SAME call
+        # auto-runs the full simulation (no separate "run" step — answering IS the trigger).
+        if answers:
+            context = (_format_answers(answers) + ("\n" + context if context else "")).strip()
+
+        if events is not None:                            # FORWARD question -> branching-realities rollout
             return self.simulate_forward(question, events, context=context, as_of=as_of, b0=b0,
                                          horizon=horizon, continuous_step=continuous_step,
                                          actions=actions, n=n)
+
+        # PERSON INTAKE: if the question turns on a specific individual, assemble a dossier; ASK the user when
+        # the evidence is too thin (never fabricate a person's disposition), else fold the dossier into context.
+        person = None
+        if self.person_intake is not None:
+            try:
+                pf = self.person_intake.preflight(question, user_context=context, as_of=(as_of or None))
+            except Exception:
+                pf = {"mode": "proceed", "person": None}
+            if pf.get("mode") == "ask":
+                return {"question": question, "mode": "needs_user_context", "person": pf["person"],
+                        "questions": pf["questions"], "forecast": None, "grounding": None,
+                        "resume_hint": "call simulate(question, answers=<your answers>) to auto-run",
+                        "headline": f"To simulate this I need your read on {pf['person']} — "
+                                    f"{pf.get('reason', 'not enough public evidence to infer honestly')}."}
+            if pf.get("person"):
+                person = {k: pf.get(k) for k in ("person", "dossier_strength", "inferred_person_variables")}
+                if pf.get("enriched_context"):
+                    context = pf["enriched_context"]
+
         if self.retriever is not None and not context:
             ctx = self.retriever.retrieve(question, as_of=as_of)
             context = ctx.to_prompt()
@@ -85,7 +115,7 @@ class WorldModel:
         return {"question": question, "n_evidence": n_evidence,
                 "mechanism": spec.mechanism, "forecast": forecast,
                 "forecastable": _forecastable(forecast),
-                "validation": validation, "grounding": grounding,
+                "validation": validation, "grounding": grounding, "person": person,
                 "headline": _headline(question, forecast),
                 "spec": {"mechanism": spec.mechanism,
                          "variables": [(v.name, v.value, v.volatility) for v in spec.variables],
@@ -141,11 +171,15 @@ class WorldModel:
                 "events": [{"name": e.name, "time": e.time, "labels": e.labels()} for e in calendar.events]}
 
 
-def general_world_model(*, compile_fn=None, n=8000, ground=True, validate=True) -> WorldModel:
+def general_world_model(*, compile_fn=None, n=8000, ground=True, validate=True, person=True) -> WorldModel:
     """The recommended front door: compile ANY question → auto-GROUND its high-leverage variable values from
     live evidence (the DeepSeek+web general router, no feeds required) → run the calibrated simulation. This is
     the end-to-end default — a user asks anything, and the simulation runs on the real current world rather
-    than the LLM's guessed state. Falls back to un-grounded compilation if no LLM key is configured."""
+    than the LLM's guessed state. Falls back to un-grounded compilation if no LLM key is configured.
+
+    `person=True` also wires the PERSON-INTAKE preflight: a question that turns on a specific individual
+    assembles a dossier and, when the evidence is too thin, ASKS the user for their read on that person instead
+    of fabricating a disposition (EXP-089). Disabled automatically if no LLM key is configured."""
     from swm.api.compiler import StructuralCompiler
     if compile_fn is None:
         from swm.api.deepseek_backend import default_chat_fn
@@ -158,7 +192,30 @@ def general_world_model(*, compile_fn=None, n=8000, ground=True, validate=True) 
         router = live_router()                            # general DeepSeek+web engine + structured overlays
         if router.retrieval is not None or router.sources:  # (Coinbase for observable market vars; the LLM
             grounder = StateGrounder(default=router)         # resolver routes to a feed only when one matches)
-    return WorldModel(compiler=StructuralCompiler(compile_fn), n=n, validate=validate, grounder=grounder)
+    intake = None
+    if person:
+        from swm.api.person_intake import build_person_intake
+        intake = build_person_intake()                    # None if no LLM key -> front door behaves as before
+    return WorldModel(compiler=StructuralCompiler(compile_fn), n=n, validate=validate, grounder=grounder,
+                      person_intake=intake)
+
+
+def _format_answers(answers) -> str:
+    """Turn a user's answers to the intake questions into a context block the dossier can consume. Accepts a
+    dict {question: answer}, a list of answers (or [question, answer] pairs), or a plain string."""
+    if isinstance(answers, str):
+        return answers.strip()
+    if isinstance(answers, dict):
+        return "\n".join(f"{q} — {a}" for q, a in answers.items() if str(a).strip())
+    if isinstance(answers, (list, tuple)):
+        parts = []
+        for item in answers:
+            if isinstance(item, (list, tuple)) and len(item) == 2:
+                parts.append(f"{item[0]} — {item[1]}")
+            elif str(item).strip():
+                parts.append(str(item).strip())
+        return "\n".join(parts)
+    return str(answers or "").strip()
 
 
 def _retrieved_belief(retriever, question: str, as_of: str):

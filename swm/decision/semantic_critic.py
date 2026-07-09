@@ -70,13 +70,15 @@ def _sentences(text: str) -> list[str]:
 
 
 _EM_DASH = re.compile(r"\s*[—–]\s*")          # em (U+2014) and en (U+2013) dash
+_SIGNOFF_DASH = re.compile(r"[—–]\s*[A-Z][\w.'-]*(\s+[A-Z][\w.'-]*)?[.!?]?\s*$")   # "— Beckett" at line end
+_EM_DASH_WEIGHT = 0.7                          # a body dash costs less than a full annoyance hit (soft bias)
 
 
 def strip_em_dashes(text: str) -> str:
-    """Deterministically remove em/en dashes — an LLM structural tic users dislike. This is a HARD
-    guarantee applied to every candidate and every final message, on top of instructing the writer to
-    avoid them (models overuse dashes even when told not to). A dash between clauses becomes a comma;
-    a leading sign-off dash ('— Beckett') is dropped. General across all message contexts."""
+    """OPT-IN deterministic removal of em/en dashes (NOT applied by the pipeline). By default the system
+    only DISCOURAGES body dashes (writer instruction + critic naturalness penalty) so a dash can still
+    appear when it's genuinely the best option; call this if a caller wants a hard guarantee instead. A
+    dash between clauses becomes a comma; a leading sign-off dash ('— Beckett') is dropped."""
     if not text or ("—" not in text and "–" not in text):
         return text
     t = re.sub(r"^\s*[—–]\s*", "", text.strip())      # leading sign-off dash
@@ -184,24 +186,33 @@ class SemanticCritic:
         for i in red:
             if i < len(crit.verdicts):
                 crit.verdicts[i].coherent = False
-                crit.verdicts[i].reasons.append("redundant — repeats an earlier sentence")
+                crit.verdicts[i].reasons.append("redundant: repeats an earlier sentence")
         crit.coherence = min(crit.coherence, 1.0 - _sat(len(red)))
         return crit
 
     # ---- offline, transparent ----
     def _lexical_critique(self, sents: list) -> Critique:
         verdicts, coh_scores, nat_scores = [], [], []
-        for s in sents:
+        n_sents = len(sents)
+        for idx, s in enumerate(sents):
             reasons = []
             # annoyance
             ann_hits = [p.pattern for p in _ANNOYING_RE if p.search(s)]
-            em_dashes = len(re.findall(r"[—–]", s))
-            annoying = len(ann_hits) > 0 or em_dashes > 0
+            # em/en dashes in the BODY are discouraged (LLMs overuse them). A sign-off dash ("— Beckett"
+            # / "..., — Beckett" as the final short line) is fine and exempt. This is a soft penalty that
+            # biases the search toward commas/periods, NOT a hard ban — a dash survives when it's the best
+            # option, just far less often than an LLM alone would use it.
+            em_total = len(re.findall(r"[—–]", s))
+            is_signoff = (idx == n_sents - 1 and len(s.split()) <= 6
+                          and bool(_SIGNOFF_DASH.search(s)))
+            em_body = max(0, em_total - (1 if is_signoff else 0))
+            annoying = len(ann_hits) > 0
             if ann_hits:
                 reasons.append("annoying/embellishing phrase: " + ", ".join(ann_hits[:3]))
-            if em_dashes:
-                reasons.append(f"{em_dashes} em/en dash(es): an LLM tic users dislike; use a comma or period")
-            nat = 1.0 - _sat(len(ann_hits) + em_dashes)
+            if em_body:
+                reasons.append(f"{em_body} em/en dash(es) in the body: prefer a comma or period "
+                               "(a sign-off dash is fine)")
+            nat = 1.0 - _sat(len(ann_hits) + _EM_DASH_WEIGHT * em_body)
             # coherence
             vague = len(_VAGUE_REF.findall(s))
             buzz = len(_BUZZ.findall(s))

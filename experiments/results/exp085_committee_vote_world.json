@@ -1,0 +1,56 @@
+{
+ "experiment": "Committee-vote world model \u2014 grounded per-member agents vs the party shortcut",
+ "data": "VoteView Senate divided roll-calls, 7233 bills (5668 contested); ideology grounded from PRIOR congress; held-out 20% of members per bill, leakage-free",
+ "ALL_VOTES": {
+  "base": {
+   "accuracy": 0.6482,
+   "brier": 0.2054,
+   "margin_mae": 0.0889
+  },
+  "party": {
+   "accuracy": 0.9023,
+   "brier": 0.0714,
+   "margin_mae": 0.049
+  },
+  "agent": {
+   "accuracy": 0.9164,
+   "brier": 0.0638,
+   "margin_mae": 0.0479
+  }
+ },
+ "CONTESTED_VOTES": {
+  "base": {
+   "accuracy": 0.5752,
+   "brier": 0.2408,
+   "margin_mae": 0.0987
+  },
+  "party": {
+   "accuracy": 0.8992,
+   "brier": 0.072,
+   "margin_mae": 0.0483
+  },
+  "agent": {
+   "accuracy": 0.9155,
+   "brier": 0.0641,
+   "margin_mae": 0.047
+  }
+ },
+ "DEFECTORS_against_party_line": {
+  "party": {
+   "accuracy": 0.0,
+   "n": 13683
+  },
+  "agent": {
+   "accuracy": 0.2199,
+   "n": 13683
+  }
+ },
+ "agent_vs_party": {
+  "all_accuracy": 0.0141,
+  "contested_accuracy": 0.0163,
+  "all_brier": 0.0076,
+  "contested_brier": 0.0079,
+  "all_margin_mae": 0.0011,
+  "contested_margin_mae": 0.0013
+ }
+}

@@ -91,11 +91,23 @@ _SPECS: list[VariableSpec] = [
     VariableSpec("pushiness", MESSAGE_FIT, "how aggressive/salesy (suppresses response)"),
     VariableSpec("ask_directness", MESSAGE_FIT, "explicit specific ask vs vague"),
     VariableSpec("length_fit", MESSAGE_FIT, "message length vs their inferred preference"),
-    # content-stance choices the SENDER controls (the message optimizer searches over these). Their
-    # effect is recipient-conditioned: credential-signaling flips sign against a prestige-skeptic,
-    # a contrarian pitch pays off with a contrarian recipient (see swm/decision/strategy_scorer.py).
+    # GENERAL message-fit levers the SENDER controls — the universal "physics" of any inbound ask,
+    # scored for every message. Their EFFECT is recipient-conditioned via interactions
+    # (see swm/decision/strategy_scorer.py); recipient-SPECIFIC levers (e.g. a contrarian pitch for
+    # Thiel) are generated per recipient as situational levers (swm/decision/situational_levers.py).
+    VariableSpec("relevance_fit", MESSAGE_FIT, "how well the ask matches the recipient's interests/mandate",
+                 default=0.4),
+    VariableSpec("credibility_proof", MESSAGE_FIT, "concrete evidence/traction backing the claims",
+                 default=0.3),
+    VariableSpec("responder_incentive", MESSAGE_FIT, "what's in it for the responder (payoff to them for engaging)",
+                 default=0.3),
+    VariableSpec("low_effort_ask", MESSAGE_FIT, "how easy/low-friction it is for them to respond",
+                 default=0.4),
+    VariableSpec("warmth", MESSAGE_FIT, "warm, respectful, human tone (vs cold/transactional)", default=0.5),
     VariableSpec("credential_signaling", MESSAGE_FIT, "how much the message parades status/credentials",
                  default=0.3),
+    # retained in the schema but no longer in the UNIVERSAL set — now emitted as situational levers when
+    # a recipient's inferred values call for them (kept for back-compat / registry keys).
     VariableSpec("contrarian_pitch", MESSAGE_FIT, "how non-consensus / against-the-grain the thesis is",
                  default=0.3),
     VariableSpec("secret_density", MESSAGE_FIT, "presence of a specific, non-obvious claim ('a secret')",
