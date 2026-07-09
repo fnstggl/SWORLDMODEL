@@ -155,8 +155,9 @@ class AgentWorldModel:
         if pf.p_event is None:
             f.abstain, f.abstain_reason = True, "observer panel produced no parseable forecast"
         else:
+            from swm.engine.calibrate import clamp_p
             T = self.registry.temperature_for("society:event", domain=domain, default=cal.get("temperature", 1.0))
-            p = apply_temperature(pf.p_event, T) if T and T != 1.0 else pf.p_event
+            p = clamp_p(apply_temperature(pf.p_event, T)) if T and T != 1.0 else pf.p_event
             f.distribution = {"yes": round(p, 4), "no": round(1 - p, 4)}
         f.headline = build_headline(f)
         return f.as_dict()
