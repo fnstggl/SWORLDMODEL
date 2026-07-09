@@ -22,7 +22,18 @@ from __future__ import annotations
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 
+import math
+
 from swm.engine.calibrate import clamp_p, pool_distribution
+
+
+def _logit(p):
+    p = min(1 - 1e-6, max(1e-6, p))
+    return math.log(p / (1 - p))
+
+
+def _sig(z):
+    return 1.0 / (1.0 + math.exp(-max(-35.0, min(35.0, z))))
 from swm.engine.grounding import parse_json
 
 # distinct forecasting LENSES — each a genuinely different prior/process, to decorrelate a single model's errors
@@ -70,7 +81,7 @@ class ObserverPanel:
     reps_per_lens: int = 2                         # resample each lens (denoise) — scale up for more agents
     max_workers: int = 8
 
-    def forecast(self, question, dossier, *, today="") -> PanelForecast:
+    def forecast(self, question, dossier, *, today="", standing_confidence=None) -> PanelForecast:
         jobs = [lens for lens in LENSES for _ in range(self.reps_per_lens)]
         scene = dossier.brief()
 
@@ -89,6 +100,23 @@ class ObserverPanel:
         if not results:
             return PanelForecast(p_event=None, n_forecasters=0, n_calls=len(jobs))
         pooled = pool_distribution([{"yes": r["p"], "no": 1 - r["p"]} for r in results])
-        # aggregate clamp: a finite panel is never CERTAIN (per-persona min_p can't stop unanimity → 1.0)
-        return PanelForecast(p_event=clamp_p(pooled["yes"]), n_forecasters=len(results),
+        p = pooled["yes"]
+
+        # CONFIDENCE TRACKS EVIDENCE: shrink the (decisive) panel forecast toward the reference-class base
+        # rate in proportion to how WEAK the directional standing is. A clear favorite (confidence ~0.9) is
+        # left sharp; a genuine toss-up (confidence ~0.3) is pulled back toward the base rate rather than a
+        # confident guess — this is where the panel was overconfident and lost the crowd-unsure slice.
+        conf = standing_confidence
+        if conf is None:
+            try:
+                conf = float((dossier.standing_struct or {}).get("confidence", 0.5))
+            except (TypeError, ValueError):
+                conf = 0.5
+        conf = min(1.0, max(0.0, conf))
+        base_rates = [float(r["base_rate"]) for r in results
+                      if isinstance(r.get("base_rate"), (int, float))]
+        anchor = sum(base_rates) / len(base_rates) if base_rates else 0.5
+        w = 0.25 + 0.75 * conf                            # even a strong standing keeps a little humility
+        p = _sig(w * _logit(p) + (1 - w) * _logit(anchor))
+        return PanelForecast(p_event=clamp_p(p), n_forecasters=len(results),
                              audit=results[:12], n_calls=len(jobs))
