@@ -100,21 +100,30 @@ def grade_vs_crowd(wm, items, *, limit=40, question_class="society:event", regis
             "agrees_with_crowd_side": round(sum(1 for r in rows if (r["p_model"] > 0.5) == (r["p_crowd"] > 0.5))
                                             / len(rows), 3)}
     if rows:
-        from swm.engine.calibrate import apply_temperature, crossfit_temperature
+        from swm.engine.calibrate import apply_temperature, crossfit_temperature, fit_temperature
         preds = [r["p_model"] for r in rows]
         ys = [r["outcome"] for r in rows]
         rep.scoreboard = score(rows)
         # OUT-OF-SAMPLE recalibration: fit temperature on held-out folds, apply, and re-score honestly.
-        # This is the non-optimistic calibration number — the T is validated on data it did not see.
         cal = crossfit_temperature(preds, ys)
         T = cal["temperature"]
-        recal_rows = [{**r, "p_model": apply_temperature(r["p_model"], T)} for r in rows]
+        # Lever 1: PER-DOMAIN temperature — a contest/tech row needs heavier tempering than a deliberation
+        # row; a single global T can't serve both. Fit one per category (fallback to global where n<8) and
+        # apply per row, then re-score. Stored so the live engine tempers by domain.
+        domain_T = {}
+        for cat in {r["category"] for r in rows}:
+            sub = [(r["p_model"], r["outcome"]) for r in rows if r["category"] == cat]
+            domain_T[cat] = fit_temperature([p for p, _ in sub], [y for _, y in sub]) if len(sub) >= 8 else T
+        recal_rows = [{**r, "p_model": apply_temperature(r["p_model"], domain_T.get(r["category"], T))}
+                      for r in rows]
         rep.scoreboard["recalibrated"] = {**score(recal_rows)["overall"], "temperature": T,
-                                          "crossfit": cal}
+                                          "per_domain_temperature": domain_T, "crossfit": cal}
         rep.grade_entry = registry.record(
             question_class,
             backtest_report={"skill_vs": {"crowd": rep.scoreboard["recalibrated"].get("skill_vs_crowd") or -1},
                              "n": len(rows), "rmse": rep.scoreboard["recalibrated"]["brier_model"] ** 0.5},
-            preds=[apply_temperature(p, T) for p in preds], outcomes=ys,
-            temperature=T)                                # persisted so the live engine applies the same recal
+            preds=[apply_temperature(r["p_model"], domain_T.get(r["category"], T)) for r in rows], outcomes=ys,
+            temperature=T)
+        registry.record_domain_temperatures(question_class, domain_T)   # merge AFTER record (record replaces)
+        rep.grade_entry["per_domain_temperature"] = domain_T
     return rep

@@ -71,7 +71,10 @@ Return ONLY JSON: {{"base_rate": <0..1>, "p": <0..1 your final probability of YE
 class PanelForecast:
     p_event: float
     n_forecasters: int
-    audit: list = field(default_factory=list)     # per-forecaster {lens, base_rate, p, why}
+    spread: float = 0.0                           # forecaster disagreement (stdev) — the uncertainty signal
+    trust: float = 1.0                            # how much the panel's deviation from base rate was trusted
+    families: int = 1                             # how many model FAMILIES actually contributed (Lever 3)
+    audit: list = field(default_factory=list)     # per-forecaster {lens, base_rate, p, why, family}
     n_calls: int = 0
 
 
@@ -80,32 +83,44 @@ class ObserverPanel:
     llm_hot: object                                # temperature>0 so repeated lenses differ
     reps_per_lens: int = 2                         # resample each lens (denoise) — scale up for more agents
     max_workers: int = 8
+    model_llms: dict = None                        # {family: callable} for the MULTI-FAMILY panel (Lever 3);
+    #                                                None ⇒ single-model (llm_hot). Genuinely different
+    #                                                pretraining decorrelates errors — the only regime where
+    #                                                extremizing is statistically valid. Degrades gracefully
+    #                                                to whatever families are actually reachable.
 
     def forecast(self, question, dossier, *, today="", standing_confidence=None) -> PanelForecast:
-        jobs = [lens for lens in LENSES for _ in range(self.reps_per_lens)]
         scene = dossier.brief()
+        backends = self.model_llms or {"deepseek": self.llm_hot}
+        # a forecaster = (lens × model family), resampled reps_per_lens — diversity of REASONING × of MODEL
+        jobs = [(lens, fam, fn) for lens in LENSES for fam, fn in backends.items()
+                for _ in range(self.reps_per_lens)]
 
-        def one(lens):
-            r = parse_json(self.llm_hot(_PROMPT.format(lens=lens[1], q=question, today=today, scene=scene)))
+        def one(job):
+            lens, fam, fn = job
+            r = parse_json(fn(_PROMPT.format(lens=lens[1], q=question, today=today, scene=scene)))
             if not r:
                 return None
             try:
                 p = min(1.0, max(0.0, float(r["p"])))
             except (KeyError, TypeError, ValueError):
                 return None
-            return {"lens": lens[0], "base_rate": r.get("base_rate"), "p": p, "why": str(r.get("why", ""))[:200]}
+            return {"lens": lens[0], "family": fam, "base_rate": r.get("base_rate"), "p": p,
+                    "why": str(r.get("why", ""))[:200]}
 
         with ThreadPoolExecutor(max_workers=self.max_workers) as ex:
             results = [r for r in ex.map(one, jobs) if r is not None]
         if not results:
             return PanelForecast(p_event=None, n_forecasters=0, n_calls=len(jobs))
+        n_families = len({r["family"] for r in results})
         pooled = pool_distribution([{"yes": r["p"], "no": 1 - r["p"]} for r in results])
         p = pooled["yes"]
 
-        # CONFIDENCE TRACKS EVIDENCE: shrink the (decisive) panel forecast toward the reference-class base
-        # rate in proportion to how WEAK the directional standing is. A clear favorite (confidence ~0.9) is
-        # left sharp; a genuine toss-up (confidence ~0.3) is pulled back toward the base rate rather than a
-        # confident guess — this is where the panel was overconfident and lost the crowd-unsure slice.
+        # CONFIDENCE TRACKS EVIDENCE (Lever 1): shrink the panel forecast toward the reference-class base rate
+        # unless BOTH the directional standing is strong AND the forecasters AGREE. A clear favorite with a
+        # consensus panel stays sharp; a toss-up, or a panel that disagrees (high spread ⇒ genuine
+        # uncertainty), is pulled back toward the base rate rather than emitting a confident guess — this is
+        # what was losing the crowd-unsure slice and the confident-wrong tail (n=127).
         conf = standing_confidence
         if conf is None:
             try:
@@ -113,10 +128,14 @@ class ObserverPanel:
             except (TypeError, ValueError):
                 conf = 0.5
         conf = min(1.0, max(0.0, conf))
+        ps = [r["p"] for r in results]
+        mean_p = sum(ps) / len(ps)
+        spread = (sum((x - mean_p) ** 2 for x in ps) / len(ps)) ** 0.5
+        agreement = 1.0 - min(1.0, spread / 0.30)         # 0 = forecasters all over the map, 1 = consensus
         base_rates = [float(r["base_rate"]) for r in results
                       if isinstance(r.get("base_rate"), (int, float))]
         anchor = sum(base_rates) / len(base_rates) if base_rates else 0.5
-        w = 0.25 + 0.75 * conf                            # even a strong standing keeps a little humility
+        w = min(1.0, max(0.10, 0.15 + 0.85 * conf * (0.4 + 0.6 * agreement)))
         p = _sig(w * _logit(p) + (1 - w) * _logit(anchor))
-        return PanelForecast(p_event=clamp_p(p), n_forecasters=len(results),
-                             audit=results[:12], n_calls=len(jobs))
+        return PanelForecast(p_event=clamp_p(p), n_forecasters=len(results), spread=round(spread, 3),
+                             trust=round(w, 3), families=n_families, audit=results[:12], n_calls=len(jobs))

@@ -189,6 +189,24 @@ class GradeRegistry:
                          if g["grade"] not in ("ungraded", "F") else
                          "graded and NOT beating the free baseline — treat as hypothesis")}
 
+    def temperature_for(self, question_class: str, *, domain: str = None, default: float = 1.0) -> float:
+        """Per-DOMAIN temperature (Lever 1) if one was fit for this class+domain, else the class temperature,
+        else `default`. Contest/tech domains need heavier tempering than deliberation — a single global T
+        can't serve both, so we fit and store one per domain."""
+        g = self.grades.get(question_class) or {}
+        pd = (g.get("per_domain_temperature") or {})
+        if domain and domain in pd:
+            return float(pd[domain])
+        return float(g.get("temperature", default))
+
+    def record_domain_temperatures(self, question_class: str, domain_temps: dict) -> None:
+        """Merge per-domain fitted temperatures into the class's registry entry and persist."""
+        g = self.grades.setdefault(question_class, {"grade": "ungraded", "n": 0, "temperature": 1.0})
+        g["per_domain_temperature"] = {k: round(float(v), 3) for k, v in domain_temps.items()}
+        p = Path(self.path)
+        p.parent.mkdir(parents=True, exist_ok=True)
+        p.write_text(json.dumps(self.grades, indent=1))
+
     def record(self, question_class: str, *, backtest_report: dict, preds=None, outcomes=None,
                temperature: float = 1.0) -> dict:
         """Store the grade a backtest earned (event_backtest.backtest output) + fitted shrink + temperature."""

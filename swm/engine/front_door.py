@@ -47,6 +47,9 @@ class AgentWorldModel:
     event_engine: str = "panel"            # binary "will X happen?" → "panel" (base-rate-anchored observer
     #                                        forecasters, accurate on markets) or "society" (voter segments)
     panel_reps: int = 2                    # observer-panel resamples per lens
+    model_llms: dict = None                # {family: callable} multi-family panel backends (Lever 3); None ⇒
+    #                                        single-model. Genuinely different pretraining decorrelates errors.
+    route_contests: bool = True            # Lever 2: send contests/announcements to the parametric kernel
 
     def __post_init__(self):
         self.llm_hot = self.llm_hot or self.llm
@@ -97,8 +100,13 @@ class AgentWorldModel:
             return f.as_dict()
 
         if binary:                                        # a binary "will X happen?" event (backtest/market)
+            # Lever 2: a CONTEST (physical) or ANNOUNCEMENT (release/launch) is not social deliberation — route
+            # it to the parametric kernel, where the panel was confidently wrong (n=127: sports/tech).
+            kind = self.router.binary_kind(question)
+            if kind in ("contest", "announcement") and self.route_contests:
+                return self._parametric_binary(question, dossier, kind, as_of)
             if self.event_engine == "panel":
-                return self._panel(question, dossier, today)
+                return self._panel(question, dossier, today, domain=kind)
             cast = CastingDirector(self.llm).cast(question, dossier.brief(), today=today)
             cast.answer_space = {"type": "binary", "options": ["yes", "no"]}
             return self._society(question, cast, dossier, today, class_key="society:event")
@@ -131,24 +139,49 @@ class AgentWorldModel:
         f.headline = build_headline(f)
         return f.as_dict()
 
-    def _panel(self, question, dossier, today):
-        """Binary event → a base-rate-anchored observer-forecaster panel (accurate on markets)."""
+    def _panel(self, question, dossier, today, domain="deliberation"):
+        """Binary event → a base-rate-anchored, multi-family observer-forecaster panel."""
+        from swm.engine.calibrate import apply_temperature
         from swm.engine.observer_panel import ObserverPanel
-        pf = ObserverPanel(self.llm_hot, reps_per_lens=self.panel_reps).forecast(
-            question, dossier, today=today)
+        pf = ObserverPanel(self.llm_hot, reps_per_lens=self.panel_reps,
+                           model_llms=self.model_llms).forecast(question, dossier, today=today)
         cal = self.registry.calibration_for("society:event")
         f = Forecast(question=question, mechanism="grounded_agents:observer_panel",
                      answer_space={"type": "binary", "options": ["yes", "no"]},
                      calibration=cal, grounding=dossier.as_report(),
                      audit=pf.audit, n_personas=pf.n_forecasters, n_llm_calls=pf.n_calls,
-                     detail={"standing": dossier.standing})
+                     detail={"standing": dossier.standing, "spread": pf.spread, "trust": pf.trust,
+                             "families": pf.families, "domain": domain})
         if pf.p_event is None:
             f.abstain, f.abstain_reason = True, "observer panel produced no parseable forecast"
         else:
-            T = cal.get("temperature", 1.0)
-            from swm.engine.calibrate import apply_temperature
+            T = self.registry.temperature_for("society:event", domain=domain, default=cal.get("temperature", 1.0))
             p = apply_temperature(pf.p_event, T) if T and T != 1.0 else pf.p_event
             f.distribution = {"yes": round(p, 4), "no": round(1 - p, 4)}
+        f.headline = build_headline(f)
+        return f.as_dict()
+
+    def _parametric_binary(self, question, dossier, kind, as_of):
+        """Lever 2: a contest/announcement → main's parametric kernel (LEAK-FREE: base-rate + mechanism
+        structure, state grounding OFF). Returns a native binary Forecast — an honest, non-overconfident
+        P(event) rather than the deliberation panel's confident-wrong guess (n=127: sports/tech)."""
+        p = parametric_binary_p(question, as_of, self.llm)
+        if p is None:                                     # honest fallback: the reference-class base rate
+            s = dossier.standing_struct or {}
+            fav = str(s.get("favored", "")).lower()
+            try:
+                conf = float(s.get("confidence", 0) or 0)
+            except (TypeError, ValueError):
+                conf = 0.0
+            p = 0.5 + 0.4 * conf if fav in ("yes", "true") else (0.5 - 0.4 * conf if fav in ("no", "false")
+                                                                 else 0.5)
+        p = min(0.97, max(0.03, float(p)))
+        f = Forecast(question=question, mechanism=f"parametric:{kind}",
+                     answer_space={"type": "binary", "options": ["yes", "no"]},
+                     distribution={"yes": round(p, 4), "no": round(1 - p, 4)},
+                     grounding=dossier.as_report(),
+                     calibration=self.registry.calibration_for("society:event"),
+                     detail={"routed": f"{kind}→parametric kernel (not social deliberation)"})
         f.headline = build_headline(f)
         return f.as_dict()
 
@@ -216,10 +249,41 @@ def hybrid_world_model(*, branches=3, max_rounds=2, k_artifacts=5, today="", par
     return wm
 
 
-def agent_world_model(*, branches=3, max_rounds=2, k_artifacts=5, today="") -> AgentWorldModel:
+def parametric_binary_p(question, as_of, llm):
+    """Leak-free P(YES) from main's parametric kernel: compile the question as-of, force state grounding OFF
+    (base-rate + mechanism structure only, no live data to leak), run the Monte-Carlo. None on failure."""
+    try:
+        from swm.api.backtest_harness import _apply_toggles, _p_from_forecast
+        from swm.api.compiler import CompiledModel, build_compile_prompt
+        from swm.api.model_spec import parse_spec
+        ctx = (f"TODAY'S DATE IS {as_of or ''}. Use ONLY information available on or before this date; do not "
+               f"use knowledge of anything after it. Define outcome.event so P(event) = P(the question "
+               f"resolves YES).")
+        spec = parse_spec(llm(build_compile_prompt(question, ctx)))
+        spec = _apply_toggles(spec, ground=False)          # neutralize state estimates → base-rate + mechanism
+        return _p_from_forecast(CompiledModel(spec).run(n=3000))
+    except Exception:
+        return None
+
+
+def multi_family_backends(*, temperature=0.5, max_tokens=500):
+    """Lever 3: {family: callable} across genuinely different pretraining (DeepSeek/Qwen/Llama/Mixtral/Gemma)
+    via main's inner_crowd — the panel backends. Unreachable families (no HF credit) drop out rather than
+    collapse onto DeepSeek, so errors stay decorrelated; degrades to whatever is actually available."""
+    try:
+        from swm.api.inner_crowd import model_panel_llms
+        backends = model_panel_llms(system="You inhabit one specific forecaster. Reason as them.",
+                                    temperature=temperature, max_tokens=max_tokens)
+        return backends or None
+    except Exception:
+        return None
+
+
+def agent_world_model(*, branches=3, max_rounds=2, k_artifacts=5, today="",
+                      multi_family=False) -> AgentWorldModel:
     """The recommended front door. DeepSeek backends: cold (t=0.2) for grounding/casting, hot (t=0.9)
-    for persona decisions — the N runs must actually differ. Raises if no LLM key is configured: this
-    engine does not degrade to heuristics, it refuses (constitution rule 2)."""
+    for persona decisions. `multi_family=True` wires the cross-family observer panel (Lever 3). Raises if no
+    LLM key is configured: this engine does not degrade to heuristics, it refuses (constitution rule 2)."""
     from swm.api.deepseek_backend import default_chat_fn
     cold = default_chat_fn(system="You are a precise assistant inside a forecasting engine. "
                                   "Reply with ONLY compact JSON.", max_tokens=1600, temperature=0.2)
@@ -229,5 +293,6 @@ def agent_world_model(*, branches=3, max_rounds=2, k_artifacts=5, today="") -> A
     if cold is None:
         raise RuntimeError("no LLM backend configured (DEEPSEEK_API_KEY / HF_TOKEN) — the agent engine "
                            "refuses to run ungrounded heuristics in place of reasoning")
+    model_llms = multi_family_backends() if multi_family else None
     return AgentWorldModel(llm=cold, llm_hot=hot, branches=branches, max_rounds=max_rounds,
-                           k_artifacts=k_artifacts, today=today)
+                           k_artifacts=k_artifacts, today=today, model_llms=model_llms)

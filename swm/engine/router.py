@@ -42,9 +42,34 @@ When in doubt, or if people's behavior is any meaningful part of it, answer "peo
 Return ONLY JSON: {{"kind": "people" | "process", "why": "<8 words>"}}"""
 
 
+# CONTEST / ANNOUNCEMENT markers — people questions, but NOT social-deliberation ones. A sports game is a
+# physical contest (main's `contest` kernel); a product launch/announcement is an arrival (main's `arrival`
+# kernel). The agent-deliberation panel is confidently WRONG on these (n=127: sports -2.5, tech -2.7), so they
+# route to the parametric kernel / a base-rate anchor instead of the panel.
+# Unambiguous SPORTS/contest markers only — deliberately excludes words that collide with elections
+# ("race", "beat", "defeat", "final") so "the mayoral race" / "will X beat Y in the election" stay deliberation.
+_CONTEST = (" vs ", " vs.", " v ", " v.", "playoff", "grand prix", "clasico", "clásico", "derby",
+            "world series", "super bowl", "world cup", "champions league", "premier league", "la liga",
+            " nba ", " nfl ", " mlb ", " nhl ", " ufc ", "olympic", "tournament", "knockout", "quarterfinal",
+            "semifinal", "heavyweight", "wrestlemania", "test match", "grand slam")
+_ANNOUNCE = ("announce", "release", "launch", "unveil", " ship ", "reveal", "debut", "roll out", "rollout",
+             "made available", "broadly available", "become available", "generally available")
+
+
 @dataclass
 class ParadigmRouter:
     llm: object = None                     # cheap classifier backend; None ⇒ lexical-only (people-biased)
+
+    def binary_kind(self, question: str) -> str:
+        """For a people-domain binary event, is it social DELIBERATION (elections, policy, appointments,
+        adoption — the agent panel's turf) or a CONTEST / ANNOUNCEMENT (a physical contest or a product/
+        release event — the parametric kernel's turf)? Lexical + people-biased; defaults to deliberation."""
+        ql = question.lower()
+        if any(w in ql for w in _CONTEST):
+            return "contest"
+        if any(w in ql for w in _ANNOUNCE):
+            return "announcement"
+        return "deliberation"
 
     def route(self, question: str) -> str:
         """Return 'agents' or 'parametric'. Biased hard toward 'agents'."""

@@ -85,15 +85,22 @@ class GradeReport:
     items: list = field(default_factory=list)
 
 
-def score_round(wm, due_date: str, *, limit=20, verbose=True) -> dict:
+def score_round(wm, due_date: str, *, limit=20, use_asof_search=True, verbose=True) -> dict:
     """Forecast every in-domain resolved question leak-free. Returns raw {preds, outcomes, items,
-    n_domain, n_abstained} — no grading (so several rounds can be POOLED into one grade)."""
+    n_domain, n_abstained} — no grading (so several rounds can be POOLED into one grade). `use_asof_search`
+    drives the engine's OWN multi-round as-of grounding (Rank 1) rather than the thin frozen background."""
+    import time as _t
+    from swm.engine.retrieval import asof_search_fn
     qs = [q for q in load_round(due_date) if is_domain(q.meta.get("question", ""))]
+    as_of_ts = _t.mktime(_t.strptime(due_date, "%Y-%m-%d"))
     preds, ys, items, n_abstained = [], [], [], 0
     for q in qs[:limit]:
         text = q.meta["question"]
         try:
-            res = wm.simulate(text, evidence=frozen_evidence(q), as_of=due_date, binary=True)
+            if use_asof_search:
+                res = wm.simulate(text, as_of=due_date, binary=True, search_fn=asof_search_fn(as_of_ts))
+            else:
+                res = wm.simulate(text, evidence=frozen_evidence(q), as_of=due_date, binary=True)
         except Exception as e:
             res = {"abstain": True, "abstain_reason": f"{type(e).__name__}: {str(e)[:80]}"}
         if res.get("abstain") or p_yes(res) is None:
@@ -133,6 +140,10 @@ def grade_pooled(rounds_scored: list, *, question_class="society:event",
     idx = {q.qid: p for q, p in zip(scored, preds)}
     rep.backtest = backtest(scored, lambda qq: idx[qq.qid], check_asof=False)
     rep.backtest["class_rate"] = round(class_rate, 3)
+    # DIRECTION accuracy (Lever 4 / no-market use case): the honest "did we get the side right" number,
+    # since without a market the bar is the base rate, and discrimination is what beats it.
+    rep.backtest["direction"] = {"side_correct": round(sum(1 for p, y in zip(preds, ys)
+                                                           if (p > 0.5) == (y > 0.5)) / len(preds), 3)}
     conservative = {"skill_vs": {"class_rate": rep.backtest["skill_vs"].get("class_rate", 0.0)},
                     "rmse": rep.backtest["rmse"]}
     rep.grade_entry = registry.record(question_class, backtest_report={**conservative, "n": len(preds)},

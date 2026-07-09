@@ -254,6 +254,59 @@ def test_router_sends_nonhuman_process_to_parametric():
     assert r2.route("Will voters approve the referendum?") == "agents"
 
 
+def test_binary_kind_separates_contests_from_deliberation():
+    from swm.engine.router import ParadigmRouter
+    r = ParadigmRouter(llm=None)
+    assert r.binary_kind("NY Knicks vs SA Spurs, NBA final game 3") == "contest"
+    assert r.binary_kind("Will Barcelona win the El Clasico?") == "contest"
+    assert r.binary_kind("Will Apple release the M5 Mac mini at WWDC?") == "announcement"
+    # election words must NOT be misread as contests
+    assert r.binary_kind("Will the incumbent win the mayoral race?") == "deliberation"
+    assert r.binary_kind("Will X beat Y in the Senate election?") == "deliberation"
+    assert r.binary_kind("Will the Senate confirm the nominee?") == "deliberation"
+
+
+def test_front_door_routes_contest_to_parametric():
+    class LLM(ScriptedLLM):
+        def __call__(self, prompt):
+            if "STRUCTURAL-MODEL COMPILER" in prompt or "mechanism" in prompt.lower() and "JSON" in prompt:
+                return "{}"                                # parametric compile fails → base-rate fallback
+            return super().__call__(prompt)
+    wm = AgentWorldModel(llm=LLM(), search_fn=lambda qs, k: _passages(), route_contests=True)
+    res = wm.simulate("Will Barcelona win the El Clasico?", binary=True)
+    assert res["mechanism"].startswith("parametric:")      # routed OUT of the deliberation panel
+    assert 0.0 < res["distribution"]["yes"] < 1.0
+
+
+def test_per_domain_temperature_registry(tmp_path):
+    from swm.engine.calibrate import GradeRegistry
+    reg = GradeRegistry(path=str(tmp_path / "g.json"))
+    reg.record("society:event", backtest_report={"n": 20, "skill_vs": {"crowd": 0.1}, "rmse": 0.4},
+               preds=[0.6] * 20, outcomes=[1, 0] * 10, temperature=1.5)
+    reg.record_domain_temperatures("society:event", {"tech": 3.0, "election": 1.2})
+    reg2 = GradeRegistry(path=str(tmp_path / "g.json"))
+    assert reg2.temperature_for("society:event", domain="tech") == 3.0       # per-domain
+    assert reg2.temperature_for("society:event", domain="election") == 1.2
+    assert reg2.temperature_for("society:event", domain="other") == 1.5      # falls back to class T
+
+
+def test_multi_family_panel_runs_every_family():
+    from swm.engine.observer_panel import LENSES, ObserverPanel
+    from swm.engine.grounding import SceneDossier
+    import json as _j
+    calls = {"a": 0, "b": 0}
+    def mk(fam):
+        def fn(prompt):
+            calls[fam] += 1
+            return _j.dumps({"base_rate": 0.4, "p": 0.6, "why": "x"})
+        return fn
+    d = SceneDossier(question="Will X?", facts=[{"fact": "f", "detail": "d"}], standing="X leads",
+                     standing_struct={"favored": "yes", "confidence": 0.7})
+    pf = ObserverPanel(None, reps_per_lens=1, model_llms={"a": mk("a"), "b": mk("b")}).forecast("Will X?", d)
+    assert calls["a"] == len(LENSES) and calls["b"] == len(LENSES)            # both families forecasted
+    assert pf.families == 2 and pf.n_forecasters == 2 * len(LENSES)
+
+
 def test_router_defaults_to_agents_on_failure_or_ambiguity():
     from swm.engine.router import ParadigmRouter
     r = ParadigmRouter(llm=lambda p: "not json")           # classifier failure → fail toward agents
