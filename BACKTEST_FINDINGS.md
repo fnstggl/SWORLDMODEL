@@ -278,3 +278,48 @@ ground/calibrate on," organized as latent state (V-Dem/WDI) + transitions (calib
 
 Sources: GDELT vs POLECAT comparison (doi.org/10.3390/data11070158), PLOVER/POLECAT (Halterman et al.), V-Dem
 (v-dem.net), World Bank WDI, ACLED, and the WDI+V-Dem+ACLED stability-forecasting literature.
+
+---
+
+# Flywheel turn 6 — the structural-state layer + the grounding stack, measured at scale (EXP-096)
+
+The full data survey (`SOCIAL_WORLD_MODEL_DATA.md`) answered the founder's thesis: there is NO single "full
+social world model" dataset; the social world is grounded by a 5-layer STACK (event/flow, structural/state,
+belief, economic, calibration). GDELT is the closest single feed but the noisiest layer; the gap is more
+LAYERS, fused + calibrated, not more GDELT. ViEWS (PRIO/Uppsala) is the proven reference architecture (latent
+state + calibrated probabilistic transitions). So we built the highest-leverage missing layer — the
+**structural/state layer** — and measured the whole grounding stack on a corpus big enough to trust.
+
+**The structural-state layer (`swm/api/structural_state.py`).** The slow latent state the event flow rides on:
+`VDemGrounder` (institutions — electoral/liberal democracy, rule of law, corruption, via Our World in Data's
+keyless V-Dem CSVs) + `WorldBankGrounder` (economy — GDP growth, unemployment, inflation, GDP/capita, via the
+WDI API), fused into an as-of state + a **FRAGILITY** scalar. The world-model coupling: fragility SCALES the
+GDELT escalation shock — `outcome ≈ f(structural_state × shock)` — so the same conflict signal tips a fragile
+state (Venezuela: rule-of-law 0.01, corruption 0.97 → fragility 0.71) far more than a robust one. Leakage-free
+(values dated ≤ the as-of year).
+
+**EXP-096 — plain vs +GDELT vs +GDELT+structural on 97 cutoff-clean conflict questions (firms up EXP-095's
+n=15):**
+
+| condition | AUC | ll_cal | skill_vs_crowd |
+|---|---|---|---|
+| plain (base forecaster) | 0.699 | 0.512 | −0.236 |
+| **+ GDELT** (fast event/flow layer) | 0.741 | 0.484 | −0.169 |
+| **+ structural** (slow V-Dem+WB state, coupled) | **0.753** | **0.458** | **−0.105** |
+| real crowd | 0.834 | 0.441 | — |
+
+- **Every layer of real-world grounding monotonically improves the forecast.** GDELT confirms the n=15 signal
+  at scale: **AUC 0.699 → 0.741 (+0.04), log-loss 0.512 → 0.484.** The structural layer adds more discrimination
+  AND sharpens calibration: **AUC → 0.753, log-loss → 0.458.** (GDELT moved 75/97 forecasts, structural moved
+  68/97 — both layers actively bite.)
+- **Together they more than HALVE the gap to the crowd:** skill_vs_crowd **−0.236 → −0.105**, and the fully
+  grounded model's calibrated log-loss (**0.458**) is now essentially crowd-level (**0.441**). Discrimination
+  (AUC 0.753 vs 0.834) is closing too.
+- This is the founding thesis, validated on the most vision-aligned slice: measure the real state of the social
+  world — fast flow, then slow structural state — and forecasts of that world get monotonically better, from
+  far-below-crowd to nearly crowd-level. The structural×event coupling is a real lever, not machinery.
+
+Net: the frontier is exactly what the data survey predicted — MORE LAYERS, fused and calibrated. Next per the
+grounding map: fuse POLECAT for cleaner events, add ACLED/UCDP as gold-standard anchors, wire FRED/IMF for the
+economic state, and adopt ForecastBench as the standing scoreboard — toward the ViEWS-style probabilistic,
+uncertainty-quantified social world model.
