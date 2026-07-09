@@ -34,18 +34,22 @@ def load_round(due_date: str, *, binary_only=True) -> list:
     `backtest(questions, forecast_fn)` where forecast_fn runs the agent engine as-of the due date."""
     qset = _fetch(f"question_sets/{due_date}-llm.json")
     rset = _fetch(f"resolution_sets/{due_date}_resolution_set.json")
-    resolved = {r["id"]: r for r in rset.get("resolutions", [])
+
+    def key(i):                                # ids are strings, or lists for combo questions
+        return json.dumps(i) if isinstance(i, list) else str(i)
+
+    resolved = {key(r.get("id")): r for r in rset.get("resolutions", [])
                 if r.get("resolved") and r.get("resolved_to") is not None}
     out = []
     for q in qset.get("questions", []):
-        r = resolved.get(q.get("id"))
+        r = resolved.get(key(q.get("id")))
         if r is None:
             continue
         y = float(r["resolved_to"])
         if binary_only and y not in (0.0, 1.0):
             continue
         out.append(Question(
-            qid=str(q["id"]), outcome=y, asof=due_date,
+            qid=key(q["id"]), outcome=y, asof=due_date,
             resolved=str(r.get("resolution_date", "")),
             baselines={"base_rate": 0.5},
             meta={"question": q.get("question", ""), "source": q.get("source", ""),

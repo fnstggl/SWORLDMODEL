@@ -201,6 +201,49 @@ def test_front_door_society_output_is_native_and_flagged():
     assert res["grounding"]["detail"]                      # provenance rides along
 
 
+# ---------------------------------------------------------------- leak-free backtest path
+def test_evidence_injection_bypasses_live_retrieval():
+    # a search_fn that would EXPLODE if called proves the frozen-evidence path never touches the web
+    def boom(_qs, _k):
+        raise AssertionError("live retrieval called during a leak-free backtest")
+    g = SceneGrounder(ScriptedLLM(), search_fn=boom)
+    d = g.ground("who wins?", evidence=["Candidate A leads B in the poll, 52-41",
+                                        "A holds a fundraising edge per the latest filing",
+                                        "the election date is 2026-08-15"])
+    assert not d.abstain and d.facts                       # grounded purely from the injected evidence
+
+
+def test_injected_evidence_is_gated_on_content_not_passage_count():
+    # 2 injected passages (below the live-retrieval min_passages=3 floor) must NOT auto-abstain —
+    # the floor is a dead-search signal; injected evidence is judged on coverage (content) only.
+    g = SceneGrounder(ScriptedLLM(), search_fn=lambda qs, k: [])
+    d = g.ground("who wins?", evidence=["Poll: A 52, B 41", "A leads fundraising"])
+    assert not d.abstain and d.facts                       # content sufficed; count did not gate it
+
+
+def test_grading_p_yes_and_domain_filter():
+    from swm.eval.grade_agent_engine import is_domain, p_yes
+    assert p_yes({"distribution": {"yes": 0.7, "no": 0.3}}) == 0.7
+    assert p_yes({"distribution": {"no": 0.8, "yes": 0.2}}) == 0.2
+    assert p_yes({"distribution": {}}) is None
+    assert is_domain("Will Mikie Sherrill win the New Jersey Governor Election?")
+    assert not is_domain("Will the Pirates win the 2025 World Series?")     # off-domain sports
+
+
+def test_grade_pooled_math_and_registry(tmp_path):
+    from swm.engine.calibrate import GradeRegistry
+    from swm.eval.grade_agent_engine import grade_pooled
+    # a discriminating forecaster: high on the YES cases, low on the NO cases → should beat the class rate
+    rounds = [{"preds": [0.8, 0.75, 0.2, 0.15, 0.1, 0.25], "outcomes": [1, 1, 0, 0, 0, 0],
+               "items": [{"q": f"q{i}"} for i in range(6)], "n_domain": 6, "n_abstained": 1}]
+    reg = GradeRegistry(path=str(tmp_path / "g.json"))
+    rep = grade_pooled(rounds, registry=reg, question_class="society:event")
+    assert rep.n_scored == 6 and rep.n_abstained == 1
+    assert rep.backtest["skill_vs"]["class_rate"] > 0        # discrimination beat the base-rate guess
+    assert rep.grade_entry["grade"] in ("A", "B", "C", "F", "ungraded")
+    assert GradeRegistry(path=str(tmp_path / "g.json")).grades["society:event"]["n"] == 6
+
+
 def test_front_door_artifact_mode_returns_ranked_real_texts():
     class LLM(ScriptedLLM):
         def __call__(self, prompt):

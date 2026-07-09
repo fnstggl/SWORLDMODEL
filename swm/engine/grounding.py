@@ -112,15 +112,26 @@ class SceneGrounder:
     min_passages: int = 3
     today: str = ""
 
-    def ground(self, question: str) -> SceneDossier:
+    def ground(self, question: str, evidence=None) -> SceneDossier:
+        """`evidence` (list of Passage|str), when given, REPLACES live retrieval — the leak-free /
+        caller-supplied path (as-of backtests feed the frozen context here; nothing is fetched from the
+        live web, so a resolved-in-the-past question cannot leak its answer through today's news)."""
         today = self.today or __import__("time").strftime("%Y-%m-%d")
         plan = parse_json(self.llm(_PLAN_PROMPT.format(q=question, today=today))) or {}
         checklist = [str(c) for c in plan.get("checklist", [])][:10]
         queries = [str(q) for q in plan.get("queries", [])][:6] or [question]
 
-        passages = (self.search_fn or multi_search)(queries, 8)
+        if evidence is not None:
+            from swm.engine.retrieval import Passage
+            passages = [e if isinstance(e, Passage) else Passage(str(e), "provided") for e in evidence]
+        else:
+            passages = (self.search_fn or multi_search)(queries, 8)
+
         d = SceneDossier(question=question, checklist=checklist, n_passages=len(passages))
-        if len(passages) < self.min_passages:
+        # The passage-COUNT floor is a LIVE-RETRIEVAL starvation signal (a dead search returns nothing).
+        # It does not apply to caller-injected evidence — that path is gated on CONTENT (coverage) below,
+        # since the caller vouched for the passages and a curated as-of context is legitimately compact.
+        if evidence is None and len(passages) < self.min_passages:
             d.abstain = True
             d.missing = checklist
             d.abstain_reason = (f"GROUNDING STARVED: retrieval returned {len(passages)} passages for "

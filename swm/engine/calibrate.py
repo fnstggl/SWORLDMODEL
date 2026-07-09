@@ -104,11 +104,13 @@ class GradeRegistry:
 
     def record(self, question_class: str, *, backtest_report: dict, preds=None, outcomes=None) -> dict:
         """Store the grade a backtest earned (event_backtest.backtest output) + a fitted shrink."""
-        skill = max((v for k, v in (backtest_report.get("skill") or {}).items()), default=None)
+        skill_map = backtest_report.get("skill_vs") or backtest_report.get("skill") or {}
+        skill = max(skill_map.values()) if skill_map else None   # skill vs the STRONGEST baseline beaten
         n = backtest_report.get("n", 0)
+        rmse = backtest_report.get("rmse")
+        brier = backtest_report.get("brier", round(rmse ** 2, 5) if isinstance(rmse, (int, float)) else None)
         entry = {"grade": _letter(skill if skill is not None else -1, n), "n": n,
-                 "brier": backtest_report.get("brier"), "skill": skill,
-                 "shrink": fit_shrink(preds or [], outcomes or [])}
+                 "brier": brier, "skill": skill, "shrink": fit_shrink(preds or [], outcomes or [])}
         self.grades[question_class] = entry
         p = Path(self.path)
         p.parent.mkdir(parents=True, exist_ok=True)

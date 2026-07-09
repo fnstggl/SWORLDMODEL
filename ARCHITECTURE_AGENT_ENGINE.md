@@ -95,16 +95,30 @@ to agree too much and understate tails; variants + private slices + temperature 
 - **Optional keyed overlays, auto-detected from env**: `SERPER_API_KEY` (cheapest keyed, ~$0.30–1/1k,
   2.5k free), `BRAVE_API_KEY` (~$5/1k), `TAVILY_API_KEY` (~$8/1k). Merged when present; never required.
 
-## The calibration program (what earns the grades)
+## The calibration program (what earns the grades) — BUILT, running (EXP-090)
+
+The grade-or-abstain wrapper is now fed by a real, leak-free backtest, not a promise:
 
 - `swm/eval/event_backtest.py` stays the no-cheat scorer (as-of guard, skill vs free baselines).
 - `swm/eval/forecastbench.py` loads **ForecastBench** rounds (Karger et al., ICLR 2025; CC BY-SA 4.0;
-  nightly `question_sets/` + `resolution_sets/`) — resolved Metaculus/Manifold/real-data questions, the
-  fuel for grading `society:*` classes and fitting each class's logit shrink
-  (`GradeRegistry.record`).
+  `question_sets/` + `resolution_sets/`) — resolved Metaculus/Manifold/Infer/real-data questions.
+- `swm/eval/grade_agent_engine.py` + `experiments/exp090_grade_agent_engine.py` run the engine **as-of a
+  round's due date on already-resolved questions, feeding ONLY the frozen as-of context** (`background` +
+  `resolution_criteria`) — never the live web. Two leakage doors shut: (1) live-retrieval leak, closed by
+  `evidence=` injection (no fetch); (2) training-recall leak, mitigated by choosing rounds whose due date
+  is **past DeepSeek's ~mid-2024 cutoff** (the only airtight version forecasts questions resolving in the
+  future — the live-and-wait track). Scored against 0.5 **and the sample class rate** (beating the class
+  rate needs discrimination, not "these are longshots, guess low"). `GradeRegistry.record` writes the
+  grade + a fitted logit-shrink to `models/agent_engine_grades.json`.
 - **Prophet Arena** (Kalshi-anchored live eval, Brier + average return, 1300+ resolved events) is a
   leaderboard to enter once classes are graded — not a training set.
 - Until a class is graded, every forecast in it carries the ungraded flag. That is the point.
+
+### First grade (EXP-090, 2025-06-08/08-31/10-26 resolved political questions, leak-free)
+
+_Filled in by the run — see `experiments/results/exp090_grade_agent_engine.json` and the PR comment._
+The engine **abstains** on genuinely thin-context questions (honest, ~⅓ of the set) and scores the rest;
+the recorded grade for `society:event` gates whether those forecasts ship confident or flagged.
 
 ## What remains (the honest gap list)
 

@@ -46,14 +46,20 @@ class AgentWorldModel:
 
     # ---------------- the one entry point ----------------
     def simulate(self, question: str, *, message: str = None, recipient: str = None,
-                 channel: str = "email") -> dict:
-        today = self.today or _time.strftime("%Y-%m-%d")
+                 channel: str = "email", evidence=None, as_of: str = None,
+                 binary: bool = False) -> dict:
+        """`evidence` + `as_of` drive the LEAK-FREE backtest path: supply frozen as-of context (no live
+        retrieval) and date the rollout from `as_of`, so a resolved-in-the-past question is scored on the
+        information available BEFORE it resolved — the no-cheat contract. `binary=True` forces a yes/no
+        answer space (for scoring against event-market benchmarks like ForecastBench)."""
+        today = as_of or self.today or _time.strftime("%Y-%m-%d")
 
         # explicit individual ask (recipient + exact artifact) skips scene-casting: the scene IS the person
         if recipient and message:
             return self._individual(question, recipient, message, channel, today)
 
-        dossier = SceneGrounder(self.llm, search_fn=self.search_fn, today=today).ground(question)
+        dossier = SceneGrounder(self.llm, search_fn=self.search_fn, today=today).ground(
+            question, evidence=evidence)
         if dossier.abstain:
             f = Forecast(question=question, mechanism="abstained", abstain=True,
                          abstain_reason=dossier.abstain_reason, grounding=dossier.as_report(),
@@ -73,6 +79,9 @@ class AgentWorldModel:
             return f.as_dict()
 
         cast = CastingDirector(self.llm).cast(question, dossier.brief(), today=today)
+        if binary:                                        # backtest against an event market: yes/no readout
+            cast.answer_space = {"type": "binary", "options": ["yes", "no"]}
+            return self._society(question, cast, dossier, today, class_key="society:event")
         if cast.process == "individual_reaction":
             person = recipient or (cast.actors[0].name if cast.actors else "")
             return self._individual(question, person, message or question, channel, today,
@@ -83,10 +92,10 @@ class AgentWorldModel:
         return self._society(question, cast, dossier, today)
 
     # ---------------- modes ----------------
-    def _society(self, question, cast, dossier, today):
+    def _society(self, question, cast, dossier, today, class_key=None):
         res = SocietyRollout(self.llm_hot, llm=self.llm, branches=self.branches,
                              max_rounds=self.max_rounds).run(question, cast, dossier, today=today)
-        cal = self.registry.calibration_for(f"society:{cast.process}")
+        cal = self.registry.calibration_for(class_key or f"society:{cast.process}")
         dist = shrink_distribution(res.distribution, cal.get("shrink", 1.0))
         f = Forecast(question=question, mechanism=f"grounded_agents:{cast.process}",
                      answer_space=cast.answer_space,
