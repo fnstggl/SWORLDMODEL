@@ -16,14 +16,14 @@ from pathlib import Path
 RESULT = "experiments/results/exp092_diverse_crowd_grade.json"
 
 
-def run(limit=50, per_category=12):
+def run(limit=50, per_category=12, min_crowd=25):
     from swm.engine.calibrate import GradeRegistry
     from swm.engine.front_door import agent_world_model
     from swm.eval.crowd_sets import diverse_set, summarize
     from swm.eval.forecasting_corpus import load_corpus
     from swm.eval.grade_vs_crowd import grade_vs_crowd
 
-    items = diverse_set(load_corpus(), per_category=per_category)[:limit]
+    items = diverse_set(load_corpus(), per_category=per_category, min_crowd=min_crowd)[:limit]
     print("diverse set:", json.dumps(summarize(items)))
     wm = agent_world_model(branches=2, max_rounds=1)
     reg = GradeRegistry()
