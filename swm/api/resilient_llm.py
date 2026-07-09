@@ -36,9 +36,11 @@ class ResilientLLM:
     """callable(prompt) -> text. HF DeepSeek-V3 first, DeepSeek direct fallback, on-disk cached."""
 
     def __init__(self, *, system="", max_tokens=1100, temperature=0.0, timeout=90, cache_dir=CACHE_DIR,
-                 retries=2):
+                 retries=2, model=HF_MODEL, ds_fallback=True):
         self.system, self.max_tokens, self.temperature, self.timeout = system, max_tokens, temperature, timeout
         self.retries = retries
+        self.model = model                            # HF-router model — vary across FAMILIES for independent errors
+        self.ds_fallback = ds_fallback                # allow DeepSeek-direct fallback (off to keep panels independent)
         self.hf_key = os.environ.get("HF_TOKEN", "")
         self.ds_key = os.environ.get("DEEPSEEK_API_KEY", "")
         self.cache = Path(cache_dir)
@@ -46,7 +48,9 @@ class ResilientLLM:
         self.calls = {"cache": 0, "hf": 0, "deepseek": 0, "fail": 0}
 
     def _key(self, prompt):
-        h = hashlib.sha256(f"{self.system}\x00{self.max_tokens}\x00{prompt}".encode()).hexdigest()[:40]
+        # keep the default-model key format unchanged (so existing cache still hits); tag only non-default models
+        tag = "" if self.model == HF_MODEL else f"{self.model}\x00"
+        h = hashlib.sha256(f"{tag}{self.system}\x00{self.max_tokens}\x00{prompt}".encode()).hexdigest()[:40]
         return self.cache / f"{h}.json"
 
     def __call__(self, prompt: str) -> str:
@@ -58,13 +62,13 @@ class ResilientLLM:
         for attempt in range(self.retries + 1):
             if self.hf_key:
                 try:
-                    text = _post(HF_ROUTER, self.hf_key, HF_MODEL, prompt, self.system, self.max_tokens,
+                    text = _post(HF_ROUTER, self.hf_key, self.model, prompt, self.system, self.max_tokens,
                                  self.temperature, self.timeout)
                     self.calls["hf"] += 1
                     break
                 except Exception:
                     pass
-            if self.ds_key:
+            if self.ds_key and self.ds_fallback:
                 try:
                     text = _post(DEEPSEEK_URL, self.ds_key, "deepseek-chat", prompt, self.system,
                                  self.max_tokens, self.temperature, self.timeout)

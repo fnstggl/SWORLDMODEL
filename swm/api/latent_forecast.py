@@ -67,7 +67,7 @@ class LatentSpec:
     raw: dict = None
 
 
-def build_prompt(question, as_of_ts, horizon_years, news=None):
+def build_prompt(question, as_of_ts, horizon_years, news=None, social_block=None):
     date = _dt.datetime.utcfromtimestamp(int(as_of_ts)).strftime("%Y-%m-%d")
     days = int(horizon_years * 365.25)
     news_block = ""
@@ -75,6 +75,14 @@ def build_prompt(question, as_of_ts, horizon_years, news=None):
         news_block = ("AS-OF NEWS (headlines published on or before today — use them to inform the base rate and "
                       "drivers; this is the information available now):\n"
                       + "\n".join(f"  - {h}" for h in news[:6]) + "\n\n")
+    if social_block:
+        news_block += social_block + "\n"
+    # only ask for the conflict-polarity field when we actually measured a social state to orient
+    social_field = (
+        f'\n5. "conflict_pushes": ONLY because a MEASURED SOCIAL STATE is given above — does RISING '
+        f'conflict/violence/protest in that country make this question resolve YES (+1) or NO (-1)? (e.g. a '
+        f'"will war escalate" question is +1; a "will there be a ceasefire/peace deal" question is -1.)'
+        if social_block else "")
     return (
         f"You are a careful SUPERFORECASTER assembling the inputs to a SIMULATION — you do NOT state whether it "
         f"happens.\nTODAY IS {date}. The question resolves in about {days} days. Use ONLY information available "
@@ -91,8 +99,10 @@ def build_prompt(question, as_of_ts, horizon_years, news=None):
         f'   If event also give: "drivers": up to 5 factors that move it off the base rate, each '
         f'{{"factor","direction" (+1 toward YES, -1 toward NO),"strength" (0-1, how decisive),"grounded" '
         f"(true only if based on a concrete known fact as of today, false if a guess)}}.\n"
+        f"{social_field}\n"
         f'Return ONLY compact JSON with keys base_rate, kind, current_value, threshold, direction, '
-        f"annual_vol_pct, grounded_conf, drivers.")
+        f"annual_vol_pct, grounded_conf, drivers"
+        + (", conflict_pushes." if social_block else "."))
 
 
 def parse_latent(txt):
@@ -122,6 +132,21 @@ def parse_latent(txt):
                       direction=("<" if str(r.get("direction")) == "<" else ">"),
                       annual_vol_pct=_num("annual_vol_pct"), metric_name=r.get("metric") or r.get("metric_name"),
                       grounded_conf=str(r.get("grounded_conf", "low")).lower(), drivers=drivers, raw=r)
+
+
+def _social_driver(spec, social):
+    """Turn a measured GDELT social state into ONE grounded driver, signed by the LLM's conflict-polarity read.
+    Real data (magnitude/trend from the event stream) with honest-but-narrow grounded uncertainty."""
+    d = social["driver"]
+    push = spec.raw.get("conflict_pushes") if spec.raw else None
+    try:
+        sign = 1.0 if float(push) >= 0 else -1.0
+    except Exception:
+        sign = 1.0 if d["goldstein"] <= 0 else -1.0     # fallback: conflictual state → assume escalation question
+    strength = min(1.0, 0.7 * d["escalation_magnitude"] + 0.6 * d["escalation_trend"])
+    if strength < 0.03:
+        return None
+    return {"direction": sign, "strength": strength, "grounded": True}
 
 
 def simulate_latent(spec: LatentSpec, horizon_years, *, n=3000, seed=0):
@@ -161,16 +186,31 @@ def simulate_latent(spec: LatentSpec, horizon_years, *, n=3000, seed=0):
 
 
 def latent_forecast(question, as_of_ts, resolve_ts, llm, *, n=3000, seed=0, grounder=None, metric_grounder=None,
-                    news=None):
+                    news=None, social_grounder=None):
     """Compile the honest simulation inputs (one LLM call, no outcome stated) and run the latent-state sim.
     CLOSE THE LOOP: when a `grounder` is supplied and the question is a metric threshold, MEASURE the current
     value live (Coinbase/web via the router) instead of trusting the LLM's guess — which lets the metric sim be
     both confident AND correct (trust=high), the lever the backtest could not use without leaking. Ungroundable
-    ⇒ stays at the LLM's as-of estimate with its honest low trust."""
+    ⇒ stays at the LLM's as-of estimate with its honest low trust.
+    SOCIAL grounding: when a `social_grounder` is supplied and the question names a country, MEASURE that
+    country's as-of GDELT social state (conflict/violence/protest trajectory), inject it into the compile
+    prompt, and add it back as a grounded escalation driver oriented by the LLM's conflict-polarity read."""
     hy = max(1e-4, (float(resolve_ts) - float(as_of_ts)) / SECONDS_PER_YEAR)
-    spec = parse_latent(llm(build_prompt(question, as_of_ts, hy, news=news)))
+    social = None
+    if social_grounder is not None:
+        try:
+            social = social_grounder.ground_social(question, as_of_ts)
+        except Exception:
+            social = None
+    spec = parse_latent(llm(build_prompt(question, as_of_ts, hy, news=news,
+                                         social_block=social["block"] if social else None)))
     if spec is None:
         return None, None
+    if social is not None and spec.kind != "metric":
+        sd = _social_driver(spec, social)
+        if sd is not None:
+            spec.drivers.append(sd)
+            spec.raw = {**(spec.raw or {}), "_social": social["driver"], "_country": social["country"]}
     if spec.kind == "metric" and metric_grounder is not None:
         try:                                                  # AS-OF grounding: real price + realised vol at as_of
             g = metric_grounder.ground_metric(question, spec.metric_name, as_of_ts)

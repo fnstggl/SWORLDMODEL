@@ -45,6 +45,23 @@ PERSONAS = {
 }
 
 
+# The independence path: a panel of DIFFERENT model FAMILIES (distinct pretraining ⇒ genuinely independent
+# errors, unlike personas of one model). ONLY with independent errors does extremization >1 become valid. These
+# are HF-router models; the router bills per model, so this is ready but gated on HF credit (see resilient_llm).
+MODEL_PANEL = ["deepseek-ai/DeepSeek-V3-0324", "Qwen/Qwen2.5-72B-Instruct", "meta-llama/Llama-3.3-70B-Instruct",
+               "mistralai/Mixtral-8x22B-Instruct-v0.1", "google/gemma-2-27b-it"]
+
+
+def model_panel_llms(system, *, max_tokens=700, temperature=0.3, models=None):
+    """One resilient callable per model FAMILY — the genuinely-independent panel. DeepSeek-direct fallback is
+    OFF so a family that is unavailable drops out rather than collapsing onto DeepSeek (which would re-correlate
+    the errors). Temperature >0 so each family also samples independently."""
+    from swm.api.resilient_llm import resilient_chat_fn
+    return {m: resilient_chat_fn(system=system + " Reply with ONLY compact JSON.", max_tokens=max_tokens,
+                                 temperature=temperature, model=m, ds_fallback=(m.startswith("deepseek")))
+            for m in (models or MODEL_PANEL)}
+
+
 def _logit(p):
     p = min(1 - 1e-6, max(1e-6, p))
     return math.log(p / (1 - p))
