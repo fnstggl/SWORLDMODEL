@@ -134,16 +134,21 @@ def parse_latent(txt):
                       grounded_conf=str(r.get("grounded_conf", "low")).lower(), drivers=drivers, raw=r)
 
 
-def _social_driver(spec, social):
+def _social_driver(spec, social, fragility=None):
     """Turn a measured GDELT social state into ONE grounded driver, signed by the LLM's conflict-polarity read.
-    Real data (magnitude/trend from the event stream) with honest-but-narrow grounded uncertainty."""
+    Real data (magnitude/trend from the event stream) with honest-but-narrow grounded uncertainty. When a
+    structural FRAGILITY is supplied, it SCALES the shock — the structural×event coupling: the same conflict
+    signal tips a fragile state far more than a robust one (0.6× when robust, ~1.4× when fully fragile)."""
     d = social["driver"]
     push = spec.raw.get("conflict_pushes") if spec.raw else None
     try:
         sign = 1.0 if float(push) >= 0 else -1.0
     except Exception:
         sign = 1.0 if d["goldstein"] <= 0 else -1.0     # fallback: conflictual state → assume escalation question
-    strength = min(1.0, 0.7 * d["escalation_magnitude"] + 0.6 * d["escalation_trend"])
+    strength = 0.7 * d["escalation_magnitude"] + 0.6 * d["escalation_trend"]
+    if fragility is not None:
+        strength *= 0.6 + 0.8 * float(fragility)        # robust dampens, fragile amplifies the shock
+    strength = min(1.0, strength)
     if strength < 0.03:
         return None
     return {"direction": sign, "strength": strength, "grounded": True}
@@ -186,7 +191,7 @@ def simulate_latent(spec: LatentSpec, horizon_years, *, n=3000, seed=0):
 
 
 def latent_forecast(question, as_of_ts, resolve_ts, llm, *, n=3000, seed=0, grounder=None, metric_grounder=None,
-                    news=None, social_grounder=None):
+                    news=None, social_grounder=None, structural_grounder=None):
     """Compile the honest simulation inputs (one LLM call, no outcome stated) and run the latent-state sim.
     CLOSE THE LOOP: when a `grounder` is supplied and the question is a metric threshold, MEASURE the current
     value live (Coinbase/web via the router) instead of trusting the LLM's guess — which lets the metric sim be
@@ -202,15 +207,26 @@ def latent_forecast(question, as_of_ts, resolve_ts, llm, *, n=3000, seed=0, grou
             social = social_grounder.ground_social(question, as_of_ts)
         except Exception:
             social = None
+    structural = None
+    if structural_grounder is not None:
+        try:
+            structural = structural_grounder.ground_structural(question, as_of_ts)
+        except Exception:
+            structural = None
+    # the compile prompt sees BOTH the slow structural state and the fast event state (state + transition)
+    ctx_block = (structural["block"] if structural else "") + (social["block"] if social else "")
     spec = parse_latent(llm(build_prompt(question, as_of_ts, hy, news=news,
-                                         social_block=social["block"] if social else None)))
+                                         social_block=ctx_block or None)))
     if spec is None:
         return None, None
     if social is not None and spec.kind != "metric":
-        sd = _social_driver(spec, social)
+        sd = _social_driver(spec, social, fragility=structural["fragility"] if structural else None)
         if sd is not None:
             spec.drivers.append(sd)
             spec.raw = {**(spec.raw or {}), "_social": social["driver"], "_country": social["country"]}
+    if structural is not None:
+        spec.raw = {**(spec.raw or {}), "_structural": {"iso3": structural["iso3"],
+                                                        "fragility": structural["fragility"]}}
     if spec.kind == "metric" and metric_grounder is not None:
         try:                                                  # AS-OF grounding: real price + realised vol at as_of
             g = metric_grounder.ground_metric(question, spec.metric_name, as_of_ts)
