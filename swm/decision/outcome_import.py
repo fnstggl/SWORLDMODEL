@@ -39,6 +39,7 @@ class LabeledMessage:
     recipient_context: str = ""        # free text about the recipient (for the LLM encoder / resolver)
     pair_id: str = ""                  # links a matched positive/negative pair (for pair accuracy)
     ts: float = 0.0                    # ordering for a temporal split (0 => index order)
+    base: float | None = None          # per-recipient base rate (from history); None => corpus base rate
 
 
 # ---- importers -----------------------------------------------------------------------------------
@@ -101,10 +102,11 @@ def to_samples(labeled: list, *, encode_fn=None, base_rate: float | None = None)
     Returns (samples, pair_ids). `base_rate` defaults to the empirical positive rate."""
     encode = encode_fn or encode_text_to_strategy
     ys = [m.outcome for m in labeled]
-    base = base_rate if base_rate is not None else (sum(ys) + 1) / (len(ys) + 2)
+    corpus_base = base_rate if base_rate is not None else (sum(ys) + 1) / (len(ys) + 2)
     samples, pairs = [], []
     for m in labeled:
         strat = encode(m.text)
+        base = m.base if m.base is not None else corpus_base   # per-recipient base rate when available
         samples.append((m.recipient_vars, strat, base, m.outcome))
         pairs.append(m.pair_id)
     return samples, pairs
