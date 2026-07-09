@@ -175,3 +175,106 @@ artifact + weakest product). Free bulk daily CAMEO event files → as-of per-cou
 Goldstein conflict-cooperation, protest/violence/diplomacy rates + trends), leakage-free, no rate limit.
 Verified as-of Jan 2025: Ukraine/Russia show ~2x US violence, Russia net-conflictual. The vision-aligned
 grounding for the social/geopolitical slice — next: wire it into the forecaster.
+
+---
+
+# Flywheel turn 5 — GDELT wired in, mechanism simulators, and the data thesis (EXP-095)
+
+Three things this turn: (1) wired GDELT social-state grounding INTO the forecaster and measured it; (2) built
+the general mechanism-specific simulator framework; (3) answered the strategic questions — inner-crowd
+independence and "is the gap just MORE DATA."
+
+## 1. GDELT social grounding — measured, and it is a REAL lever on the social slice (EXP-095)
+
+`GdeltSocialGrounder` detects the question's country (name→FIPS), pulls its as-of GDELT social state
+(conflict/violence/protest trajectory, leakage-free), injects a QUANTIFIED state block into the compile prompt,
+and adds a GROUNDED escalation driver whose SIGN is the LLM's conflict-polarity read (escalation q → +, ceasefire
+q → −) and whose STRENGTH is the measured conflict/violence departure from calm. Run WITHOUT vs WITH grounding
+on the 99 clean questions that name a country:
+
+| slice | plain AUC | **grounded AUC** | plain ll | **grounded ll** |
+|---|---|---|---|---|
+| **CONFLICT/POLITICS** (on-topic, n=15) | 0.696 | **0.768** | 0.648 | **0.629** |
+| off-topic (sports/other, n=84) | 0.558 | 0.583 | 0.673 | 0.676 |
+| all country-naming (n=99) | 0.563 | **0.596** | 0.670 | 0.670 |
+
+- **The grounding helps exactly where it is on-topic:** on genuine conflict/politics questions, discrimination
+  rises **AUC 0.70 → 0.77** and calibrated log-loss improves **0.648 → 0.629**. Measuring the real state of that
+  part of the social world makes the forecast of that world better — the founding thesis, confirmed on the most
+  vision-aligned slice.
+- **Neutral where off-topic** (sports/other: AUC +0.02, log-loss flat-to-slightly-worse) — the LLM's
+  `conflict_pushes` mostly no-ops when a country is named incidentally. So GATE it to social/geopolitical
+  questions (a regime signal), don't fire it on every country mention.
+- Caveat: the conflict subset is small (n=15) and the crowd is perfect there (AUC 1.0), so skill-vs-crowd stays
+  negative — the gain is DISCRIMINATION, honest, and directionally clear. The lever is real; scaling the
+  measurement needs a bigger conflict corpus.
+
+## 2. Mechanism-specific simulators — specialize on MECHANISMS, not subjects (`swm/api/mechanisms.py`)
+
+The general-world-model way to add per-domain simulators without fragmenting into infinite topics: there are
+only ~7 GENERATIVE MECHANISMS by which a binary social outcome is produced. Elections, referendums and
+shareholder votes are ONE mechanism (aggregate a share, threshold at a majority); sports, court cases and races
+are a CONTEST; a launch, a death and a record are an ARRIVAL. So we built seven tiny parametric Monte-Carlo
+simulators on the SHARED honest substrate (base-rate anchor + integrated parameter uncertainty + real horizon),
+plus an LLM router that names the mechanism and supplies its grounded params:
+
+| mechanism | covers | grounded by | kernel |
+|---|---|---|---|
+| aggregation | vote / approval / referendum | polls / current share | threshold on a Normal share (poll error) |
+| contest | sports / court / race | ratings / odds | Elo-logistic or grounded win-prob |
+| diffusion | price / index / % / count | as-of value + realised vol | GBM (reuses the metric branch) |
+| arrival | launch / death / record / first | base rate over a horizon | Poisson survival 1−e^(−λH) |
+| whipcount | legislation / treaty / merger | committed votes vs needed | Binomial break of the undecided |
+| escalation | war / bank-run / viral / unrest | GDELT social pressure | reinforcing log-odds drift |
+| persistence | incumbency / status-quo / on-time | disruption hazard | e^(−hH) status-quo survival |
+
+`mechanism_forecast` compiles → grounds live (as-of price for diffusion, GDELT pressure for escalation) →
+routes, and **falls back to the generic latent sim** when the mechanism/params are absent, so it is never worse
+than `latent_forecast`, only more specific where it can be. One engine, any binary social question. (23 new
+unit tests, all green.)
+
+## 3. The strategic answers
+
+**Inner-crowd independence — can we get independent errors?** Not with the current backend. Independent errors
+require different model FAMILIES (distinct pretraining), not personas of one model — which is exactly why the
+extremization factor tuned to **0.8 (<1)**: the 8 personas share DeepSeek's weights, so their errors are
+correlated and sharpening them amplifies shared bias. Making personas "more extreme" on one model therefore
+CANNOT help (and empirically hurts). The real independence path is a multi-MODEL panel (DeepSeek + Qwen + Llama
++ Mixtral + Gemma), and only THEN is extremization >1 valid. We built that path (`model_panel_llms`, model-aware
+`ResilientLLM` with DeepSeek-fallback OFF so families stay independent) — but it is currently **billing-blocked**:
+the HF router returns `402 Payment Required` for every model family (HF credit exhausted), and DeepSeek-direct
+serves only one model. So: possible in architecture, ready in code, gated on HF credit. Until then the
+single-model inner-crowd stays a SELECTIVE booster on modelable domains (crypto 0.68→0.82, econ 0.60→0.72).
+
+**Is inner-crowd a drift from the core thesis? — partly, yes.** Inner-crowd is an ensemble-of-JUDGMENTS method
+(average many LLM framings); it is orthogonal to "simulate the social world's latent state + transitions." It
+earns its place only as the honest fallback where there IS no groundable latent state (soft/unmodelable
+questions). The GDELT + mechanism + dataset direction IS the core vision — measure the real state, evolve it
+with calibrated transitions, read off the outcome — and it is where the measured edge lives (GDELT +0.07 AUC on
+conflict; crypto grounding 0.68→0.79). **Strategic call: invest in the world-model stack, keep inner-crowd as a
+gated soft-domain booster.**
+
+**Are there FULL social-world-model datasets? Is GDELT the closest? — GDELT is the closest single feed, but the
+real answer is a LAYERED STACK, and yes, the gap is substantially MORE DATA.** No one dataset is a "full social
+world model." The social world's grounding decomposes into three layers, and the frontier is grounding on all
+three:
+
+- **Event / flow layer** (high-frequency "what is happening now") — **GDELT** (563M events, 1979→, global, the
+  broadest + most immediate feed, but noisy machine-coding: poor redundancy/domain accuracy) + **POLECAT** (6.2M
+  events 2010→, the ICEWS successor, PLOVER ontology replacing CAMEO, high accuracy + low redundancy) +
+  **ACLED** (human-verified violence/protest, georeferenced by day — the gold standard, but narrow). GDELT for
+  breadth/immediacy, POLECAT/ACLED for accuracy on the conflict slice.
+- **Structural / state layer** (slow-moving latent state of each society — this literally IS the world model's
+  latent state) — **V-Dem** (~500 democracy/institution indicators, expert-coded, country-year) + **World Bank
+  WDI** (266 economic/social/demographic indicators, 217 countries) + Polity / Fragile-States.
+- **Belief / opinion layer** (what people think) — polls/surveys (partly wired) + GDELT tone + social media.
+
+Published country-month stability models that fuse **363 WDI + 129 V-Dem + ACLED** reach ~85% contemporaneous /
+~75% next-month accuracy — direct evidence that the layered stack is the calibration substrate. So GDELT is the
+closest to a live universal social-event feed (and the right first grounding, now wired + measured), but the
+step-function is a STACK: GDELT/POLECAT/ACLED events over a V-Dem/WDI structural state, with mechanism
+transitions calibrated on how those actually move. That is the core thesis, fully — "more real-world data to
+ground/calibrate on," organized as latent state (V-Dem/WDI) + transitions (calibrated on GDELT/ACLED flow).
+
+Sources: GDELT vs POLECAT comparison (doi.org/10.3390/data11070158), PLOVER/POLECAT (Halterman et al.), V-Dem
+(v-dem.net), World Bank WDI, ACLED, and the WDI+V-Dem+ACLED stability-forecasting literature.
