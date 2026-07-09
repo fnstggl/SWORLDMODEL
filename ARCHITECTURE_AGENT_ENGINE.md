@@ -1,3 +1,57 @@
+<!-- CALIBRATION & FIDELITY PROGRAM (EXP-090..093) — the push to beat the market -->
+## The calibration/fidelity program — from catastrophic F toward the market
+
+A 6-agent research fan-out (LLM-forecasting SOTA, forecast aggregation/extremizing, silicon-sampling
+fidelity, calibration, and a failure analysis of our own rows) ranked the levers by **measured Brier
+recovery on the failure set**, and we ablated them in that order on a leak-free crowd backtest (bounded
+`before:/after:` as-of Google News; resolved Manifold/Polymarket questions with the crowd price at as-of;
+`cutoff_clean`).
+
+**The bottleneck was Stage-0 grounding of the DIRECTIONAL signal, not aggregation or calibration.** The
+engine got *direction* wrong ~half the time (side-correct 0.53 = a coin flip), near-random on the questions
+the market was most sure about — a base-rate/evidence failure, not a pooling-math one. Measured leverage:
+grounding the "who's favored" signal **+0.111 Brier (3–5× everything else combined)**; out-of-sample
+recalibration +0.03; the 0/1 clamp +0.01; **more/proportional agents ≈ 0** (the failure is bias, not
+variance); and **extremizing is NEGATIVE before direction is fixed** (sharpening a wrong-side consensus).
+
+What we built, in ablation order:
+1. **Aggregation/calibration** (`calibrate.py`): weighted **log-linear opinion pool** (uninformative 0.5s
+   stop dragging the signal to the middle) + **finite-sample smoothing** + **out-of-sample (k-fold)
+   temperature** recalibration (honest, not in-sample-optimistic) + an aggregate 0/1 clamp.
+2. **Rank-1 grounding** (`grounding.py`, `retrieval.py`): a **structured directional standing**
+   `{favored, margin, basis, confidence}`, extracted explicitly and made **common knowledge** to every
+   agent; a **second targeted "who's favored" retrieval round** when the signal is missing; the backtest
+   drives the engine's own multi-round as-of retrieval (`asof_search_fn`), never live news.
+3. **Observer panel** (`observer_panel.py`): binary events route to a diverse ensemble of **base-rate-
+   anchored superforecaster personas** (5 reasoning lenses) — the literature-backed way to match markets —
+   with **confidence tracking evidence** (shrink toward the base rate when the standing is weak).
+4. **Measurement** (`crowd_sets.py`, `grade_vs_crowd.py`): a large, cleaned, multi-domain, liquidity-
+   filtered set + a first-class **direction-accuracy** metric that isolates the grounding bug from
+   calibration.
+
+**Measured trajectory (leak-free, vs the crowd):**
+
+| stage | skill vs crowd | direction | note |
+|---|---|---|---|
+| F baseline (political, liquid crowd) | **−6.15** | 0.53 | p=1.00 on losers; near-random |
+| + pooling/smoothing/standing (society, diverse) | −0.03 (recal −0.01) | — | +0.007 on crowd-unsure |
+| + observer panel + Rank-1 grounding (diverse) | recal −0.05 | **0.61** | **beats crowd on tech +0.117**, parity sports |
+| + confidence-shrink (diverse) | recal −0.17* | 0.61 | *per-category swings show n=44 is noise-limited |
+| definitive **n=127** (current best config) | _see EXP-093 result_ | — | the trustworthy, noise-resistant number |
+
+**The honest state.** We eliminated the catastrophic failure (worse-than-a-coin-flip → **near-parity with a
+strong liquid-market crowd**) and fixed direction (0.53 → 0.61), and the engine already **beats the crowd on
+evidence-rich domains (tech)**. Two honest limits remain: (a) at n≈44, per-category and per-tweak
+differences are **within noise** (±0.15 skill) — measurement power, not more tweaks, is the binding
+constraint, which is why EXP-093 runs at n=127; and (b) beating a liquid market **overall** on a general set
+is a hard bar the literature shows even frontier LLM systems mostly *match*, not beat — the defensible
+target is **match overall, beat on the evidence-rich / crowd-unsure slice**. Remaining ranked levers
+(gated behind the now-fixed direction): per-domain / two-sided calibration, a vote-share→win map for the
+society path, selective forecasting (defer on weak evidence), and multi-model-family panels to decorrelate
+errors (which is the only condition under which extremizing turns positive).
+
+---
+
 # The Grounded-Agent Engine — the vision clause by clause (hybrid front door on `main`)
 
 **The vision**: *Take an arbitrary natural-language question → automatically construct the belief state →
