@@ -103,6 +103,6 @@ def grade_vs_crowd(wm, items, *, limit=40, question_class="society:event",
             question_class,
             backtest_report={"skill_vs": {"crowd": rep.scoreboard["recalibrated"].get("skill_vs_crowd") or -1},
                              "n": len(rows), "rmse": rep.scoreboard["recalibrated"]["brier_model"] ** 0.5},
-            preds=[apply_temperature(p, T) for p in preds], outcomes=ys)
-        rep.grade_entry["temperature"] = T                # stored so the live engine applies the same recal
+            preds=[apply_temperature(p, T) for p in preds], outcomes=ys,
+            temperature=T)                                # persisted so the live engine applies the same recal
     return rep

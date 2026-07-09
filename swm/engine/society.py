@@ -77,8 +77,15 @@ class SocietyRollout:
             drawn = list(ex.map(lambda a: draw_variants(llm_cold, a, question, dossier.brief()),
                                 cast.actors))
         personas = [p for group in drawn for p in group]
+        # The DECIDING facts are COMMON knowledge (in a covered race everyone knows the front-runner) — never
+        # rotate the deciding signal away from an agent, or it reasons in a vacuum (the 'underconfident on a
+        # clear favorite' failure). Every persona sees all grounded facts; diversity comes from the variant
+        # sketch + temperature + a little rotated PERIPHERAL color, not from hiding the standing.
+        all_facts = [f"{f['fact']}: {f.get('detail', '')}" for f in dossier.facts]
         for i, p in enumerate(personas):
-            p.private_facts = slice_private_facts(dossier.facts, i)
+            peripheral = slice_private_facts(dossier.facts, i, keep=0.4)
+            p.private_facts = all_facts + [f"(you weigh this personally: {x})" for x in peripheral[:2]]
+        standing = dossier.standing
         n_calls = len(cast.actors)
 
         # ---- Stage 3: B branches × dated rounds; each round every persona reasons; the branch's next
@@ -86,7 +93,8 @@ class SocietyRollout:
         branch_finals, audit = [], []
         for b in range(self.branches):
             brng = random.Random(self.seed * 997 + b)
-            public = f"(start of simulation) {cast.interaction}" if cast.interaction else "(nothing yet)"
+            public = ((f"CURRENT STANDING: {standing}. " if standing else "") +
+                      (cast.interaction or "the situation as grounded above"))
             last = None
             for ri, date in enumerate(dates):
                 interval_days = cast.horizon_days / len(dates)

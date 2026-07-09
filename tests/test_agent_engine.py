@@ -31,6 +31,8 @@ class ScriptedLLM:
 
     def __call__(self, prompt):
         self.calls.append(prompt)
+        if "professional SUPERFORECASTER" in prompt:       # observer-panel forecaster
+            return json.dumps({"base_rate": 0.4, "p": 0.6, "why": "evidence leans yes"})
         if "Classify how this question's outcome is GENERATED" in prompt:
             proc = any(w in prompt.lower() for w in ("bitcoin", "price", "index", "s&p"))
             return json.dumps({"kind": "process" if proc else "people", "why": "stub"})
@@ -333,6 +335,39 @@ def test_asof_google_news_drops_post_cutoff_items(monkeypatch):
     texts = [p.text for p in out]
     assert any("Campaign" in t for t in texts)             # pre-cutoff kept
     assert not any("WINNER" in t for t in texts)           # post-cutoff outcome DROPPED (no leak)
+
+
+def test_observer_panel_base_rate_anchored_and_diverse_lenses():
+    from swm.engine.observer_panel import LENSES, ObserverPanel
+    from swm.engine.grounding import SceneDossier
+    import json as _j
+    # a stub forecaster: skeptic lens fades to base rate, insider adjusts up on a strong standing
+    def llm(prompt):
+        if "contrarian skeptic" in prompt:
+            return _j.dumps({"base_rate": 0.05, "p": 0.08, "why": "fringe, base rate low"})
+        if "domain insider" in prompt:
+            return _j.dumps({"base_rate": 0.5, "p": 0.85, "why": "leads the only poll big"})
+        return _j.dumps({"base_rate": 0.4, "p": 0.5, "why": "neutral"})
+    d = SceneDossier(question="Will X win?", facts=[{"fact": "poll", "detail": "X +15"}],
+                     standing="X leads the only poll 55-40")
+    pf = ObserverPanel(llm, reps_per_lens=1).forecast("Will X win?", d)
+    assert pf.n_forecasters == len(LENSES)                 # every lens forecasted (diverse ensemble)
+    assert 0.0 < pf.p_event < 1.0
+    assert any(a["lens"] == "skeptic" and a["p"] < 0.2 for a in pf.audit)   # skeptic anchored low
+    assert any(a["lens"] == "insider" and a["p"] > 0.7 for a in pf.audit)   # insider adjusted up
+
+
+def test_front_door_binary_uses_observer_panel():
+    class LLM(ScriptedLLM):
+        def __call__(self, prompt):
+            if "professional SUPERFORECASTER" in prompt:
+                import json as _j
+                return _j.dumps({"base_rate": 0.3, "p": 0.7, "why": "evidence favors yes"})
+            return super().__call__(prompt)
+    wm = AgentWorldModel(llm=LLM(), search_fn=lambda qs, k: _passages(), event_engine="panel")
+    res = wm.simulate("Will the incumbent win the mayoral race?", binary=True)
+    assert res["mechanism"] == "grounded_agents:observer_panel"
+    assert res["distribution"] and 0.0 < res["distribution"]["yes"] < 1.0
 
 
 def test_grade_vs_crowd_scores_against_the_market(tmp_path):

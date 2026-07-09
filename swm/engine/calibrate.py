@@ -174,21 +174,24 @@ class GradeRegistry:
                              "resolved history (swm/eval/event_backtest.py or ForecastBench) to earn a "
                              "grade before trusting the numbers.")}
         return {"class": question_class, "grade": g["grade"], "shrink": g.get("shrink", 1.0),
+                "temperature": g.get("temperature", 1.0),
                 "abstain_confident": g["grade"] in ("ungraded", "F"),
                 "n_backtest": g.get("n"), "brier": g.get("brier"), "skill": g.get("skill"),
                 "note": ("graded on resolved history — the calibration map below is fitted, not asserted"
                          if g["grade"] not in ("ungraded", "F") else
                          "graded and NOT beating the free baseline — treat as hypothesis")}
 
-    def record(self, question_class: str, *, backtest_report: dict, preds=None, outcomes=None) -> dict:
-        """Store the grade a backtest earned (event_backtest.backtest output) + a fitted shrink."""
+    def record(self, question_class: str, *, backtest_report: dict, preds=None, outcomes=None,
+               temperature: float = 1.0) -> dict:
+        """Store the grade a backtest earned (event_backtest.backtest output) + fitted shrink + temperature."""
         skill_map = backtest_report.get("skill_vs") or backtest_report.get("skill") or {}
         skill = max(skill_map.values()) if skill_map else None   # skill vs the STRONGEST baseline beaten
         n = backtest_report.get("n", 0)
         rmse = backtest_report.get("rmse")
         brier = backtest_report.get("brier", round(rmse ** 2, 5) if isinstance(rmse, (int, float)) else None)
         entry = {"grade": _letter(skill if skill is not None else -1, n), "n": n,
-                 "brier": brier, "skill": skill, "shrink": fit_shrink(preds or [], outcomes or [])}
+                 "brier": brier, "skill": skill, "shrink": fit_shrink(preds or [], outcomes or []),
+                 "temperature": round(temperature, 3)}
         self.grades[question_class] = entry
         p = Path(self.path)
         p.parent.mkdir(parents=True, exist_ok=True)

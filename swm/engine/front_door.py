@@ -44,6 +44,9 @@ class AgentWorldModel:
     parametric: object = None              # main's parametric engine (swm.api.world_model.general_world_model)
     #                                        result object with .simulate — the NON-HUMAN stochastic fallback
     router: object = None                  # ParadigmRouter (people → agents, process → parametric)
+    event_engine: str = "panel"            # binary "will X happen?" → "panel" (base-rate-anchored observer
+    #                                        forecasters, accurate on markets) or "society" (voter segments)
+    panel_reps: int = 2                    # observer-panel resamples per lens
 
     def __post_init__(self):
         self.llm_hot = self.llm_hot or self.llm
@@ -93,10 +96,14 @@ class AgentWorldModel:
                                    f"\"{str(dossier.resolved.get('evidence', ''))[:140]}\""))
             return f.as_dict()
 
-        cast = CastingDirector(self.llm).cast(question, dossier.brief(), today=today)
-        if binary:                                        # backtest against an event market: yes/no readout
+        if binary:                                        # a binary "will X happen?" event (backtest/market)
+            if self.event_engine == "panel":
+                return self._panel(question, dossier, today)
+            cast = CastingDirector(self.llm).cast(question, dossier.brief(), today=today)
             cast.answer_space = {"type": "binary", "options": ["yes", "no"]}
             return self._society(question, cast, dossier, today, class_key="society:event")
+
+        cast = CastingDirector(self.llm).cast(question, dossier.brief(), today=today)
         if cast.process == "individual_reaction":
             person = recipient or (cast.actors[0].name if cast.actors else "")
             return self._individual(question, person, message or question, channel, today,
@@ -121,6 +128,27 @@ class AgentWorldModel:
                                                       "branch_distributions": res.branch_distributions})
         if not f.distribution:
             f.abstain, f.abstain_reason = True, "no persona decisions parsed — simulation produced nothing"
+        f.headline = build_headline(f)
+        return f.as_dict()
+
+    def _panel(self, question, dossier, today):
+        """Binary event → a base-rate-anchored observer-forecaster panel (accurate on markets)."""
+        from swm.engine.observer_panel import ObserverPanel
+        pf = ObserverPanel(self.llm_hot, reps_per_lens=self.panel_reps).forecast(
+            question, dossier, today=today)
+        cal = self.registry.calibration_for("society:event")
+        f = Forecast(question=question, mechanism="grounded_agents:observer_panel",
+                     answer_space={"type": "binary", "options": ["yes", "no"]},
+                     calibration=cal, grounding=dossier.as_report(),
+                     audit=pf.audit, n_personas=pf.n_forecasters, n_llm_calls=pf.n_calls,
+                     detail={"standing": dossier.standing})
+        if pf.p_event is None:
+            f.abstain, f.abstain_reason = True, "observer panel produced no parseable forecast"
+        else:
+            T = cal.get("temperature", 1.0)
+            from swm.engine.calibrate import apply_temperature
+            p = apply_temperature(pf.p_event, T) if T and T != 1.0 else pf.p_event
+            f.distribution = {"yes": round(p, 4), "no": round(1 - p, 4)}
         f.headline = build_headline(f)
         return f.as_dict()
 

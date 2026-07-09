@@ -54,15 +54,20 @@ class SceneDossier:
     missing: list = field(default_factory=list)      # checklist items NO passage established
     checklist: list = field(default_factory=list)    # what a domain expert said was needed
     resolved: dict = None                            # {"answer","evidence","source"} if already decided
+    standing: str = ""                               # the DECIDING SIGNAL: current front-runner / poll /
+    #                                                  market / expert read on the likely outcome + margin
     n_passages: int = 0
     coverage: float = 0.0                            # grounded checklist items / all checklist items
     abstain: bool = False
     abstain_reason: str = ""
 
-    def brief(self, max_facts=14) -> str:
-        """The grounded scene as prompt context — every line cited."""
-        lines = [f"- {f['fact']}: {f.get('detail', '')}  [{f.get('source', '?')}"
-                 f"{', ' + f['date'] if f.get('date') else ''}]" for f in self.facts[:max_facts]]
+    def brief(self, max_facts=16) -> str:
+        """The grounded scene as prompt context — every line cited, the DECIDING STANDING first."""
+        lines = []
+        if self.standing:
+            lines.append(f"- CURRENT STANDING (the deciding signal): {self.standing}")
+        lines += [f"- {f['fact']}: {f.get('detail', '')}  [{f.get('source', '?')}"
+                  f"{', ' + f['date'] if f.get('date') else ''}]" for f in self.facts[:max_facts]]
         if self.missing:
             lines.append(f"- NOT ESTABLISHED (no evidence found): {'; '.join(self.missing[:6])}")
         return "\n".join(lines)
@@ -97,6 +102,10 @@ PASSAGES:
 Return ONLY JSON:
 {{"facts": [{{"fact": "<checklist item or other key fact>", "detail": "<the grounded specifics>",
              "source": "<passage source>", "date": "<passage date if any>"}}],
+  "standing": "<the DECIDING SIGNAL from the evidence: who/which outcome is currently favored and BY HOW
+              MUCH — the poll lead, the front-runner, the money/endorsement edge, the market/expert read.
+              Be specific and directional (e.g. 'X leads the only poll 52-38; incumbent; 4:1 cash edge').
+              '' if the evidence genuinely does not indicate a favorite.>",
   "actors": ["<real named actors or concrete population segments this question turns on>"],
   "missing": ["<checklist items no passage established>"],
   "resolved": <null, or {{"answer": "<the outcome>", "evidence": "<passage text>", "source": "<source>"}}
@@ -145,6 +154,7 @@ class SceneGrounder:
         d.facts = [f for f in dist.get("facts", []) if isinstance(f, dict) and f.get("fact")]
         d.actors_hint = [str(a) for a in dist.get("actors", [])][:12]
         d.missing = [str(m) for m in dist.get("missing", [])]
+        d.standing = str(dist.get("standing", ""))[:400]
         r = dist.get("resolved")
         d.resolved = r if isinstance(r, dict) and r.get("answer") else None
 
