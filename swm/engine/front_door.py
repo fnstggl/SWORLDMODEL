@@ -24,6 +24,7 @@ from swm.engine.casting import CastingDirector
 from swm.engine.grounding import SceneGrounder
 from swm.engine.individual import IndividualSimulator
 from swm.engine.outcome import Forecast, build_headline
+from swm.engine.router import ParadigmRouter
 from swm.engine.society import SocietyRollout
 
 _ARTIFACT_WORDS = ("headline", "subject line", "tagline", "copy", "slogan", "ad ", "landing page",
@@ -40,9 +41,14 @@ class AgentWorldModel:
     registry: GradeRegistry = field(default_factory=GradeRegistry)
     search_fn: object = None               # override retrieval (fixtures in tests)
     today: str = ""
+    parametric: object = None              # main's parametric engine (swm.api.world_model.general_world_model)
+    #                                        result object with .simulate — the NON-HUMAN stochastic fallback
+    router: object = None                  # ParadigmRouter (people → agents, process → parametric)
 
     def __post_init__(self):
         self.llm_hot = self.llm_hot or self.llm
+        if self.router is None:
+            self.router = ParadigmRouter(self.llm)
 
     # ---------------- the one entry point ----------------
     def simulate(self, question: str, *, message: str = None, recipient: str = None,
@@ -57,6 +63,15 @@ class AgentWorldModel:
         # explicit individual ask (recipient + exact artifact) skips scene-casting: the scene IS the person
         if recipient and message:
             return self._individual(question, recipient, message, channel, today)
+
+        # PARADIGM ROUTE — people → agents (always); a genuinely non-human stochastic process (price/rate/
+        # record/launch) → main's parametric kernels. Backtest (binary) mode is pre-filtered to people, so it
+        # never diverts. The router is biased hard toward agents; ties and ambiguity stay here.
+        if not binary and self.parametric is not None and self.router.route(question) == "parametric":
+            out = self.parametric.simulate(question, as_of=(as_of or ""))
+            out["engine"] = "parametric_mechanism"        # main's grounded stochastic kernel, not the readout
+            out.setdefault("routed", "process→parametric (no human-behavior generative core)")
+            return out
 
         dossier = SceneGrounder(self.llm, search_fn=self.search_fn, today=today).ground(
             question, evidence=evidence)
@@ -155,6 +170,22 @@ class AgentWorldModel:
             f.abstain, f.abstain_reason = True, res.get("error", "no artifacts survived evaluation")
         f.headline = build_headline(f)
         return f.as_dict()
+
+
+def hybrid_world_model(*, branches=3, max_rounds=2, k_artifacts=5, today="", parametric=True):
+    """The recommended front door: the reasoning-agent engine for anything driven by PEOPLE (the default and
+    the vast majority of social questions), with main's parametric mechanism engine wired in ONLY as the
+    fallback for genuinely non-human stochastic processes (a price crossing a level, a launch, a record).
+    The router is biased hard toward agents — we never regress to a parametric readout for a people question.
+    `parametric=False` returns the pure agent engine (no fallback)."""
+    wm = agent_world_model(branches=branches, max_rounds=max_rounds, k_artifacts=k_artifacts, today=today)
+    if parametric:
+        try:
+            from swm.api.world_model import general_world_model
+            wm.parametric = general_world_model()          # main's grounded parametric kernels
+        except Exception:
+            wm.parametric = None                           # no fallback available → pure agents
+    return wm
 
 
 def agent_world_model(*, branches=3, max_rounds=2, k_artifacts=5, today="") -> AgentWorldModel:

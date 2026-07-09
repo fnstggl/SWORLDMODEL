@@ -27,6 +27,6 @@ Pipeline (the vision, clause by clause):
   calibrated native-typed distribution + best action (outcome.py + calibrate.py + actions.py),
   all behind one call: front_door.AgentWorldModel.simulate(question).
 """
-from swm.engine.front_door import AgentWorldModel, agent_world_model
+from swm.engine.front_door import AgentWorldModel, agent_world_model, hybrid_world_model
 
-__all__ = ["AgentWorldModel", "agent_world_model"]
+__all__ = ["AgentWorldModel", "agent_world_model", "hybrid_world_model"]

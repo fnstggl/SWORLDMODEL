@@ -31,6 +31,9 @@ class ScriptedLLM:
 
     def __call__(self, prompt):
         self.calls.append(prompt)
+        if "Classify how this question's outcome is GENERATED" in prompt:
+            proc = any(w in prompt.lower() for w in ("bitcoin", "price", "index", "s&p"))
+            return json.dumps({"kind": "process" if proc else "people", "why": "stub"})
         if "targeted web-search queries" in prompt or '"checklist"' in prompt:
             return json.dumps({"checklist": ["who is running", "current polls", "election date"],
                                "queries": ["district 9 primary candidates", "district 9 primary polls"]})
@@ -55,6 +58,8 @@ class ScriptedLLM:
         if '"probs"' in prompt:
             if '"engage"' in prompt:
                 p = {"engage": 0.6, "ignore": 0.4} if "Silence" in prompt else {"engage": 0.3, "ignore": 0.7}
+            elif '"yes"' in prompt:                        # binary event framing
+                p = {"yes": 0.6, "no": 0.4}
             else:
                 p = {"A": 0.7, "B": 0.3} if "progressive" in prompt else {"A": 0.45, "B": 0.55}
             return json.dumps({"probs": p, "statement": "leaning", "why": "fits my values"})
@@ -201,6 +206,48 @@ def test_front_door_society_output_is_native_and_flagged():
     assert res["grounding"]["detail"]                      # provenance rides along
 
 
+# ---------------------------------------------------------------- paradigm router (people → agents)
+def test_router_sends_people_questions_to_agents():
+    from swm.engine.router import ParadigmRouter
+    # a classifier that WRONGLY says "process" must be overridden by the lexical people fast-path
+    r = ParadigmRouter(llm=lambda p: '{"kind":"process","why":"wrong"}')
+    for q in ["Who will win the NY-10 primary?", "Will Thiel reply to this email?",
+              "Will the Senate confirm the nominee?", "Best headline to maximize AirPods sales?"]:
+        assert r.route(q) == "agents", q
+
+
+def test_router_sends_nonhuman_process_to_parametric():
+    from swm.engine.router import ParadigmRouter
+    r = ParadigmRouter(llm=lambda p: '{"kind":"process","why":"market price"}')
+    assert r.route("Will Bitcoin be above $80,000 by year end?") == "parametric"
+    # no-LLM lexical fallback still diverts an unmistakable price process, defaults people→agents otherwise
+    r2 = ParadigmRouter(llm=None)
+    assert r2.route("Will the S&P 500 index close above 7000?") == "parametric"
+    assert r2.route("Will voters approve the referendum?") == "agents"
+
+
+def test_router_defaults_to_agents_on_failure_or_ambiguity():
+    from swm.engine.router import ParadigmRouter
+    r = ParadigmRouter(llm=lambda p: "not json")           # classifier failure → fail toward agents
+    assert r.route("Will the coup succeed in Fooland?") == "agents"
+
+
+def test_hybrid_routes_process_to_parametric_and_people_to_agents():
+    # a stub parametric engine records if it was called
+    class Parametric:
+        called = False
+        def simulate(self, q, as_of=""):
+            Parametric.called = True
+            return {"mechanism": "diffusion", "forecast": {"p_event": 0.4}}
+    wm = AgentWorldModel(llm=ScriptedLLM(), search_fn=lambda qs, k: _passages(),
+                         parametric=Parametric(), branches=1)
+    proc = wm.simulate("Will Bitcoin be above $80,000 by year end?")
+    assert proc["engine"] == "parametric_mechanism" and Parametric.called
+    Parametric.called = False
+    ppl = wm.simulate("Who will win the district 9 primary?")     # people → agents, parametric untouched
+    assert not Parametric.called and ppl["mechanism"].startswith(("grounded_agents", "resolved"))
+
+
 # ---------------------------------------------------------------- leak-free backtest path
 def test_evidence_injection_bypasses_live_retrieval():
     # a search_fn that would EXPLODE if called proves the frozen-evidence path never touches the web
@@ -242,6 +289,31 @@ def test_grade_pooled_math_and_registry(tmp_path):
     assert rep.backtest["skill_vs"]["class_rate"] > 0        # discrimination beat the base-rate guess
     assert rep.grade_entry["grade"] in ("A", "B", "C", "F", "ungraded")
     assert GradeRegistry(path=str(tmp_path / "g.json")).grades["society:event"]["n"] == 6
+
+
+def test_grade_vs_crowd_scores_against_the_market(tmp_path):
+    from swm.engine.calibrate import GradeRegistry
+    from swm.eval.grade_vs_crowd import grade_vs_crowd
+
+    class Item:  # a minimal BacktestItem stand-in
+        def __init__(self, q, y, crowd, cat="politics"):
+            self.question, self.outcome, self.crowd_prob = q, y, crowd
+            self.category, self.cutoff_clean, self.as_of = cat, True, 1_700_000_000
+
+    items = [Item("Will candidate A win the mayoral election?", 1, 0.55),
+             Item("Will the Senate confirm the nominee?", 0, 0.5),
+             Item("Will voters approve the referendum?", 1, 0.6),
+             Item("Will Bitcoin be above $80,000?", 1, 0.5)]  # process → filtered out (not people)
+    wm = AgentWorldModel(llm=ScriptedLLM(), search_fn=lambda qs, k: _passages(), branches=1)
+    reg = GradeRegistry(path=str(tmp_path / "g.json"))
+    # inject stub evidence so no live GDELT is needed; engine yields ~0.575 YES from the scripted personas
+    rep = grade_vs_crowd(wm, items, registry=reg,
+                         evidence_fn=lambda q, ts: [Passage("stub as-of headline about the race", "gdelt_asof")],
+                         verbose=False)
+    assert rep.n_domain == 3                                # the BTC (process) item was routed out
+    assert rep.n_scored >= 1
+    assert "skill_vs_crowd" in rep.scoreboard["overall"]    # scored against the market, not just 0.5
+    assert reg.grades["society:event"]["n"] == rep.n_scored
 
 
 def test_front_door_artifact_mode_returns_ranked_real_texts():
