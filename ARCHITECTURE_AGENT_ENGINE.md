@@ -37,7 +37,30 @@ What we built, in ablation order:
 | + pooling/smoothing/standing (society, diverse) | −0.03 (recal −0.01) | — | +0.007 on crowd-unsure |
 | + observer panel + Rank-1 grounding (diverse) | recal −0.05 | **0.61** | **beats crowd on tech +0.117**, parity sports |
 | + confidence-shrink (diverse) | recal −0.17* | 0.61 | *per-category swings show n=44 is noise-limited |
-| **definitive n=127** (best config) | **recal −0.26** | **0.68** | the trustworthy number — corrects the n=44 read |
+| **definitive n=127** (pre-levers) | **recal −0.26** | **0.68** | the trustworthy number — corrects the n=44 read |
+| **n=127 + all 4 levers** (EXP-095) | **recal −0.19** | 0.68 | **crowd-unsure slice +0.089 — beats the market there**; tech −2.7→−0.19, sports −2.5→−1.19 |
+
+**The four levers (EXP-095), and what they bought.** After the n=127 verdict, the ranked levers were built
+and re-graded at n=127:
+1. **Per-domain temperature + spread/standing deferral** — the panel defers toward the base rate when the
+   standing is weak OR the forecasters disagree; each domain gets its own fitted temperature. The registry
+   *learned the right thing*: **election T=0.8 (SHARPEN — the engine is underconfident on its strength),
+   sports T=3.5 (heavy temper — a noisy contest)**.
+2. **Route contests/announcements to the parametric kernel** (leak-free, grounding off) — a sports game or
+   product launch is not social deliberation; this killed the confident-wrong tail (**tech −2.7 → −0.19,
+   sports −2.5 → −1.19**).
+3. **Multi-model-family panel** (`inner_crowd`: DeepSeek/Qwen/Llama/Mixtral/Gemma) — decorrelates errors;
+   degrades to whatever families are reachable (DeepSeek-only here without HF credit).
+4. **No-market grade** (EXP-094) — the real use case: resolved social questions with no crowd, scored vs
+   base rate + direction.
+
+**Result:** every category improved, and **the crowd-unsure slice flipped from −0.88 to +0.089 — the engine
+now beats the market exactly where a grounded model should (evidence-rich, genuinely-uncertain questions).**
+It still grades **F overall** (recal skill vs crowd −0.19) because a liquid market is near-perfect on the
+questions it is *confident* about — the expected, literature-consistent limit. The honest headline: a
+directionally-competent (0.68), domain-calibrated forecaster that **beats the crowd on the uncertain slice
+and is no longer catastrophic on any domain** — and, per the reframe below, the crowd bar was always a
+calibration check, not the product target.
 
 **The honest state (n=127, statistically powered).** Two true things, one of them a correction:
 - **Real, robust win:** direction went **0.53 → 0.68** (side-correct), and the catastrophic −6.15 is gone.
