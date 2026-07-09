@@ -37,18 +37,35 @@ What we built, in ablation order:
 | + pooling/smoothing/standing (society, diverse) | −0.03 (recal −0.01) | — | +0.007 on crowd-unsure |
 | + observer panel + Rank-1 grounding (diverse) | recal −0.05 | **0.61** | **beats crowd on tech +0.117**, parity sports |
 | + confidence-shrink (diverse) | recal −0.17* | 0.61 | *per-category swings show n=44 is noise-limited |
-| definitive **n=127** (current best config) | _see EXP-093 result_ | — | the trustworthy, noise-resistant number |
+| **definitive n=127** (best config) | **recal −0.26** | **0.68** | the trustworthy number — corrects the n=44 read |
 
-**The honest state.** We eliminated the catastrophic failure (worse-than-a-coin-flip → **near-parity with a
-strong liquid-market crowd**) and fixed direction (0.53 → 0.61), and the engine already **beats the crowd on
-evidence-rich domains (tech)**. Two honest limits remain: (a) at n≈44, per-category and per-tweak
-differences are **within noise** (±0.15 skill) — measurement power, not more tweaks, is the binding
-constraint, which is why EXP-093 runs at n=127; and (b) beating a liquid market **overall** on a general set
-is a hard bar the literature shows even frontier LLM systems mostly *match*, not beat — the defensible
-target is **match overall, beat on the evidence-rich / crowd-unsure slice**. Remaining ranked levers
-(gated behind the now-fixed direction): per-domain / two-sided calibration, a vote-share→win map for the
-society path, selective forecasting (defer on weak evidence), and multi-model-family panels to decorrelate
-errors (which is the only condition under which extremizing turns positive).
+**The honest state (n=127, statistically powered).** Two true things, one of them a correction:
+- **Real, robust win:** direction went **0.53 → 0.68** (side-correct), and the catastrophic −6.15 is gone.
+  The grounding lever worked — the engine is now a *directionally competent* forecaster.
+- **Honest correction:** with adequate power, the engine **does NOT beat or match the crowd** — Brier 0.245
+  vs crowd 0.179, recalibrated skill **−0.26**, and it **loses on the crowd-unsure slice (−0.88)**. The
+  n≈44 "near-parity" was **noise**; the n=127 run exposed the real signal, which is why we ran it.
+- **The diagnosis:** the engine is **overconfident with a confident-wrong tail** — raw held-out log-loss
+  1.0 (worse than a coin flip), rescued to 0.67 only by heavy tempering (T=3.5). Direction is right 68% of
+  the time, but when it's wrong it's *confidently* wrong (fringe party at 0.11 that hit; a product launch at
+  0.08 that shipped). It loses worst on **tech (−2.7) and sports (−2.5)** — domains that are contests /
+  announcements, not social deliberation.
+
+**What this means, honestly.** Beating a *liquid* market is the wrong bar — even frontier LLM systems only
+*match* liquid markets (Prophet Arena/ForecastBench), because the market price already aggregates the same
+news. The crowd backtest's real job here is a **calibration check**, and we are **not passing it yet**: the
+engine is overconfident. The product value is on questions *without* a liquid market (who wins before a
+market forms, will-X-reply, best-headline), where the calibration measured here transfers — so **fixing the
+overconfidence is the priority, not chasing the market number.**
+
+**Highest-value remaining levers (from the n=127 data):**
+1. **Kill the confident-wrong tail** — per-domain temperature (tech/sports need heavy tempering), and
+   defer to the base rate / crowd on the crowd-unsure slice instead of forecasting confidently.
+2. **Route contests to the parametric kernel** — sports "team vs team" and pure announcements are not
+   agent-society questions; the hybrid router should send them to main's `contest`/`arrival` mechanisms.
+3. **Multi-model-family panels** to decorrelate errors (main's `inner_crowd`) — the only condition under
+   which extremizing legitimately turns positive.
+4. **Grade on no-liquid-market questions** (the real use case) once calibration is honest.
 
 ---
 
