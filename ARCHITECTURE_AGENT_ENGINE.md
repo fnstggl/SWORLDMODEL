@@ -114,11 +114,43 @@ The grade-or-abstain wrapper is now fed by a real, leak-free backtest, not a pro
   leaderboard to enter once classes are graded — not a training set.
 - Until a class is graded, every forecast in it carries the ungraded flag. That is the point.
 
-### First grade (EXP-090, 2025-06-08/08-31/10-26 resolved political questions, leak-free)
+### First grade (EXP-090, 2025-06-08 / 08-31 / 10-26 resolved political questions, leak-free)
 
-_Filled in by the run — see `experiments/results/exp090_grade_agent_engine.json` and the PR comment._
-The engine **abstains** on genuinely thin-context questions (honest, ~⅓ of the set) and scores the rest;
-the recorded grade for `society:event` gates whether those forecasts ship confident or flagged.
+**Result: `society:event` = ungraded (did NOT beat the base rate). The harness refused to certify the
+engine — which is the point.**
+
+| metric | value |
+|---|---|
+| in-domain questions | 33 |
+| scored / abstained | **13 / 20** (60% abstained on thin frozen context) |
+| class base rate (fraction YES) | 0.154 (longshot-dominated) |
+| engine log-loss | 0.454 |
+| baseline log-loss: 0.5 / class-rate | 0.693 / 0.429 |
+| **skill vs 0.5** | **+0.344** (beats max-entropy handily) |
+| **skill vs class-rate (the real bar)** | **−0.058** (loses to "guess the base rate") |
+| Brier | 0.144 |
+| **grade** | **ungraded** → forecasts stay flagged |
+
+**Honest diagnosis (no spin):**
+- The engine extracts *real* signal (skill +0.34 vs 50/50): it correctly said Putin stays president
+  (0.03), Trump approval stays <45%, obscure mayoral longshots lose. It is not noise.
+- But it **only matches "these are longshots, guess low"** and does not beat it. It caught the easy NO
+  cases and **missed or abstained on the discriminating YES cases** — Støre becoming Norway PM (said 0.41,
+  resolved YES), Sherrill winning NJ (abstained — she was the clear favorite), Platner as ME Senate
+  nominee (abstained, resolved YES). Catching those is what beats the base rate, and it didn't.
+- **Why:** two-thirds of the miss is that the leak-free eval feeds only ForecastBench's thin frozen
+  background, which often omits the polls/standings that make a race predictable — hence 60% abstention
+  and the favorite-misses. This eval grades *reasoning on sparse context*, a floor, not the engine with
+  live grounding. **But that is not an excuse to wave away the number**: on what it did score, it did not
+  beat the skeptic. Binary "will this specific longshot happen" also plays to the engine's weakness — its
+  edge is modeling voters choosing among the *actual frontrunners*, which these questions rarely exercise.
+- **The machine worked.** grade-or-abstain did its one job: it withheld the grade, so no `society:event`
+  forecast ships as a confident number. The evaluator embarrassed the model — exactly the README thesis.
+
+**What this changes about next steps:** the right grading set for THIS engine is head-to-head races with
+real **as-of polling** in context (who wins among the actual contenders), which needs as-of-scoped
+retrieval so the frozen dossier carries the polls. Longshot binary event-markets are off the engine's
+strength and under-inform it. That, plus growing n, is the path to a real grade.
 
 ## What remains (the honest gap list)
 
