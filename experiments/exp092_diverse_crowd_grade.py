@@ -33,6 +33,9 @@ def run(limit=50, per_category=12):
     ov, recal = sb.get("overall"), sb.get("recalibrated")
     unc = (sb.get("by_crowd_confidence", {}) or {}).get("uncertain(.35-.65)")
     print(f"\n===== DIVERSE CROWD GRADE (scored={rep.n_scored}, abstained={rep.n_abstained}) =====")
+    if rep.direction:
+        print(f"  DIRECTION: side-correct {rep.direction['side_correct']}  "
+              f"agrees-with-crowd-side {rep.direction['agrees_with_crowd_side']}  (was 0.53 at the F baseline)")
     if ov:
         print(f"  Brier: model {ov['brier_model']}  vs crowd {ov['brier_crowd']}")
         print(f"  RAW    skill vs crowd {ov['skill_vs_crowd']}   skill vs base {ov['skill_vs_base']}")
@@ -50,7 +53,8 @@ def run(limit=50, per_category=12):
     print(f"  GRADE: {rep.grade_entry.get('grade')}  (T={rep.grade_entry.get('temperature')})")
 
     out = {"summary": summarize(items), "scoreboard": sb, "grade": rep.grade_entry,
-           "n_scored": rep.n_scored, "n_abstained": rep.n_abstained, "rows": rep.rows}
+           "direction": rep.direction, "n_scored": rep.n_scored, "n_abstained": rep.n_abstained,
+           "rows": rep.rows}
     Path(RESULT).parent.mkdir(parents=True, exist_ok=True)
     Path(RESULT).write_text(json.dumps(out, indent=1))
     print(f"\nwrote {RESULT}")

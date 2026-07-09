@@ -385,13 +385,13 @@ def test_grade_vs_crowd_scores_against_the_market(tmp_path):
              Item("Will Bitcoin be above $80,000?", 1, 0.5)]  # process → filtered out (not people)
     wm = AgentWorldModel(llm=ScriptedLLM(), search_fn=lambda qs, k: _passages(), branches=1)
     reg = GradeRegistry(path=str(tmp_path / "g.json"))
-    # inject stub evidence so no live GDELT is needed; engine yields ~0.575 YES from the scripted personas
+    # inject a stub as-of search factory so no live network is needed
     rep = grade_vs_crowd(wm, items, registry=reg,
-                         evidence_fn=lambda q, ts: [Passage("stub as-of headline about the race", "gdelt_asof")],
-                         verbose=False)
+                         search_fn_factory=lambda ts: (lambda qs, k=6: _passages()), verbose=False)
     assert rep.n_domain == 3                                # the BTC (process) item was routed out
     assert rep.n_scored >= 1
     assert "skill_vs_crowd" in rep.scoreboard["overall"]    # scored against the market, not just 0.5
+    assert "side_correct" in rep.direction                  # direction-accuracy metric emitted
     assert reg.grades["society:event"]["n"] == rep.n_scored
 
 

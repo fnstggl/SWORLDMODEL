@@ -118,6 +118,32 @@ def asof_google_news(question, as_of_ts, *, days_back=45, k=8):
     return out
 
 
+def asof_multi_search(queries, as_of_ts, *, days_back=45, k_each=6):
+    """Several targeted as-of queries in parallel, merged+deduped — leak-free (bounded window + pubDate
+    drop on every one). Returns [Passage]. This is the backtest's `search_fn`, so SceneGrounder can run its
+    MULTI-ROUND retrieval (plan queries → follow-up 'who is favored' queries) entirely as-of, never touching
+    live news, and the deciding-signal deepening (Rank 1) works in the backtest exactly as it does live."""
+    qs = [q for q in (queries or []) if str(q).strip()][:6] or [""]
+    with ThreadPoolExecutor(max_workers=min(6, len(qs))) as ex:
+        results = list(ex.map(lambda q: asof_google_news(q, as_of_ts, days_back=days_back, k=k_each), qs))
+    out, seen = [], set()
+    for rs in results:
+        for p in rs:
+            key = p.text[:80].lower()
+            if key not in seen:
+                seen.add(key)
+                out.append(p)
+    return out
+
+
+def asof_search_fn(as_of_ts, *, days_back=45):
+    """A `search_fn(queries, k_each) -> [Passage]` bound to an as-of timestamp — pass to simulate() for a
+    leak-free backtest so the engine's own multi-round grounding runs, never live retrieval."""
+    def fn(queries, k_each=6):
+        return asof_multi_search(queries, as_of_ts, days_back=days_back, k_each=k_each)
+    return fn
+
+
 def wikipedia(query, k=2):
     """Background/entity facts: top-matching article summaries (dated 'current' — encyclopedic)."""
     try:

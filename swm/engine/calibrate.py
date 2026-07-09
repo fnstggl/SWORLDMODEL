@@ -114,6 +114,14 @@ def apply_temperature(p: float, T: float) -> float:
     return _sig(_logit(p) / max(1e-6, T))
 
 
+def clamp_p(p: float, lo: float = 0.03, hi: float = 0.97) -> float:
+    """Aggregate-level clamp away from 0/1. The per-forecaster min_p in pool_distribution CANNOT stop a
+    unanimous panel from exponentiating to exactly 1.0, so the AGGREGATE is clamped: a finite panel is never
+    certain (the p=1.00-on-a-loser tail is ~20% of our error mass). Bounds are conservative defaults; fit
+    out-of-sample where data allows."""
+    return min(hi, max(lo, p))
+
+
 def shrink_distribution(dist: dict, lam: float) -> dict:
     """The fitted calibration map: shrink each option's logit toward ignorance by (1-lam) and renormalize.
     lam=1 leaves the sim untouched; lam<1 tempers a known-overconfident engine. Fitted, never asserted."""

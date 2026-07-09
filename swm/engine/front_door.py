@@ -56,7 +56,7 @@ class AgentWorldModel:
     # ---------------- the one entry point ----------------
     def simulate(self, question: str, *, message: str = None, recipient: str = None,
                  channel: str = "email", evidence=None, as_of: str = None,
-                 binary: bool = False) -> dict:
+                 binary: bool = False, search_fn=None) -> dict:
         """`evidence` + `as_of` drive the LEAK-FREE backtest path: supply frozen as-of context (no live
         retrieval) and date the rollout from `as_of`, so a resolved-in-the-past question is scored on the
         information available BEFORE it resolved — the no-cheat contract. `binary=True` forces a yes/no
@@ -76,7 +76,7 @@ class AgentWorldModel:
             out.setdefault("routed", "process→parametric (no human-behavior generative core)")
             return out
 
-        dossier = SceneGrounder(self.llm, search_fn=self.search_fn, today=today).ground(
+        dossier = SceneGrounder(self.llm, search_fn=(search_fn or self.search_fn), today=today).ground(
             question, evidence=evidence)
         if dossier.abstain:
             f = Forecast(question=question, mechanism="abstained", abstain=True,

@@ -54,15 +54,30 @@ class SceneDossier:
     missing: list = field(default_factory=list)      # checklist items NO passage established
     checklist: list = field(default_factory=list)    # what a domain expert said was needed
     resolved: dict = None                            # {"answer","evidence","source"} if already decided
-    standing: str = ""                               # the DECIDING SIGNAL: current front-runner / poll /
-    #                                                  market / expert read on the likely outcome + margin
+    standing: str = ""                               # rendered deciding-signal string (for prompts)
+    standing_struct: dict = None                     # {favored, margin, basis, confidence} — the DIRECTIONAL
+    #                                                  deciding signal (Rank-1 lever); None if not established
     n_passages: int = 0
+    n_rounds: int = 1                                # retrieval rounds run (deepening)
     coverage: float = 0.0                            # grounded checklist items / all checklist items
     abstain: bool = False
     abstain_reason: str = ""
 
+    @property
+    def standing_directional(self) -> bool:
+        """True iff the evidence established a DIRECTIONAL favorite with real confidence — the signal that
+        decides direction. A blank or hedged standing means the forecasters would revert to a coin flip."""
+        s = self.standing_struct or {}
+        try:
+            conf = float(s.get("confidence", 0) or 0)
+        except (TypeError, ValueError):
+            conf = 0.0
+        return bool(s.get("favored")) and str(s.get("favored")).lower() not in ("", "unknown", "unclear",
+                                                                                "toss-up", "tossup", "even") \
+            and conf >= 0.35
+
     def brief(self, max_facts=16) -> str:
-        """The grounded scene as prompt context — every line cited, the DECIDING STANDING first."""
+        """The grounded scene as prompt context — every line cited, the DIRECTIONAL STANDING first."""
         lines = []
         if self.standing:
             lines.append(f"- CURRENT STANDING (the deciding signal): {self.standing}")
@@ -90,6 +105,14 @@ real actors are, current standings/polls/money/endorsements, key dates, the stat
 targeted web-search queries to find them. Return ONLY JSON:
 {{"checklist": ["<deciding fact needed>", ...], "queries": ["<search query>", ...]}}"""
 
+_STANDING_QUERY_PROMPT = """A forecaster needs the DIRECTIONAL deciding signal for this question — who or
+which outcome is currently FAVORED, and by how much (polls, odds, front-runner, incumbency, money).
+QUESTION: {q}
+TODAY: {today}
+Give 3-4 web-search queries most likely to surface that favored-side signal as of the question date (e.g.
+'<race> latest poll', '<race> odds favorite', '<subject> frontrunner', '<event> likely to pass').
+Return ONLY JSON: {{"queries": ["...", ...]}}"""
+
 _DISTILL_PROMPT = """You are grounding a forecasting question in evidence. Use ONLY the passages below —
 if a checklist item is not established by a passage, put it in "missing"; do NOT fill it from memory.
 QUESTION: {q}
@@ -102,10 +125,13 @@ PASSAGES:
 Return ONLY JSON:
 {{"facts": [{{"fact": "<checklist item or other key fact>", "detail": "<the grounded specifics>",
              "source": "<passage source>", "date": "<passage date if any>"}}],
-  "standing": "<the DECIDING SIGNAL from the evidence: who/which outcome is currently favored and BY HOW
-              MUCH — the poll lead, the front-runner, the money/endorsement edge, the market/expert read.
-              Be specific and directional (e.g. 'X leads the only poll 52-38; incumbent; 4:1 cash edge').
-              '' if the evidence genuinely does not indicate a favorite.>",
+  "standing": {{"favored": "<which OUTCOME the evidence favors — the front-runner's name, or YES / NO for a
+               yes-no event; 'unclear' ONLY if the evidence genuinely gives no directional signal>",
+               "margin": "<how big the edge is: the poll lead, cash ratio, incumbency, base-rate strength —
+               specific (e.g. 'leads only poll 52-38, 4:1 cash, incumbent')>",
+               "basis": "<the cited evidence for it>",
+               "confidence": <0..1 how strongly the evidence points to 'favored'; a clear front-runner is
+               0.8+, a genuine toss-up 0.3, no signal 0.0>}},
   "actors": ["<real named actors or concrete population segments this question turns on>"],
   "missing": ["<checklist items no passage established>"],
   "resolved": <null, or {{"answer": "<the outcome>", "evidence": "<passage text>", "source": "<source>"}}
@@ -148,21 +174,28 @@ class SceneGrounder:
                                 f"Refusing to simulate on the LLM's imagination.")
             return d
 
-        ptxt = "\n".join(p.cite() for p in passages[:40])
-        dist = parse_json(self.llm(_DISTILL_PROMPT.format(
-            q=question, today=today, checklist=json.dumps(checklist), passages=ptxt))) or {}
-        d.facts = [f for f in dist.get("facts", []) if isinstance(f, dict) and f.get("fact")]
-        d.actors_hint = [str(a) for a in dist.get("actors", [])][:12]
-        d.missing = [str(m) for m in dist.get("missing", [])]
-        d.standing = str(dist.get("standing", ""))[:400]
-        r = dist.get("resolved")
-        d.resolved = r if isinstance(r, dict) and r.get("answer") else None
+        self._distill(d, question, today, passages, checklist)
+
+        # ROUND 2 (Rank-1 deepening): if the DIRECTIONAL deciding signal is still missing, run a targeted
+        # 'who is favored' retrieval round and re-distill on the merged evidence. This is the highest-leverage
+        # fix — without a directional standing every forecaster reverts to base rate / a coin flip. Only when
+        # we can actually retrieve more (search_fn/live or as-of search_fn), never for fixed injected evidence.
+        can_retrieve = evidence is None or callable(self.search_fn)
+        if can_retrieve and d.resolved is None and not d.standing_directional:
+            tq = parse_json(self.llm(_STANDING_QUERY_PROMPT.format(q=question, today=today))) or {}
+            follow = [str(x) for x in tq.get("queries", [])][:4]
+            if follow:
+                more = (self.search_fn or multi_search)(follow, 8)
+                seen = {p.text[:80].lower() for p in passages}
+                passages = passages + [p for p in more if p.text[:80].lower() not in seen]
+                d.n_passages = len(passages)
+                d.n_rounds = 2
+                self._distill(d, question, today, passages, checklist)
 
         n_check = max(1, len(checklist))
         established = sum(1 for c in checklist
                           if any(c.lower()[:24] in (f["fact"] + " " + f.get("detail", "")).lower()
                                  for f in d.facts))
-        # distiller may phrase facts differently; credit the larger of keyed match and fact count
         d.coverage = max(established, min(len(d.facts), n_check) - len(d.missing) * 0) / n_check
         d.coverage = min(1.0, max(d.coverage, (n_check - len(d.missing)) / n_check if d.missing else
                                   min(1.0, len(d.facts) / n_check)))
@@ -172,3 +205,22 @@ class SceneGrounder:
                                 f"{'; '.join(d.missing[:4]) or 'most of the checklist'}). A simulation run "
                                 f"on ungrounded facts would be theater — abstaining.")
         return d
+
+    def _distill(self, d, question, today, passages, checklist):
+        """Distill passages → facts + STRUCTURED directional standing (mutates d)."""
+        ptxt = "\n".join(p.cite() for p in passages[:40])
+        dist = parse_json(self.llm(_DISTILL_PROMPT.format(
+            q=question, today=today, checklist=json.dumps(checklist), passages=ptxt))) or {}
+        d.facts = [f for f in dist.get("facts", []) if isinstance(f, dict) and f.get("fact")]
+        d.actors_hint = [str(a) for a in dist.get("actors", [])][:12]
+        d.missing = [str(m) for m in dist.get("missing", [])]
+        st = dist.get("standing")
+        if isinstance(st, dict) and st.get("favored"):
+            d.standing_struct = st
+            d.standing = (f"{st.get('favored')} favored ({st.get('margin', '')}); {st.get('basis', '')} "
+                          f"[confidence {st.get('confidence', '?')}]")[:400]
+        elif isinstance(st, str) and st.strip():           # tolerate a free-text standing
+            d.standing = st[:400]
+            d.standing_struct = None
+        r = dist.get("resolved")
+        d.resolved = r if isinstance(r, dict) and r.get("answer") else None

@@ -22,7 +22,7 @@ from __future__ import annotations
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 
-from swm.engine.calibrate import pool_distribution
+from swm.engine.calibrate import clamp_p, pool_distribution
 from swm.engine.grounding import parse_json
 
 # distinct forecasting LENSES — each a genuinely different prior/process, to decorrelate a single model's errors
@@ -89,5 +89,6 @@ class ObserverPanel:
         if not results:
             return PanelForecast(p_event=None, n_forecasters=0, n_calls=len(jobs))
         pooled = pool_distribution([{"yes": r["p"], "no": 1 - r["p"]} for r in results])
-        return PanelForecast(p_event=pooled["yes"], n_forecasters=len(results),
+        # aggregate clamp: a finite panel is never CERTAIN (per-persona min_p can't stop unanimity → 1.0)
+        return PanelForecast(p_event=clamp_p(pooled["yes"]), n_forecasters=len(results),
                              audit=results[:12], n_calls=len(jobs))
