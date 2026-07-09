@@ -161,6 +161,55 @@ def pull_polymarket(target=1500, min_volume=2000, page=500):
     return items
 
 
+_CONFLICT_TERMS = ["war", "ceasefire", "invade", "invasion", "coup", "sanctions", "military strike", "nuclear",
+                   "annex", "hostage", "protest", "election", "regime", "airstrike", "troops", "border conflict",
+                   "peace deal", "referendum", "assassination", "missile"]
+
+
+def pull_conflict_corpus(target=140, min_bettors=6, path="experiments/results/conflict_corpus.json"):
+    """A LARGER geopolitics/conflict slice — search Manifold for conflict terms, keep resolved binary markets
+    with a real crowd that are cutoff-clean AND name a detectable country (the slice where GDELT/structural
+    grounding could matter), reconstruct the crowd prob at a fair as-of lead. Cached to `path`."""
+    import urllib.parse
+
+    from pathlib import Path
+
+    from swm.api.gdelt_social import detect_country
+    seen, items = set(), []
+    for term in _CONFLICT_TERMS:
+        try:
+            batch = _get(f"https://api.manifold.markets/v0/search-markets?term={urllib.parse.quote(term)}"
+                         f"&sort=most-popular&filter=resolved&contractType=BINARY&limit=100")
+        except Exception:
+            continue
+        for m in batch:
+            if (m["id"] in seen or not m.get("isResolved") or m.get("resolution") not in ("YES", "NO")
+                    or m.get("uniqueBettorCount", 0) < min_bettors or not m.get("resolutionTime")
+                    or not m.get("createdTime")):
+                continue
+            seen.add(m["id"])
+            created, resolved = m["createdTime"], m["resolutionTime"]
+            if resolved <= created or (resolved // 1000) <= CUTOFF_TS:      # cutoff-clean only
+                continue
+            if detect_country(m["question"])[0] is None:                    # must name a country to ground it
+                continue
+            as_of = int(created + AS_OF_FRAC * (resolved - created))
+            cp = _manifold_crowd_prob(m["id"], as_of)
+            if cp is None:
+                continue
+            items.append(BacktestItem(
+                qid=f"mf_{m['id']}", platform="manifold", question=m["question"].strip(),
+                outcome=1 if m["resolution"] == "YES" else 0, as_of=as_of // 1000,
+                resolve_ts=resolved // 1000, crowd_prob=round(cp, 4), n_crowd=int(m["uniqueBettorCount"]),
+                category=_cat(m["question"]), cutoff_clean=True))
+            if len(items) >= target:
+                break
+        if len(items) >= target:
+            break
+    Path(path).write_text(json.dumps([asdict(it) for it in items], indent=0))
+    return items
+
+
 def build_corpus(*, manifold=3000, polymarket=1500, path="experiments/results/backtest_corpus.json"):
     items = pull_manifold(target=manifold) + pull_polymarket(target=polymarket)
     seen, uniq = set(), []
