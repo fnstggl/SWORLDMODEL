@@ -147,7 +147,35 @@ returns Sep–Oct campaign coverage *including a poll* and zero outcome-leaking 
 fallback where reachable. No paid key required; a keyed overlay (Serper/Tavily/Brave) is still auto-detected
 if present. This is what lets EXP-091 grade the engine against the crowd live (see below).
 
-### First grade (EXP-090, 2025-06-08 / 08-31 / 10-26 resolved political questions, leak-free)
+### Crowd grade (EXP-091) — `society:event` = **F**. Real as-of grounding, real market baseline.
+
+With keyless as-of Google News grounding, the engine finally forecasts (only 3/20 abstain, down from ~60%
+on thin context) — and loses badly to the market on 17 resolved political questions:
+
+| metric | model | crowd |
+|---|---|---|
+| Brier | **0.295** | 0.094 |
+| log-loss | 2.264 | 0.316 |
+| skill vs base | −2.74 | +0.48 |
+| **skill vs crowd** | **−6.15** | — |
+
+**GRADE: F** (fitted shrink dropped to 0.4 — the calibrator learned the engine is overconfident and tempers
+it hard). Two failure modes, from the rows: **confident-and-wrong extremes** (p=1.00 on Massie losing;
+p=0.57 on Restore Britain, which the crowd correctly priced at 1%) and **underconfidence on clear
+favorites** (Brad Lander NY-10: engine 0.54 vs crowd 0.90 vs outcome YES; Letlow 0.22 vs 0.93 YES). The
+grounding fix was real (abstention 60%→15%) but it exposed the true bottleneck: **the engine is
+badly calibrated and under-discriminating versus a money-market crowd.** grade-or-abstain did its job — it
+stamped F, so nothing ships confident. This is the honest floor to improve from.
+
+Caveats: n=17, a few confident-wrong rows dominate the log-loss; the corpus mixes obscure by-elections with
+cleaner races; the fitted shrink is in-sample (should move to a held-out split). But the direction is
+unambiguous — the engine does not beat the crowd, and isn't close yet.
+
+**The frontier is now calibration, not grounding:** never emit 0/1 from finite persona samples; translate
+as-of poll leads into proportionally stronger frontrunner support; fit the shrink out-of-sample; add value
+only where the crowd is unsure. Grounding works; the reasoning-to-probability mapping is the weak link.
+
+### Earlier grade (EXP-090, 2025-06-08 / 08-31 / 10-26 resolved political questions, frozen ForecastBench context)
 
 **Result: `society:event` = ungraded (did NOT beat the base rate). The harness refused to certify the
 engine — which is the point.**
