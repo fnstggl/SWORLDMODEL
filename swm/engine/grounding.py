@@ -1,0 +1,153 @@
+"""Scene grounding — retrieve the facts that DEFINE the situation, and abstain loudly when we can't.
+
+Stage 0 of the vision. Before anything is simulated, the engine must know what the scene actually is: for
+"who wins the NY-10 primary" that means the actual candidates, the incumbent, polls, money, endorsements,
+the election date. The old path shredded the question into latent constructs ("name_recognition = 0.5 ±
+0.23, source=retrieval") and threw away the one hard fact the web returned. This module does the opposite:
+
+  1. The LLM writes a CHECKLIST of the deciding facts (what would a domain expert need to know?) and the
+     targeted queries to find them.
+  2. The retrieval stack fetches real, dated passages (swm/engine/retrieval.py).
+  3. The LLM DISTILLS passages → facts, each with a citation. It is instructed to mark a checklist item
+     MISSING rather than fill it from its own knowledge — a fact without a passage is not a fact here.
+  4. The result is a SceneDossier with a coverage score and an explicit `missing` list. If the deciding
+     facts are missing, `abstain=True` with a human-readable reason — LOUD, never a neutral prior dressed
+     as evidence.
+
+The distiller also checks whether the question is ALREADY RESOLVED by the evidence (an election that
+already happened, a decision already announced). A world model that doesn't notice the world already
+answered the question is theater; `resolved` short-circuits the simulation with provenance.
+"""
+from __future__ import annotations
+
+import json
+from dataclasses import dataclass, field
+
+from swm.engine.retrieval import multi_search
+
+
+def parse_json(txt):
+    """Lenient JSON from an LLM reply (dict as-is; strip fences; first {...} block)."""
+    import re
+    if isinstance(txt, dict):
+        return txt
+    if not isinstance(txt, str):
+        return None
+    s = re.sub(r"```(?:json)?|```", "", txt).strip()
+    try:
+        return json.loads(s)
+    except ValueError:
+        m = re.search(r"\{.*\}", s, flags=re.S)
+        if m:
+            try:
+                return json.loads(m.group(0))
+            except ValueError:
+                return None
+        return None
+
+
+@dataclass
+class SceneDossier:
+    question: str
+    facts: list = field(default_factory=list)        # [{"fact", "detail", "source", "date"}]
+    actors_hint: list = field(default_factory=list)  # real actor names/segments surfaced by the evidence
+    missing: list = field(default_factory=list)      # checklist items NO passage established
+    checklist: list = field(default_factory=list)    # what a domain expert said was needed
+    resolved: dict = None                            # {"answer","evidence","source"} if already decided
+    n_passages: int = 0
+    coverage: float = 0.0                            # grounded checklist items / all checklist items
+    abstain: bool = False
+    abstain_reason: str = ""
+
+    def brief(self, max_facts=14) -> str:
+        """The grounded scene as prompt context — every line cited."""
+        lines = [f"- {f['fact']}: {f.get('detail', '')}  [{f.get('source', '?')}"
+                 f"{', ' + f['date'] if f.get('date') else ''}]" for f in self.facts[:max_facts]]
+        if self.missing:
+            lines.append(f"- NOT ESTABLISHED (no evidence found): {'; '.join(self.missing[:6])}")
+        return "\n".join(lines)
+
+    def as_report(self) -> dict:
+        return {"n_passages": self.n_passages, "coverage": round(self.coverage, 3),
+                "abstain": self.abstain, "abstain_reason": self.abstain_reason,
+                "resolved": self.resolved, "missing": self.missing,
+                "detail": [{"fact": f["fact"], "grounded": True, "source": f.get("source"),
+                            "date": f.get("date")} for f in self.facts] +
+                          [{"fact": m, "grounded": False, "source": None} for m in self.missing]}
+
+
+_PLAN_PROMPT = """A forecasting engine must ground this question in real current facts before simulating it.
+QUESTION: {q}
+TODAY: {today}
+
+List (a) the DECIDING FACTS a domain expert would need (the facts the outcome actually turns on — who the
+real actors are, current standings/polls/money/endorsements, key dates, the state of play), and (b) 3-6
+targeted web-search queries to find them. Return ONLY JSON:
+{{"checklist": ["<deciding fact needed>", ...], "queries": ["<search query>", ...]}}"""
+
+_DISTILL_PROMPT = """You are grounding a forecasting question in evidence. Use ONLY the passages below —
+if a checklist item is not established by a passage, put it in "missing"; do NOT fill it from memory.
+QUESTION: {q}
+TODAY: {today}
+CHECKLIST (deciding facts needed): {checklist}
+
+PASSAGES:
+{passages}
+
+Return ONLY JSON:
+{{"facts": [{{"fact": "<checklist item or other key fact>", "detail": "<the grounded specifics>",
+             "source": "<passage source>", "date": "<passage date if any>"}}],
+  "actors": ["<real named actors or concrete population segments this question turns on>"],
+  "missing": ["<checklist items no passage established>"],
+  "resolved": <null, or {{"answer": "<the outcome>", "evidence": "<passage text>", "source": "<source>"}}
+              if the passages show the question's outcome has ALREADY been decided/announced>}}"""
+
+
+@dataclass
+class SceneGrounder:
+    """question → SceneDossier via checklist-planned retrieval + evidence-only distillation."""
+    llm: object                                  # callable(prompt) -> text (DeepSeek/Anthropic/...)
+    search_fn: object = None                     # callable(queries:list, k_each) -> [Passage]; default stack
+    min_coverage: float = 0.4                    # below this, the deciding facts are not grounded → abstain
+    min_passages: int = 3
+    today: str = ""
+
+    def ground(self, question: str) -> SceneDossier:
+        today = self.today or __import__("time").strftime("%Y-%m-%d")
+        plan = parse_json(self.llm(_PLAN_PROMPT.format(q=question, today=today))) or {}
+        checklist = [str(c) for c in plan.get("checklist", [])][:10]
+        queries = [str(q) for q in plan.get("queries", [])][:6] or [question]
+
+        passages = (self.search_fn or multi_search)(queries, 8)
+        d = SceneDossier(question=question, checklist=checklist, n_passages=len(passages))
+        if len(passages) < self.min_passages:
+            d.abstain = True
+            d.missing = checklist
+            d.abstain_reason = (f"GROUNDING STARVED: retrieval returned {len(passages)} passages for "
+                                f"{len(queries)} queries — cannot establish the deciding facts. "
+                                f"Refusing to simulate on the LLM's imagination.")
+            return d
+
+        ptxt = "\n".join(p.cite() for p in passages[:40])
+        dist = parse_json(self.llm(_DISTILL_PROMPT.format(
+            q=question, today=today, checklist=json.dumps(checklist), passages=ptxt))) or {}
+        d.facts = [f for f in dist.get("facts", []) if isinstance(f, dict) and f.get("fact")]
+        d.actors_hint = [str(a) for a in dist.get("actors", [])][:12]
+        d.missing = [str(m) for m in dist.get("missing", [])]
+        r = dist.get("resolved")
+        d.resolved = r if isinstance(r, dict) and r.get("answer") else None
+
+        n_check = max(1, len(checklist))
+        established = sum(1 for c in checklist
+                          if any(c.lower()[:24] in (f["fact"] + " " + f.get("detail", "")).lower()
+                                 for f in d.facts))
+        # distiller may phrase facts differently; credit the larger of keyed match and fact count
+        d.coverage = max(established, min(len(d.facts), n_check) - len(d.missing) * 0) / n_check
+        d.coverage = min(1.0, max(d.coverage, (n_check - len(d.missing)) / n_check if d.missing else
+                                  min(1.0, len(d.facts) / n_check)))
+        if d.coverage < self.min_coverage and d.resolved is None:
+            d.abstain = True
+            d.abstain_reason = (f"DECIDING FACTS NOT GROUNDED (coverage {d.coverage:.0%}; missing: "
+                                f"{'; '.join(d.missing[:4]) or 'most of the checklist'}). A simulation run "
+                                f"on ungrounded facts would be theater — abstaining.")
+        return d

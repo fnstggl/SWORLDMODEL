@@ -141,11 +141,19 @@ class WorldModel:
                 "events": [{"name": e.name, "time": e.time, "labels": e.labels()} for e in calendar.events]}
 
 
-def general_world_model(*, compile_fn=None, n=8000, ground=True, validate=True) -> WorldModel:
-    """The recommended front door: compile ANY question → auto-GROUND its high-leverage variable values from
-    live evidence (the DeepSeek+web general router, no feeds required) → run the calibrated simulation. This is
-    the end-to-end default — a user asks anything, and the simulation runs on the real current world rather
-    than the LLM's guessed state. Falls back to un-grounded compilation if no LLM key is configured."""
+def general_world_model(*, compile_fn=None, n=8000, ground=True, validate=True, engine="agents"):
+    """The recommended front door. DEFAULT = the grounded-agent engine (`swm/engine/`): ground the scene
+    from real retrieval (abstain loudly when the deciding facts can't be established), cast the REAL actors,
+    let LLM-reasoned personas interact over real dated rounds, and return a native-typed, grade-or-abstain
+    distribution. See swm/engine/__init__.py for the constitution this engine is bound by.
+
+    `engine="legacy"` returns the old structural-compiler path (mechanism menu + calibrated_readout). It is
+    DEPRECATED for question-answering: on open questions it decomposes into abstract variables with
+    LLM-guessed values and coefficients — the exact failure mode (confident, well-narrated, uncalibrated)
+    the project exists to kill. It remains only for reproducing old experiments (EXP-057..088)."""
+    if engine == "agents" and compile_fn is None:     # an explicit compile_fn is a legacy opt-in
+        from swm.engine.front_door import agent_world_model
+        return agent_world_model()
     from swm.api.compiler import StructuralCompiler
     if compile_fn is None:
         from swm.api.deepseek_backend import default_chat_fn
