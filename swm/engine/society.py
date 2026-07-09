@@ -25,6 +25,7 @@ from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 
 from swm.engine.agents import decide, draw_variants, slice_private_facts
+from swm.engine.calibrate import pool_distribution
 
 
 def _dates(horizon_days, cadence_days, max_rounds, today=""):
@@ -100,12 +101,10 @@ class SocietyRollout:
                 voted = [(p, r) for p, r in zip(personas, results) if r is not None]
                 if not voted:
                     break
-                agg = {o: 0.0 for o in options}
-                for p, r in voted:
-                    for o in options:
-                        agg[o] += p.weight * r["probs"].get(o, 0.0)
-                z = sum(agg.values()) or 1.0
-                agg = {o: v / z for o, v in agg.items()}
+                # LOG-LINEAR opinion pool (weighted geometric mean), not a linear mean — agreement sharpens,
+                # a dissenter widens; a single certain persona can't force 0/1 (finite-sample smoothing).
+                agg = pool_distribution([r["probs"] for _, r in voted],
+                                        [p.weight for p, _ in voted])
                 last = (voted, agg)
                 if ri < len(dates) - 1:                     # build the next round's public world
                     reading = _sample_reading(brng, agg)

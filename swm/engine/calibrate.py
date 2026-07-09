@@ -36,6 +36,84 @@ def _sig(z):
     return 1.0 / (1.0 + math.exp(-max(-35.0, min(35.0, z))))
 
 
+def pool_distribution(persona_dists, weights=None, *, temperature: float = 1.0, eps: float = 1e-3,
+                      min_p: float = 0.02) -> dict:
+    """Aggregate many persona forecasts into one distribution by a WEIGHTED LOG-LINEAR OPINION POOL
+    (geometric mean of probabilities), the principled aggregator — NOT the naive linear mean.
+
+    Why: a linear mean of independent LLM forecasts regresses toward the uniform (a handful of wishy-washy
+    0.5s drags a real signal to the middle — our 'underconfident on clear favorites' failure). The log-linear
+    pool multiplies the odds, so genuine AGREEMENT sharpens the result (5 personas all leaning YES → a
+    confident YES) while a real dissenter widens it. `temperature` (>1 tempers, <1 sharpens) is the
+    OUT-OF-SAMPLE-fitted recalibration knob (fit_temperature), never a guess. A per-forecast floor `min_p`
+    keeps a single certain persona from forcing 0/1 (finite-sample smoothing)."""
+    if not persona_dists:
+        return {}
+    options = list(persona_dists[0].keys())
+    weights = weights if weights is not None else [1.0] * len(persona_dists)
+    wsum = sum(weights) or 1.0
+    logp = {o: 0.0 for o in options}
+    for d, w in zip(persona_dists, weights):
+        for o in options:
+            p = min(1.0, max(min_p, d.get(o, 0.0)))       # smooth each persona away from 0
+            logp[o] += w * math.log(max(eps, p))
+    logp = {o: (v / wsum) / max(1e-6, temperature) for o, v in logp.items()}
+    m = max(logp.values())
+    ex = {o: math.exp(v - m) for o, v in logp.items()}
+    z = sum(ex.values()) or 1.0
+    return {o: v / z for o, v in ex.items()}
+
+
+def fit_temperature(preds, outcomes, *, grid=None) -> float:
+    """Temperature scaling in logit space, fit to MINIMIZE held-out log-loss. T>1 tempers an overconfident
+    engine, T<1 sharpens an underconfident one — the data decides which. Binary preds (p for YES)."""
+    if grid is None:
+        grid = [0.5, 0.65, 0.8, 0.9, 1.0, 1.15, 1.35, 1.6, 2.0, 2.6, 3.5]
+
+    def loss(T):
+        tot = 0.0
+        for p, y in zip(preds, outcomes):
+            q = _sig(_logit(p) / T)
+            q = min(1 - 1e-6, max(1e-6, q))
+            tot += -(y * math.log(q) + (1 - y) * math.log(1 - q))
+        return tot / max(1, len(preds))
+    return min(grid, key=loss) if preds else 1.0
+
+
+def crossfit_temperature(preds, outcomes, *, k: int = 5) -> dict:
+    """OUT-OF-SAMPLE recalibration: fit the temperature on k-1 folds, measure improvement on the held-out
+    fold, average. Reports the honest (not in-sample-optimistic) log-loss before/after and the mean T.
+    This is what makes the calibration claim real — the shrink/temperature is validated on data it did not
+    see, exactly like the grade itself."""
+    n = len(preds)
+    if n < k * 2:
+        T = fit_temperature(preds, outcomes)
+        return {"temperature": T, "n": n, "note": "n too small for cross-fit; in-sample T"}
+    idx = list(range(n))
+    folds = [idx[i::k] for i in range(k)]                 # deterministic strided folds (no RNG)
+    before = after = 0.0
+    Ts = []
+    for f in folds:
+        test = set(f)
+        tr_p = [preds[i] for i in idx if i not in test]
+        tr_y = [outcomes[i] for i in idx if i not in test]
+        T = fit_temperature(tr_p, tr_y)
+        Ts.append(T)
+        for i in f:
+            p = min(1 - 1e-6, max(1e-6, preds[i]))
+            q = min(1 - 1e-6, max(1e-6, _sig(_logit(p) / T)))
+            y = outcomes[i]
+            before += -(y * math.log(p) + (1 - y) * math.log(1 - p))
+            after += -(y * math.log(q) + (1 - y) * math.log(1 - q))
+    return {"temperature": round(sum(Ts) / len(Ts), 3), "n": n,
+            "logloss_before": round(before / n, 4), "logloss_after": round(after / n, 4),
+            "improved": after < before}
+
+
+def apply_temperature(p: float, T: float) -> float:
+    return _sig(_logit(p) / max(1e-6, T))
+
+
 def shrink_distribution(dist: dict, lam: float) -> dict:
     """The fitted calibration map: shrink each option's logit toward ignorance by (1-lam) and renormalize.
     lam=1 leaves the sim untouched; lam<1 tempers a known-overconfident engine. Fitted, never asserted."""

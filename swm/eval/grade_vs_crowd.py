@@ -88,11 +88,21 @@ def grade_vs_crowd(wm, items, *, limit=40, question_class="society:event",
     rep.n_scored = len(rows)
     rep.rows = rows
     if rows:
+        from swm.engine.calibrate import apply_temperature, crossfit_temperature
+        preds = [r["p_model"] for r in rows]
+        ys = [r["outcome"] for r in rows]
         rep.scoreboard = score(rows)
-        ov = rep.scoreboard["overall"]
+        # OUT-OF-SAMPLE recalibration: fit temperature on held-out folds, apply, and re-score honestly.
+        # This is the non-optimistic calibration number — the T is validated on data it did not see.
+        cal = crossfit_temperature(preds, ys)
+        T = cal["temperature"]
+        recal_rows = [{**r, "p_model": apply_temperature(r["p_model"], T)} for r in rows]
+        rep.scoreboard["recalibrated"] = {**score(recal_rows)["overall"], "temperature": T,
+                                          "crossfit": cal}
         rep.grade_entry = registry.record(
             question_class,
-            backtest_report={"skill_vs": {"crowd": ov.get("skill_vs_crowd") or -1}, "n": len(rows),
-                             "rmse": ov["brier_model"] ** 0.5},
-            preds=[r["p_model"] for r in rows], outcomes=[r["outcome"] for r in rows])
+            backtest_report={"skill_vs": {"crowd": rep.scoreboard["recalibrated"].get("skill_vs_crowd") or -1},
+                             "n": len(rows), "rmse": rep.scoreboard["recalibrated"]["brier_model"] ** 0.5},
+            preds=[apply_temperature(p, T) for p in preds], outcomes=ys)
+        rep.grade_entry["temperature"] = T                # stored so the live engine applies the same recal
     return rep

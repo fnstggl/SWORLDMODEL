@@ -189,6 +189,32 @@ def test_graded_class_carries_fitted_shrink(tmp_path):
     assert cal["grade"] == "A" and not cal["abstain_confident"] and 0.4 <= cal["shrink"] <= 1.0
 
 
+def test_log_linear_pool_downweights_wishy_washy_and_never_hits_0_1():
+    from swm.engine.calibrate import pool_distribution
+    # the key property: two decisive YES-leaners + one uninformative 0.5 → the pool should be MORE decisive
+    # than the linear mean (0.70), because a 0.5 carries no information in log-odds space (fixes the
+    # 'a few wishy-washy 0.5s drag a real signal to the middle' failure).
+    pooled = pool_distribution([{"yes": 0.8, "no": 0.2}, {"yes": 0.8, "no": 0.2}, {"yes": 0.5, "no": 0.5}])
+    assert pooled["yes"] > 0.70
+    # a lone certain persona cannot force 1.0 (finite-sample smoothing via min_p)
+    certain = pool_distribution([{"yes": 1.0, "no": 0.0}] * 3)
+    assert certain["yes"] < 0.99 and certain["no"] > 0.0
+    # a real dissenter widens it back toward the middle
+    split = pool_distribution([{"yes": 0.9, "no": 0.1}, {"yes": 0.1, "no": 0.9}])
+    assert 0.3 < split["yes"] < 0.7
+
+
+def test_temperature_recalibration_out_of_sample():
+    from swm.engine.calibrate import apply_temperature, crossfit_temperature, fit_temperature
+    # an OVERCONFIDENT forecaster (says 0.95 but is right only ~60%) → T>1 should be chosen (tempering)
+    preds = [0.95, 0.95, 0.95, 0.95, 0.95, 0.05, 0.05, 0.05, 0.05, 0.05] * 3
+    ys = [1, 1, 1, 0, 0, 0, 0, 0, 1, 1] * 3
+    assert fit_temperature(preds, ys) > 1.0
+    assert apply_temperature(0.95, 2.0) < 0.95              # tempering pulls toward 0.5
+    cf = crossfit_temperature(preds, ys)
+    assert cf["temperature"] > 1.0 and "logloss_after" in cf
+
+
 def test_shrink_tempers_toward_ignorance():
     d = shrink_distribution({"A": 0.9, "B": 0.1}, 0.5)
     assert 0.5 < d["A"] < 0.9 and abs(sum(d.values()) - 1) < 1e-9
