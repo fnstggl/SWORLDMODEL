@@ -106,7 +106,8 @@ def test_resolved_by_evidence_short_circuits():
     wm = AgentWorldModel(llm=LLM(), search_fn=lambda qs, k: _passages())
     res = wm.simulate("who wins the district 9 primary?")
     assert res["mechanism"] == "resolved_by_evidence"
-    assert res["distribution"] == {"A": 1.0} and "ALREADY RESOLVED" in res["headline"]
+    # 0.97, not 1.0 — a projection isn't a certification; a wrong 1.0 is a log-loss catastrophe
+    assert res["distribution"] == {"A": 0.97} and "ALREADY RESOLVED" in res["headline"]
 
 
 # ---------------------------------------------------------------- casting: native answer space

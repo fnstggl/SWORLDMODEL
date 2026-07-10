@@ -116,8 +116,10 @@ class AgentWorldModel:
             return f.as_dict()
 
         if dossier.resolved:                              # the world already answered — report it, cited
+            # 0.97, not 1.0: even an "already resolved per the evidence" read carries misread/mislabel risk
+            # (a projection isn't a certification), and a wrong 1.0 is a log-loss catastrophe in scoring.
             f = Forecast(question=question, mechanism="resolved_by_evidence",
-                         distribution={str(dossier.resolved["answer"]): 1.0},
+                         distribution={str(dossier.resolved["answer"]): 0.97},
                          grounding=dossier.as_report(),
                          calibration={"grade": "resolved", "abstain_confident": False,
                                       "note": "outcome already decided per the cited evidence"},
