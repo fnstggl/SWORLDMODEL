@@ -57,6 +57,8 @@ class SceneDossier:
     standing: str = ""                               # rendered deciding-signal string (for prompts)
     standing_struct: dict = None                     # {favored, margin, basis, confidence} — the DIRECTIONAL
     #                                                  deciding signal (Rank-1 lever); None if not established
+    relations: list = field(default_factory=list)    # GraphRAG-light: [{"a","rel","b"}] entity edges from
+    #                                                  the evidence — the actor structure for multi-actor Qs
     n_passages: int = 0
     n_rounds: int = 1                                # retrieval rounds run (deepening)
     coverage: float = 0.0                            # grounded checklist items / all checklist items
@@ -83,6 +85,28 @@ class SceneDossier:
             lines.append(f"- CURRENT STANDING (the deciding signal): {self.standing}")
         lines += [f"- {f['fact']}: {f.get('detail', '')}  [{f.get('source', '?')}"
                   f"{', ' + f['date'] if f.get('date') else ''}]" for f in self.facts[:max_facts]]
+        for r in self.relations[:8]:                     # the actor graph (GraphRAG-light), common knowledge
+            lines.append(f"- RELATION: {r.get('a')} —{r.get('rel')}→ {r.get('b')}")
+        if self.missing:
+            lines.append(f"- NOT ESTABLISHED (no evidence found): {'; '.join(self.missing[:6])}")
+        return "\n".join(lines)
+
+    def partitioned_brief(self, idx: int, *, keep: float = 0.6, max_facts: int = 16) -> str:
+        """Evidence-PARTITIONED scene for forecaster #idx: the DECIDING standing stays common knowledge
+        (hiding it caused the underconfident-favorite failure), but each forecaster reads a DIFFERENT
+        rotated slice of the supporting facts. Same-model forecasters fed identical briefs make identical
+        mistakes; partitioning the periphery decorrelates their errors for free — the poor man's
+        multi-family panel (the real one is proxy-blocked here)."""
+        lines = []
+        if self.standing:
+            lines.append(f"- CURRENT STANDING (the deciding signal): {self.standing}")
+        facts = self.facts[:max_facts]
+        if facts:
+            n = max(1, int(len(facts) * keep))
+            start = (idx * 3) % len(facts)
+            rotated = (facts[start:] + facts[:start])[:n]
+            lines += [f"- {f['fact']}: {f.get('detail', '')}  [{f.get('source', '?')}"
+                      f"{', ' + f['date'] if f.get('date') else ''}]" for f in rotated]
         if self.missing:
             lines.append(f"- NOT ESTABLISHED (no evidence found): {'; '.join(self.missing[:6])}")
         return "\n".join(lines)
@@ -133,6 +157,8 @@ Return ONLY JSON:
                "confidence": <0..1 how strongly the evidence points to 'favored'; a clear front-runner is
                0.8+, a genuine toss-up 0.3, no signal 0.0>}},
   "actors": ["<real named actors or concrete population segments this question turns on>"],
+  "relations": [{{"a": "<entity>", "rel": "<endorsed|opposes|funds|allied_with|employs|rivals|...>",
+                 "b": "<entity>"}}],
   "missing": ["<checklist items no passage established>"],
   "resolved": <null, or {{"answer": "<the outcome>", "evidence": "<passage text>", "source": "<source>"}}
               if the passages show the question's outcome has ALREADY been decided/announced>}}"""
@@ -213,6 +239,8 @@ class SceneGrounder:
             q=question, today=today, checklist=json.dumps(checklist), passages=ptxt))) or {}
         d.facts = [f for f in dist.get("facts", []) if isinstance(f, dict) and f.get("fact")]
         d.actors_hint = [str(a) for a in dist.get("actors", [])][:12]
+        d.relations = [r for r in dist.get("relations", []) or []
+                       if isinstance(r, dict) and r.get("a") and r.get("b")][:12]
         d.missing = [str(m) for m in dist.get("missing", [])]
         st = dist.get("standing")
         if isinstance(st, dict) and st.get("favored"):

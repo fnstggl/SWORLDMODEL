@@ -175,6 +175,69 @@ def test_individual_mixture_is_scenario_specific():
     assert len(res["detail"]["per_state"]) == 2            # the p comes FROM the latent states
 
 
+# ---------------------------------------------------------------- the outcome flywheel (the moat)
+def test_flywheel_log_resolve_refit_closes_the_loop(tmp_path):
+    from swm.engine.calibrate import GradeRegistry
+    from swm.engine.flywheel import FlywheelLog
+    fw = FlywheelLog(path=str(tmp_path / "log.jsonl"))
+    # 1. LOG: an overconfident stream (says 0.9/0.1, right only ~70% of the time)
+    rids = []
+    for i in range(20):
+        rids.append(fw.log(question=f"will thing {i} happen?", question_class="society:event",
+                           domain="deliberation", mechanism="panel", p=0.9 if i % 2 == 0 else 0.1,
+                           as_of="2026-01-01", resolve_by="2026-02-01", ts=1_700_000_000 + i))
+    assert len(fw.load()) == 20 and all(r.status == "open" for r in fw.load())
+    # idempotent: re-logging the same forecast doesn't duplicate
+    fw.log(question="will thing 0 happen?", question_class="society:event", domain="deliberation",
+           mechanism="panel", p=0.9, as_of="2026-01-01", ts=1_700_000_000)
+    assert len(fw.load()) == 20
+    # 2. RESOLVE: outcomes land (70% agree with the forecast side)
+    for i, rid in enumerate(rids):
+        said_yes = i % 2 == 0
+        correct = i % 10 < 7
+        fw.record_outcome(rid, 1.0 if (said_yes == correct) else 0.0)
+    assert all(r.status == "resolved" for r in fw.load())
+    # 3. REFIT: the registry's temperature updates from the PROPRIETARY stream (T>1: it learned to temper)
+    reg = GradeRegistry(path=str(tmp_path / "grades.json"))
+    rep = fw.refit(reg, min_n=10)
+    assert rep["classes"]["society:event"]["n"] == 20
+    assert rep["classes"]["society:event"]["temperature"] > 1.0
+    assert reg.temperature_for("society:event") > 1.0      # the live engine now reads the refit T
+
+
+def test_flywheel_auto_resolve_from_evidence(tmp_path):
+    from swm.engine.flywheel import FlywheelLog
+    fw = FlywheelLog(path=str(tmp_path / "log.jsonl"))
+    rid = fw.log(question="Will candidate A win the election?", question_class="society:event",
+                 domain="deliberation", mechanism="panel", p=0.8, resolve_by="2020-01-01",
+                 ts=1_500_000_000)
+    out = fw.auto_resolve(
+        lambda p: json.dumps({"resolved": True, "outcome": "yes", "evidence": "A won [news]"}),
+        search_fn=lambda qs, k=6: _passages(4))
+    assert out == {"checked": 1, "resolved": 1}
+    r = {x.rid: x for x in fw.load()}[rid]
+    assert r.status == "resolved" and r.outcome == 1.0 and r.resolution_source.startswith("auto:")
+
+
+def test_front_door_logs_forecasts_to_flywheel(tmp_path):
+    from swm.engine.flywheel import FlywheelLog
+    fw = FlywheelLog(path=str(tmp_path / "log.jsonl"))
+    wm = AgentWorldModel(llm=ScriptedLLM(), search_fn=lambda qs, k: _passages(), branches=2, flywheel=fw)
+    wm.simulate("who wins the district 9 primary?")
+    recs = fw.load()
+    assert len(recs) == 1 and recs[0].p is not None        # the emitted forecast is in the stream
+    assert recs[0].status == "open" and recs[0].resolve_by == "2026-08-15"   # real resolution date captured
+
+
+def test_partitioned_brief_keeps_standing_common_but_slices_differ():
+    from swm.engine.grounding import SceneDossier
+    d = SceneDossier(question="q", standing="A favored (poll +14)",
+                     facts=[{"fact": f"f{i}", "detail": f"d{i}"} for i in range(8)])
+    b0, b1 = d.partitioned_brief(0), d.partitioned_brief(1)
+    assert "A favored" in b0 and "A favored" in b1          # deciding signal is COMMON knowledge
+    assert b0 != b1                                          # but the peripheral evidence slices differ
+
+
 # ---------------------------------------------------------------- calibration: grade-or-abstain
 def test_ungraded_class_ships_flagged_not_confident(tmp_path):
     reg = GradeRegistry(path=str(tmp_path / "grades.json"))
@@ -221,6 +284,66 @@ def test_shrink_tempers_toward_ignorance():
     d = shrink_distribution({"A": 0.9, "B": 0.1}, 0.5)
     assert 0.5 < d["A"] < 0.9 and abs(sum(d.values()) - 1) < 1e-9
     assert fit_shrink([0.99, 0.99], [0, 0]) < 1.0          # overconfident+wrong => shrink chosen
+
+
+# ---------------------------------------------------------------- diffusion / virality class
+def test_diffusion_cascade_native_output():
+    from swm.engine.diffusion import DiffusionSimulator
+    from swm.engine.grounding import SceneDossier
+    import json as _j
+    def llm(prompt):
+        if '"archetypes"' in prompt:
+            return _j.dumps({"archetypes": [
+                {"name": "influencers", "share": 0.1, "reach_mult": 8.0, "sketch": "big accounts"},
+                {"name": "fans", "share": 0.5, "reach_mult": 1.0, "sketch": "engaged fans"},
+                {"name": "lurkers", "share": 0.4, "reach_mult": 0.4, "sketch": "rarely post"}]})
+        if '"amplify"' in prompt:
+            eager = "influencers" in prompt or "fans" in prompt or "engaged" in prompt or "big accounts" in prompt
+            early = "EARLY" in prompt
+            return _j.dumps({"amplify": eager and early, "sentiment": 0.5, "why": "fits my feed"})
+        return "{}"
+    d = SceneDossier(question="q", facts=[{"fact": "context", "detail": "x"}])
+    df = DiffusionSimulator(llm, n_nodes=150, n_worlds=60, reps_per_archetype=4).simulate("BIG NEWS", d)
+    assert set(df.reach) == {"p10", "p50", "p90"} and df.reach["p90"] >= df.reach["p10"]
+    assert df.narrative_leaders and df.narrative_leaders[0]["archetype"] in ("influencers", "fans")
+    assert df.inflection_round is not None
+    # late decay was learned from sampled decisions, not assumed: p_late < p_early for eager archetypes
+    eager = next(a for a in df.archetypes if a["name"] == "fans")
+    assert eager["p_late"] < eager["p_early"]
+
+
+def test_front_door_routes_viral_questions_to_diffusion():
+    class LLM(ScriptedLLM):
+        def __call__(self, prompt):
+            import json as _j
+            if '"archetypes"' in prompt:
+                return _j.dumps({"archetypes": [
+                    {"name": "core", "share": 0.6, "reach_mult": 2.0, "sketch": "core audience"},
+                    {"name": "casual", "share": 0.4, "reach_mult": 0.5, "sketch": "casuals"}]})
+            if '"amplify"' in prompt:
+                return _j.dumps({"amplify": "EARLY" in prompt, "sentiment": 0.2, "why": "novel"})
+            return super().__call__(prompt)
+    wm = AgentWorldModel(llm=LLM(), search_fn=lambda qs, k: _passages())
+    res = wm.simulate("Will this announcement go viral?", message="We are launching X")
+    assert res["mechanism"] == "grounded_agents:diffusion"
+    assert "reach>0.2" in res["distribution"] and res["detail"]["narrative_leaders"]
+    assert "hypothesis" in res["headline"]                 # ungraded class ships flagged
+
+
+def test_grounding_extracts_relations_graph():
+    class LLM(ScriptedLLM):
+        def __call__(self, prompt):
+            if "grounding a forecasting question" in prompt:
+                return json.dumps({"facts": [{"fact": "f", "detail": "d", "source": "s"}],
+                                   "actors": [], "missing": [],
+                                   "relations": [{"a": "AOC", "rel": "endorsed", "b": "Candidate A"}],
+                                   "standing": {"favored": "Candidate A", "margin": "poll +10",
+                                                "basis": "poll", "confidence": 0.8}})
+            return super().__call__(prompt)
+    g = SceneGrounder(LLM(), search_fn=lambda qs, k: _passages())
+    d = g.ground("who wins?")
+    assert d.relations == [{"a": "AOC", "rel": "endorsed", "b": "Candidate A"}]
+    assert "AOC —endorsed→ Candidate A" in d.brief()       # the actor graph reaches every agent
 
 
 # ---------------------------------------------------------------- front door: one mechanism

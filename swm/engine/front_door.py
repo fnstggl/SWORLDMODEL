@@ -29,6 +29,8 @@ from swm.engine.society import SocietyRollout
 
 _ARTIFACT_WORDS = ("headline", "subject line", "tagline", "copy", "slogan", "ad ", "landing page",
                    "best message", "best email")
+_DIFFUSION_WORDS = ("go viral", "viral", "spread", "how far will", "reach how many", "shares will",
+                    "retweet", "repost", "word of mouth", "buzz", "trend on", "amplif")
 
 
 @dataclass
@@ -50,6 +52,8 @@ class AgentWorldModel:
     model_llms: dict = None                # {family: callable} multi-family panel backends (Lever 3); None ⇒
     #                                        single-model. Genuinely different pretraining decorrelates errors.
     route_contests: bool = True            # Lever 2: send contests/announcements to the parametric kernel
+    flywheel: object = None                # FlywheelLog — the outcome-data moat. When set, every emitted
+    #                                        (non-abstained) forecast is logged for later resolution + refit.
 
     def __post_init__(self):
         self.llm_hot = self.llm_hot or self.llm
@@ -57,9 +61,32 @@ class AgentWorldModel:
             self.router = ParadigmRouter(self.llm)
 
     # ---------------- the one entry point ----------------
-    def simulate(self, question: str, *, message: str = None, recipient: str = None,
-                 channel: str = "email", evidence=None, as_of: str = None,
-                 binary: bool = False, search_fn=None) -> dict:
+    def simulate(self, question: str, **kw) -> dict:
+        """The public call. Runs the simulation, then — the FLYWHEEL — logs every non-abstained forecast
+        to the outcome stream so its eventual real resolution re-calibrates the engine (the moat)."""
+        res = self._simulate(question, **kw)
+        if self.flywheel is not None and not res.get("abstain") and res.get("distribution"):
+            try:
+                dist = res["distribution"]
+                p = dist.get("yes", dist.get("responds"))
+                p = float(p) if p is not None else float(max(dist.values()))
+                cast = (res.get("detail") or {}).get("cast") or {}
+                self.flywheel.log(
+                    question=question, question_class=(res.get("calibration") or {}).get("class", "society:event"),
+                    domain=(res.get("detail") or {}).get("domain", "deliberation"),
+                    mechanism=res.get("mechanism", "?"), p=p, distribution=dist,
+                    as_of=kw.get("as_of") or self.today, resolve_by=cast.get("resolve_by", ""),
+                    engine_config={"branches": self.branches, "panel_reps": self.panel_reps,
+                                   "event_engine": self.event_engine},
+                    grounding={k: (res.get("grounding") or {}).get(k)
+                               for k in ("coverage", "n_passages", "abstain")})
+            except Exception:                              # logging must never break a forecast
+                pass
+        return res
+
+    def _simulate(self, question: str, *, message: str = None, recipient: str = None,
+                  channel: str = "email", evidence=None, as_of: str = None,
+                  binary: bool = False, search_fn=None) -> dict:
         """`evidence` + `as_of` drive the LEAK-FREE backtest path: supply frozen as-of context (no live
         retrieval) and date the rollout from `as_of`, so a resolved-in-the-past question is scored on the
         information available BEFORE it resolved — the no-cheat contract. `binary=True` forces a yes/no
@@ -110,6 +137,11 @@ class AgentWorldModel:
             cast = CastingDirector(self.llm).cast(question, dossier.brief(), today=today)
             cast.answer_space = {"type": "binary", "options": ["yes", "no"]}
             return self._society(question, cast, dossier, today, class_key="society:event")
+
+        # DIFFUSION class: "how far does this spread / will it go viral" — the class where interaction IS
+        # the outcome. Needs the actual artifact (message=) or the question's own content description.
+        if any(w in question.lower() for w in _DIFFUSION_WORDS):
+            return self._diffusion(question, message or question, dossier, today)
 
         cast = CastingDirector(self.llm).cast(question, dossier.brief(), today=today)
         if cast.process == "individual_reaction":
@@ -184,6 +216,36 @@ class AgentWorldModel:
                      calibration=self.registry.calibration_for("society:event"),
                      detail={"routed": f"{kind}→parametric kernel (not social deliberation)"})
         f.headline = build_headline(f)
+        return f.as_dict()
+
+    def _diffusion(self, question, artifact, dossier, today):
+        """Spread/virality → grounded-archetype cascade simulation (native: reach distribution, narrative
+        leaders, inflection). Ships flagged until the class earns a grade on real cascade data."""
+        from swm.engine.diffusion import DiffusionSimulator
+        df = DiffusionSimulator(self.llm_hot, llm=self.llm).simulate(artifact, dossier)
+        cal = self.registry.calibration_for("diffusion:reach")
+        f = Forecast(question=question, mechanism="grounded_agents:diffusion",
+                     answer_space={"type": "reach_distribution",
+                                   "options": list(df.p_over.keys())},
+                     distribution={f"reach>{t}": p for t, p in df.p_over.items()},
+                     calibration=cal, grounding=dossier.as_report(), audit=df.archetypes,
+                     n_personas=len(df.archetypes), n_llm_calls=df.n_calls,
+                     detail={"reach": df.reach, "narrative_leaders": df.narrative_leaders,
+                             "inflection_round": df.inflection_round, "sentiment": df.sentiment,
+                             "n_worlds": df.n_worlds,
+                             "assumption": "heavy-tailed follower graph; propensities are SAMPLED reasoned "
+                                           "decisions on the actual content, early vs late exposure"})
+        if not df.reach:
+            f.abstain, f.abstain_reason = True, "audience identification failed — no cascade simulated"
+            f.headline = build_headline(f)
+        else:
+            lead = df.narrative_leaders[0]["archetype"] if df.narrative_leaders else "?"
+            f.headline = (f"median reach {df.reach['p50']:.0%} of the plausible audience "
+                          f"(p10 {df.reach['p10']:.0%} – p90 {df.reach['p90']:.0%}); "
+                          f"P(>20% reach) = {df.p_over.get('0.2', 0):.0%}; narrative leader: {lead}; "
+                          f"inflection ~round {df.inflection_round}")
+            if cal.get("abstain_confident"):
+                f.headline += f"  [{cal.get('grade', 'ungraded')} — hypothesis, not a calibrated forecast]"
         return f.as_dict()
 
     def _individual(self, question, person, message, channel, today, dossier=None):
@@ -281,7 +343,7 @@ def multi_family_backends(*, temperature=0.5, max_tokens=500):
 
 
 def agent_world_model(*, branches=3, max_rounds=2, k_artifacts=5, today="",
-                      multi_family=False) -> AgentWorldModel:
+                      multi_family=False, log_forecasts=False) -> AgentWorldModel:
     """The recommended front door. DeepSeek backends: cold (t=0.2) for grounding/casting, hot (t=0.9)
     for persona decisions. `multi_family=True` wires the cross-family observer panel (Lever 3). Raises if no
     LLM key is configured: this engine does not degrade to heuristics, it refuses (constitution rule 2)."""
@@ -295,5 +357,9 @@ def agent_world_model(*, branches=3, max_rounds=2, k_artifacts=5, today="",
         raise RuntimeError("no LLM backend configured (DEEPSEEK_API_KEY / HF_TOKEN) — the agent engine "
                            "refuses to run ungrounded heuristics in place of reasoning")
     model_llms = multi_family_backends() if multi_family else None
+    fw = None
+    if log_forecasts:                                      # the outcome flywheel: log → resolve → refit
+        from swm.engine.flywheel import FlywheelLog
+        fw = FlywheelLog()
     return AgentWorldModel(llm=cold, llm_hot=hot, branches=branches, max_rounds=max_rounds,
-                           k_artifacts=k_artifacts, today=today, model_llms=model_llms)
+                           k_artifacts=k_artifacts, today=today, model_llms=model_llms, flywheel=fw)

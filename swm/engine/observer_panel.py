@@ -89,15 +89,21 @@ class ObserverPanel:
     #                                                extremizing is statistically valid. Degrades gracefully
     #                                                to whatever families are actually reachable.
 
+    partition_evidence: bool = True                # each forecaster reads a DIFFERENT slice of the periphery
+    #                                                (standing stays common) — decorrelates same-model errors
+
     def forecast(self, question, dossier, *, today="", standing_confidence=None) -> PanelForecast:
-        scene = dossier.brief()
         backends = self.model_llms or {"deepseek": self.llm_hot}
         # a forecaster = (lens × model family), resampled reps_per_lens — diversity of REASONING × of MODEL
-        jobs = [(lens, fam, fn) for lens in LENSES for fam, fn in backends.items()
-                for _ in range(self.reps_per_lens)]
+        jobs = [(i, lens, fam, fn) for i, (lens, fam) in enumerate(
+                    (ln, fm) for ln in LENSES for fm in backends)
+                for fn in [backends[fam]] for _ in range(self.reps_per_lens)]
+        common_scene = dossier.brief()
 
         def one(job):
-            lens, fam, fn = job
+            i, lens, fam, fn = job
+            scene = (dossier.partitioned_brief(i) if self.partition_evidence and dossier.facts
+                     else common_scene)
             r = parse_json(fn(_PROMPT.format(lens=lens[1], q=question, today=today, scene=scene)))
             if not r:
                 return None
