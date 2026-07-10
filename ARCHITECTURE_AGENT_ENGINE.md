@@ -72,6 +72,26 @@ loop the category (per MiroFish's own community) lacks. Also new: the **diffusio
 cascades on a heavy-tailed follower graph → reach distribution, narrative leaders, inflection; ships
 flagged ungraded) and **GraphRAG-light** entity relations in every dossier.
 
+**The decisive ablation (EXP-097) — does the SIMULATION earn its keep? `swm/eval/ablation.py`.** Every other
+lever (retrieval, prompting, calibration, routing) can improve the stack without the *society simulation*
+itself being justified. The defining architectural claim is narrower: for the questions the product answers,
+does running a grounded agent PANEL beat simply asking the same DeepSeek model the same question with the
+**same retrieved evidence**, once? We ran a controlled, leak-free, same-inputs comparison — five arms per
+question (FULL panel / RAW no-evidence / EVIDENCE single grounded call / BASE_RATE / PARAMETRIC), grounded
+once so every evidence-using arm sees the identical as-of dossier — over **n=44 resolved deliberation
+questions** across 6 ForecastBench political rounds (post-cutoff, bounded before/after grounding).
+
+Per-arm Brier: **FULL 0.095** · EVIDENCE 0.098 · BASE_RATE 0.129 · RAW 0.142. The head-to-head that IS the
+thesis — **FULL vs EVIDENCE on the 33 questions both answered: Brier 0.098 vs 0.107, full better on 58% of
+rows.** So the simulation *does* add value over the same model + same evidence — but the margin is **small
+(−0.0095 Brier) and n=33 is not yet statistically decisive.** The honest read: the defining claim is
+**directionally validated, not yet proven.** FULL is the single best arm and beats the naked model (RAW) by
+a wide, robust margin (0.095 vs 0.142) — grounding + panel clearly matters — but the *marginal* lift of the
+society machinery *over one grounded call* is real-but-thin and needs a larger forward n (and likely the
+multi-actor / diffusion classes, where a panel should help most) to move from "adds value" to "adds value we
+can bet on." This is the experiment the project was missing; it now exists, is leak-free, and runs FORWARD
+(lock all five before resolution) for the standing validation.
+
 **Result:** every category improved, and **the crowd-unsure slice flipped from −0.88 to +0.089 — the engine
 now beats the market exactly where a grounded model should (evidence-rich, genuinely-uncertain questions).**
 It still grades **F overall** (recal skill vs crowd −0.19) because a liquid market is near-perfect on the
