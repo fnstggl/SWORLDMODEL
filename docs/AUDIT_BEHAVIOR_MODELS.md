@@ -134,6 +134,47 @@ that REFUSE unless a real GPU runner is injected** — they never fabricate a de
 **quarantined** in `swm/experimental/` (a test pins that the production engine never imports it). This is the
 apparatus for a fair same-inputs A/B once a GPU is available.
 
+## Labeled evaluations — BUILT + DeepSeek baselines RUN here (OSim column added on the pod)
+
+A realism probe can't show OSim *predicts* better (hard rule). So there are now three labeled harnesses on
+real human outcomes; the DeepSeek arm was run in-sandbox, the OSim arm runs on the GPU pod with the same
+prompts. **These committed baselines are the numbers OSim must beat.**
+
+**1. Economic-game distributional alignment** — BehaviorBench `moblab/game_behavior` (real human choices).
+Metric = Wasserstein-1 between the model's sampled choices and the human distribution (lower = more human).
+`swm/eval/behavior_eval.py`, `experiments/behavior_pilot/behaviorbench_eval.py`.
+
+| game | human mean | DeepSeek mean | W1_norm (↓) |
+|---|---|---|---|
+| bomb (risk) | 33.0 | **77.7** | 0.586 |
+| dictator (fairness) | 36.5 | 40.0 | 0.092 |
+| ultimatum_responder | 37.9 | 28.8 | 0.199 |
+| **mean** | | | **0.293** |
+
+The **bomb game is a smoking gun**: DeepSeek "opens 78 boxes" where real humans open 33 — far more
+risk-seeking than people. *This* is precisely the human-misalignment a behavior-trained model should fix; it's
+the cleanest place for OSim to show measurable value.
+
+**2. Headline-click ranking** — Upworthy randomized A/B (real clicks; CC-BY). Metric = precision@1 (picked the
+empirical CTR winner) + pairwise accuracy. `swm/eval/response_datasets.py`,
+`experiments/behavior_pilot/upworthy_eval.py`.
+
+| arm | precision@1 (random 0.34) | pairwise acc | n tests |
+|---|---|---|---|
+| DeepSeek | **0.56** | 0.652 | 50 |
+
+DeepSeek already beats random (0.56 vs 0.34) at picking the winning headline — OSim must clear 0.56 to earn
+the engagement claim.
+
+**3. Individual reply + delay** — Enron (leak-free thread reconstruction, time-forward split);
+`load_enron_reply_delay` + `time_forward_split` in `swm/eval/response_datasets.py`. Loader built + tested;
+needs the ~1.7 GB Enron maildir (download on the pod) → metrics: reply-occurrence Brier/log-loss + response-
+delay MAE. This is OSim's core claimed strength (#1).
+
+**On the pod, add the OSim arm** (`OSIM_ENDPOINT` set): re-run all three; OSim only earns "keep" if it lowers
+W1_norm (esp. on bomb), raises Upworthy precision@1 above 0.56, and/or beats DeepSeek on Enron reply — on
+these untouched labels.
+
 ## PART D/E/G — the pilot (SCRIPTED, not run — no GPU here)
 
 `experiments/behavior_pilot/` contains the runnable plan (see its README):

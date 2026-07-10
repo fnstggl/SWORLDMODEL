@@ -833,3 +833,31 @@ def test_behavior_adapter_disabled_by_default():
         assert False, "disabled adapter must refuse"
     except BackendUnavailable:
         pass
+
+
+# ---------------------------------------------------------------- labeled behavior-eval harnesses (offline)
+def test_behavior_eval_num_parse_and_wasserstein():
+    from swm.eval.behavior_eval import _num, _wasserstein1
+    assert _num("[33]") == 33.0 and _num("I would open 40 boxes") == 40.0 and _num("nope") is None
+    assert _wasserstein1([1, 2, 3], [1, 2, 3]) == 0.0
+    assert _wasserstein1([10, 10, 10], [0, 0, 0]) > 5    # far distributions → large distance
+
+
+def test_upworthy_ranking_scorer():
+    from swm.eval.response_datasets import score_headline_ranking
+    tests = [
+        {"variants": [{"headline": "A", "ctr": 0.10}, {"headline": "B", "ctr": 0.05}], "winner_headline": "A"},
+        {"variants": [{"headline": "C", "ctr": 0.02}, {"headline": "D", "ctr": 0.08}], "winner_headline": "D"},
+    ]
+    perfect = score_headline_ranking(tests, lambda hs: sorted(hs, key={"A": 0, "B": 1, "C": 1, "D": 0}.get))
+    assert perfect["precision_at_1"] == 1.0 and perfect["pairwise_accuracy"] == 1.0
+    worst = score_headline_ranking(tests, lambda hs: list(reversed(
+        sorted(hs, key={"A": 0, "B": 1, "C": 1, "D": 0}.get))))
+    assert worst["precision_at_1"] == 0.0
+
+
+def test_enron_time_forward_split_is_leak_free():
+    from swm.eval.response_datasets import time_forward_split
+    recs = [{"date_ts": t} for t in [5, 1, 4, 2, 3]]
+    tr, te = time_forward_split(recs, test_frac=0.4)
+    assert max(r["date_ts"] for r in tr) < min(r["date_ts"] for r in te)   # no future in train
