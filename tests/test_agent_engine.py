@@ -744,3 +744,60 @@ def test_dataset_registry_is_valid_and_honest():
     for cap, refs in reg["product_capability_to_dataset"].items():
         for r in refs:
             assert r in ids, f"capability {cap} references unknown dataset {r}"
+
+
+# ---------------------------------------------------------------- PART C: forward-locked multi-arm ledger
+def _fake_pred(ev_hash, commit="abc123", model="deepseek-chat", as_of="2025-06-08"):
+    return {
+        "_meta": {"evidence_hash": ev_hash, "commit": commit, "model": model, "as_of": as_of, "abstain": False},
+        "base_rate": {"p": 0.1, "spend": {"calls": 0, "cost_usd": 0.0, "seconds": 0.0}},
+        "grounded_1shot": {"p": 0.3, "spend": {"calls": 1, "cost_usd": 0.001, "seconds": 1.0}},
+        "full": {"p": 0.8, "spend": {"calls": 10, "cost_usd": 0.01, "seconds": 8.0}},
+    }
+
+
+def test_forward_ledger_versions_on_config_change_and_is_append_only(tmp_path):
+    from swm.engine.forward_ledger import ForwardLedger
+    led = ForwardLedger(path=str(tmp_path / "fwd.jsonl"))
+    p = _fake_pred("ev1")
+    v1 = led.lock_from_prediction(p, question="Will X win?", question_class="society:event",
+                                  domain="deliberation", config={"panel_reps": 2})
+    # re-locking the SAME config is idempotent (no new version)
+    v1b = led.lock_from_prediction(p, question="Will X win?", question_class="society:event",
+                                   domain="deliberation", config={"panel_reps": 2})
+    assert v1 == v1b and len(led.load()) == 1
+    # a changed model (or commit/evidence/config) MUST write a NEW version, never overwrite
+    p2 = _fake_pred("ev1", model="deepseek-v9")
+    v2 = led.lock_from_prediction(p2, question="Will X win?", question_class="society:event",
+                                  domain="deliberation", config={"panel_reps": 2})
+    assert v2 != v1 and len(led.load()) == 2
+    # a changed config likewise
+    v3 = led.lock_from_prediction(p, question="Will X win?", question_class="society:event",
+                                  domain="deliberation", config={"panel_reps": 4})
+    assert v3 not in (v1, v2) and len(led.load()) == 3
+
+
+def test_forward_ledger_resolve_and_score_and_eligibility(tmp_path):
+    from swm.engine.forward_ledger import ForwardLedger
+    led = ForwardLedger(path=str(tmp_path / "fwd.jsonl"))
+    qids = []
+    for i in range(10):
+        y = i % 2
+        p = _fake_pred(f"ev{i}", as_of="2025-06-08")
+        p["full"]["p"] = 0.85 if y else 0.15                       # 'full' is well-aligned
+        p["grounded_1shot"]["p"] = 0.6 if y else 0.4               # weaker
+        led.lock_from_prediction(p, question=f"Q{i}?", question_class="society:event",
+                                 domain="deliberation", config={"panel_reps": 2})
+        from swm.engine.forward_ledger import _qid
+        qids.append((_qid(f"Q{i}?", "2025-06-08"), y))
+    assert len(led.open_rows()) == 10
+    for qid, y in qids:
+        led.resolve(qid, float(y), source="test")
+    assert len(led.open_rows()) == 0
+    sc = led.score(min_n=4)
+    assert sc["n_resolved"] == 10
+    # per-class best architecture identified; 'full' should beat base_rate on Brier
+    best = sc["per_class_best_architecture"]["society:event"]
+    assert best["arm_brier"]["full"] < best["arm_brier"]["base_rate"]
+    # resolved rows are eligible for calibration until flagged reported
+    assert len(led.refit_eligible()) == 10
