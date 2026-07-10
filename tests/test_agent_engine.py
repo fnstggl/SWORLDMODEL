@@ -692,3 +692,31 @@ def test_report_marginals_computes_paired_stats():
     ens = [m for m in rep["marginals"] if m["hi"] == "grounded_ens"][0]
     assert ens.get("insufficient")                                 # all-None arm → not scored, not a crash
     assert rep["spend"]["full"]["mean_calls"] == 10.0
+
+
+# ---------------------------------------------------------------- PART I: TRIBE adapter is quarantined
+def test_experimental_is_quarantined_from_engine():
+    """The production engine must NEVER import the experimental (unvalidated, non-commercial) modules."""
+    import pathlib
+    import re
+    engine_dir = pathlib.Path(__file__).resolve().parent.parent / "swm" / "engine"
+    for f in engine_dir.glob("*.py"):
+        src = f.read_text()
+        assert not re.search(r"import\s+swm\.experimental|from\s+swm\.experimental", src), \
+            f"{f.name} imports the quarantined swm.experimental package"
+
+
+def test_tribe_adapter_refuses_by_default_and_blocks_commercial_use():
+    from swm.experimental.tribe_adapter import TribeAdapter, TribeUnavailable
+    ad = TribeAdapter()                                            # disabled by default
+    assert not ad.available()
+    try:
+        ad.features_for("Silence, engineered.")
+        assert False, "disabled adapter must refuse"
+    except TribeUnavailable:
+        pass
+    try:
+        TribeAdapter(commercial_use=True)                          # license forbids commercial use
+        assert False, "commercial_use=True must be rejected"
+    except TribeUnavailable:
+        pass
