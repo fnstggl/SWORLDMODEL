@@ -609,3 +609,86 @@ def test_front_door_artifact_mode_returns_ranked_real_texts():
     assert res["ranked_artifacts"] and res["ranked_artifacts"][0]["text"]   # ACTUAL texts, ranked
     assert res["answer_space"]["type"] == "artifacts"
     assert "p_engage" in res["ranked_artifacts"][0]
+
+
+# ---------------------------------------------------------------- PART A/B: guardrails + tiered harness
+def test_human_questions_never_route_to_logistic_compiler():
+    """AUDIT_PART_A §4 guardrail: the banned pattern (logistic-over-invented-variables, swm/api/compiler.py)
+    is reachable only via the parametric path. Pin that core HUMAN-COGNITION questions route to AGENTS and
+    classify as DELIBERATION — so they hit the panel/society, never _parametric_binary or route→parametric."""
+    from swm.engine.router import ParadigmRouter
+    r = ParadigmRouter(llm=None)                                   # lexical, people-biased (production default)
+    human = [
+        "Will Zohran Mamdani win the 2025 NYC mayoral election?",
+        "Will the Senate confirm the nominee before recess?",
+        "Will Graham Platner be the Democratic nominee for Senate?",
+        "Will Pierre Poilievre become Prime Minister of Canada?",
+        "Will Congress pass the budget reconciliation bill?",
+        "Will Peter Thiel reply to this cold email?",
+        "Will customers adopt the new subscription tier?",
+    ]
+    for q in human:
+        assert r.route(q) == "agents", f"{q!r} routed away from agents"
+        assert r.binary_kind(q) == "deliberation", f"{q!r} misclassified as {r.binary_kind(q)}"
+
+
+def test_counting_llm_meters_calls_and_tokens():
+    from swm.eval.instrument import CountingLLM, Meter, evidence_hash
+    m = Meter()
+    llm = CountingLLM(lambda p: "x" * 40, m)
+    llm("a" * 80); llm("b" * 80)
+    assert m.calls == 2 and m.tokens_in == 40 and m.tokens_out == 20    # 80//4=20 in each, 40//4=10 out each
+    assert m.cost_usd() >= 0.0
+    assert evidence_hash("same") == evidence_hash("same") != evidence_hash("other")
+
+
+def test_stratify_sample_covers_every_stratum():
+    from swm.eval.tiered_ablation import stratify_sample
+    items = [{"g": g, "i": i} for g in ("a", "b", "c") for i in range(10)]
+    picked = stratify_sample(items, lambda it: it["g"], 0.2, seed=1)
+    got = {items[i]["g"] for i in picked}
+    assert got == {"a", "b", "c"}                                   # each stratum represented
+    assert 3 <= len(picked) <= 12                                   # ~20% of 30, at least 1 per stratum
+
+
+def test_grounded_ensemble_pools_and_filters_none():
+    """B3 pools N grounded direct forecasts log-linearly; identical inputs pool to themselves; bad parses
+    drop rather than poison the pool."""
+    from swm.eval.tiered_ablation import _grounded_ensemble
+
+    class Stub:
+        def __init__(self): self.n = 0
+        def __call__(self, prompt):
+            self.n += 1
+            return "" if self.n == 2 else json.dumps({"p": 0.7})    # one unparseable call drops out
+    p = _grounded_ensemble(Stub(), "q", "2025-01-01", _DossierStub(), n=4)
+    assert abs(p - 0.7) < 1e-6                                      # pool of 0.7's is 0.7, None ignored
+
+
+class _DossierStub:
+    abstain = False
+    facts = []
+    def brief(self): return "EVIDENCE: A leads B 52-41."
+
+
+def test_report_marginals_computes_paired_stats():
+    """Synthetic runs where 'full' is uniformly better than 'base_rate' → marginal must show hi_better with a
+    permutation p and a bootstrap CI; an all-abstain arm yields insufficient-n, not a crash."""
+    from swm.eval.tiered_ablation import report_marginals
+    runs = []
+    for i in range(20):
+        y = i % 2
+        runs.append({
+            "outcome": y,
+            "base_rate": {"p": 0.5, "spend": {"calls": 0, "cost_usd": 0.0, "seconds": 0.0}},
+            "grounded_1shot": {"p": 0.6 if y else 0.4, "spend": {"calls": 1, "cost_usd": 0.001, "seconds": 1.0}},
+            "full": {"p": 0.9 if y else 0.1, "spend": {"calls": 10, "cost_usd": 0.01, "seconds": 8.0}},
+            "grounded_ens": {"p": None, "spend": {"calls": 0, "cost_usd": 0.0, "seconds": 0.0}},
+        })
+    rep = report_marginals(runs)
+    assert rep["arms"]["full"]["brier"] < rep["arms"]["base_rate"]["brier"]
+    whole = [m for m in rep["marginals"] if m["hi"] == "full" and m["lo"] == "grounded_1shot"][0]
+    assert whole["hi_better"] and 0.0 <= whole["p_perm"] <= 1.0 and len(whole["ci95"]) == 2
+    ens = [m for m in rep["marginals"] if m["hi"] == "grounded_ens"][0]
+    assert ens.get("insufficient")                                 # all-None arm → not scored, not a crash
+    assert rep["spend"]["full"]["mean_calls"] == 10.0
