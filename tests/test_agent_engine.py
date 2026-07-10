@@ -861,3 +861,102 @@ def test_enron_time_forward_split_is_leak_free():
     recs = [{"date_ts": t} for t in [5, 1, 4, 2, 3]]
     tr, te = time_forward_split(recs, test_frac=0.4)
     assert max(r["date_ts"] for r in tr) < min(r["date_ts"] for r in te)   # no future in train
+
+
+# ---------------------------------------------------------------- vision gaps 1-9 (contract, score, sampling…)
+def test_outcome_contract_validates_and_rejects_abstractions():
+    from swm.engine.contract import ContractViolation, validate_outcome_space
+    ok = validate_outcome_space({"type": "named_options", "options": ["Mamdani", "Cuomo", "Sliwa"]})
+    assert len(ok["options"]) == 3
+    for bad in ({"type": "named_options", "options": ["Candidate A", "Candidate B"]},  # abstractions
+                {"type": "named_options", "options": ["OnlyOne"]},                     # too few
+                {"type": "made_up_family"}, {}):
+        try:
+            validate_outcome_space(bad)
+            assert False, f"should have rejected {bad}"
+        except ContractViolation:
+            pass
+
+
+def test_forecast_conformance_checker_flags_regressions():
+    from swm.engine.contract import check_forecast_conforms
+    good = {"answer_space": {"type": "binary", "options": ["yes", "no"]},
+            "distribution": {"yes": 0.7, "no": 0.3}}
+    assert check_forecast_conforms(good) == []
+    bad = {"answer_space": {"type": "named_options", "options": ["A", "B"]},
+           "distribution": {"A": 0.4, "C": 0.4}}                     # off-space option + bad sum
+    v = check_forecast_conforms(bad)
+    assert any("outside" in x for x in v) and any("sums" in x for x in v)
+    assert check_forecast_conforms({"abstain": True}) == []          # refusing is a valid native answer
+
+
+def test_grounding_score_measures_the_five_axes():
+    from swm.engine.contract import score_grounding
+    from swm.engine.grounding import SceneDossier
+    d = SceneDossier(question="q", facts=[
+        {"fact": "polls", "detail": "Mamdani leads Cuomo 52-38", "source": "google_news", "date": "2025-08-10"},
+        {"fact": "money", "detail": "Mamdani raised 2x", "source": "gdelt", "date": "2025-08-12"}],
+        actors_hint=["Zohran Mamdani", "Andrew Cuomo"],
+        standing="Mamdani favored", standing_struct={"favored": "Mamdani", "confidence": 0.7})
+    gs = score_grounding(d, as_of="2025-08-17")
+    assert gs.actor_coverage == 1.0 and gs.decisive_fact == 1.0 and gs.asof_valid == 1.0
+    assert gs.freshness > 0.9 and 0 < gs.composite <= 1.0            # fresh, well-grounded scene scores high
+    thin = score_grounding(SceneDossier(question="q"), as_of="2025-08-17")
+    assert thin.composite < gs.composite                              # thin dossier scores lower
+
+
+def test_proportional_variant_allocation():
+    from swm.engine.casting import Actor, allocate_variants
+    actors = [Actor(name="majority", kind="segment", weight=0.9, n_variants=3),
+              Actor(name="minority", kind="segment", weight=0.1, n_variants=3)]
+    allocate_variants(actors)
+    maj, mino = actors
+    assert maj.n_variants > mino.n_variants                          # samples track weight…
+    assert mino.n_variants >= 2                                      # …but small segments keep a floor
+    assert maj.n_variants <= 6                                       # and a cap
+
+
+def test_router_logs_why_it_selected_a_paradigm():
+    from swm.engine.router import ParadigmRouter
+    r = ParadigmRouter(llm=None)
+    route, why = r.route_with_reason("Will the Senate confirm the nominee?")
+    assert route == "agents" and "human" in why.lower()
+    route2, why2 = r.route_with_reason("Will bitcoin cross $100k this month?")
+    assert route2 == "parametric" and "non-human" in why2.lower()
+
+
+def test_persistent_state_society_accumulates_memory():
+    """B7: with persistent_state=True the second round's decision call must carry the persona's own round-1
+    position (the memory line), which the stateless version never includes."""
+    from swm.engine.casting import Cast, Actor
+    from swm.engine.grounding import SceneDossier
+    from swm.engine.society import SocietyRollout
+    seen = []
+    def hot(prompt):
+        seen.append(prompt)
+        return json.dumps({"probs": {"yes": 0.6, "no": 0.4}, "statement": "", "why": "reasons"})
+    def cold(prompt):
+        return json.dumps({"variants": [{"sketch": "an engaged voter"}]})
+    cast = Cast(process="collective_choice", answer_space={"type": "binary", "options": ["yes", "no"]},
+                actors=[Actor(name="voters", kind="segment", weight=1.0, n_variants=1)],
+                horizon_days=14, cadence_days=7)
+    SocietyRollout(hot, llm=cold, branches=1, max_rounds=2, persistent_state=True).run(
+        "will it pass?", cast, SceneDossier(question="q"), today="2025-06-01")
+    assert any("your own recent state" in p for p in seen)           # round-2 prompt carries round-1 memory
+
+
+def test_refit_reports_temporal_holdout_and_horizon_buckets(tmp_path):
+    from swm.engine.calibrate import GradeRegistry
+    from swm.engine.flywheel import FlywheelLog
+    fw = FlywheelLog(path=str(tmp_path / "log.jsonl"))
+    reg = GradeRegistry(path=str(tmp_path / "grades.json"))
+    for i in range(30):                                              # overconfident stream, time-ordered
+        y = i % 2
+        rid = fw.log(question=f"q{i}", question_class="society:event", domain="deliberation",
+                     mechanism="panel", p=(0.9 if y else 0.1) if i % 3 else (0.1 if y else 0.9),
+                     as_of="2025-06-01", resolve_by="2025-06-20", ts=1_700_000_000 + i * 86400)
+        fw.record_outcome(rid, float(y))
+    rep = fw.refit(reg, min_n=12)
+    cls = rep["classes"]["society:event"]
+    assert cls["temporal_holdout"] and cls["temporal_holdout"]["n_holdout"] >= 4   # later rows held out
+    assert any("|h" in k for k in cls["per_domain"])                 # horizon-bucketed temperature recorded

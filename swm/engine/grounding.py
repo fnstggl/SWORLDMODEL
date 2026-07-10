@@ -64,6 +64,7 @@ class SceneDossier:
     coverage: float = 0.0                            # grounded checklist items / all checklist items
     abstain: bool = False
     abstain_reason: str = ""
+    score: object = None                             # gap 2: GroundingScore (contract.score_grounding)
 
     @property
     def standing_directional(self) -> bool:
@@ -114,6 +115,7 @@ class SceneDossier:
     def as_report(self) -> dict:
         return {"n_passages": self.n_passages, "coverage": round(self.coverage, 3),
                 "abstain": self.abstain, "abstain_reason": self.abstain_reason,
+                **({"score": self.score.as_dict()} if self.score is not None else {}),
                 "resolved": self.resolved, "missing": self.missing,
                 "detail": [{"fact": f["fact"], "grounded": True, "source": f.get("source"),
                             "date": f.get("date")} for f in self.facts] +

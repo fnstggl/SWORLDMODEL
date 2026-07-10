@@ -95,6 +95,32 @@ Return ONLY JSON:
   "interaction": "...", "rationale": "<one sentence>"}}"""
 
 
+def allocate_variants(actors, *, budget: int = None, floor: int = 2, cap: int = 6):
+    """Gap 3 — hierarchical proportional sampling. Equal variants-per-segment means 3 personas represent a
+    90% segment and 3 represent a 10% one: the majority's behavioral diversity is under-sampled exactly where
+    it moves the outcome most. Reallocate the SAME total persona budget ∝ segment weight, with a floor so
+    small-but-real segments never collapse to one stereotype (their within-segment variance still matters)
+    and a cap so one segment can't consume the budget. Named individuals keep their latent-state draws."""
+    segs = [a for a in actors if a.kind == "segment"]
+    if len(segs) < 2:
+        return actors
+    budget = budget or sum(a.n_variants for a in segs)
+    budget = max(budget, floor * len(segs))
+    w = sum(a.weight for a in segs) or 1.0
+    for a in segs:                                         # largest-remainder proportional allocation
+        a.n_variants = floor
+    remaining = budget - floor * len(segs)
+    shares = [(a, (a.weight / w) * remaining) for a in segs]
+    for a, s in shares:
+        a.n_variants += int(s)
+    left = remaining - sum(int(s) for _, s in shares)
+    for a, s in sorted(shares, key=lambda x: -(x[1] - int(x[1])))[:max(0, left)]:
+        a.n_variants += 1
+    for a in segs:
+        a.n_variants = min(cap, a.n_variants)
+    return actors
+
+
 @dataclass
 class CastingDirector:
     llm: object
@@ -118,6 +144,7 @@ class CastingDirector:
         total = sum(a.weight for a in actors) or 1.0
         for a in actors:                                   # weights are shares of the outcome, normalized
             a.weight = a.weight / total
+        allocate_variants(actors)                          # gap 3: samples ∝ segment weight, not equal-per-cell
         return Cast(process=process, answer_space=space, actors=actors,
                     horizon_days=float(raw.get("horizon_days", 30.0) or 30.0),
                     resolve_by=str(raw.get("resolve_by", "") or ""),

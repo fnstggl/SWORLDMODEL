@@ -62,9 +62,15 @@ class AgentWorldModel:
 
     # ---------------- the one entry point ----------------
     def simulate(self, question: str, **kw) -> dict:
-        """The public call. Runs the simulation, then — the FLYWHEEL — logs every non-abstained forecast
-        to the outcome stream so its eventual real resolution re-calibrates the engine (the moat)."""
+        """The public call. Runs the simulation, CHECKS THE ANSWER CONTRACT (the produced forecast must
+        conform to its declared OutcomeSpace — the mechanical anti-regression guarantee for native answers),
+        then — the FLYWHEEL — logs every non-abstained forecast to the outcome stream."""
+        from swm.engine.contract import check_forecast_conforms
         res = self._simulate(question, **kw)
+        violations = check_forecast_conforms(res)
+        if violations:                                        # ship loudly-flagged, never silently degraded
+            res.setdefault("detail", {})["contract_violations"] = violations
+            res["headline"] = f"[CONTRACT VIOLATION: {violations[0]}] " + str(res.get("headline", ""))
         if self.flywheel is not None and not res.get("abstain") and res.get("distribution"):
             try:
                 dist = res["distribution"]
@@ -100,14 +106,23 @@ class AgentWorldModel:
         # PARADIGM ROUTE — people → agents (always); a genuinely non-human stochastic process (price/rate/
         # record/launch) → main's parametric kernels. Backtest (binary) mode is pre-filtered to people, so it
         # never diverts. The router is biased hard toward agents; ties and ambiguity stay here.
-        if not binary and self.parametric is not None and self.router.route(question) == "parametric":
-            out = self.parametric.simulate(question, as_of=(as_of or ""))
-            out["engine"] = "parametric_mechanism"        # main's grounded stochastic kernel, not the readout
-            out.setdefault("routed", "process→parametric (no human-behavior generative core)")
-            return out
+        if not binary and self.parametric is not None:
+            route, why = self.router.route_with_reason(question)   # gap 4: log WHY a paradigm was selected
+            if route == "parametric":
+                out = self.parametric.simulate(question, as_of=(as_of or ""))
+                out["engine"] = "parametric_mechanism"    # main's grounded stochastic kernel, not the readout
+                out["routed"] = why
+                return out
 
         dossier = SceneGrounder(self.llm, search_fn=(search_fn or self.search_fn), today=today).ground(
             question, evidence=evidence)
+        # gap 2: the MEASURABLE grounding score — attached to every dossier report so consumers can knowingly
+        # distrust a thinly-grounded number (actor coverage / decisive fact / freshness / corroboration / as-of)
+        from swm.engine.contract import score_grounding
+        try:
+            dossier.score = score_grounding(dossier, as_of=today)
+        except Exception:
+            dossier.score = None
         if dossier.abstain:
             f = Forecast(question=question, mechanism="abstained", abstain=True,
                          abstain_reason=dossier.abstain_reason, grounding=dossier.as_report(),
@@ -157,6 +172,16 @@ class AgentWorldModel:
 
     # ---------------- modes ----------------
     def _society(self, question, cast, dossier, today, class_key=None):
+        # gap 1: validate the typed OutcomeSpace BEFORE simulation — a bad cast fails loudly, never degrades
+        from swm.engine.contract import ContractViolation, validate_outcome_space
+        try:
+            cast.answer_space = validate_outcome_space(cast.answer_space)
+        except ContractViolation as e:
+            f = Forecast(question=question, mechanism="abstained", abstain=True,
+                         abstain_reason=f"cast failed the outcome contract: {e}",
+                         grounding=dossier.as_report())
+            f.headline = build_headline(f)
+            return f.as_dict()
         res = SocietyRollout(self.llm_hot, llm=self.llm, branches=self.branches,
                              max_rounds=self.max_rounds).run(question, cast, dossier, today=today)
         cal = self.registry.calibration_for(class_key or f"society:{cast.process}")

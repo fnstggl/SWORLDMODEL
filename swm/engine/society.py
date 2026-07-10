@@ -55,6 +55,14 @@ class SocietyResult:
     n_calls: int = 0
 
 
+_EVENT_CLOCK_PROMPT = """Between {today} and resolution ({resolve}), list the REAL event opportunities that could
+move this situation — the class-specific clock (elections: poll releases, debates, endorsements, filings;
+legislation: hearings, whip counts, votes; adoption: launches, reviews, word-of-mouth waves). 2-5 events,
+dated plausibly, in order. QUESTION: {q}
+Return ONLY JSON: {{"events": [{{"date": "YYYY-MM-DD", "kind": "<debate|poll|endorsement|hearing|...>",
+"note": "<what plausibly happens>"}}]}}"""
+
+
 @dataclass
 class SocietyRollout:
     llm_hot: object                       # decision-call backend (temperature > 0)
@@ -63,12 +71,38 @@ class SocietyRollout:
     max_rounds: int = 2
     max_workers: int = 8
     seed: int = 0
+    persistent_state: bool = False        # B7 (vision gap 4): personas accumulate MEMORY across rounds —
+    #                                       their own last position + what they observed — instead of being
+    #                                       re-prompted statelessly. TESTABLE ARM, not default: EXP-098 showed
+    #                                       added simulation machinery must earn its keep on held-out outcomes.
+    event_clock: bool = False             # B8 (vision gap 5): rounds advance event-opportunity → event-
+    #                                       opportunity (a cast-specific dated schedule: debates, poll
+    #                                       releases, hearings) instead of evenly spaced dates. TESTABLE ARM.
+
+    def _event_dates(self, question, cast, today):
+        """B8: one cold call for the class-specific event schedule; falls back to even spacing on failure."""
+        from swm.engine.grounding import parse_json
+        llm_cold = self.llm or self.llm_hot
+        raw = parse_json(llm_cold(_EVENT_CLOCK_PROMPT.format(
+            today=today, resolve=cast.resolve_by or f"~{cast.horizon_days:.0f} days out", q=question))) or {}
+        evs = [(str(e.get("date", ""))[:10], f"{e.get('kind', 'event')}: {str(e.get('note', ''))[:100]}")
+               for e in (raw.get("events") or []) if isinstance(e, dict) and e.get("date")]
+        evs = [e for e in evs if len(e[0]) == 10][: self.max_rounds + 2]
+        return evs or None
 
     def run(self, question, cast, dossier, *, today="") -> SocietyResult:
         llm_cold = self.llm or self.llm_hot
         rng = random.Random(self.seed)
         options = cast.options()
-        dates = _dates(cast.horizon_days, cast.cadence_days, self.max_rounds, today)
+        event_notes = {}
+        dates = None
+        if self.event_clock:                              # B8: advance real event → real event
+            evs = self._event_dates(question, cast, today)
+            if evs:
+                dates = [d for d, _ in evs]
+                event_notes = dict(evs)
+        if dates is None:
+            dates = _dates(cast.horizon_days, cast.cadence_days, self.max_rounds, today)
         resolve_note = (f"The outcome is decided on {cast.resolve_by}." if cast.resolve_by else
                         f"The outcome resolves about {cast.horizon_days:.0f} days from today.")
 
@@ -96,19 +130,40 @@ class SocietyRollout:
             public = ((f"CURRENT STANDING: {standing}. " if standing else "") +
                       (cast.interaction or "the situation as grounded above"))
             last = None
+            memory = {id(p): [] for p in personas}          # B7: per-persona rolling memory (persistent state)
             for ri, date in enumerate(dates):
                 interval_days = cast.horizon_days / len(dates)
                 time_note = (f"{resolve_note} This round advances the world to {date} "
                              f"(~{interval_days:.0f} days of real change — assume only what can "
                              f"plausibly happen in that time).")
+                if event_notes.get(date):                   # B8: the round IS a real event opportunity
+                    time_note += f" EVENT THIS ROUND: {event_notes[date]}."
+                pub = public
+
+                def _decide(p):
+                    priv_extra = memory[id(p)][-3:] if self.persistent_state else []
+                    if priv_extra:                          # B7: the persona remembers its own trajectory
+                        old = p.private_facts
+                        p.private_facts = old + [f"(your own recent state: {m})" for m in priv_extra]
+                        try:
+                            return decide(self.llm_hot, p, question, options, date=date,
+                                          public=pub, time_note=time_note)
+                        finally:
+                            p.private_facts = old
+                    return decide(self.llm_hot, p, question, options, date=date,
+                                  public=pub, time_note=time_note)
+
                 with ThreadPoolExecutor(max_workers=self.max_workers) as ex:
-                    results = list(ex.map(
-                        lambda p: decide(self.llm_hot, p, question, options, date=date,
-                                         public=public, time_note=time_note), personas))
+                    results = list(ex.map(_decide, personas))
                 n_calls += len(personas)
                 voted = [(p, r) for p, r in zip(personas, results) if r is not None]
                 if not voted:
                     break
+                if self.persistent_state:                   # B7: commit this round's position to memory
+                    for p, r in voted:
+                        top = max(r["probs"].items(), key=lambda kv: kv[1])
+                        memory[id(p)].append(f"on {date} you leaned {top[0]} ({top[1]:.0%}) because "
+                                             f"{r.get('why', '')[:80]}")
                 # LOG-LINEAR opinion pool (weighted geometric mean), not a linear mean — agreement sharpens,
                 # a dissenter widens; a single certain persona can't force 0/1 (finite-sample smoothing).
                 agg = pool_distribution([r["probs"] for _, r in voted],

@@ -73,14 +73,24 @@ class ParadigmRouter:
 
     def route(self, question: str) -> str:
         """Return 'agents' or 'parametric'. Biased hard toward 'agents'."""
+        return self.route_with_reason(question)[0]
+
+    def route_with_reason(self, question: str) -> tuple:
+        """(route, why) — the system must LOG why it selected a paradigm (vision gap 4): the operative rule is
+        'does the outcome materially depend on human decisions/beliefs/reactions/coordination? → agents'."""
         ql = question.lower()
-        if any(w in ql for w in _PEOPLE):
-            return "agents"                                # unambiguously human-decided → agents, no call
+        hit = next((w for w in _PEOPLE if w in ql), None)
+        if hit:
+            return "agents", f"human-decided outcome (lexical: {hit!r}) → grounded agents, hard rule"
         if self.llm is None:
-            # no classifier: only divert the unmistakable non-human processes, else agents
-            return "parametric" if any(w in ql for w in _PROCESS) else "agents"
+            p = next((w for w in _PROCESS if w in ql), None)
+            return (("parametric", f"non-human stochastic process (lexical: {p!r}); no human decision is "
+                                   f"the generative mechanism") if p else
+                    ("agents", "no unmistakable non-human marker; ambiguity fails toward agents (hard rule)"))
         try:
             r = parse_json(self.llm(_PROMPT.format(q=question))) or {}
         except Exception:
-            return "agents"                                # fail toward the honest engine
-        return "parametric" if r.get("kind") == "process" else "agents"
+            return "agents", "classifier failed → fail toward the honest engine (hard rule)"
+        if r.get("kind") == "process":
+            return "parametric", f"classifier: non-human process ({str(r.get('why', ''))[:80]})"
+        return "agents", f"classifier: human-generated outcome ({str(r.get('why', ''))[:80]})"

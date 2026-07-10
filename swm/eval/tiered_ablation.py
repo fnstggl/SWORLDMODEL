@@ -91,14 +91,16 @@ def _grounded_ensemble(llm, question, today, dossier, n):
     return pool_distribution([{"yes": p, "no": 1 - p} for p in ps])["yes"]
 
 
-def _society_p(llm_cold, llm_hot, question, dossier, today, *, max_rounds, branches):
-    """Run the REAL society simulation for a binary question and return P(yes). Used by B5 (independent,
-    1 round) and B6 (interacting, ≥2 rounds). Casts the actual stakeholders from the dossier."""
+def _society_p(llm_cold, llm_hot, question, dossier, today, *, max_rounds, branches,
+               persistent=False, event_clock=False):
+    """Run the REAL society simulation for a binary question and return P(yes). B5 (independent, 1 round),
+    B6 (interacting, ≥2 rounds), B7 (+persistent per-agent memory), B8 (+event-opportunity clock)."""
     from swm.engine.casting import CastingDirector
     from swm.engine.society import SocietyRollout
     cast = CastingDirector(llm_cold).cast(question, dossier.brief(), today=today)
     cast.answer_space = {"type": "binary", "options": ["yes", "no"]}
-    res = SocietyRollout(llm_hot, llm=llm_cold, branches=branches, max_rounds=max_rounds).run(
+    res = SocietyRollout(llm_hot, llm=llm_cold, branches=branches, max_rounds=max_rounds,
+                         persistent_state=persistent, event_clock=event_clock).run(
         question, cast, dossier, today=today)
     if not res.distribution:
         return None
@@ -177,11 +179,12 @@ def predict_arms(wm, question, *, as_of, class_rate, tier=1, search_fn=None, llm
         CountingLLM(wm.llm, m), CountingLLM(wm.llm_hot, m), question, dossier, today,
         max_rounds=2, branches=2)))
 
-    out["persistent"] = {"p": None, "spend": Meter().snapshot(),
-                         "note": "NOT BUILT — persistent per-agent belief/memory state module (B7) does not "
-                                 "exist yet; see AUDIT_PART_A §2"}
-    out["time_evolving"] = {"p": None, "spend": Meter().snapshot(),
-                            "note": "NOT BUILT — real-event-opportunity transitions (B8) do not exist yet"}
+    metered("persistent", lambda m: (None if dossier.abstain else _society_p(
+        CountingLLM(wm.llm, m), CountingLLM(wm.llm_hot, m), question, dossier, today,
+        max_rounds=2, branches=2, persistent=True)))
+    metered("time_evolving", lambda m: (None if dossier.abstain else _society_p(
+        CountingLLM(wm.llm, m), CountingLLM(wm.llm_hot, m), question, dossier, today,
+        max_rounds=3, branches=2, persistent=True, event_clock=True)))
     metered("parametric", lambda m: parametric_binary_p(question, as_of, CountingLLM(wm.llm, m)))
     out["experimental"] = {"p": None, "spend": Meter().snapshot(),
                            "note": "NOT BUILT — graph/OASIS/TRIBE (B10); see Parts H/I"}

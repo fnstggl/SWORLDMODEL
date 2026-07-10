@@ -147,9 +147,30 @@ class FlywheelLog:
         return {"checked": checked, "resolved": resolved}
 
     # ---------------- 3. REFIT ----------------
-    def refit(self, registry=None, *, min_n=12) -> dict:
-        """Refit per-class temperature + per-domain temperatures from the RESOLVED stream and write them
-        into the live GradeRegistry. The compounding step: every resolution sharpens the next forecast."""
+    @staticmethod
+    def _horizon_bucket(r) -> str:
+        """Forecast horizon at emit time: resolve_by − as_of (fallback: resolution delay). Calibration must be
+        horizon-aware (vision gap 7): an election at 180 days and a reply within 24h are different classes of
+        uncertainty even in the same domain."""
+        for a, b in ((r.resolve_by, r.as_of),):
+            try:
+                days = (_time.mktime(_time.strptime(a, "%Y-%m-%d")) -
+                        _time.mktime(_time.strptime(b[:10], "%Y-%m-%d"))) / 86400.0
+                break
+            except (ValueError, TypeError):
+                days = None
+        if days is None and r.resolved_ts:
+            days = (r.resolved_ts - r.ts) / 86400.0
+        if days is None:
+            return "h?"
+        return "h<7d" if days < 7 else ("h7-45d" if days < 45 else "h>45d")
+
+    def refit(self, registry=None, *, min_n=12, holdout_frac=0.3) -> dict:
+        """Refit per-class temperature + per-(domain, horizon) temperatures from the RESOLVED stream and write
+        them into the live GradeRegistry. STRICT TEMPORAL DISCIPLINE (vision gap 7): the temperature is fit on
+        the EARLIER records only; the report's held-out metrics come from the LATER untouched records — never
+        fit-and-report on the same rows. (The recorded T for production still uses all data — production wants
+        the best estimate — but the honest performance number is the temporal holdout's.)"""
         from swm.engine.calibrate import GradeRegistry, crossfit_temperature, fit_temperature
         registry = registry or GradeRegistry()
         resolved = [r for r in self.load() if r.status == "resolved" and r.p is not None]
@@ -161,6 +182,20 @@ class FlywheelLog:
             if len(rs) < min_n:
                 report["classes"][qc] = {"n": len(rs), "skipped": f"n<{min_n}"}
                 continue
+            rs = sorted(rs, key=lambda r: r.ts)             # time order — earlier trains, later evaluates
+            cut = max(1, int(len(rs) * (1 - holdout_frac)))
+            train, hold = rs[:cut], rs[cut:]
+            hold_metrics = None
+            if len(hold) >= 4:
+                T_tr = fit_temperature([r.p for r in train], [r.outcome for r in train])
+                from swm.engine.calibrate import apply_temperature
+                hp = [apply_temperature(r.p, T_tr) for r in hold]
+                hy = [r.outcome for r in hold]
+                hold_metrics = {"n_holdout": len(hold), "T_train": T_tr,
+                                "holdout_brier_raw": round(sum((r.p - y) ** 2 for r, y in
+                                                               zip(hold, hy)) / len(hold), 4),
+                                "holdout_brier_cal": round(sum((p - y) ** 2 for p, y in
+                                                               zip(hp, hy)) / len(hold), 4)}
             preds = [r.p for r in rs]
             ys = [r.outcome for r in rs]
             cal = crossfit_temperature(preds, ys)
@@ -177,9 +212,15 @@ class FlywheelLog:
                 sub = [(r.p, r.outcome) for r in rs if r.domain == dom]
                 if len(sub) >= 8:
                     domain_T[dom] = fit_temperature([p for p, _ in sub], [y for _, y in sub])
+            # gap 7: horizon-bucketed temperatures too — (domain, horizon) compound keys in the same registry
+            for key in {f"{r.domain}|{self._horizon_bucket(r)}" for r in rs}:
+                sub = [(r.p, r.outcome) for r in rs if f"{r.domain}|{self._horizon_bucket(r)}" == key]
+                if len(sub) >= 8:
+                    domain_T[key] = fit_temperature([p for p, _ in sub], [y for _, y in sub])
             if domain_T:
                 registry.record_domain_temperatures(qc, domain_T)
             report["classes"][qc] = {"n": len(rs), "grade": entry["grade"],
                                      "temperature": cal["temperature"], "per_domain": domain_T,
+                                     "temporal_holdout": hold_metrics,
                                      "brier_skill_vs_class_rate": round(skill, 4)}
         return report
