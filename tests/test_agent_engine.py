@@ -720,3 +720,27 @@ def test_tribe_adapter_refuses_by_default_and_blocks_commercial_use():
         assert False, "commercial_use=True must be rejected"
     except TribeUnavailable:
         pass
+
+
+# ---------------------------------------------------------------- PART E: dataset registry is well-formed
+def test_dataset_registry_is_valid_and_honest():
+    """The registry must parse, cover the six capabilities, and every entry must carry the fields a
+    reviewer needs to judge fitness (license, labels, randomized/causal, access, priority)."""
+    import pathlib
+    reg = json.loads((pathlib.Path(__file__).resolve().parent.parent / "data"
+                      / "dataset_registry.json").read_text())
+    ds = reg["datasets"]
+    assert len(ds) >= 10
+    required = {"id", "name", "capability", "source", "license", "labels", "randomized", "causal",
+                "access_status", "priority", "supports"}
+    ids = set()
+    for d in ds:
+        assert required <= set(d), f"{d.get('id')} missing {required - set(d)}"
+        assert d["priority"] in {"P0", "P1", "P2", "reject"}
+        ids.add(d["id"])
+    # the three P0 build-now datasets are present
+    assert {"upworthy", "criteo_uplift", "higgs_twitter"} <= ids
+    # every capability bucket maps to real dataset ids
+    for cap, refs in reg["product_capability_to_dataset"].items():
+        for r in refs:
+            assert r in ids, f"capability {cap} references unknown dataset {r}"
