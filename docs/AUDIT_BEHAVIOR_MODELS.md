@@ -175,7 +175,34 @@ delay MAE. This is OSim's core claimed strength (#1).
 W1_norm (esp. on bomb), raises Upworthy precision@1 above 0.56, and/or beats DeepSeek on Enron reply — on
 these untouched labels.
 
-## OSim-8B pilot — FIRST RUN (A40, vLLM 0.24) — MIXED, not yet matched
+## OSim-8B pilot — MATCHED RUN (A40) — decisively MIXED, class-specific
+
+Both arms, identical items (5 games × 20 items × 6 reps), one process → apples-to-apples. **OSim is more
+human-aligned on economic-game distributions overall (mean W1_norm 0.191 vs DeepSeek 0.228), but loses the
+product-relevant tasks.**
+
+| game | human | DeepSeek W1↓ | OSim W1↓ | winner |
+|---|---|---|---|---|
+| bomb (risk) | 33 | 0.543 (opens 86!) | **0.186** (opens 46) | OSim, huge |
+| ultimatum_proposer | 45 | 0.166 (offers 32) | **0.116** (offers 48) | OSim |
+| guessing | 37 | 0.130 | **0.119** | OSim slight |
+| dictator | 32 | **0.101** | 0.119 | DeepSeek slight |
+| ultimatum_responder | 44 | **0.202** | 0.415 (accepts 2!) | DeepSeek, huge |
+| **mean** | | **0.228** | **0.191** | OSim (−16%) |
+
+Upworthy headline clicks (matched, n=100): DeepSeek precision@1 **0.45** vs OSim **0.35** (random 0.337) —
+**OSim at chance; DeepSeek beats random.**
+
+**Verdict:** (1) OSim genuinely captures human *economic/strategic* behavior distributions better than DeepSeek
+— big wins on risk (bomb) and bargaining offers (proposer), wins 3/5 games. (2) OSim has a **catastrophic
+over-compliance failure** as an ultimatum *responder* (min-accept ≈2 vs human 44) — a direct red flag for the
+"will X accept/reply?" product question. (3) OSim is **at chance on headline-click ranking** — no value on the
+engagement product task. **NARROW KEEP** (economic/strategic population simulation only); **reject** for
+engagement ranking; **wary** for reply prediction. Neither task is the core deliberation-forecasting product
+(EXP-098: simulation doesn't help there). Bootstrap CIs added to `behavior_eval` to confirm significance on
+the next run; the individual reply+delay test (Enron) remains the unrun, most product-relevant experiment.
+
+## OSim-8B pilot — FIRST RUN (A40, vLLM 0.24) — MIXED, not yet matched (superseded by the matched run above)
 
 OSim-8B served on an A40 (needs `VLLM_USE_FLASHINFER_SAMPLER=0`) and ran all three evals. **Result leans
 negative for adopting OSim as a general stakeholder model, with one real bright spot.** ⚠️ This first run was

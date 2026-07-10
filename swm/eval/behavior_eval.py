@@ -68,9 +68,30 @@ def _wasserstein1(a, b):
     return sum(abs(q(a, i / n) - q(b, i / n)) for i in range(n)) / n
 
 
-def eval_game(game, sample_fn, *, reps=10, limit=25):
+def _bootstrap_w1_ci(model, human, scale, *, n_boot=400, seed=17):
+    """95% bootstrap CI on the normalized W1 — resample BOTH empirical samples with replacement. Lets a run
+    tell whether an OSim-vs-DeepSeek gap is real or noise without another GPU run."""
+    import random
+    if not model or not human:
+        return None
+    rng = random.Random(seed)
+    lm, lh = len(model), len(human)
+    boots = []
+    for _ in range(n_boot):
+        mm = [model[rng.randrange(lm)] for _ in range(lm)]
+        hh = [human[rng.randrange(lh)] for _ in range(lh)]
+        w = _wasserstein1(mm, hh)
+        if w is not None:
+            boots.append(w / scale)
+    if not boots:
+        return None
+    boots.sort()
+    return [round(boots[int(0.025 * len(boots))], 4), round(boots[int(0.975 * len(boots))], 4)]
+
+
+def eval_game(game, sample_fn, *, reps=10, limit=25, bootstrap=True):
     """Score one arm on one game. For each of `limit` prompts, draw `reps` model samples; compare the pooled
-    model distribution to the human distribution. Returns metrics dict."""
+    model distribution to the human distribution. Returns metrics dict incl. a bootstrap CI on W1_norm."""
     rows = load_game(game, limit=limit)
     if not rows:
         return {"game": game, "n": 0}
@@ -93,6 +114,7 @@ def eval_game(game, sample_fn, *, reps=10, limit=25):
             "human_mean": round(hm, 2), "model_mean": (round(mm, 2) if mm is not None else None),
             "wasserstein": (round(w, 3) if w is not None else None),
             "wasserstein_norm": (round(w / scale, 4) if w is not None else None),
+            "wasserstein_ci95": (_bootstrap_w1_ci(model, human, scale) if bootstrap else None),
             "mean_abs_err": (round(abs(mm - hm), 3) if mm is not None else None)}
 
 

@@ -53,8 +53,10 @@ def run(games, reps, limit):
         out[name] = res
         for r in res["per_game"]:
             if r.get("wasserstein_norm") is not None:
+                ci = r.get("wasserstein_ci95")
+                cis = f" CI[{ci[0]:.3f},{ci[1]:.3f}]" if ci else ""
                 print(f"  {r['game']:20s} human_mean={r['human_mean']:>6} model_mean={str(r['model_mean']):>6} "
-                      f"W1_norm={r['wasserstein_norm']:.4f} (lower=more human)  unparsed={r['n_unparsed']}")
+                      f"W1_norm={r['wasserstein_norm']:.4f}{cis} (lower=more human)  unparsed={r['n_unparsed']}")
             else:
                 print(f"  {r['game']:20s} (no parseable samples)")
         print(f"  >> {name} mean_wasserstein_norm = {res['mean_wasserstein_norm']} over {res['n_games']} games")
