@@ -801,3 +801,35 @@ def test_forward_ledger_resolve_and_score_and_eligibility(tmp_path):
     assert best["arm_brier"]["full"] < best["arm_brier"]["base_rate"]
     # resolved rows are eligible for calibration until flagged reported
     assert len(led.refit_eligible()) == 10
+
+
+# ---------------------------------------------------------------- behavior-model adapter (quarantined)
+def test_behavior_adapter_deepseek_backend_runs_offline_and_stubs_refuse():
+    from swm.experimental.behavior_models import (BehaviorModelAdapter, BehaviorRequest,
+                                                  DeepSeekBehaviorBackend, osim_backend, BackendUnavailable)
+
+    class Stub:
+        def __call__(self, prompt):
+            return json.dumps({"action": "respond", "p": 0.7, "why": "curious"})
+    ad = BehaviorModelAdapter(enabled=True, backends={
+        "deepseek": DeepSeekBehaviorBackend(llm=Stub()),
+        "osim": osim_backend(runner=None),        # no GPU/weights → must refuse (abstain), never fabricate
+    })
+    req = BehaviorRequest(dossier="a busy investor", scenario="cold email arrives",
+                          stimulus="Quick question about your fund", allowed_actions=["respond", "no_response"])
+    r = ad.decide("deepseek", req)
+    assert r.action == "respond" and 0.0 <= r.p <= 1.0 and r.backend == "deepseek" and not r.abstain
+    # the behavior-trained stub has no runner here → honest abstention, not a made-up choice
+    r2 = ad.decide("osim", req)
+    assert r2.abstain and "runner" in r2.abstain_reason.lower()
+
+
+def test_behavior_adapter_disabled_by_default():
+    from swm.experimental.behavior_models import BehaviorModelAdapter, BehaviorRequest, BackendUnavailable
+    ad = BehaviorModelAdapter()                    # disabled
+    assert not ad.available()
+    try:
+        ad.decide("deepseek", BehaviorRequest(dossier="x", scenario="y"))
+        assert False, "disabled adapter must refuse"
+    except BackendUnavailable:
+        pass
