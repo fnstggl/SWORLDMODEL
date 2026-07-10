@@ -1,3 +1,46 @@
+<!-- EMPIRICAL PROGRAM v2 (Parts A-C/E/I) — isolate the MARGINAL value of each layer -->
+## The empirical program — does each layer earn its keep? (current)
+
+The pilot ablation (EXP-097) showed FULL ≈ one grounded call + a hair (Brier 0.095 vs 0.098). The v2 program
+asks the sharper question the pilot could not: **which layer** — grounding, ensembling, forecaster lenses,
+stakeholder modeling, interaction, persistent state, temporal rollout — actually adds value, at what cost.
+
+**PART A — ground-truth wiring audit ([`docs/AUDIT_PART_A_WIRING.md`](docs/AUDIT_PART_A_WIRING.md)).** Read of
+the real call graph. **Decisive finding: the pilot's "FULL" arm was a role-prompted OBSERVER-PANEL ENSEMBLE
+(10 independent grounded forecasts, log-linear pooled + base-rate shrink) — NOT a society simulation.** No
+stakeholders, no interaction, no persistent state, no rounds. The real `SocietyRollout` (interacting, dated
+rounds, but no persistent agent state) was **never exercised** by the benchmark. All "society simulation"
+language for the binary benchmark is retired. Also flagged the one surviving logistic-over-invented-variables
+residual (announcements → compiler kernel) and proved the human deliberation path can't reach it.
+
+**PART B — practical tiered ablation ([`swm/eval/tiered_ablation.py`](swm/eval/tiered_ablation.py), EXP-098).**
+The pilot lacked the control that separates *simulation* from *averaging*. B2 now sits on a ladder run at three
+densities (so rigor never blocks iteration): Tier-1 B0/B1/B2 every item; Tier-2 **B3 the call-matched grounded
+ENSEMBLE** on a stratified 20%; Tier-3 B4 panel / **B5 independent + B6 interacting stakeholders (the real
+SocietyRollout, finally graded)** / B9 parametric on a diagnostic 8%. Every arm shares one frozen dossier;
+every arm's compute (calls/tokens/cost/latency) and the evidence/commit/model hashes are metered so
+"simulation is better" can be checked against the strongest *fair, compute-matched* alternative. Marginal
+effects are reported with paired-bootstrap CIs + permutation p. *(Phase-2 numbers: see the EXP-098 block
+below.)*
+
+**PART C — forward-locked, append-only, VERSIONED ledger
+([`swm/engine/forward_ledger.py`](swm/engine/forward_ledger.py)).** Locks every arm on OPEN questions with full
+provenance before resolution; any change to commit/model/evidence/config writes a NEW version (never an
+overwrite); `score()` gives per-arm accuracy + the marginal ladder + per-class best architecture;
+`refit_eligible()` keeps reported rows out of the calibration they're scored against.
+
+**PART E — dataset registry ([`docs/DATASET_REGISTRY.md`](docs/DATASET_REGISTRY.md)).** P0 build-now set:
+Upworthy (randomized headline clicks), Criteo Uplift (randomized treatment), Higgs Twitter (cascade + graph).
+Honest about the gaps: cold-outreach reply has no public labeled set; valence/meeting-booked need annotation.
+
+**PART I — TRIBE v2 ([`docs/AUDIT_PART_I_TRIBE.md`](docs/AUDIT_PART_I_TRIBE.md)): RESEARCH-ONLY.** An fMRI
+encoding model (stimulus→BOLD), not behavior. Two blockers before any product use: CC-BY-NC-4.0
+(non-commercial) license, and an unlearned BOLD→behavior bridge that must beat the plain Llama-3.2-3B embedding
+(TRIBE's own text encoder) on held-out clicks. Adapter shipped **disabled + quarantined**
+(`swm/experimental/`), pinned by a test that the engine never imports it.
+
+---
+
 <!-- CALIBRATION & FIDELITY PROGRAM (EXP-090..093) — the push to beat the market -->
 ## The calibration/fidelity program — from catastrophic F toward the market
 
