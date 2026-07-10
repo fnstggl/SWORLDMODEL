@@ -134,10 +134,11 @@ class ArmScore:
     n_bets: int = 0
 
 
-def score_arms(rows) -> dict:
-    """rows: [{arm: p or None, ...} ... , 'outcome': y]. Score each arm on the items it did NOT abstain on."""
+def score_arms(rows, arms=ARMS) -> dict:
+    """rows: [{arm: p or None, ...} ... , 'outcome': y]. Score each arm on the items it did NOT abstain on.
+    `arms` selects which arm keys to score (default the 5-arm pilot set; the tiered harness passes ALL_ARMS)."""
     scores = {}
-    for arm in ARMS:
+    for arm in arms:
         pairs = [(r[arm], r["outcome"]) for r in rows if r.get(arm) is not None]
         n_abs = sum(1 for r in rows if r.get(arm) is None)
         if not pairs:
@@ -170,9 +171,9 @@ def score_arms(rows) -> dict:
             brier_cal=round(sum((cp - y) ** 2 for cp, y in zip(cal_preds, ys)) / len(pairs), 4),
             logloss_cal=round(sum(_logloss(y, cp) for cp, y in zip(cal_preds, ys)) / len(pairs), 4),
             T=T_report, decision_value=round(dv, 3), n_bets=nb)
-    # the head-to-head that IS the thesis: FULL vs EVIDENCE on the items BOTH answered
+    # the head-to-head that IS the thesis: FULL vs EVIDENCE on the items BOTH answered (pilot 5-arm set only)
     both = [(r["full"], r["evidence"], r["outcome"]) for r in rows
-            if r.get("full") is not None and r.get("evidence") is not None]
+            if "evidence" in arms and r.get("full") is not None and r.get("evidence") is not None]
     head = None
     if both:
         bf = sum((f - y) ** 2 for f, _, y in both) / len(both)
@@ -182,4 +183,4 @@ def score_arms(rows) -> dict:
                 "full_better": bf < be,
                 "full_wins_rows": round(sum(1 for f, e, y in both if (f - y) ** 2 < (e - y) ** 2)
                                         / len(both), 3)}
-    return {"arms": {a: scores[a].__dict__ for a in ARMS}, "head_to_head_full_vs_evidence": head}
+    return {"arms": {a: scores[a].__dict__ for a in arms}, "head_to_head_full_vs_evidence": head}

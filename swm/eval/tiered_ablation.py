@@ -235,7 +235,7 @@ def _paired_brier_diff(runs, hi, lo, n_boot=2000, seed=12345):
 def report_marginals(runs) -> dict:
     """The full Part-B readout: per-arm scores + every marginal effect with paired bootstrap CI + permutation
     p. `runs` = list of predict_arms outputs each augmented with an 'outcome' key."""
-    sb = score_arms(_rows_for_scoring(runs))
+    sb = score_arms(_rows_for_scoring(runs), arms=ALL_ARMS)
     marg = []
     for hi, lo, label in MARGINALS:
         d = _paired_brier_diff(runs, hi, lo)

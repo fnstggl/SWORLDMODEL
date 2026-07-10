@@ -20,8 +20,38 @@ ENSEMBLE** on a stratified 20%; Tier-3 B4 panel / **B5 independent + B6 interact
 SocietyRollout, finally graded)** / B9 parametric on a diagnostic 8%. Every arm shares one frozen dossier;
 every arm's compute (calls/tokens/cost/latency) and the evidence/commit/model hashes are metered so
 "simulation is better" can be checked against the strongest *fair, compute-matched* alternative. Marginal
-effects are reported with paired-bootstrap CIs + permutation p. *(Phase-2 numbers: see the EXP-098 block
-below.)*
+effects are reported with paired-bootstrap CIs + permutation p.
+
+**EXP-098 result (n=44 leak-free deliberation questions) — the honest per-layer verdict:**
+
+| arm | n | Brier | dir | calls | what it is |
+|---|---|---|---|---|---|
+| base_rate | 44 | 0.1286 | 0.84 | 0 | class rate |
+| **grounded_1shot** | 34 | **0.0876** | 0.91 | 1 | ONE grounded call |
+| full (production panel) | 38 | 0.0868 | 0.84 | 10 | the ensemble |
+| grounded_ens | 13 | 0.1029 | 0.92 | 10 | call-matched ensemble |
+| generic_panel | 11 | 0.0961 | 0.91 | 10 | forecaster lenses |
+| indep_stake | 11 | 0.1352 | 0.73 | 14 | **real stakeholder sim** |
+| interact_stake | 11 | 0.1508 | 0.73 | 42 | **interacting stakeholder sim** |
+
+Marginal ladder (paired Brier diff; negative = the more-complex arm is better; none significant at n≤34):
+- **Grounding: Δ=−0.059, 65% win (p=0.21)** — the one real lever, directionally strong (as the pilot found).
+- **Ensembling: Δ=+0.0002 (p=0.92)** — pooling 10 grounded calls adds **literally nothing** over one.
+- **Forecaster lenses: Δ=−0.014 (p=0.40)** — a hair, not significant.
+- **Stakeholder modeling: Δ=+0.039, 36% win (p=0.15)** — the real society sim is **WORSE** than the lenses.
+- **Interaction: Δ=+0.016, 27% win (p=0.27)** — interacting stakeholders **WORSE** than independent ones.
+- **Whole stack vs one grounded call: Δ=+0.032 (p=0.47)** — no advantage on the paired subset.
+
+**The verdict, stated honestly:** on leak-free deliberation questions there is **no measured evidence that any
+simulation layer beats a single grounded DeepSeek call** — and the actual society simulation (stakeholders,
+then interaction) is **directionally worse and 14–42× more expensive**, with direction accuracy dropping
+0.91→0.73. The product's value on this class is **grounding + calibration + the flywheel**, not the
+multi-agent society. Caveat: the tier-3 arms are n=11 and nothing is statistically significant — so this
+*falsifies the strong claim* (simulation clearly helps) and *fails to support even the weak one* on
+deliberation; it does not yet prove simulation hurts. **Implication for the roadmap:** the society sim must be
+tested where interaction genuinely drives the outcome (diffusion/cascades, multi-actor negotiation), not on
+"who wins election X" — and Part C's forward ledger is how we get the n to settle it. This is exactly the
+result the tiered harness was built to expose, and it aligns with the Part A audit.
 
 **PART C — forward-locked, append-only, VERSIONED ledger
 ([`swm/engine/forward_ledger.py`](swm/engine/forward_ledger.py)).** Locks every arm on OPEN questions with full
