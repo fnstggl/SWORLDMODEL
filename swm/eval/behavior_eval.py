@@ -96,10 +96,20 @@ def eval_game(game, sample_fn, *, reps=10, limit=25):
             "mean_abs_err": (round(abs(mm - hm), 3) if mm is not None else None)}
 
 
-def eval_arm(sample_fn, *, games=None, reps=10, limit=25):
-    """Score an arm across games. Returns per-game rows + an aggregate normalized-Wasserstein (lower=better)."""
+def eval_arm(sample_fn, *, games=None, reps=10, limit=25, progress=True):
+    """Score an arm across games. Returns per-game rows + an aggregate normalized-Wasserstein (lower=better).
+    Prints each game result as it completes (progress=True) so a long run isn't silent."""
     games = games or GAMES
-    rows = [eval_game(g, sample_fn, reps=reps, limit=limit) for g in games]
+    rows = []
+    for g in games:
+        r = eval_game(g, sample_fn, reps=reps, limit=limit)
+        rows.append(r)
+        if progress:
+            if r.get("wasserstein_norm") is not None:
+                print(f"    {r['game']:20s} human={r['human_mean']:>6} model={str(r['model_mean']):>6} "
+                      f"W1_norm={r['wasserstein_norm']:.4f}  unparsed={r['n_unparsed']}", flush=True)
+            else:
+                print(f"    {r['game']:20s} (no parseable samples)", flush=True)
     scored = [r for r in rows if r.get("wasserstein_norm") is not None]
     agg = round(sum(r["wasserstein_norm"] for r in scored) / len(scored), 4) if scored else None
     return {"per_game": rows, "mean_wasserstein_norm": agg, "n_games": len(scored)}
