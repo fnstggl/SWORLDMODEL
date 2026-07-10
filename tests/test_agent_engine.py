@@ -347,6 +347,27 @@ def test_grounding_extracts_relations_graph():
     assert "AOC —endorsed→ Candidate A" in d.brief()       # the actor graph reaches every agent
 
 
+# ---------------------------------------------------------------- the decisive ablation
+def test_ablation_scoring_and_head_to_head():
+    from swm.eval.ablation import score_arms
+    # FULL is a better forecaster than EVIDENCE on this synthetic set (sharper AND right)
+    rows = []
+    for i in range(24):
+        y = i % 2
+        rows.append({"full": 0.85 if y else 0.15, "raw": 0.5, "evidence": 0.65 if y else 0.35,
+                     "base_rate": 0.5, "parametric": 0.55 if y else 0.45, "outcome": y})
+    sb = score_arms(rows)
+    assert sb["arms"]["full"]["brier"] < sb["arms"]["evidence"]["brier"]        # sim beats single call
+    assert sb["arms"]["evidence"]["brier"] < sb["arms"]["raw"]["brier"]          # evidence beats no-evidence
+    assert sb["arms"]["full"]["direction"] == 1.0
+    h = sb["head_to_head_full_vs_evidence"]
+    assert h["full_better"] and h["full_minus_evidence"] < 0 and h["n_both"] == 24
+    # arms that abstain are scored only on what they answered
+    rows2 = [{"full": None, "evidence": 0.6, "base_rate": 0.5, "raw": 0.5, "parametric": 0.5, "outcome": 1}]
+    s2 = score_arms(rows2)
+    assert s2["arms"]["full"]["n"] == 0 and s2["arms"]["full"]["n_abstain"] == 1
+
+
 # ---------------------------------------------------------------- front door: one mechanism
 def test_front_door_society_output_is_native_and_flagged():
     wm = AgentWorldModel(llm=ScriptedLLM(), search_fn=lambda qs, k: _passages(), branches=2)
