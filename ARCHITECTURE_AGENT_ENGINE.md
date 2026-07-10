@@ -54,6 +54,24 @@ and re-graded at n=127:
 4. **No-market grade** (EXP-094) — the real use case: resolved social questions with no crowd, scored vs
    base rate + direction.
 
+**Measured NEGATIVE (EXP-096), recorded honestly:** evidence-PARTITIONED lenses (each forecaster reads a
+different slice of the periphery, standing common) were hypothesized to decorrelate same-model errors for
+free. At n=127 they made everything worse (Brier 0.218→0.262; unsure-slice +0.089→−2.25): with compact
+dossiers, hiding evidence removes information faster than it decorrelates errors. Default OFF; the
+mechanism is retained for re-testing when dossiers are much richer. (The keep-or-revert loop working as
+designed — a plausible idea, measured, rejected.)
+
+**The outcome flywheel (EXP-097 machinery, `swm/engine/flywheel.py`) — the moat, wired end-to-end:** every
+non-abstained forecast is logged (question, class, domain-kind, p, as-of, resolve-by, engine config,
+grounding provenance) → `auto_resolve` checks due records against current news with a cited, conservative
+LLM verdict → `refit` rewrites per-class and per-domain temperatures into the live registry from the
+RESOLVED stream. Tested end-to-end: an overconfident logged stream resolves, refits, and the live engine's
+temperature moves. Every resolution makes the next forecast better calibrated — the proprietary compounding
+loop the category (per MiroFish's own community) lacks. Also new: the **diffusion/virality class**
+(`swm/engine/diffusion.py` — sampled per-archetype reasoned decisions on the actual content + Monte-Carlo
+cascades on a heavy-tailed follower graph → reach distribution, narrative leaders, inflection; ships
+flagged ungraded) and **GraphRAG-light** entity relations in every dossier.
+
 **Result:** every category improved, and **the crowd-unsure slice flipped from −0.88 to +0.089 — the engine
 now beats the market exactly where a grounded model should (evidence-rich, genuinely-uncertain questions).**
 It still grades **F overall** (recal skill vs crowd −0.19) because a liquid market is near-perfect on the

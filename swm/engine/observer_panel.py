@@ -89,8 +89,12 @@ class ObserverPanel:
     #                                                extremizing is statistically valid. Degrades gracefully
     #                                                to whatever families are actually reachable.
 
-    partition_evidence: bool = True                # each forecaster reads a DIFFERENT slice of the periphery
-    #                                                (standing stays common) — decorrelates same-model errors
+    partition_evidence: bool = False               # MEASURED NEGATIVE (EXP-096): partitioning the periphery
+    #                                                decorrelates errors but REMOVES information — with our
+    #                                                compact dossiers each forecaster got worse faster than
+    #                                                the errors decorrelated (unsure-slice skill +0.089 →
+    #                                                −2.25; Brier 0.218 → 0.262). Default OFF; retained for
+    #                                                re-testing when dossiers are much richer.
 
     def forecast(self, question, dossier, *, today="", standing_confidence=None) -> PanelForecast:
         backends = self.model_llms or {"deepseek": self.llm_hot}
