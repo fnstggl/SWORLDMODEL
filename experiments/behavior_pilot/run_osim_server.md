@@ -9,13 +9,21 @@ to fit a 16 GB card.
 pip install "vllm>=0.6.0"
 
 # 2. serve OSim with an OpenAI-compatible API
-python -m vllm.entrypoints.openai.api_server \
+#    VLLM_USE_FLASHINFER_SAMPLER=0 is REQUIRED on some images: the FlashInfer sampling kernel can fail to
+#    JIT-build (`sampling.so: cannot open shared object file`) and crash engine startup. Disabling it uses
+#    the native sampler and works (verified on an A40 / vLLM 0.24).
+VLLM_USE_FLASHINFER_SAMPLER=0 python -m vllm.entrypoints.openai.api_server \
   --model cmu-lti/osim-8b \
   --dtype bfloat16 \
   --max-model-len 8192 \
   --gpu-memory-utilization 0.90 \
   --port 8000
 # (add: --quantization bitsandbytes   to fit a 16 GB GPU)
+# Startup takes ~2 min (load 15GB + compile). WAIT for "Application startup complete", then:
+#   until curl -s http://127.0.0.1:8000/v1/models >/dev/null; do sleep 10; done; echo "OSim up!"
+
+# MATCHED RUNS: set DEEPSEEK_API_KEY on the pod too, and give both evals the SAME --limit/--reps, so DeepSeek
+# and OSim score identical items in one process (else the arms use different item subsets and can't be compared).
 
 # 3. the pilot talks to it here
 export OSIM_ENDPOINT=http://127.0.0.1:8000/v1

@@ -175,6 +175,29 @@ delay MAE. This is OSim's core claimed strength (#1).
 W1_norm (esp. on bomb), raises Upworthy precision@1 above 0.56, and/or beats DeepSeek on Enron reply — on
 these untouched labels.
 
+## OSim-8B pilot — FIRST RUN (A40, vLLM 0.24) — MIXED, not yet matched
+
+OSim-8B served on an A40 (needs `VLLM_USE_FLASHINFER_SAMPLER=0`) and ran all three evals. **Result leans
+negative for adopting OSim as a general stakeholder model, with one real bright spot.** ⚠️ This first run was
+**unmatched** — the OSim arm used `--limit 12 --reps 6` while the committed DeepSeek baseline used
+`--limit 8 --reps 5`, so the item subsets differ (visible in differing human means). Treat as directional,
+not decisive; the matched re-run (both arms, same flags, DeepSeek key on the pod) is the next step.
+
+| signal | OSim | DeepSeek | read |
+|---|---|---|---|
+| bomb (risk) W1↓ | **0.274** (opens ~50) | 0.586 (opens ~78) | OSim clearly more human (~33) — its one clear win |
+| dictator W1↓ | 0.127 (gives 43) | 0.092 | OSim over-gives — worse |
+| ultimatum responder W1↓ | 0.375 (accepts ~3) | 0.199 | OSim accepts anything — worse |
+| Upworthy precision@1 | 0.417 | 0.56 | OSim near random (0.34); DeepSeek much better |
+| realism action-rate | 26% | 18.8% | both human-ish; OSim slightly higher |
+| realism persona spread | 0.06 | 0.13 | **OSim homogenizes personas more** (OmniBehavior's failure) |
+
+**Verdict so far:** OSim helps *only* on risk realism; it is equal-or-worse on fairness/bargaining, headline
+clicks, and persona diversity. This argues against a general OSim swap and — if OSim is used at all — only for
+the narrow risk/engagement-realism sub-task. Robustness is low (n tiny, no CIs, arms unmatched); the matched,
+scaled re-run + per-game bootstrap CIs must land before any keep/reject is final. Per the hard rule, no
+improvement is claimed from these unmatched, small-n numbers.
+
 ## PART D/E/G — the pilot (SCRIPTED, not run — no GPU here)
 
 `experiments/behavior_pilot/` contains the runnable plan (see its README):
