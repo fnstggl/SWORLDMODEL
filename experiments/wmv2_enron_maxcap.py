@@ -151,9 +151,12 @@ def run(limit, llm_n, n_particles):
                     row["E3"] = {b: hz_cum(e3_direct(ex), j) for j, b in enumerate(BUCKS)}
                     ens = sum(e3_direct(ex) for _ in range(3)) / 3   # E4 call-matched ensemble (3 pooled)
                     row["E4"] = {b: hz_cum(ens, j) for j, b in enumerate(BUCKS)}
-                    for arm, kw in (("E6", dict(latent=False, event_driven=False)),
-                                    ("E7", dict(event_driven=False)), ("E8", dict()),
-                                    ("E9", dict())):
+                    # LEAVE-ONE-OUT ablation vs the full E10: each arm removes exactly one mechanism, so
+                    # E10−Ex isolates that mechanism's marginal contribution (content is ON throughout).
+                    for arm, kw in (("E6", dict(latent=False, event_driven=False)),   # content only
+                                    ("E7", dict(event_driven=False)),                 # E10 − event rollout
+                                    ("E8", dict(latent=False)),                       # E10 − latent
+                                    ("E9", dict(relationship=False))):                # E10 − relationship
                         o = v2_predict(ex, fm, n_particles=n_particles, seed=i, content_fn=chat,
                                        meter=None, **kw)
                         row[arm] = {b: o["p_by"].get(b, o["p14"]) for b in BUCKS}
@@ -189,21 +192,40 @@ def run(limit, llm_n, n_particles):
                       "brier@7d_cal": round(sum((_apply(r[a][7.0], ab) - r["y"][7.0]) ** 2
                                                 for r in rows if r.get(a)) / len(rows), 4)}
         llm_rows = [r for r in rows if r.get("E10")]
+        # APPLES-TO-APPLES: statistical arms recomputed on the SAME LLM subsample rows as E3/E4/E6–E10
+        detail7_llm = {a: _metrics(llm_rows, a, 7.0) for a in arms}
         pairs_vs_e1 = {a: _paired(rows, a, "E1", 7.0) for a in ("E0", "E2", "E5")}
-        pairs_vs_e1_llm = {a: _paired(llm_rows, a, "E1", 7.0) for a in ("E3", "E8", "E10")}
-        pairs_vs_e3 = {a: _paired(llm_rows, a, "E3", 7.0) for a in ("E8", "E10")}
+        pairs_vs_e1_llm = {a: _paired(llm_rows, a, "E1", 7.0) for a in ("E3", "E4", "E6", "E10")}
+        pairs_vs_e3 = {a: _paired(llm_rows, a, "E3", 7.0) for a in ("E10",)}
         pairs_content = {"E10_vs_E5": _paired(llm_rows, "E10", "E5", 7.0),
                          "E3_vs_E2": _paired(llm_rows, "E3", "E2", 7.0)}
+        # mechanism leave-one-out: E10 minus one mechanism → that mechanism's marginal effect
+        pairs_mech = {"E10_vs_E6_sim_stack": _paired(llm_rows, "E10", "E6", 7.0),
+                      "E10_vs_E7_event": _paired(llm_rows, "E10", "E7", 7.0),
+                      "E10_vs_E8_latent": _paired(llm_rows, "E10", "E8", 7.0),
+                      "E10_vs_E9_relationship": _paired(llm_rows, "E10", "E9", 7.0)}
         out[tag] = {"n": len(rows), "n_llm": len(llm_rows), "raw_brier": raw, "detail@7d": detail7,
-                    "calibrated": cal, "paired_vs_E1": {**pairs_vs_e1, **pairs_vs_e1_llm},
-                    "paired_vs_E3": pairs_vs_e3, "content_effects": pairs_content}
+                    "detail@7d_llm_subsample": detail7_llm, "calibrated": cal,
+                    "paired_vs_E1": {**pairs_vs_e1, **pairs_vs_e1_llm}, "paired_vs_E3": pairs_vs_e3,
+                    "content_effects": pairs_content, "mechanism_ablation": pairs_mech}
         print(f"\n== {tag} n={len(rows)} n_llm={len(llm_rows)} ==")
+        print("  [full test cap]")
         for a in arms:
             m = detail7[a]
             if m:
-                print(f"  {a} @7d: brier={m['brier']} logloss={m['logloss']} auroc={m['auroc']} ece={m['ece']}")
-        print(f"  E10 vs E5 (content effect): {pairs_content['E10_vs_E5']}")
-        print(f"  E10 vs E3 (does sim beat direct LLM): {pairs_vs_e3.get('E10')}")
+                print(f"  {a} @7d: brier={m['brier']} logloss={m['logloss']} auroc={m['auroc']} ece={m['ece']} n={m['n']}")
+        print("  [LLM subsample — apples-to-apples]")
+        for a in arms:
+            m = detail7_llm[a]
+            if m:
+                print(f"  {a} @7d: brier={m['brier']} logloss={m['logloss']} auroc={m['auroc']} n={m['n']}")
+        print(f"  E10 vs E1  (max-cap beats the bar?):     {out[tag]['paired_vs_E1'].get('E10')}")
+        print(f"  E10 vs E5  (content effect):             {pairs_content['E10_vs_E5']}")
+        print(f"  E10 vs E3  (sim-wrap beats raw LLM?):    {pairs_vs_e3.get('E10')}")
+        print(f"  E3  vs E2  (raw LLM beats text embed?):  {pairs_content['E3_vs_E2']}")
+        print(f"  E10 vs E7  (event rollout effect):       {pairs_mech['E10_vs_E7_event']}")
+        print(f"  E10 vs E8  (latent effect):              {pairs_mech['E10_vs_E8_latent']}")
+        print(f"  E10 vs E9  (relationship effect):        {pairs_mech['E10_vs_E9_relationship']}")
 
     # ---- PART 1 forensic audit: 20 held-out predictions, full instrumentation, raw LLM I/O ----
     forensic = []
@@ -268,8 +290,15 @@ def run(limit, llm_n, n_particles):
                     "model_name": "deepseek-chat (DeepSeek V3)" if chat else "none",
                     "est_cost_usd": round(meter["tokens"] * (DS_IN + DS_OUT) / 2, 4),
                     "runtime_s": round(time.time() - t0, 1),
-                    "arm_legend": {"E5": "V2_METADATA_TEMPORAL (renamed from prior 'full V2')",
-                                   "E10": "MAX-CAPACITY (content+latent+event+relationship ON)"}}
+                    "arm_legend": {
+                        "E0": "base rate", "E1": "fitted metadata (the bar)",
+                        "E2": "non-LLM hashed-BoW text baseline", "E3": "grounded one-shot LLM (raw propensity)",
+                        "E4": "call-matched direct LLM ensemble (3 pooled)",
+                        "E5": "V2_METADATA_TEMPORAL (renamed from prior 'full V2'; no content)",
+                        "E6": "content only (latent+event OFF)", "E7": "E10 − event rollout",
+                        "E8": "E10 − latent", "E9": "E10 − relationship",
+                        "E10": "MAX-CAPACITY (content+latent+event+relationship ON)"},
+                    "ablation_design": "E6-E9 are leave-one-out from E10; E10−Ex isolates one mechanism"}
     Path(RESULT).parent.mkdir(parents=True, exist_ok=True)
     Path(RESULT).write_text(json.dumps(out, indent=1, default=str))
     print(f"\nwrote {RESULT}  (llm calls={meter['calls']}, ~${out['_meta']['est_cost_usd']})")
