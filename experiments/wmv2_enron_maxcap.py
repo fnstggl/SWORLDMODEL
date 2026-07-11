@@ -147,17 +147,21 @@ def run(limit, llm_n, n_particles):
             o5 = v2_predict(ex, fm, n_particles=n_particles, seed=i)      # V2_METADATA_TEMPORAL
             row["E5"] = {b: o5["p_by"].get(b, o5["p14"]) for b in BUCKS}
             if i in llm_ids:
-                row["E3"] = {b: hz_cum(e3_direct(ex), j) for j, b in enumerate(BUCKS)}
-                # E4 call-matched ensemble (3 direct reads pooled)
-                ens = sum(e3_direct(ex) for _ in range(3)) / 3
-                row["E4"] = {b: hz_cum(ens, j) for j, b in enumerate(BUCKS)}
-                for arm, kw in (("E6", dict(latent=False, event_driven=False)),
-                                ("E7", dict(event_driven=False)), ("E8", dict()),
-                                ("E9", dict())):
-                    o = v2_predict(ex, fm, n_particles=n_particles, seed=i, content_fn=chat, meter=None, **kw)
-                    row[arm] = {b: o["p_by"].get(b, o["p14"]) for b in BUCKS}
-                o10 = v2_predict(ex, fm, n_particles=n_particles, seed=i, content_fn=chat, meter=None)
-                row["E10"] = {b: o10["p_by"].get(b, o10["p14"]) for b in BUCKS}
+                try:                                       # one bad example must not kill a 30-min batch
+                    row["E3"] = {b: hz_cum(e3_direct(ex), j) for j, b in enumerate(BUCKS)}
+                    ens = sum(e3_direct(ex) for _ in range(3)) / 3   # E4 call-matched ensemble (3 pooled)
+                    row["E4"] = {b: hz_cum(ens, j) for j, b in enumerate(BUCKS)}
+                    for arm, kw in (("E6", dict(latent=False, event_driven=False)),
+                                    ("E7", dict(event_driven=False)), ("E8", dict()),
+                                    ("E9", dict())):
+                        o = v2_predict(ex, fm, n_particles=n_particles, seed=i, content_fn=chat,
+                                       meter=None, **kw)
+                        row[arm] = {b: o["p_by"].get(b, o["p14"]) for b in BUCKS}
+                    o10 = v2_predict(ex, fm, n_particles=n_particles, seed=i, content_fn=chat, meter=None)
+                    row["E10"] = {b: o10["p_by"].get(b, o10["p14"]) for b in BUCKS}
+                except Exception as e:                     # noqa: BLE001 — log + drop LLM arms for this row
+                    print(f"  [{tag}] example {i} LLM arms failed ({type(e).__name__}: {e}); skipped",
+                          flush=True)
             rows.append(row)
             if i % 40 == 0:
                 print(f"  [{tag}] {i}/{len(test)} calls={meter['calls']}", flush=True)
@@ -208,6 +212,7 @@ def run(limit, llm_n, n_particles):
                                  "E1": {b: hz_cum(fm.base_p(ex), j) for j, b in enumerate(BUCKS)}}
                                 for ex in val[:300]]], "E1", 7.0)
     for i, ex in enumerate(test_seen[:20]):
+      try:
         y7 = 1.0 if (ex.replied and ex.delay_days is not None and ex.delay_days <= 7.0) else 0.0
         cap = {}
         prop = e3_direct(ex, capture=cap) if chat else None       # exact-message read (raw I/O captured)
@@ -242,6 +247,8 @@ def run(limit, llm_n, n_particles):
                                  "E10_max_capacity": round(o10["p_by"].get(7.0, 0.0), 4),
                                  "baseline_E0": round(fm.global_rate, 4)},
             "observed_outcome": {"replied": ex.replied, "delay_days": ex.delay_days, "y@7d": y7}})
+      except Exception as e:                               # noqa: BLE001 — skip a bad forensic example
+        print(f"  [forensic] example {i} failed ({type(e).__name__}: {e}); skipped", flush=True)
     Path(FORENSIC).write_text(json.dumps({
         "questions": {
             "was_deepseek_called": bool(chat),
