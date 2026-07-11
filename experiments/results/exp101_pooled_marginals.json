@@ -1,0 +1,295 @@
+{
+ "n": 87,
+ "report": {
+  "n": 87,
+  "arms": {
+   "base_rate": {
+    "arm": "base_rate",
+    "n": 87,
+    "n_abstain": 0,
+    "brier": 0.1657,
+    "logloss": 0.4997,
+    "direction": 0.759,
+    "ece": 0.0158,
+    "brier_cal": 0.1674,
+    "logloss_cal": 0.5085,
+    "T": 1.0,
+    "decision_value": 0.667,
+    "n_bets": 60
+   },
+   "grounded_1shot": {
+    "arm": "grounded_1shot",
+    "n": 75,
+    "n_abstain": 12,
+    "brier": 0.1665,
+    "logloss": 0.5322,
+    "direction": 0.787,
+    "ece": 0.125,
+    "brier_cal": 0.1661,
+    "logloss_cal": 0.5131,
+    "T": 1.6,
+    "decision_value": 0.6,
+    "n_bets": 70
+   },
+   "full": {
+    "arm": "full",
+    "n": 78,
+    "n_abstain": 9,
+    "brier": 0.1499,
+    "logloss": 0.4464,
+    "direction": 0.731,
+    "ece": 0.1343,
+    "brier_cal": 0.1517,
+    "logloss_cal": 0.4571,
+    "T": 1.0,
+    "decision_value": 0.656,
+    "n_bets": 64
+   },
+   "grounded_ens": {
+    "arm": "grounded_ens",
+    "n": 30,
+    "n_abstain": 57,
+    "brier": 0.1751,
+    "logloss": 0.5927,
+    "direction": 0.8,
+    "ece": 0.1392,
+    "brier_cal": 0.1866,
+    "logloss_cal": 0.6291,
+    "T": 2.0,
+    "decision_value": 0.63,
+    "n_bets": 27
+   },
+   "generic_panel": {
+    "arm": "generic_panel",
+    "n": 21,
+    "n_abstain": 66,
+    "brier": 0.1885,
+    "logloss": 0.6269,
+    "direction": 0.762,
+    "ece": 0.1229,
+    "brier_cal": 0.2013,
+    "logloss_cal": 0.6267,
+    "T": 2.0,
+    "decision_value": 0.524,
+    "n_bets": 21
+   },
+   "indep_stake": {
+    "arm": "indep_stake",
+    "n": 21,
+    "n_abstain": 66,
+    "brier": 0.1721,
+    "logloss": 0.5288,
+    "direction": 0.714,
+    "ece": 0.1755,
+    "brier_cal": 0.1784,
+    "logloss_cal": 0.5786,
+    "T": 1.35,
+    "decision_value": 0.579,
+    "n_bets": 19
+   },
+   "interact_stake": {
+    "arm": "interact_stake",
+    "n": 21,
+    "n_abstain": 66,
+    "brier": 0.1704,
+    "logloss": 0.4887,
+    "direction": 0.714,
+    "ece": 0.1763,
+    "brier_cal": 0.1835,
+    "logloss_cal": 0.5287,
+    "T": 1.15,
+    "decision_value": 0.529,
+    "n_bets": 17
+   },
+   "persistent": {
+    "arm": "persistent",
+    "n": 9,
+    "n_abstain": 78,
+    "brier": 0.2205,
+    "logloss": 0.7508,
+    "direction": 0.667,
+    "ece": 0.2289,
+    "brier_cal": 0.2081,
+    "logloss_cal": 0.6116,
+    "T": 2.6,
+    "decision_value": 0.5,
+    "n_bets": 8
+   },
+   "time_evolving": {
+    "arm": "time_evolving",
+    "n": 10,
+    "n_abstain": 77,
+    "brier": 0.2347,
+    "logloss": 0.7753,
+    "direction": 0.6,
+    "ece": 0.239,
+    "brier_cal": 0.2411,
+    "logloss_cal": 0.7929,
+    "T": 2.6,
+    "decision_value": 0.333,
+    "n_bets": 9
+   },
+   "parametric": {
+    "arm": "parametric",
+    "n": 0,
+    "n_abstain": 87,
+    "brier": null,
+    "logloss": null,
+    "direction": null,
+    "ece": null,
+    "brier_cal": null,
+    "logloss_cal": null,
+    "T": null,
+    "decision_value": null,
+    "n_bets": 0
+   },
+   "experimental": {
+    "arm": "experimental",
+    "n": 0,
+    "n_abstain": 87,
+    "brier": null,
+    "logloss": null,
+    "direction": null,
+    "ece": null,
+    "brier_cal": null,
+    "logloss_cal": null,
+    "T": null,
+    "decision_value": null,
+    "n_bets": 0
+   }
+  },
+  "marginals": [
+   {
+    "hi": "grounded_1shot",
+    "lo": "base_rate",
+    "n_pairs": 75,
+    "mean_brier_diff": -0.01201,
+    "ci95": [
+     -0.07825,
+     0.05449
+    ],
+    "hi_better": true,
+    "p_perm": 0.7416,
+    "hi_wins_rows": 0.6,
+    "isolates": "grounding value (grounded 1-shot \u2212 base rate)"
+   },
+   {
+    "hi": "grounded_ens",
+    "lo": "grounded_1shot",
+    "n_pairs": 30,
+    "mean_brier_diff": 0.00466,
+    "ci95": [
+     -0.00227,
+     0.01238
+    ],
+    "hi_better": false,
+    "p_perm": 0.2669,
+    "hi_wins_rows": 0.4,
+    "isolates": "ensembling value (call-matched ensemble \u2212 1-shot)"
+   },
+   {
+    "hi": "generic_panel",
+    "lo": "grounded_ens",
+    "n_pairs": 21,
+    "mean_brier_diff": 0.00293,
+    "ci95": [
+     -0.02083,
+     0.03073
+    ],
+    "hi_better": false,
+    "p_perm": 0.8631,
+    "hi_wins_rows": 0.381,
+    "isolates": "forecaster-lens value (panel \u2212 plain ensemble)"
+   },
+   {
+    "hi": "indep_stake",
+    "lo": "generic_panel",
+    "n_pairs": 21,
+    "mean_brier_diff": -0.01637,
+    "ci95": [
+     -0.10264,
+     0.04724
+    ],
+    "hi_better": true,
+    "p_perm": 0.8791,
+    "hi_wins_rows": 0.524,
+    "isolates": "stakeholder-modeling value (stakeholders \u2212 forecaster lenses)"
+   },
+   {
+    "hi": "interact_stake",
+    "lo": "indep_stake",
+    "n_pairs": 21,
+    "mean_brier_diff": -0.00171,
+    "ci95": [
+     -0.05606,
+     0.05244
+    ],
+    "hi_better": true,
+    "p_perm": 0.9665,
+    "hi_wins_rows": 0.524,
+    "isolates": "interaction value (interacting \u2212 independent stakeholders)"
+   },
+   {
+    "hi": "full",
+    "lo": "grounded_1shot",
+    "n_pairs": 72,
+    "mean_brier_diff": -0.00089,
+    "ci95": [
+     -0.0541,
+     0.04933
+    ],
+    "hi_better": true,
+    "p_perm": 0.975,
+    "hi_wins_rows": 0.403,
+    "isolates": "WHOLE-STACK value (production \u2212 grounded 1-shot)"
+   }
+  ],
+  "spend": {
+   "base_rate": {
+    "mean_calls": 0.0,
+    "mean_cost_usd": 0.0,
+    "mean_seconds": 0.0
+   },
+   "grounded_1shot": {
+    "mean_calls": 1.0,
+    "mean_cost_usd": 0.00018,
+    "mean_seconds": 1.1
+   },
+   "full": {
+    "mean_calls": 10.0,
+    "mean_cost_usd": 0.0,
+    "mean_seconds": 0.0
+   },
+   "grounded_ens": {
+    "mean_calls": 10.0,
+    "mean_cost_usd": 0.00179,
+    "mean_seconds": 11.1
+   },
+   "generic_panel": {
+    "mean_calls": 10.0,
+    "mean_cost_usd": 0.00299,
+    "mean_seconds": 26.5
+   },
+   "indep_stake": {
+    "mean_calls": 12.9,
+    "mean_cost_usd": 0.00485,
+    "mean_seconds": 36.2
+   },
+   "interact_stake": {
+    "mean_calls": 40.1,
+    "mean_cost_usd": 0.01368,
+    "mean_seconds": 98.4
+   },
+   "persistent": {
+    "mean_calls": 44.2,
+    "mean_cost_usd": 0.01552,
+    "mean_seconds": 103.2
+   },
+   "time_evolving": {
+    "mean_calls": 69.2,
+    "mean_cost_usd": 0.02378,
+    "mean_seconds": 155.6
+   }
+  }
+ }
+}

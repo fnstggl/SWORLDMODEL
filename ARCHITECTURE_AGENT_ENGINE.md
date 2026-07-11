@@ -42,6 +42,13 @@ Marginal ladder (paired Brier diff; negative = the more-complex arm is better; n
 - **Interaction: Δ=+0.016, 27% win (p=0.27)** — interacting stakeholders **WORSE** than independent ones.
 - **Whole stack vs one grounded call: Δ=+0.032 (p=0.47)** — no advantage on the paired subset.
 
+**POOLED UPDATE (EXP-100/101, n=87 across 13 rounds 2025-06 → 2026-04):** the fresh harder rounds flipped some
+tier-3 signs (stakeholder arms helped there), but the pooled paired ladder settles it — **every marginal effect
+is a precise null**: grounding Δ=−0.012 (p=0.74), ensembling +0.005, lenses +0.003, stakeholders −0.016,
+interaction −0.002, and **whole-stack vs one grounded call Δ=−0.0009 (p=0.98) — exactly zero**. B7 persistent
+(0.221) and B8 event-clock (0.235) are the *worst* arms at the *highest* cost. The product's value on this
+class is the harness — grounding + routing + calibration + abstention + flywheel — not the society.
+
 **The verdict, stated honestly:** on leak-free deliberation questions there is **no measured evidence that any
 simulation layer beats a single grounded DeepSeek call** — and the actual society simulation (stakeholders,
 then interaction) is **directionally worse and 14–42× more expensive**, with direction accuracy dropping
