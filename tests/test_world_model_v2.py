@@ -390,3 +390,126 @@ def test_no_scenario_branches_in_v2_source():
             if line.strip().startswith("#") or "`" in line:
                 continue                                   # prose/docstrings mentioning the anti-pattern
             assert not pat.search(line), f"{f.name}:{i} looks like a scenario-level branch: {line.strip()}"
+
+
+# ================= observation model + particle posterior (Parts 2-3) =================
+def test_observation_model_generates_noise_missingness_delay_and_likelihood():
+    from swm.world_model_v2.observation import GaussianMeasurement, BernoulliDetection
+    rng = random.Random(0)
+    poll = GaussianMeasurement(sd=0.04, bias=0.01, p_missing=0.2, delay_days=2.0)
+    obs = [poll.generate(0.52, at=T0, rng=rng, of_path="race.support") for _ in range(200)]
+    missing = [o for o in obs if o.value is None]
+    assert 0.1 < len(missing) / 200 < 0.35                       # missingness real
+    shown = [o.value for o in obs if o.value is not None]
+    assert abs(sum(shown) / len(shown) - 0.53) < 0.02            # bias + noise around latent+bias
+    assert obs[0].reported_at - obs[0].at == 2 * 86400.0         # reporting delay
+    # likelihood: the true latent explains the observation better than a wrong one
+    o = poll.generate(0.52, at=T0, rng=random.Random(1), of_path="race.support")
+    while o.value is None:
+        o = poll.generate(0.52, at=T0, rng=random.Random(2), of_path="race.support")
+    assert poll.likelihood(o, 0.52) > poll.likelihood(o, 0.30)
+    email = BernoulliDetection(p_detect=0.9, p_false=0.05)
+    pos_obs = email.generate(True, at=T0, rng=random.Random(3), of_path="bob.replied")
+    assert email.likelihood(pos_obs, True) != email.likelihood(pos_obs, False)
+
+
+def test_particle_posterior_reweights_resamples_and_traces_ancestry():
+    from swm.world_model_v2.observation import GaussianMeasurement, Observation, register_observation_model
+    from swm.world_model_v2.posterior import ParticlePosterior
+    # 40 particles: half with latent support 0.3, half 0.7 (sampled status)
+    worlds = []
+    for i in range(40):
+        w = _world(entities=("race",))
+        w.entity("race").set("beliefs", F(0.3 if i < 20 else 0.7, status="sampled"), key="support")
+        w.branch_id = f"b{i:03d}"
+        worlds.append(w)
+    post = ParticlePosterior.from_worlds(worlds, resample_threshold=0.6)
+    assert abs(sum(p.weight for p in post.particles) - 1.0) < 1e-9          # normalized
+    model = register_observation_model("race.beliefs[support]", GaussianMeasurement(sd=0.05))
+    # an informative poll at 0.68 must move posterior mass to the 0.7 particles
+    obs = Observation(obs_id="poll1", of_path="race.beliefs[support]", value=0.68, at=T0, reported_at=T0)
+    post.assimilate(obs)
+    exp = post.expectation("race.beliefs[support]")
+    assert exp > 0.6                                              # contradictory particles lost mass
+    assert abs(sum(p.weight for p in post.particles) - 1.0) < 1e-9
+    # a second contradicting observation crushes ESS → auto-resample fired; ancestry traceable
+    post.assimilate(Observation(obs_id="poll2", of_path="race.beliefs[support]", value=0.71,
+                                at=T0 + DAY, reported_at=T0 + DAY))
+    assert any(e["event"] == "resample" for e in post.log)
+    assert all(p.ancestry for p in post.particles)                # every survivor knows its parents
+    # observed fields were NEVER perturbed by rejuvenation
+    assert all(p.world.entity("race").get("resources", key="money").prov.status == "observed"
+               and p.world.entity("race").value("resources", key="money") == 100.0
+               for p in post.particles)
+    # posterior predictive check flags an impossible observation
+    ppc = post.posterior_predictive_check(Observation(obs_id="weird", of_path="race.beliefs[support]",
+                                                      value=-3.0, at=T0, reported_at=T0))
+    assert ppc["suspect_model_family"]
+
+
+def test_provenance_semantics_execute_differently():
+    """sampled/inferred fields may be rejuvenated; observed fields never (executable semantics, not labels)."""
+    from swm.world_model_v2.posterior import ParticlePosterior
+    w = _world(entities=("p",))
+    w.entity("p").set("attention", F(0.5, dist={"lo": 0.0, "hi": 1.0}, status="sampled"))
+    before_obs = w.entity("p").value("resources", key="money")
+    rng = random.Random(0)
+    ParticlePosterior._rejuvenate(w, rng, jitter=0.2)
+    assert w.entity("p").value("attention") != 0.5                # sampled → perturbed
+    assert w.entity("p").value("resources", key="money") == before_obs   # observed → untouched
+
+
+# ================= facade + product-eligibility + import boundary =================
+def test_facade_requires_explicit_architecture_and_contract():
+    from swm.facade import ArchitectureError, RunRecord, forecast
+    with pytest.raises(ArchitectureError):
+        forecast("q", architecture="whatever")
+    # a V2 record that touched legacy FAILS finalize (contamination cannot ship)
+    rec = RunRecord(architecture="world_model_v2")
+    rec.legacy_executed = True
+    with pytest.raises(ArchitectureError):
+        rec.finalize()
+    # a clean V2 record is recorded but NOT product-eligible until benchmark-validated
+    clean = RunRecord(architecture="world_model_v2").finalize()
+    assert clean.product_eligible is False and clean.validation_status == "architecture_validated"
+    base = RunRecord(architecture="baseline:observer_panel_v1").finalize()
+    assert base.product_eligible is False and base.baseline == "baseline:observer_panel_v1"
+
+
+def test_import_boundary_ast_v2_never_imports_legacy():
+    """AST-based (not grep): no module in swm/world_model_v2/ imports the legacy engines/compilers."""
+    import ast
+    import pathlib
+    banned_prefixes = ("swm.api.compiler", "swm.api.world_model", "swm.engine.front_door",
+                       "swm.engine.observer_panel", "swm.engine.society", "swm.engine.individual",
+                       "swm.engine.diffusion", "swm.engine.router", "swm.transition", "swm.variables",
+                       "swm.simulation", "swm.worlds")
+    v2 = pathlib.Path(__file__).resolve().parent.parent / "swm" / "world_model_v2"
+    for f in v2.glob("*.py"):
+        tree = ast.parse(f.read_text())
+        for node in ast.walk(tree):
+            names = []
+            if isinstance(node, ast.Import):
+                names = [a.name for a in node.names]
+            elif isinstance(node, ast.ImportFrom) and node.module:
+                names = [node.module]
+            for n in names:
+                assert not any(n.startswith(b) for b in banned_prefixes), \
+                    f"{f.name} imports legacy module {n}"
+
+
+def test_facade_is_the_only_legacy_door_for_new_code():
+    """Legacy engine imports outside swm/engine, swm/api, swm/eval, experiments, tests and the facade are
+    forbidden — new code reaches baselines ONLY by naming them through the facade."""
+    import ast
+    import pathlib
+    root = pathlib.Path(__file__).resolve().parent.parent / "swm"
+    allowed_dirs = {"engine", "api", "eval", "decision", "memory", "state", "transition", "variables",
+                    "simulation", "worlds", "experimental"}
+    for f in root.glob("*.py"):
+        if f.name in ("facade.py", "__init__.py"):
+            continue
+        tree = ast.parse(f.read_text())
+        for node in ast.walk(tree):
+            if isinstance(node, ast.ImportFrom) and node.module and node.module.startswith("swm.engine"):
+                raise AssertionError(f"{f.name}: new top-level code must use swm.facade, not swm.engine")
