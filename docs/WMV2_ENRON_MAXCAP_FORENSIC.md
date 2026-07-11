@@ -1,4 +1,11 @@
-# WMv2 Enron MAX-CAPACITY benchmark — forensic audit + verdict
+# WMv2 Enron scalar-content benchmark — forensic audit + verdict
+
+> **RECLASSIFIED (post-audit):** the E10 arm below carried content through ONE scalar
+> (`reply_propensity`) and therefore does not meet the maximum-capacity acceptance rule (structured actor
+> state + structured interpretation + typed actions + persistent hidden state + dynamic transitions). It is
+> renamed **`V2_SCALAR_CONTENT`** and demoted to baseline **C0** of the structured actor-cognition ladder —
+> see `docs/WMV2_ACTOR_COGNITION_AUDIT.md` and `experiments/wmv2_enron_actor_run.py`. The numbers below
+> remain valid as the scalar-policy result.
 
 **Reference World A, second round: the first genuine maximum-capacity run.** The prior "full V2" arm
 (I7/I8) is renamed **`V2_METADATA_TEMPORAL`** (arm **E5** here) because it never interpreted message

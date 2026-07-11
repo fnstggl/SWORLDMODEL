@@ -327,3 +327,274 @@ def text_baseline_p(ex, tb):
     words = set(re.findall(r"[a-z]{3,}", (ex.subject + " " + ex.body).lower()))
     rates = [tb["model"][w] for w in words if w in tb["model"]]
     return min(0.97, max(0.01, sum(rates) / len(rates))) if rates else tb["base"]
+
+
+# ---------------------------------------------------------------- STRUCTURED ACTOR POLICY (PARTS 2-4)
+# Composes the UNIVERSAL actor-cognition components (swm/world_model_v2/actor_cognition.py) into this
+# reference world. Nothing below adds email-only cognition machinery: interpretation schema, fitted policy,
+# action packs, hidden-state latents and temporal processes are the shared V2 vocabulary; this file supplies
+# only the Enron parameter pack (observable context, workload normalization, fitted dispersion).
+
+def interpret_message(ex, chat_fn, meter=None):
+    """The Enron composition of the universal interpretation boundary: recipient-observable context only
+    (prior pair history, current load, local time, thread marker) + the EXACT message. No labels, no future."""
+    from swm.world_model_v2.actor_cognition import interpret
+    context = (f"- prior history with {ex.sender}: you received {ex.feats['pair_n']} messages from them; "
+               f"you replied to about {ex.feats['pair_rate']:.0%}\n"
+               f"- your inbox load, last 7 days: {ex.feats['inbox_7d']} messages\n"
+               f"- local time: hour {ex.feats['hour']:02d}, weekday {ex.feats['weekday']}\n"
+               f"- subject marks an existing thread: {'yes' if ex.feats.get('thread') else 'no'}")
+    return interpret(chat_fn, actor=f"{ex.recipient} (Enron employee)", channel="corporate email",
+                     context=context, content=f"SUBJECT: {ex.subject[:200]}\n{ex.body[:1500]}", meter=meter)
+
+
+def fit_hetero_sd(train) -> float:
+    """FITTED heterogeneity for the responsiveness latent: dispersion of log per-recipient response-rate
+    multipliers (recipients with n>=5) — a measured spread, not an invented constant. Clamped [0.1, 0.6]."""
+    g = sum(e.replied for e in train) / max(1, len(train))
+    per = {}
+    for e in train:
+        if e.feats["rcpt_n"] >= 5:
+            per[e.recipient] = e.feats["rcpt_rate"]          # last seen (running smoothed rate)
+    if len(per) < 10 or g <= 0:
+        return 0.3
+    logs = [math.log(max(1e-3, r / g)) for r in per.values()]
+    mu = sum(logs) / len(logs)
+    sd = (sum((x - mu) ** 2 for x in logs) / max(1, len(logs) - 1)) ** 0.5
+    return min(0.6, max(0.1, sd / 2.0))                      # /2: rate noise inflates raw dispersion
+
+
+REPLY_ACTIONS = ("reply_now", "reply_later", "ask_clarification")
+
+
+def v2_predict_actor(ex, fm: FittedMechanisms, interp, pol, *, level=6, horizon_days=14.0,
+                     n_particles=48, seed=0, hetero_sd=0.3):
+    """PART 2-4: the STRUCTURED actor world. Levels are the C-ladder:
+      2: typed action distribution through the event world (point hidden state)
+      3: + sampled coherent hidden actor state (attention, responsiveness, obligation_sensitivity; correlated)
+      4: + dynamic attention (mean-reverting workload/time-of-day process between observations)
+      5: + relationship state (history-inferred strength modulates engagement; terminal bounded transition)
+      6: + interruption hazard (distraction events) + obligation×hidden-state coupling
+    The fitted policy `pol` (train-only) sets the calibrated engagement mass from interpretation features +
+    the metadata anchor; the interpretation shapes the typed split; hidden state modulates within bounds.
+    interp=None → the arm ABSTAINS from semantics (metadata anchor only), flagged."""
+    from swm.world_model_v2.actor_cognition import (Interpretation, action_distribution,
+                                                    attention_transition, hidden_state_latents,
+                                                    relationship_modulator, relationship_strength,
+                                                    relationship_transition)
+    from swm.world_model_v2.contracts import OutcomeContract
+    from swm.world_model_v2.events import Event, EventQueue, StochasticHazard, register_event_type
+    from swm.world_model_v2.init_state import InitialStateModel
+    from swm.world_model_v2.rollout import WorldModelV2Run
+    from swm.world_model_v2.state import Entity, F, SimulationClock, WorldState
+    from swm.world_model_v2.transitions import TransitionOperator, TransitionProposal, StateDelta
+
+    base_p = fm.base_p(ex)
+    itp = interp if interp is not None else Interpretation()             # neutral shape when abstaining
+    p_eng = pol.p_engage(itp.features(), base_p) if (interp is not None and pol is not None) else base_p
+    act_dist = action_distribution("messaging", itp, p_eng)
+    p_del = act_dist["delegate"]
+    # delegation preempts at the first observation; compensate the reply hazard so P(reply)=p_eng exactly
+    p_reply_target = min(0.97, p_eng / max(0.03, 1.0 - p_del))
+    wl_norm = min(1.0, ex.feats["inbox_7d"] / max(1.0, 2.0 * fm.terciles[1]))
+    rel_strength = relationship_strength(ex.feats["pair_n"], ex.feats["pair_rate"], fm.global_rate)
+
+    base = WorldState(world_id=ex.msg_id[:12], branch_id="root",
+                      clock=SimulationClock(now=ex.sent_ts, as_of=ex.sent_ts))
+    rcpt = Entity(identity="recipient")
+    rcpt.set("attention", F(0.7, status="assumed"))
+    rcpt.set("current_action", F(None, status="assumed"))
+    rcpt.set("responsiveness", F(1.0, status="assumed"))
+    rcpt.set("obligation_sensitivity", F(1.0, status="assumed"))
+    rcpt.set("workload_pressure", F(wl_norm, status="observed", method="inbox_7d/terciles"))
+    rcpt.set("last_observation_ts", F(ex.sent_ts, status="derived"))
+    rcpt.set("relationships", F(rel_strength, status="inferred", method="relationship_strength"),
+             key=ex.sender)
+    base.entities["recipient"] = rcpt
+    latents, correlations = ([], [])
+    if level >= 3:
+        latents, correlations = hidden_state_latents("recipient", workload_norm=wl_norm,
+                                                     hetero_sd=hetero_sd)
+    init = InitialStateModel(base_world=base, latents=latents, correlations=correlations)
+
+    register_event_type("reply_check", scheduling="hazard", validated=True)
+    register_event_type("deferred_reply", scheduling="scheduled", validated=True)
+
+    class TypedMessageDecision(TransitionOperator):
+        """The typed-action policy inside the world: at each observation opportunity the actor either
+        engages (hazard calibrated to the FITTED p_engage) — sampling reply_now / reply_later /
+        ask_clarification from the interpretation-shaped split — or hands off (delegate, first observation
+        only) or waits. reply_later schedules a deferred completion event; past-horizon deferrals honestly
+        count as no observed reply."""
+        name = "typed_action_decision"
+
+        def applicable(self, world, event):
+            return (event.etype in ("reply_check", "deferred_reply", "distraction")
+                    and world.entity("recipient").value("current_action") in (None, "reply_later"))
+
+        def propose(self, world, event, rng):
+            r = world.entity("recipient")
+            if event.etype == "deferred_reply":
+                if r.value("current_action") == "reply_later":
+                    return TransitionProposal(operator=self.name,
+                                              action={"actor": "recipient", "type": "complete_deferred"},
+                                              reason_codes=["deferred_completion"])
+                return None
+            if event.etype == "distraction":
+                if level >= 6:
+                    return TransitionProposal(operator=self.name,
+                                              action={"actor": "recipient", "type": "interrupted"},
+                                              reason_codes=["distraction_shock"])
+                return None
+            if r.value("current_action") is not None:
+                return None
+            att = float(r.value("attention") or 0.7)
+            if level >= 4:                                   # PART 4: attention as a temporal process
+                last = float(r.value("last_observation_ts") or ex.sent_ts)
+                att = attention_transition(att, dt_days=(world.clock.now - last) / DAY,
+                                           workload_norm=wl_norm, hour=ex.feats["hour"], rng=rng)
+            resp = float(r.value("responsiveness") or 1.0) if level >= 3 else 1.0
+            p_t = p_reply_target * resp
+            if level >= 5:
+                p_t *= relationship_modulator(rel_strength, itp.relationship_salience)
+            if level >= 6:
+                osens = float(r.value("obligation_sensitivity") or 1.0)
+                p_t *= min(1.25, max(0.8, 1.0 + 0.5 * osens * (itp.obligation - 0.5)))
+            p_t = min(0.97, max(0.01, p_t))
+            el_days = (world.clock.now - ex.sent_ts) / DAY
+            b = next((i for i, bb in enumerate(BUCKETS) if el_days <= bb), len(BUCKETS) - 1)
+            widths = (BUCKETS[0],) + tuple(BUCKETS[i] - BUCKETS[i - 1] for i in range(1, len(BUCKETS)))
+            n_opp = max(1.0, fm.check_rate_per_day * widths[b])
+            H = min(0.95, fm.hazard[b] * (p_t / max(1e-6, fm.global_rate)) * (0.4 + 0.85 * att))
+            p_check = 1.0 - (1.0 - H) ** (1.0 / n_opp)
+            first_check = float(r.value("last_observation_ts") or ex.sent_ts) <= ex.sent_ts
+            u = rng.random()
+            if u < p_check:                                  # ENGAGE: typed split (renormalized reply mass)
+                mass = {a: act_dist[a] for a in REPLY_ACTIONS}
+                z = sum(mass.values()) or 1.0
+                pick, acc, chosen = rng.random(), 0.0, REPLY_ACTIONS[0]
+                for a, m in mass.items():
+                    acc += m / z
+                    if pick <= acc:
+                        chosen = a
+                        break
+                return TransitionProposal(operator=self.name,
+                                          action={"actor": "recipient", "type": chosen},
+                                          p_dist={**{a: round(m / z * p_check, 4) for a, m in mass.items()},
+                                                  "wait": round(1 - p_check, 4)},
+                                          reason_codes=[f"bucket={b}", "fitted_policy",
+                                                        f"attention={att:.2f}"])
+            if first_check and u < p_check + p_del:          # hand-off happens at the first look only
+                return TransitionProposal(operator=self.name,
+                                          action={"actor": "recipient", "type": "delegate"},
+                                          p_dist={"delegate": round(p_del, 4)},
+                                          reason_codes=["handoff"])
+            return TransitionProposal(operator=self.name,
+                                      action={"actor": "recipient", "type": "observe", "att": att},
+                                      p_dist={"wait": round(1 - p_check, 4)}, reason_codes=["waited"])
+
+        def apply(self, world, proposal):
+            r = world.entity("recipient")
+            act = proposal.action["type"]
+            d = StateDelta(at=world.clock.now, event_type="typed_action", operator=self.name,
+                           reason_codes=proposal.reason_codes, uncertainty={"p_dist": proposal.p_dist})
+            before = r.value("current_action")
+            if act == "interrupted":
+                a0 = float(r.value("attention") or 0.7)
+                r.set("attention", F(max(0.05, a0 - 0.15), status="derived", method="distraction",
+                                     updated_at=world.clock.now))
+                return d.change("recipient.attention", round(a0, 3), round(max(0.05, a0 - 0.15), 3))
+            if act == "observe":
+                r.set("last_observation_ts", F(world.clock.now, status="derived",
+                                               updated_at=world.clock.now))
+                if level >= 4 and "att" in proposal.action:  # the temporal process PERSISTS its state
+                    r.set("attention", F(proposal.action["att"], status="derived",
+                                         method="attention_transition", updated_at=world.clock.now))
+                return d
+            if act in ("reply_now", "ask_clarification", "complete_deferred"):
+                r.set("current_action", F("reply", status="derived", method=act,
+                                          updated_at=world.clock.now))
+                world.quantities["reply_delay_days"] = type("Q", (), {
+                    "value": (world.clock.now - ex.sent_ts) / DAY})()
+                d.change("recipient.current_action", before, f"reply({act})")
+            elif act == "reply_later":
+                r.set("current_action", F("reply_later", status="derived", method=act,
+                                          updated_at=world.clock.now))
+                d.change("recipient.current_action", before, "reply_later")
+            elif act == "delegate":
+                r.set("current_action", F("delegate", status="derived", method=act,
+                                          updated_at=world.clock.now))
+                d.change("recipient.current_action", before, "delegate")
+            if level >= 5:                                   # PART 4: bounded relationship transition
+                s0 = float(r.value("relationships", key=ex.sender) or rel_strength)
+                s1 = relationship_transition(s0, engaged=act in ("reply_now", "ask_clarification",
+                                                                 "complete_deferred"))
+                r.set("relationships", F(s1, status="derived", method="relationship_transition",
+                                         updated_at=world.clock.now), key=ex.sender)
+                d.change(f"recipient.relationships[{ex.sender}]", round(s0, 3), round(s1, 3))
+            return d
+
+    def build_queue(world):
+        q = EventQueue(horizon_ts=ex.sent_ts + horizon_days * DAY)
+        rng = random.Random(hash(world.branch_id) & 0xFFFF)
+        q.add_hazard(StochasticHazard(etype="reply_check", rate_per_day=fm.check_rate_per_day,
+                                      participants=["recipient"]), now=ex.sent_ts, rng=rng, world=world)
+        if level >= 6:
+            q.add_hazard(StochasticHazard(etype="distraction", rate_per_day=1.0 + 2.0 * wl_norm,
+                                          participants=["recipient"],
+                                          payload={"prov": "prior (workload-coupled interruptions)"}),
+                         now=ex.sent_ts, rng=rng, world=world)
+        return q
+
+    contract = OutcomeContract(
+        family="response_occurrence", options=["reply", "no_reply"],
+        resolution_rule=f"replied within {horizon_days:.0f}d",
+        readout=lambda w: "reply" if w.entity("recipient").value("current_action") == "reply"
+        else "no_reply",
+        horizon_ts=ex.sent_ts + horizon_days * DAY).validate()
+
+    # reply_later completion rides the check-event stream: a deferred reply completes at the first
+    # observation after the per-particle sampled defer delay; past-horizon completions drop honestly
+    class DeferredCompletion(TransitionOperator):
+        name = "deferred_completion"
+
+        def applicable(self, world, event):
+            r = world.entity("recipient")
+            if r.value("current_action") != "reply_later" or event.etype != "reply_check":
+                return False
+            chosen_at = float(r.get("current_action").prov.updated_at or 0.0)
+            rngl = random.Random(int(chosen_at) ^ (hash(world.branch_id) & 0xFFFF))
+            defer_days = min(5.0, max(0.1, math.exp(rngl.gauss(math.log(0.8), 0.8))))
+            return world.clock.now >= chosen_at + defer_days * DAY
+
+        def propose(self, world, event, rng):
+            return TransitionProposal(operator=self.name,
+                                      action={"actor": "recipient", "type": "complete_deferred"},
+                                      reason_codes=["deferred_completion"])
+
+        def apply(self, world, proposal):
+            r = world.entity("recipient")
+            before = r.value("current_action")
+            r.set("current_action", F("reply", status="derived", method="complete_deferred",
+                                      updated_at=world.clock.now))
+            world.quantities["reply_delay_days"] = type("Q", (), {
+                "value": (world.clock.now - ex.sent_ts) / DAY})()
+            d = StateDelta(at=world.clock.now, event_type="typed_action", operator=self.name,
+                           reason_codes=["deferred_completion"])
+            return d.change("recipient.current_action", before, "reply(deferred)")
+
+    run = WorldModelV2Run(initial=init, queue_builder=build_queue,
+                          operators=[TypedMessageDecision(), DeferredCompletion()],
+                          contract=contract, n_particles=n_particles)
+    result, branches = run.run(seed=seed)
+    delays, actions = [], []
+    for b in branches:
+        q = b.world.quantities.get("reply_delay_days")
+        delays.append(q.value if q is not None else None)
+        actions.append(b.world.entity("recipient").value("current_action") or "ignore")
+    p_by = {bb: sum(1 for d in delays if d is not None and d <= bb) / len(delays) for bb in BUCKETS}
+    return {"p_by": p_by, "p14": result["distribution"].get("reply", 0.0),
+            "delays": [d for d in delays if d is not None], "p_engage": p_eng,
+            "action_dist": act_dist, "terminal_actions": actions,
+            "interpretation": (itp.as_dict() if interp is not None else None),
+            "abstained": interp is None, "n_deltas": result["n_deltas"], "trace_branches": branches}
