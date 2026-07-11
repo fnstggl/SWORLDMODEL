@@ -118,14 +118,63 @@ def asof_google_news(question, as_of_ts, *, days_back=45, k=8):
     return out
 
 
+def asof_wikipedia(query, as_of_ts, k=2):
+    """LEAK-FREE encyclopedic background: the Wikipedia article AS IT STOOD on the as-of date, via the
+    revisions API (rvstart=<as_of>, rvdir=older → the newest revision at or before the cutoff). News
+    headlines tell you what CHANGED this week; this tells you what the world already KNEW — who the person
+    is, what the office/process is, the standing structure — which headlines alone never carry. Guards:
+    the fetched revision's own timestamp is verified <= as_of (an article created after the cutoff yields
+    no earlier revision and is dropped), and the passage is stamped with the revision date."""
+    import datetime as _dt
+    iso = _dt.datetime.utcfromtimestamp(int(as_of_ts)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    try:
+        hits = json.loads(_get("https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=" +
+                               urllib.parse.quote(query) + f"&format=json&srlimit={k}"))
+    except Exception:
+        return []
+    out = []
+    for h in hits.get("query", {}).get("search", [])[:k]:
+        try:
+            rev = json.loads(_get(
+                "https://en.wikipedia.org/w/api.php?action=query&prop=revisions&titles=" +
+                urllib.parse.quote(h["title"]) +
+                f"&rvlimit=1&rvstart={iso}&rvdir=older&rvprop=timestamp%7Ccontent&rvslots=main"
+                f"&format=json&formatversion=2"))
+            pages = rev.get("query", {}).get("pages", [])
+            if not pages or not pages[0].get("revisions"):
+                continue                                   # no revision before the cutoff → article is post-as-of
+            r0 = pages[0]["revisions"][0]
+            ts = r0.get("timestamp", "")
+            content = (r0.get("slots", {}).get("main", {}) or {}).get("content", "")
+            # crude wikitext → prose: drop infobox param lines, templates, refs, links; keep lead sentences
+            body = "\n".join(ln for ln in content.splitlines()
+                             if not ln.strip().startswith(("|", "{{", "}}", "{|", "!", "<")))
+            lead = re.sub(r"\{\{[^{}]*\}\}", " ", body)
+            lead = re.sub(r"\{\{[^{}]*\}\}", " ", lead)     # nested, twice is enough for leads
+            lead = re.sub(r"<ref[^>]*>.*?</ref>|<ref[^/>]*/>|<!--.*?-->", " ", lead, flags=re.S)
+            lead = re.sub(r"\[\[(?:[^|\]]*\|)?([^\]]+)\]\]", r"\1", lead)
+            lead = re.sub(r"\[\[File:[^\]]*\]\]|'''|''|==+[^=]*==+", " ", lead)
+            lead = re.sub(r"\s+", " ", lead).strip()
+            prose = lead[:650]
+            if len(prose) > 80:
+                out.append(Passage(prose, f"wikipedia_asof:{pages[0]['title']}", ts[:10]))
+        except Exception:
+            continue
+    return out
+
+
 def asof_multi_search(queries, as_of_ts, *, days_back=45, k_each=6):
     """Several targeted as-of queries in parallel, merged+deduped — leak-free (bounded window + pubDate
     drop on every one). Returns [Passage]. This is the backtest's `search_fn`, so SceneGrounder can run its
     MULTI-ROUND retrieval (plan queries → follow-up 'who is favored' queries) entirely as-of, never touching
-    live news, and the deciding-signal deepening (Rank 1) works in the backtest exactly as it does live."""
+    live news. Sources: as-of Google News (what changed) + as-of Wikipedia revisions (what the world already
+    knew — the encyclopedic state headlines never carry; added after EXP-098 measured grounding as the ONE
+    lever that moves accuracy)."""
     qs = [q for q in (queries or []) if str(q).strip()][:6] or [""]
-    with ThreadPoolExecutor(max_workers=min(6, len(qs))) as ex:
-        results = list(ex.map(lambda q: asof_google_news(q, as_of_ts, days_back=days_back, k=k_each), qs))
+    jobs = [lambda q=q: asof_google_news(q, as_of_ts, days_back=days_back, k=k_each) for q in qs]
+    jobs += [lambda q=q: asof_wikipedia(q, as_of_ts, k=1) for q in qs[:2]]   # background for the top queries
+    with ThreadPoolExecutor(max_workers=min(8, len(jobs))) as ex:
+        results = list(ex.map(lambda f: f(), jobs))
     out, seen = [], set()
     for rs in results:
         for p in rs:
