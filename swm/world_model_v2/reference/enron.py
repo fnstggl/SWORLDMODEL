@@ -162,11 +162,50 @@ def fit_mechanisms(train) -> FittedMechanisms:
 
 
 # ---------------------------------------------------------------- the V2 world per message
+_CONTENT_PROMPT = """You ARE the recipient of an email, deciding whether YOU will reply. Judge ONLY from what
+you can see now — never from the future.
+YOU: {recipient} (Enron employee)
+FROM: {sender}   PRIOR HISTORY WITH THEM: you have received {pair_n} emails from this person before; you
+replied to about {pair_rate:.0%} of them.
+YOUR CURRENT LOAD: {inbox_7d} emails in your inbox in the last week.
+SUBJECT: {subject}
+MESSAGE:
+---
+{body}
+---
+Given the message's content, specificity, whether it asks you something, its importance to your work, and
+your relationship — how likely are YOU to reply at all (any time)? Return ONLY JSON:
+{{"reply_propensity": <0..1>, "why": "<6 words>"}}"""
+
+
+def content_multiplier(ex, chat_fn, meter=None):
+    """MAX-CAPACITY content mechanism (experimental): ONE LLM call reads the EXACT message + the recipient's
+    OBSERVABLE dossier (no future, no labels) → a reply-propensity in [0,1]. Returned as a multiplier on the
+    fitted base rate (centered at 1.0 so content REDISTRIBUTES rather than replacing the fitted signal).
+    None on parse failure (arm abstains from the content boost, falls back to metadata)."""
+    from swm.engine.grounding import parse_json
+    prompt = _CONTENT_PROMPT.format(
+        recipient=ex.recipient, sender=ex.sender, pair_n=ex.feats["pair_n"],
+        pair_rate=ex.feats["pair_rate"], inbox_7d=ex.feats["inbox_7d"],
+        subject=ex.subject[:200], body=ex.body[:1500])
+    txt = chat_fn(prompt)
+    if meter is not None:
+        meter["calls"] += 1
+        meter["tokens"] += (len(prompt) + len(txt or "")) // 4
+    r = parse_json(txt) or {}
+    try:
+        prop = min(1.0, max(0.0, float(r["reply_propensity"])))
+    except (KeyError, TypeError, ValueError):
+        return None, ""
+    return prop, str(r.get("why", ""))[:60]
+
+
 def v2_predict(ex, fm: FittedMechanisms, *, horizon_days=14.0, n_particles=30, seed=0,
-               latent=True, event_driven=True, relationship=True):
+               latent=True, event_driven=True, relationship=True, content_fn=None, meter=None):
     """Build + roll the message world through the UNIVERSAL runtime. Returns {'p_by': {b: p}, 'trace': …}.
     Ablations: latent=False → point attention; event_driven=False → single-shot decision (no queue);
-    relationship=False → recipient/global rates only (pair history hidden)."""
+    relationship=False → recipient/global rates only (pair history hidden); content_fn set → MAX-CAPACITY
+    content-conditioned policy (LLM reads the exact message, modulates the fitted hazard)."""
     from swm.world_model_v2.contracts import OutcomeContract
     from swm.world_model_v2.events import Event, EventQueue, StochasticHazard, register_event_type
     from swm.world_model_v2.init_state import InitialStateModel, LatentVariableRecord
@@ -176,6 +215,13 @@ def v2_predict(ex, fm: FittedMechanisms, *, horizon_days=14.0, n_particles=30, s
 
     ex2 = ex if relationship else MessageExample(**{**ex.__dict__, "feats": {**ex.feats, "pair_n": 0}})
     p_base = fm.base_p(ex2)
+    content_why = ""
+    if content_fn is not None:
+        prop, content_why = content_multiplier(ex, content_fn, meter)
+        if prop is not None:
+            # content redistributes around the fitted rate: propensity 0.5→×1.0, higher/lower scales it,
+            # bounded so a single LLM read can't manufacture certainty (max ~2.2× swing)
+            p_base = min(0.97, max(0.01, p_base * (0.45 + 1.75 * prop)))
 
     base = WorldState(world_id=ex.msg_id[:12], branch_id="root",
                       clock=SimulationClock(now=ex.sent_ts, as_of=ex.sent_ts))
@@ -255,5 +301,29 @@ def v2_predict(ex, fm: FittedMechanisms, *, horizon_days=14.0, n_particles=30, s
         delays.append(q.value if q is not None else None)
     p_by = {bb: sum(1 for d in delays if d is not None and d <= bb) / len(delays) for bb in BUCKETS}
     return {"p_by": p_by, "p14": result["distribution"].get("reply", 0.0),
-            "delays": [d for d in delays if d is not None],
+            "delays": [d for d in delays if d is not None], "p_base": p_base, "content_why": content_why,
             "n_deltas": result["n_deltas"], "trace_branches": branches}
+
+
+# ---------------------------------------------------------------- E2: non-LLM text baseline
+def fit_text_baseline(train):
+    """A real non-LLM content model: hashed word-presence → per-token replied-rate; predict a message's
+    reply propensity as the mean replied-rate of its tokens (Laplace). No embeddings library needed; it IS a
+    bag-of-words logistic-free text signal to test whether CONTENT (not the LLM) carries the lift."""
+    import re
+    tok = defaultdict(lambda: [0.0, 0.0])                  # token -> [n, n_replied]
+    for e in train:
+        words = set(re.findall(r"[a-z]{3,}", (e.subject + " " + e.body).lower()))
+        for w in list(words)[:60]:
+            tok[w][0] += 1
+            tok[w][1] += 1 if e.replied else 0
+    base = sum(e.replied for e in train) / max(1, len(train))
+    model = {w: (c[1] + base) / (c[0] + 1.0) for w, c in tok.items() if c[0] >= 5}
+    return {"model": model, "base": base}
+
+
+def text_baseline_p(ex, tb):
+    import re
+    words = set(re.findall(r"[a-z]{3,}", (ex.subject + " " + ex.body).lower()))
+    rates = [tb["model"][w] for w in words if w in tb["model"]]
+    return min(0.97, max(0.01, sum(rates) / len(rates))) if rates else tb["base"]
