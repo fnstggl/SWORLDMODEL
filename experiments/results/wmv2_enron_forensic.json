@@ -1,0 +1,5866 @@
+{
+ "questions": {
+  "was_deepseek_called": true,
+  "model_name": "deepseek-chat (DeepSeek V3)",
+  "was_llm_in_v2_policy": true,
+  "policy_type_E1": "fitted statistical (reply_decision_fitted; no LLM)",
+  "policy_type_E10": "content-conditioned: fitted hazard \u00d7 bounded LLM-read multiplier",
+  "components_not_executed": "none disabled in E10 \u2014 content/latent/event/relationship all ON"
+ },
+ "total_llm_calls": 1460,
+ "total_tokens_est": 618718,
+ "est_cost_usd": 0.4238,
+ "predictions": [
+  {
+   "id": 0,
+   "msg_id": "<25377116.1075851660595.JavaMail.evans@thyme>",
+   "input_evidence": {
+    "sender": "susan.mara@enron.com",
+    "recipient": "jeff.dasovich@enron.com",
+    "sent_ts": 1003745476.0,
+    "features": {
+     "pair_n": 233,
+     "pair_rate": 0.06196581196581197,
+     "rcpt_n": 3949,
+     "rcpt_rate": 0.16350291065553024,
+     "inbox_7d": 79,
+     "hour": 10,
+     "weekday": 0,
+     "thread": 1
+    },
+    "mechanism_status": {
+     "reply_hazard": "fitted",
+     "recipient_rate": "fitted",
+     "relationship": "fitted",
+     "workload": "fitted",
+     "hour_weekday": "fitted",
+     "check_rate": "fitted",
+     "attention_latent": "prior_backed",
+     "message_content_eval": "experimental (LLM policy, off by default)"
+    }
+   },
+   "exact_message": {
+    "subject": "FW: 10/20 SDUT: Small users might face $8 billion power bill",
+    "body": "\n\n-----Original Message-----\nFrom: Fairchild, Tracy [mailto:tracy.fairchild@edelman.com]\nSent: Monday, October 22, 2001 9:27 AM\nTo: 'arem@electric.com'; 'nplotkin@rcsis.com';\n'douglass@energyattorney.com'\nCc: Allen, Stevan; Manuel, Erica\nSubject: 10/20 SDUT: Small users might face $8 billion power bill\n\n\nAReMers:\n\nHere's the San Diego Union Story that ran on Saturday 10/20.  It includes\nonly part of my quote.  What I said in total, when asked to response from\nAReM's perspective on Angelides' comments that DA would shift $8B over time\nto other ratepayers was:\n\n\"Direct access is still a small part of California's energy market.\nHowever, direct access is being held up as the scapegoat when one of the\nbiggest problems we have right now is $43 billion in contracts that\neffectively hold California ratepayers hostage to the utilities for decades,\nif not renegotiated.\"\n\n\n\nSmall users might face $8 billion power bill\nDirect-access loophole used by big customers\n\n\nBy Craig D. Rose \nSTAFF WRITER \n\nOctober 20, 2001 \n\nA legal loophole exploited by large electricity customers could leave mostly\nsmaller customers shouldering $8 billion more in electricity costs than they\nshould, the state treasurer disclosed yesterday.\n\nThe loophole opened over the summer when it became clear that large\ncustomers could get lower electricity prices and might avoid the billions in\nstate costs from the electricity crisis by entering into so-called\ndirect-access relationships with alternative electricity suppli",
+    "note": "this is the recipient-visible text; no future replies/labels shown"
+   },
+   "content_entered_model": {
+    "E0_base_rate": false,
+    "E1_fitted_metadata": false,
+    "E2_text_embedding": "hashed BoW (non-LLM)",
+    "E3_grounded_llm": true,
+    "E10_max_capacity": true,
+    "llm_prompt_sent": "You ARE the recipient of an email, deciding whether YOU will reply. Judge ONLY from what\nyou can see now \u2014 never from the future.\nYOU: jeff.dasovich@enron.com (Enron employee)\nFROM: susan.mara@enron.com   PRIOR HISTORY WITH THEM: you have received 233 emails from this person before; you\nreplied to about 6% of them.\nYOUR CURRENT LOAD: 79 emails in your inbox in the last week.\nSUBJECT: FW: 10/20 SDUT: Small users might face $8 billion power bill\nMESSAGE:\n---\n\n\n-----Original Message-----\nFrom: Fairchild, Tracy [mailto:tracy.fairchild@edelman.com]\nSent: Monday, October 22, 2001 9:27 AM\nTo: 'arem@electric.com'; 'nplotkin@rcsis.com';\n'douglass@energyattorney.com'\nCc: Allen, Stevan; Manuel, Erica\nSubject: 10/20 SDUT: Small users might face $8 billion power bill\n\n\nAReMers:\n\nHere's the San Diego Union Story that ran on Saturday 10/20.  It includes\nonly part of my quote.  What I said in total, when asked to response from\nAReM's perspective on Angelides' comments that DA would shift $8B over time\nto other ratepayers was:\n\n\"Direct access is still a small part of California's energy market.\nHowever, direct access is being held up as the scapegoat when one of the\nbiggest problems we have right now is $43 billion in contracts that\neffectively hold California ratepayers hostage to the utilities for decades,\nif not renegotiated.\"\n\n\n\nSmall users might face $8 billion power bill\nDirect-access loophole used by big customers\n\n\nBy Craig D. Rose \nSTAFF WRITER \n\nOctober 20, 2001 \n\nA legal loophole exploited by large electricity customers could leave mostly\nsmaller customers shouldering $8 billion more in electricity costs than they\nshould, the state treasurer disclosed yesterday.\n\nThe loophole opened over the summer when it became clear that large\ncustomers could get lower electricity prices and might avoid the billions in\nstate costs from the electricity crisis by entering into so-called\ndirect-access relationships with alternative electricity suppli\n---\nGiven the message's content, specificity, whether it asks you something, its importance to your work, and\nyour relationship \u2014 how likely are YOU to reply at all (any time)? Return ONLY JSON:\n{\"reply_propensity\": <0..1>, \"why\": \"<6 words>\"}",
+    "llm_raw_response": "{\"reply_propensity\": 0.05, \"why\": \"Low reply rate, not directly actionable.\"}",
+    "llm_parsed": {
+     "reply_propensity": 0.05,
+     "why": "Low reply rate, not directly actionable."
+    },
+    "reply_propensity": 0.05
+   },
+   "priors_and_state": {
+    "p_base_fitted": 0.1183,
+    "p_base_after_content": 0.0739,
+    "content_why": "Low priority, not directly actionable."
+   },
+   "particles": {
+    "n": 24,
+    "terminal_delays_days": [
+     0.05
+    ],
+    "attention_samples": [
+     {
+      "recipient.attention": 0.9354
+     },
+     {
+      "recipient.attention": 0.3509
+     },
+     {
+      "recipient.attention": 0.5301
+     },
+     {
+      "recipient.attention": 0.7926
+     },
+     {
+      "recipient.attention": 0.4459
+     },
+     {
+      "recipient.attention": 0.682
+     }
+    ]
+   },
+   "deltas_branch0": [
+    {
+     "at": "2001-10-22T12:54:32Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=0",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.028939367373110758,
+       "wait": 0.9710606326268892
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T16:41:09Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.002203377730701006,
+       "wait": 0.997796622269299
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T17:47:38Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.002203377730701006,
+       "wait": 0.997796622269299
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T19:14:50Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.002203377730701006,
+       "wait": 0.997796622269299
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T22:21:22Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.002203377730701006,
+       "wait": 0.997796622269299
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T23:40:14Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.002203377730701006,
+       "wait": 0.997796622269299
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T04:30:59Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.002203377730701006,
+       "wait": 0.997796622269299
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T05:11:19Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.002203377730701006,
+       "wait": 0.997796622269299
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T07:08:38Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.002203377730701006,
+       "wait": 0.997796622269299
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T12:01:35Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00024676004618928715,
+       "wait": 0.9997532399538107
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T15:24:00Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00024676004618928715,
+       "wait": 0.9997532399538107
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T16:09:13Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00024676004618928715,
+       "wait": 0.9997532399538107
+      }
+     },
+     "evidence_deps": []
+    }
+   ],
+   "n_deltas_total": 3827,
+   "action_distribution": {
+    "terminal_p_by": {
+     "0.16666666666666666": 0.041666666666666664,
+     "1.0": 0.041666666666666664,
+     "3.0": 0.041666666666666664,
+     "7.0": 0.041666666666666664,
+     "14.0": 0.041666666666666664
+    },
+    "p14_reply": 0.0417,
+    "selected_action": null,
+    "readout": "terminal_states"
+   },
+   "probabilities@7d": {
+    "E1_raw": 0.1165,
+    "E1_calibrated": 0.0972,
+    "E3_grounded_llm": 0.0492,
+    "E10_max_capacity": 0.0417,
+    "baseline_E0": 0.0337
+   },
+   "observed_outcome": {
+    "replied": false,
+    "delay_days": null,
+    "y@7d": 0.0
+   }
+  },
+  {
+   "id": 1,
+   "msg_id": "<31666883.1075851627366.JavaMail.evans@thyme>",
+   "input_evidence": {
+    "sender": "jeff.dasovich@enron.com",
+    "recipient": "wbooth@booth-law.com",
+    "sent_ts": 1003745744.0,
+    "features": {
+     "pair_n": 2,
+     "pair_rate": 0.16666666666666666,
+     "rcpt_n": 6,
+     "rcpt_rate": 0.125,
+     "inbox_7d": 0,
+     "hour": 10,
+     "weekday": 0,
+     "thread": 0
+    },
+    "mechanism_status": {
+     "reply_hazard": "fitted",
+     "recipient_rate": "fitted",
+     "relationship": "fitted",
+     "workload": "fitted",
+     "hour_weekday": "fitted",
+     "check_rate": "fitted",
+     "attention_latent": "prior_backed",
+     "message_content_eval": "experimental (LLM policy, off by default)"
+    }
+   },
+   "exact_message": {
+    "subject": "Angelides Oct. 19th Letter to L. Lynch Urging July 1 DA Suspension\n Date",
+    "body": "I'm sure that by now everyone's seen the letter that Angelides sent to Loretta last Friday.  If you haven't, let me know and I'll have it faxed to you.  In short, Angelides blames all of the financial woes of the State on Loretta and the PUC.  Specifically, he claims that by allowing DA sign-ups to extend to September 20th, the PUC may have shifted over $8 billion to \"homeowners, small businesses, and other enterprises...\"  Angelides ends the lettery by urging the Commission to immediately roll back the DA suspension date to July 1.\n\nThe concern, of course, is that Angelides' assertions are out there and have received alot of press attention, i.e., Direct Access=$8 billion tax on homeowners.  \n\nTo her credit, Loretta refuted Angelides in the press accounts and repeated that the best way to get costs down is to renegotiate the DWR contracts.  She also said in the press accounts that she intends to deal with the July 1/September 20 suspension issue at the next commission meeting.\n\nIn light of these events (and the increasing attacks on Loretta by Angelides and others in the Administration) It might be useful to give Loretta an assist by drafting a very brief letter to her stating:\n\nAngelides is all wet--DA and \"fairness\" are not mutually exclusive and the PUC has all the regulatory tools necessary to ensure fairness is maintained going forward.  Thus, the 8 plus billion dollar number is without basis.\nRe-stating that the PUC has no legal authority to retroactively suspend DA to",
+    "note": "this is the recipient-visible text; no future replies/labels shown"
+   },
+   "content_entered_model": {
+    "E0_base_rate": false,
+    "E1_fitted_metadata": false,
+    "E2_text_embedding": "hashed BoW (non-LLM)",
+    "E3_grounded_llm": true,
+    "E10_max_capacity": true,
+    "llm_prompt_sent": "You ARE the recipient of an email, deciding whether YOU will reply. Judge ONLY from what\nyou can see now \u2014 never from the future.\nYOU: wbooth@booth-law.com (Enron employee)\nFROM: jeff.dasovich@enron.com   PRIOR HISTORY WITH THEM: you have received 2 emails from this person before; you\nreplied to about 17% of them.\nYOUR CURRENT LOAD: 0 emails in your inbox in the last week.\nSUBJECT: Angelides Oct. 19th Letter to L. Lynch Urging July 1 DA Suspension\n Date\nMESSAGE:\n---\nI'm sure that by now everyone's seen the letter that Angelides sent to Loretta last Friday.  If you haven't, let me know and I'll have it faxed to you.  In short, Angelides blames all of the financial woes of the State on Loretta and the PUC.  Specifically, he claims that by allowing DA sign-ups to extend to September 20th, the PUC may have shifted over $8 billion to \"homeowners, small businesses, and other enterprises...\"  Angelides ends the lettery by urging the Commission to immediately roll back the DA suspension date to July 1.\n\nThe concern, of course, is that Angelides' assertions are out there and have received alot of press attention, i.e., Direct Access=$8 billion tax on homeowners.  \n\nTo her credit, Loretta refuted Angelides in the press accounts and repeated that the best way to get costs down is to renegotiate the DWR contracts.  She also said in the press accounts that she intends to deal with the July 1/September 20 suspension issue at the next commission meeting.\n\nIn light of these events (and the increasing attacks on Loretta by Angelides and others in the Administration) It might be useful to give Loretta an assist by drafting a very brief letter to her stating:\n\nAngelides is all wet--DA and \"fairness\" are not mutually exclusive and the PUC has all the regulatory tools necessary to ensure fairness is maintained going forward.  Thus, the 8 plus billion dollar number is without basis.\nRe-stating that the PUC has no legal authority to retroactively suspend DA to\n---\nGiven the message's content, specificity, whether it asks you something, its importance to your work, and\nyour relationship \u2014 how likely are YOU to reply at all (any time)? Return ONLY JSON:\n{\"reply_propensity\": <0..1>, \"why\": \"<6 words>\"}",
+    "llm_raw_response": "{\"reply_propensity\": 0.85, \"why\": \"Relevant to Enron's regulatory interests.\"}",
+    "llm_parsed": {
+     "reply_propensity": 0.85,
+     "why": "Relevant to Enron's regulatory interests."
+    },
+    "reply_propensity": 0.85
+   },
+   "priors_and_state": {
+    "p_base_fitted": 0.0869,
+    "p_base_after_content": 0.1761,
+    "content_why": "Important issue, I can assist."
+   },
+   "particles": {
+    "n": 24,
+    "terminal_delays_days": [
+     1.646
+    ],
+    "attention_samples": [
+     {
+      "recipient.attention": 1.0
+     },
+     {
+      "recipient.attention": 1.0
+     },
+     {
+      "recipient.attention": 0.7166
+     },
+     {
+      "recipient.attention": 0.5089
+     },
+     {
+      "recipient.attention": 0.427
+     },
+     {
+      "recipient.attention": 0.7078
+     }
+    ]
+   },
+   "deltas_branch0": [
+    {
+     "at": "2001-10-22T12:59:00Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=0",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.07369655682663201,
+       "wait": 0.926303443173368
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T15:03:11Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.005569471541136961,
+       "wait": 0.994430528458863
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T19:36:22Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.005569471541136961,
+       "wait": 0.994430528458863
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T01:16:31Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.005569471541136961,
+       "wait": 0.994430528458863
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T04:58:09Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.005569471541136961,
+       "wait": 0.994430528458863
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T06:37:09Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.005569471541136961,
+       "wait": 0.994430528458863
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T08:32:58Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.005569471541136961,
+       "wait": 0.994430528458863
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T08:49:03Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.005569471541136961,
+       "wait": 0.994430528458863
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T10:19:17Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0006171187081616125,
+       "wait": 0.9993828812918384
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T12:27:27Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0006171187081616125,
+       "wait": 0.9993828812918384
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T13:55:55Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0006171187081616125,
+       "wait": 0.9993828812918384
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T16:37:16Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0006171187081616125,
+       "wait": 0.9993828812918384
+      }
+     },
+     "evidence_deps": []
+    }
+   ],
+   "n_deltas_total": 3867,
+   "action_distribution": {
+    "terminal_p_by": {
+     "0.16666666666666666": 0.0,
+     "1.0": 0.0,
+     "3.0": 0.041666666666666664,
+     "7.0": 0.041666666666666664,
+     "14.0": 0.041666666666666664
+    },
+    "p14_reply": 0.0417,
+    "selected_action": null,
+    "readout": "terminal_states"
+   },
+   "probabilities@7d": {
+    "E1_raw": 0.0856,
+    "E1_calibrated": 0.0695,
+    "E3_grounded_llm": 0.837,
+    "E10_max_capacity": 0.0417,
+    "baseline_E0": 0.0337
+   },
+   "observed_outcome": {
+    "replied": false,
+    "delay_days": null,
+    "y@7d": 0.0
+   }
+  },
+  {
+   "id": 2,
+   "msg_id": "<2818889.1075851660619.JavaMail.evans@thyme>",
+   "input_evidence": {
+    "sender": "susan.mara@enron.com",
+    "recipient": "jeff.dasovich@enron.com",
+    "sent_ts": 1003745753.0,
+    "features": {
+     "pair_n": 234,
+     "pair_rate": 0.06170212765957447,
+     "rcpt_n": 3950,
+     "rcpt_rate": 0.16346153846153846,
+     "inbox_7d": 80,
+     "hour": 10,
+     "weekday": 0,
+     "thread": 1
+    },
+    "mechanism_status": {
+     "reply_hazard": "fitted",
+     "recipient_rate": "fitted",
+     "relationship": "fitted",
+     "workload": "fitted",
+     "hour_weekday": "fitted",
+     "check_rate": "fitted",
+     "attention_latent": "prior_backed",
+     "message_content_eval": "experimental (LLM policy, off by default)"
+    }
+   },
+   "exact_message": {
+    "subject": "FW: SBX2 18",
+    "body": "Legal status of SBX2 18\n\n-----Original Message-----\nFrom: Aaron Thomas [mailto:aaron.thomas@aesmail.com]\nSent: Friday, October 19, 2001 6:18 PM\nTo: 'Norman Plotkin'; arem@electric.com\nSubject: RE: SBX2 18\n\n\nOr, he is working on the override votes?\n\n-----Original Message-----\nFrom: Norman Plotkin [mailto:nplotkin@rcsis.com]\nSent: Friday, October 19, 2001 6:17 PM\nTo: arem@electric.com\nSubject: SBX2 18\n\n\nGreetings:\nOn the subject of SBX2 18, this is where it stands:\n\nI.  Article IV Section 10(b)(3) of the Cal. Const. states that any bill\npresented to the Governor that is not returned within 12 days becomes a\nstatute.   So, the Governor has 12 days to sign or veto a bill; unless ...\n\nII.  Section 10(b)(1) says that any non-reapportionment bill passed by the\nLegislature on or before the date of adjournment for interim recess that\narrives to the Gov. after the adjournment, that is not returned within 30\ndays becomes a statute.  So bills passed in the last week, that because of\nthe enrollment process do not find their way to the Gov. until after\nadjournment have 30 days.\n\nIII.  Section 10(b)(1) does not apply to Extraordinary Session bills- they\nalways have 12 days to be signed or vetoed.  However, the clock does not\nbegin ticking until the Gov. receives the bill.  This last point is the\nkicker.  Burton is still holding the bill in Enrollment.  So it can remain\nthere until:\n\t1. Burton frees it from Enrollment and sends it to the Gov. at which\ntime\nit has 12 days to be signed or veto",
+    "note": "this is the recipient-visible text; no future replies/labels shown"
+   },
+   "content_entered_model": {
+    "E0_base_rate": false,
+    "E1_fitted_metadata": false,
+    "E2_text_embedding": "hashed BoW (non-LLM)",
+    "E3_grounded_llm": true,
+    "E10_max_capacity": true,
+    "llm_prompt_sent": "You ARE the recipient of an email, deciding whether YOU will reply. Judge ONLY from what\nyou can see now \u2014 never from the future.\nYOU: jeff.dasovich@enron.com (Enron employee)\nFROM: susan.mara@enron.com   PRIOR HISTORY WITH THEM: you have received 234 emails from this person before; you\nreplied to about 6% of them.\nYOUR CURRENT LOAD: 80 emails in your inbox in the last week.\nSUBJECT: FW: SBX2 18\nMESSAGE:\n---\nLegal status of SBX2 18\n\n-----Original Message-----\nFrom: Aaron Thomas [mailto:aaron.thomas@aesmail.com]\nSent: Friday, October 19, 2001 6:18 PM\nTo: 'Norman Plotkin'; arem@electric.com\nSubject: RE: SBX2 18\n\n\nOr, he is working on the override votes?\n\n-----Original Message-----\nFrom: Norman Plotkin [mailto:nplotkin@rcsis.com]\nSent: Friday, October 19, 2001 6:17 PM\nTo: arem@electric.com\nSubject: SBX2 18\n\n\nGreetings:\nOn the subject of SBX2 18, this is where it stands:\n\nI.  Article IV Section 10(b)(3) of the Cal. Const. states that any bill\npresented to the Governor that is not returned within 12 days becomes a\nstatute.   So, the Governor has 12 days to sign or veto a bill; unless ...\n\nII.  Section 10(b)(1) says that any non-reapportionment bill passed by the\nLegislature on or before the date of adjournment for interim recess that\narrives to the Gov. after the adjournment, that is not returned within 30\ndays becomes a statute.  So bills passed in the last week, that because of\nthe enrollment process do not find their way to the Gov. until after\nadjournment have 30 days.\n\nIII.  Section 10(b)(1) does not apply to Extraordinary Session bills- they\nalways have 12 days to be signed or vetoed.  However, the clock does not\nbegin ticking until the Gov. receives the bill.  This last point is the\nkicker.  Burton is still holding the bill in Enrollment.  So it can remain\nthere until:\n\t1. Burton frees it from Enrollment and sends it to the Gov. at which\ntime\nit has 12 days to be signed or veto\n---\nGiven the message's content, specificity, whether it asks you something, its importance to your work, and\nyour relationship \u2014 how likely are YOU to reply at all (any time)? Return ONLY JSON:\n{\"reply_propensity\": <0..1>, \"why\": \"<6 words>\"}",
+    "llm_raw_response": "{\"reply_propensity\": 0.1, \"why\": \"Informational only, no action needed.\"}",
+    "llm_parsed": {
+     "reply_propensity": 0.1,
+     "why": "Informational only, no action needed."
+    },
+    "reply_propensity": 0.1
+   },
+   "priors_and_state": {
+    "p_base_fitted": 0.1178,
+    "p_base_after_content": 0.0633,
+    "content_why": "No action requested, low priority info"
+   },
+   "particles": {
+    "n": 24,
+    "terminal_delays_days": [],
+    "attention_samples": [
+     {
+      "recipient.attention": 1.0
+     },
+     {
+      "recipient.attention": 0.5343
+     },
+     {
+      "recipient.attention": 0.7987
+     },
+     {
+      "recipient.attention": 0.7366
+     },
+     {
+      "recipient.attention": 0.9088
+     },
+     {
+      "recipient.attention": 0.3495
+     }
+    ]
+   },
+   "deltas_branch0": [
+    {
+     "at": "2001-10-22T12:59:09Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=0",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.02588108343100226,
+       "wait": 0.9741189165689977
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T13:18:55Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=0",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.02588108343100226,
+       "wait": 0.9741189165689977
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T15:24:26Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.001971473173750682,
+       "wait": 0.9980285268262493
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T15:48:21Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.001971473173750682,
+       "wait": 0.9980285268262493
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T17:01:39Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.001971473173750682,
+       "wait": 0.9980285268262493
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T17:14:42Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.001971473173750682,
+       "wait": 0.9980285268262493
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T17:55:47Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.001971473173750682,
+       "wait": 0.9980285268262493
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T18:37:36Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.001971473173750682,
+       "wait": 0.9980285268262493
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T20:22:30Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.001971473173750682,
+       "wait": 0.9980285268262493
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T21:57:48Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.001971473173750682,
+       "wait": 0.9980285268262493
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T22:38:34Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.001971473173750682,
+       "wait": 0.9980285268262493
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T02:08:11Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.001971473173750682,
+       "wait": 0.9980285268262493
+      }
+     },
+     "evidence_deps": []
+    }
+   ],
+   "n_deltas_total": 3989,
+   "action_distribution": {
+    "terminal_p_by": {
+     "0.16666666666666666": 0.0,
+     "1.0": 0.0,
+     "3.0": 0.0,
+     "7.0": 0.0,
+     "14.0": 0.0
+    },
+    "p14_reply": 0.0,
+    "selected_action": null,
+    "readout": "terminal_states"
+   },
+   "probabilities@7d": {
+    "E1_raw": 0.116,
+    "E1_calibrated": 0.0968,
+    "E3_grounded_llm": 0.0985,
+    "E10_max_capacity": 0.0,
+    "baseline_E0": 0.0337
+   },
+   "observed_outcome": {
+    "replied": false,
+    "delay_days": null,
+    "y@7d": 0.0
+   }
+  },
+  {
+   "id": 3,
+   "msg_id": "<21169832.1075852767299.JavaMail.evans@thyme>",
+   "input_evidence": {
+    "sender": "chet_fenner@bmc.com",
+    "recipient": "constantine'.'brian@enron.com",
+    "sent_ts": 1003745831.0,
+    "features": {
+     "pair_n": 1,
+     "pair_rate": 0.25,
+     "rcpt_n": 1,
+     "rcpt_rate": 0.3333333333333333,
+     "inbox_7d": 0,
+     "hour": 10,
+     "weekday": 0,
+     "thread": 1
+    },
+    "mechanism_status": {
+     "reply_hazard": "fitted",
+     "recipient_rate": "fitted",
+     "relationship": "fitted",
+     "workload": "fitted",
+     "hour_weekday": "fitted",
+     "check_rate": "fitted",
+     "attention_latent": "prior_backed",
+     "message_content_eval": "experimental (LLM policy, off by default)"
+    }
+   },
+   "exact_message": {
+    "subject": "RE: Deer Lease Report",
+    "body": "I suggest Chris goes w/ an AT tire next time.\n\n-----Original Message-----\nFrom: Brian Constantine [mailto:brianc@saltgrass.com]\nSent: Monday, October 22, 2001 12:10 PM\nTo: Erik Wollam; knipe3@msn.com; chet_fenner@bmc.com;\nJoe.Parks@enron.com\nSubject: RE: Deer Lease Report\n\n\nTHAT SUCKS...Why the hell arent they working? Doesn't make any sense.\nThey were all new batteries, right?\n\n-----Original Message-----\nFrom: Erik Wollam [mailto:erwollam@hotmail.com] \nSent: Monday, October 22, 2001 11:43 AM\nTo: knipe3@msn.com; chet_fenner@bmc.com; Joe.Parks@enron.com; Brian\nConstantine\nSubject: Deer Lease Report\n\nTalked to Chris and Mertz this am.\n\nMertz saw some decent deer today. Still hot out there\n\nMcComb had a shitty 24 hours. Scrambler out of gas wanted to blam on us.\nI \npointed out we used it for about hlaf an hour, only. then he got one\nflat \ntire in his suburban.\nthree feeders are down, one was booger which should have been repaired. \nLooks like it should work, but it has fed three times since sept. Bone\nyard \nnot working. Hideout not working. Those may be battery issues. the other\n7 \nstands are working and he filled them up.\n\nhis friends shot lots of doves at the trailer sun evening. Zander said\nhis \nbother shot a bunch a few weeks ago while picking stuff off their lease.\n\nChris said they were swarming around the trailer at sunset. Chris hunted\n\nlone star brush pile sun evening, missed a spike and a turkey. saw a\ngood \ndeer walking out.\n\nhe got another flat tire 13 miles away from",
+    "note": "this is the recipient-visible text; no future replies/labels shown"
+   },
+   "content_entered_model": {
+    "E0_base_rate": false,
+    "E1_fitted_metadata": false,
+    "E2_text_embedding": "hashed BoW (non-LLM)",
+    "E3_grounded_llm": true,
+    "E10_max_capacity": true,
+    "llm_prompt_sent": "You ARE the recipient of an email, deciding whether YOU will reply. Judge ONLY from what\nyou can see now \u2014 never from the future.\nYOU: constantine'.'brian@enron.com (Enron employee)\nFROM: chet_fenner@bmc.com   PRIOR HISTORY WITH THEM: you have received 1 emails from this person before; you\nreplied to about 25% of them.\nYOUR CURRENT LOAD: 0 emails in your inbox in the last week.\nSUBJECT: RE: Deer Lease Report\nMESSAGE:\n---\nI suggest Chris goes w/ an AT tire next time.\n\n-----Original Message-----\nFrom: Brian Constantine [mailto:brianc@saltgrass.com]\nSent: Monday, October 22, 2001 12:10 PM\nTo: Erik Wollam; knipe3@msn.com; chet_fenner@bmc.com;\nJoe.Parks@enron.com\nSubject: RE: Deer Lease Report\n\n\nTHAT SUCKS...Why the hell arent they working? Doesn't make any sense.\nThey were all new batteries, right?\n\n-----Original Message-----\nFrom: Erik Wollam [mailto:erwollam@hotmail.com] \nSent: Monday, October 22, 2001 11:43 AM\nTo: knipe3@msn.com; chet_fenner@bmc.com; Joe.Parks@enron.com; Brian\nConstantine\nSubject: Deer Lease Report\n\nTalked to Chris and Mertz this am.\n\nMertz saw some decent deer today. Still hot out there\n\nMcComb had a shitty 24 hours. Scrambler out of gas wanted to blam on us.\nI \npointed out we used it for about hlaf an hour, only. then he got one\nflat \ntire in his suburban.\nthree feeders are down, one was booger which should have been repaired. \nLooks like it should work, but it has fed three times since sept. Bone\nyard \nnot working. Hideout not working. Those may be battery issues. the other\n7 \nstands are working and he filled them up.\n\nhis friends shot lots of doves at the trailer sun evening. Zander said\nhis \nbother shot a bunch a few weeks ago while picking stuff off their lease.\n\nChris said they were swarming around the trailer at sunset. Chris hunted\n\nlone star brush pile sun evening, missed a spike and a turkey. saw a\ngood \ndeer walking out.\n\nhe got another flat tire 13 miles away from\n---\nGiven the message's content, specificity, whether it asks you something, its importance to your work, and\nyour relationship \u2014 how likely are YOU to reply at all (any time)? Return ONLY JSON:\n{\"reply_propensity\": <0..1>, \"why\": \"<6 words>\"}",
+    "llm_raw_response": "{\"reply_propensity\": 0.1, \"why\": \"No direct question, low priority.\"}",
+    "llm_parsed": {
+     "reply_propensity": 0.1,
+     "why": "No direct question, low priority."
+    },
+    "reply_propensity": 0.1
+   },
+   "priors_and_state": {
+    "p_base_fitted": 0.0234,
+    "p_base_after_content": 0.0146,
+    "content_why": "No direct question or action needed."
+   },
+   "particles": {
+    "n": 24,
+    "terminal_delays_days": [],
+    "attention_samples": [
+     {
+      "recipient.attention": 0.7237
+     },
+     {
+      "recipient.attention": 1.0
+     },
+     {
+      "recipient.attention": 0.4672
+     },
+     {
+      "recipient.attention": 0.9481
+     },
+     {
+      "recipient.attention": 0.6352
+     },
+     {
+      "recipient.attention": 0.6346
+     }
+    ]
+   },
+   "deltas_branch0": [
+    {
+     "at": "2001-10-22T13:00:27Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=0",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.004811593658788693,
+       "wait": 0.9951884063412113
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T14:15:22Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=0",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.004811593658788693,
+       "wait": 0.9951884063412113
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T16:37:45Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0003676987301688417,
+       "wait": 0.9996323012698312
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T17:02:54Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0003676987301688417,
+       "wait": 0.9996323012698312
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T17:11:50Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0003676987301688417,
+       "wait": 0.9996323012698312
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T17:41:57Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0003676987301688417,
+       "wait": 0.9996323012698312
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T19:50:51Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0003676987301688417,
+       "wait": 0.9996323012698312
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T00:58:50Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0003676987301688417,
+       "wait": 0.9996323012698312
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T03:11:36Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0003676987301688417,
+       "wait": 0.9996323012698312
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T04:15:16Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0003676987301688417,
+       "wait": 0.9996323012698312
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T04:31:43Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0003676987301688417,
+       "wait": 0.9996323012698312
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T07:17:44Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0003676987301688417,
+       "wait": 0.9996323012698312
+      }
+     },
+     "evidence_deps": []
+    }
+   ],
+   "n_deltas_total": 3868,
+   "action_distribution": {
+    "terminal_p_by": {
+     "0.16666666666666666": 0.0,
+     "1.0": 0.0,
+     "3.0": 0.0,
+     "7.0": 0.0,
+     "14.0": 0.0
+    },
+    "p14_reply": 0.0,
+    "selected_action": null,
+    "readout": "terminal_states"
+   },
+   "probabilities@7d": {
+    "E1_raw": 0.0231,
+    "E1_calibrated": 0.0168,
+    "E3_grounded_llm": 0.0985,
+    "E10_max_capacity": 0.0,
+    "baseline_E0": 0.0337
+   },
+   "observed_outcome": {
+    "replied": false,
+    "delay_days": null,
+    "y@7d": 0.0
+   }
+  },
+  {
+   "id": 4,
+   "msg_id": "<18462129.1075851627390.JavaMail.evans@thyme>",
+   "input_evidence": {
+    "sender": "jeff.dasovich@enron.com",
+    "recipient": "susan.mara@enron.com",
+    "sent_ts": 1003745853.0,
+    "features": {
+     "pair_n": 231,
+     "pair_rate": 0.015086206896551725,
+     "rcpt_n": 566,
+     "rcpt_rate": 0.017605633802816902,
+     "inbox_7d": 8,
+     "hour": 10,
+     "weekday": 0,
+     "thread": 1
+    },
+    "mechanism_status": {
+     "reply_hazard": "fitted",
+     "recipient_rate": "fitted",
+     "relationship": "fitted",
+     "workload": "fitted",
+     "hour_weekday": "fitted",
+     "check_rate": "fitted",
+     "attention_latent": "prior_backed",
+     "message_content_eval": "experimental (LLM policy, off by default)"
+    }
+   },
+   "exact_message": {
+    "subject": "FW: Angelides Oct. 19th Letter to L. Lynch Urging July 1 DA\n Suspension Date",
+    "body": "\n\n -----Original Message-----\nFrom: \tDasovich, Jeff  \nSent:\tMonday, October 22, 2001 12:16 PM\nTo:\t'wbooth@booth-law.com'; 'dominic.dimare@calchamber.com'; 'cra@calretailers.com'; 'ek@a-klaw.com'; 'mikahl@ka-pow.com'; 'jrredding@aol.com'; 'drothrock@cmta.net'; 'vjw@cleanpower.org'; 'djsmith@s-k-w.com'; 'dhunter@s-k-w.com'\nSubject:\tAngelides Oct. 19th Letter to L. Lynch Urging July 1 DA Suspension Date\n\nI'm sure that by now everyone's seen the letter that Angelides sent to Loretta last Friday.  If you haven't, let me know and I'll have it faxed to you.  In short, Angelides blames all of the financial woes of the State on Loretta and the PUC.  Specifically, he claims that by allowing DA sign-ups to extend to September 20th, the PUC may have shifted over $8 billion to \"homeowners, small businesses, and other enterprises...\"  Angelides ends the lettery by urging the Commission to immediately roll back the DA suspension date to July 1.\n\nThe concern, of course, is that Angelides' assertions are out there and have received alot of press attention, i.e., Direct Access=$8 billion tax on homeowners.  \n\nTo her credit, Loretta refuted Angelides in the press accounts and repeated that the best way to get costs down is to renegotiate the DWR contracts.  She also said in the press accounts that she intends to deal with the July 1/September 20 suspension issue at the next commission meeting.\n\nIn light of these events (and the increasing attacks on Loretta by Angelides and others in the Admini",
+    "note": "this is the recipient-visible text; no future replies/labels shown"
+   },
+   "content_entered_model": {
+    "E0_base_rate": false,
+    "E1_fitted_metadata": false,
+    "E2_text_embedding": "hashed BoW (non-LLM)",
+    "E3_grounded_llm": true,
+    "E10_max_capacity": true,
+    "llm_prompt_sent": "You ARE the recipient of an email, deciding whether YOU will reply. Judge ONLY from what\nyou can see now \u2014 never from the future.\nYOU: susan.mara@enron.com (Enron employee)\nFROM: jeff.dasovich@enron.com   PRIOR HISTORY WITH THEM: you have received 231 emails from this person before; you\nreplied to about 2% of them.\nYOUR CURRENT LOAD: 8 emails in your inbox in the last week.\nSUBJECT: FW: Angelides Oct. 19th Letter to L. Lynch Urging July 1 DA\n Suspension Date\nMESSAGE:\n---\n\n\n -----Original Message-----\nFrom: \tDasovich, Jeff  \nSent:\tMonday, October 22, 2001 12:16 PM\nTo:\t'wbooth@booth-law.com'; 'dominic.dimare@calchamber.com'; 'cra@calretailers.com'; 'ek@a-klaw.com'; 'mikahl@ka-pow.com'; 'jrredding@aol.com'; 'drothrock@cmta.net'; 'vjw@cleanpower.org'; 'djsmith@s-k-w.com'; 'dhunter@s-k-w.com'\nSubject:\tAngelides Oct. 19th Letter to L. Lynch Urging July 1 DA Suspension Date\n\nI'm sure that by now everyone's seen the letter that Angelides sent to Loretta last Friday.  If you haven't, let me know and I'll have it faxed to you.  In short, Angelides blames all of the financial woes of the State on Loretta and the PUC.  Specifically, he claims that by allowing DA sign-ups to extend to September 20th, the PUC may have shifted over $8 billion to \"homeowners, small businesses, and other enterprises...\"  Angelides ends the lettery by urging the Commission to immediately roll back the DA suspension date to July 1.\n\nThe concern, of course, is that Angelides' assertions are out there and have received alot of press attention, i.e., Direct Access=$8 billion tax on homeowners.  \n\nTo her credit, Loretta refuted Angelides in the press accounts and repeated that the best way to get costs down is to renegotiate the DWR contracts.  She also said in the press accounts that she intends to deal with the July 1/September 20 suspension issue at the next commission meeting.\n\nIn light of these events (and the increasing attacks on Loretta by Angelides and others in the Admini\n---\nGiven the message's content, specificity, whether it asks you something, its importance to your work, and\nyour relationship \u2014 how likely are YOU to reply at all (any time)? Return ONLY JSON:\n{\"reply_propensity\": <0..1>, \"why\": \"<6 words>\"}",
+    "llm_raw_response": "{\"reply_propensity\": 0.02, \"why\": \"Low reply rate historically; no direct ask.\"}",
+    "llm_parsed": {
+     "reply_propensity": 0.02,
+     "why": "Low reply rate historically; no direct ask."
+    },
+    "reply_propensity": 0.02
+   },
+   "priors_and_state": {
+    "p_base_fitted": 0.02,
+    "p_base_after_content": 0.01,
+    "content_why": "Low reply rate historically; no direct ask."
+   },
+   "particles": {
+    "n": 24,
+    "terminal_delays_days": [],
+    "attention_samples": [
+     {
+      "recipient.attention": 0.7102
+     },
+     {
+      "recipient.attention": 0.8162
+     },
+     {
+      "recipient.attention": 0.5848
+     },
+     {
+      "recipient.attention": 0.7882
+     },
+     {
+      "recipient.attention": 0.9315
+     },
+     {
+      "recipient.attention": 0.8028
+     }
+    ]
+   },
+   "deltas_branch0": [
+    {
+     "at": "2001-10-22T13:00:49Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=0",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0032458983008418762,
+       "wait": 0.9967541016991581
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T16:04:55Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00024810692071119966,
+       "wait": 0.9997518930792888
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T17:27:39Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00024810692071119966,
+       "wait": 0.9997518930792888
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T18:58:22Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00024810692071119966,
+       "wait": 0.9997518930792888
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T20:00:27Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00024810692071119966,
+       "wait": 0.9997518930792888
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T23:14:33Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00024810692071119966,
+       "wait": 0.9997518930792888
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T23:26:51Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00024810692071119966,
+       "wait": 0.9997518930792888
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T00:16:40Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00024810692071119966,
+       "wait": 0.9997518930792888
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T00:26:01Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00024810692071119966,
+       "wait": 0.9997518930792888
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T01:19:07Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00024810692071119966,
+       "wait": 0.9997518930792888
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T03:42:16Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00024810692071119966,
+       "wait": 0.9997518930792888
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T05:38:14Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00024810692071119966,
+       "wait": 0.9997518930792888
+      }
+     },
+     "evidence_deps": []
+    }
+   ],
+   "n_deltas_total": 4082,
+   "action_distribution": {
+    "terminal_p_by": {
+     "0.16666666666666666": 0.0,
+     "1.0": 0.0,
+     "3.0": 0.0,
+     "7.0": 0.0,
+     "14.0": 0.0
+    },
+    "p14_reply": 0.0,
+    "selected_action": null,
+    "readout": "terminal_states"
+   },
+   "probabilities@7d": {
+    "E1_raw": 0.0197,
+    "E1_calibrated": 0.0142,
+    "E3_grounded_llm": 0.0197,
+    "E10_max_capacity": 0.0,
+    "baseline_E0": 0.0337
+   },
+   "observed_outcome": {
+    "replied": false,
+    "delay_days": null,
+    "y@7d": 0.0
+   }
+  },
+  {
+   "id": 5,
+   "msg_id": "<31779912.1075851660645.JavaMail.evans@thyme>",
+   "input_evidence": {
+    "sender": "susan.mara@enron.com",
+    "recipient": "gordon.savage@enron.com",
+    "sent_ts": 1003745964.0,
+    "features": {
+     "pair_n": 0,
+     "pair_rate": 0.5,
+     "rcpt_n": 4,
+     "rcpt_rate": 0.16666666666666666,
+     "inbox_7d": 0,
+     "hour": 10,
+     "weekday": 0,
+     "thread": 1
+    },
+    "mechanism_status": {
+     "reply_hazard": "fitted",
+     "recipient_rate": "fitted",
+     "relationship": "fitted",
+     "workload": "fitted",
+     "hour_weekday": "fitted",
+     "check_rate": "fitted",
+     "attention_latent": "prior_backed",
+     "message_content_eval": "experimental (LLM policy, off by default)"
+    }
+   },
+   "exact_message": {
+    "subject": "FW: Rehearing on PG&E's GRC",
+    "body": "Changes to the Distribution Revenue Requirement\n\n-----Original Message-----\nFrom: JBennett [mailto:JBennett@GMSSR.com]\nSent: Monday, October 22, 2001 8:33 AM\nTo: Jeff Dasovich (E-mail); Sue Mara (E-mail)\nCc: 'mpetroch@enron.com'; 'acomnes@enron.com'\nSubject: Rehearing on PG&E's GRC\n\n\nAlmost two years after issuing a decision in PG&E's GRC, the Commission\nissued it rehearing order on October 16th and, lo and behold, actually\ngranted TURN's rehearing request in part.  The overall result is to reduce\nthe capital revenue requirement by $24.8 million and expenses by $37.3\nmillion.  In addition, some portion of PG&E' estimated $171 million in\nelectric distribution capital spending will be subject to rehearing.\nListed  below are the areas in which the Commission granted rehearing.\n\n1.  Electric Distribution Capital Spending.    The Commission will, in\nessence, reopen the record, and allow PG&E to put into evidence how much it\ninvested in its electric distribution plant in 1998.  PG&E had used a 1998\nforecasted amt of capital expenditures to develop its test year forecast.\nTURN argued that there was substantial evidence on the record that this\namount was never spent. PG&E argued that the record closed prior to the end\nof 1998 so the best it could do was an estimate.  On rehearing, the\nCommission agreed with TURN, that there was evidence that the forecasted\namount was never spent, so they are allowing PG&E to prove it.  The\nrehearing order states that any rates that are raised based o",
+    "note": "this is the recipient-visible text; no future replies/labels shown"
+   },
+   "content_entered_model": {
+    "E0_base_rate": false,
+    "E1_fitted_metadata": false,
+    "E2_text_embedding": "hashed BoW (non-LLM)",
+    "E3_grounded_llm": true,
+    "E10_max_capacity": true,
+    "llm_prompt_sent": "You ARE the recipient of an email, deciding whether YOU will reply. Judge ONLY from what\nyou can see now \u2014 never from the future.\nYOU: gordon.savage@enron.com (Enron employee)\nFROM: susan.mara@enron.com   PRIOR HISTORY WITH THEM: you have received 0 emails from this person before; you\nreplied to about 50% of them.\nYOUR CURRENT LOAD: 0 emails in your inbox in the last week.\nSUBJECT: FW: Rehearing on PG&E's GRC\nMESSAGE:\n---\nChanges to the Distribution Revenue Requirement\n\n-----Original Message-----\nFrom: JBennett [mailto:JBennett@GMSSR.com]\nSent: Monday, October 22, 2001 8:33 AM\nTo: Jeff Dasovich (E-mail); Sue Mara (E-mail)\nCc: 'mpetroch@enron.com'; 'acomnes@enron.com'\nSubject: Rehearing on PG&E's GRC\n\n\nAlmost two years after issuing a decision in PG&E's GRC, the Commission\nissued it rehearing order on October 16th and, lo and behold, actually\ngranted TURN's rehearing request in part.  The overall result is to reduce\nthe capital revenue requirement by $24.8 million and expenses by $37.3\nmillion.  In addition, some portion of PG&E' estimated $171 million in\nelectric distribution capital spending will be subject to rehearing.\nListed  below are the areas in which the Commission granted rehearing.\n\n1.  Electric Distribution Capital Spending.    The Commission will, in\nessence, reopen the record, and allow PG&E to put into evidence how much it\ninvested in its electric distribution plant in 1998.  PG&E had used a 1998\nforecasted amt of capital expenditures to develop its test year forecast.\nTURN argued that there was substantial evidence on the record that this\namount was never spent. PG&E argued that the record closed prior to the end\nof 1998 so the best it could do was an estimate.  On rehearing, the\nCommission agreed with TURN, that there was evidence that the forecasted\namount was never spent, so they are allowing PG&E to prove it.  The\nrehearing order states that any rates that are raised based o\n---\nGiven the message's content, specificity, whether it asks you something, its importance to your work, and\nyour relationship \u2014 how likely are YOU to reply at all (any time)? Return ONLY JSON:\n{\"reply_propensity\": <0..1>, \"why\": \"<6 words>\"}",
+    "llm_raw_response": "{\"reply_propensity\": 0.1, \"why\": \"Forwarded info, no direct ask.\"}",
+    "llm_parsed": {
+     "reply_propensity": 0.1,
+     "why": "Forwarded info, no direct ask."
+    },
+    "reply_propensity": 0.1
+   },
+   "priors_and_state": {
+    "p_base_fitted": 0.0234,
+    "p_base_after_content": 0.0105,
+    "content_why": "No action requested, not relevant"
+   },
+   "particles": {
+    "n": 24,
+    "terminal_delays_days": [],
+    "attention_samples": [
+     {
+      "recipient.attention": 0.4053
+     },
+     {
+      "recipient.attention": 0.413
+     },
+     {
+      "recipient.attention": 0.8674
+     },
+     {
+      "recipient.attention": 0.1265
+     },
+     {
+      "recipient.attention": 0.6642
+     },
+     {
+      "recipient.attention": 0.136
+     }
+    ]
+   },
+   "deltas_branch0": [
+    {
+     "at": "2001-10-22T13:02:40Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=0",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0025379563699027274,
+       "wait": 0.9974620436300973
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T14:48:22Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00019401422077591768,
+       "wait": 0.9998059857792241
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T15:37:06Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00019401422077591768,
+       "wait": 0.9998059857792241
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T17:23:56Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00019401422077591768,
+       "wait": 0.9998059857792241
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T19:06:18Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00019401422077591768,
+       "wait": 0.9998059857792241
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T20:04:30Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00019401422077591768,
+       "wait": 0.9998059857792241
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T20:09:10Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00019401422077591768,
+       "wait": 0.9998059857792241
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T20:27:37Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00019401422077591768,
+       "wait": 0.9998059857792241
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T22:26:26Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00019401422077591768,
+       "wait": 0.9998059857792241
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T04:04:18Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00019401422077591768,
+       "wait": 0.9998059857792241
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T06:06:03Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00019401422077591768,
+       "wait": 0.9998059857792241
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T06:33:29Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00019401422077591768,
+       "wait": 0.9998059857792241
+      }
+     },
+     "evidence_deps": []
+    }
+   ],
+   "n_deltas_total": 3956,
+   "action_distribution": {
+    "terminal_p_by": {
+     "0.16666666666666666": 0.0,
+     "1.0": 0.0,
+     "3.0": 0.0,
+     "7.0": 0.0,
+     "14.0": 0.0
+    },
+    "p14_reply": 0.0,
+    "selected_action": null,
+    "readout": "terminal_states"
+   },
+   "probabilities@7d": {
+    "E1_raw": 0.0231,
+    "E1_calibrated": 0.0168,
+    "E3_grounded_llm": 0.0985,
+    "E10_max_capacity": 0.0,
+    "baseline_E0": 0.0337
+   },
+   "observed_outcome": {
+    "replied": false,
+    "delay_days": null,
+    "y@7d": 0.0
+   }
+  },
+  {
+   "id": 6,
+   "msg_id": "<24289646.1075852560818.JavaMail.evans@thyme>",
+   "input_evidence": {
+    "sender": "joseph.alamo@enron.com",
+    "recipient": "susan.mara@enron.com",
+    "sent_ts": 1003746710.0,
+    "features": {
+     "pair_n": 69,
+     "pair_rate": 0.007142857142857143,
+     "rcpt_n": 567,
+     "rcpt_rate": 0.01757469244288225,
+     "inbox_7d": 9,
+     "hour": 10,
+     "weekday": 0,
+     "thread": 0
+    },
+    "mechanism_status": {
+     "reply_hazard": "fitted",
+     "recipient_rate": "fitted",
+     "relationship": "fitted",
+     "workload": "fitted",
+     "hour_weekday": "fitted",
+     "check_rate": "fitted",
+     "attention_latent": "prior_backed",
+     "message_content_eval": "experimental (LLM policy, off by default)"
+    }
+   },
+   "exact_message": {
+    "subject": "RCR Meeting Today *REMINDER*",
+    "body": "Sue & Jeff,\nGinger is most anxious that you two make this call...(?)\nStarts in approx. 30 min.\n(11 am our time)\nThanks,\nJoseph\n\n -----Original Message-----\nFrom: \tDernehl, Ginger  \nSent:\tMonday, October 22, 2001 11:21 AM\nTo:\tMara, Susan; Dasovich, Jeff\nSubject:\tRCR Meeting Today\n\nSue & Jeff,\n\nYou two were the only individuals who submitted RCR's.  Please access the following number @ 1:00 PM (CDT) to discuss your RCR.\n\nDate:\t\tMonday, October 22\n\nTime:\t\t1:00 PM (CDT)\n\nNumber:\t1-877-660-6591\n\t\tparticipant code# 558191\n\nGinger Dernehl\nAdministrative Coordinator\nGlobal Government Affairs\nPhone# 713-853-7751\nFax# 713-646-8160",
+    "note": "this is the recipient-visible text; no future replies/labels shown"
+   },
+   "content_entered_model": {
+    "E0_base_rate": false,
+    "E1_fitted_metadata": false,
+    "E2_text_embedding": "hashed BoW (non-LLM)",
+    "E3_grounded_llm": true,
+    "E10_max_capacity": true,
+    "llm_prompt_sent": "You ARE the recipient of an email, deciding whether YOU will reply. Judge ONLY from what\nyou can see now \u2014 never from the future.\nYOU: susan.mara@enron.com (Enron employee)\nFROM: joseph.alamo@enron.com   PRIOR HISTORY WITH THEM: you have received 69 emails from this person before; you\nreplied to about 1% of them.\nYOUR CURRENT LOAD: 9 emails in your inbox in the last week.\nSUBJECT: RCR Meeting Today *REMINDER*\nMESSAGE:\n---\nSue & Jeff,\nGinger is most anxious that you two make this call...(?)\nStarts in approx. 30 min.\n(11 am our time)\nThanks,\nJoseph\n\n -----Original Message-----\nFrom: \tDernehl, Ginger  \nSent:\tMonday, October 22, 2001 11:21 AM\nTo:\tMara, Susan; Dasovich, Jeff\nSubject:\tRCR Meeting Today\n\nSue & Jeff,\n\nYou two were the only individuals who submitted RCR's.  Please access the following number @ 1:00 PM (CDT) to discuss your RCR.\n\nDate:\t\tMonday, October 22\n\nTime:\t\t1:00 PM (CDT)\n\nNumber:\t1-877-660-6591\n\t\tparticipant code# 558191\n\nGinger Dernehl\nAdministrative Coordinator\nGlobal Government Affairs\nPhone# 713-853-7751\nFax# 713-646-8160\n---\nGiven the message's content, specificity, whether it asks you something, its importance to your work, and\nyour relationship \u2014 how likely are YOU to reply at all (any time)? Return ONLY JSON:\n{\"reply_propensity\": <0..1>, \"why\": \"<6 words>\"}",
+    "llm_raw_response": "{\"reply_propensity\": 0.1, \"why\": \"Rarely reply to Joseph; not urgent.\"}",
+    "llm_parsed": {
+     "reply_propensity": 0.1,
+     "why": "Rarely reply to Joseph; not urgent."
+    },
+    "reply_propensity": 0.1
+   },
+   "priors_and_state": {
+    "p_base_fitted": 0.02,
+    "p_base_after_content": 0.0125,
+    "content_why": "Low reply rate, reminder, not urgent"
+   },
+   "particles": {
+    "n": 24,
+    "terminal_delays_days": [],
+    "attention_samples": [
+     {
+      "recipient.attention": 0.8249
+     },
+     {
+      "recipient.attention": 0.2527
+     },
+     {
+      "recipient.attention": 0.5061
+     },
+     {
+      "recipient.attention": 0.7183
+     },
+     {
+      "recipient.attention": 1.0
+     },
+     {
+      "recipient.attention": 0.701
+     }
+    ]
+   },
+   "deltas_branch0": [
+    {
+     "at": "2001-10-22T13:15:06Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=0",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.004454127799426666,
+       "wait": 0.9955458722005733
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T17:11:15Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00034039949302711037,
+       "wait": 0.9996596005069729
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T17:45:43Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00034039949302711037,
+       "wait": 0.9996596005069729
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T18:47:47Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00034039949302711037,
+       "wait": 0.9996596005069729
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T19:27:55Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00034039949302711037,
+       "wait": 0.9996596005069729
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T20:11:33Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00034039949302711037,
+       "wait": 0.9996596005069729
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T22:39:02Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00034039949302711037,
+       "wait": 0.9996596005069729
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T02:26:09Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00034039949302711037,
+       "wait": 0.9996596005069729
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T02:46:04Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00034039949302711037,
+       "wait": 0.9996596005069729
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T05:23:49Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00034039949302711037,
+       "wait": 0.9996596005069729
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T06:03:21Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00034039949302711037,
+       "wait": 0.9996596005069729
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T07:44:40Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00034039949302711037,
+       "wait": 0.9996596005069729
+      }
+     },
+     "evidence_deps": []
+    }
+   ],
+   "n_deltas_total": 4036,
+   "action_distribution": {
+    "terminal_p_by": {
+     "0.16666666666666666": 0.0,
+     "1.0": 0.0,
+     "3.0": 0.0,
+     "7.0": 0.0,
+     "14.0": 0.0
+    },
+    "p14_reply": 0.0,
+    "selected_action": null,
+    "readout": "terminal_states"
+   },
+   "probabilities@7d": {
+    "E1_raw": 0.0197,
+    "E1_calibrated": 0.0142,
+    "E3_grounded_llm": 0.0985,
+    "E10_max_capacity": 0.0,
+    "baseline_E0": 0.0337
+   },
+   "observed_outcome": {
+    "replied": false,
+    "delay_days": null,
+    "y@7d": 0.0
+   }
+  },
+  {
+   "id": 7,
+   "msg_id": "<7134285.1075852560767.JavaMail.evans@thyme>",
+   "input_evidence": {
+    "sender": "drothrock@cmta.net",
+    "recipient": "jeff.dasovich@enron.com",
+    "sent_ts": 1003746728.0,
+    "features": {
+     "pair_n": 12,
+     "pair_rate": 0.2692307692307692,
+     "rcpt_n": 3951,
+     "rcpt_rate": 0.16342018719959525,
+     "inbox_7d": 81,
+     "hour": 10,
+     "weekday": 0,
+     "thread": 1
+    },
+    "mechanism_status": {
+     "reply_hazard": "fitted",
+     "recipient_rate": "fitted",
+     "relationship": "fitted",
+     "workload": "fitted",
+     "hour_weekday": "fitted",
+     "check_rate": "fitted",
+     "attention_latent": "prior_backed",
+     "message_content_eval": "experimental (LLM policy, off by default)"
+    }
+   },
+   "exact_message": {
+    "subject": "Re: Angelides Oct. 19th Letter to L. Lynch Urging July 1 DA\n Suspension Date",
+    "body": "hey....at the high point of direct access, how much of the load was off the system?\n\nDot\n\n\"Dasovich, Jeff\" wrote:\n\n> I'm sure that by now everyone's seen the letter that Angelides sent to\n> Loretta last Friday.  If you haven't, let me know and I'll have it faxed\n> to you.  In short, Angelides blames all of the financial woes of the\n> State on Loretta and the PUC.  Specifically, he claims that by allowing\n> DA sign-ups to extend to September 20th, the PUC may have shifted over\n> $8 billion to \"homeowners, small businesses, and other enterprises...\"\n> Angelides ends the lettery by urging the Commission to immediately roll\n> back the DA suspension date to July 1.\n>\n> The concern, of course, is that Angelides' assertions are out there and\n> have received alot of press attention, i.e., Direct Access=$8 billion\n> tax on homeowners.\n>\n> To her credit, Loretta refuted Angelides in the press accounts and\n> repeated that the best way to get costs down is to renegotiate the DWR\n> contracts.  She also said in the press accounts that she intends to deal\n> with the July 1/September 20 suspension issue at the next commission\n> meeting.\n>\n> In light of these events (and the increasing attacks on Loretta by\n> Angelides and others in the Administration) It might be useful to give\n> Loretta an assist by drafting a very brief letter to her stating:\n>\n> *       Angelides is all wet--DA and \"fairness\" are not mutually\n> exclusive and the PUC has all the regulatory tools necessary to ensure\n> fairn",
+    "note": "this is the recipient-visible text; no future replies/labels shown"
+   },
+   "content_entered_model": {
+    "E0_base_rate": false,
+    "E1_fitted_metadata": false,
+    "E2_text_embedding": "hashed BoW (non-LLM)",
+    "E3_grounded_llm": true,
+    "E10_max_capacity": true,
+    "llm_prompt_sent": "You ARE the recipient of an email, deciding whether YOU will reply. Judge ONLY from what\nyou can see now \u2014 never from the future.\nYOU: jeff.dasovich@enron.com (Enron employee)\nFROM: drothrock@cmta.net   PRIOR HISTORY WITH THEM: you have received 12 emails from this person before; you\nreplied to about 27% of them.\nYOUR CURRENT LOAD: 81 emails in your inbox in the last week.\nSUBJECT: Re: Angelides Oct. 19th Letter to L. Lynch Urging July 1 DA\n Suspension Date\nMESSAGE:\n---\nhey....at the high point of direct access, how much of the load was off the system?\n\nDot\n\n\"Dasovich, Jeff\" wrote:\n\n> I'm sure that by now everyone's seen the letter that Angelides sent to\n> Loretta last Friday.  If you haven't, let me know and I'll have it faxed\n> to you.  In short, Angelides blames all of the financial woes of the\n> State on Loretta and the PUC.  Specifically, he claims that by allowing\n> DA sign-ups to extend to September 20th, the PUC may have shifted over\n> $8 billion to \"homeowners, small businesses, and other enterprises...\"\n> Angelides ends the lettery by urging the Commission to immediately roll\n> back the DA suspension date to July 1.\n>\n> The concern, of course, is that Angelides' assertions are out there and\n> have received alot of press attention, i.e., Direct Access=$8 billion\n> tax on homeowners.\n>\n> To her credit, Loretta refuted Angelides in the press accounts and\n> repeated that the best way to get costs down is to renegotiate the DWR\n> contracts.  She also said in the press accounts that she intends to deal\n> with the July 1/September 20 suspension issue at the next commission\n> meeting.\n>\n> In light of these events (and the increasing attacks on Loretta by\n> Angelides and others in the Administration) It might be useful to give\n> Loretta an assist by drafting a very brief letter to her stating:\n>\n> *       Angelides is all wet--DA and \"fairness\" are not mutually\n> exclusive and the PUC has all the regulatory tools necessary to ensure\n> fairn\n---\nGiven the message's content, specificity, whether it asks you something, its importance to your work, and\nyour relationship \u2014 how likely are YOU to reply at all (any time)? Return ONLY JSON:\n{\"reply_propensity\": <0..1>, \"why\": \"<6 words>\"}",
+    "llm_raw_response": "{\"reply_propensity\": 0.3, \"why\": \"Low priority, not urgent, busy inbox\"}",
+    "llm_parsed": {
+     "reply_propensity": 0.3,
+     "why": "Low priority, not urgent, busy inbox"
+    },
+    "reply_propensity": 0.3
+   },
+   "priors_and_state": {
+    "p_base_fitted": 0.514,
+    "p_base_after_content": 0.5012,
+    "content_why": "Low priority, not directly actionable."
+   },
+   "particles": {
+    "n": 24,
+    "terminal_delays_days": [
+     0.115,
+     0.159,
+     0.375,
+     2.747,
+     13.194,
+     0.069,
+     0.128,
+     0.029,
+     0.064,
+     0.395,
+     0.006,
+     0.49
+    ],
+    "attention_samples": [
+     {
+      "recipient.attention": 0.636
+     },
+     {
+      "recipient.attention": 0.8279
+     },
+     {
+      "recipient.attention": 0.6435
+     },
+     {
+      "recipient.attention": 0.6212
+     },
+     {
+      "recipient.attention": 0.4675
+     },
+     {
+      "recipient.attention": 0.6467
+     }
+    ]
+   },
+   "deltas_branch0": [
+    {
+     "at": "2001-10-22T13:15:24Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=0",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.16553027039521007,
+       "wait": 0.8344697296047899
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T13:18:01Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [
+      {
+       "path": "recipient.current_action",
+       "before": null,
+       "after": "reply"
+      }
+     ],
+     "reason_codes": [
+      "bucket=0",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.16553027039521007,
+       "wait": 0.8344697296047899
+      }
+     },
+     "evidence_deps": []
+    }
+   ],
+   "n_deltas_total": 2217,
+   "action_distribution": {
+    "terminal_p_by": {
+     "0.16666666666666666": 0.2916666666666667,
+     "1.0": 0.4166666666666667,
+     "3.0": 0.4583333333333333,
+     "7.0": 0.4583333333333333,
+     "14.0": 0.5
+    },
+    "p14_reply": 0.5,
+    "selected_action": "reply",
+    "readout": "terminal_states"
+   },
+   "probabilities@7d": {
+    "E1_raw": 0.5062,
+    "E1_calibrated": 0.4915,
+    "E3_grounded_llm": 0.2954,
+    "E10_max_capacity": 0.4583,
+    "baseline_E0": 0.0337
+   },
+   "observed_outcome": {
+    "replied": true,
+    "delay_days": 0.03666666666666667,
+    "y@7d": 1.0
+   }
+  },
+  {
+   "id": 8,
+   "msg_id": "<15169806.1075851627413.JavaMail.evans@thyme>",
+   "input_evidence": {
+    "sender": "jeff.dasovich@enron.com",
+    "recipient": "joseph.alamo@enron.com",
+    "sent_ts": 1003747416.0,
+    "features": {
+     "pair_n": 255,
+     "pair_rate": 0.037109375,
+     "rcpt_n": 383,
+     "rcpt_rate": 0.025974025974025976,
+     "inbox_7d": 13,
+     "hour": 10,
+     "weekday": 0,
+     "thread": 1
+    },
+    "mechanism_status": {
+     "reply_hazard": "fitted",
+     "recipient_rate": "fitted",
+     "relationship": "fitted",
+     "workload": "fitted",
+     "hour_weekday": "fitted",
+     "check_rate": "fitted",
+     "attention_latent": "prior_backed",
+     "message_content_eval": "experimental (LLM policy, off by default)"
+    }
+   },
+   "exact_message": {
+    "subject": "RE: RCR Meeting Today *REMINDER*",
+    "body": "I'll be on.\n\n -----Original Message-----\nFrom: \tAlamo, Joseph  \nSent:\tMonday, October 22, 2001 12:32 PM\nTo:\tMara, Susan; Dasovich, Jeff\nSubject:\tRCR Meeting Today *REMINDER*\nImportance:\tHigh\n\nSue & Jeff,\nGinger is most anxious that you two make this call...(?)\nStarts in approx. 30 min.\n(11 am our time)\nThanks,\nJoseph\n\n -----Original Message-----\nFrom: \tDernehl, Ginger  \nSent:\tMonday, October 22, 2001 11:21 AM\nTo:\tMara, Susan; Dasovich, Jeff\nSubject:\tRCR Meeting Today\n\nSue & Jeff,\n\nYou two were the only individuals who submitted RCR's.  Please access the following number @ 1:00 PM (CDT) to discuss your RCR.\n\nDate:\t\tMonday, October 22\n\nTime:\t\t1:00 PM (CDT)\n\nNumber:\t1-877-660-6591\n\t\tparticipant code# 558191\n\nGinger Dernehl\nAdministrative Coordinator\nGlobal Government Affairs\nPhone# 713-853-7751\nFax# 713-646-8160",
+    "note": "this is the recipient-visible text; no future replies/labels shown"
+   },
+   "content_entered_model": {
+    "E0_base_rate": false,
+    "E1_fitted_metadata": false,
+    "E2_text_embedding": "hashed BoW (non-LLM)",
+    "E3_grounded_llm": true,
+    "E10_max_capacity": true,
+    "llm_prompt_sent": "You ARE the recipient of an email, deciding whether YOU will reply. Judge ONLY from what\nyou can see now \u2014 never from the future.\nYOU: joseph.alamo@enron.com (Enron employee)\nFROM: jeff.dasovich@enron.com   PRIOR HISTORY WITH THEM: you have received 255 emails from this person before; you\nreplied to about 4% of them.\nYOUR CURRENT LOAD: 13 emails in your inbox in the last week.\nSUBJECT: RE: RCR Meeting Today *REMINDER*\nMESSAGE:\n---\nI'll be on.\n\n -----Original Message-----\nFrom: \tAlamo, Joseph  \nSent:\tMonday, October 22, 2001 12:32 PM\nTo:\tMara, Susan; Dasovich, Jeff\nSubject:\tRCR Meeting Today *REMINDER*\nImportance:\tHigh\n\nSue & Jeff,\nGinger is most anxious that you two make this call...(?)\nStarts in approx. 30 min.\n(11 am our time)\nThanks,\nJoseph\n\n -----Original Message-----\nFrom: \tDernehl, Ginger  \nSent:\tMonday, October 22, 2001 11:21 AM\nTo:\tMara, Susan; Dasovich, Jeff\nSubject:\tRCR Meeting Today\n\nSue & Jeff,\n\nYou two were the only individuals who submitted RCR's.  Please access the following number @ 1:00 PM (CDT) to discuss your RCR.\n\nDate:\t\tMonday, October 22\n\nTime:\t\t1:00 PM (CDT)\n\nNumber:\t1-877-660-6591\n\t\tparticipant code# 558191\n\nGinger Dernehl\nAdministrative Coordinator\nGlobal Government Affairs\nPhone# 713-853-7751\nFax# 713-646-8160\n---\nGiven the message's content, specificity, whether it asks you something, its importance to your work, and\nyour relationship \u2014 how likely are YOU to reply at all (any time)? Return ONLY JSON:\n{\"reply_propensity\": <0..1>, \"why\": \"<6 words>\"}",
+    "llm_raw_response": "{\"reply_propensity\": 0.0, \"why\": \"No action needed from me.\"}",
+    "llm_parsed": {
+     "reply_propensity": 0.0,
+     "why": "No action needed from me."
+    },
+    "reply_propensity": 0.01
+   },
+   "priors_and_state": {
+    "p_base_fitted": 0.0708,
+    "p_base_after_content": 0.0443,
+    "content_why": "Already confirmed attendance; no action needed."
+   },
+   "particles": {
+    "n": 24,
+    "terminal_delays_days": [
+     0.093
+    ],
+    "attention_samples": [
+     {
+      "recipient.attention": 0.7934
+     },
+     {
+      "recipient.attention": 1.0
+     },
+     {
+      "recipient.attention": 0.9738
+     },
+     {
+      "recipient.attention": 0.9785
+     },
+     {
+      "recipient.attention": 0.8621
+     },
+     {
+      "recipient.attention": 0.7961
+     }
+    ]
+   },
+   "deltas_branch0": [
+    {
+     "at": "2001-10-22T13:26:52Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=0",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.015477043168727556,
+       "wait": 0.9845229568312724
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T16:00:30Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0011808484558618604,
+       "wait": 0.9988191515441381
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T21:13:29Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0011808484558618604,
+       "wait": 0.9988191515441381
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T22:35:36Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0011808484558618604,
+       "wait": 0.9988191515441381
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T00:07:57Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0011808484558618604,
+       "wait": 0.9988191515441381
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T00:11:26Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0011808484558618604,
+       "wait": 0.9988191515441381
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T01:21:45Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0011808484558618604,
+       "wait": 0.9988191515441381
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T05:47:36Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0011808484558618604,
+       "wait": 0.9988191515441381
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T05:52:49Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0011808484558618604,
+       "wait": 0.9988191515441381
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T07:15:06Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0011808484558618604,
+       "wait": 0.9988191515441381
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T09:14:54Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0011808484558618604,
+       "wait": 0.9988191515441381
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T13:32:10Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.000132672898358277,
+       "wait": 0.9998673271016417
+      }
+     },
+     "evidence_deps": []
+    }
+   ],
+   "n_deltas_total": 3821,
+   "action_distribution": {
+    "terminal_p_by": {
+     "0.16666666666666666": 0.041666666666666664,
+     "1.0": 0.041666666666666664,
+     "3.0": 0.041666666666666664,
+     "7.0": 0.041666666666666664,
+     "14.0": 0.041666666666666664
+    },
+    "p14_reply": 0.0417,
+    "selected_action": null,
+    "readout": "terminal_states"
+   },
+   "probabilities@7d": {
+    "E1_raw": 0.0698,
+    "E1_calibrated": 0.0556,
+    "E3_grounded_llm": 0.0098,
+    "E10_max_capacity": 0.0417,
+    "baseline_E0": 0.0337
+   },
+   "observed_outcome": {
+    "replied": false,
+    "delay_days": null,
+    "y@7d": 0.0
+   }
+  },
+  {
+   "id": 9,
+   "msg_id": "<14061126.1075852134397.JavaMail.evans@thyme>",
+   "input_evidence": {
+    "sender": "valerie.ramsower@enron.com",
+    "recipient": "clint.dean@enron.com",
+    "sent_ts": 1003747434.0,
+    "features": {
+     "pair_n": 1,
+     "pair_rate": 0.25,
+     "rcpt_n": 505,
+     "rcpt_rate": 0.007889546351084813,
+     "inbox_7d": 23,
+     "hour": 10,
+     "weekday": 0,
+     "thread": 1
+    },
+    "mechanism_status": {
+     "reply_hazard": "fitted",
+     "recipient_rate": "fitted",
+     "relationship": "fitted",
+     "workload": "fitted",
+     "hour_weekday": "fitted",
+     "check_rate": "fitted",
+     "attention_latent": "prior_backed",
+     "message_content_eval": "experimental (LLM policy, off by default)"
+    }
+   },
+   "exact_message": {
+    "subject": "FW: results of football pool",
+    "body": "not too bad...\n\n -----Original Message-----\nFrom: \tPace, Andy  \nSent:\tMonday, October 22, 2001 12:13 PM\nTo:\tCampbell, Larry F.; Phillips, George; Ellis, Carter; Brewer, Joe; Muschar, Daniel; Benson, Robert; Ramsower, Valerie; Jenkins IV, Daniel; Mahajan, Ashish; Garcia, Miguel; Allen, Diana; Lowell, Thomas; Broussard, Richard; Gupta, Gautam; Coulter, Kayne; Vargas, Robert; Jester, Larry; Grubbs, Mike; Gilbert, Gerald; Schneider, Bryce; Decook, Todd; Laurent, Dean; Quenet, Joe; Pan, Steve; Mathews, Reagan; Stepenovitch, Joe; Gualy, Jaime; Capasso, Joe; Hanse, Patrick; Williams, Ryan\nSubject:\tresults of football pool\n\nHello Everyone,\n\n\tWell, this week was no doubt a tough week for us all picking the winners. Approximately 10 of the NFL games were won by the underdogs this week. Many people missed the Pittsburgh/Tampa Bay game, also the Carolina/Washington game, Baltimore/Cleveland, New England/Indy game; Atlanta/New Orleans, Denver/San Diego and Green Bay/Minnesota game. Back on Thursday, Buffalo was only picked by one person over Jacksonville. In the college games, just about everyone missed the North Carolina/Clemson game, while the Wisconsin/Illinois and USC/Notre Dame games were missed by about half the people. \n\n\tThrough all that, Larry Campbell is the current leader with only 7 wrong, while George Phillips is the only other person still in contention with 8 wrong. Larry picked the Giants tonight with 39 total pts, while George picked the Eagles with 32 total points. There",
+    "note": "this is the recipient-visible text; no future replies/labels shown"
+   },
+   "content_entered_model": {
+    "E0_base_rate": false,
+    "E1_fitted_metadata": false,
+    "E2_text_embedding": "hashed BoW (non-LLM)",
+    "E3_grounded_llm": true,
+    "E10_max_capacity": true,
+    "llm_prompt_sent": "You ARE the recipient of an email, deciding whether YOU will reply. Judge ONLY from what\nyou can see now \u2014 never from the future.\nYOU: clint.dean@enron.com (Enron employee)\nFROM: valerie.ramsower@enron.com   PRIOR HISTORY WITH THEM: you have received 1 emails from this person before; you\nreplied to about 25% of them.\nYOUR CURRENT LOAD: 23 emails in your inbox in the last week.\nSUBJECT: FW: results of football pool\nMESSAGE:\n---\nnot too bad...\n\n -----Original Message-----\nFrom: \tPace, Andy  \nSent:\tMonday, October 22, 2001 12:13 PM\nTo:\tCampbell, Larry F.; Phillips, George; Ellis, Carter; Brewer, Joe; Muschar, Daniel; Benson, Robert; Ramsower, Valerie; Jenkins IV, Daniel; Mahajan, Ashish; Garcia, Miguel; Allen, Diana; Lowell, Thomas; Broussard, Richard; Gupta, Gautam; Coulter, Kayne; Vargas, Robert; Jester, Larry; Grubbs, Mike; Gilbert, Gerald; Schneider, Bryce; Decook, Todd; Laurent, Dean; Quenet, Joe; Pan, Steve; Mathews, Reagan; Stepenovitch, Joe; Gualy, Jaime; Capasso, Joe; Hanse, Patrick; Williams, Ryan\nSubject:\tresults of football pool\n\nHello Everyone,\n\n\tWell, this week was no doubt a tough week for us all picking the winners. Approximately 10 of the NFL games were won by the underdogs this week. Many people missed the Pittsburgh/Tampa Bay game, also the Carolina/Washington game, Baltimore/Cleveland, New England/Indy game; Atlanta/New Orleans, Denver/San Diego and Green Bay/Minnesota game. Back on Thursday, Buffalo was only picked by one person over Jacksonville. In the college games, just about everyone missed the North Carolina/Clemson game, while the Wisconsin/Illinois and USC/Notre Dame games were missed by about half the people. \n\n\tThrough all that, Larry Campbell is the current leader with only 7 wrong, while George Phillips is the only other person still in contention with 8 wrong. Larry picked the Giants tonight with 39 total pts, while George picked the Eagles with 32 total points. There\n---\nGiven the message's content, specificity, whether it asks you something, its importance to your work, and\nyour relationship \u2014 how likely are YOU to reply at all (any time)? Return ONLY JSON:\n{\"reply_propensity\": <0..1>, \"why\": \"<6 words>\"}",
+    "llm_raw_response": "{\"reply_propensity\": 0.1, \"why\": \"Not work-related; no direct ask.\"}",
+    "llm_parsed": {
+     "reply_propensity": 0.1,
+     "why": "Not work-related; no direct ask."
+    },
+    "reply_propensity": 0.1
+   },
+   "priors_and_state": {
+    "p_base_fitted": 0.02,
+    "p_base_after_content": 0.0125,
+    "content_why": "Not work-related, low priority."
+   },
+   "particles": {
+    "n": 24,
+    "terminal_delays_days": [],
+    "attention_samples": [
+     {
+      "recipient.attention": 0.4648
+     },
+     {
+      "recipient.attention": 0.7557
+     },
+     {
+      "recipient.attention": 1.0
+     },
+     {
+      "recipient.attention": 1.0
+     },
+     {
+      "recipient.attention": 0.9953
+     },
+     {
+      "recipient.attention": 0.7119
+     }
+    ]
+   },
+   "deltas_branch0": [
+    {
+     "at": "2001-10-22T13:27:10Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=0",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0032140894106369444,
+       "wait": 0.9967859105893631
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T16:19:29Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0002456766986659309,
+       "wait": 0.9997543233013341
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T16:49:56Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0002456766986659309,
+       "wait": 0.9997543233013341
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T17:38:33Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0002456766986659309,
+       "wait": 0.9997543233013341
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T18:36:08Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0002456766986659309,
+       "wait": 0.9997543233013341
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T22:32:34Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0002456766986659309,
+       "wait": 0.9997543233013341
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T22:34:52Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0002456766986659309,
+       "wait": 0.9997543233013341
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T08:40:01Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0002456766986659309,
+       "wait": 0.9997543233013341
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T10:00:26Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0002456766986659309,
+       "wait": 0.9997543233013341
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T14:15:51Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 2.7684230698099555e-05,
+       "wait": 0.9999723157693019
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T17:57:44Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 2.7684230698099555e-05,
+       "wait": 0.9999723157693019
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T18:25:04Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 2.7684230698099555e-05,
+       "wait": 0.9999723157693019
+      }
+     },
+     "evidence_deps": []
+    }
+   ],
+   "n_deltas_total": 3952,
+   "action_distribution": {
+    "terminal_p_by": {
+     "0.16666666666666666": 0.0,
+     "1.0": 0.0,
+     "3.0": 0.0,
+     "7.0": 0.0,
+     "14.0": 0.0
+    },
+    "p14_reply": 0.0,
+    "selected_action": null,
+    "readout": "terminal_states"
+   },
+   "probabilities@7d": {
+    "E1_raw": 0.0197,
+    "E1_calibrated": 0.0142,
+    "E3_grounded_llm": 0.0985,
+    "E10_max_capacity": 0.0,
+    "baseline_E0": 0.0337
+   },
+   "observed_outcome": {
+    "replied": false,
+    "delay_days": null,
+    "y@7d": 0.0
+   }
+  },
+  {
+   "id": 10,
+   "msg_id": "<28241412.1075863405553.JavaMail.evans@thyme>",
+   "input_evidence": {
+    "sender": "enron_update@concureworkplace.com",
+    "recipient": "vkamins@enron.com",
+    "sent_ts": 1003747732.0,
+    "features": {
+     "pair_n": 0,
+     "pair_rate": 0.5,
+     "rcpt_n": 3,
+     "rcpt_rate": 0.2,
+     "inbox_7d": 0,
+     "hour": 10,
+     "weekday": 0,
+     "thread": 0
+    },
+    "mechanism_status": {
+     "reply_hazard": "fitted",
+     "recipient_rate": "fitted",
+     "relationship": "fitted",
+     "workload": "fitted",
+     "hour_weekday": "fitted",
+     "check_rate": "fitted",
+     "attention_latent": "prior_backed",
+     "message_content_eval": "experimental (LLM policy, off by default)"
+    }
+   },
+   "exact_message": {
+    "subject": "<<Concur Expense Document>> - Oct. Admin Asst's Meeting",
+    "body": "The following expense report is ready for approval:\n\nEmployee Name: Anita L. Dupont\nStatus last changed by:  Automated Administrator\nExpense Report Name: Oct. Admin Asst's Meeting\nReport Total: $47.59\nAmount Due Employee: $47.59\n\n\nTo approve this expense report, click on the following link for Concur Expense.\nhttp://expensexms.enron.com",
+    "note": "this is the recipient-visible text; no future replies/labels shown"
+   },
+   "content_entered_model": {
+    "E0_base_rate": false,
+    "E1_fitted_metadata": false,
+    "E2_text_embedding": "hashed BoW (non-LLM)",
+    "E3_grounded_llm": true,
+    "E10_max_capacity": true,
+    "llm_prompt_sent": "You ARE the recipient of an email, deciding whether YOU will reply. Judge ONLY from what\nyou can see now \u2014 never from the future.\nYOU: vkamins@enron.com (Enron employee)\nFROM: enron_update@concureworkplace.com   PRIOR HISTORY WITH THEM: you have received 0 emails from this person before; you\nreplied to about 50% of them.\nYOUR CURRENT LOAD: 0 emails in your inbox in the last week.\nSUBJECT: <<Concur Expense Document>> - Oct. Admin Asst's Meeting\nMESSAGE:\n---\nThe following expense report is ready for approval:\n\nEmployee Name: Anita L. Dupont\nStatus last changed by:  Automated Administrator\nExpense Report Name: Oct. Admin Asst's Meeting\nReport Total: $47.59\nAmount Due Employee: $47.59\n\n\nTo approve this expense report, click on the following link for Concur Expense.\nhttp://expensexms.enron.com\n---\nGiven the message's content, specificity, whether it asks you something, its importance to your work, and\nyour relationship \u2014 how likely are YOU to reply at all (any time)? Return ONLY JSON:\n{\"reply_propensity\": <0..1>, \"why\": \"<6 words>\"}",
+    "llm_raw_response": "{\"reply_propensity\": 0.0, \"why\": \"No action needed; automated approval.\"}",
+    "llm_parsed": {
+     "reply_propensity": 0.0,
+     "why": "No action needed; automated approval."
+    },
+    "reply_propensity": 0.01
+   },
+   "priors_and_state": {
+    "p_base_fitted": 0.0234,
+    "p_base_after_content": 0.0105,
+    "content_why": "No action needed from me"
+   },
+   "particles": {
+    "n": 24,
+    "terminal_delays_days": [],
+    "attention_samples": [
+     {
+      "recipient.attention": 0.4616
+     },
+     {
+      "recipient.attention": 0.5852
+     },
+     {
+      "recipient.attention": 0.5502
+     },
+     {
+      "recipient.attention": 0.62
+     },
+     {
+      "recipient.attention": 0.8804
+     },
+     {
+      "recipient.attention": 0.2707
+     }
+    ]
+   },
+   "deltas_branch0": [
+    {
+     "at": "2001-10-22T13:32:08Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=0",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.002701251867808452,
+       "wait": 0.9972987481321915
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T20:39:58Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0002064923741145197,
+       "wait": 0.9997935076258855
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T21:42:04Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0002064923741145197,
+       "wait": 0.9997935076258855
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T23:45:02Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0002064923741145197,
+       "wait": 0.9997935076258855
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T00:26:42Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0002064923741145197,
+       "wait": 0.9997935076258855
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T04:25:04Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0002064923741145197,
+       "wait": 0.9997935076258855
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T07:14:58Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0002064923741145197,
+       "wait": 0.9997935076258855
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T15:03:03Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 2.3271593406981594e-05,
+       "wait": 0.999976728406593
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T17:15:55Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 2.3271593406981594e-05,
+       "wait": 0.999976728406593
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T17:48:42Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 2.3271593406981594e-05,
+       "wait": 0.999976728406593
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T18:52:19Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 2.3271593406981594e-05,
+       "wait": 0.999976728406593
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T20:13:10Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 2.3271593406981594e-05,
+       "wait": 0.999976728406593
+      }
+     },
+     "evidence_deps": []
+    }
+   ],
+   "n_deltas_total": 3916,
+   "action_distribution": {
+    "terminal_p_by": {
+     "0.16666666666666666": 0.0,
+     "1.0": 0.0,
+     "3.0": 0.0,
+     "7.0": 0.0,
+     "14.0": 0.0
+    },
+    "p14_reply": 0.0,
+    "selected_action": null,
+    "readout": "terminal_states"
+   },
+   "probabilities@7d": {
+    "E1_raw": 0.0231,
+    "E1_calibrated": 0.0168,
+    "E3_grounded_llm": 0.0098,
+    "E10_max_capacity": 0.0,
+    "baseline_E0": 0.0337
+   },
+   "observed_outcome": {
+    "replied": false,
+    "delay_days": null,
+    "y@7d": 0.0
+   }
+  },
+  {
+   "id": 11,
+   "msg_id": "<8725181.1075852805915.JavaMail.evans@thyme>",
+   "input_evidence": {
+    "sender": "dan.leff@enron.com",
+    "recipient": "kenneth.lay@enron.com",
+    "sent_ts": 1003748302.0,
+    "features": {
+     "pair_n": 2,
+     "pair_rate": 0.16666666666666666,
+     "rcpt_n": 1323,
+     "rcpt_rate": 0.0022641509433962265,
+     "inbox_7d": 36,
+     "hour": 10,
+     "weekday": 0,
+     "thread": 0
+    },
+    "mechanism_status": {
+     "reply_hazard": "fitted",
+     "recipient_rate": "fitted",
+     "relationship": "fitted",
+     "workload": "fitted",
+     "hour_weekday": "fitted",
+     "check_rate": "fitted",
+     "attention_latent": "prior_backed",
+     "message_content_eval": "experimental (LLM policy, off by default)"
+    }
+   },
+   "exact_message": {
+    "subject": "Management & Leadership",
+    "body": "Ken, Greg, Mark - \n\nThank you for your leadership over the last several weeks and this morning.  We appreciate it.\n\nFollowing are some additional thoughts and some more detail on my comments from this morning:\n\nThe leadership group in that room needs to feel the sense of responsibility to lead our businesses.  Everything we say & do - including all written, verbal and \"body language\" - are signals.  We must communicate and lead all day, every day.  \nAs an organization, and as part of our culture, we lead with our chin - always have and probably always will.  We are going to take our share of bumps and bruises.\nWe have some great businesses here....and we are fortunate.  We have grown the size and profitability of our core businesses substantially, and in a market where many companies have not been as successful.\nMost of our wounds are self - inflicted.  We can and should do a better job.\nI believe this leadership team needs to make an absolute commitment in the following areas:\nVision -  define what we want this company to be in the next 3-5 years\nValue -    as part of building the World's Leading Company, my vote is that we dedicate our energy towards building long term, sustainable value.  This is not about just creating value in the eyes of Wall Street - this is about creating real value, perhaps as defined by \"after tax operating profit minus the real cost of capital\".  Market cap will follow this type of economic value creation.  We need to measure it and incent people t",
+    "note": "this is the recipient-visible text; no future replies/labels shown"
+   },
+   "content_entered_model": {
+    "E0_base_rate": false,
+    "E1_fitted_metadata": false,
+    "E2_text_embedding": "hashed BoW (non-LLM)",
+    "E3_grounded_llm": true,
+    "E10_max_capacity": true,
+    "llm_prompt_sent": "You ARE the recipient of an email, deciding whether YOU will reply. Judge ONLY from what\nyou can see now \u2014 never from the future.\nYOU: kenneth.lay@enron.com (Enron employee)\nFROM: dan.leff@enron.com   PRIOR HISTORY WITH THEM: you have received 2 emails from this person before; you\nreplied to about 17% of them.\nYOUR CURRENT LOAD: 36 emails in your inbox in the last week.\nSUBJECT: Management & Leadership\nMESSAGE:\n---\nKen, Greg, Mark - \n\nThank you for your leadership over the last several weeks and this morning.  We appreciate it.\n\nFollowing are some additional thoughts and some more detail on my comments from this morning:\n\nThe leadership group in that room needs to feel the sense of responsibility to lead our businesses.  Everything we say & do - including all written, verbal and \"body language\" - are signals.  We must communicate and lead all day, every day.  \nAs an organization, and as part of our culture, we lead with our chin - always have and probably always will.  We are going to take our share of bumps and bruises.\nWe have some great businesses here....and we are fortunate.  We have grown the size and profitability of our core businesses substantially, and in a market where many companies have not been as successful.\nMost of our wounds are self - inflicted.  We can and should do a better job.\nI believe this leadership team needs to make an absolute commitment in the following areas:\nVision -  define what we want this company to be in the next 3-5 years\nValue -    as part of building the World's Leading Company, my vote is that we dedicate our energy towards building long term, sustainable value.  This is not about just creating value in the eyes of Wall Street - this is about creating real value, perhaps as defined by \"after tax operating profit minus the real cost of capital\".  Market cap will follow this type of economic value creation.  We need to measure it and incent people t\n---\nGiven the message's content, specificity, whether it asks you something, its importance to your work, and\nyour relationship \u2014 how likely are YOU to reply at all (any time)? Return ONLY JSON:\n{\"reply_propensity\": <0..1>, \"why\": \"<6 words>\"}",
+    "llm_raw_response": "{\"reply_propensity\": 0.1, \"why\": \"No direct ask, low prior reply rate\"}",
+    "llm_parsed": {
+     "reply_propensity": 0.1,
+     "why": "No direct ask, low prior reply rate"
+    },
+    "reply_propensity": 0.1
+   },
+   "priors_and_state": {
+    "p_base_fitted": 0.02,
+    "p_base_after_content": 0.0195,
+    "content_why": "General encouragement, no direct question."
+   },
+   "particles": {
+    "n": 24,
+    "terminal_delays_days": [],
+    "attention_samples": [
+     {
+      "recipient.attention": 0.394
+     },
+     {
+      "recipient.attention": 0.7944
+     },
+     {
+      "recipient.attention": 0.9487
+     },
+     {
+      "recipient.attention": 0.5717
+     },
+     {
+      "recipient.attention": 0.3678
+     },
+     {
+      "recipient.attention": 0.6836
+     }
+    ]
+   },
+   "deltas_branch0": [
+    {
+     "at": "2001-10-22T13:41:38Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=0",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.004637526398999503,
+       "wait": 0.9953624736010005
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T16:39:54Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00035440578728651584,
+       "wait": 0.9996455942127135
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T17:09:13Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00035440578728651584,
+       "wait": 0.9996455942127135
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T19:00:03Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00035440578728651584,
+       "wait": 0.9996455942127135
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T20:28:21Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00035440578728651584,
+       "wait": 0.9996455942127135
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T03:41:11Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00035440578728651584,
+       "wait": 0.9996455942127135
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T04:14:38Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00035440578728651584,
+       "wait": 0.9996455942127135
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T06:28:26Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00035440578728651584,
+       "wait": 0.9996455942127135
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T10:07:06Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00035440578728651584,
+       "wait": 0.9996455942127135
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T11:44:14Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 3.992275652719979e-05,
+       "wait": 0.9999600772434728
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T11:51:26Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 3.992275652719979e-05,
+       "wait": 0.9999600772434728
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T13:37:04Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 3.992275652719979e-05,
+       "wait": 0.9999600772434728
+      }
+     },
+     "evidence_deps": []
+    }
+   ],
+   "n_deltas_total": 3962,
+   "action_distribution": {
+    "terminal_p_by": {
+     "0.16666666666666666": 0.0,
+     "1.0": 0.0,
+     "3.0": 0.0,
+     "7.0": 0.0,
+     "14.0": 0.0
+    },
+    "p14_reply": 0.0,
+    "selected_action": null,
+    "readout": "terminal_states"
+   },
+   "probabilities@7d": {
+    "E1_raw": 0.0197,
+    "E1_calibrated": 0.0142,
+    "E3_grounded_llm": 0.0985,
+    "E10_max_capacity": 0.0,
+    "baseline_E0": 0.0337
+   },
+   "observed_outcome": {
+    "replied": false,
+    "delay_days": null,
+    "y@7d": 0.0
+   }
+  },
+  {
+   "id": 12,
+   "msg_id": "<23728546.1075859197417.JavaMail.evans@thyme>",
+   "input_evidence": {
+    "sender": "jeff.dasovich@enron.com",
+    "recipient": "karen.denne@enron.com",
+    "sent_ts": 1003748361.0,
+    "features": {
+     "pair_n": 256,
+     "pair_rate": 0.06031128404669261,
+     "rcpt_n": 337,
+     "rcpt_rate": 0.05604719764011799,
+     "inbox_7d": 1,
+     "hour": 10,
+     "weekday": 0,
+     "thread": 1
+    },
+    "mechanism_status": {
+     "reply_hazard": "fitted",
+     "recipient_rate": "fitted",
+     "relationship": "fitted",
+     "workload": "fitted",
+     "hour_weekday": "fitted",
+     "check_rate": "fitted",
+     "attention_latent": "prior_backed",
+     "message_content_eval": "experimental (LLM policy, off by default)"
+    }
+   },
+   "exact_message": {
+    "subject": "FW: SEC Probes Possible CFO Conflict at Enron",
+    "body": "FYI.  Sure you've seen it, but just in case.  Non-energy-related friend of mine emailed it to me.\n\nBest,\nJeff\n\n\n\n\nhttp://www.cfo.com \n\nCFO.com's\nToday in Finance\n\n\n________________________________Sponsor ________________________________\n\nMonday, October 22, 2001\nRelated Party Crashers? SEC Looking Into Possible Conflict on Interest at\nEnron\n\nBy Stephen Taub\n\nThe Securities and Exchange Commission has requested that Enron provide\ninformation regarding certain related party transactions. \n\n\"We welcome this request,\" said Kenneth L. Lay, Enron chairman and CEO in a\nprepared statement. \"We will cooperate fully with the SEC.\" \n\nEnron, North America's biggest buyer and seller of natural gas and\nelectricity, noted that its internal and external auditors and attorneys\nreviewed the related party arrangements, the Board was fully informed of and\napproved these arrangements, and they were disclosed in the company's SEC\nfilings. \"We believe everything that needed to be considered and done in\nconnection with these transactions was considered and done,\" Lay added. \n\nAs we noted on Friday, a limited partnership organized by chief financial\nofficer Andrew Fastow racked up millions of dollars since 1997 in profits\nfrom transactions conducted with the energy company, according to The Wall\nStreet Journal. The partnership reportedly renegotiated the terms of deals\nwith Enron in ways that boosted its financial positions or reduced its risk\nof losses. \n\n\nREPORT: E&Y REVENUES NEARLY HALVED\nLater th",
+    "note": "this is the recipient-visible text; no future replies/labels shown"
+   },
+   "content_entered_model": {
+    "E0_base_rate": false,
+    "E1_fitted_metadata": false,
+    "E2_text_embedding": "hashed BoW (non-LLM)",
+    "E3_grounded_llm": true,
+    "E10_max_capacity": true,
+    "llm_prompt_sent": "You ARE the recipient of an email, deciding whether YOU will reply. Judge ONLY from what\nyou can see now \u2014 never from the future.\nYOU: karen.denne@enron.com (Enron employee)\nFROM: jeff.dasovich@enron.com   PRIOR HISTORY WITH THEM: you have received 256 emails from this person before; you\nreplied to about 6% of them.\nYOUR CURRENT LOAD: 1 emails in your inbox in the last week.\nSUBJECT: FW: SEC Probes Possible CFO Conflict at Enron\nMESSAGE:\n---\nFYI.  Sure you've seen it, but just in case.  Non-energy-related friend of mine emailed it to me.\n\nBest,\nJeff\n\n\n\n\nhttp://www.cfo.com \n\nCFO.com's\nToday in Finance\n\n\n________________________________Sponsor ________________________________\n\nMonday, October 22, 2001\nRelated Party Crashers? SEC Looking Into Possible Conflict on Interest at\nEnron\n\nBy Stephen Taub\n\nThe Securities and Exchange Commission has requested that Enron provide\ninformation regarding certain related party transactions. \n\n\"We welcome this request,\" said Kenneth L. Lay, Enron chairman and CEO in a\nprepared statement. \"We will cooperate fully with the SEC.\" \n\nEnron, North America's biggest buyer and seller of natural gas and\nelectricity, noted that its internal and external auditors and attorneys\nreviewed the related party arrangements, the Board was fully informed of and\napproved these arrangements, and they were disclosed in the company's SEC\nfilings. \"We believe everything that needed to be considered and done in\nconnection with these transactions was considered and done,\" Lay added. \n\nAs we noted on Friday, a limited partnership organized by chief financial\nofficer Andrew Fastow racked up millions of dollars since 1997 in profits\nfrom transactions conducted with the energy company, according to The Wall\nStreet Journal. The partnership reportedly renegotiated the terms of deals\nwith Enron in ways that boosted its financial positions or reduced its risk\nof losses. \n\n\nREPORT: E&Y REVENUES NEARLY HALVED\nLater th\n---\nGiven the message's content, specificity, whether it asks you something, its importance to your work, and\nyour relationship \u2014 how likely are YOU to reply at all (any time)? Return ONLY JSON:\n{\"reply_propensity\": <0..1>, \"why\": \"<6 words>\"}",
+    "llm_raw_response": "{\"reply_propensity\": 0.1, \"why\": \"Low reply rate historically; FYI only.\"}",
+    "llm_parsed": {
+     "reply_propensity": 0.1,
+     "why": "Low reply rate historically; FYI only."
+    },
+    "reply_propensity": 0.1
+   },
+   "priors_and_state": {
+    "p_base_fitted": 0.0419,
+    "p_base_after_content": 0.0262,
+    "content_why": "Low priority FYI, rarely reply to Jeff."
+   },
+   "particles": {
+    "n": 24,
+    "terminal_delays_days": [],
+    "attention_samples": [
+     {
+      "recipient.attention": 0.3387
+     },
+     {
+      "recipient.attention": 0.7582
+     },
+     {
+      "recipient.attention": 0.6305
+     },
+     {
+      "recipient.attention": 0.58
+     },
+     {
+      "recipient.attention": 0.9417
+     },
+     {
+      "recipient.attention": 0.7165
+     }
+    ]
+   },
+   "deltas_branch0": [
+    {
+     "at": "2001-10-22T13:42:37Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=0",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.005839969865000683,
+       "wait": 0.9941600301349993
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T16:57:20Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.000446218305321211,
+       "wait": 0.9995537816946788
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T18:53:34Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.000446218305321211,
+       "wait": 0.9995537816946788
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T19:12:01Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.000446218305321211,
+       "wait": 0.9995537816946788
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T20:35:05Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.000446218305321211,
+       "wait": 0.9995537816946788
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T01:57:00Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.000446218305321211,
+       "wait": 0.9995537816946788
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T02:51:19Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.000446218305321211,
+       "wait": 0.9995537816946788
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T05:55:25Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.000446218305321211,
+       "wait": 0.9995537816946788
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T07:57:47Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.000446218305321211,
+       "wait": 0.9995537816946788
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T10:00:25Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.000446218305321211,
+       "wait": 0.9995537816946788
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T12:14:03Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 5.0250622758096775e-05,
+       "wait": 0.9999497493772419
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T15:47:44Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 5.0250622758096775e-05,
+       "wait": 0.9999497493772419
+      }
+     },
+     "evidence_deps": []
+    }
+   ],
+   "n_deltas_total": 3965,
+   "action_distribution": {
+    "terminal_p_by": {
+     "0.16666666666666666": 0.0,
+     "1.0": 0.0,
+     "3.0": 0.0,
+     "7.0": 0.0,
+     "14.0": 0.0
+    },
+    "p14_reply": 0.0,
+    "selected_action": null,
+    "readout": "terminal_states"
+   },
+   "probabilities@7d": {
+    "E1_raw": 0.0413,
+    "E1_calibrated": 0.0315,
+    "E3_grounded_llm": 0.0985,
+    "E10_max_capacity": 0.0,
+    "baseline_E0": 0.0337
+   },
+   "observed_outcome": {
+    "replied": false,
+    "delay_days": null,
+    "y@7d": 0.0
+   }
+  },
+  {
+   "id": 13,
+   "msg_id": "<17153458.1075852665107.JavaMail.evans@thyme>",
+   "input_evidence": {
+    "sender": "bpaddock@ghcf.org",
+    "recipient": "white.william@enron.com",
+    "sent_ts": 1003748683.0,
+    "features": {
+     "pair_n": 5,
+     "pair_rate": 0.08333333333333333,
+     "rcpt_n": 5,
+     "rcpt_rate": 0.14285714285714285,
+     "inbox_7d": 0,
+     "hour": 11,
+     "weekday": 0,
+     "thread": 0
+    },
+    "mechanism_status": {
+     "reply_hazard": "fitted",
+     "recipient_rate": "fitted",
+     "relationship": "fitted",
+     "workload": "fitted",
+     "hour_weekday": "fitted",
+     "check_rate": "fitted",
+     "attention_latent": "prior_backed",
+     "message_content_eval": "experimental (LLM policy, off by default)"
+    }
+   },
+   "exact_message": {
+    "subject": "meeting",
+    "body": "\nAttached is the agenda and Investment Policy that we  will be reviewing at the meeting at Paul's office at 7:30 am on Nov.14th.  \nRobert W. Paddock\nManaging Director - Fund  Development\nGreater Houston Community Foundation\n713-960-1990bpaddock@ghcf.org \n - Invest. Com. meeting 11-14-01 agenda.doc \n - Investment Policy 9-22-99.doc ",
+    "note": "this is the recipient-visible text; no future replies/labels shown"
+   },
+   "content_entered_model": {
+    "E0_base_rate": false,
+    "E1_fitted_metadata": false,
+    "E2_text_embedding": "hashed BoW (non-LLM)",
+    "E3_grounded_llm": true,
+    "E10_max_capacity": true,
+    "llm_prompt_sent": "You ARE the recipient of an email, deciding whether YOU will reply. Judge ONLY from what\nyou can see now \u2014 never from the future.\nYOU: white.william@enron.com (Enron employee)\nFROM: bpaddock@ghcf.org   PRIOR HISTORY WITH THEM: you have received 5 emails from this person before; you\nreplied to about 8% of them.\nYOUR CURRENT LOAD: 0 emails in your inbox in the last week.\nSUBJECT: meeting\nMESSAGE:\n---\n\nAttached is the agenda and Investment Policy that we  will be reviewing at the meeting at Paul's office at 7:30 am on Nov.14th.  \nRobert W. Paddock\nManaging Director - Fund  Development\nGreater Houston Community Foundation\n713-960-1990bpaddock@ghcf.org \n - Invest. Com. meeting 11-14-01 agenda.doc \n - Investment Policy 9-22-99.doc \n---\nGiven the message's content, specificity, whether it asks you something, its importance to your work, and\nyour relationship \u2014 how likely are YOU to reply at all (any time)? Return ONLY JSON:\n{\"reply_propensity\": <0..1>, \"why\": \"<6 words>\"}",
+    "llm_raw_response": "{\"reply_propensity\": 0.1, \"why\": \"Low prior reply rate, no request\"}",
+    "llm_parsed": {
+     "reply_propensity": 0.1,
+     "why": "Low prior reply rate, no request"
+    },
+    "reply_propensity": 0.1
+   },
+   "priors_and_state": {
+    "p_base_fitted": 0.058,
+    "p_base_after_content": 0.0362,
+    "content_why": "No action requested, low prior reply rate"
+   },
+   "particles": {
+    "n": 24,
+    "terminal_delays_days": [],
+    "attention_samples": [
+     {
+      "recipient.attention": 0.6785
+     },
+     {
+      "recipient.attention": 1.0
+     },
+     {
+      "recipient.attention": 0.5043
+     },
+     {
+      "recipient.attention": 0.2547
+     },
+     {
+      "recipient.attention": 0.7711
+     },
+     {
+      "recipient.attention": 0.8664
+     }
+    ]
+   },
+   "deltas_branch0": [
+    {
+     "at": "2001-10-22T13:47:59Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=0",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.011488758132927268,
+       "wait": 0.9885112418670727
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T16:02:30Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00087708574313905,
+       "wait": 0.999122914256861
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T16:08:30Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00087708574313905,
+       "wait": 0.999122914256861
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T16:34:27Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00087708574313905,
+       "wait": 0.999122914256861
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T16:46:48Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00087708574313905,
+       "wait": 0.999122914256861
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T17:13:39Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00087708574313905,
+       "wait": 0.999122914256861
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T17:45:02Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00087708574313905,
+       "wait": 0.999122914256861
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T19:41:46Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00087708574313905,
+       "wait": 0.999122914256861
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T19:57:40Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00087708574313905,
+       "wait": 0.999122914256861
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T20:56:43Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00087708574313905,
+       "wait": 0.999122914256861
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T20:58:46Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00087708574313905,
+       "wait": 0.999122914256861
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T01:36:04Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00087708574313905,
+       "wait": 0.999122914256861
+      }
+     },
+     "evidence_deps": []
+    }
+   ],
+   "n_deltas_total": 3840,
+   "action_distribution": {
+    "terminal_p_by": {
+     "0.16666666666666666": 0.0,
+     "1.0": 0.0,
+     "3.0": 0.0,
+     "7.0": 0.0,
+     "14.0": 0.0
+    },
+    "p14_reply": 0.0,
+    "selected_action": null,
+    "readout": "terminal_states"
+   },
+   "probabilities@7d": {
+    "E1_raw": 0.0571,
+    "E1_calibrated": 0.0447,
+    "E3_grounded_llm": 0.0985,
+    "E10_max_capacity": 0.0,
+    "baseline_E0": 0.0337
+   },
+   "observed_outcome": {
+    "replied": false,
+    "delay_days": null,
+    "y@7d": 0.0
+   }
+  },
+  {
+   "id": 14,
+   "msg_id": "<3897106.1075852966162.JavaMail.evans@thyme>",
+   "input_evidence": {
+    "sender": "dennis.lee@enron.com",
+    "recipient": "lorraine.lindberg@enron.com",
+    "sent_ts": 1003748782.0,
+    "features": {
+     "pair_n": 0,
+     "pair_rate": 0.5,
+     "rcpt_n": 7,
+     "rcpt_rate": 0.1111111111111111,
+     "inbox_7d": 2,
+     "hour": 11,
+     "weekday": 0,
+     "thread": 0
+    },
+    "mechanism_status": {
+     "reply_hazard": "fitted",
+     "recipient_rate": "fitted",
+     "relationship": "fitted",
+     "workload": "fitted",
+     "hour_weekday": "fitted",
+     "check_rate": "fitted",
+     "attention_latent": "prior_backed",
+     "message_content_eval": "experimental (LLM policy, off by default)"
+    }
+   },
+   "exact_message": {
+    "subject": "New OBA's",
+    "body": "The attached OBA's have been submitted to the customers for their signature.  The only two remaining are Mojave (Effective date 12/02/01) and Williams Field Services (Effective Date 11/3/01).  I will send them out tomorrow (10/23).\n\n           \n\n\n\nDennis P. Lee\nETS\nGas Logistics\n(713) 853-1715\ndennis.lee@enron.com",
+    "note": "this is the recipient-visible text; no future replies/labels shown"
+   },
+   "content_entered_model": {
+    "E0_base_rate": false,
+    "E1_fitted_metadata": false,
+    "E2_text_embedding": "hashed BoW (non-LLM)",
+    "E3_grounded_llm": true,
+    "E10_max_capacity": true,
+    "llm_prompt_sent": "You ARE the recipient of an email, deciding whether YOU will reply. Judge ONLY from what\nyou can see now \u2014 never from the future.\nYOU: lorraine.lindberg@enron.com (Enron employee)\nFROM: dennis.lee@enron.com   PRIOR HISTORY WITH THEM: you have received 0 emails from this person before; you\nreplied to about 50% of them.\nYOUR CURRENT LOAD: 2 emails in your inbox in the last week.\nSUBJECT: New OBA's\nMESSAGE:\n---\nThe attached OBA's have been submitted to the customers for their signature.  The only two remaining are Mojave (Effective date 12/02/01) and Williams Field Services (Effective Date 11/3/01).  I will send them out tomorrow (10/23).\n\n           \n\n\n\nDennis P. Lee\nETS\nGas Logistics\n(713) 853-1715\ndennis.lee@enron.com\n---\nGiven the message's content, specificity, whether it asks you something, its importance to your work, and\nyour relationship \u2014 how likely are YOU to reply at all (any time)? Return ONLY JSON:\n{\"reply_propensity\": <0..1>, \"why\": \"<6 words>\"}",
+    "llm_raw_response": "{\"reply_propensity\": 0.3, \"why\": \"No direct request; informational update.\"}",
+    "llm_parsed": {
+     "reply_propensity": 0.3,
+     "why": "No direct request; informational update."
+    },
+    "reply_propensity": 0.3
+   },
+   "priors_and_state": {
+    "p_base_fitted": 0.0896,
+    "p_base_after_content": 0.0717,
+    "content_why": "No action requested from me."
+   },
+   "particles": {
+    "n": 24,
+    "terminal_delays_days": [
+     0.163
+    ],
+    "attention_samples": [
+     {
+      "recipient.attention": 1.0
+     },
+     {
+      "recipient.attention": 0.9421
+     },
+     {
+      "recipient.attention": 0.3573
+     },
+     {
+      "recipient.attention": 0.2153
+     },
+     {
+      "recipient.attention": 0.6746
+     },
+     {
+      "recipient.attention": 0.8905
+     }
+    ]
+   },
+   "deltas_branch0": [
+    {
+     "at": "2001-10-22T13:49:38Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=0",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.029342557171810557,
+       "wait": 0.9706574428281894
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T17:07:33Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0022339336972422297,
+       "wait": 0.9977660663027578
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T18:51:47Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0022339336972422297,
+       "wait": 0.9977660663027578
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T01:07:14Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0022339336972422297,
+       "wait": 0.9977660663027578
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T01:45:49Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0022339336972422297,
+       "wait": 0.9977660663027578
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T07:50:02Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0022339336972422297,
+       "wait": 0.9977660663027578
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T07:53:13Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0022339336972422297,
+       "wait": 0.9977660663027578
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T09:57:10Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0022339336972422297,
+       "wait": 0.9977660663027578
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T10:24:49Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0022339336972422297,
+       "wait": 0.9977660663027578
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T10:48:07Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0022339336972422297,
+       "wait": 0.9977660663027578
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T11:33:51Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00025015790552507244,
+       "wait": 0.9997498420944749
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T12:22:33Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00025015790552507244,
+       "wait": 0.9997498420944749
+      }
+     },
+     "evidence_deps": []
+    }
+   ],
+   "n_deltas_total": 3746,
+   "action_distribution": {
+    "terminal_p_by": {
+     "0.16666666666666666": 0.041666666666666664,
+     "1.0": 0.041666666666666664,
+     "3.0": 0.041666666666666664,
+     "7.0": 0.041666666666666664,
+     "14.0": 0.041666666666666664
+    },
+    "p14_reply": 0.0417,
+    "selected_action": null,
+    "readout": "terminal_states"
+   },
+   "probabilities@7d": {
+    "E1_raw": 0.0882,
+    "E1_calibrated": 0.0718,
+    "E3_grounded_llm": 0.2954,
+    "E10_max_capacity": 0.0417,
+    "baseline_E0": 0.0337
+   },
+   "observed_outcome": {
+    "replied": false,
+    "delay_days": null,
+    "y@7d": 0.0
+   }
+  },
+  {
+   "id": 15,
+   "msg_id": "<25493054.1075858859740.JavaMail.evans@thyme>",
+   "input_evidence": {
+    "sender": "tracy.geaccone@enron.com",
+    "recipient": "steven.harris@enron.com",
+    "sent_ts": 1003748801.0,
+    "features": {
+     "pair_n": 2,
+     "pair_rate": 0.16666666666666666,
+     "rcpt_n": 49,
+     "rcpt_rate": 0.0392156862745098,
+     "inbox_7d": 14,
+     "hour": 11,
+     "weekday": 0,
+     "thread": 0
+    },
+    "mechanism_status": {
+     "reply_hazard": "fitted",
+     "recipient_rate": "fitted",
+     "relationship": "fitted",
+     "workload": "fitted",
+     "hour_weekday": "fitted",
+     "check_rate": "fitted",
+     "attention_latent": "prior_backed",
+     "message_content_eval": "experimental (LLM policy, off by default)"
+    }
+   },
+   "exact_message": {
+    "subject": "2002 Plan Lay Review Run Through",
+    "body": "Please plan to attend a run through with Danny of your 2002 Plan Presentations for the Lay Reviews on Thursday, October 25 from 9:00-11:00 in 42C2.  For Omaha room 696.\n\nThanks\n\nTracy",
+    "note": "this is the recipient-visible text; no future replies/labels shown"
+   },
+   "content_entered_model": {
+    "E0_base_rate": false,
+    "E1_fitted_metadata": false,
+    "E2_text_embedding": "hashed BoW (non-LLM)",
+    "E3_grounded_llm": true,
+    "E10_max_capacity": true,
+    "llm_prompt_sent": "You ARE the recipient of an email, deciding whether YOU will reply. Judge ONLY from what\nyou can see now \u2014 never from the future.\nYOU: steven.harris@enron.com (Enron employee)\nFROM: tracy.geaccone@enron.com   PRIOR HISTORY WITH THEM: you have received 2 emails from this person before; you\nreplied to about 17% of them.\nYOUR CURRENT LOAD: 14 emails in your inbox in the last week.\nSUBJECT: 2002 Plan Lay Review Run Through\nMESSAGE:\n---\nPlease plan to attend a run through with Danny of your 2002 Plan Presentations for the Lay Reviews on Thursday, October 25 from 9:00-11:00 in 42C2.  For Omaha room 696.\n\nThanks\n\nTracy\n---\nGiven the message's content, specificity, whether it asks you something, its importance to your work, and\nyour relationship \u2014 how likely are YOU to reply at all (any time)? Return ONLY JSON:\n{\"reply_propensity\": <0..1>, \"why\": \"<6 words>\"}",
+    "llm_raw_response": "{\"reply_propensity\": 0.9, \"why\": \"Direct request for my attendance\"}",
+    "llm_parsed": {
+     "reply_propensity": 0.9,
+     "why": "Direct request for my attendance"
+    },
+    "reply_propensity": 0.9
+   },
+   "priors_and_state": {
+    "p_base_fitted": 0.0749,
+    "p_base_after_content": 0.1516,
+    "content_why": "Direct request for my attendance confirmation."
+   },
+   "particles": {
+    "n": 24,
+    "terminal_delays_days": [
+     0.113,
+     5.039,
+     3.098,
+     2.419,
+     0.101
+    ],
+    "attention_samples": [
+     {
+      "recipient.attention": 0.7374
+     },
+     {
+      "recipient.attention": 0.6917
+     },
+     {
+      "recipient.attention": 0.6871
+     },
+     {
+      "recipient.attention": 0.5539
+     },
+     {
+      "recipient.attention": 0.746
+     },
+     {
+      "recipient.attention": 0.696
+     }
+    ]
+   },
+   "deltas_branch0": [
+    {
+     "at": "2001-10-22T13:49:57Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [
+      {
+       "path": "recipient.current_action",
+       "before": null,
+       "after": "reply"
+      }
+     ],
+     "reason_codes": [
+      "bucket=0",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.051554681052094375,
+       "wait": 0.9484453189479056
+      }
+     },
+     "evidence_deps": []
+    }
+   ],
+   "n_deltas_total": 3211,
+   "action_distribution": {
+    "terminal_p_by": {
+     "0.16666666666666666": 0.08333333333333333,
+     "1.0": 0.08333333333333333,
+     "3.0": 0.125,
+     "7.0": 0.20833333333333334,
+     "14.0": 0.20833333333333334
+    },
+    "p14_reply": 0.2083,
+    "selected_action": "reply",
+    "readout": "terminal_states"
+   },
+   "probabilities@7d": {
+    "E1_raw": 0.0737,
+    "E1_calibrated": 0.059,
+    "E3_grounded_llm": 0.8862,
+    "E10_max_capacity": 0.2083,
+    "baseline_E0": 0.0337
+   },
+   "observed_outcome": {
+    "replied": false,
+    "delay_days": null,
+    "y@7d": 0.0
+   }
+  },
+  {
+   "id": 16,
+   "msg_id": "<15945140.1075852560795.JavaMail.evans@thyme>",
+   "input_evidence": {
+    "sender": "dks@cpuc.ca.gov",
+    "recipient": "bernstein@enron.com",
+    "sent_ts": 1003748895.0,
+    "features": {
+     "pair_n": 7,
+     "pair_rate": 0.0625,
+     "rcpt_n": 7,
+     "rcpt_rate": 0.1111111111111111,
+     "inbox_7d": 3,
+     "hour": 11,
+     "weekday": 0,
+     "thread": 1
+    },
+    "mechanism_status": {
+     "reply_hazard": "fitted",
+     "recipient_rate": "fitted",
+     "relationship": "fitted",
+     "workload": "fitted",
+     "hour_weekday": "fitted",
+     "check_rate": "fitted",
+     "attention_latent": "prior_backed",
+     "message_content_eval": "experimental (LLM policy, off by default)"
+    }
+   },
+   "exact_message": {
+    "subject": "FW: CPCFA updates",
+    "body": "\n\n -----Original Message----- \nFrom:   Schultz, Don  \nSent:   Monday, October 22, 2001 11:07 AM \nTo:     Boyd,Kelly; Brown,Jeff; Chinn,Randy; Clark,Woody; Ferrera, Anna; Johannesson,Magnus; Kelly,Brian; Lingbloom, Lawrence; Lipper,Kip; Lyons, Joseph; Phillips,Guy; Sherriff,Rona; Symonds,Toni; Zeps,Gabrielle\n\nCc:     Bondonno,Maria; Campbell,Rod; Hartmann,Audra; Julian, Bill \nSubject:        CPCFA updates \n\n\n\nCALIFORNIA ENERGY MARKETS \nu u Friday, October 19, 2001 u u No. 640 u u \n\n\n[1] Power Authority Faces Legislative Backlash \nAfter a three-month honeymoon, the new California Power Authority \nis being shredded in the winds of politics this week with the Legislature \nlooking into its deals, the California Energy Commission annoyed with its \nmonopolizing ventures and the Department of Water Resources rebuffing \nits plan to sell its power through state contracts. Other than skepticism \nfrom legislative staff about its microturbine bid plan, the Power Authority \nescaped major problems in its requests for bids for photovoltaics and \nfuel cells at [18]. \n\n[18] Assembly to Investigate Power Authority \n(from [1]) \nIs the California Power Authority a dangerously \nout-of-control state agency, or is it the best hope for get-ting \nback some state control over electricity supplies? \nThe Joint Legislative Audit Committee is looking into the \nPower Authority's role thus far in carrying out the letter \nand spirit of SBx2-6 in a hearing set for November 1. \nThe move is spearheaded by the of",
+    "note": "this is the recipient-visible text; no future replies/labels shown"
+   },
+   "content_entered_model": {
+    "E0_base_rate": false,
+    "E1_fitted_metadata": false,
+    "E2_text_embedding": "hashed BoW (non-LLM)",
+    "E3_grounded_llm": true,
+    "E10_max_capacity": true,
+    "llm_prompt_sent": "You ARE the recipient of an email, deciding whether YOU will reply. Judge ONLY from what\nyou can see now \u2014 never from the future.\nYOU: bernstein@enron.com (Enron employee)\nFROM: dks@cpuc.ca.gov   PRIOR HISTORY WITH THEM: you have received 7 emails from this person before; you\nreplied to about 6% of them.\nYOUR CURRENT LOAD: 3 emails in your inbox in the last week.\nSUBJECT: FW: CPCFA updates\nMESSAGE:\n---\n\n\n -----Original Message----- \nFrom:   Schultz, Don  \nSent:   Monday, October 22, 2001 11:07 AM \nTo:     Boyd,Kelly; Brown,Jeff; Chinn,Randy; Clark,Woody; Ferrera, Anna; Johannesson,Magnus; Kelly,Brian; Lingbloom, Lawrence; Lipper,Kip; Lyons, Joseph; Phillips,Guy; Sherriff,Rona; Symonds,Toni; Zeps,Gabrielle\n\nCc:     Bondonno,Maria; Campbell,Rod; Hartmann,Audra; Julian, Bill \nSubject:        CPCFA updates \n\n\n\nCALIFORNIA ENERGY MARKETS \nu u Friday, October 19, 2001 u u No. 640 u u \n\n\n[1] Power Authority Faces Legislative Backlash \nAfter a three-month honeymoon, the new California Power Authority \nis being shredded in the winds of politics this week with the Legislature \nlooking into its deals, the California Energy Commission annoyed with its \nmonopolizing ventures and the Department of Water Resources rebuffing \nits plan to sell its power through state contracts. Other than skepticism \nfrom legislative staff about its microturbine bid plan, the Power Authority \nescaped major problems in its requests for bids for photovoltaics and \nfuel cells at [18]. \n\n[18] Assembly to Investigate Power Authority \n(from [1]) \nIs the California Power Authority a dangerously \nout-of-control state agency, or is it the best hope for get-ting \nback some state control over electricity supplies? \nThe Joint Legislative Audit Committee is looking into the \nPower Authority's role thus far in carrying out the letter \nand spirit of SBx2-6 in a hearing set for November 1. \nThe move is spearheaded by the of\n---\nGiven the message's content, specificity, whether it asks you something, its importance to your work, and\nyour relationship \u2014 how likely are YOU to reply at all (any time)? Return ONLY JSON:\n{\"reply_propensity\": <0..1>, \"why\": \"<6 words>\"}",
+    "llm_raw_response": "{\"reply_propensity\": 0.1, \"why\": \"Forwarded update, no direct ask\"}",
+    "llm_parsed": {
+     "reply_propensity": 0.1,
+     "why": "Forwarded update, no direct ask"
+    },
+    "reply_propensity": 0.1
+   },
+   "priors_and_state": {
+    "p_base_fitted": 0.0504,
+    "p_base_after_content": 0.0315,
+    "content_why": "Forwarded update, no direct request"
+   },
+   "particles": {
+    "n": 24,
+    "terminal_delays_days": [
+     0.01
+    ],
+    "attention_samples": [
+     {
+      "recipient.attention": 0.5155
+     },
+     {
+      "recipient.attention": 0.9187
+     },
+     {
+      "recipient.attention": 0.4642
+     },
+     {
+      "recipient.attention": 0.8356
+     },
+     {
+      "recipient.attention": 0.3915
+     },
+     {
+      "recipient.attention": 0.8971
+     }
+    ]
+   },
+   "deltas_branch0": [
+    {
+     "at": "2001-10-22T13:51:31Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=0",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.008559053726139854,
+       "wait": 0.9914409462738601
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T17:47:17Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0006537114939142441,
+       "wait": 0.9993462885060858
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T19:47:23Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0006537114939142441,
+       "wait": 0.9993462885060858
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T21:13:13Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0006537114939142441,
+       "wait": 0.9993462885060858
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T21:30:55Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0006537114939142441,
+       "wait": 0.9993462885060858
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T22:03:04Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0006537114939142441,
+       "wait": 0.9993462885060858
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T01:07:52Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0006537114939142441,
+       "wait": 0.9993462885060858
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T01:59:02Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0006537114939142441,
+       "wait": 0.9993462885060858
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T04:08:43Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0006537114939142441,
+       "wait": 0.9993462885060858
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T06:43:28Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0006537114939142441,
+       "wait": 0.9993462885060858
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T07:37:42Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0006537114939142441,
+       "wait": 0.9993462885060858
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T07:57:25Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0006537114939142441,
+       "wait": 0.9993462885060858
+      }
+     },
+     "evidence_deps": []
+    }
+   ],
+   "n_deltas_total": 3807,
+   "action_distribution": {
+    "terminal_p_by": {
+     "0.16666666666666666": 0.041666666666666664,
+     "1.0": 0.041666666666666664,
+     "3.0": 0.041666666666666664,
+     "7.0": 0.041666666666666664,
+     "14.0": 0.041666666666666664
+    },
+    "p14_reply": 0.0417,
+    "selected_action": null,
+    "readout": "terminal_states"
+   },
+   "probabilities@7d": {
+    "E1_raw": 0.0496,
+    "E1_calibrated": 0.0384,
+    "E3_grounded_llm": 0.0985,
+    "E10_max_capacity": 0.0417,
+    "baseline_E0": 0.0337
+   },
+   "observed_outcome": {
+    "replied": false,
+    "delay_days": null,
+    "y@7d": 0.0
+   }
+  },
+  {
+   "id": 17,
+   "msg_id": "<23813206.1075852096649.JavaMail.evans@thyme>",
+   "input_evidence": {
+    "sender": "benjamin.rogers@enron.com",
+    "recipient": "jeff.bartlett@enron.com",
+    "sent_ts": 1003748917.0,
+    "features": {
+     "pair_n": 0,
+     "pair_rate": 0.5,
+     "rcpt_n": 3,
+     "rcpt_rate": 0.2,
+     "inbox_7d": 0,
+     "hour": 11,
+     "weekday": 0,
+     "thread": 1
+    },
+    "mechanism_status": {
+     "reply_hazard": "fitted",
+     "recipient_rate": "fitted",
+     "relationship": "fitted",
+     "workload": "fitted",
+     "hour_weekday": "fitted",
+     "check_rate": "fitted",
+     "attention_latent": "prior_backed",
+     "message_content_eval": "experimental (LLM policy, off by default)"
+    }
+   },
+   "exact_message": {
+    "subject": "RE: Do you have this consulting report?",
+    "body": "Jeff:\nI have a report that talks about Enron in depth, like a former executive wrote it, but its by a group called Global Change Associates.  Would you still like a copy?  Let me know.\nBen\n\n -----Original Message-----\nFrom: \tBartlett, Jeff  \nSent:\tMonday, October 22, 2001 1:05 PM\nTo:\tRogers, Benjamin\nSubject:\tDo you have this consulting report?\n\nDon Miller mentioned that you might have a copy of the \"Enron Secrets Revealed!\" report from The Power Marketing Association.    We're discussing a partnership with a company that confessed to have recently purchased the report.  I'd like to read it over to better understand what they are thinking.\nthanks,\nJeff\n\n\nJeffrey M. Bartlett\nDirector, Enron Americas\n713-853-5629\njeff.bartlett@enron.com",
+    "note": "this is the recipient-visible text; no future replies/labels shown"
+   },
+   "content_entered_model": {
+    "E0_base_rate": false,
+    "E1_fitted_metadata": false,
+    "E2_text_embedding": "hashed BoW (non-LLM)",
+    "E3_grounded_llm": true,
+    "E10_max_capacity": true,
+    "llm_prompt_sent": "You ARE the recipient of an email, deciding whether YOU will reply. Judge ONLY from what\nyou can see now \u2014 never from the future.\nYOU: jeff.bartlett@enron.com (Enron employee)\nFROM: benjamin.rogers@enron.com   PRIOR HISTORY WITH THEM: you have received 0 emails from this person before; you\nreplied to about 50% of them.\nYOUR CURRENT LOAD: 0 emails in your inbox in the last week.\nSUBJECT: RE: Do you have this consulting report?\nMESSAGE:\n---\nJeff:\nI have a report that talks about Enron in depth, like a former executive wrote it, but its by a group called Global Change Associates.  Would you still like a copy?  Let me know.\nBen\n\n -----Original Message-----\nFrom: \tBartlett, Jeff  \nSent:\tMonday, October 22, 2001 1:05 PM\nTo:\tRogers, Benjamin\nSubject:\tDo you have this consulting report?\n\nDon Miller mentioned that you might have a copy of the \"Enron Secrets Revealed!\" report from The Power Marketing Association.    We're discussing a partnership with a company that confessed to have recently purchased the report.  I'd like to read it over to better understand what they are thinking.\nthanks,\nJeff\n\n\nJeffrey M. Bartlett\nDirector, Enron Americas\n713-853-5629\njeff.bartlett@enron.com\n---\nGiven the message's content, specificity, whether it asks you something, its importance to your work, and\nyour relationship \u2014 how likely are YOU to reply at all (any time)? Return ONLY JSON:\n{\"reply_propensity\": <0..1>, \"why\": \"<6 words>\"}",
+    "llm_raw_response": "{\"reply_propensity\": 0.9, \"why\": \"Directly relevant to my request.\"}",
+    "llm_parsed": {
+     "reply_propensity": 0.9,
+     "why": "Directly relevant to my request."
+    },
+    "reply_propensity": 0.9
+   },
+   "priors_and_state": {
+    "p_base_fitted": 0.0234,
+    "p_base_after_content": 0.0475,
+    "content_why": "Directly asked, relevant to partnership discussion"
+   },
+   "particles": {
+    "n": 24,
+    "terminal_delays_days": [
+     0.069,
+     0.006
+    ],
+    "attention_samples": [
+     {
+      "recipient.attention": 0.2511
+     },
+     {
+      "recipient.attention": 0.6376
+     },
+     {
+      "recipient.attention": 0.9004
+     },
+     {
+      "recipient.attention": 0.6492
+     },
+     {
+      "recipient.attention": 0.7394
+     },
+     {
+      "recipient.attention": 0.3118
+     }
+    ]
+   },
+   "deltas_branch0": [
+    {
+     "at": "2001-10-22T13:51:53Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=0",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.00944156132536278,
+       "wait": 0.9905584386746372
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T16:03:20Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0007210189456486882,
+       "wait": 0.9992789810543513
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T16:30:59Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0007210189456486882,
+       "wait": 0.9992789810543513
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T18:49:10Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0007210189456486882,
+       "wait": 0.9992789810543513
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T20:04:37Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0007210189456486882,
+       "wait": 0.9992789810543513
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T20:23:19Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0007210189456486882,
+       "wait": 0.9992789810543513
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T20:58:53Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0007210189456486882,
+       "wait": 0.9992789810543513
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T21:40:57Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0007210189456486882,
+       "wait": 0.9992789810543513
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T23:04:41Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0007210189456486882,
+       "wait": 0.9992789810543513
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T01:33:40Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0007210189456486882,
+       "wait": 0.9992789810543513
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T04:26:59Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0007210189456486882,
+       "wait": 0.9992789810543513
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T08:57:01Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0007210189456486882,
+       "wait": 0.9992789810543513
+      }
+     },
+     "evidence_deps": []
+    }
+   ],
+   "n_deltas_total": 3756,
+   "action_distribution": {
+    "terminal_p_by": {
+     "0.16666666666666666": 0.08333333333333333,
+     "1.0": 0.08333333333333333,
+     "3.0": 0.08333333333333333,
+     "7.0": 0.08333333333333333,
+     "14.0": 0.08333333333333333
+    },
+    "p14_reply": 0.0833,
+    "selected_action": null,
+    "readout": "terminal_states"
+   },
+   "probabilities@7d": {
+    "E1_raw": 0.0231,
+    "E1_calibrated": 0.0168,
+    "E3_grounded_llm": 0.8862,
+    "E10_max_capacity": 0.0833,
+    "baseline_E0": 0.0337
+   },
+   "observed_outcome": {
+    "replied": false,
+    "delay_days": null,
+    "y@7d": 0.0
+   }
+  },
+  {
+   "id": 18,
+   "msg_id": "<29515308.1075852190879.JavaMail.evans@thyme>",
+   "input_evidence": {
+    "sender": "michele.winckowski@enron.com",
+    "recipient": "lynn.blair@enron.com",
+    "sent_ts": 1003748933.0,
+    "features": {
+     "pair_n": 0,
+     "pair_rate": 0.5,
+     "rcpt_n": 19,
+     "rcpt_rate": 0.047619047619047616,
+     "inbox_7d": 1,
+     "hour": 11,
+     "weekday": 0,
+     "thread": 0
+    },
+    "mechanism_status": {
+     "reply_hazard": "fitted",
+     "recipient_rate": "fitted",
+     "relationship": "fitted",
+     "workload": "fitted",
+     "hour_weekday": "fitted",
+     "check_rate": "fitted",
+     "attention_latent": "prior_backed",
+     "message_content_eval": "experimental (LLM policy, off by default)"
+    }
+   },
+   "exact_message": {
+    "subject": "Draft - Procedures for Offsytem Transactions",
+    "body": "\tAttached is the first draft of procedures for offsystem transactions.  Please review and provide comments by Friday, Oct 26th .  Thanks MW\n\n\t ",
+    "note": "this is the recipient-visible text; no future replies/labels shown"
+   },
+   "content_entered_model": {
+    "E0_base_rate": false,
+    "E1_fitted_metadata": false,
+    "E2_text_embedding": "hashed BoW (non-LLM)",
+    "E3_grounded_llm": true,
+    "E10_max_capacity": true,
+    "llm_prompt_sent": "You ARE the recipient of an email, deciding whether YOU will reply. Judge ONLY from what\nyou can see now \u2014 never from the future.\nYOU: lynn.blair@enron.com (Enron employee)\nFROM: michele.winckowski@enron.com   PRIOR HISTORY WITH THEM: you have received 0 emails from this person before; you\nreplied to about 50% of them.\nYOUR CURRENT LOAD: 1 emails in your inbox in the last week.\nSUBJECT: Draft - Procedures for Offsytem Transactions\nMESSAGE:\n---\n\tAttached is the first draft of procedures for offsystem transactions.  Please review and provide comments by Friday, Oct 26th .  Thanks MW\n\n\t \n---\nGiven the message's content, specificity, whether it asks you something, its importance to your work, and\nyour relationship \u2014 how likely are YOU to reply at all (any time)? Return ONLY JSON:\n{\"reply_propensity\": <0..1>, \"why\": \"<6 words>\"}",
+    "llm_raw_response": "{\"reply_propensity\": 0.9, \"why\": \"Work-related draft review requested.\"}",
+    "llm_parsed": {
+     "reply_propensity": 0.9,
+     "why": "Work-related draft review requested."
+    },
+    "reply_propensity": 0.9
+   },
+   "priors_and_state": {
+    "p_base_fitted": 0.0331,
+    "p_base_after_content": 0.0671,
+    "content_why": "Direct request for review by deadline."
+   },
+   "particles": {
+    "n": 24,
+    "terminal_delays_days": [
+     0.07
+    ],
+    "attention_samples": [
+     {
+      "recipient.attention": 0.854
+     },
+     {
+      "recipient.attention": 1.0
+     },
+     {
+      "recipient.attention": 0.6159
+     },
+     {
+      "recipient.attention": 0.8432
+     },
+     {
+      "recipient.attention": 0.4088
+     },
+     {
+      "recipient.attention": 0.7192
+     }
+    ]
+   },
+   "deltas_branch0": [
+    {
+     "at": "2001-10-22T13:52:09Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=0",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.02467843205388298,
+       "wait": 0.975321567946117
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T18:30:13Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0018802151523628075,
+       "wait": 0.9981197848476372
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T19:35:10Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0018802151523628075,
+       "wait": 0.9981197848476372
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T20:30:59Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0018802151523628075,
+       "wait": 0.9981197848476372
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T21:54:08Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0018802151523628075,
+       "wait": 0.9981197848476372
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T01:29:27Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0018802151523628075,
+       "wait": 0.9981197848476372
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T01:53:19Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0018802151523628075,
+       "wait": 0.9981197848476372
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T03:02:05Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0018802151523628075,
+       "wait": 0.9981197848476372
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T06:59:15Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0018802151523628075,
+       "wait": 0.9981197848476372
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T07:27:44Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0018802151523628075,
+       "wait": 0.9981197848476372
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T11:37:57Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0002107835991318474,
+       "wait": 0.9997892164008682
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T14:25:55Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0002107835991318474,
+       "wait": 0.9997892164008682
+      }
+     },
+     "evidence_deps": []
+    }
+   ],
+   "n_deltas_total": 3683,
+   "action_distribution": {
+    "terminal_p_by": {
+     "0.16666666666666666": 0.041666666666666664,
+     "1.0": 0.041666666666666664,
+     "3.0": 0.041666666666666664,
+     "7.0": 0.041666666666666664,
+     "14.0": 0.041666666666666664
+    },
+    "p14_reply": 0.0417,
+    "selected_action": null,
+    "readout": "terminal_states"
+   },
+   "probabilities@7d": {
+    "E1_raw": 0.0326,
+    "E1_calibrated": 0.0244,
+    "E3_grounded_llm": 0.8862,
+    "E10_max_capacity": 0.0417,
+    "baseline_E0": 0.0337
+   },
+   "observed_outcome": {
+    "replied": false,
+    "delay_days": null,
+    "y@7d": 0.0
+   }
+  },
+  {
+   "id": 19,
+   "msg_id": "<23783116.1075852134443.JavaMail.evans@thyme>",
+   "input_evidence": {
+    "sender": "clint.dean@enron.com",
+    "recipient": "bdenney@hyperformix.com",
+    "sent_ts": 1003749237.0,
+    "features": {
+     "pair_n": 2,
+     "pair_rate": 0.16666666666666666,
+     "rcpt_n": 2,
+     "rcpt_rate": 0.25,
+     "inbox_7d": 2,
+     "hour": 11,
+     "weekday": 0,
+     "thread": 0
+    },
+    "mechanism_status": {
+     "reply_hazard": "fitted",
+     "recipient_rate": "fitted",
+     "relationship": "fitted",
+     "workload": "fitted",
+     "hour_weekday": "fitted",
+     "check_rate": "fitted",
+     "attention_latent": "prior_backed",
+     "message_content_eval": "experimental (LLM policy, off by default)"
+    }
+   },
+   "exact_message": {
+    "subject": "",
+    "body": "Bryan,\nThanks again for letting me stay with y'all.  I had a very good time.  The boat was awesome.  Tell Monica also.\n\nClint",
+    "note": "this is the recipient-visible text; no future replies/labels shown"
+   },
+   "content_entered_model": {
+    "E0_base_rate": false,
+    "E1_fitted_metadata": false,
+    "E2_text_embedding": "hashed BoW (non-LLM)",
+    "E3_grounded_llm": true,
+    "E10_max_capacity": true,
+    "llm_prompt_sent": "You ARE the recipient of an email, deciding whether YOU will reply. Judge ONLY from what\nyou can see now \u2014 never from the future.\nYOU: bdenney@hyperformix.com (Enron employee)\nFROM: clint.dean@enron.com   PRIOR HISTORY WITH THEM: you have received 2 emails from this person before; you\nreplied to about 17% of them.\nYOUR CURRENT LOAD: 2 emails in your inbox in the last week.\nSUBJECT: \nMESSAGE:\n---\nBryan,\nThanks again for letting me stay with y'all.  I had a very good time.  The boat was awesome.  Tell Monica also.\n\nClint\n---\nGiven the message's content, specificity, whether it asks you something, its importance to your work, and\nyour relationship \u2014 how likely are YOU to reply at all (any time)? Return ONLY JSON:\n{\"reply_propensity\": <0..1>, \"why\": \"<6 words>\"}",
+    "llm_raw_response": "{\"reply_propensity\": 0.9, \"why\": \"Polite thank-you; low effort reply.\"}",
+    "llm_parsed": {
+     "reply_propensity": 0.9,
+     "why": "Polite thank-you; low effort reply."
+    },
+    "reply_propensity": 0.9
+   },
+   "priors_and_state": {
+    "p_base_fitted": 0.0272,
+    "p_base_after_content": 0.0265,
+    "content_why": "Casual thanks, no question asked."
+   },
+   "particles": {
+    "n": 24,
+    "terminal_delays_days": [
+     0.971
+    ],
+    "attention_samples": [
+     {
+      "recipient.attention": 0.5063
+     },
+     {
+      "recipient.attention": 0.3069
+     },
+     {
+      "recipient.attention": 0.4032
+     },
+     {
+      "recipient.attention": 0.6616
+     },
+     {
+      "recipient.attention": 0.1
+     },
+     {
+      "recipient.attention": 1.0
+     }
+    ]
+   },
+   "deltas_branch0": [
+    {
+     "at": "2001-10-22T13:57:13Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=0",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.007124650444896186,
+       "wait": 0.9928753495551038
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-22T20:51:28Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0005442734361902346,
+       "wait": 0.9994557265638098
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T02:14:29Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0005442734361902346,
+       "wait": 0.9994557265638098
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T02:55:49Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0005442734361902346,
+       "wait": 0.9994557265638098
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T07:14:17Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=1",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 0.0005442734361902346,
+       "wait": 0.9994557265638098
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T11:30:59Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 6.127410723577587e-05,
+       "wait": 0.9999387258927642
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T13:40:18Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 6.127410723577587e-05,
+       "wait": 0.9999387258927642
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T15:30:14Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 6.127410723577587e-05,
+       "wait": 0.9999387258927642
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T18:28:49Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 6.127410723577587e-05,
+       "wait": 0.9999387258927642
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T19:04:49Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 6.127410723577587e-05,
+       "wait": 0.9999387258927642
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-23T20:18:49Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 6.127410723577587e-05,
+       "wait": 0.9999387258927642
+      }
+     },
+     "evidence_deps": []
+    },
+    {
+     "at": "2001-10-24T04:02:14Z",
+     "event_type": "reply_decision",
+     "operator": "reply_decision_fitted",
+     "changes": [],
+     "reason_codes": [
+      "bucket=2",
+      "fitted_hazard"
+     ],
+     "uncertainty": {
+      "p_dist": {
+       "reply": 6.127410723577587e-05,
+       "wait": 0.9999387258927642
+      }
+     },
+     "evidence_deps": []
+    }
+   ],
+   "n_deltas_total": 3913,
+   "action_distribution": {
+    "terminal_p_by": {
+     "0.16666666666666666": 0.0,
+     "1.0": 0.041666666666666664,
+     "3.0": 0.041666666666666664,
+     "7.0": 0.041666666666666664,
+     "14.0": 0.041666666666666664
+    },
+    "p14_reply": 0.0417,
+    "selected_action": null,
+    "readout": "terminal_states"
+   },
+   "probabilities@7d": {
+    "E1_raw": 0.0267,
+    "E1_calibrated": 0.0197,
+    "E3_grounded_llm": 0.8862,
+    "E10_max_capacity": 0.0417,
+    "baseline_E0": 0.0337
+   },
+   "observed_outcome": {
+    "replied": false,
+    "delay_days": null,
+    "y@7d": 0.0
+   }
+  }
+ ]
+}

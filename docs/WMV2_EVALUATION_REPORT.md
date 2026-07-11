@@ -29,6 +29,35 @@ Horizon degradation eliminated (0.090→0.096 flat) — the integration fix is v
 arms collapse to the 2.2% base rate (tiny positives; nothing differentiates; V2 arms trivially but
 significantly worse by ~0.0007 — noise-scale miscalibration on near-zero-rate strangers).
 
+## Round 2 — MAX-CAPACITY (content ON, LLM policy ON): `V2_METADATA_TEMPORAL` renamed, content tested
+
+The prior "full V2" (I7/I8) never read message content — renamed **`V2_METADATA_TEMPORAL`** (arm E5). The
+max-capacity round adds a content-conditioned recipient policy through the typed boundary (exact email →
+DeepSeek `deepseek-chat` → bounded multiplier on the fitted base → particle/event rollout) and ablates
+every experimental mechanism leave-one-out against the full arm E10. 1,460 API calls, ~$0.42, particles=24.
+Full detail + 20 forensic traces: `docs/WMV2_ENRON_MAXCAP_FORENSIC.md`,
+`experiments/results/wmv2_enron_maxcap.json`.
+
+**Time-forward, apples-to-apples Brier@7d (all arms on the same n=120 LLM subsample), paired CIs:**
+
+| arm | Brier@7d | Δ vs E1 (paired CI95) | verdict |
+|---|---|---|---|
+| **E1 fitted metadata** | **0.0577** | — | **the bar** |
+| E2 non-LLM text BoW | 0.0855 | worse | text alone < metadata |
+| E3 raw one-shot LLM | 0.1638 | — | miscalibrated; **worse than BoW** (E3−E2 +0.078 [0.020,0.139]) |
+| E5 V2_METADATA_TEMPORAL | 0.0584 | +0.001 ns | ≈ E1 |
+| E6 content only | 0.0663 | — | content alone < metadata |
+| **E10 MAX-CAPACITY** | **0.0622** | **+0.004 [−0.005, +0.016]** | **matches, does NOT beat** |
+
+Mechanism leave-one-out (E10 − Ex, all NS): event rollout −0.005 [−0.020,+0.012], latent +0.0004
+[−0.002,+0.003], relationship −0.008 [−0.020,+0.002]. Content effect E10 vs E5 +0.004 [−0.003,+0.013] NS.
+Person-disjoint: everything collapses to the 2% base; E10 vs E1 ns; relationship effect exactly 0 (no prior
+relationship exists for held-out persons).
+
+**The one positive is methodological:** the raw LLM read loses (Brier 0.164, worse than BoW), but wrapping
+that same read as a bounded multiplier on the fitted base inside the typed world rescues it to parity
+(E10 vs E3 −0.10 [−0.15,−0.06]). The boundary's value here is **calibration discipline, not lift.**
+
 ## Keep / revise / disable
 
 | Component | Decision | Evidence |
@@ -38,7 +67,7 @@ significantly worse by ~0.0007 — noise-scale miscalibration on near-zero-rate 
 | Event-driven rollout | **NO EVIDENCE** (keep as research) | matches the closed-form model at ~10× compute; no lift |
 | Latent attention state | **NO EVIDENCE** | I5/I7 spreads within noise |
 | Relationship history inside the sim | **NO EVIDENCE** | I7−I6 ns |
-| LLM message-content policy (I2/I3) | **UNRUN** | the open question: semantic content is the one signal I1 cannot see |
+| LLM message-content policy (E3/E6/E10) | **RUN → NO EVIDENCE OF LIFT** | E10 vs E1 +0.004 ns; E10 vs E5 (content) +0.004 ns; raw LLM (E3) *worse* than BoW. Boundary adds calibration discipline, not predictive lift |
 
 **Status label: architecture-validated + first-benchmark NO-EVIDENCE-OF-LIFT.** The V2 runtime now
 *reproduces* a fitted statistical model through a real event-driven world (a nontrivial correctness result —
@@ -49,6 +78,6 @@ held-out predictive value) remains **undemonstrated**. Do not merge PR #75.
 
 | Benchmark | Status |
 |---|---|
-| Enron (Ref. World A) | run (above); next: I2/I3 LLM arms — content is the untested signal |
+| Enron (Ref. World A) | **run twice** (metadata round + MAX-CAPACITY content round); content tested → NO EVIDENCE OF LIFT (`WMV2_ENRON_MAXCAP_FORENSIC.md`) |
 | Upworthy / ForecastBench / crowd / BehaviorBench / OmniBehavior(repair) / Higgs | staged per `WMV2_BENCHMARK_MAP.md`, unrun for V2 |
 | Forward ledger V2 wiring | pending |
