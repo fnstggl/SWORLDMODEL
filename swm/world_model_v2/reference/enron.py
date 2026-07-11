@@ -203,8 +203,14 @@ def v2_predict(ex, fm: FittedMechanisms, *, horizon_days=14.0, n_particles=30, s
             el_days = (world.clock.now - ex.sent_ts) / DAY
             b = next((i for i, bb in enumerate(BUCKETS) if el_days <= bb), len(BUCKETS) - 1)
             att = world.entity("recipient").value("attention") or 0.7
-            # fitted per-opportunity hazard, scaled by how this message's fitted rate compares to global
-            p_reply = min(0.95, fm.hazard[b] * (p_base / max(1e-6, fm.global_rate)) * (0.4 + 0.85 * att))
+            # HAZARD INTEGRATION (the 30-days≠30-guesses rule): fm.hazard[b] is P(reply lands in bucket b |
+            # not yet) for the WHOLE bucket. There are ~check_rate×width opportunities in that bucket, so the
+            # per-opportunity hazard must satisfy 1-(1-h)^n = H_bucket — otherwise probability compounds and
+            # the rollout overpredicts more the longer the horizon (the exact failure of the first run).
+            widths = (BUCKETS[0],) + tuple(BUCKETS[i] - BUCKETS[i - 1] for i in range(1, len(BUCKETS)))
+            n_opp = max(1.0, fm.check_rate_per_day * widths[b])
+            H = min(0.95, fm.hazard[b] * (p_base / max(1e-6, fm.global_rate)) * (0.4 + 0.85 * att))
+            p_reply = 1.0 - (1.0 - H) ** (1.0 / n_opp)
             act = "reply" if rng.random() < p_reply else "wait"
             return TransitionProposal(operator=self.name, action={"actor": "recipient", "type": act},
                                       p_dist={"reply": p_reply, "wait": 1 - p_reply},
