@@ -91,18 +91,35 @@ def forecast(question: str, *, architecture: str, llm=None, evidence: str = "", 
         result, _ = run_from_plan(plan, llm=llm)
         return {"question": question, **result, "run": rec.finalize().as_dict()}
     # ---- explicit baselines (deprecated for new development; preserved for science) ----
+    # EVERY name executes its OWN mechanism — call-spy tests pin label↔implementation identity (Part 0).
     rec.legacy_executed = True
     if architecture == "baseline:grounded_direct":
+        # exactly ONE grounded direct forecast: ground once, one LLM call, no roles, no pooling
         from swm.engine.grounding import SceneGrounder
         from swm.eval.ablation import _p_single
         dossier = SceneGrounder(llm, today=as_of).ground(question, evidence=evidence or None)
         p = None if dossier.abstain else _p_single(llm, question, as_of, dossier)
         return {"question": question, "p": p, "abstain": p is None, "run": rec.finalize().as_dict()}
-    if architecture in ("baseline:observer_panel_v1", "baseline:society_v1", "baseline:parametric_v1",
-                        "baseline:direct_ensemble"):
+    if architecture == "baseline:direct_ensemble":
+        # N INDEPENDENT grounded direct forecasts, log-linear pooled — no lenses, no personas, no anchor
+        from swm.engine.grounding import SceneGrounder
+        from swm.eval.tiered_ablation import _grounded_ensemble
+        n = int(kw.pop("n_ensemble", 10))
+        dossier = SceneGrounder(llm, today=as_of).ground(question, evidence=evidence or None)
+        p = None if dossier.abstain else _grounded_ensemble(llm, question, as_of, dossier, n)
+        return {"question": question, "p": p, "abstain": p is None, "n_ensemble": n,
+                "pooling": "log_linear", "run": rec.finalize().as_dict()}
+    if architecture == "baseline:parametric_v1":
+        # the parametric/compiler kernel path — NEVER the observer panel
+        from swm.engine.front_door import parametric_binary_p
+        p = parametric_binary_p(question, as_of, llm)
+        return {"question": question, "p": p, "abstain": p is None,
+                "mechanism": "parametric_kernel", "run": rec.finalize().as_dict()}
+    if architecture in ("baseline:observer_panel_v1", "baseline:society_v1"):
         from swm.engine.front_door import agent_world_model
         wm = agent_world_model()
         wm.event_engine = "society" if architecture == "baseline:society_v1" else "panel"
+        wm.route_contests = False                          # the NAMED mechanism runs — no silent rerouting
         res = wm.simulate(question, as_of=as_of, binary=True, **kw)
         res["run"] = rec.finalize().as_dict()
         return res

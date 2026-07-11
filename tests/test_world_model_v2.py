@@ -513,3 +513,94 @@ def test_facade_is_the_only_legacy_door_for_new_code():
         for node in ast.walk(tree):
             if isinstance(node, ast.ImportFrom) and node.module and node.module.startswith("swm.engine"):
                 raise AssertionError(f"{f.name}: new top-level code must use swm.facade, not swm.engine")
+
+
+# ================= PART 0: baseline identity — each label executes ITS mechanism (call-spy) =================
+def test_baseline_labels_reach_distinct_implementations(monkeypatch):
+    """Call-spy proof: grounded_direct → ONE _p_single; direct_ensemble → _grounded_ensemble (no lenses);
+    parametric_v1 → parametric_binary_p (never the panel); panel/society → agent_world_model with the right
+    event_engine. No benchmark label can execute a different mechanism than it names."""
+    import swm.facade as facade
+    calls = []
+
+    class StubDossier:
+        abstain = False
+        facts = []
+        def brief(self): return "E"
+    class StubGrounder:
+        def __init__(self, *a, **k): pass
+        def ground(self, q, evidence=None):
+            calls.append("ground"); return StubDossier()
+
+    monkeypatch.setattr("swm.engine.grounding.SceneGrounder", StubGrounder)
+    monkeypatch.setattr("swm.eval.ablation._p_single",
+                        lambda llm, q, today, dossier=None: calls.append("p_single") or 0.6)
+    monkeypatch.setattr("swm.eval.tiered_ablation._grounded_ensemble",
+                        lambda llm, q, t, d, n: calls.append(f"ensemble(n={n})") or 0.55)
+    monkeypatch.setattr("swm.engine.front_door.parametric_binary_p",
+                        lambda q, a, llm: calls.append("parametric") or 0.4)
+
+    r1 = facade.forecast("q?", architecture="baseline:grounded_direct", llm=lambda p: "x")
+    assert calls == ["ground", "p_single"] and r1["p"] == 0.6          # ONE direct call, nothing else
+    calls.clear()
+    r2 = facade.forecast("q?", architecture="baseline:direct_ensemble", llm=lambda p: "x", n_ensemble=7)
+    assert calls == ["ground", "ensemble(n=7)"] and r2["pooling"] == "log_linear"
+    calls.clear()
+    r3 = facade.forecast("q?", architecture="baseline:parametric_v1", llm=lambda p: "x")
+    assert calls == ["parametric"] and r3["mechanism"] == "parametric_kernel"   # NEVER the panel
+    # every baseline is marked legacy + product-ineligible
+    for r in (r1, r2, r3):
+        assert r["run"]["legacy_executed"] and not r["run"]["product_eligible"]
+
+
+def test_panel_and_society_labels_set_distinct_engines(monkeypatch):
+    import swm.facade as facade
+    seen = {}
+    class SpyWM:
+        def __init__(self): self.event_engine = "panel"; self.route_contests = True
+        def simulate(self, q, **kw):
+            seen[id(self)] = self.event_engine
+            return {"distribution": {"yes": 0.5, "no": 0.5}, "abstain": False}
+    import swm.engine.front_door as fd
+    monkeypatch.setattr(fd, "agent_world_model", lambda **kw: SpyWM())
+    rp = facade.forecast("q?", architecture="baseline:observer_panel_v1", llm=None)
+    rs = facade.forecast("q?", architecture="baseline:society_v1", llm=None)
+    assert sorted(seen.values()) == ["panel", "society"]               # distinct engines actually selected
+    assert rp["run"]["baseline"] == "baseline:observer_panel_v1"
+
+
+# ================= Reference World A (Enron) — offline on synthetic records =================
+def _synthetic_records(n=400, seed=7):
+    rng = random.Random(seed)
+    recs = []
+    t0 = parse_time("2001-01-01")
+    people = [f"p{i}@enron.com" for i in range(12)]
+    for i in range(n):
+        s, rc = rng.sample(people, 2)
+        fast = rng.random() < 0.4                          # 40% of messages get replies, mostly fast
+        recs.append({"msg_id": f"<m{i}>", "from": s, "to": rc, "subject": "budget",
+                     "body": "please review", "date_ts": t0 + i * 3600.0 * 6,
+                     "replied": fast, "delay_hours": (rng.expovariate(1 / 20.0) if fast else None)})
+    return recs
+
+
+def test_enron_world_fits_mechanisms_and_rolls_leak_free():
+    from swm.world_model_v2.reference.enron import (build_examples, fit_mechanisms, splits, v2_predict,
+                                                    BUCKETS)
+    exs = build_examples(_synthetic_records())
+    assert exs and all(e.feats["pair_n"] >= 0 for e in exs)
+    train, test_seen, test_new = splits(exs)
+    assert max(e.sent_ts for e in train) <= min(e.sent_ts for e in (test_seen + test_new))  # time-forward
+    assert not ({e.recipient for e in test_new} & {e.recipient for e in train})             # person-disjoint
+    fm = fit_mechanisms(train)
+    assert abs(sum(fm.hazard) - (sum(1 for e in train if e.replied) /
+                                 max(1, len(train)))) < 0.25                                # hazard ~ rate
+    assert fm.status["reply_hazard"] == "fitted" and fm.status["attention_latent"] == "prior_backed"
+    ex = test_seen[0] if test_seen else test_new[0]
+    out = v2_predict(ex, fm, n_particles=12, seed=2)
+    ps = [out["p_by"][b] for b in BUCKETS]
+    assert all(0.0 <= p <= 1.0 for p in ps) and ps == sorted(ps)       # monotone cumulative reply curve
+    assert out["n_deltas"] > 0                                         # real transitions happened
+    # ablation flags actually change the machinery
+    flat = v2_predict(ex, fm, n_particles=12, seed=2, event_driven=False, latent=False)
+    assert flat["p_by"][BUCKETS[-1]] != out["p_by"][BUCKETS[-1]] or flat["n_deltas"] != out["n_deltas"]
