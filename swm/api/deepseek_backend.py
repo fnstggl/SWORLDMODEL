@@ -18,7 +18,12 @@ def deepseek_chat_fn(model: str = "deepseek-chat", *, system: str = "", max_toke
                      temperature: float = 0.0):
     """Return a callable(prompt) -> text using the DeepSeek API. Reads DEEPSEEK_API_KEY from env only.
     model: 'deepseek-chat' (flagship V3 chat) or 'deepseek-reasoner' (R1)."""
-    key = os.environ.get("DEEPSEEK_API_KEY", "")
+    key = os.environ.get("DEEPSEEK_API_KEY", "").strip()
+    # a pasted key can pick up non-ASCII junk (smart quotes, bullets, a trailing comment) → the HTTP header
+    # crashes with an opaque latin-1 UnicodeEncodeError. Fail LOUDLY and clearly instead.
+    if key and not key.isascii():
+        raise ValueError("DEEPSEEK_API_KEY contains non-ASCII characters — it was likely corrupted on paste. "
+                         "Re-set it by hand (no smart quotes / trailing comment): export DEEPSEEK_API_KEY=sk-…")
 
     def fn(prompt: str) -> str:
         msgs = ([{"role": "system", "content": system}] if system else []) + \
