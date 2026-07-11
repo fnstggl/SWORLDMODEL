@@ -58,6 +58,25 @@ relationship exists for held-out persons).
 that same read as a bounded multiplier on the fitted base inside the typed world rescues it to parity
 (E10 vs E3 −0.10 [−0.15,−0.06]). The boundary's value here is **calibration discipline, not lift.**
 
+## Round 3 — STRUCTURED ACTOR COGNITION (the scalar bottleneck audited, replaced, and tested)
+
+Audit proved round 2's E10 carried content through ONE scalar (`reply_propensity`) into a two-action
+fitted hazard → renamed **`V2_SCALAR_CONTENT`**, demoted to baseline **C0**. Replacement (universal
+`swm/world_model_v2/actor_cognition.py`): typed 12-dim interpretation → TRAIN-fitted calibration layer →
+typed actions (reply_now/reply_later/clarify/delegate/ignore) → correlated hidden actor state → dynamic
+attention → relationship transitions, all through the shared runtime. Universality proven by a negotiation-
+domain acceptance test. Full audit + results: `docs/WMV2_ACTOR_COGNITION_AUDIT.md`.
+
+**Time-forward Brier@7d (n=120 identical rows):** E1 fitted metadata **0.0577** | C1 structured
+interpretation **0.0587** (+0.001 [−0.005,+0.006] ns) | C0 scalar world 0.0618 | C6 max structured actor
+0.0640 (+0.006 ns) | every ladder rung (typed actions, hidden state, dynamics, relationship) **NS**.
+The fitted layer learned real semantics (thread_continuity +0.36, task_ownership +0.31, obligation +0.22,
+social intent −0.21; metadata anchor discounted to 0.68) — the semantic channel now demonstrably carries
+information — yet the score lands on the SAME number as metadata alone. **Three architectures of increasing
+cognitive fidelity (none / scalar / structured) all match E1: the ceiling on this task is metadata signal +
+label noise, not the content channel's richness.** Lead preserved: person-disjoint C1 AUROC 0.966 /
+PR-AUC 0.333 vs E1 0.788 / 0.091 (n=60, ~1–2 positives — a lead to test at scale, not a claim).
+
 ## Keep / revise / disable
 
 | Component | Decision | Evidence |
