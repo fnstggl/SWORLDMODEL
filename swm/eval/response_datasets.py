@@ -115,12 +115,42 @@ def load_enron_reply_delay(maildir, *, limit_messages=None):
             n += 1
             if limit_messages and n >= limit_messages:
                 break
-    # a message is replied-to iff a LATER message references its id; delay = first such reference
+    # signal 1: a LATER message references this Message-ID (headers — rare in Enron: most 2000-era clients
+    # never set In-Reply-To, which is why header-only reconstruction finds ~0 replies)
     for mid, rec in by_id.items():
         later = sorted([(ts, rid) for rid, ts in refs_to.get(mid, []) if ts > rec["date_ts"]])
         if later:
             rec["replied"] = True
             rec["delay_hours"] = round((later[0][0] - rec["date_ts"]) / 3600.0, 2)
+    # signal 2 (the workhorse): SUBJECT+DIRECTION matching — a later message from B→A whose normalized
+    # subject (Re:/Fw: stripped) equals an earlier A→B message's, within 30 days, is a reply to the LATEST
+    # such message. Standard Enron reconstruction; conservative window; first reply wins.
+    import re as _re
+    def _norm(s):
+        return _re.sub(r"^\s*((re|fw|fwd)\s*:\s*)+", "", str(s or "").strip().lower())[:120]
+    def _addr(s):
+        return str(s or "").split(",")[0].strip().lower()
+    by_key = defaultdict(list)                 # (sender, recipient, norm_subject) -> [(ts, rec)]
+    for rec in by_id.values():
+        s, r_ = _addr(rec["from"]), _addr(rec["to"])
+        if s and r_ and _norm(rec["subject"]):
+            by_key[(s, r_, _norm(rec["subject"]))].append((rec["date_ts"], rec))
+    for lst in by_key.values():
+        lst.sort(key=lambda x: x[0])
+    for rec in by_id.values():
+        s, r_ = _addr(rec["from"]), _addr(rec["to"])
+        subj = _norm(rec["subject"])
+        if not (s and r_ and subj):
+            continue
+        # this message replies to the latest earlier r_→s message with the same normalized subject
+        cands = [orig for ts, orig in by_key.get((r_, s, subj), [])
+                 if ts < rec["date_ts"] <= ts + 30 * 86400.0]
+        if cands:
+            orig = cands[-1]
+            delay = round((rec["date_ts"] - orig["date_ts"]) / 3600.0, 2)
+            if not orig["replied"] or (orig["delay_hours"] is not None and delay < orig["delay_hours"]):
+                orig["replied"] = True
+                orig["delay_hours"] = delay
     return list(by_id.values())
 
 
