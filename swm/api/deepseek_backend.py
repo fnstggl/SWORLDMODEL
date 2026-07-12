@@ -9,6 +9,8 @@ from __future__ import annotations
 
 import json
 import os
+import time
+import urllib.error
 import urllib.request
 
 DEEPSEEK_URL = "https://api.deepseek.com/chat/completions"
@@ -18,19 +20,40 @@ def deepseek_chat_fn(model: str = "deepseek-chat", *, system: str = "", max_toke
                      temperature: float = 0.0):
     """Return a callable(prompt) -> text using the DeepSeek API. Reads DEEPSEEK_API_KEY from env only.
     model: 'deepseek-chat' (flagship V3 chat) or 'deepseek-reasoner' (R1)."""
-    key = os.environ.get("DEEPSEEK_API_KEY", "")
+    key = os.environ.get("DEEPSEEK_API_KEY", "").strip()
+    # a pasted key can pick up non-ASCII junk (smart quotes, bullets, a trailing comment) → the HTTP header
+    # crashes with an opaque latin-1 UnicodeEncodeError. Fail LOUDLY and clearly instead.
+    if key and not key.isascii():
+        raise ValueError("DEEPSEEK_API_KEY contains non-ASCII characters — it was likely corrupted on paste. "
+                         "Re-set it by hand (no smart quotes / trailing comment): export DEEPSEEK_API_KEY=sk-…")
 
     def fn(prompt: str) -> str:
         msgs = ([{"role": "system", "content": system}] if system else []) + \
                [{"role": "user", "content": prompt}]
         body = json.dumps({"model": model, "messages": msgs, "max_tokens": max_tokens,
                            "temperature": temperature}).encode()
-        req = urllib.request.Request(DEEPSEEK_URL, data=body,
-                                     headers={"Authorization": f"Bearer {key}",
-                                              "Content-Type": "application/json"})
-        with urllib.request.urlopen(req, timeout=120) as r:
-            data = json.loads(r.read())
-        return data["choices"][0]["message"]["content"]
+        # bounded retry on TRANSIENT failures (connection resets, 429/5xx, timeouts) so a single network
+        # blip cannot kill a long batch. Deterministic backoff (no jitter — Math.random is unavailable
+        # in some sandboxes and determinism aids replay). Non-transient errors (4xx auth) raise at once.
+        last = None
+        for attempt in range(5):
+            try:
+                req = urllib.request.Request(DEEPSEEK_URL, data=body,
+                                             headers={"Authorization": f"Bearer {key}",
+                                                      "Content-Type": "application/json"})
+                with urllib.request.urlopen(req, timeout=120) as r:
+                    data = json.loads(r.read())
+                return data["choices"][0]["message"]["content"]
+            except urllib.error.HTTPError as e:
+                last = e
+                if e.code not in (429, 500, 502, 503, 504) or attempt == 4:
+                    raise
+            except (urllib.error.URLError, ConnectionError, TimeoutError, OSError) as e:
+                last = e
+                if attempt == 4:
+                    raise
+            time.sleep(2 ** attempt)                       # 1, 2, 4, 8s
+        raise last                                         # unreachable (loop raises), keeps type-checkers happy
     return fn
 
 
