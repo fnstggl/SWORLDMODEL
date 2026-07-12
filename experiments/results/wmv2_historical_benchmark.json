@@ -1,0 +1,142 @@
+{
+ "corpus": {
+  "n_total": 661,
+  "n_train": 330,
+  "n_test": 3,
+  "v2_coverage": 0.0,
+  "v2_abstention_rate": 1.0
+ },
+ "full_set": {
+  "label": "full (crowd/direct always answer; V2 answers on supported)",
+  "n": 3,
+  "metrics": {
+   "B0_base": {
+    "n": 3,
+    "brier": 0.1913,
+    "logloss": 0.5751,
+    "auroc": 1.0,
+    "base_rate": 0.333,
+    "mean_pred": 0.481
+   },
+   "B1_grounded": {
+    "n": 3,
+    "brier": 0.2075,
+    "logloss": 0.6057,
+    "auroc": 0.75,
+    "base_rate": 0.333,
+    "mean_pred": 0.45
+   },
+   "B6_v2": {
+    "n": 0
+   },
+   "B7_crowd": {
+    "n": 3,
+    "brier": 0.12,
+    "logloss": 0.4132,
+    "auroc": 1.0,
+    "base_rate": 0.333,
+    "mean_pred": 0.342
+   }
+  },
+  "directional_acc": {
+   "B0_base": 1.0,
+   "B1_grounded": 0.667,
+   "B6_v2": null,
+   "B7_crowd": 1.0
+  },
+  "always_majority_acc": 0.667,
+  "calibration_buckets": {
+   "B7_crowd": [
+    {
+     "bucket": "50%-60%",
+     "mean_conf": 0.52,
+     "observed": 1.0,
+     "n": 1
+    },
+    {
+     "bucket": "70%-80%",
+     "mean_conf": 0.747,
+     "observed": 1.0,
+     "n": 2
+    }
+   ],
+   "B6_v2": []
+  },
+  "paired": {
+   "v2_vs_crowd": null,
+   "v2_vs_grounded": null,
+   "v2_vs_base": null,
+   "grounded_vs_crowd": {
+    "mean": 0.08751,
+    "ci95": [
+     0.0196,
+     0.1971
+    ],
+    "n": 3
+   }
+  }
+ },
+ "v2_supported_subset": {
+  "label": "V2-supported subset",
+  "n": 0,
+  "metrics": {
+   "B0_base": {
+    "n": 0
+   },
+   "B1_grounded": {
+    "n": 0
+   },
+   "B6_v2": {
+    "n": 0
+   },
+   "B7_crowd": {
+    "n": 0
+   }
+  },
+  "directional_acc": {
+   "B0_base": null,
+   "B1_grounded": null,
+   "B6_v2": null,
+   "B7_crowd": null
+  },
+  "always_majority_acc": 0.0,
+  "calibration_buckets": {
+   "B7_crowd": [],
+   "B6_v2": []
+  },
+  "paired": {
+   "v2_vs_crowd": null,
+   "v2_vs_grounded": null,
+   "v2_vs_base": null,
+   "grounded_vs_crowd": null
+  }
+ },
+ "abstained_subset": {
+  "n": 3,
+  "crowd_brier_on_abstained": 0.12,
+  "reasons": {
+   "decomposition unparseable \u2014 no typed outcome propo": 3
+  }
+ },
+ "per_domain_brier": {},
+ "evidence": {
+  "mean_items": 0.0,
+  "n_with_leak_flag": 0,
+  "grade_hist": {
+   "C (claimed timestamps only)": 3
+  }
+ },
+ "baselines_not_run": {
+  "B2_ensemble": "interface on base branch",
+  "B3_observer_panel": "base branch",
+  "B4_analogical": "base branch",
+  "B5_generic_stack": "base branch"
+ },
+ "_meta": {
+  "llm_calls": 6,
+  "llm_tokens_est": 4975,
+  "est_cost_usd": 0.0034,
+  "runtime_s": 10.4,
+  "remaining_work": "corpus has 661 cutoff-clean questions; this run scored 3. To reach the 1000-question target: expand the corpus (build_corpus pulls up to 4500) and raise --limit; the pipeline is resumable via the per-question cache."
+ }
+}
