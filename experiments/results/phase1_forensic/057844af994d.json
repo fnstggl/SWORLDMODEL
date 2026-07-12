@@ -1,0 +1,248 @@
+{
+ "question": "Will the company's CEO resign within a month of the scandal breaking?",
+ "as_of": "2023-05-01",
+ "horizon": "2023-06-01",
+ "outcome_contract": {
+  "family": "binary",
+  "options": [
+   "resign",
+   "not_resign"
+  ],
+  "readout_var": "outcome",
+  "resolution_rule": "If the CEO has publicly announced resignation or been removed from the position by 2023-06-01, outcome is 'resign'; otherwise 'not_resign'."
+ },
+ "readout_repaired": true,
+ "outcome_lean": "neutral",
+ "interpretations": [
+  {
+   "id": "primary",
+   "reading": "The CEO's resignation within one month of the scandal breaking is a rare event driven by board pressure, personal cost-benefit, and institutional norms, with high uncertainty due to no grounded evidence.",
+   "weight": 1.0
+  }
+ ],
+ "n_entities": 2,
+ "n_institutions": 2,
+ "n_populations": 5,
+ "n_latents": 10,
+ "sample_entities": [
+  "ceo",
+  "company"
+ ],
+ "sample_latents": [
+  {
+   "path": "ceo.personal_reputation_cost",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.9
+  },
+  {
+   "path": "ceo.legal_risk",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.8
+  },
+  {
+   "path": "ceo.severance_package",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.7
+  },
+  {
+   "path": "board_members.independence",
+   "candidates": {
+    "mean": 0.55,
+    "sd": 0.175,
+    "lo": 0.2,
+    "hi": 0.9
+   },
+   "sensitivity": 0.8
+  }
+ ],
+ "accepted_mechanisms": [
+  "agent_decision",
+  "belief_update",
+  "relationship_update",
+  "resource_update",
+  "background_dynamics",
+  "generic_outcome_prior",
+  "poisson_arrival",
+  "generic_outcome_prior"
+ ],
+ "rejected_mechanisms": [
+  [
+   "institutional_vote",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "rare_event_arrival",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "norm_compliance",
+   "no executable operator ('swm.world_model_v2.actor_"
+  ],
+  [
+   "quantal_response_choice",
+   "no executable operator ('swm.world_model_v2.policy"
+  ],
+  [
+   "trust_violation",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "trust_repair",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "mobilization",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "attention_dynamics",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "memory_decay",
+   "no executable operator ('swm.world_model_v2.inform"
+  ]
+ ],
+ "experimental_mechanisms": [
+  "board_deliberation_dynamics",
+  "reputation_damage_function"
+ ],
+ "mechanism_tiers": {
+  "outcome_resolution": 7
+ },
+ "fallbacks_used": [
+  {
+   "process": "outcome_resolution",
+   "tier": 7,
+   "family": "generic_outcome_prior",
+   "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+  }
+ ],
+ "structural_hypotheses": [
+  {
+   "id": "board_driven",
+   "lean": "weak_yes",
+   "prior": 0.4
+  },
+  {
+   "id": "ceo_voluntary",
+   "lean": "weak_yes",
+   "prior": 0.3
+  },
+  {
+   "id": "no_resignation",
+   "lean": "weak_no",
+   "prior": 0.3
+  }
+ ],
+ "fidelity_plan": {
+  "explicit": [
+   "ceo",
+   "company",
+   "board_members",
+   "employees",
+   "shareholders",
+   "media_outlets",
+   "regulators",
+   "board",
+   "company_governance",
+   "ceo.personal_reputation_cost",
+   "ceo.legal_risk",
+   "ceo.severance_package",
+   "board_members.independence",
+   "board_members.alignment_with_ceo",
+   "company.scandal_severity",
+   "company.governance_quality",
+   "media_outlets.coverage_intensity",
+   "shareholders.activism_likelihood",
+   "regulators.investigation_scope"
+  ],
+  "marginalized_with_uncertainty": [],
+  "n_particles": 80
+ },
+ "omissions": [],
+ "world_provenance_statuses": {},
+ "n_deltas": 323,
+ "readout": "terminal_states",
+ "structural_posterior": {
+  "board_driven": 0.4,
+  "ceo_voluntary": 0.3,
+  "no_resignation": 0.3
+ },
+ "delta_log_sample": [
+  {
+   "at": 1683842192.315496,
+   "event": "background_tick",
+   "operator": "background_dynamics",
+   "reasons": []
+  },
+  {
+   "at": 1684060995.2061958,
+   "event": "background_tick",
+   "operator": "background_dynamics",
+   "reasons": []
+  },
+  {
+   "at": 1685577599.0,
+   "event": "background_tick",
+   "operator": "background_dynamics",
+   "reasons": []
+  },
+  {
+   "at": 1685577599.0,
+   "event": "resolve_outcome",
+   "operator": "generic_outcome_prior",
+   "reasons": [
+    "generic_fallback",
+    "lean=weak_yes"
+   ]
+  }
+ ],
+ "SIMULATION_RESULT": {
+  "simulation_status": "completed_with_degradation",
+  "support_grade": "highly_speculative",
+  "recommendation_status": "not_requested",
+  "raw_distribution": {
+   "resign": 0.5375,
+   "not_resign": 0.4625
+  },
+  "raw_probability": 0.5375,
+  "structural_disagreement": {
+   "board_driven": 0.4,
+   "ceo_voluntary": 0.3,
+   "no_resignation": 0.3
+  },
+  "uncertainty_decomposition": {
+   "n_particles": 80,
+   "structural_model_uncertainty": 0.9912,
+   "structural_posterior": {
+    "board_driven": 0.4,
+    "ceo_voluntary": 0.3,
+    "no_resignation": 0.3
+   },
+   "state_parameter_uncertainty": 0.2409,
+   "evidence_uncertainty": 0.5
+  },
+  "limitations": [
+   "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+  ],
+  "plan_hash": "b6697fe85191"
+ },
+ "plan_hash": "b6697fe85191",
+ "latency_s": 19.34
+}

@@ -1,0 +1,395 @@
+{
+ "question": "Will the three parties form a governing coalition after the election?",
+ "as_of": "2023-09-01",
+ "horizon": "2023-11-01",
+ "outcome_contract": {
+  "family": "binary",
+  "options": [
+   "coalition_formed",
+   "no_coalition"
+  ],
+  "readout_var": "outcome",
+  "resolution_rule": "coalition_formed if all three parties formally agree to govern together and secure a majority in the legislature by 2023-11-01; otherwise no_coalition."
+ },
+ "readout_repaired": true,
+ "outcome_lean": "neutral",
+ "interpretations": [
+  {
+   "id": "primary",
+   "reading": "The three parties will form a governing coalition if and only if they can agree on a policy platform and allocate ministerial positions such that each party's utility from joining exceeds its utility from remaining outside, given the election outcome and institutional rules.",
+   "weight": 1.0
+  }
+ ],
+ "n_entities": 3,
+ "n_institutions": 2,
+ "n_populations": 1,
+ "n_latents": 10,
+ "sample_entities": [
+  "party_A_leader",
+  "party_B_leader",
+  "party_C_leader"
+ ],
+ "sample_latents": [
+  {
+   "path": "party_A_leader.ideology",
+   "candidates": {
+    "mean": 0.0,
+    "sd": 0.5,
+    "lo": -1.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.8
+  },
+  {
+   "path": "party_B_leader.ideology",
+   "candidates": {
+    "mean": 0.0,
+    "sd": 0.5,
+    "lo": -1.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.8
+  },
+  {
+   "path": "party_C_leader.ideology",
+   "candidates": {
+    "mean": 0.0,
+    "sd": 0.5,
+    "lo": -1.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.8
+  },
+  {
+   "path": "party_A_leader.risk_aversion",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.6
+  }
+ ],
+ "accepted_mechanisms": [
+  "agent_decision",
+  "belief_update",
+  "relationship_update",
+  "resource_update",
+  "background_dynamics",
+  "generic_outcome_prior",
+  "poisson_arrival",
+  "generic_outcome_prior"
+ ],
+ "rejected_mechanisms": [
+  [
+   "institutional_vote",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "poll_error_aggregation",
+   "no executable operator ('')"
+  ],
+  [
+   "whipcount_binomial",
+   "no executable operator ('')"
+  ],
+  [
+   "agenda_stage_control",
+   "no executable operator ('swm.world_model_v2.instit"
+  ],
+  [
+   "attention_allocation",
+   "no executable operator ('swm.world_model_v2.actor_"
+  ],
+  [
+   "attention_dynamics",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "bargaining_rubinstein",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "belief_learning",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "belief_update_exposure",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "bernoulli_detection",
+   "no executable operator ('swm.world_model_v2.observ"
+  ],
+  [
+   "bounded_confidence",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "coalition_formation",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "complex_contagion_hazard",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "degroot_influence",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "donation_response",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "engagement_momentum_persistence",
+   "no executable operator ('swm.world_model_v2.refere"
+  ],
+  [
+   "experience_weighted_attraction",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "exposure_response_hazard",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "finite_population_saturation",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "gaussian_measurement",
+   "no executable operator ('swm.world_model_v2.observ"
+  ],
+  [
+   "habit_formation",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "hierarchical_rate_shrinkage",
+   "no executable operator ('swm.world_model_v2.infere"
+  ],
+  [
+   "information_aging",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "information_interpretation",
+   "no executable operator ('swm.world_model_v2.actor_"
+  ],
+  [
+   "latent_expressed_opinion",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "memory_decay",
+   "no executable operator ('swm.world_model_v2.inform"
+  ],
+  [
+   "mobilization",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "negotiation_concession",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "network_rewiring",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "norm_compliance",
+   "no executable operator ('swm.world_model_v2.actor_"
+  ],
+  [
+   "observation_exposure",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "platform_examination",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "platform_ranking",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "quantal_response_choice",
+   "no executable operator ('swm.world_model_v2.policy"
+  ],
+  [
+   "rare_event_arrival",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "reciprocity",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "reinforcement_learning",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "relationship_strength_inference",
+   "no executable operator ('swm.world_model_v2.actor_"
+  ],
+  [
+   "relationship_update_bounded",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "resource_depletion",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "simple_contagion_hazard",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "social_preference_population",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "susceptibility_frailty",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "threshold_adoption",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "trust_formation",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "trust_repair",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "trust_violation",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "voting_turnout",
+   "no executable operator ('swm.world_model_v2.regist"
+  ]
+ ],
+ "experimental_mechanisms": [],
+ "mechanism_tiers": {
+  "election_outcome_determination": 7,
+  "post_election_negotiation": 7,
+  "outcome_resolution": 7
+ },
+ "fallbacks_used": [
+  {
+   "process": "outcome_resolution",
+   "tier": 7,
+   "family": "generic_outcome_prior",
+   "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+  }
+ ],
+ "structural_hypotheses": [
+  {
+   "id": "ideological_proximity",
+   "lean": "neutral",
+   "prior": 0.5
+  },
+  {
+   "id": "office_seeking",
+   "lean": "weak_yes",
+   "prior": 0.3
+  },
+  {
+   "id": "electoral_punishment",
+   "lean": "weak_no",
+   "prior": 0.2
+  }
+ ],
+ "fidelity_plan": {
+  "explicit": [
+   "party_A_leader",
+   "party_B_leader",
+   "party_C_leader",
+   "electorate",
+   "parliament",
+   "electoral_commission",
+   "party_A_leader.ideology",
+   "party_B_leader.ideology",
+   "party_C_leader.ideology",
+   "party_A_leader.risk_aversion",
+   "party_B_leader.risk_aversion",
+   "party_C_leader.risk_aversion",
+   "party_A_leader.office_motivation",
+   "party_B_leader.office_motivation",
+   "party_C_leader.office_motivation",
+   "electorate.undecided_lean"
+  ],
+  "marginalized_with_uncertainty": [],
+  "n_particles": 80
+ },
+ "omissions": [],
+ "world_provenance_statuses": {},
+ "n_deltas": 242,
+ "readout": "terminal_states",
+ "structural_posterior": {
+  "ideological_proximity": 0.5,
+  "office_seeking": 0.3,
+  "electoral_punishment": 0.2
+ },
+ "delta_log_sample": [
+  {
+   "at": 1697328000.0,
+   "event": "background_tick",
+   "operator": "background_dynamics",
+   "reasons": []
+  },
+  {
+   "at": 1698796799.0,
+   "event": "background_tick",
+   "operator": "background_dynamics",
+   "reasons": []
+  },
+  {
+   "at": 1698796799.0,
+   "event": "resolve_outcome",
+   "operator": "generic_outcome_prior",
+   "reasons": [
+    "generic_fallback",
+    "lean=neutral"
+   ]
+  }
+ ],
+ "SIMULATION_RESULT": {
+  "simulation_status": "completed_with_degradation",
+  "support_grade": "highly_speculative",
+  "recommendation_status": "not_requested",
+  "raw_distribution": {
+   "no_coalition": 0.525,
+   "coalition_formed": 0.475
+  },
+  "raw_probability": 0.475,
+  "structural_disagreement": {
+   "ideological_proximity": 0.5,
+   "office_seeking": 0.3,
+   "electoral_punishment": 0.2
+  },
+  "uncertainty_decomposition": {
+   "n_particles": 80,
+   "structural_model_uncertainty": 0.9372,
+   "structural_posterior": {
+    "ideological_proximity": 0.5,
+    "office_seeking": 0.3,
+    "electoral_punishment": 0.2
+   },
+   "state_parameter_uncertainty": 0.2409,
+   "evidence_uncertainty": 0.5
+  },
+  "limitations": [
+   "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+  ],
+  "plan_hash": "e8b9ed6ca3b3"
+ },
+ "plan_hash": "e8b9ed6ca3b3",
+ "latency_s": 14.95
+}

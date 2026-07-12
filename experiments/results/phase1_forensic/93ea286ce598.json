@@ -1,0 +1,227 @@
+{
+ "question": "Will the infrastructure bill pass the Senate before the recess?",
+ "as_of": "2023-06-01",
+ "horizon": "2023-08-01",
+ "outcome_contract": {
+  "family": "binary",
+  "options": [
+   "pass",
+   "fail"
+  ],
+  "readout_var": "outcome",
+  "resolution_rule": "The bill is considered passed if it receives a majority of votes in the Senate (or 60 votes if cloture is required) before the recess date."
+ },
+ "readout_repaired": true,
+ "outcome_lean": "neutral",
+ "interpretations": [
+  {
+   "id": "primary",
+   "reading": "The infrastructure bill's passage through the Senate before the recess depends on the interplay of leadership agenda control, whip counts, undecided senators' leanings, and potential procedural hurdles.",
+   "weight": 1.0
+  }
+ ],
+ "n_entities": 3,
+ "n_institutions": 1,
+ "n_populations": 3,
+ "n_latents": 4,
+ "sample_entities": [
+  "Senate_Majority_Leader",
+  "Senate_Minority_Leader",
+  "President"
+ ],
+ "sample_latents": [
+  {
+   "path": "Senate_Democrats.segments.Dem_moderates.swing_lean",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.09999999999999999,
+    "lo": 0.3,
+    "hi": 0.7
+   },
+   "sensitivity": 0.8
+  },
+  {
+   "path": "Senate_Republicans.segments.GOP_moderates.bipartisan_tendency",
+   "candidates": {
+    "mean": 0.3,
+    "sd": 0.1,
+    "lo": 0.1,
+    "hi": 0.5
+   },
+   "sensitivity": 0.7
+  },
+  {
+   "path": "Senate.undecided_count",
+   "candidates": {
+    "mean": 12.5,
+    "sd": 3.75,
+    "lo": 5.0,
+    "hi": 20.0
+   },
+   "sensitivity": 0.9
+  },
+  {
+   "path": "Senate.filibuster_probability",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.15000000000000002,
+    "lo": 0.2,
+    "hi": 0.8
+   },
+   "sensitivity": 0.8
+  }
+ ],
+ "accepted_mechanisms": [
+  "poisson_arrival",
+  "generic_outcome_prior"
+ ],
+ "rejected_mechanisms": [
+  [
+   "institutional_vote",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "whipcount_binomial",
+   "no executable operator ('')"
+  ],
+  [
+   "agenda_stage_control",
+   "no executable operator ('swm.world_model_v2.instit"
+  ],
+  [
+   "bargaining_rubinstein",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "coalition_formation",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "belief_update_exposure",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "quantal_response_choice",
+   "no executable operator ('swm.world_model_v2.policy"
+  ]
+ ],
+ "experimental_mechanisms": [
+  "filibuster_decision",
+  "amendment_process"
+ ],
+ "mechanism_tiers": {
+  "whip_count_evolution": 7,
+  "undecided_lean_formation": 7,
+  "filibuster_decision": 7,
+  "cloture_vote": 7,
+  "final_passage_vote": 7,
+  "outcome_resolution": 7
+ },
+ "fallbacks_used": [
+  {
+   "process": "outcome_resolution",
+   "tier": 7,
+   "family": "generic_outcome_prior",
+   "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+  }
+ ],
+ "structural_hypotheses": [
+  {
+   "id": "leadership_control",
+   "lean": "weak_yes",
+   "prior": 0.4
+  },
+  {
+   "id": "bipartisan_compromise",
+   "lean": "weak_yes",
+   "prior": 0.3
+  },
+  {
+   "id": "filibuster_block",
+   "lean": "weak_no",
+   "prior": 0.3
+  }
+ ],
+ "fidelity_plan": {
+  "explicit": [
+   "Senate_Majority_Leader",
+   "Senate_Minority_Leader",
+   "President",
+   "Senate_Democrats",
+   "Senate_Republicans",
+   "Senate_Independents",
+   "Senate",
+   "Senate_Democrats.segments.Dem_moderates.swing_lean",
+   "Senate_Republicans.segments.GOP_moderates.bipartisan_tendency",
+   "Senate.undecided_count",
+   "Senate.filibuster_probability"
+  ],
+  "marginalized_with_uncertainty": [],
+  "n_particles": 66
+ },
+ "omissions": [
+  {
+   "component": "public_opinion_polls",
+   "sensitivity": 0.2,
+   "reason": "negligible sensitivity because senators are not directly bound by polls in this "
+  },
+  {
+   "component": "campaign_finance_contributions",
+   "sensitivity": 0.1,
+   "reason": "negligible sensitivity because no major fundraising events are scheduled before "
+  }
+ ],
+ "world_provenance_statuses": {},
+ "n_deltas": 66,
+ "readout": "terminal_states",
+ "structural_posterior": {
+  "leadership_control": 0.3939,
+  "bipartisan_compromise": 0.303,
+  "filibuster_block": 0.303
+ },
+ "delta_log_sample": [
+  {
+   "at": 1690847999.0,
+   "event": "resolve_outcome",
+   "operator": "generic_outcome_prior",
+   "reasons": [
+    "generic_fallback",
+    "lean=weak_yes"
+   ]
+  }
+ ],
+ "SIMULATION_RESULT": {
+  "simulation_status": "completed_with_degradation",
+  "support_grade": "highly_speculative",
+  "recommendation_status": "not_requested",
+  "raw_distribution": {
+   "pass": 0.5303,
+   "fail": 0.4697
+  },
+  "raw_probability": 0.5303,
+  "structural_disagreement": {
+   "leadership_control": 0.3939,
+   "bipartisan_compromise": 0.303,
+   "filibuster_block": 0.303
+  },
+  "uncertainty_decomposition": {
+   "n_particles": 66,
+   "structural_model_uncertainty": 0.9927,
+   "structural_posterior": {
+    "leadership_control": 0.3939,
+    "bipartisan_compromise": 0.303,
+    "filibuster_block": 0.303
+   },
+   "state_parameter_uncertainty": 0.2512,
+   "evidence_uncertainty": 0.5
+  },
+  "limitations": [
+   "omitted (negligible-sensitivity): public_opinion_polls",
+   "omitted (negligible-sensitivity): campaign_finance_contributions",
+   "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+  ],
+  "plan_hash": "1bf93c8a7066"
+ },
+ "plan_hash": "1bf93c8a7066",
+ "latency_s": 16.86
+}

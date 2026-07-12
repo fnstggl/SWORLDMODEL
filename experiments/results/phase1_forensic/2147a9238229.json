@@ -1,0 +1,198 @@
+{
+ "question": "Will my manager reply to the budget-approval email I sent this morning by end of week?",
+ "as_of": "2023-05-01",
+ "horizon": "2023-05-08",
+ "outcome_contract": {
+  "family": "response_occurrence",
+  "options": [
+   "reply",
+   "no_reply"
+  ],
+  "readout_var": "outcome",
+  "resolution_rule": "A reply is defined as any email response from the manager to the sender's budget-approval email, received by 2023-05-08 23:59:59 local time."
+ },
+ "readout_repaired": true,
+ "outcome_lean": "neutral",
+ "interpretations": [
+  {
+   "id": "primary",
+   "reading": "The manager will either reply or not by end of week; the outcome is whether a reply occurs.",
+   "weight": 1.0
+  }
+ ],
+ "n_entities": 2,
+ "n_institutions": 1,
+ "n_populations": 0,
+ "n_latents": 4,
+ "sample_entities": [
+  "manager",
+  "sender"
+ ],
+ "sample_latents": [
+  {
+   "path": "manager.attention_to_email",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 1.0
+  },
+  {
+   "path": "manager.decision_style",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.8
+  },
+  {
+   "path": "manager.email_reading_habit",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.8
+  },
+  {
+   "path": "sender.relationship_with_manager",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.6
+  }
+ ],
+ "accepted_mechanisms": [
+  "agent_decision",
+  "belief_update",
+  "poisson_arrival",
+  "generic_outcome_prior",
+  "generic_outcome_prior"
+ ],
+ "rejected_mechanisms": [
+  [
+   "observation_exposure",
+   "no executable operator ('swm.world_model_v2.transi"
+  ]
+ ],
+ "experimental_mechanisms": [
+  "email_reading_attention_allocation"
+ ],
+ "mechanism_tiers": {
+  "manager reads email": 7,
+  "manager decides to reply": 7,
+  "manager sends reply": 7,
+  "outcome_resolution": 7
+ },
+ "fallbacks_used": [
+  {
+   "process": "outcome_resolution",
+   "tier": 7,
+   "family": "generic_outcome_prior",
+   "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+  }
+ ],
+ "structural_hypotheses": [
+  {
+   "id": "default_attention",
+   "lean": "neutral",
+   "prior": 0.5
+  },
+  {
+   "id": "delayed_attention",
+   "lean": "weak_no",
+   "prior": 0.3
+  },
+  {
+   "id": "delegation",
+   "lean": "weak_no",
+   "prior": 0.2
+  }
+ ],
+ "fidelity_plan": {
+  "explicit": [
+   "manager",
+   "sender",
+   "company",
+   "manager.attention_to_email",
+   "manager.decision_style",
+   "manager.email_reading_habit",
+   "sender.relationship_with_manager"
+  ],
+  "marginalized_with_uncertainty": [],
+  "n_particles": 66
+ },
+ "omissions": [
+  {
+   "component": "other employees' emails to manager",
+   "sensitivity": 0.2,
+   "reason": "negligible sensitivity because the question is about a specific email; general v"
+  },
+  {
+   "component": "content of budget email",
+   "sensitivity": 0.1,
+   "reason": "negligible sensitivity because no evidence provided; decision style latent cover"
+  }
+ ],
+ "world_provenance_statuses": {},
+ "n_deltas": 66,
+ "readout": "terminal_states",
+ "structural_posterior": {
+  "default_attention": 0.5,
+  "delayed_attention": 0.303,
+  "delegation": 0.197
+ },
+ "delta_log_sample": [
+  {
+   "at": 1683503999.0,
+   "event": "resolve_outcome",
+   "operator": "generic_outcome_prior",
+   "reasons": [
+    "generic_fallback",
+    "lean=neutral"
+   ]
+  }
+ ],
+ "SIMULATION_RESULT": {
+  "simulation_status": "completed_with_degradation",
+  "support_grade": "highly_speculative",
+  "recommendation_status": "not_requested",
+  "raw_distribution": {
+   "no_reply": 0.5303,
+   "reply": 0.4697
+  },
+  "raw_probability": 0.4697,
+  "structural_disagreement": {
+   "default_attention": 0.5,
+   "delayed_attention": 0.303,
+   "delegation": 0.197
+  },
+  "uncertainty_decomposition": {
+   "n_particles": 66,
+   "structural_model_uncertainty": 0.9361,
+   "structural_posterior": {
+    "default_attention": 0.5,
+    "delayed_attention": 0.303,
+    "delegation": 0.197
+   },
+   "state_parameter_uncertainty": 0.2512,
+   "evidence_uncertainty": 0.5
+  },
+  "limitations": [
+   "omitted (negligible-sensitivity): other employees' emails to manager",
+   "omitted (negligible-sensitivity): content of budget email",
+   "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+  ],
+  "plan_hash": "2d03cd221578"
+ },
+ "plan_hash": "2d03cd221578",
+ "latency_s": 10.85
+}

@@ -1,0 +1,207 @@
+{
+ "question": "Will the buyer accept our counteroffer of $4.2M for the office building?",
+ "as_of": "2023-04-01",
+ "horizon": "2023-05-01",
+ "outcome_contract": {
+  "family": "binary",
+  "options": [
+   "accept",
+   "reject"
+  ],
+  "readout_var": "outcome",
+  "resolution_rule": "The buyer communicates acceptance of the $4.2M counteroffer by 2023-05-01."
+ },
+ "readout_repaired": true,
+ "outcome_lean": "neutral",
+ "interpretations": [
+  {
+   "id": "primary",
+   "reading": "The buyer's acceptance of the $4.2M counteroffer depends on their reservation price, outside options, negotiation dynamics, and the institutional context of the transaction.",
+   "weight": 1.0
+  }
+ ],
+ "n_entities": 2,
+ "n_institutions": 1,
+ "n_populations": 1,
+ "n_latents": 6,
+ "sample_entities": [
+  "buyer",
+  "seller"
+ ],
+ "sample_latents": [
+  {
+   "path": "buyer.reservation_price",
+   "candidates": {
+    "mean": 4000000.0,
+    "sd": 500000.0,
+    "lo": 3000000.0,
+    "hi": 5000000.0
+   },
+   "sensitivity": 1.0
+  },
+  {
+   "path": "seller.reservation_price",
+   "candidates": {
+    "mean": 4000000.0,
+    "sd": 250000.0,
+    "lo": 3500000.0,
+    "hi": 4500000.0
+   },
+   "sensitivity": 1.0
+  },
+  {
+   "path": "buyer.outside_options",
+   "candidates": {
+    "mean": 5.0,
+    "sd": 2.5,
+    "lo": 0.0,
+    "hi": 10.0
+   },
+   "sensitivity": 0.8
+  },
+  {
+   "path": "buyer.patience",
+   "candidates": {
+    "mean": 0.9,
+    "sd": 0.04999999999999999,
+    "lo": 0.8,
+    "hi": 1.0
+   },
+   "sensitivity": 0.5
+  }
+ ],
+ "accepted_mechanisms": [
+  "agent_decision",
+  "generic_outcome_prior"
+ ],
+ "rejected_mechanisms": [
+  [
+   "bargaining_rubinstein",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "belief_update_exposure",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "negotiation_concession",
+   "no executable operator ('swm.world_model_v2.regist"
+  ]
+ ],
+ "experimental_mechanisms": [
+  "property_valuation_model"
+ ],
+ "mechanism_tiers": {
+  "buyer_reservation_price_formation": 7,
+  "seller_reservation_price_formation": 7,
+  "bargaining_process": 7,
+  "outside_option_evolution": 7,
+  "outcome_resolution": 7
+ },
+ "fallbacks_used": [
+  {
+   "process": "outcome_resolution",
+   "tier": 7,
+   "family": "generic_outcome_prior",
+   "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+  }
+ ],
+ "structural_hypotheses": [
+  {
+   "id": "buyer_has_lower_reservation",
+   "lean": "strong_no",
+   "prior": 0.3
+  },
+  {
+   "id": "buyer_has_higher_reservation",
+   "lean": "strong_yes",
+   "prior": 0.3
+  },
+  {
+   "id": "bargaining_equilibrium",
+   "lean": "neutral",
+   "prior": 0.4
+  }
+ ],
+ "fidelity_plan": {
+  "explicit": [
+   "buyer",
+   "seller",
+   "commercial_real_estate_market",
+   "real_estate_transaction_framework",
+   "buyer.reservation_price",
+   "seller.reservation_price",
+   "buyer.outside_options",
+   "buyer.patience",
+   "seller.patience",
+   "market_price_trend"
+  ],
+  "marginalized_with_uncertainty": [],
+  "n_particles": 76
+ },
+ "omissions": [
+  {
+   "component": "financing_approval",
+   "sensitivity": 0.1,
+   "reason": "Negligible sensitivity because no evidence of financing contingency; assumed cas"
+  },
+  {
+   "component": "regulatory_approvals",
+   "sensitivity": 0.1,
+   "reason": "Negligible sensitivity because no evidence of zoning or permit issues within the"
+  }
+ ],
+ "world_provenance_statuses": {},
+ "n_deltas": 76,
+ "readout": "terminal_states",
+ "structural_posterior": {
+  "buyer_has_lower_reservation": 0.3026,
+  "buyer_has_higher_reservation": 0.3026,
+  "bargaining_equilibrium": 0.3947
+ },
+ "delta_log_sample": [
+  {
+   "at": 1682899199.0,
+   "event": "resolve_outcome",
+   "operator": "generic_outcome_prior",
+   "reasons": [
+    "generic_fallback",
+    "lean=strong_no"
+   ]
+  }
+ ],
+ "SIMULATION_RESULT": {
+  "simulation_status": "completed_with_degradation",
+  "support_grade": "highly_speculative",
+  "recommendation_status": "not_requested",
+  "raw_distribution": {
+   "reject": 0.5,
+   "accept": 0.5
+  },
+  "raw_probability": 0.5,
+  "structural_disagreement": {
+   "buyer_has_lower_reservation": 0.3026,
+   "buyer_has_higher_reservation": 0.3026,
+   "bargaining_equilibrium": 0.3947
+  },
+  "uncertainty_decomposition": {
+   "n_particles": 76,
+   "structural_model_uncertainty": 0.9925,
+   "structural_posterior": {
+    "buyer_has_lower_reservation": 0.3026,
+    "buyer_has_higher_reservation": 0.3026,
+    "bargaining_equilibrium": 0.3947
+   },
+   "state_parameter_uncertainty": 0.2474,
+   "evidence_uncertainty": 0.5
+  },
+  "limitations": [
+   "omitted (negligible-sensitivity): financing_approval",
+   "omitted (negligible-sensitivity): regulatory_approvals",
+   "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+  ],
+  "plan_hash": "f35562fb6cdd"
+ },
+ "plan_hash": "f35562fb6cdd",
+ "latency_s": 12.28
+}
