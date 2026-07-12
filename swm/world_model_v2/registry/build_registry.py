@@ -287,6 +287,8 @@ def build() -> RegistryStore:
          "swm.world_model_v2.registry.families.diffusion:fit_frailty_sigma", "tests/test_diffusion_families.py"),
         ("information_aging", "diffusion", "Age-weighted exposure decay (fitted half-life)",
          "swm.world_model_v2.registry.families.diffusion:fit_aging_tau", "tests/test_diffusion_families.py"),
+        ("engagement_momentum_persistence", "memory", "Momentum/burstiness persistence state",
+         "swm.world_model_v2.reference.omnibehavior:momentum_state", "experiments/wmv2_persistence_power.py"),
         ("hierarchical_rate_shrinkage", "measurement", "Empirical-Bayes partial-pooling rate posterior",
          "swm.world_model_v2.inference_layer:hierarchical_rates", "tests/test_inference_layer.py"),
         ("norm_compliance", "norm", "Obligation/norm-driven action utility shift",
@@ -352,6 +354,30 @@ def build() -> RegistryStore:
                          "institutional": ["legislation", "organizational"]}.get(otype, ["*"]),
                 transport_risk="high"),
             status="proposed", status_reason="registering"))
+
+    # persistence: adequately-powered held-out win + person-disjoint transfer (OmniBehavior n=7074)
+    s.add_pack("engagement_momentum_persistence", ParameterPack(
+        pack_id="omnibehavior_kuaishou", family_id="engagement_momentum_persistence",
+        domain="platform_engagement", population="Kuaishou short-video/e-commerce users, 90-day traces",
+        values={"momentum_lift": {"source": "fitted", "value": 6.777, "sd": None, "lo": None, "hi": None,
+                                  "method": "train p_hot/p_cold ratio"}},
+        fitted_on="OmniBehavior train (per-user 70% chronological prefix)",
+        fit_method="momentum ratio + hierarchical user-rate shrinkage",
+        transport_note="short-video engagement; transport to deliberation domains unvalidated",
+        validation=[
+            ValidationRecord(kind="held_out", dataset="OmniBehavior (Kuaishou)",
+                             split="per-user time-forward test, n=7074 passive-exposure events",
+                             metric="Brier_paired_vs_memoryless_userrate", value=-0.006496,
+                             ci95=[-0.009211, -0.003483], baseline="hierarchical user-rate (no persistence)",
+                             passed=True, artifact="experiments/results/wmv2_persistence_power.json",
+                             note="adequately powered (0.993 at empirical paired sd); CI excludes 0 — "
+                                  "REVERSES the prior n=48 null"),
+            ValidationRecord(kind="transfer", dataset="OmniBehavior (Kuaishou)",
+                             split="person-disjoint (14 users never in train), n=216",
+                             metric="Brier_paired_vs_userrate", value=-0.027127,
+                             ci95=[-0.032386, -0.02117], passed=True,
+                             artifact="experiments/results/wmv2_persistence_power.json",
+                             note="persistence transfers to held-out PEOPLE")]))
 
     # ---- promotion pass: promote families with real passed held-out/transfer records ----
     _promote(s)
