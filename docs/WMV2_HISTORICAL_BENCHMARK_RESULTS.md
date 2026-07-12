@@ -17,12 +17,16 @@ full set + a 1000-question target — remaining work below).
 
 ## Why V2 coverage is 0% here — and why that is the correct behavior
 
-Every one of the 60 questions produced a V2 abstention, with GENUINE reasons (after fixing a harness token
-limit that had earlier masked them as "unparseable"):
-- **readout does not bind** (e.g. `market.price...` resolves to no materialized quantity) — the
-  readout-binding guard aborts rather than emitting a confident no-op;
-- **no executable registry mechanism applies** — one-off market/sports/crypto events need institutional/
-  event-resolution dynamics that are registered but not yet executable production families.
+Every one of the 60 questions produced a V2 abstention, with GENUINE reasons (16 distinct, after fixing a
+harness token limit that had earlier masked them as "unparseable"):
+- **no executable registry mechanism applies** (26 of 60) — one-off market/sports/crypto events need
+  institutional/event-resolution dynamics that are registered but not yet executable production families;
+- **unresolved terminal mass / no yes-mapped outcome** (19) — the world executed but its terminal state did
+  not resolve to the declared option space, so the option-space-coverage guard reports it as unsupported
+  rather than emitting a confident number;
+- **readout does not bind** (~13, one per specific variable, e.g. `award_outcome.value`,
+  `person.me.gym_attendance...`) — the readout-binding guard aborts rather than emitting a confident no-op;
+- **decomposition unparseable** (2) — genuine LLM parse failures.
 
 This is the SAME pattern the compiler-generality run measured (election 12% / coalition 20% e2e) and the
 SAME honest conclusion as the prior ForecastBench round: **on prediction-market-style questions the crowd is

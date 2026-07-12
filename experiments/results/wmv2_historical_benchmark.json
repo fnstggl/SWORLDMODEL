@@ -2,62 +2,80 @@
  "corpus": {
   "n_total": 661,
   "n_train": 330,
-  "n_test": 3,
+  "n_test": 60,
   "v2_coverage": 0.0,
   "v2_abstention_rate": 1.0
  },
  "full_set": {
   "label": "full (crowd/direct always answer; V2 answers on supported)",
-  "n": 3,
+  "n": 60,
   "metrics": {
    "B0_base": {
-    "n": 3,
-    "brier": 0.1913,
-    "logloss": 0.5751,
-    "auroc": 1.0,
-    "base_rate": 0.333,
-    "mean_pred": 0.481
+    "n": 60,
+    "brier": 0.2324,
+    "logloss": 0.6574,
+    "auroc": 0.665,
+    "base_rate": 0.517,
+    "mean_pred": 0.483
    },
    "B1_grounded": {
-    "n": 3,
-    "brier": 0.2075,
-    "logloss": 0.6057,
-    "auroc": 0.75,
-    "base_rate": 0.333,
-    "mean_pred": 0.45
+    "n": 60,
+    "brier": 0.2572,
+    "logloss": 0.7516,
+    "auroc": 0.609,
+    "base_rate": 0.517,
+    "mean_pred": 0.41
    },
    "B6_v2": {
     "n": 0
    },
    "B7_crowd": {
-    "n": 3,
-    "brier": 0.12,
-    "logloss": 0.4132,
-    "auroc": 1.0,
-    "base_rate": 0.333,
-    "mean_pred": 0.342
+    "n": 60,
+    "brier": 0.1959,
+    "logloss": 0.5807,
+    "auroc": 0.77,
+    "base_rate": 0.517,
+    "mean_pred": 0.471
    }
   },
   "directional_acc": {
-   "B0_base": 1.0,
-   "B1_grounded": 0.667,
+   "B0_base": 0.65,
+   "B1_grounded": 0.583,
    "B6_v2": null,
-   "B7_crowd": 1.0
+   "B7_crowd": 0.667
   },
-  "always_majority_acc": 0.667,
+  "always_majority_acc": 0.517,
   "calibration_buckets": {
    "B7_crowd": [
     {
      "bucket": "50%-60%",
-     "mean_conf": 0.52,
-     "observed": 1.0,
-     "n": 1
+     "mean_conf": 0.537,
+     "observed": 0.5,
+     "n": 20
+    },
+    {
+     "bucket": "60%-70%",
+     "mean_conf": 0.652,
+     "observed": 0.6,
+     "n": 15
     },
     {
      "bucket": "70%-80%",
-     "mean_conf": 0.747,
+     "mean_conf": 0.762,
+     "observed": 0.867,
+     "n": 15
+    },
+    {
+     "bucket": "80%-90%",
+     "mean_conf": 0.86,
      "observed": 1.0,
-     "n": 2
+     "n": 3
+    },
+    {
+     "bucket": "90%-100%",
+     "mean_conf": 0.934,
+     "observed": 0.714,
+     "n": 7
     }
    ],
    "B6_v2": []
@@ -67,12 +85,12 @@
    "v2_vs_grounded": null,
    "v2_vs_base": null,
    "grounded_vs_crowd": {
-    "mean": 0.08751,
+    "mean": 0.06131,
     "ci95": [
-     0.0196,
-     0.1971
+     0.01108,
+     0.11627
     ],
-    "n": 3
+    "n": 60
    }
   }
  },
@@ -112,20 +130,46 @@
   }
  },
  "abstained_subset": {
-  "n": 3,
-  "crowd_brier_on_abstained": 0.12,
+  "n": 60,
+  "crowd_brier_on_abstained": 0.1959,
   "reasons": {
-   "unresolved terminal mass / no yes-mapped outcome": 1,
-   "terminal readout 'market.price.9984T' resolves to ": 1,
-   "no executable registry mechanism applies \u2014 the nee": 1
+   "no executable registry mechanism applies \u2014 the nee": 26,
+   "unresolved terminal mass / no yes-mapped outcome": 19,
+   "decomposition unparseable \u2014 no typed outcome propo": 2,
+   "terminal readout 'person.me.gym_attendance_this_we": 1,
+   "terminal readout 'award_outcome.value' resolves to": 1,
+   "terminal readout 'fable_access_available.value' re": 1,
+   "terminal readout 'market_outcome.value' resolves t": 1,
+   "terminal readout 'argentina_squad.messi_included' ": 1,
+   "terminal readout 'eth_price.change_24h' resolves t": 1,
+   "terminal readout 'team.final_rank' resolves to nei": 1,
+   "terminal readout 'institutions.anthropic.fields.ac": 1,
+   "terminal readout 'gluten_speed.status' resolves to": 1,
+   "terminal readout 'agent_decision.outcome' resolves": 1,
+   "terminal readout 'bill.presented_to_president' res": 1,
+   "terminal readout 'person.gym_visit_count' resolves": 1,
+   "terminal readout 'match_result' resolves to neithe": 1
   }
  },
- "per_domain_brier": {},
+ "per_domain_brier": {
+  "other": {
+   "B0_base": 0.2407,
+   "B1_grounded": 0.2368,
+   "B6_v2": null,
+   "B7_crowd": 0.2125
+  },
+  "sports": {
+   "B0_base": 0.2171,
+   "B1_grounded": 0.2764,
+   "B6_v2": null,
+   "B7_crowd": 0.2076
+  }
+ },
  "evidence": {
   "mean_items": 0.0,
   "n_with_leak_flag": 0,
   "grade_hist": {
-   "C (claimed timestamps only)": 3
+   "C (claimed timestamps only)": 60
   }
  },
  "baselines_not_run": {
@@ -135,10 +179,10 @@
   "B5_generic_stack": "base branch"
  },
  "_meta": {
-  "llm_calls": 6,
-  "llm_tokens_est": 6922,
-  "est_cost_usd": 0.0047,
-  "runtime_s": 25.8,
-  "remaining_work": "corpus has 661 cutoff-clean questions; this run scored 3. To reach the 1000-question target: expand the corpus (build_corpus pulls up to 4500) and raise --limit; the pipeline is resumable via the per-question cache."
+  "llm_calls": 120,
+  "llm_tokens_est": 128374,
+  "est_cost_usd": 0.0879,
+  "runtime_s": 453.7,
+  "remaining_work": "corpus has 661 cutoff-clean questions; this run scored 60. To reach the 1000-question target: expand the corpus (build_corpus pulls up to 4500) and raise --limit; the pipeline is resumable via the per-question cache."
  }
 }
