@@ -1,58 +1,285 @@
 {
  "aggregate": {
-  "n_questions": 4,
-  "n_domains": 1,
-  "compile_success_rate": 1.0,
-  "abstention_rate": 0.0,
-  "executes_e2e_rate": 1.0,
-  "materialize_abstain_rate": 0.0,
+  "n_questions": 104,
+  "n_domains": 16,
+  "compile_success_rate": 0.702,
+  "abstention_rate": 0.298,
+  "executes_e2e_rate": 0.51,
+  "materialize_abstain_rate": 0.192,
   "error_rate": 0.0,
   "mechanism_validity": 1.0,
-  "readout_resolves_rate": 1.0,
+  "readout_resolves_rate": 0.726,
   "provenance_ok_rate": 1.0,
-  "mean_mechanisms_per_plan": 1.75,
-  "mean_entities_per_plan": 2.0,
-  "mean_latents_per_plan": 1.25
+  "mean_mechanisms_per_plan": 2.16,
+  "mean_entities_per_plan": 1.96,
+  "mean_latents_per_plan": 2.19
  },
  "per_domain": {
   "messaging": {
-   "n": 4,
+   "n": 8,
+   "compile_rate": 1.0,
+   "e2e_rate": 0.88
+  },
+  "negotiation": {
+   "n": 8,
+   "compile_rate": 0.38,
+   "e2e_rate": 0.38
+  },
+  "organizational_decision": {
+   "n": 9,
+   "compile_rate": 0.56,
+   "e2e_rate": 0.22
+  },
+  "election": {
+   "n": 8,
+   "compile_rate": 0.25,
+   "e2e_rate": 0.12
+  },
+  "legislation": {
+   "n": 8,
+   "compile_rate": 0.62,
+   "e2e_rate": 0.25
+  },
+  "acquisition": {
+   "n": 7,
+   "compile_rate": 0.71,
+   "e2e_rate": 0.29
+  },
+  "product_launch": {
+   "n": 7,
+   "compile_rate": 0.57,
+   "e2e_rate": 0.57
+  },
+  "social_media_diffusion": {
+   "n": 7,
+   "compile_rate": 0.71,
+   "e2e_rate": 0.43
+  },
+  "protest": {
+   "n": 5,
+   "compile_rate": 1.0,
+   "e2e_rate": 0.8
+  },
+  "strike": {
+   "n": 3,
+   "compile_rate": 0.33,
+   "e2e_rate": 0.33
+  },
+  "court_ruling": {
+   "n": 7,
+   "compile_rate": 1.0,
+   "e2e_rate": 0.86
+  },
+  "fundraising": {
+   "n": 6,
+   "compile_rate": 1.0,
+   "e2e_rate": 0.83
+  },
+  "coalition": {
+   "n": 5,
+   "compile_rate": 0.8,
+   "e2e_rate": 0.2
+  },
+  "market": {
+   "n": 5,
+   "compile_rate": 1.0,
+   "e2e_rate": 0.8
+  },
+  "reputation_crisis": {
+   "n": 5,
    "compile_rate": 1.0,
    "e2e_rate": 1.0
+  },
+  "best_action": {
+   "n": 6,
+   "compile_rate": 0.5,
+   "e2e_rate": 0.5
   }
  },
- "abstention_reasons": {},
+ "abstention_reasons": {
+  "no executable registry mechanism applies \u2014 the needed mechan": 29,
+  "decomposition unparseable \u2014 no typed outcome proposed": 2,
+  "materialize: terminal readout 'support_ticket.escalated' res": 1,
+  "materialize: terminal readout 'institution.decision' resolve": 1,
+  "materialize: terminal readout 'institutions.finance_committe": 1,
+  "materialize: terminal readout 'institution.it_security_team.": 1,
+  "materialize: terminal readout 'candidate.vote_share' resolve": 1,
+  "materialize: terminal readout 'institutions.US_Congress.fiel": 1,
+  "materialize: terminal readout 'institution.legislature.vote_": 1,
+  "materialize: terminal readout 'merger_outcome.value' resolve": 1,
+  "materialize: terminal readout 'board_vote.result' resolves t": 1,
+  "materialize: terminal readout 'trending_flag' resolves to ne": 1,
+  "materialize: terminal readout 'court.ruling' resolves to nei": 1,
+  "materialize: terminal readout 'coalition_formation.outcome' ": 1,
+  "materialize: terminal readout 'swing_senators.join_bloc' res": 1,
+  "materialize: terminal readout 'industry_groups.united' resol": 1,
+  "materialize: terminal readout 'stock_price.change_pct' resol": 1,
+  "materialize: terminal readout 'university_decision.reopen_ne": 1,
+  "materialize: terminal readout 'capital_campaign.progress' re": 1,
+  "materialize: terminal readout 'conference_outcome.stripped' ": 1,
+  "materialize: terminal readout 'institution.founder_vote_resu": 1,
+  "materialize: terminal readout 'recall_notice.reach_72h' reso": 1
+ },
  "mechanism_histogram": {
-  "poisson_arrival": 4,
-  "background_dynamics": 2,
-  "agent_decision": 1
+  "agent_decision": 48,
+  "background_dynamics": 30,
+  "poisson_arrival": 26,
+  "belief_update": 26,
+  "relationship_update": 15,
+  "resource_update": 13
  },
  "jury_rubric": {
-  "n_reviewed": 2,
+  "n_reviewed": 16,
   "means": {
-   "outcome_contract_ok": 0.9,
-   "actors_relevant": 0.8,
-   "mechanisms_appropriate": 0.7,
-   "missing_high_sensitivity_var": 0.3
+   "outcome_contract_ok": 0.856,
+   "actors_relevant": 0.744,
+   "mechanisms_appropriate": 0.713,
+   "missing_high_sensitivity_var": 0.419
   },
   "rows": [
    {
     "question": "Will my manager reply to the budget-approval email I sent this morning by end of",
     "domain": "messaging",
-    "outcome_contract_ok": 0.9,
-    "actors_relevant": 0.8,
+    "outcome_contract_ok": 0.8,
+    "actors_relevant": 0.9,
     "mechanisms_appropriate": 0.7,
-    "missing_high_sensitivity_var": 0.3,
-    "note": "Manager's reply depends on workload and priority."
+    "missing_high_sensitivity_var": 0.6,
+    "note": "Missing manager's workload and email priority."
    },
    {
-    "question": "If I send a follow-up nudge tomorrow, will the vendor respond within 48 hours?",
-    "domain": "messaging",
+    "question": "In the salary negotiation, will the candidate accept an offer 8% below their sta",
+    "domain": "negotiation",
+    "outcome_contract_ok": 0.9,
+    "actors_relevant": 0.8,
+    "mechanisms_appropriate": 0.7,
+    "missing_high_sensitivity_var": 0.6,
+    "note": "Lacks candidate's BATNA and market salary data."
+   },
+   {
+    "question": "Will the engineering VP approve the request to hire two more backend engineers t",
+    "domain": "organizational_decision",
+    "outcome_contract_ok": 0.7,
+    "actors_relevant": 0.8,
+    "mechanisms_appropriate": 0.6,
+    "missing_high_sensitivity_var": 0.3,
+    "note": "Lacks VP's budget constraints and team capacity details."
+   },
+   {
+    "question": "Will the challenger flip the swing district in the general election?",
+    "domain": "election",
     "outcome_contract_ok": 0.9,
     "actors_relevant": 0.8,
     "mechanisms_appropriate": 0.7,
     "missing_high_sensitivity_var": 0.3,
-    "note": "Vendor response timing plausible; missing vendor-specific behavior patterns."
+    "note": "Lacks polling trends and campaign finance details."
+   },
+   {
+    "question": "Will the committee advance the data-privacy bill to a floor vote?",
+    "domain": "legislation",
+    "outcome_contract_ok": 0.9,
+    "actors_relevant": 0.8,
+    "mechanisms_appropriate": 0.7,
+    "missing_high_sensitivity_var": 0.3,
+    "note": "Relevant actors and mechanism, but missing political pressure variables."
+   },
+   {
+    "question": "Will the proposed merger between the two regional banks be completed?",
+    "domain": "acquisition",
+    "outcome_contract_ok": 0.9,
+    "actors_relevant": 0.8,
+    "mechanisms_appropriate": 0.7,
+    "missing_high_sensitivity_var": 0.3,
+    "note": "Reasonable but lacks regulatory approval sensitivity."
+   },
+   {
+    "question": "Will the streaming service hit 1M subscribers within three months of launch?",
+    "domain": "product_launch",
+    "outcome_contract_ok": 0.9,
+    "actors_relevant": 0.7,
+    "mechanisms_appropriate": 0.8,
+    "missing_high_sensitivity_var": 0.3,
+    "note": "Reasonable but lacks marketing spend or competitor actions."
+   },
+   {
+    "question": "Will the campaign hashtag trend nationally within 24 hours of launch?",
+    "domain": "social_media_diffusion",
+    "outcome_contract_ok": 0.9,
+    "actors_relevant": 0.5,
+    "mechanisms_appropriate": 0.7,
+    "missing_high_sensitivity_var": 0.8,
+    "note": "Lacks campaign specifics, platform, and timing details."
+   },
+   {
+    "question": "Will the planned climate march draw more than 10,000 participants?",
+    "domain": "protest",
+    "outcome_contract_ok": 1,
+    "actors_relevant": 0.5,
+    "mechanisms_appropriate": 0.7,
+    "missing_high_sensitivity_var": 0.8,
+    "note": "Lacks mobilization factors, weather, and counter-mobilization."
+   },
+   {
+    "question": "Will the dockworkers ratify the tentative agreement?",
+    "domain": "strike",
+    "outcome_contract_ok": 0.7,
+    "actors_relevant": 0.8,
+    "mechanisms_appropriate": 0.6,
+    "missing_high_sensitivity_var": 0.3,
+    "note": "Lacks specific union leadership and economic pressures."
+   },
+   {
+    "question": "Will the appeals court uphold the lower court's ruling in the antitrust case?",
+    "domain": "court_ruling",
+    "outcome_contract_ok": 0.8,
+    "actors_relevant": 0.7,
+    "mechanisms_appropriate": 0.9,
+    "missing_high_sensitivity_var": 0.3,
+    "note": "Plan lacks key legal variables like precedent or judge ideology."
+   },
+   {
+    "question": "Will the startup close its Series B round within the quarter?",
+    "domain": "fundraising",
+    "outcome_contract_ok": 0.9,
+    "actors_relevant": 0.7,
+    "mechanisms_appropriate": 0.8,
+    "missing_high_sensitivity_var": 0.5,
+    "note": "Lacks investor sentiment and market conditions."
+   },
+   {
+    "question": "Will the three parties form a governing coalition after the election?",
+    "domain": "coalition",
+    "outcome_contract_ok": 0.9,
+    "actors_relevant": 0.8,
+    "mechanisms_appropriate": 0.7,
+    "missing_high_sensitivity_var": 0.3,
+    "note": "Good structure, but missing electoral threshold or seat distribution."
+   },
+   {
+    "question": "Will the stock rise more than 5% the day after the earnings call?",
+    "domain": "market",
+    "outcome_contract_ok": 0.9,
+    "actors_relevant": 0.7,
+    "mechanisms_appropriate": 0.8,
+    "missing_high_sensitivity_var": 0.3,
+    "note": "Earnings call impact on stock price plausible."
+   },
+   {
+    "question": "Will the company's CEO resign within a month of the scandal breaking?",
+    "domain": "reputation_crisis",
+    "outcome_contract_ok": 0.7,
+    "actors_relevant": 0.8,
+    "mechanisms_appropriate": 0.6,
+    "missing_high_sensitivity_var": 0.4,
+    "note": "Lacks board pressure and media scrutiny variables."
+   },
+   {
+    "question": "Should we send the discount offer now or wait until the customer's renewal date ",
+    "domain": "best_action",
+    "outcome_contract_ok": 0.9,
+    "actors_relevant": 0.8,
+    "mechanisms_appropriate": 0.7,
+    "missing_high_sensitivity_var": 0.3,
+    "note": "Lacks customer price sensitivity and competitor actions."
    }
   ]
  },
@@ -74,17 +301,17 @@
     "poisson_arrival"
    ],
    "all_mech_executable": true,
-   "readout_var": "manager.replied",
+   "readout_var": "manager.reply_by_friday",
    "readout_resolves": true,
    "n_entities": 2,
    "n_institutions": 1,
    "n_populations": 0,
    "n_latents": 1,
    "provenance_ok": true,
-   "n_omissions": 5,
+   "n_omissions": 4,
    "terminal_distribution": null,
    "error": "",
-   "latency_s": 7.06
+   "latency_s": 5.98
   },
   {
    "domain": "messaging",
@@ -97,10 +324,10 @@
    "executed_e2e": true,
    "materialize_abstained": false,
    "n_accepted_mech": 2,
-   "n_rejected_mech": 0,
+   "n_rejected_mech": 1,
    "mechanisms": [
-    "poisson_arrival",
-    "background_dynamics"
+    "background_dynamics",
+    "agent_decision"
    ],
    "all_mech_executable": true,
    "readout_var": "vendor.response_occurrence",
@@ -108,12 +335,12 @@
    "n_entities": 2,
    "n_institutions": 0,
    "n_populations": 0,
-   "n_latents": 1,
+   "n_latents": 2,
    "provenance_ok": true,
    "n_omissions": 1,
    "terminal_distribution": null,
    "error": "",
-   "latency_s": 5.48
+   "latency_s": 6.32
   },
   {
    "domain": "messaging",
@@ -131,25 +358,77 @@
     "poisson_arrival"
    ],
    "all_mech_executable": true,
-   "readout_var": "recruiter.will_respond_before_weekend",
+   "readout_var": "recruiter.response_before_deadline",
    "readout_resolves": true,
    "n_entities": 2,
    "n_institutions": 0,
    "n_populations": 0,
-   "n_latents": 2,
+   "n_latents": 0,
    "provenance_ok": true,
    "n_omissions": 5,
    "terminal_distribution": null,
    "error": "",
-   "latency_s": 5.52
+   "latency_s": 5.04
+  },
+  {
+   "domain": "negotiation",
+   "question": "Will the buyer accept our counteroffer of $4.2M for the office building?",
+   "as_of": "2023-04-01",
+   "horizon": "2023-05-01",
+   "compiled": false,
+   "abstained": true,
+   "abstain_reason": "no executable registry mechanism applies \u2014 the needed mechanisms are missing or unexecutable; rejected: ['bargaining_rubinstein']; marked experimental: []",
+   "executed_e2e": false,
+   "materialize_abstained": false,
+   "n_accepted_mech": 0,
+   "n_rejected_mech": 0,
+   "mechanisms": [],
+   "all_mech_executable": null,
+   "readout_var": "",
+   "readout_resolves": null,
+   "n_entities": 0,
+   "n_institutions": 0,
+   "n_populations": 0,
+   "n_latents": 0,
+   "provenance_ok": null,
+   "n_omissions": 0,
+   "terminal_distribution": null,
+   "error": "",
+   "latency_s": 6.49
+  },
+  {
+   "domain": "negotiation",
+   "question": "Will the union and management reach a wage agreement before the contract expires?",
+   "as_of": "2023-08-15",
+   "horizon": "2023-09-30",
+   "compiled": false,
+   "abstained": true,
+   "abstain_reason": "no executable registry mechanism applies \u2014 the needed mechanisms are missing or unexecutable; rejected: ['bargaining_rubinstein', 'negotiation_concession']; marked experimental: []",
+   "executed_e2e": false,
+   "materialize_abstained": false,
+   "n_accepted_mech": 0,
+   "n_rejected_mech": 0,
+   "mechanisms": [],
+   "all_mech_executable": null,
+   "readout_var": "",
+   "readout_resolves": null,
+   "n_entities": 0,
+   "n_institutions": 0,
+   "n_populations": 0,
+   "n_latents": 0,
+   "provenance_ok": null,
+   "n_omissions": 0,
+   "terminal_distribution": null,
+   "error": "",
+   "latency_s": 7.91
   }
  ],
  "_meta": {
-  "llm_calls": 6,
-  "llm_tokens_est": 8248,
-  "est_cost_usd": 0.0056,
+  "llm_calls": 120,
+  "llm_tokens_est": 226396,
+  "est_cost_usd": 0.1551,
   "model": "deepseek-chat",
-  "runtime_s": 28.3,
+  "runtime_s": 736.5,
   "note": "FIRST real-LLM exercise of compile_world\u2192materialize\u2192rollout; no scripted plans; benchmark adapters absent (pure NL questions)"
  }
 }
