@@ -120,9 +120,19 @@ def run(limit, seed):
     meter = {"calls": 0, "tokens": 0}
     llm = default_chat_fn(system="You are a careful forecaster. Reply ONLY compact JSON.",
                           max_tokens=150, temperature=0.2)
+    # the compiler emits a full decomposition JSON — it needs its own handle with adequate max_tokens
+    # (reusing the 150-token forecaster handle truncates the JSON → spurious 'unparseable' abstentions).
+    compiler_llm = default_chat_fn(system="You are the world-slice compiler proposal stage. Reply ONLY JSON.",
+                                   max_tokens=1400, temperature=0.2)
 
     def call(prompt):
         txt = llm(prompt)
+        meter["calls"] += 1
+        meter["tokens"] += (len(prompt) + len(txt or "")) // 4
+        return txt
+
+    def call_compiler(prompt):
+        txt = compiler_llm(prompt)
         meter["calls"] += 1
         meter["tokens"] += (len(prompt) + len(txt or "")) // 4
         return txt
@@ -147,7 +157,7 @@ def run(limit, seed):
         bundle = EvidenceBundle(question_id=i.qid, as_of=float(i.as_of))
         if asof_google_news is not None:
             try:
-                passages = asof_google_news(i.question[:120], float(i.as_of), max_items=6) or []
+                passages = asof_google_news(i.question[:120], float(i.as_of), k=6) or []
                 for p in passages:
                     try:
                         bundle.add(item_from_asof_passage(p))
@@ -175,7 +185,7 @@ def run(limit, seed):
             import time as _t2
             asof_s = _t2.strftime("%Y-%m-%d", _t2.gmtime(i.as_of))
             hor_s = _t2.strftime("%Y-%m-%d", _t2.gmtime(i.resolve_ts or (i.as_of + 30 * 86400)))
-            plan = compile_world(i.question, llm=(lambda p: call(p)), evidence=bundle,
+            plan = compile_world(i.question, llm=call_compiler, evidence=bundle,
                                  as_of=asof_s, horizon=hor_s)
             result, branches = run_from_plan(plan, n_particles=12, seed=7)
             dist = result.get("distribution") or {}
