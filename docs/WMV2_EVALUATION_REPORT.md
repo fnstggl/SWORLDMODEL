@@ -93,10 +93,18 @@ PR-AUC 0.333 vs E1 0.788 / 0.091 (n=60, ~1–2 positives — a lead to test at s
 run 2 shows how easily simulation gets this wrong), but the defining claim (structured simulation adds
 held-out predictive value) remains **undemonstrated**. Do not merge PR #75.
 
-## Portfolio status
+## Portfolio status — ALL FIVE PORTFOLIO BENCHMARKS RUN (see `WMV2_PORTFOLIO_VERDICT.md` for the full verdict)
 
-| Benchmark | Status |
-|---|---|
-| Enron (Ref. World A) | **run twice** (metadata round + MAX-CAPACITY content round); content tested → NO EVIDENCE OF LIFT (`WMV2_ENRON_MAXCAP_FORENSIC.md`) |
-| Upworthy / ForecastBench / crowd / BehaviorBench / OmniBehavior(repair) / Higgs | staged per `WMV2_BENCHMARK_MAP.md`, unrun for V2 |
-| Forward ledger V2 wiring | pending |
+| Benchmark | Structural test | Result |
+|---|---|---|
+| Enron (Ref. World A, 3 rounds) | content/actor cognition | matches fitted metadata, never beats (all rounds) |
+| **BehaviorBench (Ref. World B)** | **interaction, heterogeneity** | **first significant mechanism positives: interaction −0.088..−0.161, latent heterogeneity essential; train histogram still wins aggregate; V2 ≫ LLM arms** |
+| OmniBehavior (Ref. World C, repaired) | persistence | burstiness real in train (lift 1.96); no held-out effect at n=48 (underpowered); direct LLM below chance |
+| Higgs (Ref. World D) | network, rollout | network features sig. real; mechanistic contagion sig. WORSE than fitted logistic; rollout ns |
+| Upworthy (Ref. World E) | population heterogeneity | surface-fitted + population best (p@1 0.467); LLM interpretation dims sig. HURT (−0.060); population helps pairwise ordering only |
+| ForecastBench deadline subset (27% coverage) | temporal/institutions | crowd unbeaten (0.152); fitted hazard exponent = identity (temporal adds exactly 0); text-only LLM catastrophic |
+| Forward ledger V2 wiring | — | pending |
+
+**Cross-portfolio pattern:** raw LLM < structured simulation ≤ fitted statistical baseline, everywhere.
+The two surviving mechanisms (interaction, population heterogeneity) are exactly the ones a per-outcome
+fit cannot express — cross-condition transfer is the trailhead. Do not merge PR #75.
