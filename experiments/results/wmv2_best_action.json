@@ -1,0 +1,106 @@
+{
+ "matched_counterfactual_mechanics": {
+  "ranking": [
+   {
+    "intervention": "big_discount",
+    "expected_utility": 0.855,
+    "downside_p10": 0.0,
+    "median": 1.0,
+    "p_best": 0.412,
+    "expected_regret": 0.0
+   },
+   {
+    "intervention": "small_discount",
+    "expected_utility": 0.685,
+    "downside_p10": 0.0,
+    "median": 1.0,
+    "p_best": 0.243,
+    "expected_regret": 0.17
+   },
+   {
+    "intervention": "no_discount",
+    "expected_utility": 0.545,
+    "downside_p10": 0.0,
+    "median": 1.0,
+    "p_best": 0.173,
+    "expected_regret": 0.31
+   },
+   {
+    "intervention": "none",
+    "expected_utility": 0.545,
+    "downside_p10": 0.0,
+    "median": 1.0,
+    "p_best": 0.173,
+    "expected_regret": 0.31
+   }
+  ],
+  "best": "big_discount",
+  "matched_seeds": true,
+  "n_matched_worlds": 200,
+  "correct_best": true,
+  "regret_big": 0.0,
+  "regret_none": 0.31
+ },
+ "upworthy_randomized_intervention": {
+  "n_train": 881,
+  "n_test": 882,
+  "policies": {
+   "random": {
+    "policy": "random",
+    "mean_regret": 0.00407,
+    "mean_realized_ctr": 0.01603,
+    "oracle_ctr": 0.0201,
+    "random_ctr": 0.01587,
+    "p_improve_over_random": 0.492,
+    "regret_reduction_vs_random": 0.0,
+    "n": 882
+   },
+   "first_listed": {
+    "policy": "first_listed",
+    "mean_regret": 0.00425,
+    "mean_realized_ctr": 0.01585,
+    "oracle_ctr": 0.0201,
+    "random_ctr": 0.01587,
+    "p_improve_over_random": 0.495,
+    "regret_reduction_vs_random": -0.00018,
+    "n": 882
+   },
+   "longest": {
+    "policy": "longest",
+    "mean_regret": 0.00385,
+    "mean_realized_ctr": 0.01625,
+    "oracle_ctr": 0.0201,
+    "random_ctr": 0.01587,
+    "p_improve_over_random": 0.524,
+    "regret_reduction_vs_random": 0.00022,
+    "n": 882
+   },
+   "surface_model": {
+    "policy": "surface_model",
+    "mean_regret": 0.0039,
+    "mean_realized_ctr": 0.01619,
+    "oracle_ctr": 0.0201,
+    "random_ctr": 0.01587,
+    "p_improve_over_random": 0.516,
+    "regret_reduction_vs_random": 0.00017,
+    "n": 882
+   },
+   "oracle": {
+    "policy": "oracle",
+    "mean_regret": 0.0,
+    "mean_realized_ctr": 0.0201,
+    "oracle_ctr": 0.0201,
+    "random_ctr": 0.01587,
+    "p_improve_over_random": 1.0,
+    "regret_reduction_vs_random": 0.00407,
+    "n": 882
+   }
+  },
+  "verdict": "surface population model reduces regret vs random by 0.00017 CTR (realized 0.01619 vs random 0.01603, oracle 0.0201)"
+ },
+ "_meta": {
+  "llm_calls": 0,
+  "est_cost_usd": 0.0,
+  "note": "matched CRN counterfactuals + REAL randomized A/B intervention data; decision lift measured as realized-CTR regret reduction, not predictive accuracy"
+ }
+}
