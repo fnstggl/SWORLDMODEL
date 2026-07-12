@@ -1,0 +1,316 @@
+{
+ "_integrity": {
+  "n_top_level": 6,
+  "saved_at": "2026-07-12T21:07:03Z",
+  "sha256": "5c11aae6bc0f492bac1c31c95a4c75113b6cf83dd9a66ec3d8aab764e3508eac"
+ },
+ "payload": {
+  "complex_contagion_hazard": [
+   {
+    "citations": [],
+    "created_at": "2026-07-12T21:07:03Z",
+    "domain": "social_media_diffusion",
+    "family_id": "complex_contagion_hazard",
+    "fit_method": "profile likelihood",
+    "fitted_on": "SNAP higgs train",
+    "pack_id": "higgs_2012_complex_contagion_hazard",
+    "population": "Twitter 2012 Higgs window",
+    "time_scale": "",
+    "transport_note": "",
+    "validation": [
+     {
+      "artifact": "experiments/results/wmv2_higgs_nonlinear.json",
+      "at": "",
+      "baseline": "log-linear hazard",
+      "baseline_value": null,
+      "ci95": [],
+      "dataset": "SNAP higgs-twitter",
+      "kind": "ablation",
+      "metric": "Brier",
+      "note": "Hill beat linear but log-linear won validation selection",
+      "passed": true,
+      "split": "test n=4000",
+      "value": null
+     }
+    ],
+    "values": {
+     "param": {
+      "hi": null,
+      "lo": null,
+      "method": "grid+profile",
+      "sd": null,
+      "source": "fitted",
+      "value": "see wmv2_higgs_nonlinear.json"
+     }
+    },
+    "version": "1.0.0"
+   }
+  ],
+  "engagement_momentum_persistence": [
+   {
+    "citations": [],
+    "created_at": "2026-07-12T21:07:03Z",
+    "domain": "platform_engagement",
+    "family_id": "engagement_momentum_persistence",
+    "fit_method": "momentum ratio + hierarchical user-rate shrinkage",
+    "fitted_on": "OmniBehavior train (per-user 70% chronological prefix)",
+    "pack_id": "omnibehavior_kuaishou",
+    "population": "Kuaishou short-video/e-commerce users, 90-day traces",
+    "time_scale": "",
+    "transport_note": "short-video engagement; transport to deliberation domains unvalidated",
+    "validation": [
+     {
+      "artifact": "experiments/results/wmv2_persistence_power.json",
+      "at": "",
+      "baseline": "hierarchical user-rate (no persistence)",
+      "baseline_value": null,
+      "ci95": [
+       -0.009211,
+       -0.003483
+      ],
+      "dataset": "OmniBehavior (Kuaishou)",
+      "kind": "held_out",
+      "metric": "Brier_paired_vs_memoryless_userrate",
+      "note": "adequately powered (0.993 at empirical paired sd); CI excludes 0 \u2014 REVERSES the prior n=48 null",
+      "passed": true,
+      "split": "per-user time-forward test, n=7074 passive-exposure events",
+      "value": -0.006496
+     },
+     {
+      "artifact": "experiments/results/wmv2_persistence_power.json",
+      "at": "",
+      "baseline": "",
+      "baseline_value": null,
+      "ci95": [
+       -0.032386,
+       -0.02117
+      ],
+      "dataset": "OmniBehavior (Kuaishou)",
+      "kind": "transfer",
+      "metric": "Brier_paired_vs_userrate",
+      "note": "persistence transfers to held-out PEOPLE",
+      "passed": true,
+      "split": "person-disjoint (14 users never in train), n=216",
+      "value": -0.027127
+     }
+    ],
+    "values": {
+     "momentum_lift": {
+      "hi": null,
+      "lo": null,
+      "method": "train p_hot/p_cold ratio",
+      "sd": null,
+      "source": "fitted",
+      "value": 6.777
+     }
+    },
+    "version": "1.0.0"
+   }
+  ],
+  "exposure_response_hazard": [
+   {
+    "citations": [],
+    "created_at": "2026-07-12T21:07:03Z",
+    "domain": "social_media_diffusion",
+    "family_id": "exposure_response_hazard",
+    "fit_method": "Bernoulli-hazard GLM",
+    "fitted_on": "SNAP higgs-twitter train cohort (t0+24h, seed 13)",
+    "pack_id": "higgs_2012_rumor",
+    "population": "Twitter users, 2012 Higgs-boson rumor window",
+    "time_scale": "24h window",
+    "transport_note": "fitted per-cascade; transporting to another cascade needs refit + 2.5x sd widening",
+    "validation": [
+     {
+      "artifact": "experiments/results/wmv2_higgs_nonlinear.json",
+      "at": "",
+      "baseline": "fitted exposure logistic (H1)",
+      "baseline_value": null,
+      "ci95": [
+       -0.000525,
+       0.000145
+      ],
+      "dataset": "SNAP higgs-twitter",
+      "kind": "held_out",
+      "metric": "Brier_paired_vs_fitted_logistic",
+      "note": "closes the gap to the fitted logistic (prior LINEAR world was significantly WORSE at +0.00234); CI straddles 0 = statistically tied",
+      "passed": true,
+      "split": "time-forward test cohort t0+48h, n=4000, seed 17",
+      "value": -0.000192
+     },
+     {
+      "artifact": "experiments/results/wmv2_higgs_nonlinear.json",
+      "at": "",
+      "baseline": "linear q\u00b7k hazard (M1)",
+      "baseline_value": null,
+      "ci95": [
+       -0.003411,
+       -0.001694
+      ],
+      "dataset": "SNAP higgs-twitter",
+      "kind": "ablation",
+      "metric": "Brier_paired_nonlinear_vs_linear",
+      "note": "nonlinearity is the load-bearing improvement, CI excludes 0",
+      "passed": true,
+      "split": "test n=4000",
+      "value": -0.00253
+     }
+    ],
+    "values": {
+     "theta": {
+      "dataset": "SNAP higgs-twitter, time-forward train cohort",
+      "hi": null,
+      "lo": null,
+      "method": "Bernoulli-hazard GLM, cloglog link",
+      "sd": null,
+      "source": "fitted",
+      "value": "see wmv2_higgs_nonlinear.json"
+     }
+    },
+    "version": "1.0.0"
+   }
+  ],
+  "hawkes_self_excitation": [
+   {
+    "citations": [],
+    "created_at": "2026-07-12T21:07:03Z",
+    "domain": "social_media_diffusion",
+    "family_id": "hawkes_self_excitation",
+    "fit_method": "EM/MLE exponential kernel",
+    "fitted_on": "Higgs stream 0-48h",
+    "pack_id": "higgs_2012_stream",
+    "population": "Twitter 2012 Higgs activity stream",
+    "time_scale": "",
+    "transport_note": "",
+    "validation": [
+     {
+      "artifact": "experiments/results/wmv2_higgs_nonlinear.json",
+      "at": "",
+      "baseline": "Poisson base rate",
+      "baseline_value": 973.0,
+      "ci95": [],
+      "dataset": "SNAP higgs activity stream",
+      "kind": "held_out",
+      "metric": "MAE_per_bin",
+      "note": "FAILED: Hawkes MAE 1098.9 > Poisson 973.0 \u2014 the fit underpredicted the burst (preserved negative result)",
+      "passed": false,
+      "split": "held-out 24-72h counts",
+      "value": 1098.9
+     }
+    ],
+    "values": {
+     "alpha": {
+      "hi": null,
+      "lo": null,
+      "sd": null,
+      "source": "fitted",
+      "value": "see artifact"
+     },
+     "mu": {
+      "hi": null,
+      "lo": null,
+      "sd": null,
+      "source": "fitted",
+      "value": "see artifact"
+     }
+    },
+    "version": "1.0.0"
+   }
+  ],
+  "simple_contagion_hazard": [
+   {
+    "citations": [],
+    "created_at": "2026-07-12T21:07:03Z",
+    "domain": "social_media_diffusion",
+    "family_id": "simple_contagion_hazard",
+    "fit_method": "profile likelihood",
+    "fitted_on": "SNAP higgs train",
+    "pack_id": "higgs_2012_simple_contagion_hazard",
+    "population": "Twitter 2012 Higgs window",
+    "time_scale": "",
+    "transport_note": "",
+    "validation": [
+     {
+      "artifact": "experiments/results/wmv2_higgs_nonlinear.json",
+      "at": "",
+      "baseline": "log-linear hazard",
+      "baseline_value": null,
+      "ci95": [],
+      "dataset": "SNAP higgs-twitter",
+      "kind": "ablation",
+      "metric": "Brier",
+      "note": "Hill beat linear but log-linear won validation selection",
+      "passed": false,
+      "split": "test n=4000",
+      "value": null
+     }
+    ],
+    "values": {
+     "param": {
+      "hi": null,
+      "lo": null,
+      "method": "grid+profile",
+      "sd": null,
+      "source": "fitted",
+      "value": "see wmv2_higgs_nonlinear.json"
+     }
+    },
+    "version": "1.0.0"
+   }
+  ],
+  "social_preference_population": [
+   {
+    "citations": [],
+    "created_at": "2026-07-12T21:07:03Z",
+    "domain": "economic_game",
+    "family_id": "social_preference_population",
+    "fit_method": "exponentiated-gradient on W1",
+    "fitted_on": "BehaviorBench train (50/50 split seed 13)",
+    "pack_id": "behaviorbench_moblab",
+    "population": "MobLab economic-game players (~200/game)",
+    "time_scale": "",
+    "transport_note": "lab economic games; transport to field behavior unvalidated",
+    "validation": [
+     {
+      "artifact": "experiments/results/wmv2_behaviorbench_policy.json",
+      "at": "",
+      "baseline": "train histogram (A1)",
+      "baseline_value": 0.0376,
+      "ci95": [],
+      "dataset": "BehaviorBench moblab",
+      "kind": "held_out",
+      "metric": "mean_W1_norm",
+      "note": "beats raw LLM (0.185) + elicitation (0.123) but LOSES to per-game histogram (0.038) and hand-crafted V2 (0.058) in-distribution",
+      "passed": false,
+      "split": "test 50%, 7 games",
+      "value": 0.0988
+     },
+     {
+      "artifact": "experiments/results/wmv2_behaviorbench_policy.json",
+      "at": "",
+      "baseline": "",
+      "baseline_value": null,
+      "ci95": [],
+      "dataset": "BehaviorBench moblab",
+      "kind": "transfer",
+      "metric": "W1_norm_vs_pooled_transfer_baseline",
+      "note": "LOGO beats pooled-histogram transfer on dictator/proposer/investor (CI excludes 0); FAILS on public_goods (+0.328)",
+      "passed": true,
+      "split": "leave-one-game-out, per game",
+      "value": null
+     }
+    ],
+    "values": {
+     "type_weights": {
+      "hi": null,
+      "lo": null,
+      "method": "EG/W1 joint",
+      "sd": null,
+      "source": "fitted",
+      "value": "see wmv2_behaviorbench_policy.json"
+     }
+    },
+    "version": "1.0.0"
+   }
+  ]
+ }
+}

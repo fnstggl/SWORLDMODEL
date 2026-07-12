@@ -1,0 +1,2559 @@
+{
+ "_integrity": {
+  "n_top_level": 47,
+  "saved_at": "2026-07-12T21:07:03Z",
+  "sha256": "914e941adecf4bbc8a34fb44240ace386b50b9b1e85354f104c271dde81e3d12"
+ },
+ "payload": {
+  "agenda_stage_control": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "legislation",
+     "organizational"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "actor_state"
+   ],
+   "causal_outputs": [
+    "action_or_edge"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Agenda / stage-transition control",
+     "limits": "candidate structural family; parameters labeled priors, must be fit/validated per setting",
+     "ref": "institutional procedure (see institutions.py)",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.institutions:Rule",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "agenda_stage_control",
+   "formal_description": "procedure rule gates actions by stage variable",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "institutional",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "institutions"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_interaction_families.py",
+   "title": "Agenda / stage-transition control",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "attention_allocation": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "*"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "state"
+   ],
+   "causal_outputs": [
+    "state_delta"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Interpretation-driven attention allocation",
+     "limits": "parameters are labeled priors / fitted where data exists; see record",
+     "ref": "see module docstring",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.actor_cognition:attention_transition",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "attention_allocation",
+   "formal_description": "Interpretation-driven attention allocation",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "attention",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_actor_cognition.py",
+   "title": "Interpretation-driven attention allocation",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "attention_dynamics": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "*"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "state"
+   ],
+   "causal_outputs": [
+    "state_delta"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Mean-reverting attention over elapsed time",
+     "limits": "parameters are labeled priors / fitted where data exists; see record",
+     "ref": "see module docstring",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.transitions:BackgroundDynamicsOperator",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "attention_dynamics",
+   "formal_description": "Mean-reverting attention over elapsed time",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "attention",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_world_model_v2.py",
+   "title": "Mean-reverting attention over elapsed time",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "bargaining_rubinstein": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "negotiation"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "actor_state"
+   ],
+   "causal_outputs": [
+    "action_or_edge"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Rubinstein alternating-offers split",
+     "limits": "candidate structural family; parameters labeled priors, must be fit/validated per setting",
+     "ref": "Rubinstein 1982 (Econometrica 50:97)",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.interaction:rubinstein_split",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "bargaining_rubinstein",
+   "formal_description": "x*=(1\u2212\u03b4_b)/(1\u2212\u03b4_a \u03b4_b)",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "bargaining",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_interaction_families.py",
+   "title": "Rubinstein alternating-offers split",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "belief_learning": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "repeated_game",
+     "decision"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "outcome",
+    "prior_latent"
+   ],
+   "causal_outputs": [
+    "updated_latent"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "belief learning in games",
+     "limits": "assumes stationary opponent",
+     "ref": "Fudenberg & Levine 1998",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.learning:belief_update_counts",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "belief_learning",
+   "formal_description": "beliefs\u2190normalized action counts",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "learning",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_policy_families.py",
+   "title": "Fictitious-play belief learning",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "belief_update_exposure": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "*"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "state"
+   ],
+   "causal_outputs": [
+    "state_delta"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Bounded Bayesian-ish belief shift on exposure",
+     "limits": "parameters are labeled priors / fitted where data exists; see record",
+     "ref": "see module docstring",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.transitions:BeliefUpdateOperator",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "belief_update_exposure",
+   "formal_description": "Bounded Bayesian-ish belief shift on exposure",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "belief",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_world_model_v2.py",
+   "title": "Bounded Bayesian-ish belief shift on exposure",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "bernoulli_detection": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "*"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "state"
+   ],
+   "causal_outputs": [
+    "state_delta"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Bernoulli detection observation model",
+     "limits": "parameters are labeled priors / fitted where data exists; see record",
+     "ref": "see module docstring",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.observation:BernoulliDetection",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "bernoulli_detection",
+   "formal_description": "Bernoulli detection observation model",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "observation",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_world_model_v2.py",
+   "title": "Bernoulli detection observation model",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "bounded_confidence": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "election",
+     "social_media_diffusion",
+     "protest"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "interaction_outcome"
+   ],
+   "causal_outputs": [
+    "updated_edge_or_opinion"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Hegselmann-Krause opinion dynamics",
+     "limits": "candidate structural family \u2014 parameters and applicability must be validated per setting; NOT a universal law",
+     "ref": "Hegselmann & Krause 2002 (JASSS)",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.social:bounded_confidence_step",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "bounded_confidence",
+   "formal_description": "average opinions within \u03b5 only",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "influence",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities",
+    "network"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_social_families.py",
+   "title": "Hegselmann-Krause opinion dynamics",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "coalition_formation": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "coalition",
+     "legislation"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "actor_state"
+   ],
+   "causal_outputs": [
+    "action_or_edge"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Minimal-winning coalition + Banzhaf power",
+     "limits": "candidate structural family; parameters labeled priors, must be fit/validated per setting",
+     "ref": "Banzhaf 1965; Riker 1962",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.interaction:banzhaf_power",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "coalition_formation",
+   "formal_description": "greedy MWC by support; Banzhaf pivotality index",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "coalition",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_interaction_families.py",
+   "title": "Minimal-winning coalition + Banzhaf power",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "complex_contagion_hazard": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "social_media_diffusion"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [
+     "activity_log"
+    ],
+    "requires_state": [
+     "network"
+    ],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "active_followee_count"
+   ],
+   "causal_outputs": [
+    "activation_event"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "complex contagion needs multiple exposures",
+     "limits": "experimental; \u03b1,c must be fit per setting",
+     "ref": "Centola & Macy 2007 (AJS)",
+     "study_period": "",
+     "study_population": "online health-behavior experiment"
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.diffusion:contagion_window_predict",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "complex_contagion_hazard",
+   "formal_description": "\u03bb=exp(\u03b80)\u00b7k^\u03b1/(c^\u03b1+k^\u03b1) (Hill; \u03b1>1 = social reinforcement, saturating)",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "diffusion",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "network"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "hours",
+   "test_ref": "tests/test_diffusion_families.py",
+   "title": "\u03bb=exp",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "degroot_influence": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "election",
+     "social_media_diffusion",
+     "protest"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "interaction_outcome"
+   ],
+   "causal_outputs": [
+    "updated_edge_or_opinion"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "DeGroot naive consensus",
+     "limits": "candidate structural family \u2014 parameters and applicability must be validated per setting; NOT a universal law",
+     "ref": "DeGroot 1974 (JASA); Chandrasekhar et al. 2020",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.social:degroot_step",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "degroot_influence",
+   "formal_description": "o_i\u2190\u03a3_j w_ij o_j (row-stochastic)",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "influence",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities",
+    "network"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_social_families.py",
+   "title": "DeGroot naive consensus",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "donation_response": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "election",
+     "fundraising",
+     "protest"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "actor_state"
+   ],
+   "causal_outputs": [
+    "action_or_edge"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Bounded donation response to an ask",
+     "limits": "candidate structural family; parameters labeled priors, must be fit/validated per setting",
+     "ref": "reference-class fundraising form",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.interaction:donation_amount",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "donation_response",
+   "formal_description": "fraction of capacity \u2191 in ask/affinity/history, saturating",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "participation",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_interaction_families.py",
+   "title": "Bounded donation response to an ask",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "engagement_momentum_persistence": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "*"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "state"
+   ],
+   "causal_outputs": [
+    "state_delta"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Momentum/burstiness persistence state",
+     "limits": "parameters are labeled priors / fitted where data exists; see record",
+     "ref": "see module docstring",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.reference.omnibehavior:momentum_state",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "engagement_momentum_persistence",
+   "formal_description": "Momentum/burstiness persistence state",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "memory",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "production_eligible",
+   "status_reason": "passed held-out validation + evidence-backed",
+   "temporal_scale": "event",
+   "test_ref": "experiments/wmv2_persistence_power.py",
+   "title": "Momentum/burstiness persistence state",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "experience_weighted_attraction": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "repeated_game",
+     "decision"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "outcome",
+    "prior_latent"
+   ],
+   "causal_outputs": [
+    "updated_latent"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "EWA nests reinforcement + belief learning",
+     "limits": "4 free params; identification needs many rounds",
+     "ref": "Camerer & Ho 1999 (Econometrica 67:827)",
+     "study_period": "",
+     "study_population": "lab games"
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.learning:EWAState",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "experience_weighted_attraction",
+   "formal_description": "A\u2190(\u03c6NA+[1 or \u03b4]\u00b7payoff)/N'; N'=\u03c1N+1",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "learning",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_policy_families.py",
+   "title": "EWA (Camerer-Ho)",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "exposure_response_hazard": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "social_media_diffusion",
+     "information_diffusion"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [
+     "no_follower_graph: needs a network"
+    ],
+    "population_kinds": [
+     "online_social"
+    ],
+    "requires_data": [
+     "activity_log"
+    ],
+    "requires_state": [
+     "network"
+    ],
+    "time_scales": [
+     "hours",
+     "days"
+    ],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "active_followee_count",
+    "out_degree",
+    "exposure_recency"
+   ],
+   "causal_outputs": [
+    "activation_event"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "exposure-response is concave and hashtag-dependent; not linear complex contagion universally",
+     "limits": "Twitter only; hashtag adoption, not general behavior",
+     "ref": "Romero, Meeder & Kleinberg 2011 (WWW)",
+     "study_period": "",
+     "study_population": "Twitter hashtags 2009"
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.diffusion:contagion_window_predict",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "exposure_response_hazard",
+   "formal_description": "\u03bb_i(t)=exp(\u03b8\u00b7x), x=[1,log1p(k_i),log1p(deg_i),k_i/deg_i,exp(-recency/24)]; window activation P=1-exp(-\u222b\u03bb dt), integrated event-by-event over the cohort subgraph with in-sample exposure growth (rollout).",
+   "implementation_note": "",
+   "known_failure_modes": [
+    "rollout adds nothing when in-sample subgraph is sparse (honest scope)"
+   ],
+   "ontology_type": "diffusion",
+   "owner": "wmv2",
+   "parameters": [
+    {
+     "default_source": "fitted",
+     "description": "hazard GLM coefficients",
+     "hi": null,
+     "lo": null,
+     "name": "theta"
+    }
+   ],
+   "required_state": [
+    "network",
+    "entities"
+   ],
+   "status": "locally_validated",
+   "status_reason": "held-out validation recorded",
+   "temporal_scale": "hours",
+   "test_ref": "tests/test_diffusion_families.py",
+   "title": "Nonlinear log-linear exposure-response activation hazard",
+   "uncertainty_note": "per-particle lognormal hazard-scale draw (parameter uncertainty); frailty sd fitted by profile likelihood",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "finite_population_saturation": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "*"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "state"
+   ],
+   "causal_outputs": [
+    "state_delta"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Finite susceptible-population cascade saturation",
+     "limits": "parameters are labeled priors / fitted where data exists; see record",
+     "ref": "see module docstring",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.diffusion:closed_form_window_p",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "finite_population_saturation",
+   "formal_description": "Finite susceptible-population cascade saturation",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "diffusion",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_diffusion_families.py",
+   "title": "Finite susceptible-population cascade saturation",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "gaussian_measurement": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "*"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "state"
+   ],
+   "causal_outputs": [
+    "state_delta"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Gaussian measurement with bias/missingness/delay",
+     "limits": "parameters are labeled priors / fitted where data exists; see record",
+     "ref": "see module docstring",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.observation:GaussianMeasurement",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "gaussian_measurement",
+   "formal_description": "Gaussian measurement with bias/missingness/delay",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "measurement",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_world_model_v2.py",
+   "title": "Gaussian measurement with bias/missingness/delay",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "habit_formation": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "repeated_game",
+     "decision"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "outcome",
+    "prior_latent"
+   ],
+   "causal_outputs": [
+    "updated_latent"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "habit as automaticity from repetition",
+     "limits": "\u03b3 context-dependent",
+     "ref": "Wood & Neal 2007 (Psych Review)",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.learning:habit_update",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "habit_formation",
+   "formal_description": "H\u2190(1\u2212\u03b3)H+\u03b3\u00b71[acted]; boosts repeat probability",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "learning",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_policy_families.py",
+   "title": "Habit-stock accumulation",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "hawkes_self_excitation": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "*"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "event_history"
+   ],
+   "causal_outputs": [
+    "event_intensity"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "retweet cascades are self-exciting",
+     "limits": "constant background + single exponential kernel underfit bursty streams",
+     "ref": "Hawkes 1971; Zhao et al. 2015 SEISMIC",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.diffusion:fit_hawkes",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "hawkes_self_excitation",
+   "formal_description": "\u03bb(t)=\u03bc+\u03b1\u03c9\u00b7\u03a3_{t_i<t} exp(-\u03c9(t-t_i)); exponential kernel, EM/MLE fit",
+   "implementation_note": "",
+   "known_failure_modes": [
+    "constant \u03bc + single exponential kernel underfit the Higgs activity burst"
+   ],
+   "ontology_type": "diffusion",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "quantities"
+   ],
+   "status": "quarantined",
+   "status_reason": "held-out count forecast FAILED to beat Poisson on the Higgs stream; preserved",
+   "temporal_scale": "minutes",
+   "test_ref": "tests/test_diffusion_families.py",
+   "title": "Hawkes self-exciting point process",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "hierarchical_rate_shrinkage": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "*"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "state"
+   ],
+   "causal_outputs": [
+    "state_delta"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Empirical-Bayes partial-pooling rate posterior",
+     "limits": "parameters are labeled priors / fitted where data exists; see record",
+     "ref": "see module docstring",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.inference_layer:hierarchical_rates",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "hierarchical_rate_shrinkage",
+   "formal_description": "Empirical-Bayes partial-pooling rate posterior",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "measurement",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_inference_layer.py",
+   "title": "Empirical-Bayes partial-pooling rate posterior",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "information_aging": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "*"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "state"
+   ],
+   "causal_outputs": [
+    "state_delta"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Age-weighted exposure decay (fitted half-life)",
+     "limits": "parameters are labeled priors / fitted where data exists; see record",
+     "ref": "see module docstring",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.diffusion:fit_aging_tau",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "information_aging",
+   "formal_description": "Age-weighted exposure decay (fitted half-life)",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "diffusion",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_diffusion_families.py",
+   "title": "Age-weighted exposure decay (fitted half-life)",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "information_interpretation": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "*"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "state"
+   ],
+   "causal_outputs": [
+    "state_delta"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Structured typed reading of an incoming item",
+     "limits": "parameters are labeled priors / fitted where data exists; see record",
+     "ref": "see module docstring",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.actor_cognition:interpret",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "information_interpretation",
+   "formal_description": "Structured typed reading of an incoming item",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "interpretation",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_actor_cognition.py",
+   "title": "Structured typed reading of an incoming item",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "institutional_vote": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "*"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "state"
+   ],
+   "causal_outputs": [
+    "state_delta"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Deterministic vote execution",
+     "limits": "parameters are labeled priors / fitted where data exists; see record",
+     "ref": "see module docstring",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.transitions:InstitutionalVoteOperator",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "institutional_vote",
+   "formal_description": "Deterministic vote execution",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "institutional",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_world_model_v2.py",
+   "title": "Deterministic vote execution",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "latent_expressed_opinion": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "election",
+     "social_media_diffusion",
+     "protest"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "interaction_outcome"
+   ],
+   "causal_outputs": [
+    "updated_edge_or_opinion"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Preference falsification",
+     "limits": "candidate structural family \u2014 parameters and applicability must be validated per setting; NOT a universal law",
+     "ref": "Kuran 1995 (Private Truths)",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.social:expressed_opinion",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "latent_expressed_opinion",
+   "formal_description": "expressed=latent unless pressure>conviction",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "influence",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities",
+    "network"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_social_families.py",
+   "title": "Preference falsification",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "memory_decay": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "*"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "state"
+   ],
+   "causal_outputs": [
+    "state_delta"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Exponential exposure-salience decay",
+     "limits": "parameters are labeled priors / fitted where data exists; see record",
+     "ref": "see module docstring",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.information:InformationLedger",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "memory_decay",
+   "formal_description": "Exponential exposure-salience decay",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "memory",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_world_model_v2.py",
+   "title": "Exponential exposure-salience decay",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "mobilization": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "election",
+     "fundraising",
+     "protest"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "actor_state"
+   ],
+   "causal_outputs": [
+    "action_or_edge"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Mobilization boost to participation",
+     "limits": "candidate structural family; parameters labeled priors, must be fit/validated per setting",
+     "ref": "Gerber & Green 2000 (APSR 94:653)",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.interaction:turnout_probability",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "mobilization",
+   "formal_description": "mobilized contact raises turnout logit",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "participation",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_interaction_families.py",
+   "title": "Mobilization boost to participation",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "negotiation_concession": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "negotiation"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "actor_state"
+   ],
+   "causal_outputs": [
+    "action_or_edge"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Time-dependent concession tactic",
+     "limits": "candidate structural family; parameters labeled priors, must be fit/validated per setting",
+     "ref": "Faratin, Sierra & Jennings 1998 (RAS)",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.interaction:concession_offer",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "negotiation_concession",
+   "formal_description": "offer decays initial\u2192reservation as deadline nears (\u03b2 tough/conceder)",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "bargaining",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_interaction_families.py",
+   "title": "Time-dependent concession tactic",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "network_rewiring": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "social_media_diffusion"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "actor_state"
+   ],
+   "causal_outputs": [
+    "action_or_edge"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Edge co-evolution (homophily + tie-age decay)",
+     "limits": "candidate structural family; parameters labeled priors, must be fit/validated per setting",
+     "ref": "Snijders SAOM 2010",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.interaction:rewire_probability",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "network_rewiring",
+   "formal_description": "P(edge)=\u03c3(w\u00b7(homophily\u2212.5)+log age_decay)",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "network",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_interaction_families.py",
+   "title": "Edge co-evolution (homophily + tie-age decay)",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "norm_compliance": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "*"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "state"
+   ],
+   "causal_outputs": [
+    "state_delta"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Obligation/norm-driven action utility shift",
+     "limits": "parameters are labeled priors / fitted where data exists; see record",
+     "ref": "see module docstring",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.actor_cognition:relationship_modulator",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "norm_compliance",
+   "formal_description": "Obligation/norm-driven action utility shift",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "norm",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_actor_cognition.py",
+   "title": "Obligation/norm-driven action utility shift",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "observation_exposure": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "*"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "state"
+   ],
+   "causal_outputs": [
+    "state_delta"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Actor-specific exposure / information visibility",
+     "limits": "parameters are labeled priors / fitted where data exists; see record",
+     "ref": "see module docstring",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.transitions:observable_view",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "observation_exposure",
+   "formal_description": "Actor-specific exposure / information visibility",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "observation",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_world_model_v2.py",
+   "title": "Actor-specific exposure / information visibility",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "platform_examination": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "social_media_diffusion",
+     "product_launch"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "actor_state"
+   ],
+   "causal_outputs": [
+    "action_or_edge"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Position-bias examination (cascade model)",
+     "limits": "candidate structural family; parameters labeled priors, must be fit/validated per setting",
+     "ref": "Craswell et al. 2008 (WSDM)",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.interaction:position_examination",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "platform_examination",
+   "formal_description": "P(examine|rank)=\u03b3^rank",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "platform",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_interaction_families.py",
+   "title": "Position-bias examination (cascade model)",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "platform_ranking": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "social_media_diffusion",
+     "product_launch"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "actor_state"
+   ],
+   "causal_outputs": [
+    "action_or_edge"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Platform ranking / allocation by score",
+     "limits": "candidate structural family; parameters labeled priors, must be fit/validated per setting",
+     "ref": "learning-to-rank / feed-allocation practice",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.interaction:rank_by_score",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "platform_ranking",
+   "formal_description": "order items by score desc \u2192 rank",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "platform",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_interaction_families.py",
+   "title": "Platform ranking / allocation by score",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "quantal_response_choice": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "negotiation",
+     "economic_game",
+     "decision"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "medium"
+   },
+   "causal_inputs": [
+    "action_utilities"
+   ],
+   "causal_outputs": [
+    "action_distribution"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "logit QRE fits lab game data",
+     "limits": "\u03bb is payoff-scale-dependent; refit per game",
+     "ref": "McKelvey & Palfrey 1995 (GEB)",
+     "study_period": "",
+     "study_population": "lab games"
+    }
+   ],
+   "code_ref": "swm.world_model_v2.policy:logit_choice",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "quantal_response_choice",
+   "formal_description": "p_a \u221d exp(\u03bb\u00b7u_a); \u03bb precision fitted on payoff scale; \u03bb=0 uniform, \u03bb\u2192\u221e best reply",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "decision",
+   "owner": "wmv2",
+   "parameters": [
+    {
+     "default_source": "fitted",
+     "description": "logit precision on payoff scale",
+     "hi": null,
+     "lo": 0.0,
+     "name": "lambda"
+    }
+   ],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_policy_families.py",
+   "title": "Quantal response (logit) choice over expected utilities",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "rare_event_arrival": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "*"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "state"
+   ],
+   "causal_outputs": [
+    "state_delta"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Poisson rare-event arrival by deadline",
+     "limits": "parameters are labeled priors / fitted where data exists; see record",
+     "ref": "see module docstring",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.transitions:RareEventArrivalOperator",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "rare_event_arrival",
+   "formal_description": "Poisson rare-event arrival by deadline",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "exogenous",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_wmv2_tier_a_fixes.py",
+   "title": "Poisson rare-event arrival by deadline",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "reciprocity": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "negotiation",
+     "coalition",
+     "organizational"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "interaction_outcome"
+   ],
+   "causal_outputs": [
+    "updated_edge_or_opinion"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Direct reciprocity edge update",
+     "limits": "candidate structural family \u2014 parameters and applicability must be validated per setting; NOT a universal law",
+     "ref": "Fehr & G\u00e4chter 2000 (AER)",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.social:reciprocity_update",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "reciprocity",
+   "formal_description": "edge\u2190edge+rate\u00b7(other_kindness\u2212baseline)",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "relationship",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "network"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_social_families.py",
+   "title": "Direct reciprocity edge update",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "reinforcement_learning": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "repeated_game",
+     "decision"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "outcome",
+    "prior_latent"
+   ],
+   "causal_outputs": [
+    "updated_latent"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "reinforcement learning tracks human game learning",
+     "limits": "\u03b1 must be fit",
+     "ref": "Watkins 1989; Erev & Roth 1998 (AER)",
+     "study_period": "",
+     "study_population": "repeated lab games"
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.learning:reinforcement_update",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "reinforcement_learning",
+   "formal_description": "Q\u2190Q+\u03b1(r\u2212Q)",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "learning",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_policy_families.py",
+   "title": "Q-learning value update",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "relationship_strength_inference": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "*"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "state"
+   ],
+   "causal_outputs": [
+    "state_delta"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Interaction-history edge strength",
+     "limits": "parameters are labeled priors / fitted where data exists; see record",
+     "ref": "see module docstring",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.actor_cognition:relationship_strength",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "relationship_strength_inference",
+   "formal_description": "Interaction-history edge strength",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "relationship",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_actor_cognition.py",
+   "title": "Interaction-history edge strength",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "relationship_update_bounded": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "*"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "state"
+   ],
+   "causal_outputs": [
+    "state_delta"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Bounded typed edge strength/trust shift",
+     "limits": "parameters are labeled priors / fitted where data exists; see record",
+     "ref": "see module docstring",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.transitions:RelationshipUpdateOperator",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "relationship_update_bounded",
+   "formal_description": "Bounded typed edge strength/trust shift",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "relationship",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_world_model_v2.py",
+   "title": "Bounded typed edge strength/trust shift",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "resource_depletion": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "*"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "state"
+   ],
+   "causal_outputs": [
+    "state_delta"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Conservation-checked resource consumption",
+     "limits": "parameters are labeled priors / fitted where data exists; see record",
+     "ref": "see module docstring",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.transitions:ResourceUpdateOperator",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "resource_depletion",
+   "formal_description": "Conservation-checked resource consumption",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "resource",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_world_model_v2.py",
+   "title": "Conservation-checked resource consumption",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "simple_contagion_hazard": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "social_media_diffusion"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [
+     "activity_log"
+    ],
+    "requires_state": [
+     "network"
+    ],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "active_followee_count"
+   ],
+   "causal_outputs": [
+    "activation_event"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "linear-in-exposure baseline",
+     "limits": "known too simple for social reinforcement \u2014 kept as comparator",
+     "ref": "classic SI/threshold literature",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.diffusion:contagion_window_predict",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "simple_contagion_hazard",
+   "formal_description": "\u03bb=q\u00b7k (independent per-exposure transmission)",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "diffusion",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "network"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "hours",
+   "test_ref": "tests/test_diffusion_families.py",
+   "title": "\u03bb=q\u00b7k",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "social_preference_population": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "economic_game",
+     "negotiation"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [
+     "lab"
+    ],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "payoff_structure",
+    "partner_beliefs"
+   ],
+   "causal_outputs": [
+    "action_distribution"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "inequity aversion calibrated type distribution",
+     "limits": "NOT a universal law; comonotonic \u03b1,\u03b2 assumption; lab stakes",
+     "ref": "Fehr & Schmidt 1999 (QJE 114:817)",
+     "study_period": "",
+     "study_population": "1990s lab ultimatum, students"
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.choice:fit_game_policy",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "social_preference_population",
+   "formal_description": "u=x_own-\u03b1\u00b7max(x_other-x_own,0)-\u03b2\u00b7max(x_own-x_other,0); discrete (\u03b1,\u03b2) type mixture, weights fitted jointly across games (partial pooling); drives every two-player game through one utility model; cross-game interaction via shared responder-threshold / banker-return beliefs.",
+   "implementation_note": "",
+   "known_failure_modes": [
+    "public_goods badly misfit (W1 0.292, KS 0.458) \u2014 FS\u2192PG mapping too crude",
+    "does not beat per-game fitted histogram in-distribution"
+   ],
+   "ontology_type": "decision",
+   "owner": "wmv2",
+   "parameters": [
+    {
+     "default_source": "fitted",
+     "description": "FS (\u03b1,\u03b2) mixture weights",
+     "hi": null,
+     "lo": null,
+     "name": "type_weights"
+    },
+    {
+     "default_source": "fitted",
+     "description": "QRE precision",
+     "hi": null,
+     "lo": null,
+     "name": "lambda_per_game"
+    }
+   ],
+   "required_state": [
+    "entities",
+    "populations"
+   ],
+   "status": "production_eligible",
+   "status_reason": "passed held-out validation + evidence-backed",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_policy_families.py",
+   "title": "Fehr-Schmidt inequity-aversion population mixture",
+   "uncertainty_note": "per-particle type draw from the fitted mixture",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "susceptibility_frailty": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "*"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "state"
+   ],
+   "causal_outputs": [
+    "state_delta"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Lognormal susceptibility heterogeneity (fitted sd)",
+     "limits": "parameters are labeled priors / fitted where data exists; see record",
+     "ref": "see module docstring",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.diffusion:fit_frailty_sigma",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "susceptibility_frailty",
+   "formal_description": "Lognormal susceptibility heterogeneity (fitted sd)",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "diffusion",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_diffusion_families.py",
+   "title": "Lognormal susceptibility heterogeneity (fitted sd)",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "threshold_adoption": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "election",
+     "social_media_diffusion",
+     "protest"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "interaction_outcome"
+   ],
+   "causal_outputs": [
+    "updated_edge_or_opinion"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Granovetter threshold cascade",
+     "limits": "candidate structural family \u2014 parameters and applicability must be validated per setting; NOT a universal law",
+     "ref": "Granovetter 1978 (AJS)",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.social:threshold_adopt",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "threshold_adoption",
+   "formal_description": "adopt iff active-neighbor frac \u2265 threshold",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "influence",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities",
+    "network"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_social_families.py",
+   "title": "Granovetter threshold cascade",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "trust_formation": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "negotiation",
+     "coalition",
+     "organizational"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "interaction_outcome"
+   ],
+   "causal_outputs": [
+    "updated_edge_or_opinion"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Asymmetric trust gain",
+     "limits": "candidate structural family \u2014 parameters and applicability must be validated per setting; NOT a universal law",
+     "ref": "Slovic 1993 (Risk Analysis)",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.social:trust_update",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "trust_formation",
+   "formal_description": "trust\u2190trust+gain\u00b7(1\u2212trust) on cooperation",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "relationship",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "network"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_social_families.py",
+   "title": "Asymmetric trust gain",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "trust_repair": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "negotiation",
+     "coalition",
+     "organizational"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "interaction_outcome"
+   ],
+   "causal_outputs": [
+    "updated_edge_or_opinion"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Partial trust repair",
+     "limits": "candidate structural family \u2014 parameters and applicability must be validated per setting; NOT a universal law",
+     "ref": "Kim et al. 2004 (JAP)",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.social:trust_update",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "trust_repair",
+   "formal_description": "trust\u2190trust+repair\u00b7(1\u2212trust) after remediation",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "relationship",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "network"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_social_families.py",
+   "title": "Partial trust repair",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "trust_violation": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "negotiation",
+     "coalition",
+     "organizational"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "interaction_outcome"
+   ],
+   "causal_outputs": [
+    "updated_edge_or_opinion"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Steep trust loss",
+     "limits": "candidate structural family \u2014 parameters and applicability must be validated per setting; NOT a universal law",
+     "ref": "Slovic 1993 asymmetry principle",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.social:trust_update",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "trust_violation",
+   "formal_description": "trust\u2190trust\u2212loss\u00b7trust on defection (loss>gain)",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "relationship",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "network"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_social_families.py",
+   "title": "Steep trust loss",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  },
+  "voting_turnout": {
+   "action_dependencies": [],
+   "applicability": {
+    "domains": [
+     "election",
+     "fundraising",
+     "protest"
+    ],
+    "excluded_domains": [],
+    "exclusion_conditions": [],
+    "population_kinds": [],
+    "requires_data": [],
+    "requires_state": [],
+    "time_scales": [],
+    "transport_risk": "high"
+   },
+   "causal_inputs": [
+    "actor_state"
+   ],
+   "causal_outputs": [
+    "action_or_edge"
+   ],
+   "citations": [
+    {
+     "doi_or_url": "",
+     "finding": "Calculus-of-voting turnout",
+     "limits": "candidate structural family; parameters labeled priors, must be fit/validated per setting",
+     "ref": "Riker & Ordeshook 1968 (APSR 62:25)",
+     "study_period": "",
+     "study_population": ""
+    }
+   ],
+   "code_ref": "swm.world_model_v2.registry.families.interaction:turnout_probability",
+   "created_at": "2026-07-12T21:07:03Z",
+   "family_id": "voting_turnout",
+   "formal_description": "p=\u03c3(logit(base)\u2212k_c\u00b7cost+k_b\u00b7benefit+k_d\u00b7duty+k_m\u00b7mobilized)",
+   "implementation_note": "",
+   "known_failure_modes": [],
+   "ontology_type": "participation",
+   "owner": "wmv2",
+   "parameters": [],
+   "required_state": [
+    "entities"
+   ],
+   "status": "implemented",
+   "status_reason": "executable transition + tests present",
+   "temporal_scale": "event",
+   "test_ref": "tests/test_interaction_families.py",
+   "title": "Calculus-of-voting turnout",
+   "uncertainty_note": "",
+   "updated_at": "2026-07-12T21:07:03Z",
+   "validation": [],
+   "version": "1.0.0"
+  }
+ }
+}
