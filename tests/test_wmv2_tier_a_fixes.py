@@ -66,7 +66,10 @@ def test_dropped_fields_are_recorded_not_silent():
     plan = _compile(d)
     w = build_world(plan)
     kinds = {o["kind"] for o in w.omissions}
-    assert "entity_field" in kinds and "relation" in kinds
+    # non-schema field is KEPT in the typed latent_state namespace (not silently dropped) and recorded;
+    # an unregistered relation IS dropped and recorded loudly
+    assert "entity_field_routed_to_latent_state" in kinds and "relation" in kinds
+    assert w.entities["alice"].get("latent_state", key="not_a_real_field") is not None
 
 
 # ---------------------------------------------------------------- closed rule kinds

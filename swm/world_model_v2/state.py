@@ -110,7 +110,12 @@ def F(value=None, *, dist=None, status="assumed", sources=None, confidence=0.5, 
 ENTITY_FIELDS = ("identity", "entity_type", "roles", "goals", "preferences", "beliefs", "resources",
                  "authority", "commitments", "attention", "affect", "private_information", "relationships",
                  "memory", "past_actions", "current_action", "planned_actions", "constraints",
-                 "information_set")
+                 "information_set",
+                 # typed namespace for compiler-proposed latent scalars whose semantic name is scenario-
+                 # specific (e.g. "attention_to_scheduling"): a dict {name: StateField}. Keeps generality
+                 # (arbitrary latents) WITHOUT arbitrary top-level untyped keys — every value is a
+                 # provenance-stamped StateField, just under a declared namespace.
+                 "latent_state")
 
 _ENTITY_EXTENSIONS: dict = {}             # name -> {"fields": {fname: description}, "entity_types": [...]}
 

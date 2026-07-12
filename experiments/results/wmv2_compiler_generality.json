@@ -1,0 +1,155 @@
+{
+ "aggregate": {
+  "n_questions": 4,
+  "n_domains": 1,
+  "compile_success_rate": 1.0,
+  "abstention_rate": 0.0,
+  "executes_e2e_rate": 1.0,
+  "materialize_abstain_rate": 0.0,
+  "error_rate": 0.0,
+  "mechanism_validity": 1.0,
+  "readout_resolves_rate": 1.0,
+  "provenance_ok_rate": 1.0,
+  "mean_mechanisms_per_plan": 1.75,
+  "mean_entities_per_plan": 2.0,
+  "mean_latents_per_plan": 1.25
+ },
+ "per_domain": {
+  "messaging": {
+   "n": 4,
+   "compile_rate": 1.0,
+   "e2e_rate": 1.0
+  }
+ },
+ "abstention_reasons": {},
+ "mechanism_histogram": {
+  "poisson_arrival": 4,
+  "background_dynamics": 2,
+  "agent_decision": 1
+ },
+ "jury_rubric": {
+  "n_reviewed": 2,
+  "means": {
+   "outcome_contract_ok": 0.9,
+   "actors_relevant": 0.8,
+   "mechanisms_appropriate": 0.7,
+   "missing_high_sensitivity_var": 0.3
+  },
+  "rows": [
+   {
+    "question": "Will my manager reply to the budget-approval email I sent this morning by end of",
+    "domain": "messaging",
+    "outcome_contract_ok": 0.9,
+    "actors_relevant": 0.8,
+    "mechanisms_appropriate": 0.7,
+    "missing_high_sensitivity_var": 0.3,
+    "note": "Manager's reply depends on workload and priority."
+   },
+   {
+    "question": "If I send a follow-up nudge tomorrow, will the vendor respond within 48 hours?",
+    "domain": "messaging",
+    "outcome_contract_ok": 0.9,
+    "actors_relevant": 0.8,
+    "mechanisms_appropriate": 0.7,
+    "missing_high_sensitivity_var": 0.3,
+    "note": "Vendor response timing plausible; missing vendor-specific behavior patterns."
+   }
+  ]
+ },
+ "forensic_examples": [
+  {
+   "domain": "messaging",
+   "question": "Will my manager reply to the budget-approval email I sent this morning by end of week?",
+   "as_of": "2023-05-01",
+   "horizon": "2023-05-08",
+   "compiled": true,
+   "abstained": false,
+   "abstain_reason": "",
+   "executed_e2e": true,
+   "materialize_abstained": false,
+   "n_accepted_mech": 2,
+   "n_rejected_mech": 1,
+   "mechanisms": [
+    "agent_decision",
+    "poisson_arrival"
+   ],
+   "all_mech_executable": true,
+   "readout_var": "manager.replied",
+   "readout_resolves": true,
+   "n_entities": 2,
+   "n_institutions": 1,
+   "n_populations": 0,
+   "n_latents": 1,
+   "provenance_ok": true,
+   "n_omissions": 5,
+   "terminal_distribution": null,
+   "error": "",
+   "latency_s": 7.06
+  },
+  {
+   "domain": "messaging",
+   "question": "If I send a follow-up nudge tomorrow, will the vendor respond within 48 hours?",
+   "as_of": "2023-06-10",
+   "horizon": "2023-06-13",
+   "compiled": true,
+   "abstained": false,
+   "abstain_reason": "",
+   "executed_e2e": true,
+   "materialize_abstained": false,
+   "n_accepted_mech": 2,
+   "n_rejected_mech": 0,
+   "mechanisms": [
+    "poisson_arrival",
+    "background_dynamics"
+   ],
+   "all_mech_executable": true,
+   "readout_var": "vendor.response_occurrence",
+   "readout_resolves": true,
+   "n_entities": 2,
+   "n_institutions": 0,
+   "n_populations": 0,
+   "n_latents": 1,
+   "provenance_ok": true,
+   "n_omissions": 1,
+   "terminal_distribution": null,
+   "error": "",
+   "latency_s": 5.48
+  },
+  {
+   "domain": "messaging",
+   "question": "Will the recruiter answer my scheduling question before the weekend?",
+   "as_of": "2023-03-15",
+   "horizon": "2023-03-19",
+   "compiled": true,
+   "abstained": false,
+   "abstain_reason": "",
+   "executed_e2e": true,
+   "materialize_abstained": false,
+   "n_accepted_mech": 1,
+   "n_rejected_mech": 0,
+   "mechanisms": [
+    "poisson_arrival"
+   ],
+   "all_mech_executable": true,
+   "readout_var": "recruiter.will_respond_before_weekend",
+   "readout_resolves": true,
+   "n_entities": 2,
+   "n_institutions": 0,
+   "n_populations": 0,
+   "n_latents": 2,
+   "provenance_ok": true,
+   "n_omissions": 5,
+   "terminal_distribution": null,
+   "error": "",
+   "latency_s": 5.52
+  }
+ ],
+ "_meta": {
+  "llm_calls": 6,
+  "llm_tokens_est": 8248,
+  "est_cost_usd": 0.0056,
+  "model": "deepseek-chat",
+  "runtime_s": 28.3,
+  "note": "FIRST real-LLM exercise of compile_world\u2192materialize\u2192rollout; no scripted plans; benchmark adapters absent (pure NL questions)"
+ }
+}

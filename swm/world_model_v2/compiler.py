@@ -235,10 +235,18 @@ def compile_world(question: str, *, llm, evidence="", as_of: str, horizon: str,
             continue
         sched.append({"etype": et, "ts": ts, "participants": list(ev.get("participants") or []),
                       "payload": dict(ev.get("payload") or {})})
-    hazards = [{"etype": str(h.get("etype", "distraction")),
-                "rate_per_day": max(0.0, float(h.get("rate_per_day", 0.0) or 0.0)),
-                "participants": list(h.get("participants") or [])}
-               for h in (raw.get("hazards") or []) if isinstance(h, dict)]
+    hazards = []
+    for h in (raw.get("hazards") or []):
+        if not isinstance(h, dict):
+            continue
+        het = str(h.get("etype", "distraction"))
+        from swm.world_model_v2.events import event_type_registered
+        if not event_type_registered(het):                   # symmetric with scheduled events
+            register_event_type(het, scheduling="hazard", validated=False,
+                                parameter_source="compiler-proposed")
+        hazards.append({"etype": het,
+                        "rate_per_day": max(0.0, float(h.get("rate_per_day", 0.0) or 0.0)),
+                        "participants": list(h.get("participants") or [])})
 
     plan = WorldExecutionPlan(
         question=question, outcome_contract=contract, as_of=parse_time(as_of),

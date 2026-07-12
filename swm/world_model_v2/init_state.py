@@ -101,12 +101,20 @@ class InitialStateModel:
         eid, _, fpath = path.partition(".")
         ent = world.entities.get(eid)
         if ent is None:
+            if eid in world.quantities:                      # a quantity-valued latent
+                world.quantities[eid].value = value
             return
         fname, _, key = fpath.partition("[")
         key = key.rstrip("]") or None
-        ent.set(fname, F(value, status="sampled", method=f"init:{rec.method}",
-                         confidence=rec.confidence, sources=rec.evidence,
-                         updated_at=world.clock.now, calibrated=rec.calibrated), key=key)
+        sf = F(value, status="sampled", method=f"init:{rec.method}", confidence=rec.confidence,
+               sources=rec.evidence, updated_at=world.clock.now, calibrated=rec.calibrated)
+        from swm.world_model_v2.state import ENTITY_FIELDS, extension_fields
+        allowed = set(ENTITY_FIELDS) | extension_fields(ent.entity_type)
+        if fname in allowed:
+            ent.set(fname, sf, key=key)
+        else:
+            # scenario-specific latent name → typed latent_state namespace (generality without untyped keys)
+            ent.set("latent_state", sf, key=fname)
 
     def sample_particle(self, branch_id: str, rng) -> WorldState:
         """One coherent world draw. Latents sample in declaration order; correlations adjust downstream

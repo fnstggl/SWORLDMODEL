@@ -48,14 +48,20 @@ def build_world(plan, *, world_id: str = "w0", evidence_hash: str = "", versions
         for fname, val in (e.get("fields") or {}).items():
             if val in ("?", None, ""):
                 continue                                     # unknowns stay latent, not fabricated
-            try:
-                # PROVENANCE HONESTY: an LLM proposal is an inference, not an observation. The evidence
-                # layer upgrades fields to `observed` only with an evidence reference attached.
-                ent.set(fname, F(val, status="inferred", method=f"compiler:proposal:{prompt_hash}",
-                                 confidence=0.45, updated_at=plan.as_of))
-            except KeyError:
-                omissions.append({"kind": "entity_field", "entity": ent.identity, "field": fname,
-                                  "reason": "not in universal schema or a registered extension"})
+            # PROVENANCE HONESTY: an LLM proposal is an inference, not an observation. The evidence
+            # layer upgrades fields to `observed` only with an evidence reference attached.
+            sf = F(val, status="inferred", method=f"compiler:proposal:{prompt_hash}",
+                   confidence=0.45, updated_at=plan.as_of)
+            from swm.world_model_v2.state import ENTITY_FIELDS, extension_fields
+            if fname in (set(ENTITY_FIELDS) | extension_fields(ent.entity_type)):
+                ent.set(fname, sf)
+            else:
+                # scenario-specific proposed field → typed latent_state namespace (kept, not dropped),
+                # and recorded as an omission-from-canonical-schema for the audit trail
+                ent.set("latent_state", sf, key=fname)
+                omissions.append({"kind": "entity_field_routed_to_latent_state", "entity": ent.identity,
+                                  "field": fname, "reason": "not a canonical schema field — stored as "
+                                  "a typed latent_state scalar with provenance"})
         w.entities[ent.identity] = ent
     for p in plan.populations:
         segs = []
