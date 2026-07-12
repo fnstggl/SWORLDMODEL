@@ -39,6 +39,29 @@ class OutcomeContract:
                 "the answer must be READ from terminal world states, never asked of an LLM afterward")
         return self
 
+    #: truthy / falsy literals a mechanism may write instead of the declared option labels
+    _TRUE_LITERALS = frozenset(("true", "yes", "1", "1.0", "occurred", "success", "pass", "accept",
+                                "approved", "ratified", "won", "happened"))
+    _FALSE_LITERALS = frozenset(("false", "no", "0", "0.0", "not_occurred", "failure", "fail", "reject",
+                                 "declined", "lost", "did_not_happen"))
+
+    def _canonical_option(self, v, opts) -> str:
+        """Reconcile a terminal value to a declared option label. A mechanism may write the readout in a
+        different vocabulary than the contract options (e.g. boolean True / the string 'True' vs a
+        yes/no contract). For a 2-option binary/response family, a truthy value maps to the AFFIRMATIVE
+        option (options[0]) and a falsy value to the negative (options[1]); this only reconciles vocabulary,
+        it never invents a value. Values already in the option set, and all categorical values, pass through."""
+        key = str(v)
+        if key in opts:
+            return key
+        if self.family in ("binary", "response_occurrence") and len(self.options) == 2:
+            low = key.strip().lower()
+            if v is True or low in self._TRUE_LITERALS:
+                return str(self.options[0])
+            if v is False or low in self._FALSE_LITERALS:
+                return str(self.options[1])
+        return key
+
     def project(self, terminal_branches) -> dict:
         """Aggregate the native answer over weighted terminal branches: frequencies for discrete families,
         weighted samples for continuous/delay/reach. `terminal_branches` = [WorldBranch].
@@ -52,7 +75,7 @@ class OutcomeContract:
             opts = {str(o) for o in self.options if str(o).strip()}
             freq, unresolved = {}, 0.0
             for w, v in vals:
-                key = str(v)
+                key = self._canonical_option(v, opts)
                 if opts and key not in opts:
                     unresolved += w / z
                     continue

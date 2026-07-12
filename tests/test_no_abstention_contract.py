@@ -114,6 +114,38 @@ def test_migrate_legacy_nonabstention_is_passthrough():
     assert m["simulation_status"] == "completed" and m["_migrated"] is False
 
 
+# ---------------------------------------------------------------- terminal always bins (no completed-empty)
+def test_mismatched_resolve_event_still_bins_to_contract_options():
+    """Adversarial: the LLM supplies its OWN resolve_outcome event whose options (True/False) do NOT match
+    the contract options (achieved/not_achieved). Pre-fix, the stray event wrote True, the canonical resolver
+    no-op'd on it, and the projection saw True∉options → an empty distribution → a completed-but-no-forecast
+    'forecast abstention'. Now: the LLM resolve_outcome event is deduped and the generic resolver overwrites
+    any non-option terminal value, so the readout ALWAYS bins to the declared options."""
+    decomp = {"outcome": {"family": "binary", "options": ["achieved", "not_achieved"],
+                          "resolution_rule": "goal achieved", "readout_var": "goal"},
+              "outcome_lean": "weak_yes", "entities": [{"id": "org", "type": "institution", "fields": {}}],
+              "scheduled_events": [{"etype": "resolve_outcome", "at": "2023-12-30",
+                                    "payload": {"outcome_var": "outcome", "family": "binary",
+                                                "options": ["True", "False"], "lean": "neutral"}}],
+              "required_causal_processes": ["fundraising"], "rationale": "x"}
+    res = simulate("Will the nonprofit hit its goal?", llm=_llm(decomp), evidence="",
+                   as_of="2023-01-01", horizon="2023-12-31", seed=7)
+    assert res.simulation_status in ("completed", "completed_with_degradation")
+    assert res.raw_distribution and set(res.raw_distribution) <= {"achieved", "not_achieved"}
+    assert res.has_forecast() and res.raw_probability is not None    # never a completed-but-empty forecast
+
+
+def test_completed_result_never_has_empty_distribution():
+    """The invariant: has_forecast() ⟹ a non-empty distribution. A run that cannot produce a binnable
+    terminal is execution_failed (terminal_readout_unbindable), never a completed-empty forecast abstention."""
+    decomp = {"outcome": {"family": "binary", "options": ["yes", "no"], "resolution_rule": "r",
+                          "readout_var": "out"}, "outcome_lean": "neutral",
+              "entities": [{"id": "a", "type": "person", "fields": {}}],
+              "required_causal_processes": ["decide"], "rationale": "x"}
+    res = simulate("Will it?", llm=_llm(decomp), evidence="", as_of=AS_OF, horizon=HORIZON, seed=2)
+    assert (not res.has_forecast()) or bool(res.raw_distribution)
+
+
 # ---------------------------------------------------------------- salvage: truncated decomposition still forecasts
 def test_truncated_decomposition_is_salvaged():
     from swm.world_model_v2.compiler import _salvage_json

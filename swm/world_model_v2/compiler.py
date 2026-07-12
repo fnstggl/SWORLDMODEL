@@ -532,6 +532,8 @@ def _build_events(raw, contract, resolve_var, o, lean, horizon):
         et = str(ev.get("etype", ""))
         if not et:
             continue
+        if et == "resolve_outcome":
+            continue                                          # the canonical terminal resolver is authoritative
         if not event_type_registered(et):
             register_event_type(et, scheduling="scheduled", validated=False,
                                 parameter_source="compiler-proposed")

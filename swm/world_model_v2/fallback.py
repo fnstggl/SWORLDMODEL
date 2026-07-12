@@ -122,7 +122,9 @@ class GenericOutcomeOperator(TransitionOperator):
         register_quantity_type(var, units="outcome")
         before = world.quantities[var].value if var in world.quantities else None
         if before is not None:
-            # SAFETY NET: a domain mechanism already resolved the outcome — do not overwrite it.
+            # SAFETY NET: a domain mechanism already resolved the outcome — do not overwrite it. A value in a
+            # different vocabulary (a boolean True/False vs yes/no options) is reconciled at projection time
+            # (contract canonicalizes truthy→affirmative), so a legitimate mechanism write is never clobbered.
             d = StateDelta(at=world.clock.now, event_type="resolve_outcome", operator=self.name,
                            reason_codes=["already_resolved_by_domain_mechanism_noop"])
             return d

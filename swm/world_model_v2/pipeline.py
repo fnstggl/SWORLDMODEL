@@ -43,7 +43,20 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
     (no double LLM calls). Epistemic weakness lives in support_grade + limitations — never in a refusal."""
     from swm.world_model_v2.calibration import decompose_uncertainty
     dist = result.get("distribution") or {}
+    quant = result.get("quantiles") or {}
     unresolved = result.get("unresolved_share", 0.0)
+    # INVARIANT: a completed simulation must carry a forecast. If the rollout produced NO binnable terminal
+    # distribution AND no quantiles (every terminal world fell outside the declared option space), the
+    # terminal readout is technically unbindable — an ENGINEERING failure (execution_failed), never a
+    # completed-but-empty "forecast abstention". The fallback resolver normally prevents this.
+    if not dist and not quant:
+        return SimulationResult(
+            question=question, simulation_status="execution_failed",
+            failure_taxonomy="terminal_readout_unbindable", plan_hash=plan.plan_hash(),
+            support_grade=plan.support_grade,
+            limitations=[f"{unresolved:.0%} of terminal worlds fell outside the declared option space "
+                         f"{plan.outcome_contract.options} — readout did not bin"],
+            latency_s=round(_time.time() - t0, 3) if t0 is not None else 0.0)
     raw_p = _binary_projection(dist, plan.outcome_contract.options)
     struct_post = result.get("structural_posterior")
     unc = decompose_uncertainty(branches, structural_posterior=struct_post,
