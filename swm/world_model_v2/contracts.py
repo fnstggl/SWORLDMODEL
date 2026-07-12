@@ -26,6 +26,7 @@ class OutcomeContract:
     readout: object = None                        # callable(world) -> native terminal value (REQUIRED pre-run)
     metric: str = ""                              # for ranked_artifacts/best_action: the explicit objective
     horizon_ts: float = None                      # when the outcome resolves (unix)
+    readout_var: str = ""                         # declarative path the readout reads (binding-checked)
 
     def validate(self):
         if self.family not in FAMILIES:
@@ -40,15 +41,31 @@ class OutcomeContract:
 
     def project(self, terminal_branches) -> dict:
         """Aggregate the native answer over weighted terminal branches: frequencies for discrete families,
-        weighted samples for continuous/delay/reach. `terminal_branches` = [WorldBranch]."""
+        weighted samples for continuous/delay/reach. `terminal_branches` = [WorldBranch].
+
+        OPTION-SPACE COVERAGE (Tier A1): for discrete families with declared options, terminal values
+        outside the option space (including None from worlds where nothing resolved) are reported as
+        `unresolved_share`, NOT as answer mass — a silent no-op world must not read as a confident answer."""
         vals = [(b.weight, self.readout(b.world)) for b in terminal_branches]
         z = sum(w for w, _ in vals) or 1.0
         if self.family in ("binary", "categorical", "response_occurrence", "response_type", "best_action"):
-            freq = {}
+            opts = {str(o) for o in self.options if str(o).strip()}
+            freq, unresolved = {}, 0.0
             for w, v in vals:
-                freq[str(v)] = freq.get(str(v), 0.0) + w / z
-            return {"distribution": {k: round(p, 4) for k, p in sorted(freq.items(), key=lambda kv: -kv[1])},
-                    "n_worlds": len(vals)}
+                key = str(v)
+                if opts and key not in opts:
+                    unresolved += w / z
+                    continue
+                freq[key] = freq.get(key, 0.0) + w / z
+            out = {"distribution": {k: round(p, 4) for k, p in sorted(freq.items(), key=lambda kv: -kv[1])},
+                   "n_worlds": len(vals)}
+            if opts:
+                out["unresolved_share"] = round(unresolved, 4)
+                if unresolved > 0.5:
+                    out["warning"] = (f"{unresolved:.0%} of terminal worlds resolved to values outside the "
+                                      f"declared option space — the simulation likely did not execute the "
+                                      f"causal chain; treat this answer as unsupported")
+            return out
         # continuous-like: return weighted quantiles
         xs = sorted((float(v), w) for w, v in vals if isinstance(v, (int, float)))
         if not xs:

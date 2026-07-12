@@ -63,16 +63,21 @@ def llm_distribution(llm, question: str, path: str, *, lo=0.0, hi=1.0) -> Latent
 
 @dataclass
 class CorrelationRule:
-    """Joint structure between two latents: after sampling `src`, shift `dst`'s draw by strength×(src-mid).
-    Declares the known couplings (high workload ↔ low attention, trust ↔ persuadability, …)."""
+    """Joint structure between two latents: after sampling `src`, shift `dst`'s draw by
+    strength×(src−src_mid), scaled to dst's range. Declares the known couplings (high workload ↔ low
+    attention, trust ↔ persuadability, …). Ranges come from each latent's OWN record (Tier A1 fix:
+    the old [0,1] defaults silently biased any latent on a different scale, e.g. responsiveness [0.5,1.8])."""
     src: str
     dst: str
     strength: float                        # -1..1 (negative = anticorrelated)
 
-    def adjust(self, src_val, dst_val, *, lo=0.0, hi=1.0):
+    def adjust(self, src_val, dst_val, *, src_lo=0.0, src_hi=1.0, dst_lo=0.0, dst_hi=1.0):
         try:
-            mid = (lo + hi) / 2.0
-            return min(hi, max(lo, float(dst_val) + self.strength * (float(src_val) - mid)))
+            src_span = max(1e-9, (src_hi - src_lo))
+            dst_span = max(1e-9, (dst_hi - dst_lo))
+            src_mid = (src_lo + src_hi) / 2.0
+            shift = self.strength * ((float(src_val) - src_mid) / src_span) * dst_span
+            return min(dst_hi, max(dst_lo, float(dst_val) + shift))
         except (TypeError, ValueError):
             return dst_val
 
@@ -109,12 +114,26 @@ class InitialStateModel:
         for _ in range(5):
             world = self.base_world.clone(branch_id=branch_id)
             sample = {}
+            ranges = {}
+            for rec in self.latents:
+                c = rec.candidates if isinstance(rec.candidates, dict) else {}
+                if "lo" in c or "hi" in c:
+                    ranges[rec.path] = (float(c.get("lo", 0.0)), float(c.get("hi", 1.0)))
+                else:                                          # discrete candidates: span of values
+                    try:
+                        ks = [float(k) for k in c.keys()]
+                        ranges[rec.path] = (min(ks), max(ks)) if ks else (0.0, 1.0)
+                    except (TypeError, ValueError):
+                        ranges[rec.path] = (0.0, 1.0)
             for rec in self.latents:
                 sf = StateField(dist=rec.candidates)
                 v = sf.sample(rng)
                 for cr in self.correlations:
                     if cr.dst == rec.path and cr.src in sample:
-                        v = cr.adjust(sample[cr.src], v)
+                        s_lo, s_hi = ranges.get(cr.src, (0.0, 1.0))
+                        d_lo, d_hi = ranges.get(rec.path, (0.0, 1.0))
+                        v = cr.adjust(sample[cr.src], v, src_lo=s_lo, src_hi=s_hi,
+                                      dst_lo=d_lo, dst_hi=d_hi)
                 sample[rec.path] = v
             ok = True
             for rule in self.coherence:

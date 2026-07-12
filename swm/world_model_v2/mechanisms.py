@@ -68,15 +68,19 @@ for e in (
     MechanismEntry("background_dynamics", "exogenous", "attention drift + memory decay over elapsed time",
                    required_state=("entities",), parameter_source="broad priors (labeled)",
                    operator="background_dynamics", calibration_status="prior"),
-    # v1's validated numerical kernels, plugged in as measurement/numerical mechanisms
+    # v1's numerical kernels. poisson_arrival is PORTED (RareEventArrivalOperator). The other two are
+    # NOT yet executable in V2 — marked experimental with empty operator so the compiler rejects them
+    # LOUDLY instead of accepting silent no-ops (Tier A1; they were 2 of the audit's 3 dead entries).
     MechanismEntry("poisson_arrival", "numerical", "rare event by a deadline: P=1−exp(−λH)",
                    required_state=("quantities",), parameter_source="base-rate/observed rate (v1 sim_arrival)",
-                   temporal_scale="horizon", calibration_status="prior"),
+                   temporal_scale="horizon", calibration_status="prior", operator="poisson_arrival"),
     MechanismEntry("poll_error_aggregation", "measurement", "latent share vs threshold with poll error",
-                   required_state=("quantities",), parameter_source="empirical poll error 3-6pt (v1)",
-                   temporal_scale="scheduled", calibration_status="prior"),
+                   required_state=("quantities",), parameter_source="empirical poll error 3-6pt (v1); "
+                   "NO V2 OPERATOR YET — v1 kernel unported",
+                   temporal_scale="scheduled", calibration_status="experimental", experimental=True),
     MechanismEntry("whipcount_binomial", "institutional", "undecideds break at grounded lean (binomial)",
-                   required_state=("institutions", "quantities"), parameter_source="whip counts (v1)",
-                   calibration_status="prior"),
+                   required_state=("institutions", "quantities"), parameter_source="whip counts (v1); "
+                   "NO V2 OPERATOR YET — v1 kernel unported",
+                   calibration_status="experimental", experimental=True),
 ):
     register_mechanism(e)

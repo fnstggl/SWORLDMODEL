@@ -10,26 +10,40 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
-from swm.world_model_v2.state import Provenance
+from swm.world_model_v2.state import Provenance, parse_time
+
+#: The CLOSED set of rule kinds with executable semantics. The docstring used to advertise kinds that
+#: silently validated everything; now: materialize refuses non-executable kinds (recorded omission), and
+#: a Rule constructed with an unknown kind FAILS CLOSED at check time (defense in depth) — a rule the
+#: engine cannot execute must not silently admit every action (Tier A1 of the gap audit).
+EXECUTABLE_RULE_KINDS = ("decision_right", "deadline", "budget", "eligibility", "procedure",
+                         "capacity", "quorum")
 
 
 @dataclass
 class Rule:
     rule_id: str
-    kind: str                             # decision_right | voting | threshold | deadline | budget |
-    #                                       eligibility | legal | procedure | capacity
+    kind: str                             # one of EXECUTABLE_RULE_KINDS
     params: dict = field(default_factory=dict)
     prov: Provenance = field(default_factory=Provenance)
 
     def check(self, world, action: dict):
         """Return (ok, reason). `action` is a typed dict: {actor, type, target?, amount?, …}."""
         k, p = self.kind, self.params
+        if k not in EXECUTABLE_RULE_KINDS:
+            return False, (f"rule kind {k!r} has no executable semantics — failing closed "
+                           f"(executable: {EXECUTABLE_RULE_KINDS})")
         if k == "decision_right":
             if action.get("type") in p.get("actions", []) and action.get("actor") not in p.get("holders", []):
                 return False, f"{action.get('actor')} lacks the decision right for {action.get('type')}"
         elif k == "deadline":
-            if action.get("type") in p.get("actions", []) and world.clock.now > p["by_ts"]:
-                return False, f"deadline passed for {action.get('type')}"
+            if action.get("type") in p.get("actions", []):
+                try:
+                    by = parse_time(p["by_ts"])
+                except (KeyError, ValueError, TypeError):
+                    return False, f"deadline rule {self.rule_id} has no parseable by_ts — failing closed"
+                if world.clock.now > by:
+                    return False, f"deadline passed for {action.get('type')}"
         elif k == "budget":
             if action.get("type") in p.get("actions", []):
                 spent = float(action.get("amount", 0.0))
@@ -52,6 +66,25 @@ class Rule:
             cur_v = cur.value if cur is not None else p.get("default_stage")
             if action.get("type") in allowed and cur_v not in allowed[action["type"]]:
                 return False, f"{action.get('type')} not allowed in stage {cur_v!r}"
+        elif k == "capacity":
+            # bounded concurrent/total uses of an action, tracked in a counter quantity
+            if action.get("type") in p.get("actions", []):
+                var = p.get("counter_var", f"capacity_used:{self.rule_id}")
+                used = world.quantities.get(var)
+                used_v = float(used.value) if used is not None and used.value is not None else 0.0
+                if used_v + 1 > float(p.get("max", 0)):
+                    return False, f"capacity exhausted for {action.get('type')} ({used_v}/{p.get('max')})"
+        elif k == "quorum":
+            # a collective action requires >= min_present eligible participants marked present/eligible
+            if action.get("type") in p.get("actions", []):
+                present = 0
+                for eid in p.get("members", []):
+                    ent = world.entities.get(eid)
+                    if ent is not None and ent.value("attention", default=1.0) not in (None, 0.0):
+                        present += 1
+                if present < int(p.get("min_present", 0)):
+                    return False, (f"quorum not met for {action.get('type')}: {present} present "
+                                   f"< {p.get('min_present')}")
         return True, ""
 
 

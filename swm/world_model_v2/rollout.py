@@ -54,6 +54,23 @@ class RolloutEngine:
                     delta, vr = op.run(world, ev, rng)
                     if delta is not None:
                         branch.log.append(delta)
+                        # A4: endogenous action→event chains. Follow-ups are validated against the
+                        # event-type registry, must not travel back in time, and are horizon-capped by
+                        # the queue itself; invalid proposals are logged, never silently queued.
+                        for fu in delta.follow_up_events:
+                            try:
+                                fev = Event(ts=max(float(fu.get("ts", world.clock.now)), world.clock.now),
+                                            etype=str(fu["etype"]),
+                                            participants=list(fu.get("participants") or []),
+                                            payload=dict(fu.get("payload") or {}),
+                                            source=f"endogenous:{op.name}")
+                            except (KeyError, TypeError, ValueError) as e:
+                                branch.log.append(_rejection_delta(
+                                    world, ev, op,
+                                    type("VR", (), {"ok": False,
+                                                    "reasons": [f"invalid follow-up event: {e}"]})()))
+                                continue
+                            queue.schedule(fev)
                     elif not vr.ok:
                         branch.log.append(_rejection_delta(world, ev, op, vr))
         branch.terminal = True

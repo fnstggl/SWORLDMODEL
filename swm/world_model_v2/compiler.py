@@ -56,6 +56,10 @@ Return ONLY JSON:
  "mechanisms": ["<registry id>", ...],
  "missing_mechanisms": [{{"name": "...", "why": "..."}}],
  "sensitivity": {{"<component id>": <0..1>}},
+ "domain": "<one short tag, e.g. organizational_decision | election | messaging | market | diffusion>",
+ "population_kind": "<e.g. online_social | organizational | electorate | lab | none>",
+ "time_scale": "<hours | days | weeks | months>",
+ "available_data": ["<evidence kinds present, e.g. polls | activity_log | org_chart | none>", ...],
  "rationale": "<one sentence per major inclusion/omission>"}}"""
 
 
@@ -100,16 +104,26 @@ def _fidelity_plan(proposal: dict, n_budget: int = 30) -> dict:
             "note": "deterministic rules over advisory LLM sensitivity; components <0.35 marginalize"}
 
 
-def compile_world(question: str, *, llm, evidence: str, as_of: str, horizon: str,
+def compile_world(question: str, *, llm, evidence="", as_of: str, horizon: str,
                   intervention: str = "", n_budget: int = 30) -> WorldExecutionPlan:
     """The one compiler for every scenario class. Raises CompileAbstention with the precise reason when the
-    slice can't be typed/parameterized responsibly."""
+    slice can't be typed/parameterized responsibly.
+
+    `evidence` may be a typed EvidenceBundle (Phase 2 — preferred: as-of-gated, hash-recorded, rendered
+    with per-item dates/sources) or a legacy string (flagged in provenance as unaudited)."""
     from swm.engine.grounding import parse_json
     from swm.world_model_v2.init_state import LatentVariableRecord
     registry = known_mechanisms()
+    bundle_hash, evidence_basis = "", "legacy_string_unaudited"
+    if hasattr(evidence, "render") and hasattr(evidence, "bundle_hash"):   # EvidenceBundle
+        bundle_hash = evidence.bundle_hash()
+        evidence_basis = "typed_bundle"
+        evidence_text = evidence.render(max_chars=4000)
+    else:
+        evidence_text = str(evidence or "")[:4000]
     prompt = _DECOMPOSE_PROMPT.format(
         q=question, intervention=intervention or "(none)", as_of=as_of, horizon=horizon,
-        evidence=evidence[:4000] or "(none)",
+        evidence=evidence_text or "(none)",
         mechanisms=json.dumps({k: v.causal_role for k, v in registry.items()}),
         families=json.dumps(list(FAMILIES)))
     raw = parse_json(llm(prompt)) or {}
@@ -136,16 +150,29 @@ def compile_world(question: str, *, llm, evidence: str, as_of: str, horizon: str
     try:
         contract = OutcomeContract(family=str(o.get("family", "")), options=list(o.get("options") or []),
                                    resolution_rule=str(o.get("resolution_rule", ""))[:300],
-                                   readout=make_readout(readout_var),
+                                   readout=make_readout(readout_var), readout_var=readout_var,
                                    horizon_ts=parse_time(horizon)).validate()
     except (ContractError, ValueError) as e:
         raise CompileAbstention(f"outcome contract invalid: {e}")
 
-    # ---- mechanisms: registry-vetted; unknown → experimental candidates ----
+    # ---- mechanisms: registry-vetted AND executable; unknown → experimental candidates ----
+    # A1: an "accepted" mechanism that resolves to no executable operator is a silent no-op factory —
+    # reject it loudly instead (the empty-operator kernels were 3 of 9 entries in the audited registry).
+    from swm.world_model_v2.transitions import _OPERATORS
     accepted, rejected = [], []
     for mid in raw.get("mechanisms") or []:
         if mid in registry:
             m = registry[mid]
+            if not m.operator or m.operator not in _OPERATORS:
+                rejected.append({"id": mid, "rejection_reason":
+                                 f"registry entry names no executable operator ({m.operator!r}) — "
+                                 f"refusing a mechanism that cannot cause any transition"})
+                continue
+            if _OPERATORS[m.operator]["experimental"]:
+                rejected.append({"id": mid, "rejection_reason":
+                                 f"operator {m.operator!r} is experimental (unvalidated) — excluded from "
+                                 f"production compilation"})
+                continue
             accepted.append({"mech_id": mid, "ontology_type": m.ontology_type, "causal_role": m.causal_role,
                              "parameter_source": m.parameter_source, "temporal_scale": m.temporal_scale,
                              "calibration_status": m.calibration_status, "operator": m.operator,
@@ -156,8 +183,31 @@ def compile_world(question: str, *, llm, evidence: str, as_of: str, horizon: str
                      "status": "experimental — NOT executed until validated"}
                     for m in (raw.get("missing_mechanisms") or []) if isinstance(m, dict)]
     if not accepted:
-        raise CompileAbstention("no registry mechanism applies — the needed mechanisms are missing; marked "
+        raise CompileAbstention("no executable registry mechanism applies — the needed mechanisms are "
+                                f"missing or unexecutable; rejected: {[r['id'] for r in rejected]}; marked "
                                 f"experimental: {[m['name'] for m in experimental]}")
+
+    # ---- A2: production-registry applicability scoring (selection provenance) ----
+    # The scenario descriptor comes from the proposal; families are scored with real applicability rules
+    # (domain/population/timescale/state/data/evidence-quality). Scores gate production-family selection
+    # and are recorded in the plan for audit; lean-registry mechanisms above remain the executable floor.
+    scenario = {"domain": str(raw.get("domain", "") or ""),
+                "population_kind": str(raw.get("population_kind", "") or ""),
+                "time_scale": str(raw.get("time_scale", "") or ""),
+                "available_state": (["network"] if raw.get("relations") else [])
+                + (["entities"] if raw.get("entities") else [])
+                + (["populations"] if raw.get("populations") else [])
+                + (["institutions"] if raw.get("institutions") else [])
+                + (["quantities"] if raw.get("quantities") else []),
+                "available_data": list(raw.get("available_data") or []),
+                "institutional": bool(raw.get("institutions"))}
+    try:
+        from swm.world_model_v2.registry import load_registry
+        from swm.world_model_v2.registry.applicability import rank_mechanisms
+        mechanism_selection = rank_mechanisms(load_registry(), scenario)
+    except Exception as e:                                    # registry unavailable → logged, not fatal
+        mechanism_selection = {"selected": [], "rejected": [],
+                               "note": f"production registry unavailable: {e}"}
 
     # ---- latents: always distributions ----
     latents = []
@@ -203,7 +253,10 @@ def compile_world(question: str, *, llm, evidence: str, as_of: str, horizon: str
         uncertainty_plan={"latents": len(latents), "hazards": len(hazards)},
         compute_plan={"n_particles": _fidelity_plan(raw, n_budget)["n_particles"]},
         provenance={"prompt_hash": hashlib.sha1(prompt.encode()).hexdigest()[:12],
-                    "rationale": str(raw.get("rationale", ""))[:400]})
+                    "rationale": str(raw.get("rationale", ""))[:400],
+                    "scenario": scenario,
+                    "evidence_basis": evidence_basis, "evidence_bundle_hash": bundle_hash,
+                    "production_registry_selection": mechanism_selection})
     return plan
 
 
