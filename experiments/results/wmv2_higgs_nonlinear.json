@@ -1,0 +1,245 @@
+{
+ "protocol": {
+  "cohorts": "identical to wmv2_higgs.json (train@24h/eval@48h, 24h windows, seeds 13/17, both pre-announcement)",
+  "form_selection": "train-internal fit/val split (even/odd rows); primary arm preregistered as val winner before test scoring",
+  "n_sample": 4000,
+  "particles": 30
+ },
+ "fitted": {
+  "linear_q": {
+   "q": 0.022391761035942502
+  },
+  "hill": {
+   "theta0": -1.2988496382936932,
+   "alpha": 0.75,
+   "c": 16.0
+  },
+  "loglinear_theta": {
+   "theta": [
+    -3.32685,
+    0.86402,
+    -0.17042,
+    0.10905,
+    -0.03488
+   ]
+  },
+  "frailty_sigma": {
+   "value": 0.0,
+   "profile_ll": {
+    "0.0": -663.03,
+    "0.25": -673.46,
+    "0.5": -671.92,
+    "0.75": -669.89,
+    "1.0": -668.17,
+    "1.5": -667.89,
+    "2.0": -671.56
+   },
+   "source": "fitted (profile likelihood, train)"
+  },
+  "aging_tau_h": {
+   "value": 48.0,
+   "grid_ll": {
+    "6.0": -673.74,
+    "12.0": -669.37,
+    "24.0": -666.13,
+    "48.0": -664.44
+   },
+   "source": "fitted (grid likelihood, train)"
+  },
+  "aging_frailty_sigma": 0.0,
+  "logistic_baseline": {
+   "w": [
+    0.6033,
+    -0.1137,
+    0.0659,
+    -0.0177
+   ],
+   "b": -3.2649
+  }
+ },
+ "val_selection": {
+  "scores_brier": {
+   "M1_linear": 0.037438,
+   "M2_hill": 0.037106,
+   "M3_loglinear": 0.036968,
+   "M4_frailty": 0.036968,
+   "M5_aging": 0.037028,
+   "M6_aging_frailty": 0.037028
+  },
+  "selected": "M3_loglinear"
+ },
+ "detail": {
+  "H0_base": {
+   "brier": 0.062741,
+   "logloss": 0.2517,
+   "auroc": 0.5,
+   "pr_auc": 0.066,
+   "real_rate": 0.0665,
+   "pred_rate": 0.0408,
+   "n": 4000
+  },
+  "H1_logistic": {
+   "brier": 0.061674,
+   "logloss": 0.2421,
+   "auroc": 0.595,
+   "pr_auc": 0.106,
+   "real_rate": 0.0665,
+   "pred_rate": 0.0526,
+   "n": 4000
+  },
+  "M1_linear": {
+   "brier": 0.064012,
+   "logloss": 0.253,
+   "auroc": 0.564,
+   "pr_auc": 0.098,
+   "real_rate": 0.0665,
+   "pred_rate": 0.0738,
+   "n": 4000
+  },
+  "M2_hill": {
+   "brier": 0.061915,
+   "logloss": 0.2454,
+   "auroc": 0.564,
+   "pr_auc": 0.099,
+   "real_rate": 0.0665,
+   "pred_rate": 0.0514,
+   "n": 4000
+  },
+  "M3_loglinear": {
+   "brier": 0.061482,
+   "logloss": 0.2413,
+   "auroc": 0.594,
+   "pr_auc": 0.11,
+   "real_rate": 0.0665,
+   "pred_rate": 0.0584,
+   "n": 4000
+  },
+  "M4_frailty": {
+   "brier": 0.061482,
+   "logloss": 0.2413,
+   "auroc": 0.594,
+   "pr_auc": 0.11,
+   "real_rate": 0.0665,
+   "pred_rate": 0.0584,
+   "n": 4000
+  },
+  "M5_aging": {
+   "brier": 0.061763,
+   "logloss": 0.2437,
+   "auroc": 0.596,
+   "pr_auc": 0.107,
+   "real_rate": 0.0665,
+   "pred_rate": 0.0484,
+   "n": 4000
+  },
+  "M6_aging_frailty": {
+   "brier": 0.061763,
+   "logloss": 0.2437,
+   "auroc": 0.596,
+   "pr_auc": 0.107,
+   "real_rate": 0.0665,
+   "pred_rate": 0.0484,
+   "n": 4000
+  },
+  "M3_loglinear_no_rollout": {
+   "brier": 0.061545,
+   "logloss": 0.2413,
+   "auroc": 0.596,
+   "pr_auc": 0.106,
+   "real_rate": 0.0665,
+   "pred_rate": 0.0598,
+   "n": 4000
+  }
+ },
+ "paired": {
+  "Msel_vs_H1": {
+   "mean": -0.000192,
+   "ci95": [
+    -0.000525,
+    0.000145
+   ],
+   "n": 4000
+  },
+  "Msel_vs_H0": {
+   "mean": -0.001259,
+   "ci95": [
+    -0.002068,
+    -0.000455
+   ],
+   "n": 4000
+  },
+  "Msel_vs_M1_linear": {
+   "mean": -0.00253,
+   "ci95": [
+    -0.003411,
+    -0.001694
+   ],
+   "n": 4000
+  },
+  "M3_vs_M1_nonlinearity": {
+   "mean": -0.00253,
+   "ci95": [
+    -0.003411,
+    -0.001694
+   ],
+   "n": 4000
+  },
+  "M4_vs_M3_frailty": {
+   "mean": 0.0,
+   "ci95": [
+    0.0,
+    0.0
+   ],
+   "n": 4000
+  },
+  "M5_vs_M3_aging": {
+   "mean": 0.000281,
+   "ci95": [
+    -8e-06,
+    0.000585
+   ],
+   "n": 4000
+  },
+  "Msel_vs_no_rollout": {
+   "mean": -6.3e-05,
+   "ci95": [
+    -0.000156,
+    3.1e-05
+   ],
+   "n": 4000
+  },
+  "H1_vs_H0": {
+   "mean": -0.001067,
+   "ci95": [
+    -0.001555,
+    -0.00058
+   ],
+   "n": 4000
+  }
+ },
+ "hawkes_family_validation": {
+  "fitted": {
+   "mu_per_s": 0.0032225783359769136,
+   "branching_alpha": 0.95,
+   "omega_per_s": 0.0016666666666666668,
+   "train_ll": -53942.6,
+   "source": "fitted (train window 0-48h, EM/MLE exponential kernel)"
+  },
+  "held_out_24_72h": {
+   "mae_hawkes": 1098.9,
+   "mae_poisson": 973.0,
+   "actual_total": 33497,
+   "hawkes_total": 7149.0,
+   "poisson_total": 10144.0
+  },
+  "passed": false,
+  "limits": "aggregate stream only (not per-user); constant background \u03bc \u2014 circadian baseline NOT modeled (logged omission); exponential kernel only"
+ },
+ "llm_arms": "STRUCTURALLY ABSENT \u2014 no message content in SNAP Higgs",
+ "_meta": {
+  "sim_latency_s": 14.4,
+  "runtime_s": 107.1,
+  "llm_calls": 0,
+  "est_cost_usd": 0.0
+ }
+}
