@@ -68,6 +68,13 @@ for e in (
     MechanismEntry("background_dynamics", "exogenous", "attention drift + memory decay over elapsed time",
                    required_state=("entities",), parameter_source="broad priors (labeled)",
                    operator="background_dynamics", calibration_status="prior"),
+    # the tier-6/7 FALLBACK: guarantees every coherent question can resolve an outcome from a broad prior
+    # when no validated mechanism applies. NOT empirically validated — labeled exploratory/speculative.
+    MechanismEntry("generic_outcome_prior", "numerical",
+                   "resolve the terminal outcome from a BROAD prior (Beta/Normal) when no validated "
+                   "mechanism applies; per-particle draw; qualitative lean only; never LLM-minted",
+                   required_state=("quantities",), parameter_source="broad prior; tier 6/7 fallback",
+                   temporal_scale="horizon", calibration_status="experimental", operator="generic_outcome_prior"),
     # v1's numerical kernels. poisson_arrival is PORTED (RareEventArrivalOperator). The other two are
     # NOT yet executable in V2 — marked experimental with empty operator so the compiler rejects them
     # LOUDLY instead of accepting silent no-ops (Tier A1; they were 2 of the audit's 3 dead entries).

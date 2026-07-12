@@ -41,7 +41,8 @@ for _n, _s in (("message_delivered", "scheduled"), ("inbox_checked", "hazard"),
                ("decision_opportunity", "scheduled"), ("collective_vote", "scheduled"),
                ("measurement", "scheduled"), ("deadline", "scheduled"),
                ("distraction", "hazard"), ("illness", "hazard"), ("external_shock", "hazard"),
-               ("follow_up", "scheduled"), ("background_tick", "scheduled")):
+               ("follow_up", "scheduled"), ("background_tick", "scheduled"),
+               ("resolve_outcome", "scheduled")):   # terminal-outcome resolution (generic fallback + others)
     register_event_type(_n, scheduling=_s, validated=True)
 
 

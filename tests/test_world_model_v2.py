@@ -357,27 +357,46 @@ def test_novel_scenario_compiles_and_runs_end_to_end():
     # unknown mechanism rejected, missing one marked experimental — never fabricated
     assert any(r["id"] == "made_up_mechanism_xyz" for r in plan.rejected_mechanisms)
     assert plan.candidate_experimental_mechanisms[0]["name"] == "strike_contagion"
-    assert "NOT executed" in plan.candidate_experimental_mechanisms[0]["status"]
-    # fidelity planner: high-sensitivity explicit, low marginalized — deterministic over advisory hints
+    assert "not executed" in plan.candidate_experimental_mechanisms[0]["status"]
+    # fidelity planner: high-sensitivity explicit, low marginalized-WITH-UNCERTAINTY (kept, never dropped)
     assert "agent_decision" in plan.fidelity_plan["explicit"]
-    assert "background_dynamics" in plan.fidelity_plan["marginalized"]
-    # end-to-end: materialize + roll + read from terminal states
+    assert "background_dynamics" in plan.fidelity_plan["marginalized_with_uncertainty"]
+    # end-to-end: materialize + roll + read from terminal states. The distribution is over the DECLARED
+    # outcome options ("yes"/"no") — faithful to the contract, not coerced to a fixed True/False.
     result, branches = run_from_plan(plan, llm=None, n_particles=8, seed=4)
     dist = result["distribution"]
-    assert set(dist) <= {"True", "False", "None"} and result["readout"] == "terminal_states"
+    assert set(dist) <= {"yes", "no", "None"} and result["readout"] == "terminal_states"
     assert result["n_deltas"] > 0                          # machine-readable history exists
 
 
-def test_compiler_abstains_without_readout_or_mechanisms():
-    from swm.world_model_v2.compiler import CompileAbstention, compile_world
-    with pytest.raises(CompileAbstention):                 # no readout var → refuse to simulate
-        compile_world("q", llm=lambda p: json.dumps({"outcome": {"family": "binary"}}),
-                      evidence="", as_of="2026-07-01", horizon="2026-07-14")
-    with pytest.raises(CompileAbstention):                 # only unknown mechanisms → abstain, marked
-        compile_world("q", llm=lambda p: json.dumps(
-            {"outcome": {"family": "binary", "readout_var": "x"},
-             "mechanisms": ["nonexistent"], "missing_mechanisms": [{"name": "nonexistent", "why": "y"}]}),
-            evidence="", as_of="2026-07-01", horizon="2026-07-14")
+def test_compiler_never_abstains_repairs_readout_and_falls_back():
+    """MIGRATION (no-abstention semantics): the two cases that used to raise CompileAbstention now COMPILE.
+    Epistemic weakness (missing readout, only-unvalidated mechanisms) NEVER blocks a forecast — the readout
+    is repaired to the canonical `outcome` quantity and the generic broad-prior resolver guarantees an
+    executable terminal mechanism. The plan is graded weak/degraded, not refused."""
+    from swm.world_model_v2.compiler import compile_world
+    from swm.world_model_v2.materialize import run_from_plan
+
+    # (1) no readout var → repaired to canonical `outcome`, resolver attached, real distribution produced
+    plan = compile_world("q", llm=lambda p: json.dumps({"outcome": {"family": "binary"}}),
+                         evidence="", as_of="2026-07-01", horizon="2026-07-14")
+    assert plan.outcome_contract.readout_var == "outcome"
+    assert any(m["mech_id"] == "generic_outcome_prior" for m in plan.accepted_mechanisms)
+    assert plan.support_grade in ("exploratory", "highly_speculative")
+    assert plan.degraded is True
+    result, _ = run_from_plan(plan, n_particles=6, seed=1)
+    assert result["distribution"] and result["n_deltas"] > 0     # a forecast, not an abstention
+
+    # (2) only unknown mechanisms → the unknown one is rejected but the fallback resolver still forecasts
+    plan2 = compile_world("q", llm=lambda p: json.dumps(
+        {"outcome": {"family": "binary", "readout_var": "x"},
+         "mechanisms": ["nonexistent"], "missing_mechanisms": [{"name": "nonexistent", "why": "y"}]}),
+        evidence="", as_of="2026-07-01", horizon="2026-07-14")
+    assert any(r["id"] == "nonexistent" for r in plan2.rejected_mechanisms)
+    assert any(m["mech_id"] == "generic_outcome_prior" for m in plan2.accepted_mechanisms)
+    assert plan2.provenance["readout_repaired"] is True          # "x" was not a declared quantity
+    result2, _ = run_from_plan(plan2, n_particles=6, seed=1)
+    assert result2["distribution"]                               # still forecasts, never abstains
 
 
 def test_no_scenario_branches_in_v2_source():

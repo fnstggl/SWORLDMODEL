@@ -219,7 +219,46 @@ def decompose_uncertainty(branches, *, structural_posterior=None, evidence_grade
     return out
 
 
-# ------------------------------------------------------------------ abstention policy
+# ------------------------------------------------------------------ support grading (no-abstention)
+#: The new axes live in swm/world_model_v2/result.py. This module maps epistemic SIGNALS to a support
+#: grade + recommendation + limitations — signals NEVER refuse a forecast, they downgrade support.
+def grade_support(*, worst_mechanism_tier: int = 6, structural_model_uncertainty: float = 0.0,
+                  n_evidence_items: int = 0, unsupported_high_sensitivity: int = 0,
+                  transport_risk: str = "medium", intervention_requested: bool = False) -> dict:
+    """Map signals → {support_grade, recommendation_status, limitations}. Support grade follows the
+    weakest mechanism tier; structural disagreement / thin evidence / unsupported high-sensitivity
+    variables add limitations and can pull the grade down one step, but NEVER produce a refusal."""
+    from swm.world_model_v2.fallback import TIER_SUPPORT_GRADE
+    grade = TIER_SUPPORT_GRADE.get(worst_mechanism_tier, "highly_speculative")
+    order = ["empirically_supported", "transfer_supported", "exploratory", "highly_speculative"]
+    idx = order.index(grade)
+    limitations = []
+    if structural_model_uncertainty > 0.6:
+        limitations.append("structural hypotheses disagree materially")
+        idx = min(len(order) - 1, idx + 1)
+    if unsupported_high_sensitivity > 0:
+        limitations.append(f"{unsupported_high_sensitivity} high-sensitivity variable(s) supported only "
+                           f"by broad priors")
+    if n_evidence_items == 0:
+        limitations.append("no admissible as-of evidence — prior-driven simulation")
+    if transport_risk == "high" and idx < order.index("exploratory"):
+        limitations.append("parameters transported with widened uncertainty")
+    grade = order[idx]
+    if not intervention_requested:
+        rec = "not_requested"
+    elif grade == "empirically_supported":
+        rec = "eligible"
+    elif grade == "transfer_supported":
+        rec = "limited"
+    else:
+        rec = "withheld"
+    return {"support_grade": grade, "recommendation_status": rec, "limitations": limitations}
+
+
+# ------------------------------------------------------------------ DEPRECATED abstention policy
+# Retained for backward compatibility + its tests. NOT used on the no-abstention production path — the
+# pipeline derives support grade from the plan's mechanism tiers (fallback.overall_support_grade) and uses
+# grade_support() above. `decide_abstention` no longer gates whether a forecast is produced.
 ABSTAIN_GRADES = ("supported", "supported_with_limitations", "low_confidence", "abstain", "unresolvable")
 
 

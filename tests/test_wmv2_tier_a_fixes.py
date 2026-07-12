@@ -101,12 +101,22 @@ def test_capacity_and_quorum_kinds_execute():
 
 
 # ---------------------------------------------------------------- executable-mechanism gating
-def test_operatorless_mechanism_rejected_at_compile():
-    with pytest.raises(CompileAbstention):
-        _compile(_plan_dict(["whipcount_binomial"]))        # experimental/unported → nothing executable
+def test_operatorless_mechanism_rejected_but_fallback_still_forecasts():
+    """MIGRATION (no-abstention): an unported/experimental mechanism is STILL rejected (never fabricated),
+    but 'no production-eligible mechanism' no longer means 'no forecast'. The generic broad-prior resolver
+    is attached as the terminal safety net so compilation completes and the plan runs."""
+    plan_only_bad = _compile(_plan_dict(["whipcount_binomial"]))   # experimental/unported → not executable
+    assert any(r["id"] == "whipcount_binomial" for r in plan_only_bad.rejected_mechanisms)
+    assert any(m["mech_id"] == "generic_outcome_prior" for m in plan_only_bad.accepted_mechanisms)
+    assert plan_only_bad.support_grade in ("exploratory", "highly_speculative")
+    result, _ = run_from_plan(plan_only_bad, n_particles=6, seed=1)
+    assert result["distribution"] and result["n_deltas"] > 0       # forecasts, never abstains
+
     plan = _compile(_plan_dict(["whipcount_binomial", "agent_decision"]))
     assert any(r["id"] == "whipcount_binomial" for r in plan.rejected_mechanisms)
-    assert [m["mech_id"] for m in plan.accepted_mechanisms] == ["agent_decision"]
+    # the domain mechanism is accepted AND the generic resolver is appended as the terminal safety net
+    accepted_ids = [m["mech_id"] for m in plan.accepted_mechanisms]
+    assert accepted_ids == ["agent_decision", "generic_outcome_prior"]
 
 
 def test_poisson_arrival_is_now_executable():
@@ -120,10 +130,16 @@ def test_poisson_arrival_is_now_executable():
 
 
 # ---------------------------------------------------------------- readout binding + coverage
-def test_dangling_readout_aborts():
+def test_dangling_readout_is_repaired_not_aborted():
+    """MIGRATION (no-abstention): a readout pointing at an entity.field no mechanism writes used to abort
+    (MaterializeAbstention). It is now REPAIRED at compile time to the canonical `outcome` quantity that the
+    terminal resolver writes, so the run completes and the readout binds — a technical unbindable readout is
+    an engineering failure (CompilerExecutionError), never a silent forecast refusal."""
     plan = _compile(_plan_dict(["agent_decision"], readout="ghost_entity.mood"))
-    with pytest.raises(MaterializeAbstention):
-        run_from_plan(plan, n_particles=2)
+    assert plan.outcome_contract.readout_var == "outcome"          # repaired to canonical quantity
+    assert plan.provenance["readout_repaired"] is True
+    result, branches = run_from_plan(plan, n_particles=4, seed=1)
+    assert result["distribution"] and result["readout"] == "terminal_states"
 
 
 def test_unresolved_terminal_mass_is_reported_not_counted():
