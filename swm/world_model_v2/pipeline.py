@@ -36,6 +36,57 @@ def _recommendation_status(intervention: str, support_grade: str) -> str:
     return "withheld"                                          # exploratory/highly_speculative → withhold
 
 
+def result_from_run(question, plan, result, branches, *, intervention="", t0=None, calibrator=None,
+                    cal_key="") -> SimulationResult:
+    """Build the shipped SimulationResult from a completed (plan, terminal result, branches). Extracted so
+    both simulate() and the validation harness construct the SAME contract from ONE compile + ONE rollout
+    (no double LLM calls). Epistemic weakness lives in support_grade + limitations — never in a refusal."""
+    from swm.world_model_v2.calibration import decompose_uncertainty
+    dist = result.get("distribution") or {}
+    unresolved = result.get("unresolved_share", 0.0)
+    raw_p = _binary_projection(dist, plan.outcome_contract.options)
+    struct_post = result.get("structural_posterior")
+    unc = decompose_uncertainty(branches, structural_posterior=struct_post,
+                                evidence_grade=plan.provenance.get("evidence_basis", ""))
+    cal_p = None
+    if calibrator is not None and raw_p is not None and hasattr(calibrator, "apply"):
+        try:
+            cal_p = round(calibrator.apply(raw_p, cal_key), 4) if cal_key else round(calibrator.apply(raw_p), 4)
+        except Exception:
+            cal_p = None
+    limitations = list(plan.omissions and [f"omitted (negligible-sensitivity): {o.get('component')}"
+                                           for o in plan.omissions[:5]] or [])
+    if plan.degraded:
+        limitations.append(f"degraded: support grade {plan.support_grade}; "
+                           f"{len(plan.fallbacks_used)} fallback mechanism(s) used")
+    if unresolved > 0.0:
+        limitations.append(f"{unresolved:.0%} of terminal worlds outside the declared option space")
+    high_sens_unknowns = [l.path for l in plan.latents if getattr(l, "sensitivity", 0.5) >= 0.6]
+    status = "completed_with_degradation" if plan.degraded else "completed"
+    return SimulationResult(
+        question=question, simulation_status=status, support_grade=plan.support_grade,
+        recommendation_status=_recommendation_status(intervention, plan.support_grade),
+        raw_distribution={k: round(v, 4) for k, v in dist.items()} if dist else result.get("quantiles", {}),
+        calibrated_distribution=({str(k): cal_p} if cal_p is not None else None),
+        raw_probability=raw_p, calibrated_probability=cal_p,
+        uncertainty_decomposition=unc, structural_disagreement=struct_post,
+        mechanism_disagreement={"choices": plan.mechanism_choices,
+                                "n_fallback": len(plan.fallbacks_used)},
+        evidence_quality=plan.provenance.get("evidence_basis", ""),
+        limitations=limitations, fallbacks_used=plan.fallbacks_used,
+        mechanism_tiers={c["process"]: c["tier"] for c in plan.mechanism_choices},
+        omitted_high_sensitivity_variables=high_sens_unknowns,
+        sensitivity_contributors=[c["process"] for c in plan.mechanism_choices if c["tier"] >= 5][:5],
+        interpretation_hypotheses=plan.interpretations,
+        plan_hash=plan.plan_hash(),
+        provenance={"compiler_version": plan.provenance.get("compiler_version"),
+                    "prompt_hash": plan.provenance.get("prompt_hash"),
+                    "readout_var": plan.outcome_contract.readout_var,
+                    "readout_repaired": plan.provenance.get("readout_repaired"),
+                    "n_deltas": result.get("n_deltas"), "n_particles": plan.compute_plan.get("n_particles")},
+        latency_s=round(_time.time() - t0, 3) if t0 is not None else 0.0)
+
+
 def simulate(question: str, *, llm, evidence="", as_of: str, horizon: str, intervention: str = "",
              n_particles=None, seed: int = 0, calibrator=None, cal_key: str = "") -> SimulationResult:
     t0 = _time.time()
@@ -69,52 +120,5 @@ def simulate(question: str, *, llm, evidence="", as_of: str, horizon: str, inter
                                 limitations=[f"runtime: {type(e).__name__}: {e}"],
                                 latency_s=round(_time.time() - t0, 3))
 
-    dist = result.get("distribution") or {}
-    unresolved = result.get("unresolved_share", 0.0)
-    raw_p = _binary_projection(dist, plan.outcome_contract.options)
-
-    # ---- uncertainty decomposition (structural + fallback + evidence) ----
-    from swm.world_model_v2.calibration import decompose_uncertainty
-    struct_post = result.get("structural_posterior")
-    unc = decompose_uncertainty(branches, structural_posterior=struct_post,
-                                evidence_grade=plan.provenance.get("evidence_basis", ""))
-
-    cal_p = None
-    if calibrator is not None and raw_p is not None and hasattr(calibrator, "apply"):
-        try:
-            cal_p = round(calibrator.apply(raw_p, cal_key), 4) if cal_key else round(calibrator.apply(raw_p), 4)
-        except Exception:
-            cal_p = None
-
-    limitations = list(plan.omissions and [f"omitted (negligible-sensitivity): {o.get('component')}"
-                                           for o in plan.omissions[:5]] or [])
-    if plan.degraded:
-        limitations.append(f"degraded: support grade {plan.support_grade}; "
-                           f"{len(plan.fallbacks_used)} fallback mechanism(s) used")
-    if unresolved > 0.0:
-        limitations.append(f"{unresolved:.0%} of terminal worlds outside the declared option space")
-    high_sens_unknowns = [l.path for l in plan.latents if getattr(l, "sensitivity", 0.5) >= 0.6]
-
-    status = "completed_with_degradation" if plan.degraded else "completed"
-    return SimulationResult(
-        question=question, simulation_status=status, support_grade=plan.support_grade,
-        recommendation_status=_recommendation_status(intervention, plan.support_grade),
-        raw_distribution={k: round(v, 4) for k, v in dist.items()} if dist else result.get("quantiles", {}),
-        calibrated_distribution=({str(k): cal_p} if cal_p is not None else None),
-        raw_probability=raw_p, calibrated_probability=cal_p,
-        uncertainty_decomposition=unc, structural_disagreement=struct_post,
-        mechanism_disagreement={"choices": plan.mechanism_choices,
-                                "n_fallback": len(plan.fallbacks_used)},
-        evidence_quality=plan.provenance.get("evidence_basis", ""),
-        limitations=limitations, fallbacks_used=plan.fallbacks_used,
-        mechanism_tiers={c["process"]: c["tier"] for c in plan.mechanism_choices},
-        omitted_high_sensitivity_variables=high_sens_unknowns,
-        sensitivity_contributors=[c["process"] for c in plan.mechanism_choices if c["tier"] >= 5][:5],
-        interpretation_hypotheses=plan.interpretations,
-        plan_hash=plan.plan_hash(),
-        provenance={"compiler_version": plan.provenance.get("compiler_version"),
-                    "prompt_hash": plan.provenance.get("prompt_hash"),
-                    "readout_var": plan.outcome_contract.readout_var,
-                    "readout_repaired": plan.provenance.get("readout_repaired"),
-                    "n_deltas": result.get("n_deltas"), "n_particles": plan.compute_plan.get("n_particles")},
-        latency_s=round(_time.time() - t0, 3))
+    return result_from_run(question, plan, result, branches, intervention=intervention, t0=t0,
+                           calibrator=calibrator, cal_key=cal_key)

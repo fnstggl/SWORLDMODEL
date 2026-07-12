@@ -142,6 +142,36 @@ def test_dangling_readout_is_repaired_not_aborted():
     assert result["distribution"] and result["readout"] == "terminal_states"
 
 
+# ---------------------------------------------------------------- binary option polarity (lean convention)
+def test_binary_option_polarity_is_order_invariant():
+    """The generic resolver applies outcome_lean toward options[0] and the projection reports P(options[0]);
+    both require options[0] to be the AFFIRMATIVE answer. LLMs order options inconsistently, so the compiler
+    normalizes by lexical negativity. A 'yes'-leaning question must give HIGH P(affirmative) regardless of the
+    order the LLM listed the options in — otherwise the forecast polarity silently inverts."""
+    from swm.world_model_v2.compiler import _affirmative_first, compile_world
+    assert _affirmative_first(["no_reply", "reply"]) == ["reply", "no_reply"]
+    assert _affirmative_first(["reply", "no_reply"]) == ["reply", "no_reply"]
+    assert _affirmative_first(["fail", "pass"]) == ["pass", "fail"]
+    assert _affirmative_first(["yes", "no"]) == ["yes", "no"]
+    assert _affirmative_first(["not_ratified", "ratified"]) == ["ratified", "not_ratified"]
+
+    def p_affirmative(options, lean, n=200):
+        decomp = {"outcome": {"family": "binary", "options": options,
+                              "resolution_rule": "affirmative iff the manager replies", "readout_var": "reply"},
+                  "outcome_lean": lean, "entities": [{"id": "m", "type": "person", "fields": {}}],
+                  "required_causal_processes": ["response_decision"], "rationale": "polarity"}
+        plan = compile_world("Will the manager reply?", llm=lambda pr: json.dumps(decomp),
+                             evidence="", as_of="2023-05-01", horizon="2023-05-08")
+        res, _ = run_from_plan(plan, n_particles=n, seed=3)
+        return res["distribution"].get("reply", 0.0)
+
+    # order-invariant AND directionally correct: strong_yes >> strong_no for P(reply), both orders
+    assert p_affirmative(["no_reply", "reply"], "strong_yes") > 0.6
+    assert p_affirmative(["reply", "no_reply"], "strong_yes") > 0.6
+    assert p_affirmative(["no_reply", "reply"], "strong_no") < 0.4
+    assert p_affirmative(["reply", "no_reply"], "strong_no") < 0.4
+
+
 def test_unresolved_terminal_mass_is_reported_not_counted():
     c = OutcomeContract(family="binary", options=["yes", "no"], resolution_rule="r",
                         readout=lambda w: w.quantities["q_out"].value if "q_out" in w.quantities else None,

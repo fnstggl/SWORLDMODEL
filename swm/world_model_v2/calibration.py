@@ -1,7 +1,7 @@
-"""Calibration, abstention, uncertainty decomposition and the direct-forecast critic — Phase 12 (Tier G).
+"""Calibration, SUPPORT GRADING, uncertainty decomposition and the direct-forecast critic — Phase 12 (Tier G).
 
-Every V2 forecast passes through here to become a user-facing result. The contract:
-  raw distribution + context → calibrated distribution + confidence grade + abstention decision +
+Every V2 forecast passes through here to become a user-facing result. The no-abstention contract:
+  raw distribution + context → calibrated distribution + SUPPORT GRADE + recommendation status +
   uncertainty decomposition + sensitivity contributors + omitted high-impact variables +
   structural disagreement + direct-model disagreement + calibration provenance.
 
@@ -9,10 +9,13 @@ CALIBRATION GOVERNANCE: calibrators are fitted on a TRAIN/VAL split ONLY (fit_* 
 carries its fit provenance and is versioned. Conditioned calibration keys on domain/horizon/mechanism-
 status with partial pooling to the global calibrator when a cell is small.
 
-ABSTENTION is signal-driven, not a fixed threshold: unsupported high-sensitivity variables, weak evidence
+SUPPORT GRADING (no-abstention) is signal-driven: unsupported high-sensitivity variables, weak evidence
 (leakage grade / few items), structural-hypothesis disagreement, no applicable validated mechanism,
-out-of-distribution, poor expected calibration. Graded outputs: supported / supported_with_limitations /
-low_confidence / abstain / unresolvable.
+transport risk and out-of-distribution do NOT refuse a forecast — they LOWER the support grade
+(empirically_supported / transfer_supported / exploratory / highly_speculative) and reduce recommendation
+eligibility. See grade_support(). The old signal→abstain policy (decide_abstention / AbstentionDecision)
+is DEPRECATED and retained only for backward compatibility and its tests; it no longer gates whether a
+forecast is produced.
 
 The direct-forecast CRITIC compares the simulation to grounded-direct and ensemble baselines on identical
 evidence; it flags disagreement and possible failure modes but NEVER overwrites the simulation number.

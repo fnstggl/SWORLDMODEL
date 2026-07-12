@@ -175,6 +175,75 @@ def _make_readout(var):
     return read
 
 
+def _salvage_json(txt: str):
+    """Recover a usable dict from a TRUNCATED LLM JSON reply (max_tokens cut it off mid-object). parse_json's
+    `{.*}` needs a closing brace a truncated reply lacks; here we walk the text tracking string state + bracket
+    depth, close whatever is still open, and if that won't parse, trim the last comma-separated member and
+    retry. This keeps the decomposition PREFIX (which lists `outcome`/entities first) rather than losing the
+    whole plan to one truncated tail field — a coherent question still simulates. Returns {} if unsalvageable."""
+    import re as _re
+    if not isinstance(txt, str):
+        return {}
+    s = _re.sub(r"```(?:json)?|```", "", txt).strip()
+    start = s.find("{")
+    if start < 0:
+        return {}
+    s = s[start:]
+    # walk, tracking string/escape state and bracket depth
+    depth, in_str, esc, stack = 0, False, False, []
+    for ch in s:
+        if in_str:
+            if esc:
+                esc = False
+            elif ch == "\\":
+                esc = True
+            elif ch == '"':
+                in_str = False
+            continue
+        if ch == '"':
+            in_str = True
+        elif ch in "{[":
+            stack.append("}" if ch == "{" else "]")
+        elif ch in "}]" and stack:
+            stack.pop()
+    closed = s + ('"' if in_str else "") + "".join(reversed(stack))
+    try:
+        obj = json.loads(closed)
+        return obj if isinstance(obj, dict) else {}
+    except ValueError:
+        pass
+    # iteratively drop the trailing (partial) member and re-close
+    body = s
+    for _ in range(40):
+        cut = max(body.rfind(","), body.rfind("}"), body.rfind("]"))
+        if cut <= 0:
+            break
+        body = body[:cut]
+        d2, in_s2, e2, st2 = 0, False, False, []
+        for ch in body:
+            if in_s2:
+                if e2:
+                    e2 = False
+                elif ch == "\\":
+                    e2 = True
+                elif ch == '"':
+                    in_s2 = False
+                continue
+            if ch == '"':
+                in_s2 = True
+            elif ch in "{[":
+                st2.append("}" if ch == "{" else "]")
+            elif ch in "}]" and st2:
+                st2.pop()
+        try:
+            obj = json.loads(body + ('"' if in_s2 else "") + "".join(reversed(st2)))
+            if isinstance(obj, dict) and obj:
+                return obj
+        except ValueError:
+            continue
+    return {}
+
+
 def _repair_readout(readout_var: str, proposal: dict) -> tuple:
     """READOUT REPAIR (B9): guarantee the terminal readout binds AND gets written. If the proposed
     readout_var references a declared QUANTITY (which the mechanism chain can populate), keep it. Otherwise
@@ -190,9 +259,46 @@ def _repair_readout(readout_var: str, proposal: dict) -> tuple:
     return canonical, canonical, bool(var and var != canonical)
 
 
+#: negation tokens used to detect which binary option is the NEGATIVE outcome. Curated whole-token set (no
+#: risky prefixes like un-/in-/dis- that false-positive on "under"/"increase"/"individual").
+_NEG_TOKENS = frozenset((
+    "no", "not", "non", "none", "never", "fail", "fails", "failed", "failure", "reject", "rejected",
+    "rejects", "decline", "declined", "declines", "deny", "denied", "denies", "against", "lose", "loses",
+    "lost", "loss", "false", "absent", "unsuccessful", "withdraw", "withdrawn", "withdrew", "block",
+    "blocked", "defeat", "defeated", "miss", "missed", "nay", "down", "below", "unresolved", "unmet",
+    "nonoccurrence", "dont", "doesnt", "wont", "cannot", "nope", "unapproved", "unratified"))
+
+
+def _negativity(opt: str) -> int:
+    """Score how NEGATIVE a binary option label reads. options are split on _/-/space and matched against a
+    curated negation lexicon; leading no_/not_/non- also count. Purely lexical (the LLM proposes only the
+    qualitative labels — no probability is minted here)."""
+    import re as _re
+    s = opt.strip().lower().replace("-", "_")
+    score = 0
+    for tok in _re.split(r"[_\s]+", s):
+        if tok in _NEG_TOKENS:
+            score += 2
+    if s.startswith(("no_", "not_", "non_", "n_")):
+        score += 1
+    return score
+
+
+def _affirmative_first(options):
+    """Return the 2 options with the AFFIRMATIVE (least-negative) one first. The generic resolver applies the
+    outcome_lean toward options[0] and the binary projection reports P(options[0]); both rely on options[0]
+    being the affirmative answer to the question. LLMs order options inconsistently (e.g. ['no_reply',
+    'reply']), so we normalize by lexical negativity, keeping the LLM order on a tie."""
+    if len(options) != 2:
+        return options
+    n0, n1 = _negativity(options[0]), _negativity(options[1])
+    return [options[1], options[0]] if n1 < n0 else list(options)
+
+
 def _coerce_outcome(o: dict) -> dict:
     """Repair a malformed outcome contract into a valid one rather than refusing. Fixes: bad family →
-    infer from options; empty options for categorical → synthesize True/False; missing resolution rule."""
+    infer from options; empty options for categorical → synthesize True/False; missing resolution rule;
+    binary option ORDER normalized so the affirmative outcome is options[0] (lean + projection convention)."""
     fam = str(o.get("family", "")).strip()
     options = [str(x) for x in (o.get("options") or []) if str(x).strip()]
     if fam not in FAMILIES:
@@ -201,6 +307,8 @@ def _coerce_outcome(o: dict) -> dict:
         options = ["True", "False"]
     if fam == "categorical" and len(options) < 2:
         options = options + [f"option_{i}" for i in range(2 - len(options))]
+    if fam in ("binary", "response_occurrence"):
+        options = _affirmative_first(options)                # affirmative outcome first (polarity contract)
     return {"family": fam, "options": options,
             "resolution_rule": str(o.get("resolution_rule", "") or "resolved from terminal state")[:300]}
 
@@ -236,6 +344,10 @@ def compile_world(question: str, *, llm, evidence="", as_of: str, horizon: str,
         except Exception as e:
             raise CompilerExecutionError(f"LLM call failed: {e}", taxonomy="unavailable_service")
         raw = parse_json(txt) or {}
+        if not raw.get("outcome") and raw.get("coherent") is not False:
+            salvaged = _salvage_json(txt)                     # recover a TRUNCATED decomposition's prefix
+            if salvaged.get("outcome"):
+                raw = salvaged
         if raw.get("outcome") or raw.get("coherent") is False:
             break
     raw = raw or {}
