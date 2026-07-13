@@ -1,14 +1,216 @@
 {
  "_integrity": {
-  "n_top_level": 6,
-  "saved_at": "2026-07-12T21:07:03Z",
-  "sha256": "5c11aae6bc0f492bac1c31c95a4c75113b6cf83dd9a66ec3d8aab764e3508eac"
+  "n_top_level": 16,
+  "saved_at": "2026-07-13T03:27:41Z",
+  "sha256": "613fb4d1deb19bbc312e2c24300b509ed73da491bb7e530d2895ac6619bd2772"
  },
  "payload": {
+  "argument_persuasion_success": [
+   {
+    "citations": [
+     {
+      "doi_or_url": "10.1145/2872427.2883081",
+      "finding": "CMV persuasion",
+      "limits": "platform-specific, confounded",
+      "ref": "Tan et al. 2016 WWW",
+      "study_period": "",
+      "study_population": ""
+     }
+    ],
+    "created_at": "2026-07-13T03:27:41Z",
+    "domain": "online_debate",
+    "family_id": "argument_persuasion_success",
+    "fit_method": "logistic MLE + L2",
+    "fitted_on": "experiments/results/exp021_cmv/cmv_common.json train split",
+    "pack_id": "cmv_delta",
+    "population": "r/ChangeMyView challengers (n=1200)",
+    "time_scale": "",
+    "transport_note": "CMV persuasion; NULL result; platform-specific",
+    "validation": [
+     {
+      "artifact": "experiments/results/wmv2_phase6_fits.json",
+      "at": "",
+      "baseline": "base-rate",
+      "baseline_value": 0.22381,
+      "ci95": [
+       -0.009533,
+       0.001343
+      ],
+      "dataset": "CMV",
+      "kind": "held_out",
+      "metric": "Brier",
+      "note": "NULL: surface features barely differ from base rate (preserved; small persuasion effects)",
+      "passed": false,
+      "split": "test 20% (disjoint), seed 13",
+      "value": 0.21993
+     }
+    ],
+    "values": {
+     "coefficients": {
+      "dataset": "experiments/results/exp021_cmv/cmv_common.json",
+      "hi": null,
+      "lo": null,
+      "method": "gradient-descent MLE + L2=1e-3",
+      "sd": null,
+      "source": "fitted",
+      "value": {
+       "intercept": 0.61355,
+       "note": "standardizer recomputed from train at instantiation",
+       "standardized_keys": [
+        "arg_words",
+        "arg_op_ratio",
+        "n_question",
+        "n_url",
+        "n_quote_lines"
+       ],
+       "weights": {
+        "arg_op_ratio": 0.00866,
+        "arg_words": -0.00627,
+        "certainty_frac": -0.00092,
+        "hedge_frac": -0.00829,
+        "n_question": -0.13849,
+        "n_quote_lines": -0.0952,
+        "n_url": -0.04186,
+        "you_frac": -0.00291
+       }
+      }
+     }
+    },
+    "version": "1.0.0"
+   }
+  ],
+  "attrition_dropout_hazard": [
+   {
+    "citations": [],
+    "created_at": "2026-07-13T03:27:41Z",
+    "domain": "subscription_churn",
+    "family_id": "attrition_dropout_hazard",
+    "fit_method": "logistic MLE + L2",
+    "fitted_on": "experiments/results/harvest_extra/telco_churn.json train split (60/20/20, seed 13)",
+    "pack_id": "telco_ibm_churn",
+    "population": "IBM Telco customers (n=7032)",
+    "time_scale": "",
+    "transport_note": "telecom churn; cross-subpopulation transfer FAILED \u2014 domain-restricted",
+    "validation": [
+     {
+      "artifact": "experiments/results/wmv2_phase6_fits.json",
+      "at": "",
+      "baseline": "base-rate",
+      "baseline_value": 0.19784,
+      "ci95": [
+       -0.066393,
+       -0.048032
+      ],
+      "dataset": "IBM Telco churn",
+      "kind": "held_out",
+      "metric": "Brier",
+      "note": "beats base rate; ECE 0.0311",
+      "passed": true,
+      "split": "test 20% (disjoint), seed 13",
+      "value": 0.14087
+     },
+     {
+      "artifact": "experiments/results/wmv2_phase6_fits.json",
+      "at": "",
+      "baseline": "target-subpop base rate",
+      "baseline_value": 0.06319,
+      "ci95": [
+       0.003956,
+       0.011754
+      ],
+      "dataset": "IBM Telco churn",
+      "kind": "transfer",
+      "metric": "Brier_vs_target_base",
+      "note": "NEGATIVE TRANSFER preserved: month-to-month hazard does NOT beat the long-contract subpopulation base rate (blocks production)",
+      "passed": false,
+      "split": "fit=month-to-month contract, test=one/two-year contract (contract excluded)",
+      "value": 0.07122
+     }
+    ],
+    "values": {
+     "coefficients": {
+      "dataset": "experiments/results/harvest_extra/telco_churn.json",
+      "hi": null,
+      "lo": null,
+      "method": "gradient-descent MLE + L2=1e-3",
+      "sd": null,
+      "source": "fitted",
+      "value": {
+       "intercept": -1.38815,
+       "note": "standardizer recomputed from train at instantiation",
+       "standardized_keys": [
+        "tenure",
+        "monthly_charges",
+        "total_charges"
+       ],
+       "weights": {
+        "contract": -0.84131,
+        "dependents": -0.13599,
+        "internet_service": 0.54216,
+        "is_female": 0.02709,
+        "monthly_charges": 0.44216,
+        "paperless_billing": 0.33324,
+        "partner": -0.05032,
+        "phone_service": -0.60162,
+        "senior": 0.28231,
+        "tenure": -0.95016,
+        "total_charges": 0.08811
+       }
+      }
+     }
+    },
+    "version": "1.0.0"
+   }
+  ],
+  "bass_diffusion": [
+   {
+    "citations": [
+     {
+      "doi_or_url": "10.1177/002224379002700107",
+      "finding": "p\u0304=0.03, q\u0304=0.38",
+      "limits": "wide prior; durable-goods context",
+      "ref": "Sultan, Farley & Lehmann 1990 JMR 27:70-77",
+      "study_period": "",
+      "study_population": ""
+     }
+    ],
+    "created_at": "2026-07-13T03:27:41Z",
+    "domain": "innovation_diffusion",
+    "family_id": "bass_diffusion",
+    "fit_method": "published meta-analytic means (verified)",
+    "fitted_on": "",
+    "pack_id": "bass_sultan_farley_lehmann_1990",
+    "population": "213 durable-good/technology diffusion applications",
+    "time_scale": "periods",
+    "transport_note": "broad prior (meta-analytic SD\u2248mean); refit per product where sales data exist",
+    "validation": [],
+    "values": {
+     "p": {
+      "dataset": "Sultan-Farley-Lehmann 1990",
+      "hi": 0.12,
+      "lo": 0.001,
+      "method": "meta-analytic mean",
+      "sd": 0.03,
+      "source": "published_research",
+      "value": 0.03
+     },
+     "q": {
+      "dataset": "Sultan-Farley-Lehmann 1990",
+      "hi": 1.0,
+      "lo": 0.05,
+      "method": "meta-analytic mean",
+      "sd": 0.35,
+      "source": "published_research",
+      "value": 0.38
+     }
+    },
+    "version": "1.0.0"
+   }
+  ],
   "complex_contagion_hazard": [
    {
     "citations": [],
-    "created_at": "2026-07-12T21:07:03Z",
+    "created_at": "2026-07-13T03:27:41Z",
     "domain": "social_media_diffusion",
     "family_id": "complex_contagion_hazard",
     "fit_method": "profile likelihood",
@@ -46,10 +248,104 @@
     "version": "1.0.0"
    }
   ],
+  "content_response_click": [
+   {
+    "citations": [
+     {
+      "doi_or_url": "10.1038/s41597-021-00934-7",
+      "finding": "randomized A/B \u2192 causal CTR winner",
+      "limits": "clickbait era; ~22% of tests had a caching randomization failure (2024 correction)",
+      "ref": "Upworthy Research Archive (Matias et al. 2021, Sci Data)",
+      "study_period": "",
+      "study_population": ""
+     }
+    ],
+    "created_at": "2026-07-13T03:27:41Z",
+    "domain": "content_ab_test",
+    "family_id": "content_response_click",
+    "fit_method": "linear CTR + population-heterogeneity rank",
+    "fitted_on": "experiments/results/exp054_upworthy/upworthy_parsed.json (random 60/40 held-out + time-forward transfer)",
+    "pack_id": "upworthy_archive_2021",
+    "population": "Upworthy A/B headline tests (randomized traffic)",
+    "time_scale": "",
+    "transport_note": "Upworthy clickbait headlines; transport to other platforms unvalidated",
+    "validation": [
+     {
+      "artifact": "experiments/results/wmv2_phase6_fits.json",
+      "at": "",
+      "baseline": "random 0.5",
+      "baseline_value": null,
+      "ci95": [],
+      "dataset": "Upworthy Research Archive",
+      "kind": "held_out",
+      "metric": "pairwise_accuracy_vs_causal_CTR",
+      "note": "in-distribution held-out pairwise 0.7377 (P@1 0.2938 vs random 0.2593); randomized A/B \u2192 causal ground truth; LLM-free",
+      "passed": true,
+      "split": "random 60/40 (in-distribution)",
+      "value": 0.7377
+     },
+     {
+      "artifact": "experiments/results/wmv2_phase6_fits.json",
+      "at": "",
+      "baseline": "random 0.5",
+      "baseline_value": null,
+      "ci95": [],
+      "dataset": "Upworthy Research Archive",
+      "kind": "transfer",
+      "metric": "pairwise_accuracy_vs_causal_CTR",
+      "note": "OUT-OF-TIME transfer pairwise 0.7187 (train earliest 60% \u2192 test latest 40%; headline styles drift)",
+      "passed": true,
+      "split": "time-forward (train earliest 60% \u2192 test latest 40%; temporal shift)",
+      "value": 0.7187
+     },
+     {
+      "artifact": "experiments/results/wmv2_phase6_fits.json",
+      "at": "",
+      "baseline": "no-population (mean audience)",
+      "baseline_value": 0.5641,
+      "ci95": [],
+      "dataset": "Upworthy Research Archive",
+      "kind": "ablation",
+      "metric": "pairwise_population_vs_mean_audience",
+      "note": "population heterogeneity is load-bearing (0.5641\u21920.7377)",
+      "passed": true,
+      "split": "random 60/40 (in-distribution)",
+      "value": 0.7377
+     }
+    ],
+    "values": {
+     "surface_w": {
+      "dataset": "experiments/results/exp054_upworthy/upworthy_parsed.json",
+      "features": [
+       "len_words",
+       "has_number",
+       "has_question",
+       "has_quote",
+       "has_you",
+       "all_caps_word"
+      ],
+      "hi": null,
+      "lo": null,
+      "method": "within-test CTR z-score linear fit",
+      "sd": null,
+      "source": "fitted",
+      "value": [
+       0.0549,
+       0.0151,
+       -0.1887,
+       0.0099,
+       0.0302,
+       -0.0822
+      ]
+     }
+    },
+    "version": "1.0.0"
+   }
+  ],
   "engagement_momentum_persistence": [
    {
     "citations": [],
-    "created_at": "2026-07-12T21:07:03Z",
+    "created_at": "2026-07-13T03:27:41Z",
     "domain": "platform_engagement",
     "family_id": "engagement_momentum_persistence",
     "fit_method": "momentum ratio + hierarchical user-rate shrinkage",
@@ -110,7 +406,7 @@
   "exposure_response_hazard": [
    {
     "citations": [],
-    "created_at": "2026-07-12T21:07:03Z",
+    "created_at": "2026-07-13T03:27:41Z",
     "domain": "social_media_diffusion",
     "family_id": "exposure_response_hazard",
     "fit_method": "Bernoulli-hazard GLM",
@@ -158,12 +454,26 @@
     "values": {
      "theta": {
       "dataset": "SNAP higgs-twitter, time-forward train cohort",
+      "feature_map": [
+       "1",
+       "log1p(k)",
+       "log1p(deg)",
+       "k/deg",
+       "exp(-recency/24)"
+      ],
       "hi": null,
       "lo": null,
       "method": "Bernoulli-hazard GLM, cloglog link",
+      "note": "REAL fitted GLM coefficients (was a pointer); see artifact for CI",
       "sd": null,
       "source": "fitted",
-      "value": "see wmv2_higgs_nonlinear.json"
+      "value": [
+       -3.32685,
+       0.86402,
+       -0.17042,
+       0.10905,
+       -0.03488
+      ]
      }
     },
     "version": "1.0.0"
@@ -172,7 +482,7 @@
   "hawkes_self_excitation": [
    {
     "citations": [],
-    "created_at": "2026-07-12T21:07:03Z",
+    "created_at": "2026-07-13T03:27:41Z",
     "domain": "social_media_diffusion",
     "family_id": "hawkes_self_excitation",
     "fit_method": "EM/MLE exponential kernel",
@@ -216,10 +526,172 @@
     "version": "1.0.0"
    }
   ],
+  "matching_donation_response": [
+   {
+    "citations": [
+     {
+      "doi_or_url": "10.1257/aer.97.5.1774",
+      "finding": "+22% relative P(donate); ratio flat",
+      "limits": "prior donors, one org",
+      "ref": "Karlan & List 2007 AER 97:1774-1793",
+      "study_period": "",
+      "study_population": ""
+     }
+    ],
+    "created_at": "2026-07-13T03:27:41Z",
+    "domain": "fundraising",
+    "family_id": "matching_donation_response",
+    "fit_method": "randomized natural field experiment (verified)",
+    "fitted_on": "",
+    "pack_id": "karlan_list_2007",
+    "population": ">50,000 prior donors (US nonprofit)",
+    "time_scale": "single solicitation",
+    "transport_note": "prior-donor renewal mail; transport to cold acquisition or other causes unvalidated",
+    "validation": [
+     {
+      "artifact": "",
+      "at": "",
+      "baseline": "no-match control",
+      "baseline_value": null,
+      "ci95": [],
+      "dataset": "Karlan & List 2007 (randomized field experiment)",
+      "kind": "published_estimate",
+      "metric": "relative_lift_P_donate",
+      "note": "the study's own randomized causal estimate; NOT a local held-out validation of OUR transport",
+      "passed": true,
+      "split": "in-study randomized treatment vs control",
+      "value": 0.22
+     }
+    ],
+    "values": {
+     "ratio_is_flat": {
+      "dataset": "Karlan & List 2007",
+      "hi": null,
+      "lo": null,
+      "method": "randomized arms 1:1/2:1/3:1",
+      "sd": null,
+      "source": "published_research",
+      "value": true
+     },
+     "relative_lift": {
+      "dataset": "Karlan & List 2007",
+      "hi": 0.4,
+      "lo": 0.05,
+      "method": "randomized field experiment",
+      "sd": 0.08,
+      "source": "published_research",
+      "value": 0.22
+     }
+    },
+    "version": "1.0.0"
+   }
+  ],
+  "reputation_updating": [
+   {
+    "citations": [
+     {
+      "doi_or_url": "10.1007/s10683-006-4309-2",
+      "finding": "8.1% reputation premium",
+      "limits": "eBay; gameable",
+      "ref": "Resnick et al. 2006 Exp Econ 9:79-101",
+      "study_period": "",
+      "study_population": ""
+     }
+    ],
+    "created_at": "2026-07-13T03:27:41Z",
+    "domain": "online_marketplace",
+    "family_id": "reputation_updating",
+    "fit_method": "randomized field experiment (verified)",
+    "fitted_on": "",
+    "pack_id": "ebay_resnick_2006",
+    "population": "eBay sellers (matched-identity field experiment)",
+    "time_scale": "event",
+    "transport_note": "eBay auctions; transport to other reputation systems unvalidated",
+    "validation": [],
+    "values": {
+     "max_premium": {
+      "dataset": "Resnick et al. 2006",
+      "hi": 0.15,
+      "lo": 0.0,
+      "method": "randomized field experiment",
+      "sd": 0.03,
+      "source": "published_research",
+      "value": 0.081
+     }
+    },
+    "version": "1.0.0"
+   }
+  ],
+  "response_occurrence_hazard": [
+   {
+    "citations": [],
+    "created_at": "2026-07-13T03:27:41Z",
+    "domain": "qa_community",
+    "family_id": "response_occurrence_hazard",
+    "fit_method": "logistic MLE + L2",
+    "fitted_on": "experiments/results/harvest_extra/stackexchange.json train split",
+    "pack_id": "stackexchange_answered",
+    "population": "StackExchange questions (n=2500)",
+    "time_scale": "",
+    "transport_note": "Q&A response; NULL result",
+    "validation": [
+     {
+      "artifact": "experiments/results/wmv2_phase6_fits.json",
+      "at": "",
+      "baseline": "base-rate",
+      "baseline_value": 0.24579,
+      "ci95": [
+       -0.000995,
+       0.006763
+      ],
+      "dataset": "StackExchange",
+      "kind": "held_out",
+      "metric": "Brier",
+      "note": "NULL: surface features do NOT beat base rate on held-out (preserved)",
+      "passed": false,
+      "split": "test 20% (disjoint), seed 13",
+      "value": 0.24883
+     }
+    ],
+    "values": {
+     "coefficients": {
+      "dataset": "experiments/results/harvest_extra/stackexchange.json",
+      "hi": null,
+      "lo": null,
+      "method": "gradient-descent MLE + L2=1e-3",
+      "sd": null,
+      "source": "fitted",
+      "value": {
+       "intercept": 0.00558,
+       "note": "standardizer recomputed from train at instantiation",
+       "standardized_keys": [
+        "title_len",
+        "body_len",
+        "n_tags",
+        "hour",
+        "dayofweek"
+       ],
+       "weights": {
+        "body_len": -0.1192,
+        "code_present": 0.40075,
+        "dayofweek": 0.05277,
+        "has_code_kw": -0.04978,
+        "hour": 0.00684,
+        "is_howto": 0.05576,
+        "n_tags": -0.02456,
+        "title_len": -0.00961,
+        "title_qmark": -0.09195
+       }
+      }
+     }
+    },
+    "version": "1.0.0"
+   }
+  ],
   "simple_contagion_hazard": [
    {
     "citations": [],
-    "created_at": "2026-07-12T21:07:03Z",
+    "created_at": "2026-07-13T03:27:41Z",
     "domain": "social_media_diffusion",
     "family_id": "simple_contagion_hazard",
     "fit_method": "profile likelihood",
@@ -260,7 +732,7 @@
   "social_preference_population": [
    {
     "citations": [],
-    "created_at": "2026-07-12T21:07:03Z",
+    "created_at": "2026-07-13T03:27:41Z",
     "domain": "economic_game",
     "family_id": "social_preference_population",
     "fit_method": "exponentiated-gradient on W1",
@@ -307,6 +779,167 @@
       "sd": null,
       "source": "fitted",
       "value": "see wmv2_behaviorbench_policy.json"
+     }
+    },
+    "version": "1.0.0"
+   }
+  ],
+  "social_pressure_turnout": [
+   {
+    "citations": [
+     {
+      "doi_or_url": "10.1017/S000305540808009X",
+      "finding": "Neighbors +8.1pp on 29.7% base",
+      "limits": "low-salience primary",
+      "ref": "Gerber, Green & Larimer 2008 APSR 102:33-48",
+      "study_period": "",
+      "study_population": ""
+     }
+    ],
+    "created_at": "2026-07-13T03:27:41Z",
+    "domain": "voter_turnout",
+    "family_id": "social_pressure_turnout",
+    "fit_method": "randomized field experiment ITT (verified)",
+    "fitted_on": "",
+    "pack_id": "ggl_2008_michigan",
+    "population": "Michigan registered voters, 2006 primary (180,002 households)",
+    "time_scale": "single election",
+    "transport_note": "within-study randomized; transporting to another election requires the base-rate remap + broad widening (effect shrinks toward high-salience ceilings)",
+    "validation": [
+     {
+      "artifact": "",
+      "at": "",
+      "baseline": "no-mailer control 29.7%",
+      "baseline_value": null,
+      "ci95": [],
+      "dataset": "Gerber-Green-Larimer 2008 (randomized field experiment)",
+      "kind": "published_estimate",
+      "metric": "ITT_pp_Neighbors",
+      "note": "the STUDY's own randomized causal estimate; a published causal effect, NOT a local held-out validation of OUR transport",
+      "passed": true,
+      "split": "in-study randomized control vs treatment",
+      "value": 0.081
+     }
+    ],
+    "values": {
+     "levels": {
+      "dataset": "Gerber-Green-Larimer 2008",
+      "method": "randomized ITT turnout levels",
+      "sd": 0.02,
+      "source": "published_research",
+      "value": {
+       "civic_duty": 0.315,
+       "control": 0.297,
+       "hawthorne": 0.322,
+       "neighbors": 0.378,
+       "self": 0.345
+      }
+     }
+    },
+    "version": "1.0.0"
+   }
+  ],
+  "trust_game_transfer": [
+   {
+    "citations": [
+     {
+      "doi_or_url": "10.1016/j.joep.2011.05.007",
+      "finding": "sent 0.50, returned 0.37",
+      "limits": "lab anonymous trust game",
+      "ref": "Johnson & Mislin 2011 JEP 32:865-889",
+      "study_period": "",
+      "study_population": ""
+     }
+    ],
+    "created_at": "2026-07-13T03:27:41Z",
+    "domain": "trust_game",
+    "family_id": "trust_game_transfer",
+    "fit_method": "published meta-analytic means (verified)",
+    "fitted_on": "",
+    "pack_id": "trust_game_johnson_mislin_2011",
+    "population": "162 trust-game replications (>23k subjects)",
+    "time_scale": "event",
+    "transport_note": "lab trust game; do NOT read as real-world relationship trust",
+    "validation": [],
+    "values": {
+     "return_frac": {
+      "dataset": "Johnson & Mislin 2011",
+      "method": "meta-analytic mean",
+      "sd": 0.1,
+      "source": "published_research",
+      "value": 0.37
+     },
+     "send_frac": {
+      "dataset": "Johnson & Mislin 2011",
+      "method": "meta-analytic mean",
+      "sd": 0.1,
+      "source": "published_research",
+      "value": 0.5
+     }
+    },
+    "version": "1.0.0"
+   }
+  ],
+  "ultimatum_offer_response": [
+   {
+    "citations": [
+     {
+      "doi_or_url": "10.1023/B:EXEC.0000026978.14316.74",
+      "finding": "offer 0.40, rejection 0.16",
+      "limits": "lab; cultural variation",
+      "ref": "Oosterbeek et al. 2004 Exp Econ 7:171-188",
+      "study_period": "",
+      "study_population": ""
+     }
+    ],
+    "created_at": "2026-07-13T03:27:41Z",
+    "domain": "economic_game",
+    "family_id": "ultimatum_offer_response",
+    "fit_method": "published meta-analytic means (verified)",
+    "fitted_on": "",
+    "pack_id": "ultimatum_oosterbeek_2004",
+    "population": "ultimatum-game lab subjects (37-paper meta-analysis)",
+    "time_scale": "event",
+    "transport_note": "lab one-shot ultimatum; transport to field bargaining unvalidated (widen)",
+    "validation": [
+     {
+      "artifact": "experiments/results/behaviorbench_eval.json",
+      "at": "",
+      "baseline": "Oosterbeek meta mean 0.40",
+      "baseline_value": null,
+      "ci95": [],
+      "dataset": "MobLab ultimatum (behaviorbench_eval.json)",
+      "kind": "published_estimate",
+      "metric": "mean_proposer_offer",
+      "note": "local MobLab proposer mean 45.15/100 is consistent with the meta-analytic 0.40 (in-range); descriptive cross-check, NOT a held-out validation of transport",
+      "passed": true,
+      "split": "descriptive cross-check",
+      "value": 0.4515
+     }
+    ],
+    "values": {
+     "accept_threshold": {
+      "dataset": "Oosterbeek 2004 + Camerer 2003",
+      "hi": 0.5,
+      "lo": 0.0,
+      "method": "MAO implied by rejection of <0.2 offers",
+      "sd": 0.1,
+      "source": "reference_class_prior",
+      "value": 0.25
+     },
+     "mean_offer": {
+      "dataset": "Oosterbeek 2004",
+      "method": "meta-analytic mean",
+      "sd": 0.08,
+      "source": "published_research",
+      "value": 0.4
+     },
+     "rejection_rate": {
+      "dataset": "Oosterbeek 2004",
+      "method": "meta-analytic mean",
+      "sd": 0.08,
+      "source": "published_research",
+      "value": 0.16
      }
     },
     "version": "1.0.0"

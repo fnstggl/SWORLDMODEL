@@ -242,48 +242,68 @@ def _upworthy(force=False):
                     for h, (c, i) in uniq.items() if i >= 300]
         if len(variants) >= 2:
             clean.append({"ts": _oid_ts(t.get("test_id", "")), "variants": variants})
-    clean.sort(key=lambda d: d["ts"])                 # time-forward
+    clean.sort(key=lambda d: d["ts"])                 # time-forward order
     n = len(clean)
-    ntr = int(0.6 * n)
-    train, test = [d["variants"] for d in clean[:ntr]], [d["variants"] for d in clean[ntr:]]
 
-    # fit the CTR layer on TRAIN variants (within-test z-score target — removes test-level traffic)
-    samples = []
-    for variants in train:
-        zs = zscores([v["ctr"] for v in variants])
-        for v, z in zip(variants, zs):
-            samples.append((surface_features(v["headline"]), z))
-    predict, info = fit_ctr_layer(samples)
-    w_fitted = info["w"]
+    def fit_ctr(train_lists):
+        samples = []
+        for variants in train_lists:
+            zs = zscores([v["ctr"] for v in variants])
+            for v, z in zip(variants, zs):
+                samples.append((surface_features(v["headline"]), z))
+        _, info = fit_ctr_layer(samples)
+        return info["w"]
 
-    def eval_arm(heterogeneity):
+    def eval_arm(test_lists, w_fitted, heterogeneity):
         p1, rnd, ph, pt = 0, 0.0, 0, 0
-        for variants in test:
+        for variants in test_lists:
             feats = [surface_features(v["headline"]) for v in variants]
             scores = population_rank(feats, w_fitted, heterogeneity=heterogeneity, seed=17)
-            score_by_h = {v["headline"]: s for v, s in zip(variants, scores)}
+            score_by_h = {v["headline"]: sc for v, sc in zip(variants, scores)}
             a, r, h, tt = _rank_variants(variants, lambda hd: score_by_h[hd])
             p1 += a
             rnd += r
             ph += h
             pt += tt
-        nt = len(test)
+        nt = len(test_lists)
         return {"precision_at_1": round(p1 / max(1, nt), 4),
                 "random_precision_at_1": round(rnd / max(1, nt), 4),
                 "pairwise_accuracy": round(ph / max(1, pt), 4), "n_pairs": pt,
                 "lift_over_random_p1": round((p1 - rnd) / max(1, nt), 4)}
 
-    pop = eval_arm(True)
-    nopop = eval_arm(False)
+    variants_all = [d["variants"] for d in clean]
+    # (1) IN-DISTRIBUTION held-out: random 60/40 split (shuffled by a fixed seed)
+    import random as _r
+    order = list(range(n))
+    _r.Random(29).shuffle(order)
+    rtr = [variants_all[i] for i in order[:int(0.6 * n)]]
+    rte = [variants_all[i] for i in order[int(0.6 * n):]]
+    w_rand = fit_ctr(rtr)
+    heldout_pop = eval_arm(rte, w_rand, True)
+    heldout_nopop = eval_arm(rte, w_rand, False)
+    # (2) OUT-OF-TIME transfer: train earliest 60%, test latest 40% (temporal shift; headline styles drift)
+    ttr, tte = variants_all[:int(0.6 * n)], variants_all[int(0.6 * n):]
+    w_time = fit_ctr(ttr)
+    transfer_pop = eval_arm(tte, w_time, True)
+    w_fitted = w_time
     result = {
-        "n_tests_total": n, "n_train": len(train), "n_test": len(test),
+        "n_tests_total": n,
+        "held_out": {"split": "random 60/40 (in-distribution)", "n_test": len(rte),
+                     "population": heldout_pop, "no_population_ablation": heldout_nopop,
+                     "beats_random": heldout_pop["pairwise_accuracy"] > 0.5 and
+                     heldout_pop["precision_at_1"] > heldout_pop["random_precision_at_1"]},
+        "transfer": {"split": "time-forward (train earliest 60% → test latest 40%; temporal shift)",
+                     "n_test": len(tte), "population": transfer_pop,
+                     "beats_random": transfer_pop["pairwise_accuracy"] > 0.5 and
+                     transfer_pop["precision_at_1"] > transfer_pop["random_precision_at_1"]},
+        # back-compat keys used by the registry builder
         "split": "time-forward by ObjectId timestamp (earliest 60% train, latest 40% test)",
-        "population": pop, "no_population_ablation": nopop,
-        "beats_random": pop["precision_at_1"] > pop["random_precision_at_1"] and pop["pairwise_accuracy"] > 0.5,
+        "population": transfer_pop, "no_population_ablation": heldout_nopop,
+        "beats_random": transfer_pop["pairwise_accuracy"] > 0.5,
     }
     coefs = {"surface_features": ["len_words", "has_number", "has_question", "has_quote",
                                   "has_you", "all_caps_word"],
-             "surface_w": [round(x, 4) for x in w_fitted], "n_train_variants": info["n"],
+             "surface_w": [round(x, 4) for x in w_fitted], "n_train_tests": len(ttr),
              "target": "within-test CTR z-score", "link": "linear + population-heterogeneity ranking"}
     return {"result": result, "coefs": coefs, "sha256": _sha256(path), "path": path}
 
@@ -407,12 +427,14 @@ def main():
                   f"| beats_base={r['beats_base_rate']} | ECE {r['test']['calibration']['ece']} "
                   f"| causal={d.get('causally_identified')}{tfmsg}")
         else:
-            pop = r.get("population", {})
-            nop = r.get("no_population_ablation", {})
-            print(f"  {name} [{fam}]: POP P@1 {pop.get('precision_at_1')} vs random "
-                  f"{pop.get('random_precision_at_1')} pairwise {pop.get('pairwise_accuracy')} "
-                  f"| no-pop P@1 {nop.get('precision_at_1')} pairwise {nop.get('pairwise_accuracy')} "
-                  f"| beats_random={r.get('beats_random')} | causal={d.get('causally_identified')}")
+            ho = r.get("held_out", {}).get("population", {})
+            tf = r.get("transfer", {}).get("population", {})
+            nop = r.get("held_out", {}).get("no_population_ablation", {})
+            print(f"  {name} [{fam}]: HELD-OUT(random) pairwise {ho.get('pairwise_accuracy')} "
+                  f"P@1 {ho.get('precision_at_1')} vs rand {ho.get('random_precision_at_1')} "
+                  f"| TRANSFER(time-fwd) pairwise {tf.get('pairwise_accuracy')} "
+                  f"beats_random={r.get('transfer', {}).get('beats_random')} "
+                  f"| no-pop pairwise {nop.get('pairwise_accuracy')} | causal={d.get('causally_identified')}")
     print(f"\nwrote {OUT}")
 
 

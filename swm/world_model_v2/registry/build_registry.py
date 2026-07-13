@@ -379,9 +379,43 @@ def build() -> RegistryStore:
                              artifact="experiments/results/wmv2_persistence_power.json",
                              note="persistence transfers to held-out PEOPLE")]))
 
+    # ---- Phase 6: register evidence-backed families/packs + causal-process declarations ----
+    from swm.world_model_v2.registry.phase6_build import register_phase6
+    register_phase6(s)
+
     # ---- promotion pass: promote families with real passed held-out/transfer records ----
     _promote(s)
+    _promote_phase6(s)
     return s
+
+
+def _promote_phase6(s: RegistryStore):
+    """Phase-6 lifecycle placement (enforced gates decide the ceiling; these only REQUEST a target):
+      * verified published-estimate families → domain_restricted (Tier-4; NOT locally validated);
+      * structural/directional research records → research_encoded;
+      * telco attrition stays locally_validated (passed held-out; FAILED transfer blocks production);
+      * Upworthy content-response → production_eligible (passed in-distribution held-out + out-of-time
+        transfer + citation); the nulls (StackExchange, CMV) stay implemented (their held-out FAILED)."""
+    # attrition_dropout_hazard is deliberately NOT here: it genuinely earned locally_validated (passed
+    # held-out) — its FAILED cross-subpopulation transfer blocks PRODUCTION but not local validation.
+    domain_restricted = ["bass_diffusion", "ultimatum_offer_response", "trust_game_transfer",
+                         "social_pressure_turnout", "matching_donation_response", "reputation_updating"]
+    research_encoded = ["weak_tie_transmission", "network_targeting_seeding", "altruistic_punishment",
+                        "persuasion_minimal_effects"]
+    for fam in domain_restricted:
+        if fam in s.records:
+            try:
+                s.set_status(fam, "domain_restricted",
+                             reason="verified published estimate / local fit valid in declared domain only")
+            except Exception:
+                pass                                          # gate refused — keep earned status
+    for fam in research_encoded:
+        if fam in s.records:
+            try:
+                s.set_status(fam, "research_encoded",
+                             reason="verified research + formal model; executable numeric pack is remaining work")
+            except Exception:
+                pass
 
 
 def _promote(s: RegistryStore):

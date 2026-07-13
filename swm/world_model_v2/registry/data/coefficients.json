@@ -1,7 +1,7 @@
 {
  "_integrity": {
-  "n": 61,
-  "sha256": "b626cf83467323a15d9fbca0026317db26ff9f86754a882b9451bbff425a18ee"
+  "n": 91,
+  "sha256": "5936219fa3f04b9876a16bf7f25fe6d47198f761ad4f2f093a0fcb9e75247cc0"
  },
  "payload": [
   {
@@ -59,6 +59,211 @@
    "source_ref": "Browne & Franklin 1973 (APSR 67:453-469); Warwick & Druckman 2006 (EJPR 45)",
    "uncertainty": "R^2 approx 0.9",
    "value": "near 1:1 (near-proportional)"
+  },
+  {
+   "context": "Per game-class averages of the foregone-payoff weight from MLE calibration; jackknife SEs used in paper but not extracted here",
+   "family": "Experience-Weighted Attraction (EWA) learning",
+   "name": "delta (foregone-payoff weight)",
+   "source_ref": "Camerer & Ho 1999, Discussion p.868 (and abstract: 'delta generally around .50')",
+   "uncertainty": null,
+   "value": {
+    "beauty_contest_games": 0.23,
+    "constant_sum_games": 0.42,
+    "median_action_games": 0.85,
+    "raw_average": 0.5
+   }
+  },
+  {
+   "context": "phi>1 in beauty contests flagged by authors as likely misspecification (adaptive model cannot extrapolate trends)",
+   "family": "Experience-Weighted Attraction (EWA) learning",
+   "name": "phi (decay of prior attractions)",
+   "source_ref": "Camerer & Ho 1999 p.869 ('decay parameters phi and rho average ...')",
+   "uncertainty": null,
+   "value": {
+    "beauty_contest": 1.33,
+    "constant_sum": 1.0,
+    "median_action": 0.8
+   }
+  },
+  {
+   "context": "rho=0 (median-action) => cumulative reinforcement-like; rho~phi => averaging/belief-like. rho,phi correlated ~0.88 in constant-sum (partial identification)",
+   "family": "Experience-Weighted Attraction (EWA) learning",
+   "name": "rho (decay of experience weight)",
+   "source_ref": "Camerer & Ho 1999 p.869; abstract ('rho varies from 0 to phi')",
+   "uncertainty": null,
+   "value": {
+    "beauty_contest": 0.94,
+    "constant_sum": 0.94,
+    "median_action": 0.0
+   }
+  },
+  {
+   "context": "Large N(0) => slow learning (heavy weight on lagged attractions). N(0),rho not separately identified when declining-effect constraint binds",
+   "family": "Experience-Weighted Attraction (EWA) learning",
+   "name": "N(0) (initial experience weight)",
+   "source_ref": "Camerer & Ho 1999 p.869",
+   "uncertainty": null,
+   "value": {
+    "beauty_contest": 16.82,
+    "constant_sum": 15.8,
+    "median_action": 0.65
+   }
+  },
+  {
+   "context": "Structural limiting property of logit QRE (verified from the model definition)",
+   "family": "Quantal Response Equilibrium / logit choice",
+   "name": "lambda limiting behavior",
+   "source_ref": "McKelvey & Palfrey 1995 (structural property)",
+   "uncertainty": null,
+   "value": {
+    "lambda->0": "uniform random",
+    "lambda->inf": "Nash equilibrium"
+   }
+  },
+  {
+   "context": "Best single value over 12 games; model MSD 1.0 (<30% of equilibrium error); predictive (leave-one-game-out) MSD 1.02; random-choice MSD 1.87",
+   "family": "Reinforcement learning in games (Roth-Erev)",
+   "name": "s(1) basic 1-parameter model (initial-propensity strength)",
+   "source_ref": "Erev & Roth 1998 p.862",
+   "uncertainty": null,
+   "value": 54
+  },
+  {
+   "context": "Specific fitted epsilon and phi values not extracted this session; aggregate mean-squared-deviation 0.59 when fit simultaneously to all games",
+   "family": "Reinforcement learning in games (Roth-Erev)",
+   "name": "3-parameter RE model {s(1), experimentation epsilon, forgetting phi} aggregate fit",
+   "source_ref": "Erev & Roth 1998 p.867 (Roth-Erev 1995 three-parameter RE model)",
+   "uncertainty": null,
+   "value": {
+    "MSD_all_games_jointly": 0.59
+   }
+  },
+  {
+   "context": "d=foregone-info weight, m=maximization, h=force of habit; only h (habit) meaningfully improves fit -- the two 'rationality' params (m, FP-expectations) add only ~7% of the 0.16 gain",
+   "family": "Reinforcement learning in games (Roth-Erev)",
+   "name": "4-parameter FP-like generalization optimal set {d, m, h, s(1)}",
+   "source_ref": "Erev & Roth 1998 p.867",
+   "uncertainty": null,
+   "value": {
+    "MSD": 0.72,
+    "d": 0.9,
+    "h": 0.1,
+    "m": 1.5,
+    "s1": 27
+   }
+  },
+  {
+   "context": "Medians fall in the lower half of the adaptive (0,1) range, sometimes near the Cournot value 0; the fictitious-play hypothesis gamma=1 is firmly rejected",
+   "family": "Belief learning / fictitious play",
+   "name": "gamma (belief-decay / recency) -- median across individuals, 3-parameter model",
+   "source_ref": "Cheung & Friedman 1997, Table II (3-par rows)",
+   "uncertainty": null,
+   "value": {
+    "Battle_of_Sexes": 0.26,
+    "BoS_variant": 0.33,
+    "Coordination": 0.41,
+    "Hawk_Dove": 0.32
+   }
+  },
+  {
+   "context": "0.42 is retained as the Hawk-Dove benchmark; beta plays the role of logit precision on the belief-based expected payoffs",
+   "family": "Belief learning / fictitious play",
+   "name": "beta (response sensitivity / choice precision) -- median",
+   "source_ref": "Cheung & Friedman 1997, Table II; text p.64-65",
+   "uncertainty": null,
+   "value": {
+    "range_across_games_3par": "0.17-0.93",
+    "typical_median": "near or above 0.42"
+   }
+  },
+  {
+   "context": "Units = days; from fitting individual asymptotic curves to daily Self-Report Habit Index scores over 84 days; N=96 self-selected behaviors",
+   "family": "Habit formation",
+   "name": "median time to 95% of asymptotic automaticity",
+   "source_ref": "Lally et al. 2010 (EJSP)",
+   "uncertainty": {
+    "range_across_individuals_days": [
+     18,
+     254
+    ]
+   },
+   "value": 66
+  },
+  {
+   "context": "Daily-diary field study; behaviors self-chosen (food/drink/activity)",
+   "family": "Habit formation",
+   "name": "N (participants)",
+   "source_ref": "Lally et al. 2010",
+   "uncertainty": null,
+   "value": 96
+  },
+  {
+   "context": "HM index = largest fraction of a subject's observations consistent with reservation-based sequential search; N=76 subjects",
+   "family": "Satisficing / bounded search",
+   "name": "consistency with sequential search (Houtman-Maks index)",
+   "source_ref": "Caplin, Dean & Martin 2011, Figure 2 / p.~?",
+   "uncertainty": null,
+   "value": {
+    "pct_subjects_HM_gt_0.9": "~70",
+    "pct_subjects_HM_gt_0.95": ">40",
+    "subjects_above_95th_pctile_of_random": "68 of 76"
+   }
+  },
+  {
+   "context": "Average money left on table $3.12 (17% of max per round); $7.12 in the hardest treatment -- evidence of incomplete/bounded search",
+   "family": "Satisficing / bounded search",
+   "name": "failure to select the best option",
+   "source_ref": "Caplin, Dean & Martin 2011 (Results)",
+   "uncertainty": null,
+   "value": {
+    "avg_across_treatments_pct": 38,
+    "worst_treatment_size40_complexity7_pct": 65
+   }
+  },
+  {
+   "context": "Incentivized search experiment with a select-and-update choice-process interface",
+   "family": "Satisficing / bounded search",
+   "name": "sample size",
+   "source_ref": "Caplin, Dean & Martin 2011",
+   "uncertainty": null,
+   "value": {
+    "exp3_choice_sets": 206,
+    "exp3_subjects": 21,
+    "subjects_exp1_2": 76
+   }
+  },
+  {
+   "context": "4-point evaluation mapped to [-1,+1]; ratings are the elicited norm inputs to the utility model",
+   "family": "Norm compliance",
+   "name": "social-appropriateness rating scale N(a)",
+   "source_ref": "Krupka & Weber 2013 (elicitation method)",
+   "uncertainty": null,
+   "value": {
+    "somewhat_appropriate": 0.333,
+    "somewhat_inappropriate": -0.333,
+    "very_appropriate": 1.0,
+    "very_inappropriate": -1.0
+   }
+  },
+  {
+   "context": "In the standard DG the equal split is rated appropriate (+0.90) and keeping $9 inappropriate (-0.71); the 1.61 gap drives the predicted preference for sharing",
+   "family": "Norm compliance",
+   "name": "example elicited ratings (standard dictator game)",
+   "source_ref": "Krupka & Weber 2013 (Table 1; text p.~13)",
+   "uncertainty": null,
+   "value": {
+    "difference": 1.61,
+    "keep_$5_equal_split": 0.9,
+    "keep_$9": -0.71
+   }
+  },
+  {
+   "context": "More agents choose the equal split in the 'bully'/take frame than the standard/give frame, as predicted by the norm+money model",
+   "family": "Norm compliance",
+   "name": "behavioral prediction test (frame manipulation)",
+   "source_ref": "Krupka & Weber 2013, Table 2 (Experiment 2)",
+   "uncertainty": "p < 0.01 (ordered logit, Table 2)",
+   "value": "predicted behavior shifts across treatments confirmed"
   },
   {
    "context": "Local Higgs train-split MLE of the linear form; this is a per-cascade nuisance rate, not a transportable constant.",
@@ -443,6 +648,116 @@
    "source_ref": "Kalla & Broockman 2018 APSR",
    "uncertainty": null,
    "value": "detectable only (a) when candidates take unusually unpopular positions AND campaigns invest heavily in identifying persuadables, or (b) when contact occurs long before election day - and that early effect decays"
+  },
+  {
+   "context": "q_r=(1/r)^eta; eta=1 default/estimated severity regime. Overestimating small propensities (eta<1) tolerable; underestimating (eta>1) harmful. Verified from PDF.",
+   "family": "Examination / position bias",
+   "name": "position_bias_severity_eta",
+   "source_ref": "Joachims 2017 (10.1145/3018661.3018699)",
+   "uncertainty": "swept eta in [0,2]",
+   "value": 1.0
+  },
+  {
+   "context": "Typical position-bias decay ranks 1-5 under eta=1 (rank10=0.1). The requested examination-probability-by-rank curve.",
+   "family": "Examination / position bias",
+   "name": "examination_probability_by_rank_eta1",
+   "source_ref": "Joachims 2017 (derived from q_r=(1/r)^1)",
+   "uncertainty": null,
+   "value": [
+    1.0,
+    0.5,
+    0.333,
+    0.25,
+    0.2
+   ]
+  },
+  {
+   "context": "P(examine|rank)=gamma^rank, gamma=0.8 is a LABELED PRIOR (not fitted); ranks0-4=1.0,0.8,0.64,0.512,0.41. Distinct from (1/r)^eta.",
+   "family": "Examination / position bias",
+   "name": "repo_examination_prior_gamma",
+   "source_ref": "repo interaction.py:position_examination",
+   "uncertainty": null,
+   "value": 0.8
+  },
+  {
+   "context": "Out of 20-token endowment; converges toward full cooperation. Verified from PDF text.",
+   "family": "Enforcement (deterrence / costly punishment)",
+   "name": "final_period_contribution_with_punishment",
+   "source_ref": "Fehr & G\u00e4chter 2000 AER (10.1257/aer.90.4.980), Partner final period",
+   "uncertainty": ">18 tokens",
+   "value": 18.0
+  },
+  {
+   "context": "Out of 20; decays toward free-riding without punishment. Verified from PDF text.",
+   "family": "Enforcement (deterrence / costly punishment)",
+   "name": "final_period_contribution_no_punishment",
+   "source_ref": "Fehr & G\u00e4chter 2000 AER, Partner final period",
+   "uncertainty": "'slightly above 3 tokens'",
+   "value": 3.0
+  },
+  {
+   "context": "Contributions 2-4x higher with punishment; significant at all conventional levels. Verified from PDF.",
+   "family": "Enforcement (deterrence / costly punishment)",
+   "name": "punishment_vs_nopunishment_ratio_stranger",
+   "source_ref": "Fehr & G\u00e4chter 2000 AER, Stranger, mean over 10 periods",
+   "uncertainty": "Wilcoxon p<0.0001",
+   "value": "2 to 4x"
+  },
+  {
+   "context": "Each punishment point reduces target's first-stage payoff by 10%; cost schedule c(p)=[0,1,2,4,6,9,12,16,20,25,30] for p=0..10. Verified from PDF.",
+   "family": "Enforcement (deterrence / costly punishment)",
+   "name": "punishment_impact_per_point",
+   "source_ref": "Fehr & G\u00e4chter 2000 AER",
+   "uncertainty": null,
+   "value": 0.1
+  },
+  {
+   "context": "With punishment, average contribution rates of 50-95% of endowment maintained. Verified from PDF.",
+   "family": "Enforcement (deterrence / costly punishment)",
+   "name": "sustained_cooperation_range_with_punishment",
+   "source_ref": "Fehr & G\u00e4chter 2000 AER",
+   "uncertainty": null,
+   "value": [
+    0.5,
+    0.95
+   ]
+  },
+  {
+   "context": "Group size, endowment (tokens), MPCR, periods. Verified from PDF.",
+   "family": "Enforcement (deterrence / costly punishment)",
+   "name": "design_params",
+   "source_ref": "Fehr & G\u00e4chter 2000 AER",
+   "uncertainty": null,
+   "value": {
+    "MPCR_a": 0.4,
+    "endowment": 20,
+    "n": 4,
+    "periods": 10
+   }
+  },
+  {
+   "context": "Exact distribution-free identity; no free parameter \u2014 \u03bb and W are measured. Verified citation.",
+   "family": "Resource depletion / capacity / queueing",
+   "name": "littles_law",
+   "source_ref": "Little 1961 (10.1287/opre.9.3.383)",
+   "uncertainty": null,
+   "value": "L = \u03bb\u00b7W"
+  },
+  {
+   "context": "Analytic result for Poisson/exponential single-server queue; structural, not fitted.",
+   "family": "Resource depletion / capacity / queueing",
+   "name": "mm1_mean_number_in_system",
+   "source_ref": "standard M/M/1 queueing theory",
+   "uncertainty": null,
+   "value": "L = \u03c1/(1-\u03c1), \u03c1=\u03bb/\u03bc"
+  },
+  {
+   "context": "\u03bb measured per setting; no universal value.",
+   "family": "Exogenous shocks / regime changes",
+   "name": "poisson_arrival_form",
+   "source_ref": "structural (Poisson process)",
+   "uncertainty": null,
+   "value": "P(>=1 by T)=1-exp(-\u03bbT)"
   },
   {
    "context": "USD, $10 endowment, no-social-history treatment; investor mean transfer (~51.6% of endowment).",

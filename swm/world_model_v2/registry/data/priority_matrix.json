@@ -1,7 +1,7 @@
 {
  "_integrity": {
-  "n": 35,
-  "sha256": "39b0576d5804d106963f2804fe031ea90d15d8082e603449400e7f784a40e789"
+  "n": 49,
+  "sha256": "c975aa474ee21b73d3c48a900fe00402d567bdc1860f2021b6cb2b3b15a347a0"
  },
  "payload": [
   {
@@ -151,6 +151,192 @@
    "promotion_blocker": "Not implemented (no code_ref/test_ref). To reach locally_validated: build the VoteView cache and record a held-out defection PPC (feasible); Gamson's-law and core/nucleolus layers additionally need a portfolio dataset / specified v(S) respectively.",
    "registry_id": null,
    "temporal_scale": "institutional/medium-to-long: government duration and legislative sessions; defection observed vote-by-vote, stability over the coalition's life."
+  },
+  {
+   "best_validation_route": "Refit MLE on an external repeated-game dataset with feedback (Camerer-Ho / Van Huyck data), hold out later rounds or a left-out game class, and test EWA against its reinforcement (delta=0) and belief (delta=1,rho=phi) special cases via out-of-sample choice-probability MSD.",
+   "cluster": "choice_learning",
+   "current_executable_status": "executable",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "4x4 and 6x6 constant-sum games in rupees (Mookherjee & Sopher 1997)",
+    "Median-action / weak-link order-statistic coordination games (Van Huyck, Battalio & Beil)",
+    "p-beauty contest / dominance-solvable games (Ho, Camerer & Weigelt 1998)"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model",
+   "expected_applicability": "narrow (repeated strategic games with feedback)",
+   "expected_transport_risk": "high",
+   "family": "Experience-Weighted Attraction (EWA) learning",
+   "formal_model": "Attraction update A_i^j(t) = [phi*N(t-1)*A_i^j(t-1) + (delta + (1-delta)*I(j=chosen))*payoff_i^j(t)] / N(t), with experience weight N(t) = rho*N(t-1) + 1; choice via logit P_i^j = exp(lambda*A_i^j)/sum_k exp(lambda*A_i^k). Nests cumulative reinforcement (delta=0, rho=0) and weighted fictitious play / belief learning (delta=1, rho=phi). Parameters: phi (decay of prior attractions), delta (foregone-payoff weight), rho (decay of experience weight), kappa (cumulative vs averaging), lambda (logit precision), N(0) (initial experience weight).",
+   "local_refit_feasible": "Limited. EWA dynamics require repeated-play panels with round-by-round realized AND foregone payoffs. In-repo MobLab/BehaviorBench economic games (dictator, ultimatum, trust, public goods, guessing) are largely one-shot cross-sections, so the (phi,delta,rho,N0) dynamics are not identifiable without a multi-round game panel (a repeated p-beauty/guessing panel would be the only candidate, if round-level data exist).",
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "Keep EWAState executable; add an MLE fitter for (phi,delta,rho,kappa,lambda,N0) on repeated-game panels; expose the reinforcement and belief special-case restrictions as selectable variants; adopt self-tuning EWA as a low-parameter default.",
+   "planned_parameter_packs": [
+    "ewa_camererho1999_reference: constant_sum(delta0.42/phi1.00/rho0.94/N0 15.80), median_action(delta0.85/phi0.80/rho0/N0 0.65), beauty_contest(delta0.23/phi1.33/rho0.94/N0 16.82) -- labeled lab-reference priors, NOT fit on target domain"
+   ],
+   "priority": "medium",
+   "promotion_blocker": "No local held-out validation record; no repeated-game panel in-repo to identify the learning dynamics; published coefficients are lab-reference priors that vary by game class and are not fit on any target domain.",
+   "registry_id": "experience_weighted_attraction",
+   "temporal_scale": "event (per round of repeated play; identification needs many rounds)"
+  },
+  {
+   "best_validation_route": "Held-out choice-distribution prediction on BehaviorBench per game with lambda refit, benchmarked against the per-game histogram and hand-crafted baselines (note the existing in-distribution failure vs histogram); require payoff-scale normalization before comparing lambda across games.",
+   "cluster": "choice_learning",
+   "current_executable_status": "executable",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Normal-form matrix-game experiments re-analyzed by McKelvey-Palfrey (e.g., Ochs 1995 games)",
+    "In-repo: BehaviorBench/MobLab games -- lambda_per_game already fitted inside the social_preference_population record (wmv2_behaviorbench_policy.json)"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model",
+   "expected_applicability": "broad for static discrete choice",
+   "expected_transport_risk": "medium",
+   "family": "Quantal Response Equilibrium / logit choice",
+   "formal_model": "Logit QRE: each player's choice probability P_i(a) = exp(lambda * EU_i(a; P))/sum_b exp(lambda * EU_i(b; P)), a fixed point in which expected utilities are computed against the equilibrium mixed profile. As lambda->0 choices are uniform; as lambda->infinity QRE converges to Nash. The single-agent 'logit choice' reduction takes expected utilities as given (no equilibrium fixed point).",
+   "local_refit_feasible": "Yes. The logit_choice operator is executable and lambda is already fit per game on BehaviorBench inside social_preference_population; logit choice can also be fit as a generic stochastic-choice layer to any in-repo choice-frequency dataset (Upworthy CTR, StackExchange answered).",
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "Keep logit_choice; add per-game lambda MLE with a payoff-scale normalizer and a falsifiability guard (reject when lambda absorbs arbitrary structure); optionally add a QRE fixed-point solver for the equilibrium version.",
+   "planned_parameter_packs": [
+    "qre_lambda_per_game_behaviorbench: fitted lambda per MobLab game (already in wmv2_behaviorbench_policy.json) -- lab economic games, transport to field unvalidated"
+   ],
+   "priority": "high",
+   "promotion_blocker": "No PASSED held-out record that beats a strong per-game baseline (current best in-distribution loses to the histogram); lambda not transportable across payoff scales; falsifiability requires imposing scale-normalized cross-game restrictions.",
+   "registry_id": "quantal_response_choice",
+   "temporal_scale": "event (static choice / one-shot game)"
+  },
+  {
+   "best_validation_route": "Refit the propensity model on an external repeated-game dataset (hold out later rounds / a left-out game), or map the Q-update onto OmniBehavior repeat-engagement and test whether payoff-reinforced propensity beats an AR/momentum baseline held-out.",
+   "cluster": "choice_learning",
+   "current_executable_status": "executable",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "12 experimental games with unique mixed-strategy equilibria (Suppes & Atkinson; Ochs 1995; O'Neill 1987; Rapoport-Boebel; etc.) plus a new Erev-Roth experiment"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model",
+   "expected_applicability": "narrow for game learning; the Q-update primitive is broadly reusable",
+   "expected_transport_risk": "high",
+   "family": "Reinforcement learning in games (Roth-Erev)",
+   "formal_model": "Roth-Erev propensity model: q_nj(t+1) = (1-phi)*q_nj(t) + E_k(j, R(x)), choice P = q_nj / sum_k q_nk, with reinforcement R(x)=payoff - x_min, forgetting/recency parameter phi, and a 'three-step' generalization/experimentation function E_k with parameter epsilon that spreads reinforcement to similar strategies. Basic 1-parameter model has only the initial-propensity strength s(1). A 4-parameter FP-like generalization adds a foregone-info weight d, a maximization parameter m, and a habit/past-experience weight h. Generic value form: Q <- Q + alpha*(r-Q).",
+   "local_refit_feasible": "Limited. Requires repeated-play panels with per-round payoffs; in-repo MobLab games are mostly one-shot. OmniBehavior/Kuaishou repeated daily engagement could support a loose 'reinforcement of a binary action' fit, but not the mixed-equilibrium game setting the model was built for.",
+   "n_sources": 3,
+   "n_verified_sources": 2,
+   "planned_implementation": "Keep reinforcement_update; add the full Roth-Erev propensity model with {s(1), epsilon, phi} and an MLE fitter; expose forgetting and local-experimentation; keep generic Q-learning alpha as a labeled prior.",
+   "planned_parameter_packs": [
+    "roth_erev1998_reference: basic s(1)=54; 4-param FP-like d0.9/m1.5/h0.1/s1 27 (MSD 0.72) -- labeled lab-reference priors from 12-game calibration"
+   ],
+   "priority": "medium",
+   "promotion_blocker": "No local held-out validation; no repeated-game panel in-repo; published parameters are payoff-scale-dependent lab-reference priors.",
+   "registry_id": "reinforcement_learning",
+   "temporal_scale": "event (per round; designed for 100+ round games)"
+  },
+  {
+   "best_validation_route": "Refit gamma,beta on an external repeated-game panel; test the Cournot (gamma=0), fictitious-play (gamma=1) and EWA nesting via out-of-sample fit.",
+   "cluster": "choice_learning",
+   "current_executable_status": "executable",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Cheung-Friedman laboratory normal-form games: Hawk-Dove, Coordination, Battle-of-Sexes, Buyer-Seller, under varying information and matching protocols"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model",
+   "expected_applicability": "narrow (repeated strategic games)",
+   "expected_transport_risk": "high",
+   "family": "Belief learning / fictitious play",
+   "formal_model": "gamma-weighted beliefs over an opponent's action frequencies: recent observations weighted more, older observations discounted by gamma per period. gamma=0 => Cournot best-response (last period only); gamma=1 => (unweighted) fictitious play. Expected payoffs are computed against these beliefs and mapped to choice via a probabilistic best-response with response sensitivity beta. Registry executable form is a Dirichlet-style count updater.",
+   "local_refit_feasible": "Limited. Requires repeated games with observable opponent history; in-repo MobLab games are mostly one-shot, so gamma is not identifiable without a repeated-game panel.",
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "Upgrade belief_update_counts to an explicit gamma-weighted (recency-discounted) belief with a logit response beta; expose the Cournot and fictitious-play endpoints as selectable limits.",
+   "planned_parameter_packs": [
+    "cheung_friedman1997_reference: median gamma ~0.26-0.41, beta ~0.42 -- labeled lab-reference priors"
+   ],
+   "priority": "low-medium",
+   "promotion_blocker": "No local validation; no repeated-game panel in-repo; empirically dominated by EWA where directly compared.",
+   "registry_id": "belief_learning",
+   "temporal_scale": "event (per round of repeated play)"
+  },
+  {
+   "best_validation_route": "Fit habit-stock accumulation on OmniBehavior repeat-engagement and test held-out whether accumulated repetition predicts next-day behavior beyond the engagement_momentum_persistence baseline (which already validated on OmniBehavior).",
+   "cluster": "choice_learning",
+   "current_executable_status": "executable",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Lally 2010 UCL daily-diary cohort (SRHI automaticity over 84 days)",
+    "Wood, Quinn & Kashy 2002 experience-sampling diary studies (habit in everyday life)"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "descriptive",
+   "expected_applicability": "medium (broad behavioral-repetition domains)",
+   "expected_transport_risk": "medium",
+   "family": "Habit formation",
+   "formal_model": "Automaticity (habit strength) grows with repetition in a stable context following an asymptotic exponential-approach curve toward a plateau; the increment per repetition diminishes as the asymptote is neared. Registry executable form: H <- (1-gamma)*H + gamma*1[acted] (habit-stock accumulation), and habit raises the probability of repeating the behavior (logit boost). Wood & Neal add the context-cue -> response associative account.",
+   "local_refit_feasible": "Partially. OmniBehavior/Kuaishou repeated daily engagement can support a behavioral habit-stock fit (does prior-repetition raise next-period engagement beyond a momentum/AR baseline?). Baby-names data is cultural diffusion, not individual habit. No in-repo dataset has the SRHI automaticity measure.",
+   "n_sources": 3,
+   "n_verified_sources": 2,
+   "planned_implementation": "Keep habit_update; add a fitter for gamma / time-to-plateau on repeat-behavior panels; explicitly separate self-report automaticity from behavioral repeat-rate; guard against conflating habit with momentum/autocorrelation.",
+   "planned_parameter_packs": [
+    "lally2010_reference: time-to-95%-automaticity median 66 days (range 18-254) -- a reference prior for automaticity growth, NOT a behavioral repeat-rate"
+   ],
+   "priority": "medium-high",
+   "promotion_blocker": "No local held-out validation; the registry gamma is a labeled prior not fit on target data; primary evidence is self-report and correlational; must be disentangled from the already-validated momentum/persistence family.",
+   "registry_id": "habit_formation",
+   "temporal_scale": "longitudinal (days-to-months; ~66-day median plateau)"
+  },
+  {
+   "best_validation_route": "Cannot be validated on current in-repo data. Requires a choice-process/search dataset (eye-tracking, or click-stream logs of option examination by a single decider). Would first need a new operator + such a dataset.",
+   "cluster": "choice_learning",
+   "current_executable_status": "not_implemented",
+   "current_registry_status": "none (not registered)",
+   "datasets_in_literature": [
+    "Caplin-Dean-Martin incentivized sequential-search experiment (choice-process data recording which option is provisionally selected over time)"
+   ],
+   "disposition": "structural_candidate_only",
+   "evidence_type": "structural_model",
+   "expected_applicability": "medium (consideration-set / bounded search is common) but data-hungry",
+   "expected_transport_risk": "medium",
+   "family": "Satisficing / bounded search",
+   "formal_model": "Sequential search with a reservation utility u*: the agent examines options in sequence, accumulating a consideration set, and STOPS as soon as an option with utility >= u* is encountered (Caplin-Dean-Martin 'Condition 1'). The reservation level is fixed within a standard-choice environment and responds to the environment (rising with set size and object complexity). Simon (1955) is the origin: choose the first option that meets an aspiration level.",
+   "local_refit_feasible": "No. In-repo datasets record final choices/outcomes but NOT the choice process (which options were examined, in what order, with provisional switches). Reservation utilities and search order are therefore not identifiable from BehaviorBench, Upworthy, StackExchange, CMV, or OmniBehavior.",
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "NEW family: a reservation-threshold sequential-search operator -- given an ordered option stream and reservation u*, stop at the first option >= u*; expose u* as a fitted/prior consideration-set gate placed before the choice operator; add executable code + test to reach 'implemented'.",
+   "planned_parameter_packs": [
+    "caplin_dean_martin2011_reference (sanity target only, not fittable locally): HM>0.95 for >40% of subjects; ~38% best-option miss rate; reservation rises with set size/complexity"
+   ],
+   "priority": "low-medium",
+   "promotion_blocker": "Not implemented (no executable code or test); no local choice-process data to identify reservation utility; requires both a new operator and a search-process dataset before any validation is possible.",
+   "registry_id": null,
+   "temporal_scale": "event (within-decision sequential search)"
+  },
+  {
+   "best_validation_route": "Pair BehaviorBench allocation choices with a fresh elicited norm-rating table and test whether V(pi)+gamma*N(a) predicts choice shifts across variants held-out; without elicited norms the model is not identifiable.",
+   "cluster": "choice_learning",
+   "current_executable_status": "executable",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Krupka-Weber dictator-game variants (standard, bully/take, and others) plus reanalysis of prior DG studies (List 2007; Bardsley 2008); norms elicited via a coordination game"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model",
+   "expected_applicability": "medium-high (norms pervade social behavior) but requires elicited-norm inputs",
+   "expected_transport_risk": "high",
+   "family": "Norm compliance",
+   "formal_model": "Utility U_i(a) = V(pi_i(a)) + gamma_i * N(a), where pi_i(a) is the monetary payoff of action a, N(a) in [-1,+1] is the elicited social-appropriateness rating of a (incentive-compatibly elicited via a coordination game), and gamma_i >= 0 is heterogeneous norm-sensitivity. Choice maximizes (or is logit over) U. Appropriateness is elicited on a 4-point scale mapped to {-1 very inappropriate, -1/3 somewhat inappropriate, +1/3 somewhat appropriate, +1 very appropriate}.",
+   "local_refit_feasible": "No for the identified model. In-repo BehaviorBench dictator/ultimatum games record choices but NOT the elicited appropriateness ratings N(a) that the model requires as inputs; a norm-elicitation experiment would be needed. A reduced-form norm proxy could be fit but would not identify the Krupka-Weber model.",
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "Upgrade norm_compliance from the generic relationship_modulator stand-in to the Krupka-Weber utility U=V(pi)+gamma*N(a); require an elicited norm-rating table as input; expose gamma as fitted/prior; add logit choice over U.",
+   "planned_parameter_packs": [
+    "krupka_weber2013_reference: standard-DG appropriateness ratings (equal-split +0.90, keep-$9 -0.71; scale [-1,+1]) as a reference norm table for allocation frames; gamma as a labeled prior needing per-setting fit"
+   ],
+   "priority": "high",
+   "promotion_blocker": "No elicited-norm inputs in local data; no local validation record; gamma not point-identified without new elicitation; the current registry operator is a generic modulator, not the identified Krupka-Weber norm model.",
+   "registry_id": "norm_compliance",
+   "temporal_scale": "event (single allocation/choice)"
   },
   {
    "best_validation_route": "Retain as the null comparator inside the Higgs held-out survival benchmark; it has already lost to the concave form, which is the intended role.",
@@ -779,6 +965,205 @@
    "promotion_blocker": "No executable family; and the credible 'estimate' is a near-zero prior with strong context-dependence, so it serves as a guardrail rather than a positive mechanism. Central null verified.",
    "registry_id": null,
    "temporal_scale": "event (campaign cycle); persuasion effects that do appear tend to decay"
+  },
+  {
+   "best_validation_route": "External IPS/swap estimation on a rank-varying click log. Locally only the structural form is unit-testable; the decay parameter is a prior, unidentifiable from repo datasets.",
+   "cluster": "platform_institutional",
+   "current_executable_status": "executable: code_ref resolves + test_ref present (status=implemented). Registry 'parameters' empty; defaults are labeled PRIORS, no validation history. code_ref=families.interaction:position_examination, formal P(examine|rank)=gamma^rank (default gamma=0.8).",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Search-engine click logs with logged/randomized rank (arXiv Full-Text Search, Joachims 2017)",
+    "Eye-tracking lab data (Joachims/Granka 2005)",
+    "Yandex Relevance Prediction click-model benchmark"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model (+ causal_estimate for propensity from swap experiments)",
+   "expected_applicability": "medium-high in ranked-feed/search domains; null in non-ranked settings.",
+   "expected_transport_risk": "high",
+   "family": "Examination / position bias",
+   "formal_model": "Examination hypothesis: P(click|rank,doc)=P(examine|rank)\u00b7P(relevant|doc). Decay forms: (a) Cascade (Craswell 2008): sequential top-down, P(examine r1)=1, P(examine r+1)=P(examine r)\u00b7(1-P(click at r)); (b) Position-Based propensity (Joachims 2017): q_r=(1/r)^eta, content-independent. Repo implements geometric variant P(examine|rank)=gamma^rank.",
+   "local_refit_feasible": "NO. No local dataset varies/logs rank with clicks. Upworthy RANDOMIZES content (headline/image) but NOT position, so it identifies content-response/click-propensity, NOT position/examination bias. StackExchange answer order is not an examination log.",
+   "n_sources": 3,
+   "n_verified_sources": 3,
+   "planned_implementation": "Keep structural family; expose both parameterizations (gamma^rank and (1/r)^eta); add IPS hook for an externally-estimated propensity vector per surface. Do NOT claim local validation.",
+   "planned_parameter_packs": [
+    "prior_pack: gamma=0.8 (labeled prior)",
+    "literature_pack: eta=1.0 (Joachims 2017), rank curve [1,0.5,0.33,0.25,0.2]"
+   ],
+   "priority": "medium",
+   "promotion_blocker": "No position-varying local click log -> examination parameter unidentifiable locally; cannot reach locally_validated. Upworthy explicitly does not identify position bias.",
+   "registry_id": "platform_examination",
+   "temporal_scale": "event (per-impression / per-session)"
+  },
+  {
+   "best_validation_route": "Structural correctness tests (order invariants, capacity). Optionally fit a CTR scorer on Upworthy to exercise the pipeline end-to-end.",
+   "cluster": "platform_institutional",
+   "current_executable_status": "executable: code_ref resolves + test_ref present (status=implemented). Registry 'parameters' empty; defaults are labeled PRIORS, no validation history. code_ref=families.interaction:rank_by_score (deterministic sort by score desc -> rank).",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "LTR benchmarks: LETOR, MSLR-WEB10K/30K, Yahoo! LTR Challenge",
+    "Production click logs for counterfactual LTR (Joachims 2017)"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model (+ methodological for IPS learning-to-rank)",
+   "expected_applicability": "high (any feed/marketplace/search)",
+   "expected_transport_risk": "low (operator) / high (scorer)",
+   "family": "Ranking allocation",
+   "formal_model": "Attention/slot allocation by ranking: rank(i)=argsort_desc(score_i). Unbiased LTR minimizes IPS-weighted rank risk R_IPS=sum_{clicked i} rankloss/q_{rank(i)} (Joachims 2017). The sort is a deterministic order statistic (structural); learning the score is the fitted part.",
+   "local_refit_feasible": "Operator is structural (no refit). A scorer could be fit on Upworthy CTR but that validates content-response, not the allocation rule.",
+   "n_sources": 2,
+   "n_verified_sources": 2,
+   "planned_implementation": "Retain as structural operator; document that only the scorer needs data; provide optional IPS-trained scorer pack tied to platform_examination propensities.",
+   "planned_parameter_packs": [
+    "structural_operator (no params)",
+    "optional: Upworthy content-response scorer (identifies click-propensity, not ranking)"
+   ],
+   "priority": "low",
+   "promotion_blocker": "Structural operator has nothing to validate against data; promotion beyond software_implemented not meaningful without a paired validated scorer.",
+   "registry_id": "platform_ranking",
+   "temporal_scale": "event"
+  },
+  {
+   "best_validation_route": "Deterministic-tally unit tests on congress votes; held-out roll-call prediction accuracy for the optional spatial overlay.",
+   "cluster": "platform_institutional",
+   "current_executable_status": "executable: code_ref resolves + test_ref present (status=implemented). Registry 'parameters' empty; defaults are labeled PRIORS, no validation history. code_ref=transitions:InstitutionalVoteOperator (deterministic vote execution / tally).",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "US Congress roll-call votes (Voteview / DW-NOMINATE)",
+    "Parliamentary roll calls (EU, UK)"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model (rule) + descriptive/associational (spatial-voting classification fit)",
+   "expected_applicability": "high for legislatures/committees/boards with explicit rules.",
+   "expected_transport_risk": "low (rule) / high (fitted ideal points)",
+   "family": "Institutional approval / voting rules",
+   "formal_model": "Two layers: (a) deterministic aggregation R(votes)->outcome (majority/supermajority/weighted) \u2014 structural, exact. (b) Predictive spatial voting P(yea_ij)=F(-||x_i-O_yea||^2+||x_i-O_nay||^2) with ideal points x_i (NOMINATE/DW-NOMINATE), MLE-fit. Registry operator implements (a); (b) is a fittable overlay.",
+   "local_refit_feasible": "PARTIAL. Local congress-votes dataset supports (i) validating the deterministic tally and (ii) fitting/holding-out a spatial-voting predictor. Tally itself is structural.",
+   "n_sources": 1,
+   "n_verified_sources": 1,
+   "planned_implementation": "Keep deterministic operator; add optional spatial-voting predictor validated on held-out congress roll calls (predictive overlay could reach locally_validated while rule stays structural).",
+   "planned_parameter_packs": [
+    "structural_rule (majority/supermajority/quorum)",
+    "optional: congress spatial-voting pack (held-out classification)"
+   ],
+   "priority": "medium",
+   "promotion_blocker": "Rule layer structural (nothing to validate). Predictive overlay has no held-out record yet; needs a hold-out roll-call evaluation to advance.",
+   "registry_id": "institutional_vote",
+   "temporal_scale": "event (discrete decision)"
+  },
+  {
+   "best_validation_route": "Scenario/rule-execution tests: verify gating, quorum, veto, stage transitions on constructed procedural traces.",
+   "cluster": "platform_institutional",
+   "current_executable_status": "executable: code_ref resolves + test_ref present (status=implemented). Registry 'parameters' empty; defaults are labeled PRIORS, no validation history. code_ref=institutions:Rule (procedure rule gates actions by stage variable).",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Legislative/committee procedure records",
+    "School-budget referenda (classic Romer-Rosenthal application)",
+    "Veto-player datasets (comparative politics)"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model (game-theoretic + rule execution)",
+   "expected_applicability": "high wherever explicit procedure governs action admissibility.",
+   "expected_transport_risk": "low (mechanism) / retrieval-dependent (specific rules)",
+   "family": "Veto / quorum / agenda control / stage transitions",
+   "formal_model": "Rule-based gatekeeping/stage machine: an action is admissible only if stage/quorum/veto predicates hold; transitions deterministic given inputs. Game-theoretic backing (Romer-Rosenthal 1978): setter proposes x, voters compare to reversion q; equilibrium can sit far from the median, bounded by setter monopoly and status-quo. Structural/analytic \u2014 institutional constants, not fitted.",
+   "local_refit_feasible": "N/A (structural). No fitting; validate by rule-execution correctness. Congress data can sanity-check quorum/threshold gating.",
+   "n_sources": 1,
+   "n_verified_sources": 1,
+   "planned_implementation": "Keep as structural rule engine; add a library of encoded procedures (quorum, supermajority, veto, agenda-setter) with correctness tests. No parameter fitting.",
+   "planned_parameter_packs": [
+    "structural procedures (quorum/veto/agenda-setter) \u2014 no fitted params"
+   ],
+   "priority": "low",
+   "promotion_blocker": "Structural family: no statistical validation target, so stays software_implemented by design; 'validation' = procedure-encoding correctness, not held-out fit.",
+   "registry_id": "agenda_stage_control",
+   "temporal_scale": "event / episodic (procedural stages)"
+  },
+  {
+   "best_validation_route": "Implement the family, then validate costly-punishment against Fehr-G\u00e4chter-style experimental data (external); for deterrence, calibrate O(p,f) signs against a crime panel. No local route.",
+   "cluster": "platform_institutional",
+   "current_executable_status": "not_implemented: no code_ref, no registry record, no test_ref.",
+   "current_registry_status": "NONE (no registry family)",
+   "datasets_in_literature": [
+    "Public-goods-with-punishment lab experiments (Fehr-G\u00e4chter; cross-cultural Herrmann/Th\u00f6ni/G\u00e4chter 2008 Science)",
+    "Crime deterrence panels (Becker-tradition econometrics)"
+   ],
+   "disposition": "structural_candidate_only",
+   "evidence_type": "causal_estimate (randomized lab experiment) + structural_model (Becker)",
+   "expected_applicability": "medium-high for norm-enforcement/moderation/sanctioning (conceptually general).",
+   "expected_transport_risk": "high",
+   "family": "Enforcement (deterrence / costly punishment)",
+   "formal_model": "(a) Becker (1968) deterrence: offenses O=O(p,f,u) decreasing in apprehension probability p and sanction severity f; optimal enforcement trades cost vs harm. (b) Fehr-G\u00e4chter costly/altruistic punishment: players pay c(p) to cut a target's payoff; credible punishment threat sustains cooperation. contribution_{t+1} rises with expected punishment for below-average contribution.",
+   "local_refit_feasible": "NO local dataset has a punishment/enforcement treatment (Upworthy/congress/StackExchange lack costly-punishment or deviation-punishment structure). Refit needs public-goods-with-punishment data.",
+   "n_sources": 3,
+   "n_verified_sources": 3,
+   "planned_implementation": "Add 'enforcement' family with two operators: (i) Becker deterrence O(p,f); (ii) costly-punishment update contribution_{t+1}=g(deviation, expected_punishment) with the FG cost schedule as a labeled pack. Ship with external-validation record only (honest: no local data).",
+   "planned_parameter_packs": [
+    "fehr_gachter_2000_pack: impact=0.10/point, c(p)=[0,1,2,4,6,9,12,16,20,25,30], n=4, endow=20, a=0.4 (VERIFIED)",
+    "becker_structural_pack: signs only (no fitted elasticity)"
+   ],
+   "priority": "HIGH (registry gap with the strongest verified numeric evidence in this cluster).",
+   "promotion_blocker": "Not implemented (no code_ref/test_ref) AND no local dataset to identify enforcement parameters -> cannot exceed structural_candidate_only until built + externally validated.",
+   "registry_id": null,
+   "temporal_scale": "event-to-episodic (per-round punishment; deterrence over repeated interaction)"
+  },
+  {
+   "best_validation_route": "Structural: conservation unit tests for depletion; simulate M/M/1 and verify L=\u03bbW. Descriptive: estimate arrival/service rates on StackExchange answer timings and check Little's-Law consistency.",
+   "cluster": "platform_institutional",
+   "current_executable_status": "resource_depletion executable (code_ref=transitions:ResourceUpdateOperator, conservation-checked consumption). capacity/queueing NOT implemented as a mechanism family (EventQueue classes in events.py/simulation are discrete-event ENGINE plumbing, not a fitted queue model).",
+   "current_registry_status": "resource_depletion: implemented; capacity/queueing: NONE",
+   "datasets_in_literature": [
+    "Service-system / call-center logs",
+    "Hospital and network-queue measurements",
+    "Web-server request logs (arrival/service rates)"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model / methodological (analytic identities)",
+   "expected_applicability": "high wherever throughput/capacity/backlog matter (moderation queues, support, attention budgets).",
+   "expected_transport_risk": "low (identities) / measured (rates)",
+   "family": "Resource depletion / capacity / queueing",
+   "formal_model": "(a) Resource depletion: conservation accounting r_{t+1}=r_t - consumption + replenishment with non-negativity/conservation checks \u2014 structural. (b) Queueing/capacity: Little's Law L=\u03bbW; M/M/1 stationary results (utilization \u03c1=\u03bb/\u03bc, mean wait W=1/(\u03bc-\u03bb)) \u2014 analytic; Little's Law distribution-free. Parameters (\u03bb,\u03bc,capacity) measured, not regression-fit.",
+   "local_refit_feasible": "PARTIAL. StackExchange answer-arrival is queue-like (response-occurrence timing) and supports DESCRIPTIVE arrival/service-rate estimation and Little's-Law bookkeeping. Depletion is structural (unit-test conservation). Not causal identification.",
+   "n_sources": 1,
+   "n_verified_sources": 1,
+   "planned_implementation": "Add a 'capacity_queue' structural family exposing Little's Law + M/M/1 / M/M/c closed forms and a stability guard; keep resource_depletion as the conservation operator. Parameters measured per setting (labeled measured, not fitted).",
+   "planned_parameter_packs": [
+    "structural_queue: Little's Law + M/M/1 closed forms (no fitted params)",
+    "stackexchange_rate_pack: descriptive arrival/service-rate estimates (associational)"
+   ],
+   "priority": "medium (add explicit capacity/queueing family; depletion already covered).",
+   "promotion_blocker": "Analytic families have no held-out statistical target; capacity/queueing also not yet implemented. Depletion stays software_implemented; queueing needs building (structural_candidate) first.",
+   "registry_id": "resource_depletion",
+   "temporal_scale": "continuous/event (rates over time)"
+  },
+  {
+   "best_validation_route": "Structural: verify Poisson arrival calibration and deadline probabilities. Methodological: fit a 2-state Markov-switching model on an external macro/finance series and check out-of-sample regime recovery. Preserve the existing Hawkes-vs-Poisson failure note.",
+   "cluster": "platform_institutional",
+   "current_executable_status": "executable: code_ref resolves + test_ref present (status=implemented). Registry 'parameters' empty; defaults are labeled PRIORS, no validation history. code_ref=transitions:RareEventArrivalOperator (Poisson rare-event arrival by deadline).",
+   "current_registry_status": "implemented",
+   "datasets_in_literature": [
+    "Macroeconomic series (US GNP growth \u2014 Hamilton 1989)",
+    "Financial return/volatility regimes",
+    "Structural-break panels"
+   ],
+   "disposition": "software_implemented",
+   "evidence_type": "structural_model (Poisson) + methodological (Markov-switching estimator)",
+   "expected_applicability": "medium (shocks/regimes common but data-hungry to identify).",
+   "expected_transport_risk": "high (fitted regimes) / medium (arrival rates)",
+   "family": "Exogenous shocks / regime changes",
+   "formal_model": "(a) Rare-event arrival: Poisson process N(t)~Poisson(\u03bbt); P(>=1 by T)=1-e^{-\u03bbT} \u2014 structural. (b) Regime switching (Hamilton 1989): latent state s_t follows a Markov chain with transition matrix P; y_t=\u03bc_{s_t}+\u03b5_t; regimes inferred by MLE + Hamilton filter/smoother \u2014 FITTABLE (methodological), unlike Poisson arrival.",
+   "local_refit_feasible": "LIMITED. No clean local regime/shock series among Upworthy/congress/StackExchange; Poisson arrival is structural (calibrate \u03bb where an arrival stream exists, e.g., StackExchange). Regime-switching needs an external macro/finance series.",
+   "n_sources": 1,
+   "n_verified_sources": 1,
+   "planned_implementation": "Keep Poisson operator; optionally add a Markov-switching operator (Hamilton filter) with parameters fit per external series and clearly labeled non-transportable. Carry forward the Hawkes-failure caveat.",
+   "planned_parameter_packs": [
+    "structural_poisson (measured \u03bb)",
+    "optional: markov_switching_2state (external-series fit, non-transportable)"
+   ],
+   "priority": "low-medium (Poisson done; regime-switching is an optional fittable add).",
+   "promotion_blocker": "Poisson layer structural (no held-out target); regime-switching not implemented and has no local identifying series -> stays software_implemented until a regime operator is built + externally validated.",
+   "registry_id": "rare_event_arrival",
+   "temporal_scale": "event (arrivals) to episodic/long (regime durations)"
   },
   {
    "best_validation_route": "Held-out prediction of trustee return r as a function of investor send s on in-repo BehaviorBench/MobLab trust-game data.",

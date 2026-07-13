@@ -369,8 +369,37 @@
    "family": "content_response_click",
    "result": {
     "n_tests_total": 2594,
-    "n_train": 1556,
-    "n_test": 1038,
+    "held_out": {
+     "split": "random 60/40 (in-distribution)",
+     "n_test": 1038,
+     "population": {
+      "precision_at_1": 0.2938,
+      "random_precision_at_1": 0.2593,
+      "pairwise_accuracy": 0.7377,
+      "n_pairs": 8155,
+      "lift_over_random_p1": 0.0345
+     },
+     "no_population_ablation": {
+      "precision_at_1": 0.2919,
+      "random_precision_at_1": 0.2593,
+      "pairwise_accuracy": 0.5641,
+      "n_pairs": 8155,
+      "lift_over_random_p1": 0.0326
+     },
+     "beats_random": true
+    },
+    "transfer": {
+     "split": "time-forward (train earliest 60% \u2192 test latest 40%; temporal shift)",
+     "n_test": 1038,
+     "population": {
+      "precision_at_1": 0.2794,
+      "random_precision_at_1": 0.2446,
+      "pairwise_accuracy": 0.7187,
+      "n_pairs": 9737,
+      "lift_over_random_p1": 0.0348
+     },
+     "beats_random": true
+    },
     "split": "time-forward by ObjectId timestamp (earliest 60% train, latest 40% test)",
     "population": {
      "precision_at_1": 0.2794,
@@ -380,11 +409,11 @@
      "lift_over_random_p1": 0.0348
     },
     "no_population_ablation": {
-     "precision_at_1": 0.2775,
-     "random_precision_at_1": 0.2446,
-     "pairwise_accuracy": 0.5586,
-     "n_pairs": 9737,
-     "lift_over_random_p1": 0.0328
+     "precision_at_1": 0.2919,
+     "random_precision_at_1": 0.2593,
+     "pairwise_accuracy": 0.5641,
+     "n_pairs": 8155,
+     "lift_over_random_p1": 0.0326
     },
     "beats_random": true
    },
@@ -405,7 +434,7 @@
      0.0302,
      -0.0822
     ],
-    "n_train_variants": 6282,
+    "n_train_tests": 1556,
     "target": "within-test CTR z-score",
     "link": "linear + population-heterogeneity ranking"
    },
