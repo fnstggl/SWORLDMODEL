@@ -1,0 +1,1813 @@
+{
+ "bundle_id": "eb_3e08ef",
+ "question": "Will the third-party candidate reach 10% of the vote?",
+ "as_of": 1694736000.0,
+ "compiler_plan_hash": "4014a5a9f1c0",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_ee5ed44482",
+   "claim_or_quantity": "The vote share of the third-party candidate on 2023-11-05, defined as votes received divided by total valid votes, must be compared to 0.10.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "third_party_candidate",
+    "democratic_candidate",
+    "republican_candidate"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_9c71eef4d5",
+   "claim_or_quantity": "value/context of third_party_candidate.true_support",
+   "why_relevant": "high-sensitivity latent (1.00) driving the outcome distribution",
+   "affected_component": "third_party_candidate.true_support",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_6ce6c66703",
+   "claim_or_quantity": "value/context of voters.third_party_appeal_distribution",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "voters.third_party_appeal_distribution",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_c81f23cde3",
+   "claim_or_quantity": "evidence discriminating structural hypothesis spoiler_effect",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:spoiler_effect",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_26981f6c31",
+   "claim_or_quantity": "evidence discriminating structural hypothesis protest_vote_surge",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:protest_vote_surge",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_2de587f691",
+   "claim_or_quantity": "value/context of electoral_system.ballot_access_barriers",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "electoral_system.ballot_access_barriers",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_4c9acf3b1d",
+   "claim_or_quantity": "decision rules / process of electoral_system",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "electoral_system",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-15",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_52803351b6",
+   "claim_or_quantity": "decision rules / process of media_ecosystem",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "media_ecosystem",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-15",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_ee5ed44482",
+   "terms": "third party candidate third party candidate democratic candidate republican candidate",
+   "after": "2023-04-18",
+   "before": "2023-09-15",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_9c71eef4d5",
+   "terms": "third party candidate true support",
+   "after": "2023-04-18",
+   "before": "2023-09-15",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_6ce6c66703",
+   "terms": "voters third party appeal distribution",
+   "after": "2023-04-18",
+   "before": "2023-09-15",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_ee5ed44482",
+   "logical_query": "third party candidate third party candidate democratic candidate republican candidate after:2023-04-18 before:2023-09-15",
+   "wire_url": "https://news.google.com/rss/search?q=third+party+candidate+third+party+candidate+democratic+candidate+republican+candidate+after%3A2023-04-18+before%3A2023-09-15&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-18",
+   "before_date": "2023-09-15",
+   "retrieved_at": 1783906685.2560349,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:38:06 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw1ZBiSO44w5AKxBVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwc_5ouXmIT-DHnmq2SclJ-YXxKfklxcUFOYnFGcWpRWWpRvJGBkZmBuYGZnoFJfIEBAH5zONA\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "96c189a2844754dd1fcdc9ef8314fd112b50dab00dd274787ff1e5e109c64a32",
+   "n_bytes": 102999,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.865
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_9c71eef4d5",
+   "logical_query": "third party candidate true support after:2023-04-18 before:2023-09-15",
+   "wire_url": "https://news.google.com/rss/search?q=third+party+candidate+true+support+after%3A2023-04-18+before%3A2023-09-15&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-18",
+   "before_date": "2023-09-15",
+   "retrieved_at": 1783906686.123483,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:38:06 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw1ZBiSO44w5AKxJVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwc_5ouXmITmLHwSh-zknJSfmF8Sn5JcXFBTmJxRnFqUVlqUbyRgZGZgbmBmZ6BSXyBAQCotjjI\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "16d246ed0a3295359eb20322fb59357c8a4afafbdd873b6a724ff0cd6819122c",
+   "n_bytes": 50107,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.657
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_6ce6c66703",
+   "logical_query": "voters third party appeal distribution after:2023-04-18 before:2023-09-15",
+   "wire_url": "https://news.google.com/rss/search?q=voters+third+party+appeal+distribution+after%3A2023-04-18+before%3A2023-09-15&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-18",
+   "before_date": "2023-09-15",
+   "retrieved_at": 1783906686.7824516,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:38:07 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmII0pBiSO44w5ACxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwc_5suXmIT2HHx3UFGJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwDG2Tlu\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "50cf23b2778180eb78280664dfc5cfe16b3a220fa2f0baf3169fa9c870c9cdb4",
+   "n_bytes": 3563,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 2,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.549
+  }
+ ],
+ "raw_content_refs": [
+  "16d246ed0a3295359eb20322fb59357c8a4afafbdd873b6a724ff0cd6819122c",
+  "50cf23b2778180eb78280664dfc5cfe16b3a220fa2f0baf3169fa9c870c9cdb4",
+  "96c189a2844754dd1fcdc9ef8314fd112b50dab00dd274787ff1e5e109c64a32"
+ ],
+ "documents": [
+  {
+   "id": "cb0b78e51592aedc",
+   "source": "PBS",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPWnR0bzhDaHl4X2hGSE94RWV0Um9EcDRDdTFGRVFWVzZqclhzREFOZnNPNWd2X29XZGN3cGV0YkRzRGhSclJ2aUV2ZFhwbFg0azk1YmhmYnVLQlJsZFlSQU0xQm5VYWg4ZFYySFEzdFNMRnBoSjlKcFRzSnBRbEZOTnhHRnNyMGh6aHJLQzk2bHlZNE4wVlFsRGhoQU9FSkUxMWt6M0RLQklLc1JrWGNKck1sZy1oZFhhRTdJ0gHAAUFVX3lxTE9TaEtWVlV3eXFEREVsOUdCM1NxR19zZ29ZRTAyalZWTlM0ZUdMVi0xVzRTbmhZRUVTUkl4bkFVUHR4bllfaDdtczNBREtGdHVzSy00eXdQX2ZPblR4dEc2dTRscGV1OTR0dnJSTk1xRXNOdTRLLVdVc20xNTdwRjJWSVB3UGU3SjlNVFpYVVpGSkZDWHVBVEc0WUNqY0gwX1JmakRmOGExbWdVMEFrdTY5UXJvRUd2bkp0N0FtYUctWg?oc=5",
+   "title": "Dick Gephardt discusses bipartisan group opposing third-party presidential candidates - PBS",
+   "text": "Dick Gephardt discusses bipartisan group opposing third-party presidential candidates - PBS. Dick Gephardt discusses bipartisan group opposing third-party presidential candidates PBS",
+   "content_hash": "4bd11e55e168f0fa",
+   "raw_feed_hash": "96c189a2844754dd1fcdc9ef8314fd112b50dab00dd274787ff1e5e109c64a32",
+   "published_at": 1689577200.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_ee5ed44482",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "b947257e3eb0ece5",
+   "source": "NBC News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNV3JyRmlqX1h2TXVUenRrNm15OWNiVHVOdTN0SnE2SkFiSkpVYV8wRU1pUmhFVFI0QlNEWlhpX3B3WHdQV3I1VUJPTE5oWk5CdHJITnp4clcxc1hnRnhIb2Z0ZjhQZEVaR3ZRaFBRMDhvbC1hWklTbXUyX1FRRFVfUUtEQTB0ZkFQMUc3NGpuMkUzSUlLeWJodDN6c01aQ0pNck12MkRrbVVFel83SEZCMDJ3WnptSTZS?oc=5",
+   "title": "More Democrats than Republicans are open to a third-party presidential candidate - NBC News",
+   "text": "More Democrats than Republicans are open to a third-party presidential candidate - NBC News. More Democrats than Republicans are open to a third-party presidential candidate NBC News",
+   "content_hash": "57b28920c52ba534",
+   "raw_feed_hash": "96c189a2844754dd1fcdc9ef8314fd112b50dab00dd274787ff1e5e109c64a32",
+   "published_at": 1687935600.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_ee5ed44482",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "48f786a48100e157",
+   "source": "The Hill",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxPdUR0bnhZTl9FaUd1NnlRTktoWXBkZk5ySDZnel9WWDFHTGRyQTU3Y2pGcHUxZmI0dGlPU3JuQ19BaUUtM3lDM1BfeWtGeVZSLUFVT0JGbmdiWEFoVnJsUThVTWpLcmlfS1c1ZlViWk5wUmF3REZBejd1RGFORkFpanFZSTVheDhmUDd4UmczTFJRMW5pZlFfeEF0Y0pLQUhvMVVVLVFzd2ltempKUGg1LUJRa9IBuAFBVV95cUxOVFV2STkzWE11dHk5VS1NYmhIZnlZNzJ6YjlhOW1ZclZKX0ZwRXd5OHVER3FJY1hlbnREN1pGbm5KNy1KZ0hNNTZyYTNOcENhM0NJYlJLc3hST2xpdXNtQ05ydzctQmRVbUFiRWM3am5Rd1QyUnpWZG1RcFpwRm1rMWk4MnpvczB1akZMeWM4cXhEQ0daUzUwbE9haWppaEFVdDIzZlVGWDFpVmZ0S2JSYno2U08yUDc4?oc=5",
+   "title": "Third-party presidential candidates who changed American history - The Hill",
+   "text": "Third-party presidential candidates who changed American history - The Hill. Third-party presidential candidates who changed American history The Hill",
+   "content_hash": "4af07d673e2c44c5",
+   "raw_feed_hash": "96c189a2844754dd1fcdc9ef8314fd112b50dab00dd274787ff1e5e109c64a32",
+   "published_at": 1690873200.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_ee5ed44482",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2a2b87fa11127c15",
+   "source": "The Cap Times",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxPT1YtUkc4cVVLLVMybHdwbmxFNHhUaVNCcVF6bGlTNk5IbEhFQlpJd0xmeGJDUW9OSHE1OEZBcW0wNGZqbTZZU1pRdEJKMV9LU3J5TjFwRXdIS1lUazdRNlEzaV9hcFB1dWhFWkNYbmZyRy0ySjJSTGtsNXg4QkE1QWFoWVNGeGl4bVEwWU9iWm1FWTVJeF8wUm4xb2NycTd2djFxdUcyWGFXNU1BVXlOLThIY3NYbWpMVW9zcmxyLVhmREVZVktXRG9aajBENGZWV3o4WFBwUV9WWFE?oc=5",
+   "title": "Opinion | Third-party candidates are not the problem - The Cap Times",
+   "text": "Opinion | Third-party candidates are not the problem - The Cap Times. Opinion | Third-party candidates are not the problem The Cap Times",
+   "content_hash": "a395ef4ce877727e",
+   "raw_feed_hash": "96c189a2844754dd1fcdc9ef8314fd112b50dab00dd274787ff1e5e109c64a32",
+   "published_at": 1688626800.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_ee5ed44482",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "8f42700b8edd6194",
+   "source": "Brookings",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxNNDhEc1ptZ245OWdUUHpYajhsWHlldF9BcFNBSHk1UWQzY2o5WTRHanktcFVNM1JkNkd6MmxGN1hIVlpMRnc2ZW52dFFOVnNLSnRQT0E0WTJRalh5S3RVNlpEeEZDc1RybF9XOTdqWHZZUzZHMG1MeDhxcnhpRjhDYzBFR1YzODRYby1xMUFqZGVaMkZIeGFUbDgwbHRiSFRYU3EtZGxtQ3F5MnFPQUE?oc=5",
+   "title": "Will Cornel West turn the 2024 presidential election into a rerun of 1948? - Brookings",
+   "text": "Will Cornel West turn the 2024 presidential election into a rerun of 1948? - Brookings. Will Cornel West turn the 2024 presidential election into a rerun of 1948? Brookings",
+   "content_hash": "2f0e5bd92519b165",
+   "raw_feed_hash": "96c189a2844754dd1fcdc9ef8314fd112b50dab00dd274787ff1e5e109c64a32",
+   "published_at": 1689231600.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_ee5ed44482",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d81ce131194e89c9",
+   "source": "Los Angeles Times",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOMU56cHViSXJLbWdES1JLV0U2TFJDRzBhbnIzX0gtRXk3T05KMkQwXzI0aUtPYXdMNWlkSnQyLTBiWWV1WlVyakdONlFWY2hwYS1mb2xfSWg5NUdNeHoyZmRJRDZJT3NOU2Z2YkdjRTFmenhwMkcxVm5rYUU2eHAyX3FmdnV3RUthdEN5RTMzdFppQ0pnUzIzRVVyRGJTUUhidk80Sml6cEN4Z3c?oc=5",
+   "title": "Opinion: Don\u2019t fall for any third-party baloney. It's the last thing we need in 2024 - Los Angeles Times",
+   "text": "Opinion: Don\u2019t fall for any third-party baloney. It's the last thing we need in 2024 - Los Angeles Times. Opinion: Don\u2019t fall for any third-party baloney. It's the last thing we need in 2024 Los Angeles Times",
+   "content_hash": "164c19f56cbe7b9d",
+   "raw_feed_hash": "96c189a2844754dd1fcdc9ef8314fd112b50dab00dd274787ff1e5e109c64a32",
+   "published_at": 1685343600.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_ee5ed44482",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a69d3a37fb4bd4d7",
+   "source": "CNN",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPVHZvWGtMckdhNWRLNkN6cmVkZkdNSnh4TFg1TjJqMVBoRlBQd0JFYjdGWW01LTdZZzF5ZDlnOG9IWXJveUZYNVdHdWZvd1RHUzN0TFBNNnVXNUlIeUlrbnRwNkwxajZ3aU9lVzg3T09kLWF1T2JFcEFWQXFlcjVOdTR3?oc=5",
+   "title": "The curse of third-party presidential candidates - CNN",
+   "text": "The curse of third-party presidential candidates - CNN. The curse of third-party presidential candidates CNN",
+   "content_hash": "2cc10f77183a4319",
+   "raw_feed_hash": "96c189a2844754dd1fcdc9ef8314fd112b50dab00dd274787ff1e5e109c64a32",
+   "published_at": 1689577200.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_ee5ed44482",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "c1ee1e75ebdee0f2",
+   "source": "The New York Times",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxQY09nWWZIZ1NSa2t0Mm9mUkJNUmNBeDRJd05LR25haUNIMTlEUmZNQldjcVBWcDdOQ2pKaDdLellYS2ZjUXRacXAzTWpLSk5xeFotNjVfTldqMVZsZTU4QWhvXzl6X3hCNGt1cW4ySjdxWTh2Wk5wM0RwTDNUQUJLMFM0bmFpTGxVSl8w?oc=5",
+   "title": "Opinion | This Is Not the Time for a Third Presidential Candidate (Published 2023) - The New York Times",
+   "text": "Opinion | This Is Not the Time for a Third Presidential Candidate (Published 2023) - The New York Times. Opinion | This Is Not the Time for a Third Presidential Candidate (Published 2023) The New York Times",
+   "content_hash": "94fb98e46188ccf2",
+   "raw_feed_hash": "96c189a2844754dd1fcdc9ef8314fd112b50dab00dd274787ff1e5e109c64a32",
+   "published_at": 1686207600.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_ee5ed44482",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a69d3a37fb4bd4d7",
+   "source": "CNN",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPVHZvWGtMckdhNWRLNkN6cmVkZkdNSnh4TFg1TjJqMVBoRlBQd0JFYjdGWW01LTdZZzF5ZDlnOG9IWXJveUZYNVdHdWZvd1RHUzN0TFBNNnVXNUlIeUlrbnRwNkwxajZ3aU9lVzg3T09kLWF1T2JFcEFWQXFlcjVOdTR3?oc=5",
+   "title": "The curse of third-party presidential candidates - CNN",
+   "text": "The curse of third-party presidential candidates - CNN. The curse of third-party presidential candidates CNN",
+   "content_hash": "2cc10f77183a4319",
+   "raw_feed_hash": "16d246ed0a3295359eb20322fb59357c8a4afafbdd873b6a724ff0cd6819122c",
+   "published_at": 1689577200.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_9c71eef4d5",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "624ddde63fd62073",
+   "source": "Carnegie Endowment for International Peace",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxPdFE2cDFxZHN0NGRTVDY2X1Z2aXlZMkY0b2FfQ19oRmE4RnpxY3Y1NHprSWM5VVlxYU93SHRCcWRVZDR4V3d0V3dmN0RBZy16aENWNVhuOTROR3lSc2JfRDJCVTU2RXk4LWhaNVlOV2ZLM0NXcnJWY3dldUxtV3IxTlhfWjRMWkRHVV82MEhKWnF1cUpNNF9YUXEwNzQ5a1Y4dWJOYzZ1NXVNZVpCanNZWUpRaEtXbkxhQ0RCb2xJRjRmZmk2RkhUZmZfUkpFVGVyeXc?oc=5",
+   "title": "Polarization, Democracy, and Political Violence in the United States: What the Research Says - Carnegie Endowment for International Peace",
+   "text": "Polarization, Democracy, and Political Violence in the United States: What the Research Says - Carnegie Endowment for International Peace. Polarization, Democracy, and Political Violence in the United States: What the Research Says Carnegie Endowment for International Peace",
+   "content_hash": "04d69e88c810bd21",
+   "raw_feed_hash": "16d246ed0a3295359eb20322fb59357c8a4afafbdd873b6a724ff0cd6819122c",
+   "published_at": 1693897200.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_9c71eef4d5",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ef092c7c7b8bd138",
+   "source": "NPR",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQbmhLeDliUU9jQk9zdUNYRk5QeXN3d21ZRTB2T3RFcW5EWU9VVkFTNERscU9ETzlzSTh0eU1MTXRGNS1Lc3VHQ2NuSlBWWktKU3ZwVkxaRU1wM0ZDbmROWVUwWEF1OFdIQVlkQm9rMDlRQ21FNFJfWlc1aVlvd3NFSDROOGh2QQ?oc=5",
+   "title": "No Labels in 2024 wants to boldly try what Americans Elect tried in 2012 - NPR",
+   "text": "No Labels in 2024 wants to boldly try what Americans Elect tried in 2012 - NPR. No Labels in 2024 wants to boldly try what Americans Elect tried in 2012 NPR",
+   "content_hash": "51623e041d8a89b1",
+   "raw_feed_hash": "16d246ed0a3295359eb20322fb59357c8a4afafbdd873b6a724ff0cd6819122c",
+   "published_at": 1690009200.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_9c71eef4d5",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "c1ee1e75ebdee0f2",
+   "source": "The New York Times",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxQY09nWWZIZ1NSa2t0Mm9mUkJNUmNBeDRJd05LR25haUNIMTlEUmZNQldjcVBWcDdOQ2pKaDdLellYS2ZjUXRacXAzTWpLSk5xeFotNjVfTldqMVZsZTU4QWhvXzl6X3hCNGt1cW4ySjdxWTh2Wk5wM0RwTDNUQUJLMFM0bmFpTGxVSl8w?oc=5",
+   "title": "Opinion | This Is Not the Time for a Third Presidential Candidate (Published 2023) - The New York Times",
+   "text": "Opinion | This Is Not the Time for a Third Presidential Candidate (Published 2023) - The New York Times. Opinion | This Is Not the Time for a Third Presidential Candidate (Published 2023) The New York Times",
+   "content_hash": "94fb98e46188ccf2",
+   "raw_feed_hash": "16d246ed0a3295359eb20322fb59357c8a4afafbdd873b6a724ff0cd6819122c",
+   "published_at": 1686207600.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_9c71eef4d5",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6a6089a7edeaea1f",
+   "source": "Center For Politics",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxQSkNrTkUzWTRycTBNNlU4QURib3RBU1BneC1abWlnQmdEMDZjeGJRTGlxZjV4Qlc4cE5JcmJCQndDUEpRU3I4Tk1RM3dOOGtMbzZJS2FhWllUOWlQRlVvRmw5NkNsSlR0OFh6YmNCTEJpZ2pvTmE2M3ZwRzV5bno3bVY0M29hSURobjI2S2dONU11VDZvT1J5Q1RtVmE5a3cxVUZtU0J1a01wMkVUZkliN0FhTi13M0tITV9MSWI0bHU?oc=5",
+   "title": "Explaining Republican Loyalty to Trump: The Crucial Role of Negative Partisanship - Center For Politics",
+   "text": "Explaining Republican Loyalty to Trump: The Crucial Role of Negative Partisanship - Center For Politics. Explaining Republican Loyalty to Trump: The Crucial Role of Negative Partisanship Center For Politics",
+   "content_hash": "ecee3cef041785a7",
+   "raw_feed_hash": "16d246ed0a3295359eb20322fb59357c8a4afafbdd873b6a724ff0cd6819122c",
+   "published_at": 1692687600.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_9c71eef4d5",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "eb1c831483d5f266",
+   "source": "The Washington Post",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQNGZXUlR2bE1YU0hFTFFnelNmT3ppY2NkbTRkcnk5RVFta0NXa0J6NTNPbDdCMWtueGRscmJhbWczRWE3YjBERkVoejV0OExuY1pVUDQ1QXJRUWNWR05IZU5GMnZGNlB5X21LdG5EMTh6M3p4M1ljTmtmT3BJSVNhLVU3cmJQRWhaSmNadVdNLXFkdw?oc=5",
+   "title": "What is the No Labels political group, and what is it trying to do? - The Washington Post",
+   "text": "What is the No Labels political group, and what is it trying to do? - The Washington Post. What is the No Labels political group, and what is it trying to do? The Washington Post",
+   "content_hash": "45cde4afc4d6de49",
+   "raw_feed_hash": "16d246ed0a3295359eb20322fb59357c8a4afafbdd873b6a724ff0cd6819122c",
+   "published_at": 1689318000.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_9c71eef4d5",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "bfc05f53635bd700",
+   "source": "Slate Magazine",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPMnBBRUFvNm5TS3NKWGNUTzgtSjVGNUNVeDJPRnVMMkNzNXJXUWk2bnYwNkswdl9RLVhtS3FtbUxlbmJ0bl82cV9WeXkxVW96RXdFdzc0OS1VNzVPaTlObFpiVDE0MG1jQzBaemstQ0laWllLWXdMSGtqUTdyZE11QnJzOG1wTFp6ekNHT1NWOGdWaVFKRGY2bGdlTjRIbFJodUtjeXZabnRGVXJDcVR0Zg?oc=5",
+   "title": "A Romp Through History\u2019s Most Successful Third-Party Presidential Candidates - Slate Magazine",
+   "text": "A Romp Through History\u2019s Most Successful Third-Party Presidential Candidates - Slate Magazine. A Romp Through History\u2019s Most Successful Third-Party Presidential Candidates Slate Magazine",
+   "content_hash": "d194d39767a6117a",
+   "raw_feed_hash": "16d246ed0a3295359eb20322fb59357c8a4afafbdd873b6a724ff0cd6819122c",
+   "published_at": 1688367600.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_9c71eef4d5",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "82b8a1ca8cbf4dc7",
+   "source": "Data For Progress",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxNSGpwSko4ZnhwQjQ1eHhHRm9BQmloek1UbHJzRWZPVWlCdlNDWDN4NVpWV3g4WVRYVHdheFlQOUhVWEF4Q2dhOG8xTlk4OVlidDA0MzluSmlBQU55WHdmMFNsSXZYeHlmZHJRVFRDamxmUy1GWU1qSWUtdlE1NEx3WW1tZnJObTFhakt1Z0xlWkZPSE9DaldETXB0VDFUbmxXMmhpVFJjMGJMLUJJZXF3blJGaElrQmxCSFNNd0ZwN0JXX3pW?oc=5",
+   "title": "A No Labels Candidate Would Be an Unserious Contender and a Threat to Democracy - Data For Progress",
+   "text": "A No Labels Candidate Would Be an Unserious Contender and a Threat to Democracy - Data For Progress. A No Labels Candidate Would Be an Unserious Contender and a Threat to Democracy Data For Progress",
+   "content_hash": "cd9e660c81dbb396",
+   "raw_feed_hash": "16d246ed0a3295359eb20322fb59357c8a4afafbdd873b6a724ff0cd6819122c",
+   "published_at": 1687330800.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_9c71eef4d5",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2d350147a6eb829f",
+   "source": "World Socialist Web Site",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9Lc29BanduRkNnb3Zpc0lOcHh2TjU0S0xDWHVRQUxPY1lEVVFGTVExXzBjcXVfZExwNlhCTlJDUUk0V0g5OFgtbE1iYzlZeFVDVzkzdElOWkhTS2h4bzFpcXhVYldNQUww?oc=5",
+   "title": "California Amazon delivery contractors vote to join the Teamsters as Amazon announces canceling of their contract - World Socialist Web Site",
+   "text": "California Amazon delivery contractors vote to join the Teamsters as Amazon announces canceling of their contract - World Socialist Web Site. California Amazon delivery contractors vote to join the Teamsters as Amazon announces canceling of their contract World Socialist Web Site",
+   "content_hash": "9a73d84ad3230f51",
+   "raw_feed_hash": "50cf23b2778180eb78280664dfc5cfe16b3a220fa2f0baf3169fa9c870c9cdb4",
+   "published_at": 1682406000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_6ce6c66703",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d6dd6c68db25d0ed",
+   "source": "24/7 Wall St.",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxOMm9WUHpQd2xmOXFwQllNOGs5eUxsWGpKVFlNYVFpTE1uVzh6ZUplQWhrUnZHZGlvM2RqSzdDZ0hVNnRrRVFrMmJxQko1cXNmSTNZbUdJeEYyU3ZUWXkzd1RaOWlCdFJKeXJrR3lqT0VDNXV1cEdmMWVCZGdiVXdhd1RUdmpGaUV5bUxrandLMkJSaUl2UE5nV2JEZERDU2ZJZEw0Mg?oc=5",
+   "title": "States That Have Elected the Most Green Party Members - 24/7 Wall St.",
+   "text": "States That Have Elected the Most Green Party Members - 24/7 Wall St.. States That Have Elected the Most Green Party Members 24/7 Wall St.",
+   "content_hash": "34bcbc437a1a3ee3",
+   "raw_feed_hash": "50cf23b2778180eb78280664dfc5cfe16b3a220fa2f0baf3169fa9c870c9cdb4",
+   "published_at": 1690873200.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_6ce6c66703",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "cb0b78e51592aedc:c0",
+   "source_id": "cb0b78e51592aedc",
+   "subject": "Dick Gephardt",
+   "predicate": "discusses",
+   "object": "bipartisan group opposing third-party presidential candidates",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Dick Gephardt discusses bipartisan group opposing third-party presidential candidates",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1689577200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Dick Gephardt"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_ca7f26c635",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ee5ed44482"
+   }
+  },
+  {
+   "claim_id": "a69d3a37fb4bd4d7:c0",
+   "source_id": "a69d3a37fb4bd4d7",
+   "subject": "third-party presidential candidates",
+   "predicate": "are affected by",
+   "object": "a curse",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "The curse of third-party presidential candidates",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1689577200.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "third-party presidential candidates"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_0982159b66",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_9c71eef4d5"
+   }
+  },
+  {
+   "claim_id": "a69d3a37fb4bd4d7:c1",
+   "source_id": "a69d3a37fb4bd4d7",
+   "subject": "CNN",
+   "predicate": "published",
+   "object": "an article about the curse of third-party presidential candidates",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The curse of third-party presidential candidates - CNN",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1689577200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "CNN"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_0982159b66",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_9c71eef4d5"
+   }
+  },
+  {
+   "claim_id": "2d350147a6eb829f:c0",
+   "source_id": "2d350147a6eb829f",
+   "subject": "California Amazon delivery contractors",
+   "predicate": "vote to join",
+   "object": "the Teamsters",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "California Amazon delivery contractors vote to join the Teamsters",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682406000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "California",
+    "Amazon",
+    "delivery contractors",
+    "Teamsters"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_99c58bcd43",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6ce6c66703"
+   }
+  },
+  {
+   "claim_id": "2d350147a6eb829f:c1",
+   "source_id": "2d350147a6eb829f",
+   "subject": "Amazon",
+   "predicate": "announces canceling of",
+   "object": "their contract",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Amazon announces canceling of their contract",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682406000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Amazon"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_99c58bcd43",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6ce6c66703"
+   }
+  },
+  {
+   "claim_id": "b947257e3eb0ece5:c0",
+   "source_id": "b947257e3eb0ece5",
+   "subject": "Democrats",
+   "predicate": "are more open to a third-party presidential candidate than",
+   "object": "Republicans",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "More Democrats than Republicans are open to a third-party presidential candidate",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1687935600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Democrats",
+    "Republicans"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_34db7a4a52",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ee5ed44482"
+   }
+  },
+  {
+   "claim_id": "b947257e3eb0ece5:c1",
+   "source_id": "b947257e3eb0ece5",
+   "subject": "NBC News",
+   "predicate": "reported that",
+   "object": "more Democrats than Republicans are open to a third-party presidential candidate",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "reported",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "More Democrats than Republicans are open to a third-party presidential candidate - NBC News",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1687935600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "NBC News"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_34db7a4a52",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ee5ed44482"
+   }
+  },
+  {
+   "claim_id": "624ddde63fd62073:c0",
+   "source_id": "624ddde63fd62073",
+   "subject": "Carnegie Endowment for International Peace",
+   "predicate": "published",
+   "object": "research on polarization, democracy, and political violence in the United States",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Polarization, Democracy, and Political Violence in the United States: What the Research Says - Carnegie Endowment for International Peace",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1693897200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Carnegie Endowment for International Peace"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_64959fcba5",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_9c71eef4d5"
+   }
+  },
+  {
+   "claim_id": "d6dd6c68db25d0ed:c0",
+   "source_id": "d6dd6c68db25d0ed",
+   "subject": "States That Have Elected the Most Green Party Members",
+   "predicate": "is a title of",
+   "object": "article",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "States That Have Elected the Most Green Party Members - 24/7 Wall St.",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1690873200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "24/7 Wall St."
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_481172c0d3",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6ce6c66703"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Dick Gephardt",
+   "normalized": "dick gephardt",
+   "candidates": [
+    {
+     "entity_id": "ent_5a5408d054",
+     "canonical": "dick gephardt",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Dick Gephardt"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "third-party presidential candidates",
+   "normalized": "third-party presidential candidates",
+   "candidates": [
+    {
+     "entity_id": "ent_28642c3f96",
+     "canonical": "third-party presidential candidates",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "third-party presidential candidates"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "CNN",
+   "normalized": "cnn",
+   "candidates": [
+    {
+     "entity_id": "ent_e19150aa83",
+     "canonical": "cnn",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "CNN"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "California",
+   "normalized": "california",
+   "candidates": [
+    {
+     "entity_id": "ent_e37b030af5",
+     "canonical": "california",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "California"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Amazon",
+   "normalized": "amazon",
+   "candidates": [
+    {
+     "entity_id": "ent_1e17fd881e",
+     "canonical": "amazon",
+     "support": 0.6538,
+     "evidence_mentions": [
+      "Amazon",
+      "Amazon"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "delivery contractors",
+   "normalized": "delivery contractors",
+   "candidates": [
+    {
+     "entity_id": "ent_53660bf4b9",
+     "canonical": "delivery contractors",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "delivery contractors"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Teamsters",
+   "normalized": "teamsters",
+   "candidates": [
+    {
+     "entity_id": "ent_a9d7f9e825",
+     "canonical": "teamsters",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Teamsters"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Amazon",
+   "normalized": "amazon",
+   "candidates": [
+    {
+     "entity_id": "ent_1e17fd881e",
+     "canonical": "amazon",
+     "support": 0.6538,
+     "evidence_mentions": [
+      "Amazon",
+      "Amazon"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Democrats",
+   "normalized": "democrats",
+   "candidates": [
+    {
+     "entity_id": "ent_f3d91dd97c",
+     "canonical": "democrats",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Democrats"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Republicans",
+   "normalized": "republicans",
+   "candidates": [
+    {
+     "entity_id": "ent_853ccb2e02",
+     "canonical": "republicans",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Republicans"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "NBC News",
+   "normalized": "nbc news",
+   "candidates": [
+    {
+     "entity_id": "ent_6a2126ed6d",
+     "canonical": "nbc news",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "NBC News"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Carnegie Endowment for International Peace",
+   "normalized": "carnegie endowment for international peace",
+   "candidates": [
+    {
+     "entity_id": "ent_2a1371e2db",
+     "canonical": "carnegie endowment for international peace",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Carnegie Endowment for International Peace"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "24/7 Wall St.",
+   "normalized": "24/7 wall st",
+   "candidates": [
+    {
+     "entity_id": "ent_76a5209cb1",
+     "canonical": "24/7 wall st",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "24/7 Wall St."
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "cb0b78e51592aedc": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1694736000.0,
+   "claimed_pubdate_ts": 1689577200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689577200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "b947257e3eb0ece5": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1694736000.0,
+   "claimed_pubdate_ts": 1687935600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687935600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "48f786a48100e157": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1694736000.0,
+   "claimed_pubdate_ts": 1690873200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690873200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2a2b87fa11127c15": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1694736000.0,
+   "claimed_pubdate_ts": 1688626800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1688626800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "8f42700b8edd6194": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1694736000.0,
+   "claimed_pubdate_ts": 1689231600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689231600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d81ce131194e89c9": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1694736000.0,
+   "claimed_pubdate_ts": 1685343600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685343600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a69d3a37fb4bd4d7": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1694736000.0,
+   "claimed_pubdate_ts": 1689577200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689577200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "c1ee1e75ebdee0f2": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1694736000.0,
+   "claimed_pubdate_ts": 1686207600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686207600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "624ddde63fd62073": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1694736000.0,
+   "claimed_pubdate_ts": 1693897200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1693897200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ef092c7c7b8bd138": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1694736000.0,
+   "claimed_pubdate_ts": 1690009200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690009200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6a6089a7edeaea1f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1694736000.0,
+   "claimed_pubdate_ts": 1692687600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1692687600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "eb1c831483d5f266": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1694736000.0,
+   "claimed_pubdate_ts": 1689318000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689318000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "bfc05f53635bd700": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1694736000.0,
+   "claimed_pubdate_ts": 1688367600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1688367600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "82b8a1ca8cbf4dc7": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1694736000.0,
+   "claimed_pubdate_ts": 1687330800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687330800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2d350147a6eb829f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1694736000.0,
+   "claimed_pubdate_ts": 1682406000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682406000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d6dd6c68db25d0ed": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1694736000.0,
+   "claimed_pubdate_ts": 1690873200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690873200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_ca7f26c635",
+   "member_ids": [
+    "cb0b78e51592aedc"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "PBS",
+   "primary_source": "PBS",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_34db7a4a52",
+   "member_ids": [
+    "b947257e3eb0ece5"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "NBC News",
+   "primary_source": "NBC News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_45c83bd14f",
+   "member_ids": [
+    "48f786a48100e157"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Hill",
+   "primary_source": "The Hill",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_f38e63aa0b",
+   "member_ids": [
+    "2a2b87fa11127c15"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Cap Times",
+   "primary_source": "The Cap Times",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_658a3d216e",
+   "member_ids": [
+    "8f42700b8edd6194"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Brookings",
+   "primary_source": "Brookings",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a7db9ede84",
+   "member_ids": [
+    "d81ce131194e89c9"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Los Angeles Times",
+   "primary_source": "Los Angeles Times",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_0982159b66",
+   "member_ids": [
+    "a69d3a37fb4bd4d7",
+    "a69d3a37fb4bd4d7"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "CNN",
+   "primary_source": "CNN",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_453d111c46",
+   "member_ids": [
+    "c1ee1e75ebdee0f2",
+    "c1ee1e75ebdee0f2"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "The New York Times",
+   "primary_source": "The New York Times",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_64959fcba5",
+   "member_ids": [
+    "624ddde63fd62073"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Carnegie Endowment for International Peace",
+   "primary_source": "Carnegie Endowment for International Peace",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_8f1deaf270",
+   "member_ids": [
+    "ef092c7c7b8bd138"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "NPR",
+   "primary_source": "NPR",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_47ad7f2e19",
+   "member_ids": [
+    "6a6089a7edeaea1f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Center For Politics",
+   "primary_source": "Center For Politics",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_829d7ec7bc",
+   "member_ids": [
+    "eb1c831483d5f266"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Washington Post",
+   "primary_source": "The Washington Post",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_82394e2fd3",
+   "member_ids": [
+    "bfc05f53635bd700"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Slate Magazine",
+   "primary_source": "Slate Magazine",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_1249a7f306",
+   "member_ids": [
+    "82b8a1ca8cbf4dc7"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Data For Progress",
+   "primary_source": "Data For Progress",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_99c58bcd43",
+   "member_ids": [
+    "2d350147a6eb829f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "World Socialist Web Site",
+   "primary_source": "World Socialist Web Site",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_481172c0d3",
+   "member_ids": [
+    "d6dd6c68db25d0ed"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "24/7 Wall St.",
+   "primary_source": "24/7 Wall St.",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "cb0b78e51592aedc:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1689577200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "a69d3a37fb4bd4d7:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1689577200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "a69d3a37fb4bd4d7:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1689577200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "2d350147a6eb829f:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682406000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "2d350147a6eb829f:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682406000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "b947257e3eb0ece5:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1687935600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "b947257e3eb0ece5:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1687935600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "624ddde63fd62073:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1693897200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "d6dd6c68db25d0ed:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1690873200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "cb0b78e51592aedc:c0",
+  "a69d3a37fb4bd4d7:c0",
+  "a69d3a37fb4bd4d7:c1",
+  "2d350147a6eb829f:c0",
+  "2d350147a6eb829f:c1",
+  "b947257e3eb0ece5:c0",
+  "b947257e3eb0ece5:c1",
+  "624ddde63fd62073:c0",
+  "d6dd6c68db25d0ed:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_ee5ed44482": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_9c71eef4d5": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_6ce6c66703": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_c81f23cde3": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_26981f6c31": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_2de587f691": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_4c9acf3b1d": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_52803351b6": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_c81f23cde3",
+  "req_26981f6c31",
+  "req_2de587f691",
+  "req_4c9acf3b1d",
+  "req_52803351b6"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 16,
+  "n_contradictions": 0,
+  "n_documents": 18
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 15.551,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "bd5a1604c5cb9188",
+ "bundle_hash": "bd5a1604c5cb9188",
+ "_persisted_at": "2026-07-13T01:38:28Z"
+}

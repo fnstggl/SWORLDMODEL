@@ -1,0 +1,1849 @@
+{
+ "bundle_id": "eb_8ed765",
+ "question": "Will the three parties form a governing coalition after the election?",
+ "as_of": 1693526400.0,
+ "compiler_plan_hash": "b45ac3559724",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_ebe05b7975",
+   "claim_or_quantity": "If any two or all three parties agree to form a government with a majority of seats by 2023-11-01, outcome is coalition_formed; otherwise no_coalition.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "party_A",
+    "party_B",
+    "party_C",
+    "electorate"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_6f2c3fbc2e",
+   "claim_or_quantity": "value/context of party_A.ideology",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "party_A.ideology",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_38f7187003",
+   "claim_or_quantity": "value/context of party_B.ideology",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "party_B.ideology",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_f2f5327d0a",
+   "claim_or_quantity": "value/context of party_C.ideology",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "party_C.ideology",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_51644b37a9",
+   "claim_or_quantity": "evidence discriminating structural hypothesis two_party_coalition",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:two_party_coalition",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_f8f6d4bd31",
+   "claim_or_quantity": "evidence discriminating structural hypothesis grand_coalition",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:grand_coalition",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_bd5dda272f",
+   "claim_or_quantity": "decision rules / process of parliament",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "parliament",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_bf4862423e",
+   "claim_or_quantity": "decision rules / process of electoral_commission",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "electoral_commission",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_ebe05b7975",
+   "terms": "three parties form governing coalition election party A party B party C",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_6f2c3fbc2e",
+   "terms": "party ideology",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_38f7187003",
+   "terms": "party ideology",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_ebe05b7975",
+   "logical_query": "three parties form governing coalition election party A party B party C after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=three+parties+form+governing+coalition+election+party+A+party+B+party+C+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783907871.8991852,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:57:52 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmJw05BiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDsaDn4iU2gQPHr25gUlJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAAnwI3CQ\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "daa87edd95f864efa7db65b4e5c9ff14116fa35caf41bf4d8879cbe1c8ba5e42",
+   "n_bytes": 24744,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.674
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_6f2c3fbc2e",
+   "logical_query": "party ideology after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=party+ideology+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783907872.574711,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:57:53 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmII1pBiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDsbDn4iU2gQ93Z1xkVFJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAArTQ3QA\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "d097c9c79c0554cf7bee2babc85b99861cacfa64a2171c7177660d291fa73324",
+   "n_bytes": 97091,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.822
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_38f7187003",
+   "logical_query": "party ideology after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=party+ideology+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783907873.3997707,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Pragma": "no-cache",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmII1pBiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDsbDn4iU2gQ93Z1xkVFJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAArTQ3QA\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Date": "Mon, 13 Jul 2026 01:57:53 GMT",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Content-Type": "application/xml; charset=utf-8",
+    "Age": "0",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding"
+   },
+   "raw_content_hash": "d097c9c79c0554cf7bee2babc85b99861cacfa64a2171c7177660d291fa73324",
+   "n_bytes": 97091,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.181
+  }
+ ],
+ "raw_content_refs": [
+  "d097c9c79c0554cf7bee2babc85b99861cacfa64a2171c7177660d291fa73324",
+  "daa87edd95f864efa7db65b4e5c9ff14116fa35caf41bf4d8879cbe1c8ba5e42"
+ ],
+ "documents": [
+  {
+   "id": "04c4befb361883e5",
+   "source": "Groupe d'Etudes G\u00e9opolitiques",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPVWE3dS13aUxwMTJsbm5aUWFyY2RzY1pmY0dNZXNYWVdkeG14UXVNWU1BOUFzaUdVcDllUXV5MnVzZEJCaXd6bndSelVZNElFandRUDQ3WG0zbm4weWRWZ0xRTUJsQ0pKUF91ZUNRUjB3WW95TDExZ2VZc3pneTJhZU5mM2lqY2Q3TjA2U0hoRVlycUR4UzZsTHFuZ01wYTA?oc=5",
+   "title": "Regional election in the Principality of Asturias, 28 May 2023 - Groupe d'Etudes G\u00e9opolitiques",
+   "text": "Regional election in the Principality of Asturias, 28 May 2023 - Groupe d'Etudes G\u00e9opolitiques. Regional election in the Principality of Asturias, 28 May 2023 Groupe d'Etudes G\u00e9opolitiques",
+   "content_hash": "9ffc5afdb836c552",
+   "raw_feed_hash": "daa87edd95f864efa7db65b4e5c9ff14116fa35caf41bf4d8879cbe1c8ba5e42",
+   "published_at": 1685257200.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_ebe05b7975",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2bc5b30a94c7aebf",
+   "source": "DW.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPY2swYzNPcGcwdWFkWEUwbUpWeWZDTldPN2c3UmxCSHdUbzA2TFp0Uk54RW9WVGpOWlRtUUpYYVRVWFRvTW1nQlFUckNoQXg2cl9HMEgyRlBxdTNoN1gzV0FLT21HYzhDb2RvQVdUSFdYZWhsOENVYXgtbmt4VV9HdVlqYlJhbE5qQy1CVEQ4anl1Z1BkV3fSAZYBQVVfeXFMUFMyelN4MXFadjdoTEl3QUstN2ZDa1VJQkRNNXZpMzZ4R3o5ZnExNEFUM3lEZldPMDJweVFWZjBiZUhaRmdfTU5zNDZXSlZxblZTYTdfalI1a0EwU2lVRi0yNFo1ZjNtbGNzWmNJQjhKYzhHejdDdlExa1A1X250MG5UNGhvZFoyRjhsRDFqQ2RTUzJPSkhB?oc=5",
+   "title": "Malaysia: PM Anwar thwarts opposition threat in state polls - DW.com",
+   "text": "Malaysia: PM Anwar thwarts opposition threat in state polls - DW.com. Malaysia: PM Anwar thwarts opposition threat in state polls DW.com",
+   "content_hash": "0b81cd4c5901295c",
+   "raw_feed_hash": "daa87edd95f864efa7db65b4e5c9ff14116fa35caf41bf4d8879cbe1c8ba5e42",
+   "published_at": 1691910000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_ebe05b7975",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "94029b0c300adc4b",
+   "source": "Anti-Defamation League",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxNWkJ1ZXhkTTFXeC1UOVRaM195bUhxVVlPVDliN0hqWE43TEpZY0d6WTRnSlF1azJNYm9kY1FBNlBHSm12TXNITGlETmJjZUFxQ2t2VmR0eWs4Qkg1WUhSd19iZWFBWktKTUFDMUd2dTUxSXhOa3J5UEN5MFVDRUhVY1BET0plMUlQLXB6UEttN3A5dDJxeDZBRDVlbGRqZ2s5Ymc?oc=5",
+   "title": "Antisemitism and Radical Anti-Israel Bias on the Political Left in Europe - Anti-Defamation League",
+   "text": "Antisemitism and Radical Anti-Israel Bias on the Political Left in Europe - Anti-Defamation League. Antisemitism and Radical Anti-Israel Bias on the Political Left in Europe Anti-Defamation League",
+   "content_hash": "f0966c42596063d5",
+   "raw_feed_hash": "daa87edd95f864efa7db65b4e5c9ff14116fa35caf41bf4d8879cbe1c8ba5e42",
+   "published_at": 1691478000.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_ebe05b7975",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f2e357eb3a9d1c09",
+   "source": "GOV.UK blogs",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxNWUxmZ0VQMlJnVGQweklHelNsMUtDemJRR3l6c0UybUYxUTZjdldTSlhqdnk4S1A4QWtxdWl4dE9TaGd5VHF3d2VwNS1NTU1IdmVPb0Z3bEtmYXNZVlpOOHNaOGdlbEdYVVk0N2hCZzNvLTJZUjNvVHI1bEpmMzRVLQ?oc=5",
+   "title": "The founding of the NHS: 75 years on - GOV.UK blogs",
+   "text": "The founding of the NHS: 75 years on - GOV.UK blogs. The founding of the NHS: 75 years on GOV.UK blogs",
+   "content_hash": "af4184c95a38c93c",
+   "raw_feed_hash": "daa87edd95f864efa7db65b4e5c9ff14116fa35caf41bf4d8879cbe1c8ba5e42",
+   "published_at": 1689231600.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_ebe05b7975",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "579cb720f5c3a0d4",
+   "source": "International Crisis Group",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxQNkVTa0hPTTB5Q0tNZEVnaDc4WElQUWtWTUx3M2tkRWJ2bHBBT3pia1J5bXJwclctZnpwS29MUW1BeVVYeUNhNHI4MXpZNnlXcHB0MFhiTFVrU3JkQzIxd1hlTjJlN3lmaDFTWUpxbEY5cTBtV2Y3WkFkdlU4clQ3ZUJiUDJYdmxwaWdwc3BuMEk1cTF4bklpZ2VDRzUyWlZCc3Z5R3NYR29ucDltY0twdg?oc=5",
+   "title": "Southern Thailand\u2019s Stop-start Peace Dialogue - International Crisis Group",
+   "text": "Southern Thailand\u2019s Stop-start Peace Dialogue - International Crisis Group. Southern Thailand\u2019s Stop-start Peace Dialogue International Crisis Group",
+   "content_hash": "b3d05065327b70ca",
+   "raw_feed_hash": "daa87edd95f864efa7db65b4e5c9ff14116fa35caf41bf4d8879cbe1c8ba5e42",
+   "published_at": 1684998000.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_ebe05b7975",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d5281598edf1c463",
+   "source": "Public Health Communication Centre",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxPc2hJVDg1NGJXS0JhLU55Wko2TW5qTmFVdy1XYjZWVmFIMDhIaDdCNEVTamk5WTA5SGxUMFF4TnQwdFFOMVVCMkZ6aG1hQnVPYVJFMUxCUThlZmRHYmN1MlFWWldSel92Mklva3IxdGZJOVRqQk9hRFdJalpCQ05xTEpiVmFqa1ZtTjlFVlU4UVViWUJHUVZPTnpnNFNaWWNBUmYw?oc=5",
+   "title": "Tobacco, alcohol and unhealthy food - where the parties stand: Election 2023 - Public Health Communication Centre",
+   "text": "Tobacco, alcohol and unhealthy food - where the parties stand: Election 2023 - Public Health Communication Centre. Tobacco, alcohol and unhealthy food - where the parties stand: Election 2023 Public Health Communication Centre",
+   "content_hash": "919bf9046a01b901",
+   "raw_feed_hash": "daa87edd95f864efa7db65b4e5c9ff14116fa35caf41bf4d8879cbe1c8ba5e42",
+   "published_at": 1691478000.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_ebe05b7975",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6a772c5d9cc6efd6",
+   "source": "Groupe d'Etudes G\u00e9opolitiques",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQZFFyQl9zLWtHekN2WEZPZkc5ZFF2NHRUUTFqNUlHQkR6aVh5bEFvaWdTQUtRT08xVGdBTmJQNTJ4MEhReXBZY2tva01RVUlQWDExMlhzTnd0R2dmN0xKZGktN19JU2NmZ0loektUdlRWMzhkWW91TGszSUUwcVBVOE1mckJFMXQyTmU5OUV5cm1zYVFKTGlGWA?oc=5",
+   "title": "Regional election in the Valencian Community, 28 May 2023 - Groupe d'Etudes G\u00e9opolitiques",
+   "text": "Regional election in the Valencian Community, 28 May 2023 - Groupe d'Etudes G\u00e9opolitiques. Regional election in the Valencian Community, 28 May 2023 Groupe d'Etudes G\u00e9opolitiques",
+   "content_hash": "ea6675146088ab35",
+   "raw_feed_hash": "daa87edd95f864efa7db65b4e5c9ff14116fa35caf41bf4d8879cbe1c8ba5e42",
+   "published_at": 1685257200.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_ebe05b7975",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "e904c726289c09b1",
+   "source": "CBC",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNb1p1TXdwMlZCdVMyWDIzZUdMbXlKVG1MLXhkZURaUlkxQlNkT1VsRnZmZ2kwTmlfYjFxTkowX3c1aWFuOW5BN1F4Nml6YmJjOTV1bk9Gb2NNeDRtRXFhNG5LQ0Q5NWxmTnNPMzJ4SEhWU29lR2ZWUW9aMHhBMjdSN3B0U1d1LVpmYWxiTmNNeUNVRFVCZVZ2TlJ6akIxdWVDRVlBU0t3?oc=5",
+   "title": "'We need to control the party': a look inside Take Back Alberta's UCP insurgency - CBC",
+   "text": "'We need to control the party': a look inside Take Back Alberta's UCP insurgency - CBC. 'We need to control the party': a look inside Take Back Alberta's UCP insurgency CBC",
+   "content_hash": "01ab1283b45274bf",
+   "raw_feed_hash": "daa87edd95f864efa7db65b4e5c9ff14116fa35caf41bf4d8879cbe1c8ba5e42",
+   "published_at": 1683615600.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_ebe05b7975",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "1043ce6a0e03c537",
+   "source": "PRRI",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxOYkx3ZkJma3NJT01Wd0hTcG40bGhDQmxHV0hxdl9qRnpEN3JKa0xuTFcybmMtcVY5UWRIeE1KUkpOWEVsMzVLUTZEYWZaZmplWUt0UkgwVXdCQjVzQ0JUQjVjenV4djNTN0dsSTZOWXUyQ014TTNfOWJTWFN6T3BpVnA5Z08wbWRzTzF5SEhQbk9VX1RtWDlCUE5UMTlueVVFWEEweUN6YS1LMGJvX0dB?oc=5",
+   "title": "The Sorting of Party, Ideology, and Religion Among Abortion Opponents and Supporters - PRRI",
+   "text": "The Sorting of Party, Ideology, and Religion Among Abortion Opponents and Supporters - PRRI. The Sorting of Party, Ideology, and Religion Among Abortion Opponents and Supporters PRRI",
+   "content_hash": "88ba3af6c22d1b15",
+   "raw_feed_hash": "d097c9c79c0554cf7bee2babc85b99861cacfa64a2171c7177660d291fa73324",
+   "published_at": 1687503600.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_6f2c3fbc2e",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "53a8ed315cb2e7c7",
+   "source": "Brookings",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQUVV6WEd0RTNzWmU5QWZNTnJVSk1RdUg1Z0Z0UnlIblFGY01TT0xrSGtDMHpaU2dDQ0lHNnphMjgyV2pCdlZCcVFsZzVudEJZTzdqaFc4bGpOaWtVT1ZvYmN5d3RjTVVsdHIyOUlNbWhJVjZyNDFJMFZKYnB5OVV4NHBYalJzZ1R5?oc=5",
+   "title": "The politics of AI: ChatGPT and political bias - Brookings",
+   "text": "The politics of AI: ChatGPT and political bias - Brookings. The politics of AI: ChatGPT and political bias Brookings",
+   "content_hash": "03b88561b519e2b5",
+   "raw_feed_hash": "d097c9c79c0554cf7bee2babc85b99861cacfa64a2171c7177660d291fa73324",
+   "published_at": 1683529200.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_6f2c3fbc2e",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "82f8e8d81c64d66a",
+   "source": "Politico",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxPTWp2UnNPQlNTcnZsbkRwS0UwZnpabVV4OHdNWHdXeklrR3hiZEpkV0NIU09EZTRmQV9rMTR2aUMza09IbkYyOU1CS1lmLUhhcTJWLXFSSHU0aEF0bG5DRVFNNjBIdGVqOGpOcEI3eTdUNWJ5b19vc3NEWVNrV01PRFF1V2FDYlpwa2tPZw?oc=5",
+   "title": "I Saw the Hollowness Inside Andrew Yang\u2019s New Third Party - Politico",
+   "text": "I Saw the Hollowness Inside Andrew Yang\u2019s New Third Party - Politico. I Saw the Hollowness Inside Andrew Yang\u2019s New Third Party Politico",
+   "content_hash": "111acccd44464290",
+   "raw_feed_hash": "d097c9c79c0554cf7bee2babc85b99861cacfa64a2171c7177660d291fa73324",
+   "published_at": 1691132400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_6f2c3fbc2e",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6f723ea120b05630",
+   "source": "Pew Research Center",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNQ09oUnhxdUR0NFdPajEtaENIOEowRTlrUENvVXJYNE5CZmlVcVJDTlFmSlZJSU5VOWg4UjFNZDlsaFg3NFl2bW1SNUpHdE0yYnpVamtRYnNRYzZxcE9nQThLWE5CbVQ4TFNlbi1KSzNtU3VZUDY2amhqMjVTM3lDdVZoSm12WWlRVURvRUVPbUx0RzBrR3hGcHMwSkZYTHdRUkU3eXI4c3RNWGQtbFB5X0Q3WnhqVnFYQkJzWFhaaDRmQQ?oc=5",
+   "title": "Most U.S. parents pass along their religion and politics to their children - Pew Research Center",
+   "text": "Most U.S. parents pass along their religion and politics to their children - Pew Research Center. Most U.S. parents pass along their religion and politics to their children Pew Research Center",
+   "content_hash": "0d2b9e7802fcfb7b",
+   "raw_feed_hash": "d097c9c79c0554cf7bee2babc85b99861cacfa64a2171c7177660d291fa73324",
+   "published_at": 1683702000.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_6f2c3fbc2e",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "487a7f61ae585a6e",
+   "source": "European Consortium for Political Research (ECPR)",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxQakRRS3dKamhFT0ZWZzZRRF9TY1RMOHcxVjF5cnNHaGJ3ODlfbm9MR2c5SVFSQUlUd2tUTFJvcjFSMDc4UEIzX01EdXE5b1ppUzQzdlRUTHpwM1JzYkYxR1VIMEtNU2U1SnUwa3c2eVQ1R3U3cnF4cm05V1NxUHpLQU52ZTVGeHdtcU1GUEVfT1VpX21zVWxKM0liWUkxRFRiSmxR?oc=5",
+   "title": "Women politicians in Colombia succeed on Twitter \u2013 depending on their ideology - European Consortium for Political Research (ECPR)",
+   "text": "Women politicians in Colombia succeed on Twitter \u2013 depending on their ideology - European Consortium for Political Research (ECPR). Women politicians in Colombia succeed on Twitter \u2013 depending on their ideology European Consortium for Political Research (ECPR)",
+   "content_hash": "281c88681f61401f",
+   "raw_feed_hash": "d097c9c79c0554cf7bee2babc85b99861cacfa64a2171c7177660d291fa73324",
+   "published_at": 1686553200.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_6f2c3fbc2e",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "13e0877dd4ec5cb6",
+   "source": "Asia Society",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNdklkVmZkSnN2NXpDWGxzaUd2TVFqaVk3SG1wTEtxUXZFdHUySFctakd0TzRyeFZQbS1JbW11X253cXRaM2N4WWI3d0owLW9VcVV5N1F2STJpNUtmY2tEcThLY3JOV0JROHJ2OUZaR3VjUmFweHhnZ1hpT1p2UE53eGRqalFKbzdJekNuU0d2WTJNdFpfamExbTJqYXhsMmFtWUs0REE1Zk5xbXJJakxWZQ?oc=5",
+   "title": "Xi Jinping Invests in Ideological Legitimacy Amid Slowing Economic Growth - Asia Society",
+   "text": "Xi Jinping Invests in Ideological Legitimacy Amid Slowing Economic Growth - Asia Society. Xi Jinping Invests in Ideological Legitimacy Amid Slowing Economic Growth Asia Society",
+   "content_hash": "914082f795a641c1",
+   "raw_feed_hash": "d097c9c79c0554cf7bee2babc85b99861cacfa64a2171c7177660d291fa73324",
+   "published_at": 1692774000.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_6f2c3fbc2e",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "99cd0a825c93917e",
+   "source": "Science | AAAS",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9fS0pGZTFIUXZoUWRMVC1vR1R3bHJneUJTWVlzNGo5d1hhU2pDU2JMVWRSandYbFpZbk9Cb3YxUkttd21oY1BHU0dUS1FORVJjR3ZscHE2bkE1UXZmOHdDQQ?oc=5",
+   "title": "Reshares on social media amplify political news but do not detectably affect beliefs or opinions - Science | AAAS",
+   "text": "Reshares on social media amplify political news but do not detectably affect beliefs or opinions - Science | AAAS. Reshares on social media amplify political news but do not detectably affect beliefs or opinions Science | AAAS",
+   "content_hash": "bdc51d0f4c1a68d3",
+   "raw_feed_hash": "d097c9c79c0554cf7bee2babc85b99861cacfa64a2171c7177660d291fa73324",
+   "published_at": 1690441200.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_6f2c3fbc2e",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "744a010cccd28d19",
+   "source": "CSIS | Center for Strategic and International Studies",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxOcl9BUFpQdkF4RkZFYml4aTF2SmxkWU83U0txZVFvXzFLZW5Qa2N4YmgyaDhiZnZHSXVhWERkRVVqMUtnb01KempaZm1vNmJwZGVUYkczTGd1M0Y5Zl9qaDNybkdFQ2ZQX0FNWERQWFo4a1lYZXJISS11TkRCdTdFRG03S1ZUM05KVW9aN2cxZGhDalB3am54UDJB?oc=5",
+   "title": "Examining Extremism: Kurdistan Workers' Party (PKK) - CSIS | Center for Strategic and International Studies",
+   "text": "Examining Extremism: Kurdistan Workers' Party (PKK) - CSIS | Center for Strategic and International Studies. Examining Extremism: Kurdistan Workers' Party (PKK) CSIS | Center for Strategic and International Studies",
+   "content_hash": "9fe990bb1a2d1097",
+   "raw_feed_hash": "d097c9c79c0554cf7bee2babc85b99861cacfa64a2171c7177660d291fa73324",
+   "published_at": 1689231600.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_6f2c3fbc2e",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "1043ce6a0e03c537",
+   "source": "PRRI",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxOYkx3ZkJma3NJT01Wd0hTcG40bGhDQmxHV0hxdl9qRnpEN3JKa0xuTFcybmMtcVY5UWRIeE1KUkpOWEVsMzVLUTZEYWZaZmplWUt0UkgwVXdCQjVzQ0JUQjVjenV4djNTN0dsSTZOWXUyQ014TTNfOWJTWFN6T3BpVnA5Z08wbWRzTzF5SEhQbk9VX1RtWDlCUE5UMTlueVVFWEEweUN6YS1LMGJvX0dB?oc=5",
+   "title": "The Sorting of Party, Ideology, and Religion Among Abortion Opponents and Supporters - PRRI",
+   "text": "The Sorting of Party, Ideology, and Religion Among Abortion Opponents and Supporters - PRRI. The Sorting of Party, Ideology, and Religion Among Abortion Opponents and Supporters PRRI",
+   "content_hash": "88ba3af6c22d1b15",
+   "raw_feed_hash": "d097c9c79c0554cf7bee2babc85b99861cacfa64a2171c7177660d291fa73324",
+   "published_at": 1687503600.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_38f7187003",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "53a8ed315cb2e7c7",
+   "source": "Brookings",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxQUVV6WEd0RTNzWmU5QWZNTnJVSk1RdUg1Z0Z0UnlIblFGY01TT0xrSGtDMHpaU2dDQ0lHNnphMjgyV2pCdlZCcVFsZzVudEJZTzdqaFc4bGpOaWtVT1ZvYmN5d3RjTVVsdHIyOUlNbWhJVjZyNDFJMFZKYnB5OVV4NHBYalJzZ1R5?oc=5",
+   "title": "The politics of AI: ChatGPT and political bias - Brookings",
+   "text": "The politics of AI: ChatGPT and political bias - Brookings. The politics of AI: ChatGPT and political bias Brookings",
+   "content_hash": "03b88561b519e2b5",
+   "raw_feed_hash": "d097c9c79c0554cf7bee2babc85b99861cacfa64a2171c7177660d291fa73324",
+   "published_at": 1683529200.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_38f7187003",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "82f8e8d81c64d66a",
+   "source": "Politico",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxPTWp2UnNPQlNTcnZsbkRwS0UwZnpabVV4OHdNWHdXeklrR3hiZEpkV0NIU09EZTRmQV9rMTR2aUMza09IbkYyOU1CS1lmLUhhcTJWLXFSSHU0aEF0bG5DRVFNNjBIdGVqOGpOcEI3eTdUNWJ5b19vc3NEWVNrV01PRFF1V2FDYlpwa2tPZw?oc=5",
+   "title": "I Saw the Hollowness Inside Andrew Yang\u2019s New Third Party - Politico",
+   "text": "I Saw the Hollowness Inside Andrew Yang\u2019s New Third Party - Politico. I Saw the Hollowness Inside Andrew Yang\u2019s New Third Party Politico",
+   "content_hash": "111acccd44464290",
+   "raw_feed_hash": "d097c9c79c0554cf7bee2babc85b99861cacfa64a2171c7177660d291fa73324",
+   "published_at": 1691132400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_38f7187003",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6f723ea120b05630",
+   "source": "Pew Research Center",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNQ09oUnhxdUR0NFdPajEtaENIOEowRTlrUENvVXJYNE5CZmlVcVJDTlFmSlZJSU5VOWg4UjFNZDlsaFg3NFl2bW1SNUpHdE0yYnpVamtRYnNRYzZxcE9nQThLWE5CbVQ4TFNlbi1KSzNtU3VZUDY2amhqMjVTM3lDdVZoSm12WWlRVURvRUVPbUx0RzBrR3hGcHMwSkZYTHdRUkU3eXI4c3RNWGQtbFB5X0Q3WnhqVnFYQkJzWFhaaDRmQQ?oc=5",
+   "title": "Most U.S. parents pass along their religion and politics to their children - Pew Research Center",
+   "text": "Most U.S. parents pass along their religion and politics to their children - Pew Research Center. Most U.S. parents pass along their religion and politics to their children Pew Research Center",
+   "content_hash": "0d2b9e7802fcfb7b",
+   "raw_feed_hash": "d097c9c79c0554cf7bee2babc85b99861cacfa64a2171c7177660d291fa73324",
+   "published_at": 1683702000.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_38f7187003",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "487a7f61ae585a6e",
+   "source": "European Consortium for Political Research (ECPR)",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxQakRRS3dKamhFT0ZWZzZRRF9TY1RMOHcxVjF5cnNHaGJ3ODlfbm9MR2c5SVFSQUlUd2tUTFJvcjFSMDc4UEIzX01EdXE5b1ppUzQzdlRUTHpwM1JzYkYxR1VIMEtNU2U1SnUwa3c2eVQ1R3U3cnF4cm05V1NxUHpLQU52ZTVGeHdtcU1GUEVfT1VpX21zVWxKM0liWUkxRFRiSmxR?oc=5",
+   "title": "Women politicians in Colombia succeed on Twitter \u2013 depending on their ideology - European Consortium for Political Research (ECPR)",
+   "text": "Women politicians in Colombia succeed on Twitter \u2013 depending on their ideology - European Consortium for Political Research (ECPR). Women politicians in Colombia succeed on Twitter \u2013 depending on their ideology European Consortium for Political Research (ECPR)",
+   "content_hash": "281c88681f61401f",
+   "raw_feed_hash": "d097c9c79c0554cf7bee2babc85b99861cacfa64a2171c7177660d291fa73324",
+   "published_at": 1686553200.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_38f7187003",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "13e0877dd4ec5cb6",
+   "source": "Asia Society",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNdklkVmZkSnN2NXpDWGxzaUd2TVFqaVk3SG1wTEtxUXZFdHUySFctakd0TzRyeFZQbS1JbW11X253cXRaM2N4WWI3d0owLW9VcVV5N1F2STJpNUtmY2tEcThLY3JOV0JROHJ2OUZaR3VjUmFweHhnZ1hpT1p2UE53eGRqalFKbzdJekNuU0d2WTJNdFpfamExbTJqYXhsMmFtWUs0REE1Zk5xbXJJakxWZQ?oc=5",
+   "title": "Xi Jinping Invests in Ideological Legitimacy Amid Slowing Economic Growth - Asia Society",
+   "text": "Xi Jinping Invests in Ideological Legitimacy Amid Slowing Economic Growth - Asia Society. Xi Jinping Invests in Ideological Legitimacy Amid Slowing Economic Growth Asia Society",
+   "content_hash": "914082f795a641c1",
+   "raw_feed_hash": "d097c9c79c0554cf7bee2babc85b99861cacfa64a2171c7177660d291fa73324",
+   "published_at": 1692774000.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_38f7187003",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "99cd0a825c93917e",
+   "source": "Science | AAAS",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE9fS0pGZTFIUXZoUWRMVC1vR1R3bHJneUJTWVlzNGo5d1hhU2pDU2JMVWRSandYbFpZbk9Cb3YxUkttd21oY1BHU0dUS1FORVJjR3ZscHE2bkE1UXZmOHdDQQ?oc=5",
+   "title": "Reshares on social media amplify political news but do not detectably affect beliefs or opinions - Science | AAAS",
+   "text": "Reshares on social media amplify political news but do not detectably affect beliefs or opinions - Science | AAAS. Reshares on social media amplify political news but do not detectably affect beliefs or opinions Science | AAAS",
+   "content_hash": "bdc51d0f4c1a68d3",
+   "raw_feed_hash": "d097c9c79c0554cf7bee2babc85b99861cacfa64a2171c7177660d291fa73324",
+   "published_at": 1690441200.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_38f7187003",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "744a010cccd28d19",
+   "source": "CSIS | Center for Strategic and International Studies",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxOcl9BUFpQdkF4RkZFYml4aTF2SmxkWU83U0txZVFvXzFLZW5Qa2N4YmgyaDhiZnZHSXVhWERkRVVqMUtnb01KempaZm1vNmJwZGVUYkczTGd1M0Y5Zl9qaDNybkdFQ2ZQX0FNWERQWFo4a1lYZXJISS11TkRCdTdFRG03S1ZUM05KVW9aN2cxZGhDalB3am54UDJB?oc=5",
+   "title": "Examining Extremism: Kurdistan Workers' Party (PKK) - CSIS | Center for Strategic and International Studies",
+   "text": "Examining Extremism: Kurdistan Workers' Party (PKK) - CSIS | Center for Strategic and International Studies. Examining Extremism: Kurdistan Workers' Party (PKK) CSIS | Center for Strategic and International Studies",
+   "content_hash": "9fe990bb1a2d1097",
+   "raw_feed_hash": "d097c9c79c0554cf7bee2babc85b99861cacfa64a2171c7177660d291fa73324",
+   "published_at": 1689231600.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_38f7187003",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "04c4befb361883e5:c0",
+   "source_id": "04c4befb361883e5",
+   "subject": "Regional election in the Principality of Asturias",
+   "predicate": "occurred on",
+   "object": "28 May 2023",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Regional election in the Principality of Asturias, 28 May 2023",
+   "span_verified": true,
+   "event_time": "28 May 2023",
+   "publication_time": 1685257200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Regional election in the Principality of Asturias",
+    "28 May 2023"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_dcba2a1edd",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ebe05b7975"
+   }
+  },
+  {
+   "claim_id": "04c4befb361883e5:c1",
+   "source_id": "04c4befb361883e5",
+   "subject": "Groupe d'Etudes G\u00e9opolitiques",
+   "predicate": "is associated with",
+   "object": "the regional election in the Principality of Asturias",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Regional election in the Principality of Asturias, 28 May 2023 - Groupe d'Etudes G\u00e9opolitiques",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1685257200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Groupe d'Etudes G\u00e9opolitiques",
+    "Regional election in the Principality of Asturias"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_dcba2a1edd",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ebe05b7975"
+   }
+  },
+  {
+   "claim_id": "1043ce6a0e03c537:c0",
+   "source_id": "1043ce6a0e03c537",
+   "subject": "PRRI",
+   "predicate": "published",
+   "object": "report on sorting of party, ideology, and religion among abortion opponents and supporters",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The Sorting of Party, Ideology, and Religion Among Abortion Opponents and Supporters - PRRI",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1687503600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "PRRI"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_fcc81892ab",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6f2c3fbc2e"
+   }
+  },
+  {
+   "claim_id": "2bc5b30a94c7aebf:c0",
+   "source_id": "2bc5b30a94c7aebf",
+   "subject": "PM Anwar",
+   "predicate": "thwarts",
+   "object": "opposition threat in state polls",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "PM Anwar thwarts opposition threat in state polls",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1691910000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Malaysia",
+    "PM Anwar"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_01410ea882",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ebe05b7975"
+   }
+  },
+  {
+   "claim_id": "53a8ed315cb2e7c7:c0",
+   "source_id": "53a8ed315cb2e7c7",
+   "subject": "The politics of AI: ChatGPT and political bias",
+   "predicate": "is about",
+   "object": "ChatGPT and political bias",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The politics of AI: ChatGPT and political bias",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683529200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "ChatGPT",
+    "political bias"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_217a234e67",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6f2c3fbc2e"
+   }
+  },
+  {
+   "claim_id": "53a8ed315cb2e7c7:c1",
+   "source_id": "53a8ed315cb2e7c7",
+   "subject": "The politics of AI: ChatGPT and political bias",
+   "predicate": "is published by",
+   "object": "Brookings",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The politics of AI: ChatGPT and political bias - Brookings",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683529200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Brookings"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_217a234e67",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6f2c3fbc2e"
+   }
+  },
+  {
+   "claim_id": "94029b0c300adc4b:c0",
+   "source_id": "94029b0c300adc4b",
+   "subject": "Antisemitism and Radical Anti-Israel Bias on the Political Left in Europe",
+   "predicate": "is the title of a report by",
+   "object": "Anti-Defamation League",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Antisemitism and Radical Anti-Israel Bias on the Political Left in Europe - Anti-Defamation League",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1691478000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Anti-Defamation League"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_dea8793660",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ebe05b7975"
+   }
+  },
+  {
+   "claim_id": "82f8e8d81c64d66a:c0",
+   "source_id": "82f8e8d81c64d66a",
+   "subject": "Andrew Yang's New Third Party",
+   "predicate": "has",
+   "object": "hollowness",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "I Saw the Hollowness Inside Andrew Yang\u2019s New Third Party",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1691132400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Andrew Yang"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_8b1b2afb8c",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6f2c3fbc2e"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Regional election in the Principality of Asturias",
+   "normalized": "regional election in principality of asturias",
+   "candidates": [
+    {
+     "entity_id": "ent_46655ea3ab",
+     "canonical": "regional election in principality of asturias",
+     "support": 0.6667,
+     "evidence_mentions": [
+      "Regional election in the Principality of Asturias",
+      "Regional election in the Principality of Asturias"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "28 May 2023",
+   "normalized": "28 may 2023",
+   "candidates": [
+    {
+     "entity_id": "ent_2d365c1483",
+     "canonical": "28 may 2023",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "28 May 2023"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Groupe d'Etudes G\u00e9opolitiques",
+   "normalized": "groupe d'etudes g\u00e9opolitiques",
+   "candidates": [
+    {
+     "entity_id": "ent_ca781155e4",
+     "canonical": "groupe d'etudes g\u00e9opolitiques",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Groupe d'Etudes G\u00e9opolitiques"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Regional election in the Principality of Asturias",
+   "normalized": "regional election in principality of asturias",
+   "candidates": [
+    {
+     "entity_id": "ent_46655ea3ab",
+     "canonical": "regional election in principality of asturias",
+     "support": 0.6667,
+     "evidence_mentions": [
+      "Regional election in the Principality of Asturias",
+      "Regional election in the Principality of Asturias"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "PRRI",
+   "normalized": "prri",
+   "candidates": [
+    {
+     "entity_id": "ent_c6f8236cd2",
+     "canonical": "prri",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "PRRI"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Malaysia",
+   "normalized": "malaysia",
+   "candidates": [
+    {
+     "entity_id": "ent_9ae41083a8",
+     "canonical": "malaysia",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Malaysia"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "PM Anwar",
+   "normalized": "pm anwar",
+   "candidates": [
+    {
+     "entity_id": "ent_0c978c1ff2",
+     "canonical": "pm anwar",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "PM Anwar"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "ChatGPT",
+   "normalized": "chatgpt",
+   "candidates": [
+    {
+     "entity_id": "ent_ab0ddc029a",
+     "canonical": "chatgpt",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "ChatGPT"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "political bias",
+   "normalized": "political bias",
+   "candidates": [
+    {
+     "entity_id": "ent_1863b97c4d",
+     "canonical": "political bias",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "political bias"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Brookings",
+   "normalized": "brookings",
+   "candidates": [
+    {
+     "entity_id": "ent_4e39354759",
+     "canonical": "brookings",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Brookings"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Anti-Defamation League",
+   "normalized": "anti-defamation league",
+   "candidates": [
+    {
+     "entity_id": "ent_5e7a982bf0",
+     "canonical": "anti-defamation league",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Anti-Defamation League"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Andrew Yang",
+   "normalized": "andrew yang",
+   "candidates": [
+    {
+     "entity_id": "ent_c180b13b46",
+     "canonical": "andrew yang",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Andrew Yang"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "04c4befb361883e5": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1685257200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685257200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2bc5b30a94c7aebf": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1691910000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1691910000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "94029b0c300adc4b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1691478000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1691478000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f2e357eb3a9d1c09": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1689231600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689231600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "579cb720f5c3a0d4": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1684998000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684998000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d5281598edf1c463": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1691478000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1691478000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6a772c5d9cc6efd6": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1685257200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685257200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "e904c726289c09b1": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1683615600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683615600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "1043ce6a0e03c537": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1687503600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687503600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "53a8ed315cb2e7c7": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1683529200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683529200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "82f8e8d81c64d66a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1691132400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1691132400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6f723ea120b05630": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1683702000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683702000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "487a7f61ae585a6e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1686553200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686553200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "13e0877dd4ec5cb6": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1692774000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1692774000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "99cd0a825c93917e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1690441200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690441200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "744a010cccd28d19": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1689231600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689231600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_dcba2a1edd",
+   "member_ids": [
+    "04c4befb361883e5"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Groupe d'Etudes G\u00e9opolitiques",
+   "primary_source": "Groupe d'Etudes G\u00e9opolitiques",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_01410ea882",
+   "member_ids": [
+    "2bc5b30a94c7aebf"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "DW.com",
+   "primary_source": "DW.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_dea8793660",
+   "member_ids": [
+    "94029b0c300adc4b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Anti-Defamation League",
+   "primary_source": "Anti-Defamation League",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_360b53a1c1",
+   "member_ids": [
+    "f2e357eb3a9d1c09"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "GOV.UK blogs",
+   "primary_source": "GOV.UK blogs",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_49487a66ca",
+   "member_ids": [
+    "579cb720f5c3a0d4"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "International Crisis Group",
+   "primary_source": "International Crisis Group",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_95b8144e1d",
+   "member_ids": [
+    "d5281598edf1c463"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Public Health Communication Centre",
+   "primary_source": "Public Health Communication Centre",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_1957856f9a",
+   "member_ids": [
+    "6a772c5d9cc6efd6"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Groupe d'Etudes G\u00e9opolitiques",
+   "primary_source": "Groupe d'Etudes G\u00e9opolitiques",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_95d9d16ec0",
+   "member_ids": [
+    "e904c726289c09b1"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "CBC",
+   "primary_source": "CBC",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_fcc81892ab",
+   "member_ids": [
+    "1043ce6a0e03c537",
+    "1043ce6a0e03c537"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "PRRI",
+   "primary_source": "PRRI",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_217a234e67",
+   "member_ids": [
+    "53a8ed315cb2e7c7",
+    "53a8ed315cb2e7c7"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "Brookings",
+   "primary_source": "Brookings",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_8b1b2afb8c",
+   "member_ids": [
+    "82f8e8d81c64d66a",
+    "82f8e8d81c64d66a"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "Politico",
+   "primary_source": "Politico",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_92f5553055",
+   "member_ids": [
+    "6f723ea120b05630",
+    "6f723ea120b05630"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "Pew Research Center",
+   "primary_source": "Pew Research Center",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_c3c8121546",
+   "member_ids": [
+    "487a7f61ae585a6e",
+    "487a7f61ae585a6e"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "European Consortium for Political Research (ECPR)",
+   "primary_source": "European Consortium for Political Research (ECPR)",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_9ecca37fb2",
+   "member_ids": [
+    "13e0877dd4ec5cb6",
+    "13e0877dd4ec5cb6"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "Asia Society",
+   "primary_source": "Asia Society",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_606b8bd029",
+   "member_ids": [
+    "99cd0a825c93917e",
+    "99cd0a825c93917e"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "Science | AAAS",
+   "primary_source": "Science | AAAS",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_49a609e346",
+   "member_ids": [
+    "744a010cccd28d19",
+    "744a010cccd28d19"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "CSIS | Center for Strategic and International Studies",
+   "primary_source": "CSIS | Center for Strategic and International Studies",
+   "confidence": 0.99
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "04c4befb361883e5:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685257200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "04c4befb361883e5:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685257200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "1043ce6a0e03c537:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1687503600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "2bc5b30a94c7aebf:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1691910000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "53a8ed315cb2e7c7:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683529200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "53a8ed315cb2e7c7:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683529200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "94029b0c300adc4b:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1691478000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "82f8e8d81c64d66a:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1691132400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "04c4befb361883e5:c0",
+  "04c4befb361883e5:c1",
+  "1043ce6a0e03c537:c0",
+  "2bc5b30a94c7aebf:c0",
+  "53a8ed315cb2e7c7:c0",
+  "53a8ed315cb2e7c7:c1",
+  "94029b0c300adc4b:c0",
+  "82f8e8d81c64d66a:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_ebe05b7975": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_6f2c3fbc2e": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_38f7187003": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_f2f5327d0a": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_51644b37a9": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_f8f6d4bd31": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_bd5dda272f": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_bf4862423e": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_38f7187003",
+  "req_f2f5327d0a",
+  "req_51644b37a9",
+  "req_f8f6d4bd31",
+  "req_bd5dda272f",
+  "req_bf4862423e"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 16,
+  "n_contradictions": 0,
+  "n_documents": 24
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 13.854,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "a4d8b521e119bc94",
+ "bundle_hash": "a4d8b521e119bc94",
+ "_persisted_at": "2026-07-13T01:58:07Z"
+}

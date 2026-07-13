@@ -26,6 +26,7 @@ class OutcomeContract:
     readout: object = None                        # callable(world) -> native terminal value (REQUIRED pre-run)
     metric: str = ""                              # for ranked_artifacts/best_action: the explicit objective
     horizon_ts: float = None                      # when the outcome resolves (unix)
+    readout_var: str = ""                         # declarative path the readout reads (binding-checked)
 
     def validate(self):
         if self.family not in FAMILIES:
@@ -38,17 +39,56 @@ class OutcomeContract:
                 "the answer must be READ from terminal world states, never asked of an LLM afterward")
         return self
 
+    #: truthy / falsy literals a mechanism may write instead of the declared option labels
+    _TRUE_LITERALS = frozenset(("true", "yes", "1", "1.0", "occurred", "success", "pass", "accept",
+                                "approved", "ratified", "won", "happened"))
+    _FALSE_LITERALS = frozenset(("false", "no", "0", "0.0", "not_occurred", "failure", "fail", "reject",
+                                 "declined", "lost", "did_not_happen"))
+
+    def _canonical_option(self, v, opts) -> str:
+        """Reconcile a terminal value to a declared option label. A mechanism may write the readout in a
+        different vocabulary than the contract options (e.g. boolean True / the string 'True' vs a
+        yes/no contract). For a 2-option binary/response family, a truthy value maps to the AFFIRMATIVE
+        option (options[0]) and a falsy value to the negative (options[1]); this only reconciles vocabulary,
+        it never invents a value. Values already in the option set, and all categorical values, pass through."""
+        key = str(v)
+        if key in opts:
+            return key
+        if self.family in ("binary", "response_occurrence") and len(self.options) == 2:
+            low = key.strip().lower()
+            if v is True or low in self._TRUE_LITERALS:
+                return str(self.options[0])
+            if v is False or low in self._FALSE_LITERALS:
+                return str(self.options[1])
+        return key
+
     def project(self, terminal_branches) -> dict:
         """Aggregate the native answer over weighted terminal branches: frequencies for discrete families,
-        weighted samples for continuous/delay/reach. `terminal_branches` = [WorldBranch]."""
+        weighted samples for continuous/delay/reach. `terminal_branches` = [WorldBranch].
+
+        OPTION-SPACE COVERAGE (Tier A1): for discrete families with declared options, terminal values
+        outside the option space (including None from worlds where nothing resolved) are reported as
+        `unresolved_share`, NOT as answer mass — a silent no-op world must not read as a confident answer."""
         vals = [(b.weight, self.readout(b.world)) for b in terminal_branches]
         z = sum(w for w, _ in vals) or 1.0
         if self.family in ("binary", "categorical", "response_occurrence", "response_type", "best_action"):
-            freq = {}
+            opts = {str(o) for o in self.options if str(o).strip()}
+            freq, unresolved = {}, 0.0
             for w, v in vals:
-                freq[str(v)] = freq.get(str(v), 0.0) + w / z
-            return {"distribution": {k: round(p, 4) for k, p in sorted(freq.items(), key=lambda kv: -kv[1])},
-                    "n_worlds": len(vals)}
+                key = self._canonical_option(v, opts)
+                if opts and key not in opts:
+                    unresolved += w / z
+                    continue
+                freq[key] = freq.get(key, 0.0) + w / z
+            out = {"distribution": {k: round(p, 4) for k, p in sorted(freq.items(), key=lambda kv: -kv[1])},
+                   "n_worlds": len(vals)}
+            if opts:
+                out["unresolved_share"] = round(unresolved, 4)
+                if unresolved > 0.5:
+                    out["warning"] = (f"{unresolved:.0%} of terminal worlds resolved to values outside the "
+                                      f"declared option space — the simulation likely did not execute the "
+                                      f"causal chain; treat this answer as unsupported")
+            return out
         # continuous-like: return weighted quantiles
         xs = sorted((float(v), w) for w, v in vals if isinstance(v, (int, float)))
         if not xs:

@@ -1,0 +1,1726 @@
+{
+ "bundle_id": "eb_d649a6",
+ "question": "Will the minimum-wage bill survive the veto override attempt?",
+ "as_of": 1693526400.0,
+ "compiler_plan_hash": "abc9dc3e74f6",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_05539544a6",
+   "claim_or_quantity": "survive_override if the override vote passes (e.g., two-thirds majority in both chambers), else fail_override",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "president",
+    "senate_majority_leader",
+    "house_speaker"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_1cf39d2684",
+   "claim_or_quantity": "value/context of legislators.pro_bill.vote_intention",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "legislators.pro_bill.vote_intention",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_6295542869",
+   "claim_or_quantity": "value/context of legislators.anti_bill.vote_intention",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "legislators.anti_bill.vote_intention",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_ffce1c2050",
+   "claim_or_quantity": "value/context of legislators.undecided.swing_probability",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "legislators.undecided.swing_probability",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_38faf70289",
+   "claim_or_quantity": "evidence discriminating structural hypothesis party_discipline_dominant",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:party_discipline_dominant",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_72f7e9a018",
+   "claim_or_quantity": "evidence discriminating structural hypothesis public_pressure_swings",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:public_pressure_swings",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_de4958aed7",
+   "claim_or_quantity": "decision rules / process of legislature",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "legislature",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_18b7d105fe",
+   "claim_or_quantity": "decision rules / process of presidency",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "presidency",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_05539544a6",
+   "terms": "minimum wage bill survive veto override attempt president senate majority leader house speaker",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_1cf39d2684",
+   "terms": "legislators pro bill intention",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_6295542869",
+   "terms": "legislators anti bill intention",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_05539544a6",
+   "logical_query": "minimum wage bill survive veto override attempt president senate majority leader house speaker after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=minimum+wage+bill+survive+veto+override+attempt+president+senate+majority+leader+house+speaker+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783906938.450718,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:42:19 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjytDikmLw1ZBiSO44w5ACxHVA3AjEfBXPmVpvnmOdDMQli86zNgFxFxDPAGJDhUus9kB8Of0Sa5HEFdYGIP5UdYNVoPoG67diXzaWEiB-689mGhLI5gzEWzSD2YS4OX63XLzEJrCgbW2oknJSfmF8Sn5JcXFBTmJxRnFqUVlqUbyRgZGZgbmBmZ6BSXyBAQBIujnI\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "4f8538766aa90de974989f947e3d6d7517ccf020a102868c75175a4d6a1c8469",
+   "n_bytes": 1353,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.645
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_1cf39d2684",
+   "logical_query": "legislators pro bill intention after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=legislators+pro+bill+intention+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783906939.0972126,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:42:19 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw15BiSO44w5AKxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcv1suXmIT6Nj57DKTknJSfmF8Sn5JcXFBTmJxRnFqUVlqUbyRgZGZgbmBmZ6BSXyBAQC6sjks\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "de2be346c67bc5d3fb0487093cb4a9cfb0225b6112129c4ac311047c75536eca",
+   "n_bytes": 13718,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.577
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_6295542869",
+   "logical_query": "legislators anti bill intention after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=legislators+anti+bill+intention+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783906939.6759164,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:42:20 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw0ZBiSO44w5ACxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcf1ouXmITmHBw6npGJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwCo7DjD\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "d0b906126851b437268fefff66f9a2efb9cec386f2db2701d3956aaf4f80a142",
+   "n_bytes": 33401,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.632
+  }
+ ],
+ "raw_content_refs": [
+  "d0b906126851b437268fefff66f9a2efb9cec386f2db2701d3956aaf4f80a142",
+  "de2be346c67bc5d3fb0487093cb4a9cfb0225b6112129c4ac311047c75536eca"
+ ],
+ "documents": [
+  {
+   "id": "3843b07fcc66f286",
+   "source": "CalMatters",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPdlJxNUoyWWliZmV5QTJVSGZiLWxUZ2djTWdJX3p5S3B1eHVlUDNFazFFRTl1eFV0MmJQWk5sczY1N3FnY1pFLVo1MUlKSUlCOEVmQ1lXR0dyX3B1SzNJQTlVU0hWT3pZYkpOQkNqRGNObU56MlhtYjFfaVhFWDBYN1BNTk50dnRGa3JaRzdR?oc=5",
+   "title": "What you need to know on the California budget deal - CalMatters",
+   "text": "What you need to know on the California budget deal - CalMatters. What you need to know on the California budget deal CalMatters",
+   "content_hash": "4b8e5f8e1e27ced0",
+   "raw_feed_hash": "de2be346c67bc5d3fb0487093cb4a9cfb0225b6112129c4ac311047c75536eca",
+   "published_at": 1687849200.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_1cf39d2684",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a57acd7cf5b2f1f4",
+   "source": "National Immigration Forum",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTFBwdW05SHItdm5UOHdxX25TdHVsV0JvV1YyaXhCeGk4b2RHeGVyNGQ1UmlPei1hM29jb3k5MjdpNEZBUDFzSWVDeFNPclk2ZTdTZTZhVlBXYUhEU0tzLWZocFJCX3NSY0laUDZ0SzhjZko?oc=5",
+   "title": "The Dignity Act: Bill Summary - National Immigration Forum",
+   "text": "The Dignity Act: Bill Summary - National Immigration Forum. The Dignity Act: Bill Summary National Immigration Forum",
+   "content_hash": "e5a0056255dc0fc6",
+   "raw_feed_hash": "de2be346c67bc5d3fb0487093cb4a9cfb0225b6112129c4ac311047c75536eca",
+   "published_at": 1684998000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_1cf39d2684",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "813c45cdf05267f7",
+   "source": "Alaska Beacon",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPYkNtQmtWUjkyYU9QTWVHNF9xWmJXZGVkcWFOYWFKRGp3Z0FfNUdaM3dtMmg3MkxvTk9pa1Zzb2lwSFktSU01ckNUcUVhSHIyWGVBQUxtN1BjNE10Y1RoZmxkYW9yYzAzSzk4T1oxbXVUWkFEZDZONFVGU1BBb0NfRzRQeUR5ZExQSGd3MlZHVktCQUdya0FLeUYwblhiWEFfTnFhalhfWHRmWXlqaHg2SkY3RHU?oc=5",
+   "title": "Alaska pension bill, facing deep scrutiny, won\u2019t advance this year, lawmakers say - Alaska Beacon",
+   "text": "Alaska pension bill, facing deep scrutiny, won\u2019t advance this year, lawmakers say - Alaska Beacon. Alaska pension bill, facing deep scrutiny, won\u2019t advance this year, lawmakers say Alaska Beacon",
+   "content_hash": "053ba2fbd569dd41",
+   "raw_feed_hash": "de2be346c67bc5d3fb0487093cb4a9cfb0225b6112129c4ac311047c75536eca",
+   "published_at": 1683097200.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_1cf39d2684",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "fc5f5929926eb031",
+   "source": "HRC | Human Rights Campaign",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNd2k3TTNwMUxoT3ZUS0dqMHBHWXk1QmxRZ09tTTk4dTFyYm9CdzI3b25HY2YyVDd6Z3NNdXlpbExFUmM5ZklPeDJXaDdwSm5oMzVVbGIzQUItNjdubGN1OVVPcTlGQk5MNHBJZ1pXQ1hnTmx6dlVTbGJJZE0yU2xhay16RG93cVJPdXppa0wxU29iNU02aFJHTEZ3TmlPbEZUMm56UlJ0V1NIRlNhbVZCVllMeFlSTHc?oc=5",
+   "title": "Texas Legislators\u2019 Relentless Political Attacks Make Texas Unsafe for LGTBQ+ People - HRC | Human Rights Campaign",
+   "text": "Texas Legislators\u2019 Relentless Political Attacks Make Texas Unsafe for LGTBQ+ People - HRC | Human Rights Campaign. Texas Legislators\u2019 Relentless Political Attacks Make Texas Unsafe for LGTBQ+ People HRC | Human Rights Campaign",
+   "content_hash": "8d6175de6df9b682",
+   "raw_feed_hash": "de2be346c67bc5d3fb0487093cb4a9cfb0225b6112129c4ac311047c75536eca",
+   "published_at": 1682578800.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_1cf39d2684",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d7cfca03a5216f93",
+   "source": "Littler Mendelson P.C.",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPeVB6SFoxbmsxS0NxaU4wc04td0xXaGpJcHlrNmZ2T0d2bUNGdWF0b0dBTTFhalh6LVUxSW9RUzJKVW9iQWdBTERpanEzUTlXV0hBcXBUbXVOeVlrb184LW14SV9ZWGsxejA3S1NqRU9WVkh0bkNVSXN1Z2UtbVVETmJGUWl1V2N6TVBwTnZrSEtpLXRjTG9RdFR4YTQ0WXJkWmRKQjNyeFJjQl9pNVR6QnRral8?oc=5",
+   "title": "New York Legislature to Increase Executive, Administrative, and Professional Compensation Threshold, Expanding Certain Wage Payment Protections | Littler - Littler Mendelson P.C.",
+   "text": "New York Legislature to Increase Executive, Administrative, and Professional Compensation Threshold, Expanding Certain Wage Payment Protections | Littler - Littler Mendelson P.C.. New York Legislature to Increase Executive, Administrative, and Professional Compensation Threshold, Expanding Certain Wage Payment Protections | Littler Littler Mendelson P.C.",
+   "content_hash": "c2f67be7c48cde76",
+   "raw_feed_hash": "de2be346c67bc5d3fb0487093cb4a9cfb0225b6112129c4ac311047c75536eca",
+   "published_at": 1686639600.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_1cf39d2684",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4c4542ad2b74d93b",
+   "source": "Northwest Arkansas Democrat-Gazette",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQRlpSc0FpMFY1dFNGNzU5b0ZuRHJUMEFlbnN2NjNKakRHSkxRbWc5OVpNQlBmXzhfcVJmT1RKQ3FxQTIwNmp2QjR5eWhPMU16dHpIeGJjNjdMSHJwWjU1OHJOTGdrMjl6a1VoeUU2c0o1TXZPLXh5N2NYR1NqeXRTX0l5dnVudHlqMDN0SElaWFRFOThCbzVB?oc=5",
+   "title": "20 state representatives declare voting mistakes - Northwest Arkansas Democrat-Gazette",
+   "text": "20 state representatives declare voting mistakes - Northwest Arkansas Democrat-Gazette. 20 state representatives declare voting mistakes Northwest Arkansas Democrat-Gazette",
+   "content_hash": "86405cbea372486e",
+   "raw_feed_hash": "de2be346c67bc5d3fb0487093cb4a9cfb0225b6112129c4ac311047c75536eca",
+   "published_at": 1682838000.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_1cf39d2684",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f14bbf62a1a155e0",
+   "source": "Honolulu Civil Beat",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxONG1LUTNEU1J3dmxJNWFweWtvdWNCMzlxMkluUFR3MFJBbzI5amRmSzY3RG8zUEVXdVZ2NkNVaHItRFo0dlRNVXd2WjNzNTUwT1FUVktaVl9WQ3AwNzJ6YXNDTEpRc2FRaWNHZld0SGxmUjZDS3hrOGRDWGMtMmZqUDRuR2N3NW9WVVVYc05INkx1UU9zUmVkTXFqcGtCbEROOXIzZzA2OFBtcnc?oc=5",
+   "title": "Governor\u2019s Veto List Includes Bill Aimed At Removing Key HTDC Director Syrmos - Honolulu Civil Beat",
+   "text": "Governor\u2019s Veto List Includes Bill Aimed At Removing Key HTDC Director Syrmos - Honolulu Civil Beat. Governor\u2019s Veto List Includes Bill Aimed At Removing Key HTDC Director Syrmos Honolulu Civil Beat",
+   "content_hash": "5fa5f9ac977f71d2",
+   "raw_feed_hash": "de2be346c67bc5d3fb0487093cb4a9cfb0225b6112129c4ac311047c75536eca",
+   "published_at": 1687503600.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_1cf39d2684",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f9bc182df5c8b5ae",
+   "source": "Florida Politics",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxONG9vek9SZGxlS0JjMmJ4NjlyTm1PZTRYSlNxRlhtUnZCUm9wNVJmd21YU0JqeEx0NmVQeEVJTmpBZWlQMzIyUDZjSmduOW8xUHNvOGJZLXFRSmx6UHUycThEclZvMEVKU2J0dm5FeEZ5SmpRYWl2SVlRRVNvUi1acUw3WHRQZlZCVkdWV1dSY3NFNlBCdEVGMnVZLW96Tklkc0pNMjRQR18zeFl1dXc?oc=5",
+   "title": "Legislature passes physician \u2018freedom\u2019 bill backed by Gov. DeSantis - Florida Politics",
+   "text": "Legislature passes physician \u2018freedom\u2019 bill backed by Gov. DeSantis - Florida Politics. Legislature passes physician \u2018freedom\u2019 bill backed by Gov. DeSantis Florida Politics",
+   "content_hash": "4ad0d201ef7113b2",
+   "raw_feed_hash": "de2be346c67bc5d3fb0487093cb4a9cfb0225b6112129c4ac311047c75536eca",
+   "published_at": 1683010800.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_1cf39d2684",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "c42bc76e4af528ea",
+   "source": "Alabama Reflector",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOVHFoNlN3OEFhaVVKc0psa19yVGF6WnJWQ0U5LTBuZmgxaUk2QnRubVJDNS1vX0lJUklqNlByVmp1REJFN3hraXNzbjdjZEJnTmh6c1VPd2xmZ0h3M01hWnJzUlRTZXZ6QjlKUVFJam5ZTnBBdEwyODFjSGIweTc4VGpDWUt3QzBnbW5xSDdJS2FxcENMWVRqbGdsVGJORk9zaEZLN2pNNDE3QQ?oc=5",
+   "title": "How a good intention made the Alabama Legislature less democratic - Alabama Reflector",
+   "text": "How a good intention made the Alabama Legislature less democratic - Alabama Reflector. How a good intention made the Alabama Legislature less democratic Alabama Reflector",
+   "content_hash": "c6c4f312f9f6ce6e",
+   "raw_feed_hash": "d0b906126851b437268fefff66f9a2efb9cec386f2db2701d3956aaf4f80a142",
+   "published_at": 1690786800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_6295542869",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "fc5f5929926eb031",
+   "source": "HRC | Human Rights Campaign",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNd2k3TTNwMUxoT3ZUS0dqMHBHWXk1QmxRZ09tTTk4dTFyYm9CdzI3b25HY2YyVDd6Z3NNdXlpbExFUmM5ZklPeDJXaDdwSm5oMzVVbGIzQUItNjdubGN1OVVPcTlGQk5MNHBJZ1pXQ1hnTmx6dlVTbGJJZE0yU2xhay16RG93cVJPdXppa0wxU29iNU02aFJHTEZ3TmlPbEZUMm56UlJ0V1NIRlNhbVZCVllMeFlSTHc?oc=5",
+   "title": "Texas Legislators\u2019 Relentless Political Attacks Make Texas Unsafe for LGTBQ+ People - HRC | Human Rights Campaign",
+   "text": "Texas Legislators\u2019 Relentless Political Attacks Make Texas Unsafe for LGTBQ+ People - HRC | Human Rights Campaign. Texas Legislators\u2019 Relentless Political Attacks Make Texas Unsafe for LGTBQ+ People HRC | Human Rights Campaign",
+   "content_hash": "8d6175de6df9b682",
+   "raw_feed_hash": "d0b906126851b437268fefff66f9a2efb9cec386f2db2701d3956aaf4f80a142",
+   "published_at": 1682578800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_6295542869",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "99621602170c72d2",
+   "source": "Arizona Mirror",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPVkhTdjlGdDlpOVF6YnkyaGV0ekkwcHFrSjRvWGhBVkNkcmlmWGJyVC04Tm1lUndSSjNxc2QxSnFPOHo0UWtINFFrYVJfeU1qSndOSzBPMWx5T0p5eUw4RTJyY3BIbzEwQXBYV3F2cjFyUDNodTMzcW02Q19CWWhBNkZPRkxadF92WWQ4QkI1em45cmZKOVRibzFYbUxEVklOa2c?oc=5",
+   "title": "AZ Republicans push anti-drag, anti-LGBTQ bills closer to veto stamp - Arizona Mirror",
+   "text": "AZ Republicans push anti-drag, anti-LGBTQ bills closer to veto stamp - Arizona Mirror. AZ Republicans push anti-drag, anti-LGBTQ bills closer to veto stamp Arizona Mirror",
+   "content_hash": "93460a1e8394319c",
+   "raw_feed_hash": "d0b906126851b437268fefff66f9a2efb9cec386f2db2701d3956aaf4f80a142",
+   "published_at": 1681196400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_6295542869",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "fef286c07998c699",
+   "source": "Kentucky Lantern",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxPU0VzX3Voa3RrUWNJTnlmdE5wOUR4aGJuNmJmd2p1Z0ZwSEthZXpQYzFWZ3NSczk3VEg3ZVdQS0YyZ3NKekFnOXFFQm1UeFpaY2EwYU85X2xVSUctRVdIemhYTE5hWW84cEhodkNjSFFyZ2dmYTFjWUpzTmw3RWhOalNmM2FKMUVTQ0NXdEJOazlRdDhwWW0zNDdxM3RKV2Uzb2hHMzFvWjVOaUE4OVJKNmNHaEdWLV8wazZjMA?oc=5",
+   "title": "\u2018Or\u2019 ignites latest conflict over what Kentucky schools may teach about sex, gender - Kentucky Lantern",
+   "text": "\u2018Or\u2019 ignites latest conflict over what Kentucky schools may teach about sex, gender - Kentucky Lantern. \u2018Or\u2019 ignites latest conflict over what Kentucky schools may teach about sex, gender Kentucky Lantern",
+   "content_hash": "40b3b24fadf562dd",
+   "raw_feed_hash": "d0b906126851b437268fefff66f9a2efb9cec386f2db2701d3956aaf4f80a142",
+   "published_at": 1686207600.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_6295542869",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "0c5dc26e03868443",
+   "source": "Democracy Docket",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxQUzF4Ty1Cb01BbHU0U0JyOEhXWi1TYjFYcDM5SXI5MzkwemdKWGdXLS1rNEdCV29FRU5MVVJGdmxQMVc0OXBBcjQ5ZTYxTDNkZVZNcmtvQTNvQ2t6WjlrLVVaMnlEVVB5cklyc1VPaEd6ckdqRkZKUXl3bnNlX3RHT2M1aHpWRFlyVkFnVGdEdXMtZWhtSzlnMTBxMEVTUUlIWUFsZVJ5Sk9NYUk?oc=5",
+   "title": "The Anti-Voting Bills Republicans Enacted This Legislative Season - Democracy Docket",
+   "text": "The Anti-Voting Bills Republicans Enacted This Legislative Season - Democracy Docket. The Anti-Voting Bills Republicans Enacted This Legislative Season Democracy Docket",
+   "content_hash": "8eb88b2f336dc8ad",
+   "raw_feed_hash": "d0b906126851b437268fefff66f9a2efb9cec386f2db2701d3956aaf4f80a142",
+   "published_at": 1687417200.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_6295542869",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f9bc182df5c8b5ae",
+   "source": "Florida Politics",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxONG9vek9SZGxlS0JjMmJ4NjlyTm1PZTRYSlNxRlhtUnZCUm9wNVJmd21YU0JqeEx0NmVQeEVJTmpBZWlQMzIyUDZjSmduOW8xUHNvOGJZLXFRSmx6UHUycThEclZvMEVKU2J0dm5FeEZ5SmpRYWl2SVlRRVNvUi1acUw3WHRQZlZCVkdWV1dSY3NFNlBCdEVGMnVZLW96Tklkc0pNMjRQR18zeFl1dXc?oc=5",
+   "title": "Legislature passes physician \u2018freedom\u2019 bill backed by Gov. DeSantis - Florida Politics",
+   "text": "Legislature passes physician \u2018freedom\u2019 bill backed by Gov. DeSantis - Florida Politics. Legislature passes physician \u2018freedom\u2019 bill backed by Gov. DeSantis Florida Politics",
+   "content_hash": "4ad0d201ef7113b2",
+   "raw_feed_hash": "d0b906126851b437268fefff66f9a2efb9cec386f2db2701d3956aaf4f80a142",
+   "published_at": 1683010800.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_6295542869",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2aa1a29f81110ef6",
+   "source": "Lakeland Ledger",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxPbl9kLU56LTlfR2RGZERteHhYZHA2cUJ2enl4WUZxa3dQeE5BSDlWNExyTnFRUXFhbnlfNXpianRja0Q5WFZPNnhBa0Faek42V0Q5NjZpTzYtTlhETy14bmtSS0pHODdobVJIdndYQWM5dlpHdGxXZkZtLUJyLS1QLVJiUkQxNUNBbFR0dElnbGhmTXNCeFBrV2d1THhQTXYwNm9PQUE0ak5PTmdSM0JrSnAyX0dhTTZYcE1RVE0yblo1R0NFRkRONU5PNm42aVQxN1E0?oc=5",
+   "title": "Polk Pride still on schedule in Lakeland as Legislature passes bill restricting drag shows - Lakeland Ledger",
+   "text": "Polk Pride still on schedule in Lakeland as Legislature passes bill restricting drag shows - Lakeland Ledger. Polk Pride still on schedule in Lakeland as Legislature passes bill restricting drag shows Lakeland Ledger",
+   "content_hash": "4e7e8a7397e34203",
+   "raw_feed_hash": "d0b906126851b437268fefff66f9a2efb9cec386f2db2701d3956aaf4f80a142",
+   "published_at": 1683097200.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_6295542869",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "94aed00eef54ad30",
+   "source": "WLIW",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxPNUctYVdRQ1RKdWlmRmpER1ZwelY4NWlSUWlyUVg1WDJvQ1VWLUhsaWZULTdVZEpOZWVvd2gzcUUweC1NZEVGVWFIQkE4QXo1WWEyeE9rMUF2SmQ3ODBKQlQ5TldwTDlBQ2tVRlVBdzNZZXRpNExtODZMODBVOUlSZTJmQ1FSS2Utd0sxTXhiaW9GMFdEcDdwQ1gtd1ZPeFdzYVozNDBGM0d0d0xIMHlQZW5GekJfVHM?oc=5",
+   "title": "Nebraska hasn\u2019t passed a single bill this session, amid filibusters over trans rights - WLIW",
+   "text": "Nebraska hasn\u2019t passed a single bill this session, amid filibusters over trans rights - WLIW. Nebraska hasn\u2019t passed a single bill this session, amid filibusters over trans rights WLIW",
+   "content_hash": "733deb33045eda8f",
+   "raw_feed_hash": "d0b906126851b437268fefff66f9a2efb9cec386f2db2701d3956aaf4f80a142",
+   "published_at": 1680850800.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_6295542869",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "3843b07fcc66f286:c0",
+   "source_id": "3843b07fcc66f286",
+   "subject": "California budget deal",
+   "predicate": "is the subject of",
+   "object": "an article by CalMatters",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "What you need to know on the California budget deal - CalMatters",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1687849200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "California",
+    "CalMatters"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_d06a4653ed",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_1cf39d2684"
+   }
+  },
+  {
+   "claim_id": "c42bc76e4af528ea:c0",
+   "source_id": "c42bc76e4af528ea",
+   "subject": "a good intention",
+   "predicate": "made",
+   "object": "the Alabama Legislature less democratic",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "inferred_implication",
+   "supporting_span": "How a good intention made the Alabama Legislature less democratic",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1690786800.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Alabama Legislature"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_5ce8ca0a32",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6295542869"
+   }
+  },
+  {
+   "claim_id": "a57acd7cf5b2f1f4:c0",
+   "source_id": "a57acd7cf5b2f1f4",
+   "subject": "The Dignity Act",
+   "predicate": "is",
+   "object": "a bill",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "The Dignity Act: Bill Summary - National Immigration Forum",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1684998000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "The Dignity Act",
+    "National Immigration Forum"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_e329b7e680",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_1cf39d2684"
+   }
+  },
+  {
+   "claim_id": "a57acd7cf5b2f1f4:c1",
+   "source_id": "a57acd7cf5b2f1f4",
+   "subject": "National Immigration Forum",
+   "predicate": "published",
+   "object": "a bill summary",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "The Dignity Act: Bill Summary - National Immigration Forum",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1684998000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "National Immigration Forum",
+    "The Dignity Act"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_e329b7e680",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_1cf39d2684"
+   }
+  },
+  {
+   "claim_id": "fc5f5929926eb031:c0",
+   "source_id": "fc5f5929926eb031",
+   "subject": "Texas Legislators",
+   "predicate": "make",
+   "object": "Texas unsafe for LGTBQ+ people",
+   "value": "",
+   "units": "",
+   "qualifiers": "relentless political attacks",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "Texas Legislators\u2019 Relentless Political Attacks Make Texas Unsafe for LGTBQ+ People",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682578800.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Texas Legislators",
+    "Texas",
+    "LGTBQ+ people"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_a3375907cf",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6295542869"
+   }
+  },
+  {
+   "claim_id": "813c45cdf05267f7:c0",
+   "source_id": "813c45cdf05267f7",
+   "subject": "Alaska pension bill",
+   "predicate": "won't advance",
+   "object": "this year",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "negate",
+   "claim_class": "actor_statement",
+   "supporting_span": "Alaska pension bill, facing deep scrutiny, won\u2019t advance this year, lawmakers say",
+   "span_verified": true,
+   "event_time": "this year",
+   "publication_time": 1683097200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Alaska pension bill"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_f026b36292",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_1cf39d2684"
+   }
+  },
+  {
+   "claim_id": "813c45cdf05267f7:c1",
+   "source_id": "813c45cdf05267f7",
+   "subject": "Alaska pension bill",
+   "predicate": "is facing",
+   "object": "deep scrutiny",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "facing deep scrutiny",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683097200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Alaska pension bill"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_f026b36292",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_1cf39d2684"
+   }
+  },
+  {
+   "claim_id": "99621602170c72d2:c0",
+   "source_id": "99621602170c72d2",
+   "subject": "AZ Republicans",
+   "predicate": "push",
+   "object": "anti-drag, anti-LGBTQ bills",
+   "value": "",
+   "units": "",
+   "qualifiers": "closer to veto stamp",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "AZ Republicans push anti-drag, anti-LGBTQ bills closer to veto stamp",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681196400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "AZ Republicans",
+    "anti-drag, anti-LGBTQ bills"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_7c8ab4d6bc",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6295542869"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "California",
+   "normalized": "california",
+   "candidates": [
+    {
+     "entity_id": "ent_e37b030af5",
+     "canonical": "california",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "California"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "CalMatters",
+   "normalized": "calmatters",
+   "candidates": [
+    {
+     "entity_id": "ent_660c88eecf",
+     "canonical": "calmatters",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "CalMatters"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Alabama Legislature",
+   "normalized": "alabama legislature",
+   "candidates": [
+    {
+     "entity_id": "ent_3aae63b00e",
+     "canonical": "alabama legislature",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Alabama Legislature"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "The Dignity Act",
+   "normalized": "dignity act",
+   "candidates": [
+    {
+     "entity_id": "ent_f152122596",
+     "canonical": "dignity act",
+     "support": 0.6429,
+     "evidence_mentions": [
+      "The Dignity Act",
+      "The Dignity Act"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "National Immigration Forum",
+   "normalized": "national immigration forum",
+   "candidates": [
+    {
+     "entity_id": "ent_fb68ca3c69",
+     "canonical": "national immigration forum",
+     "support": 0.6429,
+     "evidence_mentions": [
+      "National Immigration Forum",
+      "National Immigration Forum"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "National Immigration Forum",
+   "normalized": "national immigration forum",
+   "candidates": [
+    {
+     "entity_id": "ent_fb68ca3c69",
+     "canonical": "national immigration forum",
+     "support": 0.6429,
+     "evidence_mentions": [
+      "National Immigration Forum",
+      "National Immigration Forum"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "The Dignity Act",
+   "normalized": "dignity act",
+   "candidates": [
+    {
+     "entity_id": "ent_f152122596",
+     "canonical": "dignity act",
+     "support": 0.6429,
+     "evidence_mentions": [
+      "The Dignity Act",
+      "The Dignity Act"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Texas Legislators",
+   "normalized": "texas legislators",
+   "candidates": [
+    {
+     "entity_id": "ent_42700f4b19",
+     "canonical": "texas legislators",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Texas Legislators"
+     ]
+    },
+    {
+     "entity_id": "ent_ca6a894923",
+     "canonical": "texas",
+     "support": 0.2214,
+     "evidence_mentions": [
+      "Texas"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Texas",
+   "normalized": "texas",
+   "candidates": [
+    {
+     "entity_id": "ent_ca6a894923",
+     "canonical": "texas",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Texas"
+     ]
+    },
+    {
+     "entity_id": "ent_42700f4b19",
+     "canonical": "texas legislators",
+     "support": 0.2214,
+     "evidence_mentions": [
+      "Texas Legislators"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "LGTBQ+ people",
+   "normalized": "lgtbq+ people",
+   "candidates": [
+    {
+     "entity_id": "ent_8a2ca9db42",
+     "canonical": "lgtbq+ people",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "LGTBQ+ people"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Alaska pension bill",
+   "normalized": "alaska pension bill",
+   "candidates": [
+    {
+     "entity_id": "ent_095ad2fbc0",
+     "canonical": "alaska pension bill",
+     "support": 0.6429,
+     "evidence_mentions": [
+      "Alaska pension bill",
+      "Alaska pension bill"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Alaska pension bill",
+   "normalized": "alaska pension bill",
+   "candidates": [
+    {
+     "entity_id": "ent_095ad2fbc0",
+     "canonical": "alaska pension bill",
+     "support": 0.6429,
+     "evidence_mentions": [
+      "Alaska pension bill",
+      "Alaska pension bill"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "AZ Republicans",
+   "normalized": "az republicans",
+   "candidates": [
+    {
+     "entity_id": "ent_42d71bc397",
+     "canonical": "az republicans",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "AZ Republicans"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "anti-drag, anti-LGBTQ bills",
+   "normalized": "anti-drag anti-lgbtq bills",
+   "candidates": [
+    {
+     "entity_id": "ent_e55e66dd80",
+     "canonical": "anti-drag anti-lgbtq bills",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "anti-drag, anti-LGBTQ bills"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "3843b07fcc66f286": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1687849200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687849200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a57acd7cf5b2f1f4": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1684998000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684998000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "813c45cdf05267f7": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1683097200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683097200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "fc5f5929926eb031": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1682578800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682578800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d7cfca03a5216f93": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1686639600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686639600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4c4542ad2b74d93b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1682838000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682838000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f14bbf62a1a155e0": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1687503600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687503600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f9bc182df5c8b5ae": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1683010800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683010800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "c42bc76e4af528ea": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1690786800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690786800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "99621602170c72d2": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1681196400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681196400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "fef286c07998c699": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1686207600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686207600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "0c5dc26e03868443": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1687417200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687417200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2aa1a29f81110ef6": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1683097200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683097200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "94aed00eef54ad30": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1680850800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680850800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_d06a4653ed",
+   "member_ids": [
+    "3843b07fcc66f286"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "CalMatters",
+   "primary_source": "CalMatters",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e329b7e680",
+   "member_ids": [
+    "a57acd7cf5b2f1f4"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "National Immigration Forum",
+   "primary_source": "National Immigration Forum",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_f026b36292",
+   "member_ids": [
+    "813c45cdf05267f7"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Alaska Beacon",
+   "primary_source": "Alaska Beacon",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a3375907cf",
+   "member_ids": [
+    "fc5f5929926eb031",
+    "fc5f5929926eb031"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "HRC | Human Rights Campaign",
+   "primary_source": "HRC | Human Rights Campaign",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_7ebda87163",
+   "member_ids": [
+    "d7cfca03a5216f93"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Littler Mendelson P.C.",
+   "primary_source": "Littler Mendelson P.C.",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9534775c15",
+   "member_ids": [
+    "4c4542ad2b74d93b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Northwest Arkansas Democrat-Gazette",
+   "primary_source": "Northwest Arkansas Democrat-Gazette",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a59699d09f",
+   "member_ids": [
+    "f14bbf62a1a155e0"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Honolulu Civil Beat",
+   "primary_source": "Honolulu Civil Beat",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_8bfba3f0de",
+   "member_ids": [
+    "f9bc182df5c8b5ae",
+    "f9bc182df5c8b5ae"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "Florida Politics",
+   "primary_source": "Florida Politics",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_5ce8ca0a32",
+   "member_ids": [
+    "c42bc76e4af528ea"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Alabama Reflector",
+   "primary_source": "Alabama Reflector",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7c8ab4d6bc",
+   "member_ids": [
+    "99621602170c72d2"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Arizona Mirror",
+   "primary_source": "Arizona Mirror",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_fa519a8c0a",
+   "member_ids": [
+    "fef286c07998c699"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Kentucky Lantern",
+   "primary_source": "Kentucky Lantern",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_4d5a5f654d",
+   "member_ids": [
+    "0c5dc26e03868443"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Democracy Docket",
+   "primary_source": "Democracy Docket",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_2caf5f4357",
+   "member_ids": [
+    "2aa1a29f81110ef6"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Lakeland Ledger",
+   "primary_source": "Lakeland Ledger",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_c6e54165c8",
+   "member_ids": [
+    "94aed00eef54ad30"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "WLIW",
+   "primary_source": "WLIW",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "3843b07fcc66f286:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1687849200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "c42bc76e4af528ea:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1690786800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "a57acd7cf5b2f1f4:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684998000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "a57acd7cf5b2f1f4:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684998000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "fc5f5929926eb031:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682578800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "813c45cdf05267f7:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683097200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "813c45cdf05267f7:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683097200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "99621602170c72d2:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681196400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "3843b07fcc66f286:c0",
+  "c42bc76e4af528ea:c0",
+  "a57acd7cf5b2f1f4:c0",
+  "a57acd7cf5b2f1f4:c1",
+  "fc5f5929926eb031:c0",
+  "813c45cdf05267f7:c0",
+  "813c45cdf05267f7:c1",
+  "99621602170c72d2:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_05539544a6": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_1cf39d2684": {
+   "status": "fulfilled",
+   "n_claims": 5,
+   "n_included": 5
+  },
+  "req_6295542869": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_ffce1c2050": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_38faf70289": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_72f7e9a018": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_de4958aed7": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_18b7d105fe": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_05539544a6",
+  "req_ffce1c2050",
+  "req_38faf70289",
+  "req_72f7e9a018",
+  "req_de4958aed7",
+  "req_18b7d105fe"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 14,
+  "n_contradictions": 0,
+  "n_documents": 16
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 14.477,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "a144477f10aa0148",
+ "bundle_hash": "a144477f10aa0148",
+ "_persisted_at": "2026-07-13T01:42:34Z"
+}

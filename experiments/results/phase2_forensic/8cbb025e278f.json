@@ -1,0 +1,379 @@
+{
+ "domain": "acquisition",
+ "question": "Will Microsoft complete its acquisition of Activision Blizzard?",
+ "as_of": "2023-08-01",
+ "horizon": "2023-11-01",
+ "n_requirements": 7,
+ "requirements": [
+  {
+   "id": "req_3fb9834f26",
+   "need": "completed if by 2023-11-01 the transaction has closed (all regulatory approvals ",
+   "why": "the terminal outcome standing as of the question date sets the base rate",
+   "voi": 1.0
+  },
+  {
+   "id": "req_92310fa134",
+   "need": "value/context of ftc.enforcement_philosophy",
+   "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "voi": 0.9
+  },
+  {
+   "id": "req_cba99a1a20",
+   "need": "value/context of ec.political_factors",
+   "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "voi": 0.8
+  },
+  {
+   "id": "req_a983a76a4a",
+   "need": "value/context of microsoft.willingness_to_concede",
+   "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "voi": 0.8
+  }
+ ],
+ "rss_windows": [
+  {
+   "query": "Microsoft complete acquisition Activision Blizzard microsoft activision blizzard ftc after:2023-03-04 before:2023-08-01",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "status": "ok",
+   "code": 200,
+   "n_items": 8,
+   "raw_hash": "d1987b4a73be"
+  },
+  {
+   "query": "ftc enforcement philosophy after:2023-03-04 before:2023-08-01",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "status": "zero_results",
+   "code": 200,
+   "n_items": 0,
+   "raw_hash": "fd79363c5775"
+  },
+  {
+   "query": "political factors after:2023-03-04 before:2023-08-01",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "status": "ok",
+   "code": 200,
+   "n_items": 8,
+   "raw_hash": "857c24d6f2d2"
+  }
+ ],
+ "n_documents": 16,
+ "documents": [
+  {
+   "source": "CNBC",
+   "title": "Microsoft-Activision deal moves closer as judge denies FTC injunction ",
+   "pub": 1689058800.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "PBS",
+   "title": "Microsoft heads to court over $69 billion deal that could reshape vide",
+   "pub": 1687417200.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "GamesIndustry.biz",
+   "title": "Microsoft allowed to complete Activision Blizzard acquisition in the U",
+   "pub": 1689058800.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "The New York Times",
+   "title": "Judge Rejects F.T.C. Delay of $70 Billion Microsoft-Activision Deal (P",
+   "pub": 1689058800.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "WTVG",
+   "title": "FTC appeals judge\u2019s ruling that would allow Microsoft\u2019s Activision Bli",
+   "pub": 1689231600.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "vox.com",
+   "title": "The FTC\u2019s case against Microsoft\u2019s Activision acquisition is not going",
+   "pub": 1689058800.0,
+   "temporal": "likely_pre_asof"
+  }
+ ],
+ "temporal_summary": {
+  "likely_pre_asof": 16
+ },
+ "included_claims": [
+  {
+   "id": "e56b958c5d1066b7:c0",
+   "class": "observed_fact",
+   "subject": "Microsoft-Activision deal",
+   "predicate": "moves closer",
+   "span": "Microsoft-Activision deal moves closer"
+  },
+  {
+   "id": "e56b958c5d1066b7:c1",
+   "class": "official_record",
+   "subject": "judge",
+   "predicate": "denies",
+   "span": "judge denies FTC injunction request"
+  },
+  {
+   "id": "9d47cab383f252b6:c0",
+   "class": "observed_fact",
+   "subject": "Mercator Institute for China Studies (ME",
+   "predicate": "has",
+   "span": "Political and social factors - Mercator Institute for China Studies (MERICS)."
+  },
+  {
+   "id": "045c6143dbda0647:c0",
+   "class": "observed_fact",
+   "subject": "Microsoft",
+   "predicate": "heads to court over",
+   "span": "Microsoft heads to court over $69 billion deal that could reshape video gaming"
+  },
+  {
+   "id": "41b8e85835b75a27:c0",
+   "class": "observed_fact",
+   "subject": "Sudan",
+   "predicate": "has",
+   "span": "A House Divided: Sudan\u2019s Troubled Transition"
+  },
+  {
+   "id": "22504a7309fe5f8a:c0",
+   "class": "official_record",
+   "subject": "Microsoft",
+   "predicate": "allowed to complete",
+   "span": "Microsoft allowed to complete Activision Blizzard acquisition in the US"
+  }
+ ],
+ "n_excluded": 0,
+ "n_suspicious": 0,
+ "entities": [
+  {
+   "mention": "Microsoft",
+   "top": "microsoft",
+   "resolved": true
+  },
+  {
+   "mention": "Activision",
+   "top": "activision",
+   "resolved": true
+  },
+  {
+   "mention": "FTC",
+   "top": "ftc",
+   "resolved": true
+  },
+  {
+   "mention": "Mercator Institute for China Studies (MERICS)",
+   "top": "mercator institute for china studies (merics)",
+   "resolved": true
+  },
+  {
+   "mention": "Microsoft",
+   "top": "microsoft",
+   "resolved": true
+  }
+ ],
+ "dependence_groups": [
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  }
+ ],
+ "n_independent_sources": 16,
+ "contradictions": [],
+ "actor_visibility": {
+  "public": 7
+ },
+ "leakage_flags": [],
+ "bundle_hash": "125865884af19f80",
+ "plan_diff": {
+  "n_entries": 16,
+  "n_structural_changes": 15,
+  "lean_only": false,
+  "entries": [
+   {
+    "kind": "entity_added",
+    "component": "us_district_court",
+    "detail": "The judge denying the FTC injunction request implies a specific court entity that made the decision.",
+    "supporting_claim_ids": [
+     "e56b958c5d1066b7:c1"
+    ],
+    "before": "",
+    "after": "us_district_court"
+   },
+   {
+    "kind": "institution_added",
+    "component": "us_district_court",
+    "detail": "The court's denial of the FTC injunction effectively approves the deal in the US, adding a decision point.",
+    "supporting_claim_ids": [
+     "e56b958c5d1066b7:c1",
+     "22504a7309fe5f8a:c0"
+    ],
+    "before": "",
+    "after": "[\"approval\"]"
+   },
+   {
+    "kind": "rule_added",
+    "component": "us_district_court.approval",
+    "detail": "{}",
+    "supporting_claim_ids": [
+     "e56b958c5d1066b7:c1",
+     "22504a7309fe5f8a:c0"
+    ],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "relation_added",
+    "component": "us_district_court-approves-microsoft",
+    "detail": "",
+    "supporting_claim_ids": [
+     "22504a7309fe5f8a:c0"
+    ],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "relation_added",
+    "component": "ftc-challenges-microsoft",
+    "detail": "",
+    "supporting_claim_ids": [
+     "e56b958c5d1066b7:c1"
+    ],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "event_added",
+    "component": "approval@2023-07-11",
+    "detail": "The judge denied the FTC injunction, allowing the deal to proceed in the US.",
+    "supporting_claim_ids": [
+     "e56b958c5d1066b7:c1",
+     "22504a7309fe5f8a:c0"
+    ],
+    "before": "",
+    "after": "approval"
+   },
+   {
+    "kind": "hypothesis_reweighted",
+    "component": "regulatory_approval_chain",
+    "detail": "The US court approval removes a major regulatory hurdle, increasing likelihood of completion.",
+    "supporting_claim_ids": [
+     "e56b958c5d1066b7:c1",
+     "22504a7309fe5f8a:c0"
+    ],
+    "before": "0.7",
+    "after": "1.05"
+   },
+   {
+    "kind": "lean_changed",
+    "component": "outcome_lean",
+    "detail": "",
+    "supporting_claim_ids": [
+     "22504a7309fe5f8a:c0",
+     "e56b958c5d1066b7:c1"
+    ],
+    "before": "neutral",
+    "after": "weak_yes"
+   },
+   {
+    "kind": "uncertainty_changed",
+    "component": "state_priors",
+    "detail": "The US court decision resolves a key uncertainty, but other regulators (CMA, EC) remain, so uncertainty narrows but not ",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": "narrow"
+   },
+   {
+    "kind": "requirement_fulfilled",
+    "component": "req_3fb9834f26",
+    "detail": "4 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_92310fa134",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_fulfilled",
+    "component": "req_cba99a1a20",
+    "detail": "3 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_a983a76a4a",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_1326ab3416",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_1b65ca65a3",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_17196e9c9a",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   }
+  ]
+ },
+ "structural_changes": 15,
+ "lean_only": false,
+ "n_institutions_pre": 5,
+ "n_institutions_post": 6,
+ "n_events_pre": 1,
+ "n_events_post": 9,
+ "observation_state_deltas": 0,
+ "terminal_pre": {
+  "not_completed": 0.58,
+  "completed": 0.42
+ },
+ "terminal_post": {
+  "completed": 0.56,
+  "not_completed": 0.44
+ },
+ "terminal_changed": true,
+ "evidence_is_causal": true
+}

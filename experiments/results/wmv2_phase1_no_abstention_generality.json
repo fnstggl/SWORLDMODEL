@@ -1,0 +1,724 @@
+{
+ "summary": {
+  "n_questions": 104,
+  "n_domains": 16,
+  "all_gates_passed": true,
+  "forecasts_produced": 101,
+  "forecast_rate": 0.9712,
+  "mean_support_by_grade": {
+   "highly_speculative": 100,
+   "exploratory": 4
+  },
+  "mean_latency_s": 13.06
+ },
+ "b13_gates": {
+  "valid_plan_rate": {
+   "value": 1.0,
+   "threshold": 0.95,
+   "op": ">=",
+   "passed": true
+  },
+  "materialize_rate": {
+   "value": 1.0,
+   "threshold": 0.9,
+   "op": ">=",
+   "passed": true
+  },
+  "complete_rollout_readout_rate": {
+   "value": 0.9231,
+   "threshold": 0.85,
+   "op": ">=",
+   "passed": true
+  },
+  "forecast_abstention_rate": {
+   "value": 0.0,
+   "threshold": 0.0,
+   "op": "==",
+   "passed": true
+  },
+  "clarification_rate": {
+   "value": 0.0,
+   "threshold": 0.05,
+   "op": "<",
+   "passed": true
+  },
+  "execution_failure_rate": {
+   "value": 0.0288,
+   "threshold": 0.1,
+   "op": "<",
+   "passed": true
+  },
+  "provenance_status_rate": {
+   "value": 1.0,
+   "threshold": 1.0,
+   "op": "==",
+   "passed": true
+  },
+  "fallback_tier_identified_rate": {
+   "value": 1.0,
+   "threshold": 1.0,
+   "op": "==",
+   "passed": true
+  },
+  "unsupported_precision_rate": {
+   "value": 0.0,
+   "threshold": 0.02,
+   "op": "<",
+   "passed": true
+  },
+  "llm_prob_injection_rate": {
+   "value": 0.0,
+   "threshold": 0.0,
+   "op": "==",
+   "passed": true
+  },
+  "no_keyword_router": {
+   "value": true,
+   "threshold": true,
+   "op": "==",
+   "passed": true,
+   "violations": []
+  }
+ },
+ "simulation_status_histogram": {
+  "completed_with_degradation": 101,
+  "execution_failed": 3
+ },
+ "support_grade_histogram": {
+  "highly_speculative": 100,
+  "exploratory": 4
+ },
+ "failure_taxonomy_histogram": {
+  "terminal_readout_unbindable": 3
+ },
+ "mechanism_histogram": {
+  "generic_outcome_prior": 172,
+  "agent_decision": 63,
+  "background_dynamics": 60,
+  "belief_update": 59,
+  "poisson_arrival": 41,
+  "resource_update": 36,
+  "relationship_update": 34
+ },
+ "per_domain": {
+  "acquisition": {
+   "n": 7,
+   "forecast_rate": 1.0,
+   "complete_rate": 1.0,
+   "grades": [
+    "exploratory",
+    "highly_speculative"
+   ]
+  },
+  "best_action": {
+   "n": 6,
+   "forecast_rate": 0.6667,
+   "complete_rate": 0.5,
+   "grades": [
+    "highly_speculative"
+   ]
+  },
+  "coalition": {
+   "n": 5,
+   "forecast_rate": 1.0,
+   "complete_rate": 1.0,
+   "grades": [
+    "exploratory",
+    "highly_speculative"
+   ]
+  },
+  "court_ruling": {
+   "n": 7,
+   "forecast_rate": 1.0,
+   "complete_rate": 1.0,
+   "grades": [
+    "highly_speculative"
+   ]
+  },
+  "election": {
+   "n": 8,
+   "forecast_rate": 1.0,
+   "complete_rate": 1.0,
+   "grades": [
+    "highly_speculative"
+   ]
+  },
+  "fundraising": {
+   "n": 6,
+   "forecast_rate": 1.0,
+   "complete_rate": 1.0,
+   "grades": [
+    "exploratory",
+    "highly_speculative"
+   ]
+  },
+  "legislation": {
+   "n": 8,
+   "forecast_rate": 1.0,
+   "complete_rate": 1.0,
+   "grades": [
+    "highly_speculative"
+   ]
+  },
+  "market": {
+   "n": 5,
+   "forecast_rate": 1.0,
+   "complete_rate": 1.0,
+   "grades": [
+    "highly_speculative"
+   ]
+  },
+  "messaging": {
+   "n": 8,
+   "forecast_rate": 1.0,
+   "complete_rate": 1.0,
+   "grades": [
+    "highly_speculative"
+   ]
+  },
+  "negotiation": {
+   "n": 8,
+   "forecast_rate": 1.0,
+   "complete_rate": 1.0,
+   "grades": [
+    "highly_speculative"
+   ]
+  },
+  "organizational_decision": {
+   "n": 9,
+   "forecast_rate": 1.0,
+   "complete_rate": 1.0,
+   "grades": [
+    "highly_speculative"
+   ]
+  },
+  "product_launch": {
+   "n": 7,
+   "forecast_rate": 1.0,
+   "complete_rate": 1.0,
+   "grades": [
+    "highly_speculative"
+   ]
+  },
+  "protest": {
+   "n": 5,
+   "forecast_rate": 1.0,
+   "complete_rate": 0.8,
+   "grades": [
+    "exploratory",
+    "highly_speculative"
+   ]
+  },
+  "reputation_crisis": {
+   "n": 5,
+   "forecast_rate": 1.0,
+   "complete_rate": 0.6,
+   "grades": [
+    "highly_speculative"
+   ]
+  },
+  "social_media_diffusion": {
+   "n": 7,
+   "forecast_rate": 0.8571,
+   "complete_rate": 0.7143,
+   "grades": [
+    "highly_speculative"
+   ]
+  },
+  "strike": {
+   "n": 3,
+   "forecast_rate": 1.0,
+   "complete_rate": 1.0,
+   "grades": [
+    "highly_speculative"
+   ]
+  }
+ },
+ "forensic_examples": [
+  {
+   "domain": "messaging",
+   "question": "Will my manager reply to the budget-approval email I sent this morning by end of week?",
+   "as_of": "2023-05-01",
+   "horizon": "2023-05-08",
+   "compiled": true,
+   "materialized": true,
+   "executed_e2e": true,
+   "readout_resolved": true,
+   "has_forecast": true,
+   "provenance_ok": true,
+   "unsupported_precision": false,
+   "llm_prob_injection": false,
+   "simulation_status": "completed_with_degradation",
+   "support_grade": "highly_speculative",
+   "recommendation_status": "not_requested",
+   "raw_probability": 0.4366,
+   "distribution_keys": [
+    "no_reply",
+    "reply"
+   ],
+   "n_distribution": 2,
+   "support_grade_valid": true,
+   "degraded": true,
+   "n_fallbacks": 1,
+   "fallbacks_all_tiered": true,
+   "fallback_tiers": [
+    7
+   ],
+   "n_structural_hypotheses": 3,
+   "structural_disagreement": {
+    "baseline": 0.7042,
+    "vacation": 0.0986,
+    "high_priority": 0.1972
+   },
+   "n_accepted_mech": 6,
+   "n_rejected_mech": 0,
+   "mechanisms": [
+    "agent_decision",
+    "belief_update",
+    "background_dynamics",
+    "poisson_arrival",
+    "generic_outcome_prior",
+    "generic_outcome_prior"
+   ],
+   "n_entities": 2,
+   "n_institutions": 1,
+   "n_populations": 1,
+   "n_latents": 5,
+   "n_limitations": 3,
+   "failure_taxonomy": "",
+   "clarification": false,
+   "forecast_abstention": false,
+   "error": "",
+   "latency_s": 11.65
+  },
+  {
+   "domain": "messaging",
+   "question": "If I send a follow-up nudge tomorrow, will the vendor respond within 48 hours?",
+   "as_of": "2023-06-10",
+   "horizon": "2023-06-13",
+   "compiled": true,
+   "materialized": true,
+   "executed_e2e": true,
+   "readout_resolved": true,
+   "has_forecast": true,
+   "provenance_ok": true,
+   "unsupported_precision": false,
+   "llm_prob_injection": false,
+   "simulation_status": "completed_with_degradation",
+   "support_grade": "highly_speculative",
+   "recommendation_status": "not_requested",
+   "raw_probability": 0.493,
+   "distribution_keys": [
+    "no",
+    "yes"
+   ],
+   "n_distribution": 2,
+   "support_grade_valid": true,
+   "degraded": true,
+   "n_fallbacks": 1,
+   "fallbacks_all_tiered": true,
+   "fallback_tiers": [
+    7
+   ],
+   "n_structural_hypotheses": 3,
+   "structural_disagreement": {
+    "attention_driven": 0.6056,
+    "relationship_driven": 0.2958,
+    "random_noise": 0.0986
+   },
+   "n_accepted_mech": 5,
+   "n_rejected_mech": 2,
+   "mechanisms": [
+    "agent_decision",
+    "belief_update",
+    "relationship_update",
+    "poisson_arrival",
+    "generic_outcome_prior"
+   ],
+   "n_entities": 2,
+   "n_institutions": 0,
+   "n_populations": 0,
+   "n_latents": 5,
+   "n_limitations": 3,
+   "failure_taxonomy": "",
+   "clarification": false,
+   "forecast_abstention": false,
+   "error": "",
+   "latency_s": 9.62
+  },
+  {
+   "domain": "messaging",
+   "question": "Will the recruiter answer my scheduling question before the weekend?",
+   "as_of": "2023-03-15",
+   "horizon": "2023-03-19",
+   "compiled": true,
+   "materialized": true,
+   "executed_e2e": true,
+   "readout_resolved": true,
+   "has_forecast": true,
+   "provenance_ok": true,
+   "unsupported_precision": false,
+   "llm_prob_injection": false,
+   "simulation_status": "completed_with_degradation",
+   "support_grade": "highly_speculative",
+   "recommendation_status": "not_requested",
+   "raw_probability": 0.4091,
+   "distribution_keys": [
+    "does_not_respond_before_weekend",
+    "responds_before_weekend"
+   ],
+   "n_distribution": 2,
+   "support_grade_valid": true,
+   "degraded": true,
+   "n_fallbacks": 1,
+   "fallbacks_all_tiered": true,
+   "fallback_tiers": [
+    7
+   ],
+   "n_structural_hypotheses": 3,
+   "structural_disagreement": {
+    "default_workflow": 0.697,
+    "high_workload_block": 0.197,
+    "obligation_driven": 0.1061
+   },
+   "n_accepted_mech": 5,
+   "n_rejected_mech": 2,
+   "mechanisms": [
+    "agent_decision",
+    "belief_update",
+    "background_dynamics",
+    "poisson_arrival",
+    "generic_outcome_prior"
+   ],
+   "n_entities": 2,
+   "n_institutions": 1,
+   "n_populations": 0,
+   "n_latents": 4,
+   "n_limitations": 3,
+   "failure_taxonomy": "",
+   "clarification": false,
+   "forecast_abstention": false,
+   "error": "",
+   "latency_s": 10.06
+  },
+  {
+   "domain": "messaging",
+   "question": "Is my co-founder likely to read and reply to the long strategy memo I just sent?",
+   "as_of": "2023-08-01",
+   "horizon": "2023-08-05",
+   "compiled": true,
+   "materialized": true,
+   "executed_e2e": true,
+   "readout_resolved": true,
+   "has_forecast": true,
+   "provenance_ok": true,
+   "unsupported_precision": false,
+   "llm_prob_injection": false,
+   "simulation_status": "completed_with_degradation",
+   "support_grade": "highly_speculative",
+   "recommendation_status": "not_requested",
+   "raw_probability": 0.4225,
+   "distribution_keys": [
+    "no_reply",
+    "reply"
+   ],
+   "n_distribution": 2,
+   "support_grade_valid": true,
+   "degraded": true,
+   "n_fallbacks": 1,
+   "fallbacks_all_tiered": true,
+   "fallback_tiers": [
+    7
+   ],
+   "n_structural_hypotheses": 3,
+   "structural_disagreement": {
+    "default_reading_habit": 0.6056,
+    "overloaded_avoidance": 0.2958,
+    "relationship_strain": 0.0986
+   },
+   "n_accepted_mech": 4,
+   "n_rejected_mech": 14,
+   "mechanisms": [
+    "agent_decision",
+    "belief_update",
+    "background_dynamics",
+    "generic_outcome_prior"
+   ],
+   "n_entities": 2,
+   "n_institutions": 0,
+   "n_populations": 0,
+   "n_latents": 5,
+   "n_limitations": 3,
+   "failure_taxonomy": "",
+   "clarification": false,
+   "forecast_abstention": false,
+   "error": "",
+   "latency_s": 12.35
+  },
+  {
+   "domain": "messaging",
+   "question": "Will my manager reply to the budget-approval email I sent this morning by end of week?",
+   "as_of": "2023-05-01",
+   "horizon": "2023-05-08",
+   "compiled": true,
+   "materialized": true,
+   "executed_e2e": true,
+   "readout_resolved": true,
+   "has_forecast": true,
+   "provenance_ok": true,
+   "unsupported_precision": false,
+   "llm_prob_injection": false,
+   "simulation_status": "completed_with_degradation",
+   "support_grade": "highly_speculative",
+   "recommendation_status": "not_requested",
+   "raw_probability": 0.4366,
+   "distribution_keys": [
+    "no_reply",
+    "reply"
+   ],
+   "n_distribution": 2,
+   "support_grade_valid": true,
+   "degraded": true,
+   "n_fallbacks": 1,
+   "fallbacks_all_tiered": true,
+   "fallback_tiers": [
+    7
+   ],
+   "n_structural_hypotheses": 3,
+   "structural_disagreement": {
+    "baseline": 0.7042,
+    "vacation": 0.0986,
+    "high_priority": 0.1972
+   },
+   "n_accepted_mech": 6,
+   "n_rejected_mech": 0,
+   "mechanisms": [
+    "agent_decision",
+    "belief_update",
+    "background_dynamics",
+    "poisson_arrival",
+    "generic_outcome_prior",
+    "generic_outcome_prior"
+   ],
+   "n_entities": 2,
+   "n_institutions": 1,
+   "n_populations": 1,
+   "n_latents": 5,
+   "n_limitations": 3,
+   "failure_taxonomy": "",
+   "clarification": false,
+   "forecast_abstention": false,
+   "error": "",
+   "latency_s": 11.65
+  },
+  {
+   "domain": "messaging",
+   "question": "If I send a follow-up nudge tomorrow, will the vendor respond within 48 hours?",
+   "as_of": "2023-06-10",
+   "horizon": "2023-06-13",
+   "compiled": true,
+   "materialized": true,
+   "executed_e2e": true,
+   "readout_resolved": true,
+   "has_forecast": true,
+   "provenance_ok": true,
+   "unsupported_precision": false,
+   "llm_prob_injection": false,
+   "simulation_status": "completed_with_degradation",
+   "support_grade": "highly_speculative",
+   "recommendation_status": "not_requested",
+   "raw_probability": 0.493,
+   "distribution_keys": [
+    "no",
+    "yes"
+   ],
+   "n_distribution": 2,
+   "support_grade_valid": true,
+   "degraded": true,
+   "n_fallbacks": 1,
+   "fallbacks_all_tiered": true,
+   "fallback_tiers": [
+    7
+   ],
+   "n_structural_hypotheses": 3,
+   "structural_disagreement": {
+    "attention_driven": 0.6056,
+    "relationship_driven": 0.2958,
+    "random_noise": 0.0986
+   },
+   "n_accepted_mech": 5,
+   "n_rejected_mech": 2,
+   "mechanisms": [
+    "agent_decision",
+    "belief_update",
+    "relationship_update",
+    "poisson_arrival",
+    "generic_outcome_prior"
+   ],
+   "n_entities": 2,
+   "n_institutions": 0,
+   "n_populations": 0,
+   "n_latents": 5,
+   "n_limitations": 3,
+   "failure_taxonomy": "",
+   "clarification": false,
+   "forecast_abstention": false,
+   "error": "",
+   "latency_s": 9.62
+  },
+  {
+   "domain": "messaging",
+   "question": "Will the recruiter answer my scheduling question before the weekend?",
+   "as_of": "2023-03-15",
+   "horizon": "2023-03-19",
+   "compiled": true,
+   "materialized": true,
+   "executed_e2e": true,
+   "readout_resolved": true,
+   "has_forecast": true,
+   "provenance_ok": true,
+   "unsupported_precision": false,
+   "llm_prob_injection": false,
+   "simulation_status": "completed_with_degradation",
+   "support_grade": "highly_speculative",
+   "recommendation_status": "not_requested",
+   "raw_probability": 0.4091,
+   "distribution_keys": [
+    "does_not_respond_before_weekend",
+    "responds_before_weekend"
+   ],
+   "n_distribution": 2,
+   "support_grade_valid": true,
+   "degraded": true,
+   "n_fallbacks": 1,
+   "fallbacks_all_tiered": true,
+   "fallback_tiers": [
+    7
+   ],
+   "n_structural_hypotheses": 3,
+   "structural_disagreement": {
+    "default_workflow": 0.697,
+    "high_workload_block": 0.197,
+    "obligation_driven": 0.1061
+   },
+   "n_accepted_mech": 5,
+   "n_rejected_mech": 2,
+   "mechanisms": [
+    "agent_decision",
+    "belief_update",
+    "background_dynamics",
+    "poisson_arrival",
+    "generic_outcome_prior"
+   ],
+   "n_entities": 2,
+   "n_institutions": 1,
+   "n_populations": 0,
+   "n_latents": 4,
+   "n_limitations": 3,
+   "failure_taxonomy": "",
+   "clarification": false,
+   "forecast_abstention": false,
+   "error": "",
+   "latency_s": 10.06
+  },
+  {
+   "domain": "best_action",
+   "question": "What sequence of concessions should we offer to close the deal before quarter end?",
+   "as_of": "2023-08-01",
+   "horizon": "2023-09-30",
+   "compiled": true,
+   "materialized": true,
+   "executed_e2e": true,
+   "readout_resolved": false,
+   "has_forecast": false,
+   "provenance_ok": true,
+   "unsupported_precision": false,
+   "llm_prob_injection": false,
+   "simulation_status": "execution_failed",
+   "support_grade": "highly_speculative",
+   "recommendation_status": "not_requested",
+   "raw_probability": null,
+   "distribution_keys": [],
+   "n_distribution": 0,
+   "support_grade_valid": true,
+   "degraded": true,
+   "n_fallbacks": 1,
+   "fallbacks_all_tiered": true,
+   "fallback_tiers": [
+    7
+   ],
+   "n_structural_hypotheses": 3,
+   "structural_disagreement": null,
+   "n_accepted_mech": 2,
+   "n_rejected_mech": 7,
+   "mechanisms": [
+    "poisson_arrival",
+    "generic_outcome_prior"
+   ],
+   "n_entities": 2,
+   "n_institutions": 1,
+   "n_populations": 1,
+   "n_latents": 5,
+   "n_limitations": 1,
+   "failure_taxonomy": "terminal_readout_unbindable",
+   "clarification": false,
+   "forecast_abstention": false,
+   "error": "",
+   "latency_s": 12.93
+  },
+  {
+   "domain": "best_action",
+   "question": "Which coalition partner should we approach first to build a majority?",
+   "as_of": "2023-05-01",
+   "horizon": "2023-06-15",
+   "compiled": true,
+   "materialized": true,
+   "executed_e2e": true,
+   "readout_resolved": false,
+   "has_forecast": false,
+   "provenance_ok": true,
+   "unsupported_precision": false,
+   "llm_prob_injection": false,
+   "simulation_status": "execution_failed",
+   "support_grade": "highly_speculative",
+   "recommendation_status": "not_requested",
+   "raw_probability": null,
+   "distribution_keys": [],
+   "n_distribution": 0,
+   "support_grade_valid": true,
+   "degraded": true,
+   "n_fallbacks": 1,
+   "fallbacks_all_tiered": true,
+   "fallback_tiers": [
+    7
+   ],
+   "n_structural_hypotheses": 2,
+   "structural_disagreement": null,
+   "n_accepted_mech": 2,
+   "n_rejected_mech": 6,
+   "mechanisms": [
+    "background_dynamics",
+    "generic_outcome_prior"
+   ],
+   "n_entities": 4,
+   "n_institutions": 1,
+   "n_populations": 1,
+   "n_latents": 7,
+   "n_limitations": 1,
+   "failure_taxonomy": "terminal_readout_unbindable",
+   "clarification": false,
+   "forecast_abstention": false,
+   "error": "",
+   "latency_s": 14.4
+  }
+ ],
+ "_meta": {
+  "llm_calls": 104,
+  "llm_tokens_est": 352003,
+  "est_cost_usd": 0.2411,
+  "model": "deepseek-chat",
+  "runtime_s": 1358.0,
+  "semantics": "no_abstention_v2",
+  "note": "production simulate() path; every coherent question forecasts; epistemic weakness lowers support_grade, never refuses. NO scripted plans."
+ }
+}

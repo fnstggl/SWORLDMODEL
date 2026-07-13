@@ -1,0 +1,1773 @@
+{
+ "bundle_id": "eb_f56852",
+ "question": "Should we send the discount offer now or wait until the customer's renewal date to maximize retention?",
+ "as_of": 1685577600.0,
+ "compiler_plan_hash": "b1e4191d7803",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_1a56f1834e",
+   "claim_or_quantity": "Observe whether the customer's subscription is active on 2023-07-01.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "customer",
+    "company"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_4217cf08ae",
+   "claim_or_quantity": "value/context of customer.price_sensitivity",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "customer.price_sensitivity",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_a378015ea3",
+   "claim_or_quantity": "value/context of customer.loyalty",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "customer.loyalty",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_73786ab2da",
+   "claim_or_quantity": "evidence discriminating structural hypothesis now_better",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:now_better",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_053c5b6911",
+   "claim_or_quantity": "evidence discriminating structural hypothesis renewal_better",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:renewal_better",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_cb9ab69053",
+   "claim_or_quantity": "value/context of customer.attention_to_offer",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "customer.attention_to_offer",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_f813c256d8",
+   "claim_or_quantity": "decision rules / process of company",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "company",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_1a56f1834e",
+   "terms": "send discount offer wait until customer renewal date customer company",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_4217cf08ae",
+   "terms": "customer price sensitivity",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_a378015ea3",
+   "terms": "customer loyalty",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_1a56f1834e",
+   "logical_query": "send discount offer wait until customer renewal date customer company after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=send+discount+offer+wait+until+customer+renewal+date+customer+company+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783908169.8810034,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:02:50 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmJw1ZBiSO44w5AKxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDcarv4iU2gY6ZB68yKSkn5RfGp-SXFBcX5CQWZxSnFpWlFsUbGRiZGZgbmOkZmMQXGAAAmS024A\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "c88657bd79172a177b49947f14acf75c8905d60aec319007f91328088f4c76ac",
+   "n_bytes": 6338,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 4,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.741
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_4217cf08ae",
+   "logical_query": "customer price sensitivity after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=customer+price+sensitivity+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783908170.623834,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:02:51 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw1ZBiSO44w5AKxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcp_suXmITWHDyaDejknJSfmF8Sn5JcXFBTmJxRnFqUVlqUbyRgZGZgbmBmZ6BSXyBAQCpHzjD\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "8b1e4661474ae080651be86cf263988d70885eec9da5a6d18b16ed36b4116bc3",
+   "n_bytes": 58329,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.661
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_a378015ea3",
+   "logical_query": "customer loyalty after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=customer+loyalty+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783908171.287256,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:02:52 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw0pBiSO44w5AKxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwcZ_ouXmITOPD4m5SSclJ-YXxKfklxcUFOYnFGcWpRWWpRvJGBkZmBuYGZnoFJfIEBAHqpOLk\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "a294607bbe7dd10b5a8f2a5185980f2e87999058247c8d5e534c899a23b22ad3",
+   "n_bytes": 128475,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.832
+  }
+ ],
+ "raw_content_refs": [
+  "8b1e4661474ae080651be86cf263988d70885eec9da5a6d18b16ed36b4116bc3",
+  "a294607bbe7dd10b5a8f2a5185980f2e87999058247c8d5e534c899a23b22ad3",
+  "c88657bd79172a177b49947f14acf75c8905d60aec319007f91328088f4c76ac"
+ ],
+ "documents": [
+  {
+   "id": "7f7050786165f4d6",
+   "source": "Chase Bank",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxOXzVJejBxRjU5NmRTbkhFb0hCejg4ejVoQTJlUWNPZFduSDlhRW5LMGhLYVVqWS1EQXNsdUlDX05QR2ttY21FQjBRbDhtUi1jakxhUUMwVXN2bWVDaFV4YnJVUGhzN0R6M1N2M3haQWpQZWVPbFRjMHJsZjBRbmRidV8xQnFmcjFINzRyQnpLVUhJcWljN2c?oc=5",
+   "title": "TSA PreCheck\u00ae Renewal: A How-To Guide - Chase Bank",
+   "text": "TSA PreCheck\u00ae Renewal: A How-To Guide - Chase Bank. TSA PreCheck\u00ae Renewal: A How-To Guide Chase Bank",
+   "content_hash": "1f5064f366cf4f94",
+   "raw_feed_hash": "c88657bd79172a177b49947f14acf75c8905d60aec319007f91328088f4c76ac",
+   "published_at": 1684170947.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_1a56f1834e",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "1d9dfdcc99f35f25",
+   "source": "MailGuard",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNaTZqT19sc1Bla0F5UWZrLU13WHljeGx3WllzaVZfNlFfc2dnWHFQLXZEaktjRFJHVXV0b1VkZ2hpYVk5VjQwRm5mMC0wVDZqWUVOaVo3VXoxVHhjamowbElIYzdHeU1xanRlb0pmQ1JTVlpkRWlnOVBpMWlJdFMyRFJWQ25hRFQ3ZXBSbU1KeDUzdnFVMHRZWNIBqAFBVV95cUxQV3k4dkpaTHpkcHc5alRPb3hsd1k1amVuYURHU0F2NFphTjl0bTBsQzFpNThDSWRQbnhoMnZMM1JTMy1xSkdodXNhYXVMclMyV3J2bE13WDFnUDFMSkxvTmN2ZjJmQWw4YUo2SkFpNjd6SFhpdHZhdWJPenNmRldacDM2ejRId1o1RUJBQllLOUxQZ29RM3R5dW1sYTNUTDA5UFYxTEtFVzA?oc=5",
+   "title": "Millions of Medicare Customers Targeted in myGov Email Scam - MailGuard",
+   "text": "Millions of Medicare Customers Targeted in myGov Email Scam - MailGuard. Millions of Medicare Customers Targeted in myGov Email Scam MailGuard",
+   "content_hash": "d5a533582699be3d",
+   "raw_feed_hash": "c88657bd79172a177b49947f14acf75c8905d60aec319007f91328088f4c76ac",
+   "published_at": 1675065600.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_1a56f1834e",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f5302481f9cb260b",
+   "source": "Netguru",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5LeUFVcjlpOFVwNENzYS0tQmdrRWlzLVVUeVdmVkV6UFR0NEZtRFdpZWNCWXdndlBtZzZRcnBFZHQ2VW5lRzBRUE40TEpHSzNOYy1iSHNUN08wZ0w5Z29hNmVBYlJyQlo4cXVFZWxVQXRrVzF0cUE?oc=5",
+   "title": "How AI Chatbots Are Improving Customer Service - Netguru",
+   "text": "How AI Chatbots Are Improving Customer Service - Netguru. How AI Chatbots Are Improving Customer Service Netguru",
+   "content_hash": "ad3fc7e2d2cfe54b",
+   "raw_feed_hash": "c88657bd79172a177b49947f14acf75c8905d60aec319007f91328088f4c76ac",
+   "published_at": 1681895189.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_1a56f1834e",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2b5a188c5fc43289",
+   "source": "GOV.UK",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxPMGlfallSOVNpVVZQZUNzZF9vNjQtOEtRZFBEbjBuSTVIdHNJRDBoV19Wd2FqSEVSYmswVjlNT3FFS0I5QVBSYm5SQndxYU5aTHQzMkVETTlPN19leTQ1bG9QZmZkXzlnWENpM3ZqLUhDcUtYeUVrV1U3bFRnWFFZdkgtNk1yOVBfODFhVQ?oc=5",
+   "title": "HMRC issues scam warning to tax credits customers - GOV.UK",
+   "text": "HMRC issues scam warning to tax credits customers - GOV.UK. HMRC issues scam warning to tax credits customers GOV.UK",
+   "content_hash": "0d806970f6d31130",
+   "raw_feed_hash": "c88657bd79172a177b49947f14acf75c8905d60aec319007f91328088f4c76ac",
+   "published_at": 1685430000.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_1a56f1834e",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a17664673a76dad5",
+   "source": "YouGov",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPNDRKNjNCZW9VeW5Gb2NYQmpfcEpIRHd4LXhHTS1fWXFWbzZ4QlNmQk9WYUdrS25XSEYteHQ0OTRpYlpidGRFYzRFRlAyODRyaTdCMG1NNlB6YVlhRXBic21RZ3hLTzJlSVgwLVJEWDhaNnVDNEpONHZTUjk5NzV2Z1FGVTJkOTByLWpiakdFTnRJMTlPb2RCbHV1Qi1pU2ZiTDh3UGpfaHo?oc=5",
+   "title": "Global consumer price sensitivity \u2013 key takeaways for financial service providers - YouGov",
+   "text": "Global consumer price sensitivity \u2013 key takeaways for financial service providers - YouGov. Global consumer price sensitivity \u2013 key takeaways for financial service providers YouGov",
+   "content_hash": "181905f199f5f651",
+   "raw_feed_hash": "8b1e4661474ae080651be86cf263988d70885eec9da5a6d18b16ed36b4116bc3",
+   "published_at": 1678262400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_4217cf08ae",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "42784c0eaf92918b",
+   "source": "JD Power",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTE12TDZnVXhRVGFBZ000dTVKaHVrQWpLVFkySnVWb1lrZEZtVEYySURlaUlhNEYybWJNeFpheHd3eTdzSVpSV2lDOFpwaUlKRDNrNUJ6aUctd2NnNnVvaHU4cklZdFc0TFJ0d0NlX1dkNElXV2pYN1N4WTE5UQ?oc=5",
+   "title": "Consumer Price Sensitivity Asserts Influence on EV Market - JD Power",
+   "text": "Consumer Price Sensitivity Asserts Influence on EV Market - JD Power. Consumer Price Sensitivity Asserts Influence on EV Market JD Power",
+   "content_hash": "5417fdfdd3e77f87",
+   "raw_feed_hash": "8b1e4661474ae080651be86cf263988d70885eec9da5a6d18b16ed36b4116bc3",
+   "published_at": 1677139200.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_4217cf08ae",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3099f5425853592b",
+   "source": "Euromonitor",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNaVJ4b0QtSGNWN3NUY3p5WldwUnNoM0ZlTUpQZTFsTHVDNEdLRk96WU9sQWVsRXR3WUVqUk4ydWtqaGs3djExX3Y2SERRUjdvckNvbDFhdldrc0R0Q0pnVEw3QmhxNU9LY2ZzaDNsQVllSXRyZ2xJdnM5MGhkQWVBdWRWSkVLVUVQTnJkMkctU1JmYThmN29BVFNLUU5aeVJURUtF?oc=5",
+   "title": "How Consumers and Businesses are Reacting to Food Price Inflation - Euromonitor",
+   "text": "How Consumers and Businesses are Reacting to Food Price Inflation - Euromonitor. How Consumers and Businesses are Reacting to Food Price Inflation Euromonitor",
+   "content_hash": "05357008d6353e84",
+   "raw_feed_hash": "8b1e4661474ae080651be86cf263988d70885eec9da5a6d18b16ed36b4116bc3",
+   "published_at": 1672732800.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_4217cf08ae",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d704fe2702b6adbb",
+   "source": "Grocery Dive",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxQa1dHUDF1MTFfeHlGT19qQ0VmSDRTMTd0ZzFsOGxlbEJhRGUzaGpWNFFZdm41OWZqNU1FSF9ZQWZFdk9DUHU2cFhRLUtkVU1pd2xJWUFTd1lVaWY0R3I4VU5YVjdsV1NhNFlLdWpvZlVMRGhmTk1HR2FRQ1ZxdlRHLUxQTnRpelhXUlN3aFJQMU1mTXpVYmRjZHczUUsxVi1ldi0xcmJ6U0ZHenh5?oc=5",
+   "title": "What grocery execs are saying about inflation and consumer behavior - Grocery Dive",
+   "text": "What grocery execs are saying about inflation and consumer behavior - Grocery Dive. What grocery execs are saying about inflation and consumer behavior Grocery Dive",
+   "content_hash": "de74b4732096cfde",
+   "raw_feed_hash": "8b1e4661474ae080651be86cf263988d70885eec9da5a6d18b16ed36b4116bc3",
+   "published_at": 1678777200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_4217cf08ae",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2f611eba69e1f6fc",
+   "source": "YouGov",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMigwFBVV95cUxOTzhVblV5M1BDUzVjeUFNem5ja295QmlaZ1lSNFVSbmdRWF9vdEdUX21Ic3psVklTUHJ0MTlNVGxtTy1FZ0Q3UjFldzdvWnlUd3FxVVZTNU5QLXZ5NzRIOVdvTTdhYjhFcmhKeDhUM0J5WkdsM0lfUWNZSEVQZnl3VnNPUQ?oc=5",
+   "title": "Are global consumers concerned about video game prices? - YouGov",
+   "text": "Are global consumers concerned about video game prices? - YouGov. Are global consumers concerned about video game prices? YouGov",
+   "content_hash": "082685f3e6ad08ea",
+   "raw_feed_hash": "8b1e4661474ae080651be86cf263988d70885eec9da5a6d18b16ed36b4116bc3",
+   "published_at": 1676016000.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_4217cf08ae",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ab94c742ceaba572",
+   "source": "Springer Nature Link",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTFBvS1pHRldqUmxBR2YwcmJxZ2c5UXF2eTlRRl9IcGNBeGdMNHFOTW9JZHNVMU5rRHRid3Buc3lQNS0wd1dmN2hZM0NBeVlodDV1YndZeWcyTVg0czNGakljYXhYdHhsV3J0OEJxbA?oc=5",
+   "title": "Do consumers benefit from national-brand listings by hard discounters? - Springer Nature Link",
+   "text": "Do consumers benefit from national-brand listings by hard discounters? - Springer Nature Link. Do consumers benefit from national-brand listings by hard discounters? Springer Nature Link",
+   "content_hash": "b7968baa171ffbc3",
+   "raw_feed_hash": "8b1e4661474ae080651be86cf263988d70885eec9da5a6d18b16ed36b4116bc3",
+   "published_at": 1683183600.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_4217cf08ae",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2e403bd68a5544ce",
+   "source": "Kantar",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPdHgwSTBVeUZ5LTYtTUlwR3FoekdPZDA2djhVdk1vVEYtb2JIM01BYlRpNHNYLU82b2xNbkRhUFJMdzMtV1pHSl83R1lwRE1WbWlTdTctblJiRUk5anlQa0N3bGloRm0xRkdWaVFpS2F1RGNBXzYzdDBpVkRDbjhUN3dfOGh6elJZT0tldVhuM1ViS1U4UVg5LWplRGlEeFA0My1hVkluR0tKY1dXdEhB?oc=5",
+   "title": "Modern Marketing Dilemmas: Is it still ok to talk about brand loyalty? - Kantar",
+   "text": "Modern Marketing Dilemmas: Is it still ok to talk about brand loyalty? - Kantar. Modern Marketing Dilemmas: Is it still ok to talk about brand loyalty? Kantar",
+   "content_hash": "863a5b9354b178dc",
+   "raw_feed_hash": "8b1e4661474ae080651be86cf263988d70885eec9da5a6d18b16ed36b4116bc3",
+   "published_at": 1676275200.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_4217cf08ae",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "12485dd1df778042",
+   "source": "McKinsey & Company",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPTDlCYzd0MlVjTW1nb1o1M0pRWjB0OTlrODROOXI3TTBpM3V0RkFPeUcweFpIS1E5d3JRZEVhQkVxdlZKNXh5bE8yUUpEQV9EekNMbXI0T1h2ZHN0c1FpNWxIX1N6LWJnejZTTzJQYUxuWUt1eDJyaW5GSkw4SXg4VXhXY1hobHRjbW9wVlRmZGRJb0Y3UnZuX1pGY2YyWkdtcVBHYkVrV3VhelBVdzJxVzdmQzR4Tk1BQm9MU0ZneHZnbUtn?oc=5",
+   "title": "State of grocery Europe 2023: Living with and responding to uncertainty - McKinsey & Company",
+   "text": "State of grocery Europe 2023: Living with and responding to uncertainty - McKinsey & Company. State of grocery Europe 2023: Living with and responding to uncertainty McKinsey & Company",
+   "content_hash": "f4a4605c25eda3a9",
+   "raw_feed_hash": "8b1e4661474ae080651be86cf263988d70885eec9da5a6d18b16ed36b4116bc3",
+   "published_at": 1681887600.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_4217cf08ae",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "446f335974eee0c7",
+   "source": "Business Insider",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNSmhWM3dMN1pDN21yUzVLaUdrdGJteXNtN1NWYi1FT0QyRU1BODlITlU3R0Itcy1PcklHTzgtaUtLTFMtbzNUSmNEdXdhZG4zeW1YVHF0Yk8zQ253blV4cDNxNUpwRWFsN0ZfWWZpT2x5bVR6bERYMEROZzVGeWJudHdaN2lpbndSTDJUMmZ6YjJsc2VEVVp3RXNRRQ?oc=5",
+   "title": "A small, specialty water brand created a customer loyalty program to thank consumers, and it led to a 90% repurchase rate - Business Insider",
+   "text": "A small, specialty water brand created a customer loyalty program to thank consumers, and it led to a 90% repurchase rate - Business Insider. A small, specialty water brand created a customer loyalty program to thank consumers, and it led to a 90% repurchase rate Business Insider",
+   "content_hash": "62b82bdd2ce6f33f",
+   "raw_feed_hash": "a294607bbe7dd10b5a8f2a5185980f2e87999058247c8d5e534c899a23b22ad3",
+   "published_at": 1681455600.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_a378015ea3",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "0c9b1aec674f13d9",
+   "source": "Bain & Company",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQTXpOYWR1UWNQdEdYbmlvM1ltTF9oaXFFWGhXM1FYbTZ6QmhRc2ZhclFPdFV5MGFkZjRnSUpEc0hoSEZ4QjQyRFdGd29pVUVnYTF6NGNFbDE1UGNDMmcyQkp3VTR0eE5ZTjFsUWlnVkx1M0dfVFFiS2ZRaE1hTUEzSm8ycnp6dEFuUTRlM0ZfYlBiRkN3UEE?oc=5",
+   "title": "Customer Behavior and Loyalty in Banking: Global Edition 2023 - Bain & Company",
+   "text": "Customer Behavior and Loyalty in Banking: Global Edition 2023 - Bain & Company. Customer Behavior and Loyalty in Banking: Global Edition 2023 Bain & Company",
+   "content_hash": "6830a4943ad2aeb3",
+   "raw_feed_hash": "a294607bbe7dd10b5a8f2a5185980f2e87999058247c8d5e534c899a23b22ad3",
+   "published_at": 1680159600.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_a378015ea3",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "0cf6f78eb6c5c1f8",
+   "source": "Mastercard US",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPVFpVc2lQNnhaTDlrUGpmdktNMWxiWHE2ZmNJNWJrT3haSnFPUndkZXFhTkwzSGkxYU5qcFozdVBzSUlZQWJlVkNzRGxVOTd6T1MzbDZvNkkzbC1wMnJhVkdkTFRleWZnYUxGV2NId2lIdFFzaDJTOXZJTXhCWmM4dkdjVHpUMHJhbEQzZC1kRF8zaFlYR0p2a1VnX0hyM1ZLZ2JvUmNrb3BMQQ?oc=5",
+   "title": "The luxury retail marketer\u2019s guide to customer loyalty - Mastercard US",
+   "text": "The luxury retail marketer\u2019s guide to customer loyalty - Mastercard US. The luxury retail marketer\u2019s guide to customer loyalty Mastercard US",
+   "content_hash": "78a76eafc930432b",
+   "raw_feed_hash": "a294607bbe7dd10b5a8f2a5185980f2e87999058247c8d5e534c899a23b22ad3",
+   "published_at": 1683270000.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_a378015ea3",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6355efc84303cd96",
+   "source": "Boston Consulting Group",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxPRHhFbl96eDA1VlMxSnIxNWRESW8zQjItNzZsUk9HZWN3MjQ2enBRR1hnb2d5VGRqem13NUp6eGh5bW1mMXc0djRBX2ZOaWhHQ0lVamRxRnMyRDJmX3FMT2dLR1ZmMVZiUlo2Y1kyUlA1eDZZNlFudWJyc2Z5eTFiN0plZTA2aGha?oc=5",
+   "title": "Loyalty Programs Need Next-Generation Design - Boston Consulting Group",
+   "text": "Loyalty Programs Need Next-Generation Design - Boston Consulting Group. Loyalty Programs Need Next-Generation Design Boston Consulting Group",
+   "content_hash": "adafd09b9dae80fc",
+   "raw_feed_hash": "a294607bbe7dd10b5a8f2a5185980f2e87999058247c8d5e534c899a23b22ad3",
+   "published_at": 1685430000.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_a378015ea3",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "22f6887098314620",
+   "source": "WSJ",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxQbUxLYWZDNC1mSnR2akxBMy1wMXl6Vlc4YVdDR1MxQnhqWXhNQVAzUTl1dFd0RTBWaGE4dGtGREN1RS1jZjloV1k0bnkwTzc5Skt1Q1RXZ3BrR3NxRC1JU0NCZ2tTbkxtQkNnaE02RVBGYUVCN3gydko0bkwxSXZMSXZWMjB4LTZQdWIzbjJ6bHFZeEF4VF83eUV3?oc=5",
+   "title": "5 Evolving Trends in Brand Loyalty and Consumer Behavior - WSJ",
+   "text": "5 Evolving Trends in Brand Loyalty and Consumer Behavior - WSJ. 5 Evolving Trends in Brand Loyalty and Consumer Behavior WSJ",
+   "content_hash": "118f5e91bd5e2577",
+   "raw_feed_hash": "a294607bbe7dd10b5a8f2a5185980f2e87999058247c8d5e534c899a23b22ad3",
+   "published_at": 1682665200.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_a378015ea3",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ac1af2d78723fb75",
+   "source": "Gallup.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxNbWtKNWhMUms1eW5pZEVjVW1OSnJJZG52dF9Zdi1uY1NpamttRUg2OWQwRVJGa2hEYW9WQ2NRYkVEYml4dVhuWDJqWDdSaWgzck1wR3hDZXhBVWIxSHV3Q2xJTnk0Ynoxa3BtajlTTndKeVBfbWFuaThxVVZ1NmRsc0ZYbzVkRUplXzBlZUdHRVBrQ1k?oc=5",
+   "title": "To Drive Customer Retention, Don't Neglect Culture - Gallup.com",
+   "text": "To Drive Customer Retention, Don't Neglect Culture - Gallup.com. To Drive Customer Retention, Don't Neglect Culture Gallup.com",
+   "content_hash": "ba5c5172162834f0",
+   "raw_feed_hash": "a294607bbe7dd10b5a8f2a5185980f2e87999058247c8d5e534c899a23b22ad3",
+   "published_at": 1684393200.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_a378015ea3",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6f33d534728df155",
+   "source": "Kantar",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxQVm1uM0U0aDRyZVRyWmtoMmdVVjJmejhZanc1N2M5ZDJIUDFrNFBhaEtwSURueUIybDExOGRJSDB2Wi1heExfLXVpdTEtQlpybEhGMmJaNjhvblJOWmpVdDRON3NpVW44TjlqdmExc2NxaDh4blhWaHMzVDBCLWxUS3ZMUzZLSVIxNXlReGhJaXVNdFNlc1VtTW9KdWloY3JMdjk5Y0lpVVI1UXJOSmR3aGw2UWQxb2dKeFFXMlh4X3RXZw?oc=5",
+   "title": "Modern Marketing Dilemmas: Is it still ok to talk about brand loyalty? - Kantar",
+   "text": "Modern Marketing Dilemmas: Is it still ok to talk about brand loyalty? - Kantar. Modern Marketing Dilemmas: Is it still ok to talk about brand loyalty? Kantar",
+   "content_hash": "863a5b9354b178dc",
+   "raw_feed_hash": "a294607bbe7dd10b5a8f2a5185980f2e87999058247c8d5e534c899a23b22ad3",
+   "published_at": 1676275200.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_a378015ea3",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3ffa5e0853fd1831",
+   "source": "eMarketer",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxNMHRoOEpqd2VGVWZzSldEbllRbHZBcEVWZnhnbTFURE9mWldSVGM5RVNLQ1FNZUZqaWgzeTFIR1UwM3UzeTYySzBRMnJUM1ZvQnBCb1pGdHVXaDd0OW1CbW5PVmNvM0x3bWRYQ05uVTEtR19zWGMtdUxJMjdSOTMwMDkzS1FlMDVq?oc=5",
+   "title": "How retailers can capture customer loyalty in 5 charts - eMarketer",
+   "text": "How retailers can capture customer loyalty in 5 charts - eMarketer. How retailers can capture customer loyalty in 5 charts eMarketer",
+   "content_hash": "adabbcb5963ca67b",
+   "raw_feed_hash": "a294607bbe7dd10b5a8f2a5185980f2e87999058247c8d5e534c899a23b22ad3",
+   "published_at": 1673942400.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_a378015ea3",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "7f7050786165f4d6:c0",
+   "source_id": "7f7050786165f4d6",
+   "subject": "TSA PreCheck\u00ae Renewal: A How-To Guide",
+   "predicate": "is from",
+   "object": "Chase Bank",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "TSA PreCheck\u00ae Renewal: A How-To Guide - Chase Bank",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1684170947.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "TSA PreCheck",
+    "Chase Bank"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_8ae28c7677",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_1a56f1834e"
+   }
+  },
+  {
+   "claim_id": "a17664673a76dad5:c0",
+   "source_id": "a17664673a76dad5",
+   "subject": "YouGov",
+   "predicate": "published",
+   "object": "report titled 'Global consumer price sensitivity \u2013 key takeaways for financial service providers'",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Global consumer price sensitivity \u2013 key takeaways for financial service providers - YouGov",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678262400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "YouGov"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_a34393e469",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_4217cf08ae"
+   }
+  },
+  {
+   "claim_id": "446f335974eee0c7:c0",
+   "source_id": "446f335974eee0c7",
+   "subject": "a small, specialty water brand",
+   "predicate": "created",
+   "object": "a customer loyalty program",
+   "value": "",
+   "units": "",
+   "qualifiers": "to thank consumers",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "A small, specialty water brand created a customer loyalty program to thank consumers",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681455600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "small, specialty water brand"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_c9f2219e42",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_a378015ea3"
+   }
+  },
+  {
+   "claim_id": "446f335974eee0c7:c1",
+   "source_id": "446f335974eee0c7",
+   "subject": "a customer loyalty program",
+   "predicate": "led to",
+   "object": "a 90% repurchase rate",
+   "value": "90",
+   "units": "%",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "it led to a 90% repurchase rate",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681455600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [],
+   "contradiction_links": [],
+   "dependence_group": "dep_c9f2219e42",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_a378015ea3"
+   }
+  },
+  {
+   "claim_id": "1d9dfdcc99f35f25:c0",
+   "source_id": "1d9dfdcc99f35f25",
+   "subject": "Millions of Medicare Customers",
+   "predicate": "targeted in",
+   "object": "myGov Email Scam",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Millions of Medicare Customers Targeted in myGov Email Scam - MailGuard",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675065600.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Medicare Customers",
+    "myGov Email Scam",
+    "MailGuard"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_ef53981ad6",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_1a56f1834e"
+   }
+  },
+  {
+   "claim_id": "42784c0eaf92918b:c0",
+   "source_id": "42784c0eaf92918b",
+   "subject": "Consumer Price Sensitivity",
+   "predicate": "asserts influence on",
+   "object": "EV Market",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Consumer Price Sensitivity Asserts Influence on EV Market - JD Power",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1677139200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Consumer Price Sensitivity",
+    "EV Market",
+    "JD Power"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_45c2001771",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_4217cf08ae"
+   }
+  },
+  {
+   "claim_id": "0c9b1aec674f13d9:c0",
+   "source_id": "0c9b1aec674f13d9",
+   "subject": "Customer Behavior and Loyalty in Banking: Global Edition 2023",
+   "predicate": "is published by",
+   "object": "Bain & Company",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Customer Behavior and Loyalty in Banking: Global Edition 2023 - Bain & Company",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680159600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Bain & Company"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_1349c62b1f",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_a378015ea3"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "TSA PreCheck",
+   "normalized": "tsa precheck",
+   "candidates": [
+    {
+     "entity_id": "ent_37ae87451c",
+     "canonical": "tsa precheck",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "TSA PreCheck"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Chase Bank",
+   "normalized": "chase bank",
+   "candidates": [
+    {
+     "entity_id": "ent_161210d907",
+     "canonical": "chase bank",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Chase Bank"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "YouGov",
+   "normalized": "yougov",
+   "candidates": [
+    {
+     "entity_id": "ent_fefd9cf523",
+     "canonical": "yougov",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "YouGov"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "small, specialty water brand",
+   "normalized": "small specialty water brand",
+   "candidates": [
+    {
+     "entity_id": "ent_aa313bbdf5",
+     "canonical": "small specialty water brand",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "small, specialty water brand"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Medicare Customers",
+   "normalized": "medicare customers",
+   "candidates": [
+    {
+     "entity_id": "ent_cf05e92722",
+     "canonical": "medicare customers",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Medicare Customers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "myGov Email Scam",
+   "normalized": "mygov email scam",
+   "candidates": [
+    {
+     "entity_id": "ent_c8ed326225",
+     "canonical": "mygov email scam",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "myGov Email Scam"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "MailGuard",
+   "normalized": "mailguard",
+   "candidates": [
+    {
+     "entity_id": "ent_5e4e557588",
+     "canonical": "mailguard",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "MailGuard"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Consumer Price Sensitivity",
+   "normalized": "consumer price sensitivity",
+   "candidates": [
+    {
+     "entity_id": "ent_144aa0b34f",
+     "canonical": "consumer price sensitivity",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Consumer Price Sensitivity"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "EV Market",
+   "normalized": "ev market",
+   "candidates": [
+    {
+     "entity_id": "ent_f7d89bccca",
+     "canonical": "ev market",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "EV Market"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "JD Power",
+   "normalized": "jd power",
+   "candidates": [
+    {
+     "entity_id": "ent_656a211648",
+     "canonical": "jd power",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "JD Power"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Bain & Company",
+   "normalized": "bain &",
+   "candidates": [
+    {
+     "entity_id": "ent_3edea233ef",
+     "canonical": "bain &",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Bain & Company"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "7f7050786165f4d6": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1684170947.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684170947.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "1d9dfdcc99f35f25": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1675065600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675065600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f5302481f9cb260b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1681895189.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681895189.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2b5a188c5fc43289": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1685430000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685430000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a17664673a76dad5": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1678262400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678262400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "42784c0eaf92918b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1677139200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677139200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3099f5425853592b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1672732800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1672732800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d704fe2702b6adbb": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1678777200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678777200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2f611eba69e1f6fc": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1676016000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676016000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ab94c742ceaba572": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1683183600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683183600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2e403bd68a5544ce": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1676275200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676275200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "12485dd1df778042": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1681887600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681887600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "446f335974eee0c7": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1681455600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681455600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "0c9b1aec674f13d9": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1680159600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680159600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "0cf6f78eb6c5c1f8": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1683270000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683270000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6355efc84303cd96": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1685430000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685430000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "22f6887098314620": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1682665200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682665200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ac1af2d78723fb75": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1684393200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684393200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6f33d534728df155": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1676275200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676275200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3ffa5e0853fd1831": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1673942400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1673942400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_8ae28c7677",
+   "member_ids": [
+    "7f7050786165f4d6"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Chase Bank",
+   "primary_source": "Chase Bank",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_ef53981ad6",
+   "member_ids": [
+    "1d9dfdcc99f35f25"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "MailGuard",
+   "primary_source": "MailGuard",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_2f6e57876a",
+   "member_ids": [
+    "f5302481f9cb260b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Netguru",
+   "primary_source": "Netguru",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_17c332771d",
+   "member_ids": [
+    "2b5a188c5fc43289"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "GOV.UK",
+   "primary_source": "GOV.UK",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a34393e469",
+   "member_ids": [
+    "a17664673a76dad5"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "YouGov",
+   "primary_source": "YouGov",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_45c2001771",
+   "member_ids": [
+    "42784c0eaf92918b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "JD Power",
+   "primary_source": "JD Power",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_c4bb4c99c6",
+   "member_ids": [
+    "3099f5425853592b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Euromonitor",
+   "primary_source": "Euromonitor",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a3a38ace14",
+   "member_ids": [
+    "d704fe2702b6adbb"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Grocery Dive",
+   "primary_source": "Grocery Dive",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9a5c1b7ce4",
+   "member_ids": [
+    "2f611eba69e1f6fc"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "YouGov",
+   "primary_source": "YouGov",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7497b4a3d0",
+   "member_ids": [
+    "ab94c742ceaba572"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Springer Nature Link",
+   "primary_source": "Springer Nature Link",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_af592ca176",
+   "member_ids": [
+    "2e403bd68a5544ce",
+    "6f33d534728df155"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "Kantar",
+   "primary_source": "Kantar",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_b1cd3fa467",
+   "member_ids": [
+    "12485dd1df778042"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "McKinsey & Company",
+   "primary_source": "McKinsey & Company",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_c9f2219e42",
+   "member_ids": [
+    "446f335974eee0c7"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Insider",
+   "primary_source": "Business Insider",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_1349c62b1f",
+   "member_ids": [
+    "0c9b1aec674f13d9"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Bain & Company",
+   "primary_source": "Bain & Company",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e8c7950d44",
+   "member_ids": [
+    "0cf6f78eb6c5c1f8"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Mastercard US",
+   "primary_source": "Mastercard US",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_6a840c8082",
+   "member_ids": [
+    "6355efc84303cd96"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Boston Consulting Group",
+   "primary_source": "Boston Consulting Group",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_ff8ada8d20",
+   "member_ids": [
+    "22f6887098314620"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "WSJ",
+   "primary_source": "WSJ",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_fec37c81cf",
+   "member_ids": [
+    "ac1af2d78723fb75"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Gallup.com",
+   "primary_source": "Gallup.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_981e00b0ae",
+   "member_ids": [
+    "3ffa5e0853fd1831"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "eMarketer",
+   "primary_source": "eMarketer",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "7f7050786165f4d6:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684170947.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "a17664673a76dad5:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678262400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "446f335974eee0c7:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681455600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "446f335974eee0c7:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681455600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "1d9dfdcc99f35f25:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675065600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "42784c0eaf92918b:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677139200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "0c9b1aec674f13d9:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680159600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "7f7050786165f4d6:c0",
+  "a17664673a76dad5:c0",
+  "446f335974eee0c7:c0",
+  "446f335974eee0c7:c1",
+  "1d9dfdcc99f35f25:c0",
+  "42784c0eaf92918b:c0",
+  "0c9b1aec674f13d9:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_1a56f1834e": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_4217cf08ae": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_a378015ea3": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_73786ab2da": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_053c5b6911": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_cb9ab69053": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_f813c256d8": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_73786ab2da",
+  "req_053c5b6911",
+  "req_cb9ab69053",
+  "req_f813c256d8"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 19,
+  "n_contradictions": 0,
+  "n_documents": 20
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 13.813,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "dc40d7954800041c",
+ "bundle_hash": "dc40d7954800041c",
+ "_persisted_at": "2026-07-13T02:03:10Z"
+}

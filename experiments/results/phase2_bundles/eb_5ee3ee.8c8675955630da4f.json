@@ -1,0 +1,1516 @@
+{
+ "bundle_id": "eb_5ee3ee",
+ "question": "Will the airline's on-time reputation recover after the meltdown?",
+ "as_of": 1688169600.0,
+ "compiler_plan_hash": "39c02f3e6a3d",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_c4115d327a",
+   "claim_or_quantity": "The value of the airline's on-time reputation index (0-100) as measured by a composite of customer surveys and operational statistics at the horizon date.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "airline",
+    "regulator",
+    "media"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_188d107e85",
+   "claim_or_quantity": "value/context of airline.reputation_index",
+   "why_relevant": "high-sensitivity latent (1.00) driving the outcome distribution",
+   "affected_component": "airline.reputation_index",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_c475b49176",
+   "claim_or_quantity": "value/context of travelers.segments.affected_travelers.trust_level",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "travelers.segments.affected_travelers.trust_level",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_8f394a07f1",
+   "claim_or_quantity": "evidence discriminating structural hypothesis rapid_recovery",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:rapid_recovery",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_a8151c7809",
+   "claim_or_quantity": "evidence discriminating structural hypothesis slow_recovery",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:slow_recovery",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_594f0ff1bf",
+   "claim_or_quantity": "value/context of media.coverage_intensity",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "media.coverage_intensity",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_fa15b06e32",
+   "claim_or_quantity": "decision rules / process of airline",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "airline",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_a1cb9e1126",
+   "claim_or_quantity": "decision rules / process of regulator",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "regulator",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_c4115d327a",
+   "terms": "airline time reputation recover meltdown airline regulator media",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_188d107e85",
+   "terms": "airline reputation index",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_c475b49176",
+   "terms": "travelers segments affected trust level",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_c4115d327a",
+   "logical_query": "airline time reputation recover meltdown airline regulator media after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=airline+time+reputation+recover+meltdown+airline+regulator+media+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783908720.663982,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:12:01 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw0ZBiSO44w5AKxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcHyddvMQm8OL-232MSspJ-YXxKfklxcUFOYnFGcWpRWWpRfFGBkZmBuYGZnoGJvEFBgDNwzml\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "451ce26be773867c7a5033ec3018689bf9ff5ae5a8a6ed0771e79e8530a156cc",
+   "n_bytes": 1293,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.633
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_188d107e85",
+   "logical_query": "airline reputation index after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=airline+reputation+index+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783908721.297738,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:12:01 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmJw1ZBiSO44w5AKxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTD8XHSxUtsAg13n55gVlJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAArpg3Xw\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "d5a5dad97aefca3ce2b8ba0306c6b1061bf8284b6e3f9acc2f7c5d06a690e04b",
+   "n_bytes": 22067,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.582
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_c475b49176",
+   "logical_query": "travelers segments affected trust level after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=travelers+segments+affected+trust+level+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783908721.8811517,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:12:02 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw1JBiSO44w5AKxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcnyZdvMQmsKLtymdGJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwC3pDkm\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "f8b16ec5951bc281c3c96fa6d71b8458ae19dbcb1740c0f738941fadd1861297",
+   "n_bytes": 1243,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.526
+  }
+ ],
+ "raw_content_refs": [
+  "d5a5dad97aefca3ce2b8ba0306c6b1061bf8284b6e3f9acc2f7c5d06a690e04b"
+ ],
+ "documents": [
+  {
+   "id": "6bb026f594cb1671",
+   "source": "Business Insider",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPcGpKZUc0cEx3bklBUC1FQkxkMmRSRHY1VHU4T0dWSnhyZUtGalBua2lGbW41TWk3MkR5ZjMxTVZKUFI4UHlYSVp6M29FMEZ0dUgzMnhDWE9SUFdRY0ZwUTk5OFppZU1LbmlYVF9VaFllT2YxNGY3VmVXU1M1cEo2RVRVelMxSEZCOW94dGRlZ0kxLWVyQlM0Yw?oc=5",
+   "title": "Southwest is the worst airline in the US, according to a new study \u2014 take a look at how the 11 biggest US airlines rank - Business Insider",
+   "text": "Southwest is the worst airline in the US, according to a new study \u2014 take a look at how the 11 biggest US airlines rank - Business Insider. Southwest is the worst airline in the US, according to a new study \u2014 take a look at how the 11 biggest US airlines rank Business Insider",
+   "content_hash": "7a71ff13f550115b",
+   "raw_feed_hash": "d5a5dad97aefca3ce2b8ba0306c6b1061bf8284b6e3f9acc2f7c5d06a690e04b",
+   "published_at": 1682492400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_188d107e85",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "1ebabb331712faf3",
+   "source": "Skytrax",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxOTnU4ZHlQc1NnSERWd19lWjdVZnM2YzVvQkdjUEY2NlpsT21hM0JjeVpac3RMMG5MUDM3WTltUWxBYXVNX1FUOEwyR0pwV3RwaTUxeUNUYzJnNUlVRXFWTElDeW5kYzI0NkhHVXo2cHlDMlY5U3pMWXRNVEZSZF9DVmdmU1JoejZXMzFheHh5V3JjVjBpYmhsd1B2Wld0WVU0d1FmN3hPeHJTRVQyNGxsdA?oc=5",
+   "title": "Singapore Airlines is named the World\u2019s Best Airline at the 2023 World Airline Awards - Skytrax",
+   "text": "Singapore Airlines is named the World\u2019s Best Airline at the 2023 World Airline Awards - Skytrax. Singapore Airlines is named the World\u2019s Best Airline at the 2023 World Airline Awards Skytrax",
+   "content_hash": "7878e804d5834d7e",
+   "raw_feed_hash": "d5a5dad97aefca3ce2b8ba0306c6b1061bf8284b6e3f9acc2f7c5d06a690e04b",
+   "published_at": 1687244400.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_188d107e85",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "fd0a55fc9695de9a",
+   "source": "thestreet.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxOZWZybUNDeGRJUlU0dGphN1V3OGphRTNCRGZXcFdETWR6Y21faXlQeGc2QlBZT3hFQUFRM1JGTjJyZnVpaHh6RFRKbEdvMjJCMkZ0M2NHeUlYN0V2U3Z5ZlZFVE5hZW1pWHRaUV9XTHY3Q2FGYVlFd0lmMTlHcENJWVhnSXV1Zw?oc=5",
+   "title": "Why You May Not Want to Fly Southwest Airlines - thestreet.com",
+   "text": "Why You May Not Want to Fly Southwest Airlines - thestreet.com. Why You May Not Want to Fly Southwest Airlines thestreet.com",
+   "content_hash": "d15cf100ff24374a",
+   "raw_feed_hash": "d5a5dad97aefca3ce2b8ba0306c6b1061bf8284b6e3f9acc2f7c5d06a690e04b",
+   "published_at": 1685170800.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_188d107e85",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "8f496b9992fba59d",
+   "source": "idealog.co.nz",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxPVmgwX21MMmY4Q2pPelNhVFpLQS1XSFZ2SndlaU1rdWxESUMyczQ5QkVsY1hFM2dndjFLSnVfWm1yNERua29jX2dfVEZDa3RsTno1UzNRM3c2ZEVIekdFMG4wLURBaWU2ZElnMl8ybU8teWNsN29iTXBqSW9nYmwyMkNwMWowd190aVlBRHo0NllNdlVS?oc=5",
+   "title": "The New Zealand companies with the best reputation - idealog.co.nz",
+   "text": "The New Zealand companies with the best reputation - idealog.co.nz. The New Zealand companies with the best reputation idealog.co.nz",
+   "content_hash": "7407a0905f3c0fd2",
+   "raw_feed_hash": "d5a5dad97aefca3ce2b8ba0306c6b1061bf8284b6e3f9acc2f7c5d06a690e04b",
+   "published_at": 1686812400.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_188d107e85",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d0271afa6a09ba59",
+   "source": "anahd.co.jp",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE5VeWJ0djVIQlpNbUltNXVnLWFveU1heGlUdWE2X2gxanhtZ09SR0NTb1QxcjEwbFdnZWdOUlBMbnItMkJxRVBPS2VUOHpPOHRtRkpJa0xxYkZsMmVDTHVadkstZlZOZzA?oc=5",
+   "title": "ANA Awarded 2023 SKYTRAX Top Winner for Airport Services, Cleanliness and Airline Staff in Asia, Ranked 3rd in Airline of the Year | Press Release | ANA Group Corp.'s Information - anahd.co.jp",
+   "text": "ANA Awarded 2023 SKYTRAX Top Winner for Airport Services, Cleanliness and Airline Staff in Asia, Ranked 3rd in Airline of the Year | Press Release | ANA Group Corp.'s Information - anahd.co.jp. ANA Awarded 2023 SKYTRAX Top Winner for Airport Services, Cleanliness and Airline Staff in Asia, Ranked 3rd in Airline of the Year | Press Release | ANA Group Corp.'s Information anahd.co.jp",
+   "content_hash": "6311a2fec88f879a",
+   "raw_feed_hash": "d5a5dad97aefca3ce2b8ba0306c6b1061bf8284b6e3f9acc2f7c5d06a690e04b",
+   "published_at": 1687244400.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_188d107e85",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "78c6c0b04e3646f9",
+   "source": "MultiVu",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxON3lqODg3d3ZFWXRqTGxqalJMbElsM1dpUTFWNkVSLXJhNEFKY1A4T0FLZDNndXJCMnh6SXAyWjJvWkUwWklGa3UwMXQ5Tm5uWXcweTZva2pmTm8yMlVMeEI4MDE0TnU5RjVkQ2xHSXhEVE5TT2NwOVFBeTJlanllMDJrSklWTU9y?oc=5",
+   "title": "2023 Gustavson Brand Trust Index: Fear of inflation impacts Canada\u2019s Brand Trust - MultiVu",
+   "text": "2023 Gustavson Brand Trust Index: Fear of inflation impacts Canada\u2019s Brand Trust - MultiVu. 2023 Gustavson Brand Trust Index: Fear of inflation impacts Canada\u2019s Brand Trust MultiVu",
+   "content_hash": "ce11c7e1aff3f49c",
+   "raw_feed_hash": "d5a5dad97aefca3ce2b8ba0306c6b1061bf8284b6e3f9acc2f7c5d06a690e04b",
+   "published_at": 1687935600.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_188d107e85",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "85294c2cca1e2b2b",
+   "source": "24/7 Wall St.",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPbEVMRkFyXzlzR290bklpamYyYjE1S1ZJcUFLT0s0cHhMZEQwRms0OHktcHY3czJLUTI0eXdRMlo5Q3pnanN3Y0EzVjlJOGRXSm1HcFlSN1UwZDF2eEllbERUbGwtdGNiZklOUGZwTmk5NS1yb0FKczZ3SThyQnNHWHJRWFFmN1pNaGVpNjB3?oc=5",
+   "title": "Companies With the Worst Reputations - 24/7 Wall St.",
+   "text": "Companies With the Worst Reputations - 24/7 Wall St.. Companies With the Worst Reputations 24/7 Wall St.",
+   "content_hash": "75f9370e6f6859a2",
+   "raw_feed_hash": "d5a5dad97aefca3ce2b8ba0306c6b1061bf8284b6e3f9acc2f7c5d06a690e04b",
+   "published_at": 1685516400.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_188d107e85",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "51e08edab90d938d",
+   "source": "CNBC",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxOZ3hTRVJoV3VQeURVNTNZTnpOT251NVlzcTRBWmJ6NUQyX2dLemtaMnlMaFZ1NUhhTU5PUmd2NFMwYWVUODNUVnhZWnlIT21talo5Z0N2MzdzVk5LUjdQbFpyck5vdExFamRmX0dwbjluSzJyaTR6amstVjRXeUlZY0lBeENrc2V3SE8taE9EZmlBNlNqYS1laEhDdktVVW5FdG9TeFVEZ9IBrAFBVV95cUxNZEp0T3ZHTzl0UHh4R3ZIWHF5QmI5X3V2S3dXS0xwc1dCRFJwVWtKSlB2V0I2bVhNbTI3YVI1ZTlWUW1JMGtmczByTy1fX0xkdjR5WlNXNXphREFJX1RVY0N6NzhzS19zZ2lsb1NyVk9fSVJoeGNfcVUzQ1dfQWxKLU5NRUlEN0pERE14QXRmTjRDNGEyQmVfa0hTTWo3S1dwN2RsY0wzcXdUZEFX?oc=5",
+   "title": "These are the 7 most hated brands in America\u2014Elon Musk's Twitter is No. 4 - CNBC",
+   "text": "These are the 7 most hated brands in America\u2014Elon Musk's Twitter is No. 4 - CNBC. These are the 7 most hated brands in America\u2014Elon Musk's Twitter is No. 4 CNBC",
+   "content_hash": "2d2b96785c93ddb9",
+   "raw_feed_hash": "d5a5dad97aefca3ce2b8ba0306c6b1061bf8284b6e3f9acc2f7c5d06a690e04b",
+   "published_at": 1685602800.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_188d107e85",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "6bb026f594cb1671:c0",
+   "source_id": "6bb026f594cb1671",
+   "subject": "Southwest",
+   "predicate": "is the worst airline in the US",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "according to a new study",
+   "modality": "reported",
+   "polarity": "affirm",
+   "claim_class": "actor_statement",
+   "supporting_span": "Southwest is the worst airline in the US, according to a new study",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682492400.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Southwest"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_83644f5fcc",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_188d107e85"
+   }
+  },
+  {
+   "claim_id": "1ebabb331712faf3:c0",
+   "source_id": "1ebabb331712faf3",
+   "subject": "Singapore Airlines",
+   "predicate": "is named",
+   "object": "World\u2019s Best Airline at the 2023 World Airline Awards - Skytrax",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Singapore Airlines is named the World\u2019s Best Airline at the 2023 World Airline Awards - Skytrax.",
+   "span_verified": true,
+   "event_time": "2023",
+   "publication_time": 1687244400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Singapore Airlines",
+    "World Airline Awards",
+    "Skytrax"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_5fb6fb4a98",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_188d107e85"
+   }
+  },
+  {
+   "claim_id": "fd0a55fc9695de9a:c0",
+   "source_id": "fd0a55fc9695de9a",
+   "subject": "Southwest Airlines",
+   "predicate": "is the subject of an article titled",
+   "object": "Why You May Not Want to Fly Southwest Airlines",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Why You May Not Want to Fly Southwest Airlines - thestreet.com",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1685170800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Southwest Airlines",
+    "thestreet.com"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_3f9b103eb8",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_188d107e85"
+   }
+  },
+  {
+   "claim_id": "fd0a55fc9695de9a:c1",
+   "source_id": "fd0a55fc9695de9a",
+   "subject": "the article",
+   "predicate": "is published by",
+   "object": "thestreet.com",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Why You May Not Want to Fly Southwest Airlines - thestreet.com",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1685170800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "thestreet.com"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_3f9b103eb8",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_188d107e85"
+   }
+  },
+  {
+   "claim_id": "8f496b9992fba59d:c0",
+   "source_id": "8f496b9992fba59d",
+   "subject": "New Zealand companies",
+   "predicate": "have",
+   "object": "the best reputation",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The New Zealand companies with the best reputation",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1686812400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "New Zealand companies"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_d6f64dd8e4",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_188d107e85"
+   }
+  },
+  {
+   "claim_id": "8f496b9992fba59d:c1",
+   "source_id": "8f496b9992fba59d",
+   "subject": "idealog.co.nz",
+   "predicate": "is",
+   "object": "the source of the list",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "idealog.co.nz",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1686812400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "idealog.co.nz"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_d6f64dd8e4",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_188d107e85"
+   }
+  },
+  {
+   "claim_id": "d0271afa6a09ba59:c0",
+   "source_id": "d0271afa6a09ba59",
+   "subject": "ANA",
+   "predicate": "awarded",
+   "object": "2023 SKYTRAX Top Winner for Airport Services, Cleanliness and Airline Staff in Asia",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "ANA Awarded 2023 SKYTRAX Top Winner for Airport Services, Cleanliness and Airline Staff in Asia",
+   "span_verified": true,
+   "event_time": "2023",
+   "publication_time": 1687244400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "ANA",
+    "SKYTRAX"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_efee6241c2",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_188d107e85"
+   }
+  },
+  {
+   "claim_id": "d0271afa6a09ba59:c1",
+   "source_id": "d0271afa6a09ba59",
+   "subject": "ANA",
+   "predicate": "ranked",
+   "object": "3rd in Airline of the Year",
+   "value": "3rd",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Ranked 3rd in Airline of the Year",
+   "span_verified": true,
+   "event_time": "2023",
+   "publication_time": 1687244400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "ANA"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_efee6241c2",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_188d107e85"
+   }
+  },
+  {
+   "claim_id": "78c6c0b04e3646f9:c0",
+   "source_id": "78c6c0b04e3646f9",
+   "subject": "2023 Gustavson Brand Trust Index",
+   "predicate": "reports that",
+   "object": "fear of inflation impacts Canada's Brand Trust",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "2023 Gustavson Brand Trust Index: Fear of inflation impacts Canada\u2019s Brand Trust",
+   "span_verified": true,
+   "event_time": "2023",
+   "publication_time": 1687935600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Gustavson Brand Trust Index",
+    "Canada"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_a7828341e9",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_188d107e85"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Southwest",
+   "normalized": "southwest",
+   "candidates": [
+    {
+     "entity_id": "ent_c748b5788a",
+     "canonical": "southwest",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Southwest"
+     ]
+    },
+    {
+     "entity_id": "ent_554ff795d5",
+     "canonical": "southwest airlines",
+     "support": 0.2214,
+     "evidence_mentions": [
+      "Southwest Airlines"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Singapore Airlines",
+   "normalized": "singapore airlines",
+   "candidates": [
+    {
+     "entity_id": "ent_662c0187a3",
+     "canonical": "singapore airlines",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Singapore Airlines"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "World Airline Awards",
+   "normalized": "world airline awards",
+   "candidates": [
+    {
+     "entity_id": "ent_689da430ab",
+     "canonical": "world airline awards",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "World Airline Awards"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Skytrax",
+   "normalized": "skytrax",
+   "candidates": [
+    {
+     "entity_id": "ent_cb52d29f6c",
+     "canonical": "skytrax",
+     "support": 0.6429,
+     "evidence_mentions": [
+      "Skytrax",
+      "SKYTRAX"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Southwest Airlines",
+   "normalized": "southwest airlines",
+   "candidates": [
+    {
+     "entity_id": "ent_554ff795d5",
+     "canonical": "southwest airlines",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Southwest Airlines"
+     ]
+    },
+    {
+     "entity_id": "ent_c748b5788a",
+     "canonical": "southwest",
+     "support": 0.2214,
+     "evidence_mentions": [
+      "Southwest"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "thestreet.com",
+   "normalized": "thestreet com",
+   "candidates": [
+    {
+     "entity_id": "ent_45b52e36c8",
+     "canonical": "thestreet com",
+     "support": 0.6429,
+     "evidence_mentions": [
+      "thestreet.com",
+      "thestreet.com"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "thestreet.com",
+   "normalized": "thestreet com",
+   "candidates": [
+    {
+     "entity_id": "ent_45b52e36c8",
+     "canonical": "thestreet com",
+     "support": 0.6429,
+     "evidence_mentions": [
+      "thestreet.com",
+      "thestreet.com"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "New Zealand companies",
+   "normalized": "new zealand companies",
+   "candidates": [
+    {
+     "entity_id": "ent_6e4c548c13",
+     "canonical": "new zealand companies",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "New Zealand companies"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "idealog.co.nz",
+   "normalized": "idealog co nz",
+   "candidates": [
+    {
+     "entity_id": "ent_a133465147",
+     "canonical": "idealog co nz",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "idealog.co.nz"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "ANA",
+   "normalized": "ana",
+   "candidates": [
+    {
+     "entity_id": "ent_72019bbac0",
+     "canonical": "ana",
+     "support": 0.6429,
+     "evidence_mentions": [
+      "ANA",
+      "ANA"
+     ]
+    },
+    {
+     "entity_id": "ent_ab65d8b961",
+     "canonical": "canada",
+     "support": 0.2214,
+     "evidence_mentions": [
+      "Canada"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "SKYTRAX",
+   "normalized": "skytrax",
+   "candidates": [
+    {
+     "entity_id": "ent_cb52d29f6c",
+     "canonical": "skytrax",
+     "support": 0.6429,
+     "evidence_mentions": [
+      "Skytrax",
+      "SKYTRAX"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "ANA",
+   "normalized": "ana",
+   "candidates": [
+    {
+     "entity_id": "ent_72019bbac0",
+     "canonical": "ana",
+     "support": 0.6429,
+     "evidence_mentions": [
+      "ANA",
+      "ANA"
+     ]
+    },
+    {
+     "entity_id": "ent_ab65d8b961",
+     "canonical": "canada",
+     "support": 0.2214,
+     "evidence_mentions": [
+      "Canada"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Gustavson Brand Trust Index",
+   "normalized": "gustavson brand trust index",
+   "candidates": [
+    {
+     "entity_id": "ent_2cbe90746a",
+     "canonical": "gustavson brand trust index",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Gustavson Brand Trust Index"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Canada",
+   "normalized": "canada",
+   "candidates": [
+    {
+     "entity_id": "ent_ab65d8b961",
+     "canonical": "canada",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Canada"
+     ]
+    },
+    {
+     "entity_id": "ent_72019bbac0",
+     "canonical": "ana",
+     "support": 0.2929,
+     "evidence_mentions": [
+      "ANA",
+      "ANA"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "6bb026f594cb1671": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1682492400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682492400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "1ebabb331712faf3": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1687244400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687244400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "fd0a55fc9695de9a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1685170800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685170800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "8f496b9992fba59d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1686812400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686812400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d0271afa6a09ba59": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1687244400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687244400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "78c6c0b04e3646f9": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1687935600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687935600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "85294c2cca1e2b2b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1685516400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685516400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "51e08edab90d938d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1685602800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685602800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_83644f5fcc",
+   "member_ids": [
+    "6bb026f594cb1671"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Insider",
+   "primary_source": "Business Insider",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_5fb6fb4a98",
+   "member_ids": [
+    "1ebabb331712faf3"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Skytrax",
+   "primary_source": "Skytrax",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_3f9b103eb8",
+   "member_ids": [
+    "fd0a55fc9695de9a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "thestreet.com",
+   "primary_source": "thestreet.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_d6f64dd8e4",
+   "member_ids": [
+    "8f496b9992fba59d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "idealog.co.nz",
+   "primary_source": "idealog.co.nz",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_efee6241c2",
+   "member_ids": [
+    "d0271afa6a09ba59"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "anahd.co.jp",
+   "primary_source": "anahd.co.jp",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a7828341e9",
+   "member_ids": [
+    "78c6c0b04e3646f9"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "MultiVu",
+   "primary_source": "MultiVu",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_5470b26483",
+   "member_ids": [
+    "85294c2cca1e2b2b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "24/7 Wall St.",
+   "primary_source": "24/7 Wall St.",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_89e12c8ff6",
+   "member_ids": [
+    "51e08edab90d938d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "CNBC",
+   "primary_source": "CNBC",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "6bb026f594cb1671:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682492400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "1ebabb331712faf3:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1687244400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "fd0a55fc9695de9a:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685170800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "fd0a55fc9695de9a:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685170800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "8f496b9992fba59d:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1686812400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "8f496b9992fba59d:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1686812400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "d0271afa6a09ba59:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1687244400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "d0271afa6a09ba59:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1687244400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "78c6c0b04e3646f9:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1687935600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "6bb026f594cb1671:c0",
+  "1ebabb331712faf3:c0",
+  "fd0a55fc9695de9a:c0",
+  "fd0a55fc9695de9a:c1",
+  "8f496b9992fba59d:c0",
+  "8f496b9992fba59d:c1",
+  "d0271afa6a09ba59:c0",
+  "d0271afa6a09ba59:c1",
+  "78c6c0b04e3646f9:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_c4115d327a": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_188d107e85": {
+   "status": "fulfilled",
+   "n_claims": 9,
+   "n_included": 9
+  },
+  "req_c475b49176": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_8f394a07f1": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_a8151c7809": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_594f0ff1bf": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_fa15b06e32": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_a1cb9e1126": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_c4115d327a",
+  "req_c475b49176",
+  "req_8f394a07f1",
+  "req_a8151c7809",
+  "req_594f0ff1bf",
+  "req_fa15b06e32",
+  "req_a1cb9e1126"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 8,
+  "n_contradictions": 0,
+  "n_documents": 8
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 15.157,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "8c8675955630da4f",
+ "bundle_hash": "8c8675955630da4f",
+ "_persisted_at": "2026-07-13T02:12:17Z"
+}

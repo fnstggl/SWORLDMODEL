@@ -80,16 +80,15 @@ def forecast(question: str, *, architecture: str, llm=None, evidence: str = "", 
                                 f"choose one of {ARCHITECTURES}")
     rec = RunRecord(architecture=architecture)
     if architecture == "world_model_v2":
-        from swm.world_model_v2.compiler import CompileAbstention, compile_world
-        from swm.world_model_v2.materialize import run_from_plan
-        try:
-            plan = compile_world(question, llm=llm, evidence=evidence, as_of=as_of, horizon=horizon, **kw)
-        except CompileAbstention as e:
-            return {"question": question, "abstain": True, "abstain_reason": str(e),
-                    "run": rec.finalize().as_dict()}
-        rec.plan_hash = plan.provenance.get("prompt_hash", "")
-        result, _ = run_from_plan(plan, llm=llm)
-        return {"question": question, **result, "run": rec.finalize().as_dict()}
+        # NO-ABSTENTION production path: every coherent question simulates. The pipeline returns a
+        # SimulationResult (simulation_status / support_grade / recommendation_status), never a forecast
+        # refusal. Epistemic weakness lowers the support grade; only technical failures → execution_failed;
+        # only genuinely incoherent questions → clarification_required.
+        from swm.world_model_v2.pipeline import simulate
+        res = simulate(question, llm=llm, evidence=evidence, as_of=as_of, horizon=horizon,
+                       intervention=kw.get("intervention", ""), seed=kw.get("seed", 0))
+        rec.plan_hash = res.plan_hash
+        return {"question": question, **res.as_dict(), "run": rec.finalize().as_dict()}
     # ---- explicit baselines (deprecated for new development; preserved for science) ----
     # EVERY name executes its OWN mechanism — call-spy tests pin label↔implementation identity (Part 0).
     rec.legacy_executed = True

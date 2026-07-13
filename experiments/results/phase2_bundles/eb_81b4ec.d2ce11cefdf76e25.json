@@ -1,0 +1,1656 @@
+{
+ "bundle_id": "eb_81b4ec",
+ "question": "Will the new smartphone model launch on the announced date?",
+ "as_of": 1690848000.0,
+ "compiler_plan_hash": "a11dcab2e92e",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_bd9f108189",
+   "claim_or_quantity": "launch_on_date if the company publicly releases the smartphone model on the announced date; otherwise not_launch_on_date.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "company",
+    "regulator"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_0b4eebbcbe",
+   "claim_or_quantity": "value/context of company.production_capacity",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "company.production_capacity",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_576b797583",
+   "claim_or_quantity": "value/context of company.supply_chain_health",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "company.supply_chain_health",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_3b8055863a",
+   "claim_or_quantity": "evidence discriminating structural hypothesis baseline_on_time",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:baseline_on_time",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_c3752a66dc",
+   "claim_or_quantity": "evidence discriminating structural hypothesis supply_disruption",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:supply_disruption",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_bf5cf952bc",
+   "claim_or_quantity": "value/context of regulator.approval_status",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "regulator.approval_status",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_f813c256d8",
+   "claim_or_quantity": "decision rules / process of company",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "company",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_a1cb9e1126",
+   "claim_or_quantity": "decision rules / process of regulator",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "regulator",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_bd9f108189",
+   "terms": "smartphone model launch announced date company regulator",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_0b4eebbcbe",
+   "terms": "company production capacity",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_576b797583",
+   "terms": "company supply chain health",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_bd9f108189",
+   "logical_query": "smartphone model launch announced date company regulator after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=smartphone+model+launch+announced+date+company+regulator+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783907163.6566672,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:46:04 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw1JBiSO44w5ACxBVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcd9ouXmITmDB7xXxGJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwCUxDhy\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "1d26f37e1c14d7d1c1cfe96acde951a82c532133c9c40232ad0b7637020b5951",
+   "n_bytes": 1277,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.595
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_0b4eebbcbe",
+   "logical_query": "company production capacity after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=company+production+capacity+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783907164.2531066,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:46:04 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw0ZBiSO44w5ACxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcd9ouXmIT-PFgzhJmJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwC08zkj\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "409e46a16c6cb0dad9a885382da6af9fb30a54cb49fc1707dfadd44928189c13",
+   "n_bytes": 114067,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.61
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_576b797583",
+   "logical_query": "company supply chain health after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=company+supply+chain+health+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783907164.86678,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:46:05 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw0JBiSO44w5ACxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcd9suXmIT-HF4yz4mJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwC6Wjk8\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "6261e455ebe5ecf7a3603b8e6ace9785a6e4d1c83e6438992884963fcf4c4502",
+   "n_bytes": 65039,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.74
+  }
+ ],
+ "raw_content_refs": [
+  "409e46a16c6cb0dad9a885382da6af9fb30a54cb49fc1707dfadd44928189c13",
+  "6261e455ebe5ecf7a3603b8e6ace9785a6e4d1c83e6438992884963fcf4c4502"
+ ],
+ "documents": [
+  {
+   "id": "f418e02f56bd01fe",
+   "source": "The Campbell's Company",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi8gFBVV95cUxQeTdLOFpjU3ZwdThJUnpKaHd2MWVPWndpeDBrZDhjNVBmbld6T0hxX3JoM0NIR2xibi1fZ3hxdGg5Q01tUlhVR0pKN09jUkJURGV5bWpaRVJMdVJTbF9sVzl1M0pMeU96azRNNjdHaEZLR0Z1c0NJSWlpb3RrY0NSRERjdjA3WS1DdG1ZbGswcnlLcy1DZVBkQXh1c3JFbmlLeVFCMzRkQlVyTDQ0QXkya0tNRi1zVlFnMFdqNk96S1p5TVlZRlZ6QXljdWpPRkRYY0dteExscjFwSkItRU95YlNoQzl0Qks5eFNsR2E4Q28xQQ?oc=5",
+   "title": "Campbell to Expand Goldfish Production Capacity with $160 Million Investment in Richmond, Utah Bakery - The Campbell's Company",
+   "text": "Campbell to Expand Goldfish Production Capacity with $160 Million Investment in Richmond, Utah Bakery - The Campbell's Company. Campbell to Expand Goldfish Production Capacity with $160 Million Investment in Richmond, Utah Bakery The Campbell's Company",
+   "content_hash": "6b1201e9dc7fcc52",
+   "raw_feed_hash": "409e46a16c6cb0dad9a885382da6af9fb30a54cb49fc1707dfadd44928189c13",
+   "published_at": 1690268400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_0b4eebbcbe",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "7cb58fc10b352ec9",
+   "source": "Carnegie Endowment for International Peace",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQQ0ViOWdZQU1fUEg5UTRRMEE3RjVWdlhBU2dBVERsdmRMQjc5c09fNjhXOFRkUXZJUmdXT1NRUjVLNlR5c3FFVmlHNTBQX3hjMVNPY0pJVVJfQ1h2X1N5RloxWWxLdU15SGdjdmJTdWh5X2pjODkzeFZ2a3Rrbl82MU1YUGc2THdjUDJHZUdjUk1BY3d3eWMwMVoxS3ZtczF0Z004Q1V0a1g5X19IeFlaUE1ZNFN1RG04R3d3bGhWNnFEanc?oc=5",
+   "title": "Vital Microchip Sanctions Will Hit Russian Computing Power Hard - Carnegie Endowment for International Peace",
+   "text": "Vital Microchip Sanctions Will Hit Russian Computing Power Hard - Carnegie Endowment for International Peace. Vital Microchip Sanctions Will Hit Russian Computing Power Hard Carnegie Endowment for International Peace",
+   "content_hash": "6ee80615b70ce3b0",
+   "raw_feed_hash": "409e46a16c6cb0dad9a885382da6af9fb30a54cb49fc1707dfadd44928189c13",
+   "published_at": 1690268400.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_0b4eebbcbe",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "28ab81298b7d9b5d",
+   "source": "Global Finance Magazine",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1NNk1HRnZIUHd0ZTVGbXlYYl9Wb1J5MDdrZXJ6d2ZUQnJkMGFZQkNFR1VBRUVtTXNRSzh1SmtCYVJTVk1zQlhRTWhTY2ZwalRpeVBPdWtrNUM4NldVd1ZfV0poZExMckk?oc=5",
+   "title": "Foxconn Looks To Expand Production Outside China - Global Finance Magazine",
+   "text": "Foxconn Looks To Expand Production Outside China - Global Finance Magazine. Foxconn Looks To Expand Production Outside China Global Finance Magazine",
+   "content_hash": "98b746e77bb82d5d",
+   "raw_feed_hash": "409e46a16c6cb0dad9a885382da6af9fb30a54cb49fc1707dfadd44928189c13",
+   "published_at": 1680246000.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_0b4eebbcbe",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2b118fd8c3a0a53f",
+   "source": "The Business Journals",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxOY21oV01MMzN1eUtuRFJWRUI4LTdTay1pT29QakprZW40UlJSY0ZnN243Tlc1Wk5tR3pIYnNBSk5HcVR0dUZjN0RhMlZwTFI2MUxhbWlCWnJoblE4dDJCRDA3RG1xSEpMVHRaX0pqeHRPYy1PUUNJOGh1bGgxbVMtQ25HeDZVZkRoN25lQzVPb3FzN1puc1ZkbHowS2ZrcFgxb1RjeGtpN0w?oc=5",
+   "title": "Viega to expand production capacity in McPherson - The Business Journals",
+   "text": "Viega to expand production capacity in McPherson - The Business Journals. Viega to expand production capacity in McPherson The Business Journals",
+   "content_hash": "c9d333d1b2a06383",
+   "raw_feed_hash": "409e46a16c6cb0dad9a885382da6af9fb30a54cb49fc1707dfadd44928189c13",
+   "published_at": 1689318000.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_0b4eebbcbe",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "7ce4b0e840685b9d",
+   "source": "nidec.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxPQW5FbUQxWDV0dU83RUpXNWJtTFRDcFhSNUs5X2VxSVNzblZOVWpUbDBxeEJ6bkw4LXRQOVZ3MWFwUTJxY1o4ZHFQVnZmaHplOUE4UjRuY1Y1QUJnZ19tYVFlWDdmU1FQbzlrakZkZ1c0MmdXZjhsNTdKSmMwTVhmUg?oc=5",
+   "title": "Nidec Machine Tool to Launch New Cutting Tool Factory in India to Meet Growing Demand for Automotive and Related Components by Increasing Production Capacity by 1.5 Times - nidec.com",
+   "text": "Nidec Machine Tool to Launch New Cutting Tool Factory in India to Meet Growing Demand for Automotive and Related Components by Increasing Production Capacity by 1.5 Times - nidec.com. Nidec Machine Tool to Launch New Cutting Tool Factory in India to Meet Growing Demand for Automotive and Related Components by Increasing Production Capacity by 1.5 Times nidec.com",
+   "content_hash": "6dd9898dd173d9f7",
+   "raw_feed_hash": "409e46a16c6cb0dad9a885382da6af9fb30a54cb49fc1707dfadd44928189c13",
+   "published_at": 1687762800.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_0b4eebbcbe",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "47494358e8706044",
+   "source": "Tire Review Magazine",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE1PalRfU2JaU3k0NzJrMUVMOXRURWtKM1BjaUdNUXdPbFlTMlZrZjI1alZuVTYtYy1EV2lTRXhGRzdxRmVsQWdnNl9OQUl5eENfMUlRcDEyYnJrOW9OcjhZNFJVcDZxb01XVUtrZGtwLWNqXzJXeEw4?oc=5",
+   "title": "Nokian to Double Tennessee Factory Tire Production Capacity by 2024 - Tire Review Magazine",
+   "text": "Nokian to Double Tennessee Factory Tire Production Capacity by 2024 - Tire Review Magazine. Nokian to Double Tennessee Factory Tire Production Capacity by 2024 Tire Review Magazine",
+   "content_hash": "62fe53b3e48649a5",
+   "raw_feed_hash": "409e46a16c6cb0dad9a885382da6af9fb30a54cb49fc1707dfadd44928189c13",
+   "published_at": 1690873200.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_0b4eebbcbe",
+   "temporal_status": "uncertain"
+  },
+  {
+   "id": "92c482340d8e2fea",
+   "source": "The International Institute for Strategic Studies",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOTk03UTRiZHV6UXUzZnhTMlpSRUwydXd1X1lNYk93ZENJZ3BwbUZPWUlmZDU4OU9wSjExOWhoa3VVTEJwNlgtMnhici1hdXZab3VUeHBVTVZPRTFFY092U0dkZmd3MnRicE9wRkhpb2pDeXVOZ2U0NTBhdEE5NV82SU5JM1lLT3lEejEwRTVXdXdDaDhmaEpaZHlNT2d0djV2MkJnNlJWakFFRlRLOUVDMF9nUmJ4aEw5LVhJNXZ4Ums2dDVzblE?oc=5",
+   "title": "The Guns of Europe: Defence-industrial Challenges in a Time of War - The International Institute for Strategic Studies",
+   "text": "The Guns of Europe: Defence-industrial Challenges in a Time of War - The International Institute for Strategic Studies. The Guns of Europe: Defence-industrial Challenges in a Time of War The International Institute for Strategic Studies",
+   "content_hash": "344b2ad9a48f07b3",
+   "raw_feed_hash": "409e46a16c6cb0dad9a885382da6af9fb30a54cb49fc1707dfadd44928189c13",
+   "published_at": 1687158000.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_0b4eebbcbe",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "cbba6e1e4cbf1dc9",
+   "source": "GMK Center",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQbDM4YklpMFk2dWxiQjR1X2J3Tng0SHlUSi1pbFNIYTdxc2EzdEFua2hCU3FHMFpraUhlOHg3bWpSTExLbFJfdTFaTWtTaUotUnBfY0JfYkNvTV9Zb051VjFrc1hYN0JxcER6QjFVM1B4VUNCOTE4eTVpclhjamp6STBiTFdzOFAtWTdZVDVIRVRHNDg4RGJYanhaZ9IBoAFBVV95cUxOemNIUlp2blhMcWRLMmJFX3RBQklobExmNy1LQXpCdF9ZTW5yZ2JDMlBsYTQxT1J6QUFvLUlGT0Y3ekZIQTZiN05jdHJ6QjA3UDFMOTBDVWlzZUJKMmJQOFBIRHJFVE0tMV9ZNGQ4bHFGT1drcmhUYTlveUE3ZDhEQl9Ib0Q2ZTFQdHFSM1lhN2NMQlVuaEZsY2lqMVZ6QVQ0?oc=5",
+   "title": "Tata Steel to double its steel production capacity in India by 2030 - GMK Center",
+   "text": "Tata Steel to double its steel production capacity in India by 2030 - GMK Center. Tata Steel to double its steel production capacity in India by 2030 GMK Center",
+   "content_hash": "f017fcadf74f4562",
+   "raw_feed_hash": "409e46a16c6cb0dad9a885382da6af9fb30a54cb49fc1707dfadd44928189c13",
+   "published_at": 1684134000.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_0b4eebbcbe",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d96a959351aa269c",
+   "source": "McKinsey & Company",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNOHo2R1JIVFM2el8xVi1nejNzQVg1cVFwd3BTLVVXTVFZOGx0VnQ5a3V2WjBOUWtobmlTMEZMRWlObjdtLUNoSkpoWXNPVnh0REJ2R3hMaWRKR3ZvVk1pRk9kdFUxRkpsRThmWUNOY2d1Z2xDdGVhNERoVUYwS0J6ZkFkU1ppUHZfcmJ3MFd2eWYxTE1MVXl1U0ZSbGR6WFNiN0REM0hqblU5N002SEx3WDc4N1JocDRoWjBiT0FuWTY?oc=5",
+   "title": "Bolstering health system supply chain resilience to reduce risk - McKinsey & Company",
+   "text": "Bolstering health system supply chain resilience to reduce risk - McKinsey & Company. Bolstering health system supply chain resilience to reduce risk McKinsey & Company",
+   "content_hash": "4acbcb19edf22e20",
+   "raw_feed_hash": "6261e455ebe5ecf7a3603b8e6ace9785a6e4d1c83e6438992884963fcf4c4502",
+   "published_at": 1689058800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_576b797583",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a6d6fb4e3d5574a1",
+   "source": "American Hospital Association",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxOd1hzd3p1S2drRm1GNkJ4bEpyM1ZsYTdwNDF5ME5GbkJ4M3NhaV8xcEdaYjd2NUtkQzZfTUJwNXQ1YjdrcXZOakNTTEVVX01YWnV2aW9zS3cxX05wVGhfLTJNV0UwMEd1V2xGdzlDZGZJSWtRZS1ET1FhUUptaGxvZHI3T2dDUndMVFphaGdrVnk4Z05fbDl5bWM2clFkZ3dOV2E2Qm1IR3dnWFYtbHlpelplMjFXT3VQMENpYVRFSURZdw?oc=5",
+   "title": "Returning to Normalcy Is Anything but for the Health Care Supply Chain - American Hospital Association",
+   "text": "Returning to Normalcy Is Anything but for the Health Care Supply Chain - American Hospital Association. Returning to Normalcy Is Anything but for the Health Care Supply Chain American Hospital Association",
+   "content_hash": "8eba2cefb90e7317",
+   "raw_feed_hash": "6261e455ebe5ecf7a3603b8e6ace9785a6e4d1c83e6438992884963fcf4c4502",
+   "published_at": 1682406000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_576b797583",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f9abc6463a503196",
+   "source": "IBM",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1oNHBBRUFvVnA5djhFVmFKazFVODBXSzZzd1BGMXljZXJzQmZyT3lpQzVtYU9YNVJ4LWlYeTJycHExMlc0cmdoVGoxZzFDX003VTFCcGtVNll0WHlZby1hZ001N1g0X3hpbUdyU2p3NGRISFk?oc=5",
+   "title": "Building resilient healthcare supply chains - IBM",
+   "text": "Building resilient healthcare supply chains - IBM. Building resilient healthcare supply chains IBM",
+   "content_hash": "e5e5f04ed4b6bb5a",
+   "raw_feed_hash": "6261e455ebe5ecf7a3603b8e6ace9785a6e4d1c83e6438992884963fcf4c4502",
+   "published_at": 1688108400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_576b797583",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6b48f4023ffa67bf",
+   "source": "Thom Tillis, US Senator (.gov)",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxOcFdiNUU3R1ozTzZTTmNQejk4WUVmSklVbGdqb05wTFlrcTFSMjZYY3FWS0o0Q24xNWpXamt6clloRnRka0NZWk1sVFlodVZoTjcybFNrY0o5dWpQcmxVY1VCUmJ2a3l2RkRlMlZCdlBFRGMxcXFCYnJEVURpSFJFVmR2U3o4OTNia0UydGZxZnBhamlCODI2S1VReV9wWi1scUpVLUk3aG1iZw?oc=5",
+   "title": "Tillis Introduces Bipartisan Bill to Strengthen Medical Supply Chains - Thom Tillis, US Senator (.gov)",
+   "text": "Tillis Introduces Bipartisan Bill to Strengthen Medical Supply Chains - Thom Tillis, US Senator (.gov). Tillis Introduces Bipartisan Bill to Strengthen Medical Supply Chains Thom Tillis, US Senator (.gov)",
+   "content_hash": "0cc21ded22885872",
+   "raw_feed_hash": "6261e455ebe5ecf7a3603b8e6ace9785a6e4d1c83e6438992884963fcf4c4502",
+   "published_at": 1687935600.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_576b797583",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6d35d17f49b8f8d2",
+   "source": "Margolis Institute for Health Policy",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE9nX1FUcnFGSHh0eVNFZjliay01MGtBVW1sUGtxRGduN0NRd1h3SWtGb196Rl9lWmhLbTFxM1J2emd2NDN5cUpnT2JkUFhmNXF6Wi1Id2ZSMnk3aU5vRVhEQnFjRFFKOXRvUndoZ3BKamE?oc=5",
+   "title": "Duke-Margolis Launches Drug Supply Chain Resilience and Advanced Manufacturing Consortium - Margolis Institute for Health Policy",
+   "text": "Duke-Margolis Launches Drug Supply Chain Resilience and Advanced Manufacturing Consortium - Margolis Institute for Health Policy. Duke-Margolis Launches Drug Supply Chain Resilience and Advanced Manufacturing Consortium Margolis Institute for Health Policy",
+   "content_hash": "59f6685230a490aa",
+   "raw_feed_hash": "6261e455ebe5ecf7a3603b8e6ace9785a6e4d1c83e6438992884963fcf4c4502",
+   "published_at": 1680073200.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_576b797583",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "1e9a2cc41cc703d1",
+   "source": "mercy.net",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPdlp6T29tOUs0d2JmZEs3UEZzWkQxWFhpOWxpZVhMZ3BOUjhpeFB0VzVpelcxYTFYekFodzJ4ZXJXdTdRd0JiUHBLWXFfQUJEUnRYb3JmYkJSUk1SeTVOSXhHTnBSUGNTR0kyWFMyTFR4b3RpSG5kS2FpNmhLZkdFSndNdHNlNGlOdk5VMXNZU1luNW1IYlExR09CWFV5MTZrcGt3SzZJSFZpRkE?oc=5",
+   "title": "Mercy Named Top Health Care Provider for Supply Chain Excellence - mercy.net",
+   "text": "Mercy Named Top Health Care Provider for Supply Chain Excellence - mercy.net. Mercy Named Top Health Care Provider for Supply Chain Excellence mercy.net",
+   "content_hash": "83c2ad6ad6dedb06",
+   "raw_feed_hash": "6261e455ebe5ecf7a3603b8e6ace9785a6e4d1c83e6438992884963fcf4c4502",
+   "published_at": 1679554800.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_576b797583",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ed209fa93eb0d18d",
+   "source": "Federal News Network",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxOVjFLbEdXNkExQUdmWHo3ZU9oeUo1czBsTm80T2NmODlpNmQ5QnZNR0tLUVVKeW1odUlCNndZUXdScmdKd1Qyb0NVWVMxZ2dkbXI5N3gyNU9ITGFFX1hITi1vNkdXOUFrR0VLYkM0OHExdWNRV1hVMXNkOXZqdWM4M3Y4dG9kY0V3X0tEcTVJaDJwUXVwR29POVZvbFFXT0Zzb1pqNHhqcXVZLTdlQWV5Rk1HMWxONks2ZC1xUmhjd09ZMkZOUWpLcERmUnc?oc=5",
+   "title": "HHS\u2019s ASPR applying pandemic lessons to better manage healthcare supply chain - Federal News Network",
+   "text": "HHS\u2019s ASPR applying pandemic lessons to better manage healthcare supply chain - Federal News Network. HHS\u2019s ASPR applying pandemic lessons to better manage healthcare supply chain Federal News Network",
+   "content_hash": "1a45dc722ed11820",
+   "raw_feed_hash": "6261e455ebe5ecf7a3603b8e6ace9785a6e4d1c83e6438992884963fcf4c4502",
+   "published_at": 1684998000.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_576b797583",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "9e3bd1b5efc92e6b",
+   "source": "Fast Company",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxOVXdZU1VzN2sxMDREVlRQV0ZLNmRMVi0zMXJwdUxudGtJVkx1VFpDVmVCMGFFSDYweHByclhFV29sckJJNlV3X3poMkRLZ09MQlR2dGo2RHpwRnM1U2JNQVF6OGxpWnU1OHNtR0lTb0JjN0ZnWWVDUnBiZ2haVlhQYjM1UnU1cmpfTnFTRmh5bjRDaTA4azBBTWVBOUVIN1paLWdhNVlDcTJucnJBZHNhYzZUSl91c1hsenhUb3JoenlKSDE4OVVRSVY4Yw?oc=5",
+   "title": "How one medical system addresses supply chain risks head on (before others even know they exist) - Fast Company",
+   "text": "How one medical system addresses supply chain risks head on (before others even know they exist) - Fast Company. How one medical system addresses supply chain risks head on (before others even know they exist) Fast Company",
+   "content_hash": "3a9a35b2816242c6",
+   "raw_feed_hash": "6261e455ebe5ecf7a3603b8e6ace9785a6e4d1c83e6438992884963fcf4c4502",
+   "published_at": 1680073200.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_576b797583",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "f418e02f56bd01fe:c0",
+   "source_id": "f418e02f56bd01fe",
+   "subject": "Campbell",
+   "predicate": "will expand",
+   "object": "Goldfish production capacity",
+   "value": "160000000",
+   "units": "USD",
+   "qualifiers": "investment in Richmond, Utah Bakery",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "forecast",
+   "supporting_span": "Campbell to Expand Goldfish Production Capacity with $160 Million Investment in Richmond, Utah Bakery",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1690268400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Campbell",
+    "Goldfish",
+    "Richmond, Utah Bakery"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_fac7ca26b6",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_0b4eebbcbe"
+   }
+  },
+  {
+   "claim_id": "d96a959351aa269c:c0",
+   "source_id": "d96a959351aa269c",
+   "subject": "McKinsey & Company",
+   "predicate": "published article about",
+   "object": "bolstering health system supply chain resilience to reduce risk",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Bolstering health system supply chain resilience to reduce risk - McKinsey & Company",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1689058800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "McKinsey & Company"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_38639097cf",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_576b797583"
+   }
+  },
+  {
+   "claim_id": "7cb58fc10b352ec9:c0",
+   "source_id": "7cb58fc10b352ec9",
+   "subject": "Vital Microchip Sanctions",
+   "predicate": "will hit",
+   "object": "Russian Computing Power",
+   "value": "",
+   "units": "",
+   "qualifiers": "hard",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "forecast",
+   "supporting_span": "Vital Microchip Sanctions Will Hit Russian Computing Power Hard",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1690268400.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Vital Microchip Sanctions",
+    "Russian Computing Power"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_36dbca6a7f",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_0b4eebbcbe"
+   }
+  },
+  {
+   "claim_id": "7cb58fc10b352ec9:c1",
+   "source_id": "7cb58fc10b352ec9",
+   "subject": "Vital Microchip Sanctions Will Hit Russian Computing Power Hard",
+   "predicate": "is from",
+   "object": "Carnegie Endowment for International Peace",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Carnegie Endowment for International Peace",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1690268400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Carnegie Endowment for International Peace"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_36dbca6a7f",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_0b4eebbcbe"
+   }
+  },
+  {
+   "claim_id": "a6d6fb4e3d5574a1:c0",
+   "source_id": "a6d6fb4e3d5574a1",
+   "subject": "Returning to Normalcy",
+   "predicate": "is",
+   "object": "Anything but for the Health Care Supply Chain",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "Returning to Normalcy Is Anything but for the Health Care Supply Chain",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682406000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Health Care Supply Chain"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_46c1ac61db",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_576b797583"
+   }
+  },
+  {
+   "claim_id": "28ab81298b7d9b5d:c0",
+   "source_id": "28ab81298b7d9b5d",
+   "subject": "Foxconn",
+   "predicate": "looks to expand production",
+   "object": "outside China",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "reported",
+   "polarity": "affirm",
+   "claim_class": "forecast",
+   "supporting_span": "Foxconn Looks To Expand Production Outside China",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680246000.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Foxconn",
+    "China"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_49993c2dc6",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_0b4eebbcbe"
+   }
+  },
+  {
+   "claim_id": "f9abc6463a503196:c0",
+   "source_id": "f9abc6463a503196",
+   "subject": "IBM",
+   "predicate": "is involved in",
+   "object": "building resilient healthcare supply chains",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Building resilient healthcare supply chains - IBM",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1688108400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "IBM"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_fd36230a3e",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_576b797583"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Campbell",
+   "normalized": "campbell",
+   "candidates": [
+    {
+     "entity_id": "ent_23a61892a6",
+     "canonical": "campbell",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Campbell"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Goldfish",
+   "normalized": "goldfish",
+   "candidates": [
+    {
+     "entity_id": "ent_fbbe7e952d",
+     "canonical": "goldfish",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Goldfish"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Richmond, Utah Bakery",
+   "normalized": "richmond utah bakery",
+   "candidates": [
+    {
+     "entity_id": "ent_b907d2e51f",
+     "canonical": "richmond utah bakery",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Richmond, Utah Bakery"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "McKinsey & Company",
+   "normalized": "mckinsey &",
+   "candidates": [
+    {
+     "entity_id": "ent_d8546ba112",
+     "canonical": "mckinsey &",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "McKinsey & Company"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Vital Microchip Sanctions",
+   "normalized": "vital microchip sanctions",
+   "candidates": [
+    {
+     "entity_id": "ent_1cb78188e9",
+     "canonical": "vital microchip sanctions",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Vital Microchip Sanctions"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Russian Computing Power",
+   "normalized": "russian computing power",
+   "candidates": [
+    {
+     "entity_id": "ent_fdcf5101d3",
+     "canonical": "russian computing power",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Russian Computing Power"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Carnegie Endowment for International Peace",
+   "normalized": "carnegie endowment for international peace",
+   "candidates": [
+    {
+     "entity_id": "ent_2a1371e2db",
+     "canonical": "carnegie endowment for international peace",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Carnegie Endowment for International Peace"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Health Care Supply Chain",
+   "normalized": "health care supply chain",
+   "candidates": [
+    {
+     "entity_id": "ent_149fbc5b68",
+     "canonical": "health care supply chain",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Health Care Supply Chain"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Foxconn",
+   "normalized": "foxconn",
+   "candidates": [
+    {
+     "entity_id": "ent_8683f7f096",
+     "canonical": "foxconn",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Foxconn"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "China",
+   "normalized": "china",
+   "candidates": [
+    {
+     "entity_id": "ent_3ab9380fa2",
+     "canonical": "china",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "China"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "IBM",
+   "normalized": "ibm",
+   "candidates": [
+    {
+     "entity_id": "ent_d3ac7a4ef1",
+     "canonical": "ibm",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "IBM"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "f418e02f56bd01fe": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1690268400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690268400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "7cb58fc10b352ec9": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1690268400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690268400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "28ab81298b7d9b5d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1680246000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680246000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2b118fd8c3a0a53f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1689318000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689318000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "7ce4b0e840685b9d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1687762800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687762800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "47494358e8706044": {
+   "status": "uncertain",
+   "confidence": 0.5,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1690873200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690873200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "92c482340d8e2fea": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1687158000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687158000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "cbba6e1e4cbf1dc9": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1684134000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684134000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d96a959351aa269c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1689058800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689058800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a6d6fb4e3d5574a1": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1682406000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682406000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f9abc6463a503196": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1688108400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1688108400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6b48f4023ffa67bf": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1687935600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687935600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6d35d17f49b8f8d2": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1680073200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680073200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "1e9a2cc41cc703d1": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1679554800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679554800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ed209fa93eb0d18d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1684998000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684998000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "9e3bd1b5efc92e6b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1680073200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680073200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_fac7ca26b6",
+   "member_ids": [
+    "f418e02f56bd01fe"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Campbell's Company",
+   "primary_source": "The Campbell's Company",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_36dbca6a7f",
+   "member_ids": [
+    "7cb58fc10b352ec9"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Carnegie Endowment for International Peace",
+   "primary_source": "Carnegie Endowment for International Peace",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_49993c2dc6",
+   "member_ids": [
+    "28ab81298b7d9b5d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Global Finance Magazine",
+   "primary_source": "Global Finance Magazine",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e0b64c1384",
+   "member_ids": [
+    "2b118fd8c3a0a53f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Business Journals",
+   "primary_source": "The Business Journals",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_c5b22c5d60",
+   "member_ids": [
+    "7ce4b0e840685b9d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "nidec.com",
+   "primary_source": "nidec.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_0f0d1d48c4",
+   "member_ids": [
+    "47494358e8706044"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Tire Review Magazine",
+   "primary_source": "Tire Review Magazine",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9a114413e0",
+   "member_ids": [
+    "92c482340d8e2fea"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The International Institute for Strategic Studies",
+   "primary_source": "The International Institute for Strategic Studies",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_afdf3e0a3c",
+   "member_ids": [
+    "cbba6e1e4cbf1dc9"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "GMK Center",
+   "primary_source": "GMK Center",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_38639097cf",
+   "member_ids": [
+    "d96a959351aa269c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "McKinsey & Company",
+   "primary_source": "McKinsey & Company",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_46c1ac61db",
+   "member_ids": [
+    "a6d6fb4e3d5574a1"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "American Hospital Association",
+   "primary_source": "American Hospital Association",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_fd36230a3e",
+   "member_ids": [
+    "f9abc6463a503196"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "IBM",
+   "primary_source": "IBM",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_582601cbf0",
+   "member_ids": [
+    "6b48f4023ffa67bf"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Thom Tillis, US Senator (.gov)",
+   "primary_source": "Thom Tillis, US Senator (.gov)",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_4c22da508e",
+   "member_ids": [
+    "6d35d17f49b8f8d2"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Margolis Institute for Health Policy",
+   "primary_source": "Margolis Institute for Health Policy",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_082a70d170",
+   "member_ids": [
+    "1e9a2cc41cc703d1"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "mercy.net",
+   "primary_source": "mercy.net",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b6e85a4a80",
+   "member_ids": [
+    "ed209fa93eb0d18d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Federal News Network",
+   "primary_source": "Federal News Network",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e7b4a6bf9e",
+   "member_ids": [
+    "9e3bd1b5efc92e6b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Fast Company",
+   "primary_source": "Fast Company",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "f418e02f56bd01fe:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1690268400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "d96a959351aa269c:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1689058800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "7cb58fc10b352ec9:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1690268400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "7cb58fc10b352ec9:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1690268400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "a6d6fb4e3d5574a1:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682406000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "28ab81298b7d9b5d:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680246000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "f9abc6463a503196:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1688108400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "f418e02f56bd01fe:c0",
+  "d96a959351aa269c:c0",
+  "7cb58fc10b352ec9:c0",
+  "7cb58fc10b352ec9:c1",
+  "a6d6fb4e3d5574a1:c0",
+  "28ab81298b7d9b5d:c0",
+  "f9abc6463a503196:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_bd9f108189": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_0b4eebbcbe": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_576b797583": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_3b8055863a": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_c3752a66dc": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_bf5cf952bc": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_f813c256d8": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_a1cb9e1126": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_bd9f108189",
+  "req_3b8055863a",
+  "req_c3752a66dc",
+  "req_bf5cf952bc",
+  "req_f813c256d8",
+  "req_a1cb9e1126"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 16,
+  "n_contradictions": 0,
+  "n_documents": 16
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 13.268,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "d2ce11cefdf76e25",
+ "bundle_hash": "d2ce11cefdf76e25",
+ "_persisted_at": "2026-07-13T01:46:20Z"
+}

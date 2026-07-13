@@ -1,0 +1,1762 @@
+{
+ "bundle_id": "eb_4772aa",
+ "question": "Will the busy executive delegate my request to an assistant?",
+ "as_of": 1685577600.0,
+ "compiler_plan_hash": "05e71f7af6a4",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_4b4181f36c",
+   "claim_or_quantity": "The terminal value of executive.decision equals 'delegated' if the executive chooses to delegate the request to an assistant by the horizon; otherwise 'not_delegated'.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "executive",
+    "assistant",
+    "request"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_f53fa18c15",
+   "claim_or_quantity": "value/context of executive.attention",
+   "why_relevant": "high-sensitivity latent (1.00) driving the outcome distribution",
+   "affected_component": "executive.attention",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_6bf04ef983",
+   "claim_or_quantity": "value/context of executive.workload",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "executive.workload",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_e4f539d6dc",
+   "claim_or_quantity": "value/context of executive.trust_in_assistant",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "executive.trust_in_assistant",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_199e8790de",
+   "claim_or_quantity": "evidence discriminating structural hypothesis high_workload_delegation",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:high_workload_delegation",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_0df27e74ba",
+   "claim_or_quantity": "evidence discriminating structural hypothesis low_importance_retention",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:low_importance_retention",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_79f6afbdd6",
+   "claim_or_quantity": "decision rules / process of organization",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "organization",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_4b4181f36c",
+   "terms": "busy executive delegate request assistant executive assistant request",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_f53fa18c15",
+   "terms": "executive attention",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_6bf04ef983",
+   "terms": "executive workload",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_4b4181f36c",
+   "logical_query": "busy executive delegate request assistant executive assistant request after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=busy+executive+delegate+request+assistant+executive+assistant+request+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783908778.4121702,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:12:58 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmII0JBiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDsWryxUtsAgverzvArKSclF8Yn5JfUlxckJNYnFGcWlSWWhRvZGBkZmBuYKZnYBJfYAAApWc3Fg\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "2cdaeb08ae31e8d796a4d7d8353372a94969b4fb60431c01747d2d27eefb9b59",
+   "n_bytes": 1303,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.425
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_f53fa18c15",
+   "logical_query": "executive attention after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=executive+attention+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783908778.8384397,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:12:59 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw0pBiSO44w5ACxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcqydfvMQm8ODshHVMSspJ-YXxKfklxcUFOYnFGcWpRWWpRfFGBkZmBuYGZnoGJvEFBgCqHTjX\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "7f42836e9554865a860d28fba2f872314f6a815144e406c4ec7672af0d86eab8",
+   "n_bytes": 66631,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.738
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_6bf04ef983",
+   "logical_query": "executive workload after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=executive+workload+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783908779.5785928,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:13:00 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw0pBiSO44w5AKxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwcayZfvMQmsGPTvAIl5aT8wviU_JLi4oKcxOKM4tSistSieCMDIzMDcwMzPQOT-AIDAGwbOGM\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "8522f0b545946547eab19de7783e35559f1b9e4f6714afe174c1665f774eb6bd",
+   "n_bytes": 40974,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.581
+  }
+ ],
+ "raw_content_refs": [
+  "7f42836e9554865a860d28fba2f872314f6a815144e406c4ec7672af0d86eab8",
+  "8522f0b545946547eab19de7783e35559f1b9e4f6714afe174c1665f774eb6bd"
+ ],
+ "documents": [
+  {
+   "id": "9a3ba8c88245b488",
+   "source": "Nature",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTFBHRGtOU3VIcFJOQ25WOGJjS25CbTBWQmxoT0ZnV1lBaDh2OU50dlNSa0J4d2VqTldyM0hZQlFjaTMwclhOalVad29Hb2MwcDVUWVIxNnowSXRPMDFxcHNn?oc=5",
+   "title": "The roles of attention, executive function and knowledge in cognitive ageing of working memory - Nature",
+   "text": "The roles of attention, executive function and knowledge in cognitive ageing of working memory - Nature. The roles of attention, executive function and knowledge in cognitive ageing of working memory Nature",
+   "content_hash": "f370235cf678cc79",
+   "raw_feed_hash": "7f42836e9554865a860d28fba2f872314f6a815144e406c4ec7672af0d86eab8",
+   "published_at": 1674633600.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_f53fa18c15",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f913c60b811a172c",
+   "source": "Wiley Online Library",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5QcElCOEVQWmRDNWF1dWJiN0xZcS1TWmRIUVJfTnJBTmhERlg1TnIzQkZ0cmlnMXlET1J5YmpIcGl1Uk9nS0ZBRXphN2ozUWg4TE9xcFVqOC0xOUdRQ2c1Nk5QUGpOOEVCc0E?oc=5",
+   "title": "The causal mechanisms underlying analogical reasoning performance improvement by executive attention intervention - Wiley Online Library",
+   "text": "The causal mechanisms underlying analogical reasoning performance improvement by executive attention intervention - Wiley Online Library. The causal mechanisms underlying analogical reasoning performance improvement by executive attention intervention Wiley Online Library",
+   "content_hash": "77acae689088da93",
+   "raw_feed_hash": "7f42836e9554865a860d28fba2f872314f6a815144e406c4ec7672af0d86eab8",
+   "published_at": 1679900400.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_f53fa18c15",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "8c974747428e6e65",
+   "source": "Frontiers",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPcVczMVZGeXJPN0x1VmRUUG5KNTg4MHN5cjVHaUtUTmxGNE00MnJabGlFbFJUSjdBR3NCT1A3MHhOUVA2Yzlkc2ZnanJvdkRWS3l6VWItM3RsVDJlWVRBdTdHVThWRzd3Nzc0T29RZ2pEbFBWc0s4QlpYb04taWJHbm9iNE50TUtHMGFxeFgzUmlkczRtNVZUMFpUcw?oc=5",
+   "title": "Executive function abilities in cognitively healthy young and older adults\u2014A cross-sectional study - Frontiers",
+   "text": "Executive function abilities in cognitively healthy young and older adults\u2014A cross-sectional study - Frontiers. Executive function abilities in cognitively healthy young and older adults\u2014A cross-sectional study Frontiers",
+   "content_hash": "f8a00036ce022019",
+   "raw_feed_hash": "7f42836e9554865a860d28fba2f872314f6a815144e406c4ec7672af0d86eab8",
+   "published_at": 1675756800.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_f53fa18c15",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6c8603b44e8ded87",
+   "source": "Today@Wayne",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi-wFBVV95cUxNOE51Qm0xVlpHVjhkTkxzRVhKS1FvS3N6a3diUDF6NXRWclFkdkw5T1l2eDZsR3hzcWxEeXJURnhxWkJPOTNyQWJ4eXJlVUtRNFVpbHV6X1R2X0lyTGotcEgxLVdFM3FLdTRfQUVid210S0pjRkJHN012dW56bHBoc2c3elRXenV5S2MzZFc4ZzJWNTFUOGt5TFNxdUdQN2JVWjFWT1hHa19mTThaVmpRZVcwTkRvX1hFOGZZcmxyT3I5T0xZcXFfMnQwMUZFMGM1OFpMTWR5WmJnTzllNVdKdkw4YXRleWJFMms3RGl4OGR6ejVGYVFmcDc1cw?oc=5",
+   "title": "Translational neuroscience Ph.D. candidate starts an important dialogue, research that will have an impact for years to come - Today@Wayne",
+   "text": "Translational neuroscience Ph.D. candidate starts an important dialogue, research that will have an impact for years to come - Today@Wayne. Translational neuroscience Ph.D. candidate starts an important dialogue, research that will have an impact for years to come Today@Wayne",
+   "content_hash": "ca64890243145208",
+   "raw_feed_hash": "7f42836e9554865a860d28fba2f872314f6a815144e406c4ec7672af0d86eab8",
+   "published_at": 1683702000.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_f53fa18c15",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ba847cd03a6ba2f3",
+   "source": "University of Cincinnati",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxPcm8yRXU3YmtfUjY4REpVWUpZYzNXaXdqWHRnRDY5OURXQmFBc203QXFXMS1Qby1yYXlocml4enN5UXZRVFFxOGduWlNQVElqNFF3eTU5MExIam54dVJvMkZFWHltQTNjcWNoRzJ0a0s5Q05Udm5zQjl2dnBONUIxOXRUSTlKZWJaUTRjTGxUTnM4dE5rNmtVdHRibHgyLWo3X3VnQjl0WWVrWG9rYWszR0lyV01xUQ?oc=5",
+   "title": "PsyCom Pro: ADHD treatments may also help executive function deficits - University of Cincinnati",
+   "text": "PsyCom Pro: ADHD treatments may also help executive function deficits - University of Cincinnati. PsyCom Pro: ADHD treatments may also help executive function deficits University of Cincinnati",
+   "content_hash": "7b7e45baa0d4c422",
+   "raw_feed_hash": "7f42836e9554865a860d28fba2f872314f6a815144e406c4ec7672af0d86eab8",
+   "published_at": 1679986800.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_f53fa18c15",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2d09be829c43fc6b",
+   "source": "unfoundation.org",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxOYzhZX1ZtNExuYjZraTlpTkRlNmc4NmZPczV1SjJqTUZoME13S0xlQ3ZaVURvVFE0MTkxTG1aUjRhVDN2WGlTWXJ1TDIxTk5YU0NNQ19HSHNYZi1jdEtkdWR2ejdMRXlsRXhZZmt0Mm1TTC1vLTR2SFk2WWZLOERIZklwbjhFWGg0d25PRTN2OGctUGNFb2RfZGZ5X2treEloV0ZMR0Nsd3pidzBTdVFwb0pqclNQZjAzNERRNDhDMGdwZ2N4?oc=5",
+   "title": "New Accelerator for Systemic Risk Assessment Launches, Ruth Richardson Named Executive Director - unfoundation.org",
+   "text": "New Accelerator for Systemic Risk Assessment Launches, Ruth Richardson Named Executive Director - unfoundation.org. New Accelerator for Systemic Risk Assessment Launches, Ruth Richardson Named Executive Director unfoundation.org",
+   "content_hash": "f8c6f42b0d88dde9",
+   "raw_feed_hash": "7f42836e9554865a860d28fba2f872314f6a815144e406c4ec7672af0d86eab8",
+   "published_at": 1674633600.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_f53fa18c15",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "8ad89a94fad435c1",
+   "source": "Boston Children's Answers",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTFBWdWIzX1MtWUFWRlE5NC1lUFF0UW5TZzZVYnJGVUs5bnphMy01VWpQdktaYnFUNEl2azZMTVZLRU55bWdHM1g1cWt3Q0d4YzNJLVY5emFTUXRPMXhkUFE2OUladVZYaWM3dnc?oc=5",
+   "title": "Babies and screen time: New research calls for caution - Boston Children's Answers",
+   "text": "Babies and screen time: New research calls for caution - Boston Children's Answers. Babies and screen time: New research calls for caution Boston Children's Answers",
+   "content_hash": "7cc28fa91ec47c93",
+   "raw_feed_hash": "7f42836e9554865a860d28fba2f872314f6a815144e406c4ec7672af0d86eab8",
+   "published_at": 1675411200.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_f53fa18c15",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "88eca1679a9b4035",
+   "source": "WilmerHale",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxQSnJneUkyY2xsTEh2Z3pQcnNCNkhWa0E5ZVd1b00tbzRIcmo0dWdUSndxQlBROWtnSlZKRkZNa3FwSmVLOW9LYlVQV0hQZ1lnMHhGemtBRkVlMUhOUzd6UkEzWTI1NU9mVGxVM3RyWGJRSWVjTE5PN1dqbjNKNnNBOEFfUFNHMFl2OGRrOUViQWlXSE9lNXJ3eFBNMENTX1l3bVBVbllRYVRIS1lzTno4cGljZVQzU1RvM2E3aWk1ZHRURVVDb2ZZSkxhWHR0WFJ1VkQ5bGdDYmlQZw?oc=5",
+   "title": "Executive Order Amplifies Whole-of-Government Environmental Justice Agenda - WilmerHale",
+   "text": "Executive Order Amplifies Whole-of-Government Environmental Justice Agenda - WilmerHale. Executive Order Amplifies Whole-of-Government Environmental Justice Agenda WilmerHale",
+   "content_hash": "633cef3da39a8e8d",
+   "raw_feed_hash": "7f42836e9554865a860d28fba2f872314f6a815144e406c4ec7672af0d86eab8",
+   "published_at": 1683010800.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_f53fa18c15",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "1b982e69fb28f958",
+   "source": "Department of Justice (.gov)",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNSWJtNEh1T3JUYjY1dWNOcXNMLS1jYUl6MzViNXBDWFZhQ1N6U0xoenZlMXFJSkE1TDBXTHN2TGdqNjdDTVl5RW9rM0VGdUpydkl4YVFWaGNaeHBKbjIwbUpDRkY5bGUtMEMxRHA4ZUhmQkR1ZWVWYlF3dmpCVnZyV2RmWWlCS2NiYUhMSGF0UQ?oc=5",
+   "title": "Eastern District of Pennsylvania | Executive Assistant U.S. Attorney for Community Engagement - Department of Justice (.gov)",
+   "text": "Eastern District of Pennsylvania | Executive Assistant U.S. Attorney for Community Engagement - Department of Justice (.gov). Eastern District of Pennsylvania | Executive Assistant U.S. Attorney for Community Engagement Department of Justice (.gov)",
+   "content_hash": "51601439327882c1",
+   "raw_feed_hash": "8522f0b545946547eab19de7783e35559f1b9e4f6714afe174c1665f774eb6bd",
+   "published_at": 1672905600.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_6bf04ef983",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "094dc035eb9bcb4c",
+   "source": "Business Wire",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiggJBVV95cUxQbGtCUUtpOE9tNHZCMDB0SHFiOHZYVVRXQW1JNmFGcjNiSDhPc0tUeWRoVThTaW9FQUhyNnFZSVhBTU55TjZzQkd0Q3hNU2lOb1EybHNOQVlPV2tsYV9HZXUxcFpGUU9VblBaU1lyTzhiOU5seXZiY2VIWlEtLXg2MDA0Z3huejJYTFg0dnFURC00bVJNLUNETDVwZS03RFV4WkNNZ25aTGtydHIzdTNBeWJWc0QtaEFvLVNrNzU5aHIzeERiclNIcEsyTUx6bjJJd1BPUUdraHRqd1hsMm1mNVFJOGw4V0Z4Nk5IcjhfNjRKZVVFMUowZkNsWEhRbDhiSFE?oc=5",
+   "title": "Double Announces Continued Growth, Launches Double for Teams to Help Startups Combat Overwork During Turbulent Times - Business Wire",
+   "text": "Double Announces Continued Growth, Launches Double for Teams to Help Startups Combat Overwork During Turbulent Times - Business Wire. Double Announces Continued Growth, Launches Double for Teams to Help Startups Combat Overwork During Turbulent Times Business Wire",
+   "content_hash": "60e735a0f59c72c6",
+   "raw_feed_hash": "8522f0b545946547eab19de7783e35559f1b9e4f6714afe174c1665f774eb6bd",
+   "published_at": 1684911600.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_6bf04ef983",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "1bf97c8112080a4b",
+   "source": "Texas 2036",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQajlxX0kwOGJyMUhKQU55d2ZERTNIM2NNWHdpUERsbVZmdGZZdUlQX28yOWVQa0hDME15QjBobG5oeHU4NlR3TkIyVHk5Vjg1WTdSUlJhUnBBRlF6dWdzTFZGSl9MVzNUeVR5U3J4OF9ZczN1c2tzYVZmbG9FLVNld2x4THppdjhIb3VtbV9zcjRfaTZtcld0RF9JWGJPWDVJ?oc=5",
+   "title": "Teacher Vacancy Task Force highlights critical ways to support teachers - Texas 2036",
+   "text": "Teacher Vacancy Task Force highlights critical ways to support teachers - Texas 2036. Teacher Vacancy Task Force highlights critical ways to support teachers Texas 2036",
+   "content_hash": "29e558271b986d96",
+   "raw_feed_hash": "8522f0b545946547eab19de7783e35559f1b9e4f6714afe174c1665f774eb6bd",
+   "published_at": 1677225600.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_6bf04ef983",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3723651c6a471274",
+   "source": "National Security Agency (NSA) (.gov)",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiggJBVV95cUxPYmsxODdYdlU3N0FPMm9oWU5LZWFnQ0s3TGxsR0hqUWc4Ry1hVE0wM2xiUE9tOUlsd1V1dXBqaHRrT2tjUG5XUTB1WTE5X1lVSVlQNmczSGxFR0hqWjRSc1NpeE94NC0waHFnb0d2Szh5eUF3eGtfV05CYXB3OVRTb0t5MWtPdll6S0JxenBzRzVuUUIyN2U0ZXZqeEtKMnpFZE4tNXBZNE5oSGdpWGdGS25uVnFUMVo4S0VuRU11NERkUEp2ZVNBSlFyN091Vkdsd293S2RBT2E2ZkRZbTlSZU50S0hCZ3BHMmxjSGZoa3RkajdiMlBYeUV0ZGhpRXN3OVE?oc=5",
+   "title": "NSA Releases Recommendations for Maturing Identity, Credential, and Access Management in Zero Trust - National Security Agency (NSA) (.gov)",
+   "text": "NSA Releases Recommendations for Maturing Identity, Credential, and Access Management in Zero Trust - National Security Agency (NSA) (.gov). NSA Releases Recommendations for Maturing Identity, Credential, and Access Management in Zero Trust National Security Agency (NSA) (.gov)",
+   "content_hash": "c9ebeb80556aeb77",
+   "raw_feed_hash": "8522f0b545946547eab19de7783e35559f1b9e4f6714afe174c1665f774eb6bd",
+   "published_at": 1678777200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_6bf04ef983",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2e0e556f36b943c1",
+   "source": "Queens Daily Eagle",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxONmJiQ1BkNGktRG10V0xZTS1tWHVqbVo0RndoTm1rb3B6ekstbW5zTTNQc0Q5OVJ1RmdEaVVnaUFNeF9paUI5dFVQdHhicmNFcmw4MGdITnlTcG5IblVxbVdpN29YcGZLTDBBNHdVTUdzbEM2Zl9QREM0M2o4WUhFZ2NaQUVWY2xXblRIRUlIRVFhb3E2TU54Y2tMaGNMa1B3cWhjVWg0dWFmT0VTVDZXdHNB?oc=5",
+   "title": "'A breaking point': Public defenders call on state and city for equal funding - Queens Daily Eagle",
+   "text": "'A breaking point': Public defenders call on state and city for equal funding - Queens Daily Eagle. 'A breaking point': Public defenders call on state and city for equal funding Queens Daily Eagle",
+   "content_hash": "dc36be869aaf1383",
+   "raw_feed_hash": "8522f0b545946547eab19de7783e35559f1b9e4f6714afe174c1665f774eb6bd",
+   "published_at": 1679295600.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_6bf04ef983",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "da04104eeb7f2220",
+   "source": "Deadline",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPenE3MGNtSkcyUDh6d2tfa2FLdWIwOWFPWjlkMThzZXRoMnhDbGdLZ0E1clJOazdqUXFmN29qOXBqdFpOaHNQQVB0MjRHeGtKcklFc0VSY0NaTTkyVC1TeVg2ME9sR25LZlpCUkQzRXN3NXo1LXBONkpRWjdSU0tkNVlxcDdWak1tM1MyYWNvS0xremRPSXc4dFRTRTQwQ1VjR3ZFR1FB?oc=5",
+   "title": "Fremantle UK CEO Simon Andreae Faced Misconduct Complaints Before Resigning On Health Grounds - Deadline",
+   "text": "Fremantle UK CEO Simon Andreae Faced Misconduct Complaints Before Resigning On Health Grounds - Deadline. Fremantle UK CEO Simon Andreae Faced Misconduct Complaints Before Resigning On Health Grounds Deadline",
+   "content_hash": "faf6ec0a97df0c01",
+   "raw_feed_hash": "8522f0b545946547eab19de7783e35559f1b9e4f6714afe174c1665f774eb6bd",
+   "published_at": 1681455600.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_6bf04ef983",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "971e74f1ef2d5f63",
+   "source": "Gulf Business",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxQN283VjZBZmtvV0JidVh5NWpTZmpBcTlsUWVQcmdDOXV4d2tnS1pVYU94TU51RVdEaGRLQjFyY2lnWDVLeGNpck1LenpOSU1BX2diSTl2QVRadEpEMXB5TmdnajR4MldYU01kMWdhVUQ4TXhhM0stUTZYYkJEcWczaUJ3?oc=5",
+   "title": "Executive leaders are more exhausted than ever \u2013 and hybrid work could be the culprit - Gulf Business",
+   "text": "Executive leaders are more exhausted than ever \u2013 and hybrid work could be the culprit - Gulf Business. Executive leaders are more exhausted than ever \u2013 and hybrid work could be the culprit Gulf Business",
+   "content_hash": "d4235b45e0d451fe",
+   "raw_feed_hash": "8522f0b545946547eab19de7783e35559f1b9e4f6714afe174c1665f774eb6bd",
+   "published_at": 1682838000.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_6bf04ef983",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "7fb912219dcdd34f",
+   "source": "RamaOnHealthcare",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxObXRhZ2ZpeUNuaEFUZnlZWDVmQjJRV2t2blpweTBESDBONnJCTWhGSng2YndhNzZLaXNPNWd6TWY2eWlMRnVnR1gzNzRNUXlRWk5USk91NXE0WnVXZ3phZzlZeW1jQmlvVWRuVFhtOHFDTkxadjBzYUZCQmRPbzQxVVd2ODhPSjY4eVJWd01yelVvMldHaEhXMlFzeE1Qb3Y5SG9CUTNJa1I?oc=5",
+   "title": "Q&A: Travis Dalton, Executive Vice President and General Manager, Oracle Health - RamaOnHealthcare",
+   "text": "Q&A: Travis Dalton, Executive Vice President and General Manager, Oracle Health - RamaOnHealthcare. Q&A: Travis Dalton, Executive Vice President and General Manager, Oracle Health RamaOnHealthcare",
+   "content_hash": "1478612c02d5158d",
+   "raw_feed_hash": "8522f0b545946547eab19de7783e35559f1b9e4f6714afe174c1665f774eb6bd",
+   "published_at": 1682838000.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_6bf04ef983",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "9a3ba8c88245b488:c0",
+   "source_id": "9a3ba8c88245b488",
+   "subject": "The roles of attention, executive function and knowledge in cognitive ageing of working memory",
+   "predicate": "is the subject of",
+   "object": "a study published in Nature",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The roles of attention, executive function and knowledge in cognitive ageing of working memory - Nature",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1674633600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Nature"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_5488feb66f",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_f53fa18c15"
+   }
+  },
+  {
+   "claim_id": "1b982e69fb28f958:c0",
+   "source_id": "1b982e69fb28f958",
+   "subject": "Eastern District of Pennsylvania",
+   "predicate": "has",
+   "object": "Executive Assistant U.S. Attorney for Community Engagement",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Eastern District of Pennsylvania | Executive Assistant U.S. Attorney for Community Engagement - Department of Justice (.gov)",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1672905600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Eastern District of Pennsylvania",
+    "Executive Assistant U.S. Attorney for Community Engagement",
+    "Department of Justice"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_fcfe29b218",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6bf04ef983"
+   }
+  },
+  {
+   "claim_id": "f913c60b811a172c:c0",
+   "source_id": "f913c60b811a172c",
+   "subject": "causal mechanisms",
+   "predicate": "underlie",
+   "object": "analogical reasoning performance improvement by executive attention intervention",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The causal mechanisms underlying analogical reasoning performance improvement by executive attention intervention",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1679900400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "causal mechanisms",
+    "analogical reasoning performance improvement",
+    "executive attention intervention"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_58c0e7f19b",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_f53fa18c15"
+   }
+  },
+  {
+   "claim_id": "094dc035eb9bcb4c:c0",
+   "source_id": "094dc035eb9bcb4c",
+   "subject": "Double",
+   "predicate": "announces",
+   "object": "continued growth",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Double Announces Continued Growth",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1684911600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Double"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_0c0a278b40",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6bf04ef983"
+   }
+  },
+  {
+   "claim_id": "094dc035eb9bcb4c:c1",
+   "source_id": "094dc035eb9bcb4c",
+   "subject": "Double",
+   "predicate": "launches",
+   "object": "Double for Teams",
+   "value": "",
+   "units": "",
+   "qualifiers": "to help startups combat overwork during turbulent times",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Launches Double for Teams to Help Startups Combat Overwork During Turbulent Times",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1684911600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Double",
+    "Double for Teams",
+    "startups"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_0c0a278b40",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6bf04ef983"
+   }
+  },
+  {
+   "claim_id": "8c974747428e6e65:c0",
+   "source_id": "8c974747428e6e65",
+   "subject": "Executive function abilities",
+   "predicate": "are studied in",
+   "object": "cognitively healthy young and older adults",
+   "value": "",
+   "units": "",
+   "qualifiers": "cross-sectional study",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Executive function abilities in cognitively healthy young and older adults\u2014A cross-sectional study",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675756800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Executive function abilities",
+    "cognitively healthy young and older adults"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_82b35c380a",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_f53fa18c15"
+   }
+  },
+  {
+   "claim_id": "8c974747428e6e65:c1",
+   "source_id": "8c974747428e6e65",
+   "subject": "The study",
+   "predicate": "is published in",
+   "object": "Frontiers",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Frontiers",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675756800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Frontiers"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_82b35c380a",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_f53fa18c15"
+   }
+  },
+  {
+   "claim_id": "1bf97c8112080a4b:c0",
+   "source_id": "1bf97c8112080a4b",
+   "subject": "Teacher Vacancy Task Force",
+   "predicate": "highlights",
+   "object": "critical ways to support teachers",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Teacher Vacancy Task Force highlights critical ways to support teachers",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1677225600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Teacher Vacancy Task Force"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_aeaaed1466",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6bf04ef983"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Nature",
+   "normalized": "nature",
+   "candidates": [
+    {
+     "entity_id": "ent_a5197f1026",
+     "canonical": "nature",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Nature"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Eastern District of Pennsylvania",
+   "normalized": "eastern district of pennsylvania",
+   "candidates": [
+    {
+     "entity_id": "ent_0d98f76b5c",
+     "canonical": "eastern district of pennsylvania",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Eastern District of Pennsylvania"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Executive Assistant U.S. Attorney for Community Engagement",
+   "normalized": "executive assistant u s attorney for community engagement",
+   "candidates": [
+    {
+     "entity_id": "ent_27302ef6dc",
+     "canonical": "executive assistant u s attorney for community engagement",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Executive Assistant U.S. Attorney for Community Engagement"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Department of Justice",
+   "normalized": "department of",
+   "candidates": [
+    {
+     "entity_id": "ent_28a2cd9a7f",
+     "canonical": "department of",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Department of Justice"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "causal mechanisms",
+   "normalized": "causal mechanisms",
+   "candidates": [
+    {
+     "entity_id": "ent_c65ff41e1c",
+     "canonical": "causal mechanisms",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "causal mechanisms"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "analogical reasoning performance improvement",
+   "normalized": "analogical reasoning performance improvement",
+   "candidates": [
+    {
+     "entity_id": "ent_c8ea8112b8",
+     "canonical": "analogical reasoning performance improvement",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "analogical reasoning performance improvement"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "executive attention intervention",
+   "normalized": "executive attention intervention",
+   "candidates": [
+    {
+     "entity_id": "ent_3cc46da9bd",
+     "canonical": "executive attention intervention",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "executive attention intervention"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Double",
+   "normalized": "double",
+   "candidates": [
+    {
+     "entity_id": "ent_bdb36bb22d",
+     "canonical": "double",
+     "support": 0.6333,
+     "evidence_mentions": [
+      "Double",
+      "Double"
+     ]
+    },
+    {
+     "entity_id": "ent_a2c6b4a874",
+     "canonical": "double for teams",
+     "support": 0.2167,
+     "evidence_mentions": [
+      "Double for Teams"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Double",
+   "normalized": "double",
+   "candidates": [
+    {
+     "entity_id": "ent_bdb36bb22d",
+     "canonical": "double",
+     "support": 0.6333,
+     "evidence_mentions": [
+      "Double",
+      "Double"
+     ]
+    },
+    {
+     "entity_id": "ent_a2c6b4a874",
+     "canonical": "double for teams",
+     "support": 0.2167,
+     "evidence_mentions": [
+      "Double for Teams"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Double for Teams",
+   "normalized": "double for teams",
+   "candidates": [
+    {
+     "entity_id": "ent_a2c6b4a874",
+     "canonical": "double for teams",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Double for Teams"
+     ]
+    },
+    {
+     "entity_id": "ent_bdb36bb22d",
+     "canonical": "double",
+     "support": 0.2833,
+     "evidence_mentions": [
+      "Double",
+      "Double"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "startups",
+   "normalized": "startups",
+   "candidates": [
+    {
+     "entity_id": "ent_26a7699460",
+     "canonical": "startups",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "startups"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Executive function abilities",
+   "normalized": "executive function abilities",
+   "candidates": [
+    {
+     "entity_id": "ent_5a014b5e72",
+     "canonical": "executive function abilities",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Executive function abilities"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "cognitively healthy young and older adults",
+   "normalized": "cognitively healthy young and older adults",
+   "candidates": [
+    {
+     "entity_id": "ent_92f8e5bd7c",
+     "canonical": "cognitively healthy young and older adults",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "cognitively healthy young and older adults"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Frontiers",
+   "normalized": "frontiers",
+   "candidates": [
+    {
+     "entity_id": "ent_f50e94f4e1",
+     "canonical": "frontiers",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Frontiers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Teacher Vacancy Task Force",
+   "normalized": "teacher vacancy task force",
+   "candidates": [
+    {
+     "entity_id": "ent_62e3cc784a",
+     "canonical": "teacher vacancy task force",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Teacher Vacancy Task Force"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "9a3ba8c88245b488": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1674633600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1674633600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f913c60b811a172c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1679900400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679900400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "8c974747428e6e65": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1675756800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675756800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6c8603b44e8ded87": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1683702000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683702000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ba847cd03a6ba2f3": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1679986800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679986800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2d09be829c43fc6b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1674633600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1674633600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "8ad89a94fad435c1": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1675411200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675411200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "88eca1679a9b4035": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1683010800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683010800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "1b982e69fb28f958": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1672905600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1672905600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "094dc035eb9bcb4c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1684911600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684911600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "1bf97c8112080a4b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1677225600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677225600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3723651c6a471274": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1678777200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678777200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2e0e556f36b943c1": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1679295600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679295600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "da04104eeb7f2220": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1681455600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681455600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "971e74f1ef2d5f63": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1682838000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682838000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "7fb912219dcdd34f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1682838000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682838000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_5488feb66f",
+   "member_ids": [
+    "9a3ba8c88245b488"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Nature",
+   "primary_source": "Nature",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_58c0e7f19b",
+   "member_ids": [
+    "f913c60b811a172c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Wiley Online Library",
+   "primary_source": "Wiley Online Library",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_82b35c380a",
+   "member_ids": [
+    "8c974747428e6e65"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Frontiers",
+   "primary_source": "Frontiers",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b77be9396f",
+   "member_ids": [
+    "6c8603b44e8ded87"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Today@Wayne",
+   "primary_source": "Today@Wayne",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_71b1032e86",
+   "member_ids": [
+    "ba847cd03a6ba2f3"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "University of Cincinnati",
+   "primary_source": "University of Cincinnati",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_fa3d18af7e",
+   "member_ids": [
+    "2d09be829c43fc6b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "unfoundation.org",
+   "primary_source": "unfoundation.org",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_f40b23adf6",
+   "member_ids": [
+    "8ad89a94fad435c1"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Boston Children's Answers",
+   "primary_source": "Boston Children's Answers",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_abe5aa1fc1",
+   "member_ids": [
+    "88eca1679a9b4035"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "WilmerHale",
+   "primary_source": "WilmerHale",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_fcfe29b218",
+   "member_ids": [
+    "1b982e69fb28f958"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Department of Justice (.gov)",
+   "primary_source": "Department of Justice (.gov)",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_0c0a278b40",
+   "member_ids": [
+    "094dc035eb9bcb4c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Wire",
+   "primary_source": "Business Wire",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_aeaaed1466",
+   "member_ids": [
+    "1bf97c8112080a4b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Texas 2036",
+   "primary_source": "Texas 2036",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_14c4af2fe2",
+   "member_ids": [
+    "3723651c6a471274"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "National Security Agency (NSA) (.gov)",
+   "primary_source": "National Security Agency (NSA) (.gov)",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_85fa287600",
+   "member_ids": [
+    "2e0e556f36b943c1"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Queens Daily Eagle",
+   "primary_source": "Queens Daily Eagle",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_8c6a74c068",
+   "member_ids": [
+    "da04104eeb7f2220"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Deadline",
+   "primary_source": "Deadline",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7f4b0516b8",
+   "member_ids": [
+    "971e74f1ef2d5f63"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Gulf Business",
+   "primary_source": "Gulf Business",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_f568cb5459",
+   "member_ids": [
+    "7fb912219dcdd34f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "RamaOnHealthcare",
+   "primary_source": "RamaOnHealthcare",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "9a3ba8c88245b488:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1674633600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "1b982e69fb28f958:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1672905600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "f913c60b811a172c:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1679900400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "094dc035eb9bcb4c:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684911600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "094dc035eb9bcb4c:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684911600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "8c974747428e6e65:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675756800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "8c974747428e6e65:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675756800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "1bf97c8112080a4b:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677225600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "9a3ba8c88245b488:c0",
+  "1b982e69fb28f958:c0",
+  "f913c60b811a172c:c0",
+  "094dc035eb9bcb4c:c0",
+  "094dc035eb9bcb4c:c1",
+  "8c974747428e6e65:c0",
+  "8c974747428e6e65:c1",
+  "1bf97c8112080a4b:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_4b4181f36c": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_f53fa18c15": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_6bf04ef983": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_e4f539d6dc": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_199e8790de": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_0df27e74ba": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_79f6afbdd6": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_4b4181f36c",
+  "req_e4f539d6dc",
+  "req_199e8790de",
+  "req_0df27e74ba",
+  "req_79f6afbdd6"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 16,
+  "n_contradictions": 0,
+  "n_documents": 16
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 13.862,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "5694f4a6af6941f1",
+ "bundle_hash": "5694f4a6af6941f1",
+ "_persisted_at": "2026-07-13T02:13:18Z"
+}

@@ -1,0 +1,1916 @@
+{
+ "bundle_id": "eb_c20f2e",
+ "question": "Will the company's CEO resign within a month of the scandal breaking?",
+ "as_of": 1682899200.0,
+ "compiler_plan_hash": "923985578ace",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_d0f2989a3f",
+   "claim_or_quantity": "The CEO has publicly announced resignation by 2023-06-01.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "ceo",
+    "board_chair",
+    "company"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_da5376484a",
+   "claim_or_quantity": "value/context of company.scandal_severity",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "company.scandal_severity",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_ac2bcd9030",
+   "claim_or_quantity": "value/context of ceo.integrity_orientation",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "ceo.integrity_orientation",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_dffcd83bbb",
+   "claim_or_quantity": "value/context of public.outrage_level",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "public.outrage_level",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_235cf194e8",
+   "claim_or_quantity": "evidence discriminating structural hypothesis board_led_ouster",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:board_led_ouster",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_24f9125fa9",
+   "claim_or_quantity": "evidence discriminating structural hypothesis ceo_voluntary_resignation",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:ceo_voluntary_resignation",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_754a1fdbce",
+   "claim_or_quantity": "decision rules / process of board_of_directors",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "board_of_directors",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_a158142f16",
+   "claim_or_quantity": "decision rules / process of regulatory_body",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "regulatory_body",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_d0f2989a3f",
+   "terms": "company CEO resign scandal breaking ceo board chair company",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_da5376484a",
+   "terms": "company scandal severity",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_ac2bcd9030",
+   "terms": "ceo integrity orientation",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_d0f2989a3f",
+   "logical_query": "company CEO resign scandal breaking ceo board chair company after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=company+CEO+resign+scandal+breaking+ceo+board+chair+company+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783908057.5164213,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:00:58 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw0pBiSO44w5AKxJVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwct3ovXmITOHDqymZGJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwC1PTkh\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "078e3bf7f1d270812ee1bf9f1385c1df91817dcac878ae1d2682521cfcb05cbf",
+   "n_bytes": 11990,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.791
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_da5376484a",
+   "logical_query": "company scandal severity after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=company+scandal+severity+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783908058.3085713,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:00:58 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw1JBiSO44w5AKxBVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDcav34iU2gRPPr-xhVlJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAAsXU3dg\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "5262e3c23565cd71d547181dccf702836ea2355bee74c8a8c7cddaa7d96b6ee0",
+   "n_bytes": 10141,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 7,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.556
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_ac2bcd9030",
+   "logical_query": "ceo integrity orientation after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=ceo+integrity+orientation+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783908058.8659909,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:00:59 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmJw1JBiSO44w5AKxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDcbv34iU2gQvf_1xmVFJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAAvZQ3yg\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "97c44265cf2f9fb0f1f8008f8428b96fd92d591e64f94aa9bce1e830cd2426dc",
+   "n_bytes": 2623,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 1,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.493
+  }
+ ],
+ "raw_content_refs": [
+  "078e3bf7f1d270812ee1bf9f1385c1df91817dcac878ae1d2682521cfcb05cbf",
+  "5262e3c23565cd71d547181dccf702836ea2355bee74c8a8c7cddaa7d96b6ee0",
+  "97c44265cf2f9fb0f1f8008f8428b96fd92d591e64f94aa9bce1e830cd2426dc"
+ ],
+ "documents": [
+  {
+   "id": "996ec1991429d7d9",
+   "source": "Crain's Cleveland",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQZXVXejRWb3NPcEF2R2RlOGhFODdkRmxUbFVIWHU4cmFlMHd0NUswdW1LUVgzUnFyMm1VdVpfeG0xNDNmem1yckc4Qk1oUUw3Y25kZS1hQnVvakdLUmtOOFRfTkVNa2VzcEJKYXVncGZYdHVEa2VFRGR2aW9Pd0laQ0xzY3RWZEVvbGVSQVRqdGczQkZ3WjQxQ2daa2phSkx5eVhMRklPTmsyX0VWeHJnaVlYNjJTdw?oc=5",
+   "title": "CFO Craig Richmond is the latest MetroHealth departure - Crain's Cleveland",
+   "text": "CFO Craig Richmond is the latest MetroHealth departure - Crain's Cleveland. CFO Craig Richmond is the latest MetroHealth departure Crain's Cleveland",
+   "content_hash": "c047d78c70ea0cb8",
+   "raw_feed_hash": "078e3bf7f1d270812ee1bf9f1385c1df91817dcac878ae1d2682521cfcb05cbf",
+   "published_at": 1677744000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_d0f2989a3f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4e677bac0dc61ee5",
+   "source": "Deadline",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOVW9PTFFJa2tmNkJRU29mWXpCdXhWTWZwM1lHZ0V3VjRPVE9URFRnd2cwemxZUHpxcEdxN3piM2dVbGktYzY0a1lQMjI2Qi0wQXo4RjRMU0xaU1pzX1h3Z2J5QUdfLUpHZUM2ek9PeXo2WFVZOXFOcVZyY3U5N1prZjNiWDQzeXZNSWVMVGtXRlFCaUFtaDlTNXNSajZvUkVjMWc?oc=5",
+   "title": "WWE Confirms Vince McMahon Return; Former CEO Ejects Three From Board, Two Others Resign - Deadline",
+   "text": "WWE Confirms Vince McMahon Return; Former CEO Ejects Three From Board, Two Others Resign - Deadline. WWE Confirms Vince McMahon Return; Former CEO Ejects Three From Board, Two Others Resign Deadline",
+   "content_hash": "e9c926361227ecbe",
+   "raw_feed_hash": "078e3bf7f1d270812ee1bf9f1385c1df91817dcac878ae1d2682521cfcb05cbf",
+   "published_at": 1672992000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_d0f2989a3f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "546e739cfc95b109",
+   "source": "The Week",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPdVkxeDh0NVNOdGNmRnVqRzZLbTU4dnIxUkNzSkZKWkpFU3h3N0g2c0V2SE1XLTJJTVB4RzBiNTYwRHBKdmtlcFJLcmt2LVJmMWxXTjBad1ZJeWRnaEROU0lmN2dBTG9fQUJFT3ZGM1Rxb3pJN0l2eFZiQnJ1dUxZQi1ESko0S3l1MVdBUGoyaml6NzVOLTYzaDFwYw?oc=5",
+   "title": "The Vince McMahon chaos at WWE: A complete timeline - The Week",
+   "text": "The Vince McMahon chaos at WWE: A complete timeline - The Week. The Vince McMahon chaos at WWE: A complete timeline The Week",
+   "content_hash": "811ffff12dd95c4a",
+   "raw_feed_hash": "078e3bf7f1d270812ee1bf9f1385c1df91817dcac878ae1d2682521cfcb05cbf",
+   "published_at": 1674460800.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_d0f2989a3f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3af9bb1a463ec257",
+   "source": "Variety",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxNU21uZ3A5MXdmaGEwRUx0dFJfYU0zVUIxWnZ3WldCYTlFN1E1dzhwZWlFdHVwb3NZb29TdlpPOENnclUxWG54TnR2VEVYbEo0eDNtNEtVcTMxUGdDSlF0TFFlYVpvaktYWGczY3lCYUJyWTFtMWZYZ1prN0o3S29nODI2WkhSTkpYTTZn?oc=5",
+   "title": "Vince McMahon Removes Three WWE Board Members as Return to Company Takes Shape - Variety",
+   "text": "Vince McMahon Removes Three WWE Board Members as Return to Company Takes Shape - Variety. Vince McMahon Removes Three WWE Board Members as Return to Company Takes Shape Variety",
+   "content_hash": "8d5862db3e1e6f8f",
+   "raw_feed_hash": "078e3bf7f1d270812ee1bf9f1385c1df91817dcac878ae1d2682521cfcb05cbf",
+   "published_at": 1672992000.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_d0f2989a3f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a2415dc8ac9c2dea",
+   "source": "SportsPro",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOdzY3UFpsbkpYOExEMVdVSTFSRlFvaG5XUWU2T0o5NVJhQWpSVl9ZVE9UajNlZWdQNXZQQW5WaG5pUGxEczRWWFZ1eU9XRzJJUEpuSnBwSHhBWU9Vay1YS1JFSGo1dUp1SW9RQ3RBRGcwZmpmNEtReTBBeVVMSEREbVU3QVlsMmhWdGZ3STJpYWNpWjcwZ1ZoR1FOMXdlcHE1?oc=5",
+   "title": "Juventus elect Gianluca Ferrero as new president, plus more - SportsPro",
+   "text": "Juventus elect Gianluca Ferrero as new president, plus more - SportsPro. Juventus elect Gianluca Ferrero as new president, plus more SportsPro",
+   "content_hash": "90e08a804927400c",
+   "raw_feed_hash": "078e3bf7f1d270812ee1bf9f1385c1df91817dcac878ae1d2682521cfcb05cbf",
+   "published_at": 1674201600.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_d0f2989a3f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "668f132c4a00df98",
+   "source": "Investopedia",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPRmEyd1diQWNULVhnYjQxUUlXdHMxVGxhVmVZMlp0YjJ2dzdNYTkxQXBGaXB6Qk9TR01HSmdNWjNCVktqa3F2VzdBaUxTZnZXTXRfbWQ5S1pQUVZWbEFQUU9xdk9OV0tQeTl2MU9WQVVTTS11NDFyenZCVFRoSzU3cWFGV2x1UmprQW4ycFhVNUZRUjlDYVE?oc=5",
+   "title": "Why Did Credit Suisse Collapse? Scandals and Financial Crisis Explained - Investopedia",
+   "text": "Why Did Credit Suisse Collapse? Scandals and Financial Crisis Explained - Investopedia. Why Did Credit Suisse Collapse? Scandals and Financial Crisis Explained Investopedia",
+   "content_hash": "d7ed2e5b70590157",
+   "raw_feed_hash": "078e3bf7f1d270812ee1bf9f1385c1df91817dcac878ae1d2682521cfcb05cbf",
+   "published_at": 1678608000.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_d0f2989a3f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "61e7231bee217e29",
+   "source": "Deadline",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxNdXRxSUthMWtoTGQySHM1b1JXY1p4TmNtNTBxeUJKTnFwQjdKUkdjVWdDWDV3WjBaaERZR0Z4NjdrOE4ydVFNb1FLNGs0NGJwR3pqcWJtX2FYUmNmRDF1QVphR0hnTUNmY2Z1TVFzaVhBbG0ybjIycXhmbzM5dkR4aXdB?oc=5",
+   "title": "Stephanie McMahon Resigns As Co-CEO OF WWE The Week After Her Father Vince Returns - Deadline",
+   "text": "Stephanie McMahon Resigns As Co-CEO OF WWE The Week After Her Father Vince Returns - Deadline. Stephanie McMahon Resigns As Co-CEO OF WWE The Week After Her Father Vince Returns Deadline",
+   "content_hash": "7f4677ea7eae421a",
+   "raw_feed_hash": "078e3bf7f1d270812ee1bf9f1385c1df91817dcac878ae1d2682521cfcb05cbf",
+   "published_at": 1673337600.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_d0f2989a3f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "850248826760fa0f",
+   "source": "The Brussels Times",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxOSVZYZktOMkx6M0ZnRmNyZFpxdVhLTVBkOVV6bFpzblNrcTRxNFRqdUh6ZmdsSDJtTFpMaVh1akVkTVpGaTFRNFQ1S0c5bWN3QUlYbEVXUUlUbTJuRXlGWG1ZdkRTdzQ3NG5ZSlhmTHp0MWJSaGpycUhnREpiUHNxMkVfcEdLbkJPZ2lQT2NyY2FvMWtmeDNHdWlHR3RPZnNWaGJnbERnTnBrTGVqV3N0MGxZMmNUa3Ji?oc=5",
+   "title": "Calls for executives to resign over Wallonia weapons embezzlement scandal - The Brussels Times",
+   "text": "Calls for executives to resign over Wallonia weapons embezzlement scandal - The Brussels Times. Calls for executives to resign over Wallonia weapons embezzlement scandal The Brussels Times",
+   "content_hash": "c05c8d90f996d62d",
+   "raw_feed_hash": "078e3bf7f1d270812ee1bf9f1385c1df91817dcac878ae1d2682521cfcb05cbf",
+   "published_at": 1675929600.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_d0f2989a3f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6d9cef568bbf64b5",
+   "source": "Business Insider",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNN3ozTmt4UGNRUTdZdGtqNDFic05CZGo4SFh4d2UyazljTjhPZjM2WS1nOVpUMm4wVEVTZWNySXBOTFhYTmVNT0NOd2xocUFmMnJhWkdQS1pQeDRka0tPOTlfZWQ5U09BYkJIdV8zY3Q3MmsxYm9zOEl3QW9fSlBZUWkwTi1ZcHRWWWtxc2tQb1FuWGQwalVGMlFBNjVHTXVQRi1r?oc=5",
+   "title": "A shortage of accountants is pushing the industry to reboot its image to win over young talent: 'You have to sell them' - Business Insider",
+   "text": "A shortage of accountants is pushing the industry to reboot its image to win over young talent: 'You have to sell them' - Business Insider. A shortage of accountants is pushing the industry to reboot its image to win over young talent: 'You have to sell them' Business Insider",
+   "content_hash": "4380bf85af7352fe",
+   "raw_feed_hash": "5262e3c23565cd71d547181dccf702836ea2355bee74c8a8c7cddaa7d96b6ee0",
+   "published_at": 1675324800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_da5376484a",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "8d6e499d99cb76af",
+   "source": "New York Post",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNMXZHc3NGU2htd0c1LURhS0xCdTNRNldTaXRZMnpmU0E5TExkZG1IYTN3MEtfZ2YxZ3h1alhFTDNJUEpUcTd0SmFZa2VEeGw0RFVpbHJkVWx4Vl8tUmF0aFhwRGxoeVFqNEViT1Q0TjBEakZjTUJ4cFdHbktUMDI2dll4VVJfWDl6THNkRDcxU2ZNcm41NWZJWQ?oc=5",
+   "title": "Many Paralympians are faking the severity of their disabilities: former officials - New York Post",
+   "text": "Many Paralympians are faking the severity of their disabilities: former officials - New York Post. Many Paralympians are faking the severity of their disabilities: former officials New York Post",
+   "content_hash": "16a2b6d734e543a5",
+   "raw_feed_hash": "5262e3c23565cd71d547181dccf702836ea2355bee74c8a8c7cddaa7d96b6ee0",
+   "published_at": 1680505200.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_da5376484a",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d1da863f34324df1",
+   "source": "Macleans.ca",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxPWXc5S081TWlSSmIxVkUyWENCNXc5M2RQRTBUZndqejJDbWdLeFFxR2Z6Zlh5MjZHMFBoNVI2a2hHQWJLTkNSMGJ1NFoyVU1SY0pJT1VGWGVMMFNaZVBnRWZNS0lhWXN3Sk43VzhnSXo0UVBhcVlZNXJJLUliUFV1WEtnQkZQRkdzdmZBTXYzOA?oc=5",
+   "title": "In the latest real estate scam, homes are being sold behind owners\u2019 backs. Here\u2019s how. - Macleans.ca",
+   "text": "In the latest real estate scam, homes are being sold behind owners\u2019 backs. Here\u2019s how. - Macleans.ca. In the latest real estate scam, homes are being sold behind owners\u2019 backs. Here\u2019s how. Macleans.ca",
+   "content_hash": "293b1254f8e31154",
+   "raw_feed_hash": "5262e3c23565cd71d547181dccf702836ea2355bee74c8a8c7cddaa7d96b6ee0",
+   "published_at": 1675670400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_da5376484a",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "31dfc113f4689d87",
+   "source": "ABC News & Headlines \u2013 Australian Broadcasting Corporation",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxNQzFpNHdybEZfeWNyMVBMRmZwYzhKTkpQWGFoUk5hNnlmRnRTUEMzMVloWkxiQ3J1UVVvUFVYTi1DMzZHbnBIdnFyNnMtQ1RlQV9tVXJOWEs1bjVxRjluWFR4OVRxdWdxcVlHd3JCU3ZvakcwWEtvZkwwTXFGYVU4Tk9lZ2djU3pvcmJzSm1SRXBSMU5KRHRibHlmdUtEX1dLMldDVXRIcHM2ZFlkV3hz?oc=5",
+   "title": "Signing a big star to your brand can feel like a coup, but what happens when there's a scandal? - ABC News & Headlines \u2013 Australian Broadcasting Corporation",
+   "text": "Signing a big star to your brand can feel like a coup, but what happens when there's a scandal? - ABC News & Headlines \u2013 Australian Broadcasting Corporation. Signing a big star to your brand can feel like a coup, but what happens when there's a scandal? ABC News & Headlines \u2013 Australian Broadcasting Corporation",
+   "content_hash": "08bcee6c54f6a67c",
+   "raw_feed_hash": "5262e3c23565cd71d547181dccf702836ea2355bee74c8a8c7cddaa7d96b6ee0",
+   "published_at": 1682838000.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_da5376484a",
+   "temporal_status": "uncertain"
+  },
+  {
+   "id": "13276a895cce2867",
+   "source": "GOV.UK",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNTDVsaC1CUlpNQ0dvem9wX1BGSmJWTVptdjVSYnRKV3M0cm9MU05TbUQ3UWloZkxvTU82cmVmUURpc2JPRG1IUmlkRXcza3B0QmxkeWhhNDYtT3NiUV9oM1pDY195SC0zbG5ha0RTZlkxcUxkdlk1MHQySjVxeDY4ekJyZUdCbFNaejdDOWVkTENoTVEycUt5cUk1QXhaRGJUZ2RCOEpyUzh6V2JLNWlKOVpOZmhjczVIbGFKWHJfeUFoU1lMUGp3?oc=5",
+   "title": "\u2018Severe consequences\u2019 for cladding companies who refuse to remediate, government warns investors - GOV.UK",
+   "text": "\u2018Severe consequences\u2019 for cladding companies who refuse to remediate, government warns investors - GOV.UK. \u2018Severe consequences\u2019 for cladding companies who refuse to remediate, government warns investors GOV.UK",
+   "content_hash": "106172e9b30c468b",
+   "raw_feed_hash": "5262e3c23565cd71d547181dccf702836ea2355bee74c8a8c7cddaa7d96b6ee0",
+   "published_at": 1681974000.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_da5376484a",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "95ad21cd768fe1a6",
+   "source": "Business Insider",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxOak5VWUoteDB0U2hTR1F4b0FucWdlRmtNMjJTME01dExBUHA5RzUtczYyYzdqX19FVHFqME5VVUNLNlU5Tkw0SEJvRkFka2NJaWpxUk4xclJTZjRXVVdsd0l4eGhPSVQ3aGpIX2l0dTFUOEtjLTZOX0RJNDJUUUJsZ2lWM2tWUjRhN09rVzdWbk1JdXdOa2g2V3g1Z1ExZkFDUlA4LVYzNjlWaDAzS1NSVzUzejU?oc=5",
+   "title": "Harvey Weinstein Victims: List of Women Who Accused Him of Misconduct - Business Insider",
+   "text": "Harvey Weinstein Victims: List of Women Who Accused Him of Misconduct - Business Insider. Harvey Weinstein Victims: List of Women Who Accused Him of Misconduct Business Insider",
+   "content_hash": "c42902e37674d220",
+   "raw_feed_hash": "5262e3c23565cd71d547181dccf702836ea2355bee74c8a8c7cddaa7d96b6ee0",
+   "published_at": 1677139200.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_da5376484a",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "c50212d9d710e784",
+   "source": "thelist.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTFA2WGp4Q0gyRndQU3BEQjRqV0RyVVNHVUtPeHY0blpPbTJSbTEteUFGZmRkZWQzMUx5aVF4MEVOUTZZMGRzS0F2ZGdMcTZRcXY1WVl4aXBKOHBmenR4c3liSnVFSUs2eERNVlRuNFd3?oc=5",
+   "title": "The Truth About Dolce & Gabbana - thelist.com",
+   "text": "The Truth About Dolce & Gabbana - thelist.com. The Truth About Dolce & Gabbana thelist.com",
+   "content_hash": "ab69ff0e17947bec",
+   "raw_feed_hash": "5262e3c23565cd71d547181dccf702836ea2355bee74c8a8c7cddaa7d96b6ee0",
+   "published_at": 1675324800.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_da5376484a",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "418128ab45e6da8c",
+   "source": "The Conversation",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxNb0RSeWg5MlFXQ0kyejJoVTZEcVZfcC1nc3ZNbF9iT2xtd3Y0TzRDaVJzWGZNalBYbnNWQzVDQUJ3YmJyWWN1OWI2Qjd0YUwyTHNkeVJaR3lVaE5qenRrT3NZT1VVWEtyMkpkRzktSHpRUGFsVlQ4c3hJZTl3bEtmVnk3R3VQblNlNHZ4OEJGaE1reTRKYVljRjVESjJtWkdGdVo0dC1qa05fR1hfYVNWMV9yemtQYnhMa09MUjZhYWc?oc=5",
+   "title": "Integrity, innovation and risk-taking is a rare combination in CEOs, new research suggests - The Conversation",
+   "text": "Integrity, innovation and risk-taking is a rare combination in CEOs, new research suggests - The Conversation. Integrity, innovation and risk-taking is a rare combination in CEOs, new research suggests The Conversation",
+   "content_hash": "4c54f1e236e278c7",
+   "raw_feed_hash": "97c44265cf2f9fb0f1f8008f8428b96fd92d591e64f94aa9bce1e830cd2426dc",
+   "published_at": 1678435200.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_ac2bcd9030",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "996ec1991429d7d9:c0",
+   "source_id": "996ec1991429d7d9",
+   "subject": "Craig Richmond",
+   "predicate": "is the latest departure from",
+   "object": "MetroHealth",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "CFO Craig Richmond is the latest MetroHealth departure",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1677744000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Craig Richmond",
+    "MetroHealth"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_9d875d55c7",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_d0f2989a3f"
+   }
+  },
+  {
+   "claim_id": "6d9cef568bbf64b5:c0",
+   "source_id": "6d9cef568bbf64b5",
+   "subject": "accountants",
+   "predicate": "is experiencing a shortage of",
+   "object": "accountants",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "A shortage of accountants is pushing the industry to reboot its image to win over young talent",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675324800.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "accountants"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_27e67063c8",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_da5376484a"
+   }
+  },
+  {
+   "claim_id": "6d9cef568bbf64b5:c1",
+   "source_id": "6d9cef568bbf64b5",
+   "subject": "the industry",
+   "predicate": "is rebooting its image to win over young talent",
+   "object": "young talent",
+   "value": "",
+   "units": "",
+   "qualifiers": "due to shortage of accountants",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "A shortage of accountants is pushing the industry to reboot its image to win over young talent",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675324800.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "the industry",
+    "young talent"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_27e67063c8",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_da5376484a"
+   }
+  },
+  {
+   "claim_id": "6d9cef568bbf64b5:c2",
+   "source_id": "6d9cef568bbf64b5",
+   "subject": "the industry",
+   "predicate": "must sell young talent",
+   "object": "young talent",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "reported",
+   "polarity": "affirm",
+   "claim_class": "actor_statement",
+   "supporting_span": "'You have to sell them'",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675324800.0,
+   "extraction_confidence": 0.8,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "young talent"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_27e67063c8",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_da5376484a"
+   }
+  },
+  {
+   "claim_id": "418128ab45e6da8c:c0",
+   "source_id": "418128ab45e6da8c",
+   "subject": "integrity, innovation and risk-taking",
+   "predicate": "is a rare combination in",
+   "object": "CEOs",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "reported",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Integrity, innovation and risk-taking is a rare combination in CEOs, new research suggests",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678435200.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "CEOs"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_a8c294e30d",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ac2bcd9030"
+   }
+  },
+  {
+   "claim_id": "4e677bac0dc61ee5:c0",
+   "source_id": "4e677bac0dc61ee5",
+   "subject": "WWE",
+   "predicate": "confirms",
+   "object": "Vince McMahon return",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "WWE Confirms Vince McMahon Return",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1672992000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "WWE",
+    "Vince McMahon"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_5fcd3c23ce",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_d0f2989a3f"
+   }
+  },
+  {
+   "claim_id": "4e677bac0dc61ee5:c1",
+   "source_id": "4e677bac0dc61ee5",
+   "subject": "former CEO",
+   "predicate": "ejects",
+   "object": "three from board",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Former CEO Ejects Three From Board",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1672992000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "former CEO",
+    "three"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_5fcd3c23ce",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_d0f2989a3f"
+   }
+  },
+  {
+   "claim_id": "4e677bac0dc61ee5:c2",
+   "source_id": "4e677bac0dc61ee5",
+   "subject": "two others",
+   "predicate": "resign",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Two Others Resign",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1672992000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "two others"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_5fcd3c23ce",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_d0f2989a3f"
+   }
+  },
+  {
+   "claim_id": "8d6e499d99cb76af:c0",
+   "source_id": "8d6e499d99cb76af",
+   "subject": "Many Paralympians",
+   "predicate": "are faking",
+   "object": "the severity of their disabilities",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "reported",
+   "polarity": "affirm",
+   "claim_class": "allegation",
+   "supporting_span": "Many Paralympians are faking the severity of their disabilities: former officials",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680505200.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Paralympians",
+    "former officials"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_a89e4296fa",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_da5376484a"
+   }
+  },
+  {
+   "claim_id": "546e739cfc95b109:c0",
+   "source_id": "546e739cfc95b109",
+   "subject": "The Week",
+   "predicate": "published",
+   "object": "a complete timeline of Vince McMahon chaos at WWE",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The Vince McMahon chaos at WWE: A complete timeline - The Week",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1674460800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "The Week",
+    "Vince McMahon",
+    "WWE"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_685a98b519",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_d0f2989a3f"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Craig Richmond",
+   "normalized": "craig richmond",
+   "candidates": [
+    {
+     "entity_id": "ent_66683b00b7",
+     "canonical": "craig richmond",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "Craig Richmond"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "MetroHealth",
+   "normalized": "metrohealth",
+   "candidates": [
+    {
+     "entity_id": "ent_f1902cf1e5",
+     "canonical": "metrohealth",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "MetroHealth"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "accountants",
+   "normalized": "accountants",
+   "candidates": [
+    {
+     "entity_id": "ent_c8996c314e",
+     "canonical": "accountants",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "accountants"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "the industry",
+   "normalized": "industry",
+   "candidates": [
+    {
+     "entity_id": "ent_1984337fca",
+     "canonical": "industry",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "the industry"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "young talent",
+   "normalized": "young talent",
+   "candidates": [
+    {
+     "entity_id": "ent_3e8f8eb15c",
+     "canonical": "young talent",
+     "support": 0.6176,
+     "evidence_mentions": [
+      "young talent",
+      "young talent"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "young talent",
+   "normalized": "young talent",
+   "candidates": [
+    {
+     "entity_id": "ent_3e8f8eb15c",
+     "canonical": "young talent",
+     "support": 0.6176,
+     "evidence_mentions": [
+      "young talent",
+      "young talent"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "CEOs",
+   "normalized": "ceos",
+   "candidates": [
+    {
+     "entity_id": "ent_6a358ee33b",
+     "canonical": "ceos",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "CEOs"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "WWE",
+   "normalized": "wwe",
+   "candidates": [
+    {
+     "entity_id": "ent_9ec062c683",
+     "canonical": "wwe",
+     "support": 0.6176,
+     "evidence_mentions": [
+      "WWE",
+      "WWE"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Vince McMahon",
+   "normalized": "vince mcmahon",
+   "candidates": [
+    {
+     "entity_id": "ent_3fbf34d90a",
+     "canonical": "vince mcmahon",
+     "support": 0.6176,
+     "evidence_mentions": [
+      "Vince McMahon",
+      "Vince McMahon"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "former CEO",
+   "normalized": "former",
+   "candidates": [
+    {
+     "entity_id": "ent_46102433cc",
+     "canonical": "former",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "former CEO"
+     ]
+    },
+    {
+     "entity_id": "ent_a6d6238477",
+     "canonical": "former officials",
+     "support": 0.2088,
+     "evidence_mentions": [
+      "former officials"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "three",
+   "normalized": "three",
+   "candidates": [
+    {
+     "entity_id": "ent_b802f38430",
+     "canonical": "three",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "three"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "two others",
+   "normalized": "two others",
+   "candidates": [
+    {
+     "entity_id": "ent_27d731ec06",
+     "canonical": "two others",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "two others"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Paralympians",
+   "normalized": "paralympians",
+   "candidates": [
+    {
+     "entity_id": "ent_843d40ed31",
+     "canonical": "paralympians",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "Paralympians"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "former officials",
+   "normalized": "former officials",
+   "candidates": [
+    {
+     "entity_id": "ent_a6d6238477",
+     "canonical": "former officials",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "former officials"
+     ]
+    },
+    {
+     "entity_id": "ent_46102433cc",
+     "canonical": "former",
+     "support": 0.2088,
+     "evidence_mentions": [
+      "former CEO"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "The Week",
+   "normalized": "week",
+   "candidates": [
+    {
+     "entity_id": "ent_c0ee32d825",
+     "canonical": "week",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "The Week"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Vince McMahon",
+   "normalized": "vince mcmahon",
+   "candidates": [
+    {
+     "entity_id": "ent_3fbf34d90a",
+     "canonical": "vince mcmahon",
+     "support": 0.6176,
+     "evidence_mentions": [
+      "Vince McMahon",
+      "Vince McMahon"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "WWE",
+   "normalized": "wwe",
+   "candidates": [
+    {
+     "entity_id": "ent_9ec062c683",
+     "canonical": "wwe",
+     "support": 0.6176,
+     "evidence_mentions": [
+      "WWE",
+      "WWE"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "996ec1991429d7d9": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1677744000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677744000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4e677bac0dc61ee5": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1672992000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1672992000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "546e739cfc95b109": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1674460800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1674460800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3af9bb1a463ec257": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1672992000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1672992000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a2415dc8ac9c2dea": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1674201600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1674201600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "668f132c4a00df98": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1678608000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678608000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "61e7231bee217e29": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1673337600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1673337600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "850248826760fa0f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1675929600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675929600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6d9cef568bbf64b5": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1675324800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675324800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "8d6e499d99cb76af": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1680505200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680505200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d1da863f34324df1": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1675670400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675670400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "31dfc113f4689d87": {
+   "status": "uncertain",
+   "confidence": 0.5,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1682838000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682838000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "13276a895cce2867": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1681974000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681974000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "95ad21cd768fe1a6": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1677139200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677139200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "c50212d9d710e784": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1675324800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675324800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "418128ab45e6da8c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1678435200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678435200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_9d875d55c7",
+   "member_ids": [
+    "996ec1991429d7d9"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Crain's Cleveland",
+   "primary_source": "Crain's Cleveland",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_5fcd3c23ce",
+   "member_ids": [
+    "4e677bac0dc61ee5"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Deadline",
+   "primary_source": "Deadline",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_685a98b519",
+   "member_ids": [
+    "546e739cfc95b109"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Week",
+   "primary_source": "The Week",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_1ec075cc05",
+   "member_ids": [
+    "3af9bb1a463ec257"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Variety",
+   "primary_source": "Variety",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_84543d0349",
+   "member_ids": [
+    "a2415dc8ac9c2dea"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "SportsPro",
+   "primary_source": "SportsPro",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_add9153386",
+   "member_ids": [
+    "668f132c4a00df98"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Investopedia",
+   "primary_source": "Investopedia",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_841963aa68",
+   "member_ids": [
+    "61e7231bee217e29"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Deadline",
+   "primary_source": "Deadline",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_483c3feb46",
+   "member_ids": [
+    "850248826760fa0f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Brussels Times",
+   "primary_source": "The Brussels Times",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_27e67063c8",
+   "member_ids": [
+    "6d9cef568bbf64b5"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Insider",
+   "primary_source": "Business Insider",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a89e4296fa",
+   "member_ids": [
+    "8d6e499d99cb76af"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "New York Post",
+   "primary_source": "New York Post",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_2ff00cba48",
+   "member_ids": [
+    "d1da863f34324df1"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Macleans.ca",
+   "primary_source": "Macleans.ca",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_14a2bab03b",
+   "member_ids": [
+    "31dfc113f4689d87"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "ABC News & Headlines \u2013 Australian Broadcasting Corporation",
+   "primary_source": "ABC News & Headlines \u2013 Australian Broadcasting Corporation",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_575b76ad23",
+   "member_ids": [
+    "13276a895cce2867"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "GOV.UK",
+   "primary_source": "GOV.UK",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a8f43c9e43",
+   "member_ids": [
+    "95ad21cd768fe1a6"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Insider",
+   "primary_source": "Business Insider",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_c5afb7c9f5",
+   "member_ids": [
+    "c50212d9d710e784"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "thelist.com",
+   "primary_source": "thelist.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a8c294e30d",
+   "member_ids": [
+    "418128ab45e6da8c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Conversation",
+   "primary_source": "The Conversation",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "996ec1991429d7d9:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677744000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "6d9cef568bbf64b5:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675324800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "6d9cef568bbf64b5:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675324800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "6d9cef568bbf64b5:c2",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675324800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "418128ab45e6da8c:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678435200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "4e677bac0dc61ee5:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1672992000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "4e677bac0dc61ee5:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1672992000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "4e677bac0dc61ee5:c2",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1672992000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "8d6e499d99cb76af:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680505200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "546e739cfc95b109:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1674460800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "996ec1991429d7d9:c0",
+  "6d9cef568bbf64b5:c0",
+  "6d9cef568bbf64b5:c1",
+  "6d9cef568bbf64b5:c2",
+  "418128ab45e6da8c:c0",
+  "4e677bac0dc61ee5:c0",
+  "4e677bac0dc61ee5:c1",
+  "4e677bac0dc61ee5:c2",
+  "8d6e499d99cb76af:c0",
+  "546e739cfc95b109:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_d0f2989a3f": {
+   "status": "fulfilled",
+   "n_claims": 5,
+   "n_included": 5
+  },
+  "req_da5376484a": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_ac2bcd9030": {
+   "status": "fulfilled",
+   "n_claims": 1,
+   "n_included": 1
+  },
+  "req_dffcd83bbb": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_235cf194e8": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_24f9125fa9": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_754a1fdbce": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_a158142f16": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_dffcd83bbb",
+  "req_235cf194e8",
+  "req_24f9125fa9",
+  "req_754a1fdbce",
+  "req_a158142f16"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 16,
+  "n_contradictions": 0,
+  "n_documents": 16
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 15.663,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "77ba2be97126aa6a",
+ "bundle_hash": "77ba2be97126aa6a",
+ "_persisted_at": "2026-07-13T02:01:15Z"
+}

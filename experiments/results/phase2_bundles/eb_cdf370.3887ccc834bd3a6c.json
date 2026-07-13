@@ -1,0 +1,1278 @@
+{
+ "bundle_id": "eb_cdf370",
+ "question": "In the salary negotiation, will the candidate accept an offer 8% below their stated ask?",
+ "as_of": 1685577600.0,
+ "compiler_plan_hash": "8b18bcbc7c40",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_801f593f0b",
+   "claim_or_quantity": "The candidate's terminal decision as of 2023-06-15, observed as a single binary outcome.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "candidate",
+    "employer"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_8be459beaf",
+   "claim_or_quantity": "value/context of candidate.reservation_wage",
+   "why_relevant": "high-sensitivity latent (1.00) driving the outcome distribution",
+   "affected_component": "candidate.reservation_wage",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_359dffa7ba",
+   "claim_or_quantity": "value/context of candidate.outside_option_value",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "candidate.outside_option_value",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_da02a4d06f",
+   "claim_or_quantity": "value/context of candidate.fairness_concern",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "candidate.fairness_concern",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_8389a9c6e5",
+   "claim_or_quantity": "evidence discriminating structural hypothesis rational_acceptance",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:rational_acceptance",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_f0358f57d6",
+   "claim_or_quantity": "evidence discriminating structural hypothesis fairness_rejection",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:fairness_rejection",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_cc9ac660dd",
+   "claim_or_quantity": "decision rules / process of employer",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "employer",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_801f593f0b",
+   "terms": "salary negotiation candidate accept offer below stated ask candidate employer",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_8be459beaf",
+   "terms": "candidate reservation wage",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_359dffa7ba",
+   "terms": "candidate outside option value",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_801f593f0b",
+   "logical_query": "salary negotiation candidate accept offer below stated ask candidate employer after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=salary+negotiation+candidate+accept+offer+below+stated+ask+candidate+employer+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783906182.1175556,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:29:42 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjytDikmII1JBiOFR1hiG54wxDKhBXAHEDELfePMc6GYhLFp1nbQLiLiCeAcSGCpdY7YH4cvol1iKJK6wNQPyp6garQPUN1m_FvmwsJUD81p_NNCSQzRmIt2gGswnxcLT9v3CJTWDDvuOrmJWUk_IL41PyS4qLC3ISizOKU4vKUovijQyMzAzMDcz0DEziCwwA5dY7Hw\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "633b8fa8b0b6a237a3fe7292556ef94b90e04a05b41b4a297fa057022187105d",
+   "n_bytes": 8366,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 5,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.702
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_8be459beaf",
+   "logical_query": "candidate reservation wage after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=candidate+reservation+wage+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783906182.8214436,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:29:43 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmII1JBiSO44w5AKxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwc7f8vXGITmHFkTjujknJSfmF8Sn5JcXFBTmJxRnFqUVlqUbyRgZGZgbmBmZ6BSXyBAQCpmDi4\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "f94996eac89dad1d525398073150b6cf25744a02db391ccb2093bebc27d2ea52",
+   "n_bytes": 3446,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 1,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.392
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_359dffa7ba",
+   "logical_query": "candidate outside option value after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=candidate+outside+option+value+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783906183.2145858,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:29:43 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmII1JBiSO44w5AKxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwc7f8vXGITmDD9x2MmJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwC-IDk9\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "4ffa09a8c2a449faf4afe7f7054dc6746acdf9629196b4da79409fdc0e8fccef",
+   "n_bytes": 4780,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 2,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.458
+  }
+ ],
+ "raw_content_refs": [
+  "4ffa09a8c2a449faf4afe7f7054dc6746acdf9629196b4da79409fdc0e8fccef",
+  "633b8fa8b0b6a237a3fe7292556ef94b90e04a05b41b4a297fa057022187105d",
+  "f94996eac89dad1d525398073150b6cf25744a02db391ccb2093bebc27d2ea52"
+ ],
+ "documents": [
+  {
+   "id": "4ce3665e39b04512",
+   "source": "theSkimm",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE1SS18waEFYVnRLY1doemhlQzc1SVN3ZFozVnVfRGRsRGhVck9VU3k2eHhQbWJ0TUhIbnVhOTVqQWR6ZDlVXzVPdFZTQkNydVZSUUFlRGJCRjVlYWQxZDgyRFQ0WVU?oc=5",
+   "title": "How To Negotiate Your Salary When the Range Is Posted\u2014And Why You Definitely Still Should - theSkimm",
+   "text": "How To Negotiate Your Salary When the Range Is Posted\u2014And Why You Definitely Still Should - theSkimm. How To Negotiate Your Salary When the Range Is Posted\u2014And Why You Definitely Still Should theSkimm",
+   "content_hash": "01ee1dac23de7132",
+   "raw_feed_hash": "633b8fa8b0b6a237a3fe7292556ef94b90e04a05b41b4a297fa057022187105d",
+   "published_at": 1684134000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_801f593f0b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "1f1968cac47ac78e",
+   "source": "CNBC",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQRk1QZDIxUU51eS1hOEpRZTlNZWU5MUhVNkc4a0w0ZDNSdUllYV85b1VhTDBFVl8tR3dMZmNPeW5SUlotWjdYMTZrZG1fSXRTZHBBYVpmbXNDN2VidXZnSTZsYlNKNjdjd3RmZjB3LWpzeUs2MTJOVlpQeDdhMlB2cHhxMklTVHc0SWJQUEZCTWlqY29MRldEYnd2dmN0TG1KQzNqOHJucEZjd9IBrwFBVV95cUxQSmFoTmI3UUgxQ0xaeWVMa1NVX1ZvUUlXdmlTUzd0Z1RDTUluSjNOM3l5UUNILVRlWEduaWU0YUtsOFlUVzlLdEZSM1E5S2pycmlienF2WGhNZjhtVnRjQjAyczY1QXptS0ExVERtUEZNSTEzSnIzZHpxa1NVZjJCMEEtNF9WS3R2aUZUMVNlYWVjX0JGUllOM3BLZDZCVjFpTURKdEZrN0dDeHRSVXZF?oc=5",
+   "title": "Turns out companies are deflating their public salary ranges, so you still have to negotiate for top dollar - CNBC",
+   "text": "Turns out companies are deflating their public salary ranges, so you still have to negotiate for top dollar - CNBC. Turns out companies are deflating their public salary ranges, so you still have to negotiate for top dollar CNBC",
+   "content_hash": "296f9adc17b8d738",
+   "raw_feed_hash": "633b8fa8b0b6a237a3fe7292556ef94b90e04a05b41b4a297fa057022187105d",
+   "published_at": 1672905600.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_801f593f0b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "af077ef0ea139ecb",
+   "source": "Fox Business",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOUng5NW9NQ2piakJQX1A1aFNSTEEtQ0YyNkpYRjd5SDhkelRjcWVHU1h6S0JlaEF5SnlrYUlUZ2NpUW53cjFRNHhZVGQwOVF4ckI0QTN5aHJlc3RBM0FZTFR4dVlEMkFWSFdnYzliejR1SGJlWlU5RkhBLVN3MFZsMXJfcWRwUkZY0gGOAUFVX3lxTE1xYXgxRTROVXh4UnVuVGpnS18yckhCQnpVR3l4SWF6eEFEZ2pyT3BjdUdvMHU5X2U1X2JUeEFrX05YWnZNZHdSeERLYzlRd0FRZk1Ka1A3ZmRFamNCbTFzQU53QXVBNTZlaXJ4WkV4eUozNWpITVVnMHZReWtuWXdrVTlVTVNlRjNFWEZNcHc?oc=5",
+   "title": "Career challenge: How do you decide between two good job offers? - Fox Business",
+   "text": "Career challenge: How do you decide between two good job offers? - Fox Business. Career challenge: How do you decide between two good job offers? Fox Business",
+   "content_hash": "aed80ab6c4935f56",
+   "raw_feed_hash": "633b8fa8b0b6a237a3fe7292556ef94b90e04a05b41b4a297fa057022187105d",
+   "published_at": 1677571200.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_801f593f0b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "7116540df028b9c0",
+   "source": "MS NOW",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPSnFiYi1SQmFWRmdrc3lwMkRSYXVYNzF6cXVwNXRUTVZ6MkIxalVWR0E0SXhXRlRHelFDbll4amRlZTMyS1ZYRVFVUmx0ZlZQSEtPUDktS08xVldWRTdoV29NZlN5OEp4M2Q3dlgxOWxWd0VKdzBicEVCWHZoOHFBb3IyVW1vWlR4LWRrT2NvQWNrbmFwaklWdm9CamVmbEFVMHNZZkJn?oc=5",
+   "title": "How to effectively counter a low-ball salary offer - MS NOW",
+   "text": "How to effectively counter a low-ball salary offer - MS NOW. How to effectively counter a low-ball salary offer MS NOW",
+   "content_hash": "edca3fc8f4b387c9",
+   "raw_feed_hash": "633b8fa8b0b6a237a3fe7292556ef94b90e04a05b41b4a297fa057022187105d",
+   "published_at": 1680073200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_801f593f0b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "66f6ff9f155d722d",
+   "source": "BuzzFeed",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE9kS244aDVOWXY2Q1F1YzNGeDVvVkxkTVQ4MVNxSkpYbTVXUTJxbVZQUlRlZ3BsWWI3T05ENXh4RmZSX3JOSHhhUlF3SWtJQXhuOWZHTVp1R0toRzFHQy1SY1hNWXRHYkFqM2VmQURNZVcxV2NjaUs0?oc=5",
+   "title": "This Company Got Caught Trying To Lowball A Woman They Were Interviewing, And I'm Lowkey Glad They Got Caught - BuzzFeed",
+   "text": "This Company Got Caught Trying To Lowball A Woman They Were Interviewing, And I'm Lowkey Glad They Got Caught - BuzzFeed. This Company Got Caught Trying To Lowball A Woman They Were Interviewing, And I'm Lowkey Glad They Got Caught BuzzFeed",
+   "content_hash": "d958f400f0cb5dff",
+   "raw_feed_hash": "633b8fa8b0b6a237a3fe7292556ef94b90e04a05b41b4a297fa057022187105d",
+   "published_at": 1676016000.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_801f593f0b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "10e1a7f40a45ff77",
+   "source": "Mathrubhumi English",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPZDBhdDR1MFJxbk5tM1hKWWhWLV96UjdKQ28yZ3lWNVVhWFpBbEUwUmtHc21Vd2NHRHJYMEc3Z1JGSThkVVJtYkVEUmZmU0c2V3hkc3FNcnpRZVdPRUx2T1k5cW8xYllNSXFFeEVEelJrNW5DSVE3cG1KUWFNMHYwdnJSWFNfMUVyNDh2b0lNdVdLalZCTVVyNHpfZXdRZ0xzV09Mdk9qeE5Pb3JFd2h3eXNKTm9USU56c0R0R1RKRFlGZVp10gHKAUFVX3lxTE9tUi1mS2xFaWNhOHdVUWdvQVd0X2lNVnh1YmFUSkNPTjg0THd0LWE0Z21UbjJ0emstWXRfdkxNQkQxMW5lRm5sbG5EQUJrSXE0SGI1X1RUemxNYkJ4dGkyNTdpTm9NYXFTSE5EdTZqVDRmQ2pkVWJKNFJnM3pnQkdjbnprNDA0T1BJaFZudUIzTFI0RE1GWVNSb1kxRW1GeW9rTVlwN1FaQURDVDlYQTFmY3lSODNKazBZLWtpd1hsbVREWXdDenVBRFE?oc=5",
+   "title": "Employment exchanges in Kerala clueless on daily wage appointments: Report - Mathrubhumi English",
+   "text": "Employment exchanges in Kerala clueless on daily wage appointments: Report - Mathrubhumi English. Employment exchanges in Kerala clueless on daily wage appointments: Report Mathrubhumi English",
+   "content_hash": "48d680e3f8c40f9c",
+   "raw_feed_hash": "f94996eac89dad1d525398073150b6cf25744a02db391ccb2093bebc27d2ea52",
+   "published_at": 1683874800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_8be459beaf",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2357e14bb2b96f39",
+   "source": "The Atlantic",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQdERRSWU1b0JmUGVRLXdJdU1xSEpuZkxjR2ZrN1RNS25EdnhuQVB2Tm5RNHB4WE81U1N0d3daTTVVSXVCTmZfWGJVWWJveE1JQXhLVTJ5UFd6R2ZmTjF4TXZ0NUtEWkUteXJ3YlNPY3dZMlUyR01vOUI5YWg3MHR5eE1nTXF2RklDUVlQNW01WHRwNzZSN3ZF?oc=5",
+   "title": "The Republican Majority\u2019s Opening Debacle - The Atlantic",
+   "text": "The Republican Majority\u2019s Opening Debacle - The Atlantic. The Republican Majority\u2019s Opening Debacle The Atlantic",
+   "content_hash": "4209682fad072460",
+   "raw_feed_hash": "4ffa09a8c2a449faf4afe7f7054dc6746acdf9629196b4da79409fdc0e8fccef",
+   "published_at": 1672732800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_359dffa7ba",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "304d4ae2239d3610",
+   "source": "CIC News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxORjdlaTFTZGVCTzlHQnI5VWVRenVWY0RYUmNXMk1RZkFYT0FIMXk3Zm5vRlpTX1E4eFpWdVFNT1JvamQ5TWpLYVpwR1hiOGtCeU1OVEl3X2Q3T3BsQWRRaVM3Y3JPbHN2VWtodVZKM185R0xRaWlKOVdkZWIwblJJbTljeEFPSFN5enRTaE00a1hIS0NraFpzemotM1ptazFGM1h1MXk4TWxfZGtQUmtJTFVhYWlpdzdiWWtFdk9FdlNJZ2J5dExMVndSSXNFVVR6UmRKbER5NVdmTFnSAeABQVVfeXFMTW5MeXJCa0l4aHhGOTFBNTByVndzcDN3b1dtR0FkQWIxeUNraW0tdmF2RkNhNlJJelFUZjRBRXh6d1F0ODJ0UElFQUxXcWhDcDdBWk9kOUg2b0xhN2EtOS1jUlR6UUFGLUxJSDlMcGE4S0dFQkU5cWY0WklSMC1Ob0t2Wlc5UGljZll0SThlc29CTlJsZURfak5xejgwU0NZc0FTcm5MaHgxUDFWVXVnMDhrMUpSYTNwWkRkS3lSUzVfVjE0RlpvQ0gwSFB3ZEpOVkp3TDhuUnl6UFBGT1NvUEc?oc=5",
+   "title": "Canadian Immigration: The Benefits of an Educational Credential Assessment when applying to the PNP - CIC News",
+   "text": "Canadian Immigration: The Benefits of an Educational Credential Assessment when applying to the PNP - CIC News. Canadian Immigration: The Benefits of an Educational Credential Assessment when applying to the PNP CIC News",
+   "content_hash": "182005d5a16c8362",
+   "raw_feed_hash": "4ffa09a8c2a449faf4afe7f7054dc6746acdf9629196b4da79409fdc0e8fccef",
+   "published_at": 1682665200.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_359dffa7ba",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "4ce3665e39b04512:c0",
+   "source_id": "4ce3665e39b04512",
+   "subject": "the article",
+   "predicate": "provides advice on",
+   "object": "negotiating salary when the range is posted",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "How To Negotiate Your Salary When the Range Is Posted\u2014And Why You Definitely Still Should",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1684134000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "theSkimm"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_d735d2b929",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_801f593f0b"
+   }
+  },
+  {
+   "claim_id": "4ce3665e39b04512:c1",
+   "source_id": "4ce3665e39b04512",
+   "subject": "the article",
+   "predicate": "states that",
+   "object": "you definitely still should negotiate",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "And Why You Definitely Still Should",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1684134000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [],
+   "contradiction_links": [],
+   "dependence_group": "dep_d735d2b929",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_801f593f0b"
+   }
+  },
+  {
+   "claim_id": "10e1a7f40a45ff77:c0",
+   "source_id": "10e1a7f40a45ff77",
+   "subject": "Employment exchanges in Kerala",
+   "predicate": "are clueless on",
+   "object": "daily wage appointments",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "reported",
+   "polarity": "affirm",
+   "claim_class": "inferred_implication",
+   "supporting_span": "Employment exchanges in Kerala clueless on daily wage appointments: Report",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683874800.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Employment exchanges in Kerala",
+    "daily wage appointments"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_a6fb02bf19",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_8be459beaf"
+   }
+  },
+  {
+   "claim_id": "2357e14bb2b96f39:c0",
+   "source_id": "2357e14bb2b96f39",
+   "subject": "The Republican Majority\u2019s Opening Debacle",
+   "predicate": "is",
+   "object": "an article in The Atlantic",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The Republican Majority\u2019s Opening Debacle - The Atlantic",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1672732800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "The Atlantic"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_1dc3239996",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_359dffa7ba"
+   }
+  },
+  {
+   "claim_id": "1f1968cac47ac78e:c0",
+   "source_id": "1f1968cac47ac78e",
+   "subject": "companies",
+   "predicate": "are deflating",
+   "object": "their public salary ranges",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Turns out companies are deflating their public salary ranges",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1672905600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "companies"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_7a4a0f6cf3",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_801f593f0b"
+   }
+  },
+  {
+   "claim_id": "1f1968cac47ac78e:c1",
+   "source_id": "1f1968cac47ac78e",
+   "subject": "you",
+   "predicate": "have to negotiate",
+   "object": "for top dollar",
+   "value": "",
+   "units": "",
+   "qualifiers": "still",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "so you still have to negotiate for top dollar",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1672905600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [],
+   "contradiction_links": [],
+   "dependence_group": "dep_7a4a0f6cf3",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_801f593f0b"
+   }
+  },
+  {
+   "claim_id": "304d4ae2239d3610:c0",
+   "source_id": "304d4ae2239d3610",
+   "subject": "Educational Credential Assessment",
+   "predicate": "has benefits for",
+   "object": "applying to the PNP",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "The Benefits of an Educational Credential Assessment when applying to the PNP",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682665200.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Educational Credential Assessment",
+    "PNP"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_6a3557f2ce",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_359dffa7ba"
+   }
+  },
+  {
+   "claim_id": "af077ef0ea139ecb:c0",
+   "source_id": "af077ef0ea139ecb",
+   "subject": "Fox Business",
+   "predicate": "publishes article about",
+   "object": "career challenge of deciding between two good job offers",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Career challenge: How do you decide between two good job offers? - Fox Business",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1677571200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Fox Business"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_e5192333e4",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_801f593f0b"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "theSkimm",
+   "normalized": "theskimm",
+   "candidates": [
+    {
+     "entity_id": "ent_d51e925eff",
+     "canonical": "theskimm",
+     "support": 0.625,
+     "evidence_mentions": [
+      "theSkimm"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Employment exchanges in Kerala",
+   "normalized": "employment exchanges in kerala",
+   "candidates": [
+    {
+     "entity_id": "ent_036e400dfc",
+     "canonical": "employment exchanges in kerala",
+     "support": 0.625,
+     "evidence_mentions": [
+      "Employment exchanges in Kerala"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "daily wage appointments",
+   "normalized": "daily wage appointments",
+   "candidates": [
+    {
+     "entity_id": "ent_5bd0a1e086",
+     "canonical": "daily wage appointments",
+     "support": 0.625,
+     "evidence_mentions": [
+      "daily wage appointments"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "The Atlantic",
+   "normalized": "atlantic",
+   "candidates": [
+    {
+     "entity_id": "ent_5721aa1bea",
+     "canonical": "atlantic",
+     "support": 0.625,
+     "evidence_mentions": [
+      "The Atlantic"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "companies",
+   "normalized": "companies",
+   "candidates": [
+    {
+     "entity_id": "ent_aed46479ee",
+     "canonical": "companies",
+     "support": 0.625,
+     "evidence_mentions": [
+      "companies"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Educational Credential Assessment",
+   "normalized": "educational credential assessment",
+   "candidates": [
+    {
+     "entity_id": "ent_c35911b807",
+     "canonical": "educational credential assessment",
+     "support": 0.625,
+     "evidence_mentions": [
+      "Educational Credential Assessment"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "PNP",
+   "normalized": "pnp",
+   "candidates": [
+    {
+     "entity_id": "ent_558a7ad4f8",
+     "canonical": "pnp",
+     "support": 0.625,
+     "evidence_mentions": [
+      "PNP"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Fox Business",
+   "normalized": "fox business",
+   "candidates": [
+    {
+     "entity_id": "ent_46e438d026",
+     "canonical": "fox business",
+     "support": 0.625,
+     "evidence_mentions": [
+      "Fox Business"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "4ce3665e39b04512": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1684134000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684134000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "1f1968cac47ac78e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1672905600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1672905600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "af077ef0ea139ecb": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1677571200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677571200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "7116540df028b9c0": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1680073200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680073200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "66f6ff9f155d722d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1676016000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676016000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "10e1a7f40a45ff77": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1683874800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683874800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2357e14bb2b96f39": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1672732800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1672732800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "304d4ae2239d3610": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1682665200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682665200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_d735d2b929",
+   "member_ids": [
+    "4ce3665e39b04512"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "theSkimm",
+   "primary_source": "theSkimm",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7a4a0f6cf3",
+   "member_ids": [
+    "1f1968cac47ac78e"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "CNBC",
+   "primary_source": "CNBC",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e5192333e4",
+   "member_ids": [
+    "af077ef0ea139ecb"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Fox Business",
+   "primary_source": "Fox Business",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b9822ff37a",
+   "member_ids": [
+    "7116540df028b9c0"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "MS NOW",
+   "primary_source": "MS NOW",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e08100eaa4",
+   "member_ids": [
+    "66f6ff9f155d722d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "BuzzFeed",
+   "primary_source": "BuzzFeed",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a6fb02bf19",
+   "member_ids": [
+    "10e1a7f40a45ff77"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Mathrubhumi English",
+   "primary_source": "Mathrubhumi English",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_1dc3239996",
+   "member_ids": [
+    "2357e14bb2b96f39"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Atlantic",
+   "primary_source": "The Atlantic",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_6a3557f2ce",
+   "member_ids": [
+    "304d4ae2239d3610"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "CIC News",
+   "primary_source": "CIC News",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "4ce3665e39b04512:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684134000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "4ce3665e39b04512:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684134000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "10e1a7f40a45ff77:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683874800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "2357e14bb2b96f39:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1672732800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "1f1968cac47ac78e:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1672905600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "1f1968cac47ac78e:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1672905600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "304d4ae2239d3610:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682665200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "af077ef0ea139ecb:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677571200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "4ce3665e39b04512:c0",
+  "4ce3665e39b04512:c1",
+  "10e1a7f40a45ff77:c0",
+  "2357e14bb2b96f39:c0",
+  "1f1968cac47ac78e:c0",
+  "1f1968cac47ac78e:c1",
+  "304d4ae2239d3610:c0",
+  "af077ef0ea139ecb:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_801f593f0b": {
+   "status": "fulfilled",
+   "n_claims": 5,
+   "n_included": 5
+  },
+  "req_8be459beaf": {
+   "status": "fulfilled",
+   "n_claims": 1,
+   "n_included": 1
+  },
+  "req_359dffa7ba": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_da02a4d06f": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_8389a9c6e5": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_f0358f57d6": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_cc9ac660dd": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_da02a4d06f",
+  "req_8389a9c6e5",
+  "req_f0358f57d6",
+  "req_cc9ac660dd"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 8,
+  "n_contradictions": 0,
+  "n_documents": 8
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 13.185,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "3887ccc834bd3a6c",
+ "bundle_hash": "3887ccc834bd3a6c",
+ "_persisted_at": "2026-07-13T01:29:58Z"
+}

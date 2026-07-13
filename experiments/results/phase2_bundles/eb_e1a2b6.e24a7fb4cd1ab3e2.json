@@ -1,0 +1,1628 @@
+{
+ "bundle_id": "eb_e1a2b6",
+ "question": "Will the client confirm the meeting time I proposed by tomorrow afternoon?",
+ "as_of": 1696118400.0,
+ "compiler_plan_hash": "7312563643fd",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_9b7ae165a8",
+   "claim_or_quantity": "The outcome is 'confirm' if the client sends a message explicitly agreeing to the proposed meeting time by 2023-10-02T17:00:00 local time; otherwise 'not_confirm'.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-10-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "client",
+    "proposer"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_1f4fd8e642",
+   "claim_or_quantity": "value/context of client.attention_to_email",
+   "why_relevant": "high-sensitivity latent (1.00) driving the outcome distribution",
+   "affected_component": "client.attention_to_email",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-10-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_471d7ab842",
+   "claim_or_quantity": "value/context of client.preferred_meeting_time",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "client.preferred_meeting_time",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-10-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_2ad125310b",
+   "claim_or_quantity": "value/context of client.decision_making_style",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "client.decision_making_style",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-10-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_8cfabef12d",
+   "claim_or_quantity": "evidence discriminating structural hypothesis default_decision",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:default_decision",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-10-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_bc7546e3ea",
+   "claim_or_quantity": "evidence discriminating structural hypothesis inattention",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:inattention",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-10-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_5e2c05373a",
+   "claim_or_quantity": "decision rules / process of email_communication",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "email_communication",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-10-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_9b7ae165a8",
+   "terms": "client confirm meeting time proposed tomorrow afternoon client proposer",
+   "after": "2023-05-04",
+   "before": "2023-10-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_1f4fd8e642",
+   "terms": "client attention email",
+   "after": "2023-05-04",
+   "before": "2023-10-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_471d7ab842",
+   "terms": "client preferred meeting time",
+   "after": "2023-05-04",
+   "before": "2023-10-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_9b7ae165a8",
+   "logical_query": "client confirm meeting time proposed tomorrow afternoon client proposer after:2023-05-04 before:2023-10-01",
+   "wire_url": "https://news.google.com/rss/search?q=client+confirm+meeting+time+proposed+tomorrow+afternoon+client+proposer+after%3A2023-05-04+before%3A2023-10-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-05-04",
+   "before_date": "2023-10-01",
+   "retrieved_at": 1783908295.6918776,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:04:56 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmJw1ZBiSO44w5AKxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDcaL_4iU2gQ871m1iVFJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAAppA3Lw\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "0dd1d016452894ea8fa19d3ccdabd4d896d885265d475a1374d540da877d242c",
+   "n_bytes": 1307,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.583
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_1f4fd8e642",
+   "logical_query": "client attention email after:2023-05-04 before:2023-10-01",
+   "wire_url": "https://news.google.com/rss/search?q=client+attention+email+after%3A2023-05-04+before%3A2023-10-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-05-04",
+   "before_date": "2023-10-01",
+   "retrieved_at": 1783908296.2768855,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:04:56 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw05BiSO44w5ACxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcJ_ovXmITOHBn7Q5mJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwCvXTkC\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "d924b1f6dd2c097e717cb0c11ec95faf56cb69e37ff2e96718d4a850ad74f69c",
+   "n_bytes": 15377,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.571
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_471d7ab842",
+   "logical_query": "client preferred meeting time after:2023-05-04 before:2023-10-01",
+   "wire_url": "https://news.google.com/rss/search?q=client+preferred+meeting+time+after%3A2023-05-04+before%3A2023-10-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-05-04",
+   "before_date": "2023-10-01",
+   "retrieved_at": 1783908296.849647,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:04:57 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw0JBiSO44w5AKxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcJ_svXmIT2LG94wajknJSfmF8Sn5JcXFBTmJxRnFqUVlqUbyRgZGZgbmBmZ6BSXyBAQCpUDjT\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "148be68d20cea9bb9a256979232b44cf050d063c6e557b06cd2463e6ddab39e5",
+   "n_bytes": 14478,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.528
+  }
+ ],
+ "raw_content_refs": [
+  "148be68d20cea9bb9a256979232b44cf050d063c6e557b06cd2463e6ddab39e5",
+  "d924b1f6dd2c097e717cb0c11ec95faf56cb69e37ff2e96718d4a850ad74f69c"
+ ],
+ "documents": [
+  {
+   "id": "e4da574d8051a8df",
+   "source": "Built In Austin",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE9vbVRpdFJUUzdQdHo5cXVwd2dzdVhLSTVCRFBZUnVKWE1HWTlYeWFHVC0zWEZPVGV3RER3UE1UZWh0enp5Q3k3MF9jcWQ4endNZ2Z5TFB4cmFVaHpXMEdvOG5ZVXV5VGhXRXIxb1lQMUZlUzZqZWczdUV3?oc=5",
+   "title": "Standing Out in a Crowded Inbox: How 2 Sales Pros Write Cold Emails That Convert - Built In Austin",
+   "text": "Standing Out in a Crowded Inbox: How 2 Sales Pros Write Cold Emails That Convert - Built In Austin. Standing Out in a Crowded Inbox: How 2 Sales Pros Write Cold Emails That Convert Built In Austin",
+   "content_hash": "ff20d9088a45189f",
+   "raw_feed_hash": "d924b1f6dd2c097e717cb0c11ec95faf56cb69e37ff2e96718d4a850ad74f69c",
+   "published_at": 1683529200.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_1f4fd8e642",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "34a302dbaa3a375e",
+   "source": "financial-planning.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxNbzA5VVU3R016eDRFcTQ2U1FTQThzbXZ0Tl9iM3laeGZOX2FhVWZlWEI2MEdGVWhGaW4zQzVKSERHcnQwaFF6U0x6RGtXbGdEZUFPMF9tS1ljeHJtb1oxY3I1RG5xZnFiMGFJcnVGU3VRTzQxLXd5eUNvZEYxeVBILXhVZG9wWUZ5R29RWUh5c3dNQVlBbFhUMm9XNDRtZzR3el9iNmgwWUZSWnF2dzg0MVVEb1VWRTdLaXpJQlhrSHhxb2lK?oc=5",
+   "title": "Track 1: Next-level client communication that goes beyond automated emails - financial-planning.com",
+   "text": "Track 1: Next-level client communication that goes beyond automated emails - financial-planning.com. Track 1: Next-level client communication that goes beyond automated emails financial-planning.com",
+   "content_hash": "7d8f33678ab1117d",
+   "raw_feed_hash": "d924b1f6dd2c097e717cb0c11ec95faf56cb69e37ff2e96718d4a850ad74f69c",
+   "published_at": 1687503600.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_1f4fd8e642",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "248a9e99920abde8",
+   "source": "Business Insider",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxOaGh5LVB6UXh0YVh4NElwX2dxRUhrdk5aY0h6d2hYR19NNkIzWWliVFhpYmduZEcxWmFwSnlCZ2xOM0prdXJYcEF5TEtsbnZvYURGUzdza1NpWDJGUHcwU2xySWJBU1d3R0JsNl9tQU5jWWRaSC00WDJlVl96VkYycGRPRHhjV0MteGFHVXNocnIwMGtMa1pvT0V1Z1h5ak0?oc=5",
+   "title": "3 Cold-Email Tips From Small-Business Founders to Grow Company Profits - Business Insider",
+   "text": "3 Cold-Email Tips From Small-Business Founders to Grow Company Profits - Business Insider. 3 Cold-Email Tips From Small-Business Founders to Grow Company Profits Business Insider",
+   "content_hash": "fabedb0f5b2946cf",
+   "raw_feed_hash": "d924b1f6dd2c097e717cb0c11ec95faf56cb69e37ff2e96718d4a850ad74f69c",
+   "published_at": 1695970800.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_1f4fd8e642",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "87e5c77143f18930",
+   "source": "CanvasRebel Magazine",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiVEFVX3lxTE5KVEtYRkI2UWZIc0Jnb00waU15cmdlYTAxdXZhdWdoY2pMM2xuMFgzYlJoTUhIT1FjVjJLRmxQVEtCWExPV1VmejQyMEJpNGdqbjN3bw?oc=5",
+   "title": "Meet Summer Young - CanvasRebel Magazine",
+   "text": "Meet Summer Young - CanvasRebel Magazine. Meet Summer Young CanvasRebel Magazine",
+   "content_hash": "097d98b2c5a7bdb1",
+   "raw_feed_hash": "d924b1f6dd2c097e717cb0c11ec95faf56cb69e37ff2e96718d4a850ad74f69c",
+   "published_at": 1688367600.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_1f4fd8e642",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "0125bde93f3b9a0c",
+   "source": "BetterUp",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTFB4V2t6SGZYUDNYdlBhcGxuSWREc3g2TVBtUXY2VXVHUFhCVEhHY182V1NqdlEzOTg2c0JjTkhiNWZvUHJ3ZlotSU9LeGdibDAzSTJJZzhIakp2SDlsd1JLaEpn?oc=5",
+   "title": "25 unique email sign-offs to make a good impression - BetterUp",
+   "text": "25 unique email sign-offs to make a good impression - BetterUp. 25 unique email sign-offs to make a good impression BetterUp",
+   "content_hash": "c16b53170a9df8b4",
+   "raw_feed_hash": "d924b1f6dd2c097e717cb0c11ec95faf56cb69e37ff2e96718d4a850ad74f69c",
+   "published_at": 1695366000.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_1f4fd8e642",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "416197ad878a426a",
+   "source": "Clifford Chance",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxOWlRINGlNNFkyV3dLejEtX1A1aHRHWGlyT0pOcUJMalJHYmJheUs2R2pnOU50Q1l1bDRuUHVJa05raUxXMWc1bm40aFhVTk1FNUJvWUVMZzFPc0lUdkNNRHVDRFZWXzdxZG9WWUQycEZtM3p3NUpqbm9leFhZRW9iSXJBSUxKeFF1b1NzaVIyTUV6LWFZYlAtQlNudWlyTHFIRkNHV3ZIREdib3Rzek50dHAyc1Vramtxdnc?oc=5",
+   "title": "Sovereign Debt Restructuring \u2013 Three New York Assembly Active Bills - Clifford Chance",
+   "text": "Sovereign Debt Restructuring \u2013 Three New York Assembly Active Bills - Clifford Chance. Sovereign Debt Restructuring \u2013 Three New York Assembly Active Bills Clifford Chance",
+   "content_hash": "206c97594dbe4683",
+   "raw_feed_hash": "d924b1f6dd2c097e717cb0c11ec95faf56cb69e37ff2e96718d4a850ad74f69c",
+   "published_at": 1684306800.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_1f4fd8e642",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "db613d21fa295f80",
+   "source": "NerdWallet",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE05cmhUVF9yeWlRLTdzQURmRG5VUVdPc3hoMUpWRS1ZdmJkeU1Kc3ljbnprNEV6aTFtWEFzNEZ2QUFGOXVlQ05hY0p2ZkZyNHVtd3Bjcmhyemc0UTdyRFppbTM0YUdwR1U1LU14Y1oyZw?oc=5",
+   "title": "How to Contact Hyatt Customer Service - NerdWallet",
+   "text": "How to Contact Hyatt Customer Service - NerdWallet. How to Contact Hyatt Customer Service NerdWallet",
+   "content_hash": "1fe173abee06d0b1",
+   "raw_feed_hash": "d924b1f6dd2c097e717cb0c11ec95faf56cb69e37ff2e96718d4a850ad74f69c",
+   "published_at": 1692342000.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_1f4fd8e642",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "dab2f44869e79b13",
+   "source": "TechTarget",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxPeDh4VTFmZE5NOUMxRDl1UTY5T2c0WlFuRG5XNzAtakxCRUhBTkdsNUxsbmxpZVZFejJ2MkJxbk1tN2o2NWU3RlpKVzY2SmlFOXhUTElLU3hHelptTHlSTTJsZHlRR3RWTU9tY1Zkc0VEVVJzS3RDdXFWa3Zlc0lrQ1BvYXprSTBHYlJFTjZUVjBkQQ?oc=5",
+   "title": "Top 10 SMS marketing best practices - TechTarget",
+   "text": "Top 10 SMS marketing best practices - TechTarget. Top 10 SMS marketing best practices TechTarget",
+   "content_hash": "fa65005b91cefc82",
+   "raw_feed_hash": "d924b1f6dd2c097e717cb0c11ec95faf56cb69e37ff2e96718d4a850ad74f69c",
+   "published_at": 1683788400.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_1f4fd8e642",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a80bb53c3aac94a0",
+   "source": "Zoom",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTE9sQXlzU2lXOUIxaFVHZzhucU1LeUprT09GWk4yeC12UnZMcU9JZnFwRGpyVFdCUWNZcGdCNkFfbUk3WUoweWpRNnJ5ejdIQlBsbFE?oc=5",
+   "title": "Zoom Scheduler, now generally available, allows users to align calendars with clients and contacts quickly and easily - Zoom",
+   "text": "Zoom Scheduler, now generally available, allows users to align calendars with clients and contacts quickly and easily - Zoom. Zoom Scheduler, now generally available, allows users to align calendars with clients and contacts quickly and easily Zoom",
+   "content_hash": "2519e7e884a5e149",
+   "raw_feed_hash": "148be68d20cea9bb9a256979232b44cf050d063c6e557b06cd2463e6ddab39e5",
+   "published_at": 1687330800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_471d7ab842",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "eb489c268f15524e",
+   "source": "Salesforce",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTFBPcjJ3U3VyMUlBU3dpdUxyYUd4Y3E0X3BoZGtVTlVhUDNBckdCTWNPRzBrZTdoSUhEWno0dEZLRzJZMjV0MGFPRzBEaUE0MWZHb1hJeUpjSVlUcXlrUFFhcGNuQ3FVYlk?oc=5",
+   "title": "Are Your Sales Emails Getting Ignored? These 6 Tips Can Help - Salesforce",
+   "text": "Are Your Sales Emails Getting Ignored? These 6 Tips Can Help - Salesforce. Are Your Sales Emails Getting Ignored? These 6 Tips Can Help Salesforce",
+   "content_hash": "b06f0e1c7401b885",
+   "raw_feed_hash": "148be68d20cea9bb9a256979232b44cf050d063c6e557b06cd2463e6ddab39e5",
+   "published_at": 1689231600.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_471d7ab842",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f5e3a183f8b6b016",
+   "source": "McKinsey & Company",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxQY3FVbmpSa1hFYk43SVJqdXA2QUxYSDR3bkc2QU9WNkFfQ1g4aUNtczNkc3dlU0NiWW5aTUhJcjhGSllDa0ZtcE5uVzBBaktCZERFcUdzSjBSbU14dXVET2dYMTJEZmlFRWszMTJKcE9VeUI4N2lEMFZuN3h3UU44cF9RRkxsNF9sTERZU0U4MGxSeXdfdF95ODgySFRQRWEtZVJqQk5oZVZaMnlCaF9HTVYzamk5WHZqZEJMMW1CX3Q0NXYybFdZdERFeU16YnJuZG5OUUpOdUhnMVpD?oc=5",
+   "title": "Elevating customer experience: A win\u2013win for insurers and customers - McKinsey & Company",
+   "text": "Elevating customer experience: A win\u2013win for insurers and customers - McKinsey & Company. Elevating customer experience: A win\u2013win for insurers and customers McKinsey & Company",
+   "content_hash": "06bf0a35d9acf847",
+   "raw_feed_hash": "148be68d20cea9bb9a256979232b44cf050d063c6e557b06cd2463e6ddab39e5",
+   "published_at": 1695279600.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_471d7ab842",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "885513fed638788c",
+   "source": "Forbes",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPN1RjRThQemVIUFpyUDI3eEt4TGVlTFZ4Z1FlSnhQU05WQnZ0Nko5ZWxKZXFrV0VyaExueEl2SWRMYzZkcmZVN2JCRGc3czVPYkg2R2dUY0NObUUwLS1DTHcyVUJoeU4yVmxYZXlkc2ZxcDQxUWxVNlh1eDk5VkY1UUhXNTQtWXM4NDZFbFE3M2VieTdsUGc?oc=5",
+   "title": "100 Customer Experience Stats For 2023 - Forbes",
+   "text": "100 Customer Experience Stats For 2023 - Forbes. 100 Customer Experience Stats For 2023 Forbes",
+   "content_hash": "de1dd19db616015d",
+   "raw_feed_hash": "148be68d20cea9bb9a256979232b44cf050d063c6e557b06cd2463e6ddab39e5",
+   "published_at": 1687762800.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_471d7ab842",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d104d959f23ab347",
+   "source": "About Amazon",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNZjlad21UeEhIeVBCMFpHUkNrbkRnME5OR252dVlIMVNOTTdQVzRsRkFmempyOXVPb3ZHRFdsT0lMTGxMbjktR3ZuLUpmZ3p5T3VOLU5EQkVlTlQxZkt3LTk5dk5pZWl0MkhXYWNiSk8zNklVYzdEQURxUHpiSUNnQUFRZXFnbzViWVBjUS1CbEZFT1M4RzBjQzMzTnM?oc=5",
+   "title": "Amazon Stores CEO Doug Herrington explains how Amazon\u2019s helping other retailers get in on Prime Day - About Amazon",
+   "text": "Amazon Stores CEO Doug Herrington explains how Amazon\u2019s helping other retailers get in on Prime Day - About Amazon. Amazon Stores CEO Doug Herrington explains how Amazon\u2019s helping other retailers get in on Prime Day About Amazon",
+   "content_hash": "546f3e631f18f604",
+   "raw_feed_hash": "148be68d20cea9bb9a256979232b44cf050d063c6e557b06cd2463e6ddab39e5",
+   "published_at": 1688972400.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_471d7ab842",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "c931c7b4daa3fa8c",
+   "source": "Business Wire",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxOQXpLZkJuRlJVaGNfVmEtWG10dkhQM1BlcUk1cF8xZmdORUpRNjJpWmVHeHQ1VUxiQnlOYzJ5QXpicUh1aGhNVzluSU53VGNFZmY2Z01LTWRIcGFaMDJ1VEVKRkxGbV95SGNGY3ZIeFY4ZktDRGV3ZmFNWUtEdVpPUnBSQ2laRFhMdlRoUGprU0lla2xhVDYydEk0T0hqLW91ZmhLN3ZwRnJPTEZfRkY2bW1mblFpbGp0b1A1eHU3bFg0MG9uX291VmhySWNJZw?oc=5",
+   "title": "IntelePeer Announces New AI-Powered Analytics Engine for SmartFlows Platform - Business Wire",
+   "text": "IntelePeer Announces New AI-Powered Analytics Engine for SmartFlows Platform - Business Wire. IntelePeer Announces New AI-Powered Analytics Engine for SmartFlows Platform Business Wire",
+   "content_hash": "d86c9abba18222ff",
+   "raw_feed_hash": "148be68d20cea9bb9a256979232b44cf050d063c6e557b06cd2463e6ddab39e5",
+   "published_at": 1694674800.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_471d7ab842",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f388c50dcdfcd5b0",
+   "source": "Barron's",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOU2dFaDVfX1FpTERaLVhUQURBTW0xcmxMLUlmb3VHRGNNcElDUzJVZE5SUkI3SnlPajV3Q0luUUw1U3lwLXJ4ZkhMYXVGRlh3Q2puNUFyTTczZDdvdEhyT0RCSlVDVFlmZHhQQ3RwZE9RNFc4SmN0SjM1M1MzTUZTRmwzSmJFUS1MenBQZmdIb2J6R0xuZXBIaWZteGE2WVV4d0d4V3pB?oc=5",
+   "title": "Financial Advisors Share Their Best Time-Saving Hacks - Barron's",
+   "text": "Financial Advisors Share Their Best Time-Saving Hacks - Barron's. Financial Advisors Share Their Best Time-Saving Hacks Barron's",
+   "content_hash": "91dfc34cc2a0c2f1",
+   "raw_feed_hash": "148be68d20cea9bb9a256979232b44cf050d063c6e557b06cd2463e6ddab39e5",
+   "published_at": 1685516400.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_471d7ab842",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "17b37be4db6ae2f7",
+   "source": "Chase Bank",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPbVUtZV9FNkV2MmVHb1FUZzNKTW1FdExNUVNROUZoT1l4eW1mOU80cXNmNEtoZDlWYjNLUHFrRnBmRkMyQnF4MGl1angtSFoyeVBrWVh1WjhNRnp5dG5PZUtuREY5NFpGUmFPbzkyNURtVTczbDNZcTZHZDJvcWx2SF9UNmRvUWlwMldQUHM1VDZfbXFyRmxOYXZCQW85b1NpUUhiaF9RYzNOVFk?oc=5",
+   "title": "Guide to the Chase Sapphire Lounge at Boston Logan Airport - Chase Bank",
+   "text": "Guide to the Chase Sapphire Lounge at Boston Logan Airport - Chase Bank. Guide to the Chase Sapphire Lounge at Boston Logan Airport Chase Bank",
+   "content_hash": "a003a828609110eb",
+   "raw_feed_hash": "148be68d20cea9bb9a256979232b44cf050d063c6e557b06cd2463e6ddab39e5",
+   "published_at": 1685655073.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_471d7ab842",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "e4da574d8051a8df:c0",
+   "source_id": "e4da574d8051a8df",
+   "subject": "article",
+   "predicate": "is about",
+   "object": "cold email writing strategies from two sales professionals",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Standing Out in a Crowded Inbox: How 2 Sales Pros Write Cold Emails That Convert - Built In Austin",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683529200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Built In Austin"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_8a8b37d631",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_1f4fd8e642"
+   }
+  },
+  {
+   "claim_id": "a80bb53c3aac94a0:c0",
+   "source_id": "a80bb53c3aac94a0",
+   "subject": "Zoom Scheduler",
+   "predicate": "is",
+   "object": "now generally available",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Zoom Scheduler, now generally available",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1687330800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Zoom Scheduler"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_90386ddeb3",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_471d7ab842"
+   }
+  },
+  {
+   "claim_id": "a80bb53c3aac94a0:c1",
+   "source_id": "a80bb53c3aac94a0",
+   "subject": "Zoom Scheduler",
+   "predicate": "allows",
+   "object": "users to align calendars with clients and contacts quickly and easily",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "allows users to align calendars with clients and contacts quickly and easily",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1687330800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Zoom Scheduler"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_90386ddeb3",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_471d7ab842"
+   }
+  },
+  {
+   "claim_id": "34a302dbaa3a375e:c0",
+   "source_id": "34a302dbaa3a375e",
+   "subject": "Track 1",
+   "predicate": "is about",
+   "object": "next-level client communication that goes beyond automated emails",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Track 1: Next-level client communication that goes beyond automated emails - financial-planning.com",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1687503600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Track 1",
+    "financial-planning.com"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_993077e371",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_1f4fd8e642"
+   }
+  },
+  {
+   "claim_id": "eb489c268f15524e:c0",
+   "source_id": "eb489c268f15524e",
+   "subject": "Sales emails",
+   "predicate": "are getting ignored",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "hedged",
+   "polarity": "affirm",
+   "claim_class": "inferred_implication",
+   "supporting_span": "Are Your Sales Emails Getting Ignored?",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1689231600.0,
+   "extraction_confidence": 0.7,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Sales emails"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_bd71541fa0",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_471d7ab842"
+   }
+  },
+  {
+   "claim_id": "eb489c268f15524e:c1",
+   "source_id": "eb489c268f15524e",
+   "subject": "6 tips",
+   "predicate": "can help",
+   "object": "sales emails getting ignored",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "hedged",
+   "polarity": "affirm",
+   "claim_class": "forecast",
+   "supporting_span": "These 6 Tips Can Help",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1689231600.0,
+   "extraction_confidence": 0.8,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "6 tips"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_bd71541fa0",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_471d7ab842"
+   }
+  },
+  {
+   "claim_id": "248a9e99920abde8:c0",
+   "source_id": "248a9e99920abde8",
+   "subject": "article",
+   "predicate": "provides",
+   "object": "3 cold-email tips from small-business founders to grow company profits",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "3 Cold-Email Tips From Small-Business Founders to Grow Company Profits - Business Insider",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1695970800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Business Insider"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_63833ebbf0",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_1f4fd8e642"
+   }
+  },
+  {
+   "claim_id": "f5e3a183f8b6b016:c0",
+   "source_id": "f5e3a183f8b6b016",
+   "subject": "Elevating customer experience",
+   "predicate": "is",
+   "object": "a win\u2013win for insurers and customers",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Elevating customer experience: A win\u2013win for insurers and customers",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1695279600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "McKinsey & Company"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_b36282b39a",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_471d7ab842"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Built In Austin",
+   "normalized": "built in austin",
+   "candidates": [
+    {
+     "entity_id": "ent_a4f8361153",
+     "canonical": "built in austin",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Built In Austin"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Zoom Scheduler",
+   "normalized": "zoom scheduler",
+   "candidates": [
+    {
+     "entity_id": "ent_261541fa6c",
+     "canonical": "zoom scheduler",
+     "support": 0.7222,
+     "evidence_mentions": [
+      "Zoom Scheduler",
+      "Zoom Scheduler"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Zoom Scheduler",
+   "normalized": "zoom scheduler",
+   "candidates": [
+    {
+     "entity_id": "ent_261541fa6c",
+     "canonical": "zoom scheduler",
+     "support": 0.7222,
+     "evidence_mentions": [
+      "Zoom Scheduler",
+      "Zoom Scheduler"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Track 1",
+   "normalized": "track 1",
+   "candidates": [
+    {
+     "entity_id": "ent_fd7b35c631",
+     "canonical": "track 1",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Track 1"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "financial-planning.com",
+   "normalized": "financial-planning com",
+   "candidates": [
+    {
+     "entity_id": "ent_d73933db72",
+     "canonical": "financial-planning com",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "financial-planning.com"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Sales emails",
+   "normalized": "sales emails",
+   "candidates": [
+    {
+     "entity_id": "ent_1b9a4fb4ea",
+     "canonical": "sales emails",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Sales emails"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "6 tips",
+   "normalized": "6 tips",
+   "candidates": [
+    {
+     "entity_id": "ent_c4e81ea362",
+     "canonical": "6 tips",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "6 tips"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Business Insider",
+   "normalized": "business insider",
+   "candidates": [
+    {
+     "entity_id": "ent_b50759d7aa",
+     "canonical": "business insider",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Business Insider"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "McKinsey & Company",
+   "normalized": "mckinsey &",
+   "candidates": [
+    {
+     "entity_id": "ent_d8546ba112",
+     "canonical": "mckinsey &",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "McKinsey & Company"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "e4da574d8051a8df": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1696118400.0,
+   "claimed_pubdate_ts": 1683529200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683529200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "34a302dbaa3a375e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1696118400.0,
+   "claimed_pubdate_ts": 1687503600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687503600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "248a9e99920abde8": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1696118400.0,
+   "claimed_pubdate_ts": 1695970800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1695970800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "87e5c77143f18930": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1696118400.0,
+   "claimed_pubdate_ts": 1688367600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1688367600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "0125bde93f3b9a0c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1696118400.0,
+   "claimed_pubdate_ts": 1695366000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1695366000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "416197ad878a426a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1696118400.0,
+   "claimed_pubdate_ts": 1684306800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684306800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "db613d21fa295f80": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1696118400.0,
+   "claimed_pubdate_ts": 1692342000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1692342000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "dab2f44869e79b13": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1696118400.0,
+   "claimed_pubdate_ts": 1683788400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683788400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a80bb53c3aac94a0": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1696118400.0,
+   "claimed_pubdate_ts": 1687330800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687330800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "eb489c268f15524e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1696118400.0,
+   "claimed_pubdate_ts": 1689231600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689231600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f5e3a183f8b6b016": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1696118400.0,
+   "claimed_pubdate_ts": 1695279600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1695279600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "885513fed638788c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1696118400.0,
+   "claimed_pubdate_ts": 1687762800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687762800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d104d959f23ab347": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1696118400.0,
+   "claimed_pubdate_ts": 1688972400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1688972400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "c931c7b4daa3fa8c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1696118400.0,
+   "claimed_pubdate_ts": 1694674800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1694674800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f388c50dcdfcd5b0": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1696118400.0,
+   "claimed_pubdate_ts": 1685516400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685516400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "17b37be4db6ae2f7": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1696118400.0,
+   "claimed_pubdate_ts": 1685655073.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685655073.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_8a8b37d631",
+   "member_ids": [
+    "e4da574d8051a8df"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Built In Austin",
+   "primary_source": "Built In Austin",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_993077e371",
+   "member_ids": [
+    "34a302dbaa3a375e"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "financial-planning.com",
+   "primary_source": "financial-planning.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_63833ebbf0",
+   "member_ids": [
+    "248a9e99920abde8"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Insider",
+   "primary_source": "Business Insider",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_ad303dbd25",
+   "member_ids": [
+    "87e5c77143f18930"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "CanvasRebel Magazine",
+   "primary_source": "CanvasRebel Magazine",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9b50a9d6a2",
+   "member_ids": [
+    "0125bde93f3b9a0c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "BetterUp",
+   "primary_source": "BetterUp",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a006ac9c00",
+   "member_ids": [
+    "416197ad878a426a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Clifford Chance",
+   "primary_source": "Clifford Chance",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_4accdc792e",
+   "member_ids": [
+    "db613d21fa295f80"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "NerdWallet",
+   "primary_source": "NerdWallet",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_1f55224342",
+   "member_ids": [
+    "dab2f44869e79b13"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "TechTarget",
+   "primary_source": "TechTarget",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_90386ddeb3",
+   "member_ids": [
+    "a80bb53c3aac94a0"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Zoom",
+   "primary_source": "Zoom",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_bd71541fa0",
+   "member_ids": [
+    "eb489c268f15524e"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Salesforce",
+   "primary_source": "Salesforce",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b36282b39a",
+   "member_ids": [
+    "f5e3a183f8b6b016"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "McKinsey & Company",
+   "primary_source": "McKinsey & Company",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_4771508995",
+   "member_ids": [
+    "885513fed638788c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Forbes",
+   "primary_source": "Forbes",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_5dd8ca869b",
+   "member_ids": [
+    "d104d959f23ab347"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "About Amazon",
+   "primary_source": "About Amazon",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_556fc0ca21",
+   "member_ids": [
+    "c931c7b4daa3fa8c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Wire",
+   "primary_source": "Business Wire",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_f8255d7f8f",
+   "member_ids": [
+    "f388c50dcdfcd5b0"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Barron's",
+   "primary_source": "Barron's",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_6965053ddc",
+   "member_ids": [
+    "17b37be4db6ae2f7"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Chase Bank",
+   "primary_source": "Chase Bank",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "e4da574d8051a8df:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683529200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "a80bb53c3aac94a0:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1687330800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "a80bb53c3aac94a0:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1687330800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "34a302dbaa3a375e:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1687503600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "eb489c268f15524e:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1689231600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "eb489c268f15524e:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1689231600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "248a9e99920abde8:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1695970800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "f5e3a183f8b6b016:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1695279600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "e4da574d8051a8df:c0",
+  "a80bb53c3aac94a0:c0",
+  "a80bb53c3aac94a0:c1",
+  "34a302dbaa3a375e:c0",
+  "eb489c268f15524e:c0",
+  "eb489c268f15524e:c1",
+  "248a9e99920abde8:c0",
+  "f5e3a183f8b6b016:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_9b7ae165a8": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_1f4fd8e642": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_471d7ab842": {
+   "status": "fulfilled",
+   "n_claims": 5,
+   "n_included": 5
+  },
+  "req_2ad125310b": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_8cfabef12d": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_bc7546e3ea": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_5e2c05373a": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_9b7ae165a8",
+  "req_2ad125310b",
+  "req_8cfabef12d",
+  "req_bc7546e3ea",
+  "req_5e2c05373a"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 16,
+  "n_contradictions": 0,
+  "n_documents": 16
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 13.832,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "e24a7fb4cd1ab3e2",
+ "bundle_hash": "e24a7fb4cd1ab3e2",
+ "_persisted_at": "2026-07-13T02:05:14Z"
+}

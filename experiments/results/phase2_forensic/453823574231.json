@@ -1,0 +1,352 @@
+{
+ "domain": "fundraising",
+ "question": "Will OpenAI raise a new funding round valuing it above 80 billion?",
+ "as_of": "2023-10-01",
+ "horizon": "2024-01-01",
+ "n_requirements": 8,
+ "requirements": [
+  {
+   "id": "req_649d42a859",
+   "need": "yes if a funding round closes with a valuation >= 80 billion USD by 2024-01-01, ",
+   "why": "the terminal outcome standing as of the question date sets the base rate",
+   "voi": 1.0
+  },
+  {
+   "id": "req_6363c56948",
+   "need": "value/context of potential_investors.risk_appetite",
+   "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "voi": 0.9
+  },
+  {
+   "id": "req_9561306146",
+   "need": "value/context of openai.negotiation_leverage",
+   "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "voi": 0.8
+  },
+  {
+   "id": "req_46bd6bb2c5",
+   "need": "value/context of microsoft.willingness_to_invest_more",
+   "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "voi": 0.8
+  }
+ ],
+ "rss_windows": [
+  {
+   "query": "OpenAI raise funding round valuing above billion openai sam altman microsoft after:2023-05-04 before:2023-10-01",
+   "after": "2023-05-04",
+   "before": "2023-10-01",
+   "status": "ok",
+   "code": 200,
+   "n_items": 8,
+   "raw_hash": "95e9eac49a32"
+  },
+  {
+   "query": "potential investors risk appetite after:2023-05-04 before:2023-10-01",
+   "after": "2023-05-04",
+   "before": "2023-10-01",
+   "status": "ok",
+   "code": 200,
+   "n_items": 8,
+   "raw_hash": "bd56d8a7b49f"
+  },
+  {
+   "query": "openai negotiation leverage after:2023-05-04 before:2023-10-01",
+   "after": "2023-05-04",
+   "before": "2023-10-01",
+   "status": "ok",
+   "code": 200,
+   "n_items": 1,
+   "raw_hash": "33fa55891e7d"
+  }
+ ],
+ "n_documents": 17,
+ "documents": [
+  {
+   "source": "WSJ",
+   "title": "Exclusive | OpenAI Seeks New Valuation of Up to $90 Billion in Sale of",
+   "pub": 1695711600.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "The Information",
+   "title": "Sam Altman\u2019s Tangle of Investments - The Information",
+   "pub": 1689145200.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "Business Insider",
+   "title": "OpenAI CEO Sam Altman says there's 'too much of an investor frenzy aro",
+   "pub": 1686121200.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "TechCrunch",
+   "title": "Sam Altman shares his optimistic view of our AI future - TechCrunch",
+   "pub": 1685084400.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "CNBC",
+   "title": "OpenAI launches ChatGPT Enterprise, the company's biggest announcement",
+   "pub": 1693206000.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "observer.com",
+   "title": "Sam Altman, Grimes and Others Warn A.I. Poses an Extinction Threat - o",
+   "pub": 1685602800.0,
+   "temporal": "likely_pre_asof"
+  }
+ ],
+ "temporal_summary": {
+  "likely_pre_asof": 17
+ },
+ "included_claims": [
+  {
+   "id": "a6f9d325c322da23:c0",
+   "class": "official_record",
+   "subject": "OpenAI",
+   "predicate": "seeks new valuation of up to",
+   "span": "OpenAI Seeks New Valuation of Up to $90 Billion in Sale of Existing Shares"
+  },
+  {
+   "id": "387922fca3085e15:c0",
+   "class": "observed_fact",
+   "subject": "Risk Tolerance and Risk Capacity",
+   "predicate": "is topic of article",
+   "span": "Risk Tolerance and Risk Capacity: Why the Difference Matters - Morningstar"
+  },
+  {
+   "id": "7bf686f381c76de4:c0",
+   "class": "official_record",
+   "subject": "OpenAI",
+   "predicate": "signs deal with",
+   "span": "ChatGPT-maker OpenAI signs deal with AP to license news stories"
+  },
+  {
+   "id": "4533d5daab36c670:c0",
+   "class": "observed_fact",
+   "subject": "Sam Altman",
+   "predicate": "has",
+   "span": "Sam Altman\u2019s Tangle of Investments"
+  },
+  {
+   "id": "4533d5daab36c670:c1",
+   "class": "official_record",
+   "subject": "The Information",
+   "predicate": "reported on",
+   "span": "Sam Altman\u2019s Tangle of Investments - The Information"
+  },
+  {
+   "id": "0821af2d0b2dd492:c0",
+   "class": "observed_fact",
+   "subject": "invesco.com",
+   "predicate": "presents",
+   "span": "A macro approach to navigating the business cycle - invesco.com"
+  }
+ ],
+ "n_excluded": 0,
+ "n_suspicious": 0,
+ "entities": [
+  {
+   "mention": "OpenAI",
+   "top": "openai",
+   "resolved": true
+  },
+  {
+   "mention": "Morningstar",
+   "top": "morningstar",
+   "resolved": true
+  },
+  {
+   "mention": "OpenAI",
+   "top": "openai",
+   "resolved": true
+  },
+  {
+   "mention": "AP",
+   "top": "ap",
+   "resolved": true
+  },
+  {
+   "mention": "Sam Altman",
+   "top": "sam altman",
+   "resolved": true
+  }
+ ],
+ "dependence_groups": [
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  }
+ ],
+ "n_independent_sources": 17,
+ "contradictions": [],
+ "actor_visibility": {
+  "public": 7
+ },
+ "leakage_flags": [],
+ "bundle_hash": "7036ab874c2b7f34",
+ "plan_diff": {
+  "n_entries": 14,
+  "n_structural_changes": 13,
+  "lean_only": false,
+  "entries": [
+   {
+    "kind": "entity_added",
+    "component": "associated_press",
+    "detail": "OpenAI signed a deal with AP to license news stories, indicating a strategic partnership that may affect valuation.",
+    "supporting_claim_ids": [
+     "7bf686f381c76de4:c0"
+    ],
+    "before": "",
+    "after": "associated_press"
+   },
+   {
+    "kind": "relation_added",
+    "component": "openai-partner-associated_press",
+    "detail": "",
+    "supporting_claim_ids": [
+     "7bf686f381c76de4:c0"
+    ],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "hypothesis_reweighted",
+    "component": "high_demand",
+    "detail": "Official record shows OpenAI seeks valuation up to $90 billion, above the $80 billion threshold, supporting high demand.",
+    "supporting_claim_ids": [
+     "a6f9d325c322da23:c0"
+    ],
+    "before": "0.4",
+    "after": "0.6"
+   },
+   {
+    "kind": "hypothesis_reweighted",
+    "component": "low_demand",
+    "detail": "Sam Altman's statement about 'too much investor frenzy' suggests caution but does not negate the high valuation target.",
+    "supporting_claim_ids": [
+     "35bcb8fba8c4ce98:c0"
+    ],
+    "before": "0.2",
+    "after": "0.12"
+   },
+   {
+    "kind": "lean_changed",
+    "component": "outcome_lean",
+    "detail": "",
+    "supporting_claim_ids": [
+     "a6f9d325c322da23:c0"
+    ],
+    "before": "neutral",
+    "after": "strong_yes"
+   },
+   {
+    "kind": "uncertainty_changed",
+    "component": "state_priors",
+    "detail": "Official record confirms a valuation target above $80 billion, narrowing uncertainty toward a positive outcome.",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": "narrow"
+   },
+   {
+    "kind": "requirement_fulfilled",
+    "component": "req_649d42a859",
+    "detail": "4 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_fulfilled",
+    "component": "req_6363c56948",
+    "detail": "2 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_fulfilled",
+    "component": "req_9561306146",
+    "detail": "1 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_46bd6bb2c5",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_535f48c3e9",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_6ff24c2a90",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_07a1dde056",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_ad99b9d627",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   }
+  ]
+ },
+ "structural_changes": 13,
+ "lean_only": false,
+ "n_institutions_pre": 2,
+ "n_institutions_post": 2,
+ "n_events_pre": 2,
+ "n_events_post": 9,
+ "observation_state_deltas": 0,
+ "terminal_pre": {
+  "no": 0.54,
+  "yes": 0.46
+ },
+ "terminal_post": {
+  "yes": 0.54,
+  "no": 0.46
+ },
+ "terminal_changed": true,
+ "evidence_is_causal": true
+}

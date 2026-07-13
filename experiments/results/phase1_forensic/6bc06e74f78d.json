@@ -1,0 +1,217 @@
+{
+ "question": "Will the transit strike be resolved before Monday's commute?",
+ "as_of": "2023-07-14",
+ "horizon": "2023-07-17",
+ "outcome_contract": {
+  "family": "binary",
+  "options": [
+   "resolved",
+   "not_resolved"
+  ],
+  "readout_var": "outcome",
+  "resolution_rule": "resolved if and only if a binding agreement is reached and service is restored before 2023-07-17 08:00 local time; otherwise not_resolved"
+ },
+ "readout_repaired": true,
+ "outcome_lean": "neutral",
+ "interpretations": [
+  {
+   "id": "primary",
+   "reading": "Will the transit strike be resolved such that normal commute service resumes by Monday morning, 2023-07-17?",
+   "weight": 1.0
+  }
+ ],
+ "n_entities": 4,
+ "n_institutions": 2,
+ "n_populations": 2,
+ "n_latents": 6,
+ "sample_entities": [
+  "transit_authority",
+  "union_leadership",
+  "mayor",
+  "mediator"
+ ],
+ "sample_latents": [
+  {
+   "path": "union_leadership.hardline_stance",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.8
+  },
+  {
+   "path": "transit_authority.financial_reserves",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.7
+  },
+  {
+   "path": "mayor.intervention_willingness",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.6
+  },
+  {
+   "path": "mediator.effectiveness",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.5
+  }
+ ],
+ "accepted_mechanisms": [
+  "poisson_arrival",
+  "generic_outcome_prior",
+  "generic_outcome_prior"
+ ],
+ "rejected_mechanisms": [
+  [
+   "bargaining_rubinstein",
+   "no executable operator ('swm.world_model_v2.regist"
+  ],
+  [
+   "belief_update_exposure",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "relationship_update_bounded",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "institutional_vote",
+   "no executable operator ('swm.world_model_v2.transi"
+  ]
+ ],
+ "experimental_mechanisms": [
+  "strike_negotiation_dynamics"
+ ],
+ "mechanism_tiers": {
+  "bargaining between transit authority and union": 7,
+  "mediation facilitation": 7,
+  "public pressure influence": 7,
+  "deadline-driven decision making": 7,
+  "outcome_resolution": 7
+ },
+ "fallbacks_used": [
+  {
+   "process": "outcome_resolution",
+   "tier": 7,
+   "family": "generic_outcome_prior",
+   "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+  }
+ ],
+ "structural_hypotheses": [
+  {
+   "id": "rapid_resolution",
+   "lean": "weak_yes",
+   "prior": 0.3
+  },
+  {
+   "id": "deadlock_extension",
+   "lean": "strong_no",
+   "prior": 0.5
+  },
+  {
+   "id": "mayoral_intervention",
+   "lean": "weak_yes",
+   "prior": 0.2
+  }
+ ],
+ "fidelity_plan": {
+  "explicit": [
+   "transit_authority",
+   "union_leadership",
+   "mayor",
+   "mediator",
+   "striking_workers",
+   "commuters",
+   "mediation_board",
+   "union_leadership.hardline_stance",
+   "transit_authority.financial_reserves",
+   "mayor.intervention_willingness",
+   "mediator.effectiveness",
+   "striking_workers.hardliners.wage_demand",
+   "striking_workers.moderates.wage_demand"
+  ],
+  "marginalized_with_uncertainty": [],
+  "n_particles": 76
+ },
+ "omissions": [
+  {
+   "component": "individual commuter mode choice details",
+   "sensitivity": 0.2,
+   "reason": "negligible sensitivity because outcome depends only on strike resolution, not on"
+  },
+  {
+   "component": "detailed financial markets impact",
+   "sensitivity": 0.1,
+   "reason": "negligible sensitivity because question is about strike resolution, not economic"
+  }
+ ],
+ "world_provenance_statuses": {},
+ "n_deltas": 76,
+ "readout": "terminal_states",
+ "structural_posterior": {
+  "rapid_resolution": 0.3026,
+  "deadlock_extension": 0.5,
+  "mayoral_intervention": 0.1974
+ },
+ "delta_log_sample": [
+  {
+   "at": 1689551999.0,
+   "event": "resolve_outcome",
+   "operator": "generic_outcome_prior",
+   "reasons": [
+    "generic_fallback",
+    "lean=weak_yes"
+   ]
+  }
+ ],
+ "SIMULATION_RESULT": {
+  "simulation_status": "completed_with_degradation",
+  "support_grade": "highly_speculative",
+  "recommendation_status": "not_requested",
+  "raw_distribution": {
+   "not_resolved": 0.6053,
+   "resolved": 0.3947
+  },
+  "raw_probability": 0.3947,
+  "structural_disagreement": {
+   "rapid_resolution": 0.3026,
+   "deadlock_extension": 0.5,
+   "mayoral_intervention": 0.1974
+  },
+  "uncertainty_decomposition": {
+   "n_particles": 76,
+   "structural_model_uncertainty": 0.9362,
+   "structural_posterior": {
+    "rapid_resolution": 0.3026,
+    "deadlock_extension": 0.5,
+    "mayoral_intervention": 0.1974
+   },
+   "state_parameter_uncertainty": 0.2474,
+   "evidence_uncertainty": 0.5
+  },
+  "limitations": [
+   "omitted (negligible-sensitivity): individual commuter mode choice details",
+   "omitted (negligible-sensitivity): detailed financial markets impact",
+   "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+  ],
+  "plan_hash": "21dd43e979dd"
+ },
+ "plan_hash": "21dd43e979dd",
+ "latency_s": 17.29
+}

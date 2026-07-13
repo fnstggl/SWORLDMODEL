@@ -1,0 +1,1870 @@
+{
+ "bundle_id": "eb_b4e962",
+ "question": "Will the class-action settlement receive court approval?",
+ "as_of": 1682899200.0,
+ "compiler_plan_hash": "ba48fa540c31",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_464eb22ec0",
+   "claim_or_quantity": "The outcome is 'approved' if the court issues an order granting final approval; otherwise 'denied'.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "presiding_judge",
+    "plaintiff_lead_counsel",
+    "defendant_lead_counsel",
+    "class_representative"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_ee2dc8af56",
+   "claim_or_quantity": "value/context of settlement_amount",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "settlement_amount",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_af4ff7e5bc",
+   "claim_or_quantity": "value/context of objection_rate",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "objection_rate",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_2b7dab6fa1",
+   "claim_or_quantity": "value/context of attorneys_fees_requested",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "attorneys_fees_requested",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_b0b2f0338d",
+   "claim_or_quantity": "evidence discriminating structural hypothesis judicial_deference",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:judicial_deference",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_6f127957ac",
+   "claim_or_quantity": "evidence discriminating structural hypothesis judicial_scrutiny",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:judicial_scrutiny",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_8a6216446b",
+   "claim_or_quantity": "decision rules / process of federal_district_court",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "federal_district_court",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_464eb22ec0",
+   "terms": "class action settlement receive court approval presiding judge plaintiff lead counsel defendant lead counsel",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_ee2dc8af56",
+   "terms": "settlement amount",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_af4ff7e5bc",
+   "terms": "objection rate",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_464eb22ec0",
+   "logical_query": "class action settlement receive court approval presiding judge plaintiff lead counsel defendant lead counsel after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=class+action+settlement+receive+court+approval+presiding+judge+plaintiff+lead+counsel+defendant+lead+counsel+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783908584.72802,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:09:45 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw15BiSO44w5AKxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcLydevMQmsOLk_t2MSspJ-YXxKfklxcUFOYnFGcWpRWWpRfFGBkZmBuYGZnoGJvEFBgC4IjkY\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "e8d26af1675cd449d14b8c0ca4d4efdf614d98703005bf4bb8b5fce0054eee91",
+   "n_bytes": 25038,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.588
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_ee2dc8af56",
+   "logical_query": "settlement amount after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=settlement+amount+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783908585.3177793,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:09:46 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjytDikmJw1ZBiOFR1hiG54wxDChBXAnEDELfePMc6GYhLFp1nbQLiLiCeAcSGCpdY7YH4cvol1iKJK6wNQPyp6garQPUN1m_FvmwsJUD81p_NNCSQzRmIt2gGswlxc7yaePESm0BD00l5JeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwCItToR\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "332b514eb62fa5a30523e418cb35073184ebd5f4a1ed4e630189364c8b048f87",
+   "n_bytes": 145191,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.739
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_af4ff7e5bc",
+   "logical_query": "objection rate after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=objection+rate+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783908586.0612297,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:09:46 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw15BiOFR1hiG54wxDKhDXAXHrzXOsk4G4ZNF51iYg7gLiGUBsqHCJ1R6IL6dfYi2SuMLaAMSfqm6wClTfYP1W7MvGUgLEb_3ZTEMC2ZyBeItmMJsQD8eriRcvsQk82N27kUlJOSm_MD4lv6S4uCAnsTijOLWoLLUo3sjAyMzA3MBMz8AkvsAAANOTOTs\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "02a8cda551b26f2bb67e91696c73d67f4c10e6538d865909858cda99b43ac284",
+   "n_bytes": 46339,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.51
+  }
+ ],
+ "raw_content_refs": [
+  "02a8cda551b26f2bb67e91696c73d67f4c10e6538d865909858cda99b43ac284",
+  "332b514eb62fa5a30523e418cb35073184ebd5f4a1ed4e630189364c8b048f87",
+  "e8d26af1675cd449d14b8c0ca4d4efdf614d98703005bf4bb8b5fce0054eee91"
+ ],
+ "documents": [
+  {
+   "id": "9826c8d81bbb3ead",
+   "source": "Lawdragon",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTFBOQjNmUVd5bXgtcWlLM3gzdTRLS2h1SW5ybmFnOGN5QzlXS3czd3pKZzlhaE1QNjQyMWRCdG5yQVFBRnlCREtJOUlVRDI1Z24xMmZYalpUa3AteFN5TnlyYjdEb0NzTmpNMGVFdVByMHNqa0JGZXdj?oc=5",
+   "title": "Go to the Mat - Lawdragon",
+   "text": "Go to the Mat - Lawdragon. Go to the Mat Lawdragon",
+   "content_hash": "c251217ce356a3a5",
+   "raw_feed_hash": "e8d26af1675cd449d14b8c0ca4d4efdf614d98703005bf4bb8b5fce0054eee91",
+   "published_at": 1678176000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_464eb22ec0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "290ca1ba3cd8314f",
+   "source": "Los Angeles Times",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxOYjZNNEZLV1M3bVh5dTRubE1jNndLeHlBMTIxLWVTcDloM2R2S2JHMVVWR0xVbHNNeDdiWm82WHBtUFdEM0ZueHpLTG5FaXlkMjRnOXYyeG1Eckg2OFBSYU14bEhTNEF0NHN6QmhrRUtVTmpiSG9KWVhYUUlKWTVDZGdQek1QUlEyaEY0R29CcHpRUnpCTHcxOXB5X3lKUEd0enE3Y1ZqNDZTU2NfRjBsbHoxTEZkX1pxNG5xaUt4bVR2Zk5XNzlNUWhQeEE?oc=5",
+   "title": "$50-million Huntington Beach oil spill settlement wins final approval - Los Angeles Times",
+   "text": "$50-million Huntington Beach oil spill settlement wins final approval - Los Angeles Times. $50-million Huntington Beach oil spill settlement wins final approval Los Angeles Times",
+   "content_hash": "bb43da0cb417a127",
+   "raw_feed_hash": "e8d26af1675cd449d14b8c0ca4d4efdf614d98703005bf4bb8b5fce0054eee91",
+   "published_at": 1682406000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_464eb22ec0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "fa773243f7fdb84f",
+   "source": "American Civil Liberties Union",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9neFBJS1JMb3lSZlFSTEROZWlYM3NzNHRoRm1VOE5iMGhXMm9QaUtuU2g3R3hOcjBfSFAtUHVTZUZKMTFZNTRnT2MxUmxJYWFNV2lXT20wZ09KUkZnYWdfUmlnNk1uLUdN?oc=5",
+   "title": "Brown v. Lexington County, et al - American Civil Liberties Union",
+   "text": "Brown v. Lexington County, et al - American Civil Liberties Union. Brown v. Lexington County, et al American Civil Liberties Union",
+   "content_hash": "1b60e9b4b36646ba",
+   "raw_feed_hash": "e8d26af1675cd449d14b8c0ca4d4efdf614d98703005bf4bb8b5fce0054eee91",
+   "published_at": 1679986800.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_464eb22ec0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "09646472f15a2287",
+   "source": "Courthouse News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxPaG14amFQeVJ4ZzM5Y3ZBY0l3SGtaMDFjcEszQzAtUG5nMUdiLTNjMC11Z3hZdENSUEVZS0xyMmtKWVZXaG95cFNVNkg1VC1fNmZIY1VwcHFfSjR0c3VWOHEyRXR4ZjJzQ0RuQWhuRzBQajVVMFdrSERzNHNDM2lTRVdabW9CWFdpMFY4bHZpVFpndEpIX0laMkYtZjNKU2RXYzdHZFJ6T2hDX1U5aTdPRWZkYkxfX19aUG9KQUphMU55MWNHakE?oc=5",
+   "title": "Vaping class action gets $255 million settlement approval - Courthouse News",
+   "text": "Vaping class action gets $255 million settlement approval - Courthouse News. Vaping class action gets $255 million settlement approval Courthouse News",
+   "content_hash": "e1e018cbba0b50ba",
+   "raw_feed_hash": "e8d26af1675cd449d14b8c0ca4d4efdf614d98703005bf4bb8b5fce0054eee91",
+   "published_at": 1674201600.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_464eb22ec0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4d17471b378bcd68",
+   "source": "Knoxville News Sentinel",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxOV2FIY2xfQW96LW5lb0RMUTljbjhqQ3JnaUZRVGN3M0ZYQ1hfTldQUmNGM2xqbDJueXVKMlBOQ3B1bnV1RTRpWDBIYXZSclc5RDFNczNJR0poVEpZbmNaRVBuZkNyNWp2ZFEzY2NwS3Boa1VhQnNJaklsMGRRTVpCRDVNakpYTEJQYkZLSW1YcmhHbXVMazUtZzNqdU0ya1pJVk1WMkU0Z2xSMFZhZXI4aFhoSEFWZEYyYkJtVWJXb1hZYzBSV1NSeC16ZGY4czktM0k2NkkzNW1qc0tRVFE?oc=5",
+   "title": "How a Tennessee attorney sent cash from class action lawsuits to his favorite universities - Knoxville News Sentinel",
+   "text": "How a Tennessee attorney sent cash from class action lawsuits to his favorite universities - Knoxville News Sentinel. How a Tennessee attorney sent cash from class action lawsuits to his favorite universities Knoxville News Sentinel",
+   "content_hash": "d5251b5e26e836eb",
+   "raw_feed_hash": "e8d26af1675cd449d14b8c0ca4d4efdf614d98703005bf4bb8b5fce0054eee91",
+   "published_at": 1682924400.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_464eb22ec0",
+   "temporal_status": "uncertain"
+  },
+  {
+   "id": "c1d1dfca3c0de86d",
+   "source": "Reuters",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxObUdpNGFfa1ZDMW4xXzdVUkdPUHRLSVpDeXdWZVBndVJ1eDdoc2Z2b0FoNGpGb3Jqb0JjVGdHZXBXSmhjT2RMMS15aWhfa3Q2aTFuTEhWU1NrNGxudnRENkpfMjM3VkVBbTVmb2ExZGxoekFQVy0za2pXa25DUjZUVUFYaTFEWkpsaTVRYWlHajRkSlg3R0FDWDc5YjNtS1otQkhFWHRGVGZna19QMV9XVXdTb2FJN2w4S1E?oc=5",
+   "title": "Facebook parent Meta to settle Cambridge Analytica scandal case for $725 million - Reuters",
+   "text": "Facebook parent Meta to settle Cambridge Analytica scandal case for $725 million - Reuters. Facebook parent Meta to settle Cambridge Analytica scandal case for $725 million Reuters",
+   "content_hash": "4799c4a9084eab9c",
+   "raw_feed_hash": "e8d26af1675cd449d14b8c0ca4d4efdf614d98703005bf4bb8b5fce0054eee91",
+   "published_at": 1671782400.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_464eb22ec0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6eceeec111af45af",
+   "source": "Axios",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxPNjNKcktubDZ3cG9yNkN0UkxIQkhqM0xEeXZjc0VzUkd5eGhjWDFDNVgxRGtPTF9maEQ0X0ZxdU1mUW9iLVdnWHJPQ1BwVmh6aktkUFJwenE1Nk9OdHFuV0hiUkFaMkdTdlFZRWlMSHRPckZ0SWJwUkxLVl9FUjhVdGh6R3hEQWdKckY1bFpNdjdJTEFVOF9UQTVoMEdaYWROcl9sZWdiSXVJWHY1ODQ1WExmdm9YbFRjaWxadlBMV2R1UHc?oc=5",
+   "title": "Settlement reached in sexual harassment case against Collin County DA - Axios",
+   "text": "Settlement reached in sexual harassment case against Collin County DA - Axios. Settlement reached in sexual harassment case against Collin County DA Axios",
+   "content_hash": "354a81f9b2d13cc2",
+   "raw_feed_hash": "e8d26af1675cd449d14b8c0ca4d4efdf614d98703005bf4bb8b5fce0054eee91",
+   "published_at": 1681887600.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_464eb22ec0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "699427c23ed30261",
+   "source": "Hawk Central",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxPejRCUWxnXzh3TmVJeDZ4bDZwNVRwT3Z3Vm9KZDg1MHdGRG1YMEdTQW1HLU1TaHc3MDUydnVoSGNBXzNZV2YyeFdxMzN0WkFMZ1A4dTFMeWlPdm5yQ2Y3MTJIRnczRENKWDNpQTllRmJ2UUhTVTk4MjZYQ0JFREFKNDAtbjIzc0RjTGU5Z0hna0tqdFlEdEFocXBLNEFscVRQNHg3VVVjcUNpU1VlajUwQUF6OENRRUxxZFVkR1piQkF1NzZTd0V1ajFPOUdDcVdGLTNNQ1pQTXg1eWU0cnM5LU1KYk54XzU0UFhz?oc=5",
+   "title": "$4M to be paid in Iowa football discrimination suit; Kirk Ferentz 'disappointed' in result - Hawk Central",
+   "text": "$4M to be paid in Iowa football discrimination suit; Kirk Ferentz 'disappointed' in result - Hawk Central. $4M to be paid in Iowa football discrimination suit; Kirk Ferentz 'disappointed' in result Hawk Central",
+   "content_hash": "d0bfd6d41a6edf94",
+   "raw_feed_hash": "e8d26af1675cd449d14b8c0ca4d4efdf614d98703005bf4bb8b5fce0054eee91",
+   "published_at": 1678089600.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_464eb22ec0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "eba58075cb6b4373",
+   "source": "Consumer Financial Services Law Monitor",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQMmdSZ3AxX0VHcGpHeFJybVBNS2RzSDlhREwzcTBJTDJDMlMtSHRjVnI5T0wwT2QzLWFFeE4zNjhFWUpOTmhBVjRxYVRGSElpSEg1OWpEODdmelh4VEtuUjRoTGFMV3h3R1dMQk5lemIyWUVSMC1jS3VENXZpY0RxVUVYY1JIaGkwRk1VVzVfT0dBMHlONV9QYktSRVlOaGg2dG45UGtzS1ltcFV5N1ptUkM5NW53dms?oc=5",
+   "title": "Ramirez Case Reaches Final Approval of Class Settlement - Consumer Financial Services Law Monitor",
+   "text": "Ramirez Case Reaches Final Approval of Class Settlement - Consumer Financial Services Law Monitor. Ramirez Case Reaches Final Approval of Class Settlement Consumer Financial Services Law Monitor",
+   "content_hash": "b4494213d4ac3c98",
+   "raw_feed_hash": "332b514eb62fa5a30523e418cb35073184ebd5f4a1ed4e630189364c8b048f87",
+   "published_at": 1672646400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_ee2dc8af56",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "9e503fcf83f9e078",
+   "source": "The Washington Post",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNYlJZWXY2ZGNxQVpLeWdJZTcwaTZBOUJYekI1d2dhSEVZYkl4R0NVT085bkM3T0JZNEFsM0lPNlRrZkg2N2VhRzl4ZmIyTlVRcXZEX1hqc2ttTWRYQ1RYRThtOUptU1V6UVpjVV84UHFydjZJd0FjOEpDaF9MbUk2WUczWXdocGg4OXA2amdzMDZhQkFsbFRv?oc=5",
+   "title": "How Facebook users can apply for a share of $725 million settlement - The Washington Post",
+   "text": "How Facebook users can apply for a share of $725 million settlement - The Washington Post. How Facebook users can apply for a share of $725 million settlement The Washington Post",
+   "content_hash": "50410a82b078123f",
+   "raw_feed_hash": "332b514eb62fa5a30523e418cb35073184ebd5f4a1ed4e630189364c8b048f87",
+   "published_at": 1681974000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_ee2dc8af56",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "17f8924b043b060a",
+   "source": "AP News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxOb3g5YmdFVnlCb3ZJbVQ0dnNLQ3dVM0Z4bktyRV9ReWo3Q3U3RURPM19tYWdyX2dWT1pSeWpKZ1YxQWh1YkNVbFdiQUFVV1JtTWtjUzhSbHkxenI5X0RhZWp5cTVTNkY5RjNiTWVDdHY4XzdTemRCYmoxSG1tYzZuR0I0Z1Vpa3hwTHZCUlVHNndEWEI3bEVRWC1DVjEwbjkwSGhMMQ?oc=5",
+   "title": "Fox, Dominion reach $787M settlement over election claims - AP News",
+   "text": "Fox, Dominion reach $787M settlement over election claims - AP News. Fox, Dominion reach $787M settlement over election claims AP News",
+   "content_hash": "ff5c3201cef073d8",
+   "raw_feed_hash": "332b514eb62fa5a30523e418cb35073184ebd5f4a1ed4e630189364c8b048f87",
+   "published_at": 1681801200.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_ee2dc8af56",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "1e4a0f449ee0ddd0",
+   "source": "ABC7 Bay Area",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTE92bXdPVGU3U3lKWnptcnp2dERzdGdJTzdTaU1YQndyV090TlhQUDlBcjhHV0E3X3E5NFB0QkpZOVhaam5ITGtVM3dxWlhYMkJ4VHVVR2Z1UmlZVjE0V0ludEhld1FJWWFqQzFPRzgtcVJydHFubVVKTWVqWdIBgAFBVV95cUxNcmdEUW9aUDE4Rl9GR0VVMVRXYVRmNHV3dF9zTlgwVUJhRVNyaUFVTTlmeUthU2llMHJFV1pFZUV6dTVhanV1TjhLeDJzQzBfbG5abWJHNVlOY1FJRnEzaEc2SUE0RmdETmRNMVZBX3FFUnJwOVZiOUluZGZnVS15Ng?oc=5",
+   "title": "Juul to pay $462 million to six states in e-cigarette maker's largest settlement ever - ABC7 Bay Area",
+   "text": "Juul to pay $462 million to six states in e-cigarette maker's largest settlement ever - ABC7 Bay Area. Juul to pay $462 million to six states in e-cigarette maker's largest settlement ever ABC7 Bay Area",
+   "content_hash": "cba9d93b5a39feea",
+   "raw_feed_hash": "332b514eb62fa5a30523e418cb35073184ebd5f4a1ed4e630189364c8b048f87",
+   "published_at": 1681282800.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_ee2dc8af56",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "16ca7c5b2a88581d",
+   "source": "Hertz Newsroom",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxPZjBVWFBvQjBMTXdiSkJKSng4YVNGYmdhdE5uTG1LRjBaUDg3QnNjSTEta3BkRExJOC0wdHdVT3JOTFpVaEQ1dHhxRlVyWWVtNkpBVkJBZmt2ZlR6eTZtYTVZWi1HMDdiYkhsZEFCcG1NRDVxNmdYYS1ROTlnTVg3VFRFLU5PZnh5VXhXazdacXg3YVJqOUFwLXl0Q0NESHBDQ0xHWk10ZE9lTmdzbWkwbVI1ZVByNkRiT1REWXUzM3VnNDZBaXFSd1l2aw?oc=5",
+   "title": "Hertz Announces Settlement Agreements Related to Past Legal Claims - - Hertz Newsroom",
+   "text": "Hertz Announces Settlement Agreements Related to Past Legal Claims - - Hertz Newsroom. Hertz Announces Settlement Agreements Related to Past Legal Claims - Hertz Newsroom",
+   "content_hash": "ea46a39cd5763e71",
+   "raw_feed_hash": "332b514eb62fa5a30523e418cb35073184ebd5f4a1ed4e630189364c8b048f87",
+   "published_at": 1670227200.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_ee2dc8af56",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "692519dd2d329977",
+   "source": "Reed Smith LLP",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi9AFBVV95cUxQSmVLUFlQWmhoX1g4d2R3US05UlBMYVNleWJSRDB2X0Y2UEZteFdlX19HMUxIV2FfTEFnUTRyZ3ZfY05OMHlHQjZWTVlMTlhEWkZjeWh2YmZ1clJIV2NPc0dnV2lmX3ZLYTdIUkJyRFlranRoR1VWY200RGVfSk1UTkY4M2dscDQySUJzbEhhLW5rd2tLcDZtNDQ1ZUFQNzNlb2p2Y3ZEZnNzSlRvUVU5NUoyZmtYLVJBd183VFQ3XzBYRmVsamdmTlNnUDJVbkp1djZWc180TUlxY2F6aUc0T1hIc3FwTncyTHQzdU5aenZ0LVdY?oc=5",
+   "title": "An insurance company\u2019s refusal to settle can be bad faith, even if the policyholder ultimately prevails at trial - Reed Smith LLP",
+   "text": "An insurance company\u2019s refusal to settle can be bad faith, even if the policyholder ultimately prevails at trial - Reed Smith LLP. An insurance company\u2019s refusal to settle can be bad faith, even if the policyholder ultimately prevails at trial Reed Smith LLP",
+   "content_hash": "3f0d6646b06d2e95",
+   "raw_feed_hash": "332b514eb62fa5a30523e418cb35073184ebd5f4a1ed4e630189364c8b048f87",
+   "published_at": 1678262400.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_ee2dc8af56",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d6e178aa18cef789",
+   "source": "Nixon Peabody",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxNQmJvQi05WEhBTkVHeHRIWVJ5d2Z3dGU3b09UdGhCQ3l1LWhmbGNlQW9iWndKci1Oek9XU1FBX05qUU4tZVRlQ29jWjhEUUhXSzNzdWd3aFpiLVRZeTAxR3N2TEo5MjdFZlF6aGJNX0ZoUnQtelZtaWFkNDJOZXdNQUliaVQzMEN5RDZlSVFuaWtMbGtvRV9xSVktRTN0dVZLV2ZyREhQSUVPWjZSMjQ2R0NSTzlUVFVONHp3Q3NqMGRfbnB0WTNXQWZIR3g?oc=5",
+   "title": "Online retailers reach $197 million settlement over false advertising claims - Nixon Peabody",
+   "text": "Online retailers reach $197 million settlement over false advertising claims - Nixon Peabody. Online retailers reach $197 million settlement over false advertising claims Nixon Peabody",
+   "content_hash": "499dae5e042617fd",
+   "raw_feed_hash": "332b514eb62fa5a30523e418cb35073184ebd5f4a1ed4e630189364c8b048f87",
+   "published_at": 1681974000.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_ee2dc8af56",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "64b375a2ea2485dd",
+   "source": "NBC 5 Chicago",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOdzlOd1VyVlRMbkphajR3dnFWV2kyTGY3b0FqTmY2U044Q0VrVGJDeS1LTUYzR0Z6UHNTelpPbEFybmxIcGZ0ZG12Wm5uYWVZTk13RmM4OTNVZHIzLXRkWHhuMGpyS3Rpanp1Y0xCT0ExNXhYTFpiZkNzcWVzcVE2ckFGdHJaZnJUT3diM2xGei1PSnM1NHRNLVJwRUNILW1RZ2RnSGZadDN0Wm5WZ0Rpb05DYnA1bUNKcndWTnBGRVRJczEteVHSAc4BQVVfeXFMTVlRRUZrbXA1blpucGZMVm5uR0FvTFlrVmxjOUc4OWRMVVNhRUJrcy1SemUwR09OR1VEWVI0QkM2eTBXZ1Bab0d6c3ItbzhuRkNkU3ktd1hTeWFJNUczQUdhQjBWQVhTRGI1YlZrN0l0U25BVjg0emZrQmtlRWhFNkxWRUZfc2VKVC1nV2dlUVBQajBNdlpSakJIVzEzSE02OHlydHJLbnFCRGpyQWN0N1JkY2JsVTIxa3Y2UG52Z0tvVHRJZWxPWjdHRTBwT3c?oc=5",
+   "title": "How Much Could You Get in New $725M Facebook Settlement? Here's What We Know So Far - NBC 5 Chicago",
+   "text": "How Much Could You Get in New $725M Facebook Settlement? Here's What We Know So Far - NBC 5 Chicago. How Much Could You Get in New $725M Facebook Settlement? Here's What We Know So Far NBC 5 Chicago",
+   "content_hash": "287cfae37fe7f594",
+   "raw_feed_hash": "332b514eb62fa5a30523e418cb35073184ebd5f4a1ed4e630189364c8b048f87",
+   "published_at": 1681887600.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_ee2dc8af56",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "b3d8b25fc8c97c50",
+   "source": "Association of State and Territorial Health Officials | ASTHO",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxOdURSRXhYUzZsdG0zWTJVbS1DT0Uxa3BTZ1AweS1TMUV3QTVkX3lDZHBIeE0zSWJ0MF83ZDNIaGVzV085Mk5zcUtEdS11WTVVRXdySVRTcjR3MVBUVlE5ellWbXpVMVhDVUU0Q1JXTWRCeUcyWHdqb1RGZFhnUVhheERKa1pfRU9vRkhRejEtcEx1cmEtMW5VV2dOemRHYUZYdmpIejUxMUQtOU8tTGs5TXVPbnc?oc=5",
+   "title": "The Impact of Non-Medical Vaccine Exemptions on Childhood Vaccination Rates - Association of State and Territorial Health Officials | ASTHO",
+   "text": "The Impact of Non-Medical Vaccine Exemptions on Childhood Vaccination Rates - Association of State and Territorial Health Officials | ASTHO. The Impact of Non-Medical Vaccine Exemptions on Childhood Vaccination Rates Association of State and Territorial Health Officials | ASTHO",
+   "content_hash": "3a89f4fdfeacbbae",
+   "raw_feed_hash": "02a8cda551b26f2bb67e91696c73d67f4c10e6538d865909858cda99b43ac284",
+   "published_at": 1678950000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_af4ff7e5bc",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2fd4f194132b2a3c",
+   "source": "Builder Magazine",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxQdUNKNU0zSlhrcjN0MGw1MjhrZ09RbHNTMlNvMUNqcW5XcFprV0NVVTJVb0lNS1JUbWg5MjFUbEhDZklfdXRTUTZuYWJmRkJzZUJXQi1aM1BQSUltbFJfNmdyQ21EaUkxY001SUNWUzN3cXVpdnZLVS1CVUpKc2d2b3kxYS0?oc=5",
+   "title": "New-Home Sales Keep Pace in February - Builder Magazine",
+   "text": "New-Home Sales Keep Pace in February - Builder Magazine. New-Home Sales Keep Pace in February Builder Magazine",
+   "content_hash": "b0ebf1a0ecff08db",
+   "raw_feed_hash": "02a8cda551b26f2bb67e91696c73d67f4c10e6538d865909858cda99b43ac284",
+   "published_at": 1679554800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_af4ff7e5bc",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "67bfa118e35222f9",
+   "source": "WILX",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQSkNlWFdxdlpZVlhReVhrNEZsaHlMajFxcHB3Rk5kQ0pab3pBS0ZlUi02X2NaT1g3Zkhsb1I3bVRFTVk5ZmtKQUpNS3g5dElkX3FDdzd5Z2tUdzRGT2RNRFhVT2t4NjllcG1WdHBxZmJEMnpRamNxUTBjSV9EVUFnWjM1elBOYU9oUHFxcUNHMjDSAaQBQVVfeXFMUElWc0gwYWh3Y3FXdE8wZWdLTmwtNmVDeG9YbWV4V1JxbVFPS1NCWHZxTDRZTllXUm9rYlRRd0xqdFpLWlZXZWdpcjBDYXNlRkRiZFpXY3ROYXhnRVpvS09HbzVNcnVnVnVGWm9oU09DR1JyWTBFWUZwREdnWUFoQ21tamwwY2VhV3BLemRmWFpTZF96Nk9faHkwLXRMZXVvenVCUmM?oc=5",
+   "title": "State approves rate increase for Consumers Energy electric - WILX",
+   "text": "State approves rate increase for Consumers Energy electric - WILX. State approves rate increase for Consumers Energy electric WILX",
+   "content_hash": "13706bc57f6edfc1",
+   "raw_feed_hash": "02a8cda551b26f2bb67e91696c73d67f4c10e6538d865909858cda99b43ac284",
+   "published_at": 1674115200.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_af4ff7e5bc",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "9443f689925b5fb4",
+   "source": "Davis Wright Tremaine",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxNNlpZV201b2dsbDZyU2ZMMTNPeUh6cTgxUGYtb3FxU01OeWdYQTJtMXg0T01TbDBLOTh5T2lrZUU3X2FEQU5OY0xOY0h4MGVNQTdYWGxGR2pfaXNaOVdWS2JwejhRalNPR18tLVhnUV9IMFZZWlNYVm8xNENuTUxqUzh5SzFDLUdPWUQycnNlT2Q3enFscWpVM3c1WEZYdXdVc1FIaWk3Qi1yUQ?oc=5",
+   "title": "Securities Class Actions: Data, Trends, and Insights - Davis Wright Tremaine",
+   "text": "Securities Class Actions: Data, Trends, and Insights - Davis Wright Tremaine. Securities Class Actions: Data, Trends, and Insights Davis Wright Tremaine",
+   "content_hash": "23019f47170a5d21",
+   "raw_feed_hash": "02a8cda551b26f2bb67e91696c73d67f4c10e6538d865909858cda99b43ac284",
+   "published_at": 1678690800.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_af4ff7e5bc",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d422daa8ea64886d",
+   "source": "Worldcrunch",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNZkdYN1RiRVU1MHRUR2RNd0U5ZUU2U29fSWV5MnJ5MFFXdTA0TE1ZdkZoUWxGamVVR3lWTGRhUHhHb2JGMXhYajhOSzZrTmxtNDJISzAzX21ZdUN3dGJHSHpzMW81LWxUXzlFS0JoWmk1ZFZqdWpJOUFpUHNLenk5ZDFQNm03Q05iNXVVb2NocUjSAZYBQVVfeXFMUGtCWUZDeDVJcjhxaUZaaGJnNzlTZEV6WWtrMEZjMW9xR2p6OXhVS3MtU2hsQ2ZvYjFSTmFsbkdDN0NKekxwRDd4bHB5dWFISEoyekI4eTNES1J6MW9HSDlwZG03czFial9sY2QtTm5PWm1neWs1RXk3a2E0eVNZUWJCdmZOLXA3UGtacnhUbDNycVlxcU93?oc=5",
+   "title": "How Italy\u2019s \u201cConscientious Objector\u201d Doctors \u2014 De Facto \u2014 Limit Abortion Rights - Worldcrunch",
+   "text": "How Italy\u2019s \u201cConscientious Objector\u201d Doctors \u2014 De Facto \u2014 Limit Abortion Rights - Worldcrunch. How Italy\u2019s \u201cConscientious Objector\u201d Doctors \u2014 De Facto \u2014 Limit Abortion Rights Worldcrunch",
+   "content_hash": "6b6076c1c6152fc6",
+   "raw_feed_hash": "02a8cda551b26f2bb67e91696c73d67f4c10e6538d865909858cda99b43ac284",
+   "published_at": 1677225600.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_af4ff7e5bc",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "5a96d2dc6543d7a9",
+   "source": "Reason Magazine",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTFAyWnhHM0VVNDVNY05IdnVMYUpBVG9mdEI5eERDWjdMajNobkxrdVlyZEM4Y1lZMEhleFRMTnREVGlrMHJQRTJaaUdHOUtRZzNtLVZzLUVYS1hld2ExaWplalI5UTJyd0hhcWNzeFc2NmRTa1d0RDd3aUJTWGd2am8?oc=5",
+   "title": "Can GPT Pass the Multistate Bar Exam? - Reason Magazine",
+   "text": "Can GPT Pass the Multistate Bar Exam? - Reason Magazine. Can GPT Pass the Multistate Bar Exam? Reason Magazine",
+   "content_hash": "699e9ffd1fd75023",
+   "raw_feed_hash": "02a8cda551b26f2bb67e91696c73d67f4c10e6538d865909858cda99b43ac284",
+   "published_at": 1672646400.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_af4ff7e5bc",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "200d8a5437dbf304",
+   "source": "International Institute for Sustainable Development",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiuwJBVV95cUxQVFZBZzRHVjVhQ0VoVGstWGxEbmNuVmNkeDNwLWl6SGcyOWRQekVKYXRmREZqekZVMVhBOEd2TzZEUnFvOU1acnUzQUsxSXpOOXVSbmExX3JuaWhsUmJvUmQzSGFLV3hJb05RMnhRdUtZVDRGMHFDWEluaGtoTmVnS0V3YzQ0cHdOS3FKUmxWZnRNTUZkUXRHcFFEUXBZTld2MHpGSGlrSzVFZGVSLXZPQ01fdEZsMTVxaEw2LVRNc096V2pUbmFBVkJ5MGdKYWpmRXdqZUJwQm5LWWxjTzZsSlhMaHoxczlQRno0Z0dSeTFWZVBaZ1Q2YkstNWRPT0trMXhZM3NxNmtUTzBlby1ZaHY1eHBNalVLZk1xWDNZTDFkNFI4THc1Wnk5cVhObEJRcjhqYkJvSmJFMWM?oc=5",
+   "title": "Bolivia found liable for violating the FET standard and the prohibition to adopt arbitrary measures when implementing nationalization on the pension system \u2013 Investment Treaty News - International Institute for Sustainable Development",
+   "text": "Bolivia found liable for violating the FET standard and the prohibition to adopt arbitrary measures when implementing nationalization on the pension system \u2013 Investment Treaty News - International Institute for Sustainable Development. Bolivia found liable for violating the FET standard and the prohibition to adopt arbitrary measures when implementing nationalization on the pension system \u2013 Investment Treaty News International Institute for Sustainable Development",
+   "content_hash": "00d06f0470147fd2",
+   "raw_feed_hash": "02a8cda551b26f2bb67e91696c73d67f4c10e6538d865909858cda99b43ac284",
+   "published_at": 1672041600.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_af4ff7e5bc",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "9ef346e2c6b34c96",
+   "source": "Human Rights Watch",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE8wdXJBdEVGbWRaOXRWdzZQT3V2VlVMT1k1RW1XWldjbk5sQzFxN1YtVm41Z1B0WVZxMFRVTDR0RHdFR3pJMFZoN21NWUY5RzVNUjdFdmIzbnBMdVpjaGdJWWs1dmw2QXh4b0paTQ?oc=5",
+   "title": "World Report 2023: Rights Trends in Italy - Human Rights Watch",
+   "text": "World Report 2023: Rights Trends in Italy - Human Rights Watch. World Report 2023: Rights Trends in Italy Human Rights Watch",
+   "content_hash": "dada7636122cfa60",
+   "raw_feed_hash": "02a8cda551b26f2bb67e91696c73d67f4c10e6538d865909858cda99b43ac284",
+   "published_at": 1673488186.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_af4ff7e5bc",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "9826c8d81bbb3ead:c0",
+   "source_id": "9826c8d81bbb3ead",
+   "subject": "Go to the Mat",
+   "predicate": "is a publication by",
+   "object": "Lawdragon",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Go to the Mat - Lawdragon",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678176000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Go to the Mat",
+    "Lawdragon"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_7f8356f962",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_464eb22ec0"
+   }
+  },
+  {
+   "claim_id": "eba58075cb6b4373:c0",
+   "source_id": "eba58075cb6b4373",
+   "subject": "Ramirez Case",
+   "predicate": "reaches",
+   "object": "final approval of class settlement",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Ramirez Case Reaches Final Approval of Class Settlement",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1672646400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Ramirez Case"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_5361cc10da",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ee2dc8af56"
+   }
+  },
+  {
+   "claim_id": "b3d8b25fc8c97c50:c0",
+   "source_id": "b3d8b25fc8c97c50",
+   "subject": "The Impact of Non-Medical Vaccine Exemptions on Childhood Vaccination Rates",
+   "predicate": "is a publication by",
+   "object": "Association of State and Territorial Health Officials (ASTHO)",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The Impact of Non-Medical Vaccine Exemptions on Childhood Vaccination Rates - Association of State and Territorial Health Officials | ASTHO",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678950000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Association of State and Territorial Health Officials",
+    "ASTHO"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_c5e16723cb",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_af4ff7e5bc"
+   }
+  },
+  {
+   "claim_id": "290ca1ba3cd8314f:c0",
+   "source_id": "290ca1ba3cd8314f",
+   "subject": "Huntington Beach oil spill settlement",
+   "predicate": "wins final approval",
+   "object": "",
+   "value": "50000000",
+   "units": "dollars",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "$50-million Huntington Beach oil spill settlement wins final approval",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682406000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Huntington Beach oil spill settlement"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_c54bf4dd6c",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_464eb22ec0"
+   }
+  },
+  {
+   "claim_id": "9e503fcf83f9e078:c0",
+   "source_id": "9e503fcf83f9e078",
+   "subject": "Facebook users",
+   "predicate": "can apply for a share of",
+   "object": "$725 million settlement",
+   "value": "725000000",
+   "units": "USD",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "How Facebook users can apply for a share of $725 million settlement",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681974000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Facebook",
+    "$725 million settlement"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_224d8ceaa5",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ee2dc8af56"
+   }
+  },
+  {
+   "claim_id": "2fd4f194132b2a3c:c0",
+   "source_id": "2fd4f194132b2a3c",
+   "subject": "New-Home Sales",
+   "predicate": "keep pace",
+   "object": "in February",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "New-Home Sales Keep Pace in February",
+   "span_verified": true,
+   "event_time": "February",
+   "publication_time": 1679554800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "New-Home Sales"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_9463aa669b",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_af4ff7e5bc"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Go to the Mat",
+   "normalized": "go to mat",
+   "candidates": [
+    {
+     "entity_id": "ent_2098514cf1",
+     "canonical": "go to mat",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Go to the Mat"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Lawdragon",
+   "normalized": "lawdragon",
+   "candidates": [
+    {
+     "entity_id": "ent_65640eb812",
+     "canonical": "lawdragon",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Lawdragon"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Ramirez Case",
+   "normalized": "ramirez case",
+   "candidates": [
+    {
+     "entity_id": "ent_06f9075926",
+     "canonical": "ramirez case",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Ramirez Case"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Association of State and Territorial Health Officials",
+   "normalized": "association of state and territorial health officials",
+   "candidates": [
+    {
+     "entity_id": "ent_75e8d96d38",
+     "canonical": "association of state and territorial health officials",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Association of State and Territorial Health Officials"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "ASTHO",
+   "normalized": "astho",
+   "candidates": [
+    {
+     "entity_id": "ent_bd5b6d2e7a",
+     "canonical": "astho",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "ASTHO"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Huntington Beach oil spill settlement",
+   "normalized": "huntington beach oil spill settlement",
+   "candidates": [
+    {
+     "entity_id": "ent_308c63ee65",
+     "canonical": "huntington beach oil spill settlement",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Huntington Beach oil spill settlement"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Facebook",
+   "normalized": "facebook",
+   "candidates": [
+    {
+     "entity_id": "ent_cbe6489090",
+     "canonical": "facebook",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Facebook"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "$725 million settlement",
+   "normalized": "$725 million settlement",
+   "candidates": [
+    {
+     "entity_id": "ent_f1fc94a406",
+     "canonical": "$725 million settlement",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "$725 million settlement"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "New-Home Sales",
+   "normalized": "new-home sales",
+   "candidates": [
+    {
+     "entity_id": "ent_a5dda43dd4",
+     "canonical": "new-home sales",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "New-Home Sales"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "9826c8d81bbb3ead": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1678176000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678176000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "290ca1ba3cd8314f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1682406000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682406000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "fa773243f7fdb84f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1679986800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679986800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "09646472f15a2287": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1674201600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1674201600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4d17471b378bcd68": {
+   "status": "uncertain",
+   "confidence": 0.5,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1682924400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682924400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "c1d1dfca3c0de86d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1671782400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1671782400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6eceeec111af45af": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1681887600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681887600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "699427c23ed30261": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1678089600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678089600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "eba58075cb6b4373": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1672646400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1672646400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "9e503fcf83f9e078": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1681974000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681974000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "17f8924b043b060a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1681801200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681801200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "1e4a0f449ee0ddd0": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1681282800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681282800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "16ca7c5b2a88581d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1670227200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1670227200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "692519dd2d329977": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1678262400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678262400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d6e178aa18cef789": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1681974000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681974000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "64b375a2ea2485dd": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1681887600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681887600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "b3d8b25fc8c97c50": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1678950000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678950000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2fd4f194132b2a3c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1679554800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679554800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "67bfa118e35222f9": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1674115200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1674115200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "9443f689925b5fb4": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1678690800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678690800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d422daa8ea64886d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1677225600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677225600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "5a96d2dc6543d7a9": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1672646400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1672646400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "200d8a5437dbf304": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1672041600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1672041600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "9ef346e2c6b34c96": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1673488186.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1673488186.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_7f8356f962",
+   "member_ids": [
+    "9826c8d81bbb3ead"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Lawdragon",
+   "primary_source": "Lawdragon",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_c54bf4dd6c",
+   "member_ids": [
+    "290ca1ba3cd8314f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Los Angeles Times",
+   "primary_source": "Los Angeles Times",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_83b6d0dbf6",
+   "member_ids": [
+    "fa773243f7fdb84f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "American Civil Liberties Union",
+   "primary_source": "American Civil Liberties Union",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_1cfef7b710",
+   "member_ids": [
+    "09646472f15a2287"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Courthouse News",
+   "primary_source": "Courthouse News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_1e920266fc",
+   "member_ids": [
+    "4d17471b378bcd68"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Knoxville News Sentinel",
+   "primary_source": "Knoxville News Sentinel",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_73992c459f",
+   "member_ids": [
+    "c1d1dfca3c0de86d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Reuters",
+   "primary_source": "Reuters",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e1617c7978",
+   "member_ids": [
+    "6eceeec111af45af"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Axios",
+   "primary_source": "Axios",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_903a213f5b",
+   "member_ids": [
+    "699427c23ed30261"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Hawk Central",
+   "primary_source": "Hawk Central",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_5361cc10da",
+   "member_ids": [
+    "eba58075cb6b4373"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Consumer Financial Services Law Monitor",
+   "primary_source": "Consumer Financial Services Law Monitor",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_224d8ceaa5",
+   "member_ids": [
+    "9e503fcf83f9e078"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Washington Post",
+   "primary_source": "The Washington Post",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_19b4250eeb",
+   "member_ids": [
+    "17f8924b043b060a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "AP News",
+   "primary_source": "AP News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_d56a7da0d7",
+   "member_ids": [
+    "1e4a0f449ee0ddd0"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "ABC7 Bay Area",
+   "primary_source": "ABC7 Bay Area",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_1545d54efe",
+   "member_ids": [
+    "16ca7c5b2a88581d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Hertz Newsroom",
+   "primary_source": "Hertz Newsroom",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_bbf8312510",
+   "member_ids": [
+    "692519dd2d329977"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Reed Smith LLP",
+   "primary_source": "Reed Smith LLP",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_d776251e05",
+   "member_ids": [
+    "d6e178aa18cef789"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Nixon Peabody",
+   "primary_source": "Nixon Peabody",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_17ae5c9070",
+   "member_ids": [
+    "64b375a2ea2485dd"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "NBC 5 Chicago",
+   "primary_source": "NBC 5 Chicago",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_c5e16723cb",
+   "member_ids": [
+    "b3d8b25fc8c97c50"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Association of State and Territorial Health Officials | ASTHO",
+   "primary_source": "Association of State and Territorial Health Officials | ASTHO",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9463aa669b",
+   "member_ids": [
+    "2fd4f194132b2a3c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Builder Magazine",
+   "primary_source": "Builder Magazine",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_325ca69e7a",
+   "member_ids": [
+    "67bfa118e35222f9"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "WILX",
+   "primary_source": "WILX",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_88072c8c9a",
+   "member_ids": [
+    "9443f689925b5fb4"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Davis Wright Tremaine",
+   "primary_source": "Davis Wright Tremaine",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9a1700d8d1",
+   "member_ids": [
+    "d422daa8ea64886d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Worldcrunch",
+   "primary_source": "Worldcrunch",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_732021db0c",
+   "member_ids": [
+    "5a96d2dc6543d7a9"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Reason Magazine",
+   "primary_source": "Reason Magazine",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e8c4481ae9",
+   "member_ids": [
+    "200d8a5437dbf304"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "International Institute for Sustainable Development",
+   "primary_source": "International Institute for Sustainable Development",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9b7a4b9283",
+   "member_ids": [
+    "9ef346e2c6b34c96"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Human Rights Watch",
+   "primary_source": "Human Rights Watch",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "9826c8d81bbb3ead:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678176000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "eba58075cb6b4373:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1672646400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "b3d8b25fc8c97c50:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678950000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "290ca1ba3cd8314f:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682406000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "9e503fcf83f9e078:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681974000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "2fd4f194132b2a3c:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1679554800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "9826c8d81bbb3ead:c0",
+  "eba58075cb6b4373:c0",
+  "b3d8b25fc8c97c50:c0",
+  "290ca1ba3cd8314f:c0",
+  "9e503fcf83f9e078:c0",
+  "2fd4f194132b2a3c:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_464eb22ec0": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_ee2dc8af56": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_af4ff7e5bc": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_2b7dab6fa1": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_b0b2f0338d": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_6f127957ac": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_8a6216446b": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_2b7dab6fa1",
+  "req_b0b2f0338d",
+  "req_6f127957ac",
+  "req_8a6216446b"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 24,
+  "n_contradictions": 0,
+  "n_documents": 24
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 12.484,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "06d1c2dfdbe5f34b",
+ "bundle_hash": "06d1c2dfdbe5f34b",
+ "_persisted_at": "2026-07-13T02:09:59Z"
+}

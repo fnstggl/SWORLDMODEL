@@ -1,0 +1,1434 @@
+{
+ "bundle_id": "eb_0ec118",
+ "question": "Will regulators approve the tech acquisition without requiring divestitures?",
+ "as_of": 1685577600.0,
+ "compiler_plan_hash": "8c0abda0b379",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_9084535787",
+   "claim_or_quantity": "If the regulatory body (e.g., FTC, DOJ, CMA) issues a decision by 2023-11-30 that allows the acquisition to close without any required divestitures, outcome is 'approve_without_divestitures'; otherwise 'require_divestitures_or_block'.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "acquiring_firm",
+    "target_firm",
+    "regulatory_body",
+    "competitors"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_f3bcdef306",
+   "claim_or_quantity": "value/context of regulatory_body.enforcement_stance",
+   "why_relevant": "high-sensitivity latent (1.00) driving the outcome distribution",
+   "affected_component": "regulatory_body.enforcement_stance",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_ad597e72a0",
+   "claim_or_quantity": "value/context of target_firm.overlapping_products",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "target_firm.overlapping_products",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_0e545754bb",
+   "claim_or_quantity": "value/context of acquiring_firm.political_connections",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "acquiring_firm.political_connections",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_f08025fd51",
+   "claim_or_quantity": "evidence discriminating structural hypothesis h1_market_concentration",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:h1_market_concentration",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_5ef5125389",
+   "claim_or_quantity": "evidence discriminating structural hypothesis h2_political_pressure",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:h2_political_pressure",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_a158142f16",
+   "claim_or_quantity": "decision rules / process of regulatory_body",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "regulatory_body",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_cba7c39cf9",
+   "claim_or_quantity": "decision rules / process of acquiring_firm",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "acquiring_firm",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_9084535787",
+   "terms": "regulators approve tech acquisition without requiring divestitures acquiring firm target firm regulatory body",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_f3bcdef306",
+   "terms": "regulatory body enforcement stance",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_ad597e72a0",
+   "terms": "target firm overlapping products",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_9084535787",
+   "logical_query": "regulators approve tech acquisition without requiring divestitures acquiring firm target firm regulatory body after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=regulators+approve+tech+acquisition+without+requiring+divestitures+acquiring+firm+target+firm+regulatory+body+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783907005.6045816,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:43:26 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjytDikmJw15BiSO44w5ACxJVA3ADEimE7mVpvnmOdDMQli86zNgFxFxDPAGJDhUus9kB8Of0Sa5HEFdYGIP5UdYNVoPoG67diXzaWEiB-689mGhLI5gzEWzSD2YR4OPa1XrzEJnDiwuv1jErKSfmF8Sn5JcXFBTmJxRnFqUVlqUXxRgZGZgbmBmZ6BibxBQYAb586Tw\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "416ea89399061e3a07d0dd54b2412bbf396d9baac66c0f4d1b0204551939f63d",
+   "n_bytes": 4087,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 2,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.681
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_f3bcdef306",
+   "logical_query": "regulatory body enforcement stance after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=regulatory+body+enforcement+stance+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783907006.2869737,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:43:26 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw1pBiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDsa_14iU2gRdPb-5jVlJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAAtGo3fg\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "beb84064701db0f398963503f6b4937032e41ca851b60dd21aa88b777f2be719",
+   "n_bytes": 8892,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 6,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.567
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_ad597e72a0",
+   "logical_query": "target firm overlapping products after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=target+firm+overlapping+products+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783907006.8553112,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:43:27 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmII0pBiSO44w5ACxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwc-1svXmIT-PH87k1GJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwDJ6TmN\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "5624e2a6076b1d5991cf4c528a3b8fcb7fbf4b51ac75ac2fb9d404479df04b2e",
+   "n_bytes": 2098,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 1,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.517
+  }
+ ],
+ "raw_content_refs": [
+  "416ea89399061e3a07d0dd54b2412bbf396d9baac66c0f4d1b0204551939f63d",
+  "5624e2a6076b1d5991cf4c528a3b8fcb7fbf4b51ac75ac2fb9d404479df04b2e",
+  "beb84064701db0f398963503f6b4937032e41ca851b60dd21aa88b777f2be719"
+ ],
+ "documents": [
+  {
+   "id": "74626e58642f43be",
+   "source": "Mayer Brown",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxPaVBwTUNJZmVIMG0tTVFKV0x5OTUteDFLNGJYOGg3enNBSWVuTmRyZ2pXYVpycW5Vc05GTldxUk1kbjMxQ0JEZmVkUUxDMHdVWVFnRlBkRGdxekVNcTY5WkJPcWRZV2stUzFWa0RUQzQ2ZnEyQ1NINmtJR2JqYWpPV2ZQMzl5QVlQbEZYZFVuTkc5UVk4cFVaNkhKQnlqVTZiVlc4ZTIzQUdVMEZ1UzJlSHZhcllIUloxV2tfRVNxUUdVVGN3MzF0OHR6Y3VCbmNsRWllZW9KWFJQbEo3?oc=5",
+   "title": "The Increasing Importance of Foreign Direct Investment Regulation in M&A Transactions - Mayer Brown",
+   "text": "The Increasing Importance of Foreign Direct Investment Regulation in M&A Transactions - Mayer Brown. The Increasing Importance of Foreign Direct Investment Regulation in M&A Transactions Mayer Brown",
+   "content_hash": "b5e2cabb5ee4f6f7",
+   "raw_feed_hash": "416ea89399061e3a07d0dd54b2412bbf396d9baac66c0f4d1b0204551939f63d",
+   "published_at": 1683270000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_9084535787",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6c7890665d2daff0",
+   "source": "Farrer & Co",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPVEdXd1VGajdGWlNTbVk2WGZmZXNPa2ptWl80RWcyYTAxYUZBUWY0VVhGTGlINHZOcmUwR1VXM3p4N3hLZjY1T253Ymc2RTNMcjFZb29LcjFQbWE0WDFianRoTGZzNmROOHZRU25EMDluMlFwUkp3Yk9HSHZycldYZVdpZl83aGZXNzhSdzdhXzRieVExWFFndDBzbFlQZw?oc=5",
+   "title": "Key regulatory considerations in wealth management M&A - Farrer & Co",
+   "text": "Key regulatory considerations in wealth management M&A - Farrer & Co. Key regulatory considerations in wealth management M&A Farrer & Co",
+   "content_hash": "374b103797c33933",
+   "raw_feed_hash": "416ea89399061e3a07d0dd54b2412bbf396d9baac66c0f4d1b0204551939f63d",
+   "published_at": 1682665200.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_9084535787",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3ed8729499ffd445",
+   "source": "Norton Rose Fulbright",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNM2tiMVlLMTl2ZEFzQXVPZU5rY1padG90Y29DZGV5MmVYc01Obk9pSDh4QjJzb0prVURtcnNmS0FOakR0cm93MUlUUnhuaEdGcUVybVU0dHM0Z3pkb0lUb2ZJZ09PbVNKajBGVEI1OWhPUEtUS1FHd3FMQWZ6eTkySEdsWUFIVDZqOEFQTXo4NDBmdHR2cEJ0aWtyRzI3dTVZcFliYkRB?oc=5",
+   "title": "\u201cClimate cartel\u201d or sustainability? - Norton Rose Fulbright",
+   "text": "\u201cClimate cartel\u201d or sustainability? - Norton Rose Fulbright. \u201cClimate cartel\u201d or sustainability? Norton Rose Fulbright",
+   "content_hash": "b01475312f18c331",
+   "raw_feed_hash": "beb84064701db0f398963503f6b4937032e41ca851b60dd21aa88b777f2be719",
+   "published_at": 1676164632.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_f3bcdef306",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "198de73d38a8a006",
+   "source": "Forkast News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE5xb24wc2NreUs3VEtySjRZNjhSNHZXOWw2RDI4NUVrVXFMZjBtckZqRlc3cVBYcWd0akl6UGJ1ODZLLUM3Sk4yX2s1cGNHZ0wzdDNfcXlpcllCb3BmZWV2SnFReFdkaWJmaVJGemdTVG9reHV6cndSN9IBfkFVX3lxTE0xaFhQekxBZGVuM2RJNXdteFRob1RsaGh4OFc1MmllcGMzZnk0VGtsTmZwem9WNjdOal9lcE1HdGI3MHlhbkRCN3BiYUJvT1puZVZNamxMT2lVMjVEbHV3S19WQk5KanBpQ3lCZm1UQnRtZ09ZY1NuUGpDUkVHZw?oc=5",
+   "title": "Why US crypto needs new regulation and clearer guidance - Forkast News",
+   "text": "Why US crypto needs new regulation and clearer guidance - Forkast News. Why US crypto needs new regulation and clearer guidance Forkast News",
+   "content_hash": "059377155fed155a",
+   "raw_feed_hash": "beb84064701db0f398963503f6b4937032e41ca851b60dd21aa88b777f2be719",
+   "published_at": 1683010800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_f3bcdef306",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d70e2c5b1bdbea3a",
+   "source": "UK Human Rights Blog",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQSUxYd19qWXJHQlJoNHpKSUVOLVduYTlzaVlBNDF1NUN4V1hXd3NnaGwtME9wSmljcGRLN2dmZG9TRFZxQ2ZLX1dhdWpZcnVoSXc5elJ0RzdFUVZQYlBoUURDZVhtU1phN0dLbC02dlZuSVZxOG1YSDY2TnNaMXRVaw?oc=5",
+   "title": "Raw sewage in the Court of Appeal - UK Human Rights Blog",
+   "text": "Raw sewage in the Court of Appeal - UK Human Rights Blog. Raw sewage in the Court of Appeal UK Human Rights Blog",
+   "content_hash": "dab22c5a8175639b",
+   "raw_feed_hash": "beb84064701db0f398963503f6b4937032e41ca851b60dd21aa88b777f2be719",
+   "published_at": 1676966400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_f3bcdef306",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "24362a787000da1a",
+   "source": "Royal College of Nursing",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxQZVVmYmdUc0MtU2NGZDU5U0piREticVY2eEpnYTQ4bWl1a2VCb3JWanRTaEtrenRmSXl4X0tydlAxc0JTOHhtTHRKUDdHMDB4dk9SVWZWMjRJLXBXWENBN3ZkSW94UGFtLWxvSE9kSkxFVlA5ODRvZTQ5QmI3SThtWHJNeDNzbDZzZW1ZTXJSeEpmNlhIQ3lkYzBMN3hOQTFRVnhwaFJzb1dDTjBwVGVVUUxXMlNrcFJpLU9RV2ExOFNHSVctV2c?oc=5",
+   "title": "RCN position on the use of body worn cameras - Royal College of Nursing",
+   "text": "RCN position on the use of body worn cameras - Royal College of Nursing. RCN position on the use of body worn cameras Royal College of Nursing",
+   "content_hash": "bfd79a49526883e2",
+   "raw_feed_hash": "beb84064701db0f398963503f6b4937032e41ca851b60dd21aa88b777f2be719",
+   "published_at": 1684738800.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_f3bcdef306",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2baa0e7befab15cd",
+   "source": "letsrecycle.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOT3ZMN2lOWXZtMkNKMWxLenRnWW1HWFltbnczeW5IZGJmOE42alp2cFp5bXhyUV9GVjZremU0Rm12RXRuUHhjVGw5bWV0b3FNSHkzQnk1VFowNHBrZVpyd294VVBRWFdrSE1DQjRublE5TzZrNlBZcVNnUnU1WDJRN3ZTY3hxRmFTdG14R2VvUXJJQ2FEU2Fj?oc=5",
+   "title": "Councils halt waste sofa collections over POPs enforcement - letsrecycle.com",
+   "text": "Councils halt waste sofa collections over POPs enforcement - letsrecycle.com. Councils halt waste sofa collections over POPs enforcement letsrecycle.com",
+   "content_hash": "3a5591e7b6aace9b",
+   "raw_feed_hash": "beb84064701db0f398963503f6b4937032e41ca851b60dd21aa88b777f2be719",
+   "published_at": 1672905600.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_f3bcdef306",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4bfb607772534011",
+   "source": "ISPreview UK",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxPZWFBLVlTR0ZoOWplblo0Qm1qdWpISXIweEVDMnNmN0VzQ21laDEtUVNWbktVRS1EQ2U1cnl5QUVRWmZWeVFvNE04NHhLVTROY2NWTzh4a3dpTnlyQjB1XzM2aTlRNnBScWlIZVN6NUt0MFR1Vk1qX1hNNWNOM1llY1NNZ3FBUWx6dDJZMURoSXZ4b0ZUbWhBMkpGSW1ycmd3MzJfUjhHMWN4VkpvVWlMSzBhZw?oc=5",
+   "title": "Ofcom UK Take Tough Stance on Rules for Wireless Broadband Kit UPDATE - ISPreview UK",
+   "text": "Ofcom UK Take Tough Stance on Rules for Wireless Broadband Kit UPDATE - ISPreview UK. Ofcom UK Take Tough Stance on Rules for Wireless Broadband Kit UPDATE ISPreview UK",
+   "content_hash": "bcb9dd8f81986873",
+   "raw_feed_hash": "beb84064701db0f398963503f6b4937032e41ca851b60dd21aa88b777f2be719",
+   "published_at": 1682492400.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_f3bcdef306",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "93e3114ad2a45ee3",
+   "source": "Angle Advisors",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE5oNTFKMmd2Wk9WTTZUcnpmN2ppRWhwMk9VdHVCU0VnYmZIdTF3SVhHelB0b3VRaFplOWJ6V2FqOFJ1R2Z2SzhqdjJQcWFXME1EVmdvYno5cnpFMF9IWGFxSQ?oc=5",
+   "title": "SALE OF TRANSNAV - Angle Advisors",
+   "text": "SALE OF TRANSNAV - Angle Advisors. SALE OF TRANSNAV Angle Advisors",
+   "content_hash": "6fccda0ecaa68ce8",
+   "raw_feed_hash": "5624e2a6076b1d5991cf4c528a3b8fcb7fbf4b51ac75ac2fb9d404479df04b2e",
+   "published_at": 1675238400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_ad597e72a0",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "74626e58642f43be:c0",
+   "source_id": "74626e58642f43be",
+   "subject": "Foreign Direct Investment Regulation",
+   "predicate": "has increasing importance in",
+   "object": "M&A Transactions",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The Increasing Importance of Foreign Direct Investment Regulation in M&A Transactions",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683270000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Foreign Direct Investment Regulation",
+    "M&A Transactions"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_06dbb4cf42",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_9084535787"
+   }
+  },
+  {
+   "claim_id": "74626e58642f43be:c1",
+   "source_id": "74626e58642f43be",
+   "subject": "Mayer Brown",
+   "predicate": "is the author of",
+   "object": "the article about Foreign Direct Investment Regulation in M&A Transactions",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Mayer Brown",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683270000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Mayer Brown"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_06dbb4cf42",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_9084535787"
+   }
+  },
+  {
+   "claim_id": "3ed8729499ffd445:c0",
+   "source_id": "3ed8729499ffd445",
+   "subject": "Norton Rose Fulbright",
+   "predicate": "poses question",
+   "object": "climate cartel or sustainability",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "\u201cClimate cartel\u201d or sustainability? - Norton Rose Fulbright.",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1676164632.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Norton Rose Fulbright"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_6576d5be10",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_f3bcdef306"
+   }
+  },
+  {
+   "claim_id": "93e3114ad2a45ee3:c0",
+   "source_id": "93e3114ad2a45ee3",
+   "subject": "Angle Advisors",
+   "predicate": "is involved in",
+   "object": "sale of Transnav",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "SALE OF TRANSNAV - Angle Advisors",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675238400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Angle Advisors",
+    "Transnav"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_5ac50b51a1",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ad597e72a0"
+   }
+  },
+  {
+   "claim_id": "6c7890665d2daff0:c0",
+   "source_id": "6c7890665d2daff0",
+   "subject": "Key regulatory considerations in wealth management M&A",
+   "predicate": "are discussed in",
+   "object": "Farrer & Co",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Key regulatory considerations in wealth management M&A - Farrer & Co.",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682665200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Farrer & Co"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_8c1d87c687",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_9084535787"
+   }
+  },
+  {
+   "claim_id": "198de73d38a8a006:c0",
+   "source_id": "198de73d38a8a006",
+   "subject": "US crypto",
+   "predicate": "needs",
+   "object": "new regulation and clearer guidance",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "Why US crypto needs new regulation and clearer guidance",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683010800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "US crypto"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_517b079edf",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_f3bcdef306"
+   }
+  },
+  {
+   "claim_id": "d70e2c5b1bdbea3a:c0",
+   "source_id": "d70e2c5b1bdbea3a",
+   "subject": "Raw sewage",
+   "predicate": "is located in",
+   "object": "the Court of Appeal",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Raw sewage in the Court of Appeal",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1676966400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Raw sewage",
+    "Court of Appeal"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_aac4cc58c1",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_f3bcdef306"
+   }
+  },
+  {
+   "claim_id": "d70e2c5b1bdbea3a:c1",
+   "source_id": "d70e2c5b1bdbea3a",
+   "subject": "Raw sewage",
+   "predicate": "is located in",
+   "object": "UK Human Rights Blog",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Raw sewage in the Court of Appeal - UK Human Rights Blog",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1676966400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Raw sewage",
+    "UK Human Rights Blog"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_aac4cc58c1",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_f3bcdef306"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Foreign Direct Investment Regulation",
+   "normalized": "foreign direct investment regulation",
+   "candidates": [
+    {
+     "entity_id": "ent_cf69090bc3",
+     "canonical": "foreign direct investment regulation",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Foreign Direct Investment Regulation"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "M&A Transactions",
+   "normalized": "m&a transactions",
+   "candidates": [
+    {
+     "entity_id": "ent_4af43e984b",
+     "canonical": "m&a transactions",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "M&A Transactions"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Mayer Brown",
+   "normalized": "mayer brown",
+   "candidates": [
+    {
+     "entity_id": "ent_e7d0dbaddc",
+     "canonical": "mayer brown",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Mayer Brown"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Norton Rose Fulbright",
+   "normalized": "norton rose fulbright",
+   "candidates": [
+    {
+     "entity_id": "ent_ab28748011",
+     "canonical": "norton rose fulbright",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Norton Rose Fulbright"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Angle Advisors",
+   "normalized": "angle advisors",
+   "candidates": [
+    {
+     "entity_id": "ent_60e4c880a5",
+     "canonical": "angle advisors",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Angle Advisors"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Transnav",
+   "normalized": "transnav",
+   "candidates": [
+    {
+     "entity_id": "ent_230e77bfe6",
+     "canonical": "transnav",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Transnav"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Farrer & Co",
+   "normalized": "farrer &",
+   "candidates": [
+    {
+     "entity_id": "ent_289d9940d8",
+     "canonical": "farrer &",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Farrer & Co"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "US crypto",
+   "normalized": "us crypto",
+   "candidates": [
+    {
+     "entity_id": "ent_ea57834593",
+     "canonical": "us crypto",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "US crypto"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Raw sewage",
+   "normalized": "raw sewage",
+   "candidates": [
+    {
+     "entity_id": "ent_901772ee3d",
+     "canonical": "raw sewage",
+     "support": 0.6667,
+     "evidence_mentions": [
+      "Raw sewage",
+      "Raw sewage"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Court of Appeal",
+   "normalized": "court of appeal",
+   "candidates": [
+    {
+     "entity_id": "ent_844469ba6d",
+     "canonical": "court of appeal",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Court of Appeal"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Raw sewage",
+   "normalized": "raw sewage",
+   "candidates": [
+    {
+     "entity_id": "ent_901772ee3d",
+     "canonical": "raw sewage",
+     "support": 0.6667,
+     "evidence_mentions": [
+      "Raw sewage",
+      "Raw sewage"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "UK Human Rights Blog",
+   "normalized": "uk human rights blog",
+   "candidates": [
+    {
+     "entity_id": "ent_6202726e92",
+     "canonical": "uk human rights blog",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "UK Human Rights Blog"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "74626e58642f43be": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1683270000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683270000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6c7890665d2daff0": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1682665200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682665200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3ed8729499ffd445": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1676164632.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676164632.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "198de73d38a8a006": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1683010800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683010800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d70e2c5b1bdbea3a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1676966400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676966400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "24362a787000da1a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1684738800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684738800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2baa0e7befab15cd": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1672905600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1672905600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4bfb607772534011": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1682492400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682492400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "93e3114ad2a45ee3": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1675238400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675238400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_06dbb4cf42",
+   "member_ids": [
+    "74626e58642f43be"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Mayer Brown",
+   "primary_source": "Mayer Brown",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_8c1d87c687",
+   "member_ids": [
+    "6c7890665d2daff0"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Farrer & Co",
+   "primary_source": "Farrer & Co",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_6576d5be10",
+   "member_ids": [
+    "3ed8729499ffd445"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Norton Rose Fulbright",
+   "primary_source": "Norton Rose Fulbright",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_517b079edf",
+   "member_ids": [
+    "198de73d38a8a006"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Forkast News",
+   "primary_source": "Forkast News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_aac4cc58c1",
+   "member_ids": [
+    "d70e2c5b1bdbea3a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "UK Human Rights Blog",
+   "primary_source": "UK Human Rights Blog",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_1d6e672eb9",
+   "member_ids": [
+    "24362a787000da1a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Royal College of Nursing",
+   "primary_source": "Royal College of Nursing",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e81b3b87d6",
+   "member_ids": [
+    "2baa0e7befab15cd"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "letsrecycle.com",
+   "primary_source": "letsrecycle.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_692f6e827f",
+   "member_ids": [
+    "4bfb607772534011"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "ISPreview UK",
+   "primary_source": "ISPreview UK",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_5ac50b51a1",
+   "member_ids": [
+    "93e3114ad2a45ee3"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Angle Advisors",
+   "primary_source": "Angle Advisors",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "74626e58642f43be:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683270000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "74626e58642f43be:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683270000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "3ed8729499ffd445:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1676164632.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "93e3114ad2a45ee3:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675238400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "6c7890665d2daff0:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682665200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "198de73d38a8a006:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683010800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "d70e2c5b1bdbea3a:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1676966400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "d70e2c5b1bdbea3a:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1676966400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "74626e58642f43be:c0",
+  "74626e58642f43be:c1",
+  "3ed8729499ffd445:c0",
+  "93e3114ad2a45ee3:c0",
+  "6c7890665d2daff0:c0",
+  "198de73d38a8a006:c0",
+  "d70e2c5b1bdbea3a:c0",
+  "d70e2c5b1bdbea3a:c1"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_9084535787": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_f3bcdef306": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_ad597e72a0": {
+   "status": "fulfilled",
+   "n_claims": 1,
+   "n_included": 1
+  },
+  "req_0e545754bb": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_f08025fd51": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_5ef5125389": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_a158142f16": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_cba7c39cf9": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_0e545754bb",
+  "req_f08025fd51",
+  "req_5ef5125389",
+  "req_a158142f16",
+  "req_cba7c39cf9"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 9,
+  "n_contradictions": 0,
+  "n_documents": 9
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 15.235,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "a161ebe9fcedaa17",
+ "bundle_hash": "a161ebe9fcedaa17",
+ "_persisted_at": "2026-07-13T01:43:52Z"
+}

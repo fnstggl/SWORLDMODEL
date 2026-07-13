@@ -48,6 +48,9 @@ class StateDelta:
     reason_codes: list = field(default_factory=list)
     uncertainty: dict = field(default_factory=dict)
     evidence_deps: list = field(default_factory=list)
+    follow_up_events: list = field(default_factory=list)  # endogenous events this transition causes (A4):
+    #                                                       [{etype, ts, participants, payload}] — validated
+    #                                                       against the event registry and queued by the engine
 
     def change(self, path: str, before, after):
         self.changes.append({"path": path, "before": before, "after": after})
@@ -67,6 +70,7 @@ class TransitionProposal:
     reason_codes: list = field(default_factory=list)
     uncertainty: dict = field(default_factory=dict)
     evidence_deps: list = field(default_factory=list)
+    follow_up_events: list = field(default_factory=list)  # endogenous consequences (A4): action→event chains
 
 
 @dataclass
@@ -100,14 +104,18 @@ class TransitionOperator:
         raise NotImplementedError
 
     def run(self, world, event, rng):
-        """propose → validate → apply. Returns (StateDelta|None, ValidationResult)."""
+        """propose → validate → apply. Returns (StateDelta|None, ValidationResult). Follow-up events
+        proposed by the transition ride on the delta (A4) — the rollout engine validates and queues them."""
         proposal = self.propose(world, event, rng)
         if proposal is None:
             return None, ValidationResult(ok=True, reasons=["no-op"])
         vr = self.validate(world, proposal)
         if not vr.ok:
             return None, vr
-        return self.apply(world, proposal), vr
+        delta = self.apply(world, proposal)
+        if delta is not None and proposal.follow_up_events:
+            delta.follow_up_events = list(proposal.follow_up_events)
+        return delta, vr
 
 
 # ---------------------------------------------------------------- A. agent decision
@@ -153,20 +161,30 @@ Return ONLY JSON: {{"p": {{"<action>": <0..1>, ...}}, "reasons": ["<code>", ...]
 
 
 class AgentDecisionOperator(TransitionOperator):
-    """The LLM as policy over TYPED actions: reads the actor's typed state + their OWN information set,
-    emits a distribution over the institution-valid action set; the sampled action becomes a typed delta.
-    With llm=None a uniform policy runs (offline/testing) — the machinery is identical."""
+    """Typed-action decision boundary. POLICY CONTRACT (gap-audit RC4 repair): the LLM may NOT mint
+    behavioral probabilities on the production path — the Enron round measured that failure directly
+    (raw-LLM ECE 0.16–0.33 vs the fitted anchor). Default behavior:
+      * a bound fitted policy (FittedDecisionOperator) is the production path;
+      * without one, a UNIFORM reference policy runs, loudly flagged `policy_unsupported_uniform` —
+        an honest ignorance prior, never a fabricated confident distribution;
+      * the legacy LLM-minting path survives ONLY behind allow_llm_probabilities=True (experimental
+        arms; excluded from calibrated claims).
+    Reference-world subclasses override _policy with fitted mechanisms — unaffected."""
     name = "agent_decision"
 
-    def __init__(self, llm=None):
+    def __init__(self, llm=None, allow_llm_probabilities=False):
         self.llm = llm
+        self.allow_llm_probabilities = allow_llm_probabilities
 
     def applicable(self, world, event):
         return event.etype == "decision_opportunity" and bool(event.participants)
 
     def _policy(self, world, actor, actions, event):
-        if self.llm is None:
-            return {a["type"]: 1.0 / len(actions) for a in actions}, ["uniform_policy"]
+        if self.llm is None or not self.allow_llm_probabilities:
+            reasons = ["uniform_policy", "policy_unsupported_uniform"]
+            if self.llm is not None:
+                reasons.append("llm_probability_minting_disabled_experimental")
+            return {a["type"]: 1.0 / len(actions) for a in actions}, reasons
         from swm.engine.grounding import parse_json
         view = observable_view(world, actor.identity)      # the boundary: ONLY what this actor can know
         raw = parse_json(self.llm(_DECIDE_PROMPT.format(
@@ -221,6 +239,31 @@ class AgentDecisionOperator(TransitionOperator):
                        reason_codes=proposal.reason_codes, uncertainty={"p_dist": proposal.p_dist})
         d.change(f"{actor.identity}.current_action", before, proposal.action["type"])
         return d
+
+
+class FittedDecisionOperator(AgentDecisionOperator):
+    """The PRODUCTION decision path (Tier A3): a fitted/empirically calibrated policy converts the
+    actor-observable state into the action distribution. `policy_fn(world, actor, valid_actions, event)
+    → ({action_type: prob}, [reason codes])`; typically built from a registry parameter pack (utility+QRE,
+    anchored logistic, hierarchical rates). The LLM never appears here. Provenance: the policy's pack id
+    and source ride on every delta via reason codes."""
+    name = "fitted_decision"
+
+    def __init__(self, policy_fn, *, pack_id: str = "", source: str = "fitted"):
+        super().__init__(llm=None)
+        self.policy_fn = policy_fn
+        self.pack_id = pack_id
+        self.source = source
+
+    def _policy(self, world, actor, actions, event):
+        dist, reasons = self.policy_fn(world, actor, actions, event)
+        clean = {a["type"]: max(0.0, float(dist.get(a["type"], 0.0) or 0.0)) for a in actions}
+        z = sum(clean.values())
+        if z <= 0:
+            return ({a["type"]: 1.0 / len(actions) for a in actions},
+                    ["fitted_policy_degenerate_uniform_fallback"])
+        tags = [f"pack={self.pack_id}" if self.pack_id else "pack=unbound", f"policy_source={self.source}"]
+        return {k: v / z for k, v in clean.items()}, tags + [str(r)[:40] for r in reasons][:3]
 
 
 # ---------------------------------------------------------------- B. belief update
@@ -371,6 +414,34 @@ class InstitutionalVoteOperator(TransitionOperator):
         return d
 
 
+# ---------------------------------------------------------------- G. rare-event arrival (v1 kernel, ported)
+class RareEventArrivalOperator(TransitionOperator):
+    """The v1 poisson_arrival kernel as a REAL transition (Tier A1: it was a registry entry with no
+    operator — a silent no-op). The compiler schedules a StochasticHazard for the rare event type; when
+    the event fires, this operator writes the typed outcome quantity. P(event by deadline)=1−exp(−λH)
+    emerges from the hazard sampling itself — the closed form is not hardcoded anywhere."""
+    name = "poisson_arrival"
+
+    def applicable(self, world, event):
+        return event.etype == "external_shock" and bool(event.payload.get("outcome_var"))
+
+    def propose(self, world, event, rng):
+        return TransitionProposal(operator=self.name,
+                                  action={"outcome_var": str(event.payload["outcome_var"]),
+                                          "value": event.payload.get("value", True)},
+                                  reason_codes=["rare_event_arrival"])
+
+    def apply(self, world, proposal):
+        var = proposal.action["outcome_var"]
+        from swm.world_model_v2.quantities import Quantity, register_quantity_type
+        register_quantity_type(var, units="bool")
+        before = world.quantities[var].value if var in world.quantities else None
+        world.quantities[var] = Quantity(name=var, qtype=var, value=proposal.action["value"],
+                                         timestamp=world.clock.now)
+        d = StateDelta(at=world.clock.now, event_type="external_shock", operator=self.name)
+        return d.change(f"quantities[{var}]", before, proposal.action["value"])
+
+
 # ---------------------------------------------------------------- H. exogenous hazards (background)
 class BackgroundDynamicsOperator(TransitionOperator):
     """Time passing: attention mean-reversion + memory decay over the ELAPSED interval. Applied on
@@ -406,7 +477,12 @@ class BackgroundDynamicsOperator(TransitionOperator):
 # exist are labeled priors)
 register_operator("agent_decision", AgentDecisionOperator, requires=("entity.*", "information"),
                   modifies=("entity.current_action", "entity.past_actions"), temporal_scale="event",
-                  parameter_source="LLM policy over typed actions", validated=True)
+                  parameter_source="uniform reference policy unless a fitted policy is bound; "
+                                   "LLM probability-minting is experimental-only (gap-audit RC4)",
+                  validated=True)
+register_operator("fitted_decision", FittedDecisionOperator, requires=("entity.*",),
+                  modifies=("entity.current_action", "entity.past_actions"), temporal_scale="event",
+                  parameter_source="fitted policy from a registry parameter pack", validated=True)
 register_operator("belief_update", BeliefUpdateOperator, requires=("information", "entity.beliefs"),
                   modifies=("entity.beliefs",), temporal_scale="event",
                   parameter_source="rule core (credibility×trust×salience), broad priors", validated=True)
@@ -422,3 +498,6 @@ register_operator("institutional_vote", InstitutionalVoteOperator, requires=("in
 register_operator("background_dynamics", BackgroundDynamicsOperator, requires=("entities",),
                   modifies=("entity.attention", "information.salience"), temporal_scale="interval",
                   parameter_source="broad priors (labeled)", validated=True)
+register_operator("poisson_arrival", RareEventArrivalOperator, requires=("quantities",),
+                  modifies=("quantities",), temporal_scale="horizon",
+                  parameter_source="hazard rate from plan (base-rate/observed)", validated=True)

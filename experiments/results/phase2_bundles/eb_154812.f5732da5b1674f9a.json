@@ -1,0 +1,2125 @@
+{
+ "bundle_id": "eb_154812",
+ "question": "Will the private-equity firm close the buyout by year end?",
+ "as_of": 1688169600.0,
+ "compiler_plan_hash": "c73efc9ab386",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_a154efa97d",
+   "claim_or_quantity": "The buyout is considered closed if the transaction is legally finalized and funds are transferred by 2023-12-31.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "private_equity_firm",
+    "target_company",
+    "regulator"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_7ff39f569f",
+   "claim_or_quantity": "value/context of regulator.approval_delay",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "regulator.approval_delay",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_ff58fca5b4",
+   "claim_or_quantity": "value/context of private_equity_firm.commitment_level",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "private_equity_firm.commitment_level",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_3fd918f361",
+   "claim_or_quantity": "value/context of lenders.financing_availability",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "lenders.financing_availability",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_6b6469696b",
+   "claim_or_quantity": "evidence discriminating structural hypothesis smooth_close",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:smooth_close",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_1eee3f4fa1",
+   "claim_or_quantity": "evidence discriminating structural hypothesis regulatory_hurdle",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:regulatory_hurdle",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_fcae14629c",
+   "claim_or_quantity": "decision rules / process of private_equity_firm",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "private_equity_firm",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_03e70d8bdd",
+   "claim_or_quantity": "decision rules / process of target_company",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "target_company",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_a154efa97d",
+   "terms": "private equity firm close buyout end private equity firm target company regulator",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_7ff39f569f",
+   "terms": "regulator approval delay",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_ff58fca5b4",
+   "terms": "private equity firm commitment level",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_a154efa97d",
+   "logical_query": "private equity firm close buyout end private equity firm target company regulator after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=private+equity+firm+close+buyout+end+private+equity+firm+target+company+regulator+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783907092.6304533,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:44:53 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmII1pBiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDMbXt4iU2gQm_bj1lVFJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAArBs3QQ\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "4f7044f8a4d5c0e83d9490ed1c55c5370b85ef3fbf159a1174fe3e62a07fd6ec",
+   "n_bytes": 30617,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.792
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_7ff39f569f",
+   "logical_query": "regulator approval delay after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=regulator+approval+delay+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783907093.4248488,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:44:54 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjytDikmJw05BiSO44w5ACxHVA3ADEfBXPmVpvnmOdDMQli86zNgFxFxDPAGJDhUus9kB8Of0Sa5HEFdYGIP5UdYNVoPoG67diXzaWEiB-689mGhLI5gzEWzSD2YS4Oaa1XbzEJrCh5beZknJSfmF8Sn5JcXFBTmJxRnFqUVlqUbyRgZGZgbmBmZ6BSXyBAQA7czma\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "4a02514f22275a7d7e4b61748a45bca806b5837b8975b87d6758d2f102bcb546",
+   "n_bytes": 70366,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.652
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_ff58fca5b4",
+   "logical_query": "private equity firm commitment level after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=private+equity+firm+commitment+level+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783907094.0800452,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:44:54 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmII1pBiSO44w5AKxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwc09ouXmITOHFgwi0mJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwCqLzjG\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "21a7ffc2dd2cb7b4206709ba5437a60baf6048deb8d8e9b17033146d51aff326",
+   "n_bytes": 60527,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.587
+  }
+ ],
+ "raw_content_refs": [
+  "21a7ffc2dd2cb7b4206709ba5437a60baf6048deb8d8e9b17033146d51aff326",
+  "4a02514f22275a7d7e4b61748a45bca806b5837b8975b87d6758d2f102bcb546",
+  "4f7044f8a4d5c0e83d9490ed1c55c5370b85ef3fbf159a1174fe3e62a07fd6ec"
+ ],
+ "documents": [
+  {
+   "id": "a3425e6ac6094fe2",
+   "source": "Mintz",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNNUkxazQ0Yi1wWXUyMnVTLTFWQy1lNkZKSlJDNWMxWUFkSVlyYXhRVjlPd0M1TzJlREE2UnRoenA4bkZ0dVBVQm9tSDJrXzR2Zk5nX25aTlVyTmttV25CT3l5bC1jUmZIMENCMmp3Yl9XZlF0Z0xuanJydzZrQ3N5a2V2NHBGZUkwTFhscUVXb2EtTzZ3bHdqNmVlY0dob3hyZHUtU1JCSUdDTFNGUzRRdkZQZlM?oc=5",
+   "title": "CMS Proposes New Disclosure of Ownership Regulations for Nursing Facilities - Top Five Takeaways for Private Equity Firms and REITs - Mintz",
+   "text": "CMS Proposes New Disclosure of Ownership Regulations for Nursing Facilities - Top Five Takeaways for Private Equity Firms and REITs - Mintz. CMS Proposes New Disclosure of Ownership Regulations for Nursing Facilities - Top Five Takeaways for Private Equity Firms and REITs Mintz",
+   "content_hash": "943f1bb66685ea6b",
+   "raw_feed_hash": "4f7044f8a4d5c0e83d9490ed1c55c5370b85ef3fbf159a1174fe3e62a07fd6ec",
+   "published_at": 1676966400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_a154efa97d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "54e37c92a0108d86",
+   "source": "Bain & Company",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxNUzVvLTM1SF9wVU43LWFXMjdVRC1fR3pxMUhzb2h2U3BEWFROUmN4ZUZwazAwVVhmYk5KNWtXRzlRRTk1NkVLZGMwcjMybDB5aWphSzU0Mmt3SjdhZmlXSGZ2ajhLUkxhcXUyNmM0cjBUOVhzMUlqdFR5cnpIc01vNFBDOWQydTVxaG91R3g1MUcwVE5wb1J4eXdEMG8zVVNXd2F2dFNFTzkwQjd4WEZiS2tWbUIxSVBZ?oc=5",
+   "title": "Why Private Equity Is Targeting Individual Investors - Bain & Company",
+   "text": "Why Private Equity Is Targeting Individual Investors - Bain & Company. Why Private Equity Is Targeting Individual Investors Bain & Company",
+   "content_hash": "8b34efc8c91c6ffe",
+   "raw_feed_hash": "4f7044f8a4d5c0e83d9490ed1c55c5370b85ef3fbf159a1174fe3e62a07fd6ec",
+   "published_at": 1677484800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_a154efa97d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "5431d2143d79a102",
+   "source": "Center for American Progress",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxQQ0R2dExDQlFtaXBnU3NGbHc4RTFCMjJhWlBSeDZmd2J6SGUzVGprZWpoWndPRUhqYzdEaDN6OGtGdUVBMlRBcUF1SXBwVWNtOHE5LXJzMGNBbW9WUGhzYkNZaURGWS1IaDBiZF9sVm1vWkRrVjZYTHZpbi1pSjl5QnVtOGNoelF2ZlJReWpkSXRLSEJDOVJpb0ZKS18wbVlTQkU4ZHNoaGJpRDI3ekl5UEUzVFRhQQ?oc=5",
+   "title": "How Exemptions From Securities Laws Put Investors and the Economy at Risk - Center for American Progress",
+   "text": "How Exemptions From Securities Laws Put Investors and the Economy at Risk - Center for American Progress. How Exemptions From Securities Laws Put Investors and the Economy at Risk Center for American Progress",
+   "content_hash": "48d5ed611f130484",
+   "raw_feed_hash": "4f7044f8a4d5c0e83d9490ed1c55c5370b85ef3fbf159a1174fe3e62a07fd6ec",
+   "published_at": 1679468400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_a154efa97d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "466e49bba9ebc3ee",
+   "source": "cepr.net",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOT1VUZHJDZDJ1LV9UemFWdWtxNDBuS1haa2IxalBjM0Vkc0UzNFpZa1R6NVQ2QnJEWWMtcEF1U200dkdsbkdmd250TF9TZTBZUmg2SzhtRG9uWXgydU1nckdiZzZPUDJ3ak04WG9kWjRTZXYzWWlFQ3lnUDYtc1VJXzNrdVQ0TUJkdld0a1B1Rzk2LV8tSTBv?oc=5",
+   "title": "Preying on the Dying: Private Equity Gets Rich in Hospice Care - cepr.net",
+   "text": "Preying on the Dying: Private Equity Gets Rich in Hospice Care - cepr.net. Preying on the Dying: Private Equity Gets Rich in Hospice Care cepr.net",
+   "content_hash": "3816175fdae799ce",
+   "raw_feed_hash": "4f7044f8a4d5c0e83d9490ed1c55c5370b85ef3fbf159a1174fe3e62a07fd6ec",
+   "published_at": 1682406000.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_a154efa97d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "0eda7071660ec0e2",
+   "source": "Clearlake Capital",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi-gFBVV95cUxNZGc5S1FqTmJteUk2cmxWU3c1YjcxRlNqMW00T09HRzU3Z0JtT2d2aUVIQUlQbGV0dVpzekVYemtLTlpPNHlnSlQwU2toU1F5T3Mwb3BfcDRUR2tPZEFLVmZKc2pKa0RBUEp6b0tXX0pkN2tHazE0cjg4aUdzX2pjbjJMSHgtM1JzRzVmRjB6ZmlqVzF5THpjZGpZZE03RWQtUEJVOW5uY3RySFZOdmcwSnltdldtalhnLWwzTWxFamN5RTlHeUZ2dnNySUt3YUdobEtQZGxvQTI4RjhJM3N6cmdCZURRN2N3dG9ja2JUbzRFc092UTlWQWV3?oc=5",
+   "title": "Clearlake and Motive-Backed Software Platform BetaNXT Expands Capabilities, Growth Opportunities with Acquisition of Mediant Communications - Clearlake Capital",
+   "text": "Clearlake and Motive-Backed Software Platform BetaNXT Expands Capabilities, Growth Opportunities with Acquisition of Mediant Communications - Clearlake Capital. Clearlake and Motive-Backed Software Platform BetaNXT Expands Capabilities, Growth Opportunities with Acquisition of Mediant Communications Clearlake Capital",
+   "content_hash": "7769ae69e5bf80a8",
+   "raw_feed_hash": "4f7044f8a4d5c0e83d9490ed1c55c5370b85ef3fbf159a1174fe3e62a07fd6ec",
+   "published_at": 1677657600.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_a154efa97d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "11da20ee6de62a9a",
+   "source": "Apollo Global Management",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxPc1RHUlRyWFI0R1B4eGx6aE44dlJtNW5ucUxKTi0wWTl0M3ZHekNoX0M2VTZnVm1OSm5TMko0cmxzNUNUTDVMYWFtUFZfZ0pYWmdPNG5HNTNrZUxfQjF3a0pqYTA4Zmd2Nlk2VEZNRUFZMzhMMEF5VzU2YU4tS0NvdGZsQ1FYZw?oc=5",
+   "title": "10-K: Annual report pursuant to Section 13 and 15(d) - Apollo Global Management",
+   "text": "10-K: Annual report pursuant to Section 13 and 15(d) - Apollo Global Management. 10-K: Annual report pursuant to Section 13 and 15(d) Apollo Global Management",
+   "content_hash": "2a85d9b4a87673cc",
+   "raw_feed_hash": "4f7044f8a4d5c0e83d9490ed1c55c5370b85ef3fbf159a1174fe3e62a07fd6ec",
+   "published_at": 1677657600.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_a154efa97d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "035c1c6bf31b6732",
+   "source": "Infrastructure Investor",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxQWG1qdnE0V0R4M0oxS1BiMUV2NmFVZGI2UUpUeFlQS3dHYUtJQ2dlV0ctbXk2Qzg1Tk9HTnNNaFRYdndNODNDOElIRWFaT1hwOHZTNlRnekw2aHN0OGdBaEFCSVpqOHhPQ0tRTFNYRERjcXFwMUZRbVFmYTVEdnhQY3pmMEdsMGEtVnBwZkZYWmFha2dhU0JsZ3lvRC1PWFhRQm9BSDBZcXVwQ24xVkR2S2RUMXpyRDhZZHk2Zl9ZemJiMkM2RkJ5dWtER3k4UHZER0RjZjRGRERiRXRGalZSb3JwNA?oc=5",
+   "title": "The Pipeline: Swiss Life adds value, Morrison & Co ups fundraising firepower, Ancala backs NA decarbonisation firm - Infrastructure Investor",
+   "text": "The Pipeline: Swiss Life adds value, Morrison & Co ups fundraising firepower, Ancala backs NA decarbonisation firm - Infrastructure Investor. The Pipeline: Swiss Life adds value, Morrison & Co ups fundraising firepower, Ancala backs NA decarbonisation firm Infrastructure Investor",
+   "content_hash": "c7dc9560a9f950b1",
+   "raw_feed_hash": "4f7044f8a4d5c0e83d9490ed1c55c5370b85ef3fbf159a1174fe3e62a07fd6ec",
+   "published_at": 1681196400.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_a154efa97d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3ef9b5c298bedbed",
+   "source": "Institutional Investor",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi_gFBVV95cUxPS1AteE05YWVFWHBVUXQtOFZEem10alpqOHpWbmI0MzJrTkdaOGJVeHdmN0R1Z1B4a3hfOW5tbVNUUWd2LXA4ZlB3Z0F6S0R0bkV3ZFRWaGE0bk5NUWlhNFZvVU1Nckh3WHZzZmRNRV80RnZhZFJEUXJ3RnVsaTNxWnNQR0tIZ2w0QlE2b2ttRWw4N0puZGtLcVVmampic2FjMHVaZzVEUWZtVXJDYVQxWFM1M3JLNHd5Zk9oZHRBRU1IZWpRZnhGeG9HWmpuUzZzTk05N0E3MWptUUhRWTNpUUZidmVPeFA4cUx4TVFUTnJDbGVLUGdEWVBBYl9NUQ?oc=5",
+   "title": "Ares Faces Its Biggest Decision Yet: Stick With Private Credit or Become an Alts Supermarket - Institutional Investor",
+   "text": "Ares Faces Its Biggest Decision Yet: Stick With Private Credit or Become an Alts Supermarket - Institutional Investor. Ares Faces Its Biggest Decision Yet: Stick With Private Credit or Become an Alts Supermarket Institutional Investor",
+   "content_hash": "394546bef83fcb2b",
+   "raw_feed_hash": "4f7044f8a4d5c0e83d9490ed1c55c5370b85ef3fbf159a1174fe3e62a07fd6ec",
+   "published_at": 1678950000.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_a154efa97d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "197da1d23b955e7d",
+   "source": "The Republic News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxPa3lZUklCSVVqRnpWTjk1elJrMGd0bHd0anJSNXpST2tucjJuTVZ5cUczbF82ak4waUo0amhTcXlDQ3RDRmU2cGhveW5GVWlNZXNsNWVhUnh1QkdpeHlPWmE1Um1Xbm1aYXMtcVNfYjlwMGtialFMbGtLQURFYW5Ec3FBQ1lxVkZzZUJlcDZtZVRQeWlvY1kxb0s3RlBnRmdyTXZ0dzluRmZFVFpRbl9HZGQxOFFaZnlEdEVKNVNiNA?oc=5",
+   "title": "RIVERFRONT DELAYS: City still working with regulators for approval of major project - The Republic News",
+   "text": "RIVERFRONT DELAYS: City still working with regulators for approval of major project - The Republic News. RIVERFRONT DELAYS: City still working with regulators for approval of major project The Republic News",
+   "content_hash": "50483e6d1b96d090",
+   "raw_feed_hash": "4a02514f22275a7d7e4b61748a45bca806b5837b8975b87d6758d2f102bcb546",
+   "published_at": 1682233200.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_7ff39f569f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "66e3e7299d8d0a94",
+   "source": "RAPS",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOS3A1dTRlSzZqVVpQWU45ZnBJT0FZVjRxak1Scl9xZ2VaYUJIcG1SNlY1UWhKME8wZ3lGazBsOUNvb0NzUFNHVnRvdWZiRzNYb0EtZjlfWmVhQ1dRdEh3ZFZzeFlSdXkxems0N0FDejZZVnFnRm9yUjVCblJGSG1EWm9zcHpBYlEtRkFj?oc=5",
+   "title": "Euro Convergence: EMA won\u2019t delay drug approval of combo product if diagnostic part doesn\u2019t have CE mark - RAPS",
+   "text": "Euro Convergence: EMA won\u2019t delay drug approval of combo product if diagnostic part doesn\u2019t have CE mark - RAPS. Euro Convergence: EMA won\u2019t delay drug approval of combo product if diagnostic part doesn\u2019t have CE mark RAPS",
+   "content_hash": "73c5dde5ff507043",
+   "raw_feed_hash": "4a02514f22275a7d7e4b61748a45bca806b5837b8975b87d6758d2f102bcb546",
+   "published_at": 1684393200.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_7ff39f569f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "437199a9475043b1",
+   "source": "MedTech Dive",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTFB1ekE3dFpMTzNrNXJueXhqMVg5dzd5VTNMTU02OVRzWjNTNGFPV0tKOE8tSzdwUnNVQnE3RktSbEdMX1pPb243d0prandUZ3VDMFVQQmJ2UTc4NkV2Rk52VkN5aHdhYWpELXNWN3JyaFQ3R2tMbXBDWmVkWQ?oc=5",
+   "title": "Medtech industry relieved as Europe\u2019s MDR extension nears final approval - MedTech Dive",
+   "text": "Medtech industry relieved as Europe\u2019s MDR extension nears final approval - MedTech Dive. Medtech industry relieved as Europe\u2019s MDR extension nears final approval MedTech Dive",
+   "content_hash": "b593d8ac87cfab6d",
+   "raw_feed_hash": "4a02514f22275a7d7e4b61748a45bca806b5837b8975b87d6758d2f102bcb546",
+   "published_at": 1678089600.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_7ff39f569f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "82c618a6d93ee098",
+   "source": "Banking Dive",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE0yOWVMbmJ0eGtHalFBdEVrNjlvZXBWdlphZjk3NklVbW9ZZ21HVUNyYV96R3FqdkdHVzZtQ2ZmRHhGS0hIUkNMNlBiVXYtbWNYWExRVlZPR2JyOWcxSUY1ZFQtN2UxMXpDNUREeDZHNzJSV1E?oc=5",
+   "title": "First Horizon warns TD deal may be in limbo - Banking Dive",
+   "text": "First Horizon warns TD deal may be in limbo - Banking Dive. First Horizon warns TD deal may be in limbo Banking Dive",
+   "content_hash": "80fca9ac5fd52ed2",
+   "raw_feed_hash": "4a02514f22275a7d7e4b61748a45bca806b5837b8975b87d6758d2f102bcb546",
+   "published_at": 1677657600.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_7ff39f569f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "1cdcba17def91d8f",
+   "source": "insights.citeline.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxOcUVmUzlmWFFSWWhQWTBOSTVrS3VQdmNfNGYyT08waFc0OGk3QzJVeDk3OFhQUDE0SmhxYzd4VHF2d0JNLWlrYU5CMW03cHZhZzltdk9pZklYYW8yUnByWl9ua051VUJPS3pHQ2VTZHdmaFJFSUxUT3FnXzZLWmU4NnVhemxDN0k4MjJwYVBNdXFaWkdhZE1qVC0zT3NKaXBEdXEtNEZjU2ZfdFlhbGNib1BwUm5vcF9q?oc=5",
+   "title": "Reata\u2019s Skyclarys Approval Aided By Natural History And Delayed-Start Analyses - insights.citeline.com",
+   "text": "Reata\u2019s Skyclarys Approval Aided By Natural History And Delayed-Start Analyses - insights.citeline.com. Reata\u2019s Skyclarys Approval Aided By Natural History And Delayed-Start Analyses insights.citeline.com",
+   "content_hash": "f26aa192bed7bfe2",
+   "raw_feed_hash": "4a02514f22275a7d7e4b61748a45bca806b5837b8975b87d6758d2f102bcb546",
+   "published_at": 1678003200.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_7ff39f569f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "506b9f8be6f7d42d",
+   "source": "The Commercial Appeal",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPaUhmZDY5OTJVcVFfcnNHS0dpbUtsb3l2Tjlpd1JxNUpGWFFSVDVUc2FhNXBkcF9DOUt4WnotUUN1MzFSdThZTlhjV1NodFJ5Y05GSHFING9ITlE0VUxYbUx4ekxhMWY1Vm5YMmk1dnVZV0J6dW12bGI4RTl0cU16U0xKaEFBVDdGSzItQlJhelpfSVpzei1pV2FNa3ZkQVJXcVdXdWtVRUtNWE5YVWczWG5qSXRkSndS?oc=5",
+   "title": "First Horizon, TD Bank call off $13.4 billion merger - The Commercial Appeal",
+   "text": "First Horizon, TD Bank call off $13.4 billion merger - The Commercial Appeal. First Horizon, TD Bank call off $13.4 billion merger The Commercial Appeal",
+   "content_hash": "1dcdf4741c3e2fbb",
+   "raw_feed_hash": "4a02514f22275a7d7e4b61748a45bca806b5837b8975b87d6758d2f102bcb546",
+   "published_at": 1683270000.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_7ff39f569f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "8df78d44b166369e",
+   "source": "Biogen",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxOMlRLN0dUdHVDanBOamdmRndpaGZYaHhyRVlhZUVJY0JyOHlnY2lPQjktN3dLakFzVS15UEdzQ0liVjZhLVdnR09SVHJWSXl6eGN0MmNCQjhGWUdtQzdKaVNnVW56djV6dUo1NVdJVUJJbUdHanZpbkIwbGVweGpzeWtDNTllWDlrSmZ6aEpyMnNYNERDZHZRNjN2NlNWS1RIakpoWnJGVVJOQm1qNEFDMXBOYkx0Znp6RU1pNW9wbWtWUHRQSFE?oc=5",
+   "title": "Biogen Receives Favorable Decision from Court of Justice of the European Union Relating to TECFIDERA\u00ae (dimethyl fumarate) Regulatory Data and Marketing Protection - Biogen",
+   "text": "Biogen Receives Favorable Decision from Court of Justice of the European Union Relating to TECFIDERA\u00ae (dimethyl fumarate) Regulatory Data and Marketing Protection - Biogen. Biogen Receives Favorable Decision from Court of Justice of the European Union Relating to TECFIDERA\u00ae (dimethyl fumarate) Regulatory Data and Marketing Protection Biogen",
+   "content_hash": "dbbdde9298500117",
+   "raw_feed_hash": "4a02514f22275a7d7e4b61748a45bca806b5837b8975b87d6758d2f102bcb546",
+   "published_at": 1678950000.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_7ff39f569f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "505d4003c3a49ffd",
+   "source": "Higher Ed Dive",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxObGduYVVfZWdIc09oRjZrbGkwWXNreFphZ1BaYlhEdGJYcTJGLTA3NVdSNW5uUUppYUNCUU8xR1FmTGZoU1NpN2pfQ0F5aThBbGVUa2ptX0ZYakJKcWktNXVMejBIVnpWRjNsbDF3YzJWNG1xdTdKQ1l6SmRFSFg1U2ViUFp3TkdMUGtPY25SMTVKOV82REl0a19sR2k1XzhQdWMtdw?oc=5",
+   "title": "New federal policy injects delay and uncertainty into merger process - Higher Ed Dive",
+   "text": "New federal policy injects delay and uncertainty into merger process - Higher Ed Dive. New federal policy injects delay and uncertainty into merger process Higher Ed Dive",
+   "content_hash": "768b5049de7e91e6",
+   "raw_feed_hash": "4a02514f22275a7d7e4b61748a45bca806b5837b8975b87d6758d2f102bcb546",
+   "published_at": 1687503600.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_7ff39f569f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "9933628293bb0c43",
+   "source": "GrowthCap",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE1aMGxaeUZ0TkdDNkV4NEhwSkxSMkpFS0dzVnBRczlCc1dnaDYxbldvemJPVXJic0x1YkJuUjZENDlKUFpxc3lhanRqeGVYV0dLZDNleTZLeVlnWkhZRDk0QTM0M0xqNUZMeXg3YnVkMWlMMnFZaWNXMQ?oc=5",
+   "title": "The Top 25 Growth Equity Firms of 2022 - GrowthCap",
+   "text": "The Top 25 Growth Equity Firms of 2022 - GrowthCap. The Top 25 Growth Equity Firms of 2022 GrowthCap",
+   "content_hash": "d3853efee6b540e7",
+   "raw_feed_hash": "21a7ffc2dd2cb7b4206709ba5437a60baf6048deb8d8e9b17033146d51aff326",
+   "published_at": 1677657600.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_ff58fca5b4",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "b2f5cff213ce2baa",
+   "source": "Mintz",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPS0lFRV9MbjZBQXllT1pWNFM1QkZJcE1DakRvZFZHTzRZdXk1dzE0ckV2VWNGTlI2T2llTGhwNGNDMUpoTDJkTWNtZjJBSHZJMGxfSHNEbWluaFJ1c1VlaVRRM1RpUV9ITXBGOFhIa0xrSXhsdFpLX0lHczhEOG53V056MFJYSFB2MHUtNGx1THh5Z2RJQkVSY2Nmd1p1cFh0bkhCVTE3VW1pZmRlVy1ER2FjeDNsR29BNEZv?oc=5",
+   "title": "Mintz\u2019s Commitment to Energy Transition Underscored by Roles on $4.6 Billion in Deals - Mintz",
+   "text": "Mintz\u2019s Commitment to Energy Transition Underscored by Roles on $4.6 Billion in Deals - Mintz. Mintz\u2019s Commitment to Energy Transition Underscored by Roles on $4.6 Billion in Deals Mintz",
+   "content_hash": "afb53f6bb60afe45",
+   "raw_feed_hash": "21a7ffc2dd2cb7b4206709ba5437a60baf6048deb8d8e9b17033146d51aff326",
+   "published_at": 1679468400.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_ff58fca5b4",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "37f52812e3c5c5d3",
+   "source": "Global Finance Magazine",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQWVVFN0p2MjhkYV90QV81ZXlOdFNWVjFoYkNZRklucnJ0M0hZZXNZanlUTjY4R1N1NXI5QUY0a05FT29kOG9GV1p3djJsb2xBWno1c3JEdkF4cExTZHBPNDNKdzhaZ3A0aGd2b01FQ3NrcDd3cVFYc29UZFllUzMyZkhQSkhHN1hQczBLMU5tcEhsdw?oc=5",
+   "title": "Private Equity\u2019s Dry Powder - Global Finance Magazine",
+   "text": "Private Equity\u2019s Dry Powder - Global Finance Magazine. Private Equity\u2019s Dry Powder Global Finance Magazine",
+   "content_hash": "da81610d427b92dd",
+   "raw_feed_hash": "21a7ffc2dd2cb7b4206709ba5437a60baf6048deb8d8e9b17033146d51aff326",
+   "published_at": 1683183600.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_ff58fca5b4",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "7c5bc7cae80411b7",
+   "source": "K&L Gates",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNaWlwUFRSaWI5NkhDMHIzajBXenpkbGxhR3FZWGc1SzU4aUlXQ01BU3YwNVVaem5RUXpha3B2M2ZfQ1dCT28wMmNVelZkeUFDZU1SQmhBbS1lWDYtZjRYWnloRjVTdWlKWTZPalN6LTE4dnp3Y25uS1FPYmdYN1RfS3dianpGdGZjRTJuNDVXN2JoR0dKRC1pdUVn?oc=5",
+   "title": "The SEC Significantly Expands the Scope of Form PF Reporting - K&L Gates",
+   "text": "The SEC Significantly Expands the Scope of Form PF Reporting - K&L Gates. The SEC Significantly Expands the Scope of Form PF Reporting K&L Gates",
+   "content_hash": "1f4b251216610935",
+   "raw_feed_hash": "21a7ffc2dd2cb7b4206709ba5437a60baf6048deb8d8e9b17033146d51aff326",
+   "published_at": 1683874800.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_ff58fca5b4",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "713357b80536f74b",
+   "source": "New Private Markets",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMipAFBVV95cUxOWXJJbXlaTkRYSHZQVnBnWW9FSXU1WmRscjNRUE5kY3NEVUF3SVJ0TFpzNDM4VlgyUkNUelNKaldJeVREZXA4d2pWV1pmRFdBLWtPTHZsZHR1WXN0RGQ4MUt4cmZsZjZYTmQxbmw2WS1jajdwZEtXc2Etal9zZGREZmItLXFnWk1OYWtVWHZ3R3RZdVdGeEdpTEZSUnRMcVliSXo2Uw?oc=5",
+   "title": "Which sustainable investors scooped awards across PEI Group\u2019s titles? - New Private Markets",
+   "text": "Which sustainable investors scooped awards across PEI Group\u2019s titles? - New Private Markets. Which sustainable investors scooped awards across PEI Group\u2019s titles? New Private Markets",
+   "content_hash": "f2f00960263fcca2",
+   "raw_feed_hash": "21a7ffc2dd2cb7b4206709ba5437a60baf6048deb8d8e9b17033146d51aff326",
+   "published_at": 1677744000.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_ff58fca5b4",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "e4203251c64657fe",
+   "source": "McGuireWoods",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNYXN0cnJmQ1l1SF9QY0dIQk5zcmxQR2FTcS1DRHZrYlBsSFdJSUxMaVNxTm1kSTBOdmJ0TDdVRVBFbHMtVklydTNLeFBldmszeFlJa1Q3TU5EZ1gzazQwWFJ1b1BlcGxna3dOcGJFMTZTbF8zaHRfd002QVZNaFp4bUZPTl84NW8yclhWMjFvLXlLdnJhbGFWaFZvUXkzT3RRNjZqQWljVWtKdkIwcDVsaUlKVWNzWUJ0M0N5dg?oc=5",
+   "title": "Independent Sponsor Spotlight: Rick Perkal of Firelight Capital - McGuireWoods",
+   "text": "Independent Sponsor Spotlight: Rick Perkal of Firelight Capital - McGuireWoods. Independent Sponsor Spotlight: Rick Perkal of Firelight Capital McGuireWoods",
+   "content_hash": "a822363154cb5169",
+   "raw_feed_hash": "21a7ffc2dd2cb7b4206709ba5437a60baf6048deb8d8e9b17033146d51aff326",
+   "published_at": 1677657600.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_ff58fca5b4",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "36aec0f65f2bf02e",
+   "source": "NYC.gov",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE5fSlBvU0p2WVJyQzNwMkpSWjBzdml6SVNva1NhTjJ6dElZY19nTy1MakRpbnB3OHBxWGRoWjFCNDRPVXoxeC1aZ19KVWpvcU45ZWlTMk8wQXR2V3FrV2RNQ2xvaGgtaEY1Y1YxRkFpU0VqaEdVMjNFclZRbFI?oc=5",
+   "title": "NYCERS Net Zero Implementation Plan - NYC.gov",
+   "text": "NYCERS Net Zero Implementation Plan - NYC.gov. NYCERS Net Zero Implementation Plan NYC.gov",
+   "content_hash": "4cb2b74100538954",
+   "raw_feed_hash": "21a7ffc2dd2cb7b4206709ba5437a60baf6048deb8d8e9b17033146d51aff326",
+   "published_at": 1680678000.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_ff58fca5b4",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f29a2ad0b502f25f",
+   "source": "Stanford Graduate School of Business",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxQQmdpM2t5ZDhxZDNuTUlOQW10eXFzOWplZ1FUSFZWWnhxWHBTaS1VMkhDNjFqMklhelZ3TlBTc2dBMUdOaGNDTXN2WkRtU2NBN2dUVFd5cTZ1dmJ4a0RwWHNWTGdxMDlWa3VURHZ1QW4zX0NELXpaOHMxMGF6WVhUSkVDS0gzc2lOdjNqOQ?oc=5",
+   "title": "Why Do Companies Cook the Books? Look to the Bean Counters. - Stanford Graduate School of Business",
+   "text": "Why Do Companies Cook the Books? Look to the Bean Counters. - Stanford Graduate School of Business. Why Do Companies Cook the Books? Look to the Bean Counters. Stanford Graduate School of Business",
+   "content_hash": "500fd3756a1bf208",
+   "raw_feed_hash": "21a7ffc2dd2cb7b4206709ba5437a60baf6048deb8d8e9b17033146d51aff326",
+   "published_at": 1679554800.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_ff58fca5b4",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "a3425e6ac6094fe2:c0",
+   "source_id": "a3425e6ac6094fe2",
+   "subject": "CMS",
+   "predicate": "proposes",
+   "object": "new disclosure of ownership regulations for nursing facilities",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "CMS Proposes New Disclosure of Ownership Regulations for Nursing Facilities",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1676966400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "CMS"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_917f5ba00a",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_a154efa97d"
+   }
+  },
+  {
+   "claim_id": "a3425e6ac6094fe2:c1",
+   "source_id": "a3425e6ac6094fe2",
+   "subject": "the article",
+   "predicate": "provides",
+   "object": "top five takeaways for private equity firms and REITs",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "inferred_implication",
+   "supporting_span": "Top Five Takeaways for Private Equity Firms and REITs",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1676966400.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "private equity firms",
+    "REITs"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_917f5ba00a",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_a154efa97d"
+   }
+  },
+  {
+   "claim_id": "197da1d23b955e7d:c0",
+   "source_id": "197da1d23b955e7d",
+   "subject": "City",
+   "predicate": "is working with",
+   "object": "regulators",
+   "value": "",
+   "units": "",
+   "qualifiers": "for approval of major project",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "City still working with regulators for approval of major project",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682233200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "City",
+    "regulators"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_0876b8c344",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_7ff39f569f"
+   }
+  },
+  {
+   "claim_id": "9933628293bb0c43:c0",
+   "source_id": "9933628293bb0c43",
+   "subject": "GrowthCap",
+   "predicate": "published",
+   "object": "The Top 25 Growth Equity Firms of 2022",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "The Top 25 Growth Equity Firms of 2022 - GrowthCap",
+   "span_verified": true,
+   "event_time": "2022",
+   "publication_time": 1677657600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "GrowthCap",
+    "The Top 25 Growth Equity Firms of 2022"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_47b801abe9",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ff58fca5b4"
+   }
+  },
+  {
+   "claim_id": "54e37c92a0108d86:c0",
+   "source_id": "54e37c92a0108d86",
+   "subject": "Private Equity",
+   "predicate": "is targeting",
+   "object": "Individual Investors",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Why Private Equity Is Targeting Individual Investors",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1677484800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Private Equity",
+    "Individual Investors"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_422748f757",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_a154efa97d"
+   }
+  },
+  {
+   "claim_id": "54e37c92a0108d86:c1",
+   "source_id": "54e37c92a0108d86",
+   "subject": "Bain & Company",
+   "predicate": "is associated with",
+   "object": "the article",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Bain & Company",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1677484800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Bain & Company"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_422748f757",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_a154efa97d"
+   }
+  },
+  {
+   "claim_id": "66e3e7299d8d0a94:c0",
+   "source_id": "66e3e7299d8d0a94",
+   "subject": "EMA",
+   "predicate": "won't delay",
+   "object": "drug approval of combo product",
+   "value": "",
+   "units": "",
+   "qualifiers": "if diagnostic part doesn't have CE mark",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "EMA won\u2019t delay drug approval of combo product if diagnostic part doesn\u2019t have CE mark",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1684393200.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "EMA"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_5fc9fc58fb",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_7ff39f569f"
+   }
+  },
+  {
+   "claim_id": "b2f5cff213ce2baa:c0",
+   "source_id": "b2f5cff213ce2baa",
+   "subject": "Mintz",
+   "predicate": "has commitment to energy transition",
+   "object": "energy transition",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Mintz\u2019s Commitment to Energy Transition Underscored by Roles on $4.6 Billion in Deals",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1679468400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Mintz"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_a2094a8629",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ff58fca5b4"
+   }
+  },
+  {
+   "claim_id": "b2f5cff213ce2baa:c1",
+   "source_id": "b2f5cff213ce2baa",
+   "subject": "Mintz",
+   "predicate": "had roles on deals worth",
+   "object": "$4.6 Billion",
+   "value": "4.6",
+   "units": "billion dollars",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Roles on $4.6 Billion in Deals",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1679468400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Mintz"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_a2094a8629",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ff58fca5b4"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "CMS",
+   "normalized": "cms",
+   "candidates": [
+    {
+     "entity_id": "ent_293ae992f4",
+     "canonical": "cms",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "CMS"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "private equity firms",
+   "normalized": "private equity firms",
+   "candidates": [
+    {
+     "entity_id": "ent_316331553e",
+     "canonical": "private equity firms",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "private equity firms"
+     ]
+    },
+    {
+     "entity_id": "ent_b08f26aa84",
+     "canonical": "private equity",
+     "support": 0.2269,
+     "evidence_mentions": [
+      "Private Equity"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "REITs",
+   "normalized": "reits",
+   "candidates": [
+    {
+     "entity_id": "ent_08f6fa0016",
+     "canonical": "reits",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "REITs"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "City",
+   "normalized": "city",
+   "candidates": [
+    {
+     "entity_id": "ent_2c54892c40",
+     "canonical": "city",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "City"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "regulators",
+   "normalized": "regulators",
+   "candidates": [
+    {
+     "entity_id": "ent_6e6857ff92",
+     "canonical": "regulators",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "regulators"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "GrowthCap",
+   "normalized": "growthcap",
+   "candidates": [
+    {
+     "entity_id": "ent_699c86f108",
+     "canonical": "growthcap",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "GrowthCap"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "The Top 25 Growth Equity Firms of 2022",
+   "normalized": "top 25 growth equity firms of 2022",
+   "candidates": [
+    {
+     "entity_id": "ent_fb33aa48f0",
+     "canonical": "top 25 growth equity firms of 2022",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "The Top 25 Growth Equity Firms of 2022"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Private Equity",
+   "normalized": "private equity",
+   "candidates": [
+    {
+     "entity_id": "ent_b08f26aa84",
+     "canonical": "private equity",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Private Equity"
+     ]
+    },
+    {
+     "entity_id": "ent_316331553e",
+     "canonical": "private equity firms",
+     "support": 0.2269,
+     "evidence_mentions": [
+      "private equity firms"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Individual Investors",
+   "normalized": "individual investors",
+   "candidates": [
+    {
+     "entity_id": "ent_973ff60200",
+     "canonical": "individual investors",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Individual Investors"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Bain & Company",
+   "normalized": "bain &",
+   "candidates": [
+    {
+     "entity_id": "ent_3edea233ef",
+     "canonical": "bain &",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Bain & Company"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "EMA",
+   "normalized": "ema",
+   "candidates": [
+    {
+     "entity_id": "ent_6a7a536d60",
+     "canonical": "ema",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "EMA"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Mintz",
+   "normalized": "mintz",
+   "candidates": [
+    {
+     "entity_id": "ent_5958387e47",
+     "canonical": "mintz",
+     "support": 0.6538,
+     "evidence_mentions": [
+      "Mintz",
+      "Mintz"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Mintz",
+   "normalized": "mintz",
+   "candidates": [
+    {
+     "entity_id": "ent_5958387e47",
+     "canonical": "mintz",
+     "support": 0.6538,
+     "evidence_mentions": [
+      "Mintz",
+      "Mintz"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "a3425e6ac6094fe2": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1676966400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676966400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "54e37c92a0108d86": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1677484800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677484800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "5431d2143d79a102": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1679468400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679468400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "466e49bba9ebc3ee": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1682406000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682406000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "0eda7071660ec0e2": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1677657600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677657600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "11da20ee6de62a9a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1677657600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677657600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "035c1c6bf31b6732": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1681196400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681196400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3ef9b5c298bedbed": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1678950000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678950000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "197da1d23b955e7d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1682233200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682233200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "66e3e7299d8d0a94": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1684393200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684393200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "437199a9475043b1": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1678089600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678089600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "82c618a6d93ee098": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1677657600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677657600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "1cdcba17def91d8f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1678003200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678003200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "506b9f8be6f7d42d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1683270000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683270000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "8df78d44b166369e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1678950000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678950000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "505d4003c3a49ffd": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1687503600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687503600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "9933628293bb0c43": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1677657600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677657600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "b2f5cff213ce2baa": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1679468400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679468400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "37f52812e3c5c5d3": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1683183600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683183600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "7c5bc7cae80411b7": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1683874800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683874800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "713357b80536f74b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1677744000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677744000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "e4203251c64657fe": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1677657600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677657600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "36aec0f65f2bf02e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1680678000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680678000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f29a2ad0b502f25f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1679554800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679554800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_917f5ba00a",
+   "member_ids": [
+    "a3425e6ac6094fe2"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Mintz",
+   "primary_source": "Mintz",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_422748f757",
+   "member_ids": [
+    "54e37c92a0108d86"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Bain & Company",
+   "primary_source": "Bain & Company",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_3f0fa0edba",
+   "member_ids": [
+    "5431d2143d79a102"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Center for American Progress",
+   "primary_source": "Center for American Progress",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_0f2dd3c4e6",
+   "member_ids": [
+    "466e49bba9ebc3ee"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "cepr.net",
+   "primary_source": "cepr.net",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_4fdf526dd3",
+   "member_ids": [
+    "0eda7071660ec0e2"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Clearlake Capital",
+   "primary_source": "Clearlake Capital",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_70f13a0285",
+   "member_ids": [
+    "11da20ee6de62a9a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Apollo Global Management",
+   "primary_source": "Apollo Global Management",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9ec656f676",
+   "member_ids": [
+    "035c1c6bf31b6732"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Infrastructure Investor",
+   "primary_source": "Infrastructure Investor",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_80c9c62411",
+   "member_ids": [
+    "3ef9b5c298bedbed"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Institutional Investor",
+   "primary_source": "Institutional Investor",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_0876b8c344",
+   "member_ids": [
+    "197da1d23b955e7d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Republic News",
+   "primary_source": "The Republic News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_5fc9fc58fb",
+   "member_ids": [
+    "66e3e7299d8d0a94"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "RAPS",
+   "primary_source": "RAPS",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_48c53dc39b",
+   "member_ids": [
+    "437199a9475043b1"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "MedTech Dive",
+   "primary_source": "MedTech Dive",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_633b61f36d",
+   "member_ids": [
+    "82c618a6d93ee098"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Banking Dive",
+   "primary_source": "Banking Dive",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e1ef5d0266",
+   "member_ids": [
+    "1cdcba17def91d8f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "insights.citeline.com",
+   "primary_source": "insights.citeline.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_3c545e7306",
+   "member_ids": [
+    "506b9f8be6f7d42d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Commercial Appeal",
+   "primary_source": "The Commercial Appeal",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_ee0515cc30",
+   "member_ids": [
+    "8df78d44b166369e"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Biogen",
+   "primary_source": "Biogen",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9f2f143dff",
+   "member_ids": [
+    "505d4003c3a49ffd"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Higher Ed Dive",
+   "primary_source": "Higher Ed Dive",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_47b801abe9",
+   "member_ids": [
+    "9933628293bb0c43"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "GrowthCap",
+   "primary_source": "GrowthCap",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a2094a8629",
+   "member_ids": [
+    "b2f5cff213ce2baa"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Mintz",
+   "primary_source": "Mintz",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_2abca875c6",
+   "member_ids": [
+    "37f52812e3c5c5d3"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Global Finance Magazine",
+   "primary_source": "Global Finance Magazine",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_40e038fa58",
+   "member_ids": [
+    "7c5bc7cae80411b7"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "K&L Gates",
+   "primary_source": "K&L Gates",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a79ef412b5",
+   "member_ids": [
+    "713357b80536f74b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "New Private Markets",
+   "primary_source": "New Private Markets",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_f0765380b6",
+   "member_ids": [
+    "e4203251c64657fe"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "McGuireWoods",
+   "primary_source": "McGuireWoods",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_8247419c12",
+   "member_ids": [
+    "36aec0f65f2bf02e"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "NYC.gov",
+   "primary_source": "NYC.gov",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_c1bfc8c4b7",
+   "member_ids": [
+    "f29a2ad0b502f25f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Stanford Graduate School of Business",
+   "primary_source": "Stanford Graduate School of Business",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "a3425e6ac6094fe2:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1676966400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "a3425e6ac6094fe2:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1676966400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "197da1d23b955e7d:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682233200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "9933628293bb0c43:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677657600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "54e37c92a0108d86:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677484800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "54e37c92a0108d86:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677484800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "66e3e7299d8d0a94:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684393200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "b2f5cff213ce2baa:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1679468400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "b2f5cff213ce2baa:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1679468400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "a3425e6ac6094fe2:c0",
+  "a3425e6ac6094fe2:c1",
+  "197da1d23b955e7d:c0",
+  "9933628293bb0c43:c0",
+  "54e37c92a0108d86:c0",
+  "54e37c92a0108d86:c1",
+  "66e3e7299d8d0a94:c0",
+  "b2f5cff213ce2baa:c0",
+  "b2f5cff213ce2baa:c1"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_a154efa97d": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_7ff39f569f": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_ff58fca5b4": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_3fd918f361": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_6b6469696b": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_1eee3f4fa1": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_fcae14629c": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_03e70d8bdd": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_3fd918f361",
+  "req_6b6469696b",
+  "req_1eee3f4fa1",
+  "req_fcae14629c",
+  "req_03e70d8bdd"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 24,
+  "n_contradictions": 0,
+  "n_documents": 24
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 14.901,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "f5732da5b1674f9a",
+ "bundle_hash": "f5732da5b1674f9a",
+ "_persisted_at": "2026-07-13T01:45:09Z"
+}

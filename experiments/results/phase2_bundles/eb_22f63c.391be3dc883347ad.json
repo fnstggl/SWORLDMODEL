@@ -1,0 +1,1665 @@
+{
+ "bundle_id": "eb_22f63c",
+ "question": "Will the buyer accept our counteroffer of $4.2M for the office building?",
+ "as_of": 1680307200.0,
+ "compiler_plan_hash": "21f0849ebded",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_fc880328dc",
+   "claim_or_quantity": "The buyer communicates acceptance or rejection of the $4.2M counteroffer by 2023-05-01.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-04-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "buyer",
+    "seller",
+    "building"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_3a27d6f17d",
+   "claim_or_quantity": "value/context of buyer.valuation",
+   "why_relevant": "high-sensitivity latent (1.00) driving the outcome distribution",
+   "affected_component": "buyer.valuation",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-04-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_055ed16aa0",
+   "claim_or_quantity": "value/context of buyer.budget",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "buyer.budget",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-04-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_0582325873",
+   "claim_or_quantity": "evidence discriminating structural hypothesis buyer_valuation_above_offer",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:buyer_valuation_above_offer",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-04-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_66763ba54d",
+   "claim_or_quantity": "evidence discriminating structural hypothesis buyer_valuation_below_offer",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:buyer_valuation_below_offer",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-04-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_b41af8f40d",
+   "claim_or_quantity": "value/context of building.market_value",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "building.market_value",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-04-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_1af2460e7d",
+   "claim_or_quantity": "decision rules / process of real_estate_market",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "real_estate_market",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-04-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_fc880328dc",
+   "terms": "buyer accept counteroffer office building buyer seller building",
+   "after": "2022-11-02",
+   "before": "2023-04-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_3a27d6f17d",
+   "terms": "buyer valuation",
+   "after": "2022-11-02",
+   "before": "2023-04-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_055ed16aa0",
+   "terms": "buyer budget",
+   "after": "2022-11-02",
+   "before": "2023-04-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_fc880328dc",
+   "logical_query": "buyer accept counteroffer office building buyer seller building after:2022-11-02 before:2023-04-01",
+   "wire_url": "https://news.google.com/rss/search?q=buyer+accept+counteroffer+office+building+buyer+seller+building+after%3A2022-11-02+before%3A2023-04-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-11-02",
+   "before_date": "2023-04-01",
+   "retrieved_at": 1783906153.2082558,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:29:13 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw15BiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTD8fLfhUtsAg-2b7_NpKSclF8Yn5JfUlxckJNYnFGcWlSWWhRvZGBkZmBuYKZnYBJfYAAAywY36Q\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "4f1fcfe8db459edacba95eb6df6c01df2af10ab4c30251f179b19befeb4c76c6",
+   "n_bytes": 1291,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.446
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_3a27d6f17d",
+   "logical_query": "buyer valuation after:2022-11-02 before:2023-04-01",
+   "wire_url": "https://news.google.com/rss/search?q=buyer+valuation+after%3A2022-11-02+before%3A2023-04-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-11-02",
+   "before_date": "2023-04-01",
+   "retrieved_at": 1783906153.6557176,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:29:14 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw1ZBiSO44w5ACxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcr_5duMQmcODj98WMSspJ-YXxKfklxcUFOYnFGcWpRWWpRfFGBkZmBuYGZnoGJvEFBgDZ5jni\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "2ac0b41a70849dfbdebd3aea84f6e06c755e8e7870dff52e1ee0bf31d4a1f176",
+   "n_bytes": 65213,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.66
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_055ed16aa0",
+   "logical_query": "buyer budget after:2022-11-02 before:2023-04-01",
+   "wire_url": "https://news.google.com/rss/search?q=buyer+budget+after%3A2022-11-02+before%3A2023-04-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-11-02",
+   "before_date": "2023-04-01",
+   "retrieved_at": 1783906154.3176663,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:29:14 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw0JBiSO44w5AKxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcr_5duMQmMGPdnlvMSspJ-YXxKfklxcUFOYnFGcWpRWWpRfFGBkZmBuYGZnoGJvEFBgDFOTlw\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "5b929b3bf6df98c9fb678720ecaf4cb4cc3c6a329d479d8691383e9f7121fe25",
+   "n_bytes": 65531,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.647
+  }
+ ],
+ "raw_content_refs": [
+  "2ac0b41a70849dfbdebd3aea84f6e06c755e8e7870dff52e1ee0bf31d4a1f176",
+  "5b929b3bf6df98c9fb678720ecaf4cb4cc3c6a329d479d8691383e9f7121fe25"
+ ],
+ "documents": [
+  {
+   "id": "6a4cde9761e27896",
+   "source": "SportsPro",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxQalphM0tpMVB0Yk9iRlpuUl9yR2xWRUxXV0JvYzBMTm5GdEhyYlNEVTBXRkMweWw0Uk42d3JVZGx1UWg1Sm1SUDJpR2hzdnhyakNMMmFTMVRtb1VocjAyRktpV0hHSmtWdXcxd01ZWi1DLXJPeGwzUXRHYVNCSFJrVkxDNC1aSW9nTTNyY0dON3REaDF5OWc?oc=5",
+   "title": "Tonal seeks buyer or fresh investment at US$500m valuation - SportsPro",
+   "text": "Tonal seeks buyer or fresh investment at US$500m valuation - SportsPro. Tonal seeks buyer or fresh investment at US$500m valuation SportsPro",
+   "content_hash": "f6e60f157eb7a8b7",
+   "raw_feed_hash": "2ac0b41a70849dfbdebd3aea84f6e06c755e8e7870dff52e1ee0bf31d4a1f176",
+   "published_at": 1676361600.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_3a27d6f17d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "8b302dfa82f96753",
+   "source": "The American College of Surgeons",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxPaGZoMmFYbkJRWEZ6bDF5ODFjaXFCSmxUTTllOHgydm5DSUp1ek55bm1aS1BJNmhVMWJvQVM1V3FLZjNjTUFBSFhYTFNRbzFUVHdUNWNTTFlWeHhkb1R3blJBSDZLS1lsSVpEWkJfRnZVMlVmelM4SlJKcW1kYThIaUJkQ0NMVDNyZ0VNbU91cUNaemMzbkE1dEwzTm5ESnJGd0NkMHk2bU01eUVWSkxMWkY0R0o5N25OWGJ4N1VmRjFaMnlEdnlpUTlxRmkwWUlXMGc?oc=5",
+   "title": "The Surgeon's Guide to Selling a Practice - The American College of Surgeons",
+   "text": "The Surgeon's Guide to Selling a Practice - The American College of Surgeons. The Surgeon's Guide to Selling a Practice The American College of Surgeons",
+   "content_hash": "1b9260003beea52a",
+   "raw_feed_hash": "2ac0b41a70849dfbdebd3aea84f6e06c755e8e7870dff52e1ee0bf31d4a1f176",
+   "published_at": 1678716102.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_3a27d6f17d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ded29cd95dee50b0",
+   "source": "Smart Business Dealmakers",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPRU5iR2thdkhXVE41S29QRklQZlp1MzFBWW1FcE4yWGYzaDRZS3p4aWpTLTJtejNUZ1J0Wkp3U05GMmVtZTgxTkxqanFuZUdOOGVrVWZIVnBneWJMcWpuMWtld1lSY3JicmV0WUJqMnltUktZamNZdm5nQnBxaUI5ZHA2VDNibk5DaXZRRmxyY0xGczdmU253OGFIZVJFWmxNRlRoOFQwbl9GVGluTjR3?oc=5",
+   "title": "Facing Headwinds, Buyers and Sellers Need To Be Patient - Smart Business Dealmakers",
+   "text": "Facing Headwinds, Buyers and Sellers Need To Be Patient - Smart Business Dealmakers. Facing Headwinds, Buyers and Sellers Need To Be Patient Smart Business Dealmakers",
+   "content_hash": "c0fec280ac427ef4",
+   "raw_feed_hash": "2ac0b41a70849dfbdebd3aea84f6e06c755e8e7870dff52e1ee0bf31d4a1f176",
+   "published_at": 1680246000.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_3a27d6f17d",
+   "temporal_status": "uncertain"
+  },
+  {
+   "id": "b732d92e4b51e521",
+   "source": "firsttuesday Journal",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxPTDNJQWh1cWl2U1o0THg1MUYxeFZjZkNIUzAyRGZWbkhoeXRDZmh3LS1mX1BxZGUtUUdkVW9oaUE4anVodTMzWnFER295eng0aWhIVkRyQnQ3M1o0UXdwcEJkSFN6MmJST0dBLU5iN05KWUc5aEtQQWZQeXRrUVlfemk1V3d1ODVSUzBXWk9HVE45YUwteU1ZNm5NdVlCRGZ0V0U0RHhINEY?oc=5",
+   "title": "A home inspection report: the liability shield for a seller\u2019s broker - firsttuesday Journal",
+   "text": "A home inspection report: the liability shield for a seller\u2019s broker - firsttuesday Journal. A home inspection report: the liability shield for a seller\u2019s broker firsttuesday Journal",
+   "content_hash": "ce67a74803b70cf5",
+   "raw_feed_hash": "2ac0b41a70849dfbdebd3aea84f6e06c755e8e7870dff52e1ee0bf31d4a1f176",
+   "published_at": 1676534400.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_3a27d6f17d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "e49e96487218811d",
+   "source": "Skadden, Arps, Slate, Meagher & Flom LLP",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPd2U1aDQ4c1dHRTlhVk84ZW5MUGhWbjkza2cxeVYzdnBNVm9FcGk2YlFZRU83M2FXcjVGUnlkZVRrMGY1U1ZOUTFHTkVpeHFxaThTZnd3RTdPOUhMaktVT3BUZVdUSmROeVFUbDUzbFBkV2dZTkpMeUdFa2RjRjBHU2ltaWFKUmFCaHlBR0tnWDM1M3hEbXpsSnVUMHZweThsdmtzbW5DeTE4Y2ZKQXdIRjNyQ1A?oc=5",
+   "title": "Putting the Best Spin on Corporate Splits | Insights - Skadden, Arps, Slate, Meagher & Flom LLP",
+   "text": "Putting the Best Spin on Corporate Splits | Insights - Skadden, Arps, Slate, Meagher & Flom LLP. Putting the Best Spin on Corporate Splits | Insights Skadden, Arps, Slate, Meagher & Flom LLP",
+   "content_hash": "e27637b3744c3b03",
+   "raw_feed_hash": "2ac0b41a70849dfbdebd3aea84f6e06c755e8e7870dff52e1ee0bf31d4a1f176",
+   "published_at": 1676592459.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_3a27d6f17d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f18664712b862591",
+   "source": "Phys.org",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE96R2w5MmZqY3kzYjNCZTdldGh0UUE5dmtmQWxwMlVwazhRcXc2V19JU2tveWt0RXM4dnp5eG1BM3J1eWh1VURsS2NzY0t2bG1VeUxhcUkxUHRvTDNFT2FyZlFUSTl1RWxHU2gzbzlzcHJ2Y096Y2JGUQ?oc=5",
+   "title": "Buyers perceive greater value in homes with whole, rounded numbers in the price - Phys.org",
+   "text": "Buyers perceive greater value in homes with whole, rounded numbers in the price - Phys.org. Buyers perceive greater value in homes with whole, rounded numbers in the price Phys.org",
+   "content_hash": "57c1a1f14f4c3bc9",
+   "raw_feed_hash": "2ac0b41a70849dfbdebd3aea84f6e06c755e8e7870dff52e1ee0bf31d4a1f176",
+   "published_at": 1670572800.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_3a27d6f17d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "e2456474aaff8839",
+   "source": "Miami Herald",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQUXQ1Nkg3Ty1oSXVVM2E2SUVyb2ozdm9VX3RMLS05Y0JiU2FnSWVjcThCUF95WjBUQWlXZjNJdUJmeTYwRmdqTGpJYWhTT1BXVnBxMTUtSy1VV25SNjQ5LXlVdkVoOHRlbmNVVTJ5OWRBOWlUYS1zckFHaDBsNVhBTnhWM05STDDSAYcBQVVfeXFMTmtfWTdWVWhBaEt2ZzduNmlncnJ2bWRrQV9jcnJFTVBrWVNpVzVuNkV1NDZEWUYxZzhLUDJJX1dqRm5rai1Xd2FyYkhNMnRCYUkzYkMyYXl5YnloVnpSQ2RUbjFibW1nWUloNjBoM2NEOWNRQTI1bk9STEhsWV9BdW1OR2pIQ1Y4?oc=5",
+   "title": "Selling your home furnished? You might be asking for trouble - Miami Herald",
+   "text": "Selling your home furnished? You might be asking for trouble - Miami Herald. Selling your home furnished? You might be asking for trouble Miami Herald",
+   "content_hash": "91dc858ccecea561",
+   "raw_feed_hash": "2ac0b41a70849dfbdebd3aea84f6e06c755e8e7870dff52e1ee0bf31d4a1f176",
+   "published_at": 1668844800.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_3a27d6f17d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f3f61f4f964d1799",
+   "source": "Investopedia",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE9WRUNwaEdsLUZLSlk0SkI0MzVFRkw3SmNoWExDaHBpQzZGeHU3a3NnZFh6OTRkRExfMVpUOEptVExNTUYxTUVnSjFNMVg4SElCY2w3NjV6TUZZOWpRQ3RreTAyME93cUIzeHc?oc=5",
+   "title": "Subway Looking for Buyers in Potential $10 Billion Deal - Investopedia",
+   "text": "Subway Looking for Buyers in Potential $10 Billion Deal - Investopedia. Subway Looking for Buyers in Potential $10 Billion Deal Investopedia",
+   "content_hash": "ecc37e0645e4f721",
+   "raw_feed_hash": "2ac0b41a70849dfbdebd3aea84f6e06c755e8e7870dff52e1ee0bf31d4a1f176",
+   "published_at": 1673510400.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_3a27d6f17d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "e6f2a370a95f7e41",
+   "source": "National Mortgage Professional",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOTDhBcnpaaUFjTGNNN040WDNMSnI1emNDZ3BySUtNRXFmS0ktVnRqQjJyejVCLW5rYlNWRlE0QWdMZFNFX0gzcHlNWTRreEhiWTdNenppN2FYWGpleDdMb0JBdmk1ZXpvMUpwZ2F6RlpZSHVkSFcwekZEWkYyNWI1dkttbkQ0YUpNLW9uczFnS0I1U0dSTXV3ejRMeFZ5eTZZcmFjdmFn?oc=5",
+   "title": "Redfin: Home Affordability Back At September Level As Rates Fall - National Mortgage Professional",
+   "text": "Redfin: Home Affordability Back At September Level As Rates Fall - National Mortgage Professional. Redfin: Home Affordability Back At September Level As Rates Fall National Mortgage Professional",
+   "content_hash": "2dcf3afd47330c9b",
+   "raw_feed_hash": "5b929b3bf6df98c9fb678720ecaf4cb4cc3c6a329d479d8691383e9f7121fe25",
+   "published_at": 1675411200.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_055ed16aa0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ccf61449fa2964f7",
+   "source": "Bond Buyer",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxNNDNPQjV3OVFlajZnTTRUQ1lzZ2tHejFoTHAtUHlncmVSR1ptdk5LeHV5ay03ZWE1VHAyNmhRZ0RJWHU2YzdSLXp4cmd6TWI4X2tVVTE3SGQtU2NfdkFUQ1lNNDlSUXFrMEQySnhzaV9DT1F6RmRpZlRLVVhvUDN0NFNLcTZ5OHVVZ3ZVbDdrZkFBbll4b1dF?oc=5",
+   "title": "California's transportation secretary faces storms, budget cuts - Bond Buyer",
+   "text": "California's transportation secretary faces storms, budget cuts - Bond Buyer. California's transportation secretary faces storms, budget cuts Bond Buyer",
+   "content_hash": "66b7feb64ee0b6f4",
+   "raw_feed_hash": "5b929b3bf6df98c9fb678720ecaf4cb4cc3c6a329d479d8691383e9f7121fe25",
+   "published_at": 1674115200.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_055ed16aa0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ccc5c7701183c9c9",
+   "source": "HerMoney",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTFBNWVRSVnZCdVNnWktsUTNxMVowYmpQdHMtcW93UU1HWGN4REpZcmJQRS14WFZrTmQtbmpGV1RNTVBBUUpqUXl2cmw4XzJTcTNNaWNBQWRmd0I1dTNsZi1IVkVibHo0UjV5Tk9vNVhrLU9PRnZ1SkNJag?oc=5",
+   "title": "Everything First-time Home Buyers Need to Know in 2023 - HerMoney",
+   "text": "Everything First-time Home Buyers Need to Know in 2023 - HerMoney. Everything First-time Home Buyers Need to Know in 2023 HerMoney",
+   "content_hash": "4d818513f1f65dca",
+   "raw_feed_hash": "5b929b3bf6df98c9fb678720ecaf4cb4cc3c6a329d479d8691383e9f7121fe25",
+   "published_at": 1675065600.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_055ed16aa0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "716dbc309d258b67",
+   "source": "CNBC",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQazgwQWdaclI0Z2g3OXJwMVB1bmFwUWkxajYyMWh1Y2dpNUZKWFQxbjR0bk5xbWN3WWFXaDE1VUtOQUlKUGRxYk41NEc2dVpxMnViZFdMWWFETmVxTnpCLU54R1AtV2ZOX0dSWWsybzRtU2RHdmNkTUpkMnJwUG1Nei0zTkVvRmdKTUlfbzY1Z1dHejNxejFuY1RQS0JhTU84OHNwdUp4RUZDMk1KX3hB0gG0AUFVX3lxTFAxWjdBT2ZEMHFpYWxDSkZvT3BNTjE0amdBbktEMFF6WldXcDNZczhJZHEzMGtQZmlSQ2tjbVVIODN1TzdXN0ZDX1NCR2VsX3BhMjdxVkJBNEpod0V2NlRUaFpDa1U5UjF3b3hzU0ozY0RIb0ZpZUxzT2x2cm9PMXdVOGpFS1Y3Ym5yRHd1N3ZPV0JadlM1WlJCQkF4NUJlTndYdFYzU1dvYzFoWWxWd2ktdkZXZw?oc=5",
+   "title": "UK property demand slides 44% after market-rocking mini-budget, study shows - CNBC",
+   "text": "UK property demand slides 44% after market-rocking mini-budget, study shows - CNBC. UK property demand slides 44% after market-rocking mini-budget, study shows CNBC",
+   "content_hash": "e55accce4a9a9b70",
+   "raw_feed_hash": "5b929b3bf6df98c9fb678720ecaf4cb4cc3c6a329d479d8691383e9f7121fe25",
+   "published_at": 1669622400.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_055ed16aa0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "8917f9bc30c048f0",
+   "source": "money.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE50LW9mTkhJeUlnSUtnalYzakxRc1RoMWtUQXNWTDY5dE5VaWRSWGRQR1pVdnNVbVA5N0cya1hweWdLdDhmM2U0MENIR1NfUjNOa1lOTDdMQ0duVkJxMXcyWWhUbjQ4REk?oc=5",
+   "title": "House Won't Sell? 6 Ways to Sweeten the Deal and Attract Buyers - money.com",
+   "text": "House Won't Sell? 6 Ways to Sweeten the Deal and Attract Buyers - money.com. House Won't Sell? 6 Ways to Sweeten the Deal and Attract Buyers money.com",
+   "content_hash": "3c0f86388c6d4e41",
+   "raw_feed_hash": "5b929b3bf6df98c9fb678720ecaf4cb4cc3c6a329d479d8691383e9f7121fe25",
+   "published_at": 1669968000.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_055ed16aa0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "24c35145acbf9880",
+   "source": "Business Insider",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMickFVX3lxTFBCNVY5dndwOUpTS0pmdjFLaDFBNFNobk9YTlZDN0YyYWlSZ2p5OXZhRlp2V2pDYmFNOWRwSE5adXFmblFwYURhRFpZUHVPYXBjekIwZ25NZ3d2RllKbzZrUTNseDJWNEN0M29CdUEwbEdrZw?oc=5",
+   "title": "Have $200,000 to spend on a house? See what you can buy in 7 US cities. - Business Insider",
+   "text": "Have $200,000 to spend on a house? See what you can buy in 7 US cities. - Business Insider. Have $200,000 to spend on a house? See what you can buy in 7 US cities. Business Insider",
+   "content_hash": "59da31edacf2d89b",
+   "raw_feed_hash": "5b929b3bf6df98c9fb678720ecaf4cb4cc3c6a329d479d8691383e9f7121fe25",
+   "published_at": 1677744000.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_055ed16aa0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "123b7bbdb896922c",
+   "source": "HotCars",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMidEFVX3lxTE9TVHRZR19xMXdfZVBwUmh3SEY0NVpCczFrXzcxdTFFdHE5U3NCSTdhVHpYeVR0YzAyRkNHd1U5OXJqWDZWd2tiWE1OWHhhNzZ2UmZpTTFtNlF3cU1CYWFnTEt1WEFfZFc4ZDg2bkFjZWczSnFG?oc=5",
+   "title": "Here Are The 10 Most Fun EVs For A Budget-Conscious Buyer - HotCars",
+   "text": "Here Are The 10 Most Fun EVs For A Budget-Conscious Buyer - HotCars. Here Are The 10 Most Fun EVs For A Budget-Conscious Buyer HotCars",
+   "content_hash": "c77736cffa4c085d",
+   "raw_feed_hash": "5b929b3bf6df98c9fb678720ecaf4cb4cc3c6a329d479d8691383e9f7121fe25",
+   "published_at": 1672300800.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_055ed16aa0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "33d6beff92160a5b",
+   "source": "South China Morning Post",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi8AFBVV95cUxPazM0Ykw0dEUwTmJTVUNXVmI5czhxN3VKdVhRdHhmang3Y2QwaW45cW5WZ2FTRUpLX2RFVkhhZmw5TENvOEQweWZRb1NZS1Y3WUhhUmNBVFlSb3BoSnA2TnY4dGtsMmViSEw4YTE5YkZEZjljTVc2dm5Pem5INEx2MHNlUTVJVGh3MFROSC1YWHBuWk9yMUQzbFNFTERaako5SGlqdjgwU0k0MGJ3OWQ2WVZMdWdtcHYtWGZzYTg4bmkyd1BCbHhaOHlMTnliOUhDS3JOM1g1V1Z2emdHOVRpb2VmdzBWVEhwVVgxN0tRRVnSAfABQVVfeXFMTmNXNDdUY0h5SVRudVhKWW1kdXZLTEg1R2JCN2NDbmFLYjNFN1N6NzNVMWpNcllOQ3JYWlZzTnZSRGp0VE1XUklWRDVHWDBtODRFM2dwSHNaWXNQVkZKR0tsT3RDUnpXemV6d2FxSjJtZzh3aVVBYmNhTXREdTg1cXEyeXJud3Brb1pnLVNmeDRIaTB5SFUyeUY0elljd1VZVHhTMGV1MjRrWjRfQjlzRTM0clNoWERSWURwaF9zOFdXNFUxbTVCNldfRGhGWS1LTHpJMHJIaWdwNm5EUm1EM1dSM3h4WVdWV2pTTVJXNlNH?oc=5",
+   "title": "Chinese EV maker doubles down on battery-swap model with 1,000 new stations - South China Morning Post",
+   "text": "Chinese EV maker doubles down on battery-swap model with 1,000 new stations - South China Morning Post. Chinese EV maker doubles down on battery-swap model with 1,000 new stations South China Morning Post",
+   "content_hash": "e0a074c5a5686a92",
+   "raw_feed_hash": "5b929b3bf6df98c9fb678720ecaf4cb4cc3c6a329d479d8691383e9f7121fe25",
+   "published_at": 1679986800.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_055ed16aa0",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "6a4cde9761e27896:c0",
+   "source_id": "6a4cde9761e27896",
+   "subject": "Tonal",
+   "predicate": "seeks",
+   "object": "buyer or fresh investment",
+   "value": "500",
+   "units": "million USD",
+   "qualifiers": "valuation",
+   "modality": "reported",
+   "polarity": "affirm",
+   "claim_class": "actor_statement",
+   "supporting_span": "Tonal seeks buyer or fresh investment at US$500m valuation",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1676361600.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Tonal"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_f51f321d5d",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_3a27d6f17d"
+   }
+  },
+  {
+   "claim_id": "e6f2a370a95f7e41:c0",
+   "source_id": "e6f2a370a95f7e41",
+   "subject": "Home Affordability",
+   "predicate": "is back at",
+   "object": "September Level",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Home Affordability Back At September Level",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675411200.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Home Affordability",
+    "September Level"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_0e7f3e9978",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_055ed16aa0"
+   }
+  },
+  {
+   "claim_id": "e6f2a370a95f7e41:c1",
+   "source_id": "e6f2a370a95f7e41",
+   "subject": "Rates",
+   "predicate": "are falling",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "As Rates Fall",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675411200.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Rates"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_0e7f3e9978",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_055ed16aa0"
+   }
+  },
+  {
+   "claim_id": "8b302dfa82f96753:c0",
+   "source_id": "8b302dfa82f96753",
+   "subject": "The Surgeon's Guide to Selling a Practice",
+   "predicate": "is published by",
+   "object": "The American College of Surgeons",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The Surgeon's Guide to Selling a Practice - The American College of Surgeons",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678716102.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "The Surgeon's Guide to Selling a Practice",
+    "The American College of Surgeons"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_38559767a0",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_3a27d6f17d"
+   }
+  },
+  {
+   "claim_id": "ccf61449fa2964f7:c0",
+   "source_id": "ccf61449fa2964f7",
+   "subject": "California's transportation secretary",
+   "predicate": "faces",
+   "object": "storms, budget cuts",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "California's transportation secretary faces storms, budget cuts",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1674115200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "California's transportation secretary"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_ddbb4dad5f",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_055ed16aa0"
+   }
+  },
+  {
+   "claim_id": "ccc5c7701183c9c9:c0",
+   "source_id": "ccc5c7701183c9c9",
+   "subject": "article",
+   "predicate": "is titled",
+   "object": "Everything First-time Home Buyers Need to Know in 2023 - HerMoney",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Everything First-time Home Buyers Need to Know in 2023 - HerMoney",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675065600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "HerMoney"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_74a2747402",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_055ed16aa0"
+   }
+  },
+  {
+   "claim_id": "ccc5c7701183c9c9:c1",
+   "source_id": "ccc5c7701183c9c9",
+   "subject": "article",
+   "predicate": "is published by",
+   "object": "HerMoney",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Everything First-time Home Buyers Need to Know in 2023 HerMoney",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675065600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "HerMoney"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_74a2747402",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_055ed16aa0"
+   }
+  },
+  {
+   "claim_id": "b732d92e4b51e521:c0",
+   "source_id": "b732d92e4b51e521",
+   "subject": "A home inspection report",
+   "predicate": "is",
+   "object": "the liability shield for a seller\u2019s broker",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "A home inspection report: the liability shield for a seller\u2019s broker",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1676534400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "home inspection report",
+    "seller\u2019s broker"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_2bbbade268",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_3a27d6f17d"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Tonal",
+   "normalized": "tonal",
+   "candidates": [
+    {
+     "entity_id": "ent_7407de069c",
+     "canonical": "tonal",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Tonal"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Home Affordability",
+   "normalized": "home affordability",
+   "candidates": [
+    {
+     "entity_id": "ent_66659cf6d7",
+     "canonical": "home affordability",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Home Affordability"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "September Level",
+   "normalized": "september level",
+   "candidates": [
+    {
+     "entity_id": "ent_20410c5860",
+     "canonical": "september level",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "September Level"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Rates",
+   "normalized": "rates",
+   "candidates": [
+    {
+     "entity_id": "ent_746650689d",
+     "canonical": "rates",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "Rates"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "The Surgeon's Guide to Selling a Practice",
+   "normalized": "surgeon's guide to selling a practice",
+   "candidates": [
+    {
+     "entity_id": "ent_ef8555cb1b",
+     "canonical": "surgeon's guide to selling a practice",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "The Surgeon's Guide to Selling a Practice"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "The American College of Surgeons",
+   "normalized": "american college of surgeons",
+   "candidates": [
+    {
+     "entity_id": "ent_03a2ea19a3",
+     "canonical": "american college of surgeons",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "The American College of Surgeons"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "California's transportation secretary",
+   "normalized": "california's transportation secretary",
+   "candidates": [
+    {
+     "entity_id": "ent_ade1788e91",
+     "canonical": "california's transportation secretary",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "California's transportation secretary"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "HerMoney",
+   "normalized": "hermoney",
+   "candidates": [
+    {
+     "entity_id": "ent_7d484de713",
+     "canonical": "hermoney",
+     "support": 0.6818,
+     "evidence_mentions": [
+      "HerMoney",
+      "HerMoney"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "HerMoney",
+   "normalized": "hermoney",
+   "candidates": [
+    {
+     "entity_id": "ent_7d484de713",
+     "canonical": "hermoney",
+     "support": 0.6818,
+     "evidence_mentions": [
+      "HerMoney",
+      "HerMoney"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "home inspection report",
+   "normalized": "home inspection report",
+   "candidates": [
+    {
+     "entity_id": "ent_1617ce8672",
+     "canonical": "home inspection report",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "home inspection report"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "seller\u2019s broker",
+   "normalized": "seller\u2019s broker",
+   "candidates": [
+    {
+     "entity_id": "ent_cf5375412f",
+     "canonical": "seller\u2019s broker",
+     "support": 0.5909,
+     "evidence_mentions": [
+      "seller\u2019s broker"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "6a4cde9761e27896": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680307200.0,
+   "claimed_pubdate_ts": 1676361600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676361600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "8b302dfa82f96753": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680307200.0,
+   "claimed_pubdate_ts": 1678716102.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678716102.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ded29cd95dee50b0": {
+   "status": "uncertain",
+   "confidence": 0.5,
+   "as_of": 1680307200.0,
+   "claimed_pubdate_ts": 1680246000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680246000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "b732d92e4b51e521": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680307200.0,
+   "claimed_pubdate_ts": 1676534400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676534400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "e49e96487218811d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680307200.0,
+   "claimed_pubdate_ts": 1676592459.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676592459.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f18664712b862591": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680307200.0,
+   "claimed_pubdate_ts": 1670572800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1670572800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "e2456474aaff8839": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680307200.0,
+   "claimed_pubdate_ts": 1668844800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1668844800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f3f61f4f964d1799": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680307200.0,
+   "claimed_pubdate_ts": 1673510400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1673510400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "e6f2a370a95f7e41": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680307200.0,
+   "claimed_pubdate_ts": 1675411200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675411200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ccf61449fa2964f7": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680307200.0,
+   "claimed_pubdate_ts": 1674115200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1674115200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ccc5c7701183c9c9": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680307200.0,
+   "claimed_pubdate_ts": 1675065600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675065600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "716dbc309d258b67": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680307200.0,
+   "claimed_pubdate_ts": 1669622400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1669622400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "8917f9bc30c048f0": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680307200.0,
+   "claimed_pubdate_ts": 1669968000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1669968000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "24c35145acbf9880": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680307200.0,
+   "claimed_pubdate_ts": 1677744000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677744000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "123b7bbdb896922c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680307200.0,
+   "claimed_pubdate_ts": 1672300800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1672300800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "33d6beff92160a5b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1680307200.0,
+   "claimed_pubdate_ts": 1679986800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679986800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_f51f321d5d",
+   "member_ids": [
+    "6a4cde9761e27896"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "SportsPro",
+   "primary_source": "SportsPro",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_38559767a0",
+   "member_ids": [
+    "8b302dfa82f96753"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The American College of Surgeons",
+   "primary_source": "The American College of Surgeons",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e74918f2d1",
+   "member_ids": [
+    "ded29cd95dee50b0"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Smart Business Dealmakers",
+   "primary_source": "Smart Business Dealmakers",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_2bbbade268",
+   "member_ids": [
+    "b732d92e4b51e521"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "firsttuesday Journal",
+   "primary_source": "firsttuesday Journal",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_ed84f00cb8",
+   "member_ids": [
+    "e49e96487218811d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Skadden, Arps, Slate, Meagher & Flom LLP",
+   "primary_source": "Skadden, Arps, Slate, Meagher & Flom LLP",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_eb84919810",
+   "member_ids": [
+    "f18664712b862591"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Phys.org",
+   "primary_source": "Phys.org",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_0fddd04a16",
+   "member_ids": [
+    "e2456474aaff8839"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Miami Herald",
+   "primary_source": "Miami Herald",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a505d27f7a",
+   "member_ids": [
+    "f3f61f4f964d1799"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Investopedia",
+   "primary_source": "Investopedia",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_0e7f3e9978",
+   "member_ids": [
+    "e6f2a370a95f7e41"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "National Mortgage Professional",
+   "primary_source": "National Mortgage Professional",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_ddbb4dad5f",
+   "member_ids": [
+    "ccf61449fa2964f7"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Bond Buyer",
+   "primary_source": "Bond Buyer",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_74a2747402",
+   "member_ids": [
+    "ccc5c7701183c9c9"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "HerMoney",
+   "primary_source": "HerMoney",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_5060a899d5",
+   "member_ids": [
+    "716dbc309d258b67"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "CNBC",
+   "primary_source": "CNBC",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_f3198a0390",
+   "member_ids": [
+    "8917f9bc30c048f0"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "money.com",
+   "primary_source": "money.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_40a8de1885",
+   "member_ids": [
+    "24c35145acbf9880"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Insider",
+   "primary_source": "Business Insider",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7767bb17db",
+   "member_ids": [
+    "123b7bbdb896922c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "HotCars",
+   "primary_source": "HotCars",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9565cd516b",
+   "member_ids": [
+    "33d6beff92160a5b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "South China Morning Post",
+   "primary_source": "South China Morning Post",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "6a4cde9761e27896:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1676361600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "e6f2a370a95f7e41:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675411200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "e6f2a370a95f7e41:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675411200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "8b302dfa82f96753:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678716102.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "ccf61449fa2964f7:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1674115200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "ccc5c7701183c9c9:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675065600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "ccc5c7701183c9c9:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675065600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "b732d92e4b51e521:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1676534400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "6a4cde9761e27896:c0",
+  "e6f2a370a95f7e41:c0",
+  "e6f2a370a95f7e41:c1",
+  "8b302dfa82f96753:c0",
+  "ccf61449fa2964f7:c0",
+  "ccc5c7701183c9c9:c0",
+  "ccc5c7701183c9c9:c1",
+  "b732d92e4b51e521:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_fc880328dc": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_3a27d6f17d": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_055ed16aa0": {
+   "status": "fulfilled",
+   "n_claims": 5,
+   "n_included": 5
+  },
+  "req_0582325873": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_66763ba54d": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_b41af8f40d": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_1af2460e7d": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_fc880328dc",
+  "req_0582325873",
+  "req_66763ba54d",
+  "req_b41af8f40d",
+  "req_1af2460e7d"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 16,
+  "n_contradictions": 0,
+  "n_documents": 16
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 13.744,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "391be3dc883347ad",
+ "bundle_hash": "391be3dc883347ad",
+ "_persisted_at": "2026-07-13T01:29:28Z"
+}

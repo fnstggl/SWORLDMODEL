@@ -1,0 +1,1841 @@
+{
+ "bundle_id": "eb_a232f5",
+ "question": "Will the recall notice reach affected customers within 72 hours?",
+ "as_of": 1693526400.0,
+ "compiler_plan_hash": "9b7229bcc2ef",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_e3d7b929ab",
+   "claim_or_quantity": "True if the proportion of affected customers who have received the notice by 72 hours exceeds 0.9; otherwise False.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "manufacturer",
+    "regulator",
+    "customer_database"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_cc51505288",
+   "claim_or_quantity": "value/context of manufacturer.notification_system",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "manufacturer.notification_system",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_4fddde110f",
+   "claim_or_quantity": "value/context of customer_database.completeness",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "customer_database.completeness",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_04271b9a77",
+   "claim_or_quantity": "value/context of customer_database.accuracy",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "customer_database.accuracy",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_b38e78c34f",
+   "claim_or_quantity": "evidence discriminating structural hypothesis efficient_notification",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:efficient_notification",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_ba2754eda8",
+   "claim_or_quantity": "evidence discriminating structural hypothesis bottlenecked_notification",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:bottlenecked_notification",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_8319028f48",
+   "claim_or_quantity": "decision rules / process of manufacturer",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "manufacturer",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_a1cb9e1126",
+   "claim_or_quantity": "decision rules / process of regulator",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "regulator",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_e3d7b929ab",
+   "terms": "recall notice affected customers hours manufacturer regulator customer database",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_cc51505288",
+   "terms": "manufacturer notification system",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_4fddde110f",
+   "terms": "customer database completeness",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_e3d7b929ab",
+   "logical_query": "recall notice affected customers hours manufacturer regulator customer database after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=recall+notice+affected+customers+hours+manufacturer+regulator+customer+database+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783908983.0274138,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:16:23 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmJw0pBiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTD8X3KxUtsAjsWLHzNpKSclF8Yn5JfUlxckJNYnFGcWlSWWhRvZGBkZmBuYKZnYBJfYAAAp9w3PA\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "39db02227b9b041076f57d9be0e788b225d1818bdbb55cf18e5db99fa30823fe",
+   "n_bytes": 1323,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.63
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_cc51505288",
+   "logical_query": "manufacturer notification system after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=manufacturer+notification+system+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783908983.65835,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:16:24 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw05BiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTD8WPKxUtsAh82PtjAqKSclF8Yn5JfUlxckJNYnFGcWlSWWhRvZGBkZmBuYKZnYBJfYAAAu143lQ\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "66f319c32156460d1d7db70b89c44526663febcdd3f883100070f92730f79fa0",
+   "n_bytes": 37923,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.64
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_4fddde110f",
+   "logical_query": "customer database completeness after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=customer+database+completeness+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783908984.3001006,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:16:24 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw0JBiSO44w5AKxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTD8WPKxUtsAh_65m1jVlJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAAqdY3Mw\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "f1f36d77fa3ea0862b331a9a9dbafd26c0fd481ee17f787ce110caae7b8ab8d0",
+   "n_bytes": 16667,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.516
+  }
+ ],
+ "raw_content_refs": [
+  "66f319c32156460d1d7db70b89c44526663febcdd3f883100070f92730f79fa0",
+  "f1f36d77fa3ea0862b331a9a9dbafd26c0fd481ee17f787ce110caae7b8ab8d0"
+ ],
+ "documents": [
+  {
+   "id": "00fa772ff719427a",
+   "source": "WardsAuto",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPR3dRZjQ1V0VZbW5RN0R3eHFkWDNrYUNwRUFyTG8zWmkyckNlejZSN3JtTms2eWh2ZWVtQ29MVmRTOVFBWl9ILVMzMlBiN2NrSFJmWjg2ME4yLVFpcWdGRU1YaXd0WTd1S05CcjV1NHVPQnZwQXI3a21PaXlxNUlDdUlDY0NuX3pQQURLSmZ3aTFlOHlxa1oxWVVlS0Z2UXM?oc=5",
+   "title": "With summer looming, safety advocates turn up the heat on NHTSA to mandate rear-seat alert systems - WardsAuto",
+   "text": "With summer looming, safety advocates turn up the heat on NHTSA to mandate rear-seat alert systems - WardsAuto. With summer looming, safety advocates turn up the heat on NHTSA to mandate rear-seat alert systems WardsAuto",
+   "content_hash": "717935c4ee994589",
+   "raw_feed_hash": "66f319c32156460d1d7db70b89c44526663febcdd3f883100070f92730f79fa0",
+   "published_at": 1686639600.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_cc51505288",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "b1ce3655f4ae0eaf",
+   "source": "Kelley Drye & Warren LLP",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOal80d3l2U2dTOVZCblhNdzVlMi1LRTVheWZjdTBWTWR2NW9hU2xZQjVsLWprTExCMmctRTJRTkxLdWVqSndZQlRpOEI0cnVSeWhDakdPTWZKT0FROTNBRFFObUFwdUlIWktaQWRCTXU4SVgwM21pVndRaFRHWVJ5MWVTSzNkdjJHbkstX2NuSlhYRFlrWEMtblJDZUhPNWJqcjRySHpB?oc=5",
+   "title": "NEWMOA Releases Draft PFAS Prevention Model Act - Kelley Drye & Warren LLP",
+   "text": "NEWMOA Releases Draft PFAS Prevention Model Act - Kelley Drye & Warren LLP. NEWMOA Releases Draft PFAS Prevention Model Act Kelley Drye & Warren LLP",
+   "content_hash": "0dc52b51f06b1ddd",
+   "raw_feed_hash": "66f319c32156460d1d7db70b89c44526663febcdd3f883100070f92730f79fa0",
+   "published_at": 1684134000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_cc51505288",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3fa89901521af034",
+   "source": "Department of Energy (.gov)",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxNOFFCQ0VpT05CazhzOC1WSkF2U3BiQ0RLZFBhbXVQLWg4eU92bE1Cb2ZWZGN4alB1RV9hRnl3c1lWUDZoUHo4TFcyVWpiS0s2OG5KYklfMjlFQ3RNTFhSaC1iSlotZU5rQ01pbVUxRmRJb2Myd2Z6djlWQ0lPTmh5czRSRzZUTWJ1RGhIeVN2N1NUZEhhVUZtYXQ1TXdNZzUyUlRjNFM3SjYzYVRCcFhBVDhZanNfc1N1endhUEtR?oc=5",
+   "title": "Funding Notice: Bipartisan Infrastructure Law Silicon Solar Manufacturing and Dual-use Photovoltaics Incubator - Department of Energy (.gov)",
+   "text": "Funding Notice: Bipartisan Infrastructure Law Silicon Solar Manufacturing and Dual-use Photovoltaics Incubator - Department of Energy (.gov). Funding Notice: Bipartisan Infrastructure Law Silicon Solar Manufacturing and Dual-use Photovoltaics Incubator Department of Energy (.gov)",
+   "content_hash": "378bf93eee09853f",
+   "raw_feed_hash": "66f319c32156460d1d7db70b89c44526663febcdd3f883100070f92730f79fa0",
+   "published_at": 1688540400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_cc51505288",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f80959f89a2a9090",
+   "source": "CarProUSA.com.",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNZDVsTE5QTlVLUHBEUk0zVlpZX3Z5cC0xNFBHWUg5Wm04dnpwaVJCcmNBVGxQa0h6TlVZeGdmSTBaZVRqN3FhSVBfRXNTVVZyLWEwSG91MGhFTzFxU1ZQVldfNlloTmVVaDVMTGdHUWswamxOVTBydDZESUhwc3FtdUZ5U2xLdkZ5VlJDWGdrNV9kWlhPWnl4TDd2NNIBqwFBVV95cUxQUlk4NExpNXVhemZ4cVpKX1I1ZE94OENfMnd4VHBGRE16cHJHcUFKTEZrS2NrdmxDMDZNVjl2NmxhQVUxMkhrcnpkM19xV01oSVhwQmhDdURhdU80WlFpLVdLenRuWDV1bk9VQUE2aTZ1QXVOX1VlcGxQUllod1ZZbmhNbjRCSFV6YVRkUnUyQnJudjlOR0RsS2haSkJoMzh4enB5OFR5NWN0ZUk?oc=5",
+   "title": "Weekly Recalls: Bentley, Jeep, Jeep/Ram (2), Kia, Land Rover, Mercedes-Benz, Toyota - CarProUSA.com.",
+   "text": "Weekly Recalls: Bentley, Jeep, Jeep/Ram (2), Kia, Land Rover, Mercedes-Benz, Toyota - CarProUSA.com.. Weekly Recalls: Bentley, Jeep, Jeep/Ram (2), Kia, Land Rover, Mercedes-Benz, Toyota CarProUSA.com.",
+   "content_hash": "f1bf8f0171f3c6ba",
+   "raw_feed_hash": "66f319c32156460d1d7db70b89c44526663febcdd3f883100070f92730f79fa0",
+   "published_at": 1686812400.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_cc51505288",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d8932538484d2fac",
+   "source": "Global Compliance News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikAJBVV95cUxNWTFHMDJubm52RV83OE5LaHB5NjFoOXBlTmV5MHRNNEFPM2pZWmlkeVlnTnc0eWhvRUc4cklEUWNCdDFlbFkzcEViY25RWldfM19Fek5YdnhiTnVlTm9USGJteEJLNFM1SE9ucTFxYURsWW1ad1pQUk5qS053akxtNzRTTExBcWY3UlBvRDg4dU1FMjYwQ2s0Z0FQRkhJNXlSbWRvVjVvNjk1UWwxTHgyeVc0amo4ODM0eDlGUEhuSFFWSFhBSldKeTZjREhCb1JpYnhsTE5GRWM4WTZQSG5RQV9sNVJiR3d0QmRScExmRzV5ZGZ3dXFSLUR5UFBDVm5HbUpod2xNcF92Vkh0UUwwUg?oc=5",
+   "title": "Poland: New medical device obligations take effect 1 July 2023 - Global Compliance News",
+   "text": "Poland: New medical device obligations take effect 1 July 2023 - Global Compliance News. Poland: New medical device obligations take effect 1 July 2023 Global Compliance News",
+   "content_hash": "b5af2e7d8f79c85e",
+   "raw_feed_hash": "66f319c32156460d1d7db70b89c44526663febcdd3f883100070f92730f79fa0",
+   "published_at": 1689058800.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_cc51505288",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f0a3e8632669654a",
+   "source": "Dentons",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxObEt1OUVQVEVrRWFjUXR2emJ0b0dwR0h3UC1HdE95OTNHcjdINGdjY1ZmVVJ0VC0xcWNUa3UwU2JCekR6RlBGeDVYMjNEOHpQTTgzSzlTQ0xBN3ZUT1pXS1dLM3MtTWhsV0VhWEdseDFJaXBhcUZIUkU0SHJNbzJFT1ZLQ0lVMmF0YUNITl9mN2g2TGNPU3lsb3JSZVZKQQ?oc=5",
+   "title": "Colorado Passes the First Right to Repair Law for Agricultural Equipment in the US - Dentons",
+   "text": "Colorado Passes the First Right to Repair Law for Agricultural Equipment in the US - Dentons. Colorado Passes the First Right to Repair Law for Agricultural Equipment in the US Dentons",
+   "content_hash": "3736656ec88545f1",
+   "raw_feed_hash": "66f319c32156460d1d7db70b89c44526663febcdd3f883100070f92730f79fa0",
+   "published_at": 1683097200.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_cc51505288",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "7e18306d8b572b4c",
+   "source": "Iowa Capital Dispatch",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxOWXdHRktzd3lMM3V0MWZiank5Vy1GN3VzTlFRYUhjUzB6eDF5Q3o4Vk4yMUptZWhfOFZ4TTBTWS1aaEFUN0dHN3BaeTdfYktEZmpsSTJ4WlM3eHFER01pb2JGZTBwMDlkU1FEZVV3bkU2V2tDc3JDTWxTREJoeEJCODBwNFFOcVNlM2g1b25OeHpsSTBNejJRWko0aHlsR2loQWg2ZS05dmo?oc=5",
+   "title": "D.C. Dispatch: Animal diseases, dog racing and disarming the IRS - Iowa Capital Dispatch",
+   "text": "D.C. Dispatch: Animal diseases, dog racing and disarming the IRS - Iowa Capital Dispatch. D.C. Dispatch: Animal diseases, dog racing and disarming the IRS Iowa Capital Dispatch",
+   "content_hash": "49448ec578f8f56f",
+   "raw_feed_hash": "66f319c32156460d1d7db70b89c44526663febcdd3f883100070f92730f79fa0",
+   "published_at": 1686898800.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_cc51505288",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "951708324c2d9adc",
+   "source": "Oracle",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE8zV08zcmhSUFdreHVmR1JodENpUGpkVTdmeExYdmtqdHp3SWdxMFQwUDgybnpUSWp5aTZENk83MTdSaHdfTEJMV0owTG1FUHNfbC1GY0lrQjRHaXNQQUNiNDctMnEyU041YVc0?oc=5",
+   "title": "9 Ways to Reduce Supply Chain Disruptions - Oracle",
+   "text": "9 Ways to Reduce Supply Chain Disruptions - Oracle. 9 Ways to Reduce Supply Chain Disruptions Oracle",
+   "content_hash": "9a493ac6e6ecc289",
+   "raw_feed_hash": "66f319c32156460d1d7db70b89c44526663febcdd3f883100070f92730f79fa0",
+   "published_at": 1689231600.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_cc51505288",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "254d9128365a64d3",
+   "source": "Towards Data Science",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNbFE2eTFKbndtVEN0YVFPU0pHbEo2NzF4RERoVkw4b1VudHVSRVg3RnVWUERZeG9HTnFZMDM3aXE0UFRYS2VGY0xLRlZFMXZZSGd2SzFSMVFTYTZUUlNaOU5lZTh3bTlUSEpRMGZDbkhUYkFaVExWeFBwNzVRbFZqRV9zVzFqT2wwOEg4YkNBVTZ1QQ?oc=5",
+   "title": "Data Quality Auditing: A Comprehensive Guide - Towards Data Science",
+   "text": "Data Quality Auditing: A Comprehensive Guide - Towards Data Science. Data Quality Auditing: A Comprehensive Guide Towards Data Science",
+   "content_hash": "cf3338862095a2b2",
+   "raw_feed_hash": "f1f36d77fa3ea0862b331a9a9dbafd26c0fd481ee17f787ce110caae7b8ab8d0",
+   "published_at": 1682924400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_4fddde110f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ea312963c6b9a0fd",
+   "source": "Amazon Web Services (AWS)",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNOThxeXpjQnozSWRHTUx1a1lsdGZnMnJjQkZNNVNPbUNLX0xwY3FIMlQtWUtyQjQxQmZTZkRseDNGUmpfQmpIWVc0TldGRGhCZHMwZEJCZ0pndEdQYmNNOXhZSW0xWGpYVlJ2b3lCTlZnVXZRbkJVUDFnbzhIckF3LWZKX05IaFo1THRUMklUbjNlRTBhTGxOTmEzQ3Z1a05SYkQ1bENvaEtnVW40NXg5ZzJOZTFWRVJBXzkyTXNMUW1ud3RoeDl3?oc=5",
+   "title": "Set up advanced rules to validate quality of multiple datasets with AWS Glue Data Quality - Amazon Web Services (AWS)",
+   "text": "Set up advanced rules to validate quality of multiple datasets with AWS Glue Data Quality - Amazon Web Services (AWS). Set up advanced rules to validate quality of multiple datasets with AWS Glue Data Quality Amazon Web Services (AWS)",
+   "content_hash": "76d62f46a92edf7f",
+   "raw_feed_hash": "f1f36d77fa3ea0862b331a9a9dbafd26c0fd481ee17f787ce110caae7b8ab8d0",
+   "published_at": 1686034800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_4fddde110f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "5c754d09bf7ed9e6",
+   "source": "Andreessen Horowitz",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE1EbEtNZ1FvUzhha2tQZUh2M3VjamljRDlzckt2RmxKNWotbzh0dHBhNnpBd29Gd2ppbzctZENSMy1jeG1MSGxVMmRCTHFuR004T181amZ6ZUdlMEo0QWFZd1ktLVRWbm9QZ2RoYlo3NGwyUQ?oc=5",
+   "title": "Customer Success Is Broken. Here\u2019s How to Fix It. - Andreessen Horowitz",
+   "text": "Customer Success Is Broken. Here\u2019s How to Fix It. - Andreessen Horowitz. Customer Success Is Broken. Here\u2019s How to Fix It. Andreessen Horowitz",
+   "content_hash": "c4b66ef4cbcf6fbe",
+   "raw_feed_hash": "f1f36d77fa3ea0862b331a9a9dbafd26c0fd481ee17f787ce110caae7b8ab8d0",
+   "published_at": 1689058800.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_4fddde110f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "9514ece76ee89e3a",
+   "source": "Kantar",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxPZ29ISlpOcUJhMlFSZnk5T1dKQ1lSeEMtelZWVWN5bE01OHVVX1Q0YnV5Z1dOeENhcnpNVVdxa09mTnl2S1RaNG1XRnRKQ1dUSXkyTDgxZnpvenA5bmdWWjNYQTFETEtyQkZfdm9jcWxUd0tmbGhmLVB2ZGlpSHh4OEo2SHRjNkpEcTFlUVVjQm5OekJhU1ZpUURKdmJrTloydkx1RXdLWVRVd280Sm9HaERZc1k4eVk?oc=5",
+   "title": "Everything you need to know about data quality - Kantar",
+   "text": "Everything you need to know about data quality - Kantar. Everything you need to know about data quality Kantar",
+   "content_hash": "b49bd9334483a155",
+   "raw_feed_hash": "f1f36d77fa3ea0862b331a9a9dbafd26c0fd481ee17f787ce110caae7b8ab8d0",
+   "published_at": 1682492400.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_4fddde110f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "dfce1fbba417cb9b",
+   "source": "Wiley Online Library",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE5KOUhZNS1oT29FRkZ2Zmd2OWlBeWZVaW9STG1rSDYwOUhvWU05b2NHa3h1d3VITlkyTUJKM2tCeU5ZX0dkTHpSQVpjSHpKWjdJd2hIZW93S01femNTS29KeE1HZXNPZ2Rr?oc=5",
+   "title": "An automated workflow to assess completeness and curate GenBank for environmental DNA metabarcoding: The marine fish assemblage as case study - Wiley Online Library",
+   "text": "An automated workflow to assess completeness and curate GenBank for environmental DNA metabarcoding: The marine fish assemblage as case study - Wiley Online Library. An automated workflow to assess completeness and curate GenBank for environmental DNA metabarcoding: The marine fish assemblage as case study Wiley Online Library",
+   "content_hash": "14b3b076927d9640",
+   "raw_feed_hash": "f1f36d77fa3ea0862b331a9a9dbafd26c0fd481ee17f787ce110caae7b8ab8d0",
+   "published_at": 1685602800.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_4fddde110f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "c57bad331dca9240",
+   "source": "Precisely",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxOQnZGRXZlbTJoLVo4Uzd5ZU4zYTE2YUNYTjZTMzB5OWdmQ3J1aHI4N0RPT19VbG5qSFJSYzZPQ1JDVjh1dVdCRzRiVmNUQkt3VTlzcTFjWnBWNjRYdGc5QzU1V2NTR09XSnE4YnAwOFpnZ1QtcGZyV1Rha2hDSVJVaVhXUGs4NWJkNU5PN01HNzBkR2xfRmpWNWdPamQ?oc=5",
+   "title": "Telecom Data: Unlock Your Data Integrity Potential - Precisely",
+   "text": "Telecom Data: Unlock Your Data Integrity Potential - Precisely. Telecom Data: Unlock Your Data Integrity Potential Precisely",
+   "content_hash": "d6e9753d5f344d77",
+   "raw_feed_hash": "f1f36d77fa3ea0862b331a9a9dbafd26c0fd481ee17f787ce110caae7b8ab8d0",
+   "published_at": 1686812400.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_4fddde110f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "73bf950c920ce4fb",
+   "source": "Solutions Review",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxNeWRWNm8tY0VlWDdJX0NBLXV3d3ZUeS0wWF9VTnNWVWQyY2ZhYUFVNy1xZjF4VmdJV0czeDlkV2YyeDVWRk4tMUhCUURsZ0xfVXFUM2xDU1VVV19fVE1WSmcxQWJSNVZyei1PdnB6bG1SWjRoNlluM180OVpiZHlHeDBsbHRjYVQtME1YOWtvMnhXZFY1Wkl2bGpiU29veGtEN0FtS2ZoYTBuYmc?oc=5",
+   "title": "Understanding the Role of Data Analytics in Distribution - Solutions Review",
+   "text": "Understanding the Role of Data Analytics in Distribution - Solutions Review. Understanding the Role of Data Analytics in Distribution Solutions Review",
+   "content_hash": "1236710e92613a2c",
+   "raw_feed_hash": "f1f36d77fa3ea0862b331a9a9dbafd26c0fd481ee17f787ce110caae7b8ab8d0",
+   "published_at": 1692860400.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_4fddde110f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6ecf1b9b31b433f0",
+   "source": "TechTarget",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPd2RaWDI3UElWNjhocnUzbUNJNTl2V0x0eXgxODI1ZFJfWms5UWpYc1hDNjBzRzFUN093azJCYThzZHU1VEQ3SWNmZXBLUV9sbUdjbUNlaGpzb1lzT2pKN0V2ay1UNDJQMFVWS3p2ZFFGUTVlQmZteEx5LUd3ZWRCYmVrVnVtMXdSeTNmZkhnZHlwUkx5bTNQbV9B?oc=5",
+   "title": "6 risks of ChatGPT in customer service - TechTarget",
+   "text": "6 risks of ChatGPT in customer service - TechTarget. 6 risks of ChatGPT in customer service TechTarget",
+   "content_hash": "efa0c4499a01f965",
+   "raw_feed_hash": "f1f36d77fa3ea0862b331a9a9dbafd26c0fd481ee17f787ce110caae7b8ab8d0",
+   "published_at": 1685516400.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_4fddde110f",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "00fa772ff719427a:c0",
+   "source_id": "00fa772ff719427a",
+   "subject": "safety advocates",
+   "predicate": "turn up the heat on",
+   "object": "NHTSA",
+   "value": "",
+   "units": "",
+   "qualifiers": "to mandate rear-seat alert systems",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "actor_statement",
+   "supporting_span": "safety advocates turn up the heat on NHTSA to mandate rear-seat alert systems",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1686639600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "safety advocates",
+    "NHTSA"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_fda20aeb25",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_cc51505288"
+   }
+  },
+  {
+   "claim_id": "254d9128365a64d3:c0",
+   "source_id": "254d9128365a64d3",
+   "subject": "Data Quality Auditing: A Comprehensive Guide",
+   "predicate": "is",
+   "object": "a comprehensive guide",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Data Quality Auditing: A Comprehensive Guide - Towards Data Science",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682924400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Data Quality Auditing: A Comprehensive Guide",
+    "Towards Data Science"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_9971dd8a5c",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_4fddde110f"
+   }
+  },
+  {
+   "claim_id": "254d9128365a64d3:c1",
+   "source_id": "254d9128365a64d3",
+   "subject": "Data Quality Auditing: A Comprehensive Guide",
+   "predicate": "is associated with",
+   "object": "Towards Data Science",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Data Quality Auditing: A Comprehensive Guide - Towards Data Science",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682924400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Data Quality Auditing: A Comprehensive Guide",
+    "Towards Data Science"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_9971dd8a5c",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_4fddde110f"
+   }
+  },
+  {
+   "claim_id": "b1ce3655f4ae0eaf:c0",
+   "source_id": "b1ce3655f4ae0eaf",
+   "subject": "NEWMOA",
+   "predicate": "released",
+   "object": "Draft PFAS Prevention Model Act",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "NEWMOA Releases Draft PFAS Prevention Model Act",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1684134000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "NEWMOA",
+    "Draft PFAS Prevention Model Act"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_bd6c4d243c",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_cc51505288"
+   }
+  },
+  {
+   "claim_id": "ea312963c6b9a0fd:c0",
+   "source_id": "ea312963c6b9a0fd",
+   "subject": "AWS Glue Data Quality",
+   "predicate": "can be used to",
+   "object": "set up advanced rules to validate quality of multiple datasets",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Set up advanced rules to validate quality of multiple datasets with AWS Glue Data Quality",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1686034800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "AWS Glue Data Quality"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_dda34e6fbf",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_4fddde110f"
+   }
+  },
+  {
+   "claim_id": "3fa89901521af034:c0",
+   "source_id": "3fa89901521af034",
+   "subject": "Funding Notice",
+   "predicate": "is about",
+   "object": "Bipartisan Infrastructure Law Silicon Solar Manufacturing and Dual-use Photovoltaics Incubator",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Funding Notice: Bipartisan Infrastructure Law Silicon Solar Manufacturing and Dual-use Photovoltaics Incubator",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1688540400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Bipartisan Infrastructure Law",
+    "Silicon Solar Manufacturing and Dual-use Photovoltaics Incubator",
+    "Department of Energy"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_a106d79ff8",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_cc51505288"
+   }
+  },
+  {
+   "claim_id": "3fa89901521af034:c1",
+   "source_id": "3fa89901521af034",
+   "subject": "Funding Notice",
+   "predicate": "is from",
+   "object": "Department of Energy (.gov)",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Department of Energy (.gov)",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1688540400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Department of Energy"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_a106d79ff8",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_cc51505288"
+   }
+  },
+  {
+   "claim_id": "5c754d09bf7ed9e6:c0",
+   "source_id": "5c754d09bf7ed9e6",
+   "subject": "Customer Success",
+   "predicate": "is broken",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "Customer Success Is Broken.",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1689058800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Customer Success"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_365eb953b8",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_4fddde110f"
+   }
+  },
+  {
+   "claim_id": "5c754d09bf7ed9e6:c1",
+   "source_id": "5c754d09bf7ed9e6",
+   "subject": "Andreessen Horowitz",
+   "predicate": "states",
+   "object": "Customer Success Is Broken. Here\u2019s How to Fix It.",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "reported",
+   "polarity": "affirm",
+   "claim_class": "actor_statement",
+   "supporting_span": "Customer Success Is Broken. Here\u2019s How to Fix It. - Andreessen Horowitz.",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1689058800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Andreessen Horowitz",
+    "Customer Success"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_365eb953b8",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_4fddde110f"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "safety advocates",
+   "normalized": "safety advocates",
+   "candidates": [
+    {
+     "entity_id": "ent_0faf530443",
+     "canonical": "safety advocates",
+     "support": 0.5625,
+     "evidence_mentions": [
+      "safety advocates"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "NHTSA",
+   "normalized": "nhtsa",
+   "candidates": [
+    {
+     "entity_id": "ent_7527731c41",
+     "canonical": "nhtsa",
+     "support": 0.5625,
+     "evidence_mentions": [
+      "NHTSA"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Data Quality Auditing: A Comprehensive Guide",
+   "normalized": "data quality auditing: a comprehensive guide",
+   "candidates": [
+    {
+     "entity_id": "ent_2ee2fd5ad7",
+     "canonical": "data quality auditing: a comprehensive guide",
+     "support": 0.625,
+     "evidence_mentions": [
+      "Data Quality Auditing: A Comprehensive Guide",
+      "Data Quality Auditing: A Comprehensive Guide"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Towards Data Science",
+   "normalized": "towards data science",
+   "candidates": [
+    {
+     "entity_id": "ent_6e5646c24f",
+     "canonical": "towards data science",
+     "support": 0.625,
+     "evidence_mentions": [
+      "Towards Data Science",
+      "Towards Data Science"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Data Quality Auditing: A Comprehensive Guide",
+   "normalized": "data quality auditing: a comprehensive guide",
+   "candidates": [
+    {
+     "entity_id": "ent_2ee2fd5ad7",
+     "canonical": "data quality auditing: a comprehensive guide",
+     "support": 0.625,
+     "evidence_mentions": [
+      "Data Quality Auditing: A Comprehensive Guide",
+      "Data Quality Auditing: A Comprehensive Guide"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Towards Data Science",
+   "normalized": "towards data science",
+   "candidates": [
+    {
+     "entity_id": "ent_6e5646c24f",
+     "canonical": "towards data science",
+     "support": 0.625,
+     "evidence_mentions": [
+      "Towards Data Science",
+      "Towards Data Science"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "NEWMOA",
+   "normalized": "newmoa",
+   "candidates": [
+    {
+     "entity_id": "ent_fd766395ba",
+     "canonical": "newmoa",
+     "support": 0.5625,
+     "evidence_mentions": [
+      "NEWMOA"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Draft PFAS Prevention Model Act",
+   "normalized": "draft pfas prevention model act",
+   "candidates": [
+    {
+     "entity_id": "ent_1124d38c24",
+     "canonical": "draft pfas prevention model act",
+     "support": 0.5625,
+     "evidence_mentions": [
+      "Draft PFAS Prevention Model Act"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "AWS Glue Data Quality",
+   "normalized": "aws glue data quality",
+   "candidates": [
+    {
+     "entity_id": "ent_772da4f994",
+     "canonical": "aws glue data quality",
+     "support": 0.5625,
+     "evidence_mentions": [
+      "AWS Glue Data Quality"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Bipartisan Infrastructure Law",
+   "normalized": "bipartisan infrastructure law",
+   "candidates": [
+    {
+     "entity_id": "ent_2c3799445e",
+     "canonical": "bipartisan infrastructure law",
+     "support": 0.5625,
+     "evidence_mentions": [
+      "Bipartisan Infrastructure Law"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Silicon Solar Manufacturing and Dual-use Photovoltaics Incubator",
+   "normalized": "silicon solar manufacturing and dual-use photovoltaics incubator",
+   "candidates": [
+    {
+     "entity_id": "ent_68c1145e70",
+     "canonical": "silicon solar manufacturing and dual-use photovoltaics incubator",
+     "support": 0.5625,
+     "evidence_mentions": [
+      "Silicon Solar Manufacturing and Dual-use Photovoltaics Incubator"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Department of Energy",
+   "normalized": "department of energy",
+   "candidates": [
+    {
+     "entity_id": "ent_5046f32ccf",
+     "canonical": "department of energy",
+     "support": 0.625,
+     "evidence_mentions": [
+      "Department of Energy",
+      "Department of Energy"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Department of Energy",
+   "normalized": "department of energy",
+   "candidates": [
+    {
+     "entity_id": "ent_5046f32ccf",
+     "canonical": "department of energy",
+     "support": 0.625,
+     "evidence_mentions": [
+      "Department of Energy",
+      "Department of Energy"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Customer Success",
+   "normalized": "customer success",
+   "candidates": [
+    {
+     "entity_id": "ent_1861d008db",
+     "canonical": "customer success",
+     "support": 0.625,
+     "evidence_mentions": [
+      "Customer Success",
+      "Customer Success"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Andreessen Horowitz",
+   "normalized": "andreessen horowitz",
+   "candidates": [
+    {
+     "entity_id": "ent_de144772e7",
+     "canonical": "andreessen horowitz",
+     "support": 0.5625,
+     "evidence_mentions": [
+      "Andreessen Horowitz"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Customer Success",
+   "normalized": "customer success",
+   "candidates": [
+    {
+     "entity_id": "ent_1861d008db",
+     "canonical": "customer success",
+     "support": 0.625,
+     "evidence_mentions": [
+      "Customer Success",
+      "Customer Success"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "00fa772ff719427a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1686639600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686639600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "b1ce3655f4ae0eaf": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1684134000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684134000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3fa89901521af034": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1688540400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1688540400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f80959f89a2a9090": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1686812400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686812400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d8932538484d2fac": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1689058800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689058800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f0a3e8632669654a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1683097200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683097200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "7e18306d8b572b4c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1686898800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686898800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "951708324c2d9adc": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1689231600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689231600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "254d9128365a64d3": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1682924400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682924400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ea312963c6b9a0fd": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1686034800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686034800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "5c754d09bf7ed9e6": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1689058800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689058800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "9514ece76ee89e3a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1682492400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682492400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "dfce1fbba417cb9b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1685602800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685602800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "c57bad331dca9240": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1686812400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686812400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "73bf950c920ce4fb": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1692860400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1692860400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6ecf1b9b31b433f0": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1685516400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685516400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_fda20aeb25",
+   "member_ids": [
+    "00fa772ff719427a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "WardsAuto",
+   "primary_source": "WardsAuto",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_bd6c4d243c",
+   "member_ids": [
+    "b1ce3655f4ae0eaf"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Kelley Drye & Warren LLP",
+   "primary_source": "Kelley Drye & Warren LLP",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a106d79ff8",
+   "member_ids": [
+    "3fa89901521af034"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Department of Energy (.gov)",
+   "primary_source": "Department of Energy (.gov)",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_811f9c819d",
+   "member_ids": [
+    "f80959f89a2a9090"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "CarProUSA.com.",
+   "primary_source": "CarProUSA.com.",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_96cb496d09",
+   "member_ids": [
+    "d8932538484d2fac"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Global Compliance News",
+   "primary_source": "Global Compliance News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_04b7395a7a",
+   "member_ids": [
+    "f0a3e8632669654a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Dentons",
+   "primary_source": "Dentons",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e0c1fba176",
+   "member_ids": [
+    "7e18306d8b572b4c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Iowa Capital Dispatch",
+   "primary_source": "Iowa Capital Dispatch",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_852ee3d2f1",
+   "member_ids": [
+    "951708324c2d9adc"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Oracle",
+   "primary_source": "Oracle",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9971dd8a5c",
+   "member_ids": [
+    "254d9128365a64d3"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Towards Data Science",
+   "primary_source": "Towards Data Science",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_dda34e6fbf",
+   "member_ids": [
+    "ea312963c6b9a0fd"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Amazon Web Services (AWS)",
+   "primary_source": "Amazon Web Services (AWS)",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_365eb953b8",
+   "member_ids": [
+    "5c754d09bf7ed9e6"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Andreessen Horowitz",
+   "primary_source": "Andreessen Horowitz",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_799a93a0ff",
+   "member_ids": [
+    "9514ece76ee89e3a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Kantar",
+   "primary_source": "Kantar",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b9cc21dde9",
+   "member_ids": [
+    "dfce1fbba417cb9b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Wiley Online Library",
+   "primary_source": "Wiley Online Library",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_bfeb5e1c0d",
+   "member_ids": [
+    "c57bad331dca9240"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Precisely",
+   "primary_source": "Precisely",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9bf78966e8",
+   "member_ids": [
+    "73bf950c920ce4fb"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Solutions Review",
+   "primary_source": "Solutions Review",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b2c8ec35ac",
+   "member_ids": [
+    "6ecf1b9b31b433f0"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "TechTarget",
+   "primary_source": "TechTarget",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "00fa772ff719427a:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1686639600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "254d9128365a64d3:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682924400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "254d9128365a64d3:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682924400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "b1ce3655f4ae0eaf:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684134000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "ea312963c6b9a0fd:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1686034800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "3fa89901521af034:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1688540400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "3fa89901521af034:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1688540400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "5c754d09bf7ed9e6:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1689058800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "5c754d09bf7ed9e6:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1689058800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "00fa772ff719427a:c0",
+  "254d9128365a64d3:c0",
+  "254d9128365a64d3:c1",
+  "b1ce3655f4ae0eaf:c0",
+  "ea312963c6b9a0fd:c0",
+  "3fa89901521af034:c0",
+  "3fa89901521af034:c1",
+  "5c754d09bf7ed9e6:c0",
+  "5c754d09bf7ed9e6:c1"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_e3d7b929ab": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_cc51505288": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_4fddde110f": {
+   "status": "fulfilled",
+   "n_claims": 5,
+   "n_included": 5
+  },
+  "req_04271b9a77": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_b38e78c34f": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_ba2754eda8": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_8319028f48": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_a1cb9e1126": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_e3d7b929ab",
+  "req_04271b9a77",
+  "req_b38e78c34f",
+  "req_ba2754eda8",
+  "req_8319028f48",
+  "req_a1cb9e1126"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 16,
+  "n_contradictions": 0,
+  "n_documents": 16
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 14.476,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "a620490504a6a8b3",
+ "bundle_hash": "a620490504a6a8b3",
+ "_persisted_at": "2026-07-13T02:16:39Z"
+}

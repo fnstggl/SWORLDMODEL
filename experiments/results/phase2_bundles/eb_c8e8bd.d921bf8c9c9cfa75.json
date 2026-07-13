@@ -1,0 +1,1439 @@
+{
+ "bundle_id": "eb_c8e8bd",
+ "question": "Will the board approve the stock buyback proposal at the next meeting?",
+ "as_of": 1686787200.0,
+ "compiler_plan_hash": "a15a94e190fd",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_07848583a5",
+   "claim_or_quantity": "majority vote of board members present at the meeting",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "board_chair",
+    "ceo",
+    "cfo"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_9be3fab746",
+   "claim_or_quantity": "value/context of board_members.preference",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "board_members.preference",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_e9515c6dd7",
+   "claim_or_quantity": "evidence discriminating structural hypothesis management_aligned",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:management_aligned",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_174c057c40",
+   "claim_or_quantity": "evidence discriminating structural hypothesis shareholder_driven",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:shareholder_driven",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_7a1346df4f",
+   "claim_or_quantity": "value/context of major_shareholders.preference",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "major_shareholders.preference",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_754a1fdbce",
+   "claim_or_quantity": "decision rules / process of board_of_directors",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "board_of_directors",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-15",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_32ab249760",
+   "claim_or_quantity": "value/context of ceo.influence_weight",
+   "why_relevant": "high-sensitivity latent (0.60) driving the outcome distribution",
+   "affected_component": "ceo.influence_weight",
+   "expected_sensitivity": 0.6,
+   "expected_voi": 0.6,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_07848583a5",
+   "terms": "board approve stock buyback proposal meeting board chair ceo cfo",
+   "after": "2023-01-16",
+   "before": "2023-06-15",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_9be3fab746",
+   "terms": "board members preference",
+   "after": "2023-01-16",
+   "before": "2023-06-15",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_e9515c6dd7",
+   "terms": "structural hypothesis management aligned evidence discriminating",
+   "after": "2023-01-16",
+   "before": "2023-06-15",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_07848583a5",
+   "logical_query": "board approve stock buyback proposal meeting board chair ceo cfo after:2023-01-16 before:2023-06-15",
+   "wire_url": "https://news.google.com/rss/search?q=board+approve+stock+buyback+proposal+meeting+board+chair+ceo+cfo+after%3A2023-01-16+before%3A2023-06-15&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-16",
+   "before_date": "2023-06-15",
+   "retrieved_at": 1783908360.4344294,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:06:00 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw05BiSO44w5ACxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcHRMuXmIT-DHz2XpmJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwCuIjjw\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "a88f1d9caed95747bce3362914112938bdf02a223489e99b86720f2a4812a259",
+   "n_bytes": 1293,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.383
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_9be3fab746",
+   "logical_query": "board members preference after:2023-01-16 before:2023-06-15",
+   "wire_url": "https://news.google.com/rss/search?q=board+members+preference+after%3A2023-01-16+before%3A2023-06-15&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-16",
+   "before_date": "2023-06-15",
+   "retrieved_at": 1783908360.8193057,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:06:01 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmJw1pBiSO44w5AKxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTD0Tnh4iU2gRe3O14zKSkn5RfGp-SXFBcX5CQWZxSnFpWlFsUbGRiZGZgbmOkZmMQXGAAAoQE3Hg\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "b13297f6ea009d99f6a530c2de8aa210a0e877e8d001e78c1e3556fcdc3b043e",
+   "n_bytes": 44547,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.895
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_e9515c6dd7",
+   "logical_query": "structural hypothesis management aligned evidence discriminating after:2023-01-16 before:2023-06-15",
+   "wire_url": "https://news.google.com/rss/search?q=structural+hypothesis+management+aligned+evidence+discriminating+after%3A2023-01-16+before%3A2023-06-15&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-16",
+   "before_date": "2023-06-15",
+   "retrieved_at": 1783908361.7166274,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:06:02 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjytDikmJw0pBiSO44w5ACxHVA3ADEfBXPmVpvnmOdDMQli86zNgFxFxDPAGJDhUus9kB8Of0Sa5HEFdYGIP5UdYNVoPoG67diXzaWEiB-689mGhLI5gzEWzSD2YS4ObomXLzEJvDi28RsJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwBLMzoJ\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "ba9e99a0a639d09fe8f80c0787c554961aebc8471f5853982340df96d5584fb2",
+   "n_bytes": 1293,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.422
+  }
+ ],
+ "raw_content_refs": [
+  "b13297f6ea009d99f6a530c2de8aa210a0e877e8d001e78c1e3556fcdc3b043e"
+ ],
+ "documents": [
+  {
+   "id": "08ffbb15c0757940",
+   "source": "U.S. Mission to International Organizations in Geneva (.gov)",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxQcWVTcnNNMUU1V1poaGEtc0RvX1d5UjBodVJldzF5bnRsOXhCbGpiTnpncHc1VGlvVm1XZENHTE9xd2sxV2NJZkV0NW1aUkdUZTNKRlFXdU14TkFzZ2lVYzhqZXFvQUY2SU5wTzBWT25xbmtkYVhKa3ZoWU1CREE1RW5IWk96cmtieTY0NTFvczdZVmRnc0NsNE1fZ091YXBhTnRGR2FPMlk2d3E0QVU4?oc=5",
+   "title": "Statement by the United States on WHO Executive Board Membership - U.S. Mission to International Organizations in Geneva (.gov)",
+   "text": "Statement by the United States on WHO Executive Board Membership - U.S. Mission to International Organizations in Geneva (.gov). Statement by the United States on WHO Executive Board Membership U.S. Mission to International Organizations in Geneva (.gov)",
+   "content_hash": "e08488a24be4d060",
+   "raw_feed_hash": "b13297f6ea009d99f6a530c2de8aa210a0e877e8d001e78c1e3556fcdc3b043e",
+   "published_at": 1685084400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_9be3fab746",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "bb3d4ec202d99980",
+   "source": "Portland.gov",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxNUm83by16R0FzaTh3VW9MRGV3RTVqLVpxOFVGaTBUNEw0N2U2T1hYVkllSWg0cGd4N05PV2ltby13bmtHVnYxLUE2Ym5CR0g2UERHaE1laWh1N3JLNFBZLWJtazMyczF3Yjh3SHpIRHBjWE00enp6OFJtS081YUxWcHVXaUhCMFZHYnF2WUFIZTFIMHZtM25QSFh3aUZEQzNmMW9zNWF6bUtPUnJNLTc4ZERQRQ?oc=5",
+   "title": "January 2023 N/NE Neighborhood Housing Strategy Newsletter - Portland.gov",
+   "text": "January 2023 N/NE Neighborhood Housing Strategy Newsletter - Portland.gov. January 2023 N/NE Neighborhood Housing Strategy Newsletter Portland.gov",
+   "content_hash": "2814e8e3f6eb79ce",
+   "raw_feed_hash": "b13297f6ea009d99f6a530c2de8aa210a0e877e8d001e78c1e3556fcdc3b043e",
+   "published_at": 1674633600.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_9be3fab746",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "c41a116529c2ee4a",
+   "source": "FairVote",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiS0FVX3lxTE5DQWdLcExxSDJhdnBaZnA5ekZtb1pxRUNhS1RnQmN4SkE2Q29kSzI1R2JtZVdsZVp2Ukx3TEc1ZFU0MGJLZUtHQXY0RQ?oc=5",
+   "title": "Ranked choice voting is recommended by Robert\u2019s Rules of Order - FairVote",
+   "text": "Ranked choice voting is recommended by Robert\u2019s Rules of Order - FairVote. Ranked choice voting is recommended by Robert\u2019s Rules of Order FairVote",
+   "content_hash": "9cccb6317941ad38",
+   "raw_feed_hash": "b13297f6ea009d99f6a530c2de8aa210a0e877e8d001e78c1e3556fcdc3b043e",
+   "published_at": 1674201600.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_9be3fab746",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "73c563aa7a69ab33",
+   "source": "Larchmont Buzz",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxNVUVsanZaeW1VUU9tb2podTQ2QU9GV0dWZEhxQnlFcDJnZXNsYUVLZTNCVXNqcXcxTkJKYm1oTWdvdHB4U2tXWE9kOTZpUVVmNk5NdXRuU0tZa3NHa05ORm5lRVZHU2ZXZzVvQ3RLUkVtZmNQRWhMTGZhUUdjbkZaRmpNZ3VHRWtVV19DdkwxWVlLVTZ1eklvRG8xdE10eXprTjYyUURCSHNXUzNiNGhVUzhwSG9OOVI0bVRxTXpXVGpvSGtSSGpadDJsM3RNQk0?oc=5",
+   "title": "Buzz Virtual vs. In-Person Meetings Poll Favors Hybrid or Virtual Options - Larchmont Buzz",
+   "text": "Buzz Virtual vs. In-Person Meetings Poll Favors Hybrid or Virtual Options - Larchmont Buzz. Buzz Virtual vs. In-Person Meetings Poll Favors Hybrid or Virtual Options Larchmont Buzz",
+   "content_hash": "c4fd2fe626ac86a0",
+   "raw_feed_hash": "b13297f6ea009d99f6a530c2de8aa210a0e877e8d001e78c1e3556fcdc3b043e",
+   "published_at": 1673942400.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_9be3fab746",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f6f41b19b3e9bf18",
+   "source": "Iowa City Press-Citizen",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxQVG1ZTkUyRnJPVWIxNFU2V1BpUm92UkJYSjNVU3Rna3p6ZWMzb2hheFZlYk9QaHR6S09BZEs2eWRDZnNOMDlxLWhKaEJmUlI4TFhUbEk0bWllMThFZEpPWHdRMkd4M2FjSU1qUVp6UFZ3WXRpRXZBNWI5LVhXejlVNFctQ0UtWTl5Z3QzYXlzRlhQV0tnbmZPTjZRRjJHS3BuRFVpTEZ4WURSQ1NxM3JZejhCOUxNN05rWkh5TjljWnJBaTNiNjdtTENWZ0VYYnM?oc=5",
+   "title": "1980s board game created by Iowa native gets reboot thanks to fans across US, Canada - Iowa City Press-Citizen",
+   "text": "1980s board game created by Iowa native gets reboot thanks to fans across US, Canada - Iowa City Press-Citizen. 1980s board game created by Iowa native gets reboot thanks to fans across US, Canada Iowa City Press-Citizen",
+   "content_hash": "12c000cdb7d26aa0",
+   "raw_feed_hash": "b13297f6ea009d99f6a530c2de8aa210a0e877e8d001e78c1e3556fcdc3b043e",
+   "published_at": 1685602800.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_9be3fab746",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "c092270534d9e481",
+   "source": "Community Impact",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPSlNpRHZETnp5NktndHA3c20wUGRLTm9wMFJYM29LX3A4dXdlQ1cydkM0UTJMRURrazU0UDV1dWJ5N1lZRzdZcXhpTkRiUmt1T0I0UWl3LXB6ck5NUU9VQXFuS19PejFZZlJhcUNVMFRzUXh5UmtEandJR1F3X0RES0dqbnRESVM2NUJmaWtTR0tBZDJJZmp4N2JOU00ydWlXMDVYUnpYU0UtemZ1RmZB?oc=5",
+   "title": "Judson ISD board of trustees approves new trustee districts - Community Impact",
+   "text": "Judson ISD board of trustees approves new trustee districts - Community Impact. Judson ISD board of trustees approves new trustee districts Community Impact",
+   "content_hash": "7384790feb57c758",
+   "raw_feed_hash": "b13297f6ea009d99f6a530c2de8aa210a0e877e8d001e78c1e3556fcdc3b043e",
+   "published_at": 1674201600.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_9be3fab746",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "baf9aacfee707f32",
+   "source": "WUWF",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQYjFLOExMel9tZ2g1U3Q3bXpTMzVBY3NGVW1MSWRQSXp4SXBrcUlSbGJoTWlnZ0tPbUlHSEJUdHh4NmZ0YkVJeXBkeFh0N3Awb2N4UHlzeTNGMHUwTkRqeTRtSDk0Z0lsdXVJbVpqRUVlQWhwYVBhR1ZieUlnaHZNNTkzczlSLW42NUVhRGc5YXV5SW1BUzd0aEtIeEdTVTA2ZnBId09kcDRUQkxZampKVW9Fa056MTRDV0U4?oc=5",
+   "title": "Escambia County School Board approves Warrington Middle School charter plans - WUWF",
+   "text": "Escambia County School Board approves Warrington Middle School charter plans - WUWF. Escambia County School Board approves Warrington Middle School charter plans WUWF",
+   "content_hash": "0bc1bcb9893336c9",
+   "raw_feed_hash": "b13297f6ea009d99f6a530c2de8aa210a0e877e8d001e78c1e3556fcdc3b043e",
+   "published_at": 1683183600.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_9be3fab746",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "89449e856c2bbe4d",
+   "source": "Georgia Public Broadcasting",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNdENQQkMtbjk5SkRUZl9XRmJjdEppNzZhQ3ZLR05fdjZnWHF6ZDd1bVBPYUI3SkhseEk5VnNQWTZqWU10X2ZHNl9qUWc4TDh6Q3RuU2k0TFNQMVZuRXFwd3BiNzhfZ1lUTDZ6MHozNE1pTFdOWGV0Sy1ETHVlOHZZcnBERFgyWkgwcGk5TFpDNW10V3dkX2ZEMWFKbkJ6TzNpYjFpX3d4WVFCZDJlTmZkT2RabEFhM1E?oc=5",
+   "title": "Savannah-Chatham County school board names Texas administrator as sole finalist for superintendent - Georgia Public Broadcasting",
+   "text": "Savannah-Chatham County school board names Texas administrator as sole finalist for superintendent - Georgia Public Broadcasting. Savannah-Chatham County school board names Texas administrator as sole finalist for superintendent Georgia Public Broadcasting",
+   "content_hash": "cc6bb78ade65656d",
+   "raw_feed_hash": "b13297f6ea009d99f6a530c2de8aa210a0e877e8d001e78c1e3556fcdc3b043e",
+   "published_at": 1685602800.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_9be3fab746",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "08ffbb15c0757940:c0",
+   "source_id": "08ffbb15c0757940",
+   "subject": "United States",
+   "predicate": "made a statement on",
+   "object": "WHO Executive Board Membership",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Statement by the United States on WHO Executive Board Membership",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1685084400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "United States",
+    "WHO Executive Board"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_0a229d7a62",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_9be3fab746"
+   }
+  },
+  {
+   "claim_id": "bb3d4ec202d99980:c0",
+   "source_id": "bb3d4ec202d99980",
+   "subject": "January 2023 N/NE Neighborhood Housing Strategy Newsletter",
+   "predicate": "is published by",
+   "object": "Portland.gov",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "January 2023 N/NE Neighborhood Housing Strategy Newsletter - Portland.gov",
+   "span_verified": true,
+   "event_time": "January 2023",
+   "publication_time": 1674633600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Portland.gov"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_534121e24b",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_9be3fab746"
+   }
+  },
+  {
+   "claim_id": "c41a116529c2ee4a:c0",
+   "source_id": "c41a116529c2ee4a",
+   "subject": "Ranked choice voting",
+   "predicate": "is recommended by",
+   "object": "Robert\u2019s Rules of Order - FairVote",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Ranked choice voting is recommended by Robert\u2019s Rules of Order - FairVote.",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1674201600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Ranked choice voting",
+    "Robert\u2019s Rules of Order - FairVote"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_02ca7d5b38",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_9be3fab746"
+   }
+  },
+  {
+   "claim_id": "c41a116529c2ee4a:c1",
+   "source_id": "c41a116529c2ee4a",
+   "subject": "Ranked choice voting",
+   "predicate": "is recommended by",
+   "object": "Robert\u2019s Rules of Order FairVote",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Ranked choice voting is recommended by Robert\u2019s Rules of Order FairVote",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1674201600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Ranked choice voting",
+    "Robert\u2019s Rules of Order FairVote"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_02ca7d5b38",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_9be3fab746"
+   }
+  },
+  {
+   "claim_id": "73c563aa7a69ab33:c0",
+   "source_id": "73c563aa7a69ab33",
+   "subject": "Buzz Virtual vs. In-Person Meetings Poll",
+   "predicate": "favors",
+   "object": "Hybrid or Virtual Options",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Buzz Virtual vs. In-Person Meetings Poll Favors Hybrid or Virtual Options",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1673942400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Buzz Virtual vs. In-Person Meetings Poll",
+    "Hybrid or Virtual Options"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_f76710a743",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_9be3fab746"
+   }
+  },
+  {
+   "claim_id": "f6f41b19b3e9bf18:c0",
+   "source_id": "f6f41b19b3e9bf18",
+   "subject": "1980s board game",
+   "predicate": "created by",
+   "object": "Iowa native",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "1980s board game created by Iowa native",
+   "span_verified": true,
+   "event_time": "1980s",
+   "publication_time": 1685602800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Iowa native"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_9759b82a61",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_9be3fab746"
+   }
+  },
+  {
+   "claim_id": "f6f41b19b3e9bf18:c1",
+   "source_id": "f6f41b19b3e9bf18",
+   "subject": "1980s board game",
+   "predicate": "gets reboot",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "thanks to fans across US, Canada",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "1980s board game created by Iowa native gets reboot thanks to fans across US, Canada",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1685602800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "US",
+    "Canada"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_9759b82a61",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_9be3fab746"
+   }
+  },
+  {
+   "claim_id": "c092270534d9e481:c0",
+   "source_id": "c092270534d9e481",
+   "subject": "Judson ISD board of trustees",
+   "predicate": "approves",
+   "object": "new trustee districts",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Judson ISD board of trustees approves new trustee districts",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1674201600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Judson ISD board of trustees",
+    "new trustee districts"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_f7a3b73b0f",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_9be3fab746"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "United States",
+   "normalized": "united states",
+   "candidates": [
+    {
+     "entity_id": "ent_afa09db868",
+     "canonical": "united states",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "United States"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "WHO Executive Board",
+   "normalized": "who executive board",
+   "candidates": [
+    {
+     "entity_id": "ent_6e36d39269",
+     "canonical": "who executive board",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "WHO Executive Board"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Portland.gov",
+   "normalized": "portland",
+   "candidates": [
+    {
+     "entity_id": "ent_508dfecfae",
+     "canonical": "portland",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Portland.gov"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Ranked choice voting",
+   "normalized": "ranked choice voting",
+   "candidates": [
+    {
+     "entity_id": "ent_6d38e5dd73",
+     "canonical": "ranked choice voting",
+     "support": 0.6429,
+     "evidence_mentions": [
+      "Ranked choice voting",
+      "Ranked choice voting"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Robert\u2019s Rules of Order - FairVote",
+   "normalized": "robert\u2019s rules of order - fairvote",
+   "candidates": [
+    {
+     "entity_id": "ent_6274072501",
+     "canonical": "robert\u2019s rules of order - fairvote",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Robert\u2019s Rules of Order - FairVote"
+     ]
+    },
+    {
+     "entity_id": "ent_92378b00af",
+     "canonical": "robert\u2019s rules of order fairvote",
+     "support": 0.1214,
+     "evidence_mentions": [
+      "Robert\u2019s Rules of Order FairVote"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Ranked choice voting",
+   "normalized": "ranked choice voting",
+   "candidates": [
+    {
+     "entity_id": "ent_6d38e5dd73",
+     "canonical": "ranked choice voting",
+     "support": 0.6429,
+     "evidence_mentions": [
+      "Ranked choice voting",
+      "Ranked choice voting"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Robert\u2019s Rules of Order FairVote",
+   "normalized": "robert\u2019s rules of order fairvote",
+   "candidates": [
+    {
+     "entity_id": "ent_92378b00af",
+     "canonical": "robert\u2019s rules of order fairvote",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Robert\u2019s Rules of Order FairVote"
+     ]
+    },
+    {
+     "entity_id": "ent_6274072501",
+     "canonical": "robert\u2019s rules of order - fairvote",
+     "support": 0.1214,
+     "evidence_mentions": [
+      "Robert\u2019s Rules of Order - FairVote"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Buzz Virtual vs. In-Person Meetings Poll",
+   "normalized": "buzz virtual vs in-person meetings poll",
+   "candidates": [
+    {
+     "entity_id": "ent_c5abb878cb",
+     "canonical": "buzz virtual vs in-person meetings poll",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Buzz Virtual vs. In-Person Meetings Poll"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Hybrid or Virtual Options",
+   "normalized": "hybrid or virtual options",
+   "candidates": [
+    {
+     "entity_id": "ent_5bacf1439c",
+     "canonical": "hybrid or virtual options",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Hybrid or Virtual Options"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Iowa native",
+   "normalized": "iowa native",
+   "candidates": [
+    {
+     "entity_id": "ent_8a0b7d6569",
+     "canonical": "iowa native",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Iowa native"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "US",
+   "normalized": "us",
+   "candidates": [
+    {
+     "entity_id": "ent_da2b128800",
+     "canonical": "us",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "US"
+     ]
+    },
+    {
+     "entity_id": "ent_befb9fad86",
+     "canonical": "judson isd board of trustees",
+     "support": 0.2214,
+     "evidence_mentions": [
+      "Judson ISD board of trustees"
+     ]
+    },
+    {
+     "entity_id": "ent_946c185325",
+     "canonical": "new trustee districts",
+     "support": 0.2214,
+     "evidence_mentions": [
+      "new trustee districts"
+     ]
+    }
+   ],
+   "resolved": false,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Canada",
+   "normalized": "canada",
+   "candidates": [
+    {
+     "entity_id": "ent_ab65d8b961",
+     "canonical": "canada",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Canada"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Judson ISD board of trustees",
+   "normalized": "judson isd board of trustees",
+   "candidates": [
+    {
+     "entity_id": "ent_befb9fad86",
+     "canonical": "judson isd board of trustees",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Judson ISD board of trustees"
+     ]
+    },
+    {
+     "entity_id": "ent_da2b128800",
+     "canonical": "us",
+     "support": 0.2214,
+     "evidence_mentions": [
+      "US"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "new trustee districts",
+   "normalized": "new trustee districts",
+   "candidates": [
+    {
+     "entity_id": "ent_946c185325",
+     "canonical": "new trustee districts",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "new trustee districts"
+     ]
+    },
+    {
+     "entity_id": "ent_da2b128800",
+     "canonical": "us",
+     "support": 0.2214,
+     "evidence_mentions": [
+      "US"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "08ffbb15c0757940": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1686787200.0,
+   "claimed_pubdate_ts": 1685084400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685084400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "bb3d4ec202d99980": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1686787200.0,
+   "claimed_pubdate_ts": 1674633600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1674633600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "c41a116529c2ee4a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1686787200.0,
+   "claimed_pubdate_ts": 1674201600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1674201600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "73c563aa7a69ab33": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1686787200.0,
+   "claimed_pubdate_ts": 1673942400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1673942400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f6f41b19b3e9bf18": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1686787200.0,
+   "claimed_pubdate_ts": 1685602800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685602800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "c092270534d9e481": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1686787200.0,
+   "claimed_pubdate_ts": 1674201600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1674201600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "baf9aacfee707f32": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1686787200.0,
+   "claimed_pubdate_ts": 1683183600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683183600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "89449e856c2bbe4d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1686787200.0,
+   "claimed_pubdate_ts": 1685602800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685602800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_0a229d7a62",
+   "member_ids": [
+    "08ffbb15c0757940"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "U.S. Mission to International Organizations in Geneva (.gov)",
+   "primary_source": "U.S. Mission to International Organizations in Geneva (.gov)",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_534121e24b",
+   "member_ids": [
+    "bb3d4ec202d99980"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Portland.gov",
+   "primary_source": "Portland.gov",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_02ca7d5b38",
+   "member_ids": [
+    "c41a116529c2ee4a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "FairVote",
+   "primary_source": "FairVote",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_f76710a743",
+   "member_ids": [
+    "73c563aa7a69ab33"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Larchmont Buzz",
+   "primary_source": "Larchmont Buzz",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9759b82a61",
+   "member_ids": [
+    "f6f41b19b3e9bf18"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Iowa City Press-Citizen",
+   "primary_source": "Iowa City Press-Citizen",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_f7a3b73b0f",
+   "member_ids": [
+    "c092270534d9e481"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Community Impact",
+   "primary_source": "Community Impact",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_616c1fb8f2",
+   "member_ids": [
+    "baf9aacfee707f32"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "WUWF",
+   "primary_source": "WUWF",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_fca26b55e6",
+   "member_ids": [
+    "89449e856c2bbe4d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Georgia Public Broadcasting",
+   "primary_source": "Georgia Public Broadcasting",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "08ffbb15c0757940:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685084400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "bb3d4ec202d99980:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1674633600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "c41a116529c2ee4a:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1674201600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "c41a116529c2ee4a:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1674201600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "73c563aa7a69ab33:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1673942400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "f6f41b19b3e9bf18:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685602800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "f6f41b19b3e9bf18:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685602800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "c092270534d9e481:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1674201600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "08ffbb15c0757940:c0",
+  "bb3d4ec202d99980:c0",
+  "c41a116529c2ee4a:c0",
+  "c41a116529c2ee4a:c1",
+  "73c563aa7a69ab33:c0",
+  "f6f41b19b3e9bf18:c0",
+  "f6f41b19b3e9bf18:c1",
+  "c092270534d9e481:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_07848583a5": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_9be3fab746": {
+   "status": "fulfilled",
+   "n_claims": 8,
+   "n_included": 8
+  },
+  "req_e9515c6dd7": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_174c057c40": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_7a1346df4f": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_754a1fdbce": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_32ab249760": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_07848583a5",
+  "req_e9515c6dd7",
+  "req_174c057c40",
+  "req_7a1346df4f",
+  "req_754a1fdbce",
+  "req_32ab249760"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 8,
+  "n_contradictions": 0,
+  "n_documents": 8
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 14.526,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "d921bf8c9c9cfa75",
+ "bundle_hash": "d921bf8c9c9cfa75",
+ "_persisted_at": "2026-07-13T02:06:16Z"
+}

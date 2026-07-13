@@ -1,0 +1,207 @@
+{
+ "domain": "coalition",
+ "question": "Will the Dutch parties form a governing coalition after the November election?",
+ "as_of": "2023-11-25",
+ "horizon": "2024-03-01",
+ "n_requirements": 6,
+ "requirements": [
+  {
+   "id": "req_68ec09dfd2",
+   "need": "A coalition is formed if a formal agreement is announced by 2024-03-01; otherwis",
+   "why": "the terminal outcome standing as of the question date sets the base rate",
+   "voi": 1.0
+  },
+  {
+   "id": "req_6ade2e0f6f",
+   "need": "value/context of vvd.negotiation_stance",
+   "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "voi": 0.8
+  },
+  {
+   "id": "req_029162be20",
+   "need": "value/context of d66.negotiation_stance",
+   "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "voi": 0.8
+  },
+  {
+   "id": "req_c8b527bd3f",
+   "need": "value/context of pvv.negotiation_stance",
+   "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "voi": 0.8
+  }
+ ],
+ "rss_windows": [
+  {
+   "query": "Dutch parties form governing coalition November election dutch government house of representatives king willem alexander after:2023-06-28 before:2023-11-25",
+   "after": "2023-06-28",
+   "before": "2023-11-25",
+   "status": "ok",
+   "code": 200,
+   "n_items": 1,
+   "raw_hash": "4a3f8c169fdf"
+  },
+  {
+   "query": "vvd negotiation stance after:2023-06-28 before:2023-11-25",
+   "after": "2023-06-28",
+   "before": "2023-11-25",
+   "status": "zero_results",
+   "code": 200,
+   "n_items": 0,
+   "raw_hash": "b074e1ccd366"
+  },
+  {
+   "query": "d66 negotiation stance after:2023-06-28 before:2023-11-25",
+   "after": "2023-06-28",
+   "before": "2023-11-25",
+   "status": "zero_results",
+   "code": 200,
+   "n_items": 0,
+   "raw_hash": "61cc9e1e6a02"
+  }
+ ],
+ "n_documents": 1,
+ "documents": [
+  {
+   "source": "DW.com",
+   "title": "Dutch election: Wilders' far-right PVV set to win \u2014 poll - DW.com",
+   "pub": 1700640000.0,
+   "temporal": "likely_pre_asof"
+  }
+ ],
+ "temporal_summary": {
+  "likely_pre_asof": 1
+ },
+ "included_claims": [
+  {
+   "id": "eed1d3f6e6bf4a4a:c0",
+   "class": "forecast",
+   "subject": "Wilders' far-right PVV",
+   "predicate": "set to win",
+   "span": "Wilders' far-right PVV set to win \u2014 poll"
+  }
+ ],
+ "n_excluded": 0,
+ "n_suspicious": 0,
+ "entities": [
+  {
+   "mention": "Wilders",
+   "top": "wilders",
+   "resolved": true
+  },
+  {
+   "mention": "PVV",
+   "top": "pvv",
+   "resolved": true
+  },
+  {
+   "mention": "Dutch election",
+   "top": "dutch election",
+   "resolved": true
+  }
+ ],
+ "dependence_groups": [
+  {
+   "type": "independent",
+   "n": 1
+  }
+ ],
+ "n_independent_sources": 1,
+ "contradictions": [],
+ "actor_visibility": {
+  "public": 1
+ },
+ "leakage_flags": [],
+ "bundle_hash": "75b475e366327bbe",
+ "plan_diff": {
+  "n_entries": 8,
+  "n_structural_changes": 8,
+  "lean_only": false,
+  "entries": [
+   {
+    "kind": "entity_added",
+    "component": "pvv",
+    "detail": "PVV is the far-right party projected to win the election, making it a key actor in coalition formation.",
+    "supporting_claim_ids": [
+     "eed1d3f6e6bf4a4a:c0"
+    ],
+    "before": "",
+    "after": "pvv"
+   },
+   {
+    "kind": "relation_added",
+    "component": "pvv-competes_in-house_of_representatives",
+    "detail": "",
+    "supporting_claim_ids": [
+     "eed1d3f6e6bf4a4a:c0"
+    ],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_fulfilled",
+    "component": "req_68ec09dfd2",
+    "detail": "1 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_6ade2e0f6f",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_029162be20",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_c8b527bd3f",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_acbc2882fa",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_285648a938",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   }
+  ]
+ },
+ "structural_changes": 8,
+ "lean_only": false,
+ "n_institutions_pre": 2,
+ "n_institutions_post": 2,
+ "n_events_pre": 1,
+ "n_events_post": 2,
+ "observation_state_deltas": 0,
+ "terminal_pre": {
+  "no_coalition_formed": 0.58,
+  "coalition_formed": 0.42
+ },
+ "terminal_post": {
+  "no_coalition_formed": 0.58,
+  "coalition_formed": 0.42
+ },
+ "terminal_changed": false,
+ "evidence_is_causal": true
+}

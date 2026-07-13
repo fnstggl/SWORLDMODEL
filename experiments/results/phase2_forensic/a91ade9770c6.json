@@ -1,0 +1,295 @@
+{
+ "domain": "social_media_diffusion",
+ "question": "Will Meta's Threads app reach 100 million users in its first month?",
+ "as_of": "2023-07-06",
+ "horizon": "2023-08-06",
+ "n_requirements": 8,
+ "requirements": [
+  {
+   "id": "req_929db365be",
+   "need": "If Meta publicly reports or credible third-party data confirms Threads reached 1",
+   "why": "the terminal outcome standing as of the question date sets the base rate",
+   "voi": 1.0
+  },
+  {
+   "id": "req_e800a761cc",
+   "need": "value/context of threads_app.user_count",
+   "why": "high-sensitivity latent (1.00) driving the outcome distribution",
+   "voi": 1.0
+  },
+  {
+   "id": "req_d90943b5fe",
+   "need": "value/context of instagram_users.interest_in_threads",
+   "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "voi": 0.8
+  },
+  {
+   "id": "req_aa22f6f3f8",
+   "need": "evidence discriminating structural hypothesis viral_adoption",
+   "why": "a fact that reweights competing structural hypotheses materially changes the out",
+   "voi": 0.8
+  }
+ ],
+ "rss_windows": [
+  {
+   "query": "Meta Threads app 100 million users first meta platforms threads app instagram after:2023-02-06 before:2023-07-06",
+   "after": "2023-02-06",
+   "before": "2023-07-06",
+   "status": "ok",
+   "code": 200,
+   "n_items": 8,
+   "raw_hash": "2e8be39b0204"
+  },
+  {
+   "query": "threads app user count after:2023-02-06 before:2023-07-06",
+   "after": "2023-02-06",
+   "before": "2023-07-06",
+   "status": "ok",
+   "code": 200,
+   "n_items": 8,
+   "raw_hash": "f930ff70ced4"
+  },
+  {
+   "query": "instagram users interest threads after:2023-02-06 before:2023-07-06",
+   "after": "2023-02-06",
+   "before": "2023-07-06",
+   "status": "ok",
+   "code": 200,
+   "n_items": 8,
+   "raw_hash": "96e04f0f3578"
+  }
+ ],
+ "n_documents": 24,
+ "documents": [
+  {
+   "source": "The Guardian",
+   "title": "Threads app: Instagram owner\u2019s Twitter rival logs 5 million users in f",
+   "pub": 1688540400.0,
+   "temporal": "uncertain"
+  },
+  {
+   "source": "Investopedia",
+   "title": "Meta\u2019s 'Threads' App Draws 10 Million Users At Launch, Hopes For More ",
+   "pub": 1688626800.0,
+   "temporal": "uncertain"
+  },
+  {
+   "source": "Time Magazine",
+   "title": "Why E.U. Users May Not Get to Use Threads - Time Magazine",
+   "pub": 1688626800.0,
+   "temporal": "uncertain"
+  },
+  {
+   "source": "NBC News",
+   "title": "Instagram Threads is live, threatening Twitter\u2019s reign: What to know a",
+   "pub": 1688626800.0,
+   "temporal": "uncertain"
+  },
+  {
+   "source": "NPR",
+   "title": "Is Threads really a 'Twitter killer'? Here's what we know so far - NPR",
+   "pub": 1688626800.0,
+   "temporal": "uncertain"
+  },
+  {
+   "source": "CNBC",
+   "title": "Meta launches Instagram Threads in a direct challenge to Twitter - CNB",
+   "pub": 1688540400.0,
+   "temporal": "uncertain"
+  }
+ ],
+ "temporal_summary": {
+  "uncertain": 23,
+  "likely_pre_asof": 1
+ },
+ "included_claims": [
+  {
+   "id": "75c52edce64c6bae:c0",
+   "class": "observed_fact",
+   "subject": "Threads",
+   "predicate": "is",
+   "span": "What is Threads? Instagram\u2019s Twitter alternative to launch July 6"
+  },
+  {
+   "id": "75c52edce64c6bae:c1",
+   "class": "forecast",
+   "subject": "Threads",
+   "predicate": "launch",
+   "span": "What is Threads? Instagram\u2019s Twitter alternative to launch July 6"
+  }
+ ],
+ "n_excluded": 0,
+ "n_suspicious": 9,
+ "entities": [
+  {
+   "mention": "Threads",
+   "top": "threads",
+   "resolved": false
+  },
+  {
+   "mention": "Instagram",
+   "top": "instagram",
+   "resolved": true
+  },
+  {
+   "mention": "Twitter",
+   "top": "twitter",
+   "resolved": true
+  },
+  {
+   "mention": "Threads",
+   "top": "threads",
+   "resolved": false
+  },
+  {
+   "mention": "Threads app",
+   "top": "threads app",
+   "resolved": false
+  }
+ ],
+ "dependence_groups": [
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "exact_duplicate",
+   "n": 2
+  }
+ ],
+ "n_independent_sources": 21,
+ "contradictions": [],
+ "actor_visibility": {
+  "public": 11
+ },
+ "leakage_flags": [],
+ "bundle_hash": "e46a77f672b09966",
+ "plan_diff": {
+  "n_entries": 11,
+  "n_structural_changes": 11,
+  "lean_only": false,
+  "entries": [
+   {
+    "kind": "event_added",
+    "component": "external_shock@2023-07-06",
+    "detail": "Threads launch date confirmed as July 6, providing a clear start for the first month count.",
+    "supporting_claim_ids": [
+     "75c52edce64c6bae:c1"
+    ],
+    "before": "",
+    "after": "external_shock"
+   },
+   {
+    "kind": "hypothesis_reweighted",
+    "component": "viral_adoption",
+    "detail": "Threads is positioned as Instagram's Twitter alternative, leveraging Instagram's existing user base for potential viral ",
+    "supporting_claim_ids": [
+     "75c52edce64c6bae:c0"
+    ],
+    "before": "0.7",
+    "after": "1.05"
+   },
+   {
+    "kind": "uncertainty_changed",
+    "component": "state_priors",
+    "detail": "The launch date is confirmed, and the positioning as Instagram's Twitter alternative suggests strong initial interest, n",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": "narrow"
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_929db365be",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_fulfilled",
+    "component": "req_e800a761cc",
+    "detail": "2 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_d90943b5fe",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_aa22f6f3f8",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_2347b86fcd",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_9877123dda",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_e8223e8ac0",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_86d06bd9b8",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   }
+  ]
+ },
+ "structural_changes": 11,
+ "lean_only": false,
+ "n_institutions_pre": 2,
+ "n_institutions_post": 2,
+ "n_events_pre": 3,
+ "n_events_post": 6,
+ "observation_state_deltas": 0,
+ "terminal_pre": {
+  "yes": 0.58,
+  "no": 0.42
+ },
+ "terminal_post": {
+  "yes": 0.62,
+  "no": 0.38
+ },
+ "terminal_changed": true,
+ "evidence_is_causal": true
+}

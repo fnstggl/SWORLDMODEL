@@ -1,0 +1,1656 @@
+{
+ "bundle_id": "eb_770b2d",
+ "question": "Will the regulator impose a fine in the data-breach investigation?",
+ "as_of": 1685577600.0,
+ "compiler_plan_hash": "6588de07a65d",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_d71bbbf4dc",
+   "claim_or_quantity": "The outcome is fine_imposed if the regulator issues a monetary penalty by the horizon; otherwise no_fine.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "regulator",
+    "breached_entity",
+    "data_subjects_population"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_8e5db12b7b",
+   "claim_or_quantity": "value/context of regulator.independence_score",
+   "why_relevant": "high-sensitivity latent (1.00) driving the outcome distribution",
+   "affected_component": "regulator.independence_score",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_e188c2915b",
+   "claim_or_quantity": "value/context of breach_severity_score",
+   "why_relevant": "high-sensitivity latent (1.00) driving the outcome distribution",
+   "affected_component": "breach_severity_score",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_4e52e1a5c2",
+   "claim_or_quantity": "value/context of breached_entity.cooperation_level",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "breached_entity.cooperation_level",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_9303537940",
+   "claim_or_quantity": "evidence discriminating structural hypothesis independent_regulator",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:independent_regulator",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_fca0cbe4ea",
+   "claim_or_quantity": "evidence discriminating structural hypothesis politically_constrained",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:politically_constrained",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_a1cb9e1126",
+   "claim_or_quantity": "decision rules / process of regulator",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "regulator",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-06-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_d71bbbf4dc",
+   "terms": "regulator impose fine data breach investigation regulator breached entity data subjects population",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_8e5db12b7b",
+   "terms": "regulator independence score",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_e188c2915b",
+   "terms": "breach severity score",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_d71bbbf4dc",
+   "logical_query": "regulator impose fine data breach investigation regulator breached entity data subjects population after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=regulator+impose+fine+data+breach+investigation+regulator+breached+entity+data+subjects+population+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783907641.9216614,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:54:02 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw05BiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDsavr4iU2gQlL7_1mVFJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAAp1k3Kg\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "af75f023de218b1569800955b7a19c0286a8ab5db60c7519fcc0fd0bcbd0f44e",
+   "n_bytes": 3445,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 2,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.515
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_8e5db12b7b",
+   "logical_query": "regulator independence score after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=regulator+independence+score+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783907642.4387288,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:54:02 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw1JBiOFR1hiG54wxDChDXAXHrzXOsk4G4ZNF51iYg7gLiGUBsqHCJ1R6IL6dfYi2SuMLaAMSfqm6wClTfYP1W7MvGUgLEb_3ZTEMC2ZyBeItmMJsQD8eurouX2AQ2XN99nFlJOSm_MD4lv6S4uCAnsTijOLWoLLUo3sjAyMzA3MBMz8AkvsAAAMgFOSY\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "27df4b8c65f614f43f1395d2b7615a889d6502ea93e2723963e109e401440883",
+   "n_bytes": 5971,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 4,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.429
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_e188c2915b",
+   "logical_query": "breach severity score after:2023-01-02 before:2023-06-01",
+   "wire_url": "https://news.google.com/rss/search?q=breach+severity+score+after%3A2023-01-02+before%3A2023-06-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-01-02",
+   "before_date": "2023-06-01",
+   "retrieved_at": 1783907642.8691115,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:54:03 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw1ZBiSO44w5AKxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDsbvr4iU2gRsnLt5lVFJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAAslI3aw\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "4e08bc245e3dd6382c621c5c2546012b7dddbe028baae5f5b81a421feee4e6bf",
+   "n_bytes": 8523,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 5,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.513
+  }
+ ],
+ "raw_content_refs": [
+  "27df4b8c65f614f43f1395d2b7615a889d6502ea93e2723963e109e401440883",
+  "4e08bc245e3dd6382c621c5c2546012b7dddbe028baae5f5b81a421feee4e6bf",
+  "af75f023de218b1569800955b7a19c0286a8ab5db60c7519fcc0fd0bcbd0f44e"
+ ],
+ "documents": [
+  {
+   "id": "b429e7e5aca1fb84",
+   "source": "Inside Privacy",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxPNXczemJ5djl0SmFyRWVUcjhBcGZqTjR3Yzl6MlBiVDB6QkJhY21adHJsQ0NrenpoNXNjRkJIMVg1TUd2N1VocXlQdmsyOEZfM1Ewd1A5M2tpUjZEa3d1TTFZTmJ3TTdKZlB4VVg5WEZ5Q1phRmtGMzZ1Sk15YWVnNlNzV0JsdWxrR0t0RE5Qaw?oc=5",
+   "title": "New EU Cyber Law \u201cNIS2\u201d Enters Into Force - Inside Privacy",
+   "text": "New EU Cyber Law \u201cNIS2\u201d Enters Into Force - Inside Privacy. New EU Cyber Law \u201cNIS2\u201d Enters Into Force Inside Privacy",
+   "content_hash": "690d40b2eec4da64",
+   "raw_feed_hash": "af75f023de218b1569800955b7a19c0286a8ab5db60c7519fcc0fd0bcbd0f44e",
+   "published_at": 1673942400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_d71bbbf4dc",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "146cc39ebba79de8",
+   "source": "TechCrunch",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1mWV9DUEh4MXlFRmxIcWRHU0NBS0VGVDB3clVMbHRCSFZRbU5yWHdDSERLeDJNX1lPb09TQmNjZUZZQThrSEhDSmZwcklvYVNWWnFWR1Y4UXJmNHlfS3kyMmlwMlNncGs?oc=5",
+   "title": "Italy orders ChatGPT blocked citing data protection concerns - TechCrunch",
+   "text": "Italy orders ChatGPT blocked citing data protection concerns - TechCrunch. Italy orders ChatGPT blocked citing data protection concerns TechCrunch",
+   "content_hash": "a412b1b7b47dbac3",
+   "raw_feed_hash": "af75f023de218b1569800955b7a19c0286a8ab5db60c7519fcc0fd0bcbd0f44e",
+   "published_at": 1680246000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_d71bbbf4dc",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f4076b3af41dde50",
+   "source": "World Bank Blogs",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOeUJwMXp2TmpMVzdQRDQxbGJKWEx0WGt4bnFEWVVYMFJ4UEJ6NUhtVnZMbEVYUHpEdjlyaXhjUGstVG03T0YwaUtOUXZhTnB0bVNjQ1ByRFdPckJHSE5Ec3hEdEtEOC1SWEY2NGltVThVUDZ0VWg2Wk92QWNGQ3p4NGhYejd5RWN4SS1EQUR5MmdxMFh0M1RQTEVySlk1THc1ZnMwQkQ3N3k1UTg?oc=5",
+   "title": "How solid are regulatory frameworks for the power sector in developing countries? - World Bank Blogs",
+   "text": "How solid are regulatory frameworks for the power sector in developing countries? - World Bank Blogs. How solid are regulatory frameworks for the power sector in developing countries? World Bank Blogs",
+   "content_hash": "fff300b80c191095",
+   "raw_feed_hash": "27df4b8c65f614f43f1395d2b7615a889d6502ea93e2723963e109e401440883",
+   "published_at": 1675670400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_8e5db12b7b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a574ff6961540b56",
+   "source": "Nature",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE9xNE00TlRPTGJVNVdRZ0JEeWlFcF9PWk9BYWI2dHRQQWdWdV84MF9HQTBVLUprZHo5Y2lZaWREa05UWmRVV212dXZBbHZUMzk5blM4MWFHQXRQSTFHT1RR?oc=5",
+   "title": "Independence and upper extremity functioning after spinal cord injury: a cross-sectional study | Scientific Reports - Nature",
+   "text": "Independence and upper extremity functioning after spinal cord injury: a cross-sectional study | Scientific Reports - Nature. Independence and upper extremity functioning after spinal cord injury: a cross-sectional study | Scientific Reports Nature",
+   "content_hash": "c35496a61d7a6514",
+   "raw_feed_hash": "27df4b8c65f614f43f1395d2b7615a889d6502ea93e2723963e109e401440883",
+   "published_at": 1677139200.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_8e5db12b7b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6b8d0956492a7978",
+   "source": "theedgemalaysia.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiUEFVX3lxTE9pVjFzSXh1TlIzQ09VNFlCZ2VvWHA5S2liV3lYM3BvUmhGX2Juc3Q4ZjlUSl9GNGo0RHhCMFoxQTJnTnhnbGRrbTZ1UUdSd3J1?oc=5",
+   "title": "MARC\u2019s chief weighs in on rating agencies\u2019 independence - theedgemalaysia.com",
+   "text": "MARC\u2019s chief weighs in on rating agencies\u2019 independence - theedgemalaysia.com. MARC\u2019s chief weighs in on rating agencies\u2019 independence theedgemalaysia.com",
+   "content_hash": "89ad451c50637ed7",
+   "raw_feed_hash": "27df4b8c65f614f43f1395d2b7615a889d6502ea93e2723963e109e401440883",
+   "published_at": 1684306800.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_8e5db12b7b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d282d969b5e3430a",
+   "source": "BusinessWorld Online",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxOY1ZKYW10VU45UVV4VXBoWklMVV9qc1Z0RWdmalNra3ZJcVdsbll2NGRHMG5acDU5WDFzaVJNNk1WcEVtZW5MWHloR1F5Q3ZiLWZQZ3BPeVFZanFyYlZ3QjNMOUoxYkI1VFNwU2l0Z1ZuRVhwYm9tbEwyNzVKNEFWc3l6Ul8ya2VNU3JUSV9OT3NSZXVKOVR6TWhNNDFlQm4wVl8tS0djYmdId25oNy1kQTZ0d1FpX2s4VURGV3hmSkoxZ2s3bjhGZVAzOUxlai1ySldGajBFcw?oc=5",
+   "title": "GOCC regulator to revamp evaluation process to measure state firms\u2019 customer satisfaction - BusinessWorld Online",
+   "text": "GOCC regulator to revamp evaluation process to measure state firms\u2019 customer satisfaction - BusinessWorld Online. GOCC regulator to revamp evaluation process to measure state firms\u2019 customer satisfaction BusinessWorld Online",
+   "content_hash": "089a91cc6c4a0bb3",
+   "raw_feed_hash": "27df4b8c65f614f43f1395d2b7615a889d6502ea93e2723963e109e401440883",
+   "published_at": 1681282800.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_8e5db12b7b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "8fae4dc4be245aa0",
+   "source": "TransUnion",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxNdWg3M0o2cVpHaEtKSzhVSUpZOTRTLWVrSVJNSG5vekt3RmEwbEpGNVEtNUpOOFpScG1xNTc1cmRKYkxFVmYyQ0FpN2JHQTRoNnJWR3p2MzJwdzVIZzBMQ3VDUUdtRVdlT3dWVWJuVVhkRE1MV3hheV9HU2l3aEtwUkNQS2NmYVBOaW9NMnRjR2tRb0Q3ZlZ3SV83RU5MUlVGRlRYdERXRmxycmdNckd2dk42VVdIUTA2SVdtMHVFWW4yTkF0dlZxdllWQjVfYXlLMGJyTklsQzVvQ2o1bVVWWUJlT0lseE5iWjNOdlF2YThvMjRBLWc?oc=5",
+   "title": "More Than 22 Million Identities Exposed in High-Risk Data Breaches in Final Quarter of 2022 That May Impact Public Sector Agencies - TransUnion",
+   "text": "More Than 22 Million Identities Exposed in High-Risk Data Breaches in Final Quarter of 2022 That May Impact Public Sector Agencies - TransUnion. More Than 22 Million Identities Exposed in High-Risk Data Breaches in Final Quarter of 2022 That May Impact Public Sector Agencies TransUnion",
+   "content_hash": "962caaee7e11247a",
+   "raw_feed_hash": "4e08bc245e3dd6382c621c5c2546012b7dddbe028baae5f5b81a421feee4e6bf",
+   "published_at": 1677744000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_e188c2915b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a9cdf937d7a01f13",
+   "source": "Nature",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE1XTG1sYXZnbXozR1pyUDFHcElPQ2t0UG1Cd1lCTVd3QXRndS1fcldsRHpxTUY1VkpfZzM1aDhmbTNZczl2MFF6VzV4emd3WVpEUlBMMEduRkJYOWZJZDdj?oc=5",
+   "title": "Data security crisis in universities: identification of key factors affecting data breach incidents - Nature",
+   "text": "Data security crisis in universities: identification of key factors affecting data breach incidents - Nature. Data security crisis in universities: identification of key factors affecting data breach incidents Nature",
+   "content_hash": "abd0c59b2a0ea23c",
+   "raw_feed_hash": "4e08bc245e3dd6382c621c5c2546012b7dddbe028baae5f5b81a421feee4e6bf",
+   "published_at": 1685430000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_e188c2915b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f5bab3cb0ede7243",
+   "source": "Business Wire",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxQVGZLT0E3RkdVTVRRcGpaeFpXN0lYYzM3UnFtemU3d1l1YmZXSFdoLWRBV3Qxc1djU2U3RlhpREpaS3lxTHozendvZmhIRkxkdHRpbFlXTjE2V0JTVTB5aE9RMnAtVTlWV3BjREtDOUlKeFFWaGJOLUpPSlY4bDlmRndPR29KRlM4Qk8yUjdkSHFKU094X3hlaFdLMm1IWFRIdUkxZk9ueXdxZEJzYmlDamZkSF9aSUxLQ2tuVkZ5elZ1b0w2TjJ3el9CZHBUMTM3TUJMQnYzak9aakk?oc=5",
+   "title": "Sontiq\u2019s BreachIQ Recognized as \u2018Transformative\u2019 With CyberSecured Fraud Protection Award - Business Wire",
+   "text": "Sontiq\u2019s BreachIQ Recognized as \u2018Transformative\u2019 With CyberSecured Fraud Protection Award - Business Wire. Sontiq\u2019s BreachIQ Recognized as \u2018Transformative\u2019 With CyberSecured Fraud Protection Award Business Wire",
+   "content_hash": "1371f4ffa0c4d3c4",
+   "raw_feed_hash": "4e08bc245e3dd6382c621c5c2546012b7dddbe028baae5f5b81a421feee4e6bf",
+   "published_at": 1675065600.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_e188c2915b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "5381af1fe9992b0d",
+   "source": "SecurityWeek",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxOZmZjWWMtMG04NEVoWG5RYTBQbnRfb1o4cDVqeTFvNVBybFRtOHhvM1owbXJReUxtRzdESkVXM04yTnNMWUpQWXFQenZYenUtZ0FqRndEU3JTaUsxSS1MLVZHNXNFYm9sVmJEdlVvcnphWDBlZE5xdFVYdVlOTHdIeG9vSGxsYTczcVBKb0JRRWpobnF4YlJHV3NHLXpuNkltWUxjV3BabDPSAa4BQVVfeXFMUE9Td1lxME4xTmItU0tVNU01NkNWZDUwbDhCYkRSWlMzZmZaVG10blNUbGpGV3Y2dVJId0pyZlN4cXkteDVLeWM5bTJENktlcDdjUDhDaU5kUE14aXkwaVpmb0RrSkY4V3hyR2poN3pBVWl3Z1laMnpReURxNmFBMzY3VkRRS0Q2c0hJSkFBX3Y2dXFRZVM0bUFRcXp1RDEyeXhrNzVlTUh2MU1hTFFB?oc=5",
+   "title": "Vulnerability Allows Hackers to Remotely Tamper With Dahua Security Cameras - SecurityWeek",
+   "text": "Vulnerability Allows Hackers to Remotely Tamper With Dahua Security Cameras - SecurityWeek. Vulnerability Allows Hackers to Remotely Tamper With Dahua Security Cameras SecurityWeek",
+   "content_hash": "c22e6fff50cb1968",
+   "raw_feed_hash": "4e08bc245e3dd6382c621c5c2546012b7dddbe028baae5f5b81a421feee4e6bf",
+   "published_at": 1675929600.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_e188c2915b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "9ae0c842c73fcb31",
+   "source": "The Hacker News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxOQ09nSHEwUlZDMmRlRHFYWVpBcmw2SnM0ZXd3SmgwX2ZRVUc0LWtFd21iWkFHMXdQRzMtMlJUU19fU2VMZmxGY0V0VDVFbm0ySWtDeWhMQVR0Q0RoLU5nZkxLU0hGbG9jc1doaHFjUEpNejJ3QzZRcjA4VFhCUERIeQ?oc=5",
+   "title": "Fortra Sheds Light on GoAnywhere MFT Zero-Day Exploit Used in Ransomware Attacks - The Hacker News",
+   "text": "Fortra Sheds Light on GoAnywhere MFT Zero-Day Exploit Used in Ransomware Attacks - The Hacker News. Fortra Sheds Light on GoAnywhere MFT Zero-Day Exploit Used in Ransomware Attacks The Hacker News",
+   "content_hash": "454a7d0b40f25301",
+   "raw_feed_hash": "4e08bc245e3dd6382c621c5c2546012b7dddbe028baae5f5b81a421feee4e6bf",
+   "published_at": 1681974000.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_e188c2915b",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "b429e7e5aca1fb84:c0",
+   "source_id": "b429e7e5aca1fb84",
+   "subject": "New EU Cyber Law \u201cNIS2\u201d",
+   "predicate": "enters into force",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "New EU Cyber Law \u201cNIS2\u201d Enters Into Force",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1673942400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "NIS2",
+    "EU"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_1be4bf3c13",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_d71bbbf4dc"
+   }
+  },
+  {
+   "claim_id": "b429e7e5aca1fb84:c1",
+   "source_id": "b429e7e5aca1fb84",
+   "subject": "New EU Cyber Law \u201cNIS2\u201d",
+   "predicate": "enters into force",
+   "object": "Inside Privacy",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "New EU Cyber Law \u201cNIS2\u201d Enters Into Force Inside Privacy",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1673942400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "NIS2",
+    "EU",
+    "Inside Privacy"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_1be4bf3c13",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_d71bbbf4dc"
+   }
+  },
+  {
+   "claim_id": "f4076b3af41dde50:c0",
+   "source_id": "f4076b3af41dde50",
+   "subject": "regulatory frameworks for the power sector in developing countries",
+   "predicate": "are the subject of a question about their solidity",
+   "object": "question",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "hedged",
+   "polarity": "affirm",
+   "claim_class": "inferred_implication",
+   "supporting_span": "How solid are regulatory frameworks for the power sector in developing countries?",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675670400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "regulatory frameworks",
+    "power sector",
+    "developing countries"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_635d71f801",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_8e5db12b7b"
+   }
+  },
+  {
+   "claim_id": "f4076b3af41dde50:c1",
+   "source_id": "f4076b3af41dde50",
+   "subject": "World Bank Blogs",
+   "predicate": "published a blog post about regulatory frameworks for the power sector in developing countries",
+   "object": "blog post",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "How solid are regulatory frameworks for the power sector in developing countries? - World Bank Blogs.",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675670400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "World Bank Blogs"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_635d71f801",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_8e5db12b7b"
+   }
+  },
+  {
+   "claim_id": "8fae4dc4be245aa0:c0",
+   "source_id": "8fae4dc4be245aa0",
+   "subject": "identities",
+   "predicate": "exposed in high-risk data breaches",
+   "object": "22 million",
+   "value": "22",
+   "units": "million",
+   "qualifiers": "more than",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "More Than 22 Million Identities Exposed in High-Risk Data Breaches in Final Quarter of 2022",
+   "span_verified": true,
+   "event_time": "final quarter of 2022",
+   "publication_time": 1677744000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "22 million identities"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_0a1de84975",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_e188c2915b"
+   }
+  },
+  {
+   "claim_id": "8fae4dc4be245aa0:c1",
+   "source_id": "8fae4dc4be245aa0",
+   "subject": "data breaches",
+   "predicate": "may impact",
+   "object": "public sector agencies",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "hedged",
+   "polarity": "affirm",
+   "claim_class": "forecast",
+   "supporting_span": "That May Impact Public Sector Agencies",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1677744000.0,
+   "extraction_confidence": 0.8,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "public sector agencies"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_0a1de84975",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_e188c2915b"
+   }
+  },
+  {
+   "claim_id": "8fae4dc4be245aa0:c2",
+   "source_id": "8fae4dc4be245aa0",
+   "subject": "report",
+   "predicate": "authored by",
+   "object": "TransUnion",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "TransUnion",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1677744000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "TransUnion"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_0a1de84975",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_e188c2915b"
+   }
+  },
+  {
+   "claim_id": "146cc39ebba79de8:c0",
+   "source_id": "146cc39ebba79de8",
+   "subject": "Italy",
+   "predicate": "orders",
+   "object": "ChatGPT blocked",
+   "value": "",
+   "units": "",
+   "qualifiers": "citing data protection concerns",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Italy orders ChatGPT blocked citing data protection concerns",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680246000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Italy",
+    "ChatGPT"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_f3e4ae9058",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_d71bbbf4dc"
+   }
+  },
+  {
+   "claim_id": "a574ff6961540b56:c0",
+   "source_id": "a574ff6961540b56",
+   "subject": "study",
+   "predicate": "is about",
+   "object": "independence and upper extremity functioning after spinal cord injury",
+   "value": "",
+   "units": "",
+   "qualifiers": "cross-sectional study",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Independence and upper extremity functioning after spinal cord injury: a cross-sectional study",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1677139200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "spinal cord injury"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_02011f7ecd",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_8e5db12b7b"
+   }
+  },
+  {
+   "claim_id": "a9cdf937d7a01f13:c0",
+   "source_id": "a9cdf937d7a01f13",
+   "subject": "Data security crisis in universities",
+   "predicate": "is the subject of",
+   "object": "identification of key factors affecting data breach incidents",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Data security crisis in universities: identification of key factors affecting data breach incidents - Nature",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1685430000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "universities",
+    "Nature"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_22d3c66944",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_e188c2915b"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "NIS2",
+   "normalized": "nis2",
+   "candidates": [
+    {
+     "entity_id": "ent_ccb2189cbc",
+     "canonical": "nis2",
+     "support": 0.6176,
+     "evidence_mentions": [
+      "NIS2",
+      "NIS2"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "EU",
+   "normalized": "eu",
+   "candidates": [
+    {
+     "entity_id": "ent_608e01334f",
+     "canonical": "eu",
+     "support": 0.6176,
+     "evidence_mentions": [
+      "EU",
+      "EU"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "NIS2",
+   "normalized": "nis2",
+   "candidates": [
+    {
+     "entity_id": "ent_ccb2189cbc",
+     "canonical": "nis2",
+     "support": 0.6176,
+     "evidence_mentions": [
+      "NIS2",
+      "NIS2"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "EU",
+   "normalized": "eu",
+   "candidates": [
+    {
+     "entity_id": "ent_608e01334f",
+     "canonical": "eu",
+     "support": 0.6176,
+     "evidence_mentions": [
+      "EU",
+      "EU"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Inside Privacy",
+   "normalized": "inside privacy",
+   "candidates": [
+    {
+     "entity_id": "ent_6440606a2e",
+     "canonical": "inside privacy",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "Inside Privacy"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "regulatory frameworks",
+   "normalized": "regulatory frameworks",
+   "candidates": [
+    {
+     "entity_id": "ent_ed3fc5f64b",
+     "canonical": "regulatory frameworks",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "regulatory frameworks"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "power sector",
+   "normalized": "power sector",
+   "candidates": [
+    {
+     "entity_id": "ent_08d656d528",
+     "canonical": "power sector",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "power sector"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "developing countries",
+   "normalized": "developing countries",
+   "candidates": [
+    {
+     "entity_id": "ent_946a8b6af6",
+     "canonical": "developing countries",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "developing countries"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "World Bank Blogs",
+   "normalized": "world bank blogs",
+   "candidates": [
+    {
+     "entity_id": "ent_01eb4024fe",
+     "canonical": "world bank blogs",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "World Bank Blogs"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "22 million identities",
+   "normalized": "22 million identities",
+   "candidates": [
+    {
+     "entity_id": "ent_b6a2760dcf",
+     "canonical": "22 million identities",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "22 million identities"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "public sector agencies",
+   "normalized": "public sector agencies",
+   "candidates": [
+    {
+     "entity_id": "ent_79baee80d2",
+     "canonical": "public sector agencies",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "public sector agencies"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "TransUnion",
+   "normalized": "transunion",
+   "candidates": [
+    {
+     "entity_id": "ent_2c93535999",
+     "canonical": "transunion",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "TransUnion"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Italy",
+   "normalized": "italy",
+   "candidates": [
+    {
+     "entity_id": "ent_c073d97dd8",
+     "canonical": "italy",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "Italy"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "ChatGPT",
+   "normalized": "chatgpt",
+   "candidates": [
+    {
+     "entity_id": "ent_ab0ddc029a",
+     "canonical": "chatgpt",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "ChatGPT"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "spinal cord injury",
+   "normalized": "spinal cord injury",
+   "candidates": [
+    {
+     "entity_id": "ent_1d3e5a383b",
+     "canonical": "spinal cord injury",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "spinal cord injury"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "universities",
+   "normalized": "universities",
+   "candidates": [
+    {
+     "entity_id": "ent_ab00fa9de0",
+     "canonical": "universities",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "universities"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Nature",
+   "normalized": "nature",
+   "candidates": [
+    {
+     "entity_id": "ent_a5197f1026",
+     "canonical": "nature",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "Nature"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "b429e7e5aca1fb84": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1673942400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1673942400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "146cc39ebba79de8": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1680246000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680246000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f4076b3af41dde50": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1675670400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675670400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a574ff6961540b56": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1677139200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677139200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6b8d0956492a7978": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1684306800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684306800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d282d969b5e3430a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1681282800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681282800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "8fae4dc4be245aa0": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1677744000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677744000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a9cdf937d7a01f13": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1685430000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685430000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f5bab3cb0ede7243": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1675065600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675065600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "5381af1fe9992b0d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1675929600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675929600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "9ae0c842c73fcb31": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1685577600.0,
+   "claimed_pubdate_ts": 1681974000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681974000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_1be4bf3c13",
+   "member_ids": [
+    "b429e7e5aca1fb84"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Inside Privacy",
+   "primary_source": "Inside Privacy",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_f3e4ae9058",
+   "member_ids": [
+    "146cc39ebba79de8"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "TechCrunch",
+   "primary_source": "TechCrunch",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_635d71f801",
+   "member_ids": [
+    "f4076b3af41dde50"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "World Bank Blogs",
+   "primary_source": "World Bank Blogs",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_02011f7ecd",
+   "member_ids": [
+    "a574ff6961540b56"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Nature",
+   "primary_source": "Nature",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_ef06158e2a",
+   "member_ids": [
+    "6b8d0956492a7978"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "theedgemalaysia.com",
+   "primary_source": "theedgemalaysia.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_39ad457dfd",
+   "member_ids": [
+    "d282d969b5e3430a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "BusinessWorld Online",
+   "primary_source": "BusinessWorld Online",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_0a1de84975",
+   "member_ids": [
+    "8fae4dc4be245aa0"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "TransUnion",
+   "primary_source": "TransUnion",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_22d3c66944",
+   "member_ids": [
+    "a9cdf937d7a01f13"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Nature",
+   "primary_source": "Nature",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_0e74c89dd2",
+   "member_ids": [
+    "f5bab3cb0ede7243"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Wire",
+   "primary_source": "Business Wire",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_1594691e5c",
+   "member_ids": [
+    "5381af1fe9992b0d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "SecurityWeek",
+   "primary_source": "SecurityWeek",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_621116c3db",
+   "member_ids": [
+    "9ae0c842c73fcb31"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Hacker News",
+   "primary_source": "The Hacker News",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "b429e7e5aca1fb84:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1673942400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "b429e7e5aca1fb84:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1673942400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "f4076b3af41dde50:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675670400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "f4076b3af41dde50:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675670400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "8fae4dc4be245aa0:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677744000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "8fae4dc4be245aa0:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677744000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "8fae4dc4be245aa0:c2",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677744000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "146cc39ebba79de8:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680246000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "a574ff6961540b56:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677139200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "a9cdf937d7a01f13:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685430000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "b429e7e5aca1fb84:c0",
+  "b429e7e5aca1fb84:c1",
+  "f4076b3af41dde50:c0",
+  "f4076b3af41dde50:c1",
+  "8fae4dc4be245aa0:c0",
+  "8fae4dc4be245aa0:c1",
+  "8fae4dc4be245aa0:c2",
+  "146cc39ebba79de8:c0",
+  "a574ff6961540b56:c0",
+  "a9cdf937d7a01f13:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_d71bbbf4dc": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_8e5db12b7b": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_e188c2915b": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_4e52e1a5c2": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_9303537940": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_fca0cbe4ea": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_a1cb9e1126": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_4e52e1a5c2",
+  "req_9303537940",
+  "req_fca0cbe4ea",
+  "req_a1cb9e1126"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 11,
+  "n_contradictions": 0,
+  "n_documents": 11
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 14.907,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "ae25cd7e1df30324",
+ "bundle_hash": "ae25cd7e1df30324",
+ "_persisted_at": "2026-07-13T01:54:22Z"
+}

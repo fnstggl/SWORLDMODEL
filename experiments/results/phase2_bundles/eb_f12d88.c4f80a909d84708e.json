@@ -1,0 +1,1879 @@
+{
+ "bundle_id": "eb_f12d88",
+ "question": "Will the viral video reach 5 million views in three days?",
+ "as_of": 1688947200.0,
+ "compiler_plan_hash": "bff90f673fa5",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_7d017b2ddb",
+   "claim_or_quantity": "yes if the view count reaches or exceeds 5,000,000 at 2023-07-13T23:59:59 UTC, else no",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-10",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "viral_video",
+    "platform_algorithm"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_634a90f84c",
+   "claim_or_quantity": "value/context of viral_video.sharing_rate",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "viral_video.sharing_rate",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-10",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_ccaeea515f",
+   "claim_or_quantity": "value/context of viral_video.exposure_rate",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "viral_video.exposure_rate",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-10",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_bb87688b46",
+   "claim_or_quantity": "value/context of viral_video.initial_views",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "viral_video.initial_views",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-10",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_37c202beae",
+   "claim_or_quantity": "evidence discriminating structural hypothesis simple_contagion",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:simple_contagion",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-10",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_3d760df676",
+   "claim_or_quantity": "evidence discriminating structural hypothesis complex_contagion_with_platform_boost",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:complex_contagion_with_platform_boost",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-10",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_6b25d20634",
+   "claim_or_quantity": "decision rules / process of platform_algorithm",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "platform_algorithm",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-10",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_7d017b2ddb",
+   "terms": "viral video million views three days viral video platform algorithm",
+   "after": "2023-02-10",
+   "before": "2023-07-10",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_634a90f84c",
+   "terms": "viral video sharing rate",
+   "after": "2023-02-10",
+   "before": "2023-07-10",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_ccaeea515f",
+   "terms": "viral video exposure rate",
+   "after": "2023-02-10",
+   "before": "2023-07-10",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_7d017b2ddb",
+   "logical_query": "viral video million views three days viral video platform algorithm after:2023-02-10 before:2023-07-10",
+   "wire_url": "https://news.google.com/rss/search?q=viral+video+million+views+three+days+viral+video+platform+algorithm+after%3A2023-02-10+before%3A2023-07-10&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-10",
+   "before_date": "2023-07-10",
+   "retrieved_at": 1783907377.8985167,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:49:38 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw1ZBiSO44w5AKxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcmzouXmITWLCwr5lJSTkpvzA-Jb-kuLggJ7E4ozi1qCy1KN7IwMjMwNzATM_AJL7AAACOKDg1\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "f20357946d572328344596394365a162ecb1b57c983ff57fd6ba421eddc3de46",
+   "n_bytes": 19783,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.664
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_634a90f84c",
+   "logical_query": "viral video sharing rate after:2023-02-10 before:2023-07-10",
+   "wire_url": "https://news.google.com/rss/search?q=viral+video+sharing+rate+after%3A2023-02-10+before%3A2023-07-10&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-10",
+   "before_date": "2023-07-10",
+   "retrieved_at": 1783907378.5641701,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:49:39 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmII0JBiSO44w5AKxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcmzsuXmITuHHh_iRGJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwC0rjkI\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "5e5932f38c487b064564b52b5b8d2b4512cca278ce6046eaaa75939f1814e798",
+   "n_bytes": 102376,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.722
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_ccaeea515f",
+   "logical_query": "viral video exposure rate after:2023-02-10 before:2023-07-10",
+   "wire_url": "https://news.google.com/rss/search?q=viral+video+exposure+rate+after%3A2023-02-10+before%3A2023-07-10&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-10",
+   "before_date": "2023-07-10",
+   "retrieved_at": 1783907379.289334,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:49:39 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjytDikmLw1JBiSO44w5ACxHVA3AjEfBXPmVpvnmOdDMQli86zNgFxFxDPAGJDhUus9kB8Of0Sa5HEFdYGIP5UdYNVoPoG67diXzaWEiB-689mGhLI5gzEWzSD2YR4ODZ3XLzEJjBjTstRZiXlpPzC-JT8kuLigpzE4ozi1KKy1KJ4IwMjMwNzAzM9A5P4AgMAdJs52Q\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "bcf410cccf051f064b559729f0edcc2b1805f5db07663424db5f59ea599d76cd",
+   "n_bytes": 2642,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 1,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.573
+  }
+ ],
+ "raw_content_refs": [
+  "5e5932f38c487b064564b52b5b8d2b4512cca278ce6046eaaa75939f1814e798",
+  "bcf410cccf051f064b559729f0edcc2b1805f5db07663424db5f59ea599d76cd",
+  "f20357946d572328344596394365a162ecb1b57c983ff57fd6ba421eddc3de46"
+ ],
+ "documents": [
+  {
+   "id": "bf6734c4271bd9db",
+   "source": "The GameDiscoverCo newsletter",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE80NkJYY1daWTN2c0lNZERNSm9PY04wbzZUYWNBNWhLTFJPUTAzeUwwaHltMHhOWUJjYnNLclJmN0JOQ0dZWkt2ZV9HZXRfcWhyMjZGVlNVTWVmQy02Yld5SlR5cTJWeG45T3d2WWhGQ1VNMUxkQTBvaUltWF93Zw?oc=5",
+   "title": "How Fruit Ninja's creator got YouTube virality for his new PC game - The GameDiscoverCo newsletter",
+   "text": "How Fruit Ninja's creator got YouTube virality for his new PC game - The GameDiscoverCo newsletter. How Fruit Ninja's creator got YouTube virality for his new PC game The GameDiscoverCo newsletter",
+   "content_hash": "9aee542a3e544b63",
+   "raw_feed_hash": "f20357946d572328344596394365a162ecb1b57c983ff57fd6ba421eddc3de46",
+   "published_at": 1688367600.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_7d017b2ddb",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2efdc26e3bbbdf51",
+   "source": "ADWEEK",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPVEs5dEJoaS0zODdHS0VzeFBHRFVCWVRqT2dFX08xNm9lcWV4eWpENnVCaUVsdjNWeGZadVh1ZlQzN0p0ZnNfN3hjVE5KM1FORGZtWjJlZHRxTmVLNGFLYVZpU1Z5MkduMjBWdks1RENROGdodjFIQlVVV3RwOVF6Umg5bHZRQ1pRQUp4R3RiaVU1aWJoYWhodWVMckJjREE?oc=5",
+   "title": "Beyond Virality: Understanding TikTok's New Growth Patterns - ADWEEK",
+   "text": "Beyond Virality: Understanding TikTok's New Growth Patterns - ADWEEK. Beyond Virality: Understanding TikTok's New Growth Patterns ADWEEK",
+   "content_hash": "a6ce8f951121d38d",
+   "raw_feed_hash": "f20357946d572328344596394365a162ecb1b57c983ff57fd6ba421eddc3de46",
+   "published_at": 1684393200.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_7d017b2ddb",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a7f9fd1297d92909",
+   "source": "Business Insider",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxPdTdxaEdXUDhfTTdxck5NclgwOUhESmxWZTRUWDB1X0JibzFtMEtvNU82ZGY4ZDFnLVZXeDVlOXVKLTFra3Bhdk5SUV9CblBQRW9yNmJtTENhWmI5OHFXcnBIanJ2VVI0QXh1c0xnbEx1R0djekFVWW9jUUd1d3A4M1RYb2FOTUlIeWxiZlpGVVpwNzQ2aUZsWg?oc=5",
+   "title": "This chronically online writer believes he gamed Twitter's For You algorithm. Here's how he made his tweets go viral. - Business Insider",
+   "text": "This chronically online writer believes he gamed Twitter's For You algorithm. Here's how he made his tweets go viral. - Business Insider. This chronically online writer believes he gamed Twitter's For You algorithm. Here's how he made his tweets go viral. Business Insider",
+   "content_hash": "b0a157978ffe795d",
+   "raw_feed_hash": "f20357946d572328344596394365a162ecb1b57c983ff57fd6ba421eddc3de46",
+   "published_at": 1678003200.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_7d017b2ddb",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "727397cb5b1448f1",
+   "source": "Sun Sentinel",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxQVkVJYmtZc1FJUU04LW1DMmFoQmlScloxZkxWdDgzRlZTSjJiS01kSFJVaUh6RGo2VHhyR1V0X3BJMU51RUFwOXNZWXdmYjRObWhJUko5MTN6U1hVZGRleDVxWjNBTHlYa0VUemlSdXNTbUtzcWwxa29qMnhLVVZKc2ZqWTZ3QnVfNWtpZnFWdlVSYlBFLVlDUkw1d3Z3ZHIxbUozNmthbWk3akYzenBmdW1ma3FIY2NFaERnT25nR0R4Yk1sdFpseEROYzE?oc=5",
+   "title": "60 million TikTok views in a few days: How a South Florida auto body shop\u2019s videos went viral - Sun Sentinel",
+   "text": "60 million TikTok views in a few days: How a South Florida auto body shop\u2019s videos went viral - Sun Sentinel. 60 million TikTok views in a few days: How a South Florida auto body shop\u2019s videos went viral Sun Sentinel",
+   "content_hash": "24f51ca104b5462c",
+   "raw_feed_hash": "f20357946d572328344596394365a162ecb1b57c983ff57fd6ba421eddc3de46",
+   "published_at": 1677830400.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_7d017b2ddb",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "171992847266ddaa",
+   "source": "CNN",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE9NdUw2SG95Y0tiMjQzWXlnbEJUVDEwdkZzbmlBWU5yWEdPYnRJYTl4ZXdPYUs2ZG80bTRLWnNwakFYYVZiOTFrRmN3TkxNT2NfclZrSHNUNzlEWGpWREFxZWo5VC0zUWdzbnhZbndacGEyTXVKWmkwbw?oc=5",
+   "title": "The biggest ways TikTok has changed American culture - CNN",
+   "text": "The biggest ways TikTok has changed American culture - CNN. The biggest ways TikTok has changed American culture CNN",
+   "content_hash": "6ac4095ba2f5c460",
+   "raw_feed_hash": "f20357946d572328344596394365a162ecb1b57c983ff57fd6ba421eddc3de46",
+   "published_at": 1680418800.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_7d017b2ddb",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "edf36185220c836c",
+   "source": "newscentermaine.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi9gFBVV95cUxNcllJbUFOZl9ZclI2S2ZDdXJMeGNkd1A5OVpac19zM0wxeFhDbUwtVFBOZm5ZRWZORVBMdWNuSk9yUlg4VnYwQXR2MTB0WENrSUtSY0h0M3lzdXdtMFc1bHhXdHJCcnIwNUcxRjcwdVgyb3Y1TkE1amlNSU1idktaeVN1VFRhVnM2dXdPSXdPNVZrckJnRy1VN0JBV2dRLS02TUloWVhheEFvUTgxNU5hY2R2NUtvZXFia2h0aE00cFRORFdkUUxKN0cyLUhRODE3NkozRmhhSXptc2FGcGc5VkNteENxRm51OUhPc0ZZVDJUdHB6ZlE?oc=5",
+   "title": "ME's own 'Dog named Stella' still making people smile online - newscentermaine.com",
+   "text": "ME's own 'Dog named Stella' still making people smile online - newscentermaine.com. ME's own 'Dog named Stella' still making people smile online newscentermaine.com",
+   "content_hash": "ee2bba9b8b243bb2",
+   "raw_feed_hash": "f20357946d572328344596394365a162ecb1b57c983ff57fd6ba421eddc3de46",
+   "published_at": 1679295600.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_7d017b2ddb",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "213d2118fc1902d5",
+   "source": "Media Matters for America",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxPeGVDa0VEemx2dzk0RDh1d0VzaURhLTNFcGtpcDR3SjZ2MkZFLUR3alpueVluTmozNFM0cTZ0R0MwNU5LajJyNi1Vb29DdmtGY010Rkc3NHliSmk3Vnc2cUxwR1o2TWRxRzJ0UGh2dUZTdm82QWRORnQzN1ZkUUt3R01VRm9lNzlWNUtxdDQxMXZ1QQ?oc=5",
+   "title": "\u201cNational Rape Day\u201d hoax goes viral on TikTok for second time - Media Matters for America",
+   "text": "\u201cNational Rape Day\u201d hoax goes viral on TikTok for second time - Media Matters for America. \u201cNational Rape Day\u201d hoax goes viral on TikTok for second time Media Matters for America",
+   "content_hash": "0928dcd48d4c8cd2",
+   "raw_feed_hash": "f20357946d572328344596394365a162ecb1b57c983ff57fd6ba421eddc3de46",
+   "published_at": 1677484800.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_7d017b2ddb",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "9579bb7286674282",
+   "source": "Tubefilter",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE9rb1JyaUxnSk1za0hMMkNxejRnQTBlc1UxbE55T2hISlZ3UmIxdDFFeUwyTTZ5dElKYi1pQkEwaHNLODZpeUxxQ2J4TERzYk5sUl85RVJfVHU2Tl9kOUtXNDNyZEhSYkVUOGFTNUVTc0JwcWxmV1dzRGN3?oc=5",
+   "title": "Creators on the Rise: Eddy Adams is the man beehind one of TikTok\u2019s most viral effects - Tubefilter",
+   "text": "Creators on the Rise: Eddy Adams is the man beehind one of TikTok\u2019s most viral effects - Tubefilter. Creators on the Rise: Eddy Adams is the man beehind one of TikTok\u2019s most viral effects Tubefilter",
+   "content_hash": "bcbc0667bc5539d8",
+   "raw_feed_hash": "f20357946d572328344596394365a162ecb1b57c983ff57fd6ba421eddc3de46",
+   "published_at": 1685516400.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_7d017b2ddb",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6ef08d43ce879cab",
+   "source": "Business Insider",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxONVlCNFlTZXU1c2lrbXdGMTI1V0M3NVJUUHVQSk9yY3JGMnBjNml4WGRDYnRabzViNXVPc0xqNzMtcURHRnFjci03eVVKdlRrZUV6MTZSb3U5ekhRNTM2Z2EzQndqek5udTN4Y05UT3VRUEVjSC0xQllZcmVUWXl4bnNWaEM2VXhsNEw0dFZWemppNk16bnFDd0g5b2tuWG8?oc=5",
+   "title": "13 TikTok media kit examples that creators use to get paid brand partnerships - Business Insider",
+   "text": "13 TikTok media kit examples that creators use to get paid brand partnerships - Business Insider. 13 TikTok media kit examples that creators use to get paid brand partnerships Business Insider",
+   "content_hash": "e2bbab56adf2b08d",
+   "raw_feed_hash": "5e5932f38c487b064564b52b5b8d2b4512cca278ce6046eaaa75939f1814e798",
+   "published_at": 1686034800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_634a90f84c",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "55da7189a27c1da5",
+   "source": "FactCheck.org",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxPWUtEVHljTlRYZkdBVFlTTVFPZWhKRUxTUkxBNnRsNGFTX3JIQXJjYW9ELWlRVEhMQm0xeDJCaWQ4enhrVXI3Ty1qei1YbmxOaklRb3hrU2xUNXZjWHRUU1NaUVYtSndWbzJ6VFBIeW5FUzB1Mkd3WWxiU1R6NHVKNC1zeDRvWHNRVmNWRERXbFdVQQ?oc=5",
+   "title": "Viral Video Makes False Claim About Global Oil Supply - FactCheck.org",
+   "text": "Viral Video Makes False Claim About Global Oil Supply - FactCheck.org. Viral Video Makes False Claim About Global Oil Supply FactCheck.org",
+   "content_hash": "b352ad2b3f1006bf",
+   "raw_feed_hash": "5e5932f38c487b064564b52b5b8d2b4512cca278ce6046eaaa75939f1814e798",
+   "published_at": 1684134000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_634a90f84c",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "02a92c863fa7a833",
+   "source": "New York Post",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikwNBVV95cUxPazZHaURJQVp6d18zbnhVcjF1MDNOR2RWbEhlTFkwenc2Mnk5NXVpZTRmOEtoRm82V2NaaE5jYklGaTZ4WGpYQ0Q0Nk1JbUlYVVdpSTk2aUpyVGpheHVITHBNQkR2bDNraGk1Q0NxQ3ZiWC1FdWpNc1BGaVp4cUxXSW5qaWlhUm0tNHhKN3VieXhfR3I3T2tabWFob1NWRGM0aU5vWVdkbVVyOWRaZkRLVXcydF9fR2VzbDUzYW5EdzJTMnlfeUh3cUJtRHhoY01fOV9udUMxU3E3VDR4R25zZnZHOXY4S1dzM3ozbFpSZkllODdPamY1THF5amc3dzhIVTVXUW9ab0xTaWt3UE03aU13TW5IWC1pVVNOLUIza01ObVR0UU96MmQ1RkE2ZEdWYmIwLUVBcUdsOUctRDk0NFdjdlhWYnZWaXh4OEt3T01tSXJLMHlCUHdmdlFSWWJIU0RZQVYtcTZqUmcxQkc0eEJPM2hMdUxjeV81SnRvQXNhZGhoUUhtWGNoeml5aUtMVDQw?oc=5",
+   "title": "British woman goes viral for bringing dying plants \u2018back to life\u2019 with \u2018genius\u2019 hack - New York Post",
+   "text": "British woman goes viral for bringing dying plants \u2018back to life\u2019 with \u2018genius\u2019 hack - New York Post. British woman goes viral for bringing dying plants \u2018back to life\u2019 with \u2018genius\u2019 hack New York Post",
+   "content_hash": "ddf514b3a829a769",
+   "raw_feed_hash": "5e5932f38c487b064564b52b5b8d2b4512cca278ce6046eaaa75939f1814e798",
+   "published_at": 1685948400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_634a90f84c",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "fe2479e864142ccc",
+   "source": "The Times of India",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxOc3pDUXRKb0puYldsaDNvbjVyVVF2dkg1RW9pM1hWMTEzaDRweE1JQ0Q5enMzRmdHZmVHRG1oMkVNck5kVVlXUVg5WUYxWmZldjFuSmMxdnJqTFc0T3RDRzhpMFM2N0ZtQ2s4cGVVZzdxY0g2WU5xSWNaS3VDSkhmVmYyaG9xYU5WSzRQdFNPUi1WSFl0dm1fTGhRd0FLX2R1Uk5ab1licUtEbnlmTnNJMVg4bThRUjVDbzRDLTQ3Sm15RGhKTno5RmRWSGFWTy1LVm10MDJNcmhTSmhQdERmTNIB5gFBVV95cUxPc3ltR0xXMldySk5RQmN2aFZLQ2c5SGM1Z05zUDlXMEF2Qi1TX19Tb1F1SmxfVVh4Y2FWT2JjV1ZjaGFjZEwzSHpzUk9aOGt3M1JMRWFDb3pmUXd3cVo1aVdadWY1SzlwcWFNanBFSW5uUkNPWnB1cjJwaVJTcmw3TEJGNy10LU1HbTRTUTk2MWtCMzB6VEJDNjdkQUxnY2g3U2lyZ0RjVXlLUlFSc0J1bXF4NmY2Wm1yVTF5eHRJaHFiRXlyWHIxWWFqdVQtQS1KbkFzbzUzZ0pSUXBUUlo4MHR3TDZYQQ?oc=5",
+   "title": "FACT CHECK: Viral video showing injured Indian Army men is staged - The Times of India",
+   "text": "FACT CHECK: Viral video showing injured Indian Army men is staged - The Times of India. FACT CHECK: Viral video showing injured Indian Army men is staged The Times of India",
+   "content_hash": "5e04d43a0add7e8f",
+   "raw_feed_hash": "5e5932f38c487b064564b52b5b8d2b4512cca278ce6046eaaa75939f1814e798",
+   "published_at": 1685689200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_634a90f84c",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "0f2f514b6cc7c6db",
+   "source": "Newschecker",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQNGVlRC1oeFFONVVSMzZQMUMxUUZjcHVnTzFvczd5LW9uZGJ5VlZXemV2U2JiM3dSWmo4NDBlMWVDUVc0ZnEwQVZVNXdpRmgzcVhXT1FxNkZDbE5FMEpFVVVOV05DOVN0UUNLRk5SNVljbk9uY1pzSDMyWk4ydk5uNVVsc05lWEE5M1FaRXRNU2FwYUZ2QVhj?oc=5",
+   "title": "Weekly Wrap: Misinformation On France Unrest, GST Rates & More - Newschecker",
+   "text": "Weekly Wrap: Misinformation On France Unrest, GST Rates & More - Newschecker. Weekly Wrap: Misinformation On France Unrest, GST Rates & More Newschecker",
+   "content_hash": "a383e2edbf470ff1",
+   "raw_feed_hash": "5e5932f38c487b064564b52b5b8d2b4512cca278ce6046eaaa75939f1814e798",
+   "published_at": 1688799600.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_634a90f84c",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "dac75232966c5cd3",
+   "source": "The Indian Express",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQcXZYN1doZFpyS1FCQzV6RjM5RGM5Mk5GR0JJZzdZNFFHeHZyaXNoUjVydDdsYVJsYUZZS3poVW1ySVNNWFBsLWdKSDZ2RjM4MlJTdVdrNlJUUGJ2OVZSOVlKaGNScjVhbVBDVENNM0VBNkdJYXBvemZoOTJoUm5rS3R2S21UTGFoU200RUF3X0tTWTZ0ek94aUYzLXVJS3B5eVRDS2t6N09IbVphN1QxUW9zWWRZcWlJYW9MU0dJcEUxUmvSAcoBQVVfeXFMUDNfYXl6UVJOd2FDeVFnRXVxQ0dyOVBza3cyWkx0bFRiVVhRSjhqLW9KOVpKa1d4SjVBN1ltbThQdHdZNzNLTExjczVwdm91dGlhQ2YySlEweXNGcU9Tb1lIUHhqSklnb0ktTVdCeUpSTVhxazBPSkJPTldwNmZRTDhGcjc0RmVBV2Jad2FaS2RwTWg5VTZWVWg1d1UyWHZxcnMzaXJIQUxreTJvZjRxRGJTQ3FqYTRUbVFuSVQxTm1QSVoyZkRkZW5lUQ?oc=5",
+   "title": "Chennai man arrested for sharing video critical of Stalin, PTR - The Indian Express",
+   "text": "Chennai man arrested for sharing video critical of Stalin, PTR - The Indian Express. Chennai man arrested for sharing video critical of Stalin, PTR The Indian Express",
+   "content_hash": "6e98d68b886a53a0",
+   "raw_feed_hash": "5e5932f38c487b064564b52b5b8d2b4512cca278ce6046eaaa75939f1814e798",
+   "published_at": 1679468400.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_634a90f84c",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "1175b84e73bc51ba",
+   "source": "Hindustan Times",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxPMkRVZ2txMmR6WUtqT3pYWjg3T3Nsemt1TF9NRFZLUmtISVJlY1gwa19ZVzhtWEV6UVNLSEN1anBRaUNId1VUWTVreWRRY0lKeFRaR096SHZheFh6aW1KMU9FUmlBTTJEclR0NlVBWG53d05kaVh1dHhHdmlEQzlQQ0lZV1E0YUFVY1lZb1NvNzdyNVBKNDM3U1RCNXdseGtoVzA5cGpuNHQ3M1RNT0gxTzZuOTJ4T0ZPbUp0UGtKb0lSM0xISE53cHBON2pLNjZD0gHWAUFVX3lxTFBVMTNNUHpxOFpwWGRvd3V4WklUU1QxMWY0TThtNF9lZWhrcFJCcHp3cWF2WDhOWmRzc01lN04wWG5rY3pfaEdhMzJMcjhkOUJ3Y0lzWG0zZTQ2eWdsWlZnMlJZbzFnMUZtRFFGQl85Z1NXMUctVnZHN0pXcUJaNU16d29aYmkyUC00OW1Sbzk5cWdyUW1lbUgycGRCVTRVYm1fdnBLQ0VpeDdNZldrQUNDS2RRMVRKdEpzRFJQVGhhZ05DZERiOVpQdG5yeVVvVkVpWExBU1E?oc=5",
+   "title": "Golden Retriever dog, pet parent share cute selfie moment. Watch viral video | Trending - Hindustan Times",
+   "text": "Golden Retriever dog, pet parent share cute selfie moment. Watch viral video | Trending - Hindustan Times. Golden Retriever dog, pet parent share cute selfie moment. Watch viral video | Trending Hindustan Times",
+   "content_hash": "e07a0d729c85ea07",
+   "raw_feed_hash": "5e5932f38c487b064564b52b5b8d2b4512cca278ce6046eaaa75939f1814e798",
+   "published_at": 1681023600.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_634a90f84c",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6c2147aee7c2994f",
+   "source": "USA Today",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxOTl9qcDJ2dkNyWnVBR25lMDR3NU4tdkxFRksycFprOVQ4MHBnbW5nOHNkTGFJbk0yaXZJNEhLeEhkSy0wcVhTNjdmS3B2b21vQjVnay1femJiQUFobWVQTUYyT0R1T1A0Z1Vic05vVXVnUDAwZWs5cGFQRWpHbTV1VnpVdkJNLTBxWG5hRHFfdjN3YXJuOVRkVk16TF9oVUFtaFlZSUlPdDF5M3BXQlpRQWVzRVpzQjZUcDB0Y2ZqN0tvdzJCamtNelhRR3BwQQ?oc=5",
+   "title": "US prescription drug usage nowhere near level described in viral video | Fact check - USA Today",
+   "text": "US prescription drug usage nowhere near level described in viral video | Fact check - USA Today. US prescription drug usage nowhere near level described in viral video | Fact check USA Today",
+   "content_hash": "af4e0ef5299d5247",
+   "raw_feed_hash": "5e5932f38c487b064564b52b5b8d2b4512cca278ce6046eaaa75939f1814e798",
+   "published_at": 1686553200.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_634a90f84c",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6c2147aee7c2994f",
+   "source": "USA Today",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxOTl9qcDJ2dkNyWnVBR25lMDR3NU4tdkxFRksycFprOVQ4MHBnbW5nOHNkTGFJbk0yaXZJNEhLeEhkSy0wcVhTNjdmS3B2b21vQjVnay1femJiQUFobWVQTUYyT0R1T1A0Z1Vic05vVXVnUDAwZWs5cGFQRWpHbTV1VnpVdkJNLTBxWG5hRHFfdjN3YXJuOVRkVk16TF9oVUFtaFlZSUlPdDF5M3BXQlpRQWVzRVpzQjZUcDB0Y2ZqN0tvdzJCamtNelhRR3BwQQ?oc=5",
+   "title": "US prescription drug usage nowhere near level described in viral video | Fact check - USA Today",
+   "text": "US prescription drug usage nowhere near level described in viral video | Fact check - USA Today. US prescription drug usage nowhere near level described in viral video | Fact check USA Today",
+   "content_hash": "af4e0ef5299d5247",
+   "raw_feed_hash": "bcf410cccf051f064b559729f0edcc2b1805f5db07663424db5f59ea599d76cd",
+   "published_at": 1686553200.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_ccaeea515f",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "bf6734c4271bd9db:c0",
+   "source_id": "bf6734c4271bd9db",
+   "subject": "Fruit Ninja's creator",
+   "predicate": "got",
+   "object": "YouTube virality for his new PC game",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "How Fruit Ninja's creator got YouTube virality for his new PC game",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1688367600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Fruit Ninja's creator",
+    "YouTube",
+    "PC game"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_1c6e4d125c",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_7d017b2ddb"
+   }
+  },
+  {
+   "claim_id": "bf6734c4271bd9db:c1",
+   "source_id": "bf6734c4271bd9db",
+   "subject": "The GameDiscoverCo newsletter",
+   "predicate": "is about",
+   "object": "How Fruit Ninja's creator got YouTube virality for his new PC game",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The GameDiscoverCo newsletter",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1688367600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "The GameDiscoverCo newsletter"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_1c6e4d125c",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_7d017b2ddb"
+   }
+  },
+  {
+   "claim_id": "6ef08d43ce879cab:c0",
+   "source_id": "6ef08d43ce879cab",
+   "subject": "TikTok media kit examples",
+   "predicate": "are used by",
+   "object": "creators",
+   "value": "",
+   "units": "",
+   "qualifiers": "to get paid brand partnerships",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "13 TikTok media kit examples that creators use to get paid brand partnerships",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1686034800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "TikTok media kit examples",
+    "creators",
+    "brand partnerships"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_84af37e118",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_634a90f84c"
+   }
+  },
+  {
+   "claim_id": "6ef08d43ce879cab:c1",
+   "source_id": "6ef08d43ce879cab",
+   "subject": "Business Insider",
+   "predicate": "published",
+   "object": "the article",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Business Insider",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1686034800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Business Insider"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_84af37e118",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_634a90f84c"
+   }
+  },
+  {
+   "claim_id": "6c2147aee7c2994f:c0",
+   "source_id": "6c2147aee7c2994f",
+   "subject": "US prescription drug usage",
+   "predicate": "is nowhere near level described in viral video",
+   "object": "level described in viral video",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "US prescription drug usage nowhere near level described in viral video",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1686553200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "US",
+    "prescription drug usage"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_9e361b60ba",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ccaeea515f"
+   }
+  },
+  {
+   "claim_id": "2efdc26e3bbbdf51:c0",
+   "source_id": "2efdc26e3bbbdf51",
+   "subject": "TikTok",
+   "predicate": "has",
+   "object": "new growth patterns",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Beyond Virality: Understanding TikTok's New Growth Patterns",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1684393200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "TikTok"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_7ef01febd2",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_7d017b2ddb"
+   }
+  },
+  {
+   "claim_id": "55da7189a27c1da5:c0",
+   "source_id": "55da7189a27c1da5",
+   "subject": "Viral Video",
+   "predicate": "makes",
+   "object": "false claim about global oil supply",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "correction",
+   "supporting_span": "Viral Video Makes False Claim About Global Oil Supply",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1684134000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Viral Video",
+    "global oil supply"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_847bc34f74",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_634a90f84c"
+   }
+  },
+  {
+   "claim_id": "a7f9fd1297d92909:c0",
+   "source_id": "a7f9fd1297d92909",
+   "subject": "this chronically online writer",
+   "predicate": "believes",
+   "object": "he gamed Twitter's For You algorithm",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "reported",
+   "polarity": "affirm",
+   "claim_class": "actor_statement",
+   "supporting_span": "This chronically online writer believes he gamed Twitter's For You algorithm.",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678003200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "this chronically online writer",
+    "Twitter's For You algorithm"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_19aec7255a",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_7d017b2ddb"
+   }
+  },
+  {
+   "claim_id": "a7f9fd1297d92909:c1",
+   "source_id": "a7f9fd1297d92909",
+   "subject": "this chronically online writer",
+   "predicate": "made",
+   "object": "his tweets go viral",
+   "value": "",
+   "units": "",
+   "qualifiers": "Here's how",
+   "modality": "reported",
+   "polarity": "affirm",
+   "claim_class": "actor_statement",
+   "supporting_span": "Here's how he made his tweets go viral.",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678003200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "this chronically online writer",
+    "his tweets"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_19aec7255a",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_7d017b2ddb"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Fruit Ninja's creator",
+   "normalized": "fruit ninja's creator",
+   "candidates": [
+    {
+     "entity_id": "ent_d2e56326e0",
+     "canonical": "fruit ninja's creator",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "Fruit Ninja's creator"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "YouTube",
+   "normalized": "youtube",
+   "candidates": [
+    {
+     "entity_id": "ent_d5244a331a",
+     "canonical": "youtube",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "YouTube"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "PC game",
+   "normalized": "pc game",
+   "candidates": [
+    {
+     "entity_id": "ent_59c311582d",
+     "canonical": "pc game",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "PC game"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "The GameDiscoverCo newsletter",
+   "normalized": "gamediscoverco newsletter",
+   "candidates": [
+    {
+     "entity_id": "ent_88e7a5fda0",
+     "canonical": "gamediscoverco newsletter",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "The GameDiscoverCo newsletter"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "TikTok media kit examples",
+   "normalized": "tiktok media kit examples",
+   "candidates": [
+    {
+     "entity_id": "ent_52310be271",
+     "canonical": "tiktok media kit examples",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "TikTok media kit examples"
+     ]
+    },
+    {
+     "entity_id": "ent_8d7624972d",
+     "canonical": "tiktok",
+     "support": 0.2088,
+     "evidence_mentions": [
+      "TikTok"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "creators",
+   "normalized": "creators",
+   "candidates": [
+    {
+     "entity_id": "ent_1f94421cfc",
+     "canonical": "creators",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "creators"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "brand partnerships",
+   "normalized": "brand partnerships",
+   "candidates": [
+    {
+     "entity_id": "ent_63396de007",
+     "canonical": "brand partnerships",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "brand partnerships"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Business Insider",
+   "normalized": "business insider",
+   "candidates": [
+    {
+     "entity_id": "ent_b50759d7aa",
+     "canonical": "business insider",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "Business Insider"
+     ]
+    },
+    {
+     "entity_id": "ent_da2b128800",
+     "canonical": "us",
+     "support": 0.2088,
+     "evidence_mentions": [
+      "US"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "US",
+   "normalized": "us",
+   "candidates": [
+    {
+     "entity_id": "ent_da2b128800",
+     "canonical": "us",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "US"
+     ]
+    },
+    {
+     "entity_id": "ent_b50759d7aa",
+     "canonical": "business insider",
+     "support": 0.2088,
+     "evidence_mentions": [
+      "Business Insider"
+     ]
+    },
+    {
+     "entity_id": "ent_1fb6781b2a",
+     "canonical": "prescription drug usage",
+     "support": 0.2088,
+     "evidence_mentions": [
+      "prescription drug usage"
+     ]
+    }
+   ],
+   "resolved": false,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "prescription drug usage",
+   "normalized": "prescription drug usage",
+   "candidates": [
+    {
+     "entity_id": "ent_1fb6781b2a",
+     "canonical": "prescription drug usage",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "prescription drug usage"
+     ]
+    },
+    {
+     "entity_id": "ent_da2b128800",
+     "canonical": "us",
+     "support": 0.2088,
+     "evidence_mentions": [
+      "US"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "TikTok",
+   "normalized": "tiktok",
+   "candidates": [
+    {
+     "entity_id": "ent_8d7624972d",
+     "canonical": "tiktok",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "TikTok"
+     ]
+    },
+    {
+     "entity_id": "ent_52310be271",
+     "canonical": "tiktok media kit examples",
+     "support": 0.2088,
+     "evidence_mentions": [
+      "TikTok media kit examples"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Viral Video",
+   "normalized": "viral video",
+   "candidates": [
+    {
+     "entity_id": "ent_46610fcdbd",
+     "canonical": "viral video",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "Viral Video"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "global oil supply",
+   "normalized": "global oil supply",
+   "candidates": [
+    {
+     "entity_id": "ent_d06b006ad5",
+     "canonical": "global oil supply",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "global oil supply"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "this chronically online writer",
+   "normalized": "this chronically online writer",
+   "candidates": [
+    {
+     "entity_id": "ent_1be29777d9",
+     "canonical": "this chronically online writer",
+     "support": 0.6176,
+     "evidence_mentions": [
+      "this chronically online writer",
+      "this chronically online writer"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Twitter's For You algorithm",
+   "normalized": "twitter's for you algorithm",
+   "candidates": [
+    {
+     "entity_id": "ent_e94e25e84e",
+     "canonical": "twitter's for you algorithm",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "Twitter's For You algorithm"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "this chronically online writer",
+   "normalized": "this chronically online writer",
+   "candidates": [
+    {
+     "entity_id": "ent_1be29777d9",
+     "canonical": "this chronically online writer",
+     "support": 0.6176,
+     "evidence_mentions": [
+      "this chronically online writer",
+      "this chronically online writer"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "his tweets",
+   "normalized": "his tweets",
+   "candidates": [
+    {
+     "entity_id": "ent_447eeac890",
+     "canonical": "his tweets",
+     "support": 0.5588,
+     "evidence_mentions": [
+      "his tweets"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "bf6734c4271bd9db": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688947200.0,
+   "claimed_pubdate_ts": 1688367600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1688367600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2efdc26e3bbbdf51": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688947200.0,
+   "claimed_pubdate_ts": 1684393200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684393200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a7f9fd1297d92909": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688947200.0,
+   "claimed_pubdate_ts": 1678003200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678003200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "727397cb5b1448f1": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688947200.0,
+   "claimed_pubdate_ts": 1677830400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677830400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "171992847266ddaa": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688947200.0,
+   "claimed_pubdate_ts": 1680418800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680418800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "edf36185220c836c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688947200.0,
+   "claimed_pubdate_ts": 1679295600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679295600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "213d2118fc1902d5": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688947200.0,
+   "claimed_pubdate_ts": 1677484800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677484800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "9579bb7286674282": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688947200.0,
+   "claimed_pubdate_ts": 1685516400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685516400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6ef08d43ce879cab": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688947200.0,
+   "claimed_pubdate_ts": 1686034800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686034800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "55da7189a27c1da5": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688947200.0,
+   "claimed_pubdate_ts": 1684134000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684134000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "02a92c863fa7a833": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688947200.0,
+   "claimed_pubdate_ts": 1685948400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685948400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "fe2479e864142ccc": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688947200.0,
+   "claimed_pubdate_ts": 1685689200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685689200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "0f2f514b6cc7c6db": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688947200.0,
+   "claimed_pubdate_ts": 1688799600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1688799600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "dac75232966c5cd3": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688947200.0,
+   "claimed_pubdate_ts": 1679468400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679468400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "1175b84e73bc51ba": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688947200.0,
+   "claimed_pubdate_ts": 1681023600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681023600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6c2147aee7c2994f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688947200.0,
+   "claimed_pubdate_ts": 1686553200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686553200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_1c6e4d125c",
+   "member_ids": [
+    "bf6734c4271bd9db"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The GameDiscoverCo newsletter",
+   "primary_source": "The GameDiscoverCo newsletter",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7ef01febd2",
+   "member_ids": [
+    "2efdc26e3bbbdf51"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "ADWEEK",
+   "primary_source": "ADWEEK",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_19aec7255a",
+   "member_ids": [
+    "a7f9fd1297d92909"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Insider",
+   "primary_source": "Business Insider",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b67f39a7bc",
+   "member_ids": [
+    "727397cb5b1448f1"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Sun Sentinel",
+   "primary_source": "Sun Sentinel",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b2cdd24cdf",
+   "member_ids": [
+    "171992847266ddaa"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "CNN",
+   "primary_source": "CNN",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b7d3426399",
+   "member_ids": [
+    "edf36185220c836c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "newscentermaine.com",
+   "primary_source": "newscentermaine.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_d1a3dec463",
+   "member_ids": [
+    "213d2118fc1902d5"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Media Matters for America",
+   "primary_source": "Media Matters for America",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9afa33b9f5",
+   "member_ids": [
+    "9579bb7286674282"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Tubefilter",
+   "primary_source": "Tubefilter",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_84af37e118",
+   "member_ids": [
+    "6ef08d43ce879cab"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Insider",
+   "primary_source": "Business Insider",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_847bc34f74",
+   "member_ids": [
+    "55da7189a27c1da5"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "FactCheck.org",
+   "primary_source": "FactCheck.org",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_86a7c7f785",
+   "member_ids": [
+    "02a92c863fa7a833"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "New York Post",
+   "primary_source": "New York Post",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_fb397beb25",
+   "member_ids": [
+    "fe2479e864142ccc"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Times of India",
+   "primary_source": "The Times of India",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_4f2f8f2509",
+   "member_ids": [
+    "0f2f514b6cc7c6db"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Newschecker",
+   "primary_source": "Newschecker",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_6df2dfb4b5",
+   "member_ids": [
+    "dac75232966c5cd3"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Indian Express",
+   "primary_source": "The Indian Express",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_524842776a",
+   "member_ids": [
+    "1175b84e73bc51ba"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Hindustan Times",
+   "primary_source": "Hindustan Times",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9e361b60ba",
+   "member_ids": [
+    "6c2147aee7c2994f",
+    "6c2147aee7c2994f"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "USA Today",
+   "primary_source": "USA Today",
+   "confidence": 0.99
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "bf6734c4271bd9db:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1688367600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "bf6734c4271bd9db:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1688367600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "6ef08d43ce879cab:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1686034800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "6ef08d43ce879cab:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1686034800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "6c2147aee7c2994f:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1686553200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "2efdc26e3bbbdf51:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684393200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "55da7189a27c1da5:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684134000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "a7f9fd1297d92909:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678003200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "a7f9fd1297d92909:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678003200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "bf6734c4271bd9db:c0",
+  "bf6734c4271bd9db:c1",
+  "6ef08d43ce879cab:c0",
+  "6ef08d43ce879cab:c1",
+  "6c2147aee7c2994f:c0",
+  "2efdc26e3bbbdf51:c0",
+  "55da7189a27c1da5:c0",
+  "a7f9fd1297d92909:c0",
+  "a7f9fd1297d92909:c1"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_7d017b2ddb": {
+   "status": "fulfilled",
+   "n_claims": 5,
+   "n_included": 5
+  },
+  "req_634a90f84c": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_ccaeea515f": {
+   "status": "fulfilled",
+   "n_claims": 1,
+   "n_included": 1
+  },
+  "req_bb87688b46": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_37c202beae": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_3d760df676": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_6b25d20634": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_bb87688b46",
+  "req_37c202beae",
+  "req_3d760df676",
+  "req_6b25d20634"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 16,
+  "n_contradictions": 0,
+  "n_documents": 17
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 14.542,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "c4f80a909d84708e",
+ "bundle_hash": "c4f80a909d84708e",
+ "_persisted_at": "2026-07-13T01:50:01Z"
+}

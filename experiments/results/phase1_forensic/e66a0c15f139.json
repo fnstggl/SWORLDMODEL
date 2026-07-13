@@ -1,0 +1,223 @@
+{
+ "question": "Will the appeals court uphold the lower court's ruling in the antitrust case?",
+ "as_of": "2023-05-01",
+ "horizon": "2023-10-01",
+ "outcome_contract": {
+  "family": "categorical",
+  "options": [
+   "affirm",
+   "reverse",
+   "remand"
+  ],
+  "readout_var": "outcome",
+  "resolution_rule": "The outcome is the actual decision rendered by the appeals court as of the horizon date."
+ },
+ "readout_repaired": true,
+ "outcome_lean": "neutral",
+ "interpretations": [
+  {
+   "id": "primary",
+   "reading": "The appeals court will either affirm, reverse, or remand the lower court's ruling in the antitrust case.",
+   "weight": 1.0
+  }
+ ],
+ "n_entities": 4,
+ "n_institutions": 2,
+ "n_populations": 2,
+ "n_latents": 5,
+ "sample_entities": [
+  "appeals_court",
+  "lower_court",
+  "plaintiff",
+  "defendant"
+ ],
+ "sample_latents": [
+  {
+   "path": "appeals_court.ideological_lean",
+   "candidates": {
+    "mean": 0.0,
+    "sd": 0.5,
+    "lo": -1.0,
+    "hi": 1.0
+   },
+   "sensitivity": 1.0
+  },
+  {
+   "path": "lower_court.legal_error",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 1.0
+  },
+  {
+   "path": "plaintiff.legal_quality",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.6
+  },
+  {
+   "path": "defendant.legal_quality",
+   "candidates": {
+    "mean": 0.5,
+    "sd": 0.25,
+    "lo": 0.0,
+    "hi": 1.0
+   },
+   "sensitivity": 0.6
+  }
+ ],
+ "accepted_mechanisms": [
+  "agent_decision",
+  "belief_update",
+  "background_dynamics",
+  "generic_outcome_prior",
+  "generic_outcome_prior"
+ ],
+ "rejected_mechanisms": [
+  [
+   "institutional_vote",
+   "no executable operator ('swm.world_model_v2.transi"
+  ],
+  [
+   "rare_event_arrival",
+   "no executable operator ('swm.world_model_v2.transi"
+  ]
+ ],
+ "experimental_mechanisms": [
+  "appellate_decision_making"
+ ],
+ "mechanism_tiers": {
+  "panel composition and ideology": 7,
+  "legal argument evaluation": 7,
+  "precedent interpretation": 7,
+  "deliberation and voting": 7,
+  "outcome_resolution": 7
+ },
+ "fallbacks_used": [
+  {
+   "process": "outcome_resolution",
+   "tier": 7,
+   "family": "generic_outcome_prior",
+   "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+  }
+ ],
+ "structural_hypotheses": [
+  {
+   "id": "ideological_decision",
+   "lean": "neutral",
+   "prior": 0.4
+  },
+  {
+   "id": "legal_merit",
+   "lean": "neutral",
+   "prior": 0.4
+  },
+  {
+   "id": "external_pressure",
+   "lean": "neutral",
+   "prior": 0.2
+  }
+ ],
+ "fidelity_plan": {
+  "explicit": [
+   "appeals_court",
+   "lower_court",
+   "plaintiff",
+   "defendant",
+   "judges_pool",
+   "legal_community",
+   "appeals_court.ideological_lean",
+   "lower_court.legal_error",
+   "plaintiff.legal_quality",
+   "defendant.legal_quality",
+   "public_opinion_pressure"
+  ],
+  "marginalized_with_uncertainty": [],
+  "n_particles": 71
+ },
+ "omissions": [
+  {
+   "component": "detailed economic impact of ruling",
+   "sensitivity": 0.1,
+   "reason": "negligible sensitivity because outcome is binary legal decision, not economic ef"
+  },
+  {
+   "component": "media coverage specifics",
+   "sensitivity": 0.2,
+   "reason": "negligible sensitivity because direct influence on judges is minimal in typical "
+  }
+ ],
+ "world_provenance_statuses": {},
+ "n_deltas": 226,
+ "readout": "terminal_states",
+ "structural_posterior": {
+  "ideological_decision": 0.3944,
+  "legal_merit": 0.3944,
+  "external_pressure": 0.2113
+ },
+ "delta_log_sample": [
+  {
+   "at": 1693526400.0,
+   "event": "background_tick",
+   "operator": "background_dynamics",
+   "reasons": []
+  },
+  {
+   "at": 1696118399.0,
+   "event": "background_tick",
+   "operator": "background_dynamics",
+   "reasons": []
+  },
+  {
+   "at": 1696118399.0,
+   "event": "resolve_outcome",
+   "operator": "generic_outcome_prior",
+   "reasons": [
+    "generic_fallback",
+    "lean=neutral"
+   ]
+  }
+ ],
+ "SIMULATION_RESULT": {
+  "simulation_status": "completed_with_degradation",
+  "support_grade": "highly_speculative",
+  "recommendation_status": "not_requested",
+  "raw_distribution": {
+   "reverse": 0.4507,
+   "affirm": 0.2958,
+   "remand": 0.2535
+  },
+  "raw_probability": 0.2958,
+  "structural_disagreement": {
+   "ideological_decision": 0.3944,
+   "legal_merit": 0.3944,
+   "external_pressure": 0.2113
+  },
+  "uncertainty_decomposition": {
+   "n_particles": 71,
+   "structural_model_uncertainty": 0.967,
+   "structural_posterior": {
+    "ideological_decision": 0.3944,
+    "legal_merit": 0.3944,
+    "external_pressure": 0.2113
+   },
+   "state_parameter_uncertainty": 0.2508,
+   "evidence_uncertainty": 0.5
+  },
+  "limitations": [
+   "omitted (negligible-sensitivity): detailed economic impact of ruling",
+   "omitted (negligible-sensitivity): media coverage specifics",
+   "degraded: support grade highly_speculative; 1 fallback mechanism(s) used"
+  ],
+  "plan_hash": "556a7dbad6fc"
+ },
+ "plan_hash": "556a7dbad6fc",
+ "latency_s": 15.57
+}

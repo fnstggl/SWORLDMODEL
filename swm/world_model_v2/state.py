@@ -39,8 +39,10 @@ def parse_time(s) -> float:
 class Provenance:
     """The full StateEstimate envelope. Status SEMANTICS affect execution, not just labeling:
     initialization samples only non-observed fields; particle sampling never perturbs `observed`; assimilation
-    may overwrite inferred/assumed but must version observed; sensitivity analysis targets sampled/inferred;
-    abstention triggers when high-sensitivity fields sit at `assumed` with low confidence."""
+    may overwrite inferred/assumed but must version observed; sensitivity analysis targets sampled/inferred.
+    Under the no-abstention contract a high-sensitivity field sitting at `assumed` with low confidence does
+    NOT trigger a refusal — it widens the field's prior, is surfaced as a sensitivity contributor, and lowers
+    the result's support grade instead."""
     status: str = "assumed"               # observed | derived | inferred | assumed | sampled
     sources: list = field(default_factory=list)    # evidence references (citations, dataset ids)
     confidence: float = 0.5
@@ -51,7 +53,7 @@ class Provenance:
     uncertainty_type: str = ""            # one of uncertainty.UNCERTAINTY_TYPES (where classified)
     valid_from: float = 0.0               # temporal validity window
     valid_until: float = 0.0              # 0.0 = open-ended
-    sensitivity: float = 0.5              # estimated outcome sensitivity (fidelity/abstention input)
+    sensitivity: float = 0.5              # estimated outcome sensitivity (fidelity + support-grade input)
     lineage: list = field(default_factory=list)   # prior (method, updated_at) entries — the field's history
 
     def as_dict(self):
@@ -110,7 +112,12 @@ def F(value=None, *, dist=None, status="assumed", sources=None, confidence=0.5, 
 ENTITY_FIELDS = ("identity", "entity_type", "roles", "goals", "preferences", "beliefs", "resources",
                  "authority", "commitments", "attention", "affect", "private_information", "relationships",
                  "memory", "past_actions", "current_action", "planned_actions", "constraints",
-                 "information_set")
+                 "information_set",
+                 # typed namespace for compiler-proposed latent scalars whose semantic name is scenario-
+                 # specific (e.g. "attention_to_scheduling"): a dict {name: StateField}. Keeps generality
+                 # (arbitrary latents) WITHOUT arbitrary top-level untyped keys — every value is a
+                 # provenance-stamped StateField, just under a declared namespace.
+                 "latent_state")
 
 _ENTITY_EXTENSIONS: dict = {}             # name -> {"fields": {fname: description}, "entity_types": [...]}
 
@@ -200,6 +207,7 @@ class WorldState:
     versions: dict = field(default_factory=dict)          # {"code": commit, "model": id, "config": hash}
     provenance_note: str = ""
     uncertainty_meta: dict = field(default_factory=dict)  # particle weight, sampled-latent record refs
+    omissions: list = field(default_factory=list)         # recorded drops/unsupported elements (loud, not silent)
 
     def version_hash(self) -> str:
         payload = f"{self.world_id}|{self.branch_id}|{self.clock.now}|{len(self.entities)}|{self.evidence_hash}"

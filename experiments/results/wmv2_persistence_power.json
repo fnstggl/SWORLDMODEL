@@ -1,0 +1,101 @@
+{
+ "cohort": {
+  "n_users": 71,
+  "n_test_events": 7074,
+  "real_action_rate": 0.2061,
+  "n_person_disjoint_users": 14,
+  "n_person_disjoint_events": 216
+ },
+ "burstiness_train": {
+  "momentum_lift": 6.777,
+  "p_hot": 0.4773,
+  "p_cold": 0.0704,
+  "n_hot": 5950,
+  "n_cold": 10839,
+  "persistence_structurally_present": true
+ },
+ "power_analysis": {
+  "main": {
+   "n": 7074,
+   "se_basis": "empirical paired-difference sd (CI-consistent)",
+   "se_per_paired_brier": 0.001469,
+   "power_at_observed_effect": 0.993,
+   "min_detectable_effect_80pct": 0.004113
+  },
+  "person_disjoint": {
+   "n": 216,
+   "se_basis": "empirical paired-difference sd (CI-consistent)",
+   "se_per_paired_brier": 0.003014,
+   "power_at_observed_effect": 0.578,
+   "min_detectable_effect_80pct": 0.008438
+  },
+  "adequately_powered": true,
+  "note": "n is adequate to detect the observed effect at >=80% power"
+ },
+ "detail": {
+  "A_nohist": {
+   "brier": 0.1637,
+   "pred_rate": 0.2146
+  },
+  "A_latest_userrate": {
+   "brier": 0.10295,
+   "pred_rate": 0.2195
+  },
+  "A_autoregression": {
+   "brier": 0.09899,
+   "pred_rate": 0.1638
+  },
+  "A_persistent_latent": {
+   "brier": 0.09646,
+   "pred_rate": 0.1897
+  }
+ },
+ "paired_ablation": {
+  "persist_vs_userrate": {
+   "mean": -0.006496,
+   "ci95": [
+    -0.009211,
+    -0.003483
+   ],
+   "n": 7074
+  },
+  "persist_vs_nohist": {
+   "mean": -0.067241,
+   "ci95": [
+    -0.072523,
+    -0.062173
+   ],
+   "n": 7074
+  },
+  "ar_vs_userrate": {
+   "mean": -0.003967,
+   "ci95": [
+    -0.006855,
+    -0.000884
+   ],
+   "n": 7074
+  }
+ },
+ "person_disjoint_ablation": {
+  "mean": -0.027127,
+  "ci95": [
+   -0.032386,
+   -0.02117
+  ],
+  "n": 216
+ },
+ "verdict": "persistence mechanism HELPS (CI excludes 0, favorable)",
+ "hierarchical_pool": {
+  "prior_mean": 0.2146,
+  "prior_strength": 2.48,
+  "var_between": 0.06854,
+  "n_groups": 71,
+  "method": "empirical-Bayes method-of-moments partial pooling"
+ },
+ "_meta": {
+  "n_users_downloaded": 92,
+  "prefix_len": 12,
+  "llm_calls": 0,
+  "est_cost_usd": 0.0
+ }
+}

@@ -1,0 +1,147 @@
+{
+ "n": {
+  "train": 330,
+  "val": 132,
+  "test": 199
+ },
+ "governance": "calibrators fitted on train+val ONLY; test measured, never fitted",
+ "ece": {
+  "uncalibrated": 0.0405,
+  "global": 0.0515,
+  "conditioned": 0.0631
+ },
+ "brier": {
+  "uncalibrated": 0.19762,
+  "global": 0.19755,
+  "conditioned": 0.19717
+ },
+ "reliability_uncalibrated": [
+  {
+   "bucket": "0%-50%",
+   "mean_pred": 0.28,
+   "observed_freq": 0.318,
+   "n": 107
+  },
+  {
+   "bucket": "50%-60%",
+   "mean_pred": 0.539,
+   "observed_freq": 0.545,
+   "n": 33
+  },
+  {
+   "bucket": "60%-70%",
+   "mean_pred": 0.644,
+   "observed_freq": 0.5,
+   "n": 20
+  },
+  {
+   "bucket": "70%-80%",
+   "mean_pred": 0.744,
+   "observed_freq": 0.733,
+   "n": 15
+  },
+  {
+   "bucket": "80%-90%",
+   "mean_pred": 0.85,
+   "observed_freq": 0.857,
+   "n": 14
+  },
+  {
+   "bucket": "90%-100%",
+   "mean_pred": 0.937,
+   "observed_freq": 1.0,
+   "n": 10
+  }
+ ],
+ "reliability_conditioned": [
+  {
+   "bucket": "0%-50%",
+   "mean_pred": 0.279,
+   "observed_freq": 0.327,
+   "n": 110
+  },
+  {
+   "bucket": "50%-60%",
+   "mean_pred": 0.546,
+   "observed_freq": 0.571,
+   "n": 21
+  },
+  {
+   "bucket": "60%-70%",
+   "mean_pred": 0.653,
+   "observed_freq": 0.5,
+   "n": 24
+  },
+  {
+   "bucket": "70%-80%",
+   "mean_pred": 0.74,
+   "observed_freq": 0.65,
+   "n": 20
+  },
+  {
+   "bucket": "80%-90%",
+   "mean_pred": 0.862,
+   "observed_freq": 0.923,
+   "n": 13
+  },
+  {
+   "bucket": "90%-100%",
+   "mean_pred": 0.947,
+   "observed_freq": 0.909,
+   "n": 11
+  }
+ ],
+ "global_calibrator": {
+  "a": 0.99747,
+  "b": 0.05489,
+  "n_fit": 462
+ },
+ "conditioned_cells": {
+  "other": {
+   "n": 281,
+   "a": 0.97054,
+   "b": -0.02992
+  },
+  "sports": {
+   "n": 88,
+   "a": 0.60694,
+   "b": 0.53876
+  },
+  "tech": {
+   "n": 33,
+   "a": 3.19913,
+   "b": -0.84045
+  },
+  "geopolitics": {
+   "n": 5,
+   "a": 1.01632,
+   "b": 0.0542
+  },
+  "crypto": {
+   "n": 20,
+   "a": 2.88157,
+   "b": -0.41403
+  },
+  "election": {
+   "n": 15,
+   "a": 2.26341,
+   "b": -0.05653
+  },
+  "economy": {
+   "n": 10,
+   "a": 1.18355,
+   "b": -1.9069
+  },
+  "science": {
+   "n": 3,
+   "a": -0.30226,
+   "b": -0.56148
+  },
+  "culture": {
+   "n": 7,
+   "a": 3.7556,
+   "b": 1.49279
+  }
+ },
+ "verdict": "best held-out ECE: uncalibrated (0.0405); calibration does NOT improve over uncalibrated (0.0405)"
+}

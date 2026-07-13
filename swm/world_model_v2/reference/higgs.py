@@ -126,6 +126,56 @@ def fit_q(train_rows, window_s):
     return (lo + hi) / 2
 
 
+def exposure_snapshot_aged(first, cutoffs, taus_h=(6.0, 12.0, 24.0, 48.0)):
+    """exposure_snapshot + age-weighted exposure per candidate half-life τ (information-aging mechanism):
+    k_tau[c][τ][a] = Σ_{b active followee of a} exp(−(c − t_b)/τ). Same single streaming pass."""
+    active_by = {c: {u for u, t in first.items() if t <= c} for c in cutoffs}
+    n_act = {c: defaultdict(int) for c in cutoffs}
+    last_act = {c: {} for c in cutoffs}
+    k_tau = {c: {tau: defaultdict(float) for tau in taus_h} for c in cutoffs}
+    out_deg = defaultdict(int)
+    with gzip.open(SOCIAL, "rt") as f:
+        for line in f:
+            p = line.split()
+            if len(p) < 2:
+                continue
+            a, b = int(p[0]), int(p[1])
+            out_deg[a] += 1
+            t_b = first.get(b)
+            if t_b is None:
+                continue
+            for c in cutoffs:
+                if t_b <= c:
+                    n_act[c][a] += 1
+                    if t_b > last_act[c].get(a, 0):
+                        last_act[c][a] = t_b
+                    age_h = (c - t_b) / 3600.0
+                    for tau in taus_h:
+                        k_tau[c][tau][a] += math.exp(-age_h / tau)
+    return {"active_by": active_by, "n_act": n_act, "last_act": last_act, "out_deg": out_deg,
+            "k_tau": k_tau, "taus_h": taus_h}
+
+
+def build_cohort_aged(first, snap, cutoff, window_s, *, n_sample, seed):
+    """build_cohort + per-τ age-weighted exposure (k_tau) and k_eff0 left unset until a τ is chosen."""
+    rows = build_cohort(first, snap, cutoff, window_s, n_sample=n_sample, seed=seed)
+    for r in rows:
+        r["k_tau"] = {tau: snap["k_tau"][cutoff][tau].get(r["u"], 0.0) for tau in snap["taus_h"]}
+    return rows
+
+
+def load_activity_stream():
+    """All activity timestamps (any type) — the Hawkes self-excitation validation target."""
+    ts = []
+    with gzip.open(ACTIVITY, "rt") as f:
+        for line in f:
+            p = line.split()
+            if len(p) >= 3:
+                ts.append(int(p[2]))
+    ts.sort()
+    return ts
+
+
 def sample_subgraph_edges(sample_ids):
     """Edges among the SAMPLED cohort (b→followers within sample) for within-window contagion rollout.
     One more streaming pass; only sample×sample edges are kept (the rollout's honest scope)."""

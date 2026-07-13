@@ -71,10 +71,18 @@ class ParticlePosterior:
         each particle are untouched (we reweight worlds, we don't edit them); auto-resample on low ESS."""
         rng = rng or random.Random(self.generation)
         model = observation_model_for(observation.of_path)
+        # missing-latent policy (Tier A1): a particle in which the observed path does not exist is
+        # penalized relative to particles that CAN explain the observation — using the observation
+        # model's own floor rather than a flat 0.5 that could dominate real densities. The penalty is
+        # the minimum likelihood across particles that do carry the latent (or a hard floor).
+        likes = []
         for p in self.particles:
             latent = _read_path(p.world, observation.of_path)
-            like = model.likelihood(observation, latent) if latent is not None else 0.5
-            p.weight *= max(1e-12, like)
+            likes.append(model.likelihood(observation, latent) if latent is not None else None)
+        present = [l for l in likes if l is not None]
+        missing_pen = min(present) if present else 1e-6
+        for p, like in zip(self.particles, likes):
+            p.weight *= max(1e-12, like if like is not None else missing_pen)
         self.normalize()
         self.generation += 1
         rec = {"event": "assimilate", "obs": observation.as_dict(), "generation": self.generation,
@@ -116,7 +124,9 @@ class ParticlePosterior:
     @staticmethod
     def _rejuvenate(world: WorldState, rng, jitter: float = 0.05):
         """Diversity preservation: perturb ONLY fields whose provenance status is sampled/inferred and whose
-        value is numeric. `observed` and `derived` fields are NEVER touched."""
+        value is numeric. `observed` and `derived` fields are NEVER touched. Jitter is RANGE-RELATIVE
+        (Tier A1 fix: a fixed 0.05 assumed every latent lives in [0,1]; fields without a declared range
+        jitter relative to their own magnitude and are NOT clamped into a fabricated [0,1] box)."""
         for ent in world.entities.values():
             for fname, sf in list(ent.fields.items()):
                 items = sf.items() if isinstance(sf, dict) else [(None, sf)]
@@ -126,9 +136,14 @@ class ParticlePosterior:
                     if f.prov.status not in ("sampled", "inferred"):
                         continue                          # provenance semantics, executable
                     if isinstance(f.value, float):
-                        lo = (f.dist or {}).get("lo", 0.0) if f.dist else 0.0
-                        hi = (f.dist or {}).get("hi", 1.0) if f.dist else 1.0
-                        f.value = min(hi, max(lo, f.value + rng.gauss(0, jitter)))
+                        if f.dist and ("lo" in f.dist or "hi" in f.dist):
+                            lo = float(f.dist.get("lo", 0.0))
+                            hi = float(f.dist.get("hi", 1.0))
+                            span = max(1e-9, hi - lo)
+                            f.value = min(hi, max(lo, f.value + rng.gauss(0, jitter * span)))
+                        else:                             # no declared range: scale-relative, unclamped
+                            scale = max(1e-3, abs(f.value))
+                            f.value = f.value + rng.gauss(0, jitter * scale)
 
     # ---------------- posterior readout & checks ----------------
     def expectation(self, path: str) -> float:

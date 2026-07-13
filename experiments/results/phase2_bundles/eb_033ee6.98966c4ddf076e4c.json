@@ -1,0 +1,992 @@
+{
+ "bundle_id": "eb_033ee6",
+ "question": "Will the proposed merger between the two regional banks be completed?",
+ "as_of": 1682899200.0,
+ "compiler_plan_hash": "34b7d0288bc1",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_aa3da3163b",
+   "claim_or_quantity": "completed if and only if both shareholder votes pass and all required regulatory approvals are granted by 2023-12-31, and no deal-terminating event occurs; otherwise not_completed.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "bank_a",
+    "bank_b",
+    "fed_reserve",
+    "doj"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_e7e42de3f2",
+   "claim_or_quantity": "value/context of shareholders_a.merger_support_lean",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "shareholders_a.merger_support_lean",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_7d31d2474f",
+   "claim_or_quantity": "value/context of shareholders_b.merger_support_lean",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "shareholders_b.merger_support_lean",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_238dba8957",
+   "claim_or_quantity": "decision rules / process of bank_a",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "bank_a",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_99c58eef6e",
+   "claim_or_quantity": "decision rules / process of bank_b",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "bank_b",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_05301da216",
+   "claim_or_quantity": "value/context of bank_a.management_commitment",
+   "why_relevant": "high-sensitivity latent (0.60) driving the outcome distribution",
+   "affected_component": "bank_a.management_commitment",
+   "expected_sensitivity": 0.6,
+   "expected_voi": 0.6,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_aa3da3163b",
+   "terms": "proposed merger between two regional banks completed bank a bank b fed reserve",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_e7e42de3f2",
+   "terms": "shareholders merger support lean",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_7d31d2474f",
+   "terms": "shareholders merger support lean",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_aa3da3163b",
+   "logical_query": "proposed merger between two regional banks completed bank a bank b fed reserve after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=proposed+merger+between+two+regional+banks+completed+bank+a+bank+b+fed+reserve+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783906972.224899,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:42:53 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw1ZBiSO44w5AKxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTNMbf14iU2gRM7t1soKSflF8an5JcUFxfkJBZnFKcWlaUWxRsZGJkZmBuY6RmYxBcYAABfFjZo\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "1579a73b04de8006cae40cef469eb82757e55ffb17d750276b150214b67bc0d5",
+   "n_bytes": 5559,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 4,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.864
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_e7e42de3f2",
+   "logical_query": "shareholders merger support lean after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=shareholders+merger+support+lean+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783906973.0907354,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:42:53 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw15BiSO44w5ACxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcc1svXmITuPBh62ImJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwCu4Djt\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "c8ea58ed4cc54ecabcd2a3bfc18784a77df8afe4c8392d5760496799069c6e25",
+   "n_bytes": 1229,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.438
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_7d31d2474f",
+   "logical_query": "shareholders merger support lean after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=shareholders+merger+support+lean+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783906973.5301347,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Pragma": "no-cache",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw15BiSO44w5ACxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcc1svXmITuPBh62ImJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwCu4Djt\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Date": "Mon, 13 Jul 2026 01:42:53 GMT",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Content-Type": "application/xml; charset=utf-8",
+    "Age": "1",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding"
+   },
+   "raw_content_hash": "c8ea58ed4cc54ecabcd2a3bfc18784a77df8afe4c8392d5760496799069c6e25",
+   "n_bytes": 1229,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.551
+  }
+ ],
+ "raw_content_refs": [
+  "1579a73b04de8006cae40cef469eb82757e55ffb17d750276b150214b67bc0d5"
+ ],
+ "documents": [
+  {
+   "id": "2fbebe616540e678",
+   "source": "Banking Dive",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxOaTdRRTVJTnhmY2l3V0VpcTVtdFNRcS1WN0o5aDJUbGVkR2lQRnNvR3dNYi1Pc1NtU3BEM3EtNlhLXzJrdmhsSjU5Vkp2dlVSMDZOQURNT0lEOEc0N3VIMG1qRmwzUFBSZDU5ZENya3UwUUJ5OWM3Tk5tWFBDLVF4d1Bnby1oamdadlRxMjBOaTVzQTN4aklJVkZZTQ?oc=5",
+   "title": "FDIC gives $5.2B Columbia-Umpqua deal its final sign-off - Banking Dive",
+   "text": "FDIC gives $5.2B Columbia-Umpqua deal its final sign-off - Banking Dive. FDIC gives $5.2B Columbia-Umpqua deal its final sign-off Banking Dive",
+   "content_hash": "01735e12a16dcd81",
+   "raw_feed_hash": "1579a73b04de8006cae40cef469eb82757e55ffb17d750276b150214b67bc0d5",
+   "published_at": 1673424000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_aa3da3163b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "1e09f045db0eab85",
+   "source": "Twin Cities Business",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTE81aTBmZWpkamtneHlXVk0yQm5NTHVXLUlTMktRVFJaSzg4c1hnaTlBTDNDWGoweWt5ZlRidEJfMVQxcENvT2R3R2tIbUtDdk51bjMtTmVkcmZhdTVGdkYyOHozOEloZy1QMU5MVkZXVQ?oc=5",
+   "title": "U.S. Bancorp\u2019s Capital Base Raises Questions - Twin Cities Business",
+   "text": "U.S. Bancorp\u2019s Capital Base Raises Questions - Twin Cities Business. U.S. Bancorp\u2019s Capital Base Raises Questions Twin Cities Business",
+   "content_hash": "6fbea09a3f176323",
+   "raw_feed_hash": "1579a73b04de8006cae40cef469eb82757e55ffb17d750276b150214b67bc0d5",
+   "published_at": 1682319600.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_aa3da3163b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3f61325c8fb814bb",
+   "source": "CBC",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE03Rk9FR1NKWUVjOHJwbGx3cE1BSHI2blRZX1B3eThScTR5bmd0NS01YXd4QkNJR3ZFcVBQS3YxVWszdl9ra3FncTUtOW5TMUhFOTQ5RVNnWW9Jem00eXRxNmFWU2pTQVcteGJLdE1PRy1wYmRjM1o0TGJoYmY?oc=5",
+   "title": "Canada among central banks banding together to calm markets after UBS deal to buy Credit Suisse - CBC",
+   "text": "Canada among central banks banding together to calm markets after UBS deal to buy Credit Suisse - CBC. Canada among central banks banding together to calm markets after UBS deal to buy Credit Suisse CBC",
+   "content_hash": "4a04503ae1a382aa",
+   "raw_feed_hash": "1579a73b04de8006cae40cef469eb82757e55ffb17d750276b150214b67bc0d5",
+   "published_at": 1679295600.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_aa3da3163b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "7f68d12629f003f5",
+   "source": "Money Crashers",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE1ndVE5RmhyNTZ3WG1IaXRzQ185cC1Vdmg2aE1HcUtHYUR3RHZtUjd5NXlKaVNGbWhORjBsRk5iS2MxMnhNZGxiMVZrdWVDNWM2UWZXQ29MdTRSMmJ3VFFGSw?oc=5",
+   "title": "Too-Big-to-Fail Bank (TBTF) \u2014 What It Is & List of US Banks - Money Crashers",
+   "text": "Too-Big-to-Fail Bank (TBTF) \u2014 What It Is & List of US Banks - Money Crashers. Too-Big-to-Fail Bank (TBTF) \u2014 What It Is & List of US Banks Money Crashers",
+   "content_hash": "8f36ab3cfe6bc27d",
+   "raw_feed_hash": "1579a73b04de8006cae40cef469eb82757e55ffb17d750276b150214b67bc0d5",
+   "published_at": 1681282800.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_aa3da3163b",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "2fbebe616540e678:c0",
+   "source_id": "2fbebe616540e678",
+   "subject": "FDIC",
+   "predicate": "gives final sign-off",
+   "object": "$5.2B Columbia-Umpqua deal",
+   "value": "5.2",
+   "units": "billion dollars",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "FDIC gives $5.2B Columbia-Umpqua deal its final sign-off",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1673424000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "FDIC",
+    "Columbia-Umpqua"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_ec63d6c127",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_aa3da3163b"
+   }
+  },
+  {
+   "claim_id": "1e09f045db0eab85:c0",
+   "source_id": "1e09f045db0eab85",
+   "subject": "U.S. Bancorp\u2019s Capital Base",
+   "predicate": "raises questions",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "inferred_implication",
+   "supporting_span": "U.S. Bancorp\u2019s Capital Base Raises Questions",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682319600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "U.S. Bancorp"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_e82f4d1a54",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_aa3da3163b"
+   }
+  },
+  {
+   "claim_id": "3f61325c8fb814bb:c0",
+   "source_id": "3f61325c8fb814bb",
+   "subject": "Canada",
+   "predicate": "is among",
+   "object": "central banks banding together to calm markets",
+   "value": "",
+   "units": "",
+   "qualifiers": "after UBS deal to buy Credit Suisse",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Canada among central banks banding together to calm markets after UBS deal to buy Credit Suisse",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1679295600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Canada",
+    "central banks",
+    "UBS",
+    "Credit Suisse"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_84fd13eb3e",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_aa3da3163b"
+   }
+  },
+  {
+   "claim_id": "7f68d12629f003f5:c0",
+   "source_id": "7f68d12629f003f5",
+   "subject": "Too-Big-to-Fail Bank (TBTF)",
+   "predicate": "is defined as",
+   "object": "a concept",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Too-Big-to-Fail Bank (TBTF) \u2014 What It Is & List of US Banks - Money Crashers",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681282800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Too-Big-to-Fail Bank (TBTF)",
+    "Money Crashers"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_ba10d207af",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_aa3da3163b"
+   }
+  },
+  {
+   "claim_id": "7f68d12629f003f5:c1",
+   "source_id": "7f68d12629f003f5",
+   "subject": "Money Crashers",
+   "predicate": "published",
+   "object": "an article titled 'Too-Big-to-Fail Bank (TBTF) \u2014 What It Is & List of US Banks'",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Too-Big-to-Fail Bank (TBTF) \u2014 What It Is & List of US Banks - Money Crashers",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681282800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Money Crashers"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_ba10d207af",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_aa3da3163b"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "FDIC",
+   "normalized": "fdic",
+   "candidates": [
+    {
+     "entity_id": "ent_786a0d69a9",
+     "canonical": "fdic",
+     "support": 0.6,
+     "evidence_mentions": [
+      "FDIC"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Columbia-Umpqua",
+   "normalized": "columbia-umpqua",
+   "candidates": [
+    {
+     "entity_id": "ent_9510c30fe6",
+     "canonical": "columbia-umpqua",
+     "support": 0.6,
+     "evidence_mentions": [
+      "Columbia-Umpqua"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "U.S. Bancorp",
+   "normalized": "u s bancorp",
+   "candidates": [
+    {
+     "entity_id": "ent_e8f77f7367",
+     "canonical": "u s bancorp",
+     "support": 0.6,
+     "evidence_mentions": [
+      "U.S. Bancorp"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Canada",
+   "normalized": "canada",
+   "candidates": [
+    {
+     "entity_id": "ent_ab65d8b961",
+     "canonical": "canada",
+     "support": 0.6,
+     "evidence_mentions": [
+      "Canada"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "central banks",
+   "normalized": "central banks",
+   "candidates": [
+    {
+     "entity_id": "ent_2a214f3528",
+     "canonical": "central banks",
+     "support": 0.6,
+     "evidence_mentions": [
+      "central banks"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "UBS",
+   "normalized": "ubs",
+   "candidates": [
+    {
+     "entity_id": "ent_4d3b07abb6",
+     "canonical": "ubs",
+     "support": 0.6,
+     "evidence_mentions": [
+      "UBS"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Credit Suisse",
+   "normalized": "credit suisse",
+   "candidates": [
+    {
+     "entity_id": "ent_5849a51f0e",
+     "canonical": "credit suisse",
+     "support": 0.6,
+     "evidence_mentions": [
+      "Credit Suisse"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Too-Big-to-Fail Bank (TBTF)",
+   "normalized": "too-big-to-fail bank (tbtf)",
+   "candidates": [
+    {
+     "entity_id": "ent_dfe0ee2b92",
+     "canonical": "too-big-to-fail bank (tbtf)",
+     "support": 0.6,
+     "evidence_mentions": [
+      "Too-Big-to-Fail Bank (TBTF)"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Money Crashers",
+   "normalized": "money crashers",
+   "candidates": [
+    {
+     "entity_id": "ent_64b0b4bccd",
+     "canonical": "money crashers",
+     "support": 0.7,
+     "evidence_mentions": [
+      "Money Crashers",
+      "Money Crashers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Money Crashers",
+   "normalized": "money crashers",
+   "candidates": [
+    {
+     "entity_id": "ent_64b0b4bccd",
+     "canonical": "money crashers",
+     "support": 0.7,
+     "evidence_mentions": [
+      "Money Crashers",
+      "Money Crashers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "2fbebe616540e678": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1673424000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1673424000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "1e09f045db0eab85": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1682319600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682319600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3f61325c8fb814bb": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1679295600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679295600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "7f68d12629f003f5": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1681282800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681282800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_ec63d6c127",
+   "member_ids": [
+    "2fbebe616540e678"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Banking Dive",
+   "primary_source": "Banking Dive",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e82f4d1a54",
+   "member_ids": [
+    "1e09f045db0eab85"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Twin Cities Business",
+   "primary_source": "Twin Cities Business",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_84fd13eb3e",
+   "member_ids": [
+    "3f61325c8fb814bb"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "CBC",
+   "primary_source": "CBC",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_ba10d207af",
+   "member_ids": [
+    "7f68d12629f003f5"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Money Crashers",
+   "primary_source": "Money Crashers",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "2fbebe616540e678:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1673424000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "1e09f045db0eab85:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682319600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "3f61325c8fb814bb:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1679295600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "7f68d12629f003f5:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681282800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "7f68d12629f003f5:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681282800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "2fbebe616540e678:c0",
+  "1e09f045db0eab85:c0",
+  "3f61325c8fb814bb:c0",
+  "7f68d12629f003f5:c0",
+  "7f68d12629f003f5:c1"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_aa3da3163b": {
+   "status": "fulfilled",
+   "n_claims": 5,
+   "n_included": 5
+  },
+  "req_e7e42de3f2": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_7d31d2474f": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_238dba8957": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_99c58eef6e": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_05301da216": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_e7e42de3f2",
+  "req_7d31d2474f",
+  "req_238dba8957",
+  "req_99c58eef6e",
+  "req_05301da216"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 4,
+  "n_contradictions": 0,
+  "n_documents": 4
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 11.105,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "98966c4ddf076e4c",
+ "bundle_hash": "98966c4ddf076e4c",
+ "_persisted_at": "2026-07-13T01:43:05Z"
+}
