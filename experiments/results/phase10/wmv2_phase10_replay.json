@@ -1,0 +1,934 @@
+{
+ "_meta": {
+  "harness": "experiments/wmv2_phase10_replay.py",
+  "source": "voteview.com roll-calls",
+  "congresses": [
+   117,
+   118
+  ],
+  "note": "tests institutional rule-selection + threshold execution on REAL votes; leakage-safe (only each roll-call's own counts + as-of rules)."
+ },
+ "matter_aware": {
+  "n_scored": 1626,
+  "n_excluded_unclassifiable": 14,
+  "accuracy": 0.9631,
+  "by_threshold_type": {
+   "majority": {
+    "n": 1088,
+    "correct": 1040
+   },
+   "cloture_nomination_majority": {
+    "n": 453,
+    "correct": 441
+   },
+   "cloture_legislation_3_5": {
+    "n": 77,
+    "correct": 77
+   },
+   "treaty_2_3": {
+    "n": 3,
+    "correct": 3
+   },
+   "override_2_3": {
+    "n": 5,
+    "correct": 5
+   }
+  },
+  "confusion": {
+   "tp": 1274,
+   "tn": 27,
+   "fp": 33,
+   "fn": 292
+  },
+  "sample_misses": [
+   {
+    "congress": "117",
+    "roll": "23",
+    "date": "2021-02-04",
+    "q": "On the Motion",
+    "result": "Motion Rejected",
+    "yea": 52,
+    "nay": 48,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "25",
+    "date": "2021-02-04",
+    "q": "On the Motion",
+    "result": "Motion Rejected",
+    "yea": 52,
+    "nay": 48,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "50",
+    "date": "2021-02-05",
+    "q": "On the Motion",
+    "result": "Motion Rejected",
+    "yea": 51,
+    "nay": 49,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "52",
+    "date": "2021-02-05",
+    "q": "On the Amendment",
+    "result": "Amendment Agreed to",
+    "yea": 50,
+    "nay": 50,
+    "threshold": "majority",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "54",
+    "date": "2021-02-05",
+    "q": "On the Concurrent Resolution",
+    "result": "Concurrent Resolution Agreed to",
+    "yea": 50,
+    "nay": 50,
+    "threshold": "majority",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "73",
+    "date": "2021-03-04",
+    "q": "On the Motion to Proceed",
+    "result": "Motion to Proceed Agreed to",
+    "yea": 50,
+    "nay": 50,
+    "threshold": "majority",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "83",
+    "date": "2021-03-06",
+    "q": "On the Motion",
+    "result": "Motion Rejected",
+    "yea": 51,
+    "nay": 48,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "94",
+    "date": "2021-03-06",
+    "q": "On the Motion",
+    "result": "Motion Rejected",
+    "yea": 52,
+    "nay": 47,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "161",
+    "date": "2021-04-21",
+    "q": "On the Motion to Discharge",
+    "result": "Motion to Discharge Agreed to",
+    "yea": 50,
+    "nay": 50,
+    "threshold": "majority",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "162",
+    "date": "2021-04-22",
+    "q": "On the Amendment",
+    "result": "Amendment Rejected",
+    "yea": 49,
+    "nay": 48,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "163",
+    "date": "2021-04-22",
+    "q": "On the Amendment",
+    "result": "Amendment Rejected",
+    "yea": 49,
+    "nay": 48,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "204",
+    "date": "2021-05-25",
+    "q": "On the Amendment",
+    "result": "Amendment Rejected",
+    "yea": 50,
+    "nay": 49,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "205",
+    "date": "2021-05-25",
+    "q": "On the Amendment",
+    "result": "Amendment Rejected",
+    "yea": 53,
+    "nay": 46,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "209",
+    "date": "2021-05-26",
+    "q": "On the Amendment",
+    "result": "Amendment Rejected",
+    "yea": 51,
+    "nay": 49,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "244",
+    "date": "2021-06-22",
+    "q": "On the Cloture Motion",
+    "result": "Cloture Motion Agreed to",
+    "yea": 50,
+    "nay": 50,
+    "threshold": "cloture_nomination_majority",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "245",
+    "date": "2021-06-22",
+    "q": "On the Nomination",
+    "result": "Nomination Confirmed",
+    "yea": 50,
+    "nay": 50,
+    "threshold": "majority",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "269",
+    "date": "2021-07-20",
+    "q": "On the Cloture Motion",
+    "result": "Cloture Motion Agreed to",
+    "yea": 50,
+    "nay": 50,
+    "threshold": "cloture_nomination_majority",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "273",
+    "date": "2021-07-21",
+    "q": "On the Nomination",
+    "result": "Nomination Confirmed",
+    "yea": 50,
+    "nay": 50,
+    "threshold": "majority",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "302",
+    "date": "2021-08-04",
+    "q": "On the Amendment",
+    "result": "Amendment Rejected",
+    "yea": 53,
+    "nay": 45,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "355",
+    "date": "2021-08-11",
+    "q": "On the Motion",
+    "result": "Motion Rejected",
+    "yea": 50,
+    "nay": 49,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "396",
+    "date": "2021-09-30",
+    "q": "On the Amendment",
+    "result": "Amendment Rejected",
+    "yea": 53,
+    "nay": 47,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "398",
+    "date": "2021-09-30",
+    "q": "On the Cloture Motion",
+    "result": "Cloture Motion Agreed to",
+    "yea": 50,
+    "nay": 50,
+    "threshold": "cloture_nomination_majority",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "418",
+    "date": "2021-10-20",
+    "q": "On the Cloture Motion",
+    "result": "Cloture Motion Agreed to",
+    "yea": 50,
+    "nay": 50,
+    "threshold": "cloture_nomination_majority",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "419",
+    "date": "2021-10-20",
+    "q": "On the Nomination",
+    "result": "Nomination Confirmed",
+    "yea": 50,
+    "nay": 50,
+    "threshold": "majority",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "462",
+    "date": "2021-11-03",
+    "q": "On the Motion to Discharge",
+    "result": "Motion to Discharge Agreed to",
+    "yea": 49,
+    "nay": 49,
+    "threshold": "majority",
+    "predicted": false
+   }
+  ]
+ },
+ "ablation_naive_cloture": {
+  "n_scored": 1626,
+  "n_excluded_unclassifiable": 14,
+  "accuracy": 0.7706,
+  "by_threshold_type": {
+   "majority": {
+    "n": 1088,
+    "correct": 1040
+   },
+   "cloture_legislation_3_5": {
+    "n": 530,
+    "correct": 205
+   },
+   "treaty_2_3": {
+    "n": 3,
+    "correct": 3
+   },
+   "override_2_3": {
+    "n": 5,
+    "correct": 5
+   }
+  },
+  "confusion": {
+   "tp": 961,
+   "tn": 27,
+   "fp": 346,
+   "fn": 292
+  },
+  "sample_misses": [
+   {
+    "congress": "117",
+    "roll": "10",
+    "date": "2021-01-28",
+    "q": "On the Cloture Motion",
+    "result": "Cloture Motion Agreed to",
+    "yea": 55,
+    "nay": 42,
+    "threshold": "cloture_legislation_3_5",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "23",
+    "date": "2021-02-04",
+    "q": "On the Motion",
+    "result": "Motion Rejected",
+    "yea": 52,
+    "nay": 48,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "25",
+    "date": "2021-02-04",
+    "q": "On the Motion",
+    "result": "Motion Rejected",
+    "yea": 52,
+    "nay": 48,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "50",
+    "date": "2021-02-05",
+    "q": "On the Motion",
+    "result": "Motion Rejected",
+    "yea": 51,
+    "nay": 49,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "52",
+    "date": "2021-02-05",
+    "q": "On the Amendment",
+    "result": "Amendment Agreed to",
+    "yea": 50,
+    "nay": 50,
+    "threshold": "majority",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "54",
+    "date": "2021-02-05",
+    "q": "On the Concurrent Resolution",
+    "result": "Concurrent Resolution Agreed to",
+    "yea": 50,
+    "nay": 50,
+    "threshold": "majority",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "73",
+    "date": "2021-03-04",
+    "q": "On the Motion to Proceed",
+    "result": "Motion to Proceed Agreed to",
+    "yea": 50,
+    "nay": 50,
+    "threshold": "majority",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "83",
+    "date": "2021-03-06",
+    "q": "On the Motion",
+    "result": "Motion Rejected",
+    "yea": 51,
+    "nay": 48,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "94",
+    "date": "2021-03-06",
+    "q": "On the Motion",
+    "result": "Motion Rejected",
+    "yea": 52,
+    "nay": 47,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "118",
+    "date": "2021-03-11",
+    "q": "On the Cloture Motion",
+    "result": "Cloture Motion Agreed to",
+    "yea": 54,
+    "nay": 42,
+    "threshold": "cloture_legislation_3_5",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "124",
+    "date": "2021-03-17",
+    "q": "On the Cloture Motion",
+    "result": "Cloture Motion Agreed to",
+    "yea": 50,
+    "nay": 49,
+    "threshold": "cloture_legislation_3_5",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "130",
+    "date": "2021-03-23",
+    "q": "On the Cloture Motion",
+    "result": "Cloture Motion Agreed to",
+    "yea": 57,
+    "nay": 43,
+    "threshold": "cloture_legislation_3_5",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "132",
+    "date": "2021-03-24",
+    "q": "On the Cloture Motion",
+    "result": "Cloture Motion Agreed to",
+    "yea": 52,
+    "nay": 48,
+    "threshold": "cloture_legislation_3_5",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "145",
+    "date": "2021-04-13",
+    "q": "On the Cloture Motion",
+    "result": "Cloture Motion Agreed to",
+    "yea": 55,
+    "nay": 42,
+    "threshold": "cloture_legislation_3_5",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "147",
+    "date": "2021-04-13",
+    "q": "On the Cloture Motion",
+    "result": "Cloture Motion Agreed to",
+    "yea": 53,
+    "nay": 45,
+    "threshold": "cloture_legislation_3_5",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "149",
+    "date": "2021-04-14",
+    "q": "On the Cloture Motion",
+    "result": "Cloture Motion Agreed to",
+    "yea": 53,
+    "nay": 45,
+    "threshold": "cloture_legislation_3_5",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "156",
+    "date": "2021-04-20",
+    "q": "On the Cloture Motion",
+    "result": "Cloture Motion Agreed to",
+    "yea": 54,
+    "nay": 44,
+    "threshold": "cloture_legislation_3_5",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "159",
+    "date": "2021-04-21",
+    "q": "On the Cloture Motion",
+    "result": "Cloture Motion Agreed to",
+    "yea": 51,
+    "nay": 49,
+    "threshold": "cloture_legislation_3_5",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "161",
+    "date": "2021-04-21",
+    "q": "On the Motion to Discharge",
+    "result": "Motion to Discharge Agreed to",
+    "yea": 50,
+    "nay": 50,
+    "threshold": "majority",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "162",
+    "date": "2021-04-22",
+    "q": "On the Amendment",
+    "result": "Amendment Rejected",
+    "yea": 49,
+    "nay": 48,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "163",
+    "date": "2021-04-22",
+    "q": "On the Amendment",
+    "result": "Amendment Rejected",
+    "yea": 49,
+    "nay": 48,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "168",
+    "date": "2021-04-27",
+    "q": "On the Cloture Motion",
+    "result": "Cloture Motion Agreed to",
+    "yea": 52,
+    "nay": 42,
+    "threshold": "cloture_legislation_3_5",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "170",
+    "date": "2021-04-27",
+    "q": "On the Cloture Motion",
+    "result": "Cloture Motion Agreed to",
+    "yea": 49,
+    "nay": 44,
+    "threshold": "cloture_legislation_3_5",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "181",
+    "date": "2021-05-11",
+    "q": "On the Cloture Motion",
+    "result": "Cloture Motion Agreed to",
+    "yea": 54,
+    "nay": 44,
+    "threshold": "cloture_legislation_3_5",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "200",
+    "date": "2021-05-24",
+    "q": "On the Cloture Motion",
+    "result": "Cloture Motion Agreed to",
+    "yea": 52,
+    "nay": 43,
+    "threshold": "cloture_legislation_3_5",
+    "predicted": false
+   }
+  ]
+ },
+ "ablation_majority_only": {
+  "n_scored": 1626,
+  "n_excluded_unclassifiable": 14,
+  "accuracy": 0.9533,
+  "by_threshold_type": {
+   "majority": {
+    "n": 1626,
+    "correct": 1550
+   }
+  },
+  "confusion": {
+   "tp": 1274,
+   "tn": 43,
+   "fp": 33,
+   "fn": 276
+  },
+  "sample_misses": [
+   {
+    "congress": "117",
+    "roll": "23",
+    "date": "2021-02-04",
+    "q": "On the Motion",
+    "result": "Motion Rejected",
+    "yea": 52,
+    "nay": 48,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "25",
+    "date": "2021-02-04",
+    "q": "On the Motion",
+    "result": "Motion Rejected",
+    "yea": 52,
+    "nay": 48,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "50",
+    "date": "2021-02-05",
+    "q": "On the Motion",
+    "result": "Motion Rejected",
+    "yea": 51,
+    "nay": 49,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "52",
+    "date": "2021-02-05",
+    "q": "On the Amendment",
+    "result": "Amendment Agreed to",
+    "yea": 50,
+    "nay": 50,
+    "threshold": "majority",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "54",
+    "date": "2021-02-05",
+    "q": "On the Concurrent Resolution",
+    "result": "Concurrent Resolution Agreed to",
+    "yea": 50,
+    "nay": 50,
+    "threshold": "majority",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "73",
+    "date": "2021-03-04",
+    "q": "On the Motion to Proceed",
+    "result": "Motion to Proceed Agreed to",
+    "yea": 50,
+    "nay": 50,
+    "threshold": "majority",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "83",
+    "date": "2021-03-06",
+    "q": "On the Motion",
+    "result": "Motion Rejected",
+    "yea": 51,
+    "nay": 48,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "94",
+    "date": "2021-03-06",
+    "q": "On the Motion",
+    "result": "Motion Rejected",
+    "yea": 52,
+    "nay": 47,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "161",
+    "date": "2021-04-21",
+    "q": "On the Motion to Discharge",
+    "result": "Motion to Discharge Agreed to",
+    "yea": 50,
+    "nay": 50,
+    "threshold": "majority",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "162",
+    "date": "2021-04-22",
+    "q": "On the Amendment",
+    "result": "Amendment Rejected",
+    "yea": 49,
+    "nay": 48,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "163",
+    "date": "2021-04-22",
+    "q": "On the Amendment",
+    "result": "Amendment Rejected",
+    "yea": 49,
+    "nay": 48,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "204",
+    "date": "2021-05-25",
+    "q": "On the Amendment",
+    "result": "Amendment Rejected",
+    "yea": 50,
+    "nay": 49,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "205",
+    "date": "2021-05-25",
+    "q": "On the Amendment",
+    "result": "Amendment Rejected",
+    "yea": 53,
+    "nay": 46,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "209",
+    "date": "2021-05-26",
+    "q": "On the Amendment",
+    "result": "Amendment Rejected",
+    "yea": 51,
+    "nay": 49,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "218",
+    "date": "2021-05-28",
+    "q": "On the Cloture Motion",
+    "result": "Cloture Motion Rejected",
+    "yea": 54,
+    "nay": 35,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "244",
+    "date": "2021-06-22",
+    "q": "On the Cloture Motion",
+    "result": "Cloture Motion Agreed to",
+    "yea": 50,
+    "nay": 50,
+    "threshold": "majority",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "245",
+    "date": "2021-06-22",
+    "q": "On the Nomination",
+    "result": "Nomination Confirmed",
+    "yea": 50,
+    "nay": 50,
+    "threshold": "majority",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "269",
+    "date": "2021-07-20",
+    "q": "On the Cloture Motion",
+    "result": "Cloture Motion Agreed to",
+    "yea": 50,
+    "nay": 50,
+    "threshold": "majority",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "273",
+    "date": "2021-07-21",
+    "q": "On the Nomination",
+    "result": "Nomination Confirmed",
+    "yea": 50,
+    "nay": 50,
+    "threshold": "majority",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "302",
+    "date": "2021-08-04",
+    "q": "On the Amendment",
+    "result": "Amendment Rejected",
+    "yea": 53,
+    "nay": 45,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "355",
+    "date": "2021-08-11",
+    "q": "On the Motion",
+    "result": "Motion Rejected",
+    "yea": 50,
+    "nay": 49,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "396",
+    "date": "2021-09-30",
+    "q": "On the Amendment",
+    "result": "Amendment Rejected",
+    "yea": 53,
+    "nay": 47,
+    "threshold": "majority",
+    "predicted": true
+   },
+   {
+    "congress": "117",
+    "roll": "398",
+    "date": "2021-09-30",
+    "q": "On the Cloture Motion",
+    "result": "Cloture Motion Agreed to",
+    "yea": 50,
+    "nay": 50,
+    "threshold": "majority",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "418",
+    "date": "2021-10-20",
+    "q": "On the Cloture Motion",
+    "result": "Cloture Motion Agreed to",
+    "yea": 50,
+    "nay": 50,
+    "threshold": "majority",
+    "predicted": false
+   },
+   {
+    "congress": "117",
+    "roll": "419",
+    "date": "2021-10-20",
+    "q": "On the Nomination",
+    "result": "Nomination Confirmed",
+    "yea": 50,
+    "nay": 50,
+    "threshold": "majority",
+    "predicted": false
+   }
+  ]
+ },
+ "matter_aware_vs_naive_cloture": 0.1925,
+ "matter_aware_vs_majority_only": 0.0098,
+ "leakage_audit": {
+  "clean": true,
+  "as_of": "2021-01-01",
+  "leaked_into_reconstruction": [],
+  "post_as_of_rules_excluded": [],
+  "post_as_of_evidence_excluded": [],
+  "future_outcomes_excluded": [
+   "later_vote"
+  ],
+  "note": "PROOF: the active reconstruction at as_of excludes post-as_of amendments and later outcomes; `clean` is True iff no future rule leaked into the active set"
+ }
+}
