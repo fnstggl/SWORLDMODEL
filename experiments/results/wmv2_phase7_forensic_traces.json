@@ -1,0 +1,194 @@
+{
+ "_meta": {
+  "note": "Phase-7 forensic traces \u2014 each produced by running the operator in a real WorldState; StateDeltas + follow-up events are the real objects.",
+  "llm_calls": 0,
+  "runtime_s": 0.3
+ },
+ "traces": [
+  {
+   "trace_id": "telco_attrition_gam",
+   "question": "Will customer cust_042 (tenure=2mo, month-to-month, $79/mo) churn within the window?",
+   "phase6_family": "attrition_dropout_hazard (relationship/subscription ends)",
+   "candidate_forms": [
+    "logistic (Phase-6 additive)",
+    "gam (nonlinear tenure/charges smooths)",
+    "logistic_interaction"
+   ],
+   "selected_form": "gam",
+   "why_selected": "won validation Brier; beat logistic on held-out (CI<0)",
+   "posterior_context": "features observed (customer record); tenure smooth carries the fitted declining-hazard shape; no Phase-3 latent needed for this observed-feature case",
+   "worldstate_fields_read": [
+    "entity cust_042 features (tenure, contract, monthly_charges, \u2026)"
+   ],
+   "event": "nonlinear_transition @ as-of",
+   "nonlinear_calculation": {
+    "gam_p_churn": 0.6498,
+    "logistic_p_churn": 0.5011,
+    "note": "GAM raises risk for very-short tenure beyond the logistic's constant-slope prediction (declining-hazard curvature)"
+   },
+   "statedelta": {
+    "at": "2014-05-13T16:53:20Z",
+    "event_type": "nonlinear_transition",
+    "operator": "nonlinear_mechanism",
+    "changes": [
+     {
+      "path": "quantities[churn]",
+      "before": null,
+      "after": "True"
+     }
+    ],
+    "reason_codes": [
+     "nonlinear::gam",
+     "p=0.6498"
+    ],
+    "uncertainty": {
+     "pack_id": "",
+     "form_id": "gam",
+     "transport_widening": 1.0,
+     "output": "prob"
+    },
+    "evidence_deps": []
+   },
+   "future_events": [],
+   "terminal_effect": "quantities[churn] set to True; downstream retention actions keyed on this churn outcome differ vs the logistic arm",
+   "anti_scaffolding": {
+    "1_mechanism": "attrition/dropout hazard \u2014 a subscription relationship ending",
+    "2_why_nonlinear": "tenure\u2192churn hazard is strongly declining/convex (0.49\u21920.02 across tenure)",
+    "3_candidates": "logistic vs GAM(tenure,charges smooths)+interaction vs logistic+interaction",
+    "4_baseline": "additive logistic (the Phase-6 form) + constant base rate",
+    "5_evidence": "telco churn, 7032 rows, real",
+    "6_split": "held-out; group-disjoint variant for the backtest",
+    "7_selection": "validation Brier, then parsimony vs logistic on TEST",
+    "8_uncertainty": "transport widening on log-odds; posterior path available when a latent enters",
+    "9_context": "customer features (contract, charges) \u2014 typed, observed",
+    "10_history": "n/a for the cross-sectional case; tenure IS the accumulated-time state",
+    "11_posterior": "none required here (observed features); Jensen-gap path validated separately",
+    "12_applicability": "in-support interpolation; nonlinear_applicable",
+    "13_transport": "does NOT transport across contract types \u2192 domain_restricted (measured)",
+    "14_scenario_object": "nonlinear_spec bound to cust_042 features + fitted GAM params",
+    "15_worldstate_read": "cust_042 feature fields",
+    "16_event": "nonlinear_transition",
+    "17_calculation": "GAM \u03c3(\u03a3 linear + \u03a3 smooth(tenure,charges) + interaction) = 0.6498",
+    "18_statedelta": "quantities[churn]: None \u2192 True",
+    "19_future_event": "none for a terminal churn resolution (recurrent path available)",
+    "20_terminal_change": "churn outcome + actor.outcome[churn] set; retention branch differs",
+    "21_heldout_improvement": "\u0394Brier -0.0055 vs logistic end-to-end (CI excludes 0)",
+    "22_ablation": "gam_no_interaction and single-smooth arms isolate the smooths' contribution",
+    "23_failed": "nonlinear transport across contract types failed (preserved)",
+    "24_not_curve_fit": "executes through WorldState\u2192StateDelta\u2192terminal churn quantity that downstream mechanisms read; not a standalone predictor"
+   }
+  },
+  {
+   "trace_id": "diffusion_logistic_saturation",
+   "question": "How does a name's adoption share evolve from 2% given saturation at L=8%?",
+   "phase6_family": "complex_contagion_hazard / bass_diffusion (adoption with saturation)",
+   "candidate_forms": [
+    "linear_growth (non-saturating)",
+    "logistic_growth (Verhulst saturation)"
+   ],
+   "selected_form": "logistic_growth",
+   "why_selected": "beats non-saturating extrapolation on real baby-name trajectories (paired CI<0)",
+   "worldstate_fields_read": [
+    "quantities[share] (current adoption state)"
+   ],
+   "event": "state_step (yearly), self-scheduling",
+   "nonlinear_calculation": "\u0394S = r\u00b7S\u00b7(1\u2212S/L): growth slows as S\u2192L; the step count = 6 StateDeltas emitted",
+   "trajectory_executed": [
+    {
+     "at": 1400086400.0,
+     "share": 0.029,
+     "reason": "state_step:logistic_growth"
+    },
+    {
+     "at": 1400172800.0,
+     "share": 0.0400925,
+     "reason": "state_step:logistic_growth"
+    },
+    {
+     "at": 1400259200.0,
+     "share": 0.052092435828125006,
+     "reason": "state_step:logistic_growth"
+    },
+    {
+     "at": 1400345600.0,
+     "share": 0.0629957332961951,
+     "reason": "state_step:logistic_growth"
+    },
+    {
+     "at": 1400432000.0,
+     "share": 0.07102970517247208,
+     "reason": "state_step:logistic_growth"
+    },
+    {
+     "at": 1400518400.0,
+     "share": 0.07580838564929303,
+     "reason": "state_step:logistic_growth"
+    }
+   ],
+   "statedelta_example": {
+    "at": "2014-05-14T16:53:20Z",
+    "event_type": "state_step",
+    "operator": "nonlinear_state_step",
+    "changes": [
+     {
+      "path": "quantities[share]",
+      "before": 0.02,
+      "after": 0.029
+     }
+    ],
+    "reason_codes": [
+     "state_step:logistic_growth",
+     "S=0.029"
+    ],
+    "uncertainty": {
+     "form_id": "logistic_growth",
+     "mode": "increment"
+    },
+    "evidence_deps": []
+   },
+   "future_events": "each step schedules the next year's state_step (endogenous) until horizon",
+   "terminal_effect": "terminal share = 0.07581; a linear form would keep climbing past L (overshoot) \u2014 the saturation changes the terminal",
+   "anti_scaffolding_summary": "nonlinear saturation executed event-by-event through StateDelta; terminal share bounded by L, unlike the linear extrapolation"
+  },
+  {
+   "trace_id": "posterior_jensen_gap",
+   "question": "With an uncertain Phase-3 half-saturation k, what is E[Hill response]?",
+   "phase6_family": "complex_contagion_hazard (Hill saturation)",
+   "selected_form": "hill",
+   "posterior_context": "Phase-3 posterior over k (mean 4, sd 2); propagated per-particle",
+   "nonlinear_calculation": {
+    "E[f(X)]_posterior_correct": 0.5343,
+    "f(E[X])_naive_shortcut": 0.5,
+    "jensen_gap": 0.0343,
+    "note": "collapsing k to its mean would MIS-state the response by the Jensen gap \u2014 exactly what Part 12 forbids"
+   },
+   "statedelta": {
+    "at": "2014-05-13T16:53:20Z",
+    "event_type": "nonlinear_transition",
+    "operator": "nonlinear_mechanism",
+    "changes": [
+     {
+      "path": "quantities[adopt]",
+      "before": null,
+      "after": "True"
+     }
+    ],
+    "reason_codes": [
+     "nonlinear::hill",
+     "p=0.4017"
+    ],
+    "uncertainty": {
+     "pack_id": "",
+     "form_id": "hill",
+     "transport_widening": 1.0,
+     "output": "rate",
+     "jensen_gap": 0.013629,
+     "posterior_propagated": true
+    },
+    "evidence_deps": []
+   },
+   "posterior_propagated_flag": true,
+   "terminal_effect": "the operator wrote the outcome using the posterior-correct E[f(X)], not the biased f(E[X])"
+  }
+ ]
+}

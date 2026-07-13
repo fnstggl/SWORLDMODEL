@@ -1,0 +1,305 @@
+{
+ "_integrity": {
+  "sha256": "bc5cf622b60b127aa74965b0e9504bdc08613c86619107c5dfdb2496948d50ae",
+  "n": 5,
+  "at": "2026-07-13T15:59:38Z"
+ },
+ "payload": {
+  "nl_attrition_gam": {
+   "extension_id": "nl_attrition_gam",
+   "family_id": "attrition_dropout_hazard",
+   "causal_process": "attrition",
+   "base_pack_id": "telco_attrition",
+   "nonlinear_pack_id": "telco_attrition_gam_v1",
+   "candidate_forms": [
+    "logistic",
+    "logistic_interaction",
+    "gam",
+    "gam_interaction"
+   ],
+   "selected_form": "gam_interaction",
+   "baseline_form": "logistic",
+   "form_posterior": {
+    "gam_interaction": 0.6,
+    "gam": 0.3,
+    "logistic": 0.1
+   },
+   "context_conditioning": {
+    "variables": [
+     "contract",
+     "internet_service",
+     "senior",
+     "partner"
+    ]
+   },
+   "history_requirements": {
+    "note": "tenure is the accumulated-time state (cross-sectional)"
+   },
+   "posterior_schema": {},
+   "applicability": {
+    "verdict": "nonlinear_applicable",
+    "in_support": true
+   },
+   "transport": {
+    "telco_cross_contract": "FAILED \u2014 nonlinear does not transport across contract types",
+    "verdict": "domain_restricted"
+   },
+   "extrapolation_limits": {
+    "tenure": "fitted on [0,72] months; do not extrapolate"
+   },
+   "nonlinear_validation": [
+    {
+     "kind": "held_out",
+     "dataset": "telco_churn",
+     "split": "random 60/20/20 seed=0",
+     "metric": "brier",
+     "value": 0.135095,
+     "baseline": "logistic",
+     "baseline_value": 0.140367,
+     "paired_delta": -0.005273,
+     "ci95": [
+      -0.008016,
+      -0.002546
+     ],
+     "passed": true
+    },
+    {
+     "kind": "held_out",
+     "dataset": "telco_churn",
+     "split": "end-to-end WorldState rollout",
+     "metric": "brier",
+     "value": -0.005748,
+     "baseline": "logistic (Phase 6)",
+     "ci95": [
+      -0.00873,
+      -0.002802
+     ],
+     "passed": true
+    },
+    {
+     "kind": "transfer",
+     "dataset": "telco_churn",
+     "split": "contract=0 \u2192 contract\u2208{1,2}",
+     "metric": "brier",
+     "baseline": "logistic",
+     "value": 0.072768,
+     "passed": false
+    }
+   ],
+   "nonlinear_ablation": {
+    "single_smooth": "tenure smooth carries most of the gain",
+    "no_interaction": "interaction adds a small increment"
+   },
+   "status": "domain_restricted",
+   "status_reason": "held-out win in-distribution (telco), but transfer across contract types FAILED \u2014 valid only within the fitted contract/tenure support",
+   "failures": [],
+   "code_ref": "swm.world_model_v2.nonlinear.operators:NonlinearMechanismOperator",
+   "test_ref": "tests/test_wmv2_phase7_execution.py",
+   "citations": [
+    {
+     "ref": "IBM Telco Customer Churn (public)",
+     "limits": "one telco, one period; tenure support differs by contract \u2014 nonlinear shape does not transport"
+    }
+   ],
+   "created_at": "2026-07-13T15:59:38Z",
+   "updated_at": "2026-07-13T15:59:38Z"
+  },
+  "nl_content_null": {
+   "extension_id": "nl_content_null",
+   "family_id": "content_response_click",
+   "causal_process": "content_response",
+   "base_pack_id": "",
+   "nonlinear_pack_id": "",
+   "candidate_forms": [
+    "linear_headline",
+    "gam_headline",
+    "partial_pooling"
+   ],
+   "selected_form": "pooled_baseline",
+   "baseline_form": "global_ctr",
+   "form_posterior": {},
+   "context_conditioning": {
+    "variables": [
+     "len_words",
+     "qmark",
+     "has_number",
+     "you"
+    ]
+   },
+   "history_requirements": {},
+   "posterior_schema": {},
+   "applicability": {},
+   "transport": {},
+   "extrapolation_limits": {},
+   "nonlinear_validation": [
+    {
+     "kind": "held_out",
+     "dataset": "upworthy_ab",
+     "metric": "impression_wt_brier",
+     "value": 0.000595,
+     "baseline": "global_ctr",
+     "baseline_value": 0.000129,
+     "passed": false
+    }
+   ],
+   "nonlinear_ablation": {},
+   "status": "structural_candidate",
+   "status_reason": "headline nonlinearity + partial pooling TESTED; pooled/global CTR baseline dominates \u2014 honest null, no promotion",
+   "failures": [],
+   "code_ref": "swm.world_model_v2.nonlinear.operators:NonlinearMechanismOperator",
+   "test_ref": "tests/test_wmv2_phase7_execution.py",
+   "citations": [],
+   "created_at": "2026-07-13T15:59:38Z",
+   "updated_at": "2026-07-13T15:59:38Z"
+  },
+  "nl_diffusion_logistic_growth": {
+   "extension_id": "nl_diffusion_logistic_growth",
+   "family_id": "bass_diffusion",
+   "causal_process": "adoption",
+   "base_pack_id": "",
+   "nonlinear_pack_id": "",
+   "candidate_forms": [
+    "linear_growth",
+    "logistic_growth"
+   ],
+   "selected_form": "logistic_growth",
+   "baseline_form": "linear_growth",
+   "form_posterior": {
+    "logistic_growth": 0.7,
+    "linear_growth": 0.3
+   },
+   "context_conditioning": {},
+   "history_requirements": {
+    "note": "cumulative adoption share stepped year-by-year"
+   },
+   "posterior_schema": {},
+   "applicability": {
+    "verdict": "nonlinear_applicable",
+    "note": "rising-phase cutoff past inflection"
+   },
+   "transport": {
+    "note": "per-name fit; carrying capacity L identified only after deceleration is observed"
+   },
+   "extrapolation_limits": {
+    "post_peak_decline": "NOT modeled \u2014 growth-only mechanism cannot fall"
+   },
+   "nonlinear_validation": [
+    {
+     "kind": "held_out",
+     "dataset": "baby_names_1880_2008",
+     "split": "as-of cutoff per name",
+     "metric": "trajectory_rmse",
+     "value": 0.028815,
+     "baseline": "linear_growth",
+     "baseline_value": 0.096838,
+     "paired_delta": -0.068024,
+     "ci95": [
+      -0.129743,
+      -0.01456
+     ],
+     "passed": true
+    }
+   ],
+   "nonlinear_ablation": {
+    "vs_constant": "naive persistence competitive (post-peak decline unmodeled)"
+   },
+   "status": "domain_restricted",
+   "status_reason": "beats Phase-6 non-saturating extrapolation on real trajectories; does NOT beat naive persistence (decline unmodeled) \u2014 a genuine but bounded diffusion win",
+   "failures": [],
+   "code_ref": "swm.world_model_v2.nonlinear.operators:NonlinearStateStepOperator",
+   "test_ref": "tests/test_wmv2_phase7_execution.py",
+   "citations": [
+    {
+     "ref": "US SSA baby-name shares 1880-2008 (public)",
+     "limits": "cultural adoption; growth-only forecast cannot capture the post-peak decline"
+    }
+   ],
+   "created_at": "2026-07-13T15:59:38Z",
+   "updated_at": "2026-07-13T15:59:38Z"
+  },
+  "nl_persuasion_null": {
+   "extension_id": "nl_persuasion_null",
+   "family_id": "argument_persuasion_success",
+   "causal_process": "argument_persuasion_success",
+   "base_pack_id": "",
+   "nonlinear_pack_id": "",
+   "candidate_forms": [
+    "logistic",
+    "gam",
+    "gam_interaction"
+   ],
+   "selected_form": "logistic",
+   "baseline_form": "logistic",
+   "form_posterior": {},
+   "context_conditioning": {},
+   "history_requirements": {},
+   "posterior_schema": {},
+   "applicability": {},
+   "transport": {},
+   "extrapolation_limits": {},
+   "nonlinear_validation": [
+    {
+     "kind": "held_out",
+     "dataset": "cmv",
+     "split": "random 60/20/20 seed=0",
+     "metric": "brier",
+     "value": 0.210896,
+     "baseline": "logistic",
+     "baseline_value": 0.20993,
+     "passed": false
+    }
+   ],
+   "nonlinear_ablation": {},
+   "status": "structural_candidate",
+   "status_reason": "nonlinear TESTED and did NOT beat additive logistic on cmv held-out \u2014 the Phase-6 null is preserved; parsimony keeps the simpler form",
+   "failures": [],
+   "code_ref": "swm.world_model_v2.nonlinear.operators:NonlinearMechanismOperator",
+   "test_ref": "tests/test_wmv2_phase7_execution.py",
+   "citations": [],
+   "created_at": "2026-07-13T15:59:38Z",
+   "updated_at": "2026-07-13T15:59:38Z"
+  },
+  "nl_response_null": {
+   "extension_id": "nl_response_null",
+   "family_id": "response_occurrence_hazard",
+   "causal_process": "response_occurrence_hazard",
+   "base_pack_id": "",
+   "nonlinear_pack_id": "",
+   "candidate_forms": [
+    "logistic",
+    "gam",
+    "gam_interaction"
+   ],
+   "selected_form": "logistic",
+   "baseline_form": "logistic",
+   "form_posterior": {},
+   "context_conditioning": {},
+   "history_requirements": {},
+   "posterior_schema": {},
+   "applicability": {},
+   "transport": {},
+   "extrapolation_limits": {},
+   "nonlinear_validation": [
+    {
+     "kind": "held_out",
+     "dataset": "stackexchange",
+     "split": "random 60/20/20 seed=0",
+     "metric": "brier",
+     "value": 0.24153,
+     "baseline": "logistic",
+     "baseline_value": 0.239069,
+     "passed": false
+    }
+   ],
+   "nonlinear_ablation": {},
+   "status": "structural_candidate",
+   "status_reason": "nonlinear TESTED and did NOT beat additive logistic on stackexchange held-out \u2014 the Phase-6 null is preserved; parsimony keeps the simpler form",
+   "failures": [],
+   "code_ref": "swm.world_model_v2.nonlinear.operators:NonlinearMechanismOperator",
+   "test_ref": "tests/test_wmv2_phase7_execution.py",
+   "citations": [],
+   "created_at": "2026-07-13T15:59:38Z",
+   "updated_at": "2026-07-13T15:59:38Z"
+  }
+ }
+}

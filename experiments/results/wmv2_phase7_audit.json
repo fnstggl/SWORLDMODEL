@@ -1,0 +1,1749 @@
+{
+ "_meta": {
+  "n_families": 63,
+  "note": "Part-0 nonlinearity audit; dispositions curated openly, registry facts data-driven. Under-served phenomena drive the Phase-7 build."
+ },
+ "disposition_counts": {
+  "test_nonlinear": 46,
+  "test_nonlinear_expect_null": 2,
+  "extend": 5,
+  "retain_linear": 6,
+  "quarantine_preserved": 1,
+  "retain": 1,
+  "retain_linear_as_comparator": 1,
+  "structural_candidate": 1
+ },
+ "phenomena_modeled_counts": {
+  "saturation": 6,
+  "finite_population": 2,
+  "threshold": 1,
+  "heterogeneity": 2,
+  "interaction": 1,
+  "recency": 1,
+  "self_excitation": 1,
+  "path_dependence": 1,
+  "inverted_u": 1
+ },
+ "under_served_phenomena": [
+  "interaction",
+  "fatigue",
+  "hysteresis"
+ ],
+ "families": [
+  {
+   "current_form": "procedure rule gates actions by stage variable",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "threshold",
+    "regime"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "agenda_stage_control",
+   "ontology_type": "institutional",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.institutions:Rule",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "agenda_gating",
+    "institutional_threshold_decision"
+   ],
+   "nonlinear_gap": [
+    "threshold",
+    "regime"
+   ]
+  },
+  {
+   "current_form": "costly peer punishment of free-riders raises/sustains cooperation in public-good",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "threshold",
+    "path_dependence"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "altruistic_punishment",
+   "ontology_type": "norm",
+   "status": "research_encoded",
+   "code_ref": "swm.world_model_v2.registry.families.structural:altruistic_punishment_cooperation",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "norm_enforcement",
+    "actor_selects_typed_action"
+   ],
+   "nonlinear_gap": [
+    "threshold",
+    "path_dependence"
+   ]
+  },
+  {
+   "current_form": "\u03c3(b+\u03a3w\u00b7z)",
+   "assumes_linear": true,
+   "phenomena_possible": [
+    "interaction",
+    "backfire",
+    "saturation"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear_expect_null",
+   "priority": "medium",
+   "note": "Phase-6 NULL; test prior\u00d7argument interaction + guard against unsupported backfire. Testbed=CMV",
+   "family_id": "argument_persuasion_success",
+   "ontology_type": "belief",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.hazard:hazard_from_pack",
+   "n_packs": 1,
+   "has_validation": true,
+   "answers_processes": [
+    "persuasion_success"
+   ],
+   "nonlinear_gap": [
+    "interaction",
+    "backfire",
+    "saturation"
+   ]
+  },
+  {
+   "current_form": "Interpretation-driven attention allocation",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "saturation",
+    "fatigue",
+    "habituation",
+    "recency",
+    "inverted_u"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "attention_allocation",
+   "ontology_type": "attention",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.actor_cognition:attention_transition",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "attention_after_exposure"
+   ],
+   "nonlinear_gap": [
+    "saturation",
+    "fatigue",
+    "habituation",
+    "recency",
+    "inverted_u"
+   ]
+  },
+  {
+   "current_form": "Mean-reverting attention over elapsed time",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "saturation",
+    "fatigue",
+    "habituation",
+    "recency",
+    "inverted_u"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "attention_dynamics",
+   "ontology_type": "attention",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.transitions:BackgroundDynamicsOperator",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [],
+   "nonlinear_gap": [
+    "saturation",
+    "fatigue",
+    "habituation",
+    "recency",
+    "inverted_u"
+   ]
+  },
+  {
+   "current_form": "\u03c3(b+\u03a3w\u00b7z) additive logistic",
+   "assumes_linear": true,
+   "phenomena_possible": [
+    "saturation",
+    "threshold",
+    "interaction",
+    "path_dependence"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "high",
+   "note": "tenure\u2192churn is famously nonlinear (declining hazard); interaction contract\u00d7tenure. Testbed=telco",
+   "family_id": "attrition_dropout_hazard",
+   "ontology_type": "resource",
+   "status": "locally_validated",
+   "code_ref": "swm.world_model_v2.registry.families.hazard:hazard_from_pack",
+   "n_packs": 1,
+   "has_validation": true,
+   "answers_processes": [
+    "relationship_dropout",
+    "attrition"
+   ],
+   "nonlinear_gap": [
+    "saturation",
+    "threshold",
+    "interaction",
+    "path_dependence"
+   ]
+  },
+  {
+   "current_form": "x*=(1\u2212\u03b4_b)/(1\u2212\u03b4_a \u03b4_b)",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "saturation",
+    "threshold"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "bargaining_rubinstein",
+   "ontology_type": "bargaining",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.interaction:rubinstein_split",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "bargaining_split",
+    "offer_response"
+   ],
+   "nonlinear_gap": [
+    "saturation",
+    "threshold"
+   ]
+  },
+  {
+   "current_form": "dN/dt=(p+q\u00b7N/M)(M\u2212N)",
+   "assumes_linear": false,
+   "phenomena_possible": [
+    "saturation",
+    "tipping",
+    "finite_population"
+   ],
+   "phenomena_modeled": [
+    "saturation",
+    "finite_population"
+   ],
+   "disposition": "extend",
+   "priority": "high",
+   "note": "logistic-type adoption saturation; testbed = baby-name cultural adoption",
+   "family_id": "bass_diffusion",
+   "ontology_type": "diffusion",
+   "status": "domain_restricted",
+   "code_ref": "swm.world_model_v2.registry.families.behavioral:bass_trajectory",
+   "n_packs": 1,
+   "has_validation": false,
+   "answers_processes": [
+    "cascade_saturation",
+    "adoption_after_repeated_exposure"
+   ],
+   "nonlinear_gap": [
+    "tipping"
+   ]
+  },
+  {
+   "current_form": "beliefs\u2190normalized action counts",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "saturation",
+    "habituation",
+    "regime"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "belief_learning",
+   "ontology_type": "learning",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.learning:belief_update_counts",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "actor_selects_typed_action",
+    "strategic_learning"
+   ],
+   "nonlinear_gap": [
+    "saturation",
+    "habituation",
+    "regime"
+   ]
+  },
+  {
+   "current_form": "Bounded Bayesian-ish belief shift on exposure",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "interaction",
+    "backfire",
+    "saturation"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "belief_update_exposure",
+   "ontology_type": "belief",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.transitions:BeliefUpdateOperator",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "belief_update_after_message"
+   ],
+   "nonlinear_gap": [
+    "interaction",
+    "backfire",
+    "saturation"
+   ]
+  },
+  {
+   "current_form": "Bernoulli detection observation model",
+   "assumes_linear": null,
+   "phenomena_possible": [],
+   "phenomena_modeled": [],
+   "disposition": "retain_linear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "bernoulli_detection",
+   "ontology_type": "observation",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.observation:BernoulliDetection",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [],
+   "nonlinear_gap": []
+  },
+  {
+   "current_form": "average opinions within \u03b5 only",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "threshold",
+    "tipping",
+    "path_dependence"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "bounded_confidence",
+   "ontology_type": "influence",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.social:bounded_confidence_step",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "belief_update_after_message",
+    "opinion_convergence"
+   ],
+   "nonlinear_gap": [
+    "threshold",
+    "tipping",
+    "path_dependence"
+   ]
+  },
+  {
+   "current_form": "greedy MWC by support; Banzhaf pivotality index",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "threshold",
+    "tipping"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "coalition_formation",
+   "ontology_type": "coalition",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.interaction:banzhaf_power",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "coalition_formation"
+   ],
+   "nonlinear_gap": [
+    "threshold",
+    "tipping"
+   ]
+  },
+  {
+   "current_form": "portfolio share \u2248 seat contribution share (slope\u22481, R\u00b2\u22480.9; small-party bonus). ",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "threshold",
+    "tipping"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "coalition_payoff_gamson",
+   "ontology_type": "coalition",
+   "status": "research_encoded",
+   "code_ref": "swm.world_model_v2.registry.families.structural:coalition_payoff_gamson",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "coalition_payoff",
+    "coalition_formation"
+   ],
+   "nonlinear_gap": [
+    "threshold",
+    "tipping"
+   ]
+  },
+  {
+   "current_form": "Hill \u03bb=exp(\u03b80)k\u1d45/(c\u1d45+k\u1d45)",
+   "assumes_linear": false,
+   "phenomena_possible": [
+    "saturation",
+    "threshold",
+    "reinforcement",
+    "tipping"
+   ],
+   "phenomena_modeled": [
+    "saturation",
+    "threshold"
+   ],
+   "disposition": "extend",
+   "priority": "high",
+   "note": "genuine nonlinear (\u03b1>1 superlinear onset + saturation); already implemented",
+   "family_id": "complex_contagion_hazard",
+   "ontology_type": "diffusion",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.diffusion:contagion_window_predict",
+   "n_packs": 1,
+   "has_validation": false,
+   "answers_processes": [
+    "adoption_after_repeated_exposure",
+    "social_reinforcement"
+   ],
+   "nonlinear_gap": [
+    "reinforcement",
+    "tipping"
+   ]
+  },
+  {
+   "current_form": "linear CTR + argmax winner-share",
+   "assumes_linear": true,
+   "phenomena_possible": [
+    "saturation",
+    "inverted_u",
+    "interaction",
+    "heterogeneity"
+   ],
+   "phenomena_modeled": [
+    "heterogeneity"
+   ],
+   "disposition": "test_nonlinear",
+   "priority": "high",
+   "note": "headline\u2192CTR saturation + partial pooling across randomized A/B tests. Testbed=Upworthy",
+   "family_id": "content_response_click",
+   "ontology_type": "attention",
+   "status": "production_eligible",
+   "code_ref": "swm.world_model_v2.reference.upworthy:population_rank",
+   "n_packs": 1,
+   "has_validation": true,
+   "answers_processes": [
+    "content_response",
+    "attention_after_exposure"
+   ],
+   "nonlinear_gap": [
+    "saturation",
+    "inverted_u",
+    "interaction"
+   ]
+  },
+  {
+   "current_form": "o_i\u2190\u03a3_j w_ij o_j (row-stochastic)",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "threshold",
+    "tipping",
+    "path_dependence"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "degroot_influence",
+   "ontology_type": "influence",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.social:degroot_step",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "belief_update_after_message",
+    "opinion_convergence"
+   ],
+   "nonlinear_gap": [
+    "threshold",
+    "tipping",
+    "path_dependence"
+   ]
+  },
+  {
+   "current_form": "fraction of capacity \u2191 in ask/affinity/history, saturating",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "threshold",
+    "saturation",
+    "fatigue",
+    "interaction"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "donation_response",
+   "ontology_type": "participation",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.interaction:donation_amount",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "donation_after_ask"
+   ],
+   "nonlinear_gap": [
+    "threshold",
+    "saturation",
+    "fatigue",
+    "interaction"
+   ]
+  },
+  {
+   "current_form": "Momentum/burstiness persistence state",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "fatigue",
+    "habituation",
+    "recency"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "engagement_momentum_persistence",
+   "ontology_type": "memory",
+   "status": "production_eligible",
+   "code_ref": "swm.world_model_v2.reference.omnibehavior:momentum_state",
+   "n_packs": 1,
+   "has_validation": true,
+   "answers_processes": [
+    "habit_persistence",
+    "engagement_persistence"
+   ],
+   "nonlinear_gap": [
+    "fatigue",
+    "habituation",
+    "recency"
+   ]
+  },
+  {
+   "current_form": "A\u2190(\u03c6NA+[1 or \u03b4]\u00b7payoff)/N'; N'=\u03c1N+1",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "saturation",
+    "habituation",
+    "regime"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "experience_weighted_attraction",
+   "ontology_type": "learning",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.learning:EWAState",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "actor_selects_typed_action",
+    "strategic_learning"
+   ],
+   "nonlinear_gap": [
+    "saturation",
+    "habituation",
+    "regime"
+   ]
+  },
+  {
+   "current_form": "log-linear \u03bb=exp(\u03b8\u00b7x), x has log1p(k), k/deg",
+   "assumes_linear": false,
+   "phenomena_possible": [
+    "saturation",
+    "interaction",
+    "recency",
+    "heterogeneity"
+   ],
+   "phenomena_modeled": [
+    "saturation",
+    "interaction",
+    "recency"
+   ],
+   "disposition": "extend",
+   "priority": "high",
+   "note": "the validated winner (locally_validated); the ONE interaction (k/deg) in the whole registry",
+   "family_id": "exposure_response_hazard",
+   "ontology_type": "diffusion",
+   "status": "locally_validated",
+   "code_ref": "swm.world_model_v2.registry.families.diffusion:contagion_window_predict",
+   "n_packs": 1,
+   "has_validation": true,
+   "answers_processes": [
+    "adoption_after_repeated_exposure",
+    "diffusion_timing"
+   ],
+   "nonlinear_gap": [
+    "heterogeneity"
+   ]
+  },
+  {
+   "current_form": "P=E_\u03b5[1\u2212exp(\u2212\u03b5\u03bbW)]",
+   "assumes_linear": false,
+   "phenomena_possible": [
+    "saturation",
+    "finite_population",
+    "heterogeneity"
+   ],
+   "phenomena_modeled": [
+    "saturation",
+    "finite_population",
+    "heterogeneity"
+   ],
+   "disposition": "extend",
+   "priority": "medium",
+   "note": "finite-pop saturation with frailty",
+   "family_id": "finite_population_saturation",
+   "ontology_type": "diffusion",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.diffusion:closed_form_window_p",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "cascade_saturation",
+    "adoption_after_repeated_exposure"
+   ],
+   "nonlinear_gap": []
+  },
+  {
+   "current_form": "Gaussian measurement with bias/missingness/delay",
+   "assumes_linear": null,
+   "phenomena_possible": [],
+   "phenomena_modeled": [],
+   "disposition": "retain_linear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "gaussian_measurement",
+   "ontology_type": "measurement",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.observation:GaussianMeasurement",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [],
+   "nonlinear_gap": []
+  },
+  {
+   "current_form": "H\u2190(1\u2212\u03b3)H+\u03b3\u00b71[acted]; boosts repeat probability",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "saturation",
+    "habituation",
+    "regime"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "habit_formation",
+   "ontology_type": "learning",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.learning:habit_update",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "actor_selects_typed_action",
+    "habit_persistence"
+   ],
+   "nonlinear_gap": [
+    "saturation",
+    "habituation",
+    "regime"
+   ]
+  },
+  {
+   "current_form": "Hawkes \u03bc+\u03b1\u03c9\u03a3e^{\u2212\u03c9(t\u2212t\u1d62)}",
+   "assumes_linear": false,
+   "phenomena_possible": [
+    "self_excitation",
+    "tipping",
+    "recency"
+   ],
+   "phenomena_modeled": [
+    "self_excitation"
+   ],
+   "disposition": "quarantine_preserved",
+   "priority": "high",
+   "note": "QUARANTINED \u2014 held-out MAE 1098.9 > Poisson 973.0 on Higgs; must NOT auto-promote",
+   "family_id": "hawkes_self_excitation",
+   "ontology_type": "diffusion",
+   "status": "quarantined",
+   "code_ref": "swm.world_model_v2.registry.families.diffusion:fit_hawkes",
+   "n_packs": 1,
+   "has_validation": true,
+   "answers_processes": [
+    "diffusion_timing"
+   ],
+   "nonlinear_gap": [
+    "tipping",
+    "recency"
+   ]
+  },
+  {
+   "current_form": "Empirical-Bayes partial-pooling rate posterior",
+   "assumes_linear": null,
+   "phenomena_possible": [],
+   "phenomena_modeled": [],
+   "disposition": "retain_linear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "hierarchical_rate_shrinkage",
+   "ontology_type": "measurement",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.inference_layer:hierarchical_rates",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [],
+   "nonlinear_gap": []
+  },
+  {
+   "current_form": "Age-weighted exposure decay (fitted half-life)",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "saturation",
+    "threshold",
+    "reinforcement",
+    "finite_population",
+    "self_excitation",
+    "recency",
+    "tipping"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "information_aging",
+   "ontology_type": "diffusion",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.diffusion:fit_aging_tau",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "diffusion_timing",
+    "attention_decay"
+   ],
+   "nonlinear_gap": [
+    "saturation",
+    "threshold",
+    "reinforcement",
+    "finite_population",
+    "self_excitation",
+    "recency",
+    "tipping"
+   ]
+  },
+  {
+   "current_form": "Structured typed reading of an incoming item",
+   "assumes_linear": null,
+   "phenomena_possible": [],
+   "phenomena_modeled": [],
+   "disposition": "retain_linear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "information_interpretation",
+   "ontology_type": "interpretation",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.actor_cognition:interpret",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [],
+   "nonlinear_gap": []
+  },
+  {
+   "current_form": "Deterministic vote execution",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "threshold",
+    "regime"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "institutional_vote",
+   "ontology_type": "institutional",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.transitions:InstitutionalVoteOperator",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "institutional_threshold_decision",
+    "collective_vote"
+   ],
+   "nonlinear_gap": [
+    "threshold",
+    "regime"
+   ]
+  },
+  {
+   "current_form": "expressed=latent unless pressure>conviction",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "threshold",
+    "tipping",
+    "path_dependence"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "latent_expressed_opinion",
+   "ontology_type": "influence",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.social:expressed_opinion",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "expressed_vs_latent_opinion"
+   ],
+   "nonlinear_gap": [
+    "threshold",
+    "tipping",
+    "path_dependence"
+   ]
+  },
+  {
+   "current_form": "P(donate|match)=P(donate)\u00b7(1+0.22); match RATIO (1:1/2:1/3:1) is FLAT (a preserv",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "threshold",
+    "saturation",
+    "fatigue",
+    "interaction"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "matching_donation_response",
+   "ontology_type": "participation",
+   "status": "domain_restricted",
+   "code_ref": "swm.world_model_v2.registry.families.behavioral:matching_donation_p",
+   "n_packs": 1,
+   "has_validation": false,
+   "answers_processes": [
+    "donation_after_ask"
+   ],
+   "nonlinear_gap": [
+    "threshold",
+    "saturation",
+    "fatigue",
+    "interaction"
+   ]
+  },
+  {
+   "current_form": "Exponential exposure-salience decay",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "fatigue",
+    "habituation",
+    "recency"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "memory_decay",
+   "ontology_type": "memory",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.information:InformationLedger",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [],
+   "nonlinear_gap": [
+    "fatigue",
+    "habituation",
+    "recency"
+   ]
+  },
+  {
+   "current_form": "mobilized contact raises turnout logit",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "threshold",
+    "saturation",
+    "fatigue",
+    "interaction"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "mobilization",
+   "ontology_type": "participation",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.interaction:turnout_probability",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "participation_after_mobilization",
+    "turnout"
+   ],
+   "nonlinear_gap": [
+    "threshold",
+    "saturation",
+    "fatigue",
+    "interaction"
+   ]
+  },
+  {
+   "current_form": "offer decays initial\u2192reservation as deadline nears (\u03b2 tough/conceder)",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "saturation",
+    "threshold"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "negotiation_concession",
+   "ontology_type": "bargaining",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.interaction:concession_offer",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "concession",
+    "offer_response"
+   ],
+   "nonlinear_gap": [
+    "saturation",
+    "threshold"
+   ]
+  },
+  {
+   "current_form": "P(edge)=\u03c3(w\u00b7(homophily\u2212.5)+log age_decay)",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "inverted_u",
+    "interaction",
+    "heterogeneity"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "network_rewiring",
+   "ontology_type": "network",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.interaction:rewire_probability",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "network_edge_change"
+   ],
+   "nonlinear_gap": [
+    "inverted_u",
+    "interaction",
+    "heterogeneity"
+   ]
+  },
+  {
+   "current_form": "seed via friendship-nomination (friendship paradox: E[deg(friend)]=E[d\u00b2]/E[d]\u2265E[",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "inverted_u",
+    "interaction",
+    "heterogeneity"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "network_targeting_seeding",
+   "ontology_type": "network",
+   "status": "research_encoded",
+   "code_ref": "swm.world_model_v2.registry.families.structural:nomination_seed_expected_degree",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "network_targeting",
+    "network_edge_change"
+   ],
+   "nonlinear_gap": [
+    "inverted_u",
+    "interaction",
+    "heterogeneity"
+   ]
+  },
+  {
+   "current_form": "Obligation/norm-driven action utility shift",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "threshold",
+    "path_dependence"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "norm_compliance",
+   "ontology_type": "norm",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.actor_cognition:relationship_modulator",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [],
+   "nonlinear_gap": [
+    "threshold",
+    "path_dependence"
+   ]
+  },
+  {
+   "current_form": "Actor-specific exposure / information visibility",
+   "assumes_linear": null,
+   "phenomena_possible": [],
+   "phenomena_modeled": [],
+   "disposition": "retain_linear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "observation_exposure",
+   "ontology_type": "observation",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.transitions:observable_view",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [],
+   "nonlinear_gap": []
+  },
+  {
+   "current_form": "average persuasive effect of campaign contact on vote choice \u2248 0 (tightly bounde",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "interaction",
+    "backfire",
+    "saturation"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "persuasion_minimal_effects",
+   "ontology_type": "belief",
+   "status": "research_encoded",
+   "code_ref": "",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "persuasion_success",
+    "belief_update_after_message"
+   ],
+   "nonlinear_gap": [
+    "interaction",
+    "backfire",
+    "saturation"
+   ]
+  },
+  {
+   "current_form": "P(examine|rank)=\u03b3^rank",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "saturation",
+    "inverted_u",
+    "interaction",
+    "heterogeneity"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "platform_examination",
+   "ontology_type": "platform",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.interaction:position_examination",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "attention_after_exposure",
+    "examination_by_rank"
+   ],
+   "nonlinear_gap": [
+    "saturation",
+    "inverted_u",
+    "interaction",
+    "heterogeneity"
+   ]
+  },
+  {
+   "current_form": "order items by score desc \u2192 rank",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "saturation",
+    "inverted_u",
+    "interaction",
+    "heterogeneity"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "platform_ranking",
+   "ontology_type": "platform",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.interaction:rank_by_score",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "ranking_allocation"
+   ],
+   "nonlinear_gap": [
+    "saturation",
+    "inverted_u",
+    "interaction",
+    "heterogeneity"
+   ]
+  },
+  {
+   "current_form": "(1/rank)^\u03b7 power law",
+   "assumes_linear": false,
+   "phenomena_possible": [
+    "saturation",
+    "interaction"
+   ],
+   "phenomena_modeled": [
+    "saturation"
+   ],
+   "disposition": "retain",
+   "priority": "low",
+   "note": "already nonlinear power law",
+   "family_id": "position_bias_propensity",
+   "ontology_type": "platform",
+   "status": "domain_restricted",
+   "code_ref": "swm.world_model_v2.registry.families.structural:position_bias_propensity",
+   "n_packs": 1,
+   "has_validation": false,
+   "answers_processes": [
+    "examination_by_rank",
+    "attention_after_exposure"
+   ],
+   "nonlinear_gap": [
+    "interaction"
+   ]
+  },
+  {
+   "current_form": "softmax p\u221dexp(\u03bbu)",
+   "assumes_linear": false,
+   "phenomena_possible": [
+    "regime",
+    "heterogeneity"
+   ],
+   "phenomena_modeled": [
+    "saturation"
+   ],
+   "disposition": "extend",
+   "priority": "low",
+   "note": "already nonlinear (softmax); heterogeneous rationality",
+   "family_id": "quantal_response_choice",
+   "ontology_type": "decision",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.policy:logit_choice",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "actor_selects_typed_action"
+   ],
+   "nonlinear_gap": [
+    "regime",
+    "heterogeneity"
+   ]
+  },
+  {
+   "current_form": "Poisson rare-event arrival by deadline",
+   "assumes_linear": null,
+   "phenomena_possible": [],
+   "phenomena_modeled": [],
+   "disposition": "retain_linear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "rare_event_arrival",
+   "ontology_type": "exogenous",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.transitions:RareEventArrivalOperator",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "exogenous_shock"
+   ],
+   "nonlinear_gap": []
+  },
+  {
+   "current_form": "edge\u2190edge+rate\u00b7(other_kindness\u2212baseline)",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "hysteresis",
+    "path_dependence",
+    "saturation",
+    "threshold"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "reciprocity",
+   "ontology_type": "relationship",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.social:reciprocity_update",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "trust_change_after_interaction",
+    "reciprocity"
+   ],
+   "nonlinear_gap": [
+    "hysteresis",
+    "path_dependence",
+    "saturation",
+    "threshold"
+   ]
+  },
+  {
+   "current_form": "Q\u2190Q+\u03b1(r\u2212Q) linear",
+   "assumes_linear": true,
+   "phenomena_possible": [
+    "saturation",
+    "regime",
+    "habituation"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "reinforcement saturation / habit",
+   "family_id": "reinforcement_learning",
+   "ontology_type": "learning",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.learning:reinforcement_update",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "actor_selects_typed_action",
+    "strategic_learning"
+   ],
+   "nonlinear_gap": [
+    "saturation",
+    "regime",
+    "habituation"
+   ]
+  },
+  {
+   "current_form": "Interaction-history edge strength",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "hysteresis",
+    "path_dependence",
+    "saturation",
+    "threshold"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "relationship_strength_inference",
+   "ontology_type": "relationship",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.actor_cognition:relationship_strength",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [],
+   "nonlinear_gap": [
+    "hysteresis",
+    "path_dependence",
+    "saturation",
+    "threshold"
+   ]
+  },
+  {
+   "current_form": "Bounded typed edge strength/trust shift",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "hysteresis",
+    "path_dependence",
+    "saturation",
+    "threshold"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "relationship_update_bounded",
+   "ontology_type": "relationship",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.transitions:RelationshipUpdateOperator",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [],
+   "nonlinear_gap": [
+    "hysteresis",
+    "path_dependence",
+    "saturation",
+    "threshold"
+   ]
+  },
+  {
+   "current_form": "Beta(\u03b1,\u03b2) posterior over latent trustworthiness; each \u00b1rating updates it (image ",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "hysteresis",
+    "path_dependence",
+    "saturation",
+    "threshold"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "reputation_updating",
+   "ontology_type": "relationship",
+   "status": "domain_restricted",
+   "code_ref": "swm.world_model_v2.registry.families.behavioral:reputation_update",
+   "n_packs": 1,
+   "has_validation": false,
+   "answers_processes": [
+    "reputation_update",
+    "trust_change_after_interaction"
+   ],
+   "nonlinear_gap": [
+    "hysteresis",
+    "path_dependence",
+    "saturation",
+    "threshold"
+   ]
+  },
+  {
+   "current_form": "Conservation-checked resource consumption",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "saturation",
+    "threshold",
+    "path_dependence"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "resource_depletion",
+   "ontology_type": "resource",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.transitions:ResourceUpdateOperator",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "resource_depletion"
+   ],
+   "nonlinear_gap": [
+    "saturation",
+    "threshold",
+    "path_dependence"
+   ]
+  },
+  {
+   "current_form": "\u03c3(b+\u03a3w\u00b7z)",
+   "assumes_linear": true,
+   "phenomena_possible": [
+    "saturation",
+    "interaction"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear_expect_null",
+   "priority": "medium",
+   "note": "Phase-6 NULL; adversarial test that Phase 7 also honestly finds null. Testbed=stackexchange",
+   "family_id": "response_occurrence_hazard",
+   "ontology_type": "participation",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.hazard:hazard_from_pack",
+   "n_packs": 1,
+   "has_validation": true,
+   "answers_processes": [
+    "response_after_message"
+   ],
+   "nonlinear_gap": [
+    "saturation",
+    "interaction"
+   ]
+  },
+  {
+   "current_form": "linear \u03bb=q\u00b7k",
+   "assumes_linear": true,
+   "phenomena_possible": [
+    "saturation",
+    "threshold",
+    "reinforcement",
+    "finite_population",
+    "self_excitation"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "retain_linear_as_comparator",
+   "priority": "high",
+   "note": "the linear form Higgs proved WRONG; kept only as the baseline nonlinear forms must beat",
+   "family_id": "simple_contagion_hazard",
+   "ontology_type": "diffusion",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.diffusion:contagion_window_predict",
+   "n_packs": 1,
+   "has_validation": false,
+   "answers_processes": [
+    "adoption_after_repeated_exposure",
+    "diffusion_timing"
+   ],
+   "nonlinear_gap": [
+    "saturation",
+    "threshold",
+    "reinforcement",
+    "finite_population",
+    "self_excitation"
+   ]
+  },
+  {
+   "current_form": "u=x_own-\u03b1\u00b7max(x_other-x_own,0)-\u03b2\u00b7max(x_own-x_other,0); discrete (\u03b1,\u03b2) type mixtu",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "regime",
+    "heterogeneity",
+    "saturation"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "social_preference_population",
+   "ontology_type": "decision",
+   "status": "production_eligible",
+   "code_ref": "swm.world_model_v2.registry.families.choice:fit_game_policy",
+   "n_packs": 1,
+   "has_validation": true,
+   "answers_processes": [
+    "actor_selects_typed_action",
+    "offer_response"
+   ],
+   "nonlinear_gap": [
+    "regime",
+    "heterogeneity",
+    "saturation"
+   ]
+  },
+  {
+   "current_form": "P(turnout|arm) from randomized ITT levels; transported effect = (arm\u2212control) ad",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "threshold",
+    "saturation",
+    "fatigue",
+    "interaction"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "social_pressure_turnout",
+   "ontology_type": "participation",
+   "status": "domain_restricted",
+   "code_ref": "swm.world_model_v2.registry.families.behavioral:social_pressure_turnout_p",
+   "n_packs": 1,
+   "has_validation": false,
+   "answers_processes": [
+    "participation_after_mobilization",
+    "turnout"
+   ],
+   "nonlinear_gap": [
+    "threshold",
+    "saturation",
+    "fatigue",
+    "interaction"
+   ]
+  },
+  {
+   "current_form": "Lognormal susceptibility heterogeneity (fitted sd)",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "saturation",
+    "threshold",
+    "reinforcement",
+    "finite_population",
+    "self_excitation",
+    "recency",
+    "tipping"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "susceptibility_frailty",
+   "ontology_type": "diffusion",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.diffusion:fit_frailty_sigma",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [],
+   "nonlinear_gap": [
+    "saturation",
+    "threshold",
+    "reinforcement",
+    "finite_population",
+    "self_excitation",
+    "recency",
+    "tipping"
+   ]
+  },
+  {
+   "current_form": "adopt iff active-neighbor frac \u2265 threshold",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "threshold",
+    "tipping",
+    "path_dependence"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "threshold_adoption",
+   "ontology_type": "influence",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.social:threshold_adopt",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "adoption_after_repeated_exposure",
+    "tipping"
+   ],
+   "nonlinear_gap": [
+    "threshold",
+    "tipping",
+    "path_dependence"
+   ]
+  },
+  {
+   "current_form": "piecewise-linear asymmetric gain/loss",
+   "assumes_linear": true,
+   "phenomena_possible": [
+    "hysteresis",
+    "path_dependence",
+    "saturation",
+    "threshold"
+   ],
+   "phenomena_modeled": [
+    "path_dependence"
+   ],
+   "disposition": "test_nonlinear",
+   "priority": "medium",
+   "note": "asymmetric gain/loss is proto-hysteresis; a true bistable band is unmodeled",
+   "family_id": "trust_formation",
+   "ontology_type": "relationship",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.social:trust_update",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "trust_change_after_interaction"
+   ],
+   "nonlinear_gap": [
+    "hysteresis",
+    "saturation",
+    "threshold"
+   ]
+  },
+  {
+   "current_form": "investor sends s\u00b7endowment (trust); tripled; trustee returns g\u00b7(3\u00b7sent) (trustwo",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "hysteresis",
+    "path_dependence",
+    "saturation",
+    "threshold"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "trust_game_transfer",
+   "ontology_type": "relationship",
+   "status": "domain_restricted",
+   "code_ref": "swm.world_model_v2.registry.families.behavioral:trust_game_outcome",
+   "n_packs": 1,
+   "has_validation": false,
+   "answers_processes": [
+    "trust_change_after_interaction"
+   ],
+   "nonlinear_gap": [
+    "hysteresis",
+    "path_dependence",
+    "saturation",
+    "threshold"
+   ]
+  },
+  {
+   "current_form": "trust\u2190trust+repair\u00b7(1\u2212trust) after remediation",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "hysteresis",
+    "path_dependence",
+    "saturation",
+    "threshold"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "trust_repair",
+   "ontology_type": "relationship",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.social:trust_update",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "trust_change_after_interaction"
+   ],
+   "nonlinear_gap": [
+    "hysteresis",
+    "path_dependence",
+    "saturation",
+    "threshold"
+   ]
+  },
+  {
+   "current_form": "trust\u2190trust\u2212loss\u00b7trust on defection (loss>gain)",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "hysteresis",
+    "path_dependence",
+    "saturation",
+    "threshold"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "trust_violation",
+   "ontology_type": "relationship",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.social:trust_update",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "trust_change_after_interaction"
+   ],
+   "nonlinear_gap": [
+    "hysteresis",
+    "path_dependence",
+    "saturation",
+    "threshold"
+   ]
+  },
+  {
+   "current_form": "P(accept|offer)=\u03c3((offer\u2212MAO)/softness); behavioral offers \u22480.40 (NOT the SPE \u22480",
+   "assumes_linear": null,
+   "phenomena_possible": [
+    "saturation",
+    "threshold"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "low",
+   "note": "not individually curated \u2014 ontology-derived candidate phenomena",
+   "family_id": "ultimatum_offer_response",
+   "ontology_type": "bargaining",
+   "status": "domain_restricted",
+   "code_ref": "swm.world_model_v2.registry.families.behavioral:ultimatum_response",
+   "n_packs": 1,
+   "has_validation": false,
+   "answers_processes": [
+    "offer_response",
+    "bargaining_split"
+   ],
+   "nonlinear_gap": [
+    "saturation",
+    "threshold"
+   ]
+  },
+  {
+   "current_form": "\u03c3(logit(base)+\u03a3 coeffs)",
+   "assumes_linear": true,
+   "phenomena_possible": [
+    "threshold",
+    "saturation",
+    "fatigue",
+    "interaction"
+   ],
+   "phenomena_modeled": [],
+   "disposition": "test_nonlinear",
+   "priority": "medium",
+   "note": "social-pressure thresholds + repeated-contact fatigue",
+   "family_id": "voting_turnout",
+   "ontology_type": "participation",
+   "status": "implemented",
+   "code_ref": "swm.world_model_v2.registry.families.interaction:turnout_probability",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "participation_after_mobilization",
+    "turnout"
+   ],
+   "nonlinear_gap": [
+    "threshold",
+    "saturation",
+    "fatigue",
+    "interaction"
+   ]
+  },
+  {
+   "current_form": "inverted-U Gaussian bump",
+   "assumes_linear": false,
+   "phenomena_possible": [
+    "inverted_u",
+    "backfire"
+   ],
+   "phenomena_modeled": [
+    "inverted_u"
+   ],
+   "disposition": "structural_candidate",
+   "priority": "low",
+   "note": "non-monotone shape (research_encoded); magnitude broad \u2014 needs data to validate the U",
+   "family_id": "weak_tie_transmission",
+   "ontology_type": "network",
+   "status": "research_encoded",
+   "code_ref": "swm.world_model_v2.registry.families.structural:weak_tie_transmission_shape",
+   "n_packs": 0,
+   "has_validation": false,
+   "answers_processes": [
+    "network_edge_change",
+    "information_transmission"
+   ],
+   "nonlinear_gap": [
+    "backfire"
+   ]
+  }
+ ]
+}
