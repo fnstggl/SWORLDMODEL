@@ -272,3 +272,31 @@ future-edge prediction.** We do not claim network lift.
 
 **Verdict on "did Phase 9 improve real held-out outcomes?" — population YES (significant), network NO (honest
 null).**
+
+### 8.4 100-question automatic discovery run (gate: 100-Q) — `discovery_eval.json`
+**112 held-out questions across 14 domains** through `simulate_with_populations_networks(question, as_of,
+horizon)` — caller supplies ONLY the question + dates. Fully live (1024 LLM calls, ~$1.54, 40.6 s/question).
+
+| metric | value |
+|---|---|
+| completed / harness errors | **112 / 0** |
+| no-abstention rate | **1.00** |
+| discovery success (actors or segments found) | **1.00** |
+| relevant-layers rate | **1.00** |
+| structure-reaches-execution rate | **1.00** |
+| mean auto-discovered actors / candidate edges | 5.0 / 8.1 |
+| **mean unsupported-edge rate** | **0.904** |
+| support-grade distribution | 9 exploratory, 103 highly_speculative |
+
+All 7 automatic-path gates pass (caller-supplies-only-question, no-benchmark-structure, no-LLM-minted-numbers,
+14 ≥ 12 domains, no-abstention, discovery-success, structure-reaches-execution). **The 100-question gate is
+met** (112 > 100).
+
+**Honest caveat — the 0.904 unsupported-edge rate:** on live questions the discovery proposes ~8 candidate
+edges but live retrieval rarely produces a typed edge OBSERVATION for them, so ~90% of candidate edges are
+**hypothesized** (broad priors), not evidence-backed. This is consistent with the no-abstention contract
+(hypothesized edges → low support grade → still simulate) but means the discovered graphs on live questions are
+**mostly speculative structure**, not confirmed relationships. Evidence-backed edges dominate only when the
+question domain has rich retrievable relational records (e.g. the congress/Enron datasets). This is the honest
+state of automatic discovery: relevance + structure are found reliably; **edge confirmation from live evidence
+is weak.**
