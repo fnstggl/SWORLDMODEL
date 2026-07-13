@@ -36,7 +36,7 @@ FAMILY_CATEGORIES = ("hierarchical_approval", "collective_vote_body", "legislati
                      "committee_system", "electoral_administration", "regulatory_review",
                      "grant_or_procurement", "benefits_eligibility", "moderation_appeals",
                      "queue_capacity_service", "contract_approval", "budget_allocation",
-                     "platform_governance", "coalition_formation")
+                     "platform_governance", "coalition_formation", "direct_democracy")
 
 #: authority types on the authority graph (Part 5)
 AUTHORITY_TYPES = ("appoint", "remove", "recommend", "advise", "approve", "final_decision", "veto",
