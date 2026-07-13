@@ -159,6 +159,39 @@ def test_extreme_likelihoods_do_not_nan_or_collapse():
         assert w == w                                                    # no NaN weights
 
 
+def test_all_neutral_tags_do_not_update_the_rate():
+    plan = _binary_plan(lean="neutral")
+    tags = [ClaimTag(claim_id=f"c{i}", outcome_direction="neutral", strength="strong") for i in range(5)]
+    post = infer_posterior(plan, None, tags, seed=0)
+    assert post.n_effective_observations == 5                            # they ARE observations...
+    assert abs(post.outcome_rate_mean - post.outcome_rate_prior_mean) < 0.05   # ...but neutral → no rate move
+
+
+def test_contradictory_evidence_stays_uncertain():
+    """Equal strong yes and no evidence must keep the rate near the middle and NOT fabricate confidence."""
+    plan = _binary_plan(lean="neutral")
+    tags = ([ClaimTag(claim_id=f"y{i}", outcome_direction="supports_yes", strength="strong",
+                      reliability=0.85, dependence_group=f"y{i}") for i in range(3)] +
+            [ClaimTag(claim_id=f"n{i}", outcome_direction="supports_no", strength="strong",
+                      reliability=0.85, dependence_group=f"n{i}") for i in range(3)])
+    post = infer_posterior(plan, None, tags, seed=2)
+    assert 0.35 < post.outcome_rate_mean < 0.65                          # contradiction → no false confidence
+    assert post.outcome_rate_sd > 0.12                                   # and honest spread retained
+
+
+def test_particle_filter_resamples_without_degenerating():
+    """A run of strong same-direction evidence must trigger resampling (ESS collapse) yet finish with a
+    healthy particle set (rejuvenation prevents impoverishment) — deterministically."""
+    plan = _binary_plan(lean="neutral")
+    tags = [ClaimTag(claim_id=f"c{i}", outcome_direction="supports_yes", strength="strong",
+                     reliability=0.95, dependence_group=f"s{i}") for i in range(12)]
+    post = infer_posterior(plan, None, tags, seed=3, n_rate_particles=200, resample_threshold=0.5)
+    assert any(row["resampled"] for row in post.assimilation_ledger)     # ESS collapse DID trigger a resample
+    assert post.rate_ess > 5                                             # but the filter did not degenerate
+    distinct = len({round(r, 3) for r, _ in post.outcome_rate_particles})
+    assert distinct > 10                                                # rejuvenation kept particle diversity
+
+
 # ============================================================ the WORLD-STATE → EXECUTION bridge
 def test_posterior_moves_the_terminal_distribution():
     """The anti-scaffolding proof: a posterior attached to the plan must change the terminal frequencies vs
