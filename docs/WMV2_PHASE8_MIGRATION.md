@@ -132,7 +132,21 @@ update live during a rollout (reinforcement of the engagement Q-value, asymmetri
 
 ## 4b — Production-completion additions (canonical path, storage, runtime status)
 
-**Canonical usage (one entry point).** Persistence is now part of the ordinary `pipeline.simulate`:
+**Automatic context (no manual `PersistenceContext`).** Normal production callers do **not** build a context.
+When `actor_history` names a durable actor identity, `pipeline.simulate` auto-requests one from a
+`PersistenceContextProvider` (`phase8_provider`) — constructed per request from environment config
+(`SWM_PERSISTENCE_BACKEND` = memory|sqlite|jsonl, `SWM_PERSISTENCE_DIR`), not a global singleton. The provider
+resolves world/scenario/actor identity (`world_id(question)` / `scenario_id(question, as_of)` / resolved actor
+ids), constructs or reuses the transactional store, registers the default engagement filter, and loads prior
+history/checkpoints. An explicit `persistence=` **overrides** the provider. Anonymous requests (no
+`actor_history`) and any storage/identity failure **degrade honestly** to the ordinary non-persistent path
+(a limitation is recorded; never an abstention or crash). Tests inject `persistence_provider=
+PersistenceContextProvider(backend_kind="memory")` or a temp `db_dir` so they never touch a production
+database. **So the only callers who pass a `PersistenceContext` are tests and advanced callers who want a
+specific store; normal product code just calls `simulate(..., actor_history=...)`.**
+
+**Explicit usage (advanced / tests).** Persistence is also part of the ordinary `pipeline.simulate` when a
+context is supplied directly:
 
 ```python
 from swm.world_model_v2.pipeline import simulate

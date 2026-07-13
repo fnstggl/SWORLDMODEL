@@ -102,14 +102,30 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
 
 def simulate(question: str, *, llm, evidence="", as_of: str, horizon: str, intervention: str = "",
              n_particles=None, seed: int = 0, calibrator=None, cal_key: str = "",
-             persistence=None, actor_history=None, persistence_families=None) -> SimulationResult:
-    """The one canonical production entry. When `persistence` (a phase8 PersistenceContext) and
-    `actor_history` are supplied — or a compatible checkpoint exists — persistence is part of THIS path:
-    prior history/checkpoint are loaded, sequential posteriors are updated, persistent state is materialized
-    into the standard WorldState, causally-relevant families execute by default (only quarantined/incompatible
-    are blocked), and lineage/support effects are returned in the standard result. Without them, behaviour is
-    unchanged (no regression). Callers no longer need a separate `simulate_with_persistence` entry point."""
+             persistence=None, actor_history=None, persistence_families=None,
+             persistence_provider=None) -> SimulationResult:
+    """The one canonical production entry. When `actor_history` names a durable actor identity, persistence is
+    part of THIS path AUTOMATICALLY — no caller needs to hand-build a PersistenceContext: an explicit
+    `persistence=` wins; otherwise a `PersistenceContextProvider` (injected or built from environment config)
+    resolves identity, constructs/reuses the transactional store, loads prior history/checkpoints, and returns
+    a ready context. Prior state is loaded, sequential posteriors updated, persistent state materialized into
+    the standard WorldState, causally-relevant families execute by default (only quarantined/incompatible are
+    blocked), and lineage/support effects are returned in the result. Anonymous/stateless requests (no
+    actor_history) and any storage/identity failure DEGRADE honestly to the ordinary non-persistent path —
+    never an abstention, never a crash. Without persistence work, behaviour is byte-identical (no regression)."""
     t0 = _time.time()
+    # ---- automatic persistence-context construction (final usability gap): if the caller did not pass an
+    #      explicit context but a durable actor identity is available, request one from the provider. ----
+    auto_persistence_meta = None
+    if persistence is None and actor_history:
+        try:
+            from swm.world_model_v2.phase8_provider import build_provider
+            provider = persistence_provider or build_provider()
+            persistence, auto_persistence_meta = provider.for_request(
+                question, as_of, actor_tokens=list(actor_history))
+        except Exception as e:  # noqa: BLE001 — provider failure must degrade, not crash
+            auto_persistence_meta = {"degraded": f"provider_unavailable: {type(e).__name__}: {e}"[:160]}
+            persistence = None
     # ---- compile (never epistemically abstains) ----
     try:
         plan = compile_world(question, llm=llm, evidence=evidence, as_of=as_of, horizon=horizon,
@@ -161,5 +177,13 @@ def simulate(question: str, *, llm, evidence="", as_of: str, horizon: str, inter
                                 limitations=[f"runtime: {type(e).__name__}: {e}"],
                                 latency_s=round(_time.time() - t0, 3))
 
-    return result_from_run(question, plan, result, branches, intervention=intervention, t0=t0,
-                           calibrator=calibrator, cal_key=cal_key)
+    res = result_from_run(question, plan, result, branches, intervention=intervention, t0=t0,
+                          calibrator=calibrator, cal_key=cal_key)
+    # honest degradation note: persistence was requested but unavailable (anonymous / storage / identity).
+    if auto_persistence_meta and auto_persistence_meta.get("degraded"):
+        deg = auto_persistence_meta["degraded"]
+        if deg != "anonymous_no_durable_identity":          # anonymous is expected, not a degradation
+            res.limitations = list(res.limitations) + [f"persistence unavailable ({deg}); ran without "
+                                                        "longitudinal state"]
+        res.provenance = {**(res.provenance or {}), "phase8_provider": auto_persistence_meta}
+    return res
