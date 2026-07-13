@@ -423,6 +423,10 @@ def compile_world(question: str, *, llm, evidence="", as_of: str, horizon: str,
     # Each required process is matched to the family that ANSWERS it; the tier reflects THAT family's
     # evidence; competing families are preserved; the composition engine flags double-counting.
     per_process, composition = _select_mechanisms_per_process(scenario, processes)
+    # PHASE 10: for institutional causal processes, select the evidence-backed institution BY CAUSAL NEED
+    # (as-of + jurisdiction), never by keyword. Recorded in provenance; the institution owns authority /
+    # procedure / thresholds through which Phase-6 behavioral mechanisms operate.
+    institution_selection = _select_institutions(raw, processes, as_of)
     for proc in processes:
         sel = per_process.get(proc, {})
         choice = select_tier_for_process(proc, sel.get("selected"),
@@ -501,6 +505,7 @@ def compile_world(question: str, *, llm, evidence="", as_of: str, horizon: str,
                                                   "n_candidates": s.get("n_candidates", 0)}
                                               for p, s in per_process.items()},
                     "mechanism_composition": composition,
+                    "institution_selection": institution_selection,
                     "repairs": raw.get("_repairs", [])})
     if persist:
         try:
@@ -554,6 +559,30 @@ def _select_mechanisms_per_process(scenario: dict, processes: list) -> tuple:
     except Exception as e:
         return {}, {"error": f"composition unavailable: {e}", "ordered": [], "competing": [],
                     "double_counting": [], "conflicts": []}
+
+
+def _select_institutions(raw: dict, processes: list, as_of: str) -> dict:
+    """Phase 10 — select evidence-backed institutions for institutional causal processes, BY CAUSAL NEED
+    (as-of + jurisdiction), never keyword routing. Returns {process: selection} for institutional processes
+    present in the plan. Degrades to {} if the institution registry is unavailable."""
+    try:
+        from swm.world_model_v2.institutions_v2 import load_store, select_institution
+        from swm.world_model_v2.institutions_v2.compile import INSTITUTIONAL_PROCESSES
+        inst_procs = [p for p in processes if p in INSTITUTIONAL_PROCESSES]
+        if not inst_procs and not raw.get("institutions"):
+            return {}
+        store = load_store()
+        jur = str(raw.get("jurisdiction", "") or raw.get("organization", "") or "")
+        scenario = {"jurisdiction": jur, "organization": raw.get("organization", "")}
+        out = {}
+        for p in (inst_procs or ["issue_formal_decision"]):
+            sel = select_institution(store, p, scenario, as_of=as_of, jurisdiction=jur)
+            out[p] = {"family": sel.family_id, "template": sel.template_id, "tier": sel.tier,
+                      "support_grade": sel.support_grade, "transported": sel.transported,
+                      "missing_evidence": sel.missing_evidence}
+        return out
+    except Exception as e:
+        return {"error": f"institution selection unavailable: {e}"}
 
 
 def _build_events(raw, contract, resolve_var, o, lean, horizon):
