@@ -1,0 +1,1522 @@
+{
+ "bundle_id": "eb_10b3d0",
+ "question": "Will the IPO price above its indicated range?",
+ "as_of": 1690848000.0,
+ "compiler_plan_hash": "f7ad316f6f94",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_147d08473f",
+   "claim_or_quantity": "The IPO price is above the indicated range if the final offer price exceeds the upper bound of the preliminary range; otherwise it is at or below.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "company",
+    "lead_underwriter",
+    "sec"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_6651bfe0e2",
+   "claim_or_quantity": "value/context of institutional_investors.demand_intensity",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "institutional_investors.demand_intensity",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_480351fab0",
+   "claim_or_quantity": "value/context of company.financials",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "company.financials",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_e14a7b4747",
+   "claim_or_quantity": "evidence discriminating structural hypothesis high_demand_push",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:high_demand_push",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_6ff24c2a90",
+   "claim_or_quantity": "evidence discriminating structural hypothesis moderate_demand",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:moderate_demand",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_ba35f2c8f5",
+   "claim_or_quantity": "value/context of lead_underwriter.reputation",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "lead_underwriter.reputation",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_f813c256d8",
+   "claim_or_quantity": "decision rules / process of company",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "company",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_aaf154eba6",
+   "claim_or_quantity": "decision rules / process of lead_underwriter",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "lead_underwriter",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_147d08473f",
+   "terms": "Will the IPO price above its indicated range? company lead_underwriter sec",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_6651bfe0e2",
+   "terms": "value/context of institutional_investors.demand_intensity",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_480351fab0",
+   "terms": "value/context of company.financials",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_147d08473f",
+   "logical_query": "Will the IPO price above its indicated range? company lead_underwriter sec after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=Will+the+IPO+price+above+its+indicated+range%3F+company+lead_underwriter+sec+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783905222.6870472,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:13:43 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw0pBiSO44w5AKxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwcx79fuMQmsGHO41Ql5aT8wviU_JLi4oKcxOKM4tSistSieCMDIzMDcwMzPQOT-AIDAIaCOPw\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "a62167212793bbaeb366afb82eff38a15dcc83abbdeb69caa6d4705b259bd8f7",
+   "n_bytes": 1313,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.463
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_6651bfe0e2",
+   "logical_query": "value/context of institutional_investors.demand_intensity after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=value%2Fcontext+of+institutional_investors.demand_intensity+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783905223.1514368,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:13:43 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw05BiSO44w5ACxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcx79fuMQmcOPMv8lMSspJ-YXxKfklxcUFOYnFGcWpRWWpRfFGBkZmBuYGZnoGJvEFBgDKVjmb\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "461b0b9d413d831d398bbb79c1236043731933a0cb31d3954edb1dac8d0db85a",
+   "n_bytes": 1279,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.366
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_480351fab0",
+   "logical_query": "value/context of company.financials after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=value%2Fcontext+of+company.financials+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783905223.5186503,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:13:44 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw0pBiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTNceL7hUtsAjt6twQqKSflF8an5JcUFxfkJBZnFKcWlaUWxRsZGJkZmBuY6RmYxBcYAABy6zba\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "28f94d119b468fd7a0b184a083a06537078701985c78cd9d77b0c403d7105607",
+   "n_bytes": 17513,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.61
+  }
+ ],
+ "raw_content_refs": [
+  "28f94d119b468fd7a0b184a083a06537078701985c78cd9d77b0c403d7105607"
+ ],
+ "documents": [
+  {
+   "id": "2eb3b38191acdf22",
+   "source": "Nature",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE5xZXl6Zk93Qnk3a21JckUtaWpuUFBidmViX0tHcHhGQ181MHE1QWVHalpHMndwVTQ1aVF0dldPVGRfN21pakpWVDExT2lvZldqMVN3LTFIS1dBak94Vzgw?oc=5",
+   "title": "Firm value in the airline industry: perspectives on the impact of sustainability and Covid-19 - Nature",
+   "text": "Firm value in the airline industry: perspectives on the impact of sustainability and Covid-19 - Nature. Firm value in the airline industry: perspectives on the impact of sustainability and Covid-19 Nature",
+   "content_hash": "667235c61310af57",
+   "raw_feed_hash": "28f94d119b468fd7a0b184a083a06537078701985c78cd9d77b0c403d7105607",
+   "published_at": 1686034800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_480351fab0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "efcde2f5b3226eea",
+   "source": "Wolters Kluwer",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQaVFUQTVKQnpBVkFSQXB5NFNSMklHUDAwZmUtLWpNR2E2dnA3TzZSZEtuSDBKLUloczRaUXliLUE4OWhVNmJpS1QtVjlzM3QyWmlVM0NNaXBrWWRqNEpMNXVqMy1TejZheU1aN3FXSE4yaVlBODdfcDIyQ0pPYkVHN2Z4M3Y2ZmtpVGhkUWtXNTRqb1hzdmtBakl6Y2JuelMwblVZSnZPYjMxUQ?oc=5",
+   "title": "What\u2019s ESG Got to Do with Transfer Pricing? - Wolters Kluwer",
+   "text": "What\u2019s ESG Got to Do with Transfer Pricing? - Wolters Kluwer. What\u2019s ESG Got to Do with Transfer Pricing? Wolters Kluwer",
+   "content_hash": "80152570b6a13603",
+   "raw_feed_hash": "28f94d119b468fd7a0b184a083a06537078701985c78cd9d77b0c403d7105607",
+   "published_at": 1682924400.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_480351fab0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3d75abd1ce45a51f",
+   "source": "McKinsey & Company",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMizgFBVV95cUxQMTN5MF9iYXQ5dUxUQ3pwNnhXNWlnTEM1QUczWEJMd1N3WnYyM1RSYm1SRUQtQjRDeFpjWjlpWGVKZTVCNENDVmRRQXRqQ25iS2pkaEhKcF8zNVZtMWpra1p2cWJKR19iV09vTmUtdUtuVmZNbUFScFpZSEYzV2FCdnk4NDdac2czdFpKS09MSzU1Z1YyVklLNXFTTFJTNGVqUDFCS1JTM0l2ZXhuOVM1MzJHQjVCdV93OGtTUVR3cEFUa0pOZXFkMlJCTDBwZw?oc=5",
+   "title": "The economic potential of generative AI: The next productivity frontier - McKinsey & Company",
+   "text": "The economic potential of generative AI: The next productivity frontier - McKinsey & Company. The economic potential of generative AI: The next productivity frontier McKinsey & Company",
+   "content_hash": "c382a33772cd1b11",
+   "raw_feed_hash": "28f94d119b468fd7a0b184a083a06537078701985c78cd9d77b0c403d7105607",
+   "published_at": 1686726000.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_480351fab0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "60a42749a3c3b7ab",
+   "source": "Wiley Online Library",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1PcnVTODNpT3hyb1hEemZMVEJEa2pDOUc2c2JkcnBlRzBJWTZUYXdydjRNUnB5UGh2TVBTUl9hUm41ZlN1UnlMbW5qdlM1Q2pQQzZEYkRobDJHRG5NSVpBM1F4bkVQaTJ3WG1r?oc=5",
+   "title": "The value of personal professional financial advice to clients: A systematic quantitative literature review - Wiley Online Library",
+   "text": "The value of personal professional financial advice to clients: A systematic quantitative literature review - Wiley Online Library. The value of personal professional financial advice to clients: A systematic quantitative literature review Wiley Online Library",
+   "content_hash": "f78c7a039461586f",
+   "raw_feed_hash": "28f94d119b468fd7a0b184a083a06537078701985c78cd9d77b0c403d7105607",
+   "published_at": 1683788400.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_480351fab0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "b8122fe579c56f9a",
+   "source": "McKinsey & Company",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxOWmQzTzlqVENibGZTYUlGRzY3RTNtRkw5N0M3bWZKVm9FS0dNbWZub2NPY0VqTUpKR0hobkk1dXF5aTNWeVMzMUdTNWItYTc1UktlMGlKUkdPemN3dE5FRkxTNUVleU90c3Zib1QwN0M3TU05bkxQWVBlVkJUWnVrd2FOb2ZncnBGMjV4dXd5YmRWR3pkVC1Bak5ydVV6Rk5FQWt0aU96RGN5YXFPRVQ0LV9pMzNkdFhidmIwRA?oc=5",
+   "title": "Exploring opportunities in the generative AI value chain - McKinsey & Company",
+   "text": "Exploring opportunities in the generative AI value chain - McKinsey & Company. Exploring opportunities in the generative AI value chain McKinsey & Company",
+   "content_hash": "ed7668eb5d9cc68a",
+   "raw_feed_hash": "28f94d119b468fd7a0b184a083a06537078701985c78cd9d77b0c403d7105607",
+   "published_at": 1682492400.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_480351fab0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f892a4dd5e79191a",
+   "source": "Macfarlanes",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxQdGlmSk1mZ0pkMWtWdldkMG5TeWNjdGxXcl9tdjZPNTBTTUUxd0t0OUFvNFJFVE9mS0ZSOGF4ck1zTDJmQTBpWXpZczh2WVA5TUJmQ0hLN21mVEdmUWFCUmhkQ1lfeVpCekZRMlp3Nm1SenpTbi02aTdqTlhJN09GMV9hbzEtZw?oc=5",
+   "title": "What was a \"material adverse change\"? - Macfarlanes",
+   "text": "What was a \"material adverse change\"? - Macfarlanes. What was a \"material adverse change\"? Macfarlanes",
+   "content_hash": "3b030ac2601a086c",
+   "raw_feed_hash": "28f94d119b468fd7a0b184a083a06537078701985c78cd9d77b0c403d7105607",
+   "published_at": 1688022000.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_480351fab0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "92914396f71f70bc",
+   "source": "Nature",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE0xWW1BdUNZOXJZdGo4cE5ZbXA4cDhCVkdlVDFrQTlURHB6d2s5bDVxbHRsWWNaU01yUmV0SXppNHhhbHRJV09fVTRZSFQxc2xfNzRpbFBTbmN5QzZyZTBv?oc=5",
+   "title": "Toward a new understanding of environmental and financial performance through corporate social responsibility, green innovation, and sustainable development - Nature",
+   "text": "Toward a new understanding of environmental and financial performance through corporate social responsibility, green innovation, and sustainable development - Nature. Toward a new understanding of environmental and financial performance through corporate social responsibility, green innovation, and sustainable development Nature",
+   "content_hash": "65ce28304ff97c65",
+   "raw_feed_hash": "28f94d119b468fd7a0b184a083a06537078701985c78cd9d77b0c403d7105607",
+   "published_at": 1686034800.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_480351fab0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "b8b56263e4648eee",
+   "source": "Wiley Online Library",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiY0FVX3lxTFB5c3JMRmZRczlKdnNpVGZWM2lfMzJrVkxsSWZ4YU14NXdoRXMxclNPSkZCNlNmZkYxZnBvVGNGdW4xdWQwamdUQ05LYWwwNXMtYWt1REZHUEpjS181elhSSjZGVQ?oc=5",
+   "title": "How the human resource (HR) function adds strategic value: A relational perspective of the HR function - Wiley Online Library",
+   "text": "How the human resource (HR) function adds strategic value: A relational perspective of the HR function - Wiley Online Library. How the human resource (HR) function adds strategic value: A relational perspective of the HR function Wiley Online Library",
+   "content_hash": "ccbfae8d6b56869e",
+   "raw_feed_hash": "28f94d119b468fd7a0b184a083a06537078701985c78cd9d77b0c403d7105607",
+   "published_at": 1686726000.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_480351fab0",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "2eb3b38191acdf22:c0",
+   "source_id": "2eb3b38191acdf22",
+   "subject": "Firm value in the airline industry",
+   "predicate": "is discussed in relation to",
+   "object": "the impact of sustainability and Covid-19",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Firm value in the airline industry: perspectives on the impact of sustainability and Covid-19 - Nature",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1686034800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "airline industry",
+    "sustainability",
+    "Covid-19"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_ff6b30edee",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_480351fab0"
+   }
+  },
+  {
+   "claim_id": "efcde2f5b3226eea:c0",
+   "source_id": "efcde2f5b3226eea",
+   "subject": "ESG",
+   "predicate": "has relation to",
+   "object": "Transfer Pricing",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "inferred_implication",
+   "supporting_span": "What\u2019s ESG Got to Do with Transfer Pricing?",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682924400.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "ESG",
+    "Transfer Pricing"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_635622fb7e",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_480351fab0"
+   }
+  },
+  {
+   "claim_id": "efcde2f5b3226eea:c1",
+   "source_id": "efcde2f5b3226eea",
+   "subject": "Wolters Kluwer",
+   "predicate": "is publisher of",
+   "object": "the article titled 'What\u2019s ESG Got to Do with Transfer Pricing?'",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Wolters Kluwer",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682924400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Wolters Kluwer"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_635622fb7e",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_480351fab0"
+   }
+  },
+  {
+   "claim_id": "3d75abd1ce45a51f:c0",
+   "source_id": "3d75abd1ce45a51f",
+   "subject": "generative AI",
+   "predicate": "has",
+   "object": "economic potential",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The economic potential of generative AI: The next productivity frontier - McKinsey & Company",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1686726000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "generative AI",
+    "McKinsey & Company"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_90ad57ef1e",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_480351fab0"
+   }
+  },
+  {
+   "claim_id": "3d75abd1ce45a51f:c1",
+   "source_id": "3d75abd1ce45a51f",
+   "subject": "generative AI",
+   "predicate": "is",
+   "object": "the next productivity frontier",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The economic potential of generative AI: The next productivity frontier - McKinsey & Company",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1686726000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "generative AI",
+    "McKinsey & Company"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_90ad57ef1e",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_480351fab0"
+   }
+  },
+  {
+   "claim_id": "60a42749a3c3b7ab:c0",
+   "source_id": "60a42749a3c3b7ab",
+   "subject": "The value of personal professional financial advice to clients: A systematic quantitative literature review",
+   "predicate": "is published by",
+   "object": "Wiley Online Library",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The value of personal professional financial advice to clients: A systematic quantitative literature review - Wiley Online Library",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683788400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Wiley Online Library"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_23620a1a40",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_480351fab0"
+   }
+  },
+  {
+   "claim_id": "b8122fe579c56f9a:c0",
+   "source_id": "b8122fe579c56f9a",
+   "subject": "McKinsey & Company",
+   "predicate": "is exploring",
+   "object": "opportunities in the generative AI value chain",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Exploring opportunities in the generative AI value chain - McKinsey & Company",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682492400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "McKinsey & Company",
+    "generative AI value chain"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_6b795da79d",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_480351fab0"
+   }
+  },
+  {
+   "claim_id": "f892a4dd5e79191a:c0",
+   "source_id": "f892a4dd5e79191a",
+   "subject": "Macfarlanes",
+   "predicate": "asked about",
+   "object": "definition of 'material adverse change'",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "actor_statement",
+   "supporting_span": "What was a \"material adverse change\"? - Macfarlanes",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1688022000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Macfarlanes"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_2664b6b3b7",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_480351fab0"
+   }
+  },
+  {
+   "claim_id": "f892a4dd5e79191a:c1",
+   "source_id": "f892a4dd5e79191a",
+   "subject": "Macfarlanes",
+   "predicate": "repeated question about",
+   "object": "definition of 'material adverse change'",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "actor_statement",
+   "supporting_span": "What was a \"material adverse change\"? Macfarlanes",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1688022000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Macfarlanes"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_2664b6b3b7",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_480351fab0"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "airline industry",
+   "normalized": "airline industry",
+   "candidates": [
+    {
+     "entity_id": "ent_6669260aa1",
+     "canonical": "airline industry",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "airline industry"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "sustainability",
+   "normalized": "sustainability",
+   "candidates": [
+    {
+     "entity_id": "ent_86b38fdd14",
+     "canonical": "sustainability",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "sustainability"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Covid-19",
+   "normalized": "covid-19",
+   "candidates": [
+    {
+     "entity_id": "ent_498f05aedc",
+     "canonical": "covid-19",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Covid-19"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "ESG",
+   "normalized": "esg",
+   "candidates": [
+    {
+     "entity_id": "ent_757b769127",
+     "canonical": "esg",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "ESG"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Transfer Pricing",
+   "normalized": "transfer pricing",
+   "candidates": [
+    {
+     "entity_id": "ent_15f767fac6",
+     "canonical": "transfer pricing",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Transfer Pricing"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Wolters Kluwer",
+   "normalized": "wolters kluwer",
+   "candidates": [
+    {
+     "entity_id": "ent_887ebbd1cd",
+     "canonical": "wolters kluwer",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Wolters Kluwer"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "generative AI",
+   "normalized": "generative ai",
+   "candidates": [
+    {
+     "entity_id": "ent_855d5cc73f",
+     "canonical": "generative ai",
+     "support": 0.6333,
+     "evidence_mentions": [
+      "generative AI",
+      "generative AI"
+     ]
+    },
+    {
+     "entity_id": "ent_5b1c7afad6",
+     "canonical": "generative ai value chain",
+     "support": 0.2167,
+     "evidence_mentions": [
+      "generative AI value chain"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "McKinsey & Company",
+   "normalized": "mckinsey &",
+   "candidates": [
+    {
+     "entity_id": "ent_d8546ba112",
+     "canonical": "mckinsey &",
+     "support": 0.7,
+     "evidence_mentions": [
+      "McKinsey & Company",
+      "McKinsey & Company",
+      "McKinsey & Company"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "generative AI",
+   "normalized": "generative ai",
+   "candidates": [
+    {
+     "entity_id": "ent_855d5cc73f",
+     "canonical": "generative ai",
+     "support": 0.6333,
+     "evidence_mentions": [
+      "generative AI",
+      "generative AI"
+     ]
+    },
+    {
+     "entity_id": "ent_5b1c7afad6",
+     "canonical": "generative ai value chain",
+     "support": 0.2167,
+     "evidence_mentions": [
+      "generative AI value chain"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "McKinsey & Company",
+   "normalized": "mckinsey &",
+   "candidates": [
+    {
+     "entity_id": "ent_d8546ba112",
+     "canonical": "mckinsey &",
+     "support": 0.7,
+     "evidence_mentions": [
+      "McKinsey & Company",
+      "McKinsey & Company",
+      "McKinsey & Company"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Wiley Online Library",
+   "normalized": "wiley online library",
+   "candidates": [
+    {
+     "entity_id": "ent_d9ebfba698",
+     "canonical": "wiley online library",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Wiley Online Library"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "McKinsey & Company",
+   "normalized": "mckinsey &",
+   "candidates": [
+    {
+     "entity_id": "ent_d8546ba112",
+     "canonical": "mckinsey &",
+     "support": 0.7,
+     "evidence_mentions": [
+      "McKinsey & Company",
+      "McKinsey & Company",
+      "McKinsey & Company"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "generative AI value chain",
+   "normalized": "generative ai value chain",
+   "candidates": [
+    {
+     "entity_id": "ent_5b1c7afad6",
+     "canonical": "generative ai value chain",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "generative AI value chain"
+     ]
+    },
+    {
+     "entity_id": "ent_855d5cc73f",
+     "canonical": "generative ai",
+     "support": 0.2833,
+     "evidence_mentions": [
+      "generative AI",
+      "generative AI"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Macfarlanes",
+   "normalized": "macfarlanes",
+   "candidates": [
+    {
+     "entity_id": "ent_569603d782",
+     "canonical": "macfarlanes",
+     "support": 0.6333,
+     "evidence_mentions": [
+      "Macfarlanes",
+      "Macfarlanes"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Macfarlanes",
+   "normalized": "macfarlanes",
+   "candidates": [
+    {
+     "entity_id": "ent_569603d782",
+     "canonical": "macfarlanes",
+     "support": 0.6333,
+     "evidence_mentions": [
+      "Macfarlanes",
+      "Macfarlanes"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "2eb3b38191acdf22": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1686034800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686034800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "efcde2f5b3226eea": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1682924400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682924400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3d75abd1ce45a51f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1686726000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686726000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "60a42749a3c3b7ab": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1683788400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683788400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "b8122fe579c56f9a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1682492400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682492400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f892a4dd5e79191a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1688022000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1688022000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "92914396f71f70bc": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1686034800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686034800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "b8b56263e4648eee": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1686726000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686726000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_ff6b30edee",
+   "member_ids": [
+    "2eb3b38191acdf22"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Nature",
+   "primary_source": "Nature",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_635622fb7e",
+   "member_ids": [
+    "efcde2f5b3226eea"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Wolters Kluwer",
+   "primary_source": "Wolters Kluwer",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_90ad57ef1e",
+   "member_ids": [
+    "3d75abd1ce45a51f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "McKinsey & Company",
+   "primary_source": "McKinsey & Company",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_23620a1a40",
+   "member_ids": [
+    "60a42749a3c3b7ab"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Wiley Online Library",
+   "primary_source": "Wiley Online Library",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_6b795da79d",
+   "member_ids": [
+    "b8122fe579c56f9a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "McKinsey & Company",
+   "primary_source": "McKinsey & Company",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_2664b6b3b7",
+   "member_ids": [
+    "f892a4dd5e79191a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Macfarlanes",
+   "primary_source": "Macfarlanes",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_956d3d6a76",
+   "member_ids": [
+    "92914396f71f70bc"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Nature",
+   "primary_source": "Nature",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b469c6e353",
+   "member_ids": [
+    "b8b56263e4648eee"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Wiley Online Library",
+   "primary_source": "Wiley Online Library",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "2eb3b38191acdf22:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1686034800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "efcde2f5b3226eea:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682924400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "efcde2f5b3226eea:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682924400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "3d75abd1ce45a51f:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1686726000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "3d75abd1ce45a51f:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1686726000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "60a42749a3c3b7ab:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683788400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "b8122fe579c56f9a:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682492400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "f892a4dd5e79191a:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1688022000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "f892a4dd5e79191a:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1688022000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "2eb3b38191acdf22:c0",
+  "efcde2f5b3226eea:c0",
+  "efcde2f5b3226eea:c1",
+  "3d75abd1ce45a51f:c0",
+  "3d75abd1ce45a51f:c1",
+  "60a42749a3c3b7ab:c0",
+  "b8122fe579c56f9a:c0",
+  "f892a4dd5e79191a:c0",
+  "f892a4dd5e79191a:c1"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_147d08473f": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_6651bfe0e2": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_480351fab0": {
+   "status": "fulfilled",
+   "n_claims": 9,
+   "n_included": 9
+  },
+  "req_e14a7b4747": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_6ff24c2a90": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_ba35f2c8f5": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_f813c256d8": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_aaf154eba6": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_147d08473f",
+  "req_6651bfe0e2",
+  "req_e14a7b4747",
+  "req_6ff24c2a90",
+  "req_ba35f2c8f5",
+  "req_f813c256d8",
+  "req_aaf154eba6"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 8,
+  "n_contradictions": 0,
+  "n_documents": 8
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 13.859,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "3e7172f933690168",
+ "bundle_hash": "3e7172f933690168",
+ "_persisted_at": "2026-07-13T01:13:58Z"
+}

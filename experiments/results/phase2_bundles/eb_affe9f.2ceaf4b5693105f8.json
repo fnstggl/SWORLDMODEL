@@ -1,0 +1,423 @@
+{
+ "bundle_id": "eb_affe9f",
+ "question": "Will the company's CEO resign within a month of the scandal breaking?",
+ "as_of": 1682899200.0,
+ "compiler_plan_hash": "e8663118f167",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_d0f2989a3f",
+   "claim_or_quantity": "If the CEO publicly announces resignation or is removed from office by 2023-06-01, outcome is 'resign'; otherwise 'not_resign'.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "CEO",
+    "Board_Chair",
+    "Lead_Independent_Director",
+    "Major_Shareholder_1"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_7d1d49548b",
+   "claim_or_quantity": "value/context of CEO.legal_exposure",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "CEO.legal_exposure",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_19b1b80004",
+   "claim_or_quantity": "value/context of CEO.reputation_cost_sensitivity",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "CEO.reputation_cost_sensitivity",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_dd79ae5584",
+   "claim_or_quantity": "value/context of Board_of_Directors.activism_lean",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "Board_of_Directors.activism_lean",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_a3e3dab7e7",
+   "claim_or_quantity": "decision rules / process of Board_of_Directors",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "Board_of_Directors",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_0ff497dac7",
+   "claim_or_quantity": "decision rules / process of Company",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "Company",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_d0f2989a3f",
+   "terms": "Will the company's CEO resign within a month of the scandal breaking? CEO Board_Chair Lead_Independent_Director",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_7d1d49548b",
+   "terms": "value/context of CEO.legal_exposure",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_19b1b80004",
+   "terms": "value/context of CEO.reputation_cost_sensitivity",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_d0f2989a3f",
+   "logical_query": "Will the company's CEO resign within a month of the scandal breaking? CEO Board_Chair Lead_Independent_Director after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=Will+the+company%27s+CEO+resign+within+a+month+of+the+scandal+breaking%3F+CEO+Board_Chair+Lead_Independent_Director+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783904892.2394278,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:08:12 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw1ZBiSO44w5AKxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcf75cuMQmsGPytT3MSspJ-YXxKfklxcUFOYnFGcWpRWWpRfFGBkZmBuYGZnoGJvEFBgDF-Dl3\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "400eda1cb4b643f45586b5a9a91fe3b8382243967bf181f35f0dd55556a7a89a",
+   "n_bytes": 1387,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.642
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_7d1d49548b",
+   "logical_query": "value/context of CEO.legal_exposure after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=value%2Fcontext+of+CEO.legal_exposure+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783904892.8826287,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:08:13 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw05BiSO44w5AKxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcf79cuMQm8OJ7zyZGJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwDVUjm-\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "fe2b3f923ab80297eec03828a2ba91cf0b0a596949af81b2539cc24f87619870",
+   "n_bytes": 1235,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.43
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_19b1b80004",
+   "logical_query": "value/context of CEO.reputation_cost_sensitivity after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=value%2Fcontext+of+CEO.reputation_cost_sensitivity+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783904893.313906,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:08:13 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw05BiSO44w5ACxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcf79cuMQm8OBl9ycmJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwDWXznf\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "a742dbe8a3f8d7f198321334f1cac6ac9c112d0ee8f9b56a40111ea466ddf99b",
+   "n_bytes": 1261,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.401
+  }
+ ],
+ "raw_content_refs": [],
+ "documents": [],
+ "claims": [],
+ "entities": [],
+ "temporal_records": {},
+ "dependence_groups": [],
+ "contradiction_graph": [],
+ "actor_visibility": [],
+ "leakage_flags": [],
+ "included_claim_ids": [],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_d0f2989a3f": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_7d1d49548b": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_19b1b80004": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_dd79ae5584": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_a3e3dab7e7": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_0ff497dac7": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_d0f2989a3f",
+  "req_7d1d49548b",
+  "req_19b1b80004",
+  "req_dd79ae5584",
+  "req_a3e3dab7e7",
+  "req_0ff497dac7"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 0,
+  "n_contradictions": 0,
+  "n_documents": 0
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 1.478,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "2ceaf4b5693105f8",
+ "bundle_hash": "2ceaf4b5693105f8",
+ "_persisted_at": "2026-07-13T01:08:13Z"
+}

@@ -1,0 +1,705 @@
+{
+ "bundle_id": "eb_0d9bad",
+ "question": "Will the crowdfunding project reach its funding target before the deadline?",
+ "as_of": 1682899200.0,
+ "compiler_plan_hash": "19cd914b05ef",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_362bddf68e",
+   "claim_or_quantity": "If total pledged amount >= funding target at or before 2023-06-01, outcome is 'reached'; otherwise 'not_reached'.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "project",
+    "platform"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_f0238b787d",
+   "claim_or_quantity": "value/context of project.funding_target",
+   "why_relevant": "high-sensitivity latent (1.00) driving the outcome distribution",
+   "affected_component": "project.funding_target",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_72caa66229",
+   "claim_or_quantity": "value/context of backers.early_adopters.pledge_propensity",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "backers.early_adopters.pledge_propensity",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_6d5931bba9",
+   "claim_or_quantity": "evidence discriminating structural hypothesis momentum_driven",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:momentum_driven",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_38f0720c43",
+   "claim_or_quantity": "evidence discriminating structural hypothesis threshold_plateau",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:threshold_plateau",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_3252bd8045",
+   "claim_or_quantity": "value/context of backers.social_followers.social_influence",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "backers.social_followers.social_influence",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_ee85f04135",
+   "claim_or_quantity": "decision rules / process of project",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "project",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_3dff0235e3",
+   "claim_or_quantity": "decision rules / process of platform",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "platform",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-05-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_362bddf68e",
+   "terms": "Will the crowdfunding project reach its funding target before the deadline? project platform",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_f0238b787d",
+   "terms": "value/context of project.funding_target",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_72caa66229",
+   "terms": "value/context of backers.early_adopters.pledge_propensity",
+   "after": "2022-12-02",
+   "before": "2023-05-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_362bddf68e",
+   "logical_query": "Will the crowdfunding project reach its funding target before the deadline? project platform after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=Will+the+crowdfunding+project+reach+its+funding+target+before+the+deadline%3F+project+platform+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783904722.195234,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:05:22 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw05BiSO44w5AKxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwclz5fuMQm8OHq3eXMSspJ-YXxKfklxcUFOYnFGcWpRWWpRfFGBkZmBuYGZnoGJvEFBgDUuznB\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "f20633eea4623f75f206e44b6770caa7b3b26ef7b0c4ca26766da63aed2660ff",
+   "n_bytes": 4597,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 2,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.634
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_f0238b787d",
+   "logical_query": "value/context of project.funding_target after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=value%2Fcontext+of+project.funding_target+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783904722.8310747,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:05:23 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmII0JBiSO44w5AKxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwclz9fuMQm8OLHzDIl5aT8wviU_JLi4oKcxOKM4tSistSieCMDIzMDcwMzPQOT-AIDAJoCOWU\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "8db9de38b3da389baca56293c4b9961b3867533f62fa717641c5a8fcddfca07e",
+   "n_bytes": 1243,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.358
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_72caa66229",
+   "logical_query": "value/context of backers.early_adopters.pledge_propensity after:2022-12-02 before:2023-05-01",
+   "wire_url": "https://news.google.com/rss/search?q=value%2Fcontext+of+backers.early_adopters.pledge_propensity+after%3A2022-12-02+before%3A2023-05-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-12-02",
+   "before_date": "2023-05-01",
+   "retrieved_at": 1783904723.1899474,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:05:23 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw0JBiSO44w5ACxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwclz9fuMQmsKJlxyEmJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwC2VDkX\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "46d1dcb53aad2816b00340c955f7d3889df41bcc81a7a3c7de388aa1ed4123a1",
+   "n_bytes": 1279,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.428
+  }
+ ],
+ "raw_content_refs": [
+  "f20633eea4623f75f206e44b6770caa7b3b26ef7b0c4ca26766da63aed2660ff"
+ ],
+ "documents": [
+  {
+   "id": "6e52106865cd2be4",
+   "source": "MuseumNext",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTE9yZElONm4zODUxaHZ6c3FMSEJ6T3FVeUNfYVdFT2hRQkowcGRGVERuaU43clR6d1FGMkh1MTNaZFN5b3kxTmMxSGdmWHk1TEY5b3cyOEVNZzMxYndGODRrVTJPOVVMVVBRakxVR2NwZXhqaW9aREVDd29JMA?oc=5",
+   "title": "Successful Crowdfunding Strategies for Museums: Real-Life Case Studies - MuseumNext",
+   "text": "Successful Crowdfunding Strategies for Museums: Real-Life Case Studies - MuseumNext. Successful Crowdfunding Strategies for Museums: Real-Life Case Studies MuseumNext",
+   "content_hash": "a9747b9adf8840a9",
+   "raw_feed_hash": "f20633eea4623f75f206e44b6770caa7b3b26ef7b0c4ca26766da63aed2660ff",
+   "published_at": 1680418800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_362bddf68e",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4cff8c59ffebcc0a",
+   "source": "Inquirer.net",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxNb181S09QOWFIWmV3VHZFcXpnWjVWV3dXUFNxcHhsdlpZVUNaUjl2VVhyelZ0U1FRTEJzUWZGQ3VHaWM3Y1QtZHd6M2MyZGNUb3J3bmVwdkpRX3lqN2F5SmEyTGpVN1pSeGE4Sm1OY2F4TzZvQjVMem9idXhTRGoxZ3JpX1NnWl9HUEphS09iUEFWOFptVjVSckNFUFNxeDlUMVhuTUxMVXMySmt3Y2VWR2lkbVdraTlTajRDNdIBwgFBVV95cUxPLUFrNTBlbXdVbWlFOUdjT3gwMElaYVpvWjRJYUpRN2VlQXBoZG93OEZSazRPZzBmRi1JbXpJZUduTTJsd1ZEVVhtVENXcDdNTGR5dmFYdGV4ejZNV1p2N3ExRllvcC1ibUZrRXJ2MEFBZU9Bb001VHRPV3BoZW5lMENPM1pkaDVSWkNkSkM4d28zMGxHZzNzeERaQ3JMOWxVSktGX3czUmhONTR3Wk1mcEVRRlktbmZ6cnlGU3doN0VsUQ?oc=5",
+   "title": "Rosas: The Song. The Journey \u2014 a heartfelt documentary about the song that inspired millions - Inquirer.net",
+   "text": "Rosas: The Song. The Journey \u2014 a heartfelt documentary about the song that inspired millions - Inquirer.net. Rosas: The Song. The Journey \u2014 a heartfelt documentary about the song that inspired millions Inquirer.net",
+   "content_hash": "374f7e4c3d264b5c",
+   "raw_feed_hash": "f20633eea4623f75f206e44b6770caa7b3b26ef7b0c4ca26766da63aed2660ff",
+   "published_at": 1677052800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_362bddf68e",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "6e52106865cd2be4:c0",
+   "source_id": "6e52106865cd2be4",
+   "subject": "MuseumNext",
+   "predicate": "published",
+   "object": "article titled 'Successful Crowdfunding Strategies for Museums: Real-Life Case Studies'",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Successful Crowdfunding Strategies for Museums: Real-Life Case Studies - MuseumNext",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680418800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "MuseumNext"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_3e3ad1167e",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_362bddf68e"
+   }
+  },
+  {
+   "claim_id": "4cff8c59ffebcc0a:c0",
+   "source_id": "4cff8c59ffebcc0a",
+   "subject": "Rosas: The Song. The Journey",
+   "predicate": "is",
+   "object": "a heartfelt documentary about the song that inspired millions",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Rosas: The Song. The Journey \u2014 a heartfelt documentary about the song that inspired millions",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1677052800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Rosas: The Song. The Journey"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_7469bf1f09",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_362bddf68e"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "MuseumNext",
+   "normalized": "museumnext",
+   "candidates": [
+    {
+     "entity_id": "ent_f11489e398",
+     "canonical": "museumnext",
+     "support": 1.0,
+     "evidence_mentions": [
+      "MuseumNext"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Rosas: The Song. The Journey",
+   "normalized": "rosas: song journey",
+   "candidates": [
+    {
+     "entity_id": "ent_9caeedf22f",
+     "canonical": "rosas: song journey",
+     "support": 1.0,
+     "evidence_mentions": [
+      "Rosas: The Song. The Journey"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "6e52106865cd2be4": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1680418800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680418800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4cff8c59ffebcc0a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1682899200.0,
+   "claimed_pubdate_ts": 1677052800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677052800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_3e3ad1167e",
+   "member_ids": [
+    "6e52106865cd2be4"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "MuseumNext",
+   "primary_source": "MuseumNext",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7469bf1f09",
+   "member_ids": [
+    "4cff8c59ffebcc0a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Inquirer.net",
+   "primary_source": "Inquirer.net",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "6e52106865cd2be4:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680418800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "4cff8c59ffebcc0a:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677052800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "6e52106865cd2be4:c0",
+  "4cff8c59ffebcc0a:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_362bddf68e": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_f0238b787d": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_72caa66229": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_6d5931bba9": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_38f0720c43": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_3252bd8045": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_ee85f04135": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_3dff0235e3": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_f0238b787d",
+  "req_72caa66229",
+  "req_6d5931bba9",
+  "req_38f0720c43",
+  "req_3252bd8045",
+  "req_ee85f04135",
+  "req_3dff0235e3"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 2,
+  "n_contradictions": 0,
+  "n_documents": 2
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 4.981,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "b3351264e62b676f",
+ "bundle_hash": "b3351264e62b676f",
+ "_persisted_at": "2026-07-13T01:05:29Z"
+}

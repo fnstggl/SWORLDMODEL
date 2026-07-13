@@ -1,0 +1,495 @@
+{
+ "bundle_id": "eb_6559c5",
+ "question": "Will the recall notice reach affected customers within 72 hours?",
+ "as_of": 1693526400.0,
+ "compiler_plan_hash": "3df12ffc44e0",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_e3d7b929ab",
+   "claim_or_quantity": "yes if the proportion of affected customers who have received the notice by 2023-09-05 00:00:00 UTC is >= 0.9, else no",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "recall_issuer",
+    "postal_service",
+    "email_service_provider",
+    "phone_service_provider"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_8787782253",
+   "claim_or_quantity": "value/context of recall_issuer.notification_capacity_per_day",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "recall_issuer.notification_capacity_per_day",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_df0592a28f",
+   "claim_or_quantity": "value/context of recall_issuer.has_customer_contact_list",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "recall_issuer.has_customer_contact_list",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_9e75074825",
+   "claim_or_quantity": "value/context of postal_service.average_delivery_delay_days",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "postal_service.average_delivery_delay_days",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_4d80c3b50c",
+   "claim_or_quantity": "evidence discriminating structural hypothesis direct_contact_sufficient",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:direct_contact_sufficient",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_ad6131ffe5",
+   "claim_or_quantity": "evidence discriminating structural hypothesis mail_dominated",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:mail_dominated",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_3abc97c1e2",
+   "claim_or_quantity": "decision rules / process of recall_issuer",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "recall_issuer",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_f77d6ac094",
+   "claim_or_quantity": "decision rules / process of postal_service",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "postal_service",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_e3d7b929ab",
+   "terms": "Will the recall notice reach affected customers within 72 hours? recall_issuer postal_service email_service_provider",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_8787782253",
+   "terms": "value/context of recall_issuer.notification_capacity_per_day",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_df0592a28f",
+   "terms": "value/context of recall_issuer.has_customer_contact_list",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_e3d7b929ab",
+   "logical_query": "Will the recall notice reach affected customers within 72 hours? recall_issuer postal_service email_service_provider after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=Will+the+recall+notice+reach+affected+customers+within+72+hours%3F+recall_issuer+postal_service+email_service_provider+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783905415.2911692,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:16:55 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw1pBiSO44w5ACxJVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwc7T8vXGIT2LHxSyuzknJSfmF8Sn5JcXFBTmJxRnFqUVlqUbyRgZGZgbmBmZ6BSXyBAQCtvDkE\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "8b3db7d88901a1d0f931dc8c19e125989d75de2b9dbebd841249cebd28531f42",
+   "n_bytes": 1397,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.46
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_8787782253",
+   "logical_query": "value/context of recall_issuer.notification_capacity_per_day after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=value%2Fcontext+of+recall_issuer.notification_capacity_per_day+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783905415.7525353,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:16:56 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw1JBiSO44w5AKxJVAzFfxnKn15jnWyUBcsug8axMQdwHxDCA2VLjEag_El9MvsRZJXGFtAOJPVTdYBapvsH4r9mVjKQHit_5spiGBbM5AvEUzmE2Im6Pj54VLbAIL_re6Kykn5RfGp-SXFBcX5CQWZxSnFpWlFsUbGRiZGZgbmOkZmMQXGAAAOjk4Iw\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "826f7a6f61caec000f9dc803d24361fe47ccd8f900d8fe20e3b3158c1321b0ce",
+   "n_bytes": 1285,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.335
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_df0592a28f",
+   "logical_query": "value/context of recall_issuer.has_customer_contact_list after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=value%2Fcontext+of+recall_issuer.has_customer_contact_list+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783905416.0889437,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:16:56 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmII1JBiSO44w5AKxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcHT8vXGITePH9Uy-TknJSfmF8Sn5JcXFBTmJxRnFqUVlqUbyRgZGZgbmBmZ6BSXyBAQDMeTmT\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "f85ed21fe69d498465a69f7a9c77509275e37808390d450354aeb06d34090524",
+   "n_bytes": 1277,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.411
+  }
+ ],
+ "raw_content_refs": [],
+ "documents": [],
+ "claims": [],
+ "entities": [],
+ "temporal_records": {},
+ "dependence_groups": [],
+ "contradiction_graph": [],
+ "actor_visibility": [],
+ "leakage_flags": [],
+ "included_claim_ids": [],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_e3d7b929ab": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_8787782253": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_df0592a28f": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_9e75074825": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_4d80c3b50c": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_ad6131ffe5": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_3abc97c1e2": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_f77d6ac094": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_e3d7b929ab",
+  "req_8787782253",
+  "req_df0592a28f",
+  "req_9e75074825",
+  "req_4d80c3b50c",
+  "req_ad6131ffe5",
+  "req_3abc97c1e2",
+  "req_f77d6ac094"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 0,
+  "n_contradictions": 0,
+  "n_documents": 0
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 1.211,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "67611b6d0330737f",
+ "bundle_hash": "67611b6d0330737f",
+ "_persisted_at": "2026-07-13T01:16:56Z"
+}

@@ -1,0 +1,494 @@
+{
+ "bundle_id": "eb_8eb40d",
+ "question": "Will the incumbent governor survive the recall vote?",
+ "as_of": 1690848000.0,
+ "compiler_plan_hash": "4c102d932875",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_45fd101e52",
+   "claim_or_quantity": "If the number of votes to retain exceeds the number to remove, the governor survives; otherwise, removed.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "incumbent_governor",
+    "recall_organizer",
+    "secretary_of_state"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_44d8663333",
+   "claim_or_quantity": "value/context of registered_voters.party_a_leaners.true_preference",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "registered_voters.party_a_leaners.true_preference",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_2b2f846cab",
+   "claim_or_quantity": "value/context of registered_voters.party_b_leaners.true_preference",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "registered_voters.party_b_leaners.true_preference",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_b4e9464b9f",
+   "claim_or_quantity": "value/context of registered_voters.independents.true_preference",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "registered_voters.independents.true_preference",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_dc09243a9e",
+   "claim_or_quantity": "evidence discriminating structural hypothesis approval_driven",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:approval_driven",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_00d06fa1d1",
+   "claim_or_quantity": "evidence discriminating structural hypothesis party_line",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:party_line",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_3b0307fa4c",
+   "claim_or_quantity": "decision rules / process of recall_election",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "recall_election",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_fc68a0ae41",
+   "claim_or_quantity": "decision rules / process of state_government",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "state_government",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_45fd101e52",
+   "terms": "Will the incumbent governor survive the recall vote? incumbent_governor recall_organizer secretary_of_state",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_44d8663333",
+   "terms": "value/context of registered_voters.party_a_leaners.true_preference",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_2b2f846cab",
+   "terms": "value/context of registered_voters.party_b_leaners.true_preference",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_45fd101e52",
+   "logical_query": "Will the incumbent governor survive the recall vote? incumbent_governor recall_organizer secretary_of_state after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=Will+the+incumbent+governor+survive+the+recall+vote%3F+incumbent_governor+recall_organizer+secretary_of_state+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783905071.3701365,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:11:12 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmII1JBiSO44w5AKxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTNseHbhUtsAifWfOJSUk7KL4xPyS8pLi7ISSzOKE4tKkstijcyMDIzMDcw0zMwiS8wAAB5DTbv\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "8800c4953d3d0b7583c65b2af566b97853d7383dbfb68c9f10ae87115d0f847b",
+   "n_bytes": 1379,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.591
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_44d8663333",
+   "logical_query": "value/context of registered_voters.party_a_leaners.true_preference after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=value%2Fcontext+of+registered_voters.party_a_leaners.true_preference+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783905071.9622097,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:11:12 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmII1JBicGs6w5DccYYhBYjrgLj15jnWyUBcsug8axMQdwHxDCA2VLjEag_El9MvsRZJXGFtAOJPVTdYBapvsH4r9mVjKQHit_5spiGBbM5AvEUzmE2Ih2PDtwuX2AQWnGjYwKiknJRfGJ-SX1JcXJCTWJxRnFpUlloUb2RgZGZgbmCmZ2ASX2AAAJAbOLA\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "502bcce0143ffa5b6bcb78c6cca1d235f22cbc76ea7554593a2c6974acf3c84e",
+   "n_bytes": 1297,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.344
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_2b2f846cab",
+   "logical_query": "value/context of registered_voters.party_b_leaners.true_preference after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=value%2Fcontext+of+registered_voters.party_b_leaners.true_preference+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783905072.3080127,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:11:12 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw0pBiSO44w5AKxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcG75duMQm0PB_7RkmJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwC6WzlE\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "1ad45d639845c94775d6c0754f9b1947561131192f2a252a33e07694936c7886",
+   "n_bytes": 1297,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.329
+  }
+ ],
+ "raw_content_refs": [],
+ "documents": [],
+ "claims": [],
+ "entities": [],
+ "temporal_records": {},
+ "dependence_groups": [],
+ "contradiction_graph": [],
+ "actor_visibility": [],
+ "leakage_flags": [],
+ "included_claim_ids": [],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_45fd101e52": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_44d8663333": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_2b2f846cab": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_b4e9464b9f": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_dc09243a9e": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_00d06fa1d1": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_3b0307fa4c": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_fc68a0ae41": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_45fd101e52",
+  "req_44d8663333",
+  "req_2b2f846cab",
+  "req_b4e9464b9f",
+  "req_dc09243a9e",
+  "req_00d06fa1d1",
+  "req_3b0307fa4c",
+  "req_fc68a0ae41"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 0,
+  "n_contradictions": 0,
+  "n_documents": 0
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 1.269,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "63475ca5685aaded",
+ "bundle_hash": "63475ca5685aaded",
+ "_persisted_at": "2026-07-13T01:11:12Z"
+}

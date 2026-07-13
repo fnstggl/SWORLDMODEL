@@ -1,0 +1,1537 @@
+{
+ "bundle_id": "eb_a63d79",
+ "question": "Will the three parties form a governing coalition after the election?",
+ "as_of": 1693526400.0,
+ "compiler_plan_hash": "b45ac3559724",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_ebe05b7975",
+   "claim_or_quantity": "If the three parties collectively control a majority of seats and reach a formal coalition agreement by the horizon date, outcome is 'coalition_formed'; otherwise 'no_coalition'.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "party_A",
+    "party_B",
+    "party_C",
+    "electorate"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_0f03c3def8",
+   "claim_or_quantity": "value/context of party_A.ideology_position",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "party_A.ideology_position",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_1a869d63ed",
+   "claim_or_quantity": "value/context of party_B.ideology_position",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "party_B.ideology_position",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_48e36b938c",
+   "claim_or_quantity": "value/context of party_C.ideology_position",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "party_C.ideology_position",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_7b938760b8",
+   "claim_or_quantity": "evidence discriminating structural hypothesis hypothesis_1",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:hypothesis_1",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_b715fad64e",
+   "claim_or_quantity": "evidence discriminating structural hypothesis hypothesis_2",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:hypothesis_2",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_bd5dda272f",
+   "claim_or_quantity": "decision rules / process of parliament",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "parliament",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_bf4862423e",
+   "claim_or_quantity": "decision rules / process of electoral_commission",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "electoral_commission",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_ebe05b7975",
+   "terms": "Will the three parties form a governing coalition after the election? party_A party_B party_C",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_0f03c3def8",
+   "terms": "value/context of party_A.ideology_position",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_1a869d63ed",
+   "terms": "value/context of party_B.ideology_position",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_ebe05b7975",
+   "logical_query": "Will the three parties form a governing coalition after the election? party_A party_B party_C after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=Will+the+three+parties+form+a+governing+coalition+after+the+election%3F+party_A+party_B+party_C+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783904777.3673837,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:06:18 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw05BiSO44w5ACxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwcXV8uXGITOPB8ibqSclJ-YXxKfklxcUFOYnFGcWpRWWpRvJGBkZmBuYGZnoFJfIEBAHiAOJ4\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "04b18f62aff936804e705c69b2be75313ed51376a1394b2499199c7864401252",
+   "n_bytes": 65537,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.705
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_0f03c3def8",
+   "logical_query": "value/context of party_A.ideology_position after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=value%2Fcontext+of+party_A.ideology_position+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783904778.0749812,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:06:18 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw0pBiSO44w5ACxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcXV8uXGITOLBywzQmJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwCmxzjR\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "45d6674df5ab21b68152594c5a368aef5250d86ee4254b0aed1989402e069b62",
+   "n_bytes": 1249,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.451
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_1a869d63ed",
+   "logical_query": "value/context of party_B.ideology_position after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=value%2Fcontext+of+party_B.ideology_position+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783904778.527131,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:06:19 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmJw1JBiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTF0f3lwiU2gY4ldUrKSfmF8Sn5JcXFBTmJxRnFqUVlqUXxRgZGZgbmBmZ6BibxBQYAIAA18A\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "21bb9063cef86a3fed7e0d9a596c37cd2932cd91bdc689564c79f61cd65bc34c",
+   "n_bytes": 1249,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.416
+  }
+ ],
+ "raw_content_refs": [
+  "04b18f62aff936804e705c69b2be75313ed51376a1394b2499199c7864401252"
+ ],
+ "documents": [
+  {
+   "id": "6d76a3570b0156bf",
+   "source": "PBS",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxQdjBoakhnU1Z4U3dXdWZmdEVCc0ppbUVXTExWOGZYeVlVSDBaMjhoNS1CeDlHQ2NyWXpPVFRyd29jOFZ2Tk1nZGFWU1RlU20xQU00MUNxVG91RUJDS1diYmE4NGE1Q1ZIZ0FwYUZaczJ2SVR2RUlGdTI4UVpkd2VDSlRFcFZMbDR3NFE3YjRNU1FrOHRTVWlYV3Z4VlUwNUt2Z3RrdHpTTzdfdUdvdXJiU2xmZ2w2RW5WQVgwVGtVZ3hfRkwyYlZPc05UcXE3SjN3bWhqVdIB2gFBVV95cUxNbWtNa3JYSVJzZzRLOW9aS1VWNXp3dXBvVU9Qa0RGN3NCT2JxT0VkRjVfLWlXMVQ4WVdianRnWnFmMWowdzNCWnRaN1RnblRONmJDM1RTQmRwVUlFdVhCNWE4SDQ2X1JQeV9LdWIxMEc3MnZhemFEVERsQ3FKdmZxMHB4UVRFOThBOHhodmdkRHJZNXJqRlBFVUFsdUQ5TVd2eGtrSVR3Vmhia01TQ3djXzdVdnZfUkt5VmJiWFk0RVRpU3dCYWpPS1JWekJZV1dndUdoUjJpdFVOZw?oc=5",
+   "title": "Populist party and outgoing administration work to form Thailand's next government amid 3-month deadlock - PBS",
+   "text": "Populist party and outgoing administration work to form Thailand's next government amid 3-month deadlock - PBS. Populist party and outgoing administration work to form Thailand's next government amid 3-month deadlock PBS",
+   "content_hash": "62c7a766905363ed",
+   "raw_feed_hash": "04b18f62aff936804e705c69b2be75313ed51376a1394b2499199c7864401252",
+   "published_at": 1691391600.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_ebe05b7975",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "014cda63e787d302",
+   "source": "Atlantic Council",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxORVJsc1RRQ0dPLWpzWXFLLWlSbGJ2X2Y5NUswTkdSWUswX2lFNnNTWTY1dWw0NWN5Z1E2NEQ5YUZGbFJ1UVZncUdkQVdOeDNPU3V4ZTFqSlJQS2R2SDJDaktSNlBoQVlWSWlMbXNsRnFnelRYOHJVYlZmMUdpQ0YwZnpIWHYxTDl6M3JJQk9fQ2ZJd3ZoSUdlZm9hMFdRUHJaN1NUNUlJWU1SbTBtdEE?oc=5",
+   "title": "Your primer on the Spanish elections - Atlantic Council",
+   "text": "Your primer on the Spanish elections - Atlantic Council. Your primer on the Spanish elections Atlantic Council",
+   "content_hash": "e1d4107dbe4bfa56",
+   "raw_feed_hash": "04b18f62aff936804e705c69b2be75313ed51376a1394b2499199c7864401252",
+   "published_at": 1690268400.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_ebe05b7975",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d149c3f2419f4c47",
+   "source": "VOA - Voice of America English News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxPQV9TVFFhLU5JTWVha19CTmFaVmNWU3psNF9ESFdWTl9FZllqUWVobVQtT0JrOXp5S0NhdTJCQmNhVFlxcTNhczNTc3kzVzNkOVpZRzFOOFluU2o0QVVuTjN2ZFVhZDF3M21TcnktbFdnM1pqanB0Q1UyTEEwTk5PVFRJUWkxRzJZd0c4Q0t4cW92R3plZzJwMWpoM1NRSURRZkJLcUkzbjVIZ01jVldUbl82WE3SAbcBQVVfeXFMT2FVc2Y5cHJ1QWdUNnZ6Rmc3dUxiRUR4emw3d0toNVhPeHFWaHk3WHNGOHctQ2tfSmQyUnZsc1dOZW5GMjE3UUFDQk5XUGRTNU45RFlFY2dlU3lPY1BoaHRJMnAxVTBTb2JkT1VvcVczbFNrRXByeTVoQ3U5TFotWFlDNExzNFlOazkwM2FvQmx3YmRKTmRZZGRaZHFpUjFoc3dNcGs5NTBqcm9UcUdqWVZtZXVRMURF?oc=5",
+   "title": "Pheu Thai Party Finds New Partners to Try to Form Government - VOA - Voice of America English News",
+   "text": "Pheu Thai Party Finds New Partners to Try to Form Government - VOA - Voice of America English News. Pheu Thai Party Finds New Partners to Try to Form Government VOA - Voice of America English News",
+   "content_hash": "72192bb907c316c3",
+   "raw_feed_hash": "04b18f62aff936804e705c69b2be75313ed51376a1394b2499199c7864401252",
+   "published_at": 1691391600.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_ebe05b7975",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "5dcdb8bc5cb146da",
+   "source": "Al Jazeera",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxNQnlXSG5uWXRxeFVyN0h3WEZlbVhIdVphSW52QWNpSHR5UDZhTTBLNzQtNnh3aENna096YllLSU13Ymc5cWdDMHBmcmFYbU1fVUtzUnVLTUhIZ1g2Ynp4dkRIYnBfWTJZVG5tWlEyOWFibUZGQnlyNnRHSllOal9ZaFRYa2FIRGlzaWZDQXhFOHBDRFpfYUhOOUliVnJzZzlvM19lYWV3QzN0V3ZOSlJBZtIBtgFBVV95cUxQSDVlZC1QenFmMmYwNENReTg1c0FhTDFzVGx4MmVvcnNiQjF3X0ZoRHNMdGRVaUtjUnpTNlNadHZEcHl2NnA5UkJGRmZuVkRWZTFMeGRGQzFEUWVvSHBFU2wxZEpyd3owQXh2ZWJHRk00OHJfa3lhcGJSb2l5Y1hOV3R5bS1YX1BidGxaUkZsYXprdFNndXpPVmppQUk2UkUzUVVpQXpXT3NLVktQYzJ3VDlmdzRTQQ?oc=5",
+   "title": "Party that won Thai elections blocked from forming coalition government - Al Jazeera",
+   "text": "Party that won Thai elections blocked from forming coalition government - Al Jazeera. Party that won Thai elections blocked from forming coalition government Al Jazeera",
+   "content_hash": "08ba7da25c0a3ed4",
+   "raw_feed_hash": "04b18f62aff936804e705c69b2be75313ed51376a1394b2499199c7864401252",
+   "published_at": 1690959600.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_ebe05b7975",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "c05390ec7578cdf9",
+   "source": "DW.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQNXBuVVFtZWlqSzF6YlBjeUVXem5NVGY4R0tTQTVMU3ZyendaTlpDbTR5VU81eDZnTm1vTjUzMEl3RzhiOFJibVAxZ3UzQVl3QkhkRGs4bF85a2pZYkl0c1owX3hPSThiLXpING8yRGhydm5CZjZKSTJPSVpNZ0hZVnEtVGRTemFuYzhCSHRwY1V0WTVjYXp30gGXAUFVX3lxTE5LeFktNHhOUmJCXzhwUW9JY2oxOWJfelhsUmlMcWdwbTZnSDZQM2NQNTU0N2NYdWtpYmVQX2szLW13eUJYZTViLXJya21WNWxtenFwU0FSMm9CQ1R3SkZvblJxSHNvcEdaZXhSOTBtSDFfWEF0QmxFMGkycUh4MnlKRExULXZVOHZzcm1xTDNrYVR4aV9Qc0U?oc=5",
+   "title": "Spain election: Conservatives win but fall short of majority - DW.com",
+   "text": "Spain election: Conservatives win but fall short of majority - DW.com. Spain election: Conservatives win but fall short of majority DW.com",
+   "content_hash": "c1cf0b3fba5a8769",
+   "raw_feed_hash": "04b18f62aff936804e705c69b2be75313ed51376a1394b2499199c7864401252",
+   "published_at": 1690095600.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_ebe05b7975",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2c8acd970610c1d7",
+   "source": "Der (europ\u00e4ische) F\u00f6deralist",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiZ0FVX3lxTE1Zb2lkUGR5emhoX2I3RHlVeTd0eHZjUGc3cmxxS2xoX29pMmVUa0tTRTAwTS05UjV0NldUd1JrcnBYU0lXSHhjWE4tYTA2ZXY4dWFRWi1weFBTT0VTRWJYZzgtSEdqYTg?oc=5",
+   "title": "Der (europ\u00e4ische) F\u00f6deralist: After the elections in Finland: Coalition options and European policy implications - Der (europ\u00e4ische) F\u00f6deralist",
+   "text": "Der (europ\u00e4ische) F\u00f6deralist: After the elections in Finland: Coalition options and European policy implications - Der (europ\u00e4ische) F\u00f6deralist. Der (europ\u00e4ische) F\u00f6deralist: After the elections in Finland: Coalition options and European policy implications Der (europ\u00e4ische) F\u00f6deralist",
+   "content_hash": "ef36e74162915520",
+   "raw_feed_hash": "04b18f62aff936804e705c69b2be75313ed51376a1394b2499199c7864401252",
+   "published_at": 1680678000.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_ebe05b7975",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3a9449a001b9dd11",
+   "source": "Reuters",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxPQXMwaU9qVDN3d0NwMEpLWi12bkJBcTUwOVpIb2pIeXg1Z1FSWWRsellSNktFR3hmVDdaMEVfLW9iTjJoakhTdnpsQjRXY0RlSnF2NDFUcE5yc1VlUkRaRm04YUpyZ24zMXJ1MWktU04yZGJQX1NQSHJROHRKUUNuVTg2SHJkUWRUM055aVRrZFdSci16MXpZOWtDSlR1MHBESmRCdE5MblBWaU4xTkdv?oc=5",
+   "title": "Explainer: Can Thailand's Pheu Thai Party form a coalition government? - Reuters",
+   "text": "Explainer: Can Thailand's Pheu Thai Party form a coalition government? - Reuters. Explainer: Can Thailand's Pheu Thai Party form a coalition government? Reuters",
+   "content_hash": "f6ef1ee173416e2c",
+   "raw_feed_hash": "04b18f62aff936804e705c69b2be75313ed51376a1394b2499199c7864401252",
+   "published_at": 1692601200.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_ebe05b7975",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4d51a611e8cb0c05",
+   "source": "Time Magazine",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMibkFVX3lxTFByZURQcl8wLUR3S3NGdDgwT0Q2T0FCZnBmdUVNY3UzWGJrcnRMeHhYNUZwVmRQU3BTSFVZRnRYY2ZvN3M4YjBxYmNyclJWWXZXc2ZzRVZjUk5IT2ZaSjlQMmtfLTNwODFSSzFmSWpn?oc=5",
+   "title": "What to Know About Spain's Most Important Election in Decades - Time Magazine",
+   "text": "What to Know About Spain's Most Important Election in Decades - Time Magazine. What to Know About Spain's Most Important Election in Decades Time Magazine",
+   "content_hash": "a7122f3d6ffff3b0",
+   "raw_feed_hash": "04b18f62aff936804e705c69b2be75313ed51376a1394b2499199c7864401252",
+   "published_at": 1689922800.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_ebe05b7975",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "6d76a3570b0156bf:c0",
+   "source_id": "6d76a3570b0156bf",
+   "subject": "Populist party and outgoing administration",
+   "predicate": "work to form",
+   "object": "Thailand's next government",
+   "value": "",
+   "units": "",
+   "qualifiers": "amid 3-month deadlock",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Populist party and outgoing administration work to form Thailand's next government amid 3-month deadlock",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1691391600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Populist party",
+    "outgoing administration",
+    "Thailand"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_b283e32717",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ebe05b7975"
+   }
+  },
+  {
+   "claim_id": "6d76a3570b0156bf:c1",
+   "source_id": "6d76a3570b0156bf",
+   "subject": "Thailand",
+   "predicate": "has",
+   "object": "3-month deadlock",
+   "value": "3",
+   "units": "month",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "amid 3-month deadlock",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1691391600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Thailand"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_b283e32717",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ebe05b7975"
+   }
+  },
+  {
+   "claim_id": "014cda63e787d302:c0",
+   "source_id": "014cda63e787d302",
+   "subject": "Atlantic Council",
+   "predicate": "published",
+   "object": "primer on the Spanish elections",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Your primer on the Spanish elections - Atlantic Council",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1690268400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Atlantic Council",
+    "Spanish elections"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_4171c723ac",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ebe05b7975"
+   }
+  },
+  {
+   "claim_id": "d149c3f2419f4c47:c0",
+   "source_id": "d149c3f2419f4c47",
+   "subject": "Pheu Thai Party",
+   "predicate": "finds",
+   "object": "new partners",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Pheu Thai Party Finds New Partners to Try to Form Government",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1691391600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Pheu Thai Party"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_154ba5bc4e",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ebe05b7975"
+   }
+  },
+  {
+   "claim_id": "d149c3f2419f4c47:c1",
+   "source_id": "d149c3f2419f4c47",
+   "subject": "Pheu Thai Party",
+   "predicate": "tries to form",
+   "object": "government",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Pheu Thai Party Finds New Partners to Try to Form Government",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1691391600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Pheu Thai Party"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_154ba5bc4e",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ebe05b7975"
+   }
+  },
+  {
+   "claim_id": "5dcdb8bc5cb146da:c0",
+   "source_id": "5dcdb8bc5cb146da",
+   "subject": "Party that won Thai elections",
+   "predicate": "blocked from forming",
+   "object": "coalition government",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Party that won Thai elections blocked from forming coalition government",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1690959600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Party that won Thai elections"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_7b2363e0fb",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ebe05b7975"
+   }
+  },
+  {
+   "claim_id": "5dcdb8bc5cb146da:c1",
+   "source_id": "5dcdb8bc5cb146da",
+   "subject": "Al Jazeera",
+   "predicate": "reported",
+   "object": "Party that won Thai elections blocked from forming coalition government",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Party that won Thai elections blocked from forming coalition government Al Jazeera",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1690959600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Al Jazeera"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_7b2363e0fb",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ebe05b7975"
+   }
+  },
+  {
+   "claim_id": "c05390ec7578cdf9:c0",
+   "source_id": "c05390ec7578cdf9",
+   "subject": "Conservatives",
+   "predicate": "win",
+   "object": "Spain election",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Spain election: Conservatives win but fall short of majority",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1690095600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Conservatives",
+    "Spain"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_b56d831ba9",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ebe05b7975"
+   }
+  },
+  {
+   "claim_id": "c05390ec7578cdf9:c1",
+   "source_id": "c05390ec7578cdf9",
+   "subject": "Conservatives",
+   "predicate": "fall short of",
+   "object": "majority",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Conservatives win but fall short of majority",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1690095600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Conservatives"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_b56d831ba9",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ebe05b7975"
+   }
+  },
+  {
+   "claim_id": "2c8acd970610c1d7:c0",
+   "source_id": "2c8acd970610c1d7",
+   "subject": "Der (europ\u00e4ische) F\u00f6deralist",
+   "predicate": "published an article about",
+   "object": "the elections in Finland: Coalition options and European policy implications",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Der (europ\u00e4ische) F\u00f6deralist: After the elections in Finland: Coalition options and European policy implications",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680678000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Der (europ\u00e4ische) F\u00f6deralist",
+    "Finland"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_bba82fe287",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ebe05b7975"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Populist party",
+   "normalized": "populist",
+   "candidates": [
+    {
+     "entity_id": "ent_02baba0862",
+     "canonical": "populist",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Populist party"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "outgoing administration",
+   "normalized": "outgoing administration",
+   "candidates": [
+    {
+     "entity_id": "ent_356483dc3b",
+     "canonical": "outgoing administration",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "outgoing administration"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Thailand",
+   "normalized": "thailand",
+   "candidates": [
+    {
+     "entity_id": "ent_6cbfbc47d7",
+     "canonical": "thailand",
+     "support": 0.6333,
+     "evidence_mentions": [
+      "Thailand",
+      "Thailand"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Thailand",
+   "normalized": "thailand",
+   "candidates": [
+    {
+     "entity_id": "ent_6cbfbc47d7",
+     "canonical": "thailand",
+     "support": 0.6333,
+     "evidence_mentions": [
+      "Thailand",
+      "Thailand"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Atlantic Council",
+   "normalized": "atlantic council",
+   "candidates": [
+    {
+     "entity_id": "ent_bd84b2962d",
+     "canonical": "atlantic council",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Atlantic Council"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Spanish elections",
+   "normalized": "spanish elections",
+   "candidates": [
+    {
+     "entity_id": "ent_c9de8d489b",
+     "canonical": "spanish elections",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Spanish elections"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Pheu Thai Party",
+   "normalized": "pheu thai",
+   "candidates": [
+    {
+     "entity_id": "ent_6c0e0f4778",
+     "canonical": "pheu thai",
+     "support": 0.6333,
+     "evidence_mentions": [
+      "Pheu Thai Party",
+      "Pheu Thai Party"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Pheu Thai Party",
+   "normalized": "pheu thai",
+   "candidates": [
+    {
+     "entity_id": "ent_6c0e0f4778",
+     "canonical": "pheu thai",
+     "support": 0.6333,
+     "evidence_mentions": [
+      "Pheu Thai Party",
+      "Pheu Thai Party"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Party that won Thai elections",
+   "normalized": "party that won thai elections",
+   "candidates": [
+    {
+     "entity_id": "ent_14bf7e67cb",
+     "canonical": "party that won thai elections",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Party that won Thai elections"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Al Jazeera",
+   "normalized": "al jazeera",
+   "candidates": [
+    {
+     "entity_id": "ent_e9e0955231",
+     "canonical": "al jazeera",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Al Jazeera"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Conservatives",
+   "normalized": "conservatives",
+   "candidates": [
+    {
+     "entity_id": "ent_e594661868",
+     "canonical": "conservatives",
+     "support": 0.6333,
+     "evidence_mentions": [
+      "Conservatives",
+      "Conservatives"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Spain",
+   "normalized": "spain",
+   "candidates": [
+    {
+     "entity_id": "ent_51288d1405",
+     "canonical": "spain",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Spain"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Conservatives",
+   "normalized": "conservatives",
+   "candidates": [
+    {
+     "entity_id": "ent_e594661868",
+     "canonical": "conservatives",
+     "support": 0.6333,
+     "evidence_mentions": [
+      "Conservatives",
+      "Conservatives"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Der (europ\u00e4ische) F\u00f6deralist",
+   "normalized": "der (europ\u00e4ische) f\u00f6deralist",
+   "candidates": [
+    {
+     "entity_id": "ent_56756581bd",
+     "canonical": "der (europ\u00e4ische) f\u00f6deralist",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Der (europ\u00e4ische) F\u00f6deralist"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Finland",
+   "normalized": "finland",
+   "candidates": [
+    {
+     "entity_id": "ent_466e5906dd",
+     "canonical": "finland",
+     "support": 0.5667,
+     "evidence_mentions": [
+      "Finland"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "6d76a3570b0156bf": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1691391600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1691391600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "014cda63e787d302": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1690268400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690268400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d149c3f2419f4c47": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1691391600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1691391600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "5dcdb8bc5cb146da": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1690959600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690959600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "c05390ec7578cdf9": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1690095600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690095600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2c8acd970610c1d7": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1680678000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680678000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3a9449a001b9dd11": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1692601200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1692601200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4d51a611e8cb0c05": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1689922800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689922800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_b283e32717",
+   "member_ids": [
+    "6d76a3570b0156bf"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "PBS",
+   "primary_source": "PBS",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_4171c723ac",
+   "member_ids": [
+    "014cda63e787d302"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Atlantic Council",
+   "primary_source": "Atlantic Council",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_154ba5bc4e",
+   "member_ids": [
+    "d149c3f2419f4c47"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "VOA - Voice of America English News",
+   "primary_source": "VOA - Voice of America English News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7b2363e0fb",
+   "member_ids": [
+    "5dcdb8bc5cb146da"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Al Jazeera",
+   "primary_source": "Al Jazeera",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b56d831ba9",
+   "member_ids": [
+    "c05390ec7578cdf9"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "DW.com",
+   "primary_source": "DW.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_bba82fe287",
+   "member_ids": [
+    "2c8acd970610c1d7"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Der (europ\u00e4ische) F\u00f6deralist",
+   "primary_source": "Der (europ\u00e4ische) F\u00f6deralist",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_6f6ec6907c",
+   "member_ids": [
+    "3a9449a001b9dd11"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Reuters",
+   "primary_source": "Reuters",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7a36969563",
+   "member_ids": [
+    "4d51a611e8cb0c05"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Time Magazine",
+   "primary_source": "Time Magazine",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "6d76a3570b0156bf:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1691391600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "6d76a3570b0156bf:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1691391600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "014cda63e787d302:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1690268400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "d149c3f2419f4c47:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1691391600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "d149c3f2419f4c47:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1691391600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "5dcdb8bc5cb146da:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1690959600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "5dcdb8bc5cb146da:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1690959600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "c05390ec7578cdf9:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1690095600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "c05390ec7578cdf9:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1690095600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "2c8acd970610c1d7:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680678000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "6d76a3570b0156bf:c0",
+  "6d76a3570b0156bf:c1",
+  "014cda63e787d302:c0",
+  "d149c3f2419f4c47:c0",
+  "d149c3f2419f4c47:c1",
+  "5dcdb8bc5cb146da:c0",
+  "5dcdb8bc5cb146da:c1",
+  "c05390ec7578cdf9:c0",
+  "c05390ec7578cdf9:c1",
+  "2c8acd970610c1d7:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_ebe05b7975": {
+   "status": "fulfilled",
+   "n_claims": 10,
+   "n_included": 10
+  },
+  "req_0f03c3def8": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_1a869d63ed": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_48e36b938c": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_7b938760b8": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_b715fad64e": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_bd5dda272f": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_bf4862423e": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_0f03c3def8",
+  "req_1a869d63ed",
+  "req_48e36b938c",
+  "req_7b938760b8",
+  "req_b715fad64e",
+  "req_bd5dda272f",
+  "req_bf4862423e"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 8,
+  "n_contradictions": 0,
+  "n_documents": 8
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 14.303,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "75292610bf91da99",
+ "bundle_hash": "75292610bf91da99",
+ "_persisted_at": "2026-07-13T01:06:36Z"
+}

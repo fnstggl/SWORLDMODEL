@@ -1,0 +1,268 @@
+{
+ "n_questions": 104,
+ "n_domains": 16,
+ "gates": {
+  "requirements_produced": {
+   "value": 1.0,
+   "th": 1.0,
+   "op": "==",
+   "passed": true
+  },
+  "nonempty_bundle_public_rate": {
+   "value": 0.2222,
+   "th": 0.9,
+   "op": ">=",
+   "passed": false
+  },
+  "paired_rss_share": {
+   "value": 1.0,
+   "th": 0.95,
+   "op": ">=",
+   "passed": true
+  },
+  "paired_rss_violation_rate": {
+   "value": 0.0,
+   "th": 0.0,
+   "op": "==",
+   "passed": true
+  },
+  "raw_persisted_rate": {
+   "value": 1.0,
+   "th": 1.0,
+   "op": "==",
+   "passed": true
+  },
+  "material_change_rate": {
+   "value": 1.0,
+   "th": 0.5,
+   "op": ">=",
+   "passed": true
+  },
+  "forecast_abstention_rate": {
+   "value": 0.0,
+   "th": 0.0,
+   "op": "==",
+   "passed": true
+  },
+  "execution_failure_rate": {
+   "value": 0.0192,
+   "th": 0.1,
+   "op": "<",
+   "passed": true
+  },
+  "lean_only_rate_when_evidence": {
+   "value": 0.0,
+   "th": 0.5,
+   "op": "<",
+   "passed": true
+  }
+ },
+ "all_gates_passed": false,
+ "total_paired_rss_queries": 310,
+ "mean_docs": 0.89,
+ "mean_included_claims": 1.03,
+ "mean_structural_changes": 2.25,
+ "per_domain": {
+  "acquisition": {
+   "n": 7,
+   "mean_docs": 1.1,
+   "material_rate": 0.1429
+  },
+  "best_action": {
+   "n": 6,
+   "mean_docs": 1.5,
+   "material_rate": 0.1667
+  },
+  "coalition": {
+   "n": 5,
+   "mean_docs": 1.6,
+   "material_rate": 0.2
+  },
+  "court_ruling": {
+   "n": 7,
+   "mean_docs": 1.6,
+   "material_rate": 0.4286
+  },
+  "election": {
+   "n": 8,
+   "mean_docs": 0.0,
+   "material_rate": 0.0
+  },
+  "fundraising": {
+   "n": 6,
+   "mean_docs": 1.8,
+   "material_rate": 0.3333
+  },
+  "legislation": {
+   "n": 8,
+   "mean_docs": 0.4,
+   "material_rate": 0.125
+  },
+  "market": {
+   "n": 5,
+   "mean_docs": 1.6,
+   "material_rate": 0.2
+  },
+  "messaging": {
+   "n": 8,
+   "mean_docs": 1.0,
+   "material_rate": 0.125
+  },
+  "negotiation": {
+   "n": 8,
+   "mean_docs": 1.6,
+   "material_rate": 0.625
+  },
+  "organizational_decision": {
+   "n": 9,
+   "mean_docs": 0.0,
+   "material_rate": 0.0
+  },
+  "product_launch": {
+   "n": 7,
+   "mean_docs": 1.3,
+   "material_rate": 0.2857
+  },
+  "protest": {
+   "n": 5,
+   "mean_docs": 0.0,
+   "material_rate": 0.0
+  },
+  "reputation_crisis": {
+   "n": 5,
+   "mean_docs": 0.0,
+   "material_rate": 0.0
+  },
+  "social_media_diffusion": {
+   "n": 7,
+   "mean_docs": 0.7,
+   "material_rate": 0.2857
+  },
+  "strike": {
+   "n": 3,
+   "mean_docs": 0.0,
+   "material_rate": 0.0
+  }
+ },
+ "forensic_examples": [
+  {
+   "domain": "messaging",
+   "question": "Will the professor respond to my request for a recommendation letter within two weeks?",
+   "as_of": "2023-09-01",
+   "horizon": "2023-09-15",
+   "requirements_produced": true,
+   "n_requirements": 7,
+   "n_documents": 8,
+   "n_included_claims": 9,
+   "n_independent_sources": 8,
+   "n_contradictions": 0,
+   "n_paired_rss": 3,
+   "n_rss_traces": 3,
+   "paired_rss_ok": true,
+   "paired_rss_violation": false,
+   "raw_persisted": true,
+   "structural_changes": 21,
+   "lean_only": false,
+   "plan_hash_changed": true,
+   "material_change": true,
+   "simulation_status": "completed_with_degradation",
+   "support_grade": "highly_speculative",
+   "has_forecast": true,
+   "raw_probability": 0.5303,
+   "bundle_hash": "e1fd06f8aaa77ea5",
+   "error": "",
+   "latency_s": 35.62
+  },
+  {
+   "domain": "negotiation",
+   "question": "Will the buyer accept our counteroffer of $4.2M for the office building?",
+   "as_of": "2023-04-01",
+   "horizon": "2023-05-01",
+   "requirements_produced": true,
+   "n_requirements": 7,
+   "n_documents": 1,
+   "n_included_claims": 1,
+   "n_independent_sources": 1,
+   "n_contradictions": 0,
+   "n_paired_rss": 3,
+   "n_rss_traces": 3,
+   "paired_rss_ok": true,
+   "paired_rss_violation": false,
+   "raw_persisted": true,
+   "structural_changes": 7,
+   "lean_only": false,
+   "plan_hash_changed": true,
+   "material_change": true,
+   "simulation_status": "completed_with_degradation",
+   "support_grade": "highly_speculative",
+   "has_forecast": true,
+   "raw_probability": 0.4737,
+   "bundle_hash": "4d33b9b672d33247",
+   "error": "",
+   "latency_s": 18.68
+  },
+  {
+   "domain": "negotiation",
+   "question": "Will the two companies agree on licensing terms within the next month?",
+   "as_of": "2023-05-10",
+   "horizon": "2023-06-10",
+   "requirements_produced": true,
+   "n_requirements": 8,
+   "n_documents": 1,
+   "n_included_claims": 1,
+   "n_independent_sources": 1,
+   "n_contradictions": 0,
+   "n_paired_rss": 3,
+   "n_rss_traces": 3,
+   "paired_rss_ok": true,
+   "paired_rss_violation": false,
+   "raw_persisted": true,
+   "structural_changes": 8,
+   "lean_only": false,
+   "plan_hash_changed": true,
+   "material_change": true,
+   "simulation_status": "completed_with_degradation",
+   "support_grade": "highly_speculative",
+   "has_forecast": true,
+   "raw_probability": 0.4875,
+   "bundle_hash": "256c00c4bd275937",
+   "error": "",
+   "latency_s": 20.53
+  },
+  {
+   "domain": "negotiation",
+   "question": "Will the divorcing parties settle the property split out of court?",
+   "as_of": "2023-02-01",
+   "horizon": "2023-06-01",
+   "requirements_produced": true,
+   "n_requirements": 7,
+   "n_documents": 2,
+   "n_included_claims": 3,
+   "n_independent_sources": 2,
+   "n_contradictions": 0,
+   "n_paired_rss": 3,
+   "n_rss_traces": 3,
+   "paired_rss_ok": true,
+   "paired_rss_violation": false,
+   "raw_persisted": true,
+   "structural_changes": 7,
+   "lean_only": false,
+   "plan_hash_changed": true,
+   "material_change": true,
+   "simulation_status": "completed_with_degradation",
+   "support_grade": "highly_speculative",
+   "has_forecast": true,
+   "raw_probability": 0.5,
+   "bundle_hash": "95edee9a016dd094",
+   "error": "",
+   "latency_s": 21.91
+  }
+ ],
+ "_meta": {
+  "llm_calls": 199,
+  "est_cost_usd": 0.2821,
+  "runtime_s": 1850.4,
+  "lookback_days": 150,
+  "model": "deepseek-chat + live Google News RSS"
+ }
+}

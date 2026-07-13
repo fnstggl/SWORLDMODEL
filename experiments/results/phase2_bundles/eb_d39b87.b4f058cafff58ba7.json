@@ -1,0 +1,998 @@
+{
+ "bundle_id": "eb_d39b87",
+ "question": "Will the patent-infringement suit be dismissed on summary judgment?",
+ "as_of": 1688169600.0,
+ "compiler_plan_hash": "b1d1051e596b",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_5c408028de",
+   "claim_or_quantity": "The outcome is 'dismissed' if the court grants summary judgment in favor of the defendant, otherwise 'not_dismissed'.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "plaintiff",
+    "defendant",
+    "court"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_f2cd5dba5b",
+   "claim_or_quantity": "value/context of plaintiff.patent_strength",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "plaintiff.patent_strength",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_e49859057d",
+   "claim_or_quantity": "value/context of defendant.evidence_quality",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "defendant.evidence_quality",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_be3565425f",
+   "claim_or_quantity": "evidence discriminating structural hypothesis strong_patent",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:strong_patent",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_47df6f632a",
+   "claim_or_quantity": "evidence discriminating structural hypothesis weak_patent",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:weak_patent",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_ad91def172",
+   "claim_or_quantity": "value/context of court.judge_ideology",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "court.judge_ideology",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_5b6cc2d162",
+   "claim_or_quantity": "decision rules / process of court",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "court",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_5c408028de",
+   "terms": "Will the patent-infringement suit be dismissed on summary judgment? plaintiff defendant court",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_f2cd5dba5b",
+   "terms": "value/context of plaintiff.patent_strength",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_e49859057d",
+   "terms": "value/context of defendant.evidence_quality",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_5c408028de",
+   "logical_query": "Will the patent-infringement suit be dismissed on summary judgment? plaintiff defendant court after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=Will+the+patent-infringement+suit+be+dismissed+on+summary+judgment%3F+plaintiff+defendant+court+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783904631.5891259,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:03:52 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjytDikmII1JBiSO44w5ACxHVA3AjEfBXPmVpvnmOdDMQli86zNgFxFxDPAGJDhUus9kB8Of0Sa5HEFdYGIP5UdYNVoPoG67diXzaWEiB-689mGhLI5gzEWzSD2YS4OX58unCJTeDAvgN2SspJ-YXxKfklxcUFOYnFGcWpRWWpRfFGBkZmBuYGZnoGJvEFBgBrdzqK\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "c47f61e0e8a54e383cc9dbdd67d0d37c454d3615990595d615dce9f18f51516c",
+   "n_bytes": 7868,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 5,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.484
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_f2cd5dba5b",
+   "logical_query": "value/context of plaintiff.patent_strength after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=value%2Fcontext+of+plaintiff.patent_strength+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783904632.075136,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:03:52 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmII0pBiSO44w5AKxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTD8ePThUtsAice3zjPqKSclF8Yn5JfUlxckJNYnFGcWlSWWhRvZGBkZmBuYKZnYBJfYAAA1CA4GA\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "a32df39cf30399769febe22f62e0a3d7bf94fd8065386bcce3c4568967186f17",
+   "n_bytes": 1249,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.306
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_e49859057d",
+   "logical_query": "value/context of defendant.evidence_quality after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=value%2Fcontext+of+defendant.evidence_quality+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783904632.3824527,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:03:52 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmJw15BiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTD8ePThUtsAgfuLlnLrKSclF8Yn5JfUlxckJNYnFGcWlSWWhRvZGBkZmBuYKZnYBJfYAAAviw3qg\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "9d49e915f6c4e6b6eafe4d04767072d71699de8b36ea7f8783f486efca54aa78",
+   "n_bytes": 1251,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.468
+  }
+ ],
+ "raw_content_refs": [
+  "c47f61e0e8a54e383cc9dbdd67d0d37c454d3615990595d615dce9f18f51516c"
+ ],
+ "documents": [
+  {
+   "id": "da2fcc4320a476f8",
+   "source": "White & Case LLP",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQSXV4cy1GZGttMm9pbjM1bENEZjczYkFvV1YwQngzMUxKby1ueGRCRzJDTHQ4dndPSmJxMzZmRFYxUE9EemJGRHljZjJ3cWZTaFllOUloZ1p5SVVlN2hES1JWQ2hjaU9aN3FPajNWUGYzNERPLV92NEgySU5xS3J3VWRRUjIta01LaTVLRnJlZV9mazBjMzNPajRPcXJacVF4UGd1YzFn?oc=5",
+   "title": "Challenging Standing In Antitrust Class Actions: Injury-In-Fact - White & Case LLP",
+   "text": "Challenging Standing In Antitrust Class Actions: Injury-In-Fact - White & Case LLP. Challenging Standing In Antitrust Class Actions: Injury-In-Fact White & Case LLP",
+   "content_hash": "c464ae870937a1c7",
+   "raw_feed_hash": "c47f61e0e8a54e383cc9dbdd67d0d37c454d3615990595d615dce9f18f51516c",
+   "published_at": 1683788400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_5c408028de",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4136ab418f335912",
+   "source": "Virginia Lawyers Weekly",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE9zWldsdEVKalRhLUtOZ3pVYldoSFlFWHJ1ZHFtVXZoVDhGSjlmNHBPMjNLOG1GOTVjZ21ya3Nybmd1eE1TcUxHLTBZUWN0cWhQMDZNSWtxdU9EVmVNcUg3RlF4alF0cnMzRU9tUVZ4SEdWWnprak5ybg?oc=5",
+   "title": "You%E2%80%99ve+been+served+%E2%80%A6+or+have+you%3F - Virginia Lawyers Weekly",
+   "text": "You%E2%80%99ve+been+served+%E2%80%A6+or+have+you%3F - Virginia Lawyers Weekly. You%E2%80%99ve+been+served+%E2%80%A6+or+have+you%3F Virginia Lawyers Weekly",
+   "content_hash": "8f1de865fa22293d",
+   "raw_feed_hash": "c47f61e0e8a54e383cc9dbdd67d0d37c454d3615990595d615dce9f18f51516c",
+   "published_at": 1684998000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_5c408028de",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3b83ef27baff44d7",
+   "source": "Canadian Lawyer",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNdUxtdDVBd2Q2UDgxVGdoTFZOY25qV2V0S1Q0MTBHaUxGR09OaWRzRi1FR29IV19UcnZRTzRaNzdqLVlFaTA3UjZOUEd0YlZUQmxndThVYWFWT1BhVjczVXBLVkRDcFRIT2ZSQWNuN3kxNHQ0eWFWRlFtMjhDQTZGbDB2R3g3bWZONkQ4SkpON011M0U2VlpaZkwtZG5YTWxOQU0yQmdVWkdWQ2IyVHJzV014UmxOeU1yNl9LaGlXVTlFdUdzNU0w?oc=5",
+   "title": "Federal Court hears firearm regulation, patent cases this week - Canadian Lawyer",
+   "text": "Federal Court hears firearm regulation, patent cases this week - Canadian Lawyer. Federal Court hears firearm regulation, patent cases this week Canadian Lawyer",
+   "content_hash": "9d75ced1680a33a8",
+   "raw_feed_hash": "c47f61e0e8a54e383cc9dbdd67d0d37c454d3615990595d615dce9f18f51516c",
+   "published_at": 1681282800.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_5c408028de",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "31010fb80558a55f",
+   "source": "Law.asia",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiSkFVX3lxTE03aW9XanFOX0JQcnN0LTA1Wkg2S21nbkhkRDhxN052dHNCTXZuMGNfN0h0VDA2VmFmdG5lSENneUMwQ1VvVHNONW53?oc=5",
+   "title": "Deals of the year 2022 - Law.asia",
+   "text": "Deals of the year 2022 - Law.asia. Deals of the year 2022 Law.asia",
+   "content_hash": "5fe735ca7d0868fa",
+   "raw_feed_hash": "c47f61e0e8a54e383cc9dbdd67d0d37c454d3615990595d615dce9f18f51516c",
+   "published_at": 1675929600.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_5c408028de",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "10deb326bf5b796d",
+   "source": "SCC Online",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi3AJBVV95cUxQZjBZNjlFWXpyZlRiWjB0Y0VlSnFURTljbmRmSExRelk2SDFqMjJucnFuZklIU1JfeVpkYzFVOXpEbnItN1JnMWZnaVZoanNJNjlnek9QVEJvekVYTGhzel9WcmhBYjBiZ3FiSWRxQ0lzTS1ZN0NIVE41enZ4RlZLNFZWdWhOUFZlMVZfaU44WTNsS2F3SEpQR0hjNVZ0TW1ubm1kUTN3bG1iY05JOGZzdDBnNGFtZjhvanVUWVJ4amdNVS1oWUQzV3FPQlNpSDJibHNNQkNVTzFGRDFCa1NwMXVTR3JzcFhneU9lQkxZZzdyX0lnYVpuOEktUXZTT0hvUFByaERFSEFXUnVoRUJLQ1ozb2VsTnpDb0ZLS1BqaVh6eVhzOWJ0enB0NjlvWkNld2dIcXhuaUwxUHpvZ1pCd0NjaVU3Vng5cDVDXzV1eDlvZ09iSzRpR3ROZ20?oc=5",
+   "title": "No abatement of suit for not impleading all LRs if deceased's estate is substantially represented: SC | SCC Blog - SCC Online",
+   "text": "No abatement of suit for not impleading all LRs if deceased's estate is substantially represented: SC | SCC Blog - SCC Online. No abatement of suit for not impleading all LRs if deceased's estate is substantially represented: SC | SCC Blog SCC Online",
+   "content_hash": "8e0e2f1dd6e1b4a4",
+   "raw_feed_hash": "c47f61e0e8a54e383cc9dbdd67d0d37c454d3615990595d615dce9f18f51516c",
+   "published_at": 1680678000.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_5c408028de",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "da2fcc4320a476f8:c0",
+   "source_id": "da2fcc4320a476f8",
+   "subject": "White & Case LLP",
+   "predicate": "published an article about",
+   "object": "challenging standing in antitrust class actions: injury-in-fact",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Challenging Standing In Antitrust Class Actions: Injury-In-Fact - White & Case LLP",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683788400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "White & Case LLP"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_1952aab42c",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_5c408028de"
+   }
+  },
+  {
+   "claim_id": "4136ab418f335912:c0",
+   "source_id": "4136ab418f335912",
+   "subject": "You",
+   "predicate": "have been served",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "hedged",
+   "polarity": "affirm",
+   "claim_class": "inferred_implication",
+   "supporting_span": "You%E2%80%99ve+been+served+%E2%80%A6+or+have+you%3F",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1684998000.0,
+   "extraction_confidence": 0.5,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [],
+   "contradiction_links": [],
+   "dependence_group": "dep_fa30f0c0bc",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_5c408028de"
+   }
+  },
+  {
+   "claim_id": "4136ab418f335912:c1",
+   "source_id": "4136ab418f335912",
+   "subject": "You",
+   "predicate": "have not been served",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "hedged",
+   "polarity": "negate",
+   "claim_class": "inferred_implication",
+   "supporting_span": "or+have+you%3F",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1684998000.0,
+   "extraction_confidence": 0.5,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [],
+   "contradiction_links": [],
+   "dependence_group": "dep_fa30f0c0bc",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_5c408028de"
+   }
+  },
+  {
+   "claim_id": "3b83ef27baff44d7:c0",
+   "source_id": "3b83ef27baff44d7",
+   "subject": "Federal Court",
+   "predicate": "hears",
+   "object": "firearm regulation, patent cases",
+   "value": "",
+   "units": "",
+   "qualifiers": "this week",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Federal Court hears firearm regulation, patent cases this week",
+   "span_verified": true,
+   "event_time": "this week",
+   "publication_time": 1681282800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Federal Court"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_d5729a9c65",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_5c408028de"
+   }
+  },
+  {
+   "claim_id": "31010fb80558a55f:c0",
+   "source_id": "31010fb80558a55f",
+   "subject": "Deals of the year 2022",
+   "predicate": "is a publication by",
+   "object": "Law.asia",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Deals of the year 2022 - Law.asia",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675929600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Law.asia"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_3e8a4b238b",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_5c408028de"
+   }
+  },
+  {
+   "claim_id": "10deb326bf5b796d:c0",
+   "source_id": "10deb326bf5b796d",
+   "subject": "suit",
+   "predicate": "does not abate for not impleading all LRs",
+   "object": "if deceased's estate is substantially represented",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "No abatement of suit for not impleading all LRs if deceased's estate is substantially represented: SC",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680678000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "SC"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_d037dccb2f",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_5c408028de"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "White & Case LLP",
+   "normalized": "white & case llp",
+   "candidates": [
+    {
+     "entity_id": "ent_5f0be3d541",
+     "canonical": "white & case llp",
+     "support": 0.75,
+     "evidence_mentions": [
+      "White & Case LLP"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Federal Court",
+   "normalized": "federal court",
+   "candidates": [
+    {
+     "entity_id": "ent_78ddadde32",
+     "canonical": "federal court",
+     "support": 0.75,
+     "evidence_mentions": [
+      "Federal Court"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Law.asia",
+   "normalized": "law asia",
+   "candidates": [
+    {
+     "entity_id": "ent_21c53deeb0",
+     "canonical": "law asia",
+     "support": 0.75,
+     "evidence_mentions": [
+      "Law.asia"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "SC",
+   "normalized": "sc",
+   "candidates": [
+    {
+     "entity_id": "ent_04096ad9c8",
+     "canonical": "sc",
+     "support": 0.75,
+     "evidence_mentions": [
+      "SC"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "da2fcc4320a476f8": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1683788400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683788400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4136ab418f335912": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1684998000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684998000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3b83ef27baff44d7": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1681282800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681282800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "31010fb80558a55f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1675929600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675929600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "10deb326bf5b796d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1680678000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680678000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_1952aab42c",
+   "member_ids": [
+    "da2fcc4320a476f8"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "White & Case LLP",
+   "primary_source": "White & Case LLP",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_fa30f0c0bc",
+   "member_ids": [
+    "4136ab418f335912"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Virginia Lawyers Weekly",
+   "primary_source": "Virginia Lawyers Weekly",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_d5729a9c65",
+   "member_ids": [
+    "3b83ef27baff44d7"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Canadian Lawyer",
+   "primary_source": "Canadian Lawyer",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_3e8a4b238b",
+   "member_ids": [
+    "31010fb80558a55f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Law.asia",
+   "primary_source": "Law.asia",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_d037dccb2f",
+   "member_ids": [
+    "10deb326bf5b796d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "SCC Online",
+   "primary_source": "SCC Online",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "da2fcc4320a476f8:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683788400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "4136ab418f335912:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684998000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "4136ab418f335912:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684998000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "3b83ef27baff44d7:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681282800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "31010fb80558a55f:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675929600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "10deb326bf5b796d:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680678000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "da2fcc4320a476f8:c0",
+  "4136ab418f335912:c0",
+  "4136ab418f335912:c1",
+  "3b83ef27baff44d7:c0",
+  "31010fb80558a55f:c0",
+  "10deb326bf5b796d:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_5c408028de": {
+   "status": "fulfilled",
+   "n_claims": 6,
+   "n_included": 6
+  },
+  "req_f2cd5dba5b": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_e49859057d": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_be3565425f": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_47df6f632a": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_ad91def172": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_5b6cc2d162": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_f2cd5dba5b",
+  "req_e49859057d",
+  "req_be3565425f",
+  "req_47df6f632a",
+  "req_ad91def172",
+  "req_5b6cc2d162"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 5,
+  "n_contradictions": 0,
+  "n_documents": 5
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 10.621,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "b4f058cafff58ba7",
+ "bundle_hash": "b4f058cafff58ba7",
+ "_persisted_at": "2026-07-13T01:04:03Z"
+}

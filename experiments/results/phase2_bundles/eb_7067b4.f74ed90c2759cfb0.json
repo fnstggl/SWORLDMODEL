@@ -1,0 +1,1380 @@
+{
+ "bundle_id": "eb_7067b4",
+ "question": "Will the candidate out-raise their opponent this reporting period?",
+ "as_of": 1688169600.0,
+ "compiler_plan_hash": "6c128c1f9ad2",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_494e161820",
+   "claim_or_quantity": "Compare total funds raised by candidate vs opponent from 2023-07-01 to 2023-09-30; if candidate > opponent, outcome is candidate_outraises, else opponent_outraises_or_tie.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "candidate",
+    "opponent"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_c47807f8d0",
+   "claim_or_quantity": "decision rules / process of fec",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "fec",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_4469759466",
+   "claim_or_quantity": "decision rules / process of party_institution",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "party_institution",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_494e161820",
+   "terms": "Will the candidate out-raise their opponent this reporting period? candidate opponent",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_c47807f8d0",
+   "terms": "decision rules / process of fec",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ]
+  },
+  {
+   "requirement_id": "req_4469759466",
+   "terms": "decision rules / process of party_institution",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_494e161820",
+   "logical_query": "Will the candidate out-raise their opponent this reporting period? candidate opponent after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=Will+the+candidate+out-raise+their+opponent+this+reporting+period%3F+candidate+opponent+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783904744.0588715,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:05:44 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw15BiSO44w5ACxHVAzFfxnKn15jnWyUBcsug8axMQdwHxDCA2VLjEag_El9MvsRZJXGFtAOJPVTdYBapvsH4r9mVjKQHit_5spiGBbM5AvEUzmE2Ih-PF5wuX2AQ6Dm45zqSknJRfGJ-SX1JcXJCTWJxRnFpUlloUb2RgZGZgbmCmZ2ASX2AAAI6TOOs\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "49676be377e483555966e90eb116679f8e957be3602443a5384a989b26118224",
+   "n_bytes": 6377,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 4,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.587
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_c47807f8d0",
+   "logical_query": "decision rules / process of fec after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=decision+rules+%2F+process+of+fec+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783904744.6478925,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:05:45 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmJw0pBiSO44w5AKxJVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTN8fLzhUtsAhtuzY9UUk7KL4xPyS8pLi7ISSzOKE4tKkstijcyMDIzMDcw0zMwiS8wAAB6izcj\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "cce2c9d1aff17338569a6d2b0f3a72163307ba4459f08278af8815363abb8a4b",
+   "n_bytes": 8305,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 5,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.482
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_4469759466",
+   "logical_query": "decision rules / process of party_institution after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=decision+rules+%2F+process+of+party_institution+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783904745.1313186,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:05:45 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw15BiSO44w5ACxJVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTD8fLzhUtsAhNWndzJpKSclF8Yn5JfUlxckJNYnFGcWlSWWhRvZGBkZmBuYKZnYBJfYAAAtN83bA\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "6aa560f651a2f8717bfc4d35088384d8611a444023eb5a6c5421ac73bbd95ebf",
+   "n_bytes": 1255,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.467
+  }
+ ],
+ "raw_content_refs": [
+  "49676be377e483555966e90eb116679f8e957be3602443a5384a989b26118224",
+  "cce2c9d1aff17338569a6d2b0f3a72163307ba4459f08278af8815363abb8a4b"
+ ],
+ "documents": [
+  {
+   "id": "cf29f119798aef6e",
+   "source": "OpenSecrets",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE8wd2dpNjZFSVJWMUt4VndHOVUwYkwySGJ0QjlyNE5pR3pvWTRtUUtYMkhidVBqQUxpOFNsOFprTUM1SWpHcVFpOXRhOC1wMkd1U1JxMnFTdWtPVm1yTG14Sm1GSjJmZGlkZWdORGl1MU8?oc=5",
+   "title": "The nationalization of political contributions and the rising role of out-of-state donations - OpenSecrets",
+   "text": "The nationalization of political contributions and the rising role of out-of-state donations - OpenSecrets. The nationalization of political contributions and the rising role of out-of-state donations OpenSecrets",
+   "content_hash": "07cc0357c3497bca",
+   "raw_feed_hash": "49676be377e483555966e90eb116679f8e957be3602443a5384a989b26118224",
+   "published_at": 1685602800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_494e161820",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "67c623e0631455ad",
+   "source": "Brandeis University",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE9JYzY2UVpUcmpSaDcxQkhCVUlFNGdGNjNMQm1UMC1lcS1UMzZZc0J1Tk9LSEh0WmxzSnZJTTBiRTdJUkhzalpiV2tmQW14TF80QnNkOXd4cUtlZXlaZFNDa3RJY2xYdW1wSEpubm9ZVHVocGI2RGI0?oc=5",
+   "title": "Eugene Debs: When a prisoner ran for president - Brandeis University",
+   "text": "Eugene Debs: When a prisoner ran for president - Brandeis University. Eugene Debs: When a prisoner ran for president Brandeis University",
+   "content_hash": "3ff98e1f106c2f5f",
+   "raw_feed_hash": "49676be377e483555966e90eb116679f8e957be3602443a5384a989b26118224",
+   "published_at": 1682060400.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_494e161820",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3646b7584910ba04",
+   "source": "Anchorage Daily News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi-AFBVV95cUxQYzdGR1FwTVJ1ZmRVdnNvd2YyQ2VHam9CN3dUc3ZrS1dCZmNxY2prMGk0U3NjS2FLeGxQRVFGcUh1ZEQ1cUpEY1ByRFlldEZsSkNoWGFyVWJfaEYyY0lVM1ozLVdlcDVyZGpuWm9fcWFhUW1zWmRCODEtVG1iRUFSOEFldzlMY2o4aHB3bFBhRTRCZ2V6MDVOZXhucDJ6MmJreC1LLVUxNVFMUlFFOVhNNXg5N3lfUmJWbjFUU3JUeXNLTkRCMFJnQW9Ub3ViVkJEMVJZbzJZSnRxRVBzRW5pUU9DaGk2cjkyTnFjZFJ4TGpnbUxsamFhZg?oc=5",
+   "title": "Conservatives close fundraising gap in Assembly races with help of big donors and independent expenditure group - Anchorage Daily News",
+   "text": "Conservatives close fundraising gap in Assembly races with help of big donors and independent expenditure group - Anchorage Daily News. Conservatives close fundraising gap in Assembly races with help of big donors and independent expenditure group Anchorage Daily News",
+   "content_hash": "85a9c67016711330",
+   "raw_feed_hash": "49676be377e483555966e90eb116679f8e957be3602443a5384a989b26118224",
+   "published_at": 1680505200.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_494e161820",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "da783aad167697b8",
+   "source": "Payday Report",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxONFZPNTEtcnFjZDdMNFBaSjZPTFFKYndmNG9tbGZEbGdwb2pWQk5zemtSYmNzVWduSVNQTmtkVkdTN1FsVXBwMDdRbm1zV1JHM3o1WlpXQnUtTFFYVWV2SHNWUG9SVW5iZHptYUtIc3lpSERNWktGeFhyWnF1Vm1aRHRiWHVyNzg4TXp3OGo0R21SM2NwY2g2LWRfQ3dWbjBFQmhn?oc=5",
+   "title": "Rival CWA Prez Candidates Covered Up Violent Intimidation & Sexual Misconduct - Payday Report",
+   "text": "Rival CWA Prez Candidates Covered Up Violent Intimidation & Sexual Misconduct - Payday Report. Rival CWA Prez Candidates Covered Up Violent Intimidation & Sexual Misconduct Payday Report",
+   "content_hash": "4505b987937bc6f7",
+   "raw_feed_hash": "49676be377e483555966e90eb116679f8e957be3602443a5384a989b26118224",
+   "published_at": 1687417200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_494e161820",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "65e0f5cf1ad6b730",
+   "source": "Campaign Legal Center",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxQajJyVVllalQyZzJqOHpTXzZROEQ1T2trYW9IakR3aU9fM1RGVGlWb05hM1djZzAzeFF4dmFjUzk1Yl9IT3lvUV8zUzRwajJSa0lnbTlBN2VlX3JGQXU1WFpILUZyeFpjelB2cENqMTFnbEp4Rzc4eWYtX1hVbmNfaGxJRHdXTFBLWDhlU3kwN2stWnB4c3VyUA?oc=5",
+   "title": "The FEC Should Not Make it Easier to Keep Political Spending Secret - Campaign Legal Center",
+   "text": "The FEC Should Not Make it Easier to Keep Political Spending Secret - Campaign Legal Center. The FEC Should Not Make it Easier to Keep Political Spending Secret Campaign Legal Center",
+   "content_hash": "5188570c165322a7",
+   "raw_feed_hash": "cce2c9d1aff17338569a6d2b0f3a72163307ba4459f08278af8815363abb8a4b",
+   "published_at": 1687762800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_c47807f8d0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d5c4fc81b6b2f26d",
+   "source": "National Conference of State Legislatures (NCSL)",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxONWh4VmtLRHJsVXA0NjRsMHBVVG1HWDRwZW00QU5VREVCV2dHZjZQbW9jLU9KTlo3UHVRUG1BQVVEd2tnX2dFWjRoeU5DY3RLVGV4aXhGbzBIYjJqeHNHSXFydXdGejdJWjNDTmRyRkluSWRHNkpxd0toWjZoWHNQSWJlYk5fTGdwSFdzbEVWSHNmcUI5clE?oc=5",
+   "title": "13 Years of Impact: The Long Reach of \u2018Citizens United\u2019... - National Conference of State Legislatures (NCSL)",
+   "text": "13 Years of Impact: The Long Reach of \u2018Citizens United\u2019... - National Conference of State Legislatures (NCSL). 13 Years of Impact: The Long Reach of \u2018Citizens United\u2019... National Conference of State Legislatures (NCSL)",
+   "content_hash": "20590ef8be281c49",
+   "raw_feed_hash": "cce2c9d1aff17338569a6d2b0f3a72163307ba4459f08278af8815363abb8a4b",
+   "published_at": 1677571200.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_c47807f8d0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "7d1120b46664ae7f",
+   "source": "Citizens for Responsibility and Ethics in Washington",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPQnllVFBPQl9lMHhGVTkzYzNhbHNEUDI4VTM1NTl3NHhWV2FsX0dXYldWbUdMSFpWMWpiOHN0a2JoOF9DQnlocktuYmpzaVZJRzNjYmZsNEdXc0RXVG44TG5zRUQyMVNoMl94YU9uUU5PeE1hMmRPQUZqOWd4MlJ3UTAyajF0VVBwMW9DbW1jWUd6QzlhcnlvNkhKc29FZzIwN2NRSXI3dERHbWUzQ1k1U0RpRTFzYW9Sbi04VldCemE?oc=5",
+   "title": "No, the FEC did not absolve Trump of his hush money campaign finance issues - Citizens for Responsibility and Ethics in Washington",
+   "text": "No, the FEC did not absolve Trump of his hush money campaign finance issues - Citizens for Responsibility and Ethics in Washington. No, the FEC did not absolve Trump of his hush money campaign finance issues Citizens for Responsibility and Ethics in Washington",
+   "content_hash": "e7f2815293748c1b",
+   "raw_feed_hash": "cce2c9d1aff17338569a6d2b0f3a72163307ba4459f08278af8815363abb8a4b",
+   "published_at": 1681887600.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_c47807f8d0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "e1265137d018211f",
+   "source": "Campaign Legal Center",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxQbWhBeTFGQzk0RUhIZzVJRjNtZS1POVdyOEpRaHYyYkpCQ1ctd3pybktMOXowZ3dLME9EcUFGWmQxdXlsZGtqaWhzVlh2X2R6T0FjQmk3M3lRVUpEdmVZaWp5NENseWJ2WVJaaU95YUs5Si1WLVItU1pYYkFWWWx4a1BpajVCWm9Bd2ExWE52NV9fNkFTWjVnZ3J2QlJtTXBFdFpvWnFlcy0tbWJqTF9kYm9aWkEwLTc5REtFR2pB?oc=5",
+   "title": "Campaign Legal Center Files Complaint Alleging Canadian Corporation Made Illegal Contributions to DeSantis Committees - Campaign Legal Center",
+   "text": "Campaign Legal Center Files Complaint Alleging Canadian Corporation Made Illegal Contributions to DeSantis Committees - Campaign Legal Center. Campaign Legal Center Files Complaint Alleging Canadian Corporation Made Illegal Contributions to DeSantis Committees Campaign Legal Center",
+   "content_hash": "e66edef281a0ba7a",
+   "raw_feed_hash": "cce2c9d1aff17338569a6d2b0f3a72163307ba4459f08278af8815363abb8a4b",
+   "published_at": 1687849200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_c47807f8d0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "52f1bb99d2535e66",
+   "source": "Citizens for Responsibility and Ethics in Washington",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxPOGpZTkdtTVl0bnYzZlZMNFdrRkdLU0JtU3V4NW84MmNRQngtRDVZT3hnVm9GZWc0a2ZoUXpLMU4zQ3BSaVpBdWc2NjRmNURwc2RLbUVDR3dZeGZheGZYZ3lRaHBSR1RQRUtnMlJtdy1UZTBfN0E4NG93RlRJMnREMXRGMlZNaEw1U3RSWkZVQmFhN3F0VFpFN0cwUXExdi1kaFN3eDN1c3F5VTB0SDNYWGV5Tkg5a0VXaFJFYU9KZGZfa0U5UGlHTjNrLXdnT2NnODhmVVllVQ?oc=5",
+   "title": "Clarence Thomas\u2019s decisions have been benefiting wealthy donors like Harlan Crow \u2014 for decades - Citizens for Responsibility and Ethics in Washington",
+   "text": "Clarence Thomas\u2019s decisions have been benefiting wealthy donors like Harlan Crow \u2014 for decades - Citizens for Responsibility and Ethics in Washington. Clarence Thomas\u2019s decisions have been benefiting wealthy donors like Harlan Crow \u2014 for decades Citizens for Responsibility and Ethics in Washington",
+   "content_hash": "577e24ce229db93a",
+   "raw_feed_hash": "cce2c9d1aff17338569a6d2b0f3a72163307ba4459f08278af8815363abb8a4b",
+   "published_at": 1682924400.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_c47807f8d0",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "cf29f119798aef6e:c0",
+   "source_id": "cf29f119798aef6e",
+   "subject": "political contributions",
+   "predicate": "undergoing nationalization",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The nationalization of political contributions",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1685602800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [],
+   "contradiction_links": [],
+   "dependence_group": "dep_fa71c42ffe",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_494e161820"
+   }
+  },
+  {
+   "claim_id": "cf29f119798aef6e:c1",
+   "source_id": "cf29f119798aef6e",
+   "subject": "out-of-state donations",
+   "predicate": "rising in role",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "the rising role of out-of-state donations",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1685602800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [],
+   "contradiction_links": [],
+   "dependence_group": "dep_fa71c42ffe",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_494e161820"
+   }
+  },
+  {
+   "claim_id": "65e0f5cf1ad6b730:c0",
+   "source_id": "65e0f5cf1ad6b730",
+   "subject": "The FEC",
+   "predicate": "should not make it easier to keep political spending secret",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "The FEC Should Not Make it Easier to Keep Political Spending Secret",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1687762800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "FEC"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_bb3ffa70ed",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_c47807f8d0"
+   }
+  },
+  {
+   "claim_id": "67c623e0631455ad:c0",
+   "source_id": "67c623e0631455ad",
+   "subject": "Eugene Debs",
+   "predicate": "ran for president",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "while a prisoner",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Eugene Debs: When a prisoner ran for president",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682060400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Eugene Debs"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_38585a4d83",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_494e161820"
+   }
+  },
+  {
+   "claim_id": "67c623e0631455ad:c1",
+   "source_id": "67c623e0631455ad",
+   "subject": "Brandeis University",
+   "predicate": "is associated with",
+   "object": "the article about Eugene Debs",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Brandeis University. Eugene Debs: When a prisoner ran for president Brandeis University",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682060400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Brandeis University",
+    "Eugene Debs"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_38585a4d83",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_494e161820"
+   }
+  },
+  {
+   "claim_id": "d5c4fc81b6b2f26d:c0",
+   "source_id": "d5c4fc81b6b2f26d",
+   "subject": "Citizens United",
+   "predicate": "has had",
+   "object": "impact",
+   "value": "13 Years",
+   "units": "years",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "13 Years of Impact: The Long Reach of \u2018Citizens United\u2019",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1677571200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Citizens United",
+    "National Conference of State Legislatures"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_255004a925",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_c47807f8d0"
+   }
+  },
+  {
+   "claim_id": "d5c4fc81b6b2f26d:c1",
+   "source_id": "d5c4fc81b6b2f26d",
+   "subject": "Citizens United",
+   "predicate": "has",
+   "object": "long reach",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The Long Reach of \u2018Citizens United\u2019",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1677571200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Citizens United"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_255004a925",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_c47807f8d0"
+   }
+  },
+  {
+   "claim_id": "d5c4fc81b6b2f26d:c2",
+   "source_id": "d5c4fc81b6b2f26d",
+   "subject": "National Conference of State Legislatures (NCSL)",
+   "predicate": "is the source of",
+   "object": "the article",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "National Conference of State Legislatures (NCSL)",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1677571200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "National Conference of State Legislatures"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_255004a925",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_c47807f8d0"
+   }
+  },
+  {
+   "claim_id": "3646b7584910ba04:c0",
+   "source_id": "3646b7584910ba04",
+   "subject": "Conservatives",
+   "predicate": "close",
+   "object": "fundraising gap in Assembly races",
+   "value": "",
+   "units": "",
+   "qualifiers": "with help of big donors and independent expenditure group",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Conservatives close fundraising gap in Assembly races with help of big donors and independent expenditure group",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680505200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Conservatives",
+    "Assembly races",
+    "big donors",
+    "independent expenditure group"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_dcef31e558",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_494e161820"
+   }
+  },
+  {
+   "claim_id": "7d1120b46664ae7f:c0",
+   "source_id": "7d1120b46664ae7f",
+   "subject": "FEC",
+   "predicate": "did not absolve",
+   "object": "Trump of his hush money campaign finance issues",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "negate",
+   "claim_class": "denial",
+   "supporting_span": "No, the FEC did not absolve Trump of his hush money campaign finance issues",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681887600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "FEC",
+    "Trump"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_b304c12a25",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_c47807f8d0"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "FEC",
+   "normalized": "fec",
+   "candidates": [
+    {
+     "entity_id": "ent_6d65e329fc",
+     "canonical": "fec",
+     "support": 0.6429,
+     "evidence_mentions": [
+      "FEC",
+      "FEC"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Eugene Debs",
+   "normalized": "eugene debs",
+   "candidates": [
+    {
+     "entity_id": "ent_3ca44266b6",
+     "canonical": "eugene debs",
+     "support": 0.6429,
+     "evidence_mentions": [
+      "Eugene Debs",
+      "Eugene Debs"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Brandeis University",
+   "normalized": "brandeis university",
+   "candidates": [
+    {
+     "entity_id": "ent_6f6253b405",
+     "canonical": "brandeis university",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Brandeis University"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Eugene Debs",
+   "normalized": "eugene debs",
+   "candidates": [
+    {
+     "entity_id": "ent_3ca44266b6",
+     "canonical": "eugene debs",
+     "support": 0.6429,
+     "evidence_mentions": [
+      "Eugene Debs",
+      "Eugene Debs"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Citizens United",
+   "normalized": "citizens united",
+   "candidates": [
+    {
+     "entity_id": "ent_53d948daf0",
+     "canonical": "citizens united",
+     "support": 0.6429,
+     "evidence_mentions": [
+      "Citizens United",
+      "Citizens United"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "National Conference of State Legislatures",
+   "normalized": "national conference of state legislatures",
+   "candidates": [
+    {
+     "entity_id": "ent_3c3d273ef7",
+     "canonical": "national conference of state legislatures",
+     "support": 0.6429,
+     "evidence_mentions": [
+      "National Conference of State Legislatures",
+      "National Conference of State Legislatures"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Citizens United",
+   "normalized": "citizens united",
+   "candidates": [
+    {
+     "entity_id": "ent_53d948daf0",
+     "canonical": "citizens united",
+     "support": 0.6429,
+     "evidence_mentions": [
+      "Citizens United",
+      "Citizens United"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "National Conference of State Legislatures",
+   "normalized": "national conference of state legislatures",
+   "candidates": [
+    {
+     "entity_id": "ent_3c3d273ef7",
+     "canonical": "national conference of state legislatures",
+     "support": 0.6429,
+     "evidence_mentions": [
+      "National Conference of State Legislatures",
+      "National Conference of State Legislatures"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Conservatives",
+   "normalized": "conservatives",
+   "candidates": [
+    {
+     "entity_id": "ent_e594661868",
+     "canonical": "conservatives",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Conservatives"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Assembly races",
+   "normalized": "assembly races",
+   "candidates": [
+    {
+     "entity_id": "ent_a883e6584a",
+     "canonical": "assembly races",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Assembly races"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "big donors",
+   "normalized": "big donors",
+   "candidates": [
+    {
+     "entity_id": "ent_54bb4f7994",
+     "canonical": "big donors",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "big donors"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "independent expenditure group",
+   "normalized": "independent expenditure",
+   "candidates": [
+    {
+     "entity_id": "ent_934f846a59",
+     "canonical": "independent expenditure",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "independent expenditure group"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "FEC",
+   "normalized": "fec",
+   "candidates": [
+    {
+     "entity_id": "ent_6d65e329fc",
+     "canonical": "fec",
+     "support": 0.6429,
+     "evidence_mentions": [
+      "FEC",
+      "FEC"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Trump",
+   "normalized": "trump",
+   "candidates": [
+    {
+     "entity_id": "ent_e0e10e6fff",
+     "canonical": "trump",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Trump"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "cf29f119798aef6e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1685602800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685602800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "67c623e0631455ad": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1682060400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682060400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3646b7584910ba04": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1680505200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680505200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "da783aad167697b8": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1687417200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687417200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "65e0f5cf1ad6b730": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1687762800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687762800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d5c4fc81b6b2f26d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1677571200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677571200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "7d1120b46664ae7f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1681887600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681887600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "e1265137d018211f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1687849200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687849200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "52f1bb99d2535e66": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1682924400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682924400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_fa71c42ffe",
+   "member_ids": [
+    "cf29f119798aef6e"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "OpenSecrets",
+   "primary_source": "OpenSecrets",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_38585a4d83",
+   "member_ids": [
+    "67c623e0631455ad"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Brandeis University",
+   "primary_source": "Brandeis University",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_dcef31e558",
+   "member_ids": [
+    "3646b7584910ba04"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Anchorage Daily News",
+   "primary_source": "Anchorage Daily News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e67c1018f6",
+   "member_ids": [
+    "da783aad167697b8"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Payday Report",
+   "primary_source": "Payday Report",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_bb3ffa70ed",
+   "member_ids": [
+    "65e0f5cf1ad6b730"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Campaign Legal Center",
+   "primary_source": "Campaign Legal Center",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_255004a925",
+   "member_ids": [
+    "d5c4fc81b6b2f26d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "National Conference of State Legislatures (NCSL)",
+   "primary_source": "National Conference of State Legislatures (NCSL)",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b304c12a25",
+   "member_ids": [
+    "7d1120b46664ae7f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Citizens for Responsibility and Ethics in Washington",
+   "primary_source": "Citizens for Responsibility and Ethics in Washington",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_4d1c678b9e",
+   "member_ids": [
+    "e1265137d018211f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Campaign Legal Center",
+   "primary_source": "Campaign Legal Center",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_79d1bcfde1",
+   "member_ids": [
+    "52f1bb99d2535e66"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Citizens for Responsibility and Ethics in Washington",
+   "primary_source": "Citizens for Responsibility and Ethics in Washington",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "cf29f119798aef6e:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685602800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "cf29f119798aef6e:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685602800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "65e0f5cf1ad6b730:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1687762800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "67c623e0631455ad:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682060400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "67c623e0631455ad:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682060400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "d5c4fc81b6b2f26d:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677571200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "d5c4fc81b6b2f26d:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677571200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "d5c4fc81b6b2f26d:c2",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677571200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "3646b7584910ba04:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680505200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "7d1120b46664ae7f:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681887600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "cf29f119798aef6e:c0",
+  "cf29f119798aef6e:c1",
+  "65e0f5cf1ad6b730:c0",
+  "67c623e0631455ad:c0",
+  "67c623e0631455ad:c1",
+  "d5c4fc81b6b2f26d:c0",
+  "d5c4fc81b6b2f26d:c1",
+  "d5c4fc81b6b2f26d:c2",
+  "3646b7584910ba04:c0",
+  "7d1120b46664ae7f:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_494e161820": {
+   "status": "fulfilled",
+   "n_claims": 5,
+   "n_included": 5
+  },
+  "req_c47807f8d0": {
+   "status": "fulfilled",
+   "n_claims": 5,
+   "n_included": 5
+  },
+  "req_4469759466": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_4469759466"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 9,
+  "n_contradictions": 0,
+  "n_documents": 9
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 14.726,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "f74ed90c2759cfb0",
+ "bundle_hash": "f74ed90c2759cfb0",
+ "_persisted_at": "2026-07-13T01:06:02Z"
+}

@@ -1,0 +1,1300 @@
+{
+ "bundle_id": "eb_ca746d",
+ "question": "Will the landlord accept a rent reduction in exchange for a longer lease?",
+ "as_of": 1693526400.0,
+ "compiler_plan_hash": "c81d0cb595b3",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_d3d75dc841",
+   "claim_or_quantity": "The landlord's final decision as observed by the tenant by 2023-09-20.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "landlord",
+    "tenant"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_366ba85ab8",
+   "claim_or_quantity": "value/context of landlord.financial_need",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "landlord.financial_need",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_4499d810db",
+   "claim_or_quantity": "value/context of landlord.risk_tolerance",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "landlord.risk_tolerance",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_2dae7b272f",
+   "claim_or_quantity": "value/context of landlord.alternative_tenant_prospects",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "landlord.alternative_tenant_prospects",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_d10f7f7a90",
+   "claim_or_quantity": "evidence discriminating structural hypothesis financial_calculation",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:financial_calculation",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_2a6d3881f7",
+   "claim_or_quantity": "evidence discriminating structural hypothesis relationship_trust",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:relationship_trust",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_03ca3f8acb",
+   "claim_or_quantity": "decision rules / process of rental_contract_law",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "rental_contract_law",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_d3d75dc841",
+   "terms": "Will the landlord accept a rent reduction in exchange for a longer lease? landlord tenant",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_366ba85ab8",
+   "terms": "value/context of landlord.financial_need",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_4499d810db",
+   "terms": "value/context of landlord.risk_tolerance",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_d3d75dc841",
+   "logical_query": "Will the landlord accept a rent reduction in exchange for a longer lease? landlord tenant after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=Will+the+landlord+accept+a+rent+reduction+in+exchange+for+a+longer+lease%3F+landlord+tenant+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783905024.067184,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:10:24 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw0pBiSO44w5AKxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTD0fDtwiU2gQs7XyxjUlJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAAsOE3Yg\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "40feba724a8b47cab189968b2cccb2e608094a39e035e66a48998a84ce04d515",
+   "n_bytes": 17492,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.514
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_366ba85ab8",
+   "logical_query": "value/context of landlord.financial_need after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=value%2Fcontext+of+landlord.financial_need+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783905024.5824382,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:10:25 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw0JBiSO44w5ACxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwcjd8uXGITuND5k0lJOSm_MD4lv6S4uCAnsTijOLWoLLUo3sjAyMzA3MBMz8AkvsAAAG8eOHM\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "04a9d1e7eb951752394dca4ce69f33335d8996ab18e18a16d9aa34b823f24380",
+   "n_bytes": 1245,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.363
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_4499d810db",
+   "logical_query": "value/context of landlord.risk_tolerance after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=value%2Fcontext+of+landlord.risk_tolerance+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783905024.9473584,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:10:25 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw0pBiSO44w5AKxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcjd8uXGIT6Pi45BSjknJSfmF8Sn5JcXFBTmJxRnFqUVlqUbyRgZGZgbmBmZ6BSXyBAQCuwTkD\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "298241492bc9c8a315cad23ad49983f96ad9b9902a9165f2a87c30ab76c69a81",
+   "n_bytes": 1245,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.414
+  }
+ ],
+ "raw_content_refs": [
+  "40feba724a8b47cab189968b2cccb2e608094a39e035e66a48998a84ce04d515"
+ ],
+ "documents": [
+  {
+   "id": "731562de9c78d9cc",
+   "source": "MPR News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNVEgtemRMRGFwVUhLUWJVZnJoMGRwUTNpS1lhaG9YbF90Tzc1dkc4S2tmNFY5OTlReUVVeTlEZVhUVlJmNGxhNmo3cnlqY05NYWp6c0V0Q2FuU2dJZmJNclpFbzdrMUVXZ3pPejRKOEhGTlF2WDF3aHBycHZTQXExbTNyU2tFejRrNmJIWFNPaER5OHRxelBjMW1DYw?oc=5",
+   "title": "Fresh rights for Minnesota renters: Here\u2019s a guide. - MPR News",
+   "text": "Fresh rights for Minnesota renters: Here\u2019s a guide. - MPR News. Fresh rights for Minnesota renters: Here\u2019s a guide. MPR News",
+   "content_hash": "b0d8f73eee66d98f",
+   "raw_feed_hash": "40feba724a8b47cab189968b2cccb2e608094a39e035e66a48998a84ce04d515",
+   "published_at": 1692342000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_d3d75dc841",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f60cdaa34a10fce6",
+   "source": "Financial Samurai",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNVWU3bFhscGVBQzZNM1JreXFheWlhNUY5NUhvNU8tMFlPTzA1ajJOZy10MXJzdkxaQXNuZGtfRHdMUXNSb3BvLUhMS0toOW5yNC1va2phdmpXT3RjMlB6cnBrdzlfV3pINWtMODNrOGVodW1rTXpiVVZGRHMxcE81V01pUEZYa0p3M2YzOWFIUms?oc=5",
+   "title": "The Easiest Way Landlords Can Automatically Increase Rent (With Minimum Tension) - Financial Samurai",
+   "text": "The Easiest Way Landlords Can Automatically Increase Rent (With Minimum Tension) - Financial Samurai. The Easiest Way Landlords Can Automatically Increase Rent (With Minimum Tension) Financial Samurai",
+   "content_hash": "addecfc9525b35e7",
+   "raw_feed_hash": "40feba724a8b47cab189968b2cccb2e608094a39e035e66a48998a84ce04d515",
+   "published_at": 1686166378.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_d3d75dc841",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2a0a92e0bdf8e4f2",
+   "source": "Jacobin",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPOENSUmZRbTVQd19Gbng4TlZfUFBLN21QSXlfdV9kRzgwUmVlWmNMb1kzVlQ5ajNLZ01UcmI0YlZ0MHBCVjNJekhHOFo2WXZnaHo3a19XajcxTXdDVjdCZ2VMeU05SURnLXlfWDRPME1DcnVJM016VTlrdGRpaHRfVVRB?oc=5",
+   "title": "Why We Need Rent Control - Jacobin",
+   "text": "Why We Need Rent Control - Jacobin. Why We Need Rent Control Jacobin",
+   "content_hash": "7b65d5bc8fa1b330",
+   "raw_feed_hash": "40feba724a8b47cab189968b2cccb2e608094a39e035e66a48998a84ce04d515",
+   "published_at": 1689836400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_d3d75dc841",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "230bf11280e556a6",
+   "source": "Journal of Accountancy",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOZVkwTG1FTk9IQnUxb09wR0p2Nlp1b0lhdGFJSi1Qd1VhYmtNMzZrOXBlZFJlb0pxTF9TZmtHWlpWNGVJWlowcmhKTjhiUXlUVE1tS1VONUwtTUIxS3QzYXEyQllqS1c0OV8tR0h5MEp2X0VpanYtWk1vNWVfb19uMlJxeWJwaTVBQjFqVURMclVvXzgtX3F3allkWWxmbGxzV3c?oc=5",
+   "title": "Passive loss limitations on rental real estate - Journal of Accountancy",
+   "text": "Passive loss limitations on rental real estate - Journal of Accountancy. Passive loss limitations on rental real estate Journal of Accountancy",
+   "content_hash": "3406a9120a5e5061",
+   "raw_feed_hash": "40feba724a8b47cab189968b2cccb2e608094a39e035e66a48998a84ce04d515",
+   "published_at": 1693551600.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_d3d75dc841",
+   "temporal_status": "uncertain"
+  },
+  {
+   "id": "1a0aaaa5ca195cdc",
+   "source": "Brick Underground",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9rV0RpeEo4dlo4TG1WN2VzSkk2d3VVVkRTZjFweGszRTR2LUphMzJXLW5EVFlEeUFQTTFldjlDRm85eXBmS05GbW5fa0l5Q0g5WTZZOG5Zd3ZWbDNtTFZhUGZYdDZPSkxRcmtxeHN2NzJXZm8?oc=5",
+   "title": "Ask Sam: Is my landlord allowed to charge a J-51 fee after the tax abatement expires? - Brick Underground",
+   "text": "Ask Sam: Is my landlord allowed to charge a J-51 fee after the tax abatement expires? - Brick Underground. Ask Sam: Is my landlord allowed to charge a J-51 fee after the tax abatement expires? Brick Underground",
+   "content_hash": "d664709145655eb5",
+   "raw_feed_hash": "40feba724a8b47cab189968b2cccb2e608094a39e035e66a48998a84ce04d515",
+   "published_at": 1692169200.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_d3d75dc841",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "9b0b1df414f08594",
+   "source": "The Conversation",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxQM19KRThNdGlCdjJnc2JWakN1T0Y1Wl9MMnhKdXBXTEZUQkRQTi03b29CNEduMnVoXzE0WWQ1MEdoZmxfTFh2WFR6bl9JZk5QRDNhbE52TnpweFRHbWpqU2dGYWRTWDNhYkEwSHM5REFGRlVJWFBwMnBRTHBqZXBSSUhTdDJYaUFUYnRJQmlrSnhZTFhjOHJEQUxWM3lSMU1GaXVDXzBTeEdiVHBkM0FuNW9FQQ?oc=5",
+   "title": "Rent freezes and rent caps will only worsen, not solve Australia\u2019s rental crisis - The Conversation",
+   "text": "Rent freezes and rent caps will only worsen, not solve Australia\u2019s rental crisis - The Conversation. Rent freezes and rent caps will only worsen, not solve Australia\u2019s rental crisis The Conversation",
+   "content_hash": "68c712223405bb24",
+   "raw_feed_hash": "40feba724a8b47cab189968b2cccb2e608094a39e035e66a48998a84ce04d515",
+   "published_at": 1687762800.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_d3d75dc841",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ad7566819102d27c",
+   "source": "Moneycontrol.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi_AFBVV95cUxQLUJ4R1lld05oai1TQVZSLUhnQVJiNzNhUmY3N1paakhSYllyN3RKbTEweHhhUDhrUE9tZ2lDcWdfQXNBT2ZpQW9UTHh6VlgtNlZGejB3c1dyOTQ1YnVlQ3lDN1RSbnBuTUdOVTNXOVdqRHNzRXlqZUFyZXM1RFA5ZkRpUFRPN0RLTWtJTkJyT1puRnRNdDlCekNLOWtUc1R2UmtOdW9KVWRsZEZLSFdpYlJSSW1EWFY3N1hzcEdiOEs3aUpiQThVaGtZUHZxcExieVBhRW03YW9SR285U00tN19jNDA2TW5xQkZlVlJWRlRRem9fNVE1LXdNSkPSAYICQVVfeXFMT0lvTGgtQjdDbE9ic1BzdXZTT0JkaElNU1djeG1sbXRxc0tJMlQ1T1RldFFWazhtd3dTOEZFMGhucWhLZHA3MlhDMDRNR2xPMGlmblFsQmM2Y1VKOUZQemZXSWNiMDMxZno5dWZZZUR3ODV1eG9Jd2VycjYwQU1waTZQWlRnM0VMQmxNOVk1NVNNSGVmZVREU3ZXVWQxdFo1dEZRNVhfTDFvUl8tdlg4X1VpUlJMTjg3V3J5TWJjbUphQlV2anhXMWE1SzJDQ1Q2SG9KRjBUSnpyZnpGNjBMdTh0ZHFicExkb3BVZEJPU2J1U0I2cW5SaV9LTWZ0Y2RlVWpR?oc=5",
+   "title": "MC Explains: Can a lock-in period in rent agreements prevent landlords from asking tenants to vacate? - Moneycontrol.com",
+   "text": "MC Explains: Can a lock-in period in rent agreements prevent landlords from asking tenants to vacate? - Moneycontrol.com. MC Explains: Can a lock-in period in rent agreements prevent landlords from asking tenants to vacate? Moneycontrol.com",
+   "content_hash": "9287d79295b53ad7",
+   "raw_feed_hash": "40feba724a8b47cab189968b2cccb2e608094a39e035e66a48998a84ce04d515",
+   "published_at": 1690268400.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_d3d75dc841",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4f3d4b86f4ca746a",
+   "source": "7NEWS",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxOQ0VmY2lVR3dSV2UyT1ZENzN2RHhnVUFpeTRaMDJ1MTZBcVJ1SlU4S2dNVUlpX0w0V0lMWGhnVlN3b0k2V3p6M29IRW9ZUy1tczk5RzY4TWxrUTBDRHo3c29ZTHg1SWI2eDFTTlhhWEhMcWd4WEVCeUgzUDVWX0U5MGFnVXZDbnpwVncyYkFPYjlyZjVfQTBQaW03UWEzUjF0RGNiVG1US0pZb0Ryc1N1OHJVWDAybTVaenVtaDBHSmd6TGo1YndYWWhSTGVTQ1hMNDNxd1MwZUVGTWdtMU5v0gHkAUFVX3lxTE55ckZ5MmtYcnNhenNyWS1DR0hhWGNLSHFHNU44aElJMlIydGxIRG1UVkh3OWVEenFrSW9zT045d2JyZE02TE52RV85THd3THRFVG5Tcjl2TE5NVWdjTm1GOTRtLTlxZi1zdjlmOXYxMU0wRkVJMzVLdGg2NkFqbVU4NWkzSTJ2bExoOFJPV0hnSnpnM1lNbERILVA3UVBYSC1aR0J1OE1wbTZvY0kyeWFXWVV6bEVnYl9tZW1kM2FmWnRLa3ByNERqWHhGbnFJdDBPRm51eGYzNFplWGtHcHZPTTk0Zg?oc=5",
+   "title": "Online rental listing sparks outrage with request for tenants to renovate \u201cuninhabitable\u201d Sydney home in exchange for free rent - 7NEWS",
+   "text": "Online rental listing sparks outrage with request for tenants to renovate \u201cuninhabitable\u201d Sydney home in exchange for free rent - 7NEWS. Online rental listing sparks outrage with request for tenants to renovate \u201cuninhabitable\u201d Sydney home in exchange for free rent 7NEWS",
+   "content_hash": "7fb4efadfc58b736",
+   "raw_feed_hash": "40feba724a8b47cab189968b2cccb2e608094a39e035e66a48998a84ce04d515",
+   "published_at": 1681714800.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_d3d75dc841",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "731562de9c78d9cc:c0",
+   "source_id": "731562de9c78d9cc",
+   "subject": "Minnesota renters",
+   "predicate": "have",
+   "object": "fresh rights",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Fresh rights for Minnesota renters: Here\u2019s a guide.",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1692342000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Minnesota renters"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_ea51e28fd8",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_d3d75dc841"
+   }
+  },
+  {
+   "claim_id": "f60cdaa34a10fce6:c0",
+   "source_id": "f60cdaa34a10fce6",
+   "subject": "The Easiest Way Landlords Can Automatically Increase Rent (With Minimum Tension)",
+   "predicate": "is a title of",
+   "object": "an article",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The Easiest Way Landlords Can Automatically Increase Rent (With Minimum Tension) - Financial Samurai",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1686166378.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Financial Samurai"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_d86d804984",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_d3d75dc841"
+   }
+  },
+  {
+   "claim_id": "2a0a92e0bdf8e4f2:c0",
+   "source_id": "2a0a92e0bdf8e4f2",
+   "subject": "Jacobin",
+   "predicate": "published article titled",
+   "object": "Why We Need Rent Control",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Why We Need Rent Control - Jacobin",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1689836400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Jacobin"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_ac167fe29a",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_d3d75dc841"
+   }
+  },
+  {
+   "claim_id": "1a0aaaa5ca195cdc:c0",
+   "source_id": "1a0aaaa5ca195cdc",
+   "subject": "landlord",
+   "predicate": "is allowed to charge",
+   "object": "J-51 fee",
+   "value": "",
+   "units": "",
+   "qualifiers": "after the tax abatement expires",
+   "modality": "hedged",
+   "polarity": "affirm",
+   "claim_class": "actor_statement",
+   "supporting_span": "Ask Sam: Is my landlord allowed to charge a J-51 fee after the tax abatement expires?",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1692169200.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "landlord",
+    "J-51 fee",
+    "tax abatement"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_9bbdfda452",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_d3d75dc841"
+   }
+  },
+  {
+   "claim_id": "9b0b1df414f08594:c0",
+   "source_id": "9b0b1df414f08594",
+   "subject": "Rent freezes and rent caps",
+   "predicate": "will only worsen, not solve",
+   "object": "Australia\u2019s rental crisis",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "Rent freezes and rent caps will only worsen, not solve Australia\u2019s rental crisis",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1687762800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Rent freezes",
+    "rent caps",
+    "Australia\u2019s rental crisis"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_fa3b4b5af2",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_d3d75dc841"
+   }
+  },
+  {
+   "claim_id": "ad7566819102d27c:c0",
+   "source_id": "ad7566819102d27c",
+   "subject": "lock-in period in rent agreements",
+   "predicate": "can prevent",
+   "object": "landlords from asking tenants to vacate",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "hedged",
+   "polarity": "affirm",
+   "claim_class": "inferred_implication",
+   "supporting_span": "Can a lock-in period in rent agreements prevent landlords from asking tenants to vacate?",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1690268400.0,
+   "extraction_confidence": 0.5,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "lock-in period",
+    "rent agreements",
+    "landlords",
+    "tenants"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_40b092a068",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_d3d75dc841"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Minnesota renters",
+   "normalized": "minnesota renters",
+   "candidates": [
+    {
+     "entity_id": "ent_413975ab1d",
+     "canonical": "minnesota renters",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Minnesota renters"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Financial Samurai",
+   "normalized": "financial samurai",
+   "candidates": [
+    {
+     "entity_id": "ent_fb94084bee",
+     "canonical": "financial samurai",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Financial Samurai"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Jacobin",
+   "normalized": "jacobin",
+   "candidates": [
+    {
+     "entity_id": "ent_8267084951",
+     "canonical": "jacobin",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Jacobin"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "landlord",
+   "normalized": "landlord",
+   "candidates": [
+    {
+     "entity_id": "ent_3a3c203606",
+     "canonical": "landlord",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "landlord"
+     ]
+    },
+    {
+     "entity_id": "ent_9df890cd1d",
+     "canonical": "landlords",
+     "support": 0.2269,
+     "evidence_mentions": [
+      "landlords"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "J-51 fee",
+   "normalized": "j-51 fee",
+   "candidates": [
+    {
+     "entity_id": "ent_07696539e7",
+     "canonical": "j-51 fee",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "J-51 fee"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "tax abatement",
+   "normalized": "tax abatement",
+   "candidates": [
+    {
+     "entity_id": "ent_1245568256",
+     "canonical": "tax abatement",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "tax abatement"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Rent freezes",
+   "normalized": "rent freezes",
+   "candidates": [
+    {
+     "entity_id": "ent_e14928aa43",
+     "canonical": "rent freezes",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Rent freezes"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "rent caps",
+   "normalized": "rent caps",
+   "candidates": [
+    {
+     "entity_id": "ent_e2aed65c60",
+     "canonical": "rent caps",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "rent caps"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Australia\u2019s rental crisis",
+   "normalized": "australia\u2019s rental crisis",
+   "candidates": [
+    {
+     "entity_id": "ent_7418b6effa",
+     "canonical": "australia\u2019s rental crisis",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Australia\u2019s rental crisis"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "lock-in period",
+   "normalized": "lock-in period",
+   "candidates": [
+    {
+     "entity_id": "ent_ed50944c5d",
+     "canonical": "lock-in period",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "lock-in period"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "rent agreements",
+   "normalized": "rent agreements",
+   "candidates": [
+    {
+     "entity_id": "ent_f8249b6194",
+     "canonical": "rent agreements",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "rent agreements"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "landlords",
+   "normalized": "landlords",
+   "candidates": [
+    {
+     "entity_id": "ent_9df890cd1d",
+     "canonical": "landlords",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "landlords"
+     ]
+    },
+    {
+     "entity_id": "ent_3a3c203606",
+     "canonical": "landlord",
+     "support": 0.2269,
+     "evidence_mentions": [
+      "landlord"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "tenants",
+   "normalized": "tenants",
+   "candidates": [
+    {
+     "entity_id": "ent_f2901d29d8",
+     "canonical": "tenants",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "tenants"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "731562de9c78d9cc": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1692342000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1692342000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f60cdaa34a10fce6": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1686166378.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686166378.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2a0a92e0bdf8e4f2": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1689836400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689836400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "230bf11280e556a6": {
+   "status": "uncertain",
+   "confidence": 0.5,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1693551600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1693551600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "1a0aaaa5ca195cdc": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1692169200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1692169200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "9b0b1df414f08594": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1687762800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687762800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ad7566819102d27c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1690268400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690268400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4f3d4b86f4ca746a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1681714800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681714800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_ea51e28fd8",
+   "member_ids": [
+    "731562de9c78d9cc"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "MPR News",
+   "primary_source": "MPR News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_d86d804984",
+   "member_ids": [
+    "f60cdaa34a10fce6"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Financial Samurai",
+   "primary_source": "Financial Samurai",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_ac167fe29a",
+   "member_ids": [
+    "2a0a92e0bdf8e4f2"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Jacobin",
+   "primary_source": "Jacobin",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_3f2d11e09f",
+   "member_ids": [
+    "230bf11280e556a6"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Journal of Accountancy",
+   "primary_source": "Journal of Accountancy",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9bbdfda452",
+   "member_ids": [
+    "1a0aaaa5ca195cdc"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Brick Underground",
+   "primary_source": "Brick Underground",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_fa3b4b5af2",
+   "member_ids": [
+    "9b0b1df414f08594"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Conversation",
+   "primary_source": "The Conversation",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_40b092a068",
+   "member_ids": [
+    "ad7566819102d27c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Moneycontrol.com",
+   "primary_source": "Moneycontrol.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_adefc2439e",
+   "member_ids": [
+    "4f3d4b86f4ca746a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "7NEWS",
+   "primary_source": "7NEWS",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "731562de9c78d9cc:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1692342000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "f60cdaa34a10fce6:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1686166378.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "2a0a92e0bdf8e4f2:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1689836400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "1a0aaaa5ca195cdc:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1692169200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "9b0b1df414f08594:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1687762800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "ad7566819102d27c:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1690268400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "731562de9c78d9cc:c0",
+  "f60cdaa34a10fce6:c0",
+  "2a0a92e0bdf8e4f2:c0",
+  "1a0aaaa5ca195cdc:c0",
+  "9b0b1df414f08594:c0",
+  "ad7566819102d27c:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_d3d75dc841": {
+   "status": "fulfilled",
+   "n_claims": 6,
+   "n_included": 6
+  },
+  "req_366ba85ab8": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_4499d810db": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_2dae7b272f": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_d10f7f7a90": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_2a6d3881f7": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_03ca3f8acb": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_366ba85ab8",
+  "req_4499d810db",
+  "req_2dae7b272f",
+  "req_d10f7f7a90",
+  "req_2a6d3881f7",
+  "req_03ca3f8acb"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 8,
+  "n_contradictions": 0,
+  "n_documents": 8
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 11.701,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "a4ad8a6fef92642c",
+ "bundle_hash": "a4ad8a6fef92642c",
+ "_persisted_at": "2026-07-13T01:10:41Z"
+}
