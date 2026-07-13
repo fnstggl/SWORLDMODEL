@@ -28,7 +28,8 @@ from dataclasses import dataclass, field
 
 from swm.world_model_v2.contracts import ContractError, FAMILIES, OutcomeContract
 from swm.world_model_v2.events import register_event_type
-from swm.world_model_v2.fallback import MechanismChoice, overall_support_grade, select_tier
+from swm.world_model_v2.fallback import (MechanismChoice, overall_support_grade, select_tier,
+                                        select_tier_for_process)
 from swm.world_model_v2.mechanisms import known_mechanisms
 from swm.world_model_v2.result import CompilerExecutionError, ClarificationRequired
 from swm.world_model_v2.state import parse_time
@@ -418,14 +419,14 @@ def compile_world(question: str, *, llm, evidence="", as_of: str, horizon: str,
     processes = [str(p) for p in (raw.get("required_causal_processes") or [])] or ["outcome_resolution"]
     choices, fallbacks_used = [], []
     has_domain_mechanism = bool(accepted)
+    # PHASE 6: request a mechanism BY CAUSAL PROCESS (not one scenario winner reused for every process).
+    # Each required process is matched to the family that ANSWERS it; the tier reflects THAT family's
+    # evidence; competing families are preserved; the composition engine flags double-counting.
+    per_process, composition = _select_mechanisms_per_process(scenario, processes)
     for proc in processes:
-        applicable = (mechanism_selection.get("selected") or [None])[0] \
-            if mechanism_selection.get("selected") else None
-        choice = select_tier(proc, applicable,
-                             has_domain_pack=bool(applicable),
-                             transported=bool(applicable and applicable.get("pack_is_transported")),
-                             competing=[h.get("id") for h in (raw.get("structural_hypotheses") or [])]
-                             if len(raw.get("structural_hypotheses") or []) > 1 else None)
+        sel = per_process.get(proc, {})
+        choice = select_tier_for_process(proc, sel.get("selected"),
+                                         competing=[c["family_id"] for c in sel.get("competing", [])])
         choices.append(choice)
     # ALWAYS attach the generic outcome resolver as the terminal SAFETY NET (tier 6/7): it writes the
     # canonical readout quantity ONLY IF unset at the horizon, so a domain mechanism that genuinely
@@ -494,6 +495,12 @@ def compile_world(question: str, *, llm, evidence="", as_of: str, horizon: str,
                     "evidence_basis": evidence_basis, "evidence_bundle_hash": bundle_hash,
                     "readout_repaired": readout_repaired, "outcome_lean": lean,
                     "production_registry_selection": mechanism_selection,
+                    "per_process_selection": {p: {"selected": (s.get("selected") or {}).get("family_id"),
+                                                  "status": (s.get("selected") or {}).get("status"),
+                                                  "competing": [c["family_id"] for c in s.get("competing", [])],
+                                                  "n_candidates": s.get("n_candidates", 0)}
+                                              for p, s in per_process.items()},
+                    "mechanism_composition": composition,
                     "repairs": raw.get("_repairs", [])})
     if persist:
         try:
@@ -523,6 +530,30 @@ def _score_production_registry(scenario: dict) -> dict:
         return rank_mechanisms(load_registry(), scenario)
     except Exception as e:
         return {"selected": [], "rejected": [], "note": f"production registry unavailable: {e}"}
+
+
+def _select_mechanisms_per_process(scenario: dict, processes: list) -> tuple:
+    """Phase 6 per-process selection + composition. For each required causal process, select the family
+    that ANSWERS it (registry.select_for_process), then compose the selections (double-counting detection,
+    competing hypotheses, precedence). Returns ({process: selection}, composition_plan_dict). Degrades
+    gracefully to an empty map (→ tier-6 generic) if the production registry is unavailable."""
+    try:
+        from swm.world_model_v2.registry import load_registry, select_for_process
+        from swm.world_model_v2.registry.composition import compose
+        store = load_registry()
+        per_process, sels = {}, []
+        for proc in processes:
+            if proc == "outcome_resolution":
+                continue
+            r = select_for_process(store, proc, scenario)
+            per_process[proc] = r
+            sels.append(r)
+        ts = {fid: store.records[fid].temporal_scale for fid in store.records}
+        comp = compose(sels, time_scales=ts).as_dict()
+        return per_process, comp
+    except Exception as e:
+        return {}, {"error": f"composition unavailable: {e}", "ordered": [], "competing": [],
+                    "double_counting": [], "conflicts": []}
 
 
 def _build_events(raw, contract, resolve_var, o, lean, horizon):

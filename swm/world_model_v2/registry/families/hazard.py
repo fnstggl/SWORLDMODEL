@@ -166,3 +166,14 @@ register_operator("feature_hazard", FeatureHazardOperator(), requires=("entities
                   parameter_source="fitted feature-hazard pack (logistic MLE, train split); "
                                    "transport widening on log-odds uncertainty",
                   validated=True)
+
+from swm.world_model_v2.events import event_type_registered, register_event_type  # noqa: E402
+if not event_type_registered("outcome_hazard"):
+    register_event_type("outcome_hazard", scheduling="scheduled", reads=("entities",),
+                        deltas=("quantities",), parameter_source="fitted feature-hazard pack", validated=True)
+
+from swm.world_model_v2.state import extension_fields, register_entity_extension  # noqa: E402
+if "mechanism_outcome" not in extension_fields("person"):
+    register_entity_extension("mechanism_outcome",
+                              fields={"outcome": "typed outcome value written to an actor by a mechanism"},
+                              entity_types=("person", "institution"))

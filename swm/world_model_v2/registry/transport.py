@@ -50,9 +50,9 @@ def _axis_risk(pack_val, scen_val) -> tuple[float, str]:
     """Risk on one axis from two free-text context descriptors. Missing either side → medium (0.5,
     pessimistic). Exact match → 0. Token overlap → partial. No overlap → high."""
     if not pack_val and not scen_val:
-        return 0.5, "both unspecified → default medium risk"
+        return 0.15, "neither side specifies this axis → not a known mismatch (low)"
     if not pack_val or not scen_val:
-        return 0.5, "one side unspecified → medium risk"
+        return 0.5, "one side specifies a context the other does not → real uncertainty (medium)"
     a = str(pack_val).lower()
     b = str(scen_val).lower()
     if a == b:

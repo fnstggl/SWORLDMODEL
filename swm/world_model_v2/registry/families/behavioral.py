@@ -180,7 +180,10 @@ def _behavioral_probability(mechanism: str, params: dict) -> tuple[float, dict]:
     raise ValueError(f"unknown behavioral mechanism {mechanism!r}")
 
 
-class BehavioralMechanismOperator:
+from swm.world_model_v2.transitions import TransitionOperator  # noqa: E402
+
+
+class BehavioralMechanismOperator(TransitionOperator):
     """Executes a Phase-6 behavioral/structural mechanism in the shared world. The scenario instance rides
     on the event payload: {mechanism, params, outcome_var, family, pack_id, transport_widening, options}.
     Writes the typed outcome quantity (taking precedence over the tier-6/7 generic safety net, which only
@@ -236,6 +239,10 @@ def _register():
                       requires=("quantities",), modifies=("quantities",), temporal_scale="event",
                       parameter_source="verified published estimate (Tier-4); transport widening on log-odds",
                       validated=True)
+    from swm.world_model_v2.events import event_type_registered, register_event_type
+    if not event_type_registered("behavioral_mechanism"):
+        register_event_type("behavioral_mechanism", scheduling="scheduled", deltas=("quantities",),
+                            parameter_source="verified published estimate (Tier-4)", validated=True)
 
 
 _register()

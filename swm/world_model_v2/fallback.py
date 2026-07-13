@@ -81,6 +81,39 @@ def select_tier(process: str, applicable, *, has_local_fit=False, has_domain_pac
                            "no validated mechanism applies — generic structural family with broad priors")
 
 
+#: registry lifecycle status → fallback tier when the family is selected FOR A PROCESS (Phase 6).
+#: production/local/transfer with an in-domain pack → Tier 2; transported → Tier 3; a verified published
+#: estimate (domain_restricted) → Tier 4; research-encoded (verified research, no numeric pack) → Tier 4/5.
+def select_tier_for_process(process: str, chosen, competing=None):
+    """Map ONE per-process registry pick (from registry.select_for_process) to a MechanismChoice with the
+    fallback tier its evidence earns. `chosen` is the winner dict (or None); `competing` the runner-up
+    family ids. This is the Phase-6 replacement for reusing one scenario winner across every process: each
+    causal process gets the tier of the family that actually answers IT."""
+    comp = list(competing or [])
+    if chosen is None:
+        if comp:
+            return MechanismChoice(process, 7, "competing_qualitative_hypotheses", TIER_SUPPORT_GRADE[7],
+                                   "multiple plausible mechanisms; broad disagreement",
+                                   competing_hypotheses=comp)
+        return MechanismChoice(process, 6, "generic_outcome_prior", TIER_SUPPORT_GRADE[6],
+                               "no family answers this causal process — generic structural fallback")
+    fam = chosen["family_id"]
+    status = chosen.get("status", "")
+    transported = bool(chosen.get("pack_is_transported", True))
+    if status in ("production_eligible", "transfer_validated", "locally_validated"):
+        tier = 3 if transported else 2
+        why = (f"{status} family (in-domain pack)" if not transported
+               else f"{status} family, transported pack — widened uncertainty")
+    elif status == "domain_restricted":
+        tier, why = 4, "verified published-estimate mechanism (domain-restricted; widened transport)"
+    elif status == "research_encoded":
+        tier, why = 4, "research-encoded mechanism (verified study; broad uncertainty, no numeric pack yet)"
+    else:
+        tier, why = 5, "reference-class estimated mechanism"
+    return MechanismChoice(process, tier, fam, TIER_SUPPORT_GRADE[tier], why,
+                           transported=transported, competing_hypotheses=comp)
+
+
 def overall_support_grade(choices) -> str:
     """The result's support grade is the WEAKEST tier among its important causal processes (a chain is as
     supported as its weakest load-bearing mechanism)."""
