@@ -33,6 +33,38 @@ class CorruptionError(ValueError):
     """Raised when a serialized Phase 11 artifact fails its content-hash check."""
 
 
+def plan_content_hash(plan, *, length: int = 16) -> str:
+    """A STRONGER plan-identity hash than ``WorldExecutionPlan.plan_hash()``.
+
+    The audit found the inherited ``plan_hash`` covers only question/as_of/horizon/len(entities)/mechs/grade —
+    so a revision that only adds an institution rule, an event, or a structural hypothesis hashes IDENTICALLY
+    to its parent. Phase 11 lineage/oscillation/identity must distinguish revisions, so we fold in version,
+    the full component inventories, and the Phase-11 revision markers.
+    """
+    def _ids(items, key="id"):
+        return sorted(str(i.get(key)) for i in (items or []) if isinstance(i, dict) and i.get(key))
+
+    def _inst(items):
+        return sorted(f"{i.get('id')}:{len(i.get('rules', []) or [])}"
+                      for i in (items or []) if isinstance(i, dict))
+
+    payload = {
+        "q": getattr(plan, "question", ""),
+        "version": getattr(plan, "version", 1),
+        "parent_version": getattr(plan, "parent_version", 0),
+        "entities": _ids(getattr(plan, "entities", [])),
+        "institutions": _inst(getattr(plan, "institutions", [])),
+        "relations": sorted(f"{r.get('src')}-{r.get('rel')}-{r.get('dst')}"
+                            for r in (getattr(plan, "relations", []) or []) if isinstance(r, dict)),
+        "hypotheses": sorted(f"{h.get('id')}:{h.get('prior')}"
+                             for h in (getattr(plan, "structural_hypotheses", []) or []) if isinstance(h, dict)),
+        "as_of": getattr(plan, "as_of", 0.0), "horizon": getattr(plan, "horizon_ts", 0.0),
+        "p11": {k: v for k, v in (getattr(plan, "provenance", {}) or {}).items() if str(k).startswith("phase11")},
+        "base": plan.plan_hash() if hasattr(plan, "plan_hash") else "",
+    }
+    return content_hash(payload, length=length)
+
+
 def atomic_write_json(path: str, payload, *, indent: int = 1) -> str:
     """Crash-safe write (temp file + os.replace) — closes the atomicity gap the audit found in Phase 8's
     ``save_checkpoint`` (which used a bare ``write_text``). Returns the path written."""
