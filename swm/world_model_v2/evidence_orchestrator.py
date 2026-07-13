@@ -50,10 +50,42 @@ def _window(as_of_ts: float, lookback_days: int) -> tuple:
     return after, before
 
 
+#: question-framing + function words that hurt a Google News RSS keyword query (a full-sentence question
+#: with "?" is matched as a phrase and returns zero results — Google News wants KEYWORDS, not a sentence).
+_STOP = frozenset((
+    "will", "would", "should", "could", "the", "a", "an", "to", "of", "in", "on", "its", "it", "by", "for",
+    "and", "or", "reach", "be", "is", "are", "was", "were", "this", "that", "these", "those", "within",
+    "before", "after", "next", "upcoming", "new", "make", "get", "getting", "do", "does", "did", "have",
+    "has", "had", "at", "as", "with", "about", "if", "than", "then", "more", "less", "over", "under", "into",
+    "out", "up", "down", "their", "his", "her", "our", "my", "your", "we", "they", "he", "she", "i", "you",
+    "any", "some", "all", "no", "not", "so", "but", "there", "here", "when", "where", "who", "what", "which",
+    "how", "why", "whether", "still", "just", "now", "vote", "day", "week", "month", "quarter", "year"))
+
+
+def _keywords(text: str, k: int = 8) -> list:
+    import re as _re
+    seen, out = set(), []
+    for w in _re.findall(r"[A-Za-z0-9]+", text):
+        lw = w.lower()
+        if lw in _STOP or len(w) < 3 or lw in seen:
+            continue
+        seen.add(lw); out.append(w)
+        if len(out) >= k:
+            break
+    return out
+
+
 def _query_terms(req, question: str) -> str:
-    ents = " ".join(str(e) for e in (req.entity_scope or [])[:3])
-    base = req.claim_or_quantity if req.affected_component != "terminal_outcome" else question
-    return f"{base} {ents}".strip()[:180]
+    """Build a KEYWORD search query (never the full-sentence question). For the terminal outcome, keywords
+    from the question; for a component requirement, the cleaned component + need. Named entities from the
+    plan (entity_scope) are appended — those are the strongest search terms for named events."""
+    if req.affected_component == "terminal_outcome":
+        base = " ".join(_keywords(question, 8))
+    else:
+        need = req.claim_or_quantity.replace("value/context of", " ").replace("_", " ").replace(".", " ")
+        base = " ".join(_keywords(f"{req.affected_component.replace('_', ' ').replace('.', ' ')} {need}", 6))
+    ents = " ".join(str(e).replace("_", " ") for e in (req.entity_scope or [])[:3])
+    return f"{base} {ents}".strip()[:160]
 
 
 def gather_evidence(question: str, *, as_of: str, requirements: list, llm=None,
