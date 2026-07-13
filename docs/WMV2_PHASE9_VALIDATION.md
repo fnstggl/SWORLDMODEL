@@ -217,3 +217,58 @@ bridge edge cuts diffusion (terminal drops); deterministic replay holds.
   congress predictive lift is honest-null
 - **Production eligible:** ❌ **not yet** — see gate C/100-question/Enron gaps in
   `WMV2_PHASE9_LIMITATIONS_AND_DEPENDENCIES.md`. Ship exploratory/transfer-grade.
+
+---
+
+## 8. FINAL HARDENING RUN — 2nd graph, fitted likelihoods, real-outcome CIs, 100-question
+
+### 8.1 Second real GRAPH domain — Enron email (gate C) — `enron_validation.json`
+Materially different from congress co-voting: relation = **email communication** (directed), process = message
+logs, task = **future-edge prediction** under a temporal split (no leakage). 70 most-active addresses, 592
+dyads from 45k parsed messages (cached in-repo). Through the same Phase-9 exposure edge posterior:
+
+| task | AUROC | PR-AUC | Brier | log-loss | ECE |
+|---|---|---|---|---|---|
+| temporal prediction (post-cutoff from pre-cutoff) | **0.704** | 0.207 | 0.097 | 1.29 | **0.048** |
+| frequency baseline | 0.699 | 0.307 | — | — | — |
+| reconstruction (train edges from train freq) | **1.0** (labeled reconstruction) | 1.0 | — | — | — |
+
+**Honest finding:** the posterior is above chance and calibrated (ECE 0.048) but **barely beats the raw
+past-frequency baseline on AUROC (0.704 vs 0.699) and is worse on PR-AUC** — its value-add here is calibration,
+not ranking lift. **Two materially different real graph datasets now satisfied** (congress co-voting + Enron
+email).
+
+### 8.2 Fitted vs FIXED observation likelihoods (Part 3) — `fitted_likelihoods.json`
+Fit the `repeated_interaction` per-opportunity detect/false on real Enron communication with a **node-disjoint**
+fit/test split (test nodes never seen during fitting). Fitted rates detect **0.163** / false **0.016** vs the
+fixed table's effective **0.86 / 0.104** — the fixed table is over-confident for this domain. Held-out:
+
+| | Brier | log-loss | ECE |
+|---|---|---|---|
+| fixed table | 0.080 | 1.027 | 0.032 |
+| **fitted** | 0.092 | **0.855** | 0.045 |
+
+**Honest mixed verdict:** the fitted likelihood **beats the fixed table on held-out log-loss** (the fixed table
+was over-confident) but is slightly worse on Brier/ECE — the broad fixed table is **not badly misspecified**.
+No tuning on the test split.
+
+### 8.3 Real-outcome validation with baselines + paired bootstrap CIs (Part 5) — `real_outcome_validation.json`
+
+**POPULATION (GSS held-out attitude margins under education-biased sampling):**
+| arm | mean \|error\| |
+|---|---|
+| **poststratified (structured)** | **0.0017** |
+| naive (biased sample) | 0.0185 |
+| homogeneous (uniform weights) | 0.017 |
+| prior-only (0.5) | 0.209 |
+
+Paired bootstrap CIs **exclude zero**: naive − poststrat +0.0168 **[0.0125, 0.0209]**; homogeneous − poststrat
++0.0153 **[0.0129, 0.0175]**. **Population real-outcome lift is REAL and significant vs both strong baselines.**
+
+**NETWORK (Enron temporal future-edge, Brier):** posterior 0.097 vs frequency 0.090 vs prior-only 0.090.
+Paired CI freq − posterior −0.007 **[−0.015, +0.002]** (includes zero); prior − posterior favors the baseline.
+**HONEST NULL/NEGATIVE preserved: the structured edge posterior does NOT beat simple baselines on Brier for
+future-edge prediction.** We do not claim network lift.
+
+**Verdict on "did Phase 9 improve real held-out outcomes?" — population YES (significant), network NO (honest
+null).**
