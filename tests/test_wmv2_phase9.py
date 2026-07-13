@@ -218,3 +218,127 @@ def test_actor_view_has_no_omniscient_leakage():
     assert any(e.layer == "communication" for e in c_view)          # but sees the public edge
     a_view = net.edges_visible_to("a")
     assert any(e.layer == "trust" for e in a_view)                  # endpoint a DOES see its private edge
+
+
+# ============================================================ multilayer EXECUTION (Parts P, R, U)
+def _chain_edges(layer, n=8, p=0.95):
+    from swm.world_model_v2.phase9_network import NetworkEdge
+    return [NetworkEdge(f"n{i}", f"n{i+1}", layer, existence_p=p) for i in range(n - 1)]
+
+
+def test_graph_causally_drives_terminal_and_is_not_ornamental():
+    from swm.world_model_v2.phase9_execution import simulate_multilayer
+    from swm.world_model_v2.phase9_population import PopulationParticle
+    pop = [PopulationParticle(weights={"s": 1.0})]
+    dense = _chain_edges("influence", n=8, p=0.95)
+    sparse = _chain_edges("influence", n=8, p=0.15)
+    r_dense = simulate_multilayer(pop, dense, segment_susceptibility={"s": 0.8}, seeds=["n0"], n_particles=40, seed=0)
+    r_sparse = simulate_multilayer(pop, sparse, segment_susceptibility={"s": 0.8}, seeds=["n0"], n_particles=40, seed=0)
+    # a denser posterior graph spreads adoption further — the graph CAUSALLY changes the terminal
+    assert r_dense["terminal_mean"] > r_sparse["terminal_mean"] + 0.1
+    # posterior graph uncertainty propagates: different particles give different terminals
+    assert r_dense["terminal_sd"] > 0.0
+    assert r_dense["n_deltas"] > 0                                   # StateDelta objects were produced
+
+
+def test_no_graph_means_no_diffusion():
+    from swm.world_model_v2.phase9_execution import simulate_multilayer
+    from swm.world_model_v2.phase9_population import PopulationParticle
+    from swm.world_model_v2.phase9_network import NetworkEdge
+    pop = [PopulationParticle(weights={"s": 1.0})]
+    # edges exist as candidates but with ~0 existence posterior → almost no realized graph → only seeds adopt
+    ghost = [NetworkEdge(f"n{i}", f"n{i+1}", "influence", existence_p=0.0) for i in range(7)]
+    r = simulate_multilayer(pop, ghost, segment_susceptibility={"s": 0.9}, seeds=["n0"], n_particles=20, seed=0)
+    assert r["terminal_mean"] < 0.2                                  # no edges → adoption stays at the seed
+
+
+def test_population_heterogeneity_changes_outcome():
+    from swm.world_model_v2.phase9_execution import simulate_multilayer
+    from swm.world_model_v2.phase9_population import PopulationParticle
+    edges = _chain_edges("influence", n=8, p=0.95)
+    pop = [PopulationParticle(weights={"hi": 1.0})]
+    hi = simulate_multilayer(pop, edges, segment_susceptibility={"hi": 0.9}, seeds=["n0"], n_particles=30, seed=1)
+    lo = simulate_multilayer([PopulationParticle(weights={"lo": 1.0})], edges,
+                             segment_susceptibility={"lo": 0.1}, seeds=["n0"], n_particles=30, seed=1)
+    # a more susceptible population adopts more from the SAME graph — population alters aggregate behavior
+    assert hi["terminal_mean"] > lo["terminal_mean"] + 0.15
+
+
+def test_authority_gate_blocks_without_edge():
+    from swm.world_model_v2.phase9_execution import authority_gate, Phase9World
+    from swm.world_model_v2.phase9_network import MultilayerNetwork, NetworkEdge
+    net = MultilayerNetwork(edges=[NetworkEdge("boss", "staff", "authority", existence_p=1.0)])
+    world = Phase9World(agents={}, net=net)
+    ok, d = authority_gate(world, "boss", "staff", "approve")
+    assert ok and "authorized" in d.reason_codes and d.changes                 # has authority → executes
+    ok2, d2 = authority_gate(world, "intern", "staff", "approve")
+    assert not ok2 and "blocked:no_authority" in d2.reason_codes and not d2.changes   # no edge → blocked + reason
+
+
+def test_communication_delivery_requires_path():
+    from swm.world_model_v2.phase9_execution import communication_delivery, Phase9World
+    from swm.world_model_v2.phase9_network import MultilayerNetwork, NetworkEdge
+    net = MultilayerNetwork(edges=[NetworkEdge("a", "b", "communication", existence_p=1.0)])
+    world = Phase9World(agents={}, net=net)
+    recips, d = communication_delivery(world, "a", "hello")
+    assert recips == ["b"]
+    none, d2 = communication_delivery(world, "z", "hello")
+    assert none == [] and "blocked:no_communication_path" in d2.reason_codes
+
+
+# ============================================================ integrated pipeline + no-abstention (Part T)
+def _pipeline_scenario():
+    segs = ["young", "old"]
+    survey = [{"counts": {"young": 60, "old": 40}, "reliability": 0.9, "source": "poll"}]
+    cand = [(f"n{i}", f"n{i+1}", "influence") for i in range(6)]
+    obs = [EdgeObservation("n0", "n1", "direct_communication_record", "strong", 0.9, claim_id="e0"),
+           EdgeObservation("n1", "n2", "org_chart_relationship", "strong", 0.9, claim_id="e1")]
+    return segs, survey, cand, obs
+
+
+def test_pipeline_runs_end_to_end():
+    from swm.world_model_v2.phase9_pipeline import simulate_populations_networks
+    segs, survey, cand, obs = _pipeline_scenario()
+    r = simulate_populations_networks(segments=segs, survey_observations=survey, candidate_edges=cand,
+                                      edge_observations=obs, segment_susceptibility={"young": 0.7, "old": 0.3},
+                                      structural_hypotheses=[{"id": "chain", "K": 1, "prior": 0.5},
+                                                             {"id": "two", "K": 2, "prior": 0.5}],
+                                      seeds=["n0"], n_particles=30, seed=0)
+    assert r.simulation_status in ("completed", "completed_with_degradation")
+    assert r.terminal.get("terminal_mean") is not None                 # a forecast exists
+    assert r.population_posterior["mean"]["young"] > r.population_posterior["mean"]["old"]  # survey moved it
+    assert r.graph_posterior["n_observed"] >= 2                        # observed edges from records
+    assert r.provenance["population_posterior_hash"] and r.provenance["terminal_hash"]
+
+
+def test_pipeline_no_abstention_on_weak_evidence():
+    from swm.world_model_v2.phase9_pipeline import simulate_populations_networks
+    # NO survey data, NO edge observations (all candidate edges hypothesized) → must still forecast, low grade
+    cand = [(f"n{i}", f"n{i+1}", "influence") for i in range(6)]
+    r = simulate_populations_networks(segments=["a", "b"], candidate_edges=cand, edge_observations=[],
+                                      seeds=["n0"], n_particles=20, seed=0)
+    assert r.simulation_status in ("completed", "completed_with_degradation")   # NOT refused
+    assert r.terminal.get("terminal_mean") is not None
+    assert r.support_grade in ("exploratory", "highly_speculative")   # weakness lowers grade, not a refusal
+    assert r.limitations                                              # surfaced, not hidden
+
+
+def test_pipeline_no_graph_still_forecasts():
+    from swm.world_model_v2.phase9_pipeline import simulate_populations_networks
+    r = simulate_populations_networks(segments=["a", "b"],
+                                      survey_observations=[{"counts": {"a": 70, "b": 30}, "reliability": 0.9}],
+                                      candidate_edges=[], edge_observations=[],
+                                      segment_susceptibility={"a": 0.5, "b": 0.5}, n_particles=20, seed=0)
+    assert r.simulation_status == "completed_with_degradation"        # no network → degraded, not refused
+    assert r.terminal.get("terminal_mean") is not None
+
+
+def test_pipeline_reproducible():
+    from swm.world_model_v2.phase9_pipeline import simulate_populations_networks
+    segs, survey, cand, obs = _pipeline_scenario()
+    kw = dict(segments=segs, survey_observations=survey, candidate_edges=cand, edge_observations=obs,
+              segment_susceptibility={"young": 0.7, "old": 0.3}, seeds=["n0"], n_particles=30, seed=0)
+    a = simulate_populations_networks(**kw)
+    b = simulate_populations_networks(**kw)
+    assert a.provenance["terminal_hash"] == b.provenance["terminal_hash"]
+    assert a.provenance["population_posterior_hash"] == b.provenance["population_posterior_hash"]

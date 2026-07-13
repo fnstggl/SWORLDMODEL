@@ -105,6 +105,9 @@ def infer_network_edges(candidate_edges, edge_observations, *, layer_priors=None
     by_edge = {}
     for o in edge_observations:
         by_edge.setdefault((o.src, o.dst, o.layer), []).append(o)
+    # every OBSERVED (src, dst, layer) is also a candidate — an observation implies a candidate edge on its own
+    # layer even if the caller listed the pair on a different layer (the evidence class fixes the layer).
+    candidate_edges = list(dict.fromkeys(list(candidate_edges) + list(by_edge.keys())))
     out = []
     for (src, dst, layer) in candidate_edges:
         obs = by_edge.get((src, dst, layer), [])
