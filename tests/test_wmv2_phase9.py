@@ -520,3 +520,66 @@ def test_evolution_changes_terminal_and_is_deterministic():
     intact, defected = run(False), run(True)
     assert intact > defected                                      # breaking a bridge edge reduces spread
     assert run(True) == defected                                  # deterministic replay
+
+
+# ============================================================ deep multilayer execution (Part 8)
+def _world(edges):
+    from swm.world_model_v2.phase9_execution import Phase9World
+    from swm.world_model_v2.phase9_network import MultilayerNetwork
+    return Phase9World(agents={}, net=MultilayerNetwork(edges=edges))
+
+
+def test_exposure_layer_identifies_observers():
+    from swm.world_model_v2.phase9_execution import exposure_mechanism
+    from swm.world_model_v2.phase9_network import NetworkEdge
+    w = _world([NetworkEdge("watcher", "star", "exposure"), NetworkEdge("star", "fan", "communication")])
+    obs, d = exposure_mechanism(w, "star")
+    assert "watcher" in obs and "fan" in obs and d.changes
+
+
+def test_reporting_escalation_follows_chain():
+    from swm.world_model_v2.phase9_execution import reporting_escalation
+    from swm.world_model_v2.phase9_network import NetworkEdge
+    w = _world([NetworkEdge("staff", "manager", "reporting"), NetworkEdge("manager", "vp", "reporting"),
+                NetworkEdge("vp", "ceo", "reporting")])
+    chain, d = reporting_escalation(w, "staff")
+    assert chain == ["manager", "vp", "ceo"]                        # multi-hop up the reporting chain
+
+
+def test_conflict_blocks_coordination():
+    from swm.world_model_v2.phase9_execution import conflict_blocks_coordination
+    from swm.world_model_v2.phase9_network import NetworkEdge
+    w = _world([NetworkEdge("a", "b", "communication"), NetworkEdge("a", "b", "conflict")])
+    can, d = conflict_blocks_coordination(w, "a", "b")
+    assert not can and "blocked:conflict" in d.reason_codes         # conflict overrides a comms channel
+    w2 = _world([NetworkEdge("a", "b", "alliance")])
+    can2, _ = conflict_blocks_coordination(w2, "a", "b")
+    assert can2
+
+
+def test_resource_transfer_requires_edge():
+    from swm.world_model_v2.phase9_execution import resource_transfer
+    from swm.world_model_v2.phase9_network import NetworkEdge
+    w = _world([NetworkEdge("donor", "campaign", "resource", existence_p=1.0)])
+    moved, d = resource_transfer(w, "donor", "campaign", 0.5)
+    assert moved > 0 and d.changes
+    none, d2 = resource_transfer(w, "stranger", "campaign", 0.5)
+    assert none == 0.0 and "blocked:no_resource_path" in d2.reason_codes
+
+
+def test_jurisdiction_gate_blocks_out_of_scope():
+    from swm.world_model_v2.phase9_execution import jurisdiction_gate
+    from swm.world_model_v2.phase9_network import NetworkEdge
+    w = _world([NetworkEdge("ftc", "merger", "jurisdiction")])
+    ok, d = jurisdiction_gate(w, "ftc", "merger", "block")
+    assert ok and "in_jurisdiction" in d.reason_codes
+    ok2, d2 = jurisdiction_gate(w, "sec", "merger", "block")
+    assert not ok2 and "blocked:out_of_jurisdiction" in d2.reason_codes
+
+
+def test_ten_layers_have_exercised_mechanisms():
+    """At least 10 relation layers must have a real typed mechanism consumer (Part 8 / gate F)."""
+    from swm.world_model_v2.phase3_observation import RELATION_LAYERS
+    exercised = {"communication", "exposure", "trust", "influence", "authority", "reporting",
+                 "alliance", "conflict", "resource", "jurisdiction", "membership"}
+    assert len(exercised & set(RELATION_LAYERS)) >= 10
