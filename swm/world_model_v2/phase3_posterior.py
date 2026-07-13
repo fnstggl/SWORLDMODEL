@@ -356,6 +356,50 @@ def _sigmoid(x):
     return z / (1.0 + z)
 
 
+@dataclass
+class ExposureObservation:
+    """An edge observation WITH exposure (Part 4, informative absence): out of `n_opportunities` chances for a
+    typed interaction to have been recorded, `n_observed` were seen. Non-observations (n_opportunities −
+    n_observed) are INFORMATIVE — many opportunities with few records is evidence the edge does not exist. A
+    Binomial detection model under exposure. Distinguishes 'no opportunity to observe' (n_opportunities=0 →
+    uninformative) from 'opportunity existed but nothing occurred'."""
+    evidence_class: str
+    n_opportunities: int
+    n_observed: int
+    reliability: float = 0.85
+    dependence_group: str = ""
+
+
+def infer_edge_posterior_exposure(src, dst, layer, exposures, *, prior_p: float = 0.1) -> "EdgePosterior":
+    """Edge-existence posterior under an OBSERVATION EXPOSURE model (Part 4). Each ExposureObservation
+    contributes a Binomial log-likelihood ratio: k observed of N opportunities with per-opportunity detect
+    (edge) / false (no edge) rates. When N=0 (no opportunity to observe) the term is 0 (uninformative). This is
+    the calibrated fix to the present-only overconfidence — absence is informative in proportion to exposure."""
+    from swm.world_model_v2.phase3_observation import _edge_rates
+    lo = _logit(prior_p)
+    ledger, total = [], 0.0
+    for ex in exposures:
+        N, k = max(0, int(ex.n_opportunities)), max(0, int(ex.n_observed))
+        k = min(k, N)
+        if N == 0:
+            ledger.append({"evidence_class": ex.evidence_class, "n_opportunities": 0, "n_observed": 0,
+                           "log_lr": 0.0, "note": "no_opportunity_uninformative"})
+            continue
+        detect, false = _edge_rates(ex.evidence_class, "strong", ex.reliability)
+        ll_exists = k * math.log(detect) + (N - k) * math.log(1 - detect)
+        ll_absent = k * math.log(false) + (N - k) * math.log(1 - false)
+        lr = ll_exists - ll_absent
+        lo += lr
+        total += lr
+        ledger.append({"evidence_class": ex.evidence_class, "n_opportunities": N, "n_observed": k,
+                       "log_lr": round(lr, 4)})
+    status = "observed" if any(e.get("n_observed", 0) > 0 for e in ledger) else (
+        "inferred" if exposures else "hypothesized")
+    return EdgePosterior(src=src, dst=dst, layer=layer, prior_p=prior_p, posterior_p=_sigmoid(lo),
+                         log_odds_shift=total, n_observations=len(exposures), observed_status=status,
+                         ledger=ledger)
+
+
 def infer_edge_posterior(src, dst, layer, edge_observations, *, prior_p: float = 0.1,
                          use_dependence: bool = True) -> EdgePosterior:
     """Per-edge existence posterior. `edge_observations` are phase3_observation.EdgeObservation for THIS edge.

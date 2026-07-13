@@ -49,12 +49,21 @@
       }
     }
   },
-  "link_prediction": {
+  "link_prediction_RECONSTRUCTION": {
     "n_test": 950,
     "auroc": 0.9988,
     "base_rate_edges": 0.478,
     "prior_same_party": 0.928,
-    "prior_diff_party": 0.017
+    "prior_diff_party": 0.017,
+    "TASK_TYPE": "RECONSTRUCTION \u2014 held-out edges predicted from the SAME co-voting signal that DEFINES them; NOT general hidden-edge prediction. See temporal_link_prediction for real future-edge prediction."
+  },
+  "temporal_link_prediction_PREDICTION": {
+    "task": "predict S117 high-agreement edges from S116 (temporal, no leakage)",
+    "n_pairs": 4005,
+    "base_rate": 0.467,
+    "auroc_full": 0.9539,
+    "auroc_party_only": 0.9335,
+    "auroc_past_agreement_only": 0.9637
   },
   "synthetic_edge_calibration": {
     "n": 3000,
@@ -67,7 +76,9 @@
   "gates": {
     "sbm_recovers_party_at_K2": true,
     "structural_detects_bloc_structure": true,
-    "link_prediction_above_chance": true,
+    "reconstruction_above_chance": true,
+    "temporal_prediction_above_chance": true,
+    "temporal_prediction_beats_party_baseline": true,
     "synthetic_edge_auroc_high": true,
     "synthetic_edge_calibrated": true
   },

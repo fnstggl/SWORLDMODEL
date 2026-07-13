@@ -121,6 +121,77 @@ def trust_weighted_credibility(world: Phase9World, receiver: str, source: str, b
 SPREAD_LAYERS = ("influence", "communication", "alliance", "friendship")
 
 
+def exposure_mechanism(world: Phase9World, source: str) -> tuple:
+    """Who OBSERVES `source` — via exposure + communication edges INTO observers (Part P exposure). Returns
+    (observers, delta). Distinct from influence: exposure is observation, not persuasion."""
+    observers = [e.src for e in world.net.layer_edges("exposure") + world.net.layer_edges("communication")
+                 if e.dst == source] + [e.dst for e in world.net.layer_edges("exposure")
+                                        + world.net.layer_edges("communication") if e.src == source]
+    observers = sorted(set(observers))
+    d = Phase9Delta("exposure", "phase9_exposure", reason_codes=[f"source={source}", f"n={len(observers)}"])
+    for o in observers:
+        d.change(f"exposed[{o}]", False, True)
+    return observers, d
+
+
+def reporting_escalation(world: Phase9World, origin: str, *, max_hops: int = 5) -> tuple:
+    """Route an issue UP the reporting chain (multi-hop) — escalation follows reporting edges, not friendship
+    (Part P reporting). Returns (chain, delta)."""
+    chain, cur, seen = [], origin, {origin}
+    for _ in range(max_hops):
+        ups = [e.dst for e in world.net.layer_edges("reporting") if e.src == cur and e.dst not in seen]
+        if not ups:
+            break
+        cur = ups[0]
+        chain.append(cur)
+        seen.add(cur)
+    d = Phase9Delta("reporting_escalation", "phase9_reporting",
+                    reason_codes=[f"origin={origin}", f"hops={len(chain)}",
+                                  "reached_top" if chain else "no_reporting_path"])
+    for i, node in enumerate(chain):
+        d.change(f"escalated_to[{i}]", None, node)
+    return chain, d
+
+
+def conflict_blocks_coordination(world: Phase9World, a: str, b: str) -> tuple:
+    """Two actors in CONFLICT cannot coordinate even if a communication path exists (Part P conflict). Returns
+    (can_coordinate, delta)."""
+    conflict = any({e.src, e.dst} == {a, b} for e in world.net.layer_edges("conflict"))
+    can = (not conflict) and any({e.src, e.dst} == {a, b} for e in
+                                 world.net.layer_edges("alliance") + world.net.layer_edges("communication"))
+    d = Phase9Delta("coordination", "phase9_coordination",
+                    reason_codes=[f"{a}~{b}", "blocked:conflict" if conflict else
+                                  ("coordinated" if can else "no_channel")])
+    if can:
+        d.change(f"coordinated[{a},{b}]", False, True)
+    return can, d
+
+
+def resource_transfer(world: Phase9World, src: str, dst: str, amount: float, *, capacity: float = 1.0) -> tuple:
+    """Transfer a resource along a RESOURCE edge, gated by capacity (Part P resource). No resource edge → no
+    transfer (feasibility). Returns (transferred_amount, delta)."""
+    e = next((x for x in world.net.layer_edges("resource") if x.src == src and x.dst == dst), None)
+    d = Phase9Delta("resource_transfer", "phase9_resource", reason_codes=[f"{src}->{dst}", f"req={amount}"])
+    if e is None:
+        d.reason_codes.append("blocked:no_resource_path")
+        return 0.0, d
+    moved = min(amount, capacity * e.existence_p)
+    d.change(f"resource[{src}->{dst}]", 0.0, round(moved, 4))
+    return moved, d
+
+
+def jurisdiction_gate(world: Phase9World, institution: str, target: str, action: str) -> tuple:
+    """An institutional action is feasible only within JURISDICTION (Part P jurisdiction/approval). Returns
+    (allowed, delta) with a reason code when blocked."""
+    has = any(e.src == institution and e.dst == target for e in
+              world.net.layer_edges("jurisdiction") + world.net.layer_edges("authority"))
+    d = Phase9Delta("jurisdiction_action", "phase9_jurisdiction",
+                    reason_codes=[f"action={action}", "in_jurisdiction" if has else "blocked:out_of_jurisdiction"])
+    if has:
+        d.change(f"institutional_action[{action}:{target}]", "pending", "executed")
+    return has, d
+
+
 def influence_diffusion(world: Phase9World, seeds, *, contagion: str = "simple", max_rounds: int = 6,
                         seed: int = 0, spread_layers=SPREAD_LAYERS) -> tuple:
     """Behavior diffusion over the social-transmission layers (influence/communication/alliance/friendship by

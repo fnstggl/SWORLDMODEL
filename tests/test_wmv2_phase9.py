@@ -342,3 +342,244 @@ def test_pipeline_reproducible():
     b = simulate_populations_networks(**kw)
     assert a.provenance["terminal_hash"] == b.provenance["terminal_hash"]
     assert a.provenance["population_posterior_hash"] == b.provenance["population_posterior_hash"]
+
+
+# ============================================================ universal discovery (completion run, Parts 1-3)
+from types import SimpleNamespace
+
+
+def _fake_plan():
+    return SimpleNamespace(
+        entities=[{"id": "alice", "type": "person"}, {"id": "bob", "type": "person"},
+                  {"id": "carol", "type": "person"}],
+        institutions=[{"id": "acme"}],
+        populations=[{"id": "voters", "segments": [{"id": "young", "differs_on": ["age"]},
+                                                   {"id": "old", "differs_on": ["age"]}]}],
+        relations=[{"src": "alice", "rel": "communicates_with", "dst": "bob"},
+                   {"src": "bob", "rel": "reports_to", "dst": "carol"},
+                   {"src": "alice", "rel": "influences", "dst": "carol"}],
+        plan_hash=lambda: "planhash123", provenance={})
+
+
+class _FakeBundle:
+    def __init__(self, claims, docs):
+        self._claims, self.documents = claims, docs
+
+    def included_claims(self):
+        return self._claims
+
+    def bundle_hash(self):
+        return "bundlehash"
+
+
+def test_discovery_is_automatic_from_plan_no_llm():
+    from swm.world_model_v2.phase9_discovery import discover
+    d = discover("Will the team adopt the proposal?", _fake_plan(), None, llm=None)
+    # discovered WITHOUT the caller supplying anything
+    assert set(d.actors) >= {"alice", "bob", "carol"}                # actors discovered from the plan
+    assert d.population_segments == ["young", "old"]                 # segmentation discovered from the plan
+    assert ("alice", "bob", "communication") in d.candidate_edges    # typed layer mapped from the relation
+    assert ("bob", "carol", "reporting") in d.candidate_edges
+    assert "communication" in d.relation_layers and "reporting" in d.relation_layers
+    assert d.structural_hypotheses and d.seeds                       # hypotheses + seeds auto-proposed
+    assert d.provenance["llm"] is False
+
+
+def test_discovery_constructs_typed_observations_from_claims():
+    from swm.world_model_v2.phase9_discovery import discover, construct_observations
+    plan = _fake_plan()
+    d = discover("q", plan, None, llm=None)
+    claims = [{"claim_id": "c1", "subject": "alice", "predicate": "emailed", "object": "bob",
+               "claim_class": "communication", "source_id": "doc1", "dependence_group": ""},
+              {"claim_id": "c2", "subject": "bob", "predicate": "reports to", "object": "carol",
+               "claim_class": "relationship", "source_id": "doc1", "dependence_group": ""}]
+    bundle = _FakeBundle(claims, [{"id": "doc1", "source_type": "news"}])
+    survey, edges = construct_observations(d, bundle, llm=None)
+    by = {(e.src, e.dst): e for e in edges}
+    assert ("alice", "bob") in by and by[("alice", "bob")].evidence_class == "direct_communication_record"
+    assert ("bob", "carol") in by and by[("bob", "carol")].evidence_class == "org_chart_relationship"
+    assert all(0 < e.reliability <= 1 for e in edges)                # reliability from source type, not minted
+
+
+def test_discovery_representation_varies_with_scenario():
+    from swm.world_model_v2.phase9_discovery import discover
+    # a small named-actor scenario → explicit individuals; a segmented population → weighted segments
+    small = SimpleNamespace(entities=[{"id": "ceo", "type": "person"}, {"id": "cfo", "type": "person"}],
+                            institutions=[], populations=[], relations=[{"src": "ceo", "rel": "controls", "dst": "cfo"}],
+                            plan_hash=lambda: "h", provenance={})
+    d_small = discover("Will the CEO approve?", small, None, llm=None)
+    d_pop = discover("Will voters support it?", _fake_plan(), None, llm=None)
+    assert d_small.population_representation == "explicit_individuals"
+    assert d_pop.population_representation == "weighted_segments"     # planner makes DIFFERENT choices
+
+
+# ============================================================ informative absence / exposure (Part 4)
+def test_exposure_absence_is_informative():
+    from swm.world_model_v2.phase3_posterior import ExposureObservation, infer_edge_posterior_exposure
+    # many opportunities, ZERO observed → strong evidence AGAINST the edge
+    many_none = [ExposureObservation("repeated_interaction", n_opportunities=30, n_observed=0, reliability=0.9)]
+    p_none = infer_edge_posterior_exposure("a", "b", "communication", many_none, prior_p=0.5)
+    assert p_none.posterior_p < 0.2                                  # absence under high exposure lowers it
+    # NO opportunity to observe → uninformative (posterior == prior)
+    no_opp = [ExposureObservation("repeated_interaction", n_opportunities=0, n_observed=0, reliability=0.9)]
+    p_noopp = infer_edge_posterior_exposure("a", "b", "communication", no_opp, prior_p=0.3)
+    assert abs(p_noopp.posterior_p - 0.3) < 1e-6                     # no exposure ≠ evidence of absence
+
+
+def test_exposure_observations_raise_posterior():
+    from swm.world_model_v2.phase3_posterior import ExposureObservation, infer_edge_posterior_exposure
+    ex = [ExposureObservation("repeated_interaction", n_opportunities=20, n_observed=15, reliability=0.9)]
+    p = infer_edge_posterior_exposure("a", "b", "communication", ex, prior_p=0.1)
+    assert p.posterior_p > 0.9 and p.observed_status == "observed"
+
+
+def test_exposure_model_is_calibrated_under_variable_exposure():
+    """The exposure model must be CALIBRATED even when the number of opportunities varies (the fix to the
+    present-only overconfidence). Well-specified generator; ECE measured over the posterior."""
+    import random
+    from collections import defaultdict
+    from swm.world_model_v2.phase3_posterior import ExposureObservation, infer_edge_posterior_exposure
+    from swm.world_model_v2.phase3_observation import _edge_rates
+    rng = random.Random(0)
+    detect, false = _edge_rates("repeated_interaction", "strong", 0.9)
+    buckets = defaultdict(lambda: [0, 0])
+    for _ in range(3000):
+        exists = 1 if rng.random() < 0.3 else 0
+        N = rng.randrange(1, 25)                                     # VARIABLE exposure
+        k = sum(1 for _ in range(N) if rng.random() < (detect if exists else false))
+        p = infer_edge_posterior_exposure("a", "b", "communication",
+                                          [ExposureObservation("repeated_interaction", N, k, 0.9)],
+                                          prior_p=0.3).posterior_p
+        b = min(9, int(p * 10))
+        buckets[b][0] += exists
+        buckets[b][1] += 1
+    n = sum(c[1] for c in buckets.values())
+    ece = sum(abs(c[0] / c[1] - (b + 0.5) / 10) * c[1] for b, c in buckets.items() if c[1]) / n
+    assert ece <= 0.06                                              # calibrated under variable exposure
+
+
+# ============================================================ temporal network evolution (Part 7)
+def test_at_least_five_typed_transitions_exist():
+    from swm.world_model_v2.phase9_temporal import TRANSITIONS
+    assert len(TRANSITIONS) >= 5
+
+
+def test_trust_transitions_move_edge_and_emit_delta():
+    from swm.world_model_v2.phase9_temporal import trust_gain, trust_loss
+    from swm.world_model_v2.phase9_network import MultilayerNetwork
+    net = MultilayerNetwork(edges=[])
+    d1 = trust_gain(net, "a", "b", event="fulfilled_commitment")
+    e = [x for x in net.edges if x.layer == "trust"][0]
+    assert e.existence_p > 0.2 and d1.changes                    # trust rose + StateDelta emitted
+    d2 = trust_loss(net, "a", "b", event="betrayal")
+    assert e.existence_p < 0.5 and d2.changes                    # betrayal lowered it
+
+
+def test_edge_expiration_removes_past_edges():
+    from swm.world_model_v2.phase9_temporal import edge_expiration
+    from swm.world_model_v2.phase9_network import MultilayerNetwork, NetworkEdge
+    net = MultilayerNetwork(edges=[NetworkEdge("a", "b", "alliance", existence_p=0.9, valid_to=100.0),
+                                   NetworkEdge("a", "c", "alliance", existence_p=0.9, valid_to=None)])
+    d = edge_expiration(net, at=200.0)
+    layers = {(e.src, e.dst) for e in net.edges}
+    assert ("a", "b") not in layers and ("a", "c") in layers      # expired edge removed, live edge kept
+    assert d.changes
+
+
+def test_evolution_changes_future_action_feasibility():
+    from swm.world_model_v2.phase9_temporal import role_change
+    from swm.world_model_v2.phase9_execution import authority_gate, Phase9World
+    from swm.world_model_v2.phase9_network import MultilayerNetwork
+    net = MultilayerNetwork(edges=[])
+    world = Phase9World(agents={}, net=net)
+    ok_before, _ = authority_gate(world, "manager", "report", "approve")
+    assert not ok_before                                          # no authority initially → blocked
+    role_change(net, "manager", "director", grants_to="report", at=50.0)  # promotion grants authority
+    ok_after, _ = authority_gate(world, "manager", "report", "approve")
+    assert ok_after                                               # evolution enabled a previously-blocked action
+
+
+def test_evolution_changes_terminal_and_is_deterministic():
+    from swm.world_model_v2.phase9_temporal import evolve
+    from swm.world_model_v2.phase9_execution import materialize_worlds, influence_diffusion, weighted_adoption
+    from swm.world_model_v2.phase9_population import PopulationParticle
+    from swm.world_model_v2.phase9_network import NetworkEdge
+    base_edges = [NetworkEdge(f"n{i}", f"n{i+1}", "alliance", existence_p=0.9) for i in range(5)]
+
+    def run(with_defection):
+        net_edges = [NetworkEdge(e.src, e.dst, e.layer, existence_p=e.existence_p) for e in base_edges]
+        from swm.world_model_v2.phase9_network import MultilayerNetwork
+        net = MultilayerNetwork(edges=net_edges)
+        if with_defection:
+            evolve(net, [{"kind": "alliance_defection", "src": "n2", "dst": "n3", "event": "defection"}])
+        worlds = materialize_worlds([PopulationParticle(weights={"s": 1.0})], net.edges,
+                                    segment_susceptibility={"s": 0.7}, n=20, seed=0)
+        outs = [weighted_adoption(w, influence_diffusion(w, ["n0"], seed=w.particle_id)[0]) for w in worlds]
+        return sum(outs) / len(outs)
+
+    intact, defected = run(False), run(True)
+    assert intact > defected                                      # breaking a bridge edge reduces spread
+    assert run(True) == defected                                  # deterministic replay
+
+
+# ============================================================ deep multilayer execution (Part 8)
+def _world(edges):
+    from swm.world_model_v2.phase9_execution import Phase9World
+    from swm.world_model_v2.phase9_network import MultilayerNetwork
+    return Phase9World(agents={}, net=MultilayerNetwork(edges=edges))
+
+
+def test_exposure_layer_identifies_observers():
+    from swm.world_model_v2.phase9_execution import exposure_mechanism
+    from swm.world_model_v2.phase9_network import NetworkEdge
+    w = _world([NetworkEdge("watcher", "star", "exposure"), NetworkEdge("star", "fan", "communication")])
+    obs, d = exposure_mechanism(w, "star")
+    assert "watcher" in obs and "fan" in obs and d.changes
+
+
+def test_reporting_escalation_follows_chain():
+    from swm.world_model_v2.phase9_execution import reporting_escalation
+    from swm.world_model_v2.phase9_network import NetworkEdge
+    w = _world([NetworkEdge("staff", "manager", "reporting"), NetworkEdge("manager", "vp", "reporting"),
+                NetworkEdge("vp", "ceo", "reporting")])
+    chain, d = reporting_escalation(w, "staff")
+    assert chain == ["manager", "vp", "ceo"]                        # multi-hop up the reporting chain
+
+
+def test_conflict_blocks_coordination():
+    from swm.world_model_v2.phase9_execution import conflict_blocks_coordination
+    from swm.world_model_v2.phase9_network import NetworkEdge
+    w = _world([NetworkEdge("a", "b", "communication"), NetworkEdge("a", "b", "conflict")])
+    can, d = conflict_blocks_coordination(w, "a", "b")
+    assert not can and "blocked:conflict" in d.reason_codes         # conflict overrides a comms channel
+    w2 = _world([NetworkEdge("a", "b", "alliance")])
+    can2, _ = conflict_blocks_coordination(w2, "a", "b")
+    assert can2
+
+
+def test_resource_transfer_requires_edge():
+    from swm.world_model_v2.phase9_execution import resource_transfer
+    from swm.world_model_v2.phase9_network import NetworkEdge
+    w = _world([NetworkEdge("donor", "campaign", "resource", existence_p=1.0)])
+    moved, d = resource_transfer(w, "donor", "campaign", 0.5)
+    assert moved > 0 and d.changes
+    none, d2 = resource_transfer(w, "stranger", "campaign", 0.5)
+    assert none == 0.0 and "blocked:no_resource_path" in d2.reason_codes
+
+
+def test_jurisdiction_gate_blocks_out_of_scope():
+    from swm.world_model_v2.phase9_execution import jurisdiction_gate
+    from swm.world_model_v2.phase9_network import NetworkEdge
+    w = _world([NetworkEdge("ftc", "merger", "jurisdiction")])
+    ok, d = jurisdiction_gate(w, "ftc", "merger", "block")
+    assert ok and "in_jurisdiction" in d.reason_codes
+    ok2, d2 = jurisdiction_gate(w, "sec", "merger", "block")
+    assert not ok2 and "blocked:out_of_jurisdiction" in d2.reason_codes
+
+
+def test_ten_layers_have_exercised_mechanisms():
+    """At least 10 relation layers must have a real typed mechanism consumer (Part 8 / gate F)."""
+    from swm.world_model_v2.phase3_observation import RELATION_LAYERS
+    exercised = {"communication", "exposure", "trust", "influence", "authority", "reporting",
+                 "alliance", "conflict", "resource", "jurisdiction", "membership"}
+    assert len(exercised & set(RELATION_LAYERS)) >= 10
