@@ -1,0 +1,206 @@
+{
+  "seed": 20240720,
+  "n_episodes_per_family": 1500,
+  "votes_per_episode": 8,
+  "families": {
+    "smooth_continuous": {
+      "winner": "discrete_hypothesis",
+      "ranking": [
+        {
+          "kind": "discrete_hypothesis",
+          "held_out_logloss": 0.65475,
+          "brier": 0.23143,
+          "calibration_err": 0.02272
+        },
+        {
+          "kind": "hybrid_interpretable",
+          "held_out_logloss": 0.65603,
+          "brier": 0.23202,
+          "calibration_err": 0.03083
+        },
+        {
+          "kind": "continuous_probabilistic",
+          "held_out_logloss": 0.6593,
+          "brier": 0.23333,
+          "calibration_err": 0.04783
+        },
+        {
+          "kind": "mixture",
+          "held_out_logloss": 0.66023,
+          "brier": 0.2337,
+          "calibration_err": 0.05539
+        },
+        {
+          "kind": "scalar_point",
+          "held_out_logloss": 0.67307,
+          "brier": 0.23676,
+          "calibration_err": 0.06915
+        }
+      ],
+      "scalar_baseline_rank": 5,
+      "base_rate_yes": 0.492
+    },
+    "two_regime": {
+      "winner": "discrete_hypothesis",
+      "ranking": [
+        {
+          "kind": "discrete_hypothesis",
+          "held_out_logloss": 0.65535,
+          "brier": 0.23154,
+          "calibration_err": 0.02742
+        },
+        {
+          "kind": "hybrid_interpretable",
+          "held_out_logloss": 0.6573,
+          "brier": 0.23234,
+          "calibration_err": 0.03782
+        },
+        {
+          "kind": "continuous_probabilistic",
+          "held_out_logloss": 0.66141,
+          "brier": 0.23386,
+          "calibration_err": 0.05252
+        },
+        {
+          "kind": "mixture",
+          "held_out_logloss": 0.66228,
+          "brier": 0.2342,
+          "calibration_err": 0.05593
+        },
+        {
+          "kind": "scalar_point",
+          "held_out_logloss": 0.68269,
+          "brier": 0.23834,
+          "calibration_err": 0.07236
+        }
+      ],
+      "scalar_baseline_rank": 5,
+      "base_rate_yes": 0.505
+    },
+    "bimodal_mixture": {
+      "winner": "mixture",
+      "ranking": [
+        {
+          "kind": "mixture",
+          "held_out_logloss": 0.57602,
+          "brier": 0.19519,
+          "calibration_err": 0.04739
+        },
+        {
+          "kind": "continuous_probabilistic",
+          "held_out_logloss": 0.57663,
+          "brier": 0.19543,
+          "calibration_err": 0.04787
+        },
+        {
+          "kind": "hybrid_interpretable",
+          "held_out_logloss": 0.58166,
+          "brier": 0.19731,
+          "calibration_err": 0.06756
+        },
+        {
+          "kind": "scalar_point",
+          "held_out_logloss": 0.58201,
+          "brier": 0.19519,
+          "calibration_err": 0.04143
+        },
+        {
+          "kind": "discrete_hypothesis",
+          "held_out_logloss": 0.58858,
+          "brier": 0.20005,
+          "calibration_err": 0.08138
+        }
+      ],
+      "scalar_baseline_rank": 4,
+      "base_rate_yes": 0.502
+    }
+  },
+  "evidence_sweep": {
+    "smooth_continuous": {
+      "m=2": {
+        "winner": "discrete_hypothesis",
+        "logloss_by_kind": {
+          "discrete_hypothesis": 0.6793,
+          "hybrid_interpretable": 0.67988,
+          "continuous_probabilistic": 0.68146,
+          "mixture": 0.68182,
+          "scalar_point": 1.12873
+        }
+      },
+      "m=8": {
+        "winner": "discrete_hypothesis",
+        "logloss_by_kind": {
+          "discrete_hypothesis": 0.65071,
+          "hybrid_interpretable": 0.6517,
+          "continuous_probabilistic": 0.65468,
+          "mixture": 0.65542,
+          "scalar_point": 0.67172
+        }
+      },
+      "m=30": {
+        "winner": "discrete_hypothesis",
+        "logloss_by_kind": {
+          "discrete_hypothesis": 0.63568,
+          "scalar_point": 0.63674,
+          "hybrid_interpretable": 0.63883,
+          "continuous_probabilistic": 0.64516,
+          "mixture": 0.64553
+        }
+      }
+    },
+    "bimodal_mixture": {
+      "m=2": {
+        "winner": "mixture",
+        "logloss_by_kind": {
+          "mixture": 0.64773,
+          "continuous_probabilistic": 0.64812,
+          "hybrid_interpretable": 0.65103,
+          "discrete_hypothesis": 0.65489,
+          "scalar_point": 0.95705
+        }
+      },
+      "m=8": {
+        "winner": "mixture",
+        "logloss_by_kind": {
+          "mixture": 0.57188,
+          "continuous_probabilistic": 0.57255,
+          "hybrid_interpretable": 0.57759,
+          "scalar_point": 0.57899,
+          "discrete_hypothesis": 0.58462
+        }
+      },
+      "m=30": {
+        "winner": "mixture",
+        "logloss_by_kind": {
+          "mixture": 0.48297,
+          "continuous_probabilistic": 0.48431,
+          "hybrid_interpretable": 0.48724,
+          "discrete_hypothesis": 0.49415,
+          "scalar_point": 0.52088
+        }
+      }
+    }
+  },
+  "summary": {
+    "winner_by_family": {
+      "smooth_continuous": "discrete_hypothesis",
+      "two_regime": "discrete_hypothesis",
+      "bimodal_mixture": "mixture"
+    },
+    "scalar_ever_wins": false,
+    "scalar_mean_rank": 4.67,
+    "winner_shifts_with_evidence": {
+      "smooth_continuous": [
+        "discrete_hypothesis",
+        "discrete_hypothesis",
+        "discrete_hypothesis"
+      ],
+      "bimodal_mixture": [
+        "mixture",
+        "mixture",
+        "mixture"
+      ]
+    },
+    "conclusion": "the best representation is family- AND identifiability-dependent; a fixed scalar is dominated whenever the hidden state has structure \u2014 representation must be chosen by held-out calibration, never by intuition or convenience"
+  }
+}

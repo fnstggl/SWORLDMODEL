@@ -223,3 +223,52 @@ def test_structural_spec_only_when_competing_structures_exist():
                                {"id": "H2", "prior": 0.5, "lean": "weak_no"}])
     ss = structural_spec(multi)
     assert ss is not None and ss.measurable() and ss.support_type == "discrete_structural"
+
+
+# ============================================================ representation-choice principle
+def test_ornamental_scalar_representation_is_refused():
+    from swm.world_model_v2.phase3_representation import (OrnamentalRepresentationError,
+                                                         RepresentationCandidate, assert_not_ornamental)
+    bare = RepresentationCandidate(concept="trust", kind="scalar_point")   # no evidence, no consumer
+    with pytest.raises(OrnamentalRepresentationError):
+        assert_not_ornamental(bare)                                     # the trust=0.7 anti-pattern is rejected
+    linked = RepresentationCandidate(concept="outcome_rate", kind="continuous_probabilistic",
+                                     evidence_claim_ids=["c1"], consumed_by=["resolve_outcome:rate"])
+    assert_not_ornamental(linked)                                      # evidence-linked + consumed → allowed
+
+
+def test_llm_proposes_kinds_never_numbers():
+    from swm.world_model_v2.phase3_representation import propose_representations
+    # default menu when no LLM: candidates are qualitative KINDS with no numeric parameters
+    cands = propose_representations("regime stability", llm=None, evidence_claim_ids=["c1"],
+                                   consumed_by=["x"])
+    assert cands and all(c.kind in
+                         ("scalar_point", "continuous_probabilistic", "discrete_hypothesis", "mixture",
+                          "hybrid_interpretable") for c in cands)
+    for c in cands:
+        d = c.as_dict()
+        assert not any(isinstance(v, float) for v in d.values())       # no numbers minted at proposal time
+
+
+def test_scalar_baseline_loses_to_structured_representation():
+    """A miniature of the representation ablation: on a genuinely bimodal truth, the mixture representation
+    beats the arbitrary-scalar baseline on held-out log-loss (structure must not be scalarized away)."""
+    import random as _r
+    from swm.world_model_v2.phase3_representation import choose_representation
+    rng = _r.Random(1)
+
+    def episode():
+        theta = 0.85 if rng.random() < 0.5 else 0.15                    # two plausible worlds
+        votes = []
+        for _ in range(8):
+            rel = 0.6 + 0.35 * rng.random()
+            d = 0.5 + 0.35 * rel
+            p = theta * d + (1 - theta) * (1 - d)
+            votes.append((1 if rng.random() < p else -1, rel))
+        return votes, (1 if rng.random() < theta else 0)
+
+    eps = [episode() for _ in range(900)]
+    card = choose_representation("bimodal", eps[:300], eps[300:],
+                                candidates=["scalar_point", "mixture", "continuous_probabilistic"])
+    assert card.winner != "scalar_point"                               # the arbitrary scalar never wins here
+    assert card.metrics["mixture"]["held_out_logloss"] < card.metrics["scalar_point"]["held_out_logloss"]
