@@ -1,0 +1,1549 @@
+{
+ "_meta": {
+  "n_forms": 32
+ },
+ "forms": {
+  "change_point": {
+   "form_id": "change_point",
+   "version": "1.0.0",
+   "title": "Segmented regression (one change-point)",
+   "output_domain": "real",
+   "monotonicity": "unconstrained",
+   "phenomena": [
+    "regime",
+    "threshold"
+   ],
+   "param_schema": {
+    "cp": {
+     "desc": "break location"
+    },
+    "a0": {
+     "desc": "left value at cp"
+    },
+    "b0": {
+     "desc": "left slope"
+    },
+    "a1": {
+     "desc": "right value at cp"
+    },
+    "b1": {
+     "desc": "right slope"
+    }
+   },
+   "required_inputs": [
+    "x"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "profile likelihood over cp (grid)",
+   "regularization": "",
+   "invariants": [
+    "two linear regimes"
+   ],
+   "extrapolation_behavior": "clamp_to_observed_support",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "an endogenous or exogenous structural break splits the response into regimes",
+   "maturity": "fitted_available",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "cloglog_hazard": {
+   "form_id": "cloglog_hazard",
+   "version": "1.0.0",
+   "title": "Window hazard P = 1 \u2212 exp(\u2212exp(\u03b8\u00b7x)\u00b7W)",
+   "output_domain": "prob_window",
+   "monotonicity": "context",
+   "phenomena": [
+    "saturation"
+   ],
+   "param_schema": {
+    "weights": {
+     "desc": "log-rate coefficients"
+    },
+    "intercept": {
+     "desc": "log baseline"
+    },
+    "standardizer": {
+     "desc": "{feat:[mu,sd]}",
+     "required": false
+    }
+   },
+   "required_inputs": [
+    "features",
+    "window_days"
+   ],
+   "time_scales": [
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "cloglog GLM (Newton-damped)",
+   "regularization": "L2",
+   "invariants": [
+    "output in [0,1]",
+    "P\u21921 as exposure\u2192\u221e"
+   ],
+   "extrapolation_behavior": "saturates_to_1",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "survival mechanism: the SAME \u03bb integrates step-by-step in rollout (Higgs exposure hazard)",
+   "maturity": "validated_elsewhere",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "cubic_spline": {
+   "form_id": "cubic_spline",
+   "version": "1.0.0",
+   "title": "Natural cubic spline (GAM smooth term)",
+   "output_domain": "real",
+   "monotonicity": "non_monotone",
+   "phenomena": [
+    "inverted_u",
+    "u_shaped"
+   ],
+   "param_schema": {
+    "x": {
+     "desc": "knots"
+    },
+    "segments": {
+     "desc": "[{a,b,c,d}] cubic coeffs"
+    }
+   },
+   "required_inputs": [
+    "x"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "penalized regression spline (offline)",
+   "regularization": "smoothing penalty (validation-selected df)",
+   "invariants": [
+    "smooth C2 interior"
+   ],
+   "extrapolation_behavior": "linear_tails_natural_bc",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [
+    "wild extrapolation beyond knots \u2014 transport must gate"
+   ],
+   "theory": "flexible smooth term for GAMs; can capture inverted-U / non-monotone shapes",
+   "maturity": "fitted_available",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "exp_saturation": {
+   "form_id": "exp_saturation",
+   "version": "1.0.0",
+   "title": "Exponential approach L(1\u2212e^{\u2212k\u00b7x})",
+   "output_domain": "nonneg_rate",
+   "monotonicity": "increasing",
+   "phenomena": [
+    "saturation",
+    "diminishing_returns"
+   ],
+   "param_schema": {
+    "L": {
+     "desc": "asymptote"
+    },
+    "k": {
+     "desc": "rate"
+    }
+   },
+   "required_inputs": [
+    "x"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "nonlinear LS",
+   "regularization": "",
+   "invariants": [
+    "0 at 0",
+    "concave",
+    "\u2192L"
+   ],
+   "extrapolation_behavior": "clamp_to_observed_support",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "cumulative-exposure ceiling (attention saturation)",
+   "maturity": "fitted_available",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "fatigue": {
+   "form_id": "fatigue",
+   "version": "1.0.0",
+   "title": "Fatigue A\u00b7\u03b3^n (response decays with exposure count)",
+   "output_domain": "real",
+   "monotonicity": "decreasing",
+   "phenomena": [
+    "fatigue",
+    "habituation"
+   ],
+   "param_schema": {
+    "A": {
+     "desc": "first-exposure response"
+    },
+    "gamma": {
+     "desc": "retention 0<\u03b3<1"
+    },
+    "floor": {
+     "desc": "irreducible response",
+     "required": false
+    }
+   },
+   "required_inputs": [
+    "n_exposures"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "nonlinear MLE on repeated-exposure data",
+   "regularization": "",
+   "invariants": [
+    "A at n=0",
+    "decreasing in n",
+    "\u2192floor"
+   ],
+   "extrapolation_behavior": "approaches_floor",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "message/donor/notification fatigue: the nth exposure moves the receiver less than the 1st. Distinct from saturation (which is about the STIMULUS level, not repetition count)",
+   "maturity": "structural_candidate",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "finite_mixture": {
+   "form_id": "finite_mixture",
+   "version": "1.0.0",
+   "title": "Finite mixture \u03a3 \u03c0_k f_k(x)",
+   "output_domain": "real",
+   "monotonicity": "unconstrained",
+   "phenomena": [
+    "heterogeneity",
+    "regime"
+   ],
+   "param_schema": {
+    "components": {
+     "desc": "[{form_id, params, weight}] latent classes"
+    }
+   },
+   "required_inputs": [
+    "x"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "EM",
+   "regularization": "component count (validation/BIC)",
+   "invariants": [
+    "weights sum to 1"
+   ],
+   "extrapolation_behavior": "clamp_to_observed_support",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [
+    "degenerate/empty component",
+    "label switching"
+   ],
+   "theory": "latent-class heterogeneity: distinct sub-populations respond via distinct shapes",
+   "maturity": "fitted_available",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "finite_population": {
+   "form_id": "finite_population",
+   "version": "1.0.0",
+   "title": "Finite-pop new-adopter rate \u03b2\u00b7I\u00b7S/N",
+   "output_domain": "nonneg_rate",
+   "monotonicity": "non_monotone",
+   "phenomena": [
+    "finite_population",
+    "saturation",
+    "tipping"
+   ],
+   "param_schema": {
+    "beta": {
+     "desc": "transmission"
+    },
+    "N": {
+     "desc": "population size"
+    }
+   },
+   "required_inputs": [
+    "infected",
+    "susceptible"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "epidemic curve fit (offline)",
+   "regularization": "",
+   "invariants": [
+    "rate=0 when S=0 or I=0",
+    "peaks then declines"
+   ],
+   "extrapolation_behavior": "clamp_to_observed_support",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "susceptible depletion: adoption accelerates then dies as the susceptible pool runs out \u2014 the Bass/SIR saturation the cascade cannot exceed",
+   "maturity": "fitted_available",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "gam": {
+   "form_id": "gam",
+   "version": "1.0.0",
+   "title": "Generalized additive model \u03c3(\u03a3 linear + \u03a3 smooth(x))",
+   "output_domain": "unit_interval",
+   "monotonicity": "non_monotone",
+   "phenomena": [
+    "saturation",
+    "diminishing_returns",
+    "inverted_u",
+    "interaction",
+    "threshold"
+   ],
+   "param_schema": {
+    "linear": {
+     "desc": "{feat: coef} linear terms"
+    },
+    "smooth": {
+     "desc": "{var: {knots, coefs}} piecewise-linear spline smooths"
+    },
+    "interactions": {
+     "desc": "{a*b: coef}",
+     "required": false
+    },
+    "intercept": {
+     "desc": "bias"
+    },
+    "standardizer": {
+     "desc": "{feat:[mu,sd]}",
+     "required": false
+    },
+    "link": {
+     "desc": "logit|identity",
+     "required": false
+    }
+   },
+   "required_inputs": [
+    "features"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "penalized IRLS / spline-basis logistic (offline)",
+   "regularization": "knot count + ridge (validation-selected)",
+   "invariants": [
+    "additive in smooth terms"
+   ],
+   "extrapolation_behavior": "linear_tails",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "a nonlinear response that stays additive + interpretable: each feature gets its own fitted shape (the churn tenure hazard, the Upworthy headline-length curve) without a black box",
+   "maturity": "fitted_available",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "habituation": {
+   "form_id": "habituation",
+   "version": "1.0.0",
+   "title": "Habituation A/(1+\u03bb\u00b7n)",
+   "output_domain": "real",
+   "monotonicity": "decreasing",
+   "phenomena": [
+    "habituation",
+    "fatigue"
+   ],
+   "param_schema": {
+    "A": {
+     "desc": "initial response"
+    },
+    "lam": {
+     "desc": "habituation rate \u22650"
+    }
+   },
+   "required_inputs": [
+    "n_exposures"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "nonlinear MLE",
+   "regularization": "",
+   "invariants": [
+    "A at n=0",
+    "decreasing",
+    "\u21920"
+   ],
+   "extrapolation_behavior": "clamp_to_observed_support",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "hyperbolic novelty decay \u2014 slower tail than geometric fatigue",
+   "maturity": "structural_candidate",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "hill": {
+   "form_id": "hill",
+   "version": "1.0.0",
+   "title": "Hill \u03b8\u00b7x\u207f/(k\u207f+x\u207f)",
+   "output_domain": "nonneg_rate",
+   "monotonicity": "increasing",
+   "phenomena": [
+    "saturation",
+    "threshold",
+    "diminishing_returns",
+    "tipping"
+   ],
+   "param_schema": {
+    "theta": {
+     "desc": "max effect / scale"
+    },
+    "n": {
+     "desc": "Hill coefficient (n>1 \u2192 S-curve)"
+    },
+    "k": {
+     "desc": "half-saturation"
+    }
+   },
+   "required_inputs": [
+    "x"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "grid on (n,k) + profiled scale",
+   "regularization": "",
+   "invariants": [
+    "0 at x=0",
+    "\u2192\u03b8 as x\u2192\u221e",
+    "sigmoidal for n>1"
+   ],
+   "extrapolation_behavior": "saturates_to_theta",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "dose-response / complex contagion: n>1 gives superlinear onset (social reinforcement) then saturation \u2014 the Higgs complex_contagion_hazard shape",
+   "maturity": "validated_elsewhere",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "hmm_regime": {
+   "form_id": "hmm_regime",
+   "version": "1.0.0",
+   "title": "HMM regime marginalization E_r[f_r(x)]",
+   "output_domain": "real",
+   "monotonicity": "context",
+   "phenomena": [
+    "regime",
+    "path_dependence"
+   ],
+   "param_schema": {
+    "regimes": {
+     "desc": "{regime_id: {form_id, params}}"
+    },
+    "transition": {
+     "desc": "regime transition matrix (offline-inferred)",
+     "required": false
+    }
+   },
+   "required_inputs": [
+    "regime_posterior"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "Baum\u2013Welch (offline)",
+   "regularization": "",
+   "invariants": [
+    "marginalizes over regime uncertainty \u2014 no hard regime label at runtime"
+   ],
+   "extrapolation_behavior": "clamp_to_observed_support",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "latent regime with temporal persistence; runtime honours the inferred regime posterior",
+   "maturity": "structural_candidate",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "hysteresis": {
+   "form_id": "hysteresis",
+   "version": "1.0.0",
+   "title": "Hysteresis (\u03c4_up > \u03c4_down, state-dependent)",
+   "output_domain": "unit_interval",
+   "monotonicity": "context",
+   "phenomena": [
+    "hysteresis",
+    "path_dependence",
+    "tipping"
+   ],
+   "param_schema": {
+    "tau_up": {
+     "desc": "activation threshold"
+    },
+    "tau_down": {
+     "desc": "deactivation"
+    }
+   },
+   "required_inputs": [
+    "x",
+    "active"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "two-threshold change-point search",
+   "regularization": "",
+   "invariants": [
+    "\u03c4_up \u2265 \u03c4_down",
+    "bistable band",
+    "output depends on prior state"
+   ],
+   "extrapolation_behavior": "state_latched",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": false,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [
+    "\u03c4_up < \u03c4_down collapses to a single threshold (no hysteresis)"
+   ],
+   "theory": "trust/adoption lock-in: harder to activate than to sustain (or vice-versa). Path dependence and irreversibility come from the state-dependent band",
+   "maturity": "structural_candidate",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "inverted_u": {
+   "form_id": "inverted_u",
+   "version": "1.0.0",
+   "title": "Inverted-U (Gaussian bump)",
+   "output_domain": "real",
+   "monotonicity": "non_monotone",
+   "phenomena": [
+    "inverted_u",
+    "backfire"
+   ],
+   "param_schema": {
+    "peak": {
+     "desc": "x of maximum"
+    },
+    "spread": {
+     "desc": "width (>0)"
+    },
+    "height": {
+     "desc": "peak value"
+    },
+    "floor": {
+     "desc": "baseline",
+     "required": false
+    }
+   },
+   "required_inputs": [
+    "x"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "nonlinear LS",
+   "regularization": "",
+   "invariants": [
+    "single interior maximum"
+   ],
+   "extrapolation_behavior": "decays_to_floor",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "weak-tie transmission / overexposure backfire: response rises then falls. NEVER assumed without evidence \u2014 must beat a monotone form on held-out",
+   "maturity": "structural_candidate",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "linear": {
+   "form_id": "linear",
+   "version": "1.0.0",
+   "title": "Linear predictor b + \u03a3 w\u00b7x",
+   "output_domain": "real",
+   "monotonicity": "unconstrained",
+   "phenomena": [
+    "interaction"
+   ],
+   "param_schema": {
+    "weights": {
+     "desc": "per-feature coefficients"
+    },
+    "intercept": {
+     "desc": "bias"
+    },
+    "standardizer": {
+     "desc": "{feat:[mu,sd]} train stats",
+     "required": false
+    },
+    "interactions": {
+     "desc": "{a*b: coef} explicit pairwise",
+     "required": false
+    }
+   },
+   "required_inputs": [
+    "features"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "OLS / penalized MLE",
+   "regularization": "L2",
+   "invariants": [
+    "additive in features"
+   ],
+   "extrapolation_behavior": "linear_extend",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "baseline additive response \u2014 the simpler form every nonlinear candidate must beat",
+   "maturity": "primitive",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "linear_growth": {
+   "form_id": "linear_growth",
+   "version": "1.0.0",
+   "title": "Linear/exponential growth increment g\u00b7S + c",
+   "output_domain": "real",
+   "monotonicity": "unconstrained",
+   "phenomena": [
+    "none"
+   ],
+   "param_schema": {
+    "g": {
+     "desc": "proportional rate (exponential)"
+    },
+    "c": {
+     "desc": "constant slope"
+    }
+   },
+   "required_inputs": [
+    "x"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "log-linear / linear trend on recent window",
+   "regularization": "",
+   "invariants": [
+    "no saturation \u2014 grows without bound"
+   ],
+   "extrapolation_behavior": "unbounded_growth",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "the non-saturating extrapolation a nonlinear saturation form must beat on a peaking trajectory",
+   "maturity": "fitted_available",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "logistic": {
+   "form_id": "logistic",
+   "version": "1.0.0",
+   "title": "Logistic \u03c3(b + \u03a3 w\u00b7x)",
+   "output_domain": "unit_interval",
+   "monotonicity": "context",
+   "phenomena": [
+    "saturation",
+    "interaction"
+   ],
+   "param_schema": {
+    "weights": {
+     "desc": "log-odds coefficients"
+    },
+    "intercept": {
+     "desc": "bias"
+    },
+    "standardizer": {
+     "desc": "{feat:[mu,sd]}",
+     "required": false
+    },
+    "interactions": {
+     "desc": "{a*b: coef}",
+     "required": false
+    }
+   },
+   "required_inputs": [
+    "features"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "logistic MLE",
+   "regularization": "L2",
+   "invariants": [
+    "output in [0,1]",
+    "monotone in each linear term"
+   ],
+   "extrapolation_behavior": "saturates_to_0_or_1",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "canonical discrete-choice / adoption link; the nonlinearity is only the squashing link",
+   "maturity": "fitted_available",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "logistic_growth": {
+   "form_id": "logistic_growth",
+   "version": "1.0.0",
+   "title": "Logistic growth increment r\u00b7S\u00b7(1\u2212S/L)",
+   "output_domain": "real",
+   "monotonicity": "non_monotone",
+   "phenomena": [
+    "saturation",
+    "finite_population",
+    "tipping"
+   ],
+   "param_schema": {
+    "r": {
+     "desc": "intrinsic growth rate"
+    },
+    "L": {
+     "desc": "carrying capacity"
+    }
+   },
+   "required_inputs": [
+    "x"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "nonlinear LS on the observed trajectory \u2264 cutoff",
+   "regularization": "",
+   "invariants": [
+    "increment\u21920 as S\u2192L",
+    "self-limiting"
+   ],
+   "extrapolation_behavior": "saturates_at_L",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "Verhulst/Bass adoption saturation: growth slows as the susceptible pool depletes \u2014 the mechanism a linear/exponential extrapolation lacks (and why it overshoots)",
+   "maturity": "fitted_available",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "logistic_saturation": {
+   "form_id": "logistic_saturation",
+   "version": "1.0.0",
+   "title": "Logistic ceiling L/(1+e^{\u2212k(x\u2212x0)})",
+   "output_domain": "nonneg_rate",
+   "monotonicity": "increasing",
+   "phenomena": [
+    "saturation",
+    "tipping"
+   ],
+   "param_schema": {
+    "L": {
+     "desc": "carrying capacity"
+    },
+    "k": {
+     "desc": "growth rate"
+    },
+    "x0": {
+     "desc": "midpoint"
+    }
+   },
+   "required_inputs": [
+    "x"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "nonlinear LS",
+   "regularization": "",
+   "invariants": [
+    "\u2192L",
+    "S-shaped"
+   ],
+   "extrapolation_behavior": "clamp_to_observed_support",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "bounded growth toward a ceiling (adoption capacity)",
+   "maturity": "fitted_available",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "michaelis_menten": {
+   "form_id": "michaelis_menten",
+   "version": "1.0.0",
+   "title": "Michaelis\u2013Menten Vmax\u00b7x/(K+x)",
+   "output_domain": "nonneg_rate",
+   "monotonicity": "increasing",
+   "phenomena": [
+    "saturation",
+    "diminishing_returns"
+   ],
+   "param_schema": {
+    "Vmax": {
+     "desc": "ceiling"
+    },
+    "K": {
+     "desc": "half-saturation constant"
+    }
+   },
+   "required_inputs": [
+    "x"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "Lineweaver\u2013Burk / nonlinear LS",
+   "regularization": "",
+   "invariants": [
+    "0 at 0",
+    "concave",
+    "\u2192Vmax"
+   ],
+   "extrapolation_behavior": "saturates_to_Vmax",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "hyperbolic saturation (Hill with n=1): pure diminishing returns, no threshold",
+   "maturity": "fitted_available",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "mixture_of_experts": {
+   "form_id": "mixture_of_experts",
+   "version": "1.0.0",
+   "title": "Gated mixture of expert forms",
+   "output_domain": "real",
+   "monotonicity": "context",
+   "phenomena": [
+    "regime",
+    "interaction",
+    "heterogeneity"
+   ],
+   "param_schema": {
+    "gate": {
+     "desc": "{expert: {weights,intercept}} softmax gate"
+    },
+    "experts": {
+     "desc": "{expert: {form_id, params}}"
+    }
+   },
+   "required_inputs": [
+    "features"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "joint EM / gradient (offline)",
+   "regularization": "",
+   "invariants": [
+    "gate weights sum to 1"
+   ],
+   "extrapolation_behavior": "clamp_to_observed_support",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "context selects which expert response applies; smoother than a hard regime split",
+   "maturity": "structural_candidate",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "monotonic_spline": {
+   "form_id": "monotonic_spline",
+   "version": "1.0.0",
+   "title": "Monotone interpolant (isotonic/PCHIP)",
+   "output_domain": "real",
+   "monotonicity": "increasing",
+   "phenomena": [
+    "saturation",
+    "diminishing_returns"
+   ],
+   "param_schema": {
+    "x": {
+     "desc": "ascending knots"
+    },
+    "y": {
+     "desc": "monotone values"
+    },
+    "direction": {
+     "desc": "increasing|decreasing",
+     "required": false
+    }
+   },
+   "required_inputs": [
+    "x"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "isotonic regression (sklearn) or PCHIP",
+   "regularization": "monotonicity constraint",
+   "invariants": [
+    "monotone by construction"
+   ],
+   "extrapolation_behavior": "clamp_to_endpoints",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "enforces a known monotone dose-response WITHOUT assuming its parametric shape",
+   "maturity": "fitted_available",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "nonlinear_state_space": {
+   "form_id": "nonlinear_state_space",
+   "version": "1.0.0",
+   "title": "Nonlinear state update x\u209c\u208a\u2081 = x + dt\u00b7g(x, u)",
+   "output_domain": "real",
+   "monotonicity": "context",
+   "phenomena": [
+    "path_dependence",
+    "hysteresis"
+   ],
+   "param_schema": {
+    "drift": {
+     "desc": "{form_id, params} for g(x,u)"
+    },
+    "dt": {
+     "desc": "step"
+    }
+   },
+   "required_inputs": [
+    "x"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "state-space MLE (offline)",
+   "regularization": "",
+   "invariants": [
+    "bounded step"
+   ],
+   "extrapolation_behavior": "clamp_to_observed_support",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "latent state evolves nonlinearly through time (accumulated trust, momentum) \u2014 the engine steps it event-by-event so path dependence is real, not assumed",
+   "maturity": "structural_candidate",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "piecewise_linear": {
+   "form_id": "piecewise_linear",
+   "version": "1.0.0",
+   "title": "Piecewise-linear over fitted knots",
+   "output_domain": "real",
+   "monotonicity": "unconstrained",
+   "phenomena": [
+    "threshold",
+    "saturation"
+   ],
+   "param_schema": {
+    "knots": {
+     "desc": "ascending x breakpoints"
+    },
+    "values": {
+     "desc": "y at knots"
+    },
+    "extrapolate": {
+     "desc": "'flat' or 'linear'",
+     "required": false
+    }
+   },
+   "required_inputs": [
+    "x"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "least squares on fixed/selected knots",
+   "regularization": "knot count (validation-selected)",
+   "invariants": [
+    "continuous",
+    "interpolates knots"
+   ],
+   "extrapolation_behavior": "flat_or_linear_beyond_knots",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "flexible shape with interpretable breakpoints; guards against runaway extrapolation",
+   "maturity": "fitted_available",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "recurrent_event_hazard": {
+   "form_id": "recurrent_event_hazard",
+   "version": "1.0.0",
+   "title": "Recurrent-event intensity \u03bb0\u00b7exp(\u03b2\u00b7history)",
+   "output_domain": "nonneg_rate",
+   "monotonicity": "context",
+   "phenomena": [
+    "recency",
+    "reinforcement",
+    "self_excitation"
+   ],
+   "param_schema": {
+    "lam0": {
+     "desc": "baseline rate"
+    },
+    "beta_count": {
+     "desc": "prior-event count effect"
+    },
+    "beta_recency": {
+     "desc": "time-since-last effect"
+    }
+   },
+   "required_inputs": [
+    "cum_count",
+    "time_since_last"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "Andersen\u2013Gill / point-process MLE",
+   "regularization": "",
+   "invariants": [
+    "rate \u2265 0"
+   ],
+   "extrapolation_behavior": "clamp_to_observed_support",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "repeated actions where prior events raise/lower the next-event rate (participation streaks)",
+   "maturity": "structural_candidate",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "refractory": {
+   "form_id": "refractory",
+   "version": "1.0.0",
+   "title": "Refractory recovery A\u00b7(1\u2212e^{\u2212\u0394t/\u03c1})",
+   "output_domain": "unit_interval",
+   "monotonicity": "increasing",
+   "phenomena": [
+    "refractory",
+    "recency"
+   ],
+   "param_schema": {
+    "A": {
+     "desc": "fully-recovered response"
+    },
+    "rho": {
+     "desc": "recovery time-constant"
+    }
+   },
+   "required_inputs": [
+    "time_since_last"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "nonlinear MLE",
+   "regularization": "",
+   "invariants": [
+    "0 immediately after event",
+    "\u2192A after long rest"
+   ],
+   "extrapolation_behavior": "clamp_to_observed_support",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "a receiver just acted/was-exposed is temporarily unresponsive; responsiveness recovers with rest (neural/behavioral refractory period)",
+   "maturity": "structural_candidate",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "regime_model": {
+   "form_id": "regime_model",
+   "version": "1.0.0",
+   "title": "Regime-indexed response (regime from context)",
+   "output_domain": "real",
+   "monotonicity": "context",
+   "phenomena": [
+    "regime",
+    "path_dependence"
+   ],
+   "param_schema": {
+    "regimes": {
+     "desc": "{regime_id: {form_id, params}}"
+    },
+    "default_regime": {
+     "desc": "fallback id",
+     "required": false
+    }
+   },
+   "required_inputs": [
+    "regime"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "regime-conditional fits (regime from data/Phase-3)",
+   "regularization": "",
+   "invariants": [
+    "regime identity NEVER LLM-invented \u2014 from data/documented-event/Phase-3 latent"
+   ],
+   "extrapolation_behavior": "clamp_to_observed_support",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [
+    "unknown regime at runtime \u2192 widen / fallback"
+   ],
+   "theory": "platform-policy / conflict-level / attention-state regimes change the mechanism's parameters",
+   "maturity": "structural_candidate",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "self_exciting": {
+   "form_id": "self_exciting",
+   "version": "1.0.0",
+   "title": "Self-exciting intensity \u03bc+\u03b1\u03c9\u03a3e^{\u2212\u03c9(t\u2212t\u1d62)}",
+   "output_domain": "nonneg_rate",
+   "monotonicity": "context",
+   "phenomena": [
+    "self_excitation",
+    "tipping"
+   ],
+   "param_schema": {
+    "mu": {
+     "desc": "background rate"
+    },
+    "alpha": {
+     "desc": "branching ratio (<1)"
+    },
+    "omega": {
+     "desc": "decay rate"
+    }
+   },
+   "required_inputs": [
+    "kernel_sum"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "EM/MLE exponential kernel (offline)",
+   "regularization": "",
+   "invariants": [
+    "\u03b1<1 for stability"
+   ],
+   "extrapolation_behavior": "clamp_to_observed_support",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [
+    "\u03b1\u22651 \u2192 explosive",
+    "constant \u03bc underfits bursty circadian streams (Higgs Hawkes FAILED held-out vs Poisson \u2014 see failures ledger; do NOT auto-promote)"
+   ],
+   "theory": "cascades where each event raises the near-term rate of further events; QUARANTINED on Higgs (held-out MAE 1098.9 > Poisson 973.0) \u2014 a context-specific pack may be re-tested separately",
+   "maturity": "structural_candidate",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "self_inhibiting": {
+   "form_id": "self_inhibiting",
+   "version": "1.0.0",
+   "title": "Self-inhibiting intensity \u03bc\u00b7exp(\u2212\u03b2\u03a3e^{\u2212\u03c9\u00b7\u0394})",
+   "output_domain": "nonneg_rate",
+   "monotonicity": "decreasing",
+   "phenomena": [
+    "self_inhibition",
+    "refractory"
+   ],
+   "param_schema": {
+    "mu": {
+     "desc": "background"
+    },
+    "beta": {
+     "desc": "inhibition strength \u22650"
+    },
+    "omega": {
+     "desc": "decay"
+    }
+   },
+   "required_inputs": [
+    "kernel_sum"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "MLE (offline)",
+   "regularization": "",
+   "invariants": [
+    "rate \u2265 0"
+   ],
+   "extrapolation_behavior": "clamp_to_observed_support",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "recent events SUPPRESS the near-term rate (attention exhaustion, saturation of an audience)",
+   "maturity": "structural_candidate",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "survival_hazard": {
+   "form_id": "survival_hazard",
+   "version": "1.0.0",
+   "title": "Proportional hazard window P=1\u2212exp(\u2212\u03bb(x)\u00b7W)",
+   "output_domain": "prob_window",
+   "monotonicity": "context",
+   "phenomena": [
+    "saturation"
+   ],
+   "param_schema": {
+    "log_lambda": {
+     "desc": "log baseline hazard"
+    },
+    "weights": {
+     "desc": "covariate log-HR"
+    },
+    "standardizer": {
+     "desc": "{feat:[mu,sd]}",
+     "required": false
+    }
+   },
+   "required_inputs": [
+    "features",
+    "window_days"
+   ],
+   "time_scales": [
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "Cox/parametric survival (offline)",
+   "regularization": "",
+   "invariants": [
+    "hazard \u2265 0",
+    "P in [0,1]"
+   ],
+   "extrapolation_behavior": "clamp_to_observed_support",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "time-to-event mechanism (churn, response, activation); the window prob is what executes",
+   "maturity": "fitted_available",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "threshold_hard": {
+   "form_id": "threshold_hard",
+   "version": "1.0.0",
+   "title": "Hard threshold (Granovetter step)",
+   "output_domain": "unit_interval",
+   "monotonicity": "increasing",
+   "phenomena": [
+    "threshold",
+    "tipping"
+   ],
+   "param_schema": {
+    "tau": {
+     "desc": "threshold on x"
+    },
+    "low": {
+     "desc": "y below"
+    },
+    "high": {
+     "desc": "y at/above"
+    }
+   },
+   "required_inputs": [
+    "x"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "change-point search (grid on validation)",
+   "regularization": "",
+   "invariants": [
+    "piecewise constant"
+   ],
+   "extrapolation_behavior": "flat",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": false,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "Granovetter collective-behavior threshold; adoption once active-neighbor fraction \u2265 \u03c4",
+   "maturity": "fitted_available",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "threshold_smooth": {
+   "form_id": "threshold_smooth",
+   "version": "1.0.0",
+   "title": "Smooth threshold \u03c3((x\u2212\u03c4)/s)",
+   "output_domain": "unit_interval",
+   "monotonicity": "increasing",
+   "phenomena": [
+    "threshold",
+    "saturation"
+   ],
+   "param_schema": {
+    "tau": {
+     "desc": "location"
+    },
+    "s": {
+     "desc": "softness (>0)"
+    },
+    "low": {
+     "desc": "floor",
+     "required": false
+    },
+    "high": {
+     "desc": "ceil",
+     "required": false
+    }
+   },
+   "required_inputs": [
+    "x"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "nonlinear MLE",
+   "regularization": "",
+   "invariants": [
+    "monotone increasing",
+    "\u2192low as x\u2192\u2212\u221e, \u2192high as x\u2192\u221e"
+   ],
+   "extrapolation_behavior": "clamp_to_observed_support",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "heterogeneous-threshold population \u2192 a smooth soft step (vs a single hard threshold)",
+   "maturity": "fitted_available",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  },
+  "u_shaped": {
+   "form_id": "u_shaped",
+   "version": "1.0.0",
+   "title": "U-shaped quadratic (a\u00b7(x\u2212m)\u00b2+c, a>0)",
+   "output_domain": "real",
+   "monotonicity": "non_monotone",
+   "phenomena": [
+    "u_shaped"
+   ],
+   "param_schema": {
+    "a": {
+     "desc": "curvature (>0)"
+    },
+    "m": {
+     "desc": "minimum location"
+    },
+    "c": {
+     "desc": "minimum value"
+    }
+   },
+   "required_inputs": [
+    "x"
+   ],
+   "time_scales": [
+    "event",
+    "interval",
+    "window",
+    "horizon"
+   ],
+   "fitting_method": "quadratic LS",
+   "regularization": "",
+   "invariants": [
+    "single interior minimum"
+   ],
+   "extrapolation_behavior": "clamp_to_observed_support",
+   "missing_data_behavior": "explicit_default_or_omit",
+   "computational_cost": "O(1)",
+   "differentiable": true,
+   "deterministic_replay": true,
+   "validation_requirements": [],
+   "failure_conditions": [],
+   "theory": "cost/benefit trade-offs with an interior optimum-avoidance",
+   "maturity": "structural_candidate",
+   "code_ref": "swm.world_model_v2.nonlinear.forms",
+   "test_ref": "tests/test_wmv2_phase7_forms.py"
+  }
+ }
+}

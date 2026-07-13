@@ -97,7 +97,12 @@ class StructuralForm:
         NaN/inf (a form NEVER emits a non-finite value — see nonlinear.safety for the failure record)."""
         if self._eval is None:
             raise FormError(f"{self.form_id}: no evaluator bound")
-        y = self._eval(params, inputs)
+        try:
+            y = self._eval(params, inputs)
+        except (OverflowError, ZeroDivisionError, ValueError) as e:
+            # arithmetic blow-up (x**n overflow, log of ≤0, …) is a non-finite result — surface it as a
+            # FormError so the operator's safety layer records it rather than crashing the rollout
+            raise FormError(f"{self.form_id}: arithmetic failure ({type(e).__name__}: {e})")
         if y != y or y in (float("inf"), float("-inf")):    # NaN / inf guard
             raise FormError(f"{self.form_id}: non-finite output {y!r} for inputs {list(inputs)[:6]}")
         return self._domain_clip(y)

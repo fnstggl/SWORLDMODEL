@@ -1,0 +1,44 @@
+{
+ "features": [
+  "cum_count",
+  "recency_h",
+  "time_since_last_h",
+  "time_since_last_action_h",
+  "mean_spacing_h",
+  "burstiness",
+  "event_age_h",
+  "memory_decay",
+  "novelty_decay",
+  "n_distinct_sources",
+  "source_diversity",
+  "rolling_count_24h",
+  "rolling_count_7d",
+  "short_term_state",
+  "long_term_state"
+ ],
+ "default_window": {
+  "features": [
+   "cum_count",
+   "recency_h",
+   "time_since_last_h",
+   "time_since_last_action_h",
+   "mean_spacing_h",
+   "burstiness",
+   "event_age_h",
+   "memory_decay",
+   "novelty_decay",
+   "n_distinct_sources",
+   "source_diversity",
+   "rolling_count_24h",
+   "rolling_count_7d",
+   "short_term_state",
+   "long_term_state"
+  ],
+  "memory_tau_h": 24.0,
+  "novelty_tau_h": 12.0,
+  "short_window_h": 24.0,
+  "long_window_h": 168.0,
+  "refractory_h": 0.0
+ },
+ "note": "all features computed strictly at-or-before now (leakage-free)"
+}
