@@ -1,0 +1,1472 @@
+{
+ "bundle_id": "eb_b3cfd6",
+ "question": "Will the recruiter answer my scheduling question before the weekend?",
+ "as_of": 1678838400.0,
+ "compiler_plan_hash": "0df11a7e36e5",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_3f97911668",
+   "claim_or_quantity": "yes if the recruiter sends any message containing a specific time/date for a meeting before 2023-03-19T23:59:59, else no",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-03-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "recruiter",
+    "question_asker"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_ec71f9d9e2",
+   "claim_or_quantity": "value/context of recruiter.attention_to_email",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "recruiter.attention_to_email",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-03-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_5fe1887286",
+   "claim_or_quantity": "evidence discriminating structural hypothesis prompt_reply",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:prompt_reply",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-03-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_e419f5cfd1",
+   "claim_or_quantity": "evidence discriminating structural hypothesis delayed_reply",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:delayed_reply",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-03-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_e6805f819e",
+   "claim_or_quantity": "value/context of recruiter.current_workload",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "recruiter.current_workload",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-03-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_af8344de7c",
+   "claim_or_quantity": "decision rules / process of recruiter_employer",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "recruiter_employer",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-03-15",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_8e611d7623",
+   "claim_or_quantity": "value/context of recruiter.decision_readiness",
+   "why_relevant": "high-sensitivity latent (0.60) driving the outcome distribution",
+   "affected_component": "recruiter.decision_readiness",
+   "expected_sensitivity": 0.6,
+   "expected_voi": 0.6,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-03-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_3f97911668",
+   "terms": "recruiter answer scheduling question weekend recruiter question asker",
+   "after": "2022-10-16",
+   "before": "2023-03-15",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_ec71f9d9e2",
+   "terms": "recruiter attention email",
+   "after": "2022-10-16",
+   "before": "2023-03-15",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_5fe1887286",
+   "terms": "structural hypothesis prompt reply evidence discriminating",
+   "after": "2022-10-16",
+   "before": "2023-03-15",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_3f97911668",
+   "logical_query": "recruiter answer scheduling question weekend recruiter question asker after:2022-10-16 before:2023-03-15",
+   "wire_url": "https://news.google.com/rss/search?q=recruiter+answer+scheduling+question+weekend+recruiter+question+asker+after%3A2022-10-16+before%3A2023-03-15&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-10-16",
+   "before_date": "2023-03-15",
+   "retrieved_at": 1783906037.520979,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:27:18 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmII0JBiSO44w5AKxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwc3_5euMQm0DHvHZuSclJ-YXxKfklxcUFOYnFGcWpRWWpRvJGBkZmBuYGZnoFJfIEBAIEeOL0\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "4971027bf58c031e9d1f219c7e40a5bed22fba01c648cbb0521c8885eaaa4672",
+   "n_bytes": 1303,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.42
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_ec71f9d9e2",
+   "logical_query": "recruiter attention email after:2022-10-16 before:2023-03-15",
+   "wire_url": "https://news.google.com/rss/search?q=recruiter+attention+email+after%3A2022-10-16+before%3A2023-03-15&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-10-16",
+   "before_date": "2023-03-15",
+   "retrieved_at": 1783906037.9419284,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:27:18 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjytDikmII1JBiOFR1hiG54wxDChDXAXEjELfePMc6GYhLFp1nbQLiLiCeAcSGCpdY7YH4cvol1iKJK6wNQPyp6garQPUN1m_FvmwsJUD81p_NNCSQzRmIt2gGswnxcHz7e-ESm8CPj7v_MyopJ-UXxqfklxQXF-QkFmcUpxaVpRbFGxkYmRmYG5jpGZjEFxgAABxrPFU\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "facc3bc481b11b283cd8268ec3d556544f9ba23ea440878eaa18c460520d5f65",
+   "n_bytes": 9978,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 7,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.523
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_5fe1887286",
+   "logical_query": "structural hypothesis prompt reply evidence discriminating after:2022-10-16 before:2023-03-15",
+   "wire_url": "https://news.google.com/rss/search?q=structural+hypothesis+prompt+reply+evidence+discriminating+after%3A2022-10-16+before%3A2023-03-15&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-10-16",
+   "before_date": "2023-03-15",
+   "retrieved_at": 1783906038.4658506,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:27:18 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjytDikmJw1JBiSO44w5AKxJVA3AjEimE7mVpvnmOdDMQli86zNgFxFxDPAGJDhUus9kB8Of0Sa5HEFdYGIP5UdYNVoPoG67diXzaWEiB-689mGhLI5gzEWzSD2YR4OL79vXCJTWDG7Es7mZWUk_IL41PyS4qLC3ISizOKU4vKUovijQyMzAzMDcz0DEziCwwAexI6iA\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "a02f28070accc2048e0ace4fcc0dcfe159765daa4a1b04b4b03692fd1cf02858",
+   "n_bytes": 1281,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.389
+  }
+ ],
+ "raw_content_refs": [
+  "facc3bc481b11b283cd8268ec3d556544f9ba23ea440878eaa18c460520d5f65"
+ ],
+ "documents": [
+  {
+   "id": "00c3673f19572f95",
+   "source": "Business Insider",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE9OZ2FnTGxJZE5MRlBCejgxcTk2THNVa1VlY0lCby1Mam9vczN0UUFXcW4zVy1ZUWktOEh4MktrRTlfS18waEJtc1NZYTA0QjZoOWcyUngtNkJHZEIyaDY4aHRTd29xTVpyLWNoODdnSUM2QlJRdW44SlJrNTZiZw?oc=5",
+   "title": "How to write an email subject line that catches a hiring manager's attention - Business Insider",
+   "text": "How to write an email subject line that catches a hiring manager's attention - Business Insider. How to write an email subject line that catches a hiring manager's attention Business Insider",
+   "content_hash": "65ad08983f01c032",
+   "raw_feed_hash": "facc3bc481b11b283cd8268ec3d556544f9ba23ea440878eaa18c460520d5f65",
+   "published_at": 1674028800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_ec71f9d9e2",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "c4608edc72bfe14f",
+   "source": "Nurse.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOUEFTcFVHN0tLbGwxdjV3aEZtcXY2YlQ5QmpGUmFEd2FjbWd3blFId1FXSE9paXQ0S0wweFdIQ0MzYTd5ZFFQTDhXeWlWSHVVODFLNkpYZXU0cndKamFrdWYwLWRZdDVqLWZpaVZtcWZTeG5aU0VCWDNsVWw1Rlk3SWYwZFBjMlcxSE9mSS1B?oc=5",
+   "title": "5 Tips for Effective Email Marketing To Nurses - Nurse.com",
+   "text": "5 Tips for Effective Email Marketing To Nurses - Nurse.com. 5 Tips for Effective Email Marketing To Nurses Nurse.com",
+   "content_hash": "68b405da5ccab753",
+   "raw_feed_hash": "facc3bc481b11b283cd8268ec3d556544f9ba23ea440878eaa18c460520d5f65",
+   "published_at": 1676016000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_ec71f9d9e2",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "0eab8dacabd015d6",
+   "source": "USNI News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxOMDdvY3RVNDh1dkZRVjhTVHhpdjI3WFlwVmc4ak9tbUVJdVVZM0tnMXJhQzRoNkF1TGdqR19NcU9ZQ2dXalhwU3dfb0NablZ2US1zaHFlYWhlalhVY0xwVnRndHB3NzdiNGo2SW1nNVB5UHNYVzNjUVAySjdQeks5elRCTjA5TlhILWVOT1JJbmRFVV90VVZmMVI2WTNtN0U2UXdJRUw5XzAwV0xvOUNzMXBJeDc5NXgzLVZrUEhidjQ3dw?oc=5",
+   "title": "Navy Used 16-Year-Old Law Made to Boost Army Recruiting to Raise Enlistment Age for Sailors - USNI News",
+   "text": "Navy Used 16-Year-Old Law Made to Boost Army Recruiting to Raise Enlistment Age for Sailors - USNI News. Navy Used 16-Year-Old Law Made to Boost Army Recruiting to Raise Enlistment Age for Sailors USNI News",
+   "content_hash": "8f1407ab118a8836",
+   "raw_feed_hash": "facc3bc481b11b283cd8268ec3d556544f9ba23ea440878eaa18c460520d5f65",
+   "published_at": 1667980800.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_ec71f9d9e2",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "786aee5ecc2c190d",
+   "source": "Business Insider",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOMmRVNWlYVlBtdDBLdEdlX1FqcHZyRlhNMmd1NFF4N3BDbVhKWmFpVjlPbEJXa1VnbUZHRWZraWRkSjY0UkhPVFd2WWNwMFhzRXBEZ2JIZGNKamdIcUNXOHlTd3hMc2JkOUthb3F5bWtzbGs4QWx3b3RSTlNiUWdoaUdrZ1k1aDNu?oc=5",
+   "title": "How Tech Workers Should Apply for Jobs in Other Industries - Business Insider",
+   "text": "How Tech Workers Should Apply for Jobs in Other Industries - Business Insider. How Tech Workers Should Apply for Jobs in Other Industries Business Insider",
+   "content_hash": "f4822c25b7a73b44",
+   "raw_feed_hash": "facc3bc481b11b283cd8268ec3d556544f9ba23ea440878eaa18c460520d5f65",
+   "published_at": 1672905600.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_ec71f9d9e2",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4ba9a7c4fd50c80a",
+   "source": "Africa Check",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxPOURZNElMNU9QYnQzSm4zQ0Q2Q0RDb1QtVkhELUJaSDViTV9sZ2VuQTZoNE5UWmhZSXB2SUh0enVXMXBxNklkZkgxUGlvVmlKT2FWay1MQUpOQklucEtueFBxTHN3OFA1T256d0tYUlVMZjdHU21fWE1CbEJRV0hDZm9WSzgzZDk0dTF5TmRnMk94MGNQeTZzMGhmeGhDTUZaU3pTbHR0d0tSZk5JZFNyQnFrd0dOLVMwb0Zv?oc=5",
+   "title": "Website advertising jobs at TotalEnergies is just another scam - Africa Check",
+   "text": "Website advertising jobs at TotalEnergies is just another scam - Africa Check. Website advertising jobs at TotalEnergies is just another scam Africa Check",
+   "content_hash": "6bcf83a6b8d08459",
+   "raw_feed_hash": "facc3bc481b11b283cd8268ec3d556544f9ba23ea440878eaa18c460520d5f65",
+   "published_at": 1669708800.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_ec71f9d9e2",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4620f5113258e24a",
+   "source": "Business Insider",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQQ0I4THFzbmRabDUwRkNtZlMycHZZTDN6Um1DM3VKdUtNY2lnbGM4OVllWWM3dHg3QkVpNWtQTjlKMHAwZ3dkSUNucXRwMElHOGVBQUpjMUlhSGxwaEt6LUQ3SGJJanpDb3dTTGFmMFJkTE42RHFJeUNGcHo3V1VaOWhYN2FLU3NSNzRueTAxT0NsOFYtLUNyUjFLZlZCRnlx?oc=5",
+   "title": "Scammers Targeting Remote Job Seekers and Luring Them Into Fake Jobs - Business Insider",
+   "text": "Scammers Targeting Remote Job Seekers and Luring Them Into Fake Jobs - Business Insider. Scammers Targeting Remote Job Seekers and Luring Them Into Fake Jobs Business Insider",
+   "content_hash": "d06c8042566f817c",
+   "raw_feed_hash": "facc3bc481b11b283cd8268ec3d556544f9ba23ea440878eaa18c460520d5f65",
+   "published_at": 1673251200.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_ec71f9d9e2",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "bcf9b4daad93081b",
+   "source": "The West Australian",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi4wFBVV95cUxNMS1mcWlfemcyTXUxT213SXhDdGxRSmJIczJ1dWROcjRnWkJwUTlYaDZMR0JMbE9LWWV0c29iN2txUG5ZclpJUERoTjZrYUw4VzEzYlMwRE5oVjFCMF9lb3VZSEFPUE1yZkFzZXVMMkFzVmplSXRFc3VFb2JYeEMxMDdjOEg2MHN0dUdSbnM5SU44TzVMNnV5S1ZkTzVUbkFlMlYtRldYVGdEZktXd1hQdDBYWEFBVTVoMTYtT3U1X1I4bFpubHVEaGl4dllzQjFwb2txc3pGdXhnODUteXlaOXFVVQ?oc=5",
+   "title": "Dalkeith home of corporate adviser raided over court row - The West Australian",
+   "text": "Dalkeith home of corporate adviser raided over court row - The West Australian. Dalkeith home of corporate adviser raided over court row The West Australian",
+   "content_hash": "fd46589d0edbd558",
+   "raw_feed_hash": "facc3bc481b11b283cd8268ec3d556544f9ba23ea440878eaa18c460520d5f65",
+   "published_at": 1671955200.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_ec71f9d9e2",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "00c3673f19572f95:c0",
+   "source_id": "00c3673f19572f95",
+   "subject": "the article",
+   "predicate": "is about",
+   "object": "how to write an email subject line that catches a hiring manager's attention",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "How to write an email subject line that catches a hiring manager's attention - Business Insider",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1674028800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Business Insider"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_59b6c5cd62",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ec71f9d9e2"
+   }
+  },
+  {
+   "claim_id": "c4608edc72bfe14f:c0",
+   "source_id": "c4608edc72bfe14f",
+   "subject": "Nurse.com",
+   "predicate": "published",
+   "object": "article titled '5 Tips for Effective Email Marketing To Nurses'",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "5 Tips for Effective Email Marketing To Nurses - Nurse.com",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1676016000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Nurse.com"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_70067e5d63",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ec71f9d9e2"
+   }
+  },
+  {
+   "claim_id": "0eab8dacabd015d6:c0",
+   "source_id": "0eab8dacabd015d6",
+   "subject": "Navy",
+   "predicate": "used",
+   "object": "16-Year-Old Law Made to Boost Army Recruiting",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Navy Used 16-Year-Old Law Made to Boost Army Recruiting to Raise Enlistment Age for Sailors",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1667980800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Navy",
+    "16-Year-Old Law",
+    "Army Recruiting"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_2424cb62af",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ec71f9d9e2"
+   }
+  },
+  {
+   "claim_id": "0eab8dacabd015d6:c1",
+   "source_id": "0eab8dacabd015d6",
+   "subject": "Navy",
+   "predicate": "raised",
+   "object": "Enlistment Age for Sailors",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Navy Used 16-Year-Old Law Made to Boost Army Recruiting to Raise Enlistment Age for Sailors",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1667980800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Navy",
+    "Enlistment Age",
+    "Sailors"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_2424cb62af",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ec71f9d9e2"
+   }
+  },
+  {
+   "claim_id": "786aee5ecc2c190d:c0",
+   "source_id": "786aee5ecc2c190d",
+   "subject": "Tech workers",
+   "predicate": "should apply for jobs in other industries",
+   "object": "jobs in other industries",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "How Tech Workers Should Apply for Jobs in Other Industries",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1672905600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Tech workers"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_f0926e2aea",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ec71f9d9e2"
+   }
+  },
+  {
+   "claim_id": "4ba9a7c4fd50c80a:c0",
+   "source_id": "4ba9a7c4fd50c80a",
+   "subject": "Website advertising jobs at TotalEnergies",
+   "predicate": "is",
+   "object": "scam",
+   "value": "",
+   "units": "",
+   "qualifiers": "just another",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Website advertising jobs at TotalEnergies is just another scam",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1669708800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "TotalEnergies",
+    "Africa Check"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_cfdf1142f2",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ec71f9d9e2"
+   }
+  },
+  {
+   "claim_id": "4ba9a7c4fd50c80a:c1",
+   "source_id": "4ba9a7c4fd50c80a",
+   "subject": "Africa Check",
+   "predicate": "states",
+   "object": "Website advertising jobs at TotalEnergies is just another scam",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "reported",
+   "polarity": "affirm",
+   "claim_class": "actor_statement",
+   "supporting_span": "Website advertising jobs at TotalEnergies is just another scam - Africa Check",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1669708800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Africa Check",
+    "TotalEnergies"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_cfdf1142f2",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ec71f9d9e2"
+   }
+  },
+  {
+   "claim_id": "4620f5113258e24a:c0",
+   "source_id": "4620f5113258e24a",
+   "subject": "Scammers",
+   "predicate": "targeting",
+   "object": "Remote Job Seekers",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Scammers Targeting Remote Job Seekers",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1673251200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Scammers",
+    "Remote Job Seekers"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_2d85c5beb6",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ec71f9d9e2"
+   }
+  },
+  {
+   "claim_id": "4620f5113258e24a:c1",
+   "source_id": "4620f5113258e24a",
+   "subject": "Scammers",
+   "predicate": "luring",
+   "object": "Remote Job Seekers",
+   "value": "",
+   "units": "",
+   "qualifiers": "into Fake Jobs",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Luring Them Into Fake Jobs",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1673251200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Scammers",
+    "Remote Job Seekers",
+    "Fake Jobs"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_2d85c5beb6",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ec71f9d9e2"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Business Insider",
+   "normalized": "business insider",
+   "candidates": [
+    {
+     "entity_id": "ent_b50759d7aa",
+     "canonical": "business insider",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "Business Insider"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Nurse.com",
+   "normalized": "nurse com",
+   "candidates": [
+    {
+     "entity_id": "ent_b0e3919487",
+     "canonical": "nurse com",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "Nurse.com"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Navy",
+   "normalized": "navy",
+   "candidates": [
+    {
+     "entity_id": "ent_57c5f2e274",
+     "canonical": "navy",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Navy",
+      "Navy"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "16-Year-Old Law",
+   "normalized": "16-year-old law",
+   "candidates": [
+    {
+     "entity_id": "ent_a8a4e01bb1",
+     "canonical": "16-year-old law",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "16-Year-Old Law"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Army Recruiting",
+   "normalized": "army recruiting",
+   "candidates": [
+    {
+     "entity_id": "ent_eec9c16511",
+     "canonical": "army recruiting",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "Army Recruiting"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Navy",
+   "normalized": "navy",
+   "candidates": [
+    {
+     "entity_id": "ent_57c5f2e274",
+     "canonical": "navy",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Navy",
+      "Navy"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Enlistment Age",
+   "normalized": "enlistment age",
+   "candidates": [
+    {
+     "entity_id": "ent_eca23c27be",
+     "canonical": "enlistment age",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "Enlistment Age"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Sailors",
+   "normalized": "sailors",
+   "candidates": [
+    {
+     "entity_id": "ent_972eb240b4",
+     "canonical": "sailors",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "Sailors"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Tech workers",
+   "normalized": "tech workers",
+   "candidates": [
+    {
+     "entity_id": "ent_06bb3fbc9a",
+     "canonical": "tech workers",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "Tech workers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "TotalEnergies",
+   "normalized": "totalenergies",
+   "candidates": [
+    {
+     "entity_id": "ent_6802e366e5",
+     "canonical": "totalenergies",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "TotalEnergies",
+      "TotalEnergies"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Africa Check",
+   "normalized": "africa check",
+   "candidates": [
+    {
+     "entity_id": "ent_baf9d89395",
+     "canonical": "africa check",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Africa Check",
+      "Africa Check"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Africa Check",
+   "normalized": "africa check",
+   "candidates": [
+    {
+     "entity_id": "ent_baf9d89395",
+     "canonical": "africa check",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Africa Check",
+      "Africa Check"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "TotalEnergies",
+   "normalized": "totalenergies",
+   "candidates": [
+    {
+     "entity_id": "ent_6802e366e5",
+     "canonical": "totalenergies",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "TotalEnergies",
+      "TotalEnergies"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Scammers",
+   "normalized": "scammers",
+   "candidates": [
+    {
+     "entity_id": "ent_f5ce342d60",
+     "canonical": "scammers",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Scammers",
+      "Scammers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Remote Job Seekers",
+   "normalized": "remote job seekers",
+   "candidates": [
+    {
+     "entity_id": "ent_985fa0f134",
+     "canonical": "remote job seekers",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Remote Job Seekers",
+      "Remote Job Seekers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Scammers",
+   "normalized": "scammers",
+   "candidates": [
+    {
+     "entity_id": "ent_f5ce342d60",
+     "canonical": "scammers",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Scammers",
+      "Scammers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Remote Job Seekers",
+   "normalized": "remote job seekers",
+   "candidates": [
+    {
+     "entity_id": "ent_985fa0f134",
+     "canonical": "remote job seekers",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Remote Job Seekers",
+      "Remote Job Seekers"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Fake Jobs",
+   "normalized": "fake jobs",
+   "candidates": [
+    {
+     "entity_id": "ent_276ae1c17a",
+     "canonical": "fake jobs",
+     "support": 0.5556,
+     "evidence_mentions": [
+      "Fake Jobs"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "00c3673f19572f95": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1678838400.0,
+   "claimed_pubdate_ts": 1674028800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1674028800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "c4608edc72bfe14f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1678838400.0,
+   "claimed_pubdate_ts": 1676016000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676016000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "0eab8dacabd015d6": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1678838400.0,
+   "claimed_pubdate_ts": 1667980800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1667980800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "786aee5ecc2c190d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1678838400.0,
+   "claimed_pubdate_ts": 1672905600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1672905600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4ba9a7c4fd50c80a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1678838400.0,
+   "claimed_pubdate_ts": 1669708800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1669708800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4620f5113258e24a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1678838400.0,
+   "claimed_pubdate_ts": 1673251200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1673251200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "bcf9b4daad93081b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1678838400.0,
+   "claimed_pubdate_ts": 1671955200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1671955200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_59b6c5cd62",
+   "member_ids": [
+    "00c3673f19572f95"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Insider",
+   "primary_source": "Business Insider",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_70067e5d63",
+   "member_ids": [
+    "c4608edc72bfe14f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Nurse.com",
+   "primary_source": "Nurse.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_2424cb62af",
+   "member_ids": [
+    "0eab8dacabd015d6"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "USNI News",
+   "primary_source": "USNI News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_f0926e2aea",
+   "member_ids": [
+    "786aee5ecc2c190d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Insider",
+   "primary_source": "Business Insider",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_cfdf1142f2",
+   "member_ids": [
+    "4ba9a7c4fd50c80a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Africa Check",
+   "primary_source": "Africa Check",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_2d85c5beb6",
+   "member_ids": [
+    "4620f5113258e24a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Business Insider",
+   "primary_source": "Business Insider",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_93b98f83ce",
+   "member_ids": [
+    "bcf9b4daad93081b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The West Australian",
+   "primary_source": "The West Australian",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "00c3673f19572f95:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1674028800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "c4608edc72bfe14f:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1676016000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "0eab8dacabd015d6:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1667980800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "0eab8dacabd015d6:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1667980800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "786aee5ecc2c190d:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1672905600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "4ba9a7c4fd50c80a:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1669708800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "4ba9a7c4fd50c80a:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1669708800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "4620f5113258e24a:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1673251200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "4620f5113258e24a:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1673251200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "00c3673f19572f95:c0",
+  "c4608edc72bfe14f:c0",
+  "0eab8dacabd015d6:c0",
+  "0eab8dacabd015d6:c1",
+  "786aee5ecc2c190d:c0",
+  "4ba9a7c4fd50c80a:c0",
+  "4ba9a7c4fd50c80a:c1",
+  "4620f5113258e24a:c0",
+  "4620f5113258e24a:c1"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_3f97911668": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_ec71f9d9e2": {
+   "status": "fulfilled",
+   "n_claims": 9,
+   "n_included": 9
+  },
+  "req_5fe1887286": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_e419f5cfd1": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_e6805f819e": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_af8344de7c": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_8e611d7623": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_3f97911668",
+  "req_5fe1887286",
+  "req_e419f5cfd1",
+  "req_e6805f819e",
+  "req_af8344de7c",
+  "req_8e611d7623"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 7,
+  "n_contradictions": 0,
+  "n_documents": 7
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 13.792,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "631c687c5febf218",
+ "bundle_hash": "631c687c5febf218",
+ "_persisted_at": "2026-07-13T01:27:35Z"
+}

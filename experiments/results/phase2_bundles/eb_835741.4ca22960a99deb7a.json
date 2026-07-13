@@ -1,0 +1,1983 @@
+{
+ "bundle_id": "eb_835741",
+ "question": "Will the incumbent mayor win re-election in the upcoming city vote?",
+ "as_of": 1693526400.0,
+ "compiler_plan_hash": "8b91ea74c55d",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_e49e71d446",
+   "claim_or_quantity": "majority_rule",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "incumbent_mayor",
+    "main_challenger",
+    "other_challengers"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_5698e95fac",
+   "claim_or_quantity": "value/context of incumbent_mayor.approval_rating",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "incumbent_mayor.approval_rating",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_c0c504273b",
+   "claim_or_quantity": "value/context of main_challenger.approval_rating",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "main_challenger.approval_rating",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_b7a9738fbb",
+   "claim_or_quantity": "value/context of city_voters.segments.independents.candidate_preference",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "city_voters.segments.independents.candidate_preference",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_c62c96443b",
+   "claim_or_quantity": "evidence discriminating structural hypothesis incumbent_advantage",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:incumbent_advantage",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_6c8b263769",
+   "claim_or_quantity": "evidence discriminating structural hypothesis anti_incumbent_wave",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:anti_incumbent_wave",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_862415e468",
+   "claim_or_quantity": "decision rules / process of city_election_commission",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "city_election_commission",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_e49e71d446",
+   "terms": "incumbent mayor win election city incumbent mayor main challenger other challengers",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_5698e95fac",
+   "terms": "incumbent mayor approval rating",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_c0c504273b",
+   "terms": "main challenger approval rating",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_e49e71d446",
+   "logical_query": "incumbent mayor win election city incumbent mayor main challenger other challengers after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=incumbent+mayor+win+election+city+incumbent+mayor+main+challenger+other+challengers+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783906553.4577787,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:35:54 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw1pBiSO44w5AKxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwcvxovXmITmPHhW5GSclJ-YXxKfklxcUFOYnFGcWpRWWpRvJGBkZmBuYGZnoFJfIEBAIoHORg\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "f2c572fd27c0dfadb5e7cb710f3b0ad2f5cdfddb391bc3fd3724f3613503fac3",
+   "n_bytes": 18748,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.74
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_5698e95fac",
+   "logical_query": "incumbent mayor approval rating after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=incumbent+mayor+approval+rating+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783906554.1994882,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:35:54 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw0JBiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTD8avx4iU2gRn_j_xmUlJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAAuig3pA\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "90005bcf4c7929ea999f5f3ec661b62222c7c2a31db16977212c9fa641bb19ff",
+   "n_bytes": 13091,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.518
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_c0c504273b",
+   "logical_query": "main challenger approval rating after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=main+challenger+approval+rating+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783906554.7187269,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:35:55 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmII1pBiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTD8bvx4iU2gQu7_uxjVFJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAAve83nQ\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "d0901623cd734696b7ecbe724183ccc6a3db62e26e9d3453634f3d582d3cac57",
+   "n_bytes": 14035,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.626
+  }
+ ],
+ "raw_content_refs": [
+  "90005bcf4c7929ea999f5f3ec661b62222c7c2a31db16977212c9fa641bb19ff",
+  "d0901623cd734696b7ecbe724183ccc6a3db62e26e9d3453634f3d582d3cac57",
+  "f2c572fd27c0dfadb5e7cb710f3b0ad2f5cdfddb391bc3fd3724f3613503fac3"
+ ],
+ "documents": [
+  {
+   "id": "c1e57c738283e748",
+   "source": "Colorado Newsline",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE1PYlIydUh4YnlQWmdZTG52YUVMXzN3NThSRVdQV3RTd0tyYkhST082ME12NmZUQlFzOU5EakhpXzlBanRFTV9XQkN3NHpaNDN3by1CcngzYWZXQW1tcUNuTUZhRlRMZ0ZfYkVCVnFIQVRCOV9xYzlZclB3?oc=5",
+   "title": "Where Denver City Council races stand as election-day ballots are counted; runoffs loom - Colorado Newsline",
+   "text": "Where Denver City Council races stand as election-day ballots are counted; runoffs loom - Colorado Newsline. Where Denver City Council races stand as election-day ballots are counted; runoffs loom Colorado Newsline",
+   "content_hash": "0b7a42273b3ca262",
+   "raw_feed_hash": "f2c572fd27c0dfadb5e7cb710f3b0ad2f5cdfddb391bc3fd3724f3613503fac3",
+   "published_at": 1680678000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_e49e71d446",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "bea9ff6696f97bd6",
+   "source": "The State Journal-Register",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi3AFBVV95cUxOM3VpcDN0cHN0YTNIbmJBY3JfWkt6MEtES1JoTWkxUFQ3R25kb0o3bWgwZkVVRmtUQTd6VWtDeVZ5MTdFVHlLVkU4YVdOOGVlWVJrLXNtWUpCa2p5bFhOZmtkbEJ1V2NQYVBzTnFnQkh1VHBBOG9vbDFaZzlnNWJxNjVURm5mZWVKY1dweTREbHRkTXYtZHR4M2liZFpUODVMS0xnSXQ1SHQydU1TeEZqM0tyVHdaVTVnaVBmWE45WWhaMUVGaXdMZS1GdmJMdjVMYm5saEZ0YktBRWVu?oc=5",
+   "title": "Election 2023: Buscher unseats Langfelder as mayor of Springfield - The State Journal-Register",
+   "text": "Election 2023: Buscher unseats Langfelder as mayor of Springfield - The State Journal-Register. Election 2023: Buscher unseats Langfelder as mayor of Springfield The State Journal-Register",
+   "content_hash": "8698a72809ceac0e",
+   "raw_feed_hash": "f2c572fd27c0dfadb5e7cb710f3b0ad2f5cdfddb391bc3fd3724f3613503fac3",
+   "published_at": 1680591600.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_e49e71d446",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6db860e66bfe3972",
+   "source": "Stevens Point Journal",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxQaEtSaE1PMW8yaXFoM056NFBpaHBnaE5vcnVEdkVPV2RObzh1VE1IVzBkM0VHNzlYNjJFd1NnYTd0Q2xZSEY0UVhRX3FPS0Jrel8yVEtaSWNzdlhZT2Y2aEpDWjVOWURIUmVmNFFxVnVrY1F0ZzBxOXo4N1pLZV83dmlpM1ZZTUVCXzQ3R3hPX3NvdXptZmtzNzdsOVZibFJQOThCUGJCdi15UWZoaGxzdkprY3NlajJTNWRkX0VfNjhjc3hXS1RZRjZfSmk0Qi04Z3E0cmhrMXI4V0I2bnc?oc=5",
+   "title": "Wiza wins third term as Stevens Point mayor and other election results - Stevens Point Journal",
+   "text": "Wiza wins third term as Stevens Point mayor and other election results - Stevens Point Journal. Wiza wins third term as Stevens Point mayor and other election results Stevens Point Journal",
+   "content_hash": "6b9881a902f62428",
+   "raw_feed_hash": "f2c572fd27c0dfadb5e7cb710f3b0ad2f5cdfddb391bc3fd3724f3613503fac3",
+   "published_at": 1680678000.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_e49e71d446",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "94af89877a721814",
+   "source": "WZZM13.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi9AFBVV95cUxPQmp5dFZMUDZiYXcxVndwZzNPSU95ZmFNdWZxcU5qSjJUeEs0VkpiNmdBNjBIeER1eWp3NE14XzA4OEFWVTJvZ1BTZlBfeHJleFVXWTdpOVRuYktuXzY4RE9DOEJqZUQwamkyZTk5S2RSVXhtRmdJbmNLd3dDcWI5Q1lrN2FlejliTUhOZlJLY0tyeUM2Nk9WR0VHMUFxSm1ScDRqNENnYTgxd0VBSnFHTC01VG9LUUJRdVZjaEp5THhFSGMwckNONGtPejhQQ2JRWWF1enNoVFAyMXB3NGxlSWFFWHZWQTB0RlFzYUxyTzV2dXNs?oc=5",
+   "title": "Grand Haven mayor Catherine McNally defeated in primary by former mayor and another challenger - WZZM13.com",
+   "text": "Grand Haven mayor Catherine McNally defeated in primary by former mayor and another challenger - WZZM13.com. Grand Haven mayor Catherine McNally defeated in primary by former mayor and another challenger WZZM13.com",
+   "content_hash": "6838f2467152e380",
+   "raw_feed_hash": "f2c572fd27c0dfadb5e7cb710f3b0ad2f5cdfddb391bc3fd3724f3613503fac3",
+   "published_at": 1691478000.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_e49e71d446",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "772b135e140ffb8d",
+   "source": "New Jersey Globe",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxOdnEtLXZkRkNsZTBua0RNcmRLQTlTTHp1b2pHM0VNcXBrWnQxVF9XZTRuRTA3V1VpNTNPcndDZzc1bUV5V2MtOXNIMG9HRG42SFp4VTZQeWtHS2MwRkZWVUM1OHh4X3czMzZ4OVl0T0tGc2VubldDU25xR1c4TDgyaFh6ay0?oc=5",
+   "title": "Checking in on other notable local primaries - New Jersey Globe",
+   "text": "Checking in on other notable local primaries - New Jersey Globe. Checking in on other notable local primaries New Jersey Globe",
+   "content_hash": "6a611d266390ebfc",
+   "raw_feed_hash": "f2c572fd27c0dfadb5e7cb710f3b0ad2f5cdfddb391bc3fd3724f3613503fac3",
+   "published_at": 1686121200.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_e49e71d446",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "24cd6631b70a31d3",
+   "source": "The Coloradoan",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMixgFBVV95cUxORV9yajZjMjFha25IOUl6N0ZKemdFN1lORmstelA4REJ4SXFaN3hreFIzQkluQ2gxSGt2aFJEV2IxOEFFUHpHU1lqcFhDczNjMHU4OHpvYUJzeHJ5Nzdid0EzYTY2UGNHenZYYW1oSUYtRUpYSWZtMGptUjhBOVdYbzJNcXR1azdKRnBDYU9waC00MV9zeXJYdktMUVNncm8wYklHY3VTMDYzSmNxUHdMa3NMbTUyZG1URXJ0QWhONzFIMkhZSGc?oc=5",
+   "title": "Here's who is officially running for Fort Collins City Council: Mayor without challenger - The Coloradoan",
+   "text": "Here's who is officially running for Fort Collins City Council: Mayor without challenger - The Coloradoan. Here's who is officially running for Fort Collins City Council: Mayor without challenger The Coloradoan",
+   "content_hash": "f4830d3bae5d7486",
+   "raw_feed_hash": "f2c572fd27c0dfadb5e7cb710f3b0ad2f5cdfddb391bc3fd3724f3613503fac3",
+   "published_at": 1693292400.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_e49e71d446",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "0a7e849572e87858",
+   "source": "Atlanta Journal-Constitution",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxQZnB4RFBJbkZtb1dCZGxwdkcwZkNFX2JHbEhkRkpBVy1UYUVVVm1ZOV9vYjIwUU5Cek5pWGVLbTZoT095eTNzYWNac1NHYnROSEEwTmJpOVJxV2NfUkxLbkhkMURCYzRERDBld0pza2gyRzQ1UE1IWkxUMnhwV2ZZMjVSNW5ZZjRsZWFCOEo3NjJzXzV0LWd2T3lldHR0TURJdV9XLVVmVWdKVnhiTzJOeTFka21VemlFcVFzOFBwNkZhcl82TUN0dWlQUFlsWmFB?oc=5",
+   "title": "Morrow councilwoman who backed multilingual ballots running for mayor - Atlanta Journal-Constitution",
+   "text": "Morrow councilwoman who backed multilingual ballots running for mayor - Atlanta Journal-Constitution. Morrow councilwoman who backed multilingual ballots running for mayor Atlanta Journal-Constitution",
+   "content_hash": "f35764823697f3aa",
+   "raw_feed_hash": "f2c572fd27c0dfadb5e7cb710f3b0ad2f5cdfddb391bc3fd3724f3613503fac3",
+   "published_at": 1693465200.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_e49e71d446",
+   "temporal_status": "uncertain"
+  },
+  {
+   "id": "b48c514abebbba20",
+   "source": "Florida Politics",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxON2VWQWlCMFRMbktUWFdQWnBDR1FLRHFTY0NaV3FlM25LMFlweEJseV9QTklxbnZZWkhwQmRkQXRLbzZ2U1JkNERKVFhESUlEc2JoRXNlNlBvZExLcTR4MHBxb0tyclh3bUVJS1Vib05kUTZ6TXlBNHpZMzRlUGl2SEdOT1BwbEZRRFpPZU9kOVZDOC12Yk9sT0ctcFhNM3R1enlzWVJzYm5YNm5ncGotby1OUjIyTkE?oc=5",
+   "title": "Two incumbents seek to repel challengers for Sweetwater City Commission - Florida Politics",
+   "text": "Two incumbents seek to repel challengers for Sweetwater City Commission - Florida Politics. Two incumbents seek to repel challengers for Sweetwater City Commission Florida Politics",
+   "content_hash": "8019eaf33da70a76",
+   "raw_feed_hash": "f2c572fd27c0dfadb5e7cb710f3b0ad2f5cdfddb391bc3fd3724f3613503fac3",
+   "published_at": 1683529200.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_e49e71d446",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "72aee3999118bdda",
+   "source": "Spectrum News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxQQ3U0dmtjNVpHbDAweEhteE1BZlNhYlQ1OENrZExBb2V6eFhzdEN2TmlHVUw4Z2plSlIwRlVsMjRIdmphNzVZQlc2Wnc2aHFhaU5vaURkT1A5YTBxcnVSdmswN2pGek9hR0hFSTJ2dGRhb2xmR09RaV96a1lqdVVPOG5wMGZJSGFWTEN0MDh6cWF1MkpwbnZIeUV3azlCU3BJbEJRUmU0NUlvQy1lY2YxQkVjNUxvYzVFWVIxcDlwM21Idw?oc=5",
+   "title": "Poll: Beshear fifth most popular U.S. governor ahead of reelection bid - Spectrum News",
+   "text": "Poll: Beshear fifth most popular U.S. governor ahead of reelection bid - Spectrum News. Poll: Beshear fifth most popular U.S. governor ahead of reelection bid Spectrum News",
+   "content_hash": "cfd883410ea94281",
+   "raw_feed_hash": "90005bcf4c7929ea999f5f3ec661b62222c7c2a31db16977212c9fa641bb19ff",
+   "published_at": 1681887600.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_5698e95fac",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "afcf96001a3e64b4",
+   "source": "PBS",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOQ0lPcU13WWdfZWhGRENGb3N2NXBDdlBMbWhxYnRDdEo4a00ydFNmZXNwVHFhMzFneVVURWprN0FFbUVYWFh4RGpLN1RtXzFJRGxfZEtIREpGZ1I5SWZlc1lIMzQ1RmgyNXdXa0FidE15X0JITUs3clBMQ3VNUWdHa3JocDFYdm95VjBVbEVVelR6VFhT0gGaAUFVX3lxTE1IMjNJcC15N19XX1lPWTladGIwQ1BoRzRFVEZtWTdnbm96OERSS0RwdndTV3RBU2w5dzZSaS1oQXlVaklWUF9UR1FSREJfUTlBdjdGUFQ2T28yWVlnRHZPeW8xMmZNbXlTZDNvV0tqeUhQaldFeVpUVVBfTm8zV3F5Z09hVlVkQkhONHlBUjEzUFlXckNSY3RhNHc?oc=5",
+   "title": "What to watch in Kentucky and Pennsylvania primaries - PBS",
+   "text": "What to watch in Kentucky and Pennsylvania primaries - PBS. What to watch in Kentucky and Pennsylvania primaries PBS",
+   "content_hash": "d12ed032adc43b61",
+   "raw_feed_hash": "90005bcf4c7929ea999f5f3ec661b62222c7c2a31db16977212c9fa641bb19ff",
+   "published_at": 1684134000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_5698e95fac",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ee7db4a344e5f603",
+   "source": "City of Arlington (.gov)",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxNdnZRY3lOX2VJMW5kX2J4OVhqWkt5ZzV5QUhwdkhXQmM4WldJSzNwRi1nZ3hwZlUxSVoyMXplQk5Iek11N3ZZdmJuRjhfblZDSWZpandrZ2dzWmJFbWowcGREenVnWFJxMHFaaC1sa3FjY1dNc3liQkp4N2lQbm4xSldWVS10Y0RXR0tYVkI0Y01yUERJSHBITWRxT2Y4bHVkZ2xkS0xuN2tzMmFrR2cwTmd1LUpWdmMtb2VhM0RuSHA1VDFyVUlDdWN2b0FOWTFmcDBLZnYxMy1sbWpreHcyRmZGaW1WRk1HdjVn?oc=5",
+   "title": "Arlington Voters Approve $278M Bond, Re-elect Mayor and Council Member - City of Arlington (.gov)",
+   "text": "Arlington Voters Approve $278M Bond, Re-elect Mayor and Council Member - City of Arlington (.gov). Arlington Voters Approve $278M Bond, Re-elect Mayor and Council Member City of Arlington (.gov)",
+   "content_hash": "1396ec8c332a86f6",
+   "raw_feed_hash": "90005bcf4c7929ea999f5f3ec661b62222c7c2a31db16977212c9fa641bb19ff",
+   "published_at": 1683529200.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_5698e95fac",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "9bec6a7336119714",
+   "source": "South Bend Tribune",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxQYUg3YUd0WnlVOEJkcUM1QkRrakdab3EzNkEtMERxQ1VNYVRtNGctM2lhRFlDQ29GRmZza25HaGpMMnFzOW5FcmQ3c2dGdVVkUGtoQWltWUdtc2gtV3N6blJ6VXJKcW4ybElkSXZBNkx3M0lEZmxuSFdndjVXQmFSVFZYakY2SVlTQ2FsRzc2bVdzNFVVdEhWRzdHNTV0WDZHbjhKRmhPVnd6Z2sxUU11NFRfc21NaE15SVdudi1aWjlPdEVhWERYYXhNeTA1anBfSllpcm5KRmtOZGZmRzBF?oc=5",
+   "title": "Colwell: Mayor Mueller wins Democratic nod \u2014 and something more \u2014 in primary - South Bend Tribune",
+   "text": "Colwell: Mayor Mueller wins Democratic nod \u2014 and something more \u2014 in primary - South Bend Tribune. Colwell: Mayor Mueller wins Democratic nod \u2014 and something more \u2014 in primary South Bend Tribune",
+   "content_hash": "86c32ff1b80885c7",
+   "raw_feed_hash": "90005bcf4c7929ea999f5f3ec661b62222c7c2a31db16977212c9fa641bb19ff",
+   "published_at": 1683270000.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_5698e95fac",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f65a57dc2270541a",
+   "source": "The Seattle Times",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNYnRtZEF5SmR2c2Z2ZEExSDJJb01JZ0pTeE0tMHhZOXhXUG9GZGhSWFl5X1VTRUtmWWtVSUswdmlpWEt4MjNyclVxX0hXY3hwbmt2T1l5WThqUHZ0VUNrOTh0cDgtS1N0VDNDNHpkajNFWFVmdlRwNW1PUnhES1hXeEpqWTNtZnF5cjltUGRxZmtsS1ctOWpCeXp1S21tLUxjbFoxTTVhY1A1WVdWbXlwc0xfSDdBNUF1bjJZ?oc=5",
+   "title": "Why the Seattle City Council is about to get a major revamp - The Seattle Times",
+   "text": "Why the Seattle City Council is about to get a major revamp - The Seattle Times. Why the Seattle City Council is about to get a major revamp The Seattle Times",
+   "content_hash": "506026540d10c429",
+   "raw_feed_hash": "90005bcf4c7929ea999f5f3ec661b62222c7c2a31db16977212c9fa641bb19ff",
+   "published_at": 1689663600.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_5698e95fac",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "da2ad2509d59dc56",
+   "source": "The Business Journals",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNNTJ6eDltMG5MTzNHMFlqcVBTNTRVSEdkX2tXa3FtWTkxMmpibU14YzRFOFZBeEFCUV9JcWQ2MHFIMmtVTG1vZS1ZSThvM0dicmNrMU5BbmhDVDdlQnRSMnY3bjlrWEhhdVJ4YnVGdnVPVWlNTHpWR0lRQmU2WWlDdG00RTQ5THJPVDZNRk1DY050ZUJVcHVJTHdFbWF6MVRxc1VZejF3?oc=5",
+   "title": "Seattle council member has backed away from police defunding - The Business Journals",
+   "text": "Seattle council member has backed away from police defunding - The Business Journals. Seattle council member has backed away from police defunding The Business Journals",
+   "content_hash": "2df1f228cffe59e9",
+   "raw_feed_hash": "90005bcf4c7929ea999f5f3ec661b62222c7c2a31db16977212c9fa641bb19ff",
+   "published_at": 1685602800.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_5698e95fac",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a5157ca2831c0348",
+   "source": "Katy Times",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxPNmFTWEo5dVVHWjZ2SWlQYkY2Q3doSXVBdkpGcF9YV2F2YlF5NVBFSDVOU0Uxek12MWF4MmZQMFhwWUhKaUZmU2Uwa25tYWZ0T2lsNWZnaHBlaEIxX3RXanFSYnBQcG1xR1ZFWU1EQ3BjV3h6QnNLVm40aGFfOW1naFEwbTJrcFc2SjgtSzdvR1ZxdFFTR1pHQWhGU0ZONDNtT0pEUEhEUnQ1SnNpR0JOVmdaNllOUWROdWxhVF9pWDhhbzlaZXp6aHRSQmg?oc=5",
+   "title": "Royal ISD voters approve part of bond package; Branch re-elected Brookshire mayor - Katy Times",
+   "text": "Royal ISD voters approve part of bond package; Branch re-elected Brookshire mayor - Katy Times. Royal ISD voters approve part of bond package; Branch re-elected Brookshire mayor Katy Times",
+   "content_hash": "4d6eceadefa0ea09",
+   "raw_feed_hash": "90005bcf4c7929ea999f5f3ec661b62222c7c2a31db16977212c9fa641bb19ff",
+   "published_at": 1683442800.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_5698e95fac",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "cd43349a4702c56e",
+   "source": "OnLondon",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOQ19QOTk3aVI2WHQ2THNfb2M5Wm42ZzB2bHBULU5FZVIxb3J0VE40YmRoa1BwOGJST2huc2NsbzlEblE1UU9tU3Q2dHlTZlBjTDdNMHFaY2RBTFNMMlBNZG9USjh0Uzk0ZGR5Z1Btc0s1cFluSGhoNGpLSGlteGxqZzdjNU84RWMy0gGOAUFVX3lxTFBjaHQtdktlT19oa2NMbFY3NVgzcmpNd1A0NVA3aE1UOXVPa2F2QlZRM2M5Y080b0J5NVZ6ZG5VbHp0N3E5VDU3c0RmM2hOQVJ1cHplNWxWd1EzYjJrZnVvM3hxMG9UNE14MG1mUjBlMlBvNU5SZGI4VXhtRkItYUQwMUxEeGdFdlJwdmFMTmc?oc=5",
+   "title": "Poll: Sadiq Khan leads London Mayor 2024 election race - OnLondon",
+   "text": "Poll: Sadiq Khan leads London Mayor 2024 election race - OnLondon. Poll: Sadiq Khan leads London Mayor 2024 election race OnLondon",
+   "content_hash": "c4126094ca492f6a",
+   "raw_feed_hash": "90005bcf4c7929ea999f5f3ec661b62222c7c2a31db16977212c9fa641bb19ff",
+   "published_at": 1686985200.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_5698e95fac",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "afcf96001a3e64b4",
+   "source": "PBS",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOQ0lPcU13WWdfZWhGRENGb3N2NXBDdlBMbWhxYnRDdEo4a00ydFNmZXNwVHFhMzFneVVURWprN0FFbUVYWFh4RGpLN1RtXzFJRGxfZEtIREpGZ1I5SWZlc1lIMzQ1RmgyNXdXa0FidE15X0JITUs3clBMQ3VNUWdHa3JocDFYdm95VjBVbEVVelR6VFhT0gGaAUFVX3lxTE1IMjNJcC15N19XX1lPWTladGIwQ1BoRzRFVEZtWTdnbm96OERSS0RwdndTV3RBU2w5dzZSaS1oQXlVaklWUF9UR1FSREJfUTlBdjdGUFQ2T28yWVlnRHZPeW8xMmZNbXlTZDNvV0tqeUhQaldFeVpUVVBfTm8zV3F5Z09hVlVkQkhONHlBUjEzUFlXckNSY3RhNHc?oc=5",
+   "title": "What to watch in Kentucky and Pennsylvania primaries - PBS",
+   "text": "What to watch in Kentucky and Pennsylvania primaries - PBS. What to watch in Kentucky and Pennsylvania primaries PBS",
+   "content_hash": "d12ed032adc43b61",
+   "raw_feed_hash": "d0901623cd734696b7ecbe724183ccc6a3db62e26e9d3453634f3d582d3cac57",
+   "published_at": 1684134000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_c0c504273b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "0bbc60e36262162c",
+   "source": "The Washington Post",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxPMVdpbi0waVh2X08wMkhoRDdVZFhqU1d3cXFSUEJvVGJ2U0l5SmxOcDByVkVqT0s3MlpxSFpxbDd5TXlUNDhlZVpsWU5xMEx3UFZnYzBweGdyR2hFazk5bkxJOHVka2lWOGFyX2ZQT3M1bDFqWHk5Q0NnTlBJak84Y0FzbHpvZGg2bmNjUVdYMmNkQQ?oc=5",
+   "title": "Analysis | How unpopular can Biden be while still winning reelection? - The Washington Post",
+   "text": "Analysis | How unpopular can Biden be while still winning reelection? - The Washington Post. Analysis | How unpopular can Biden be while still winning reelection? The Washington Post",
+   "content_hash": "ad0639ae8b191cc1",
+   "raw_feed_hash": "d0901623cd734696b7ecbe724183ccc6a3db62e26e9d3453634f3d582d3cac57",
+   "published_at": 1682406000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_c0c504273b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6935d0e841426456",
+   "source": "NBC News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxQT3JIQVJHU3dEUE92ZElYZXdMd0dWT3M3bURrZEprZDFVaGZPMFphdUdkUWdVN2E4Q2tFYi03amZvU0VCYUxaaUZTS3JPalVjbUk3M3l3SW1iSFhFcnB4RURINU5JM1gyMFY0LW1KbG9qUFZ1eXRoUjB5Mmo0SXRZYVJDVmxiN0stbHV6ZGFqa3R1ZV9hcjJNV01Pdm5hSm5CMVZ3SWZrVm5kX2gzdkNrWjBtSzRyQlpXT2k5TGZ5R3JWQQ?oc=5",
+   "title": "Whitmer 'proud' to support Biden, despite call to launch a primary challenge - NBC News",
+   "text": "Whitmer 'proud' to support Biden, despite call to launch a primary challenge - NBC News. Whitmer 'proud' to support Biden, despite call to launch a primary challenge NBC News",
+   "content_hash": "e76f5884a3b3e38a",
+   "raw_feed_hash": "d0901623cd734696b7ecbe724183ccc6a3db62e26e9d3453634f3d582d3cac57",
+   "published_at": 1692169200.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_c0c504273b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "848b3a7db21642cb",
+   "source": "The Conversation",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi5wFBVV95cUxNdER5SXdNalpaZVM1aDJtQ0RTQmNNVXFLZERENVJWVjUtMGhNRy16V0s4YWVWSlpNVU9lTmRHUnFoM3pXM1lBMkdjdlpZUXZtV3RLSVJ5MGI4Tm42aU5GRW1zazh4YWNOdDNBUHhUMEs0ZTlXQzM0dmRJXy15Mkd0MkptbzdrZXhwZ0pQbWZpLTJyb0V5VjJDLXdxQkx2X2VOSHFIN1dLdGw1MEpvdm5uWWRGRXRxZTF6MGFodTBrbVQycUR0X0ViVTk4ZHhXbmwtSVlQMEpIckMtVFU4WWpiWUU3bmhzdVU?oc=5",
+   "title": "Turkey\u2019s Erdo\u011fan took a page from US presidents and boosted reelection campaign by claiming to have killed a terrorist - The Conversation",
+   "text": "Turkey\u2019s Erdo\u011fan took a page from US presidents and boosted reelection campaign by claiming to have killed a terrorist - The Conversation. Turkey\u2019s Erdo\u011fan took a page from US presidents and boosted reelection campaign by claiming to have killed a terrorist The Conversation",
+   "content_hash": "b9e5aec75ffc55e0",
+   "raw_feed_hash": "d0901623cd734696b7ecbe724183ccc6a3db62e26e9d3453634f3d582d3cac57",
+   "published_at": 1684911600.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_c0c504273b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6bb55a1c81f41f57",
+   "source": "E&E News by POLITICO",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxObVZJSkY5Y3BaeEV1dThBSDJDWUtkZmdQUzREdGN4SHBKTEJaY2x6Z1p4eVhGUjhKUEo3Y2Z4U2RFcjRBSWdoYk1Ga2FDLVNvcHFJcmVRSERTblNydGhSaktBdTEtYUp5UENkNjNvN3ZwMkp4S3h5Tkk1Vk5ub0lpMFFaSHpwLXNYNUZTY2hqek1VUHVo?oc=5",
+   "title": "States challenge utility costs backed by \u2018fleet of lawyers\u2019 - E&E News by POLITICO",
+   "text": "States challenge utility costs backed by \u2018fleet of lawyers\u2019 - E&E News by POLITICO. States challenge utility costs backed by \u2018fleet of lawyers\u2019 E&E News by POLITICO",
+   "content_hash": "30f447be0f3b439e",
+   "raw_feed_hash": "d0901623cd734696b7ecbe724183ccc6a3db62e26e9d3453634f3d582d3cac57",
+   "published_at": 1680764400.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_c0c504273b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ff267d005728488e",
+   "source": "The Lancet",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxNX1BQS0dWRkxNa2k3TFI2QXI4Ny1QenFBd282ZXZzYmxKUGVFZXRnMlhQVncxX2FDbUVZUXpfODNaVk9ydzR0VTllaDlEcHpxdzF5ZEFteUVSY3Rid3FVSVJ0MWp1VW04ci1kV2I4ZEVQTTBtQ0lEanBWMVl2MG81bWtrai01R3dTU2Nz?oc=5",
+   "title": "Strategic and scientific contributions of human challenge trials for vaccine development: facts versus fantasy - The Lancet",
+   "text": "Strategic and scientific contributions of human challenge trials for vaccine development: facts versus fantasy - The Lancet. Strategic and scientific contributions of human challenge trials for vaccine development: facts versus fantasy The Lancet",
+   "content_hash": "75b2ff2147e98a3f",
+   "raw_feed_hash": "d0901623cd734696b7ecbe724183ccc6a3db62e26e9d3453634f3d582d3cac57",
+   "published_at": 1691650800.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_c0c504273b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "bd26e96b3576d3fb",
+   "source": "Hiiraan Online",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxNWnN0RGsydUc1Z25WS2tXWWZBc2x5OHdhSW8wM3hia2hmcWVndGVybjhfVDRqWTRiUG0zeHFqWXJTMjdxcnhYUjAtckJlNDU5emQ1bG5RVG53bXU1blZQUzdweG44Mm9IRGdWdkNiQlgzMVpCY0RzNEhpTzNfMklGWG02b2J1ajNEY21CbGhsVC1FLTNaUU9RRVJ2bFhaMllEMF9xWF9LbTA3TFd3ME9TZ3RXOFR1d2tqdFZQOG1OTGlMTTBrZW5wTw?oc=5",
+   "title": "Turkish presidential candidate withdraws in boost to Erdogan's main challenger - Hiiraan Online",
+   "text": "Turkish presidential candidate withdraws in boost to Erdogan's main challenger - Hiiraan Online. Turkish presidential candidate withdraws in boost to Erdogan's main challenger Hiiraan Online",
+   "content_hash": "cd0fe3dcb1f9b54e",
+   "raw_feed_hash": "d0901623cd734696b7ecbe724183ccc6a3db62e26e9d3453634f3d582d3cac57",
+   "published_at": 1683874800.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_c0c504273b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "fb51c29581635932",
+   "source": "The Sierra Leone Telegraph",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiiAJBVV95cUxPb3ZiaW9zbjhmMDQ0QzQ1eXRmSGxuWG9EVVBKV2dzeWhvaVMyMTBpZkdPS1ZvMUlxaTViSkU1WGhQQkVTcWdvWGQzQ1NEZjJiQkpTOFEwZjB5UmtyZ2ozNkU4V1J2NDhFTmxfRXF4US10U2NoVGdvd2t2eE43U3V2ZHhUTlJuOUN4QjVXOGEwa1M2T245ZVBybzZzRDlGN2ZZUFZnOVg2Wl9Pc1k4NEJOSnRhVzRvcXB5ODI4UmFscm01NkJOTXpuc2p4Z1F5bF9yajRIbTlwNHE0cVlJSWJPTXYzbzIzZC1STkdtaXd0OHBDbTZNR29WNWhXTXVEd21oLW5GRFd6TWI?oc=5",
+   "title": "Sierra Leone\u2019s largest independent opinion poll predicts record turnout with over 30% of voters still undecided \u2013 and a run-off on the cards - The Sierra Leone Telegraph",
+   "text": "Sierra Leone\u2019s largest independent opinion poll predicts record turnout with over 30% of voters still undecided \u2013 and a run-off on the cards - The Sierra Leone Telegraph. Sierra Leone\u2019s largest independent opinion poll predicts record turnout with over 30% of voters still undecided \u2013 and a run-off on the cards The Sierra Leone Telegraph",
+   "content_hash": "a656c9e0141c24d9",
+   "raw_feed_hash": "d0901623cd734696b7ecbe724183ccc6a3db62e26e9d3453634f3d582d3cac57",
+   "published_at": 1687503600.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_c0c504273b",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "c1e57c738283e748:c0",
+   "source_id": "c1e57c738283e748",
+   "subject": "Denver City Council races",
+   "predicate": "are being counted",
+   "object": "election-day ballots",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Where Denver City Council races stand as election-day ballots are counted",
+   "span_verified": true,
+   "event_time": "present",
+   "publication_time": 1680678000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Denver City Council"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_3cdedf94f7",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_e49e71d446"
+   }
+  },
+  {
+   "claim_id": "c1e57c738283e748:c1",
+   "source_id": "c1e57c738283e748",
+   "subject": "runoffs",
+   "predicate": "loom",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "hedged",
+   "polarity": "affirm",
+   "claim_class": "forecast",
+   "supporting_span": "runoffs loom",
+   "span_verified": true,
+   "event_time": "future",
+   "publication_time": 1680678000.0,
+   "extraction_confidence": 0.8,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [],
+   "contradiction_links": [],
+   "dependence_group": "dep_3cdedf94f7",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_e49e71d446"
+   }
+  },
+  {
+   "claim_id": "72aee3999118bdda:c0",
+   "source_id": "72aee3999118bdda",
+   "subject": "Beshear",
+   "predicate": "is",
+   "object": "fifth most popular U.S. governor",
+   "value": "",
+   "units": "",
+   "qualifiers": "ahead of reelection bid",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Poll: Beshear fifth most popular U.S. governor ahead of reelection bid",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681887600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Beshear"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_c6a8308dad",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_5698e95fac"
+   }
+  },
+  {
+   "claim_id": "afcf96001a3e64b4:c0",
+   "source_id": "afcf96001a3e64b4",
+   "subject": "Kentucky and Pennsylvania primaries",
+   "predicate": "are being watched",
+   "object": "by PBS",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "What to watch in Kentucky and Pennsylvania primaries - PBS",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1684134000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Kentucky",
+    "Pennsylvania",
+    "PBS"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_7c7b3fbac4",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_c0c504273b"
+   }
+  },
+  {
+   "claim_id": "bea9ff6696f97bd6:c0",
+   "source_id": "bea9ff6696f97bd6",
+   "subject": "Buscher",
+   "predicate": "unseats",
+   "object": "Langfelder",
+   "value": "",
+   "units": "",
+   "qualifiers": "as mayor of Springfield",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Buscher unseats Langfelder as mayor of Springfield",
+   "span_verified": true,
+   "event_time": "2023",
+   "publication_time": 1680591600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Buscher",
+    "Langfelder",
+    "Springfield"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_0b31fc8c82",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_e49e71d446"
+   }
+  },
+  {
+   "claim_id": "bea9ff6696f97bd6:c1",
+   "source_id": "bea9ff6696f97bd6",
+   "subject": "The State Journal-Register",
+   "predicate": "published",
+   "object": "article",
+   "value": "",
+   "units": "",
+   "qualifiers": "Election 2023: Buscher unseats Langfelder as mayor of Springfield",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Election 2023: Buscher unseats Langfelder as mayor of Springfield - The State Journal-Register",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680591600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "The State Journal-Register"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_0b31fc8c82",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_e49e71d446"
+   }
+  },
+  {
+   "claim_id": "0bbc60e36262162c:c0",
+   "source_id": "0bbc60e36262162c",
+   "subject": "Biden",
+   "predicate": "can be",
+   "object": "unpopular",
+   "value": "",
+   "units": "",
+   "qualifiers": "while still winning reelection",
+   "modality": "speculative",
+   "polarity": "affirm",
+   "claim_class": "forecast",
+   "supporting_span": "How unpopular can Biden be while still winning reelection?",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682406000.0,
+   "extraction_confidence": 0.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Biden"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_9acea01a49",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_c0c504273b"
+   }
+  },
+  {
+   "claim_id": "6db860e66bfe3972:c0",
+   "source_id": "6db860e66bfe3972",
+   "subject": "Wiza",
+   "predicate": "wins",
+   "object": "third term as Stevens Point mayor",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Wiza wins third term as Stevens Point mayor and other election results",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680678000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Wiza",
+    "Stevens Point"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_93aaa5a0b3",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_e49e71d446"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Denver City Council",
+   "normalized": "denver city council",
+   "candidates": [
+    {
+     "entity_id": "ent_28cd87a7d3",
+     "canonical": "denver city council",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Denver City Council"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Beshear",
+   "normalized": "beshear",
+   "candidates": [
+    {
+     "entity_id": "ent_2bbef1a553",
+     "canonical": "beshear",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Beshear"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Kentucky",
+   "normalized": "kentucky",
+   "candidates": [
+    {
+     "entity_id": "ent_709b828eaf",
+     "canonical": "kentucky",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Kentucky"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Pennsylvania",
+   "normalized": "pennsylvania",
+   "candidates": [
+    {
+     "entity_id": "ent_0f425faa75",
+     "canonical": "pennsylvania",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Pennsylvania"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "PBS",
+   "normalized": "pbs",
+   "candidates": [
+    {
+     "entity_id": "ent_31c4190435",
+     "canonical": "pbs",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "PBS"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Buscher",
+   "normalized": "buscher",
+   "candidates": [
+    {
+     "entity_id": "ent_70f3827c0e",
+     "canonical": "buscher",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Buscher"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Langfelder",
+   "normalized": "langfelder",
+   "candidates": [
+    {
+     "entity_id": "ent_34fc59310f",
+     "canonical": "langfelder",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Langfelder"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Springfield",
+   "normalized": "springfield",
+   "candidates": [
+    {
+     "entity_id": "ent_9828b3ebef",
+     "canonical": "springfield",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Springfield"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "The State Journal-Register",
+   "normalized": "state journal-register",
+   "candidates": [
+    {
+     "entity_id": "ent_50eea10b84",
+     "canonical": "state journal-register",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "The State Journal-Register"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Biden",
+   "normalized": "biden",
+   "candidates": [
+    {
+     "entity_id": "ent_d1a4be2894",
+     "canonical": "biden",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Biden"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Wiza",
+   "normalized": "wiza",
+   "candidates": [
+    {
+     "entity_id": "ent_2d317bff2c",
+     "canonical": "wiza",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Wiza"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Stevens Point",
+   "normalized": "stevens point",
+   "candidates": [
+    {
+     "entity_id": "ent_53819040c3",
+     "canonical": "stevens point",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Stevens Point"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "c1e57c738283e748": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1680678000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680678000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "bea9ff6696f97bd6": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1680591600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680591600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6db860e66bfe3972": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1680678000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680678000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "94af89877a721814": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1691478000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1691478000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "772b135e140ffb8d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1686121200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686121200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "24cd6631b70a31d3": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1693292400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1693292400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "0a7e849572e87858": {
+   "status": "uncertain",
+   "confidence": 0.5,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1693465200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1693465200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "b48c514abebbba20": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1683529200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683529200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "72aee3999118bdda": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1681887600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681887600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "afcf96001a3e64b4": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1684134000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684134000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ee7db4a344e5f603": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1683529200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683529200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "9bec6a7336119714": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1683270000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683270000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f65a57dc2270541a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1689663600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689663600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "da2ad2509d59dc56": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1685602800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685602800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a5157ca2831c0348": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1683442800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683442800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "cd43349a4702c56e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1686985200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686985200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "0bbc60e36262162c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1682406000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682406000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6935d0e841426456": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1692169200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1692169200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "848b3a7db21642cb": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1684911600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684911600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6bb55a1c81f41f57": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1680764400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680764400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ff267d005728488e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1691650800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1691650800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "bd26e96b3576d3fb": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1683874800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683874800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "fb51c29581635932": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1687503600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687503600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_3cdedf94f7",
+   "member_ids": [
+    "c1e57c738283e748"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Colorado Newsline",
+   "primary_source": "Colorado Newsline",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_0b31fc8c82",
+   "member_ids": [
+    "bea9ff6696f97bd6"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The State Journal-Register",
+   "primary_source": "The State Journal-Register",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_93aaa5a0b3",
+   "member_ids": [
+    "6db860e66bfe3972"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Stevens Point Journal",
+   "primary_source": "Stevens Point Journal",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_155ad8cf84",
+   "member_ids": [
+    "94af89877a721814"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "WZZM13.com",
+   "primary_source": "WZZM13.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_8f082d9c5e",
+   "member_ids": [
+    "772b135e140ffb8d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "New Jersey Globe",
+   "primary_source": "New Jersey Globe",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_6450f841ee",
+   "member_ids": [
+    "24cd6631b70a31d3"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Coloradoan",
+   "primary_source": "The Coloradoan",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a38dbf3bb0",
+   "member_ids": [
+    "0a7e849572e87858"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Atlanta Journal-Constitution",
+   "primary_source": "Atlanta Journal-Constitution",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_4b3d1f87a3",
+   "member_ids": [
+    "b48c514abebbba20"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Florida Politics",
+   "primary_source": "Florida Politics",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_c6a8308dad",
+   "member_ids": [
+    "72aee3999118bdda"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Spectrum News",
+   "primary_source": "Spectrum News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7c7b3fbac4",
+   "member_ids": [
+    "afcf96001a3e64b4",
+    "afcf96001a3e64b4"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "PBS",
+   "primary_source": "PBS",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_b84aa476c0",
+   "member_ids": [
+    "ee7db4a344e5f603"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "City of Arlington (.gov)",
+   "primary_source": "City of Arlington (.gov)",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_753175bdbf",
+   "member_ids": [
+    "9bec6a7336119714"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "South Bend Tribune",
+   "primary_source": "South Bend Tribune",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a8a2fd6459",
+   "member_ids": [
+    "f65a57dc2270541a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Seattle Times",
+   "primary_source": "The Seattle Times",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_0215ffb1c0",
+   "member_ids": [
+    "da2ad2509d59dc56"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Business Journals",
+   "primary_source": "The Business Journals",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_2cbffd5cce",
+   "member_ids": [
+    "a5157ca2831c0348"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Katy Times",
+   "primary_source": "Katy Times",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_098d7c6d8f",
+   "member_ids": [
+    "cd43349a4702c56e"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "OnLondon",
+   "primary_source": "OnLondon",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9acea01a49",
+   "member_ids": [
+    "0bbc60e36262162c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Washington Post",
+   "primary_source": "The Washington Post",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_93ed3a78dc",
+   "member_ids": [
+    "6935d0e841426456"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "NBC News",
+   "primary_source": "NBC News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_f5a65dfb71",
+   "member_ids": [
+    "848b3a7db21642cb"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Conversation",
+   "primary_source": "The Conversation",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_6419285ac3",
+   "member_ids": [
+    "6bb55a1c81f41f57"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "E&E News by POLITICO",
+   "primary_source": "E&E News by POLITICO",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e02b25538a",
+   "member_ids": [
+    "ff267d005728488e"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Lancet",
+   "primary_source": "The Lancet",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b1b09f971e",
+   "member_ids": [
+    "bd26e96b3576d3fb"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Hiiraan Online",
+   "primary_source": "Hiiraan Online",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_bf2fdf945c",
+   "member_ids": [
+    "fb51c29581635932"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Sierra Leone Telegraph",
+   "primary_source": "The Sierra Leone Telegraph",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "c1e57c738283e748:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680678000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "c1e57c738283e748:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680678000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "72aee3999118bdda:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681887600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "afcf96001a3e64b4:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684134000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "bea9ff6696f97bd6:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680591600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "bea9ff6696f97bd6:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680591600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "0bbc60e36262162c:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682406000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "6db860e66bfe3972:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680678000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "c1e57c738283e748:c0",
+  "c1e57c738283e748:c1",
+  "72aee3999118bdda:c0",
+  "afcf96001a3e64b4:c0",
+  "bea9ff6696f97bd6:c0",
+  "bea9ff6696f97bd6:c1",
+  "0bbc60e36262162c:c0",
+  "6db860e66bfe3972:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_e49e71d446": {
+   "status": "fulfilled",
+   "n_claims": 5,
+   "n_included": 5
+  },
+  "req_5698e95fac": {
+   "status": "fulfilled",
+   "n_claims": 1,
+   "n_included": 1
+  },
+  "req_c0c504273b": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_b7a9738fbb": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_c62c96443b": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_6c8b263769": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_862415e468": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_b7a9738fbb",
+  "req_c62c96443b",
+  "req_6c8b263769",
+  "req_862415e468"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 23,
+  "n_contradictions": 0,
+  "n_documents": 24
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 14.319,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "4ca22960a99deb7a",
+ "bundle_hash": "4ca22960a99deb7a",
+ "_persisted_at": "2026-07-13T01:36:09Z"
+}

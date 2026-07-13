@@ -1,0 +1,1604 @@
+{
+ "bundle_id": "eb_a3af0b",
+ "question": "Will the professor respond to my request for a recommendation letter within two weeks?",
+ "as_of": 1693526400.0,
+ "compiler_plan_hash": "692425e95677",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_547eddf999",
+   "claim_or_quantity": "If the professor sends any communication (email, letter, etc.) regarding the recommendation letter request by 2023-09-15, the outcome is 'response_within_two_weeks'; otherwise 'no_response_within_two_weeks'.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "student",
+    "professor"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_49c4f4e670",
+   "claim_or_quantity": "value/context of professor.responsiveness_tendency",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "professor.responsiveness_tendency",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_cc51cb9ab0",
+   "claim_or_quantity": "value/context of professor.current_workload",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "professor.current_workload",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_5a54053054",
+   "claim_or_quantity": "evidence discriminating structural hypothesis high_workload_delays",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:high_workload_delays",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_4c3bdad25a",
+   "claim_or_quantity": "evidence discriminating structural hypothesis strong_relationship_speeds",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:strong_relationship_speeds",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_2a0e93b9ca",
+   "claim_or_quantity": "value/context of professor.vacation_status",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "professor.vacation_status",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_7d8b406417",
+   "claim_or_quantity": "decision rules / process of university",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "university",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_547eddf999",
+   "terms": "professor respond request recommendation letter two weeks student professor",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_49c4f4e670",
+   "terms": "professor responsiveness tendency",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_cc51cb9ab0",
+   "terms": "professor current workload",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_547eddf999",
+   "logical_query": "professor respond request recommendation letter two weeks student professor after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=professor+respond+request+recommendation+letter+two+weeks+student+professor+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783906096.4080942,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:28:17 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmJw0JBiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTNsfHfhUtsAhuW3k1TUk7KL4xPyS8pLi7ISSzOKE4tKkstijcyMDIzMDcw0zMwiS8wAAB2PTcO\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "12e6c2d790eddf072207454b132f709040048f22c4d699d6daf7e131804a4fef",
+   "n_bytes": 9878,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 7,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.759
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_49c4f4e670",
+   "logical_query": "professor responsiveness tendency after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=professor+responsiveness+tendency+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783906097.16882,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:28:17 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmII0pBiSO44w5AKxJVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcG_9duMQm0NG5-g2TknJSfmF8Sn5JcXFBTmJxRnFqUVlqUbyRgZGZgbmBmZ6BSXyBAQC1BzkH\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "f94cbda8e2ac395506a340b6d9098ba9fe7165995e07c893dc96d571721bd713",
+   "n_bytes": 2310,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 1,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.522
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_cc51cb9ab0",
+   "logical_query": "professor current workload after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=professor+current+workload+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783906097.692595,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:28:18 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw15BiSO44w5AKxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcm_5duMQmMKOzrZ1RSTkpvzA-Jb-kuLggJ7E4ozi1qCy1KN7IwMjMwNzATM_AJL7AAACe2DiH\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "71c8bd77aa0e0136d47b102015e28d4d5d5f782d4acf616d746f0070f0f26fe5",
+   "n_bytes": 2377,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 1,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.517
+  }
+ ],
+ "raw_content_refs": [
+  "12e6c2d790eddf072207454b132f709040048f22c4d699d6daf7e131804a4fef",
+  "71c8bd77aa0e0136d47b102015e28d4d5d5f782d4acf616d746f0070f0f26fe5",
+  "f94cbda8e2ac395506a340b6d9098ba9fe7165995e07c893dc96d571721bd713"
+ ],
+ "documents": [
+  {
+   "id": "8640e506a420bf2a",
+   "source": "Slow Boring",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiYkFVX3lxTE4yemZ2eWVUdk1YemJSWlFGUUZIOGpPQ0JoTzBnMEkzR2ZVUDdLRXp4dmRyQ1AtdUwtX2F4QmxjNFZ4dzg4YnVEWVZWc09GczFLVkI0Rzk5c2N0S3A4ejBpYVZn?oc=5",
+   "title": "ChatGPT goes to Harvard - by Maya Bodnick - Slow Boring",
+   "text": "ChatGPT goes to Harvard - by Maya Bodnick - Slow Boring. ChatGPT goes to Harvard - by Maya Bodnick Slow Boring",
+   "content_hash": "3cb9b5ee037181c4",
+   "raw_feed_hash": "12e6c2d790eddf072207454b132f709040048f22c4d699d6daf7e131804a4fef",
+   "published_at": 1689663600.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_547eddf999",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "8e2e091bcf08d0bf",
+   "source": "Daily Nous",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxOQms3dnJxVl82LTNrZHJXOVVzODl6S0Q1dzk1WlVKQjd5VUNNQXZrSlJHQ1djUkJSMmRSeXlZbEdkakc1d3pKWk1NNExKWkliWGFqbmxaRC1PN083MXQzeEJlZkh3LUpfRjdHOXZCYzV2Rk93ckV3c3dUakhTNEFLSUhCNTFUZ0pjWlpnaWk2NzZDSnVWdHJRTkF1RHRkLWpIdExr?oc=5",
+   "title": "\u201cAm I the unethical one?\u201d A Philosophy Professor & His Cheating Students - Daily Nous",
+   "text": "\u201cAm I the unethical one?\u201d A Philosophy Professor & His Cheating Students - Daily Nous. \u201cAm I the unethical one?\u201d A Philosophy Professor & His Cheating Students Daily Nous",
+   "content_hash": "625aa56ddd03973e",
+   "raw_feed_hash": "12e6c2d790eddf072207454b132f709040048f22c4d699d6daf7e131804a4fef",
+   "published_at": 1684998000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_547eddf999",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "297f27d150e1508c",
+   "source": "The Texas Tribune",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQcUZIa2ZrdmpqU2xPZENoTVJrWERDLW85SFh3Sk5TbEF1NjRRSzhVMGFvMVVOUUhSNmVBSFdUV1M5cWF3Z2dONWJFRk5UVmRwcV94ZDFPbFFjcVdCSGt0RXF2WEU0QmxOc21HYkxJRG5vUmFhQ3hIRkZTX0ltTHJaWXRobjJCX00?oc=5",
+   "title": "Texas A&M put professor on leave for allegedly criticizing Dan Patrick - The Texas Tribune",
+   "text": "Texas A&M put professor on leave for allegedly criticizing Dan Patrick - The Texas Tribune. Texas A&M put professor on leave for allegedly criticizing Dan Patrick The Texas Tribune",
+   "content_hash": "6751ed0941759a51",
+   "raw_feed_hash": "12e6c2d790eddf072207454b132f709040048f22c4d699d6daf7e131804a4fef",
+   "published_at": 1690268400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_547eddf999",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "b03e3795dd82810c",
+   "source": "Palo Alto Daily Post",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxQcjM0MlFKLV9TUTRXNTlKQ21wcldiQ0hlVjkxU2JpRkFuYTFlQ1NYdVgxMExYdDlLVV9BWXlLX3Y2REd2cUZ5Z3N5NkZZbGo5MVF5c2FhbmtJNUxweUs1Rk1QRTJGZzlMSnJwcVdDTEVNWEdWQ2JDam9ZV1g4dUgwX19vXzV2N3IzXy1CeXZYVFVYM1ZMclRKTE0xVml3UGZXbk5iNDIwWHVSb0hCUi1LS25zVGZMUjg?oc=5",
+   "title": "UPDATED: School district responds after teacher and employee are injured in fight with student at JLS - Palo Alto Daily Post",
+   "text": "UPDATED: School district responds after teacher and employee are injured in fight with student at JLS - Palo Alto Daily Post. UPDATED: School district responds after teacher and employee are injured in fight with student at JLS Palo Alto Daily Post",
+   "content_hash": "11d1640b2aa55573",
+   "raw_feed_hash": "12e6c2d790eddf072207454b132f709040048f22c4d699d6daf7e131804a4fef",
+   "published_at": 1685257200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_547eddf999",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a2beede07c49bbb5",
+   "source": "The Harvard Crimson",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE1oZHB3ZmxHYk4xQXRTeGpPQnRFVS1GeUJxOFdhZ3BjYkhRbkVCVDlCaUpTQ2NQakpkYUlXNU0xQ3BMMTFSOUtrWm1PQWJjeXk2RWtzQzc1dWZnR1ZnVFZORFRCWUNHc24tVUNnelJVcVpQQQ?oc=5",
+   "title": "In Wake of Schrag Bullying Allegations, Harvard ESE and EPS Affiliates Call to Strengthen Anti-Bullying Policy - The Harvard Crimson",
+   "text": "In Wake of Schrag Bullying Allegations, Harvard ESE and EPS Affiliates Call to Strengthen Anti-Bullying Policy - The Harvard Crimson. In Wake of Schrag Bullying Allegations, Harvard ESE and EPS Affiliates Call to Strengthen Anti-Bullying Policy The Harvard Crimson",
+   "content_hash": "1147ede03b9c8451",
+   "raw_feed_hash": "12e6c2d790eddf072207454b132f709040048f22c4d699d6daf7e131804a4fef",
+   "published_at": 1683356400.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_547eddf999",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "21f25d517c9615df",
+   "source": "New York Post",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxNUXRNZTZDZ0RoZ2NYZ1FVNjZhRXFNM0RVYXJxanVuNldPNG8yU2d2ekRXb3UteDZqeWRKanhxUUxuWlpsakt6RTQ0TW9ucVZqRjhBRlBwdFRXZEFhTURJSlhkdVZaWGpHZHM0YU9Wb2tPd1RXeldJeG9USmZJQkEycWJFbkJZVkJHODFHeGI3bTJoQmdV?oc=5",
+   "title": "Randi Weingarten, teacher\u2019s union helped coordinate CDC\u2019s 2021 school reopening guidance, records reveal - New York Post",
+   "text": "Randi Weingarten, teacher\u2019s union helped coordinate CDC\u2019s 2021 school reopening guidance, records reveal - New York Post. Randi Weingarten, teacher\u2019s union helped coordinate CDC\u2019s 2021 school reopening guidance, records reveal New York Post",
+   "content_hash": "159847fc557a0171",
+   "raw_feed_hash": "12e6c2d790eddf072207454b132f709040048f22c4d699d6daf7e131804a4fef",
+   "published_at": 1682406000.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_547eddf999",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "90497955b9db9235",
+   "source": "ABC News & Headlines \u2013 Australian Broadcasting Corporation",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQWGJFNF9MdU1sTlU5dURTSE11NFIwVmx1RFdOVXRGMmhyUGt3WHh2ZDdRaG93MUdVYTNOV1I0ZEJKNVNwTk56YVVCZlR2empXYUR0Zm9mbV8yX3drZWl1Z241S0dqR2U2cEY1Ny1FVmJoaERuTWFWeUdhc1o3WFJaTVU0d1NqYUUyRWZPdjJ1V1pjSmZlZFpETUxjbXVRNmdiektKeUVZdzc?oc=5",
+   "title": "Future of Universities Australia head under question over handling of sexual violence concerns - ABC News & Headlines \u2013 Australian Broadcasting Corporation",
+   "text": "Future of Universities Australia head under question over handling of sexual violence concerns - ABC News & Headlines \u2013 Australian Broadcasting Corporation. Future of Universities Australia head under question over handling of sexual violence concerns ABC News & Headlines \u2013 Australian Broadcasting Corporation",
+   "content_hash": "40ed1d395ad911f3",
+   "raw_feed_hash": "12e6c2d790eddf072207454b132f709040048f22c4d699d6daf7e131804a4fef",
+   "published_at": 1691910000.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_547eddf999",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ec8c3be39969026b",
+   "source": "Harvard Gazette",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxPMlJjbi1PZUFVN3AwUlJ2LV9pSXB1ZU5ITTBjV2NKTkxXd0ttQnVwcXlhWXRmR2Z0NHZ1cnRTQnpWdkh0R2hDaDg3YXVSby1KRWxIazRzRmpDdzMtc3dlRG9JNmRnUlQ5eUhMZGppT2IwR2lsbHZocThSOWphd3hfb3ZVRzVxZHBMWlh3?oc=5",
+   "title": "Biggest problem with gerrymandering - Harvard Gazette",
+   "text": "Biggest problem with gerrymandering - Harvard Gazette. Biggest problem with gerrymandering Harvard Gazette",
+   "content_hash": "c2bb7c46c1a7b37b",
+   "raw_feed_hash": "f94cbda8e2ac395506a340b6d9098ba9fe7165995e07c893dc96d571721bd713",
+   "published_at": 1688540400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_49c4f4e670",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "da15915e71510c66",
+   "source": "Belt Magazine",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNa3NHZVc5Y2g0aGU0ZkEzYUVvdGZmeHdxQTF2cjBpWkR1Tng1YTJzR0JTUW5RMDdLOFFMNnNtdVRJNDVhM1V1Y0t2TDZacDQtOUgtdW9vS3hmYlFuLUFSRVRBQ1hjTXJEaGxmUl9QV0lXX2xxS1NydFpsXzdpYkVraDczSTR2NmtobHN2LXNCT2ZzZw?oc=5",
+   "title": "\u201cAll-In\u201d \u2013 Professors on the Picket Line at Eastern Illinois - Belt Magazine",
+   "text": "\u201cAll-In\u201d \u2013 Professors on the Picket Line at Eastern Illinois - Belt Magazine. \u201cAll-In\u201d \u2013 Professors on the Picket Line at Eastern Illinois Belt Magazine",
+   "content_hash": "d859a76ff47cbab9",
+   "raw_feed_hash": "71c8bd77aa0e0136d47b102015e28d4d5d5f782d4acf616d746f0070f0f26fe5",
+   "published_at": 1680764400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_cc51cb9ab0",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "8640e506a420bf2a:c0",
+   "source_id": "8640e506a420bf2a",
+   "subject": "ChatGPT",
+   "predicate": "goes to",
+   "object": "Harvard",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "inferred_implication",
+   "supporting_span": "ChatGPT goes to Harvard",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1689663600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "ChatGPT",
+    "Harvard"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_769192012b",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_547eddf999"
+   }
+  },
+  {
+   "claim_id": "8640e506a420bf2a:c1",
+   "source_id": "8640e506a420bf2a",
+   "subject": "Maya Bodnick",
+   "predicate": "is author of",
+   "object": "Slow Boring",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "by Maya Bodnick - Slow Boring",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1689663600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Maya Bodnick",
+    "Slow Boring"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_769192012b",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_547eddf999"
+   }
+  },
+  {
+   "claim_id": "ec8c3be39969026b:c0",
+   "source_id": "ec8c3be39969026b",
+   "subject": "Biggest problem with gerrymandering",
+   "predicate": "is discussed in",
+   "object": "Harvard Gazette",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Biggest problem with gerrymandering - Harvard Gazette",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1688540400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Harvard Gazette"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_d1032ae6e6",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_49c4f4e670"
+   }
+  },
+  {
+   "claim_id": "da15915e71510c66:c0",
+   "source_id": "da15915e71510c66",
+   "subject": "Professors",
+   "predicate": "are on the picket line at",
+   "object": "Eastern Illinois",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Professors on the Picket Line at Eastern Illinois",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680764400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Professors",
+    "Eastern Illinois"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_99b600a897",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_cc51cb9ab0"
+   }
+  },
+  {
+   "claim_id": "8e2e091bcf08d0bf:c0",
+   "source_id": "8e2e091bcf08d0bf",
+   "subject": "A Philosophy Professor & His Cheating Students",
+   "predicate": "is the subject of",
+   "object": "an article titled 'Am I the unethical one?'",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "\u201cAm I the unethical one?\u201d A Philosophy Professor & His Cheating Students - Daily Nous",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1684998000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "A Philosophy Professor",
+    "His Cheating Students",
+    "Daily Nous"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_9f6671d0dd",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_547eddf999"
+   }
+  },
+  {
+   "claim_id": "297f27d150e1508c:c0",
+   "source_id": "297f27d150e1508c",
+   "subject": "Texas A&M",
+   "predicate": "put",
+   "object": "professor on leave",
+   "value": "",
+   "units": "",
+   "qualifiers": "for allegedly criticizing Dan Patrick",
+   "modality": "reported",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Texas A&M put professor on leave for allegedly criticizing Dan Patrick",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1690268400.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Texas A&M",
+    "Dan Patrick"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_52921ad83d",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_547eddf999"
+   }
+  },
+  {
+   "claim_id": "b03e3795dd82810c:c0",
+   "source_id": "b03e3795dd82810c",
+   "subject": "teacher and employee",
+   "predicate": "are injured in fight with student",
+   "object": "at JLS",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "teacher and employee are injured in fight with student at JLS",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1685257200.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "teacher",
+    "employee",
+    "student",
+    "JLS"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_10f1f4814f",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_547eddf999"
+   }
+  },
+  {
+   "claim_id": "b03e3795dd82810c:c1",
+   "source_id": "b03e3795dd82810c",
+   "subject": "School district",
+   "predicate": "responds",
+   "object": "after teacher and employee are injured in fight with student at JLS",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "School district responds after teacher and employee are injured in fight with student at JLS",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1685257200.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "School district",
+    "teacher",
+    "employee",
+    "student",
+    "JLS"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_10f1f4814f",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_547eddf999"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "ChatGPT",
+   "normalized": "chatgpt",
+   "candidates": [
+    {
+     "entity_id": "ent_ab0ddc029a",
+     "canonical": "chatgpt",
+     "support": 0.5476,
+     "evidence_mentions": [
+      "ChatGPT"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Harvard",
+   "normalized": "harvard",
+   "candidates": [
+    {
+     "entity_id": "ent_69c1d0aa4f",
+     "canonical": "harvard",
+     "support": 0.5476,
+     "evidence_mentions": [
+      "Harvard"
+     ]
+    },
+    {
+     "entity_id": "ent_70973cb5ee",
+     "canonical": "harvard gazette",
+     "support": 0.1976,
+     "evidence_mentions": [
+      "Harvard Gazette"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Maya Bodnick",
+   "normalized": "maya bodnick",
+   "candidates": [
+    {
+     "entity_id": "ent_c96b5d54d2",
+     "canonical": "maya bodnick",
+     "support": 0.5476,
+     "evidence_mentions": [
+      "Maya Bodnick"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Slow Boring",
+   "normalized": "slow boring",
+   "candidates": [
+    {
+     "entity_id": "ent_4a973533c8",
+     "canonical": "slow boring",
+     "support": 0.5476,
+     "evidence_mentions": [
+      "Slow Boring"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Harvard Gazette",
+   "normalized": "harvard gazette",
+   "candidates": [
+    {
+     "entity_id": "ent_70973cb5ee",
+     "canonical": "harvard gazette",
+     "support": 0.5476,
+     "evidence_mentions": [
+      "Harvard Gazette"
+     ]
+    },
+    {
+     "entity_id": "ent_69c1d0aa4f",
+     "canonical": "harvard",
+     "support": 0.1976,
+     "evidence_mentions": [
+      "Harvard"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Professors",
+   "normalized": "professors",
+   "candidates": [
+    {
+     "entity_id": "ent_26215f219e",
+     "canonical": "professors",
+     "support": 0.5476,
+     "evidence_mentions": [
+      "Professors"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Eastern Illinois",
+   "normalized": "eastern illinois",
+   "candidates": [
+    {
+     "entity_id": "ent_c268164fe2",
+     "canonical": "eastern illinois",
+     "support": 0.5476,
+     "evidence_mentions": [
+      "Eastern Illinois"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "A Philosophy Professor",
+   "normalized": "a philosophy professor",
+   "candidates": [
+    {
+     "entity_id": "ent_08ab060942",
+     "canonical": "a philosophy professor",
+     "support": 0.5476,
+     "evidence_mentions": [
+      "A Philosophy Professor"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "His Cheating Students",
+   "normalized": "his cheating students",
+   "candidates": [
+    {
+     "entity_id": "ent_6e1d8a3c4b",
+     "canonical": "his cheating students",
+     "support": 0.5476,
+     "evidence_mentions": [
+      "His Cheating Students"
+     ]
+    },
+    {
+     "entity_id": "ent_204036a1ef",
+     "canonical": "student",
+     "support": 0.2452,
+     "evidence_mentions": [
+      "student",
+      "student"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Daily Nous",
+   "normalized": "daily nous",
+   "candidates": [
+    {
+     "entity_id": "ent_de0d6c42b4",
+     "canonical": "daily nous",
+     "support": 0.5476,
+     "evidence_mentions": [
+      "Daily Nous"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Texas A&M",
+   "normalized": "texas a&m",
+   "candidates": [
+    {
+     "entity_id": "ent_92d3f8cdf2",
+     "canonical": "texas a&m",
+     "support": 0.5476,
+     "evidence_mentions": [
+      "Texas A&M"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Dan Patrick",
+   "normalized": "dan patrick",
+   "candidates": [
+    {
+     "entity_id": "ent_6d58da2511",
+     "canonical": "dan patrick",
+     "support": 0.5476,
+     "evidence_mentions": [
+      "Dan Patrick"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "teacher",
+   "normalized": "teacher",
+   "candidates": [
+    {
+     "entity_id": "ent_4a82cb6db5",
+     "canonical": "teacher",
+     "support": 0.5952,
+     "evidence_mentions": [
+      "teacher",
+      "teacher"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "employee",
+   "normalized": "employee",
+   "candidates": [
+    {
+     "entity_id": "ent_caf322f0bb",
+     "canonical": "employee",
+     "support": 0.5952,
+     "evidence_mentions": [
+      "employee",
+      "employee"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "student",
+   "normalized": "student",
+   "candidates": [
+    {
+     "entity_id": "ent_204036a1ef",
+     "canonical": "student",
+     "support": 0.5952,
+     "evidence_mentions": [
+      "student",
+      "student"
+     ]
+    },
+    {
+     "entity_id": "ent_6e1d8a3c4b",
+     "canonical": "his cheating students",
+     "support": 0.1976,
+     "evidence_mentions": [
+      "His Cheating Students"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "JLS",
+   "normalized": "jls",
+   "candidates": [
+    {
+     "entity_id": "ent_cf1ae6baa1",
+     "canonical": "jls",
+     "support": 0.5952,
+     "evidence_mentions": [
+      "JLS",
+      "JLS"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "School district",
+   "normalized": "school district",
+   "candidates": [
+    {
+     "entity_id": "ent_df7b1e03cc",
+     "canonical": "school district",
+     "support": 0.5476,
+     "evidence_mentions": [
+      "School district"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "teacher",
+   "normalized": "teacher",
+   "candidates": [
+    {
+     "entity_id": "ent_4a82cb6db5",
+     "canonical": "teacher",
+     "support": 0.5952,
+     "evidence_mentions": [
+      "teacher",
+      "teacher"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "employee",
+   "normalized": "employee",
+   "candidates": [
+    {
+     "entity_id": "ent_caf322f0bb",
+     "canonical": "employee",
+     "support": 0.5952,
+     "evidence_mentions": [
+      "employee",
+      "employee"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "student",
+   "normalized": "student",
+   "candidates": [
+    {
+     "entity_id": "ent_204036a1ef",
+     "canonical": "student",
+     "support": 0.5952,
+     "evidence_mentions": [
+      "student",
+      "student"
+     ]
+    },
+    {
+     "entity_id": "ent_6e1d8a3c4b",
+     "canonical": "his cheating students",
+     "support": 0.1976,
+     "evidence_mentions": [
+      "His Cheating Students"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "JLS",
+   "normalized": "jls",
+   "candidates": [
+    {
+     "entity_id": "ent_cf1ae6baa1",
+     "canonical": "jls",
+     "support": 0.5952,
+     "evidence_mentions": [
+      "JLS",
+      "JLS"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "8640e506a420bf2a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1689663600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689663600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "8e2e091bcf08d0bf": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1684998000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684998000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "297f27d150e1508c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1690268400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690268400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "b03e3795dd82810c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1685257200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685257200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a2beede07c49bbb5": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1683356400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683356400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "21f25d517c9615df": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1682406000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682406000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "90497955b9db9235": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1691910000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1691910000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ec8c3be39969026b": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1688540400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1688540400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "da15915e71510c66": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1680764400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680764400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_769192012b",
+   "member_ids": [
+    "8640e506a420bf2a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Slow Boring",
+   "primary_source": "Slow Boring",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9f6671d0dd",
+   "member_ids": [
+    "8e2e091bcf08d0bf"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Daily Nous",
+   "primary_source": "Daily Nous",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_52921ad83d",
+   "member_ids": [
+    "297f27d150e1508c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Texas Tribune",
+   "primary_source": "The Texas Tribune",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_10f1f4814f",
+   "member_ids": [
+    "b03e3795dd82810c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Palo Alto Daily Post",
+   "primary_source": "Palo Alto Daily Post",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_18cafe44e6",
+   "member_ids": [
+    "a2beede07c49bbb5"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Harvard Crimson",
+   "primary_source": "The Harvard Crimson",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_5a7bd75a3a",
+   "member_ids": [
+    "21f25d517c9615df"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "New York Post",
+   "primary_source": "New York Post",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b429a043b8",
+   "member_ids": [
+    "90497955b9db9235"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "ABC News & Headlines \u2013 Australian Broadcasting Corporation",
+   "primary_source": "ABC News & Headlines \u2013 Australian Broadcasting Corporation",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_d1032ae6e6",
+   "member_ids": [
+    "ec8c3be39969026b"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Harvard Gazette",
+   "primary_source": "Harvard Gazette",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_99b600a897",
+   "member_ids": [
+    "da15915e71510c66"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Belt Magazine",
+   "primary_source": "Belt Magazine",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "8640e506a420bf2a:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1689663600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "8640e506a420bf2a:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1689663600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "ec8c3be39969026b:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1688540400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "da15915e71510c66:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680764400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "8e2e091bcf08d0bf:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684998000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "297f27d150e1508c:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1690268400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "b03e3795dd82810c:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685257200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "b03e3795dd82810c:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685257200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "8640e506a420bf2a:c0",
+  "8640e506a420bf2a:c1",
+  "ec8c3be39969026b:c0",
+  "da15915e71510c66:c0",
+  "8e2e091bcf08d0bf:c0",
+  "297f27d150e1508c:c0",
+  "b03e3795dd82810c:c0",
+  "b03e3795dd82810c:c1"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_547eddf999": {
+   "status": "fulfilled",
+   "n_claims": 6,
+   "n_included": 6
+  },
+  "req_49c4f4e670": {
+   "status": "fulfilled",
+   "n_claims": 1,
+   "n_included": 1
+  },
+  "req_cc51cb9ab0": {
+   "status": "fulfilled",
+   "n_claims": 1,
+   "n_included": 1
+  },
+  "req_5a54053054": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_4c3bdad25a": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_2a0e93b9ca": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_7d8b406417": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_5a54053054",
+  "req_4c3bdad25a",
+  "req_2a0e93b9ca",
+  "req_7d8b406417"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 9,
+  "n_contradictions": 0,
+  "n_documents": 9
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 13.13,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "b02bfc4e1ff8fbd0",
+ "bundle_hash": "b02bfc4e1ff8fbd0",
+ "_persisted_at": "2026-07-13T01:28:31Z"
+}

@@ -1,0 +1,1665 @@
+{
+ "bundle_id": "eb_c06adf",
+ "question": "Will the divorcing parties settle the property split out of court?",
+ "as_of": 1675209600.0,
+ "compiler_plan_hash": "8cfff7730649",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_a30d24019b",
+   "claim_or_quantity": "If the parties reach a binding agreement on property division without a court order by 2023-06-01, outcome is settle_out_of_court; otherwise court_adjudication.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-02-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "party_A",
+    "party_B",
+    "attorney_A",
+    "attorney_B"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_349b2201bd",
+   "claim_or_quantity": "value/context of party_A.reservation_price",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "party_A.reservation_price",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-02-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_cac0bef653",
+   "claim_or_quantity": "value/context of party_B.reservation_price",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "party_B.reservation_price",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-02-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_a8f4274817",
+   "claim_or_quantity": "value/context of party_A.risk_tolerance",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "party_A.risk_tolerance",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-02-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_c8f72bde07",
+   "claim_or_quantity": "evidence discriminating structural hypothesis rational_bargaining",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:rational_bargaining",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-02-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_1757a112e9",
+   "claim_or_quantity": "decision rules / process of family_court",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "family_court",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-02-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_a30d24019b",
+   "terms": "divorcing parties settle property split court party A party B attorney A",
+   "after": "2022-09-04",
+   "before": "2023-02-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_349b2201bd",
+   "terms": "party reservation price",
+   "after": "2022-09-04",
+   "before": "2023-02-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_cac0bef653",
+   "terms": "party reservation price",
+   "after": "2022-09-04",
+   "before": "2023-02-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_a30d24019b",
+   "logical_query": "divorcing parties settle property split court party A party B attorney A after:2022-09-04 before:2023-02-01",
+   "wire_url": "https://news.google.com/rss/search?q=divorcing+parties+settle+property+split+court+party+A+party+B+attorney+A+after%3A2022-09-04+before%3A2023-02-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-09-04",
+   "before_date": "2023-02-01",
+   "retrieved_at": 1783906277.2164443,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:31:18 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw0ZBiSO44w5AKxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwcz_5fuMQm0LH5IYeSclJ-YXxKfklxcUFOYnFGcWpRWWpRvJGBkZmBuYGZnoFJfIEBAHlLOK0\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "022f39de2bf9d8ceffd70df999187233842dc672b86fdcf3d9737da9bc566e11",
+   "n_bytes": 5362,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 3,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.727
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_349b2201bd",
+   "logical_query": "party reservation price after:2022-09-04 before:2023-02-01",
+   "wire_url": "https://news.google.com/rss/search?q=party+reservation+price+after%3A2022-09-04+before%3A2023-02-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-09-04",
+   "before_date": "2023-02-01",
+   "retrieved_at": 1783906277.945534,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:31:18 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw0pBiSO44w5AKxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcz_5fuMQmsKH7bDuTknJSfmF8Sn5JcXFBTmJxRnFqUVlqUbyRgZGZgbmBmZ6BSXyBAQC1aDkZ\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "02a29b876330f6d433dc97e3d98344858c54e4a35609e9c62750d075b6c70f9d",
+   "n_bytes": 61379,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.579
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_cac0bef653",
+   "logical_query": "party reservation price after:2022-09-04 before:2023-02-01",
+   "wire_url": "https://news.google.com/rss/search?q=party+reservation+price+after%3A2022-09-04+before%3A2023-02-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2022-09-04",
+   "before_date": "2023-02-01",
+   "retrieved_at": 1783906278.5269194,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Pragma": "no-cache",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw0pBiSO44w5AKxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcz_5fuMQmsKH7bDuTknJSfmF8Sn5JcXFBTmJxRnFqUVlqUbyRgZGZgbmBmZ6BSXyBAQC1aDkZ\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Date": "Mon, 13 Jul 2026 01:31:18 GMT",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Content-Type": "application/xml; charset=utf-8",
+    "Age": "0",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding"
+   },
+   "raw_content_hash": "02a29b876330f6d433dc97e3d98344858c54e4a35609e9c62750d075b6c70f9d",
+   "n_bytes": 61379,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.156
+  }
+ ],
+ "raw_content_refs": [
+  "022f39de2bf9d8ceffd70df999187233842dc672b86fdcf3d9737da9bc566e11",
+  "02a29b876330f6d433dc97e3d98344858c54e4a35609e9c62750d075b6c70f9d"
+ ],
+ "documents": [
+  {
+   "id": "88d1eeae243cd9fe",
+   "source": "The Florida Bar",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiygFBVV95cUxOY3F6Mkd6SVAta2ZGUlQ1aXVyTDI5REtBNXlJbzVNQ1NJTmtHdmN0ZkVOTExubmFWMUwzYVhVTTM3cXJGR0lzSkRvQjdhbmVBanBPd3dWb2s2MENaYlcwVDhOdWowZFNfZ2ZuY21acnRTcUlEaGdCa01pbldzbFFheW1kZURQMFlEYVZ0VUNRQVZiVTRxdFR3a3pCZU1KeDdjSGpNUTJ6SUZIUDlPalo4aGtrWGtWcDNoQlNsaWhzVGZMNDNTUm9YT0V3?oc=5",
+   "title": "Estate Planning Issues in a Divorce Situation II: An Update and Standing Orders - The Florida Bar",
+   "text": "Estate Planning Issues in a Divorce Situation II: An Update and Standing Orders - The Florida Bar. Estate Planning Issues in a Divorce Situation II: An Update and Standing Orders The Florida Bar",
+   "content_hash": "38e2c94a69f20318",
+   "raw_feed_hash": "022f39de2bf9d8ceffd70df999187233842dc672b86fdcf3d9737da9bc566e11",
+   "published_at": 1672560000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_a30d24019b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6a9438d56e800ed1",
+   "source": "CBS News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9Cc0ExWTdZYmQ3Vi04MkRmMGZMQ2htZGNpTmF5V3E1dnY4UjlWaWtUcEJmWnJVRWNCV3N2VEdmbFFHYWxQTWd0R1FFQTJEcGg2R0VoYXJSOUktZTJwMGU4ejNEQ1ZnOEhUajhoQkR3TUM1LUHSAXhBVV95cUxPYkRSTlFGNlNDSkpJVDBjbXh1bjJxZzg2cXpQNFJrQ0xEcVlKNi05RUh6Vzd2VVRFTll2MDhlc19kc2hZTG9SZVdXcV9zR0dQMUw3Qmc4TXpvNjJfbkgweUNWR0U5SHRYU2FMMnZBNDc5Nk9wdTdKbmM?oc=5",
+   "title": "50 very expensive celebrity divorces - CBS News",
+   "text": "50 very expensive celebrity divorces - CBS News. 50 very expensive celebrity divorces CBS News",
+   "content_hash": "96fdc69bf4fb6408",
+   "raw_feed_hash": "022f39de2bf9d8ceffd70df999187233842dc672b86fdcf3d9737da9bc566e11",
+   "published_at": 1662534000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_a30d24019b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "123da90c0ed943a8",
+   "source": "Law Society of Scotland",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPX2VTaldaT01lazBaQ0N1YlBqdGFwdlJPRkJXOGZEYWJVZ1JHVmlxaXdoU1J3amhzeFBINkswMmk1Yi1sVUM5NkNyblpsUURzenZqUmZVMjdRT3JBVy1td2lLcGVsMTB3Ny1vOExtZ2gwMko1WlpvMzRmbnBLdUlwQ05JSWJuOU5GbFFVN283cXNZb0dqNHBoc3JkdmNLeDg?oc=5",
+   "title": "Assets, experts and fair sharing - Law Society of Scotland",
+   "text": "Assets, experts and fair sharing - Law Society of Scotland. Assets, experts and fair sharing Law Society of Scotland",
+   "content_hash": "bb8b8b3403e7d73e",
+   "raw_feed_hash": "022f39de2bf9d8ceffd70df999187233842dc672b86fdcf3d9737da9bc566e11",
+   "published_at": 1673856000.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_a30d24019b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4559d8b7975a26e1",
+   "source": "WDW Magazine",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQWDlmaE5iX2dWbGtxNDFWcFF5SlBMV05EZlpLdXAyZ0lwbmRwdDdHSEd1cTlYSmlMRGRQOU1CTk5VWjd0ejUyb1Z5dy1ocndRU2NVcFViZUR0NGZBZEd5cnpvRmdvSjRxZjBvOTRyUTZjRkFGVUpIU29FdUozTmJzM3J4OXJCS1AxYWVnekJ0UVBEdw?oc=5",
+   "title": "Mickey\u2019s Very Merry Christmas Party 2022: The Complete Guide - WDW Magazine",
+   "text": "Mickey\u2019s Very Merry Christmas Party 2022: The Complete Guide - WDW Magazine. Mickey\u2019s Very Merry Christmas Party 2022: The Complete Guide WDW Magazine",
+   "content_hash": "fea4173dd0277698",
+   "raw_feed_hash": "02a29b876330f6d433dc97e3d98344858c54e4a35609e9c62750d075b6c70f9d",
+   "published_at": 1669104000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_349b2201bd",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "63ffc7bf1694ced1",
+   "source": "The Washington Post",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxOYnk2ZkwzaC04d1NXaEE2VTZwck9VYXZvTEx1dEZVdWJRWUhiRXhIbHZST2xGejNSczh0cWpVcjBxY2tUZExESWg0VXVSTm5PbFdaNzZIUllyVFVSWEozSkRvSEVOR2E0aGF6d1lURnVkOXdERzk3aUZGNjlGQmhsVEk5RjRiMjEtc2RwNXpEVGtEQWc?oc=5",
+   "title": "Advice | The great booking debate: Is direct better than a third-party site? - The Washington Post",
+   "text": "Advice | The great booking debate: Is direct better than a third-party site? - The Washington Post. Advice | The great booking debate: Is direct better than a third-party site? The Washington Post",
+   "content_hash": "869b7c91bcb8f1c1",
+   "raw_feed_hash": "02a29b876330f6d433dc97e3d98344858c54e4a35609e9c62750d075b6c70f9d",
+   "published_at": 1673424000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_349b2201bd",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6fe43b35e781ab77",
+   "source": "Disney Tourist Blog",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQZ1dRbXhlNG9FOENWMWJIQzhEVjlFV0NrMWdfWWtac2tBUmlzRV9LcDdnOVM4RlhoUmZMWWtIM2Rhd1FQbEl0bmJrWW9RbTNhZmpfSWNxbGQ3TGdsNFdkeG80QWhQRWdyM0I0THZ6RlZFNWlNSHNlVTJUSzE4UmF6ODEyVk1hTXptaFc0T2FacDVYY1MyaG4ta3ZVcGpVSFp5Qk1mM0g5X2NnbW5FX050N3pn?oc=5",
+   "title": "Most Ticket Prices Increase & Park-Specific Pricing Debuts at Disney World - Disney Tourist Blog",
+   "text": "Most Ticket Prices Increase & Park-Specific Pricing Debuts at Disney World - Disney Tourist Blog. Most Ticket Prices Increase & Park-Specific Pricing Debuts at Disney World Disney Tourist Blog",
+   "content_hash": "8788ea6f919737f8",
+   "raw_feed_hash": "02a29b876330f6d433dc97e3d98344858c54e4a35609e9c62750d075b6c70f9d",
+   "published_at": 1671350400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_349b2201bd",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "c609858d04af3bea",
+   "source": "Thrillist",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNbUx0b3hBM3NyLXNCZE9DZ2l1eENUSEF6RW5sSnNwV191UXptLXhqS2N4eG5GWmVqVnJ6QlVLYkRCZ3U5aXBDY3dsMDZwc0FNNU1JVU5pbmwwNmF4Zlp3MzduODE3ZVdrOERKVWZZX3lJRXlnQ0RBYzBRX3l2blpMcmpucW5QWWRTQTdmdjhtM2dLS1Z6SjFtaTl3ak0?oc=5",
+   "title": "The Best Restaurants for Group Dining in Las Vegas - Thrillist",
+   "text": "The Best Restaurants for Group Dining in Las Vegas - Thrillist. The Best Restaurants for Group Dining in Las Vegas Thrillist",
+   "content_hash": "4d1bf619bc534cb9",
+   "raw_feed_hash": "02a29b876330f6d433dc97e3d98344858c54e4a35609e9c62750d075b6c70f9d",
+   "published_at": 1668499200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_349b2201bd",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6d4eef471f7e569f",
+   "source": "wdwinfo.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxPQjIzSFhhTHBxMnQ5YnEtTWxaWTVVSUJWVmdKdHA3OTJzVWdORTNETENwRVNvT2lyTnRhRmkxU0loSnpNaHdLZHk1VDNuM3hadjMzanZpaVA2MzZiamhFa3l3dHg5cndaZXVSVUJNa192VGs5bVZUX2FlbUxZWndzQ1k2d3N1S2xhdHRBRXlSYU5Wc1c5WGxpNkxWbjlYdm9MT21XSGxtYldJcWdpV1dMYk1lYktfVms?oc=5",
+   "title": "A First-Timer\u2019s Honest Review of Mickey\u2019s Not-So-Scary Halloween Party 2022 - wdwinfo.com",
+   "text": "A First-Timer\u2019s Honest Review of Mickey\u2019s Not-So-Scary Halloween Party 2022 - wdwinfo.com. A First-Timer\u2019s Honest Review of Mickey\u2019s Not-So-Scary Halloween Party 2022 wdwinfo.com",
+   "content_hash": "67e0c2db74d9cae0",
+   "raw_feed_hash": "02a29b876330f6d433dc97e3d98344858c54e4a35609e9c62750d075b6c70f9d",
+   "published_at": 1666249200.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_349b2201bd",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ba631bf6fa1ec750",
+   "source": "Fort Worth Star-Telegram",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9MdUtIOHhnN2FtQlJmZjFKUlhBZDIwODBBVllWWHNZc1BocHBzekUtUHYyV0ZGV0RJR2NxTmVaTWV1UFRlYzNwcS1iTGVKbVhJTkFEdnVIQ1lpWWROTWgtOW1sem92a1VKTGk1amJQVFVKYzDSAXNBVV95cUxQenRSaUxIOE1QT0pmdGJLQ1VMR2FQS0dkeVUwU3NSbHVwbHZxb1MyX1h0S0lKQWowa2NTQTl4M0xyeVBuS2wwX3QzYk1nenY2QU5ZNHRGMllwMVFwbDRGWlk0QUxkVVVYOWFTQnNPV3J1WVNr?oc=5",
+   "title": "Our guide to New Year\u2019s eve parties in Fort Worth and Arlington - Fort Worth Star-Telegram",
+   "text": "Our guide to New Year\u2019s eve parties in Fort Worth and Arlington - Fort Worth Star-Telegram. Our guide to New Year\u2019s eve parties in Fort Worth and Arlington Fort Worth Star-Telegram",
+   "content_hash": "7294d9bea99f3888",
+   "raw_feed_hash": "02a29b876330f6d433dc97e3d98344858c54e4a35609e9c62750d075b6c70f9d",
+   "published_at": 1671523200.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_349b2201bd",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "54d772855e286adf",
+   "source": "Knoxville News Sentinel",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxQWWROMGtBZnhNaEpXX1BPNWZQZGp5OTZaWDk2Vk1RdDFOMHp4M2VzN3ZZYmY2OGxnY0JHZW5SLUR2MHRqNGdSdVVjbTdMWnFQSFhMUGg4TWRCbWFpcFdvZWI0ODlObHJGNlg2WkRZSGNJQlB3OW5wZDdIRHl1MEM2d1VsT3VSVUVSZ0xQTGNacURFclFqZmtZWjdvWjNlRUo0UTRVbjBsdDNmYk8wQk1Vd21TVXNacU1KNTRmLWNtM0lzNlV3TDAxTEs1aw?oc=5",
+   "title": "Made your Knoxville New Year's Eve plans yet? Here's everything from fancy to low-key - Knoxville News Sentinel",
+   "text": "Made your Knoxville New Year's Eve plans yet? Here's everything from fancy to low-key - Knoxville News Sentinel. Made your Knoxville New Year's Eve plans yet? Here's everything from fancy to low-key Knoxville News Sentinel",
+   "content_hash": "ede3fc3cc22d43e3",
+   "raw_feed_hash": "02a29b876330f6d433dc97e3d98344858c54e4a35609e9c62750d075b6c70f9d",
+   "published_at": 1671177600.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_349b2201bd",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "7a0f3cf74f4d1871",
+   "source": "The Infatuation",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1ZYzNaZFJNczVOdWRreHhTTGtHSVNfSlNxYnFib2thWG03cTlDOVVSYWd6S0xYNnota2kxc0pwOTFUM0VkZVdVeVdNVm9sVWFOeUVXdzNBVHJwQVdqMl9adHl1bEtlMVpFdlVURk90cG9wRGc?oc=5",
+   "title": "10 NYC Spots Where You Can Have A Birthday With An Open Bar - New York - The Infatuation",
+   "text": "10 NYC Spots Where You Can Have A Birthday With An Open Bar - New York - The Infatuation. 10 NYC Spots Where You Can Have A Birthday With An Open Bar - New York The Infatuation",
+   "content_hash": "0c97b2d3c8dd9a3b",
+   "raw_feed_hash": "02a29b876330f6d433dc97e3d98344858c54e4a35609e9c62750d075b6c70f9d",
+   "published_at": 1674547200.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_349b2201bd",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4559d8b7975a26e1",
+   "source": "WDW Magazine",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQWDlmaE5iX2dWbGtxNDFWcFF5SlBMV05EZlpLdXAyZ0lwbmRwdDdHSEd1cTlYSmlMRGRQOU1CTk5VWjd0ejUyb1Z5dy1ocndRU2NVcFViZUR0NGZBZEd5cnpvRmdvSjRxZjBvOTRyUTZjRkFGVUpIU29FdUozTmJzM3J4OXJCS1AxYWVnekJ0UVBEdw?oc=5",
+   "title": "Mickey\u2019s Very Merry Christmas Party 2022: The Complete Guide - WDW Magazine",
+   "text": "Mickey\u2019s Very Merry Christmas Party 2022: The Complete Guide - WDW Magazine. Mickey\u2019s Very Merry Christmas Party 2022: The Complete Guide WDW Magazine",
+   "content_hash": "fea4173dd0277698",
+   "raw_feed_hash": "02a29b876330f6d433dc97e3d98344858c54e4a35609e9c62750d075b6c70f9d",
+   "published_at": 1669104000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_cac0bef653",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "63ffc7bf1694ced1",
+   "source": "The Washington Post",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxOYnk2ZkwzaC04d1NXaEE2VTZwck9VYXZvTEx1dEZVdWJRWUhiRXhIbHZST2xGejNSczh0cWpVcjBxY2tUZExESWg0VXVSTm5PbFdaNzZIUllyVFVSWEozSkRvSEVOR2E0aGF6d1lURnVkOXdERzk3aUZGNjlGQmhsVEk5RjRiMjEtc2RwNXpEVGtEQWc?oc=5",
+   "title": "Advice | The great booking debate: Is direct better than a third-party site? - The Washington Post",
+   "text": "Advice | The great booking debate: Is direct better than a third-party site? - The Washington Post. Advice | The great booking debate: Is direct better than a third-party site? The Washington Post",
+   "content_hash": "869b7c91bcb8f1c1",
+   "raw_feed_hash": "02a29b876330f6d433dc97e3d98344858c54e4a35609e9c62750d075b6c70f9d",
+   "published_at": 1673424000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_cac0bef653",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6fe43b35e781ab77",
+   "source": "Disney Tourist Blog",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQZ1dRbXhlNG9FOENWMWJIQzhEVjlFV0NrMWdfWWtac2tBUmlzRV9LcDdnOVM4RlhoUmZMWWtIM2Rhd1FQbEl0bmJrWW9RbTNhZmpfSWNxbGQ3TGdsNFdkeG80QWhQRWdyM0I0THZ6RlZFNWlNSHNlVTJUSzE4UmF6ODEyVk1hTXptaFc0T2FacDVYY1MyaG4ta3ZVcGpVSFp5Qk1mM0g5X2NnbW5FX050N3pn?oc=5",
+   "title": "Most Ticket Prices Increase & Park-Specific Pricing Debuts at Disney World - Disney Tourist Blog",
+   "text": "Most Ticket Prices Increase & Park-Specific Pricing Debuts at Disney World - Disney Tourist Blog. Most Ticket Prices Increase & Park-Specific Pricing Debuts at Disney World Disney Tourist Blog",
+   "content_hash": "8788ea6f919737f8",
+   "raw_feed_hash": "02a29b876330f6d433dc97e3d98344858c54e4a35609e9c62750d075b6c70f9d",
+   "published_at": 1671350400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_cac0bef653",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "c609858d04af3bea",
+   "source": "Thrillist",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxNbUx0b3hBM3NyLXNCZE9DZ2l1eENUSEF6RW5sSnNwV191UXptLXhqS2N4eG5GWmVqVnJ6QlVLYkRCZ3U5aXBDY3dsMDZwc0FNNU1JVU5pbmwwNmF4Zlp3MzduODE3ZVdrOERKVWZZX3lJRXlnQ0RBYzBRX3l2blpMcmpucW5QWWRTQTdmdjhtM2dLS1Z6SjFtaTl3ak0?oc=5",
+   "title": "The Best Restaurants for Group Dining in Las Vegas - Thrillist",
+   "text": "The Best Restaurants for Group Dining in Las Vegas - Thrillist. The Best Restaurants for Group Dining in Las Vegas Thrillist",
+   "content_hash": "4d1bf619bc534cb9",
+   "raw_feed_hash": "02a29b876330f6d433dc97e3d98344858c54e4a35609e9c62750d075b6c70f9d",
+   "published_at": 1668499200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_cac0bef653",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6d4eef471f7e569f",
+   "source": "wdwinfo.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxPQjIzSFhhTHBxMnQ5YnEtTWxaWTVVSUJWVmdKdHA3OTJzVWdORTNETENwRVNvT2lyTnRhRmkxU0loSnpNaHdLZHk1VDNuM3hadjMzanZpaVA2MzZiamhFa3l3dHg5cndaZXVSVUJNa192VGs5bVZUX2FlbUxZWndzQ1k2d3N1S2xhdHRBRXlSYU5Wc1c5WGxpNkxWbjlYdm9MT21XSGxtYldJcWdpV1dMYk1lYktfVms?oc=5",
+   "title": "A First-Timer\u2019s Honest Review of Mickey\u2019s Not-So-Scary Halloween Party 2022 - wdwinfo.com",
+   "text": "A First-Timer\u2019s Honest Review of Mickey\u2019s Not-So-Scary Halloween Party 2022 - wdwinfo.com. A First-Timer\u2019s Honest Review of Mickey\u2019s Not-So-Scary Halloween Party 2022 wdwinfo.com",
+   "content_hash": "67e0c2db74d9cae0",
+   "raw_feed_hash": "02a29b876330f6d433dc97e3d98344858c54e4a35609e9c62750d075b6c70f9d",
+   "published_at": 1666249200.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_cac0bef653",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ba631bf6fa1ec750",
+   "source": "Fort Worth Star-Telegram",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9MdUtIOHhnN2FtQlJmZjFKUlhBZDIwODBBVllWWHNZc1BocHBzekUtUHYyV0ZGV0RJR2NxTmVaTWV1UFRlYzNwcS1iTGVKbVhJTkFEdnVIQ1lpWWROTWgtOW1sem92a1VKTGk1amJQVFVKYzDSAXNBVV95cUxQenRSaUxIOE1QT0pmdGJLQ1VMR2FQS0dkeVUwU3NSbHVwbHZxb1MyX1h0S0lKQWowa2NTQTl4M0xyeVBuS2wwX3QzYk1nenY2QU5ZNHRGMllwMVFwbDRGWlk0QUxkVVVYOWFTQnNPV3J1WVNr?oc=5",
+   "title": "Our guide to New Year\u2019s eve parties in Fort Worth and Arlington - Fort Worth Star-Telegram",
+   "text": "Our guide to New Year\u2019s eve parties in Fort Worth and Arlington - Fort Worth Star-Telegram. Our guide to New Year\u2019s eve parties in Fort Worth and Arlington Fort Worth Star-Telegram",
+   "content_hash": "7294d9bea99f3888",
+   "raw_feed_hash": "02a29b876330f6d433dc97e3d98344858c54e4a35609e9c62750d075b6c70f9d",
+   "published_at": 1671523200.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_cac0bef653",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "54d772855e286adf",
+   "source": "Knoxville News Sentinel",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxQWWROMGtBZnhNaEpXX1BPNWZQZGp5OTZaWDk2Vk1RdDFOMHp4M2VzN3ZZYmY2OGxnY0JHZW5SLUR2MHRqNGdSdVVjbTdMWnFQSFhMUGg4TWRCbWFpcFdvZWI0ODlObHJGNlg2WkRZSGNJQlB3OW5wZDdIRHl1MEM2d1VsT3VSVUVSZ0xQTGNacURFclFqZmtZWjdvWjNlRUo0UTRVbjBsdDNmYk8wQk1Vd21TVXNacU1KNTRmLWNtM0lzNlV3TDAxTEs1aw?oc=5",
+   "title": "Made your Knoxville New Year's Eve plans yet? Here's everything from fancy to low-key - Knoxville News Sentinel",
+   "text": "Made your Knoxville New Year's Eve plans yet? Here's everything from fancy to low-key - Knoxville News Sentinel. Made your Knoxville New Year's Eve plans yet? Here's everything from fancy to low-key Knoxville News Sentinel",
+   "content_hash": "ede3fc3cc22d43e3",
+   "raw_feed_hash": "02a29b876330f6d433dc97e3d98344858c54e4a35609e9c62750d075b6c70f9d",
+   "published_at": 1671177600.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_cac0bef653",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "7a0f3cf74f4d1871",
+   "source": "The Infatuation",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE1ZYzNaZFJNczVOdWRreHhTTGtHSVNfSlNxYnFib2thWG03cTlDOVVSYWd6S0xYNnota2kxc0pwOTFUM0VkZVdVeVdNVm9sVWFOeUVXdzNBVHJwQVdqMl9adHl1bEtlMVpFdlVURk90cG9wRGc?oc=5",
+   "title": "10 NYC Spots Where You Can Have A Birthday With An Open Bar - New York - The Infatuation",
+   "text": "10 NYC Spots Where You Can Have A Birthday With An Open Bar - New York - The Infatuation. 10 NYC Spots Where You Can Have A Birthday With An Open Bar - New York The Infatuation",
+   "content_hash": "0c97b2d3c8dd9a3b",
+   "raw_feed_hash": "02a29b876330f6d433dc97e3d98344858c54e4a35609e9c62750d075b6c70f9d",
+   "published_at": 1674547200.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_cac0bef653",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "88d1eeae243cd9fe:c0",
+   "source_id": "88d1eeae243cd9fe",
+   "subject": "The Florida Bar",
+   "predicate": "published",
+   "object": "Estate Planning Issues in a Divorce Situation II: An Update and Standing Orders",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Estate Planning Issues in a Divorce Situation II: An Update and Standing Orders - The Florida Bar",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1672560000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "The Florida Bar"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_12fca64d78",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_a30d24019b"
+   }
+  },
+  {
+   "claim_id": "4559d8b7975a26e1:c0",
+   "source_id": "4559d8b7975a26e1",
+   "subject": "Mickey\u2019s Very Merry Christmas Party 2022",
+   "predicate": "is described in",
+   "object": "The Complete Guide - WDW Magazine",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Mickey\u2019s Very Merry Christmas Party 2022: The Complete Guide - WDW Magazine",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1669104000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Mickey\u2019s Very Merry Christmas Party 2022",
+    "WDW Magazine"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_98ff501416",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_349b2201bd"
+   }
+  },
+  {
+   "claim_id": "4559d8b7975a26e1:c1",
+   "source_id": "4559d8b7975a26e1",
+   "subject": "Mickey\u2019s Very Merry Christmas Party 2022",
+   "predicate": "is the subject of",
+   "object": "The Complete Guide",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Mickey\u2019s Very Merry Christmas Party 2022: The Complete Guide WDW Magazine",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1669104000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Mickey\u2019s Very Merry Christmas Party 2022",
+    "The Complete Guide"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_98ff501416",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_349b2201bd"
+   }
+  },
+  {
+   "claim_id": "6a9438d56e800ed1:c0",
+   "source_id": "6a9438d56e800ed1",
+   "subject": "CBS News",
+   "predicate": "published",
+   "object": "article titled '50 very expensive celebrity divorces'",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "50 very expensive celebrity divorces - CBS News",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1662534000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "CBS News"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_824e3d7dbe",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_a30d24019b"
+   }
+  },
+  {
+   "claim_id": "63ffc7bf1694ced1:c0",
+   "source_id": "63ffc7bf1694ced1",
+   "subject": "The great booking debate",
+   "predicate": "is about",
+   "object": "whether direct is better than a third-party site",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The great booking debate: Is direct better than a third-party site?",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1673424000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "The Washington Post"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_f73977463b",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_349b2201bd"
+   }
+  },
+  {
+   "claim_id": "123da90c0ed943a8:c0",
+   "source_id": "123da90c0ed943a8",
+   "subject": "Law Society of Scotland",
+   "predicate": "has",
+   "object": "assets",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Assets, experts and fair sharing - Law Society of Scotland",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1673856000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Law Society of Scotland"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_7bcd382788",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_a30d24019b"
+   }
+  },
+  {
+   "claim_id": "123da90c0ed943a8:c1",
+   "source_id": "123da90c0ed943a8",
+   "subject": "Law Society of Scotland",
+   "predicate": "has",
+   "object": "experts",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Assets, experts and fair sharing - Law Society of Scotland",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1673856000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Law Society of Scotland"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_7bcd382788",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_a30d24019b"
+   }
+  },
+  {
+   "claim_id": "123da90c0ed943a8:c2",
+   "source_id": "123da90c0ed943a8",
+   "subject": "Law Society of Scotland",
+   "predicate": "promotes",
+   "object": "fair sharing",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Assets, experts and fair sharing - Law Society of Scotland",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1673856000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Law Society of Scotland"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_7bcd382788",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_a30d24019b"
+   }
+  },
+  {
+   "claim_id": "6fe43b35e781ab77:c0",
+   "source_id": "6fe43b35e781ab77",
+   "subject": "Ticket prices",
+   "predicate": "increase",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "most",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Most Ticket Prices Increase",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1671350400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Disney World"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_f0c5364ccd",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_349b2201bd"
+   }
+  },
+  {
+   "claim_id": "6fe43b35e781ab77:c1",
+   "source_id": "6fe43b35e781ab77",
+   "subject": "Park-specific pricing",
+   "predicate": "debuts",
+   "object": "at Disney World",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Park-Specific Pricing Debuts at Disney World",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1671350400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Disney World"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_f0c5364ccd",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_349b2201bd"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "The Florida Bar",
+   "normalized": "florida bar",
+   "candidates": [
+    {
+     "entity_id": "ent_fa9ef234e9",
+     "canonical": "florida bar",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "The Florida Bar"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Mickey\u2019s Very Merry Christmas Party 2022",
+   "normalized": "mickey\u2019s very merry christmas party 2022",
+   "candidates": [
+    {
+     "entity_id": "ent_08a4d4607b",
+     "canonical": "mickey\u2019s very merry christmas party 2022",
+     "support": 0.6667,
+     "evidence_mentions": [
+      "Mickey\u2019s Very Merry Christmas Party 2022",
+      "Mickey\u2019s Very Merry Christmas Party 2022"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "WDW Magazine",
+   "normalized": "wdw magazine",
+   "candidates": [
+    {
+     "entity_id": "ent_793fa4ad9b",
+     "canonical": "wdw magazine",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "WDW Magazine"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Mickey\u2019s Very Merry Christmas Party 2022",
+   "normalized": "mickey\u2019s very merry christmas party 2022",
+   "candidates": [
+    {
+     "entity_id": "ent_08a4d4607b",
+     "canonical": "mickey\u2019s very merry christmas party 2022",
+     "support": 0.6667,
+     "evidence_mentions": [
+      "Mickey\u2019s Very Merry Christmas Party 2022",
+      "Mickey\u2019s Very Merry Christmas Party 2022"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "The Complete Guide",
+   "normalized": "complete guide",
+   "candidates": [
+    {
+     "entity_id": "ent_16bbe54a86",
+     "canonical": "complete guide",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "The Complete Guide"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "CBS News",
+   "normalized": "cbs news",
+   "candidates": [
+    {
+     "entity_id": "ent_0aa55eb58a",
+     "canonical": "cbs news",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "CBS News"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "The Washington Post",
+   "normalized": "washington post",
+   "candidates": [
+    {
+     "entity_id": "ent_d072c65169",
+     "canonical": "washington post",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "The Washington Post"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Law Society of Scotland",
+   "normalized": "law society of scotland",
+   "candidates": [
+    {
+     "entity_id": "ent_ada27f242a",
+     "canonical": "law society of scotland",
+     "support": 0.75,
+     "evidence_mentions": [
+      "Law Society of Scotland",
+      "Law Society of Scotland",
+      "Law Society of Scotland"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Law Society of Scotland",
+   "normalized": "law society of scotland",
+   "candidates": [
+    {
+     "entity_id": "ent_ada27f242a",
+     "canonical": "law society of scotland",
+     "support": 0.75,
+     "evidence_mentions": [
+      "Law Society of Scotland",
+      "Law Society of Scotland",
+      "Law Society of Scotland"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Law Society of Scotland",
+   "normalized": "law society of scotland",
+   "candidates": [
+    {
+     "entity_id": "ent_ada27f242a",
+     "canonical": "law society of scotland",
+     "support": 0.75,
+     "evidence_mentions": [
+      "Law Society of Scotland",
+      "Law Society of Scotland",
+      "Law Society of Scotland"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Disney World",
+   "normalized": "disney world",
+   "candidates": [
+    {
+     "entity_id": "ent_24497f5110",
+     "canonical": "disney world",
+     "support": 0.6667,
+     "evidence_mentions": [
+      "Disney World",
+      "Disney World"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Disney World",
+   "normalized": "disney world",
+   "candidates": [
+    {
+     "entity_id": "ent_24497f5110",
+     "canonical": "disney world",
+     "support": 0.6667,
+     "evidence_mentions": [
+      "Disney World",
+      "Disney World"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "88d1eeae243cd9fe": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1675209600.0,
+   "claimed_pubdate_ts": 1672560000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1672560000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6a9438d56e800ed1": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1675209600.0,
+   "claimed_pubdate_ts": 1662534000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1662534000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "123da90c0ed943a8": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1675209600.0,
+   "claimed_pubdate_ts": 1673856000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1673856000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4559d8b7975a26e1": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1675209600.0,
+   "claimed_pubdate_ts": 1669104000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1669104000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "63ffc7bf1694ced1": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1675209600.0,
+   "claimed_pubdate_ts": 1673424000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1673424000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6fe43b35e781ab77": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1675209600.0,
+   "claimed_pubdate_ts": 1671350400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1671350400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "c609858d04af3bea": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1675209600.0,
+   "claimed_pubdate_ts": 1668499200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1668499200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6d4eef471f7e569f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1675209600.0,
+   "claimed_pubdate_ts": 1666249200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1666249200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ba631bf6fa1ec750": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1675209600.0,
+   "claimed_pubdate_ts": 1671523200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1671523200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "54d772855e286adf": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1675209600.0,
+   "claimed_pubdate_ts": 1671177600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1671177600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "7a0f3cf74f4d1871": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1675209600.0,
+   "claimed_pubdate_ts": 1674547200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1674547200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_12fca64d78",
+   "member_ids": [
+    "88d1eeae243cd9fe"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Florida Bar",
+   "primary_source": "The Florida Bar",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_824e3d7dbe",
+   "member_ids": [
+    "6a9438d56e800ed1"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "CBS News",
+   "primary_source": "CBS News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7bcd382788",
+   "member_ids": [
+    "123da90c0ed943a8"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Law Society of Scotland",
+   "primary_source": "Law Society of Scotland",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_98ff501416",
+   "member_ids": [
+    "4559d8b7975a26e1",
+    "4559d8b7975a26e1"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "WDW Magazine",
+   "primary_source": "WDW Magazine",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_f73977463b",
+   "member_ids": [
+    "63ffc7bf1694ced1",
+    "63ffc7bf1694ced1"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "The Washington Post",
+   "primary_source": "The Washington Post",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_f0c5364ccd",
+   "member_ids": [
+    "6fe43b35e781ab77",
+    "6fe43b35e781ab77"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "Disney Tourist Blog",
+   "primary_source": "Disney Tourist Blog",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_a9466cb859",
+   "member_ids": [
+    "c609858d04af3bea",
+    "c609858d04af3bea"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "Thrillist",
+   "primary_source": "Thrillist",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_b0e5394e6b",
+   "member_ids": [
+    "6d4eef471f7e569f",
+    "6d4eef471f7e569f"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "wdwinfo.com",
+   "primary_source": "wdwinfo.com",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_88b168030f",
+   "member_ids": [
+    "ba631bf6fa1ec750",
+    "ba631bf6fa1ec750"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "Fort Worth Star-Telegram",
+   "primary_source": "Fort Worth Star-Telegram",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_c24d86a776",
+   "member_ids": [
+    "54d772855e286adf",
+    "54d772855e286adf"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "Knoxville News Sentinel",
+   "primary_source": "Knoxville News Sentinel",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_d621adf028",
+   "member_ids": [
+    "7a0f3cf74f4d1871",
+    "7a0f3cf74f4d1871"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "The Infatuation",
+   "primary_source": "The Infatuation",
+   "confidence": 0.99
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "88d1eeae243cd9fe:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1672560000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "4559d8b7975a26e1:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1669104000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "4559d8b7975a26e1:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1669104000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "6a9438d56e800ed1:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1662534000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "63ffc7bf1694ced1:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1673424000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "123da90c0ed943a8:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1673856000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "123da90c0ed943a8:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1673856000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "123da90c0ed943a8:c2",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1673856000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "6fe43b35e781ab77:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1671350400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "6fe43b35e781ab77:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1671350400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "88d1eeae243cd9fe:c0",
+  "4559d8b7975a26e1:c0",
+  "4559d8b7975a26e1:c1",
+  "6a9438d56e800ed1:c0",
+  "63ffc7bf1694ced1:c0",
+  "123da90c0ed943a8:c0",
+  "123da90c0ed943a8:c1",
+  "123da90c0ed943a8:c2",
+  "6fe43b35e781ab77:c0",
+  "6fe43b35e781ab77:c1"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_a30d24019b": {
+   "status": "fulfilled",
+   "n_claims": 5,
+   "n_included": 5
+  },
+  "req_349b2201bd": {
+   "status": "fulfilled",
+   "n_claims": 5,
+   "n_included": 5
+  },
+  "req_cac0bef653": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_a8f4274817": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_c8f72bde07": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_1757a112e9": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_cac0bef653",
+  "req_a8f4274817",
+  "req_c8f72bde07",
+  "req_1757a112e9"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 11,
+  "n_contradictions": 0,
+  "n_documents": 19
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 15.62,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "c2240f7a59635c7d",
+ "bundle_hash": "c2240f7a59635c7d",
+ "_persisted_at": "2026-07-13T01:31:35Z"
+}

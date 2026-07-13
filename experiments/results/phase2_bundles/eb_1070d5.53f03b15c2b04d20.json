@@ -1,0 +1,1413 @@
+{
+ "bundle_id": "eb_1070d5",
+ "question": "Will the engineering VP approve the request to hire two more backend engineers this quarter?",
+ "as_of": 1688169600.0,
+ "compiler_plan_hash": "141e44295fb0",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_819c6e9ef8",
+   "claim_or_quantity": "The VP's final decision as recorded in the HR system by 2023-09-30.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "engineering_vp",
+    "ceo",
+    "cfo",
+    "hr_director"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_625e5e6542",
+   "claim_or_quantity": "value/context of cfo.budget_constraint",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "cfo.budget_constraint",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_ff1790870d",
+   "claim_or_quantity": "value/context of company.financial_health",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "company.financial_health",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_6d6bb224fd",
+   "claim_or_quantity": "evidence discriminating structural hypothesis budget_driven",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:budget_driven",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_8418849ab9",
+   "claim_or_quantity": "evidence discriminating structural hypothesis need_driven",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:need_driven",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_21f3be75d7",
+   "claim_or_quantity": "value/context of engineering_vp.strategic_priority",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "engineering_vp.strategic_priority",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_f813c256d8",
+   "claim_or_quantity": "decision rules / process of company",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "company",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_819c6e9ef8",
+   "terms": "engineering approve request hire two backend engineers engineering vp ceo cfo",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_625e5e6542",
+   "terms": "cfo budget constraint",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_ff1790870d",
+   "terms": "company financial health",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_819c6e9ef8",
+   "logical_query": "engineering approve request hire two backend engineers engineering vp ceo cfo after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=engineering+approve+request+hire+two+backend+engineers+engineering+vp+ceo+cfo+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783906354.8258061,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:32:35 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmII0pBiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDsbnh4iU2gYYfR9cwKikn5RfGp-SXFBcX5CQWZxSnFpWlFsUbGRiZGZgbmOkZmMQXGAAAoSk2-A\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "17d78005668fd6f7ce3dea63f8ac1493bfa660aacf94568ade8471994031d079",
+   "n_bytes": 1319,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.462
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_625e5e6542",
+   "logical_query": "cfo budget constraint after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=cfo+budget+constraint+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783906355.2892938,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:32:35 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw1JBiSO44w5AKxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcmxsuXmITWHDlzQ1mJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwCzozka\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "1be1d7d83056f58eaa63e3b0b4a0c40971bd5c3077048a88dfb605044857845e",
+   "n_bytes": 3494,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 2,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.626
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_ff1790870d",
+   "logical_query": "company financial health after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=company+financial+health+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783906355.9169624,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:32:36 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmJw0pBiSO44w5AKxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDsaXh4iU2gQfbL6xkUlJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAAn7A3Eg\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "8f4391c1710cc4bdaeb4bcede5e9ef0d5b385f22edb96369095d9c9d1516aedc",
+   "n_bytes": 79425,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.677
+  }
+ ],
+ "raw_content_refs": [
+  "1be1d7d83056f58eaa63e3b0b4a0c40971bd5c3077048a88dfb605044857845e",
+  "8f4391c1710cc4bdaeb4bcede5e9ef0d5b385f22edb96369095d9c9d1516aedc"
+ ],
+ "documents": [
+  {
+   "id": "38a413a0b0134a90",
+   "source": "Marketoonist | Tom Fishburne",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE5wX3JGLWpYQ1U5VWd2Ml9YMVNGWmZJWGRkeUt6emlZQm5zNm83SG50QTJXNmk1bUF0all3UkFjNGhwa0FpNzVaUW5JUlJwNGFqeU96dzhJeU0zMVQwX21MbFRvMlpPb3BPRkE?oc=5",
+   "title": "Marketing to the CFO cartoon - Marketoonist - Marketoonist | Tom Fishburne",
+   "text": "Marketing to the CFO cartoon - Marketoonist - Marketoonist | Tom Fishburne. Marketing to the CFO cartoon - Marketoonist Marketoonist | Tom Fishburne",
+   "content_hash": "7bf7f0126e714425",
+   "raw_feed_hash": "1be1d7d83056f58eaa63e3b0b4a0c40971bd5c3077048a88dfb605044857845e",
+   "published_at": 1675584000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_625e5e6542",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "8d81badb0c080b6e",
+   "source": "News24",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxORVBDVWh3Z1lxOU5UeWE5S0djRWQ4alBFQ1RHaVhEa0l2cTlYQ1VickU4YjR5UmRsVnpWQUpwNUpJRklZNm4yMUNObTVoMDVDN2JEWlJHWE9mRTFscDJRTTNUbmxybXBPQVFwRllfaTBBOTJTaWFxMUVwRGxJV1hoSzRjXzA5TUpfSVotWWlJWHBpd3YyLUJ1LU5kbWYyanZvWGdWM0cwSUJJZER3Y3FGWmZieFRaUQ?oc=5",
+   "title": "SAHRC operations constrained due to limited budget, Parliament told - News24",
+   "text": "SAHRC operations constrained due to limited budget, Parliament told - News24. SAHRC operations constrained due to limited budget, Parliament told News24",
+   "content_hash": "6e56f9e41f7ebc68",
+   "raw_feed_hash": "1be1d7d83056f58eaa63e3b0b4a0c40971bd5c3077048a88dfb605044857845e",
+   "published_at": 1683702000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_625e5e6542",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "084fd6c63f40bdce",
+   "source": "Bain & Company",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTFB3NGRYaS03MXllVGJ5N3ZDNF9tWnFPSVE2ZVNxZnZHdlEzMUh4OGFPUm1OcTJpRmhLS3pRSG1wbFZDRXNTUVFaVE1kRGkzWWpya0tmVVRxY055aXdJb20tUDUwVkNrMV81WHBxQlZ2ZzU?oc=5",
+   "title": "The Financially Resilient University - Bain & Company",
+   "text": "The Financially Resilient University - Bain & Company. The Financially Resilient University Bain & Company",
+   "content_hash": "9bd1e6a40a31b524",
+   "raw_feed_hash": "8f4391c1710cc4bdaeb4bcede5e9ef0d5b385f22edb96369095d9c9d1516aedc",
+   "published_at": 1684738800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_ff1790870d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "68d2cdb024ffb9e0",
+   "source": "Healthcare Finance News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxQRDQxdC1HUU10ZmU1TG9UbjU3cDd3cFhGTk05S3E5dkdXQVBKVHhLU0diOHZfVlBEclpDaVJHZVNqbGo3ekFrNDJ5UVplZ2ZCclpWNVNIeHNicXAzTmFrRGN4XzlGX183ZFNNOEF1d0FBb0V1RUdlVlpzZmRXdy00QUd4emplcTBESm9sRl9nQ3hVcHJaUkoxa0Y2bDhMOWRNUzYtczA1SHdDZU50TGc?oc=5",
+   "title": "Bright Health explores sale of California Medicare Advantage business - Healthcare Finance News",
+   "text": "Bright Health explores sale of California Medicare Advantage business - Healthcare Finance News. Bright Health explores sale of California Medicare Advantage business Healthcare Finance News",
+   "content_hash": "253b520d9a96a3cb",
+   "raw_feed_hash": "8f4391c1710cc4bdaeb4bcede5e9ef0d5b385f22edb96369095d9c9d1516aedc",
+   "published_at": 1682924400.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_ff1790870d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2167a9452f4169c2",
+   "source": "Penn LDI",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQb0pPQkRlWnphWDF4VTgxakhOcUs1TkdHTXAxREhjVUZjUUl0c1lEaEdqRWhaOE5ib0hIV280cmgyMmg4YUthTW55U3piXzZpYWZkV1cxRmRxa0lHcVZfNmZNOWtJcWpySmNiLXUwZVVSWWpUV1pUTVVDTlN1U0ZheF9lbWFnVXJPREZIMmFWZ3diYVRLWFdhVnY5WEZER0JzU3k0akln?oc=5",
+   "title": "The Effect of Private Equity Investment in Health Care - Penn LDI",
+   "text": "The Effect of Private Equity Investment in Health Care - Penn LDI. The Effect of Private Equity Investment in Health Care Penn LDI",
+   "content_hash": "73394bb2a6d27aa5",
+   "raw_feed_hash": "8f4391c1710cc4bdaeb4bcede5e9ef0d5b385f22edb96369095d9c9d1516aedc",
+   "published_at": 1678435200.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_ff1790870d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4da57de6092932f1",
+   "source": "Florida Today",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi1wFBVV95cUxNTUtjNGxRWkdEbGlmSWZBZTBHaEtYVjlqM3NJZWJ0cnZ4RTBNYmxCTDlIa3BqSG80X3dGQzV4dFk1UEpiV0M1UkZjYzVJLXh1bVhQZjNlakZSVDREVlNwSFlFU3pPRmJDUmpuUmlQQ2x0U1ptajhqNWJ1N3VDcnBoSnFIYUMwWk1VWGxlX2VGNmNUQzdoUlBqeWtCdWxDNlBHWUNKaXcySlFoN1BTVld3cEg0MFN4azljU2N2alotY25CcUNGWUtUS3NlaGg1aGF1bFdKcXRNQQ?oc=5",
+   "title": "Health First tells staff not to panic after more than a year of financial losses - Florida Today",
+   "text": "Health First tells staff not to panic after more than a year of financial losses - Florida Today. Health First tells staff not to panic after more than a year of financial losses Florida Today",
+   "content_hash": "7e9c701de5511745",
+   "raw_feed_hash": "8f4391c1710cc4bdaeb4bcede5e9ef0d5b385f22edb96369095d9c9d1516aedc",
+   "published_at": 1681196400.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_ff1790870d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d69dfaf83f597d14",
+   "source": "Andreessen Horowitz",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOZjh1ZlByVnViS0ROMEVGUjA0ekhKakxXTXE3RDNOMnpVZUFTYUNoNmFPQjVQeENfSmVfQnJlejRsd09vd3M2MVdDNWtFMjBDYnZGalZoaE5INGltQURqMnplMVFxMU96eXVSVlJiY1UyaHFua0xRaXlEUDNTWGk1ZHVFNlc1UE9GMUY4aUpwazJfRDB4dzNpYjZDU3pidWFV?oc=5",
+   "title": "Healthtech x Fintech\u2019s Biggest Prize: The Financial Operating System for Healthcare - Andreessen Horowitz",
+   "text": "Healthtech x Fintech\u2019s Biggest Prize: The Financial Operating System for Healthcare - Andreessen Horowitz. Healthtech x Fintech\u2019s Biggest Prize: The Financial Operating System for Healthcare Andreessen Horowitz",
+   "content_hash": "54b45ce65c95c340",
+   "raw_feed_hash": "8f4391c1710cc4bdaeb4bcede5e9ef0d5b385f22edb96369095d9c9d1516aedc",
+   "published_at": 1675756800.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_ff1790870d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f6b0345051357245",
+   "source": "Bessemer Venture Partners",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxPT3lCeWFpdFk3UFR4SkNJSXJFdGM0QnpoYmdwQVFmdWhDb3pPNWl1alE4QkFHNE9XWDN2bGNzcExtZ0xiaXdYU3ZNVVJWUDVQRGxmOVFOMlZaYzQ5aDY2cXVEaTVCcjBRMm9EdDRzcmJTNjNHV0FaUWxaZFdXM3JCMWZqNkRQaEEyc0hNZUh2MW1iRXQxZEE?oc=5",
+   "title": "How to scale a health tech business to $100 million ARR and beyond - Bessemer Venture Partners",
+   "text": "How to scale a health tech business to $100 million ARR and beyond - Bessemer Venture Partners. How to scale a health tech business to $100 million ARR and beyond Bessemer Venture Partners",
+   "content_hash": "fc38ae2dfdf5b39f",
+   "raw_feed_hash": "8f4391c1710cc4bdaeb4bcede5e9ef0d5b385f22edb96369095d9c9d1516aedc",
+   "published_at": 1680678000.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_ff1790870d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d179adffebd4f53c",
+   "source": "West Virginia Explorer",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiekFVX3lxTE9lLVRLR2otS3BuUm9VR09GSFh0Zk52WTVCUUhyZlg3NmZtaHlnQnJhVVNEUmxPelAzWlNJVWRhYjBHWTNmV21uOVFkRFhPVTA1dERRcFp3UWN1Z0NaTGZHdGhaWUZkUlZxNGVtUHRvTTFVRnQ2aUtMWjRR?oc=5",
+   "title": "Davis & Elkins earns an \u2018A\u2019 from Forbes for financial health - West Virginia Explorer",
+   "text": "Davis & Elkins earns an \u2018A\u2019 from Forbes for financial health - West Virginia Explorer. Davis & Elkins earns an \u2018A\u2019 from Forbes for financial health West Virginia Explorer",
+   "content_hash": "6c9389d110f29e64",
+   "raw_feed_hash": "8f4391c1710cc4bdaeb4bcede5e9ef0d5b385f22edb96369095d9c9d1516aedc",
+   "published_at": 1687503600.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_ff1790870d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a03e2b5f95ef08af",
+   "source": "Fierce Healthcare",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxPMHJhUEVhbkdpelVXbHRaZURaMmJ4ekJmNk9DRFpUdDFoOFUxM0FPVmMtcHhEc00xb2FidGFtdFBxakFXYm9xSUZlaHdEdV9aSjJ0SXhnUm1iWFFpbzlDaDZXeldBYU1WWFNENnNobmxFMW9heVN2SmdfSnVaSWo5ZVQ1M3Qwd043N2p2MTQ0bFRkakkyZVVla2YtMFdpSGUxU1ZZUF95a25WNXhDaHRVNzhTU3FzMTV3UHc?oc=5",
+   "title": "Primary care business Cano Health secures $150M loan as its losses swelled in 2022 - Fierce Healthcare",
+   "text": "Primary care business Cano Health secures $150M loan as its losses swelled in 2022 - Fierce Healthcare. Primary care business Cano Health secures $150M loan as its losses swelled in 2022 Fierce Healthcare",
+   "content_hash": "b7ea5711ce9a889b",
+   "raw_feed_hash": "8f4391c1710cc4bdaeb4bcede5e9ef0d5b385f22edb96369095d9c9d1516aedc",
+   "published_at": 1677744000.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_ff1790870d",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "38a413a0b0134a90:c0",
+   "source_id": "38a413a0b0134a90",
+   "subject": "Marketing to the CFO cartoon",
+   "predicate": "is created by",
+   "object": "Marketoonist | Tom Fishburne",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Marketing to the CFO cartoon - Marketoonist - Marketoonist | Tom Fishburne",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1675584000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Marketing to the CFO cartoon",
+    "Marketoonist",
+    "Tom Fishburne"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_5267fd078c",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_625e5e6542"
+   }
+  },
+  {
+   "claim_id": "084fd6c63f40bdce:c0",
+   "source_id": "084fd6c63f40bdce",
+   "subject": "The Financially Resilient University",
+   "predicate": "is associated with",
+   "object": "Bain & Company",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The Financially Resilient University - Bain & Company. The Financially Resilient University Bain & Company",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1684738800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "The Financially Resilient University",
+    "Bain & Company"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_7bf68c9fe6",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ff1790870d"
+   }
+  },
+  {
+   "claim_id": "8d81badb0c080b6e:c0",
+   "source_id": "8d81badb0c080b6e",
+   "subject": "SAHRC operations",
+   "predicate": "are constrained due to",
+   "object": "limited budget",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "reported",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "SAHRC operations constrained due to limited budget, Parliament told",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683702000.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "SAHRC",
+    "Parliament"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_4658f4eab9",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_625e5e6542"
+   }
+  },
+  {
+   "claim_id": "68d2cdb024ffb9e0:c0",
+   "source_id": "68d2cdb024ffb9e0",
+   "subject": "Bright Health",
+   "predicate": "explores sale of",
+   "object": "California Medicare Advantage business",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "reported",
+   "polarity": "affirm",
+   "claim_class": "actor_statement",
+   "supporting_span": "Bright Health explores sale of California Medicare Advantage business",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682924400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Bright Health",
+    "California Medicare Advantage business"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_3cfbd86636",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ff1790870d"
+   }
+  },
+  {
+   "claim_id": "2167a9452f4169c2:c0",
+   "source_id": "2167a9452f4169c2",
+   "subject": "The Effect of Private Equity Investment in Health Care",
+   "predicate": "is a publication by",
+   "object": "Penn LDI",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The Effect of Private Equity Investment in Health Care - Penn LDI",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678435200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "The Effect of Private Equity Investment in Health Care",
+    "Penn LDI"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_073fc9a2e5",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ff1790870d"
+   }
+  },
+  {
+   "claim_id": "4da57de6092932f1:c0",
+   "source_id": "4da57de6092932f1",
+   "subject": "Health First",
+   "predicate": "tells",
+   "object": "staff not to panic",
+   "value": "",
+   "units": "",
+   "qualifiers": "after more than a year of financial losses",
+   "modality": "reported",
+   "polarity": "affirm",
+   "claim_class": "actor_statement",
+   "supporting_span": "Health First tells staff not to panic after more than a year of financial losses",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681196400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Health First"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_d41ece9d52",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ff1790870d"
+   }
+  },
+  {
+   "claim_id": "4da57de6092932f1:c1",
+   "source_id": "4da57de6092932f1",
+   "subject": "Health First",
+   "predicate": "has experienced",
+   "object": "financial losses",
+   "value": "",
+   "units": "",
+   "qualifiers": "for more than a year",
+   "modality": "reported",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "after more than a year of financial losses",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681196400.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Health First"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_d41ece9d52",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ff1790870d"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Marketing to the CFO cartoon",
+   "normalized": "marketing to cfo cartoon",
+   "candidates": [
+    {
+     "entity_id": "ent_25d0509319",
+     "canonical": "marketing to cfo cartoon",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Marketing to the CFO cartoon"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Marketoonist",
+   "normalized": "marketoonist",
+   "candidates": [
+    {
+     "entity_id": "ent_29eb31c818",
+     "canonical": "marketoonist",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Marketoonist"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Tom Fishburne",
+   "normalized": "tom fishburne",
+   "candidates": [
+    {
+     "entity_id": "ent_35d9a5c315",
+     "canonical": "tom fishburne",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Tom Fishburne"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "The Financially Resilient University",
+   "normalized": "financially resilient university",
+   "candidates": [
+    {
+     "entity_id": "ent_a37dbcaeb6",
+     "canonical": "financially resilient university",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "The Financially Resilient University"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Bain & Company",
+   "normalized": "bain &",
+   "candidates": [
+    {
+     "entity_id": "ent_3edea233ef",
+     "canonical": "bain &",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Bain & Company"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "SAHRC",
+   "normalized": "sahrc",
+   "candidates": [
+    {
+     "entity_id": "ent_bd49b7bd02",
+     "canonical": "sahrc",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "SAHRC"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Parliament",
+   "normalized": "parliament",
+   "candidates": [
+    {
+     "entity_id": "ent_7d9ac98262",
+     "canonical": "parliament",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Parliament"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Bright Health",
+   "normalized": "bright health",
+   "candidates": [
+    {
+     "entity_id": "ent_d066e05b40",
+     "canonical": "bright health",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Bright Health"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "California Medicare Advantage business",
+   "normalized": "california medicare advantage business",
+   "candidates": [
+    {
+     "entity_id": "ent_bfc0075cc2",
+     "canonical": "california medicare advantage business",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "California Medicare Advantage business"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "The Effect of Private Equity Investment in Health Care",
+   "normalized": "effect of private equity investment in health care",
+   "candidates": [
+    {
+     "entity_id": "ent_bb85c9c42f",
+     "canonical": "effect of private equity investment in health care",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "The Effect of Private Equity Investment in Health Care"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Penn LDI",
+   "normalized": "penn ldi",
+   "candidates": [
+    {
+     "entity_id": "ent_891c0489b0",
+     "canonical": "penn ldi",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Penn LDI"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Health First",
+   "normalized": "health first",
+   "candidates": [
+    {
+     "entity_id": "ent_dd8ea36888",
+     "canonical": "health first",
+     "support": 0.6538,
+     "evidence_mentions": [
+      "Health First",
+      "Health First"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Health First",
+   "normalized": "health first",
+   "candidates": [
+    {
+     "entity_id": "ent_dd8ea36888",
+     "canonical": "health first",
+     "support": 0.6538,
+     "evidence_mentions": [
+      "Health First",
+      "Health First"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "38a413a0b0134a90": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1675584000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675584000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "8d81badb0c080b6e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1683702000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683702000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "084fd6c63f40bdce": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1684738800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684738800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "68d2cdb024ffb9e0": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1682924400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682924400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2167a9452f4169c2": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1678435200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678435200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4da57de6092932f1": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1681196400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681196400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d69dfaf83f597d14": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1675756800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675756800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f6b0345051357245": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1680678000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680678000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d179adffebd4f53c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1687503600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687503600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a03e2b5f95ef08af": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1677744000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677744000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_5267fd078c",
+   "member_ids": [
+    "38a413a0b0134a90"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Marketoonist | Tom Fishburne",
+   "primary_source": "Marketoonist | Tom Fishburne",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_4658f4eab9",
+   "member_ids": [
+    "8d81badb0c080b6e"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "News24",
+   "primary_source": "News24",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7bf68c9fe6",
+   "member_ids": [
+    "084fd6c63f40bdce"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Bain & Company",
+   "primary_source": "Bain & Company",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_3cfbd86636",
+   "member_ids": [
+    "68d2cdb024ffb9e0"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Healthcare Finance News",
+   "primary_source": "Healthcare Finance News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_073fc9a2e5",
+   "member_ids": [
+    "2167a9452f4169c2"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Penn LDI",
+   "primary_source": "Penn LDI",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_d41ece9d52",
+   "member_ids": [
+    "4da57de6092932f1"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Florida Today",
+   "primary_source": "Florida Today",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_82cd891fb6",
+   "member_ids": [
+    "d69dfaf83f597d14"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Andreessen Horowitz",
+   "primary_source": "Andreessen Horowitz",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_5f580b5e28",
+   "member_ids": [
+    "f6b0345051357245"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Bessemer Venture Partners",
+   "primary_source": "Bessemer Venture Partners",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e0c53ad65a",
+   "member_ids": [
+    "d179adffebd4f53c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "West Virginia Explorer",
+   "primary_source": "West Virginia Explorer",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_fb7a4f15d2",
+   "member_ids": [
+    "a03e2b5f95ef08af"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Fierce Healthcare",
+   "primary_source": "Fierce Healthcare",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "38a413a0b0134a90:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1675584000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "084fd6c63f40bdce:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684738800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "8d81badb0c080b6e:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683702000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "68d2cdb024ffb9e0:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682924400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "2167a9452f4169c2:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678435200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "4da57de6092932f1:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681196400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "4da57de6092932f1:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681196400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "38a413a0b0134a90:c0",
+  "084fd6c63f40bdce:c0",
+  "8d81badb0c080b6e:c0",
+  "68d2cdb024ffb9e0:c0",
+  "2167a9452f4169c2:c0",
+  "4da57de6092932f1:c0",
+  "4da57de6092932f1:c1"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_819c6e9ef8": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_625e5e6542": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_ff1790870d": {
+   "status": "fulfilled",
+   "n_claims": 5,
+   "n_included": 5
+  },
+  "req_6d6bb224fd": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_8418849ab9": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_21f3be75d7": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_f813c256d8": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_819c6e9ef8",
+  "req_6d6bb224fd",
+  "req_8418849ab9",
+  "req_21f3be75d7",
+  "req_f813c256d8"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 10,
+  "n_contradictions": 0,
+  "n_documents": 10
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 13.535,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "53f03b15c2b04d20",
+ "bundle_hash": "53f03b15c2b04d20",
+ "_persisted_at": "2026-07-13T01:32:50Z"
+}

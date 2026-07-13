@@ -1,0 +1,1641 @@
+{
+ "bundle_id": "eb_544d7836c031",
+ "question": "Will the Republicans win the Kentucky governor race in 2023?",
+ "as_of": 1697328000.0,
+ "compiler_plan_hash": "046c8a9fad54",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_affbbec6d6",
+   "claim_or_quantity": "The candidate receiving the most votes in the general election is the winner; if the Republican candidate receives more votes than the Democratic candidate, outcome is Republican_win, else Democrat_win.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-10-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "andy_beshear",
+    "daniel_cameron",
+    "kentucky_state_board_of_elections"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_4e87026280",
+   "claim_or_quantity": "value/context of kentucky_voters.true_preference_distribution",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "kentucky_voters.true_preference_distribution",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-10-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_ac839eb7ab",
+   "claim_or_quantity": "value/context of andy_beshear.approval_rating",
+   "why_relevant": "high-sensitivity latent (0.85) driving the outcome distribution",
+   "affected_component": "andy_beshear.approval_rating",
+   "expected_sensitivity": 0.85,
+   "expected_voi": 0.85,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-10-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_2d4f3ee610",
+   "claim_or_quantity": "value/context of kentucky_voters.turnout_propensity_by_segment",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "kentucky_voters.turnout_propensity_by_segment",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-10-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_c62c96443b",
+   "claim_or_quantity": "evidence discriminating structural hypothesis incumbent_advantage",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:incumbent_advantage",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-10-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_35e4699bc8",
+   "claim_or_quantity": "evidence discriminating structural hypothesis nationalization",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:nationalization",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-10-15",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_81c2afc8e5",
+   "claim_or_quantity": "decision rules / process of kentucky_governor_election_2023",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "kentucky_governor_election_2023",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-10-15",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_4d2b7a6391",
+   "claim_or_quantity": "decision rules / process of kentucky_governor_office",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "kentucky_governor_office",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-10-15",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_affbbec6d6",
+   "terms": "Republicans win Kentucky governor race 2023 andy beshear daniel cameron kentucky state board of elections",
+   "after": "2023-05-18",
+   "before": "2023-10-15",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_4e87026280",
+   "terms": "kentucky voters true preference distribution",
+   "after": "2023-05-18",
+   "before": "2023-10-15",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_ac839eb7ab",
+   "terms": "andy beshear approval rating",
+   "after": "2023-05-18",
+   "before": "2023-10-15",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_affbbec6d6",
+   "logical_query": "Republicans win Kentucky governor race 2023 andy beshear daniel cameron kentucky state board of elections after:2023-05-18 before:2023-10-15",
+   "wire_url": "https://news.google.com/rss/search?q=Republicans+win+Kentucky+governor+race+2023+andy+beshear+daniel+cameron+kentucky+state+board+of+elections+after%3A2023-05-18+before%3A2023-10-15&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-05-18",
+   "before_date": "2023-10-15",
+   "retrieved_at": 1783906115.519362,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:28:36 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw1ZBiSO44w5AKxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwcR_5duMQm8GDOMgcl5aT8wviU_JLi4oKcxOKM4tSistSieCMDIzMDcwMzPQOT-AIDAH1EOMk\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "41265934879a164f7335bec3aa234caa0296737897309a3687ba8f4284fba4a2",
+   "n_bytes": 13838,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.564
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_4e87026280",
+   "logical_query": "kentucky voters true preference distribution after:2023-05-18 before:2023-10-15",
+   "wire_url": "https://news.google.com/rss/search?q=kentucky+voters+true+preference+distribution+after%3A2023-05-18+before%3A2023-10-15&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-05-18",
+   "before_date": "2023-10-15",
+   "retrieved_at": 1783906116.0851052,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:28:36 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjytDikmLw1pBiOFR1hiG54wxDKhDXAXEDELfePMc6GYhLFp1nbQLiLiCeAcSGCpdY7YH4cvol1iKJK6wNQPyp6garQPUN1m_FvmwsJUD81p_NNCSQzRmIt2gGswnxcBz5d-ESm8CFlZf2MikpJ-UXxqfklxQXF-QkFmcUpxaVpRbFGxkYmRmYG5jpGZjEFxgAAPdBO4Q\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "d48a168ece9ecacfc34cea436c17d9a46d19c57b85423f9697d5de632f549dd6",
+   "n_bytes": 1253,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.512
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_ac839eb7ab",
+   "logical_query": "andy beshear approval rating after:2023-05-18 before:2023-10-15",
+   "wire_url": "https://news.google.com/rss/search?q=andy+beshear+approval+rating+after%3A2023-05-18+before%3A2023-10-15&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-05-18",
+   "before_date": "2023-10-15",
+   "retrieved_at": 1783906116.5986836,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:28:37 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw15BiSO44w5ACxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwcR_9duMQm8ODQXicl5aT8wviU_JLi4oKcxOKM4tSistSieCMDIzMDcwMzPQOT-AIDAIhMOQs\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "859032150f4d60882041833c08103a69c6458ed7b96bb93a4c5b121d5af313b5",
+   "n_bytes": 15757,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.49
+  }
+ ],
+ "raw_content_refs": [
+  "41265934879a164f7335bec3aa234caa0296737897309a3687ba8f4284fba4a2",
+  "859032150f4d60882041833c08103a69c6458ed7b96bb93a4c5b121d5af313b5"
+ ],
+ "documents": [
+  {
+   "id": "d0380dd5f68cdc37",
+   "source": "Kentucky Lantern",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxObjBUTm5JZmd6dm0zbC1UTDJnU3VpUXlFX1VfZUQ4RkQyUFNxMU4yM0NjNk9vQlVLekJWVmIxX251Y2d1Z1VuakthY0tFaHVzOW9ORVdRR0J6dk5SUWRjRDMza3A1NkxwanpWMk4wNGZVYm9MVXRBQ3lvRE1DVWRBZjVuRXNzQQ?oc=5",
+   "title": "Why I\u2019m very worried about a Gov. Cameron - Kentucky Lantern",
+   "text": "Why I\u2019m very worried about a Gov. Cameron - Kentucky Lantern. Why I\u2019m very worried about a Gov. Cameron Kentucky Lantern",
+   "content_hash": "a029fb1c19a92c55",
+   "raw_feed_hash": "41265934879a164f7335bec3aa234caa0296737897309a3687ba8f4284fba4a2",
+   "published_at": 1694588400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_affbbec6d6",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3657c7f257678b1a",
+   "source": "The 19th News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMihAFBVV95cUxObDQyNFU3ejA0RXZqUzZKY2FGcEFSZnJyYWhBNHBvRlh0MmgwVWhray1xSUV6NEZIYjFsRTYwSWVqMDkxT0RZRllackE1OFk3X2d4a2hJbkdzaWNlTjc4NXdGaFp1TUdNSmo4OC1JQ2pQdUN5cnF2eFlwN0M5WExhNkZBSlg?oc=5",
+   "title": "How abortion is set to shape the Kentucky governor\u2019s race - The 19th News",
+   "text": "How abortion is set to shape the Kentucky governor\u2019s race - The 19th News. How abortion is set to shape the Kentucky governor\u2019s race The 19th News",
+   "content_hash": "68d752564ea03430",
+   "raw_feed_hash": "41265934879a164f7335bec3aa234caa0296737897309a3687ba8f4284fba4a2",
+   "published_at": 1693206000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_affbbec6d6",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "b3ccbb0a5d23467d",
+   "source": "boltsmag.org",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE96VUU1cTdfWUdrTVJSdjNXdDlGRkxNdGRlTVJfbFp2SDBQdDZlM0FwN3JWMjNBY3hKRzA3Q2hRRHhGNVRPX25aTUFWRV9zWThFcG5WQlhHNUtCZmlTQThlQUE2cnh0STJHbk0xUmdMT1g?oc=5",
+   "title": "Your Cheat Sheet to the 2023 General Elections - boltsmag.org",
+   "text": "Your Cheat Sheet to the 2023 General Elections - boltsmag.org. Your Cheat Sheet to the 2023 General Elections boltsmag.org",
+   "content_hash": "e9ee22f44056d691",
+   "raw_feed_hash": "41265934879a164f7335bec3aa234caa0296737897309a3687ba8f4284fba4a2",
+   "published_at": 1697049755.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_affbbec6d6",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "db58ded84d123d86",
+   "source": "Center For Politics",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxNRmVVSzNnc0kwSnpZUHpjV0NodGcwQ3FXV20tQXY1VUNHRjdNQ2R2R1MyTkoxZVZxVkZiTEFFYWhjNU5hWURzVllYZFhYNC1CQjdtNEVQeFdBWFVhT096ZkdDODFEYlVtZ2VKVU1QNjNidlozbms2akdfUUI2MGpqR1h6aVVvMXBrU3huZHd3?oc=5",
+   "title": "Notes on the State of Politics: June 7, 2023 - Center For Politics",
+   "text": "Notes on the State of Politics: June 7, 2023 - Center For Politics. Notes on the State of Politics: June 7, 2023 Center For Politics",
+   "content_hash": "9a590306946fd4e3",
+   "raw_feed_hash": "41265934879a164f7335bec3aa234caa0296737897309a3687ba8f4284fba4a2",
+   "published_at": 1686121200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_affbbec6d6",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "8b2d960de169784c",
+   "source": "Inside Climate News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQOHBYZlRBRHdPakdGT1E3WHlXWlU4Y3FnZDl0MTNxRHRhUXg4bEtZVnZGMUtWeW5BWjF5R0VNTF9xMFVvNWdXTDlqelJlUXB1TkU3RmpGM0E2S19lR3F1WW55S2ExeGtOWGJRUE9YOXp0VmtrUlhIM3YzcmdUWVFBbEczbUlHQWFXY0E1ZWJtZ05heXVIZ0l0UU03c2FXWTlp?oc=5",
+   "title": "Kentucky\u2019s Democratic Governor Steers Clear of a Climate Agenda in His Bid to Fend Off a Mitch McConnell Protege - Inside Climate News",
+   "text": "Kentucky\u2019s Democratic Governor Steers Clear of a Climate Agenda in His Bid to Fend Off a Mitch McConnell Protege - Inside Climate News. Kentucky\u2019s Democratic Governor Steers Clear of a Climate Agenda in His Bid to Fend Off a Mitch McConnell Protege Inside Climate News",
+   "content_hash": "9e417a9147d674b0",
+   "raw_feed_hash": "41265934879a164f7335bec3aa234caa0296737897309a3687ba8f4284fba4a2",
+   "published_at": 1696402800.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_affbbec6d6",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d6bbf85c9db2a5c9",
+   "source": "The Courier-Journal",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxOSmJXa1NxQ0c3NHJ0RllYb3M2QnpDcVJuU25VRk8yYUNzZTI3UF9PWmRoTnltMkl0SU96dHliZUk2N2RvRjZhZlpjMlZWbThzOGdqbkEzMlJmaTZGLWRILS1qNm55cEh0QU5pRF9IbW5ILTBoY3g0NUFmMGllbE4tRkZmSWwyeG9XaEFoX0NfeU1YR0JRY08xTFlsMElWNWoyTTlwR2RpcXRwbWNnd05oMktuYW1ScTQwdWZIWE80RE5ROE8xV3NHMTJMMDFGa29WNl9FMGpDS1NHeTNMTkE?oc=5",
+   "title": "Daniel Cameron's campaign touts his lawsuits against Beshear and Biden. Here they are - The Courier-Journal",
+   "text": "Daniel Cameron's campaign touts his lawsuits against Beshear and Biden. Here they are - The Courier-Journal. Daniel Cameron's campaign touts his lawsuits against Beshear and Biden. Here they are The Courier-Journal",
+   "content_hash": "5e34087bc983fb33",
+   "raw_feed_hash": "41265934879a164f7335bec3aa234caa0296737897309a3687ba8f4284fba4a2",
+   "published_at": 1686553200.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_affbbec6d6",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "cbfe126171576bd1",
+   "source": "The Washington Post",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxORVAzZDJOUzZtNW9WeHlpOGVCd09saGt4MDVjWlZDNlFHZi1iWkl1LVFnVnhtQXhLdXFHT285cTgxS09ZUDAzY29NUUFhakNmRFBveDdLTC1EejktTUl3ZzRkX2JIYl95RmlqU1I5akJHb0hUSDQwdEwtb2F3cTdCR3ZVeEpwZEp2Tnc0bFFBYVdoa0RCS2daX2lLSQ?oc=5",
+   "title": "A guide to the 2023 Virginia general election: What to know before you vote - The Washington Post",
+   "text": "A guide to the 2023 Virginia general election: What to know before you vote - The Washington Post. A guide to the 2023 Virginia general election: What to know before you vote The Washington Post",
+   "content_hash": "6ed6ec858d449097",
+   "raw_feed_hash": "41265934879a164f7335bec3aa234caa0296737897309a3687ba8f4284fba4a2",
+   "published_at": 1695366000.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_affbbec6d6",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3a7cf03ddd836c4e",
+   "source": "Kentucky Lantern",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitAFBVV95cUxNY2xVanpmRmhud1pSMjA5YU5uOGdFZ2JFSnpPVm0xQVFBUC1XYVltVDBnSWY1YzdMVDlpZnFTdzV2dzB2TmFXdzUwUzB5WTU4eEl0c1BnNVV4S2lJTTg0aFJmZVJRX1JDeVpYb2ZQT3VnRGdwZzdFQzhzdlFLN1BRN2RyNkhoYml3dkdvWU42ZnVEemlaU2ZDc1hwRHRmQ0szVHNCQkZxVXZfS1RwMmJPREUtYmU?oc=5",
+   "title": "Daniel Cameron needs to focus on Kentucky\u2019s challenges, not cultural attacks - Kentucky Lantern",
+   "text": "Daniel Cameron needs to focus on Kentucky\u2019s challenges, not cultural attacks - Kentucky Lantern. Daniel Cameron needs to focus on Kentucky\u2019s challenges, not cultural attacks Kentucky Lantern",
+   "content_hash": "1aee502da931953e",
+   "raw_feed_hash": "41265934879a164f7335bec3aa234caa0296737897309a3687ba8f4284fba4a2",
+   "published_at": 1684393200.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_affbbec6d6",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "12d91d16565f6ea2",
+   "source": "NBC News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxOUDNlOHVBRWRnMGRJU2ZSem5DR0pEWC0tc2FyTkxocUg5dHJYWGtZYjcyenpmNmFoMXRLMHhnQWkzbDU0NHFJUXNXYkp6bkFUNVBlZXVkRENHSC14SjdFbmdDQWtpUDMwSGQxcWtxZ0dRV2JBNVJHc3E4c2dhcmZlZUxuNnYyNHFWWDZ2Nl9mS2tjSGM0TWcwUEprOThJbEN1SjI4SmJzV2ZKZThkalhmMjRYLVpYWnk0dlJhRGZ2RUN1dw?oc=5",
+   "title": "Poll: Kentucky Gov. Beshear leads re-election race by 10 points - NBC News",
+   "text": "Poll: Kentucky Gov. Beshear leads re-election race by 10 points - NBC News. Poll: Kentucky Gov. Beshear leads re-election race by 10 points NBC News",
+   "content_hash": "013775b75797d257",
+   "raw_feed_hash": "859032150f4d60882041833c08103a69c6458ed7b96bb93a4c5b121d5af313b5",
+   "published_at": 1689922800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_ac839eb7ab",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "11bd415bfda29a9a",
+   "source": "WKU Public Radio",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi-gFBVV95cUxPb0tTbUZ3bEhLNlpHYnFEQ2VOMFJDSWNrdmRpeTdjUXZnT1VMd0pkekJyUzBsM2kxS21iVXgySU5Sa0hDVGsyOFh1ZmEtcXUwdFhJMFRaalBPX3pOZEljaDFBbm82aXhhQnBsUkFnd3BWRzFmSW9FbldBMDU3TFZDZG1QejVwZGd2RXhCMGpJUF8yZkFOai1BZDJKNzBKQkV1eW5WTzZveE5DSmoxNXNfWjhjR1hNVW1IM0FyaWVBRXdDOThSTThhT0pXOWp1QmdHb2NfWUFtZ3h2c0ZSRGNrbWpvY1dUTVgyTnpQZGczZi1BQkNTX3dlaXVn?oc=5",
+   "title": "Poll: Beshear is America\u2019s 5th most popular governor, bolstered by highest approval among GOP voters than any other Democratic governor - WKU Public Radio",
+   "text": "Poll: Beshear is America\u2019s 5th most popular governor, bolstered by highest approval among GOP voters than any other Democratic governor - WKU Public Radio. Poll: Beshear is America\u2019s 5th most popular governor, bolstered by highest approval among GOP voters than any other Democratic governor WKU Public Radio",
+   "content_hash": "836e54d7f72e6dfe",
+   "raw_feed_hash": "859032150f4d60882041833c08103a69c6458ed7b96bb93a4c5b121d5af313b5",
+   "published_at": 1690182000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_ac839eb7ab",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "70e1a8c73d8efe2d",
+   "source": "MultiState",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxQRFZ1OHBUQjZqZ2pmcXJWZWozY3cxMG5ZMTBCZS1hdmFPQS1ENFBEdGlsVlpSM3Qtdy1ZMVRiV2VrLUlrUWtONVdYZVVicTdMcUVTYml6RjBUaU9jbG0ySU45MTRnLUF3VUQ1SEZCZVp4Qmw4b01DNVhQMWxFZElTd3ZXYktnZUNacEY4SlNsTFE?oc=5",
+   "title": "Decoding 2023 Gubernatorial Approval Ratings - MultiState",
+   "text": "Decoding 2023 Gubernatorial Approval Ratings - MultiState. Decoding 2023 Gubernatorial Approval Ratings MultiState",
+   "content_hash": "c2eab98056ece560",
+   "raw_feed_hash": "859032150f4d60882041833c08103a69c6458ed7b96bb93a4c5b121d5af313b5",
+   "published_at": 1691132400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_ac839eb7ab",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d0ff10a88dfe10f7",
+   "source": "- Emerson Polling",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMivAFBVV95cUxQWU1oQXktX2loSnBEaHNCZWxnaGtYSzhELS1TejBta1VWdnVNSWV6Uy0xdTRfYWRqaVNQenhzMEZzMVVjVlhLYjEzb3N1eUVoME5PTC1GZnlCeFZad0lEd0VsLTR2U0c5Mk8tOUlQaW1TWHJxOHQ5cXU3R3kwcUJqU3IyNWxJVjlUM2UxUFNZc20yRlFnZkVFOEJ1cGJHZkpBclFQVFFaY0FnWC1GeFY5VEVjc3RGcUI0UnFWVA?oc=5",
+   "title": "Kentucky 2023 Poll: Beshear Holds 16-Point Lead Over Cameron in Gubernatorial Election - - Emerson Polling",
+   "text": "Kentucky 2023 Poll: Beshear Holds 16-Point Lead Over Cameron in Gubernatorial Election - - Emerson Polling. Kentucky 2023 Poll: Beshear Holds 16-Point Lead Over Cameron in Gubernatorial Election - Emerson Polling",
+   "content_hash": "0de1a8be37820daf",
+   "raw_feed_hash": "859032150f4d60882041833c08103a69c6458ed7b96bb93a4c5b121d5af313b5",
+   "published_at": 1696575600.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_ac839eb7ab",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d803ddb52b192701",
+   "source": "Kentucky Lantern",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxPSFRZZktNVGFndHNXUmVTcEFZdjdYaVFNUVFfRUFKTFFFUmFJZW5rcVUyMDZZT1FTM3JmZ3JfSndKRGRiZnpxVzY0bS1NWThRUW53VUZFS0Z4NXhFWWtsU1hjeHR6OWdXc2gwc3VlOTVaQ19KUmd0S0xzRElXeXNLVWh6WXFjY1RDOHNXM1NGRFRfdndhVGk1SUtNNHZEV3M?oc=5",
+   "title": "Thanks to McConnell, Trump and himself, Cameron looks strong - Kentucky Lantern",
+   "text": "Thanks to McConnell, Trump and himself, Cameron looks strong - Kentucky Lantern. Thanks to McConnell, Trump and himself, Cameron looks strong Kentucky Lantern",
+   "content_hash": "87d7cf6c95f4806d",
+   "raw_feed_hash": "859032150f4d60882041833c08103a69c6458ed7b96bb93a4c5b121d5af313b5",
+   "published_at": 1684479600.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_ac839eb7ab",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "8b2d960de169784c",
+   "source": "Inside Climate News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQOHBYZlRBRHdPakdGT1E3WHlXWlU4Y3FnZDl0MTNxRHRhUXg4bEtZVnZGMUtWeW5BWjF5R0VNTF9xMFVvNWdXTDlqelJlUXB1TkU3RmpGM0E2S19lR3F1WW55S2ExeGtOWGJRUE9YOXp0VmtrUlhIM3YzcmdUWVFBbEczbUlHQWFXY0E1ZWJtZ05heXVIZ0l0UU03c2FXWTlp?oc=5",
+   "title": "Kentucky\u2019s Democratic Governor Steers Clear of a Climate Agenda in His Bid to Fend Off a Mitch McConnell Protege - Inside Climate News",
+   "text": "Kentucky\u2019s Democratic Governor Steers Clear of a Climate Agenda in His Bid to Fend Off a Mitch McConnell Protege - Inside Climate News. Kentucky\u2019s Democratic Governor Steers Clear of a Climate Agenda in His Bid to Fend Off a Mitch McConnell Protege Inside Climate News",
+   "content_hash": "9e417a9147d674b0",
+   "raw_feed_hash": "859032150f4d60882041833c08103a69c6458ed7b96bb93a4c5b121d5af313b5",
+   "published_at": 1696402800.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_ac839eb7ab",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "0e29fdbbceba7f9a",
+   "source": "WOWK 13 News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxOV0pfUGhFQkV5RDlrbGYyd09fYTc2b0JiSDFnMXBaOWtsMHJKdThhMTNydTQ5bjZVY0RPMlRhLUg3MEJ5c21Ib2dodlBXcHdrUk5NWWdEV19QTGVrN2dDcEtHbFE3alFqU3d3WnhTR096a1hVelhyX3lDMklKVjJqTWRyQTlMZDhzcG10SlZ6b9IBlAFBVV95cUxNc1YwRE5TTUpPQ2JodGROMkhJWEs1Yi01RGVvQ3ZLcEZ0NWZ2LWY1VHhqTHZ0QnFSeHF1SThQYmNobkhLZjlhSnpDZTVrR3ZWdFhWaF9sdWJGUG16dzZ4VXB5cTZ4RmZuSmJnRlIxang0UUxJU29aS3pRSUFKcHFnME5SZUdGZXdjRE5YU0pUMUtuRGxT?oc=5",
+   "title": "Justice, Beshear among top 10 most popular governors - WOWK 13 News",
+   "text": "Justice, Beshear among top 10 most popular governors - WOWK 13 News. Justice, Beshear among top 10 most popular governors WOWK 13 News",
+   "content_hash": "bc7266b60f7ee4e9",
+   "raw_feed_hash": "859032150f4d60882041833c08103a69c6458ed7b96bb93a4c5b121d5af313b5",
+   "published_at": 1691391600.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_ac839eb7ab",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "605029c798d9d1a1",
+   "source": "The Courier-Journal",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxNQ1ZUOWRuQzk3RkdMekM4UW1oeWR6S24xRHU5SnBWMmJFMWtPUnI2OUpHRGktVWFLSXZ6TTFXUS1pYWVJSXN3elRtX2I0WUlOMVpSQXB6NGxXb252dDZpSHJCM055R1plTDA3SG1HVzNYSzk4U0k1dHlsQms2TnFSRWJIdkg2LVE4S3JrX2hFeEZ4MU85V0JYZ2RBb0pTV3ZBZTFld0NSZnlleFFzbXU0cUZ2M1BJUnlhSDN3LW5kUkNvTzR3Q1pUQlZZR1ZncUZHOEE?oc=5",
+   "title": "Pandemic criticism of Beshear played well in Kentucky GOP primary, but does it hold up? - The Courier-Journal",
+   "text": "Pandemic criticism of Beshear played well in Kentucky GOP primary, but does it hold up? - The Courier-Journal. Pandemic criticism of Beshear played well in Kentucky GOP primary, but does it hold up? The Courier-Journal",
+   "content_hash": "f9bf85ab3341f401",
+   "raw_feed_hash": "859032150f4d60882041833c08103a69c6458ed7b96bb93a4c5b121d5af313b5",
+   "published_at": 1695020400.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_ac839eb7ab",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "d0380dd5f68cdc37:c0",
+   "source_id": "d0380dd5f68cdc37",
+   "subject": "I",
+   "predicate": "am very worried about",
+   "object": "a Gov. Cameron",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "Why I\u2019m very worried about a Gov. Cameron",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1694588400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Cameron"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_17cd6677e9",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_affbbec6d6"
+   }
+  },
+  {
+   "claim_id": "12d91d16565f6ea2:c0",
+   "source_id": "12d91d16565f6ea2",
+   "subject": "Kentucky Gov. Beshear",
+   "predicate": "leads re-election race by",
+   "object": "10 points",
+   "value": "10",
+   "units": "points",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Poll: Kentucky Gov. Beshear leads re-election race by 10 points",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1689922800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Kentucky Gov. Beshear"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_18714a2724",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ac839eb7ab"
+   }
+  },
+  {
+   "claim_id": "3657c7f257678b1a:c0",
+   "source_id": "3657c7f257678b1a",
+   "subject": "abortion",
+   "predicate": "is set to shape",
+   "object": "the Kentucky governor\u2019s race",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "forecast",
+   "supporting_span": "How abortion is set to shape the Kentucky governor\u2019s race",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1693206000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "abortion",
+    "Kentucky governor\u2019s race"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_a80c9ff1c2",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_affbbec6d6"
+   }
+  },
+  {
+   "claim_id": "11bd415bfda29a9a:c0",
+   "source_id": "11bd415bfda29a9a",
+   "subject": "Beshear",
+   "predicate": "is",
+   "object": "America\u2019s 5th most popular governor",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Poll: Beshear is America\u2019s 5th most popular governor",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1690182000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Beshear"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_11019e07de",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ac839eb7ab"
+   }
+  },
+  {
+   "claim_id": "11bd415bfda29a9a:c1",
+   "source_id": "11bd415bfda29a9a",
+   "subject": "Beshear",
+   "predicate": "has",
+   "object": "highest approval among GOP voters than any other Democratic governor",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "bolstered by highest approval among GOP voters than any other Democratic governor",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1690182000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Beshear",
+    "GOP voters"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_11019e07de",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ac839eb7ab"
+   }
+  },
+  {
+   "claim_id": "b3ccbb0a5d23467d:c0",
+   "source_id": "b3ccbb0a5d23467d",
+   "subject": "boltsmag.org",
+   "predicate": "published",
+   "object": "a cheat sheet to the 2023 General Elections",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Your Cheat Sheet to the 2023 General Elections - boltsmag.org",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1697049755.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "boltsmag.org",
+    "2023 General Elections"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_9cf4afdd47",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_affbbec6d6"
+   }
+  },
+  {
+   "claim_id": "70e1a8c73d8efe2d:c0",
+   "source_id": "70e1a8c73d8efe2d",
+   "subject": "MultiState",
+   "predicate": "published",
+   "object": "Decoding 2023 Gubernatorial Approval Ratings",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Decoding 2023 Gubernatorial Approval Ratings - MultiState",
+   "span_verified": true,
+   "event_time": "2023",
+   "publication_time": 1691132400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "MultiState"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_bb405896ce",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ac839eb7ab"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Cameron",
+   "normalized": "cameron",
+   "candidates": [
+    {
+     "entity_id": "ent_1d572acbfa",
+     "canonical": "cameron",
+     "support": 0.6,
+     "evidence_mentions": [
+      "Cameron"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Kentucky Gov. Beshear",
+   "normalized": "kentucky beshear",
+   "candidates": [
+    {
+     "entity_id": "ent_7630d9bff6",
+     "canonical": "kentucky beshear",
+     "support": 0.6,
+     "evidence_mentions": [
+      "Kentucky Gov. Beshear"
+     ]
+    },
+    {
+     "entity_id": "ent_2bbef1a553",
+     "canonical": "beshear",
+     "support": 0.35,
+     "evidence_mentions": [
+      "Beshear",
+      "Beshear"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "abortion",
+   "normalized": "abortion",
+   "candidates": [
+    {
+     "entity_id": "ent_07a47c951a",
+     "canonical": "abortion",
+     "support": 0.6,
+     "evidence_mentions": [
+      "abortion"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Kentucky governor\u2019s race",
+   "normalized": "kentucky governor\u2019s race",
+   "candidates": [
+    {
+     "entity_id": "ent_a5b2f156f9",
+     "canonical": "kentucky governor\u2019s race",
+     "support": 0.6,
+     "evidence_mentions": [
+      "Kentucky governor\u2019s race"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Beshear",
+   "normalized": "beshear",
+   "candidates": [
+    {
+     "entity_id": "ent_2bbef1a553",
+     "canonical": "beshear",
+     "support": 0.7,
+     "evidence_mentions": [
+      "Beshear",
+      "Beshear"
+     ]
+    },
+    {
+     "entity_id": "ent_7630d9bff6",
+     "canonical": "kentucky beshear",
+     "support": 0.25,
+     "evidence_mentions": [
+      "Kentucky Gov. Beshear"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Beshear",
+   "normalized": "beshear",
+   "candidates": [
+    {
+     "entity_id": "ent_2bbef1a553",
+     "canonical": "beshear",
+     "support": 0.7,
+     "evidence_mentions": [
+      "Beshear",
+      "Beshear"
+     ]
+    },
+    {
+     "entity_id": "ent_7630d9bff6",
+     "canonical": "kentucky beshear",
+     "support": 0.25,
+     "evidence_mentions": [
+      "Kentucky Gov. Beshear"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "GOP voters",
+   "normalized": "gop voters",
+   "candidates": [
+    {
+     "entity_id": "ent_947497b3a9",
+     "canonical": "gop voters",
+     "support": 0.6,
+     "evidence_mentions": [
+      "GOP voters"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "boltsmag.org",
+   "normalized": "boltsmag org",
+   "candidates": [
+    {
+     "entity_id": "ent_a10433780c",
+     "canonical": "boltsmag org",
+     "support": 0.6,
+     "evidence_mentions": [
+      "boltsmag.org"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "2023 General Elections",
+   "normalized": "2023 general elections",
+   "candidates": [
+    {
+     "entity_id": "ent_c1739f31b3",
+     "canonical": "2023 general elections",
+     "support": 0.6,
+     "evidence_mentions": [
+      "2023 General Elections"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "MultiState",
+   "normalized": "multistate",
+   "candidates": [
+    {
+     "entity_id": "ent_e682d277fd",
+     "canonical": "multistate",
+     "support": 0.6,
+     "evidence_mentions": [
+      "MultiState"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "d0380dd5f68cdc37": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1697328000.0,
+   "claimed_pubdate_ts": 1694588400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1694588400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3657c7f257678b1a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1697328000.0,
+   "claimed_pubdate_ts": 1693206000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1693206000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "b3ccbb0a5d23467d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1697328000.0,
+   "claimed_pubdate_ts": 1697049755.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1697049755.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "db58ded84d123d86": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1697328000.0,
+   "claimed_pubdate_ts": 1686121200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686121200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "8b2d960de169784c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1697328000.0,
+   "claimed_pubdate_ts": 1696402800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1696402800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d6bbf85c9db2a5c9": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1697328000.0,
+   "claimed_pubdate_ts": 1686553200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686553200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "cbfe126171576bd1": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1697328000.0,
+   "claimed_pubdate_ts": 1695366000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1695366000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3a7cf03ddd836c4e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1697328000.0,
+   "claimed_pubdate_ts": 1684393200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684393200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "12d91d16565f6ea2": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1697328000.0,
+   "claimed_pubdate_ts": 1689922800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689922800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "11bd415bfda29a9a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1697328000.0,
+   "claimed_pubdate_ts": 1690182000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690182000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "70e1a8c73d8efe2d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1697328000.0,
+   "claimed_pubdate_ts": 1691132400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1691132400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d0ff10a88dfe10f7": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1697328000.0,
+   "claimed_pubdate_ts": 1696575600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1696575600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d803ddb52b192701": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1697328000.0,
+   "claimed_pubdate_ts": 1684479600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684479600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "0e29fdbbceba7f9a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1697328000.0,
+   "claimed_pubdate_ts": 1691391600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1691391600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "605029c798d9d1a1": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1697328000.0,
+   "claimed_pubdate_ts": 1695020400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1695020400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_17cd6677e9",
+   "member_ids": [
+    "d0380dd5f68cdc37"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Kentucky Lantern",
+   "primary_source": "Kentucky Lantern",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a80c9ff1c2",
+   "member_ids": [
+    "3657c7f257678b1a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The 19th News",
+   "primary_source": "The 19th News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9cf4afdd47",
+   "member_ids": [
+    "b3ccbb0a5d23467d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "boltsmag.org",
+   "primary_source": "boltsmag.org",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_0a8b692929",
+   "member_ids": [
+    "db58ded84d123d86"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Center For Politics",
+   "primary_source": "Center For Politics",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_99d8d7c8d6",
+   "member_ids": [
+    "8b2d960de169784c",
+    "8b2d960de169784c"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "Inside Climate News",
+   "primary_source": "Inside Climate News",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_148b2d06ca",
+   "member_ids": [
+    "d6bbf85c9db2a5c9"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Courier-Journal",
+   "primary_source": "The Courier-Journal",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_23d9cdb13a",
+   "member_ids": [
+    "cbfe126171576bd1"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Washington Post",
+   "primary_source": "The Washington Post",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_c7e3cc59af",
+   "member_ids": [
+    "3a7cf03ddd836c4e"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Kentucky Lantern",
+   "primary_source": "Kentucky Lantern",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_18714a2724",
+   "member_ids": [
+    "12d91d16565f6ea2"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "NBC News",
+   "primary_source": "NBC News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_11019e07de",
+   "member_ids": [
+    "11bd415bfda29a9a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "WKU Public Radio",
+   "primary_source": "WKU Public Radio",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_bb405896ce",
+   "member_ids": [
+    "70e1a8c73d8efe2d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "MultiState",
+   "primary_source": "MultiState",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_156234c6ad",
+   "member_ids": [
+    "d0ff10a88dfe10f7"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "- Emerson Polling",
+   "primary_source": "- Emerson Polling",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_13e86015c7",
+   "member_ids": [
+    "d803ddb52b192701"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Kentucky Lantern",
+   "primary_source": "Kentucky Lantern",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_394d8e7e82",
+   "member_ids": [
+    "0e29fdbbceba7f9a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "WOWK 13 News",
+   "primary_source": "WOWK 13 News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_057df6343a",
+   "member_ids": [
+    "605029c798d9d1a1"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Courier-Journal",
+   "primary_source": "The Courier-Journal",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "d0380dd5f68cdc37:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1694588400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "12d91d16565f6ea2:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1689922800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "3657c7f257678b1a:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1693206000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "11bd415bfda29a9a:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1690182000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "11bd415bfda29a9a:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1690182000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "b3ccbb0a5d23467d:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1697049755.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "70e1a8c73d8efe2d:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1691132400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "d0380dd5f68cdc37:c0",
+  "12d91d16565f6ea2:c0",
+  "3657c7f257678b1a:c0",
+  "11bd415bfda29a9a:c0",
+  "11bd415bfda29a9a:c1",
+  "b3ccbb0a5d23467d:c0",
+  "70e1a8c73d8efe2d:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_affbbec6d6": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_4e87026280": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_ac839eb7ab": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_2d4f3ee610": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_c62c96443b": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_35e4699bc8": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_81c2afc8e5": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_4d2b7a6391": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_4e87026280",
+  "req_2d4f3ee610",
+  "req_c62c96443b",
+  "req_35e4699bc8",
+  "req_81c2afc8e5",
+  "req_4d2b7a6391"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 15,
+  "n_contradictions": 0,
+  "n_documents": 16
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 13.409,
+ "seed": 0,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "855bc0fe76c466d6",
+ "bundle_hash": "855bc0fe76c466d6",
+ "_persisted_at": "2026-07-13T01:28:52Z"
+}
