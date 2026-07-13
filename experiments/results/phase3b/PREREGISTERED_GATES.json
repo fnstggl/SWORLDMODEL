@@ -1,0 +1,25 @@
+{
+  "_purpose": "Part K acceptance gates, PRE-REGISTERED and committed BEFORE the locked test set was opened. These are not changed after seeing results. Repair parameters are frozen in repair_params.json at this same commit.",
+  "frozen_at": "before locked_test.json exists",
+  "primary_gates": {
+    "G1_brier_not_worse": "repaired Phase-3 paired mean Brier vs Phase-2 <= 0 (does not increase Brier)",
+    "G2_logloss_not_worse": "repaired Phase-3 paired mean log-loss vs Phase-2 <= 0 (does not increase log-loss)",
+    "G3_one_primary_CI_favorable": "at least one of {Brier, log-loss} paired 95% bootstrap CI lies entirely below 0 (significant improvement) for an ACCEPT-as-improvement verdict",
+    "G4_no_significant_regression": "neither primary metric's paired 95% CI lies entirely above 0 (no significant regression)",
+    "G5_ece_not_materially_worse": "repaired ECE <= Phase-2 ECE + 0.05"
+  },
+  "verdict_rule": {
+    "phase3b_improves": "G3 holds AND G4 holds AND G5 holds",
+    "inconclusive": "G4 holds (no significant regression) but G3 does not (no significant improvement)",
+    "phase3b_harms": "a primary paired 95% CI lies entirely ABOVE 0 (significant regression)"
+  },
+  "secondary_diagnostics_reported_not_gated": [
+    "per-domain Brier (directional only; underpowered)",
+    "per-question catastrophic movements audited",
+    "current Phase-3 vs Phase-2 on the locked set (does the committed regression reproduce out-of-sample?)",
+    "prior_only baseline (is evidence assimilation beating the naive prior at all?)"
+  ],
+  "power_caveat": "locked test ~34 questions (< the 75 target). A null result is 'not demonstrated', not 'disproven'. No production-readiness claim is made if underpowered.",
+  "production_default_rule": "If phase3b does not clear G1-G5 as 'improves', Phase-2 REMAINS the production default; repaired Phase-3 is not production-eligible.",
+  "frozen_repair_summary": "gamma=0.7 likelihood shrinkage, no_info_mix=0, post_temp=1, reference-priors OFF (not selected by validation), convex blend w_phase2=0.5, gate min_effective_obs=6 (Phase-2 fallback below 6 effective observations). Fit on 23-question DEV capture (event-family train/val split), pre-registered robustness constraints gamma<=0.7 and w_phase2>=0.5."
+}

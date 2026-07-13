@@ -210,12 +210,38 @@ def aggregate(rows):
                                   "phase2_better" if b_p2 < b_rep - 1e-9 else "tie"})
     boot_rep = _paired_bootstrap(ok, "phase3_repaired", "phase2")
     boot_cur = _paired_bootstrap(ok, "phase3_current", "phase2")
+    gates = _eval_gates(per_arm, boot_rep)
     return {"n_completed": len(ok), "n_questions": len(rows), "per_arm_scores": per_arm,
             "domain_breakdown": dom, "per_question_deltas": deltas,
             "paired_repaired_vs_phase2": boot_rep, "paired_current_vs_phase2": boot_cur,
             "repaired_better": sum(1 for d in deltas if d["verdict"] == "repaired_better"),
             "phase2_better": sum(1 for d in deltas if d["verdict"] == "phase2_better"),
-            "tie": sum(1 for d in deltas if d["verdict"] == "tie")}
+            "tie": sum(1 for d in deltas if d["verdict"] == "tie"),
+            "preregistered_gates": gates}
+
+
+def _eval_gates(per_arm, boot_rep):
+    """Evaluate the PRE-REGISTERED Part-K gates (from PREREGISTERED_GATES.json). Never changed after results."""
+    if boot_rep.get("insufficient"):
+        return {"insufficient": True}
+    bd, ld = boot_rep["mean_brier_diff"], boot_rep["mean_logloss_diff"]
+    bci, lci = boot_rep["brier_diff_ci95"], boot_rep["logloss_diff_ci95"]
+    ece_rep = (per_arm.get("phase3_repaired") or {}).get("ece")
+    ece_p2 = (per_arm.get("phase2") or {}).get("ece")
+    g = {
+        "G1_brier_not_worse": bd <= 0,
+        "G2_logloss_not_worse": ld <= 0,
+        "G3_one_primary_CI_favorable": (bci[1] < 0) or (lci[1] < 0),
+        "G4_no_significant_regression": not (bci[0] > 0 or lci[0] > 0),
+        "G5_ece_not_materially_worse": (ece_rep is not None and ece_p2 is not None and ece_rep <= ece_p2 + 0.05)}
+    if g["G3_one_primary_CI_favorable"] and g["G4_no_significant_regression"] and g["G5_ece_not_materially_worse"]:
+        verdict = "phase3b_improves"
+    elif (bci[0] > 0 or lci[0] > 0):
+        verdict = "phase3b_harms"
+    else:
+        verdict = "inconclusive"
+    return {"gates": g, "verdict": verdict,
+            "production_default": "phase2" if verdict != "phase3b_improves" else "phase3b_repaired"}
 
 
 def main():

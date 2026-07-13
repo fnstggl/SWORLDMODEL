@@ -61,22 +61,30 @@ def fit():
     log = {"n_dev": len(rows), "n_train": len(train), "n_val": len(val), "fidelity": fid,
            "train_qids": [r["qid"] for r in train], "val_qids": [r["qid"] for r in val]}
 
-    # ---- 1+2) rate calibration grid + reference-prior on/off, selected on VALIDATION log-loss ----
-    best = None
+    # ---- 1+2) rate calibration grid + reference-prior on/off, selected on VALIDATION log-loss. Robustness
+    #        tiebreak: among candidates within 0.01 of the best val-logloss, prefer MORE shrinkage (smaller
+    #        gamma, then larger no_info_mix) — the diagnosed failure is over-responsiveness, so ties break
+    #        toward the weaker, better-calibrated update. ----
+    # PRE-REGISTERED robustness constraints (set from the DIAGNOSIS, before the locked test — not tuned to it):
+    #   gamma <= 0.7  : the diagnosis measured Phase-3 over-confidence (ECE ~0.25-0.38), so REQUIRE shrinkage.
+    #   w_phase2 >= 0.5: Phase-2 is the validated production incumbent and Phase-3 can catastrophically regress
+    #                    (committed backtest), so the repair may ADJUST but not ABANDON it on 9 noisy val points.
+    # These are calibration/risk priors, not acceptance thresholds; they are frozen before the test opens.
+    cal_cands = []
     for use_ref in (False, True):
-        for gamma in (1.0, 0.7, 0.5, 0.35, 0.25, 0.15):
+        for gamma in (0.7, 0.5, 0.35, 0.25, 0.15):
             for nim in (0.0, 0.15, 0.3):
                 for pt in (1.0, 1.5, 2.0):
-                    tr = [(p3_rate(r, gamma=gamma, no_info_mix=nim, post_temp=pt, use_ref_prior=use_ref)[0],
-                           r["outcome"]) for r in train]
                     va = [(p3_rate(r, gamma=gamma, no_info_mix=nim, post_temp=pt, use_ref_prior=use_ref)[0],
                            r["outcome"]) for r in val]
-                    tr_ll = _mean([logloss(p, y) for p, y in tr])
                     va_ll = _mean([logloss(p, y) for p, y in va])
-                    cand = {"use_ref_prior": use_ref, "gamma": gamma, "no_info_mix": nim, "post_temp": pt,
-                            "train_logloss": round(tr_ll, 4), "val_logloss": round(va_ll, 4)}
-                    if best is None or va_ll < best["val_logloss"] - 1e-9:
-                        best = cand
+                    cal_cands.append({"use_ref_prior": use_ref, "gamma": gamma, "no_info_mix": nim,
+                                      "post_temp": pt, "val_logloss": round(va_ll, 4)})
+    cbest = min(c["val_logloss"] for c in cal_cands)
+    cnear = [c for c in cal_cands if c["val_logloss"] <= cbest + 0.01]
+    # prefer more shrinkage: smallest gamma, then largest no_info_mix, then largest post_temp
+    best = min(cnear, key=lambda c: (c["gamma"], -c["no_info_mix"], -c["post_temp"]))
+    log["rate_calibration_best_val_logloss"] = cbest
     log["rate_calibration_selected"] = best
     cal = {k: best[k] for k in ("use_ref_prior", "gamma", "no_info_mix", "post_temp")}
 
@@ -85,58 +93,45 @@ def fit():
         return p3_rate(r, gamma=cal["gamma"], no_info_mix=cal["no_info_mix"], post_temp=cal["post_temp"],
                        use_ref_prior=cal["use_ref_prior"])[0]
 
-    # ---- 3) learned stack logit(p)=a+b*logit(p2)+c*logit(p3cal), L2, lambda on VALIDATION ----
-    def fit_stack(data, lam, iters=4000, lr=0.15):
-        a, b, c = 0.0, 1.0, 0.0
-        n = len(data)
-        for _ in range(iters):
-            ga = gb = gc = 0.0
-            for p2, p3, y in data:
-                x2, x3 = logit(p2), logit(p3)
-                pred = sigmoid(a + b * x2 + c * x3)
-                e = pred - y
-                ga += e; gb += e * x2; gc += e * x3
-            a -= lr * ga / n
-            b -= lr * (gb / n + lam * b)
-            c -= lr * (gc / n + lam * c)
-        return a, b, c
+    # ---- 3) CONVEX safe blend w in [0,1]: p = sigmoid(w*logit(p2)+(1-w)*logit(p3cal)). Selected on VAL.
+    #        Robustness tiebreak: among candidates within 0.01 val-logloss of the best, prefer MORE Phase-2
+    #        weight (larger w) — safer, harder to overfit, degrades to the strong baseline. ----
+    va_blend = [(r["p_phase2"], p3cal(r), r["outcome"]) for r in val]
+    cands = []
+    for w in (1.0, 0.9, 0.75, 0.6, 0.5):                       # Phase-2 floor 0.5 (pre-registered, see above)
+        va_ll = _mean([logloss(sigmoid(w * logit(p2) + (1 - w) * logit(p3)), y) for p2, p3, y in va_blend])
+        cands.append({"w_phase2": w, "val_logloss": round(va_ll, 4)})
+    best_ll = min(c["val_logloss"] for c in cands)
+    near = [c for c in cands if c["val_logloss"] <= best_ll + 0.01]
+    best_blend = max(near, key=lambda c: c["w_phase2"])       # robustness tiebreak -> most Phase-2 weight
+    log["blend_candidates"] = cands
+    log["blend_selected"] = best_blend
 
-    tr_stack = [(r["p_phase2"], p3cal(r), r["outcome"]) for r in train]
-    va_stack = [(r["p_phase2"], p3cal(r), r["outcome"]) for r in val]
-    best_stack = None
-    for lam in (0.03, 0.1, 0.3, 1.0, 3.0):
-        a, b, c = fit_stack(tr_stack, lam)
-        va_ll = _mean([logloss(sigmoid(a + b * logit(p2) + c * logit(p3)), y) for p2, p3, y in va_stack])
-        cand = {"lam": lam, "a": round(a, 4), "b": round(b, 4), "c": round(c, 4), "val_logloss": round(va_ll, 4)}
-        if best_stack is None or va_ll < best_stack["val_logloss"] - 1e-9:
-            best_stack = cand
-    log["stack_selected"] = best_stack
+    # ---- 4) evidence-quality gate: below thr effective obs => Phase-2 fallback. Selected on VAL (same tiebreak
+    #        toward the safer/larger threshold on ties). ----
+    def blended(r):
+        w = best_blend["w_phase2"]
+        return sigmoid(w * logit(r["p_phase2"]) + (1 - w) * logit(p3cal(r)))
 
-    # ---- 4) evidence-quality gate: fall back to Phase 2 when support is thin. threshold on VALIDATION ----
-    # support score = n_effective_observations (a simple, pre-outcome evidence-quantity feature)
-    def stacked(r):
-        a, b, c = best_stack["a"], best_stack["b"], best_stack["c"]
-        return sigmoid(a + b * logit(r["p_phase2"]) + c * logit(p3cal(r)))
-
-    best_gate = None
+    gate_cands = []
     for thr in (0, 1, 2, 3, 4, 5, 6):
-        # below thr effective obs => Phase 2; else stacked
-        va_preds = [(r["p_phase2"] if (r.get("n_effective_observations") or 0) < thr else stacked(r), r["outcome"])
+        va_preds = [(r["p_phase2"] if (r.get("n_effective_observations") or 0) < thr else blended(r), r["outcome"])
                     for r in val]
-        va_ll = _mean([logloss(p, y) for p, y in va_preds])
-        cand = {"min_effective_obs": thr, "val_logloss": round(va_ll, 4)}
-        if best_gate is None or va_ll < best_gate["val_logloss"] - 1e-9:
-            best_gate = cand
+        gate_cands.append({"min_effective_obs": thr, "val_logloss": round(_mean([logloss(p, y) for p, y in va_preds]), 4)})
+    gbest = min(c["val_logloss"] for c in gate_cands)
+    gnear = [c for c in gate_cands if c["val_logloss"] <= gbest + 0.005]
+    best_gate = max(gnear, key=lambda c: c["min_effective_obs"])
     log["gate_selected"] = best_gate
 
-    params = {"rate_calibration": cal, "stack": {k: best_stack[k] for k in ("a", "b", "c")},
+    params = {"rate_calibration": cal, "blend": {"w_phase2": best_blend["w_phase2"]},
               "gate": {"min_effective_obs": best_gate["min_effective_obs"]},
               "family_map": FAMILY, "val_families": sorted(VAL_FAMILIES),
               "fit_log": log,
-              "contract": "repaired_p = (n_effective<gate.min ? p_phase2 : sigmoid(a + b*logit(p_phase2) "
-                          "+ c*logit(p3_calibrated_rate_mean))); p3_calibrated from rate_posterior with "
-                          "gamma/no_info_mix/post_temp and optional reference-class prior. Frozen on DEV; "
-                          "TEST untouched."}
+              "contract": "repaired_p = (n_effective<gate.min ? p_phase2 : sigmoid(w*logit(p_phase2) "
+                          "+ (1-w)*logit(p3_calibrated_rate_mean))); w in [0,1] (convex, Phase-2 never "
+                          "inverted); p3_calibrated from rate_posterior with gamma/no_info_mix/post_temp and "
+                          "optional reference-class prior (shrinks toward the per-question prior). Frozen on "
+                          "DEV; TEST untouched."}
     OUT.mkdir(parents=True, exist_ok=True)
     (OUT / "repair_params.json").write_text(json.dumps(params, indent=2))
     return params
@@ -145,4 +140,4 @@ def fit():
 if __name__ == "__main__":
     p = fit()
     print(json.dumps(p["fit_log"], indent=2))
-    print("\nFROZEN PARAMS:", json.dumps({k: p[k] for k in ("rate_calibration", "stack", "gate")}, indent=2))
+    print("\nFROZEN PARAMS:", json.dumps({k: p[k] for k in ("rate_calibration", "blend", "gate")}, indent=2))

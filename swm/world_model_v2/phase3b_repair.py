@@ -103,17 +103,21 @@ def load_params(path=None):
         return json.loads(p.read_text())
     # identity / safe fallback: pure Phase-2 (no Phase-3 influence)
     return {"rate_calibration": {"use_ref_prior": False, "gamma": 1.0, "no_info_mix": 0.0, "post_temp": 1.0},
-            "stack": {"a": 0.0, "b": 1.0, "c": 0.0}, "gate": {"min_effective_obs": 999}}
+            "blend": {"w_phase2": 1.0}, "gate": {"min_effective_obs": 999}}
 
 
 def combine(p_phase2, p3_cal, n_effective, params):
-    """Repaired forecast: gate to Phase-2 when support is thin, else the frozen logistic stack."""
+    """Repaired forecast: gate to Phase-2 when support is thin, else a CONVEX blend of the Phase-2 terminal
+    and the calibrated Phase-3 rate (w in [0,1] so Phase-2 can never be inverted). The blend is in logit
+    space; the Phase-3 over-responsiveness is already tamed upstream by the likelihood shrinkage (gamma) that
+    pulls p3_cal toward the per-question prior. No global shrink-toward-0.5 (that would leak the base rate)."""
     gate = (params.get("gate") or {}).get("min_effective_obs", 999)
     if (n_effective or 0) < gate:
         return _clip(p_phase2), "gate_phase2_fallback"
-    st = params["stack"]
-    p = sigmoid(st["a"] + st["b"] * logit(p_phase2) + st["c"] * logit(p3_cal))
-    return _clip(p), "stacked"
+    w = float((params.get("blend") or {}).get("w_phase2", 1.0))
+    w = min(1.0, max(0.0, w))
+    p = sigmoid(w * logit(p_phase2) + (1 - w) * logit(p3_cal))
+    return _clip(p), ("phase2_only" if w >= 0.999 else "blended")
 
 
 def repaired_from_capture_row(r, params):

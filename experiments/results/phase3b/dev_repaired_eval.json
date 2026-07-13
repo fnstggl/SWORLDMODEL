@@ -1,0 +1,56 @@
+{
+  "drift": {
+    "fresh_capture_phase2": {
+      "brier": 0.2592,
+      "log_loss": 0.7125
+    },
+    "fresh_capture_phase3": {
+      "brier": 0.2525,
+      "log_loss": 0.6942
+    },
+    "committed": {
+      "n": 23,
+      "phase2": {
+        "brier": 0.2581,
+        "log_loss": 0.7103
+      },
+      "phase3": {
+        "brier": 0.3118,
+        "log_loss": 0.8481
+      },
+      "committed_verdict": "phase3_harms"
+    },
+    "note": "live retrieval drifts vs the committed backtest; the committed negative result stays frozen. This capture is the DEV substrate for diagnosis + fitting only."
+  },
+  "dev_eval": {
+    "NOTE": "DEV set \u2014 repaired is FIT on this set; optimistic. The honest number is the LOCKED test.",
+    "prior_only": {
+      "n": 23,
+      "brier": 0.2507,
+      "log_loss": 0.6946,
+      "ece": 0.1444
+    },
+    "phase2": {
+      "n": 23,
+      "brier": 0.2592,
+      "log_loss": 0.7125,
+      "ece": 0.2597
+    },
+    "phase3_current": {
+      "n": 23,
+      "brier": 0.2525,
+      "log_loss": 0.6942,
+      "ece": 0.249
+    },
+    "phase3_repaired_devfit": {
+      "n": 23,
+      "brier": 0.2411,
+      "log_loss": 0.6753,
+      "ece": 0.2443
+    },
+    "gate_modes": {
+      "gate_phase2_fallback": 17,
+      "blended": 6
+    }
+  }
+}
