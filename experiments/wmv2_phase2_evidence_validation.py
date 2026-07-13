@@ -79,12 +79,15 @@ def run(limit, lookback_days, verbose=True):
                "paired_rss_ok": True, "paired_rss_violation": False, "raw_persisted": True,
                "structural_changes": 0, "lean_only": None, "plan_hash_changed": None,
                "material_change": False, "simulation_status": "", "support_grade": "", "has_forecast": False,
-               "raw_probability": None, "bundle_hash": "", "error": ""}
+               "raw_probability": None, "bundle_hash": "", "failure_taxonomy": "", "evidence_stage": "",
+               "error": ""}
         t_q = time.time()
         try:
             res, art = simulate_with_evidence(q, llm=llm, as_of=as_of, horizon=horizon, config=cfg,
                                               store=store, seed=7)
             rec["simulation_status"] = res.simulation_status
+            rec["failure_taxonomy"] = res.failure_taxonomy
+            rec["evidence_stage"] = art.get("stage", "")
             rec["support_grade"] = res.support_grade
             rec["has_forecast"] = res.has_forecast() and bool(res.raw_distribution)
             rec["raw_probability"] = res.raw_probability
@@ -153,12 +156,18 @@ def run(limit, lookback_days, verbose=True):
         v, th, op = g["value"], g["th"], g["op"]
         g["passed"] = (v >= th) if op == ">=" else (v < th) if op == "<" else abs(v - th) < 1e-9
     total_paired = sum(r["n_paired_rss"] for r in rows)
+    tax_hist = {}
+    for r in rows:
+        if r["simulation_status"] == "execution_failed":
+            key = f"{r.get('failure_taxonomy', '')}@{r.get('evidence_stage', '')}"
+            tax_hist[key] = tax_hist.get(key, 0) + 1
     by_domain = {}
     for r in rows:
         by_domain.setdefault(r["domain"], []).append(r)
     out = {"n_questions": n, "n_domains": len(by_domain), "gates": gates,
            "all_gates_passed": all(g["passed"] for g in gates.values()),
            "total_paired_rss_queries": total_paired,
+           "failure_taxonomy_histogram": tax_hist,
            "mean_docs": round(sum(r["n_documents"] for r in rows) / max(1, n), 2),
            "mean_included_claims": round(sum(r["n_included_claims"] for r in rows) / max(1, n), 2),
            "mean_structural_changes": round(sum(r["structural_changes"] for r in rows) / max(1, n), 2),
