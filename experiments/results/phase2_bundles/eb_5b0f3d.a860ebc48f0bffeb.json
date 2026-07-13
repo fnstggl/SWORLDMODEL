@@ -1,0 +1,1033 @@
+{
+ "bundle_id": "eb_5b0f3d",
+ "question": "Will the challenger flip the swing district in the general election?",
+ "as_of": 1690848000.0,
+ "compiler_plan_hash": "b188ae1447a3",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_1186c24bc3",
+   "claim_or_quantity": "challenger_wins if challenger_vote_share > 0.5, else incumbent_wins",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "challenger",
+    "incumbent",
+    "district_election_authority"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_6b71e1bd0a",
+   "claim_or_quantity": "value/context of swing_district_voters.undecided_share",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "swing_district_voters.undecided_share",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_c0fa67a3f8",
+   "claim_or_quantity": "value/context of swing_district_voters.true_independents.party_lean",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "swing_district_voters.true_independents.party_lean",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_6a6ab635fc",
+   "claim_or_quantity": "value/context of swing_district_voters.turnout_probability",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "swing_district_voters.turnout_probability",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_c62c96443b",
+   "claim_or_quantity": "evidence discriminating structural hypothesis incumbent_advantage",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:incumbent_advantage",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_c56cae7cdc",
+   "claim_or_quantity": "evidence discriminating structural hypothesis national_tide",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:national_tide",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_0d84e7cb04",
+   "claim_or_quantity": "decision rules / process of district_election_authority",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "district_election_authority",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_1186c24bc3",
+   "terms": "challenger flip swing district general election challenger incumbent district election authority",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_6b71e1bd0a",
+   "terms": "swing district voters undecided share",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_c0fa67a3f8",
+   "terms": "swing district voters true independents party",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_1186c24bc3",
+   "logical_query": "challenger flip swing district general election challenger incumbent district election authority after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=challenger+flip+swing+district+general+election+challenger+incumbent+district+election+authority+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783906618.460259,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:36:59 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw1pBiSO44w5AKxJVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTNsbvp4iU2gQvLVzorKSflF8an5JcUFxfkJBZnFKcWlaUWxRsZGJkZmBuY6RmYxBcYAABeYDZv\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "259687a8164e0808d88bde2428746cf496d65fa0cdb64f9a23878924252fbcfb",
+   "n_bytes": 3881,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 2,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.601
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_6b71e1bd0a",
+   "logical_query": "swing district voters undecided share after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=swing+district+voters+undecided+share+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783906619.0625553,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:36:59 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmII0pBiSO44w5ACxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcu5suXmITuHD4wnwmJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwCxkDj0\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "55115eacc1e10951755c6b971ad1136a532dd512329938c1ddcd11ec3e0857a9",
+   "n_bytes": 3644,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 2,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.466
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_c0fa67a3f8",
+   "logical_query": "swing district voters true independents party after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=swing+district+voters+true+independents+party+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783906619.5304418,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:37:00 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw0pBiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTNsafp4iU2gQvP-qWVlJPyC-NT8kuKiwtyEoszilOLylKL4o0MjMwMzA3M9AxM4gsMAF_3NnA\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "eb60498c9ceeff64a6c95bbfa81515cc9501d908a9e69305c7bad546ef8603c3",
+   "n_bytes": 1255,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.45
+  }
+ ],
+ "raw_content_refs": [
+  "259687a8164e0808d88bde2428746cf496d65fa0cdb64f9a23878924252fbcfb",
+  "55115eacc1e10951755c6b971ad1136a532dd512329938c1ddcd11ec3e0857a9"
+ ],
+ "documents": [
+  {
+   "id": "9766fbe3c5a37987",
+   "source": "Elections Daily",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxNamllNFZCbTBCSVF4eDllX1pLMzZ2X0VhcEdIeFItbW9PWXRMUTk4YWZDTjhDQ0VPYkxrSV8yMm93dmhGaTFuZ09BNnpRUF9CelBRUXp3b2V5UFM4eC1mbk1hajJVWmlYcUpGc1A3aWdfYzNnX1RFRUhULXZaMVhtdNIBhgFBVV95cUxNTzJGYl9XTkVfNEU0YXhTOVhQVWJrdDJTMzI4TEt4RlBIYW1SVkE5UjhGcThGNHdLSjRueW0ya0JtT1ZZdmRyYkhlcURKSGtRUDBRSHFidGk1aEh5VjhqS1B2VUtINmRwN2pfbDQ5ZHVXX1FXSC1UNXdOaFhqTENuWV9NcTFWZw?oc=5",
+   "title": "The 2022 California House Elections - Elections Daily",
+   "text": "The 2022 California House Elections - Elections Daily. The 2022 California House Elections Elections Daily",
+   "content_hash": "94b81133746f744b",
+   "raw_feed_hash": "259687a8164e0808d88bde2428746cf496d65fa0cdb64f9a23878924252fbcfb",
+   "published_at": 1682578800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_1186c24bc3",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2e4c9490c90b0010",
+   "source": "Center For Politics",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiXEFVX3lxTE5jLW94Y1NCU0VsRmJEUDlyUEdnQWticThQV1U0dUhwR0xjUE03RUxrLXBWaWxvY1lvcTRxSklpX3cyVWpuWl9RVWFpc0h0bHVEZ2xuaHBnaG5PYld4?oc=5",
+   "title": "A First Look at 2024 State Supreme Court Contests - Center For Politics",
+   "text": "A First Look at 2024 State Supreme Court Contests - Center For Politics. A First Look at 2024 State Supreme Court Contests Center For Politics",
+   "content_hash": "6a9e986786e80ecc",
+   "raw_feed_hash": "259687a8164e0808d88bde2428746cf496d65fa0cdb64f9a23878924252fbcfb",
+   "published_at": 1678950000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_1186c24bc3",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4e9c10822e1fc1dc",
+   "source": "NBC News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxOVUwweVF0Y09BMVlmdTVXS0JUODZxZlVfQ2lNUTRiY1htV011Wk5sQ2NHeTBTcUYxMndXYjluU0xhcnIxbkhsZzMzVG4zQVBqamxYVFgyc1hhalJlLTNfXzQ5UTRhZy1reEdSLWVRZ05ielRsME52Y3hxTVZqOWhoWWlsVndGTzdIb05fUVNockc0Q1h5SjdKZm9wVnpvMEFlMks5VTZ1WmV2UGtiZlZGSWwtbTRBcjI4enZIZjRYaw?oc=5",
+   "title": "McCarthy's debt limit bill praised by GOP conservatives, but centrists are skeptical - NBC News",
+   "text": "McCarthy's debt limit bill praised by GOP conservatives, but centrists are skeptical - NBC News. McCarthy's debt limit bill praised by GOP conservatives, but centrists are skeptical NBC News",
+   "content_hash": "fa4f5b4c0991cceb",
+   "raw_feed_hash": "55115eacc1e10951755c6b971ad1136a532dd512329938c1ddcd11ec3e0857a9",
+   "published_at": 1681974000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_6b71e1bd0a",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "c12d3883db343ddd",
+   "source": "LA Progressive",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTFBiNm9HZWhzOHZpcWhFZ2dmUUxudS1hMFFhLXhpQkQ4eW1MUEg3bjVGNU94MXZFNDJUbjhCMUNZRFZ3VWlOVDQ3ajF3bVVhVUlRdjhmTFlUMGZQeUVFS1ZzQng3VlVyV3A1dmNlNkVvOVZ5dzQ?oc=5",
+   "title": "After Another Shooting, Welcome to Again to Winner-Take-All Land - LA Progressive",
+   "text": "After Another Shooting, Welcome to Again to Winner-Take-All Land - LA Progressive. After Another Shooting, Welcome to Again to Winner-Take-All Land LA Progressive",
+   "content_hash": "c63a5591e2a7675e",
+   "raw_feed_hash": "55115eacc1e10951755c6b971ad1136a532dd512329938c1ddcd11ec3e0857a9",
+   "published_at": 1680332400.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_6b71e1bd0a",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "9766fbe3c5a37987:c0",
+   "source_id": "9766fbe3c5a37987",
+   "subject": "2022 California House Elections",
+   "predicate": "is covered by",
+   "object": "Elections Daily",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The 2022 California House Elections - Elections Daily",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682578800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "2022 California House Elections",
+    "Elections Daily"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_f3a43da99c",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_1186c24bc3"
+   }
+  },
+  {
+   "claim_id": "4e9c10822e1fc1dc:c0",
+   "source_id": "4e9c10822e1fc1dc",
+   "subject": "McCarthy's debt limit bill",
+   "predicate": "praised by",
+   "object": "GOP conservatives",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "McCarthy's debt limit bill praised by GOP conservatives",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681974000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "McCarthy",
+    "GOP conservatives"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_787b0edeeb",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6b71e1bd0a"
+   }
+  },
+  {
+   "claim_id": "4e9c10822e1fc1dc:c1",
+   "source_id": "4e9c10822e1fc1dc",
+   "subject": "centrists",
+   "predicate": "are skeptical of",
+   "object": "McCarthy's debt limit bill",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "but centrists are skeptical",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1681974000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "centrists"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_787b0edeeb",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6b71e1bd0a"
+   }
+  },
+  {
+   "claim_id": "2e4c9490c90b0010:c0",
+   "source_id": "2e4c9490c90b0010",
+   "subject": "Center For Politics",
+   "predicate": "published",
+   "object": "A First Look at 2024 State Supreme Court Contests",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "A First Look at 2024 State Supreme Court Contests - Center For Politics",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678950000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Center For Politics"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_58d0e8465f",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_1186c24bc3"
+   }
+  },
+  {
+   "claim_id": "c12d3883db343ddd:c0",
+   "source_id": "c12d3883db343ddd",
+   "subject": "the article",
+   "predicate": "is titled",
+   "object": "After Another Shooting, Welcome to Again to Winner-Take-All Land",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "After Another Shooting, Welcome to Again to Winner-Take-All Land - LA Progressive",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680332400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "LA Progressive"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_379f77549b",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6b71e1bd0a"
+   }
+  },
+  {
+   "claim_id": "c12d3883db343ddd:c1",
+   "source_id": "c12d3883db343ddd",
+   "subject": "the article",
+   "predicate": "is published by",
+   "object": "LA Progressive",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "LA Progressive",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680332400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "LA Progressive"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_379f77549b",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_6b71e1bd0a"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "2022 California House Elections",
+   "normalized": "2022 california house elections",
+   "candidates": [
+    {
+     "entity_id": "ent_8342a273d5",
+     "canonical": "2022 california house elections",
+     "support": 0.625,
+     "evidence_mentions": [
+      "2022 California House Elections"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Elections Daily",
+   "normalized": "elections daily",
+   "candidates": [
+    {
+     "entity_id": "ent_64c66b081f",
+     "canonical": "elections daily",
+     "support": 0.625,
+     "evidence_mentions": [
+      "Elections Daily"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "McCarthy",
+   "normalized": "mccarthy",
+   "candidates": [
+    {
+     "entity_id": "ent_2ba6488ba4",
+     "canonical": "mccarthy",
+     "support": 0.625,
+     "evidence_mentions": [
+      "McCarthy"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "GOP conservatives",
+   "normalized": "gop conservatives",
+   "candidates": [
+    {
+     "entity_id": "ent_2a66fc24ea",
+     "canonical": "gop conservatives",
+     "support": 0.625,
+     "evidence_mentions": [
+      "GOP conservatives"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "centrists",
+   "normalized": "centrists",
+   "candidates": [
+    {
+     "entity_id": "ent_878a29739f",
+     "canonical": "centrists",
+     "support": 0.625,
+     "evidence_mentions": [
+      "centrists"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Center For Politics",
+   "normalized": "center for politics",
+   "candidates": [
+    {
+     "entity_id": "ent_a5fef0518b",
+     "canonical": "center for politics",
+     "support": 0.625,
+     "evidence_mentions": [
+      "Center For Politics"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "LA Progressive",
+   "normalized": "la progressive",
+   "candidates": [
+    {
+     "entity_id": "ent_02a26f131d",
+     "canonical": "la progressive",
+     "support": 0.75,
+     "evidence_mentions": [
+      "LA Progressive",
+      "LA Progressive"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "LA Progressive",
+   "normalized": "la progressive",
+   "candidates": [
+    {
+     "entity_id": "ent_02a26f131d",
+     "canonical": "la progressive",
+     "support": 0.75,
+     "evidence_mentions": [
+      "LA Progressive",
+      "LA Progressive"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "9766fbe3c5a37987": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1682578800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682578800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2e4c9490c90b0010": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1678950000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678950000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4e9c10822e1fc1dc": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1681974000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681974000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "c12d3883db343ddd": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1680332400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680332400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_f3a43da99c",
+   "member_ids": [
+    "9766fbe3c5a37987"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Elections Daily",
+   "primary_source": "Elections Daily",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_58d0e8465f",
+   "member_ids": [
+    "2e4c9490c90b0010"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Center For Politics",
+   "primary_source": "Center For Politics",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_787b0edeeb",
+   "member_ids": [
+    "4e9c10822e1fc1dc"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "NBC News",
+   "primary_source": "NBC News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_379f77549b",
+   "member_ids": [
+    "c12d3883db343ddd"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "LA Progressive",
+   "primary_source": "LA Progressive",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "9766fbe3c5a37987:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682578800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "4e9c10822e1fc1dc:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681974000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "4e9c10822e1fc1dc:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1681974000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "2e4c9490c90b0010:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678950000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "c12d3883db343ddd:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680332400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "c12d3883db343ddd:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680332400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "9766fbe3c5a37987:c0",
+  "4e9c10822e1fc1dc:c0",
+  "4e9c10822e1fc1dc:c1",
+  "2e4c9490c90b0010:c0",
+  "c12d3883db343ddd:c0",
+  "c12d3883db343ddd:c1"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_1186c24bc3": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_6b71e1bd0a": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_c0fa67a3f8": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_6a6ab635fc": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_c62c96443b": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_c56cae7cdc": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_0d84e7cb04": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_c0fa67a3f8",
+  "req_6a6ab635fc",
+  "req_c62c96443b",
+  "req_c56cae7cdc",
+  "req_0d84e7cb04"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 4,
+  "n_contradictions": 0,
+  "n_documents": 4
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 10.046,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "a860ebc48f0bffeb",
+ "bundle_hash": "a860ebc48f0bffeb",
+ "_persisted_at": "2026-07-13T01:37:10Z"
+}

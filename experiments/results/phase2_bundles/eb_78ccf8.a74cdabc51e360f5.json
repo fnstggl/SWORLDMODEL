@@ -1,0 +1,1610 @@
+{
+ "bundle_id": "eb_78ccf8",
+ "question": "Will the candidate out-raise their opponent this reporting period?",
+ "as_of": 1688169600.0,
+ "compiler_plan_hash": "ff69ae4433c4",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_494e161820",
+   "claim_or_quantity": "Compare the total monetary amount raised by the candidate (from all sources) to the total raised by the opponent over the reporting period; if candidate > opponent, outcome is 'yes', else 'no'.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "candidate",
+    "opponent"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_091926403d",
+   "claim_or_quantity": "value/context of donors.enthusiasm",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "donors.enthusiasm",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_d4327824b6",
+   "claim_or_quantity": "value/context of candidate.fundraising_effectiveness",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "candidate.fundraising_effectiveness",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_db1e9dfb23",
+   "claim_or_quantity": "value/context of opponent.fundraising_effectiveness",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "opponent.fundraising_effectiveness",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_c62c96443b",
+   "claim_or_quantity": "evidence discriminating structural hypothesis incumbent_advantage",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:incumbent_advantage",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_c422e09637",
+   "claim_or_quantity": "evidence discriminating structural hypothesis momentum_effect",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:momentum_effect",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_c47807f8d0",
+   "claim_or_quantity": "decision rules / process of fec",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "fec",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_d4d5cd7b30",
+   "claim_or_quantity": "decision rules / process of media",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "media",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_494e161820",
+   "terms": "candidate raise opponent reporting period candidate opponent",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_091926403d",
+   "terms": "donors enthusiasm",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_d4327824b6",
+   "terms": "candidate fundraising effectiveness",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_494e161820",
+   "logical_query": "candidate raise opponent reporting period candidate opponent after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=candidate+raise+opponent+reporting+period+candidate+opponent+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783907837.9855962,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:57:18 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw1pBiSO44w5AKxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTD8a_74iU2gQNrp-1iUlJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAAp0k3HQ\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "7060c366cced864f8498f623d2827bd1feadcb3cda2febc73eb0fe8a82cbeb80",
+   "n_bytes": 10338,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 6,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.583
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_091926403d",
+   "logical_query": "donors enthusiasm after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=donors+enthusiasm+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783907838.5704038,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:57:19 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw1JBiSO44w5ACxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwc_7svXmITmPHgSZySclJ-YXxKfklxcUFOYnFGcWpRWWpRvJGBkZmBuYGZnoFJfIEBAH3IOOU\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "0e9b3a82c8aa904c84862494b59d5963a722fd4a2e779e0e24f5acedb022a1bd",
+   "n_bytes": 22685,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.558
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_d4327824b6",
+   "logical_query": "candidate fundraising effectiveness after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=candidate+fundraising+effectiveness+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783907839.1302738,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:57:19 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjytDikmJw0pBiSO44w5AKxHVA3AjEfBXPmVpvnmOdDMQli86zNgFxFxDPAGJDhUus9kB8Of0Sa5HEFdYGIP5UdYNVoPoG67diXzaWEiB-689mGhLI5gzEWzSD2YR4OP53X7zEJnBj2YO9TErKSfmF8Sn5JcXFBTmJxRnFqUVlqUXxRgZGZgbmBmZ6BibxBQYAmPI6vw\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "4988239a85519efa2d1e7eb426d9cab6af9aa9fdf9b7b343e34a2a1c4b91873b",
+   "n_bytes": 1235,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.446
+  }
+ ],
+ "raw_content_refs": [
+  "0e9b3a82c8aa904c84862494b59d5963a722fd4a2e779e0e24f5acedb022a1bd",
+  "7060c366cced864f8498f623d2827bd1feadcb3cda2febc73eb0fe8a82cbeb80"
+ ],
+ "documents": [
+  {
+   "id": "6d480bf20b3e7ec3",
+   "source": "Florida Politics",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxQRHVVVGlwejVBdjJCZFRxVDBod1YyM3AxblhBWkJGekx1amNtajRzSWh4bVJVRnFmbXZWWFpaZzJKRWlzc3JOVTdpMVNMMzNnRFFhVmNobkhrRHBoRVN4REpycmlCSFBPV1QwTVNJMVR1dkpYakFUd3gxYjBlNUUtejE5ZFlacUItNzY1N3RtYUozai1mYXhIX1dQYXBGOVhDeHc?oc=5",
+   "title": "Blake Casper self-funds $105K for Tampa City Council bid - Florida Politics",
+   "text": "Blake Casper self-funds $105K for Tampa City Council bid - Florida Politics. Blake Casper self-funds $105K for Tampa City Council bid Florida Politics",
+   "content_hash": "b020a53eb86657de",
+   "raw_feed_hash": "7060c366cced864f8498f623d2827bd1feadcb3cda2febc73eb0fe8a82cbeb80",
+   "published_at": 1676275200.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_494e161820",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "cf29f119798aef6e",
+   "source": "OpenSecrets",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE8wd2dpNjZFSVJWMUt4VndHOVUwYkwySGJ0QjlyNE5pR3pvWTRtUUtYMkhidVBqQUxpOFNsOFprTUM1SWpHcVFpOXRhOC1wMkd1U1JxMnFTdWtPVm1yTG14Sm1GSjJmZGlkZWdORGl1MU8?oc=5",
+   "title": "The nationalization of political contributions and the rising role of out-of-state donations - OpenSecrets",
+   "text": "The nationalization of political contributions and the rising role of out-of-state donations - OpenSecrets. The nationalization of political contributions and the rising role of out-of-state donations OpenSecrets",
+   "content_hash": "07cc0357c3497bca",
+   "raw_feed_hash": "7060c366cced864f8498f623d2827bd1feadcb3cda2febc73eb0fe8a82cbeb80",
+   "published_at": 1685602800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_494e161820",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a487596f56965c09",
+   "source": "NOLA.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxNM0I3a3QtLW9tVHBYNXJEVUctaERCZWlLcjc1VWxJbUMyWlJobVktbEwxbXFBUDFhS2FhcTBGMlFSaDRTaE5ER0djMXAtUVNmc2k3cUQ1b0hPekJ5UmJCTFV3MTNZZmg2dlJqdFBXbzJ1amZmV1JIV1NrUWF4QUV0WHJrVURJRFpVekdsbm50U2ZLT1lHeW94S0xzMWE2eFdSZ0pWZkxoQldVM2duSHEzM3l4dmY0QXhzQk9Zd2plc1JMWm1jem9Gc2FzNUFOZVF2VU8za1lCaGZKRjgzNEt30gHkAUFVX3lxTE9BLTJzREhuY1lHcUhOaFVRemtZYVRuU05WZThhb1MyeWlyT1FRZDMtMGJxekZaaDhaSWp3ZzZXaV9aR0VsSjRrMlBDTkRxT0hSU2MzdG9QZlZSU0MycUFia3NfWEo4bFYzXzhIbW9aME5ONExfaXQ5SE9Ud0hXSTJ0RkgxbjByWUNnOGE2R2FKT0I4UVF2aFdwUklpQUt3V2dfNTlDSjdaZzZYRVJ1SUFjSVoydmpDYzZmQmxLY0I0bUJzMHZRT1RrdmU1LVNFQjAxNk9mOGlQb0Uwc1I4dDNObnJ0ZQ?oc=5",
+   "title": "Candidates raising big bucks as St. Tammany Parish president campaign heats up - NOLA.com",
+   "text": "Candidates raising big bucks as St. Tammany Parish president campaign heats up - NOLA.com. Candidates raising big bucks as St. Tammany Parish president campaign heats up NOLA.com",
+   "content_hash": "46af739af1cae4d8",
+   "raw_feed_hash": "7060c366cced864f8498f623d2827bd1feadcb3cda2febc73eb0fe8a82cbeb80",
+   "published_at": 1682060400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_494e161820",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "3646b7584910ba04",
+   "source": "Anchorage Daily News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi-AFBVV95cUxQYzdGR1FwTVJ1ZmRVdnNvd2YyQ2VHam9CN3dUc3ZrS1dCZmNxY2prMGk0U3NjS2FLeGxQRVFGcUh1ZEQ1cUpEY1ByRFlldEZsSkNoWGFyVWJfaEYyY0lVM1ozLVdlcDVyZGpuWm9fcWFhUW1zWmRCODEtVG1iRUFSOEFldzlMY2o4aHB3bFBhRTRCZ2V6MDVOZXhucDJ6MmJreC1LLVUxNVFMUlFFOVhNNXg5N3lfUmJWbjFUU3JUeXNLTkRCMFJnQW9Ub3ViVkJEMVJZbzJZSnRxRVBzRW5pUU9DaGk2cjkyTnFjZFJ4TGpnbUxsamFhZg?oc=5",
+   "title": "Conservatives close fundraising gap in Assembly races with help of big donors and independent expenditure group - Anchorage Daily News",
+   "text": "Conservatives close fundraising gap in Assembly races with help of big donors and independent expenditure group - Anchorage Daily News. Conservatives close fundraising gap in Assembly races with help of big donors and independent expenditure group Anchorage Daily News",
+   "content_hash": "85a9c67016711330",
+   "raw_feed_hash": "7060c366cced864f8498f623d2827bd1feadcb3cda2febc73eb0fe8a82cbeb80",
+   "published_at": 1680505200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_494e161820",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "da783aad167697b8",
+   "source": "Payday Report",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxONFZPNTEtcnFjZDdMNFBaSjZPTFFKYndmNG9tbGZEbGdwb2pWQk5zemtSYmNzVWduSVNQTmtkVkdTN1FsVXBwMDdRbm1zV1JHM3o1WlpXQnUtTFFYVWV2SHNWUG9SVW5iZHptYUtIc3lpSERNWktGeFhyWnF1Vm1aRHRiWHVyNzg4TXp3OGo0R21SM2NwY2g2LWRfQ3dWbjBFQmhn?oc=5",
+   "title": "Rival CWA Prez Candidates Covered Up Violent Intimidation & Sexual Misconduct - Payday Report",
+   "text": "Rival CWA Prez Candidates Covered Up Violent Intimidation & Sexual Misconduct - Payday Report. Rival CWA Prez Candidates Covered Up Violent Intimidation & Sexual Misconduct Payday Report",
+   "content_hash": "4505b987937bc6f7",
+   "raw_feed_hash": "7060c366cced864f8498f623d2827bd1feadcb3cda2febc73eb0fe8a82cbeb80",
+   "published_at": 1687417200.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_494e161820",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "e97c2fbc8e339c7a",
+   "source": "The Guardian Nigeria News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQRmx0MUpyQ2xMYkNFd3BRUEpwQThDUmI0WkVCQ2JmamlGa3VGb3lWbWpNOXhPNlNqR3NFeHVDSHoyWnZTczR5T3MzZWxvYWpxVEExc3RNZjM5RUhjXy0ta1BTUkRKbWdaRDRkWHp4UW9vUWdoMVRrcXRwMjkyUkJBT000eGtvRW1vaUpJMjNfTk1qbm96ck5jckVMdmVIY2hmMUxaZGlrWjBlVjVsNExjcFI2NG9mVHJnVDFn?oc=5",
+   "title": "How presidential candidates pay influencers to peddle fake news on social media, by CDD report - The Guardian Nigeria News",
+   "text": "How presidential candidates pay influencers to peddle fake news on social media, by CDD report - The Guardian Nigeria News. How presidential candidates pay influencers to peddle fake news on social media, by CDD report The Guardian Nigeria News",
+   "content_hash": "14ab3b491032bd47",
+   "raw_feed_hash": "7060c366cced864f8498f623d2827bd1feadcb3cda2febc73eb0fe8a82cbeb80",
+   "published_at": 1676534400.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_494e161820",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "cf29f119798aef6e",
+   "source": "OpenSecrets",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE8wd2dpNjZFSVJWMUt4VndHOVUwYkwySGJ0QjlyNE5pR3pvWTRtUUtYMkhidVBqQUxpOFNsOFprTUM1SWpHcVFpOXRhOC1wMkd1U1JxMnFTdWtPVm1yTG14Sm1GSjJmZGlkZWdORGl1MU8?oc=5",
+   "title": "The nationalization of political contributions and the rising role of out-of-state donations - OpenSecrets",
+   "text": "The nationalization of political contributions and the rising role of out-of-state donations - OpenSecrets. The nationalization of political contributions and the rising role of out-of-state donations OpenSecrets",
+   "content_hash": "07cc0357c3497bca",
+   "raw_feed_hash": "0e9b3a82c8aa904c84862494b59d5963a722fd4a2e779e0e24f5acedb022a1bd",
+   "published_at": 1685602800.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_091926403d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ab9283a078db1a36",
+   "source": "Claremont COURIER",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOM0ZOODhuRVdHbFhLbTB0N2ItZ3c4WDRZdUhxN1hOVjVVeHNndXBvdHdlUHhUOU45MFlZNWFfYXNLMWFqd3J5YmxuSFBUd0VicDhnYmRTa1hWRmticHRxUnd2VktUeHJqQV9UbGhDMkx6Z3ZGbGlaSGRuRnozWVBFSGpoLXJiZ3A4LVRKYXZkbjJwcWtxM0NZdmEzY2lPeUxJU3V3a1NIRDJmTWY0OHc?oc=5",
+   "title": "Curb Your Enthusiasm filming slows traffic at Pomona College - Claremont COURIER",
+   "text": "Curb Your Enthusiasm filming slows traffic at Pomona College - Claremont COURIER. Curb Your Enthusiasm filming slows traffic at Pomona College Claremont COURIER",
+   "content_hash": "10f551525510470b",
+   "raw_feed_hash": "0e9b3a82c8aa904c84862494b59d5963a722fd4a2e779e0e24f5acedb022a1bd",
+   "published_at": 1678863600.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_091926403d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d5218af565c356f5",
+   "source": "Institute on Taxation and Economic Policy",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQNHNUaWxzdkcyeTlVZ0IxaHo3b2lVdUdLLWZiRmM2cTZFYXMta3ZUTUs1MjRqSEZteGRlUzdEdGRwUnJhdjhqbHhiTUFxY1pZV3JPcmstbmlHanVjMkp6VU5VMEt2QkxQdTlSSjE5WDJBTVkyN1VOampFbXV6MFpNUA?oc=5",
+   "title": "Tax Avoidance Continues to Fuel School Privatization Efforts - Institute on Taxation and Economic Policy",
+   "text": "Tax Avoidance Continues to Fuel School Privatization Efforts - Institute on Taxation and Economic Policy. Tax Avoidance Continues to Fuel School Privatization Efforts Institute on Taxation and Economic Policy",
+   "content_hash": "6cd6337fb66a39d1",
+   "raw_feed_hash": "0e9b3a82c8aa904c84862494b59d5963a722fd4a2e779e0e24f5acedb022a1bd",
+   "published_at": 1677830400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_091926403d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "bb9032108cfdafe9",
+   "source": "News at IU",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxNbldBRnJYTWxTMVVnb0xnZzJyc0NKTnIwcFc1RU1QT3E1OG9yMG1YdTZncTVyUnlXTHlNaWVKSkdFRGlwZ3pDODg1WFFwWk8tRFZ6YXVsVFB3TTZiOUpWT1NwRUxzYjNhMk0xVGJKTm5FcUVfc0dDaDUwMFpkR2hRUUtjRWRHdEtFQlM4UFdkRHVjV1VWMHJ4UE52cw?oc=5",
+   "title": "IU Southeast\u2019s Chancellor\u2019s Medallion Dinner brings in more than $100,500 - News at IU",
+   "text": "IU Southeast\u2019s Chancellor\u2019s Medallion Dinner brings in more than $100,500 - News at IU. IU Southeast\u2019s Chancellor\u2019s Medallion Dinner brings in more than $100,500 News at IU",
+   "content_hash": "d645d7bee2bc9470",
+   "raw_feed_hash": "0e9b3a82c8aa904c84862494b59d5963a722fd4a2e779e0e24f5acedb022a1bd",
+   "published_at": 1681801200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_091926403d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "9b6bf1744919d076",
+   "source": "NBC News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQVkMwQmdCOEp2ZFBFY0h3a3QzMlBJQXFjWUVzTjVQX1k0cWNreEFvN1hYbUlJdWZmVGhHTU1tdkdPSi13SkEwbmVXN2VrSDBaRld6bmZlekdiV0NtWnk5VnQ3dzNuSzlueDBfcGhLQWFhZWxEa0RvVDBjNWFkWGVQa3gzbG80OXlQZVczZkQ2N0M3OFQwR3ZWUkJ4NHFzNTN5MF9UX0FnYkIwUDVFWnc2dlFobVk2aTdHNXNZ?oc=5",
+   "title": "Biden meets with top donors as campaign courts deep-pocketed Democrats - NBC News",
+   "text": "Biden meets with top donors as campaign courts deep-pocketed Democrats - NBC News. Biden meets with top donors as campaign courts deep-pocketed Democrats NBC News",
+   "content_hash": "cb7072e92e60c1ca",
+   "raw_feed_hash": "0e9b3a82c8aa904c84862494b59d5963a722fd4a2e779e0e24f5acedb022a1bd",
+   "published_at": 1682751600.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_091926403d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "67606151e2c56afa",
+   "source": "Rotary International",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiYEFVX3lxTE52QUMtSzlEUkEzQ09POGZ6U2hGR3F3eHNGd00zeS1jT2pzc3ExNDZGVkxzYlJPWlVuTWlZYkFqaXFMTVhYaVFWb1I0WGFuNTF2clY1NkExWWVEVlhCX2NDMA?oc=5",
+   "title": "Acting is in Interactors\u2019 nature - Rotary International",
+   "text": "Acting is in Interactors\u2019 nature - Rotary International. Acting is in Interactors\u2019 nature Rotary International",
+   "content_hash": "ba1707c13caa578a",
+   "raw_feed_hash": "0e9b3a82c8aa904c84862494b59d5963a722fd4a2e779e0e24f5acedb022a1bd",
+   "published_at": 1682701466.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_091926403d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "cae3dc4ef359fbae",
+   "source": "Television Academy",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxQc3BoazdUazZsdEMzZUw4V2dxNjZBTUJvZHU1THdsVDV4OXAtSndlZ1RhSW1FbVluQjJVTGRTTHlVd3lBNXA4bWVicXdjd0NKSG1acENvenhiWVNUbU1oeVUxOE9GMFZxekJpaEpTTjdmN0htVHFXYkF3dkZvM3BScHlHQmZ6TjdaMjIwdThpZm5YR1ZEdTNWYnY2NkFTZw?oc=5",
+   "title": "Foundation Announces Donation to Create Industry Leadership Intern Initiative - Television Academy",
+   "text": "Foundation Announces Donation to Create Industry Leadership Intern Initiative - Television Academy. Foundation Announces Donation to Create Industry Leadership Intern Initiative Television Academy",
+   "content_hash": "d5d766a990c4cc67",
+   "raw_feed_hash": "0e9b3a82c8aa904c84862494b59d5963a722fd4a2e779e0e24f5acedb022a1bd",
+   "published_at": 1684306800.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_091926403d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "60538007dffa68ac",
+   "source": "The Oklahoman",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxQbk05UjJnS2hLdkVuaXRLTm1xZDljXzVrLVFGN0ZGLW1nbVNxYldPVTBiXzJSNVpqX1RoMzVHRDF4Smp3OWk4ejQ3WHhjZkRpc2FkYnVRRFl3eDBDTzdEeHRNdmh5cWVPZ3c3Q25zeHA0LWpmM0RJMzBDZXJ2U2hWNHJOM3RZellLaFlJZmtncU5QWHhDNFc4QUlHQXJ3V3R4Sm02b2hhNHVCNHFjaThaR1NvVkJLd0ppTjcxMkJFVWc4NXBSTHpLYm9Yd2tqVFJBSDdz?oc=5",
+   "title": "Entrepreneur kills $61 million Edmond sculpture park project after tiring of process - The Oklahoman",
+   "text": "Entrepreneur kills $61 million Edmond sculpture park project after tiring of process - The Oklahoman. Entrepreneur kills $61 million Edmond sculpture park project after tiring of process The Oklahoman",
+   "content_hash": "bae64608264d57d0",
+   "raw_feed_hash": "0e9b3a82c8aa904c84862494b59d5963a722fd4a2e779e0e24f5acedb022a1bd",
+   "published_at": 1685689200.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_091926403d",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "6d480bf20b3e7ec3:c0",
+   "source_id": "6d480bf20b3e7ec3",
+   "subject": "Blake Casper",
+   "predicate": "self-funds",
+   "object": "$105K",
+   "value": "105000",
+   "units": "USD",
+   "qualifiers": "for Tampa City Council bid",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Blake Casper self-funds $105K for Tampa City Council bid",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1676275200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Blake Casper",
+    "Tampa City Council"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_33a5228a96",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_494e161820"
+   }
+  },
+  {
+   "claim_id": "cf29f119798aef6e:c0",
+   "source_id": "cf29f119798aef6e",
+   "subject": "political contributions",
+   "predicate": "is being nationalized",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The nationalization of political contributions",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1685602800.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [],
+   "contradiction_links": [],
+   "dependence_group": "dep_7927bd2900",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_091926403d"
+   }
+  },
+  {
+   "claim_id": "cf29f119798aef6e:c1",
+   "source_id": "cf29f119798aef6e",
+   "subject": "out-of-state donations",
+   "predicate": "has a rising role",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "the rising role of out-of-state donations",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1685602800.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [],
+   "contradiction_links": [],
+   "dependence_group": "dep_7927bd2900",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_091926403d"
+   }
+  },
+  {
+   "claim_id": "ab9283a078db1a36:c0",
+   "source_id": "ab9283a078db1a36",
+   "subject": "Curb Your Enthusiasm filming",
+   "predicate": "slows",
+   "object": "traffic at Pomona College",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Curb Your Enthusiasm filming slows traffic at Pomona College",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678863600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Curb Your Enthusiasm",
+    "Pomona College"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_275f819e28",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_091926403d"
+   }
+  },
+  {
+   "claim_id": "a487596f56965c09:c0",
+   "source_id": "a487596f56965c09",
+   "subject": "Candidates",
+   "predicate": "raising",
+   "object": "big bucks",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Candidates raising big bucks as St. Tammany Parish president campaign heats up",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682060400.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "St. Tammany Parish president campaign"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_e5be1206d9",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_494e161820"
+   }
+  },
+  {
+   "claim_id": "a487596f56965c09:c1",
+   "source_id": "a487596f56965c09",
+   "subject": "St. Tammany Parish president campaign",
+   "predicate": "heats up",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "St. Tammany Parish president campaign heats up",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682060400.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "St. Tammany Parish president campaign"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_e5be1206d9",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_494e161820"
+   }
+  },
+  {
+   "claim_id": "d5218af565c356f5:c0",
+   "source_id": "d5218af565c356f5",
+   "subject": "Tax Avoidance",
+   "predicate": "continues to fuel",
+   "object": "School Privatization Efforts",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Tax Avoidance Continues to Fuel School Privatization Efforts",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1677830400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Tax Avoidance",
+    "School Privatization Efforts"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_458ce2eb61",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_091926403d"
+   }
+  },
+  {
+   "claim_id": "3646b7584910ba04:c0",
+   "source_id": "3646b7584910ba04",
+   "subject": "Conservatives",
+   "predicate": "close fundraising gap",
+   "object": "in Assembly races",
+   "value": "",
+   "units": "",
+   "qualifiers": "with help of big donors and independent expenditure group",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Conservatives close fundraising gap in Assembly races with help of big donors and independent expenditure group",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680505200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Conservatives",
+    "Assembly races",
+    "big donors",
+    "independent expenditure group"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_dcef31e558",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_494e161820"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Blake Casper",
+   "normalized": "blake casper",
+   "candidates": [
+    {
+     "entity_id": "ent_229a195029",
+     "canonical": "blake casper",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Blake Casper"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Tampa City Council",
+   "normalized": "tampa city council",
+   "candidates": [
+    {
+     "entity_id": "ent_6bb97fe374",
+     "canonical": "tampa city council",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Tampa City Council"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Curb Your Enthusiasm",
+   "normalized": "curb your enthusiasm",
+   "candidates": [
+    {
+     "entity_id": "ent_dc7e71d7a1",
+     "canonical": "curb your enthusiasm",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Curb Your Enthusiasm"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Pomona College",
+   "normalized": "pomona college",
+   "candidates": [
+    {
+     "entity_id": "ent_e176670a33",
+     "canonical": "pomona college",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Pomona College"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "St. Tammany Parish president campaign",
+   "normalized": "st tammany parish campaign",
+   "candidates": [
+    {
+     "entity_id": "ent_396e5adfe3",
+     "canonical": "st tammany parish campaign",
+     "support": 0.6667,
+     "evidence_mentions": [
+      "St. Tammany Parish president campaign",
+      "St. Tammany Parish president campaign"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "St. Tammany Parish president campaign",
+   "normalized": "st tammany parish campaign",
+   "candidates": [
+    {
+     "entity_id": "ent_396e5adfe3",
+     "canonical": "st tammany parish campaign",
+     "support": 0.6667,
+     "evidence_mentions": [
+      "St. Tammany Parish president campaign",
+      "St. Tammany Parish president campaign"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Tax Avoidance",
+   "normalized": "tax avoidance",
+   "candidates": [
+    {
+     "entity_id": "ent_ecc8b483ed",
+     "canonical": "tax avoidance",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Tax Avoidance"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "School Privatization Efforts",
+   "normalized": "school privatization efforts",
+   "candidates": [
+    {
+     "entity_id": "ent_6849ad0da2",
+     "canonical": "school privatization efforts",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "School Privatization Efforts"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Conservatives",
+   "normalized": "conservatives",
+   "candidates": [
+    {
+     "entity_id": "ent_e594661868",
+     "canonical": "conservatives",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Conservatives"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Assembly races",
+   "normalized": "assembly races",
+   "candidates": [
+    {
+     "entity_id": "ent_a883e6584a",
+     "canonical": "assembly races",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "Assembly races"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "big donors",
+   "normalized": "big donors",
+   "candidates": [
+    {
+     "entity_id": "ent_54bb4f7994",
+     "canonical": "big donors",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "big donors"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "independent expenditure group",
+   "normalized": "independent expenditure",
+   "candidates": [
+    {
+     "entity_id": "ent_934f846a59",
+     "canonical": "independent expenditure",
+     "support": 0.5833,
+     "evidence_mentions": [
+      "independent expenditure group"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "6d480bf20b3e7ec3": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1676275200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676275200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "cf29f119798aef6e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1685602800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685602800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a487596f56965c09": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1682060400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682060400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "3646b7584910ba04": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1680505200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680505200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "da783aad167697b8": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1687417200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687417200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "e97c2fbc8e339c7a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1676534400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676534400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ab9283a078db1a36": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1678863600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678863600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d5218af565c356f5": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1677830400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677830400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "bb9032108cfdafe9": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1681801200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681801200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "9b6bf1744919d076": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1682751600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682751600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "67606151e2c56afa": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1682701466.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682701466.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "cae3dc4ef359fbae": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1684306800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684306800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "60538007dffa68ac": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1685689200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685689200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_33a5228a96",
+   "member_ids": [
+    "6d480bf20b3e7ec3"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Florida Politics",
+   "primary_source": "Florida Politics",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7927bd2900",
+   "member_ids": [
+    "cf29f119798aef6e",
+    "cf29f119798aef6e"
+   ],
+   "dependence_type": "exact_duplicate",
+   "likely_origin": "OpenSecrets",
+   "primary_source": "OpenSecrets",
+   "confidence": 0.99
+  },
+  {
+   "group_id": "dep_e5be1206d9",
+   "member_ids": [
+    "a487596f56965c09"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "NOLA.com",
+   "primary_source": "NOLA.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_dcef31e558",
+   "member_ids": [
+    "3646b7584910ba04"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Anchorage Daily News",
+   "primary_source": "Anchorage Daily News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e67c1018f6",
+   "member_ids": [
+    "da783aad167697b8"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Payday Report",
+   "primary_source": "Payday Report",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_433e55be62",
+   "member_ids": [
+    "e97c2fbc8e339c7a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Guardian Nigeria News",
+   "primary_source": "The Guardian Nigeria News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_275f819e28",
+   "member_ids": [
+    "ab9283a078db1a36"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Claremont COURIER",
+   "primary_source": "Claremont COURIER",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_458ce2eb61",
+   "member_ids": [
+    "d5218af565c356f5"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Institute on Taxation and Economic Policy",
+   "primary_source": "Institute on Taxation and Economic Policy",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_8ffb6925c5",
+   "member_ids": [
+    "bb9032108cfdafe9"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "News at IU",
+   "primary_source": "News at IU",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_1cb15972cf",
+   "member_ids": [
+    "9b6bf1744919d076"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "NBC News",
+   "primary_source": "NBC News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_af5d586af8",
+   "member_ids": [
+    "67606151e2c56afa"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Rotary International",
+   "primary_source": "Rotary International",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_2ea50e8003",
+   "member_ids": [
+    "cae3dc4ef359fbae"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Television Academy",
+   "primary_source": "Television Academy",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a16b6765b4",
+   "member_ids": [
+    "60538007dffa68ac"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Oklahoman",
+   "primary_source": "The Oklahoman",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "6d480bf20b3e7ec3:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1676275200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "cf29f119798aef6e:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685602800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "cf29f119798aef6e:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685602800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "ab9283a078db1a36:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678863600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "a487596f56965c09:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682060400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "a487596f56965c09:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682060400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "d5218af565c356f5:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1677830400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "3646b7584910ba04:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680505200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "6d480bf20b3e7ec3:c0",
+  "cf29f119798aef6e:c0",
+  "cf29f119798aef6e:c1",
+  "ab9283a078db1a36:c0",
+  "a487596f56965c09:c0",
+  "a487596f56965c09:c1",
+  "d5218af565c356f5:c0",
+  "3646b7584910ba04:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_494e161820": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_091926403d": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_d4327824b6": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_db1e9dfb23": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_c62c96443b": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_c422e09637": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_c47807f8d0": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_d4d5cd7b30": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_d4327824b6",
+  "req_db1e9dfb23",
+  "req_c62c96443b",
+  "req_c422e09637",
+  "req_c47807f8d0",
+  "req_d4d5cd7b30"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 13,
+  "n_contradictions": 0,
+  "n_documents": 14
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 13.57,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "a74cdabc51e360f5",
+ "bundle_hash": "a74cdabc51e360f5",
+ "_persisted_at": "2026-07-13T01:57:37Z"
+}

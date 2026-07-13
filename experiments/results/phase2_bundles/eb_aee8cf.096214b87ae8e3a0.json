@@ -1,0 +1,1793 @@
+{
+ "bundle_id": "eb_aee8cf",
+ "question": "Will the electric vehicle begin deliveries this quarter?",
+ "as_of": 1688169600.0,
+ "compiler_plan_hash": "ba6862816add",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_c583f1eb35",
+   "claim_or_quantity": "resolve at horizon end based on actual delivery start",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "EV_manufacturer",
+    "supplier_network",
+    "regulator"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_84c1474a4f",
+   "claim_or_quantity": "value/context of EV_manufacturer.production_readiness",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "EV_manufacturer.production_readiness",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_0ad66b05c0",
+   "claim_or_quantity": "value/context of EV_manufacturer.management_decision_to_launch",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "EV_manufacturer.management_decision_to_launch",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_041fec6ea9",
+   "claim_or_quantity": "value/context of supplier_network.bottleneck_severity",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "supplier_network.bottleneck_severity",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_f6718adfe0",
+   "claim_or_quantity": "evidence discriminating structural hypothesis supply_chain_driven",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:supply_chain_driven",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_8c1d03f0d9",
+   "claim_or_quantity": "evidence discriminating structural hypothesis regulatory_driven",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:regulatory_driven",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_7c131f2f31",
+   "claim_or_quantity": "decision rules / process of EV_manufacturer",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "EV_manufacturer",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_a1cb9e1126",
+   "claim_or_quantity": "decision rules / process of regulator",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "regulator",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_c583f1eb35",
+   "terms": "electric vehicle begin deliveries EV manufacturer supplier network regulator",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_84c1474a4f",
+   "terms": "manufacturer production readiness",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_0ad66b05c0",
+   "terms": "manufacturer management decision launch",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_c583f1eb35",
+   "logical_query": "electric vehicle begin deliveries EV manufacturer supplier network regulator after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=electric+vehicle+begin+deliveries+EV+manufacturer+supplier+network+regulator+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783907230.043112,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:47:10 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw1pBiSO44w5AKxJVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwc89ovXmIT6NjfP5NZSTkpvzA-Jb-kuLggJ7E4ozi1qCy1KN7IwMjMwNzATM_AJL7AAACPjjg_\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "786d10307f4abb9767c6db3dec02cfec9dbfee065f3cbcb858511581d990ae67",
+   "n_bytes": 2253,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 1,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.728
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_84c1474a4f",
+   "logical_query": "manufacturer production readiness after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=manufacturer+production+readiness+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783907230.7729864,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:47:11 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmJw1pBiSO44w5AKxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDMb_94iU2gR0Nx68zKikn5RfGp-SXFBcX5CQWZxSnFpWlFsUbGRiZGZgbmOkZmMQXGAAAk602yg\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "0cf391736e5b64a276977a2badc971209a3a553af45fc3bf3297918d61b2cee4",
+   "n_bytes": 66136,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.639
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_0ad66b05c0",
+   "logical_query": "manufacturer management decision launch after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=manufacturer+management+decision+launch+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783907231.4145799,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 01:47:12 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjytDikmLw0JBiSO44w5ACxJVA3AjEfBXPmVpvnmOdDMQli86zNgFxFxDPAGJDhUus9kB8Of0Sa5HEFdYGIP5UdYNVoPoG67diXzaWEiB-689mGhLI5gzEWzSD2YS4ORa0X7zEJtCw7K6dknJSfmF8Sn5JcXFBTmJxRnFqUVlqUbyRgZGZgbmBmZ6BSXyBAQA2tTl_\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "a4bb58300a659eb78bf25af09a48af36366a02582fb21c86a12e194b2a616a8c",
+   "n_bytes": 46433,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.656
+  }
+ ],
+ "raw_content_refs": [
+  "0cf391736e5b64a276977a2badc971209a3a553af45fc3bf3297918d61b2cee4",
+  "786d10307f4abb9767c6db3dec02cfec9dbfee065f3cbcb858511581d990ae67",
+  "a4bb58300a659eb78bf25af09a48af36366a02582fb21c86a12e194b2a616a8c"
+ ],
+ "documents": [
+  {
+   "id": "25f6817adb16d163",
+   "source": "RMI",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE45WTV4OFZZQ2tXNnRzQUJVNklzY1o3UktoQ1g5QW4xMkJiX1R2LXRFSjEtaEpVSUo0X0QwNF9GNXVlcHVhWnBoMFVCRW81dWFXLXpCNndBYThvVHB3eE1MbGhYaG5idXVKc1dEVWtqQll5dw?oc=5",
+   "title": "The EV Battery Supply Chain Explained - RMI",
+   "text": "The EV Battery Supply Chain Explained - RMI. The EV Battery Supply Chain Explained RMI",
+   "content_hash": "218eb93f89098fad",
+   "raw_feed_hash": "786d10307f4abb9767c6db3dec02cfec9dbfee065f3cbcb858511581d990ae67",
+   "published_at": 1683270000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_c583f1eb35",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "73c2d371cad748a0",
+   "source": "dla.mil",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi3gFBVV95cUxQVmQwTm95RmhTT3JPNDkwaDNHRUo0MUV3MVQ0aUotc0lwUEVoNDd4TGZVdm5DWWZnM1ZLcHhqYU9WT05uR1ppUFViZlpfQlBTekFIZGxvcEdSWXBycm5uSGk0R0RBdjY3LS11UDB0YllaOUVsd05fUkN1NUZKdDZFc2t0LTc5MFVybElndjRZUV9aZXNSLUFPYXl4d3RHcmpKVlM5UDRTbmFrWUVXb0dYcXMyT2FXNFhWSnBtZ2NXdTdTb2dueVQyRWVMZVBmT3F2blNhRWlva0pnVVpWeVE?oc=5",
+   "title": "DLA leaders outline agency\u2019s role in DOD additive manufacturing capabilities - dla.mil",
+   "text": "DLA leaders outline agency\u2019s role in DOD additive manufacturing capabilities - dla.mil. DLA leaders outline agency\u2019s role in DOD additive manufacturing capabilities dla.mil",
+   "content_hash": "f449aedf84fd1a14",
+   "raw_feed_hash": "0cf391736e5b64a276977a2badc971209a3a553af45fc3bf3297918d61b2cee4",
+   "published_at": 1676448000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_84c1474a4f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ebbd4a84cb6ef412",
+   "source": "MIT Sloan",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE5HaG9TeVFSTDd2Y2NKd1dmUmVMTlYtblFQWExFTlFpR2NxN2Q3RTEwdDdsQWZfY0tUaFk2OC1VS1RFRmI5WF80aWZZaVVKYnJyc01aSFYyaWE2UzFxMG5uUzQ1Smc0QldwRUlzMTdSeVFPNnpoaFNUcklNNjRfZw?oc=5",
+   "title": "For AI in manufacturing, start with data - MIT Sloan",
+   "text": "For AI in manufacturing, start with data - MIT Sloan. For AI in manufacturing, start with data MIT Sloan",
+   "content_hash": "7a46bbef6b5a94d9",
+   "raw_feed_hash": "0cf391736e5b64a276977a2badc971209a3a553af45fc3bf3297918d61b2cee4",
+   "published_at": 1687935600.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_84c1474a4f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ec55f56e9959e4db",
+   "source": "National Defense Magazine",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxQQWZOZi1TZW5od1dHRU50SXowMmROTW1ldC1TY2NRZkNRWXNpOEwyMzkwNHFqM2hRNEIzUFRreC1oc0sxQm9aOU4xa0VyWnAwaEk5cldHSWRXWlJnbHBRMkxTWkpkT055RmdZNWx1ZHlUWU85LUhGeXhaTkc5bEdBNU9RRExZdmUtbm5PZ1FxQ25qR0d2RHZVSUhRd2pCcWNUUWUycWQxcEktdXAtN1UwVjdEcG9Gek5WN0E?oc=5",
+   "title": "Navy Must Go All In on Additive Manufacturing, Official Says - National Defense Magazine",
+   "text": "Navy Must Go All In on Additive Manufacturing, Official Says - National Defense Magazine. Navy Must Go All In on Additive Manufacturing, Official Says National Defense Magazine",
+   "content_hash": "4e53d729cb04379b",
+   "raw_feed_hash": "0cf391736e5b64a276977a2badc971209a3a553af45fc3bf3297918d61b2cee4",
+   "published_at": 1679036400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_84c1474a4f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2502ce30f07b3f3a",
+   "source": "Carnegie Endowment for International Peace",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOWWZjeGdvWVRYSG5PQlFubDVZMUVOUFNGOGZhNV9wV2p1VTF0XzVUNGloRS1QRmp3UlhBcHkxRmVadXRiYlNHWFR4aFhpRjExelpOQkVadEV1ZVd2QUx3dDNzZGlOVVNzamVxdmNQcjNTMWsxaDlUSlpiZnJjSUhPOEVqdXZ2eXBBdkhxSjlrdk1vZmpJdTNjdGlMbFU4eTZC?oc=5",
+   "title": "Is India \u201cReady\u201d for Semiconductor Manufacturing? - Carnegie Endowment for International Peace",
+   "text": "Is India \u201cReady\u201d for Semiconductor Manufacturing? - Carnegie Endowment for International Peace. Is India \u201cReady\u201d for Semiconductor Manufacturing? Carnegie Endowment for International Peace",
+   "content_hash": "706ef0cd0dc54e77",
+   "raw_feed_hash": "0cf391736e5b64a276977a2badc971209a3a553af45fc3bf3297918d61b2cee4",
+   "published_at": 1684825200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_84c1474a4f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a3e310bd90b728b5",
+   "source": "Metal Additive Manufacturing magazine",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxPdDM3RU9ERzFabGJwOWFyT3ZObkxIblJiNTd6ZlBaYjU2WFQtYVFUaGpyUU1IZW9ibng3bG1TQUJKcGhKWW52UzUxRTdTeXFqVHVyTWo5czRiTjk0WmhjWUU1clZnbDJtQzJBNGNYbUJWVkE1WWZ5dTh3ZDI3VnIySHBOSWJoS2RtYkdfcWxLaVk?oc=5",
+   "title": "US Army opens Advanced Manufacturing Commercialisation Centre - Metal Additive Manufacturing magazine",
+   "text": "US Army opens Advanced Manufacturing Commercialisation Centre - Metal Additive Manufacturing magazine. US Army opens Advanced Manufacturing Commercialisation Centre Metal Additive Manufacturing magazine",
+   "content_hash": "b5695d4ecb17f029",
+   "raw_feed_hash": "0cf391736e5b64a276977a2badc971209a3a553af45fc3bf3297918d61b2cee4",
+   "published_at": 1680764400.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_84c1474a4f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "279a7db5d3c788bf",
+   "source": "DVIDS",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOSWxuaTR6OEFNNzVXVWRtY3BpZTJYWHF4c3pDVjZYcThMUEFjcW1KN3FMQ0JiY0N0TG9wVlZIazc0TFBaNTBCX3JJRVZsOU5ETk52RVBDd3dPTVJWb0JtbXVWbUNDYnhVWV9sSkFCVmJiNVNGaVAtbnVTekNkSGpQVHJvS2U1b0h2aFNIOE5jenF0Z1NITUVsSEU0d3VEQ2owcmV5LU1LY3NGell2?oc=5",
+   "title": "News - Army to open Advanced Manufacturing Commercialization Center in metro Detroit - DVIDS",
+   "text": "News - Army to open Advanced Manufacturing Commercialization Center in metro Detroit - DVIDS. News - Army to open Advanced Manufacturing Commercialization Center in metro Detroit DVIDS",
+   "content_hash": "ebf18f189d97cdf9",
+   "raw_feed_hash": "0cf391736e5b64a276977a2badc971209a3a553af45fc3bf3297918d61b2cee4",
+   "published_at": 1679900400.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_84c1474a4f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ba9263ab372bf362",
+   "source": "Fermilab (.gov)",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxONWdWRXA3WHYwQk8zSW1JcTI3cGtoTXR4QjIyUHFkUUt3RUpueUxYVTBVZ3UxZVZJVkllSVg1aU9hTWFtR0cwXzFvd3ZrTFdMRDdISVNvWG5wUVFXamJweDBMTG9WRjlXd1NDMWhyQ0QwSGEwZXBsUTRBMXVyWWlpY1Fkdk5JRHF2N25nUXU0aGQxdHBHQmY5Tm9KLVFkeDZ2X0xUeC12V2hQcDJM?oc=5",
+   "title": "DUNE collaboration ready to ramp up mass production for first detector module - Fermilab (.gov)",
+   "text": "DUNE collaboration ready to ramp up mass production for first detector module - Fermilab (.gov). DUNE collaboration ready to ramp up mass production for first detector module Fermilab (.gov)",
+   "content_hash": "12131a81edee9630",
+   "raw_feed_hash": "0cf391736e5b64a276977a2badc971209a3a553af45fc3bf3297918d61b2cee4",
+   "published_at": 1680159600.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_84c1474a4f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "26f72762e18f4cce",
+   "source": "Roll Call",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQVm1XNzhSajhfbUtPLVlGOTZkYTBxTWlaUG0yZlZsdEFMLTJKblBNODRmYVppSG9BTnB6ZW9iVGZWbVVnemhFQ1BvLWExcTFfOVBxcVpMcGd1dWU2eXM4bmp1M3Y0OHlyV1AyOE9HUEhpQk1jS3hQLVBHbzlHMWgzbzJEQldIMFNRLThlYWJNY0N5Z09ySTUw?oc=5",
+   "title": "Lawmakers worry about weapons-makers\u2019 ability to meet demand - Roll Call",
+   "text": "Lawmakers worry about weapons-makers\u2019 ability to meet demand - Roll Call. Lawmakers worry about weapons-makers\u2019 ability to meet demand Roll Call",
+   "content_hash": "1ec78b5d8347a01d",
+   "raw_feed_hash": "0cf391736e5b64a276977a2badc971209a3a553af45fc3bf3297918d61b2cee4",
+   "published_at": 1675670400.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_84c1474a4f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "7b1b5b799016574e",
+   "source": "IANR News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxOQjB4c3NqTXVvU0U1ZXlKMjhFNWdSY0NzUVl5ZjlJNm9TZ0RhZUhvMGpRNFpzeTBHcWJFcGVfMi00bTRFTTFoUnE1Q0VrTmR3RC1NY1NhSWFMNFd2WTZiU3pVOGQyaGoxZWZaMXVMdWdVTzhjODBicTZGYWlGbGZ5enlwZzJKUFY0cG5EU1N6TndfRnRhQTNyUUlpLVNRS2t6d1Q4?oc=5",
+   "title": "DAWN project launches first phase of an innovative, web-based decision-support tool - IANR News",
+   "text": "DAWN project launches first phase of an innovative, web-based decision-support tool - IANR News. DAWN project launches first phase of an innovative, web-based decision-support tool IANR News",
+   "content_hash": "87347090dba4c24d",
+   "raw_feed_hash": "a4bb58300a659eb78bf25af09a48af36366a02582fb21c86a12e194b2a616a8c",
+   "published_at": 1678262400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_0ad66b05c0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "e0868040749a35a0",
+   "source": "Boston Consulting Group",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxOQVRNR283MmxLWWtGTzB2WkV2VUNmQXNQX0hMdmdDWFBZMnVkTFZsMEh1R3luRWhrX21NVmJkTDVUQnR5VkhVZFFaZHo3NHFLcnljUEFNc21EbERacXV2MDk5MGlGb2M3b191LUtFZWJRZHd2cldHYzhCeml1NnpLX2prSzVKTTg3S19WaHpxdnBnUTZ4?oc=5",
+   "title": "Agility Is Fashion\u2019s New Source of Competitive Advantage - Boston Consulting Group",
+   "text": "Agility Is Fashion\u2019s New Source of Competitive Advantage - Boston Consulting Group. Agility Is Fashion\u2019s New Source of Competitive Advantage Boston Consulting Group",
+   "content_hash": "d913db86fe53ae01",
+   "raw_feed_hash": "a4bb58300a659eb78bf25af09a48af36366a02582fb21c86a12e194b2a616a8c",
+   "published_at": 1680073200.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_0ad66b05c0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "393b66eb1a2107b9",
+   "source": "Databricks",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTFBxWUJ3Vnl6RXRlYVFNMU5mZmRQNVB2a3Bxand3LTlFNUduYTFvUVZwLWw4T1FlM2tRc3lWLVM3ak0tOWItMTNLVzdVZzBsZUItTlpWNjN3YUdsZ3dLMHVDdzk2dWZVOUJFVm9FWFNNNktEMEhubHhjc21WUDViMWM?oc=5",
+   "title": "The Lakehouse for Manufacturing - Databricks",
+   "text": "The Lakehouse for Manufacturing - Databricks. The Lakehouse for Manufacturing Databricks",
+   "content_hash": "8f84d3a3fa9a5584",
+   "raw_feed_hash": "a4bb58300a659eb78bf25af09a48af36366a02582fb21c86a12e194b2a616a8c",
+   "published_at": 1680591600.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_0ad66b05c0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ce95a575a6968c8a",
+   "source": "Automotive Manufacturing Solutions",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxPRlltT0JyNXZyVkdsMXZDM04wMzNlR3QyOEtWdTc2RTIwSVo2aS1FMTRaQ3dscF9vRmp5aU5iRXI1eG9OdkRJZVpDX3lVeHpGRXFfYUM1ZTBNQzluaDNQb2g4NzV2Zy1LMUJYQ0NIVkw0allMaXRDTkp0QWQ5T3k5VGIxSW56S0xTVkhmVkFJbktaLWlmczFCZ0dnZlZRRmpkRU9uX1ljR0E3TG1VVHRQUWxLVGxQVmpSemEzSTJVM0JEeUxMQ0dv?oc=5",
+   "title": "A culture of quick decisions for Mercedes-Benz production - Automotive Manufacturing Solutions",
+   "text": "A culture of quick decisions for Mercedes-Benz production - Automotive Manufacturing Solutions. A culture of quick decisions for Mercedes-Benz production Automotive Manufacturing Solutions",
+   "content_hash": "dbc31e4f5a678acf",
+   "raw_feed_hash": "a4bb58300a659eb78bf25af09a48af36366a02582fb21c86a12e194b2a616a8c",
+   "published_at": 1687417200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_0ad66b05c0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a3d02705b13e352c",
+   "source": "Hitachi Global",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxPbHJlZnc0eTVXNEI5aDRfY2tGazFYRTlqNnhGaWtFYkEyYnVZRlAzcDdKVlU0d3AwSWk0amhqVTVTMmNxLVlDUld4czR1OXZGZVpfeUZ6SHhQLTl1RTBGQnRWMnhENGRkUGpOYmZBVGI1elJTMTNBNnhRT2RTZ2lHT05rcHMyMGxJQlRYMDFmelFWQQ?oc=5",
+   "title": "The Goals of Suntory's Next-Generation Factory Combining OT and IT: Lumada - Hitachi Global",
+   "text": "The Goals of Suntory's Next-Generation Factory Combining OT and IT: Lumada - Hitachi Global. The Goals of Suntory's Next-Generation Factory Combining OT and IT: Lumada Hitachi Global",
+   "content_hash": "c164965474a75c16",
+   "raw_feed_hash": "a4bb58300a659eb78bf25af09a48af36366a02582fb21c86a12e194b2a616a8c",
+   "published_at": 1677744000.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_0ad66b05c0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "75dfdf177645f7d6",
+   "source": "\u30c8\u30e8\u30bf\u81ea\u52d5\u8eca\u682a\u5f0f\u4f1a\u793e \u516c\u5f0f\u4f01\u696d\u30b5\u30a4\u30c8",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiaEFVX3lxTE9PRFZOa2dGRWQ1aW5fdnlYNHJkU2docTB6Y0FmSXJ4WXotZWJnU2o1MjdWU2tKZFVVZlVyTi1jNjhjVF9DRnhTZUJ4Ykh3QWpibnlNZF9DcFMxYWRhUmZsa1ZkV0c2VmNZ?oc=5",
+   "title": "New Management Policy & Direction Announcement - \u30c8\u30e8\u30bf\u81ea\u52d5\u8eca\u682a\u5f0f\u4f1a\u793e \u516c\u5f0f\u4f01\u696d\u30b5\u30a4\u30c8",
+   "text": "New Management Policy & Direction Announcement - \u30c8\u30e8\u30bf\u81ea\u52d5\u8eca\u682a\u5f0f\u4f1a\u793e \u516c\u5f0f\u4f01\u696d\u30b5\u30a4\u30c8. New Management Policy & Direction Announcement \u30c8\u30e8\u30bf\u81ea\u52d5\u8eca\u682a\u5f0f\u4f1a\u793e \u516c\u5f0f\u4f01\u696d\u30b5\u30a4\u30c8",
+   "content_hash": "019d14d8e4c7e2b9",
+   "raw_feed_hash": "a4bb58300a659eb78bf25af09a48af36366a02582fb21c86a12e194b2a616a8c",
+   "published_at": 1680850800.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_0ad66b05c0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "c48add82aee6420c",
+   "source": "Glass Magazine - NGA",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitwFBVV95cUxNRmxRZ2RRczFwcmhYaGhDcjF6akNuUVRaekVubGVvY194N1YwS2NYMUJEdENfVDFSNDNFems3TG9GbHhHVThaUDI3bUY2aUd0N0hETHg3cFZZSnVyTm9mWDV1QXdYRk13LUJVYUE5Z0pkUTlvTUtVRmpYemp3QVltZ1lOdVZqWEVSQVhoeFo1T1NPZ1RyQ2pIMVQ0emxDRzJYY2xaRWVIbmZJdzRGdEQ4UW5jbHJhSHM?oc=5",
+   "title": "3 Crucial Lessons About Project Management You\u2019ll Learn Working For A Glass Company - Glass Magazine - NGA",
+   "text": "3 Crucial Lessons About Project Management You\u2019ll Learn Working For A Glass Company - Glass Magazine - NGA. 3 Crucial Lessons About Project Management You\u2019ll Learn Working For A Glass Company Glass Magazine - NGA",
+   "content_hash": "0acc06868fcaf707",
+   "raw_feed_hash": "a4bb58300a659eb78bf25af09a48af36366a02582fb21c86a12e194b2a616a8c",
+   "published_at": 1676275200.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_0ad66b05c0",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ed161653b5778a1a",
+   "source": "Aviation International News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxPWENyOEY1SlJvaHZnUS1SSHZIaldlQ2dZQlByRzl5VXJSTEZKd0haVkFEZ3hRMkpOT2Y3ZjBCbVd1SVUzdzJHUDdiUDlGMWxhN2FkeG54dXN2c3ZPQTBFRHE3WDlFLVYwTHJfX0tpZTdSQURMck1yeTNDUnBtYi04NC1td00wb2hscXo2bWhRbV9BSHR2eFFzdXl1NGVyMGJ3TDlYTjJPN0lJUVZNcmt0UjBHdw?oc=5",
+   "title": "HondaJet 2600 Light Business Jet May Be Nearing Launch Decision - Aviation International News",
+   "text": "HondaJet 2600 Light Business Jet May Be Nearing Launch Decision - Aviation International News. HondaJet 2600 Light Business Jet May Be Nearing Launch Decision Aviation International News",
+   "content_hash": "a7540cbcd54cd7dd",
+   "raw_feed_hash": "a4bb58300a659eb78bf25af09a48af36366a02582fb21c86a12e194b2a616a8c",
+   "published_at": 1685516400.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_0ad66b05c0",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "25f6817adb16d163:c0",
+   "source_id": "25f6817adb16d163",
+   "subject": "RMI",
+   "predicate": "explains",
+   "object": "the EV battery supply chain",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The EV Battery Supply Chain Explained - RMI",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683270000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "RMI"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_5e1f547396",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_c583f1eb35"
+   }
+  },
+  {
+   "claim_id": "73c2d371cad748a0:c0",
+   "source_id": "73c2d371cad748a0",
+   "subject": "DLA leaders",
+   "predicate": "outline",
+   "object": "agency\u2019s role in DOD additive manufacturing capabilities",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "DLA leaders outline agency\u2019s role in DOD additive manufacturing capabilities",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1676448000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "DLA",
+    "DOD"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_767f1b10c9",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_84c1474a4f"
+   }
+  },
+  {
+   "claim_id": "7b1b5b799016574e:c0",
+   "source_id": "7b1b5b799016574e",
+   "subject": "DAWN project",
+   "predicate": "launches",
+   "object": "first phase of an innovative, web-based decision-support tool",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "DAWN project launches first phase of an innovative, web-based decision-support tool",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678262400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "DAWN project"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_4be0305d23",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_0ad66b05c0"
+   }
+  },
+  {
+   "claim_id": "ebbd4a84cb6ef412:c0",
+   "source_id": "ebbd4a84cb6ef412",
+   "subject": "AI in manufacturing",
+   "predicate": "should start with",
+   "object": "data",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "For AI in manufacturing, start with data",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1687935600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "AI",
+    "manufacturing",
+    "data"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_db6b97effd",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_84c1474a4f"
+   }
+  },
+  {
+   "claim_id": "ebbd4a84cb6ef412:c1",
+   "source_id": "ebbd4a84cb6ef412",
+   "subject": "MIT Sloan",
+   "predicate": "is the source of",
+   "object": "the statement about AI in manufacturing starting with data",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "MIT Sloan",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1687935600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "MIT Sloan"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_db6b97effd",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_84c1474a4f"
+   }
+  },
+  {
+   "claim_id": "e0868040749a35a0:c0",
+   "source_id": "e0868040749a35a0",
+   "subject": "Agility",
+   "predicate": "is",
+   "object": "Fashion\u2019s New Source of Competitive Advantage",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Agility Is Fashion\u2019s New Source of Competitive Advantage",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680073200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Agility",
+    "Fashion"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_82454eaad0",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_0ad66b05c0"
+   }
+  },
+  {
+   "claim_id": "e0868040749a35a0:c1",
+   "source_id": "e0868040749a35a0",
+   "subject": "Agility Is Fashion\u2019s New Source of Competitive Advantage",
+   "predicate": "is from",
+   "object": "Boston Consulting Group",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Agility Is Fashion\u2019s New Source of Competitive Advantage - Boston Consulting Group",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680073200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Boston Consulting Group"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_82454eaad0",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_0ad66b05c0"
+   }
+  },
+  {
+   "claim_id": "ec55f56e9959e4db:c0",
+   "source_id": "ec55f56e9959e4db",
+   "subject": "Navy",
+   "predicate": "must go all in on",
+   "object": "additive manufacturing",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "reported",
+   "polarity": "affirm",
+   "claim_class": "actor_statement",
+   "supporting_span": "Navy Must Go All In on Additive Manufacturing, Official Says",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1679036400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Navy",
+    "additive manufacturing"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_7eb69f2e32",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_84c1474a4f"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "RMI",
+   "normalized": "rmi",
+   "candidates": [
+    {
+     "entity_id": "ent_a2f9d531ae",
+     "canonical": "rmi",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "RMI"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "DLA",
+   "normalized": "dla",
+   "candidates": [
+    {
+     "entity_id": "ent_6957d4d340",
+     "canonical": "dla",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "DLA"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "DOD",
+   "normalized": "dod",
+   "candidates": [
+    {
+     "entity_id": "ent_5f327584e5",
+     "canonical": "dod",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "DOD"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "DAWN project",
+   "normalized": "dawn project",
+   "candidates": [
+    {
+     "entity_id": "ent_5304cf560f",
+     "canonical": "dawn project",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "DAWN project"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "AI",
+   "normalized": "ai",
+   "candidates": [
+    {
+     "entity_id": "ent_141a92417f",
+     "canonical": "ai",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "AI"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "manufacturing",
+   "normalized": "manufacturing",
+   "candidates": [
+    {
+     "entity_id": "ent_001f63800a",
+     "canonical": "manufacturing",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "manufacturing"
+     ]
+    },
+    {
+     "entity_id": "ent_60653fd36f",
+     "canonical": "additive manufacturing",
+     "support": 0.2269,
+     "evidence_mentions": [
+      "additive manufacturing"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "data",
+   "normalized": "data",
+   "candidates": [
+    {
+     "entity_id": "ent_a17c9aaa61",
+     "canonical": "data",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "data"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "MIT Sloan",
+   "normalized": "mit sloan",
+   "candidates": [
+    {
+     "entity_id": "ent_9a075ce5d5",
+     "canonical": "mit sloan",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "MIT Sloan"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Agility",
+   "normalized": "agility",
+   "candidates": [
+    {
+     "entity_id": "ent_d44177ddb6",
+     "canonical": "agility",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Agility"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Fashion",
+   "normalized": "fashion",
+   "candidates": [
+    {
+     "entity_id": "ent_ed421c3541",
+     "canonical": "fashion",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Fashion"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Boston Consulting Group",
+   "normalized": "boston consulting",
+   "candidates": [
+    {
+     "entity_id": "ent_5e94f64557",
+     "canonical": "boston consulting",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Boston Consulting Group"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Navy",
+   "normalized": "navy",
+   "candidates": [
+    {
+     "entity_id": "ent_57c5f2e274",
+     "canonical": "navy",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "Navy"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "additive manufacturing",
+   "normalized": "additive manufacturing",
+   "candidates": [
+    {
+     "entity_id": "ent_60653fd36f",
+     "canonical": "additive manufacturing",
+     "support": 0.5769,
+     "evidence_mentions": [
+      "additive manufacturing"
+     ]
+    },
+    {
+     "entity_id": "ent_001f63800a",
+     "canonical": "manufacturing",
+     "support": 0.2269,
+     "evidence_mentions": [
+      "manufacturing"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "25f6817adb16d163": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1683270000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683270000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "73c2d371cad748a0": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1676448000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676448000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ebbd4a84cb6ef412": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1687935600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687935600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ec55f56e9959e4db": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1679036400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679036400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2502ce30f07b3f3a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1684825200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684825200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a3e310bd90b728b5": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1680764400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680764400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "279a7db5d3c788bf": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1679900400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679900400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ba9263ab372bf362": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1680159600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680159600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "26f72762e18f4cce": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1675670400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1675670400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "7b1b5b799016574e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1678262400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678262400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "e0868040749a35a0": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1680073200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680073200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "393b66eb1a2107b9": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1680591600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680591600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ce95a575a6968c8a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1687417200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687417200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a3d02705b13e352c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1677744000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1677744000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "75dfdf177645f7d6": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1680850800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680850800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "c48add82aee6420c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1676275200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1676275200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ed161653b5778a1a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1685516400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685516400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_5e1f547396",
+   "member_ids": [
+    "25f6817adb16d163"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "RMI",
+   "primary_source": "RMI",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_767f1b10c9",
+   "member_ids": [
+    "73c2d371cad748a0"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "dla.mil",
+   "primary_source": "dla.mil",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_db6b97effd",
+   "member_ids": [
+    "ebbd4a84cb6ef412"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "MIT Sloan",
+   "primary_source": "MIT Sloan",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7eb69f2e32",
+   "member_ids": [
+    "ec55f56e9959e4db"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "National Defense Magazine",
+   "primary_source": "National Defense Magazine",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_922a6501d5",
+   "member_ids": [
+    "2502ce30f07b3f3a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Carnegie Endowment for International Peace",
+   "primary_source": "Carnegie Endowment for International Peace",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b6ef1182c1",
+   "member_ids": [
+    "a3e310bd90b728b5"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Metal Additive Manufacturing magazine",
+   "primary_source": "Metal Additive Manufacturing magazine",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a28e840f5c",
+   "member_ids": [
+    "279a7db5d3c788bf"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "DVIDS",
+   "primary_source": "DVIDS",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_2491f56ce3",
+   "member_ids": [
+    "ba9263ab372bf362"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Fermilab (.gov)",
+   "primary_source": "Fermilab (.gov)",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_ac5b36bd2a",
+   "member_ids": [
+    "26f72762e18f4cce"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Roll Call",
+   "primary_source": "Roll Call",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_4be0305d23",
+   "member_ids": [
+    "7b1b5b799016574e"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "IANR News",
+   "primary_source": "IANR News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_82454eaad0",
+   "member_ids": [
+    "e0868040749a35a0"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Boston Consulting Group",
+   "primary_source": "Boston Consulting Group",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_e0d51a5442",
+   "member_ids": [
+    "393b66eb1a2107b9"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Databricks",
+   "primary_source": "Databricks",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_4403a422e9",
+   "member_ids": [
+    "ce95a575a6968c8a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Automotive Manufacturing Solutions",
+   "primary_source": "Automotive Manufacturing Solutions",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_8ec2548643",
+   "member_ids": [
+    "a3d02705b13e352c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Hitachi Global",
+   "primary_source": "Hitachi Global",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b9bfde2ac7",
+   "member_ids": [
+    "75dfdf177645f7d6"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "\u30c8\u30e8\u30bf\u81ea\u52d5\u8eca\u682a\u5f0f\u4f1a\u793e \u516c\u5f0f\u4f01\u696d\u30b5\u30a4\u30c8",
+   "primary_source": "\u30c8\u30e8\u30bf\u81ea\u52d5\u8eca\u682a\u5f0f\u4f1a\u793e \u516c\u5f0f\u4f01\u696d\u30b5\u30a4\u30c8",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_8dd98e6606",
+   "member_ids": [
+    "c48add82aee6420c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Glass Magazine - NGA",
+   "primary_source": "Glass Magazine - NGA",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_6b966b1144",
+   "member_ids": [
+    "ed161653b5778a1a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Aviation International News",
+   "primary_source": "Aviation International News",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "25f6817adb16d163:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683270000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "73c2d371cad748a0:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1676448000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "7b1b5b799016574e:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678262400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "ebbd4a84cb6ef412:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1687935600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "ebbd4a84cb6ef412:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1687935600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "e0868040749a35a0:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680073200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "e0868040749a35a0:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680073200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "ec55f56e9959e4db:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1679036400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "25f6817adb16d163:c0",
+  "73c2d371cad748a0:c0",
+  "7b1b5b799016574e:c0",
+  "ebbd4a84cb6ef412:c0",
+  "ebbd4a84cb6ef412:c1",
+  "e0868040749a35a0:c0",
+  "e0868040749a35a0:c1",
+  "ec55f56e9959e4db:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_c583f1eb35": {
+   "status": "fulfilled",
+   "n_claims": 1,
+   "n_included": 1
+  },
+  "req_84c1474a4f": {
+   "status": "fulfilled",
+   "n_claims": 4,
+   "n_included": 4
+  },
+  "req_0ad66b05c0": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_041fec6ea9": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_f6718adfe0": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_8c1d03f0d9": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_7c131f2f31": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_a1cb9e1126": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_041fec6ea9",
+  "req_f6718adfe0",
+  "req_8c1d03f0d9",
+  "req_7c131f2f31",
+  "req_a1cb9e1126"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 17,
+  "n_contradictions": 0,
+  "n_documents": 17
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 13.715,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "096214b87ae8e3a0",
+ "bundle_hash": "096214b87ae8e3a0",
+ "_persisted_at": "2026-07-13T01:47:26Z"
+}
