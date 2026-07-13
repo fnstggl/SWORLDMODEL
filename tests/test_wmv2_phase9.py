@@ -342,3 +342,72 @@ def test_pipeline_reproducible():
     b = simulate_populations_networks(**kw)
     assert a.provenance["terminal_hash"] == b.provenance["terminal_hash"]
     assert a.provenance["population_posterior_hash"] == b.provenance["population_posterior_hash"]
+
+
+# ============================================================ universal discovery (completion run, Parts 1-3)
+from types import SimpleNamespace
+
+
+def _fake_plan():
+    return SimpleNamespace(
+        entities=[{"id": "alice", "type": "person"}, {"id": "bob", "type": "person"},
+                  {"id": "carol", "type": "person"}],
+        institutions=[{"id": "acme"}],
+        populations=[{"id": "voters", "segments": [{"id": "young", "differs_on": ["age"]},
+                                                   {"id": "old", "differs_on": ["age"]}]}],
+        relations=[{"src": "alice", "rel": "communicates_with", "dst": "bob"},
+                   {"src": "bob", "rel": "reports_to", "dst": "carol"},
+                   {"src": "alice", "rel": "influences", "dst": "carol"}],
+        plan_hash=lambda: "planhash123", provenance={})
+
+
+class _FakeBundle:
+    def __init__(self, claims, docs):
+        self._claims, self.documents = claims, docs
+
+    def included_claims(self):
+        return self._claims
+
+    def bundle_hash(self):
+        return "bundlehash"
+
+
+def test_discovery_is_automatic_from_plan_no_llm():
+    from swm.world_model_v2.phase9_discovery import discover
+    d = discover("Will the team adopt the proposal?", _fake_plan(), None, llm=None)
+    # discovered WITHOUT the caller supplying anything
+    assert set(d.actors) >= {"alice", "bob", "carol"}                # actors discovered from the plan
+    assert d.population_segments == ["young", "old"]                 # segmentation discovered from the plan
+    assert ("alice", "bob", "communication") in d.candidate_edges    # typed layer mapped from the relation
+    assert ("bob", "carol", "reporting") in d.candidate_edges
+    assert "communication" in d.relation_layers and "reporting" in d.relation_layers
+    assert d.structural_hypotheses and d.seeds                       # hypotheses + seeds auto-proposed
+    assert d.provenance["llm"] is False
+
+
+def test_discovery_constructs_typed_observations_from_claims():
+    from swm.world_model_v2.phase9_discovery import discover, construct_observations
+    plan = _fake_plan()
+    d = discover("q", plan, None, llm=None)
+    claims = [{"claim_id": "c1", "subject": "alice", "predicate": "emailed", "object": "bob",
+               "claim_class": "communication", "source_id": "doc1", "dependence_group": ""},
+              {"claim_id": "c2", "subject": "bob", "predicate": "reports to", "object": "carol",
+               "claim_class": "relationship", "source_id": "doc1", "dependence_group": ""}]
+    bundle = _FakeBundle(claims, [{"id": "doc1", "source_type": "news"}])
+    survey, edges = construct_observations(d, bundle, llm=None)
+    by = {(e.src, e.dst): e for e in edges}
+    assert ("alice", "bob") in by and by[("alice", "bob")].evidence_class == "direct_communication_record"
+    assert ("bob", "carol") in by and by[("bob", "carol")].evidence_class == "org_chart_relationship"
+    assert all(0 < e.reliability <= 1 for e in edges)                # reliability from source type, not minted
+
+
+def test_discovery_representation_varies_with_scenario():
+    from swm.world_model_v2.phase9_discovery import discover
+    # a small named-actor scenario → explicit individuals; a segmented population → weighted segments
+    small = SimpleNamespace(entities=[{"id": "ceo", "type": "person"}, {"id": "cfo", "type": "person"}],
+                            institutions=[], populations=[], relations=[{"src": "ceo", "rel": "controls", "dst": "cfo"}],
+                            plan_hash=lambda: "h", provenance={})
+    d_small = discover("Will the CEO approve?", small, None, llm=None)
+    d_pop = discover("Will voters support it?", _fake_plan(), None, llm=None)
+    assert d_small.population_representation == "explicit_individuals"
+    assert d_pop.population_representation == "weighted_segments"     # planner makes DIFFERENT choices

@@ -26,6 +26,70 @@ from swm.world_model_v2.phase9_network import (graph_structural_posterior, infer
 from swm.world_model_v2.phase9_population import materialize_population_particles
 
 
+def simulate_with_populations_networks(question: str, *, llm=None, as_of: str, horizon: str,
+                                       intervention: str = "", seed: int = 0, config=None,
+                                       user_documents=None, prior_world=None, n_particles: int = 40):
+    """UNIVERSAL production entry (Part 2): caller supplies ONLY a question + as-of + horizon (+ optional user
+    facts). The path compiles, gathers Phase-2 evidence, AUTOMATICALLY DISCOVERS the population/network slice,
+    constructs typed observations from the evidence, infers all posteriors through Phase 3, materializes and
+    executes — no segments/edges/hypotheses/susceptibility/seeds supplied by the caller. No-abstention preserved.
+
+    Returns (Phase9Result, artifacts) where artifacts carries the discovery plan, evidence bundle, observation
+    set and plan hashes for a full forensic trace."""
+    import time as _time
+    from swm.world_model_v2.compiler import compile_world
+    from swm.world_model_v2.evidence_orchestrator import gather_evidence
+    from swm.world_model_v2.evidence_requirements import requirements_from_plan
+    from swm.world_model_v2.phase9_discovery import construct_observations, discover
+    from swm.world_model_v2.result import ClarificationRequired, CompilerExecutionError
+    t0 = _time.time()
+    # ---- compile (no-abstention) ----
+    try:
+        plan = compile_world(question, llm=llm, evidence="", as_of=as_of, horizon=horizon,
+                             intervention=intervention, seed=seed)
+    except ClarificationRequired as e:
+        return (Phase9Result(simulation_status="clarification_required",
+                             limitations=[str(e)[:160]]), {"stage": "compile"})
+    except CompilerExecutionError as e:
+        return (Phase9Result(simulation_status="execution_failed", provenance={"failure_taxonomy": e.taxonomy}),
+                {"stage": "compile"})
+    # ---- Phase-2 evidence ----
+    bundle = None
+    try:
+        iso = _time.strftime("%Y-%m-%d", _time.gmtime(__import__("swm.world_model_v2.state", fromlist=["parse_time"]).parse_time(as_of)))
+        reqs = requirements_from_plan(plan, as_of_iso=iso, question=question)
+        bundle = gather_evidence(question, as_of=as_of, requirements=reqs, llm=llm,
+                                 user_documents=user_documents, config=config, plan_hash=plan.plan_hash(),
+                                 seed=seed)
+    except Exception as e:  # noqa: BLE001 — evidence retrieval is best-effort; weak evidence must not block
+        bundle = None
+    # ---- AUTOMATIC discovery + typed observation construction ----
+    discovery = discover(question, plan, bundle, llm=llm)
+    survey_obs, edge_obs = construct_observations(discovery, bundle, llm=llm)
+    # susceptibility: a BROAD prior per segment (0.3) — not caller-supplied, not LLM-minted; a documented
+    # weakly-informative default the evidence could later refine.
+    susc = {s: 0.3 for s in discovery.population_segments} or {"all": 0.3}
+    res = simulate_populations_networks(
+        segments=discovery.population_segments or None, survey_observations=survey_obs,
+        candidate_edges=discovery.candidate_edges, edge_observations=edge_obs,
+        structural_hypotheses=discovery.structural_hypotheses,
+        segment_susceptibility=susc, seeds=discovery.seeds or None, contagion="simple",
+        n_particles=n_particles, seed=seed)
+    if res.simulation_status == "completed" and (not discovery.relevant):
+        res.simulation_status = "completed_with_degradation"
+        res.limitations.append("populations/networks judged low-relevance for this question")
+    res.provenance["discovery_hash"] = _hash(discovery.as_dict())
+    res.provenance["plan_hash"] = plan.plan_hash()
+    res.provenance["evidence_bundle_hash"] = bundle.bundle_hash() if bundle else ""
+    res.provenance["universal_path"] = True
+    res.forensic["discovery"] = discovery.as_dict()
+    res.forensic["n_edge_observations"] = len(edge_obs)
+    res.forensic["latency_s"] = round(_time.time() - t0, 3)
+    return res, {"discovery": discovery, "bundle": bundle, "edge_observations": edge_obs,
+                 "survey_observations": survey_obs, "plan_hash": plan.plan_hash(),
+                 "evidence_bundle_hash": bundle.bundle_hash() if bundle else ""}
+
+
 @dataclass
 class Phase9Result:
     simulation_status: str = "completed"
