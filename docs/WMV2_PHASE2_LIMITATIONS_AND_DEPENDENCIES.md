@@ -54,10 +54,23 @@ need to change the bundle schema, the connectors, or the temporal/leakage layers
   user/dataset/prior connectors. Official-filing / regulatory / court / legislative / election connectors are
   registered as categories but implemented as web-page retrieval against their public sites, not
   source-specific APIs; deeper structured adapters are future work.
-- **Temporal verification depth**: the independent `verified_pre_asof` tier uses archive.org Wayback; JSON-LD
-  `datePublished` and HTTP `Last-Modified` are defined as additional signals but not yet fetched per-article
-  by default (`verify_online` is off in the batch runs for latency). The claimed-signal + paired-window +
-  defensive filter already zero the measured post-as-of leakage on the ablation set.
+- **`verified_pre_asof` on Google News items**: Google News RSS returns *redirect* URLs
+  (`news.google.com/rss/articles/…`), which archive.org has no snapshot of, so the live Wayback audit
+  returned `verified_pre_asof=0` on real retrieved news URLs even though **0 post-as-of items** were admitted.
+  Temporal safety for those items therefore rests on the paired-window + claimed-date + defensive filter path
+  (the leakage ablation shows before-only 6% → paired 0% → +filter 0%), not on Wayback. Resolving the Google
+  redirect to the canonical article URL before Wayback lookup (to earn the `verified` tier for news) is a
+  concrete future enhancement; Wikipedia's server-side revision timestamp already provides a genuine
+  `verified` signal where it is the source.
+- **Retrieval precision on private / generic questions**: keyword queries (the fix that lifted recall) surface
+  topically-related public articles even for questions that are inherently private (a personal email) or
+  entity-free (a generic "the incumbent mayor"). Those articles are contemporaneous and leak-free but not
+  always directly relevant, so the evidence they contribute is noisier. Private-domain questions should prefer
+  the `user_provided` connector over public news, and a relevance filter (requirement ↔ claim matching) should
+  gate low-relevance claims — both are future work. The named-entity forensic set is the clean measure of
+  relevant retrieval + causal effect.
+- **Temporal verification depth**: JSON-LD `datePublished` and HTTP `Last-Modified` are defined as additional
+  signals but not yet fetched per-article by default (`verify_online` is off in the batch runs for latency).
 - **Entity resolution** is deterministic (normalized-alias + contextual scoring). It preserves ambiguity but
   does not link to external durable KB identifiers (Wikidata QIDs) — a future enrichment.
 - **Private-domain retrieval**: personal-messaging / internal-org / best-action questions correctly return
