@@ -58,7 +58,7 @@ def simulate_with_posterior(question: str, *, llm, as_of: str, horizon: str, int
                             prior_bundle_path: str = "", store=None, n_rate_particles: int = 400,
                             use_dependence: bool = True, use_structural: bool = True,
                             consume_posterior: bool = True, reference_data: dict = None,
-                            use_reference_prior: bool = True) -> tuple:
+                            use_reference_prior: bool = True, bundle=None, tags=None, plan=None) -> tuple:
     """Run the posterior-conditioned simulation. Returns (SimulationResult, artifacts).
 
     `consume_posterior=False` is the ABLATION arm: the posterior is still computed and reported, but NOT
@@ -70,31 +70,41 @@ def simulate_with_posterior(question: str, *, llm, as_of: str, horizon: str, int
     t0 = _time.time()
     planes = {}
 
-    # ---- CODE + compile (no-abstention) ----
-    try:
-        plan = compile_world(question, llm=llm, evidence="", as_of=as_of, horizon=horizon,
-                             intervention=intervention, seed=seed)
-    except ClarificationRequired as e:
-        return (SimulationResult(question=question, simulation_status="clarification_required",
-                                 clarification_reason=str(e), latency_s=round(_time.time() - t0, 3)),
-                {"stage": "compile"})
-    except CompilerExecutionError as e:
-        return (SimulationResult(question=question, simulation_status="execution_failed",
-                                 failure_taxonomy=e.taxonomy, latency_s=round(_time.time() - t0, 3)),
-                {"stage": "compile"})
+    # ---- CODE + compile (no-abstention). A pre-built `plan` may be supplied so the ablation/reproducibility
+    #      arms share the EXACT same compiled world — isolating the (stochastic) LLM compile step so the numeric
+    #      posterior pipeline is byte-reproducible given fixed plan+bundle+tags+seed. ----
+    if plan is None:
+        try:
+            plan = compile_world(question, llm=llm, evidence="", as_of=as_of, horizon=horizon,
+                                 intervention=intervention, seed=seed)
+        except ClarificationRequired as e:
+            return (SimulationResult(question=question, simulation_status="clarification_required",
+                                     clarification_reason=str(e), latency_s=round(_time.time() - t0, 3)),
+                    {"stage": "compile"})
+        except CompilerExecutionError as e:
+            return (SimulationResult(question=question, simulation_status="execution_failed",
+                                     failure_taxonomy=e.taxonomy, latency_s=round(_time.time() - t0, 3)),
+                    {"stage": "compile"})
 
-    # ---- EVIDENCE: typed requirements → live retrieval → verified as-of bundle (Phase 2) ----
-    reqs = requirements_from_plan(plan, as_of_iso=_iso(as_of), question=question)
-    bundle = gather_evidence(question, as_of=as_of, requirements=reqs, llm=llm,
-                             user_documents=user_documents, dataset_path=dataset_path,
-                             prior_bundle_path=prior_bundle_path, config=config,
-                             plan_hash=plan.plan_hash(), seed=seed, store=store)
+    # ---- EVIDENCE: typed requirements → live retrieval → verified as-of bundle (Phase 2). A pre-gathered
+    #      `bundle` may be supplied to (a) run the posterior-consumed and posterior-ignored ABLATION arms on
+    #      the SAME evidence, and (b) avoid a second live retrieval. Reproducibility of the posterior given a
+    #      fixed bundle is then exact. ----
+    if bundle is None:
+        reqs = requirements_from_plan(plan, as_of_iso=_iso(as_of), question=question)
+        bundle = gather_evidence(question, as_of=as_of, requirements=reqs, llm=llm,
+                                 user_documents=user_documents, dataset_path=dataset_path,
+                                 prior_bundle_path=prior_bundle_path, config=config,
+                                 plan_hash=plan.plan_hash(), seed=seed, store=store)
     planes["evidence"] = {"bundle_hash": bundle.bundle_hash(),
                           "n_included_claims": len(bundle.included_claim_ids),
                           "n_documents": len(bundle.documents)}
 
-    # ---- LLM SEMANTIC MAPPING ONLY: qualitative claim tags (no numbers) ----
-    tags = tag_claims(question, bundle, plan, llm=llm)
+    # ---- LLM SEMANTIC MAPPING ONLY: qualitative claim tags (no numbers). Pre-computed `tags` may be supplied
+    #      to reuse the EXACT semantic mapping across arms — isolating the (stochastic) LLM tagging step so the
+    #      NUMERIC posterior pipeline is exactly reproducible given fixed evidence + tags. ----
+    if tags is None:
+        tags = tag_claims(question, bundle, plan, llm=llm)
 
     # ---- PRIOR: reference-class prior with provenance + transport-risk inflation (Part B). LLM names the
     #      reference class + qualitative transport risk; the base rate comes from `reference_data` (DATA) when
@@ -194,7 +204,7 @@ def simulate_with_posterior(question: str, *, llm, as_of: str, horizon: str, int
     res.limitations.extend(posterior.warnings)
 
     artifacts = {"bundle": bundle, "posterior": posterior, "tags": tags, "plan_diff": diff,
-                 "latent_specs": latent_specs, "planes": planes,
+                 "latent_specs": latent_specs, "planes": planes, "plan": plan,
                  "pre_plan_hash": plan.plan_hash(), "post_plan_hash": revised.plan_hash(),
                  "posterior_hash": _posterior_hash(posterior), "posterior_consumed": consumed}
     return res, artifacts

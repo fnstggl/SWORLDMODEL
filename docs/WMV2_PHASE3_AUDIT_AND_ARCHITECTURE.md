@@ -97,3 +97,46 @@ Entry: `phase3_pipeline.simulate_with_posterior(question, …) -> (SimulationRes
 (Design of each subsystem — latent spec, priors, observation models, dependence correction, structural
 posterior, particle posterior, assimilation, WorldState/mechanism consumption — is documented section-by-
 section below as each is implemented; validation and gate results are in `WMV2_PHASE3_VALIDATION.md`.)
+
+---
+
+## Part 2 — As-built (what this run actually implemented, honestly reconciled)
+
+### Modules delivered
+| module | role | plane |
+|---|---|---|
+| `phase3_latent_spec.py` | `LatentVariableSpec` (typed, support, observation model, **consumer**, identifiability, transport risk); `ClaimTag`; `tag_claims` (LLM qualitative tags → fixed reliability table) | CODE→EVIDENCE |
+| `phase3_representation.py` | representation-choice: candidate KINDs (LLM-proposed) + executable fitters (scalar/continuous/discrete/mixture/hybrid) + held-out calibration selection + **anti-ornamental guard** | CODE |
+| `phase3_priors.py` | reference-class prior + provenance + **transport-risk variance inflation**; generic-lean fallback | POSTERIOR |
+| `phase3_observation.py` | `DirectionalRateModel` (P(claim dir \| rate r)); `StructuralDetectionModel` (P(claim \| h true)); `collapse_by_dependence` (Part D) | EVIDENCE→POSTERIOR |
+| `phase3_posterior.py` | `infer_posterior`: prior → dependence-collapsed likelihood → particle posterior over rate + structural posterior; ESS/resample/rejuvenate; assimilation ledger; warnings | POSTERIOR |
+| `phase3_pipeline.py` | `simulate_with_posterior`: compile→evidence→tag→**prior**→infer→materialize→consume→run; five-plane trace | all |
+| `fallback.py` (edit) | `GenericOutcomeOperator` draws each Bernoulli rate from the **posterior** particles when present (`rate_source`), else the lean-Beta prior | EXECUTION |
+| `materialize.py` (edit) | `_inject_posterior_rate` puts posterior particles on the `resolve_outcome` event (shared by both exec paths); `_run_with_hypotheses` weights strata by the **structural posterior** when present | WORLD-STATE→EXECUTION |
+| `result.py` (edit) | additive `posterior_inference` field (prior→posterior deltas, ESS, ledger, latent specs) | — |
+
+### The five planes — AS WIRED (with the crossing point named)
+1. **CODE** — the modules above.
+2. **EVIDENCE** — Phase-2 `EvidenceBundleV2.included_claims()` + `documents` + `dependence_group`. **Crossing:** `tag_claims` reads verified claims; `collapse_by_dependence` reads Phase-2 dependence groups.
+3. **POSTERIOR** — `PosteriorResult`: numeric, likelihood-updated, reproducible, LLM-free numbers. **Crossing:** `infer_posterior` multiplies `DirectionalRateModel.likelihood` / `StructuralDetectionModel.loglik` into particle log-weights.
+4. **WORLD-STATE** — `plan.posterior_rate_particles` + `plan.structural_posterior`. **Crossing:** `_inject_posterior_rate` copies particles onto the `resolve_outcome` payload; `_weight(h)` reads the structural posterior.
+5. **EXECUTION** — `GenericOutcomeOperator.apply` draws the per-particle rate from the posterior (`rate_source=="posterior"` in the emitted `StateDelta.uncertainty`); strata allocated by posterior mass. **Proof of consumption:** the terminal `StateDelta` records `rate_source`, read back by the harness and asserted in `test_posterior_moves_the_terminal_distribution` and the live `rate_source` field.
+
+> A posterior that stops at plane 3 is **scaffolding**; one stored at plane 4 but unread is **ornamental**. Every number here crosses into plane 5 and is read back from the terminal delta — see `WMV2_PHASE3_FORENSIC_TRACES.md`.
+
+### LLM inference contract — as enforced
+The LLM is the **semantic-mapping layer only**. It emits: qualitative claim tags (direction ∈ {supports_yes, supports_no, neutral}, supported hypotheses, strength bucket, is_strategic), candidate representation KINDs, a reference-class descriptor + qualitative transport-risk level. Every NUMBER — likelihood, sensitivity/specificity, reliability, dependence discount, prior α/β, transport inflation, structural weight, posterior mean, terminal probability — comes from a **fixed registered table or an explicit prior×likelihood update**, never the LLM. Enforcement points: `tag_claims` overwrites reliability from `_SOURCE_RELIABILITY` and only accepts enum tags; `DirectionalRateModel`/`StructuralDetectionModel` keep sens/spec/detect in module constants; `phase3_priors` takes base rates from DATA only; `test_llm_probability_minting_is_ignored` (Phase-1) still holds on this path.
+
+### Representation-choice principle — as implemented
+Hidden concepts are **not** auto-scalarized. Each is a typed representation chosen for causal adequacy + identifiability + **held-out calibration**, not intuition:
+- `outcome_rate` → **continuous_probabilistic** (bounded [0,1] particle set) — the outcome is a probability; evidence is directional votes; the Bernoulli resolver consumes it.
+- `structural_hypothesis` → **discrete_structural** — qualitatively distinct causal structures, kept distinct from their numeric posterior weights (which come only from likelihoods).
+- `phase3_representation.choose_representation` empirically compares scalar/continuous/discrete/mixture/hybrid by held-out log-loss; `assert_not_ornamental` refuses any representation that is neither evidence-linked nor causally consumed (the `trust=0.7` anti-pattern). The empirical ablation (`experiments/phase3_representation_ablation.py`) shows the scalar baseline is dominated in every structured family and the winner is family- and identifiability-dependent.
+
+### Honest scope deltas vs the Part-1 target
+- **Observation models**: 2 production models (`DirectionalRateModel`, `StructuralDetectionModel`) drive the two consumed posteriors, not ~20. The registered-model *registry* and the reliability/strategic/dependence machinery exist; adding claim-class-specific models (poll, official record, absence, financial commitment) is a documented extension in `WMV2_PHASE3_LIMITATIONS_AND_DEPENDENCIES.md`, not silently skipped.
+- **Sequential assimilation** is single-pass over dependence-collapsed observations (not a time-ordered filter over reported_at windows); `inference_layer.run_filtered` provides the windowed variant and remains available.
+- **Correlated multi-latent joint state** (`init_state.CorrelationRule`) is not yet driven by claims on the general path; the current consumed latents are `outcome_rate` and `structural_hypothesis`.
+- **Learned latent representation** is a declared candidate KIND without a fitter (dependency: a trained encoder) — named, not faked.
+
+Status axes (never collapsed to "complete") — see the four-status table in the final report and `WMV2_PHASE3_VALIDATION.md`.
