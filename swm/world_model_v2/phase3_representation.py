@@ -26,7 +26,15 @@ import math
 from dataclasses import dataclass, field
 
 REPRESENTATION_KINDS = ("scalar_point", "binary", "categorical", "ordinal", "continuous_probabilistic",
-                        "hazard_duration", "mixture", "relational", "hybrid_interpretable", "learned_latent")
+                        "hazard_duration", "mixture", "relational", "hybrid_interpretable", "learned_latent",
+                        # Phase 9 additions (population + network): a compositional latent is NOT independent
+                        # scalars; an edge is Bernoulli; graph structure is block-structured / graph-valued.
+                        "compositional_simplex", "bernoulli_edge", "relational_asymmetric",
+                        "stochastic_block", "temporal_point_process", "graph_valued")
+#: Phase-9 kinds whose empirical comparison uses a DOMAIN-SPECIFIC ablation (held-out margin / link prediction)
+#: rather than the scalar-outcome `choose_representation` harness — documented, not silently unsupported.
+PHASE9_KINDS = ("compositional_simplex", "bernoulli_edge", "relational_asymmetric", "stochastic_block",
+                "temporal_point_process", "graph_valued")
 
 #: which kinds are IMPLEMENTED as executable fitters here (the rest are declared candidates with a documented
 #: dependency — see phase3_representation fitters + the LIMITATIONS doc). Honest scope, not silent omission.
