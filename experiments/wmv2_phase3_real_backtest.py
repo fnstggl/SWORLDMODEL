@@ -270,15 +270,18 @@ def aggregate(rows, meter):
     boot = _paired_bootstrap(scored, "phase3_posterior", "phase2_no_posterior")
     n = len(scored)
     preliminary = n < 30
-    # verdict from the paired key comparison (accuracy, not movement)
+    # verdict from the paired key comparison (accuracy, not movement). We require BOTH primary losses
+    # (Brier + log-loss) to agree. IMPROVE only if both CIs sit entirely below 0. HARM if EITHER CI sits
+    # entirely above 0 (a confirmed regression on a primary proper score is enough to reject improvement) and
+    # neither sits below 0. Otherwise inconclusive. Direction: positive diff => Phase-3 WORSE.
     verdict = "inconclusive"
     if isinstance(boot, dict) and not boot.get("insufficient"):
-        hi = boot["brier_diff_ci95"][1]
-        lo = boot["brier_diff_ci95"][0]
-        if hi < 0:
-            verdict = "phase3_improves"           # whole CI below 0 => improvement
-        elif lo > 0:
-            verdict = "phase3_harms"              # whole CI above 0 => regression
+        b_lo, b_hi = boot["brier_diff_ci95"]
+        l_lo, l_hi = boot["logloss_diff_ci95"]
+        if b_hi < 0 and l_hi < 0:
+            verdict = "phase3_improves"
+        elif (b_lo > 0 or l_lo > 0) and not (b_hi < 0 or l_hi < 0):
+            verdict = "phase3_harms"
         else:
             verdict = "inconclusive"
     return {
@@ -295,9 +298,9 @@ def aggregate(rows, meter):
         "llm_calls": meter["calls"] if meter else None,
         "verdict": verdict,
         "verdict_meaning": {
-            "phase3_improves": "Phase 3 improves real held-out forecasting (paired Brier CI entirely < 0)",
-            "inconclusive": "result is inconclusive (paired Brier CI spans 0)",
-            "phase3_harms": "Phase 3 harms forecasting (paired Brier CI entirely > 0)"}[verdict]}
+            "phase3_improves": "Phase 3 improves real held-out forecasting (both paired Brier and log-loss CIs entirely < 0)",
+            "inconclusive": "result is inconclusive (paired loss CIs span 0)",
+            "phase3_harms": "Phase 3 harms forecasting (a primary paired loss CI, Brier or log-loss, is entirely > 0 with neither < 0 => confirmed regression, no improvement)"}[verdict]}
 
 
 def run(limit=None, seed=0):
