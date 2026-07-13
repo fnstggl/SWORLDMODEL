@@ -56,7 +56,15 @@ def build_world(plan, *, world_id: str = "w0", evidence_hash: str = "", versions
                    confidence=0.45, updated_at=plan.as_of)
             from swm.world_model_v2.state import ENTITY_FIELDS, extension_fields
             if fname in (set(ENTITY_FIELDS) | extension_fields(ent.entity_type)):
-                ent.set(fname, sf)
+                # Canonical keyed state must remain addressable by key.  Wrapping a
+                # resource/belief dict in one StateField made feasibility and updates
+                # unable to access individual entries.
+                if fname in ("resources", "beliefs") and isinstance(val, dict):
+                    for key, item in val.items():
+                        ent.set(fname, F(item, status="inferred", method=f"compiler:proposal:{prompt_hash}",
+                                         confidence=0.45, updated_at=plan.as_of), key=str(key))
+                else:
+                    ent.set(fname, sf)
             else:
                 # scenario-specific proposed field → typed latent_state namespace (kept, not dropped),
                 # and recorded as an omission-from-canonical-schema for the audit trail

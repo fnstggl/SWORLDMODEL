@@ -389,6 +389,8 @@ class InstitutionalVoteOperator(TransitionOperator):
         votes = {}
         for pid in event.participants:
             act = world.entity(pid).value("current_action", default="abstain")
+            if isinstance(act, dict):
+                act = act.get("action_name") or act.get("type") or "abstain"
             votes[pid] = act if act in ("yes", "no", "abstain") else "abstain"
         return TransitionProposal(operator=self.name,
                                   action={"votes": votes, **{k: event.payload.get(k)
@@ -501,3 +503,7 @@ register_operator("background_dynamics", BackgroundDynamicsOperator, requires=("
 register_operator("poisson_arrival", RareEventArrivalOperator, requires=("quantities",),
                   modifies=("quantities",), temporal_scale="horizon",
                   parameter_source="hazard rate from plan (base-rate/observed)", validated=True)
+
+# Import after the foundational registry is complete: the Phase-4 operator depends on
+# StateDelta/register_operator from this module and registers itself on import.
+from swm.world_model_v2 import phase4_execution as _phase4_execution  # noqa: E402,F401
