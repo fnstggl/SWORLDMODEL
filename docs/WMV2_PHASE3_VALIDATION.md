@@ -105,7 +105,40 @@ reproducible. `artifact: representation_ablation.json`.
 **universal** WMv2 path (no benchmark-specific engine), with a posterior-IGNORED ablation arm and a
 within-run reproducibility arm on the SAME bundle+tags. `artifact: live_validation.json`.
 
-<!-- LIVE_RESULTS -->
+Run of **6 held-out cross-domain questions** (retrieval 2026-07-13), 18 pipeline executions, 96 LLM calls,
+**0 harness errors**. `artifact: live_validation.json`.
+
+| metric | value | meaning |
+|---|---|---|
+| `no_abstention_rate` | **1.00** (6/6) | every coherent question produced a forecast |
+| `posterior_consumed_rate` | **1.00** (6/6) | resolver drew from the posterior (`rate_source=="posterior"`) every time |
+| `mean_prior→posterior_shift` | **0.112** (max 0.223) | evidence moved the number |
+| `mean_terminal_effect_vs_ignored` | **0.172** | consuming vs ignoring the posterior changed P(yes) by ~0.17 on average |
+| `structural_updated_rate` | **0.833** (5/6) | structural posterior differed from prior |
+| `reproducible_hash_rate` | **1.00** (6/6) | same plan+bundle+tags → byte-identical posterior hash |
+
+Per-question (shift, terminal effect, dependence collapse):
+
+| domain | prior→post shift | terminal effect | claims→effective | P(yes) | grade |
+|---|---|---|---|---|---|
+| Fed rate cut | −0.000 | 0.06 | 14→8 | 0.40 | highly_speculative |
+| GPT-5 release | +0.092 | 0.20 | 9→8 | 0.59 | highly_speculative |
+| US recession | +0.059 | 0.22 | 15→8 | 0.65 | highly_speculative |
+| Govt shutdown | **+0.223** | **0.37** | 15→8 | 0.81 | highly_speculative |
+| Bitcoin $100k | −0.100 | 0.15 | 13→8 | 0.27 | highly_speculative |
+| Israel–Hamas ceasefire | −0.197 | 0.04 | 10→8 | 0.35 | exploratory |
+
+The shifts are **direction-varied and evidence-driven** (shutdown +0.22, ceasefire −0.20), not a uniform nudge.
+All 5 live gates pass: `all_coherent_questions_forecast`, `posterior_consumed_when_evidence_present`,
+`evidence_moves_the_number`, `posterior_changes_terminal_vs_ignored`, `within_run_reproducible`. Full per-claim
+forensic traces (claim→tag→dependence collapse→ledger→structural posterior→terminal `rate_source`) for two of
+these questions are in `WMV2_PHASE3_FORENSIC_TRACES.md`.
+
+> Honesty note: `terminal_effect` (consumed vs ignored) contains some variance from the stochastic Phase-2
+> recompile in addition to the posterior's effect; the CLEAN causal isolation is the deterministic offline
+> `test_posterior_moves_the_terminal_distribution` (same plan, posterior vs none → P(yes) 0.8 vs 0.2). The
+> live number corroborates. Live numbers reproduce only against the frozen bundle hash (live news drifts);
+> the posterior-given-fixed-evidence is byte-reproducible (gate above).
 
 ---
 
