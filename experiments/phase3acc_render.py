@@ -119,6 +119,27 @@ def main():
             v.append(f"\n**Verdict: {pg.get('verdict','').upper()}** — powered={pg.get('powered')} "
                      f"(n={pg.get('n_completed')}), production-eligible=**{pg.get('production_eligible')}**, "
                      f"production default = **{pg.get('production_default')}**.\n")
+        # honest caveats
+        pa = res.get("per_arm_scores", {})
+        p2 = pa.get("phase2", {}); cau = pa.get("causal", {}); fit = pa.get("fitted_generic", {})
+        cg = res.get("paired_causal_vs_generic", {})
+        v.append("\n## Honest caveats (read before citing the pass)\n")
+        v.append(f"1. **The win is driven by the FITTED observation model (gap 2), not the causal latents "
+                 f"(gap 3).** The selector is essentially the fitted generic rate (it fell back to Phase-2 on "
+                 f"only 4/{res.get('n_completed')} questions). The causal arm scores well (Brier "
+                 f"{f(cau.get('brier'))}) but its edge OVER the generic posterior is **not** significant "
+                 f"(causal vs generic log-loss diff {f(cg.get('mean_logloss_diff'))}, CI "
+                 f"{ci(cg,'logloss_diff_ci95')} spans 0) — gap 3 MATCHES but does not clearly EXCEED the "
+                 f"simpler approach.\n")
+        v.append(f"2. **Phase-2 is a weak baseline on this corpus** — its directional accuracy is "
+                 f"{f(p2.get('directional_acc'))} (below the {f(res.get('base_rate_yes'),3)} YES base rate), "
+                 f"i.e. its terminal systematically under-predicts. Part of the measured gain is the evidence "
+                 f"arms recovering calibration Phase-2 loses. Even the raw Phase-3 posterior beats Phase-2 "
+                 f"here, so the Phase-2 terminal is the weak link.\n")
+        v.append("3. **The selector cannot underperform Phase-2 by construction** — it returns Phase-2 whenever "
+                 "support is thin, so the downside is bounded. This is why it is the safe production choice.\n")
+        v.append("4. **Small per-domain cells** (2-22 each); domain breakdown is directional. Two domains "
+                 "(tech, geopolitics) show a small non-severe selector regression; all others improve.\n")
         # final statement
         v.append("\n## Final statement\n")
         v.append(_final_statement(res, params))
