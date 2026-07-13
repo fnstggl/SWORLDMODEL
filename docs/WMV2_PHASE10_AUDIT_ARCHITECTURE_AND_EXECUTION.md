@@ -69,16 +69,24 @@ compile_world(question, as_of, ...)                          swm/world_model_v2/
 - **Evidence** (`evidence.py`) — as-of `active_rules`, deterministic `validate_rule` (Part 4), `leakage_audit`,
   `amendment_chain`.
 
-## 6. Phase 3 & Phase 6 integration (honest)
+## 6. Phase 3 & Phase 6 integration (LIVE — continuation)
 
-- **Phase 6:** the institution owns the valid action set / authority / information / stage / timing; Phase-6
-  behavioral mechanisms provide the votes/actions inside those constraints. The decision engine consumes
-  votes — in the historical replay these are the REAL recorded votes; a live Phase-6-actor-policy→institution
-  run is contract-defined, not wired this run.
-- **Phase 3:** information boundaries enforce that a Phase-3 actor view cannot see unavailable info; templates
-  record where posteriors are needed (secret cert votes, informal agenda control). A live Phase-3-posterior→
-  institution multi-particle run is contract-defined, not wired this run. **No Phase-10-local pseudo-posterior
-  was created.**
+- **Phase 6 (live):** `experiments/wmv2_phase10_predict.py` implements the genuine end-to-end path — as-of
+  party composition → a Phase-6 partisan actor policy → the institution's matter-aware threshold engine →
+  **StateDelta via the real `InstitutionOperator`** → terminal outcome probability. It is OUT-OF-SAMPLE
+  (train Congress 117 → test 118) and leakage-safe (the target vote's own counts are never inputs), and is
+  reported SEPARATELY from procedural reconstruction (forward prediction is honestly modest: acc 0.83, Brier
+  0.132 vs base-rate 0.144; procedural reconstruction on real votes is 96.3% and validates rule EXECUTION,
+  not forecasting).
+- **Phase 3 (live):** `institutions_v2/particles.py` draws REAL posterior weights over competing institutional
+  interpretations from the merged Phase-3 engine (`infer_compositional_posterior` — a Dirichlet over a
+  hypothesis simplex) and `execute_competing_models` runs each hypothesis separately, aggregating a weighted
+  terminal distribution (incompatible rules never averaged). **No Phase-10-local pseudo-posterior was
+  created** — the weights come from the Phase-3 engine. Information boundaries still enforce that a Phase-3
+  actor view cannot see unavailable info; templates still record where posteriors are needed.
+- **Automatic rule extraction (live):** `institutions_v2/extract.py` — source text → LLM candidate WITH a
+  verbatim source span → source-span grounding → deterministic `validate_rule` → typed rule. The LLM proposes;
+  it cannot establish an unsupported rule (macro precision 1.0 / recall 0.83 on two real documents).
 
 ## 7. Storage, versioning, hashes, migrations
 
@@ -90,10 +98,16 @@ SHA-256 integrity envelope. Templates carry `content_hash` + `version`. New pack
 
 | Artifact | What |
 |---|---|
-| `swm/world_model_v2/institutions_v2/data/families.json` / `templates.json` | committed family + template registry (hashed) |
+| `swm/world_model_v2/institutions_v2/data/families.json` / `templates.json` | family + template registry (hashed; gitignored — regenerated from `build.py`) |
 | `experiments/results/phase10/wmv2_phase10_replay.json` | real Senate historical replay + ablations + leakage |
+| `experiments/results/phase10/wmv2_phase10_court_replay.json` | real SCOTUS/SCDB replay — decision 99.4% + non-voting term-deadline timing 99.6% |
+| `experiments/results/phase10/wmv2_phase10_referendum_replay.json` | real Swiss referendum replay — form regularity + out-of-sample forecast + non-voting cadence |
+| `experiments/results/phase10/wmv2_phase10_predict.json` | out-of-sample predictive path vs procedural reconstruction (metric separation) |
+| `experiments/results/phase10/wmv2_phase10_extraction.json` | automatic rule extraction vs verified ground truth (P 1.0 / R 0.83) |
 | `experiments/results/phase10/wmv2_phase10_forensic_traces.json` | WorldState execution + counterfactuals |
 | `experiments/results/phase10/wmv2_phase10_summary.json` | counts + per-template planes |
-| `experiments/results/phase10/wmv2_phase10_failures.json` | 3 preserved negatives |
-| `experiments/results/phase10/voteview/` | cached VoteView roll-call CSVs (real data) |
-| `tests/test_wmv2_phase10.py` | 18 acceptance tests |
+| `experiments/results/phase10/wmv2_phase10_failures.json` | preserved negatives |
+| `experiments/results/exp074/referenda.json` | committed real Swiss federal referendum source (704 votes) |
+| `experiments/results/phase10/voteview/` · `.../scdb/` | cached VoteView CSVs / SCDB zip (real data, gitignored, re-downloaded on demand) |
+| `swm/world_model_v2/institutions_v2/particles.py` · `extract.py` | competing-model execution (live Phase-3) · automatic rule extraction |
+| `tests/test_wmv2_phase10.py` | 28 acceptance tests (18 base + 10 continuation) |

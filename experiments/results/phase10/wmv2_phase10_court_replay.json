@@ -1,0 +1,32 @@
+{
+ "_meta": {
+  "harness": "experiments/wmv2_phase10_court_replay.py",
+  "source": "SCDB (scdb.wustl.edu)",
+  "category": "adjudicative_court",
+  "leakage": "as-of argument date; no post-decision inputs",
+  "note": "2nd real institution category; includes a NON-VOTING timing/deadline dimension"
+ },
+ "replay": {
+  "min_term": 1990,
+  "n_cases": 2786,
+  "decision_dimension": {
+   "n_decided": 2777,
+   "majority_rule_reconstructs_decision": 0.9939,
+   "note": "a case is decided for the MAJORITY of participating justices (majVotes>minVotes)"
+  },
+  "reversal_regularity": {
+   "n_dispositions": 2626,
+   "reversal_rate": 0.7011,
+   "affirm_rate": 0.2989,
+   "institutional_fact": "cert is granted mostly to REVERSE \u2014 SCOTUS reverses ~2/3 of merits cases",
+   "matches_two_thirds_regularity": true
+  },
+  "timing_dimension_non_voting": {
+   "n_timed": 2527,
+   "median_days_argument_to_decision": 84,
+   "p90_days": 162,
+   "fraction_decided_within_term_deadline": 0.9956,
+   "note": "the Court's term-deadline institution: argued cases are decided before the term ends (~end of June) \u2014 a real DEADLINE / capacity-constrained-docket dimension (non-voting)"
+  }
+ }
+}

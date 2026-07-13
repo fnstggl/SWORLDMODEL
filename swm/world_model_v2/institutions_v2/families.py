@@ -128,3 +128,38 @@ def moderation_appeals(*, violates_policy: bool, penalty: str, appealed: bool = 
     if appealed and appeal_upheld:
         return {"outcome": "reinstated", "final": True, "original_penalty": penalty}
     return {"outcome": penalty, "final": True, "appealed": appealed}
+
+
+# ---------------- I. direct democracy (popular referendum, single or DOUBLE majority) ----------------
+def direct_democracy(*, people_spec: ThresholdSpec, people_votes: dict, people_eligible: list,
+                     requires_double_majority: bool = False, subunit_results: dict | None = None) -> dict:
+    """A popular referendum. The People decide by a majority of valid votes (single majority). For
+    CONSTITUTIONAL matters (mandatory referendum / popular initiative) the measure ALSO needs a majority of
+    the sub-units — the Swiss cantons' majority ('Ständemehr'): a CONJUNCTIVE double majority, a genuinely
+    distinct rule from a single collective vote (a measure can win the popular vote yet fail on cantons).
+    subunit_results maps unit -> 'yes'|'no' (or (vote, weight)); half-cantons count as half a canton."""
+    people = evaluate_decision(people_spec, people_votes, eligible=people_eligible)
+    people_pass = people.passed
+    if not requires_double_majority:
+        return {"outcome": "accepted" if people_pass else "rejected", "people_majority": people_pass,
+                "rule": "single_majority", "decided_by": "people", "final": True}
+    units = _weighted_units(subunit_results or {})
+    yes_units = sum(w for v, w in units.values() if v == "yes")
+    no_units = sum(w for v, w in units.values() if v == "no")
+    units_pass = yes_units > no_units
+    accepted = people_pass and units_pass                    # conjunctive: BOTH majorities required
+    return {"outcome": "accepted" if accepted else "rejected", "people_majority": people_pass,
+            "subunit_majority": units_pass, "yes_units": yes_units, "no_units": no_units,
+            "rule": "double_majority", "decided_by": "people_and_subunits", "final": True,
+            "note": "a measure winning the popular vote can still FAIL on the sub-unit majority"}
+
+
+def _weighted_units(subunit_results: dict) -> dict:
+    """Half-cantons count as half a canton (Ständemehr). Input maps unit -> 'yes'/'no' or (vote, weight)."""
+    out = {}
+    for u, v in subunit_results.items():
+        if isinstance(v, (list, tuple)):
+            out[u] = (v[0], float(v[1]))
+        else:
+            out[u] = (v, 0.5 if str(u).lower().endswith("_half") else 1.0)
+    return out

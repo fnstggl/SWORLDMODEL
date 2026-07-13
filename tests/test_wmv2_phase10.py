@@ -235,3 +235,132 @@ def test_formal_vs_informal_scotus_rule_of_four():
     s = load_store(reload=True)
     cert = s.templates["scotus_certiorari"]
     assert any(not p["formal"] for p in cert.informal_practice)   # rule of four is a CUSTOM, not formal law
+
+
+# ================= Phase 10 CONTINUATION: competing-model execution, extraction, 2nd category, prediction ===
+import os                                                          # noqa: E402
+import json as _json                                              # noqa: E402
+
+_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+
+# ---------------- competing rule-model EXECUTION + live Phase-3 posterior (priorities #1, #5) ----------------
+def test_competing_rule_models_execute_separately_and_diverge():
+    from swm.world_model_v2.institutions_v2.particles import RuleHypothesis, execute_competing_models
+    # veto-override interpretation dispute: 2/3 of PRESENT vs 2/3 of ALL MEMBERS, 66 yes of 96 present (100 total)
+    votes = {**{f"s{i}": "yes" for i in range(66)}, **{f"s{66 + i}": "no" for i in range(30)}}
+    h_present = RuleHypothesis("two_thirds_present", weight=0.6,
+                               threshold=ThresholdSpec("supermajority", 2 / 3, base="present"))
+    h_all = RuleHypothesis("two_thirds_all_members", weight=0.4,
+                           threshold=ThresholdSpec("supermajority", 2 / 3, base="all_members"))
+    out = execute_competing_models([h_present, h_all], votes, base_eligible=ELIG100)
+    # 66/96 present ≥ 2/3 → pass ; 66/100 all-members < 2/3 → fail : the interpretation is OUTCOME-DETERMINING
+    assert out["divergence"]["disagree"] and out["divergence"]["interpretation_matters"]
+    assert len(out["particles"]) == 2                    # incompatible rules kept SEPARATE (never averaged)
+    assert 0.0 < out["p_pass_weighted"] < 1.0            # weighted terminal distribution, not collapsed
+    assert abs(out["p_pass_weighted"] - 0.6) < 1e-6      # only the 2/3-present model (w=0.6) passes
+
+
+def test_hypothesis_posterior_is_real_phase3_and_normalised():
+    from swm.world_model_v2.institutions_v2.particles import institutional_hypothesis_posterior
+    w, res = institutional_hypothesis_posterior(
+        ["interp_a", "interp_b"], [1.0, 1.0],
+        [{"counts": {"interp_a": 7, "interp_b": 2}, "reliability": 1.0, "source": "authorities"}])
+    assert abs(sum(w.values()) - 1.0) < 1e-6             # a Dirichlet posterior over the hypothesis simplex
+    assert w["interp_a"] > w["interp_b"]                 # more supporting sources → more posterior weight
+    assert res.diagnostics["posterior_family"] == "dirichlet_conjugate"
+
+
+# ---------------- automatic evidence-backed rule extraction (priority #4), offline-deterministic ----------------
+def test_extraction_grounding_rejects_ungrounded_span():
+    from swm.world_model_v2.institutions_v2.extract import _grounded
+    src = "A Majority of each House shall constitute a Quorum to do Business."
+    assert _grounded("a majority of each house shall constitute a quorum to do business", src)
+    assert not _grounded("two thirds of the members present shall be required to expel", src)   # fabricated
+
+
+def test_deterministic_extractor_grounds_and_validates_quorum():
+    from swm.world_model_v2.institutions_v2.extract import extract_rules
+    src = ("Section 5: a Majority of each House shall constitute a Quorum to do Business. If after such "
+           "Reconsideration two thirds of that House shall agree to pass the Bill, it shall become a Law.")
+    saved = os.environ.pop("DEEPSEEK_API_KEY", None)     # force the offline deterministic path
+    try:
+        res = extract_rules(src, source_id="art1_test")
+    finally:
+        if saved is not None:
+            os.environ["DEEPSEEK_API_KEY"] = saved
+    assert res["source_tag"] == "deterministic_fallback"
+    kinds = {r.kind for r in res["rules"]}
+    assert "quorum" in kinds                             # grounded + deterministically validated
+    assert all(r.evidence_id == "art1_test" for r in res["rules"])   # every accepted rule is source-tagged
+    assert all(not r.verified for r in res["rules"])     # auto-extracted rules are NOT marked verified
+
+
+# ---------------- second REAL institution category (court) with a non-voting dimension (priority #3) ---------
+def test_second_institution_category_is_court_and_replayed():
+    s = load_store(reload=True)
+    assert "scotus_merits" in s.templates
+    tpl = s.templates["scotus_merits"]
+    assert tpl.family_id == "adjudicative_court"
+    assert tpl.status == "cross_institution_tested"      # real SCDB replay promoted it (2nd category)
+    # the replay recorded BOTH a decision dimension AND a non-voting (timing/deadline) dimension
+    hr = [v for v in tpl.validation if v.get("kind") == "historical_replay"]
+    assert hr and "timing_within_deadline" in hr[0]
+
+
+def test_court_replay_timing_helpers_offline():
+    from experiments.wmv2_phase10_court_replay import _ymd, _days
+    assert _ymd("6/28/2019") == (2019, 6, 28)
+    assert _days((2019, 1, 1), (2019, 1, 11)) == 10
+    assert _days((2020, 6, 15), (2020, 6, 30)) >= 0      # within the June-30 term deadline
+
+
+def test_third_category_direct_democracy_double_majority():
+    # the direct_democracy family's CONJUNCTIVE double majority is genuinely distinct from a single vote:
+    # a measure can win the People yet FAIL on the sub-units (Swiss Ständemehr)
+    people = {f"v{i}": ("yes" if i < 55 else "no") for i in range(100)}
+    cantons = {**{f"c{i}": "no" for i in range(14)}, **{f"c{i}": "yes" for i in range(14, 26)}}
+    r = F.direct_democracy(people_spec=ThresholdSpec("simple_majority", 0.5, base="present"),
+                           people_votes=people, people_eligible=[f"v{i}" for i in range(100)],
+                           requires_double_majority=True, subunit_results=cantons)
+    assert r["people_majority"] and not r["subunit_majority"] and r["outcome"] == "rejected"
+    # an OPTIONAL referendum (single majority) with the same popular vote passes
+    r2 = F.direct_democracy(people_spec=ThresholdSpec("simple_majority", 0.5, base="present"),
+                            people_votes=people, people_eligible=[f"v{i}" for i in range(100)])
+    assert r2["outcome"] == "accepted"
+
+
+def test_third_category_replayed_and_promoted():
+    s = load_store(reload=True)
+    assert "swiss_federal_referendum" in s.templates
+    tpl = s.templates["swiss_federal_referendum"]
+    assert tpl.family_id == "direct_democracy" and tpl.status == "cross_institution_tested"
+    # THREE institution categories now carry a real, passing historical replay — TWO of them non-Congress
+    replayed = {t.family_id for t in s.templates.values()
+                if any(v.get("kind") == "historical_replay" and v.get("passed") for v in t.validation)}
+    assert {"legislative_process", "adjudicative_court", "direct_democracy"} <= replayed
+
+
+# ---------------- predictive path vs procedural reconstruction: metric separation (priorities #2, #6) --------
+def test_predict_scoring_and_institution_specs_offline():
+    from experiments.wmv2_phase10_predict import _brier, _logloss, _spec_for, _naive_partyline_pass
+    assert _brier([1.0, 0.0], [True, False]) < 1e-9      # perfect probabilistic forecast → 0
+    assert abs(_brier([0.5, 0.5], [True, False]) - 0.25) < 1e-9
+    assert _logloss([0.9], [True]) < _logloss([0.1], [True])          # confident-correct beats confident-wrong
+    assert _spec_for("cloture_legislation_3_5")[0].fraction == 0.6    # institution rule by matter type
+    assert _spec_for("treaty_2_3")[0].fraction > 0.66
+    assert _naive_partyline_pass("majority", 51)                      # 51-seat majority clears simple majority
+    assert not _naive_partyline_pass("cloture_legislation_3_5", 51)   # but NOT a 3/5 legislation cloture
+
+
+def test_committed_phase10_artifacts_separate_reconstruction_from_prediction():
+    """Regression guard on the committed machine-readable artifacts: the honest metric separation and the
+    court replay's real scale must persist (no silent drift toward inflated 'prediction' numbers)."""
+    court = _json.load(open(os.path.join(_ROOT, "experiments/results/phase10/wmv2_phase10_court_replay.json")))["replay"]
+    assert court["decision_dimension"]["majority_rule_reconstructs_decision"] > 0.95
+    assert court["timing_dimension_non_voting"]["n_timed"] > 100      # real cases, non-voting dimension
+    pred = _json.load(open(os.path.join(_ROOT, "experiments/results/phase10/wmv2_phase10_predict.json")))["predictive_path"]
+    assert pred["design"]["out_of_sample"] and pred["design"]["leakage_safe"]
+    # forward prediction is HONESTLY weaker than procedural reconstruction, but M2 beats the base-rate Brier
+    assert pred["M2_phase3_matter_type_propensity"]["brier"] < pred["baselines"]["predict_base_rate_brier"]
+    assert pred["statedelta_wiring_proof"]["routed_through_operator"]  # the chain runs through the real engine
