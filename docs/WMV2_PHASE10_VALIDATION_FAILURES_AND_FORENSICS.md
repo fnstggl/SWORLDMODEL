@@ -23,6 +23,34 @@ as-of + matter-type cloture rule right (nomination cloture = majority since the 
 accuracy from 0.77 to 0.96 — a real demonstration that as-of rule versioning + matter-type rule selection
 change reconstructed outcomes.
 
+### 1b. Second category — SCOTUS adjudicative court (continuation, `wmv2_phase10_court_replay.py`)
+Data: **SCDB** (scdb.wustl.edu), 2786 real cases, terms ≥1990. Leakage-safe (as-of argument date; no
+post-decision inputs). Two dimensions: **(voting) decision** — the majority of participating Justices decides
+(`majVotes>minVotes`): reconstructs **99.4%**; reversal rate **0.70** (matches the ~2/3 cert-to-reverse
+regularity). **(NON-VOTING) term-deadline timing** — median **84 days** argument→decision, **99.6%** of argued
+cases decided within the term deadline (a real capacity-constrained-docket / deadline institution).
+
+### 1c. Third category — Swiss direct democracy (continuation, `wmv2_phase10_referendum_replay.py`)
+Data: **Swissvotes/BFS** (cached `exp074/referenda.json`), 704 real federal referenda, 1848–2026. Leakage-safe
+(legal form + date known before the vote). **(form regularity)** popular initiatives pass **10.7%** vs
+mandatory referenda **75.1%** — the double-majority + establishment-opposition effect. **(out-of-sample
+prediction)** train ≤1990 → test >1990 (n=323): acc **0.64**, Brier **0.183** beats base-rate Brier 0.249.
+**(NON-VOTING cadence)** median 3 official voting dates/year. *Limitation (preserved): no per-canton shares →
+regularity, not full double-majority execution.*
+
+### 1d. Prediction vs procedural reconstruction (continuation, `wmv2_phase10_predict.py`) — metric separation
+The 96.3% / 99.4% numbers above are **procedural RULE-RECONSTRUCTION** (real votes → threshold engine),
+validating rule EXECUTION — NOT forecasting. The distinct out-of-sample **PREDICTIVE** path (train Congress
+117 → test 118; party composition → Phase-6 actor policy → threshold engine → StateDelta → outcome
+probability; leakage-safe) is honestly weaker: **acc 0.83, Brier 0.132** (beats the base-rate Brier 0.144; a
+naive party-line policy scores 0.82, *below* the base rate). The two quantities are reported separately and
+never conflated.
+
+### 1e. Competing rule-model execution (continuation, `particles.py`)
+The veto-override "2/3-of-present vs 2/3-of-all-members" interpretation dispute, executed as separate
+particles weighted by the REAL Phase-3 posterior: 66-of-96-present → **pass 0.60 / fail 0.40**. Incompatible
+rules are never averaged; `divergence()` flags the interpretation as outcome-determining.
+
 ## 2. Leakage audit (Part 3)
 
 `leakage_audit(us_congress_legislative, "2021-01-01", outcome_events=[{later vote 2024}])` → `clean=True`;
@@ -72,11 +100,20 @@ Same fixed **55 yea / 45 nay**, vary only the institutional rule:
 
 1. **naive_cloture_uniform_3_5** — a uniform 3/5 cloture rule reconstructs only 0.77 (worse than majority-
    only) because it ignores the nuclear option. Preserved: naive rule application can hurt.
-2. **evidence gap** — agency/queue/election/moderation families are executable but have **no verified
-   template** this run → Tier-3 structural selection. Honest gap, not faked.
+2. **evidence gap (narrowed)** — the continuation filled the adjudicative-court and direct-democracy
+   categories with historically-replayed templates; the **administrative agency, capacity queue, platform
+   moderation, and corporate board** families remain executable but have **no historically-replayed template**
+   this run → Tier-3 structural selection. Honest gap, not faked.
 3. **scotus_cert_count_not_fraction** — the Rule of Four is a fixed count (4 of 9), an informal custom; the
-   fraction-based decision engine does not natively execute a count, so SCOTUS cert stays `executable`
-   (informal), not historically replayed.
+   fraction-based decision engine does not natively execute a count, so SCOTUS *cert* stays `executable`
+   (informal), not historically replayed. (The SCOTUS *merits* decision, a majority rule, IS replayed — §1b.)
+4. **referendum_no_canton_shares** (continuation) — the cached Swiss referendum data has the legal form +
+   outcome but no per-canton vote shares, so the double majority is reconstructed as an outcome REGULARITY by
+   form, NOT executed on canton counts. A full double-majority execution replay needs canton-level Swissvotes
+   data. Preserved, not papered over.
+5. **forward_prediction_is_modest** (continuation) — out-of-sample institutional prediction (acc 0.83, Brier
+   0.132) is far weaker than procedural reconstruction (0.96); a naive party-line policy (0.82) even
+   underperforms the base rate. Preserved to keep the reconstruction/forecast distinction honest.
 
 ## 8. Cost & latency
 

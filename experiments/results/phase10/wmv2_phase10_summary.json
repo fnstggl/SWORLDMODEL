@@ -3,21 +3,22 @@
   "source": "committed institution registry"
  },
  "counts": {
-  "families": 8,
-  "families_executable": 8,
-  "templates": 3,
-  "templates_evidence_backed": 3,
-  "templates_temporally_versioned": 3,
-  "templates_execute": 3,
-  "templates_historically_replayed": 1,
+  "families": 9,
+  "families_executable": 9,
+  "templates": 5,
+  "templates_evidence_backed": 5,
+  "templates_temporally_versioned": 5,
+  "templates_execute": 5,
+  "templates_historically_replayed": 3,
   "templates_production_eligible": 1
  },
  "families_by_status": {
-  "executable": 8
+  "executable": 9
  },
  "templates_by_status": {
   "production_eligible": 1,
-  "executable": 2
+  "executable": 2,
+  "cross_institution_tested": 2
  },
  "families": [
   {
@@ -107,6 +108,16 @@
     "issue_formal_decision",
     "process_appeal"
    ]
+  },
+  {
+   "family_id": "direct_democracy",
+   "category": "direct_democracy",
+   "status": "executable",
+   "executable": true,
+   "answers_processes": [
+    "evaluate_quorum_and_threshold",
+    "issue_formal_decision"
+   ]
   }
  ],
  "templates": [
@@ -160,6 +171,40 @@
    },
    "n_evidence": 1,
    "n_rules": 1
+  },
+  {
+   "template_id": "scotus_merits",
+   "family": "adjudicative_court",
+   "jurisdiction": "US-federal",
+   "valid_from": "1789-03-04",
+   "status": "cross_institution_tested",
+   "planes": {
+    "evidence_backed": true,
+    "temporally_versioned": true,
+    "software_implemented": true,
+    "executes": true,
+    "historically_replayed": true,
+    "production_eligible": false
+   },
+   "n_evidence": 1,
+   "n_rules": 3
+  },
+  {
+   "template_id": "swiss_federal_referendum",
+   "family": "direct_democracy",
+   "jurisdiction": "CH-federal",
+   "valid_from": "1848-09-12",
+   "status": "cross_institution_tested",
+   "planes": {
+    "evidence_backed": true,
+    "temporally_versioned": true,
+    "software_implemented": true,
+    "executes": true,
+    "historically_replayed": true,
+    "production_eligible": false
+   },
+   "n_evidence": 1,
+   "n_rules": 2
   }
  ]
 }

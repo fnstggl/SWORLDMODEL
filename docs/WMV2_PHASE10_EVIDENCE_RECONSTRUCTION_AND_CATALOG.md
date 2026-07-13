@@ -25,7 +25,16 @@ impossible deadline, effective precedes supersession. The LLM may PROPOSE a form
 the validator + core-agent verification gate what becomes a production rule. `test_wmv2_phase10.py`'s
 `validate_template_rules(tpl) == {}` pins that all committed rules pass.
 
-## 4. Institution families (8, all executable) — `families.py`
+**Automatic extraction (continuation, `institutions_v2/extract.py`).** The extraction front-end is now wired
+end-to-end: source text → LLM candidate WITH a verbatim source span → **source-span grounding** (a candidate
+whose quoted span is not found in the source is rejected — the LLM cannot establish an unsupported rule) →
+deterministic `validate_rule` → typed `RuleRecord`. It degrades to a transparent regex/keyword extractor when
+no LLM key is present, so it is always runnable. Scored on two materially-different real documents (US Const
+Art I §5/§7; Delaware GCL §141(b)) vs the manually-verified ground truth (`wmv2_phase10_extract.py`):
+**macro precision 1.0, recall 0.83, zero hallucinated rules** (real DeepSeek run). This closes the "validator
+exists but the extraction front-end is not wired" gap.
+
+## 4. Institution families (9, all executable) — `families.py`
 
 | Family | Category | Characteristic executable procedure |
 |---|---|---|
@@ -37,8 +46,9 @@ the validator + core-agent verification gate what becomes a production rule. `te
 | queue_capacity_service | queue_capacity_service | capacity-limited service; real completion timing |
 | corporate_board | corporate_board | delegated management vs reserved board vote (with recusal) |
 | moderation_appeals | moderation_appeals | report → penalty → appeal → reinstatement |
+| **direct_democracy** (continuation) | direct_democracy | popular referendum; **conjunctive DOUBLE majority** (People AND cantons, half-cantons counting half) — a measure can win the People yet fail on the sub-units |
 
-## 5. Real templates reconstructed (3) — each core-verified
+## 5. Real templates reconstructed (5) — each core-verified
 
 ### us_congress_legislative — US federal legislature (Art I) — **production-eligible**
 - **Evidence:** U.S. Const. art. I **§5** ("a Majority of each shall constitute a Quorum") and **§7**
@@ -63,6 +73,28 @@ the validator + core-agent verification gate what becomes a production rule. `te
 - **Limitation:** the threshold is a fixed COUNT (4), not a fraction of present; cert votes are secret
   (a Phase-3 posterior point). Not historically replayed.
 
+### scotus_merits — US Supreme Court merits decision (Art III) — **cross_institution_tested** (continuation)
+- **Evidence:** U.S. Const. **art. III** + **28 U.S.C. §1** (quorum of six); a case is decided by a **majority
+  of participating Justices**; an equally divided Court (4-4) affirms the judgment below (recorded ambiguity).
+- **Real replay (SCDB, 2786 cases, terms ≥1990):** majority-rule decision reconstruction **99.4%**; reversal
+  rate **0.70** (matches the ~2/3 cert-to-reverse regularity); **NON-VOTING term-deadline timing** — median
+  84 days argument→decision, **99.6%** of argued cases decided within the term. Leakage-safe (as-of argument
+  date; no post-decision inputs). 2nd institution category (adjudicative court).
+
+### swiss_federal_referendum — Swiss direct democracy (Cst. Art 139–142) — **cross_institution_tested** (continuation)
+- **Evidence:** Federal Constitution of the Swiss Confederation **Art. 141** (optional referendum on federal
+  acts = single majority of the People), **Art. 139/140** (popular initiative & mandatory referendum on
+  constitutional matters = **DOUBLE majority** of People AND cantons), **Art. 142** (required majorities; six
+  half-cantons count half). The double-majority is executed by the `direct_democracy` family procedure.
+- **Real replay (Swissvotes/BFS, 704 referenda, 1848–2026):** the legal FORM reconstructs the outcome
+  regularity — popular initiatives pass **10.7%** vs mandatory referenda **75.1%** (the famous double-majority
+  + establishment-opposition effect); an **out-of-sample** forecast (train ≤1990 → test >1990, n=323): acc
+  0.64, Brier 0.183 beats the base-rate Brier 0.249; a **NON-VOTING voting-cadence** dimension (median 3
+  official voting dates/year). 3rd institution category (direct democracy).
+- **Limitation (preserved):** the cached data has the legal form + outcome but **no per-canton vote shares**,
+  so the double majority is reconstructed as an outcome REGULARITY by form, NOT executed on canton counts. A
+  full double-majority execution replay needs canton-level Swissvotes data (recorded in the failures artifact).
+
 ## 6. Formal vs informal structure (Part 12)
 
 Each template separates layers: formal authority (constitution/statute/bylaws) vs informal practice
@@ -74,14 +106,21 @@ point where it affects outcomes.
 
 `RuleRecord.alternatives`, `InstitutionTemplate.procedural_uncertainty`, and
 `InstitutionInstance.competing_models` carry alternative interpretations (e.g. the override "2/3 of a quorum
-vs of full membership" ambiguity; the cert count uncertainty). Multi-particle execution of competing models
-is contract-defined; live branching is remaining work.
+vs of full membership" ambiguity; the cert count uncertainty). **Multi-particle execution is now live**
+(`institutions_v2/particles.py`, continuation): `execute_competing_models` runs each structurally-distinct
+hypothesis SEPARATELY (its own threshold/quorum/base/membership) and aggregates a WEIGHTED terminal
+distribution — **incompatible rules are never averaged into one threshold** — with weights drawn from the
+REAL Phase-3 posterior (`institutional_hypothesis_posterior` → `infer_compositional_posterior`). On the
+veto-override "2/3-of-present vs 2/3-of-all-members" dispute, 66-of-96-present splits **pass 0.60 / fail
+0.40** by posterior weight, and `divergence()` flags the interpretation as outcome-determining.
 
 ## 8. Unresolved evidence gaps (honest)
 
-No template-specific official evidence was core-verified this run for the **administrative agency, queue/
-capacity service, court docket procedure, election administration, or platform moderation** categories — the
-families are executable but have no evidence-backed template, so they select at Tier 3 (structural, rule
-uncertainty). This is recorded as a preserved failure (`wmv2_phase10_failures.json`), not papered over. Real
-next-round evidence: agency processing-time datasets, court dockets, official election calendars, published
-platform transparency reports.
+The continuation added evidence-backed, **historically-replayed** templates for the adjudicative-court
+(scotus_merits) and direct-democracy (swiss_federal_referendum) categories. Still with **no historically-
+replayed template** this run: the **administrative agency, capacity queue, platform moderation, and corporate
+board** categories — the families are executable but select at Tier 3 (structural, rule uncertainty). This is
+recorded as a preserved failure (`wmv2_phase10_failures.json`), not papered over. Also preserved: the Swiss
+referendum's missing **per-canton vote shares** (blocks a full double-majority EXECUTION replay). Real
+next-round evidence: agency processing-time datasets, board-meeting minutes, platform transparency reports,
+and canton-level Swissvotes results.

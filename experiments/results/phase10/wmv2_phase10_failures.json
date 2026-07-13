@@ -1,6 +1,6 @@
 {
  "_meta": {
-  "n": 3,
+  "n": 5,
   "note": "append-only preserved negatives (Part 26)"
  },
  "failures": [
@@ -13,18 +13,32 @@
    "artifact": "experiments/results/phase10/wmv2_phase10_replay.json"
   },
   {
-   "failure_id": "no_verified_templates_for_agency_queue_election_moderation",
-   "family": "administrative_agency/queue_capacity_service/electoral_administration/moderation_appeals",
+   "failure_id": "no_verified_templates_for_agency_queue_moderation_board",
+   "family": "administrative_agency/queue_capacity_service/moderation_appeals/corporate_board",
    "failure_type": "evidence_gap",
-   "detail": "The agency/queue/election/moderation FAMILIES are executable, but no template-specific official evidence was core-verified this run, so no evidence-backed TEMPLATE exists for them \u2014 they select at Tier 3 (structural) with rule uncertainty. Honest gap, not faked.",
+   "detail": "The continuation filled the adjudicative-court (scotus_merits) and direct-democracy (swiss_federal_referendum) categories with historically-replayed templates. The administrative agency / capacity queue / platform moderation / corporate board families remain executable but have NO historically-replayed template this run \u2014 they select at Tier 3 (structural) with rule uncertainty. Honest gap, not faked.",
    "artifact": "experiments/results/phase10/wmv2_phase10_summary.json"
   },
   {
    "failure_id": "scotus_cert_count_not_fraction",
    "template": "scotus_certiorari",
    "failure_type": "rule_shape_limitation",
-   "detail": "The Rule of Four is a COUNT (4 of 9), an informal custom; it is stored as evidence but the decision engine's fraction-of-present threshold does not natively execute a fixed count. SCOTUS cert stays `executable` (informal), not historically replayed.",
+   "detail": "The Rule of Four is a COUNT (4 of 9), an informal custom; it is stored as evidence but the decision engine's fraction-of-present threshold does not natively execute a fixed count. SCOTUS cert stays `executable` (informal), not historically replayed. (The SCOTUS merits decision \u2014 a majority rule \u2014 IS historically replayed on SCDB.)",
    "artifact": "experiments/results/phase10/wmv2_phase10_summary.json"
+  },
+  {
+   "failure_id": "referendum_no_canton_shares",
+   "template": "swiss_federal_referendum",
+   "failure_type": "partial_reconstruction_data_gap",
+   "detail": "The cached Swiss referendum data has the legal FORM + outcome but no per-canton vote shares, so the DOUBLE majority (People AND cantons, Art. 142) is reconstructed as an outcome REGULARITY by legal form (initiatives ~10% vs mandatory ~75%), NOT executed on canton counts. A full double-majority execution replay needs canton-level Swissvotes data.",
+   "artifact": "experiments/results/phase10/wmv2_phase10_referendum_replay.json"
+  },
+  {
+   "failure_id": "forward_prediction_is_modest",
+   "template": "us_congress_legislative",
+   "failure_type": "honest_metric_separation",
+   "detail": "Out-of-sample institutional PREDICTION (train C117 \u2192 test C118: party composition \u2192 actor policy \u2192 threshold engine \u2192 StateDelta) is honestly weak \u2014 acc 0.83, Brier 0.132 (beats the base-rate Brier 0.144 but only just; a naive party-line policy 0.82 UNDERPERFORMS the base rate). Far below procedural reconstruction (0.96, which uses real votes). Preserved to keep rule-EXECUTION and forecasting cleanly distinct.",
+   "artifact": "experiments/results/phase10/wmv2_phase10_predict.json"
   }
  ]
 }
