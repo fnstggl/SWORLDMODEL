@@ -14,6 +14,14 @@ All numbers regenerate from `experiments/wmv2_phase6_fits.py` (real-data fits), 
 | attrition_dropout_hazard | IBM Telco | month-to-month → long-contract | Brier vs target base | 0.071 | 0.063 | **FAIL (negative transfer, preserved)** |
 | response_occurrence_hazard | StackExchange (2500) | random 20% test | Brier | 0.249 | 0.246 | **NULL (preserved)** |
 | argument_persuasion_success | CMV (1200) | random 20% test | Brier | 0.220 | 0.224 | **NULL (preserved)** |
+| (demographic opinion — not registered) | OpinionQA / Pew ATP (368 q) | per-question 40% test | Brier | 0.225 | 0.216 | **NULL (preserved)** |
+
+The OpinionQA attempt is instructive: a naive party×ideology cell model does **not** beat the per-question
+base rate on held-out (ECE 0.087, poorly calibrated). "Demographics predict opinion" is real for some
+politically-charged questions but weak on average across Pew's question bank — so **no validated opinion
+family is claimed** from it. The opinion category remains covered on the *code* plane (DeGroot,
+bounded-confidence, latent-expressed are `implemented`) but is honestly **not** empirically validated,
+consistent with the research finding that opinion-dynamics parameters are rarely empirically pinned.
 
 Prior committed validations (unchanged, re-indexed): `exposure_response_hazard` (Higgs, held-out tied the
 fitted logistic; nonlinearity ablation excludes 0), `engagement_momentum_persistence` (OmniBehavior, Brier

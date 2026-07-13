@@ -365,6 +365,103 @@
    "citation": "Tan, Niculae, Danescu-Niculescu-Mizil & Lee 2016, WWW (CMV dataset)",
    "transport": "domain_restricted"
   },
+  "opinionqa_demographic": {
+   "family": "demographic_opinion_response",
+   "result": {
+    "test": {
+     "brier": 0.22488,
+     "logloss": 0.66252,
+     "calibration": {
+      "reliability": [
+       {
+        "conf": 0.053,
+        "acc": 0.1727,
+        "n": 718
+       },
+       {
+        "conf": 0.1491,
+        "acc": 0.3032,
+        "n": 653
+       },
+       {
+        "conf": 0.2506,
+        "acc": 0.3694,
+        "n": 674
+       },
+       {
+        "conf": 0.3508,
+        "acc": 0.4345,
+        "n": 840
+       },
+       {
+        "conf": 0.4467,
+        "acc": 0.4746,
+        "n": 845
+       },
+       {
+        "conf": 0.5489,
+        "acc": 0.5671,
+        "n": 917
+       },
+       {
+        "conf": 0.6487,
+        "acc": 0.6265,
+        "n": 846
+       },
+       {
+        "conf": 0.7483,
+        "acc": 0.6486,
+        "n": 777
+       },
+       {
+        "conf": 0.8467,
+        "acc": 0.7217,
+        "n": 794
+       },
+       {
+        "conf": 0.9536,
+        "acc": 0.8134,
+        "n": 852
+       }
+      ],
+      "ece": 0.0874
+     }
+    },
+    "baseline_base_rate": {
+     "brier": 0.21634
+    },
+    "paired_brier_model_minus_base": {
+     "mean": 0.008535,
+     "ci95": [
+      0.004725,
+      0.01237
+     ],
+     "n": 7916
+    },
+    "beats_base_rate": false,
+    "n_test": 7916,
+    "n_questions": 232
+   },
+   "coefs": {
+    "model": "party\u00d7ideology cell probability (Laplace-smoothed), per-question"
+   },
+   "sha256": "e83a6ea4853b61bab9521f93ba00eb30e6829cab105ba0a40303f692155e9cf9",
+   "path": "experiments/results/exp028_oqa/oqa_parsed.json",
+   "identifies": "PREDICTIVE/associational: party\u00d7ideology group membership predicts expressed opinion better than the population base rate on Pew ATP questions.",
+   "causally_identified": false,
+   "forbidden": [
+    "do NOT read as a causal opinion lever (party is not randomly assigned)",
+    "do NOT transport across countries/eras (US survey, specific waves)",
+    "expressed opinion \u2260 latent belief"
+   ],
+   "missing_variables": [
+    "question wording effects",
+    "non-response bias",
+    "temporal drift"
+   ],
+   "citation": "OpinionQA / Pew American Trends Panel (Santurkar et al. 2023)",
+   "transport": "domain_restricted"
+  },
   "upworthy_content_response": {
    "family": "content_response_click",
    "result": {

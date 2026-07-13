@@ -308,6 +308,53 @@ def _upworthy(force=False):
     return {"result": result, "coefs": coefs, "sha256": _sha256(path), "path": path}
 
 
+# ----------------------------------------------------------------- OpinionQA (demographic → opinion)
+def _opinionqa():
+    """Demographic-opinion response: does group membership predict expressed opinion better than the
+    population base rate? For each binary Pew question, learn P(answer | party×ideology cell) on a TRAIN
+    split (Laplace-smoothed), predict held-out PEOPLE, and compare held-out Brier to the question's own base
+    rate. PREDICTIVE/associational (group membership correlates with opinion; NOT a causal opinion lever)."""
+    path = f"{RESULTS}/exp028_oqa/oqa_parsed.json"
+    if not os.path.exists(path):
+        return {"status": "skipped_missing_data", "path": path}
+    rows = [r for r in json.load(open(path)) if r.get("n_opt") == 2 and "answer_idx" in r]
+    by_q = {}
+    for r in rows:
+        by_q.setdefault(r["qid"], []).append(r)
+    rng = random.Random(13)
+    preds, ys, base_preds = [], [], []
+    for qid, rs in by_q.items():
+        if len(rs) < 40:
+            continue
+        idx = list(range(len(rs)))
+        rng.shuffle(idx)
+        cut = int(0.6 * len(rs))
+        tr = [rs[i] for i in idx[:cut]]
+        te = [rs[i] for i in idx[cut:]]
+        base = sum(r["answer_idx"] for r in tr) / len(tr)          # question base rate (train)
+        cell = {}
+        for r in tr:
+            k = (r["demo"].get("party"), r["demo"].get("ideology"))
+            c = cell.setdefault(k, [0, 0])
+            c[0] += r["answer_idx"]
+            c[1] += 1
+        for r in te:
+            k = (r["demo"].get("party"), r["demo"].get("ideology"))
+            c = cell.get(k)
+            p = (c[0] + base) / (c[1] + 1) if c else base          # smoothed toward the base rate
+            preds.append(min(1 - 1e-6, max(1e-6, p)))
+            ys.append(r["answer_idx"])
+            base_preds.append(base)
+    if not ys:
+        return {"status": "insufficient"}
+    paired = paired_bootstrap_delta(ys, preds, base_preds, seed=7)
+    return {"n_questions": len([q for q, rs in by_q.items() if len(rs) >= 40]), "n_test": len(ys),
+            "test_brier": round(brier(preds, ys), 5), "base_rate_brier": round(brier(base_preds, ys), 5),
+            "logloss": round(logloss(preds, ys), 5), "calibration": calibration(preds, ys),
+            "paired_brier_model_minus_base": paired, "beats_base_rate": paired["ci95"][1] < 0,
+            "sha256": _sha256(path), "path": path}
+
+
 # ----------------------------------------------------------------- dataset drivers
 def run_all(force=False):
     out = {"_meta": {"harness": "experiments/wmv2_phase6_fits.py",
@@ -382,6 +429,28 @@ def run_all(force=False):
                           "do NOT interpret as general attitude change"],
             "missing_variables": ["argument semantic content/quality", "OP prior receptivity", "timing/order"],
             "citation": "Tan, Niculae, Danescu-Niculescu-Mizil & Lee 2016, WWW (CMV dataset)",
+            "transport": "domain_restricted"}
+
+    # 4b) OpinionQA — DEMOGRAPHIC-OPINION response (does group membership beat the base rate?)
+    oqa = _opinionqa()
+    if "test_brier" in oqa:
+        out["datasets"]["opinionqa_demographic"] = {
+            "family": "demographic_opinion_response", "result": {"test": {"brier": oqa["test_brier"],
+                     "logloss": oqa["logloss"], "calibration": oqa["calibration"]},
+                     "baseline_base_rate": {"brier": oqa["base_rate_brier"]},
+                     "paired_brier_model_minus_base": oqa["paired_brier_model_minus_base"],
+                     "beats_base_rate": oqa["beats_base_rate"], "n_test": oqa["n_test"],
+                     "n_questions": oqa["n_questions"]},
+            "coefs": {"model": "party×ideology cell probability (Laplace-smoothed), per-question"},
+            "sha256": oqa["sha256"], "path": oqa["path"],
+            "identifies": "PREDICTIVE/associational: party×ideology group membership predicts expressed "
+                          "opinion better than the population base rate on Pew ATP questions.",
+            "causally_identified": False,
+            "forbidden": ["do NOT read as a causal opinion lever (party is not randomly assigned)",
+                          "do NOT transport across countries/eras (US survey, specific waves)",
+                          "expressed opinion ≠ latent belief"],
+            "missing_variables": ["question wording effects", "non-response bias", "temporal drift"],
+            "citation": "OpinionQA / Pew American Trends Panel (Santurkar et al. 2023)",
             "transport": "domain_restricted"}
 
     # 4) Upworthy — CONTENT-RESPONSE click ranking (RANDOMIZED A/B → causal ordering)
