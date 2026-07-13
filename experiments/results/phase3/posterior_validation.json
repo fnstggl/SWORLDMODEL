@@ -1,0 +1,92 @@
+{
+  "recovery_at_adequate_evidence": {
+    "n": 800,
+    "recovery_corr": 0.6336,
+    "rmse_posterior": 0.1868,
+    "rmse_prior_only": 0.2331,
+    "rmse_improvement": 0.0462,
+    "ece_posterior": 0.0427,
+    "ece_prior_only": 0.0262,
+    "ci80_coverage": 0.8812,
+    "brier_posterior": 0.2167,
+    "brier_prior_only": 0.25
+  },
+  "recovery_curve": {
+    "n_claims=3": {
+      "recovery_corr": 0.2954,
+      "rmse_improvement": 0.0086,
+      "ece_posterior": 0.0239,
+      "ci80_coverage": 0.9367
+    },
+    "n_claims=6": {
+      "recovery_corr": 0.3248,
+      "rmse_improvement": 0.0072,
+      "ece_posterior": 0.0753,
+      "ci80_coverage": 0.9317
+    },
+    "n_claims=12": {
+      "recovery_corr": 0.5095,
+      "rmse_improvement": 0.0295,
+      "ece_posterior": 0.029,
+      "ci80_coverage": 0.925
+    },
+    "n_claims=24": {
+      "recovery_corr": 0.5913,
+      "rmse_improvement": 0.0389,
+      "ece_posterior": 0.0686,
+      "ci80_coverage": 0.8417
+    }
+  },
+  "structural_recovery": {
+    "n": 600,
+    "true_structure_recovered": 1.0,
+    "prior_baseline": 0.3167,
+    "chance": 0.3333
+  },
+  "ablations": {
+    "full_posterior": {
+      "logloss": 0.67783,
+      "ece": 0.02465,
+      "rmse_to_theta": 0.21954
+    },
+    "prior_only": {
+      "logloss": 0.69315,
+      "ece": 0.00125,
+      "rmse_to_theta": 0.23373
+    },
+    "point_estimate": {
+      "logloss": 0.78613,
+      "ece": 0.12137,
+      "rmse_to_theta": 0.26324
+    },
+    "independent_on_syndicated": {
+      "logloss": 0.82183,
+      "ece": 0.21101,
+      "rmse_to_theta": 0.33416
+    },
+    "dependence_corrected_on_syndicated": {
+      "logloss": 0.68705,
+      "ece": 0.01629,
+      "rmse_to_theta": 0.23287
+    }
+  },
+  "acceptance_gates": {
+    "gates": {
+      "recovery_rises_with_evidence": true,
+      "recovery_corr>=0.55_at_adequate_evidence": true,
+      "posterior_beats_prior_rmse_at_all_evidence_levels": true,
+      "posterior_calibrated_ece<=0.08": true,
+      "ci80_coverage_conservative_[0.78,0.95]": true,
+      "ci80_coverage_tightens_toward_nominal_with_evidence": true,
+      "structure_recovered_above_prior": true,
+      "full_posterior_beats_point_estimate_logloss": true,
+      "full_posterior_beats_prior_only_logloss": true,
+      "dependence_correction_improves_calibration_on_syndicated": true,
+      "dependence_correction_reduces_overconfidence_on_syndicated": true
+    },
+    "n_pass": 11,
+    "n_total": 11,
+    "all_pass": true
+  },
+  "note": "well-specified generator (model's own likelihood) + injected neutral/unreliable noise; syndicated arm uses TRUE identical copies; hash-stable seeds \u2192 reproducible"
+}

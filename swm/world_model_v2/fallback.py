@@ -138,13 +138,18 @@ class GenericOutcomeOperator(TransitionOperator):
 
     def propose(self, world, event, rng):
         p = event.payload
+        # Phase 3: when a posterior rate is present, the resolver draws each particle's Bernoulli rate from
+        # the evidence-updated POSTERIOR particles (not the broad lean-Beta prior), so evidence + posterior
+        # uncertainty propagate to the terminal. The per-hypothesis lean becomes a SHIFT on the posterior rate.
         return TransitionProposal(operator=self.name, action={
             "outcome_var": str(p.get("outcome_var", "outcome")),
             "family": str(p.get("family", "binary")),
             "lean": str(p.get("lean", "neutral")),
             "options": list(p.get("options") or ["True", "False"]),
+            "posterior_rate_particles": p.get("posterior_rate_particles"),
             "lo": p.get("lo"), "hi": p.get("hi")},
-            reason_codes=["generic_fallback", f"lean={p.get('lean', 'neutral')}"])
+            reason_codes=["posterior_rate" if p.get("posterior_rate_particles") else "generic_fallback",
+                          f"lean={p.get('lean', 'neutral')}"])
 
     def apply(self, world, proposal):
         from swm.world_model_v2.quantities import Quantity, register_quantity_type
@@ -162,7 +167,14 @@ class GenericOutcomeOperator(TransitionOperator):
                            reason_codes=["already_resolved_by_domain_mechanism_noop"])
             return d
         if fam in ("binary", "response_occurrence", "best_action"):
-            p = _beta_sample(rng, av, bv)                    # per-particle base-rate draw (broad)
+            post = a.get("posterior_rate_particles")
+            if post:                                         # Phase 3: draw the rate from the POSTERIOR
+                p = _draw_posterior_rate(post, rng)
+                p = _apply_lean_shift(p, a["lean"])          # competing structures shift the posterior base
+                rate_src = "posterior"
+            else:
+                p = _beta_sample(rng, av, bv)                # per-particle base-rate draw (broad prior)
+                rate_src = "prior_beta"
             opts = a["options"] if len(a["options"]) == 2 else ["True", "False"]
             val = opts[0] if rng.random() < p else opts[1]
         elif fam == "categorical":
@@ -182,11 +194,42 @@ class GenericOutcomeOperator(TransitionOperator):
             mid = (lo + hi) / 2.0
             val = min(hi, max(lo, rng.gauss(mid, (hi - lo) / 3.0)))
         world.quantities[var] = Quantity(name=var, qtype=var, value=val, timestamp=world.clock.now)
+        rate_src = locals().get("rate_src", "prior_beta")
         d = StateDelta(at=world.clock.now, event_type="resolve_outcome", operator=self.name,
                        reason_codes=proposal.reason_codes,
-                       uncertainty={"prior": f"Beta({av},{bv})" if fam != "continuous" else "wide Normal",
-                                    "tier": "6/7 generic (broad prior; not empirically validated)"})
+                       uncertainty={"rate_source": rate_src,
+                                    "prior": f"Beta({av},{bv})" if fam != "continuous" else "wide Normal",
+                                    "tier": "3 posterior-updated" if rate_src == "posterior"
+                                            else "6/7 generic (broad prior; not empirically validated)"})
         return d.change(f"quantities[{var}]", before, val)
+
+
+#: per-hypothesis lean → multiplicative shift on a posterior rate, so competing structures produce genuinely
+#: different terminals from the SAME evidence-updated base rate (kept in [0,1]).
+_LEAN_SHIFT = {"strong_no": -0.4, "weak_no": -0.2, "neutral": 0.0, "weak_yes": 0.2, "strong_yes": 0.4}
+
+
+def _draw_posterior_rate(particles, rng) -> float:
+    """Weighted draw of one rate from the posterior rate particles [(rate, weight)]. Propagates posterior
+    uncertainty: different particles pick different rates, so the terminal spread reflects the posterior."""
+    total = sum(w for _, w in particles) or 1.0
+    r, acc = rng.random() * total, 0.0
+    for rate, w in particles:
+        acc += w
+        if r <= acc:
+            return max(0.0, min(1.0, float(rate)))
+    return max(0.0, min(1.0, float(particles[-1][0])))
+
+
+def _apply_lean_shift(p: float, lean: str) -> float:
+    """Shift a posterior base rate toward a hypothesis lean (toward 1 for yes-leans, toward 0 for no-leans),
+    magnitude bounded so the posterior still dominates. Identity for neutral."""
+    s = _LEAN_SHIFT.get(lean, 0.0)
+    if s > 0:
+        return min(1.0, p + (1.0 - p) * s)
+    if s < 0:
+        return max(0.0, p * (1.0 + s))
+    return p
 
 
 def _beta_sample(rng, a, b):

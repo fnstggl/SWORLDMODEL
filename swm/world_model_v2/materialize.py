@@ -179,6 +179,25 @@ def operators_from_plan(plan, *, llm=None, allow_experimental=False) -> tuple:
     return ops, rejections
 
 
+def _inject_posterior_rate(plan) -> bool:
+    """Copy the plan's evidence-updated outcome-rate posterior particles onto every resolve_outcome scheduled
+    event payload, so the terminal resolver (GenericOutcomeOperator) draws each particle's Bernoulli rate from
+    the POSTERIOR. Returns True iff a posterior was present and injected. Idempotent (writes the same value).
+
+    This is the WORLD-STATE→EXECUTION bridge: a posterior stored on the plan but never placed where a mechanism
+    reads it is ornamental. Here the numbers cross into the execution plane where they are causally consumed."""
+    post = getattr(plan, "posterior_rate_particles", None)
+    if not post:
+        return False
+    parts = [[float(r), float(w)] for r, w in post]
+    injected = False
+    for ev in plan.scheduled_events:
+        if ev.get("etype") == "resolve_outcome":
+            ev.setdefault("payload", {})["posterior_rate_particles"] = parts
+            injected = True
+    return injected
+
+
 def run_from_plan(plan, *, llm=None, n_particles=None, seed=0):
     """The end-to-end: plan → world → InitialStateModel → rollout → native terminal distribution.
     The compiler's fallback hierarchy guarantees ≥1 executable mechanism + a binding readout, so a
@@ -187,6 +206,11 @@ def run_from_plan(plan, *, llm=None, n_particles=None, seed=0):
     from swm.world_model_v2.result import CompilerExecutionError
     base = build_world(plan, evidence_hash=(plan.provenance or {}).get("evidence_bundle_hash", ""))
     check_readout_binding(plan, base)
+    # Phase 3: if the pipeline attached an evidence-updated outcome-rate posterior, hand its particles to the
+    # canonical resolve_outcome event so the terminal resolver draws each particle's Bernoulli rate from the
+    # POSTERIOR (not the broad lean-Beta prior). This is the single injection point shared by BOTH the
+    # single-structure (run.run) and multi-hypothesis paths — both build queues from plan.scheduled_events.
+    _inject_posterior_rate(plan)
     ops, rejections = operators_from_plan(plan, llm=llm)
     if not ops:
         # the fallback guarantees generic_outcome_prior is accepted; reaching here is a compiler defect
@@ -214,15 +238,23 @@ def run_from_plan(plan, *, llm=None, n_particles=None, seed=0):
 
 def _run_with_hypotheses(run, plan, hyps, seed):
     """Stratify particles across structural hypotheses; each hypothesis carries a lean the generic resolver
-    reads, so competing structures produce genuinely different terminal outcomes. Report structural_posterior
-    (= priors, normalized; Phase-1 does not assimilate evidence to reweight)."""
+    reads, so competing structures produce genuinely different terminal outcomes. When a Phase-3 structural
+    POSTERIOR is attached to the plan, strata are weighted by the evidence-updated posterior (not the prior);
+    otherwise by the compiler prior."""
     from swm.world_model_v2.state import F
     total = run.n_particles
-    z = sum(max(0.0, float(h.get("prior", 1.0) or 1.0)) for h in hyps) or 1.0
+    # Phase 3: prefer the likelihood-updated structural posterior when present.
+    struct_post = getattr(plan, "structural_posterior", None) or {}
+
+    def _weight(h):
+        hid = str(h.get("id", "H"))
+        if struct_post and hid in struct_post:
+            return max(0.0, float(struct_post[hid]))
+        return max(0.0, float(h.get("prior", 1.0) or 1.0))
+    z = sum(_weight(h) for h in hyps) or 1.0
     alloc, assigned = [], 0
     for i, h in enumerate(hyps):
-        k = max(1, round(total * max(0.0, float(h.get("prior", 1.0) or 1.0)) / z)) if i < len(hyps) - 1 \
-            else total - assigned
+        k = max(1, round(total * _weight(h) / z)) if i < len(hyps) - 1 else total - assigned
         alloc.append(max(0, k))
         assigned += alloc[-1]
     worlds = run.initial.sample_particles(total, seed=seed)
@@ -247,11 +279,21 @@ def _run_with_hypotheses(run, plan, hyps, seed):
     result = plan.outcome_contract.project(branches)
     result["n_deltas"] = sum(len(b.log) for b in branches)
     result["readout"] = "terminal_states"
-    # structural posterior = normalized priors (Phase 1); disagreement entropy reported
-    post = {}
+    # realized structural mass = the fraction of particles allocated to each hypothesis (which equals the
+    # posterior when a Phase-3 structural posterior drove the allocation, else the compiler prior).
+    realized = {}
     for b in branches:
         hid = b.world.uncertainty_meta.get("model", {}).get("hypothesis", "H")
-        post[hid] = post.get(hid, 0.0) + 1.0 / len(branches)
-    result["structural_posterior"] = {k: round(v, 4) for k, v in post.items()}
-    result["structural_note"] = "priors materialized as competing particles; NOT evidence-reweighted (Phase 3)"
+        realized[hid] = realized.get(hid, 0.0) + 1.0 / max(1, len(branches))
+    result["structural_realized_mass"] = {k: round(v, 4) for k, v in realized.items()}
+    if struct_post:
+        result["structural_posterior"] = {k: round(float(v), 4) for k, v in struct_post.items()}
+        result["structural_source"] = "phase3_evidence_posterior"
+        result["structural_note"] = ("competing structures weighted by the LIKELIHOOD-UPDATED structural "
+                                     "posterior (Phase 3); strata allocated by posterior mass")
+    else:
+        result["structural_posterior"] = result["structural_realized_mass"]
+        result["structural_source"] = "compiler_prior"
+        result["structural_note"] = ("priors materialized as competing particles; NOT evidence-reweighted "
+                                     "(no Phase-3 posterior attached)")
     return result, branches
