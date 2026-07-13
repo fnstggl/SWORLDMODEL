@@ -1,0 +1,89 @@
+{
+ "habit_heldout": {
+  "task": "OmniBehavior habit/repetition held-out (per-user cumulative positive-action state)",
+  "n": 7290,
+  "base_rate": 0.2146,
+  "brier": {
+   "habit": 0.09875,
+   "no_history": 0.16092
+  },
+  "auroc_habit": 0.8673,
+  "habit_vs_no_history": {
+   "mean": -0.06217,
+   "ci95": [
+    -0.066756,
+    -0.057788
+   ],
+   "n": 7290
+  },
+  "power": {
+   "n": 7290,
+   "se_per_paired_brier": 0.002293,
+   "power_at_observed_effect": 1.0,
+   "min_detectable_effect_80pct": 0.006419,
+   "se_basis": "empirical paired-difference sd (CI-consistent)"
+  },
+  "adequately_powered": true,
+  "verdict": "habit/repetition HELPS vs no-history (CI excludes 0) \u2014 a held-out data point for the habit_strength family"
+ },
+ "family_evidence_map": {
+  "engagement_propensity": {
+   "dataset": "OmniBehavior (n=7074)",
+   "held_out": true,
+   "result": "persist vs memoryless -0.0119 [-0.0134,-0.0103] power 1.0; person-disjoint transfer -0.0189 power 1.0",
+   "status": "empirically_supported"
+  },
+  "habit_strength": {
+   "dataset": "OmniBehavior habit test",
+   "held_out": true,
+   "result": "habit vs no-history -0.06217 [-0.066756, -0.057788] (n=7290, power 1.0)",
+   "status": "transfer_supported"
+  },
+  "relationship_strength": {
+   "dataset": "Enron dyadic (Track B, n=251)",
+   "held_out": true,
+   "result": "beats frequency but NOT base rate (AUROC 0.50); regime change \u2014 WEAK",
+   "status": "exploratory"
+  },
+  "trust": {
+   "dataset": "Enron dyadic proxy (Track B)",
+   "held_out": "partial",
+   "result": "no direct trust-labeled outcome; asymmetric model is a reference pack",
+   "status": "exploratory"
+  },
+  "institutional_stage": {
+   "dataset": "US Senate roll-calls (Track C, n=882)",
+   "held_out": true,
+   "result": "pass-persistence -0.004 [-0.008,+0.0001] power 0.43 \u2014 NULL (bill-driven)",
+   "status": "exploratory"
+  },
+  "resource_level": {
+   "dataset": "none in-repo (accounting-driven, near-deterministic constraint)",
+   "held_out": false,
+   "result": "no defensible resource-longitudinal dataset available; conservation is structural",
+   "status": "transfer_supported"
+  },
+  "commitment": {
+   "dataset": "none in-repo",
+   "held_out": false,
+   "result": "no commitment fulfillment/violation longitudinal dataset; lifecycle is observed-driven",
+   "status": "exploratory"
+  },
+  "reputation": {
+   "dataset": "none in-repo",
+   "held_out": false,
+   "result": "no reputation-change dataset; accrual rates are broad priors",
+   "status": "highly_speculative"
+  },
+  "risk_tolerance": {
+   "dataset": "none in-repo",
+   "held_out": false,
+   "result": "no risk-adaptation dataset; broad priors",
+   "status": "highly_speculative"
+  }
+ },
+ "note": "targeted, honest \u2014 held-out tests only where the data corresponds to the family's process; nulls (Track C) and weak results (Track B) preserved; no manufactured wins",
+ "status_changes": {
+  "habit_strength": "habit/repetition HELPS vs no-history (CI excludes 0) \u2014 a held-out data point for the habit_strength family"
+ }
+}
