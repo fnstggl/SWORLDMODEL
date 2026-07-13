@@ -1,0 +1,379 @@
+{
+ "domain": "best_action",
+ "question": "Should the Writers Guild accept the studios' latest contract offer?",
+ "as_of": "2023-09-20",
+ "horizon": "2023-10-01",
+ "n_requirements": 8,
+ "requirements": [
+  {
+   "id": "req_ea932dacb4",
+   "need": "majority vote of WGA membership",
+   "why": "the terminal outcome standing as of the question date sets the base rate",
+   "voi": 1.0
+  },
+  {
+   "id": "req_b66c1a18e9",
+   "need": "value/context of AMPTP.offer_details",
+   "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "voi": 0.9
+  },
+  {
+   "id": "req_d97f2f87c4",
+   "need": "value/context of WGA_members.segments.strike_hawks.reservation_wage",
+   "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "voi": 0.8
+  },
+  {
+   "id": "req_01bebe3c1f",
+   "need": "value/context of WGA_members.segments.moderates.reservation_wage",
+   "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "voi": 0.8
+  }
+ ],
+ "rss_windows": [
+  {
+   "query": "Writers Guild accept studios latest contract offer WGA AMPTP WGA leadership after:2023-04-23 before:2023-09-20",
+   "after": "2023-04-23",
+   "before": "2023-09-20",
+   "status": "ok",
+   "code": 200,
+   "n_items": 8,
+   "raw_hash": "5ee9b7492ecd"
+  },
+  {
+   "query": "AMPTP offer details after:2023-04-23 before:2023-09-20",
+   "after": "2023-04-23",
+   "before": "2023-09-20",
+   "status": "ok",
+   "code": 200,
+   "n_items": 8,
+   "raw_hash": "ff2e172bcf0c"
+  },
+  {
+   "query": "WGA members segments strike hawks reservation after:2023-04-23 before:2023-09-20",
+   "after": "2023-04-23",
+   "before": "2023-09-20",
+   "status": "zero_results",
+   "code": 200,
+   "n_items": 0,
+   "raw_hash": "3675cf45fc83"
+  }
+ ],
+ "n_documents": 16,
+ "documents": [
+  {
+   "source": "Deadline",
+   "title": "Studios Reveal New AI, Data Transparency & Residuals Proposals To WGA;",
+   "pub": 1692687600.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "The Hollywood Reporter",
+   "title": "Writers Guild Replies to Studios\u2019 Counteroffer: Not \u201cNearly Enough\u201d - ",
+   "pub": 1692860400.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "Jacobin",
+   "title": "The Hollywood Studios Still Aren\u2019t Serious About Ending the Writers\u2019 S",
+   "pub": 1692946800.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "Los Angeles Times",
+   "title": "Why Hollywood\u2019s labor nightmare won\u2019t end soon: Frustration, fear and ",
+   "pub": 1693551600.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "Variety",
+   "title": "WGA Restarts Negotiations With Studios and Will Respond to Latest Offe",
+   "pub": 1691737200.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "Deadline",
+   "title": "Hollywood Hit With Writers Strike After Talks With AMPTP Fail; Guild S",
+   "pub": 1682924400.0,
+   "temporal": "likely_pre_asof"
+  }
+ ],
+ "temporal_summary": {
+  "likely_pre_asof": 16
+ },
+ "included_claims": [
+  {
+   "id": "df9312f7a2211369:c0",
+   "class": "official_record",
+   "subject": "Studios",
+   "predicate": "reveal",
+   "span": "Studios Reveal New AI, Data Transparency & Residuals Proposals To WGA"
+  },
+  {
+   "id": "df9312f7a2211369:c1",
+   "class": "official_record",
+   "subject": "Guild",
+   "predicate": "meets with",
+   "span": "Guild Meets With CEOs"
+  },
+  {
+   "id": "9112f5ca6f4fa61c:c0",
+   "class": "actor_statement",
+   "subject": "Writers Guild",
+   "predicate": "replies to",
+   "span": "Writers Guild Replies to Studios\u2019 Counteroffer: Not \u201cNearly Enough\u201d"
+  },
+  {
+   "id": "9112f5ca6f4fa61c:c1",
+   "class": "actor_statement",
+   "subject": "Writers Guild",
+   "predicate": "states that the counteroffer is",
+   "span": "Not \u201cNearly Enough\u201d"
+  },
+  {
+   "id": "8be0a8e6c1780961:c0",
+   "class": "official_record",
+   "subject": "SAG-AFTRA's streaming revenue sharing pr",
+   "predicate": "was flatly rejected by",
+   "span": "Why SAG-AFTRA\u2019s Streaming Revenue Sharing Proposal for Casts Was Flatly Rejected"
+  },
+  {
+   "id": "501d730302b0e753:c0",
+   "class": "opinion",
+   "subject": "The Hollywood Studios",
+   "predicate": "are not serious about ending",
+   "span": "The Hollywood Studios Still Aren\u2019t Serious About Ending the Writers\u2019 Strike"
+  }
+ ],
+ "n_excluded": 0,
+ "n_suspicious": 0,
+ "entities": [
+  {
+   "mention": "Studios",
+   "top": "studios",
+   "resolved": true
+  },
+  {
+   "mention": "WGA",
+   "top": "wga",
+   "resolved": true
+  },
+  {
+   "mention": "Guild",
+   "top": "guild",
+   "resolved": true
+  },
+  {
+   "mention": "CEOs",
+   "top": "ceos",
+   "resolved": true
+  },
+  {
+   "mention": "Writers Guild",
+   "top": "writers guild",
+   "resolved": true
+  }
+ ],
+ "dependence_groups": [
+  {
+   "type": "exact_duplicate",
+   "n": 2
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "exact_duplicate",
+   "n": 2
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "exact_duplicate",
+   "n": 2
+  }
+ ],
+ "n_independent_sources": 13,
+ "contradictions": [],
+ "actor_visibility": {
+  "public": 10
+ },
+ "leakage_flags": [],
+ "bundle_hash": "98c78764be4e5d6c",
+ "plan_diff": {
+  "n_entries": 16,
+  "n_structural_changes": 15,
+  "lean_only": false,
+  "entries": [
+   {
+    "kind": "entity_added",
+    "component": "SAG-AFTRA",
+    "detail": "SAG-AFTRA's streaming revenue proposal rejection is a parallel labor action that influences WGA's perception of AMPTP's ",
+    "supporting_claim_ids": [
+     "8be0a8e6c1780961:c0"
+    ],
+    "before": "",
+    "after": "SAG-AFTRA"
+   },
+   {
+    "kind": "relation_added",
+    "component": "WGA-observes-SAG-AFTRA",
+    "detail": "",
+    "supporting_claim_ids": [
+     "8be0a8e6c1780961:c0"
+    ],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "relation_added",
+    "component": "WGA_leadership-negotiates_with-AMPTP",
+    "detail": "",
+    "supporting_claim_ids": [
+     "df9312f7a2211369:c1",
+     "b18b61cb945a414c:c0"
+    ],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "event_added",
+    "component": "decision_opportunity@2023-09-20",
+    "detail": "WGA restarted negotiations and will respond to latest offer next week, creating a decision point.",
+    "supporting_claim_ids": [
+     "b18b61cb945a414c:c0",
+     "b18b61cb945a414c:c1"
+    ],
+    "before": "",
+    "after": "decision_opportunity"
+   },
+   {
+    "kind": "hypothesis_reweighted",
+    "component": "deal_seeker_majority",
+    "detail": "WGA's public rejection of the counteroffer as 'not nearly enough' and AMPTP's rejection of SAG-AFTRA's proposal indicate",
+    "supporting_claim_ids": [
+     "9112f5ca6f4fa61c:c1",
+     "8be0a8e6c1780961:c0",
+     "501d730302b0e753:c0"
+    ],
+    "before": "0.3",
+    "after": "0.18"
+   },
+   {
+    "kind": "hypothesis_reweighted",
+    "component": "hawk_dominance",
+    "detail": "WGA's strong rejection and the characterization of frustration and mistrust support hawkish stance.",
+    "supporting_claim_ids": [
+     "9112f5ca6f4fa61c:c1",
+     "32be0743e47c00fe:c1"
+    ],
+    "before": "0.3",
+    "after": "0.45"
+   },
+   {
+    "kind": "lean_changed",
+    "component": "outcome_lean",
+    "detail": "",
+    "supporting_claim_ids": [
+     "9112f5ca6f4fa61c:c1",
+     "501d730302b0e753:c0",
+     "32be0743e47c00fe:c0"
+    ],
+    "before": "neutral",
+    "after": "strong_no"
+   },
+   {
+    "kind": "uncertainty_changed",
+    "component": "state_priors",
+    "detail": "Evidence consistently points to rejection and mistrust, narrowing the range of plausible outcomes toward strong no.",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": "narrow"
+   },
+   {
+    "kind": "requirement_fulfilled",
+    "component": "req_ea932dacb4",
+    "detail": "7 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_fulfilled",
+    "component": "req_b66c1a18e9",
+    "detail": "3 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_d97f2f87c4",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_01bebe3c1f",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_c2bd120f13",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_76c1bcc615",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_b4e594c6b2",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_2732565c8e",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   }
+  ]
+ },
+ "structural_changes": 15,
+ "lean_only": false,
+ "n_institutions_pre": 2,
+ "n_institutions_post": 2,
+ "n_events_pre": 3,
+ "n_events_post": 12,
+ "observation_state_deltas": 0,
+ "terminal_pre": {
+  "accept": 0.5,
+  "reject": 0.5
+ },
+ "terminal_post": {
+  "reject": 0.52,
+  "accept": 0.48
+ },
+ "terminal_changed": true,
+ "evidence_is_causal": true
+}

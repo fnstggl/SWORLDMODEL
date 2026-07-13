@@ -1,0 +1,357 @@
+{
+ "domain": "election",
+ "question": "Will the Republicans win the Kentucky governor race in 2023?",
+ "as_of": "2023-10-15",
+ "horizon": "2023-11-08",
+ "n_requirements": 8,
+ "requirements": [
+  {
+   "id": "req_affbbec6d6",
+   "need": "The candidate receiving the most votes in the general election is the winner; if",
+   "why": "the terminal outcome standing as of the question date sets the base rate",
+   "voi": 1.0
+  },
+  {
+   "id": "req_4e87026280",
+   "need": "value/context of kentucky_voters.true_preference_distribution",
+   "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "voi": 0.9
+  },
+  {
+   "id": "req_ac839eb7ab",
+   "need": "value/context of andy_beshear.approval_rating",
+   "why": "high-sensitivity latent (0.85) driving the outcome distribution",
+   "voi": 0.85
+  },
+  {
+   "id": "req_2d4f3ee610",
+   "need": "value/context of kentucky_voters.turnout_propensity_by_segment",
+   "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "voi": 0.8
+  }
+ ],
+ "rss_windows": [
+  {
+   "query": "Republicans win Kentucky governor race 2023 andy beshear daniel cameron kentucky state board of elections after:2023-05-18 before:2023-10-15",
+   "after": "2023-05-18",
+   "before": "2023-10-15",
+   "status": "ok",
+   "code": 200,
+   "n_items": 8,
+   "raw_hash": "41265934879a"
+  },
+  {
+   "query": "kentucky voters true preference distribution after:2023-05-18 before:2023-10-15",
+   "after": "2023-05-18",
+   "before": "2023-10-15",
+   "status": "zero_results",
+   "code": 200,
+   "n_items": 0,
+   "raw_hash": "d48a168ece9e"
+  },
+  {
+   "query": "andy beshear approval rating after:2023-05-18 before:2023-10-15",
+   "after": "2023-05-18",
+   "before": "2023-10-15",
+   "status": "ok",
+   "code": 200,
+   "n_items": 8,
+   "raw_hash": "859032150f4d"
+  }
+ ],
+ "n_documents": 16,
+ "documents": [
+  {
+   "source": "Kentucky Lantern",
+   "title": "Why I\u2019m very worried about a Gov. Cameron - Kentucky Lantern",
+   "pub": 1694588400.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "The 19th News",
+   "title": "How abortion is set to shape the Kentucky governor\u2019s race - The 19th N",
+   "pub": 1693206000.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "boltsmag.org",
+   "title": "Your Cheat Sheet to the 2023 General Elections - boltsmag.org",
+   "pub": 1697049755.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "Center For Politics",
+   "title": "Notes on the State of Politics: June 7, 2023 - Center For Politics",
+   "pub": 1686121200.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "Inside Climate News",
+   "title": "Kentucky\u2019s Democratic Governor Steers Clear of a Climate Agenda in His",
+   "pub": 1696402800.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "The Courier-Journal",
+   "title": "Daniel Cameron's campaign touts his lawsuits against Beshear and Biden",
+   "pub": 1686553200.0,
+   "temporal": "likely_pre_asof"
+  }
+ ],
+ "temporal_summary": {
+  "likely_pre_asof": 16
+ },
+ "included_claims": [
+  {
+   "id": "d0380dd5f68cdc37:c0",
+   "class": "opinion",
+   "subject": "I",
+   "predicate": "am very worried about",
+   "span": "Why I\u2019m very worried about a Gov. Cameron"
+  },
+  {
+   "id": "12d91d16565f6ea2:c0",
+   "class": "observed_fact",
+   "subject": "Kentucky Gov. Beshear",
+   "predicate": "leads re-election race by",
+   "span": "Poll: Kentucky Gov. Beshear leads re-election race by 10 points"
+  },
+  {
+   "id": "3657c7f257678b1a:c0",
+   "class": "forecast",
+   "subject": "abortion",
+   "predicate": "is set to shape",
+   "span": "How abortion is set to shape the Kentucky governor\u2019s race"
+  },
+  {
+   "id": "11bd415bfda29a9a:c0",
+   "class": "observed_fact",
+   "subject": "Beshear",
+   "predicate": "is",
+   "span": "Poll: Beshear is America\u2019s 5th most popular governor"
+  },
+  {
+   "id": "11bd415bfda29a9a:c1",
+   "class": "observed_fact",
+   "subject": "Beshear",
+   "predicate": "has",
+   "span": "bolstered by highest approval among GOP voters than any other Democratic governo"
+  },
+  {
+   "id": "b3ccbb0a5d23467d:c0",
+   "class": "observed_fact",
+   "subject": "boltsmag.org",
+   "predicate": "published",
+   "span": "Your Cheat Sheet to the 2023 General Elections - boltsmag.org"
+  }
+ ],
+ "n_excluded": 0,
+ "n_suspicious": 0,
+ "entities": [
+  {
+   "mention": "Cameron",
+   "top": "cameron",
+   "resolved": true
+  },
+  {
+   "mention": "Kentucky Gov. Beshear",
+   "top": "kentucky beshear",
+   "resolved": true
+  },
+  {
+   "mention": "abortion",
+   "top": "abortion",
+   "resolved": true
+  },
+  {
+   "mention": "Kentucky governor\u2019s race",
+   "top": "kentucky governor\u2019s race",
+   "resolved": true
+  },
+  {
+   "mention": "Beshear",
+   "top": "beshear",
+   "resolved": true
+  }
+ ],
+ "dependence_groups": [
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "exact_duplicate",
+   "n": 2
+  }
+ ],
+ "n_independent_sources": 15,
+ "contradictions": [],
+ "actor_visibility": {
+  "public": 7
+ },
+ "leakage_flags": [],
+ "bundle_hash": "855bc0fe76c466d6",
+ "plan_diff": {
+  "n_entries": 14,
+  "n_structural_changes": 13,
+  "lean_only": false,
+  "entries": [
+   {
+    "kind": "entity_added",
+    "component": "abortion_rights_groups",
+    "detail": "Abortion is a key issue in the race, implying organized groups will mobilize.",
+    "supporting_claim_ids": [
+     "3657c7f257678b1a:c0"
+    ],
+    "before": "",
+    "after": "abortion_rights_groups"
+   },
+   {
+    "kind": "relation_added",
+    "component": "abortion_rights_groups-mobilizes_for-andy_beshear",
+    "detail": "",
+    "supporting_claim_ids": [
+     "3657c7f257678b1a:c0"
+    ],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "hypothesis_reweighted",
+    "component": "incumbent_advantage",
+    "detail": "Beshear leads by 10 points and is the 5th most popular governor, with high GOP approval.",
+    "supporting_claim_ids": [
+     "12d91d16565f6ea2:c0",
+     "11bd415bfda29a9a:c0",
+     "11bd415bfda29a9a:c1"
+    ],
+    "before": "0.5",
+    "after": "0.75"
+   },
+   {
+    "kind": "hypothesis_reweighted",
+    "component": "nationalization",
+    "detail": "Abortion as a key issue may nationalize the race but Beshear's cross-party appeal weakens nationalization effect.",
+    "supporting_claim_ids": [
+     "3657c7f257678b1a:c0",
+     "11bd415bfda29a9a:c1"
+    ],
+    "before": "0.5",
+    "after": "0.3"
+   },
+   {
+    "kind": "lean_changed",
+    "component": "outcome_lean",
+    "detail": "",
+    "supporting_claim_ids": [
+     "12d91d16565f6ea2:c0",
+     "11bd415bfda29a9a:c0",
+     "11bd415bfda29a9a:c1"
+    ],
+    "before": "neutral",
+    "after": "strong_no"
+   },
+   {
+    "kind": "uncertainty_changed",
+    "component": "state_priors",
+    "detail": "Multiple polls and approval data consistently show Beshear leading, reducing uncertainty.",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": "narrow"
+   },
+   {
+    "kind": "requirement_fulfilled",
+    "component": "req_affbbec6d6",
+    "detail": "3 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_4e87026280",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_fulfilled",
+    "component": "req_ac839eb7ab",
+    "detail": "4 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_2d4f3ee610",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_c62c96443b",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_35e4699bc8",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_81c2afc8e5",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_4d2b7a6391",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   }
+  ]
+ },
+ "structural_changes": 13,
+ "lean_only": false,
+ "n_institutions_pre": 2,
+ "n_institutions_post": 2,
+ "n_events_pre": 2,
+ "n_events_post": 9,
+ "observation_state_deltas": 0,
+ "terminal_pre": {
+  "Democrat_win": 0.56,
+  "Republican_win": 0.44
+ },
+ "terminal_post": {
+  "Republican_win": 0.5,
+  "Democrat_win": 0.5
+ },
+ "terminal_changed": true,
+ "evidence_is_causal": true
+}

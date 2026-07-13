@@ -1,0 +1,361 @@
+{
+ "domain": "reputation_crisis",
+ "question": "Will Bud Light sales recover after the boycott controversy?",
+ "as_of": "2023-07-01",
+ "horizon": "2023-10-01",
+ "n_requirements": 8,
+ "requirements": [
+  {
+   "id": "req_478df539c3",
+   "need": "The outcome is the ratio of Bud Light weekly sales volume in the last week of Se",
+   "why": "the terminal outcome standing as of the question date sets the base rate",
+   "voi": 1.0
+  },
+  {
+   "id": "req_e7588c5c98",
+   "need": "value/context of us_beer_drinkers.conservative_males_21_40.boycott_persistence",
+   "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "voi": 0.9
+  },
+  {
+   "id": "req_24834a548d",
+   "need": "value/context of anheuser_busch_inbev.crisis_response_effectiveness",
+   "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "voi": 0.8
+  },
+  {
+   "id": "req_08aee25d1f",
+   "need": "evidence discriminating structural hypothesis boycott_fades",
+   "why": "a fact that reweights competing structural hypotheses materially changes the out",
+   "voi": 0.8
+  }
+ ],
+ "rss_windows": [
+  {
+   "query": "Bud Light sales recover boycott controversy anheuser busch inbev bud light brand dylan mulvaney after:2023-02-01 before:2023-07-01",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "status": "ok",
+   "code": 200,
+   "n_items": 7,
+   "raw_hash": "cb8e9a513b8d"
+  },
+  {
+   "query": "beer drinkers conservative males boycott persistence after:2023-02-01 before:2023-07-01",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "status": "zero_results",
+   "code": 200,
+   "n_items": 0,
+   "raw_hash": "94ea48f678bc"
+  },
+  {
+   "query": "anheuser busch inbev crisis response effectiveness after:2023-02-01 before:2023-07-01",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "status": "ok",
+   "code": 200,
+   "n_items": 3,
+   "raw_hash": "91a57b5e3709"
+  }
+ ],
+ "n_documents": 10,
+ "documents": [
+  {
+   "source": "CBS News",
+   "title": "Bud Light fumbles, but inclusive advertising are here to stay - CBS Ne",
+   "pub": 1682492400.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "Fox Business",
+   "title": "CEO distances Anheuser-Busch from Bud Light Dylan Mulvaney controversy",
+   "pub": 1683183600.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "Barron's",
+   "title": "Bud Light Sales Keep Cratering After Promotion With Transgender Influe",
+   "pub": 1684825200.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "Marketing Dive",
+   "title": "Bud Light looks to rebound from controversy with huge summer push - Ma",
+   "pub": 1687417200.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "Newsweek",
+   "title": "The Truth About Bud Light Brewery\u2019s Stock and Sales Since Mulvaney Fal",
+   "pub": 1683702000.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "Fox Business",
+   "title": "Bud Light to spend 'heavily' on marketing after Dylan Mulvaney controv",
+   "pub": 1682578800.0,
+   "temporal": "likely_pre_asof"
+  }
+ ],
+ "temporal_summary": {
+  "likely_pre_asof": 10
+ },
+ "included_claims": [
+  {
+   "id": "e26b33a2c0452786:c0",
+   "class": "observed_fact",
+   "subject": "Bud Light",
+   "predicate": "fumbles",
+   "span": "Bud Light fumbles"
+  },
+  {
+   "id": "e26b33a2c0452786:c1",
+   "class": "opinion",
+   "subject": "inclusive advertising",
+   "predicate": "are here to stay",
+   "span": "inclusive advertising are here to stay"
+  },
+  {
+   "id": "81e882152b87d3d9:c0",
+   "class": "observed_fact",
+   "subject": "AB InBev",
+   "predicate": "is helping address",
+   "span": "5 ways AB InBev is helping address global water challenges"
+  },
+  {
+   "id": "c71a8a88a9af080c:c0",
+   "class": "actor_statement",
+   "subject": "CEO",
+   "predicate": "distances",
+   "span": "CEO distances Anheuser-Busch from Bud Light Dylan Mulvaney controversy: 'Not a f"
+  },
+  {
+   "id": "c71a8a88a9af080c:c1",
+   "class": "actor_statement",
+   "subject": "CEO",
+   "predicate": "said",
+   "span": "'Not a formal campaign'"
+  },
+  {
+   "id": "b1d4051c6dbdd17e:c0",
+   "class": "opinion",
+   "subject": "Self-inflicted wounds",
+   "predicate": "haunt",
+   "span": "Self-inflicted wounds haunt Anheuser-Busch\u2019s Dylan Mulvaney crisis response"
+  }
+ ],
+ "n_excluded": 0,
+ "n_suspicious": 0,
+ "entities": [
+  {
+   "mention": "Bud Light",
+   "top": "bud light",
+   "resolved": true
+  },
+  {
+   "mention": "AB InBev",
+   "top": "ab inbev",
+   "resolved": true
+  },
+  {
+   "mention": "CEO",
+   "top": "bud light",
+   "resolved": false
+  },
+  {
+   "mention": "Anheuser-Busch",
+   "top": "anheuser-busch",
+   "resolved": true
+  },
+  {
+   "mention": "Bud Light",
+   "top": "bud light",
+   "resolved": true
+  }
+ ],
+ "dependence_groups": [
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  }
+ ],
+ "n_independent_sources": 10,
+ "contradictions": [],
+ "actor_visibility": {
+  "public": 9
+ },
+ "leakage_flags": [],
+ "bundle_hash": "6ec160d29970eb95",
+ "plan_diff": {
+  "n_entries": 15,
+  "n_structural_changes": 15,
+  "lean_only": false,
+  "entries": [
+   {
+    "kind": "entity_added",
+    "component": "ab_inbev_ceo",
+    "detail": "CEO made a statement distancing Anheuser-Busch from the Bud Light campaign, indicating a key decision-maker.",
+    "supporting_claim_ids": [
+     "c71a8a88a9af080c:c0",
+     "c71a8a88a9af080c:c1"
+    ],
+    "before": "",
+    "after": "ab_inbev_ceo"
+   },
+   {
+    "kind": "relation_added",
+    "component": "ab_inbev_ceo-leads-anheuser_busch_inbev",
+    "detail": "",
+    "supporting_claim_ids": [
+     "c71a8a88a9af080c:c0"
+    ],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "event_added",
+    "component": "external_shock@2023-04-01",
+    "detail": "The controversy began with the promotion featuring Dylan Mulvaney, leading to boycott and sales decline.",
+    "supporting_claim_ids": [
+     "e0e93a2f31ecef86:c0"
+    ],
+    "before": "",
+    "after": "external_shock"
+   },
+   {
+    "kind": "event_added",
+    "component": "decision_opportunity@2023-04-14",
+    "detail": "CEO publicly distanced the company from the campaign, a strategic response to the boycott.",
+    "supporting_claim_ids": [
+     "c71a8a88a9af080c:c0",
+     "c71a8a88a9af080c:c1"
+    ],
+    "before": "",
+    "after": "decision_opportunity"
+   },
+   {
+    "kind": "hypothesis_reweighted",
+    "component": "boycott_fades",
+    "detail": "Sales continue to crater and the CEO's distancing may not reverse the trend; inclusive advertising persist as an opinion",
+    "supporting_claim_ids": [
+     "e0e93a2f31ecef86:c0",
+     "e26b33a2c0452786:c1",
+     "b1d4051c6dbdd17e:c0"
+    ],
+    "before": "0.3",
+    "after": "0.18"
+   },
+   {
+    "kind": "hypothesis_reweighted",
+    "component": "boycott_persists",
+    "detail": "Evidence of ongoing sales decline and self-inflicted crisis response supports persistence of boycott.",
+    "supporting_claim_ids": [
+     "e0e93a2f31ecef86:c0",
+     "b1d4051c6dbdd17e:c0"
+    ],
+    "before": "1.0",
+    "after": "1.5"
+   },
+   {
+    "kind": "uncertainty_changed",
+    "component": "state_priors",
+    "detail": "Evidence consistently shows sales decline and poor crisis response, narrowing the range of possible recovery outcomes.",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": "narrow"
+   },
+   {
+    "kind": "requirement_fulfilled",
+    "component": "req_478df539c3",
+    "detail": "6 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_e7588c5c98",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_fulfilled",
+    "component": "req_24834a548d",
+    "detail": "3 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_08aee25d1f",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_846ed1f8ec",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_a7bd73e407",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_b876a76f35",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_f29d3010b3",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   }
+  ]
+ },
+ "structural_changes": 15,
+ "lean_only": false,
+ "n_institutions_pre": 2,
+ "n_institutions_post": 2,
+ "n_events_pre": 1,
+ "n_events_post": 11,
+ "observation_state_deltas": 0,
+ "terminal_pre": null,
+ "terminal_post": null,
+ "terminal_changed": false,
+ "evidence_is_causal": true
+}

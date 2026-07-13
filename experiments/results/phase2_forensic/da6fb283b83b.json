@@ -1,0 +1,357 @@
+{
+ "domain": "organizational_decision",
+ "question": "Will Disney's board extend Bob Iger's contract as CEO?",
+ "as_of": "2023-06-01",
+ "horizon": "2023-08-01",
+ "n_requirements": 8,
+ "requirements": [
+  {
+   "id": "req_bcd746f5d2",
+   "need": "The board's formal vote outcome as recorded in official minutes or public announ",
+   "why": "the terminal outcome standing as of the question date sets the base rate",
+   "voi": 1.0
+  },
+  {
+   "id": "req_842b4c6618",
+   "need": "value/context of board_members.preference_extend",
+   "why": "high-sensitivity latent (1.00) driving the outcome distribution",
+   "voi": 1.0
+  },
+  {
+   "id": "req_10a9789ff4",
+   "need": "value/context of board_members.loyalty_to_iger",
+   "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "voi": 0.9
+  },
+  {
+   "id": "req_83a116d33d",
+   "need": "value/context of iger_performance_metric",
+   "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "voi": 0.9
+  }
+ ],
+ "rss_windows": [
+  {
+   "query": "Disney board extend Bob Iger contract CEO bob iger board chair successor candidate internal after:2023-01-02 before:2023-06-01",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "status": "ok",
+   "code": 200,
+   "n_items": 5,
+   "raw_hash": "e93de2e3fe48"
+  },
+  {
+   "query": "board members preference extend after:2023-01-02 before:2023-06-01",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "status": "ok",
+   "code": 200,
+   "n_items": 2,
+   "raw_hash": "e67802e7f975"
+  },
+  {
+   "query": "board members loyalty iger after:2023-01-02 before:2023-06-01",
+   "after": "2023-01-02",
+   "before": "2023-06-01",
+   "status": "zero_results",
+   "code": 200,
+   "n_items": 0,
+   "raw_hash": "ac6f3b475939"
+  }
+ ],
+ "n_documents": 7,
+ "documents": [
+  {
+   "source": "Business Insider",
+   "title": "Inside Disney it's 'Revenge of the Creatives' and woe to company foes ",
+   "pub": 1680850800.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "Disney Tourist Blog",
+   "title": "Disney Reveals Reason for Firing Former CEO Bob Chapek, Salary & Sever",
+   "pub": 1674028800.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "Disney Food Blog",
+   "title": "Can Activist Investors Derail Bob Iger\u2019s Board at Disney? - Disney Foo",
+   "pub": 1675497600.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "The Hollywood Reporter",
+   "title": "Behind Disney\u2019s Activist Investor Battle: A Marvel Mogul\u2019s Revenge Pla",
+   "pub": 1673942400.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "Deadline",
+   "title": "Disney Replaces Susan Arnold As Chair, Seeks To Fend Off Activist Inve",
+   "pub": 1673424000.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "K-12 Dive",
+   "title": "Baron Davis resigns as superintendent of South Carolina\u2019s Richland Sch",
+   "pub": 1674115200.0,
+   "temporal": "likely_pre_asof"
+  }
+ ],
+ "temporal_summary": {
+  "likely_pre_asof": 7
+ },
+ "included_claims": [
+  {
+   "id": "cdaf0b03424d4711:c0",
+   "class": "observed_fact",
+   "subject": "Disney",
+   "predicate": "is experiencing",
+   "span": "Inside Disney it's 'Revenge of the Creatives'"
+  },
+  {
+   "id": "cdaf0b03424d4711:c1",
+   "class": "observed_fact",
+   "subject": "CEO Bob Iger",
+   "predicate": "is taking",
+   "span": "CEO Bob Iger is taking no prisoners"
+  },
+  {
+   "id": "db3dce30f7baac39:c0",
+   "class": "observed_fact",
+   "subject": "Baron Davis",
+   "predicate": "resigns as",
+   "span": "Baron Davis resigns as superintendent of South Carolina\u2019s Richland School Distri"
+  },
+  {
+   "id": "e967acef0091a89d:c0",
+   "class": "official_record",
+   "subject": "Disney",
+   "predicate": "revealed",
+   "span": "Disney Reveals Reason for Firing Former CEO Bob Chapek"
+  },
+  {
+   "id": "e967acef0091a89d:c1",
+   "class": "official_record",
+   "subject": "Disney",
+   "predicate": "revealed",
+   "span": "Disney Reveals Reason for Firing Former CEO Bob Chapek, Salary & Severance"
+  },
+  {
+   "id": "3d33caf9c3b5e4aa:c0",
+   "class": "observed_fact",
+   "subject": "The Journalist's Resource",
+   "predicate": "published",
+   "span": "6 tips on covering race-based affirmative action in college admissions - The Jou"
+  }
+ ],
+ "n_excluded": 0,
+ "n_suspicious": 0,
+ "entities": [
+  {
+   "mention": "Disney",
+   "top": "disney",
+   "resolved": true
+  },
+  {
+   "mention": "Bob Iger",
+   "top": "bob iger",
+   "resolved": true
+  },
+  {
+   "mention": "Baron Davis",
+   "top": "baron davis",
+   "resolved": true
+  },
+  {
+   "mention": "South Carolina\u2019s Richland School District Two",
+   "top": "south carolina\u2019s richland school district two",
+   "resolved": true
+  },
+  {
+   "mention": "Disney",
+   "top": "disney",
+   "resolved": true
+  }
+ ],
+ "dependence_groups": [
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  }
+ ],
+ "n_independent_sources": 7,
+ "contradictions": [],
+ "actor_visibility": {
+  "public": 8
+ },
+ "leakage_flags": [],
+ "bundle_hash": "73353b9eaf265c1c",
+ "plan_diff": {
+  "n_entries": 14,
+  "n_structural_changes": 13,
+  "lean_only": false,
+  "entries": [
+   {
+    "kind": "entity_added",
+    "component": "activist_investors",
+    "detail": "Claim bd506efe84257779:c0 and e4dd8ce38a85f69d:c0 indicate activist investors are challenging the board, which is a new ",
+    "supporting_claim_ids": [
+     "bd506efe84257779:c0",
+     "e4dd8ce38a85f69d:c0"
+    ],
+    "before": "",
+    "after": "activist_investors"
+   },
+   {
+    "kind": "relation_added",
+    "component": "activist_investors-challenges-disney_board",
+    "detail": "",
+    "supporting_claim_ids": [
+     "bd506efe84257779:c0",
+     "e4dd8ce38a85f69d:c0"
+    ],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "event_added",
+    "component": "external_shock@2024-01-01",
+    "detail": "Claims bd506efe84257779:c0 and e4dd8ce38a85f69d:c0 describe an activist investor battle that could disrupt board dynamic",
+    "supporting_claim_ids": [
+     "bd506efe84257779:c0",
+     "e4dd8ce38a85f69d:c0"
+    ],
+    "before": "",
+    "after": "external_shock"
+   },
+   {
+    "kind": "hypothesis_reweighted",
+    "component": "board_seeks_change",
+    "detail": "Activist investor pressure (bd506efe84257779:c0, e4dd8ce38a85f69d:c0) increases likelihood of board seeking change.",
+    "supporting_claim_ids": [
+     "bd506efe84257779:c0",
+     "e4dd8ce38a85f69d:c0"
+    ],
+    "before": "0.3",
+    "after": "0.45"
+   },
+   {
+    "kind": "lean_changed",
+    "component": "outcome_lean",
+    "detail": "",
+    "supporting_claim_ids": [
+     "bd506efe84257779:c0",
+     "e4dd8ce38a85f69d:c0"
+    ],
+    "before": "neutral",
+    "after": "weak_no"
+   },
+   {
+    "kind": "uncertainty_changed",
+    "component": "state_priors",
+    "detail": "Activist investor claims provide a clear directional pressure against Iger's extension, reducing ambiguity.",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": "narrow"
+   },
+   {
+    "kind": "requirement_fulfilled",
+    "component": "req_bcd746f5d2",
+    "detail": "6 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_fulfilled",
+    "component": "req_842b4c6618",
+    "detail": "2 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_10a9789ff4",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_83a116d33d",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_fb0eddc481",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_2f9407119b",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_e292fb1988",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_bc6b2136cf",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   }
+  ]
+ },
+ "structural_changes": 13,
+ "lean_only": false,
+ "n_institutions_pre": 2,
+ "n_institutions_post": 2,
+ "n_events_pre": 3,
+ "n_events_post": 12,
+ "observation_state_deltas": 0,
+ "terminal_pre": {
+  "not_extend": 0.54,
+  "extend": 0.46
+ },
+ "terminal_post": {
+  "not_extend": 0.54,
+  "extend": 0.46
+ },
+ "terminal_changed": false,
+ "evidence_is_causal": true
+}

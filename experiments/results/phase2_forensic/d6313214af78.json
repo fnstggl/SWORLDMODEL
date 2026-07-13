@@ -1,0 +1,401 @@
+{
+ "domain": "negotiation",
+ "question": "Will the UAW and Ford reach a tentative labor agreement?",
+ "as_of": "2023-10-01",
+ "horizon": "2023-11-01",
+ "n_requirements": 8,
+ "requirements": [
+  {
+   "id": "req_c007adfc76",
+   "need": "agreement_reached if a tentative contract is ratified or announced by both parti",
+   "why": "the terminal outcome standing as of the question date sets the base rate",
+   "voi": 1.0
+  },
+  {
+   "id": "req_d23a4af729",
+   "need": "value/context of uaw.leadership_militancy",
+   "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "voi": 0.9
+  },
+  {
+   "id": "req_dc0f19ce85",
+   "need": "value/context of ford.reservation_price",
+   "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "voi": 0.9
+  },
+  {
+   "id": "req_e8d3f867b2",
+   "need": "value/context of uaw.reservation_price",
+   "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "voi": 0.9
+  }
+ ],
+ "rss_windows": [
+  {
+   "query": "UAW Ford tentative labor agreement uaw ford shawn fain after:2023-05-04 before:2023-10-01",
+   "after": "2023-05-04",
+   "before": "2023-10-01",
+   "status": "ok",
+   "code": 200,
+   "n_items": 8,
+   "raw_hash": "6fd423722b81"
+  },
+  {
+   "query": "uaw leadership militancy after:2023-05-04 before:2023-10-01",
+   "after": "2023-05-04",
+   "before": "2023-10-01",
+   "status": "ok",
+   "code": 200,
+   "n_items": 8,
+   "raw_hash": "b3721709e32f"
+  },
+  {
+   "query": "ford reservation price after:2023-05-04 before:2023-10-01",
+   "after": "2023-05-04",
+   "before": "2023-10-01",
+   "status": "ok",
+   "code": 200,
+   "n_items": 8,
+   "raw_hash": "934dc2dcde4a"
+  }
+ ],
+ "n_documents": 24,
+ "documents": [
+  {
+   "source": "ABC News - Breaking News, Latest News and Videos",
+   "title": "UAW launches strike against Big 3 automakers - ABC News - Breaking New",
+   "pub": 1694761200.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "Labor Notes |",
+   "title": "Ford and GM Agree to End At Least One Tier, Stellantis Still Holding O",
+   "pub": 1695625200.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "CBS News",
+   "title": "General Motors issues counteroffer to UAW amid negotiations - CBS News",
+   "pub": 1694070000.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "The Detroit News",
+   "title": "Ford says 600 non-striking workers at Michigan Assembly Plant to be te",
+   "pub": 1694761200.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "The Courier-Journal",
+   "title": "UAW strike threat: How Ford plans to combat worker shortage, disruptio",
+   "pub": 1694588400.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "Detroit Free Press",
+   "title": "Ford demands secrecy as it preps salaried workers for blue-collar jobs",
+   "pub": 1692255600.0,
+   "temporal": "likely_pre_asof"
+  }
+ ],
+ "temporal_summary": {
+  "likely_pre_asof": 23,
+  "uncertain": 1
+ },
+ "included_claims": [
+  {
+   "id": "0588f6113b7e425d:c0",
+   "class": "observed_fact",
+   "subject": "UAW",
+   "predicate": "launches",
+   "span": "UAW launches strike against Big 3 automakers"
+  },
+  {
+   "id": "9623a139b8047af1:c0",
+   "class": "opinion",
+   "subject": "Union Reform Caucus",
+   "predicate": "is responsible for",
+   "span": "We Can Thank a Union Reform Caucus for the Militant UAW Strike"
+  },
+  {
+   "id": "8b6d19e55b1a84ba:c0",
+   "class": "forecast",
+   "subject": "2023 Ford F-150 Lightning orders",
+   "predicate": "open",
+   "span": "2023 Ford F-150 Lightning Orders Open May 9 to Non-Reservation Holders: Report"
+  },
+  {
+   "id": "8e8840ef62b85a5d:c0",
+   "class": "observed_fact",
+   "subject": "Ford",
+   "predicate": "agrees to end",
+   "span": "Ford and GM Agree to End At Least One Tier"
+  },
+  {
+   "id": "8e8840ef62b85a5d:c1",
+   "class": "observed_fact",
+   "subject": "GM",
+   "predicate": "agrees to end",
+   "span": "Ford and GM Agree to End At Least One Tier"
+  },
+  {
+   "id": "8e8840ef62b85a5d:c2",
+   "class": "observed_fact",
+   "subject": "Stellantis",
+   "predicate": "is still holding out",
+   "span": "Stellantis Still Holding Out"
+  }
+ ],
+ "n_excluded": 0,
+ "n_suspicious": 0,
+ "entities": [
+  {
+   "mention": "UAW",
+   "top": "uaw",
+   "resolved": true
+  },
+  {
+   "mention": "Big 3 automakers",
+   "top": "big 3 automakers",
+   "resolved": true
+  },
+  {
+   "mention": "Union Reform Caucus",
+   "top": "union reform caucus",
+   "resolved": true
+  },
+  {
+   "mention": "UAW",
+   "top": "uaw",
+   "resolved": true
+  },
+  {
+   "mention": "2023 Ford F-150 Lightning",
+   "top": "2023 ford f-150 lightning",
+   "resolved": false
+  }
+ ],
+ "dependence_groups": [
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  }
+ ],
+ "n_independent_sources": 24,
+ "contradictions": [],
+ "actor_visibility": {
+  "public": 10
+ },
+ "leakage_flags": [],
+ "bundle_hash": "6e1b12773386e1b6",
+ "plan_diff": {
+  "n_entries": 19,
+  "n_structural_changes": 18,
+  "lean_only": false,
+  "entries": [
+   {
+    "kind": "entity_added",
+    "component": "union_reform_caucus",
+    "detail": "Claim [9623a139b8047af1:c0] identifies the Union Reform Caucus as responsible for the militant UAW strike, indicating a ",
+    "supporting_claim_ids": [
+     "9623a139b8047af1:c0"
+    ],
+    "before": "",
+    "after": "union_reform_caucus"
+   },
+   {
+    "kind": "entity_added",
+    "component": "stellantis",
+    "detail": "Claim [8e8840ef62b85a5d:c2] notes Stellantis is still holding out, making it a relevant third automaker in the broader b",
+    "supporting_claim_ids": [
+     "8e8840ef62b85a5d:c2"
+    ],
+    "before": "",
+    "after": "stellantis"
+   },
+   {
+    "kind": "institution_added",
+    "component": "uaw_bargaining_committee",
+    "detail": "The UAW bargaining committee is an existing entity in the plan; no new rules are added by the claims.",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": "[\"approval\"]"
+   },
+   {
+    "kind": "rule_added",
+    "component": "uaw_bargaining_committee.approval",
+    "detail": "{}",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "relation_added",
+    "component": "union_reform_caucus-influences-uaw",
+    "detail": "",
+    "supporting_claim_ids": [
+     "9623a139b8047af1:c0"
+    ],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "relation_added",
+    "component": "uaw-strikes_against-ford",
+    "detail": "",
+    "supporting_claim_ids": [
+     "0588f6113b7e425d:c0"
+    ],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "relation_added",
+    "component": "uaw-strikes_against-stellantis",
+    "detail": "",
+    "supporting_claim_ids": [
+     "0588f6113b7e425d:c0"
+    ],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "event_added",
+    "component": "external_shock@2023-09-15",
+    "detail": "Claim [0588f6113b7e425d:c0] states the UAW launches a strike against Big 3 automakers, which is a significant external s",
+    "supporting_claim_ids": [
+     "0588f6113b7e425d:c0"
+    ],
+    "before": "",
+    "after": "external_shock"
+   },
+   {
+    "kind": "hypothesis_reweighted",
+    "component": "militant_showdown",
+    "detail": "Claims [9623a139b8047af1:c0] and [0588f6113b7e425d:c0] indicate a militant faction and an actual strike, supporting a mo",
+    "supporting_claim_ids": [
+     "9623a139b8047af1:c0",
+     "0588f6113b7e425d:c0"
+    ],
+    "before": "1.0",
+    "after": "1.5"
+   },
+   {
+    "kind": "lean_changed",
+    "component": "outcome_lean",
+    "detail": "",
+    "supporting_claim_ids": [
+     "8e8840ef62b85a5d:c0",
+     "8e8840ef62b85a5d:c1"
+    ],
+    "before": "neutral",
+    "after": "weak_yes"
+   },
+   {
+    "kind": "uncertainty_changed",
+    "component": "state_priors",
+    "detail": "Claims show concrete actions (strike, tier concessions) that reduce ambiguity about the bargaining process, though Stell",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": "narrow"
+   },
+   {
+    "kind": "requirement_fulfilled",
+    "component": "req_c007adfc76",
+    "detail": "4 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_fulfilled",
+    "component": "req_d23a4af729",
+    "detail": "3 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_fulfilled",
+    "component": "req_dc0f19ce85",
+    "detail": "3 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_e8d3f867b2",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_620d0931c6",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_525df595df",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_2f2a40a166",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_230f0c5d13",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   }
+  ]
+ },
+ "structural_changes": 18,
+ "lean_only": false,
+ "n_institutions_pre": 3,
+ "n_institutions_post": 4,
+ "n_events_pre": 1,
+ "n_events_post": 10,
+ "observation_state_deltas": 0,
+ "terminal_pre": {
+  "no_agreement": 0.52,
+  "agreement_reached": 0.48
+ },
+ "terminal_post": {
+  "agreement_reached": 0.56,
+  "no_agreement": 0.44
+ },
+ "terminal_changed": true,
+ "evidence_is_causal": true
+}

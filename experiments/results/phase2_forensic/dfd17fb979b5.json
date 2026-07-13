@@ -1,0 +1,355 @@
+{
+ "domain": "strike",
+ "question": "Will the SAG-AFTRA actors strike end with a studio agreement?",
+ "as_of": "2023-10-01",
+ "horizon": "2023-11-15",
+ "n_requirements": 8,
+ "requirements": [
+  {
+   "id": "req_c13bb83577",
+   "need": "agreement_reached if a tentative or ratified contract is publicly announced by 2",
+   "why": "the terminal outcome standing as of the question date sets the base rate",
+   "voi": 1.0
+  },
+  {
+   "id": "req_0d7e222d7b",
+   "need": "value/context of amptp_leadership.concession_willingness",
+   "why": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "voi": 0.9
+  },
+  {
+   "id": "req_5b2c309a46",
+   "need": "value/context of sag_aftra_leadership.internal_hawk_dove_split",
+   "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "voi": 0.8
+  },
+  {
+   "id": "req_2138b2c30d",
+   "need": "value/context of sag_aftra_membership.contract_approval_threshold_lean",
+   "why": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "voi": 0.8
+  }
+ ],
+ "rss_windows": [
+  {
+   "query": "SAG AFTRA actors strike end studio agreement sag aftra leadership amptp leadership sag aftra membership after:2023-05-04 before:2023-10-01",
+   "after": "2023-05-04",
+   "before": "2023-10-01",
+   "status": "ok",
+   "code": 200,
+   "n_items": 8,
+   "raw_hash": "e9f479ec6bd7"
+  },
+  {
+   "query": "amptp leadership concession willingness after:2023-05-04 before:2023-10-01",
+   "after": "2023-05-04",
+   "before": "2023-10-01",
+   "status": "zero_results",
+   "code": 200,
+   "n_items": 0,
+   "raw_hash": "71850c6b59fa"
+  },
+  {
+   "query": "sag aftra leadership internal hawk dove after:2023-05-04 before:2023-10-01",
+   "after": "2023-05-04",
+   "before": "2023-10-01",
+   "status": "zero_results",
+   "code": 200,
+   "n_items": 0,
+   "raw_hash": "f1e9dcf993be"
+  }
+ ],
+ "n_documents": 8,
+ "documents": [
+  {
+   "source": "Los Angeles Times",
+   "title": "SAG-AFTRA leaders cite \u2018extremely productive\u2019 contract talks with Holl",
+   "pub": 1687590000.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "Time Magazine",
+   "title": "Why Actors Are Going on Strike - Time Magazine",
+   "pub": 1689193805.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "The Hollywood Reporter",
+   "title": "After SAG-AFTRA Releases List of Contract Proposals, Union Members Cal",
+   "pub": 1689750000.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "Deadline",
+   "title": "SAG-AFTRA: Studios \"Wouldn't Meaningfully Engage\" On Key Issues Ahead ",
+   "pub": 1689577200.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "The Washington Post",
+   "title": "SAG-AFTRA is on strike. What to know about the impact on Hollywood. - ",
+   "pub": 1689145200.0,
+   "temporal": "likely_pre_asof"
+  },
+  {
+   "source": "Collider",
+   "title": "Everything You Need to Know About the SAG-AFTRA Strike - Collider",
+   "pub": 1689231600.0,
+   "temporal": "likely_pre_asof"
+  }
+ ],
+ "temporal_summary": {
+  "likely_pre_asof": 8
+ },
+ "included_claims": [
+  {
+   "id": "1fac1e48001493fe:c0",
+   "class": "actor_statement",
+   "subject": "SAG-AFTRA leaders",
+   "predicate": "cite",
+   "span": "SAG-AFTRA leaders cite \u2018extremely productive\u2019 contract talks with Hollywood stud"
+  },
+  {
+   "id": "b7a3c111056caa03:c0",
+   "class": "observed_fact",
+   "subject": "Actors",
+   "predicate": "are going on strike",
+   "span": "Why Actors Are Going on Strike"
+  },
+  {
+   "id": "b7a3c111056caa03:c1",
+   "class": "observed_fact",
+   "subject": "Time Magazine",
+   "predicate": "published article titled",
+   "span": "Why Actors Are Going on Strike - Time Magazine"
+  },
+  {
+   "id": "f24431ad06fb349d:c0",
+   "class": "observed_fact",
+   "subject": "SAG-AFTRA",
+   "predicate": "releases",
+   "span": "After SAG-AFTRA Releases List of Contract Proposals"
+  },
+  {
+   "id": "8c79a31bb1d8d3da:c0",
+   "class": "actor_statement",
+   "subject": "SAG-AFTRA",
+   "predicate": "stated",
+   "span": "SAG-AFTRA: Studios \"Wouldn't Meaningfully Engage\" On Key Issues Ahead Of Strike"
+  },
+  {
+   "id": "377fcf440c4fb6f2:c0",
+   "class": "observed_fact",
+   "subject": "SAG-AFTRA",
+   "predicate": "is on strike",
+   "span": "SAG-AFTRA is on strike."
+  }
+ ],
+ "n_excluded": 0,
+ "n_suspicious": 1,
+ "entities": [
+  {
+   "mention": "SAG-AFTRA",
+   "top": "sag-aftra",
+   "resolved": true
+  },
+  {
+   "mention": "Hollywood studios",
+   "top": "hollywood studios",
+   "resolved": false
+  },
+  {
+   "mention": "Actors",
+   "top": "actors",
+   "resolved": true
+  },
+  {
+   "mention": "Time Magazine",
+   "top": "time magazine",
+   "resolved": true
+  },
+  {
+   "mention": "SAG-AFTRA",
+   "top": "sag-aftra",
+   "resolved": true
+  }
+ ],
+ "dependence_groups": [
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  },
+  {
+   "type": "independent",
+   "n": 1
+  }
+ ],
+ "n_independent_sources": 8,
+ "contradictions": [],
+ "actor_visibility": {
+  "public": 9
+ },
+ "leakage_flags": [],
+ "bundle_hash": "e8d1b564a5295e6d",
+ "plan_diff": {
+  "n_entries": 14,
+  "n_structural_changes": 13,
+  "lean_only": false,
+  "entries": [
+   {
+    "kind": "hypothesis_reweighted",
+    "component": "hawk_dominates",
+    "detail": "Claim [1fac1e48001493fe:c0] indicates 'extremely productive' talks, suggesting progress that reduces likelihood of a haw",
+    "supporting_claim_ids": [
+     "1fac1e48001493fe:c0"
+    ],
+    "before": "0.3",
+    "after": "0.18"
+   },
+   {
+    "kind": "hypothesis_reweighted",
+    "component": "studios_concede",
+    "detail": "Claim [1fac1e48001493fe:c0] of productive talks and claim [f24431ad06fb349d:c0] of SAG-AFTRA releasing proposals imply a",
+    "supporting_claim_ids": [
+     "1fac1e48001493fe:c0",
+     "f24431ad06fb349d:c0"
+    ],
+    "before": "0.3",
+    "after": "0.45"
+   },
+   {
+    "kind": "hypothesis_reweighted",
+    "component": "membership_rejects",
+    "detail": "Claim [1fac1e48001493fe:c0] of productive talks suggests leadership may secure terms acceptable to membership, reducing ",
+    "supporting_claim_ids": [
+     "1fac1e48001493fe:c0"
+    ],
+    "before": "0.2",
+    "after": "0.12"
+   },
+   {
+    "kind": "hypothesis_reweighted",
+    "component": "mediation_success",
+    "detail": "Claim [1fac1e48001493fe:c0] of productive talks and claim [f24431ad06fb349d:c0] of proposals indicate progress, which co",
+    "supporting_claim_ids": [
+     "1fac1e48001493fe:c0",
+     "f24431ad06fb349d:c0"
+    ],
+    "before": "0.2",
+    "after": "0.3"
+   },
+   {
+    "kind": "lean_changed",
+    "component": "outcome_lean",
+    "detail": "",
+    "supporting_claim_ids": [
+     "1fac1e48001493fe:c0",
+     "f24431ad06fb349d:c0"
+    ],
+    "before": "neutral",
+    "after": "weak_yes"
+   },
+   {
+    "kind": "uncertainty_changed",
+    "component": "state_priors",
+    "detail": "Productive talks and released proposals suggest narrowing of options toward agreement, though strike continues per claim",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": "narrow"
+   },
+   {
+    "kind": "requirement_fulfilled",
+    "component": "req_c13bb83577",
+    "detail": "8 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_0d7e222d7b",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_5b2c309a46",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_2138b2c30d",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_52e1655c2b",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_3c33c49dca",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_14be9f4f8a",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   },
+   {
+    "kind": "requirement_unmet",
+    "component": "req_43c57653c6",
+    "detail": "0 included claims",
+    "supporting_claim_ids": [],
+    "before": "",
+    "after": ""
+   }
+  ]
+ },
+ "structural_changes": 13,
+ "lean_only": false,
+ "n_institutions_pre": 2,
+ "n_institutions_post": 2,
+ "n_events_pre": 8,
+ "n_events_post": 16,
+ "observation_state_deltas": 0,
+ "terminal_pre": {
+  "agreement_reached": 0.5,
+  "no_agreement": 0.5
+ },
+ "terminal_post": {
+  "agreement_reached": 0.58,
+  "no_agreement": 0.42
+ },
+ "terminal_changed": true,
+ "evidence_is_causal": true
+}
