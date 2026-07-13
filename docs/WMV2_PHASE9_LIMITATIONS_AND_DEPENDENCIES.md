@@ -104,3 +104,64 @@ PYTHONPATH=. python experiments/wmv2_phase9_network_validation.py       # real c
 PYTHONPATH=. python experiments/wmv2_phase9_ablations.py                # ablations + forensic trace
 ```
 Same seed + committed caches reproduce the posterior + terminal hashes. No PR was merged.
+
+---
+
+## 6. COMPLETION RUN — updated status, remaining failed gates, continuation manifest
+
+*The completion run wired the universal automatic discovery path (the biggest first-run gap), added a 2nd real
+population dataset, a genuine temporal graph-prediction task, informative-absence edge modeling, temporal
+network evolution, and deep execution of 10+ layers. Remaining gaps below are stated honestly.*
+
+### Five-status (updated)
+| status | first run | completion run |
+|---|---|---|
+| software implemented | ✅ | ✅ |
+| automatic universal path implemented | ❌ | ✅ `simulate_with_populations_networks(question, as_of, horizon)` |
+| executes end-to-end | ✅ (prepared input) | ✅ (14 domains, caller supplies only the question) |
+| empirically validated | ⚠️ 1+1 datasets | ✅ 2 real population + 1 real graph (reconstruction + temporal prediction) + synthetic |
+| broadly validated | ❌ | ⚠️ partial (14/100 discovery Qs; 1 distinct-domain real graph; congress lift honest-null) |
+| production eligible | ❌ | ❌ **still not** |
+
+### Remaining FAILED / partial gates (honest)
+1. **100-question discovery gate — PARTIAL.** 14 held-out questions across 14 domains ran at 100% discovery
+   success + zero abstention, but not the full N=100 (live cost/latency). The harness (`wmv2_phase9_discovery_
+   eval.py`) scales to any N; running 100 is a resumable compute task, not a code gap.
+2. **2nd distinct-domain real GRAPH — NOT met.** Congress co-voting is the one real graph (now with a temporal
+   S116→S117 prediction task). A materially different relation/observation-process graph (Enron email
+   communication) is NOT run this session. `experiments/datasets_enron.py` streams it; resumable.
+3. **Real-outcome predictive LIFT — honest-null on congress.** The temporal S117-from-S116 task shows the
+   structured model (AUROC 0.954) does NOT beat past-agreement-only (0.964): Senate co-voting is highly
+   autocorrelated, so the raw past feature dominates. GSS temporal transfer + the Senate poststratification are
+   genuine real-outcome POPULATION results; a network task where the structured model beats all baselines is
+   still owed.
+4. **Fitted (not fixed) observation constants — NOT met.** `_STRENGTH_SENS_SPEC`, `EDGE_OBS_MODELS`,
+   `_SOURCE_RELIABILITY` remain hand-set broad tables. Fitting them to labeled evidence→outcome data is a
+   follow-up.
+5. **Per-question forensic persistence for all discovery questions — PARTIAL.** Two full automatic traces are
+   persisted (`automatic_forensic_trace.json` + the UNSC trace in the doc); per-question full persistence for
+   all 14 is a follow-up (the discovery_eval artifact records the discovered structure per question).
+6. **Susceptibility / contagion still weakly-informative defaults.** The universal path uses a broad 0.3
+   susceptibility prior and simple contagion by default (documented in the forensic doc), not evidence-inferred
+   per segment. Inferring segment-conditional susceptibility from behavioral evidence is a follow-up.
+
+### Continuation manifest (exact)
+1. Run `wmv2_phase9_discovery_eval.py` at N=100 across ≥12 domains (compute); add a manually-audited
+   relevant-actor precision/recall subset.
+2. Run `datasets_enron.py` → build the email communication graph → future-edge prediction + community recovery
+   (2nd distinct-domain real graph).
+3. Fit observation-model constants (sens/spec, source reliability, edge detect/false) on a labeled training
+   corpus with hierarchical partial pooling; re-measure calibration.
+4. Infer segment-conditional susceptibility from evidence instead of the broad 0.3 default.
+5. Persist full per-question forensic chains for the discovery batch.
+
+### Reproducibility commands (completion run)
+```
+python -m pytest tests/test_wmv2_phase9.py -q                          # 43 tests
+PYTHONPATH=. python experiments/wmv2_phase9_population_validation.py    # GSS + Senate roll-call (2 real pops)
+PYTHONPATH=. python experiments/wmv2_phase9_network_validation.py       # congress: reconstruction + temporal prediction
+PYTHONPATH=. python experiments/wmv2_phase9_ablations.py                # ablations + forensic
+PYTHONPATH=. python experiments/wmv2_phase9_discovery_eval.py           # universal path across 14 domains (live)
+```
+No PR was merged. "Mergeable clean" (Git) does NOT mean the production/scientific gates passed — gates 100-Q,
+2nd-graph, fitted-likelihoods, and predictive-lift remain open.
