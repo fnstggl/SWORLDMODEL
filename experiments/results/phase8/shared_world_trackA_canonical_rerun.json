@@ -1,0 +1,97 @@
+{
+ "task": "OmniBehavior passive-exposure engagement \u2014 SHARED-WORLD longitudinal execution",
+ "path": "history \u2192 EventLog \u2192 DecayedBetaBernoulli filter \u2192 materialize latent_state \u2192 readout",
+ "cohort": {
+  "n_users": 71,
+  "n_test_events": 7074,
+  "real_action_rate": 0.2061,
+  "n_person_disjoint_users": 14,
+  "n_person_disjoint_events": 216
+ },
+ "train_fit": {
+  "decay": 0.85,
+  "prior_strength": 8.0,
+  "train_loglik": -1825.62,
+  "note": "hyperparameters fit on TRAIN only; decay=1 (no momentum) was in the grid"
+ },
+ "burstiness_train": {
+  "momentum_lift": 6.777,
+  "p_hot": 0.4773,
+  "p_cold": 0.0704,
+  "persistence_structurally_present": true
+ },
+ "detail": {
+  "B0_no_history": {
+   "brier": 0.1637,
+   "logloss": 0.509,
+   "auroc": 0.5,
+   "ece": 0.0439,
+   "pred_rate": 0.2146
+  },
+  "B_userrate_memoryless": {
+   "brier": 0.10295,
+   "logloss": 0.3392,
+   "auroc": 0.8567,
+   "ece": 0.0342,
+   "pred_rate": 0.2195
+  },
+  "B_persist_shared_world": {
+   "brier": 0.09109,
+   "logloss": 0.2984,
+   "auroc": 0.8954,
+   "ece": 0.0254,
+   "pred_rate": 0.2143
+  }
+ },
+ "paired_ablation": {
+  "persist_vs_userrate": {
+   "mean": -0.01186,
+   "ci95": [
+    -0.01341,
+    -0.010263
+   ],
+   "n": 7074
+  },
+  "persist_vs_nohistory": {
+   "mean": -0.072605,
+   "ci95": [
+    -0.0769,
+    -0.067989
+   ],
+   "n": 7074
+  }
+ },
+ "power_analysis": {
+  "n": 7074,
+  "se_per_paired_brier": 0.000766,
+  "power_at_observed_effect": 1.0,
+  "min_detectable_effect_80pct": 0.002144,
+  "se_basis": "empirical paired-difference sd (CI-consistent)"
+ },
+ "adequately_powered": true,
+ "person_disjoint_transfer": {
+  "n": 216,
+  "real_rate": 0.0417,
+  "persist_vs_userrate": {
+   "mean": -0.018887,
+   "ci95": [
+    -0.021809,
+    -0.015605
+   ],
+   "n": 216
+  },
+  "power": {
+   "n": 216,
+   "se_per_paired_brier": 0.001666,
+   "power_at_observed_effect": 1.0,
+   "min_detectable_effect_80pct": 0.004666,
+   "se_basis": "empirical paired-difference sd (CI-consistent)"
+  }
+ },
+ "verdict": "persistence HELPS through the shared world (paired CI excludes 0, favorable)",
+ "_meta": {
+  "llm_calls": 0,
+  "est_cost_usd": 0.0,
+  "n_users_downloaded": 92
+ }
+}

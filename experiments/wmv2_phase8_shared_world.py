@@ -140,7 +140,7 @@ def _fit_decay(train_targets, anchors, *, grid_decay=(0.4, 0.55, 0.7, 0.85, 1.0)
     return best[0], best[1], round(best_ll, 2)
 
 
-def run(n_users, cap_targets=None):
+def run(n_users, cap_targets=None, result_path=None):
     from swm.eval.omnibehavior_eval import download_users
     from swm.world_model_v2.reference.omnibehavior import PASSIVE, acted, split_user, user_events
     from swm.world_model_v2.inference_layer import hierarchical_rates
@@ -260,13 +260,14 @@ def run(n_users, cap_targets=None):
            "adequately_powered": power["power_at_observed_effect"] >= 0.8,
            "person_disjoint_transfer": pd_block, "verdict": verdict,
            "_meta": {"llm_calls": 0, "est_cost_usd": 0.0, "n_users_downloaded": len(paths)}}
-    Path(RESULT).parent.mkdir(parents=True, exist_ok=True)
-    Path(RESULT).write_text(json.dumps(out, indent=1, default=str))
+    rp = Path(result_path) if result_path else Path(RESULT)
+    rp.parent.mkdir(parents=True, exist_ok=True)
+    rp.write_text(json.dumps(out, indent=1, default=str))
     print("\ndetail:", json.dumps(detail, indent=1))
     print("persist_vs_userrate:", paired["persist_vs_userrate"])
     print("power:", power["power_at_observed_effect"], "adequately_powered:", out["adequately_powered"])
     print("VERDICT:", verdict)
-    print("wrote", RESULT)
+    print("wrote", rp)
     return out
 
 
