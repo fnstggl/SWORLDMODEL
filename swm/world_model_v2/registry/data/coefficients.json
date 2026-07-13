@@ -1,0 +1,496 @@
+{
+ "_integrity": {
+  "n": 61,
+  "sha256": "b626cf83467323a15d9fbca0026317db26ff9f86754a882b9451bbff425a18ee"
+ },
+ "payload": [
+  {
+   "context": "meta-analysis pooled mean over 37 papers / 75 results; decreases with pie size",
+   "family": "Alternating-offer bargaining (Rubinstein SPE + ultimatum behavior)",
+   "name": "mean proposer offer (share of pie)",
+   "source_ref": "Oosterbeek et al. 2004 (Exp Econ 7:171-188)",
+   "uncertainty": null,
+   "value": 0.4
+  },
+  {
+   "context": "share of offers rejected on average; falls as offered share rises",
+   "family": "Alternating-offer bargaining (Rubinstein SPE + ultimatum behavior)",
+   "name": "overall responder rejection rate",
+   "source_ref": "Oosterbeek et al. 2004",
+   "uncertainty": null,
+   "value": 0.16
+  },
+  {
+   "context": "modal and median offers are 40-50% of the stake across many replications",
+   "family": "Alternating-offer bargaining (Rubinstein SPE + ultimatum behavior)",
+   "name": "modal/median proposer offer",
+   "source_ref": "Camerer 2003; Guth et al. 1982",
+   "uncertainty": null,
+   "value": "0.40-0.50"
+  },
+  {
+   "context": "offers below ~20% of the pie are rejected roughly half the time",
+   "family": "Alternating-offer bargaining (Rubinstein SPE + ultimatum behavior)",
+   "name": "rejection probability of low (<20% pie) offers",
+   "source_ref": "Camerer 2003 Behavioral Game Theory",
+   "uncertainty": null,
+   "value": "~0.5"
+  },
+  {
+   "context": "human_mean in points 0-100, n_human=20 held-out subset; ultimatum_responder human_mean=43.8; MobLab game_behavior, cc-by-nc-nd benchmark-only. Matches literature 40-50% modal offer.",
+   "family": "Alternating-offer bargaining (Rubinstein SPE + ultimatum behavior)",
+   "name": "MobLab ultimatum proposer mean offer (LOCAL)",
+   "source_ref": "experiments/results/behaviorbench_eval.json (arm deepseek, per_game)",
+   "uncertainty": null,
+   "value": 45.15
+  },
+  {
+   "context": "SPE has ZERO delay under complete information; positive delay requires incomplete information",
+   "family": "Delay & escalation (costly delay, war of attrition, dollar-auction entrapment)",
+   "name": "complete-information bargaining delay",
+   "source_ref": "Rubinstein 1982",
+   "uncertainty": null,
+   "value": 0
+  },
+  {
+   "context": "portfolio share strongly proportional to seat contribution; among the most robust regularities in comparative politics",
+   "family": "Coalition stability & defection (core/nucleolus, Gamson's law payoffs, legislative defection)",
+   "name": "Gamson's law: portfolio share vs seat share",
+   "source_ref": "Browne & Franklin 1973 (APSR 67:453-469); Warwick & Druckman 2006 (EJPR 45)",
+   "uncertainty": "R^2 approx 0.9",
+   "value": "near 1:1 (near-proportional)"
+  },
+  {
+   "context": "Local Higgs train-split MLE of the linear form; this is a per-cascade nuisance rate, not a transportable constant.",
+   "family": "Simple contagion (SI / independent cascade baseline)",
+   "name": "q (per-exposure transmission rate, linear hazard)",
+   "source_ref": "experiments/results/wmv2_higgs_nonlinear.json (fitted.linear_q.q = 0.022391761)",
+   "uncertainty": null,
+   "value": 0.0224
+  },
+  {
+   "context": "The linear-in-exposure hazard was SIGNIFICANTLY WORSE than a concave/log-linear exposure response on Higgs held-out; simple contagion is retained only as a comparator, not the preferred predictor.",
+   "family": "Simple contagion (SI / independent cascade baseline)",
+   "name": "linear-vs-concave held-out penalty (delta held-out loss)",
+   "source_ref": "swm/world_model_v2/registry/families/diffusion.py docstring (Higgs round)",
+   "uncertainty": "95% CI [0.00117, 0.00349]",
+   "value": 0.00234
+  },
+  {
+   "context": "LOCAL NULL: alpha=0.75 < 1 means Higgs did NOT exhibit the alpha>1 complex-contagion (superlinear reinforcement) signature \u2014 the fitted shape was concave/saturating, consistent with simple diminishing returns, not reinforcement.",
+   "family": "Complex contagion (multiple-signal social reinforcement)",
+   "name": "Hill exponent alpha (Higgs fit)",
+   "source_ref": "experiments/results/wmv2_higgs_nonlinear.json (fitted.hill.alpha = 0.75)",
+   "uncertainty": null,
+   "value": 0.75
+  },
+  {
+   "context": "Local Higgs baseline log-hazard; per-cascade nuisance.",
+   "family": "Complex contagion (multiple-signal social reinforcement)",
+   "name": "Hill intercept theta0 (Higgs fit)",
+   "source_ref": "experiments/results/wmv2_higgs_nonlinear.json (fitted.hill.theta0)",
+   "uncertainty": null,
+   "value": -1.2988
+  },
+  {
+   "context": "Published-research prior for the external-influence coefficient; note SD approximately equals the mean (heavy-tailed, not a tight point).",
+   "family": "Finite-population diffusion (Bass innovation/imitation saturation)",
+   "name": "p (coefficient of innovation), meta-analytic mean",
+   "source_ref": "Sultan, Farley & Lehmann 1990 JMR 27(1):70-77",
+   "uncertainty": "SD ~0.03 across ~213 applications",
+   "value": 0.03
+  },
+  {
+   "context": "Published-research prior for the internal word-of-mouth coefficient; SD ~0.35 is nearly as large as the mean 0.38 \u2014 wide, product/country-dependent.",
+   "family": "Finite-population diffusion (Bass innovation/imitation saturation)",
+   "name": "q (coefficient of imitation), meta-analytic mean",
+   "source_ref": "Sultan, Farley & Lehmann 1990 JMR 27(1):70-77",
+   "uncertainty": "SD ~0.35 across ~213 applications",
+   "value": 0.38
+  },
+  {
+   "context": "Number of diffusion-model applications pooled.",
+   "family": "Finite-population diffusion (Bass innovation/imitation saturation)",
+   "name": "meta-analysis sample size",
+   "source_ref": "Sultan, Farley & Lehmann 1990 JMR",
+   "uncertainty": "approx (reported as 'more than 200 product innovations' across 15 studies)",
+   "value": 213
+  },
+  {
+   "context": "LOCAL FAILURE: Hawkes MAE 1098.9 WORSE than the Poisson baseline MAE 973.0 on the Higgs aggregate count forecast.",
+   "family": "Hawkes / self-excitation (point-process contagion)",
+   "name": "held-out 24-72h count-forecast MAE, Hawkes",
+   "source_ref": "experiments/results/wmv2_higgs_nonlinear.json (hawkes_family_validation.held_out_24_72h.mae_hawkes)",
+   "uncertainty": null,
+   "value": 1098.9
+  },
+  {
+   "context": "The simpler Poisson beat Hawkes \u2014 the failure that quarantines this family.",
+   "family": "Hawkes / self-excitation (point-process contagion)",
+   "name": "held-out 24-72h count-forecast MAE, Poisson baseline",
+   "source_ref": "experiments/results/wmv2_higgs_nonlinear.json (hawkes_family_validation.held_out_24_72h.mae_poisson)",
+   "uncertainty": null,
+   "value": 973.0
+  },
+  {
+   "context": "Near-critical (alpha->1): the fit sits at the edge of the explosive regime, explaining unstable extrapolation and the under-forecast (Hawkes total 7149 vs Poisson total 10144).",
+   "family": "Hawkes / self-excitation (point-process contagion)",
+   "name": "fitted branching ratio alpha (Higgs)",
+   "source_ref": "experiments/results/wmv2_higgs_nonlinear.json (hawkes_family_validation.fitted.branching_alpha)",
+   "uncertainty": null,
+   "value": 0.95
+  },
+  {
+   "context": "Local Higgs e-folding decay time; sits at the top of the search grid, so it is a lower bound on the true tau (identification weak upward).",
+   "family": "Information aging / novelty decay",
+   "name": "fitted decay time constant tau (Higgs)",
+   "source_ref": "experiments/results/wmv2_higgs_nonlinear.json (fitted.aging_tau_h.value = 48.0)",
+   "uncertainty": "grid {6,12,24,48}h; best log-likelihood at 48h (grid boundary) \u2014 upper end not bracketed",
+   "value": 48.0
+  },
+  {
+   "context": "The aging term barely improves held-out Brier and the CI includes zero \u2014 MARGINAL local signal, not a clear win.",
+   "family": "Information aging / novelty decay",
+   "name": "aging improvement over no-aging (paired delta Brier, Higgs held-out)",
+   "source_ref": "experiments/results/wmv2_higgs_nonlinear.json (paired.M5_vs_M3_aging)",
+   "uncertainty": "95% CI [-8e-06, 0.000585] (touches zero)",
+   "value": 0.000281
+  },
+  {
+   "context": "Platform-specific (Digg news); illustrates that the decay time scale is domain-dependent and NOT the same as the local Higgs 48h.",
+   "family": "Information aging / novelty decay",
+   "name": "novelty decay characteristic time (Digg)",
+   "source_ref": "Wu & Huberman 2007 PNAS 104:17599-17601",
+   "uncertainty": null,
+   "value": "~1 hour (stretched-exponential)"
+  },
+  {
+   "context": "Weaker ties raise job transmission up to a point, then diminishing marginal returns to tie weakness.",
+   "family": "Weak ties (strength-of-weak-ties / opportunity transmission)",
+   "name": "tie_strength_to_job_transmission_shape",
+   "source_ref": "Rajkumar et al. 2022 Science",
+   "uncertainty": null,
+   "value": "inverted_U (nonlinear, concave)"
+  },
+  {
+   "context": "Measurement-dependent result; weak ties help most in more-digital industries, strong ties in less-digital industries.",
+   "family": "Weak ties (strength-of-weak-ties / opportunity transmission)",
+   "name": "which_ties_maximize_mobility",
+   "source_ref": "Rajkumar et al. 2022 Science (abstract)",
+   "uncertainty": null,
+   "value": "moderately weak ties (by mutual connections); weakest ties (by interaction intensity)"
+  },
+  {
+   "context": "Scale of the LinkedIn field experiments (descriptive, not an effect size).",
+   "family": "Weak ties (strength-of-weak-ties / opportunity transmission)",
+   "name": "experiment_scale",
+   "source_ref": "Rajkumar et al. 2022 Science",
+   "uncertainty": null,
+   "value": ">20,000,000 people; ~2,000,000,000 new ties; ~600,000 new jobs; 5 years"
+  },
+  {
+   "context": "Adoption of a paid mobile service application on a global instant-messaging network; dynamic matched-sample vs naive estimation.",
+   "family": "Homophily vs influence (peer-effect identification / confounding)",
+   "name": "homophily_share_of_perceived_contagion",
+   "source_ref": "Aral, Muchnik & Sundararajan 2009 PNAS",
+   "uncertainty": null,
+   "value": ">=50% (influence upper bound = 49.8%)"
+  },
+  {
+   "context": "Random matching vs dynamic matched sample; quantifies homophily-induced inflation of contagion estimates.",
+   "family": "Homophily vs influence (peer-effect identification / confounding)",
+   "name": "overestimation_of_peer_influence_by_naive_methods",
+   "source_ref": "Aral et al. 2009 PNAS",
+   "uncertainty": "up to 7x for users with >=4 adopter friends",
+   "value": "300-700%"
+  },
+  {
+   "context": "Formal result: absent randomization or strong assumptions, influence cannot be separated from homophily/covariate causation.",
+   "family": "Homophily vs influence (peer-effect identification / confounding)",
+   "name": "identifiability_of_influence_from_observational_ties",
+   "source_ref": "Shalizi & Thomas 2011 Sociological Methods & Research",
+   "uncertainty": null,
+   "value": "not_identified (generically confounded)"
+  },
+  {
+   "context": "Nutritional-supplement redemption: nomination 74.3% (951/1280) vs random 66.2% (940/1420); all pairwise differences p<0.01.",
+   "family": "Network targeting / seeding (friendship-nomination targeting; friendship paradox)",
+   "name": "nomination_vs_random_multivitamin_adoption",
+   "source_ref": "Kim et al. 2015 Lancet",
+   "uncertainty": "95% CI 6.9-17.9",
+   "value": "+12.2 percentage points"
+  },
+  {
+   "context": "In-degree (most-connected) seeding = 61.0% (744/1220); targeting highest-degree individuals was NOT better than random \u2014 key null.",
+   "family": "Network targeting / seeding (friendship-nomination targeting; friendship paradox)",
+   "name": "indegree_targeting_vs_random",
+   "source_ref": "Kim et al. 2015 Lancet",
+   "uncertainty": null,
+   "value": "no significant benefit"
+  },
+  {
+   "context": "Rural Honduras; interventions = chlorine (water) + multivitamins; ClinicalTrials NCT01672580.",
+   "family": "Network targeting / seeding (friendship-nomination targeting; friendship paradox)",
+   "name": "study_scale",
+   "source_ref": "Kim et al. 2015 Lancet",
+   "uncertainty": null,
+   "value": "32 villages; 5,773 participants"
+  },
+  {
+   "context": "Mathematical guarantee on any degree-heterogeneous graph; explains why nomination targeting reaches more-central seeds.",
+   "family": "Network targeting / seeding (friendship-nomination targeting; friendship paradox)",
+   "name": "friendship_paradox",
+   "source_ref": "Feld 1991 AJS",
+   "uncertainty": null,
+   "value": "E[degree(friend)] > E[degree(random node)]"
+  },
+  {
+   "context": "Current defaults are UNFITTED priors, not estimated from any dataset (verified by reading source).",
+   "family": "Network rewiring / edge formation & decay (SAOM; triadic closure)",
+   "name": "repo_rewire_defaults_unfitted",
+   "source_ref": "interaction.py:rewire_probability (repo)",
+   "uncertainty": null,
+   "value": "decay_days=90, homophily_weight=1.0"
+  },
+  {
+   "context": "University email network, 43,553 people, 1 year; associational \u2014 magnitudes are dataset-specific.",
+   "family": "Network rewiring / edge formation & decay (SAOM; triadic closure)",
+   "name": "triadic_closure_drives_tie_formation",
+   "source_ref": "Kossinets & Watts 2006 Science",
+   "uncertainty": null,
+   "value": "qualitative (closure of short cycles + shared foci dominate edge creation)"
+  },
+  {
+   "context": "A related self-exciting point-process mechanism already failed held-out count forecasting here \u2014 a cautionary local null for coupled-Hawkes coevolution.",
+   "family": "Diffusion-network coevolution (coupled point processes)",
+   "name": "local_hawkes_self_excitation_held_out_result",
+   "source_ref": "repo registry: hawkes_self_excitation (audit notes)",
+   "uncertainty": null,
+   "value": "FAILED vs Poisson (quarantined in this repo)"
+  },
+  {
+   "context": "Cross-sectional EXPRESSED opinion by group. Supports descriptive expressed-distribution modeling and nonresponse ('refused') as a falsification PROXY only; it cannot causally identify preference falsification (no manipulated pressure, no latent-truth measure).",
+   "family": "Latent vs expressed opinion / preference falsification",
+   "name": "OpinionQA expressed-response corpus size (local)",
+   "source_ref": "experiments/results/exp028_oqa/oqa_parsed.json (counted directly)",
+   "uncertainty": null,
+   "value": "23340 responses; 368 questions; 15 ATP waves; 12 demographic axes"
+  },
+  {
+   "context": "Local matched-challenger persuasion dataset: 781 arguments earned a delta vs 419 that did not. This is a REAL, locally refittable persuasion-success outcome (online text argumentation) \u2014 a different construct/domain from face-to-face canvassing.",
+   "family": "Interpersonal persuasion / durable attitude change (with backfire & minimal-effects nulls)",
+   "name": "CMV local persuasion base rate (delta earned)",
+   "source_ref": "experiments/results/exp021_cmv/cmv_common.json (counted directly)",
+   "uncertainty": null,
+   "value": "0.651 (781/1200 successful challenger arguments)"
+  },
+  {
+   "context": "Raw/ITT-style comparison; per-contact CACE is larger after IV correction for contact rate. SE not extracted from primary table.",
+   "family": "Mobilization / GOTV (get-out-the-vote contact)",
+   "name": "Face-to-face canvassing turnout (New Haven 1998)",
+   "source_ref": "Gerber & Green 2000 APSR",
+   "uncertainty": null,
+   "value": "control ~44% -> canvassed ~53% (~+9pp raw ITT among reached)"
+  },
+  {
+   "context": "Null survives the Imai (2005) merge-error correction",
+   "family": "Mobilization / GOTV (get-out-the-vote contact)",
+   "name": "Commercial phone-bank effect on turnout",
+   "source_ref": "Gerber & Green 2000; corrected in Gerber & Green 2005 reply to Imai",
+   "uncertainty": null,
+   "value": "~0 (no discernible effect)"
+  },
+  {
+   "context": "Slight positive; magnitude modest",
+   "family": "Mobilization / GOTV (get-out-the-vote contact)",
+   "name": "Direct mail effect on turnout",
+   "source_ref": "Gerber & Green 2000 APSR",
+   "uncertainty": null,
+   "value": "small positive (~fraction of a point per piece)"
+  },
+  {
+   "context": "'Do Your Civic Duty' mailer vs control",
+   "family": "Social pressure on turnout",
+   "name": "Civic Duty mailer effect",
+   "source_ref": "Gerber, Green & Larimer 2008 APSR",
+   "uncertainty": "SE ~0.3pp (design-derived, NOT extracted from primary Table 3)",
+   "value": "+1.8pp"
+  },
+  {
+   "context": "'You are being studied' mailer vs control",
+   "family": "Social pressure on turnout",
+   "name": "Hawthorne mailer effect",
+   "source_ref": "Gerber, Green & Larimer 2008 APSR",
+   "uncertainty": "SE ~0.3pp (design-derived, unverified from primary table)",
+   "value": "+2.5pp"
+  },
+  {
+   "context": "Shows household's own past vote record",
+   "family": "Social pressure on turnout",
+   "name": "Self mailer effect",
+   "source_ref": "Gerber, Green & Larimer 2008 APSR",
+   "uncertainty": "SE ~0.3pp (design-derived, unverified from primary table)",
+   "value": "+4.9pp"
+  },
+  {
+   "context": "Shows neighbors' past vote records; largest arm",
+   "family": "Social pressure on turnout",
+   "name": "Neighbors mailer effect",
+   "source_ref": "Gerber, Green & Larimer 2008 APSR",
+   "uncertainty": "SE ~0.3pp (design-derived, unverified from primary table)",
+   "value": "+8.1pp"
+  },
+  {
+   "context": "Social message (friend faces) vs control on real (validated) voting",
+   "family": "Online / network mobilization (social contagion)",
+   "name": "Direct effect: social message on validated turnout",
+   "source_ref": "Bond et al 2012 Nature",
+   "uncertainty": null,
+   "value": "+0.39pp vs no-message control"
+  },
+  {
+   "context": "Self-expression / button click",
+   "family": "Online / network mobilization (social contagion)",
+   "name": "Effect on 'I Voted' self-expression",
+   "source_ref": "Bond et al 2012 Nature",
+   "uncertainty": null,
+   "value": "+2.08% (social ~20% vs informational ~18% clicking 'I Voted')"
+  },
+  {
+   "context": "Clicking the polling-place locator",
+   "family": "Online / network mobilization (social contagion)",
+   "name": "Effect on polling-place information seeking",
+   "source_ref": "Bond et al 2012 Nature",
+   "uncertainty": null,
+   "value": "+0.26pp"
+  },
+  {
+   "context": "Per-treated-close-friend increase in ego's real voting; ordinary (weak-tie) friends showed ~no transmission",
+   "family": "Online / network mobilization (social contagion)",
+   "name": "Close-friend contagion on validated turnout",
+   "source_ref": "Bond et al 2012 Nature",
+   "uncertainty": null,
+   "value": "+0.224pp per close friend who received the social message"
+  },
+  {
+   "context": "Contagion effect exceeded the direct effect",
+   "family": "Online / network mobilization (social contagion)",
+   "name": "Total additional votes generated",
+   "source_ref": "Bond et al 2012 Nature",
+   "uncertainty": null,
+   "value": "~340,000 (~60,000 direct + ~280,000 via contagion)"
+  },
+  {
+   "context": "Announcing a match raises response rate",
+   "family": "Donation / charitable giving response to an ask",
+   "name": "Match offer on probability of donating",
+   "source_ref": "Karlan & List 2007 AER",
+   "uncertainty": null,
+   "value": "+~22% (relative increase in P(donate) vs no-match control)"
+  },
+  {
+   "context": "Amount raised per letter",
+   "family": "Donation / charitable giving response to an ask",
+   "name": "Match offer on revenue per solicitation",
+   "source_ref": "Karlan & List 2007 AER",
+   "uncertainty": null,
+   "value": "+~19%"
+  },
+  {
+   "context": "Larger match ratios do NOT beat 1:1 (price-insensitivity)",
+   "family": "Donation / charitable giving response to an ask",
+   "name": "Match ratio (2:1, 3:1 vs 1:1)",
+   "source_ref": "Karlan & List 2007 AER",
+   "uncertainty": null,
+   "value": "no additional effect"
+  },
+  {
+   "context": "Structural estimate of utility cost of declining a door-to-door solicitor",
+   "family": "Donation / charitable giving response to an ask",
+   "name": "Social-pressure cost of saying no (in-person ask)",
+   "source_ref": "DellaVigna, List & Malmendier 2012 QJE",
+   "uncertainty": null,
+   "value": "$3.5 in-state charity; $1.4 out-of-state charity"
+  },
+  {
+   "context": "Pre-announcement lets households avoid the ask",
+   "family": "Donation / charitable giving response to an ask",
+   "name": "Opt-out flyer on door-opening",
+   "source_ref": "DLM 2012 QJE",
+   "uncertainty": null,
+   "value": "-10% to -25% share opening the door"
+  },
+  {
+   "context": "Removing social pressure lowers small, pressure-driven gifts",
+   "family": "Donation / charitable giving response to an ask",
+   "name": "'Do Not Disturb' box on giving",
+   "source_ref": "DLM 2012 QJE",
+   "uncertainty": null,
+   "value": "-30% giving (concentrated in gifts < $10)"
+  },
+  {
+   "context": "Applies to persuasion (candidate choice) in general elections, not turnout",
+   "family": "Political persuasion (campaign contact on vote choice)",
+   "name": "Average persuasive effect of campaign contact (general elections)",
+   "source_ref": "Kalla & Broockman 2018 APSR",
+   "uncertainty": "tightly bounded near zero; authors' central claim",
+   "value": "~0 (best estimate zero) across 49 experiments (40 meta + 9 original)"
+  },
+  {
+   "context": "Boundary conditions where persuasion is not zero",
+   "family": "Political persuasion (campaign contact on vote choice)",
+   "name": "Nonzero-persuasion regimes (exceptions)",
+   "source_ref": "Kalla & Broockman 2018 APSR",
+   "uncertainty": null,
+   "value": "detectable only (a) when candidates take unusually unpopular positions AND campaigns invest heavily in identifying persuadables, or (b) when contact occurs long before election day - and that early effect decays"
+  },
+  {
+   "context": "USD, $10 endowment, no-social-history treatment; investor mean transfer (~51.6% of endowment).",
+   "family": "Reciprocity",
+   "name": "avg_amount_sent_no_history",
+   "source_ref": "Berg et al. 1995",
+   "uncertainty": null,
+   "value": 5.16
+  },
+  {
+   "context": "USD returned by trustee, no-history; note < amount sent -> reciprocity present but investor not profitable on average. Canonical value confirmed across multiple secondary quotes of the primary paper.",
+   "family": "Reciprocity",
+   "name": "avg_amount_returned_no_history",
+   "source_ref": "Berg et al. 1995",
+   "uncertainty": null,
+   "value": 4.66
+  },
+  {
+   "context": "Average amount sent as a proportion of the first-mover's endowment across 162 replications. As-reported meta-analytic mean (abstract omits it; confirmed via secondary summaries of the paper).",
+   "family": "Trust formation",
+   "name": "mean_amount_sent_frac_of_endowment",
+   "source_ref": "Johnson & Mislin 2011",
+   "uncertainty": null,
+   "value": 0.5
+  },
+  {
+   "context": "Average amount returned by the trustee as a proportion of the amount received (trustworthiness). As-reported meta-analytic mean.",
+   "family": "Trust formation",
+   "name": "mean_amount_returned_frac_of_received",
+   "source_ref": "Johnson & Mislin 2011",
+   "uncertainty": null,
+   "value": 0.37
+  },
+  {
+   "context": "Difference in buyers' willingness-to-pay = 8.1% of selling price for the established high-reputation identity vs new identities (matched-pairs randomized field experiment, vintage postcards).",
+   "family": "Reputation updating",
+   "name": "ebay_reputation_price_premium",
+   "source_ref": "Resnick et al. 2006",
+   "uncertainty": null,
+   "value": 0.081
+  },
+  {
+   "context": "92% of banker-colleague relations at risk of decay are embedded in >=1 positive third-party tie; remaining 8% are bridges. Verified structural composition; embedded ties decay more slowly.",
+   "family": "Relationship decay",
+   "name": "embedded_vs_bridge_composition",
+   "source_ref": "Burt 2000",
+   "uncertainty": null,
+   "value": 0.92
+  }
+ ]
+}

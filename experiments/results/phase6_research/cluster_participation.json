@@ -1,0 +1,345 @@
+[
+  {
+    "family": "Turnout / calculus of voting",
+    "registry_id": "voting_turnout",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable (code_ref swm.world_model_v2.registry.families.interaction:turnout_probability resolves; test_ref tests/test_interaction_families.py present); no validation record, no parameter pack",
+    "primary_sources": [
+      {
+        "title": "A Theory of the Calculus of Voting",
+        "authors": "William H. Riker; Peter C. Ordeshook",
+        "year": 1968,
+        "venue": "American Political Science Review 62(1):25-42",
+        "doi_or_url": "10.2307/1953324",
+        "verified": true,
+        "what_it_provides": "Formal expected-utility model of the decision to vote (structural). Introduces the D term (citizen duty) to rescue rationality of voting."
+      },
+      {
+        "title": "What Affects Voter Turnout? (review)",
+        "authors": "Andre Blais",
+        "year": 2006,
+        "venue": "Annual Review of Political Science 9:111-125",
+        "doi_or_url": "10.1146/annurev.polisci.9.070204.105121",
+        "verified": false,
+        "what_it_provides": "Review of empirical turnout determinants and the descriptive-fit limits of rational-choice/calculus-of-voting (the 'paradox of voting'). DOI/venue not re-fetched; cite as review context only."
+      }
+    ],
+    "formal_model": "Calculus of voting: R = P*B - C + D, vote iff R>0, where P=prob the ballot is pivotal, B=candidate differential benefit, C=cost of voting, D=expressive/duty benefit. Registry implementation is a bounded-logit surrogate: p = sigmoid(logit(base_rate) - k_c*cost + k_b*benefit + k_d*duty + k_m*mobilized).",
+    "causal_assumptions": [
+      "Expected-utility rationality of the voter",
+      "Voter perceives (or acts as if perceiving) pivotality P; in large electorates P is near-zero so D must dominate to explain positive turnout",
+      "Additive separability of cost/benefit/duty/mobilization terms on the turnout logit",
+      "Coefficients are electorate-specific and must be refit (labeled priors, not identified from any committed dataset)"
+    ],
+    "required_variables": ["base_rate (baseline turnout)", "cost", "benefit", "duty", "mobilized"],
+    "temporal_scale": "event (single election)",
+    "evidence_type": "structural_model",
+    "reported_coefficients": [
+      {"name": "k_cost (in-code prior)", "value_or_null": -1.0, "uncertainty_or_null": null, "source_ref": "interaction.py:turnout_probability", "context": "Hard-coded labeled prior on the turnout logit, NOT an empirical estimate", "verified": false},
+      {"name": "k_benefit (in-code prior)", "value_or_null": 0.8, "uncertainty_or_null": null, "source_ref": "interaction.py:turnout_probability", "context": "Hard-coded labeled prior; unfitted", "verified": false},
+      {"name": "k_duty (in-code prior)", "value_or_null": 1.2, "uncertainty_or_null": null, "source_ref": "interaction.py:turnout_probability", "context": "Hard-coded labeled prior; unfitted", "verified": false},
+      {"name": "k_mobilized (in-code prior)", "value_or_null": 0.6, "uncertainty_or_null": null, "source_ref": "interaction.py:turnout_probability", "context": "Hard-coded labeled prior; unfitted", "verified": false}
+    ],
+    "datasets_in_literature": ["CPS Voter Supplement", "ANES", "Catalist/validated voter files", "aggregate national turnout series"],
+    "replication_evidence": "Formal model canonical and pervasively cited; however the calculus-of-voting has a well-documented descriptive-fit failure (the paradox of voting: P~0 in mass electorates makes P*B negligible, so the model cannot explain observed turnout without a large unmodeled D). It is a structural scaffold, not a calibrated predictor.",
+    "critiques_or_nulls": [
+      "Paradox of voting: instrumental term P*B ~ 0 in large electorates; positive turnout requires the D (duty) term to carry nearly all explanatory weight",
+      "In-code coefficients (1.0/0.8/1.2/0.6) are arbitrary priors with no empirical provenance"
+    ],
+    "applicability_limits": ["Elections / discrete costly-participation decisions", "Requires an externally supplied base_rate; not self-calibrating"],
+    "transport_risks": ["Coefficients not identified from data; any cross-electorate transfer is uncalibrated"],
+    "local_refit_feasible": "partial - structural form is executable, but no turnout micro-dataset is committed on disk; fitting k_* requires importing CPS/ANES or a GOTV experimental voter file",
+    "best_validation_route": "Seed k_* from a turnout micro-dataset or GOTV replication; posterior-predictive check against held-out electorate turnout; explicitly document paradox-of-voting miscalibration as a known failure mode",
+    "expected_applicability": "medium (broad conceptual scope but weak calibrated predictive power)",
+    "expected_transport_risk": "high",
+    "priority": "medium",
+    "planned_implementation": "Keep the bounded-logit surrogate; add a duty-dominant parameterization; attach an empirically-anchored duty/mobilization prior sourced from the mobilization and social_pressure packs below",
+    "planned_parameter_packs": ["calculus_of_voting_priors (labeled reference-class; blocked from production until fit)"],
+    "promotion_blocker": "No empirical validation record, no parameter pack, coefficients are unfitted priors, and the mechanism has a known descriptive-fit failure (paradox of voting). Formal model verified; numbers are priors not estimates.",
+    "disposition": "software_implemented"
+  },
+  {
+    "family": "Mobilization / GOTV (get-out-the-vote contact)",
+    "registry_id": "mobilization",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable (shares code_ref turnout_probability, mobilized term; test_ref present); no validation record, no pack",
+    "primary_sources": [
+      {
+        "title": "The Effects of Canvassing, Telephone Calls, and Direct Mail on Voter Turnout: A Field Experiment",
+        "authors": "Alan S. Gerber; Donald P. Green",
+        "year": 2000,
+        "venue": "American Political Science Review 94(3):653-663",
+        "doi_or_url": "10.2307/2585837",
+        "verified": true,
+        "what_it_provides": "Foundational randomized GOTV field experiment (New Haven 1998, ~30,000 voters): face-to-face canvassing raises turnout substantially, direct mail slightly, commercial phone calls not at all."
+      },
+      {
+        "title": "Get Out the Vote: How to Increase Voter Turnout (book, meta-estimates)",
+        "authors": "Donald P. Green; Alan S. Gerber",
+        "year": 2019,
+        "venue": "Brookings Institution Press (4th ed.)",
+        "doi_or_url": "https://www.brookings.edu/books/get-out-the-vote/",
+        "verified": false,
+        "what_it_provides": "Meta-synthesis rules of thumb across hundreds of GOTV experiments (canvassing ~1 added vote per ~14 contacts; commercial phone ~0; mail small). Book-level; page figures not independently re-fetched."
+      }
+    ],
+    "formal_model": "Mobilized contact adds a positive shift to the turnout logit: p_treated = sigmoid(logit(baseline) + k_m*mobilized). Empirically summarized as an intent-to-treat (ITT) turnout difference and a complier average causal effect (CACE) via IV on contact.",
+    "causal_assumptions": [
+      "Randomized assignment of contact attempt (ITT identified by design)",
+      "CACE identification for door-to-door requires exclusion restriction (assignment affects turnout only through contact) and monotonicity",
+      "SUTVA / limited spillover between treated and control households",
+      "Validated turnout outcome from voter file (not self-report)"
+    ],
+    "required_variables": ["contact_type (door/phone/mail)", "contact_dose", "baseline_turnout", "compliance/contact_rate"],
+    "temporal_scale": "event (one election cycle)",
+    "evidence_type": "causal_estimate",
+    "reported_coefficients": [
+      {"name": "Face-to-face canvassing turnout (New Haven 1998)", "value_or_null": "control ~44% -> canvassed ~53% (~+9pp raw ITT among reached)", "uncertainty_or_null": null, "source_ref": "Gerber & Green 2000 APSR", "context": "Raw/ITT-style comparison; per-contact CACE is larger after IV correction for contact rate. SE not extracted from primary table.", "verified": true},
+      {"name": "Commercial phone-bank effect on turnout", "value_or_null": "~0 (no discernible effect)", "uncertainty_or_null": null, "source_ref": "Gerber & Green 2000; corrected in Gerber & Green 2005 reply to Imai", "context": "Null survives the Imai (2005) merge-error correction", "verified": true},
+      {"name": "Direct mail effect on turnout", "value_or_null": "small positive (~fraction of a point per piece)", "uncertainty_or_null": null, "source_ref": "Gerber & Green 2000 APSR", "context": "Slight positive; magnitude modest", "verified": true},
+      {"name": "GOTV canvassing rule-of-thumb (book meta)", "value_or_null": "~1 additional vote per ~14 door-to-door contacts (~7pp per contact)", "uncertainty_or_null": null, "source_ref": "Green & Gerber, Get Out the Vote (book)", "context": "Meta rule of thumb; not re-fetched at page level", "verified": false}
+    ],
+    "datasets_in_literature": ["New Haven 1998 registered-voter file (Gerber-Green 2000)", "Green, Gerber & Nickerson JOP 2003 six-city local-election experiments", "state validated voter files"],
+    "replication_evidence": "Extensively replicated across hundreds of experiments; door-to-door canvassing robustly positive, commercial phone weak/null. Imai (2005, APSR) caught a data-merge/coding error in Gerber & Green (2000); Gerber & Green (2005) correction shows the substantive phone-null is unchanged after repair.",
+    "critiques_or_nulls": [
+      "Imai (2005) reanalysis (merge error + IV/matching dispute); resolved by Gerber-Green (2005) correction with null phone effect preserved",
+      "Effect sizes are electorate/context specific; canvassing effects shrink in high-salience elections and with low contact rates"
+    ],
+    "applicability_limits": ["Elections with in-person/mail/phone contact channels", "Effects depend on baseline turnout and contact rate"],
+    "transport_risks": ["Magnitude varies by election salience, electorate, and canvasser quality; US-centric evidence base"],
+    "local_refit_feasible": "no - no GOTV experimental dataset is committed on disk (Upworthy on-disk data is content A/B, not turnout); packs must be seeded from published_research and refit needs an external replication voter file",
+    "best_validation_route": "Attach published_research packs (canvassing +~7pp/contact, commercial phone ~0, mail ~+0.5pp) with broad transport uncertainty; hold out a distinct replication (e.g., Green-Gerber-Nickerson 2003) to test transfer",
+    "expected_applicability": "high (well-identified, repeatedly replicated causal channel)",
+    "expected_transport_risk": "medium",
+    "priority": "high",
+    "planned_implementation": "Bind mobilized term to a published_research pack keyed by contact_type; expose contact_rate so ITT vs CACE is explicit",
+    "planned_parameter_packs": ["gotv_canvassing (ATE ~+7pp per reached contact, wide CI)", "gotv_phone_commercial (~0)", "gotv_direct_mail (~+0.5pp/piece)"],
+    "promotion_blocker": "No in-model validation record and no committed dataset for local refit; packs are transferable published_research priors only until a held-out replication passes.",
+    "disposition": "software_implemented"
+  },
+  {
+    "family": "Social pressure on turnout",
+    "registry_id": null,
+    "current_registry_status": "not_registered (no dedicated family; conceptually a mobilization sub-mechanism / observability shifter on the turnout logit)",
+    "current_executable_status": "not_executable (no dedicated code_ref); could be realized as a mobilization parameter pack or a new social_pressure family",
+    "primary_sources": [
+      {
+        "title": "Social Pressure and Voter Turnout: Evidence from a Large-Scale Field Experiment",
+        "authors": "Alan S. Gerber; Donald P. Green; Christopher W. Larimer",
+        "year": 2008,
+        "venue": "American Political Science Review 102(1):33-48",
+        "doi_or_url": "10.1017/S000305540808009X",
+        "verified": true,
+        "what_it_provides": "The 'Neighbors' mailer experiment (Michigan Aug 2006 primary). Four escalating social-pressure mail treatments plus control; validated turnout outcome; the largest known direct-mail turnout effect."
+      }
+    ],
+    "formal_model": "Additive social-pressure term on the turnout logit whose magnitude increases in the observability/publicizing of the individual's vote: Δturnout monotone in pressure intensity (Civic Duty < Hawthorne < Self < Neighbors). Equivalent to a large positive shock to the D/mobilization term in the calculus-of-voting surrogate.",
+    "causal_assumptions": [
+      "Household-level randomization of mailer arm (design-identified ATE)",
+      "Validated turnout from state voter file",
+      "SUTVA within household treated as unit (within-household spillover expected and part of the estimand)",
+      "No differential attrition across arms"
+    ],
+    "required_variables": ["social_pressure_intensity / vote_observability", "baseline_turnout", "household_composition"],
+    "temporal_scale": "event (single primary election)",
+    "evidence_type": "causal_estimate",
+    "reported_coefficients": [
+      {"name": "Civic Duty mailer effect", "value_or_null": "+1.8pp", "uncertainty_or_null": "SE ~0.3pp (design-derived, NOT extracted from primary Table 3)", "source_ref": "Gerber, Green & Larimer 2008 APSR", "context": "'Do Your Civic Duty' mailer vs control", "verified": true},
+      {"name": "Hawthorne mailer effect", "value_or_null": "+2.5pp", "uncertainty_or_null": "SE ~0.3pp (design-derived, unverified from primary table)", "source_ref": "Gerber, Green & Larimer 2008 APSR", "context": "'You are being studied' mailer vs control", "verified": true},
+      {"name": "Self mailer effect", "value_or_null": "+4.9pp", "uncertainty_or_null": "SE ~0.3pp (design-derived, unverified from primary table)", "source_ref": "Gerber, Green & Larimer 2008 APSR", "context": "Shows household's own past vote record", "verified": true},
+      {"name": "Neighbors mailer effect", "value_or_null": "+8.1pp", "uncertainty_or_null": "SE ~0.3pp (design-derived, unverified from primary table)", "source_ref": "Gerber, Green & Larimer 2008 APSR", "context": "Shows neighbors' past vote records; largest arm", "verified": true},
+      {"name": "Control baseline turnout", "value_or_null": "~29.7%", "uncertainty_or_null": null, "source_ref": "commonly reported for GGL 2008", "context": "Widely cited control turnout; NOT re-confirmed from primary text here", "verified": false},
+      {"name": "Sample size", "value_or_null": "~180,002 households (control ~100,000; four arms ~20,000 each); ~344,084 individuals", "uncertainty_or_null": null, "source_ref": "GGL 2008", "context": "Household count (~180,000) verified via secondary summaries; individual count (~344,084) recalled, not re-verified", "verified": false}
+    ],
+    "datasets_in_literature": ["Michigan August 2006 primary registered-voter file (GGL 2008)"],
+    "replication_evidence": "Robustly replicated: Gerber, Green & Larimer (2010) pride/shame follow-up; Mann (2010) backlash study; Panagopoulos and others confirm monotone social-pressure gradient. Effect ranking (Neighbors > Self > Hawthorne > Civic Duty) is highly stable.",
+    "critiques_or_nulls": [
+      "Some backlash/annoyance (Mann 2010) and ethical concerns about shaming",
+      "Exact standard errors were NOT extracted from the primary Table 3 in this pass (source PDF returned as binary); SEs above are design-derived approximations flagged verified:false",
+      "Control baseline (29.7%) and individual N (344,084) not primary-confirmed here"
+    ],
+    "applicability_limits": ["Low-salience elections where mail can move turnout most", "Requires publicizable vote records (US validated-vote norm)"],
+    "transport_risks": ["Depends on cultural acceptability of publicizing turnout and on a public voter file; magnitude context-specific"],
+    "local_refit_feasible": "no on-disk data; effect sizes enter as a published_research pack from GGL 2008",
+    "best_validation_route": "Add a social_pressure family (or mobilization sub-pack) with the four-arm gradient; given strong replication, transfer-test the ordering/magnitude across electorates",
+    "expected_applicability": "high (best-identified single causal effect in this cluster)",
+    "expected_transport_risk": "medium",
+    "priority": "high",
+    "planned_implementation": "New social_pressure family OR mobilization pack: turnout logit += g(pressure_intensity), calibrated to +1.8/+2.5/+4.9/+8.1pp arms",
+    "planned_parameter_packs": ["social_pressure_mail (Civic Duty +1.8 / Hawthorne +2.5 / Self +4.9 / Neighbors +8.1 pp)"],
+    "promotion_blocker": "No executable registry family yet; needs family + pack. Point estimates verified; SEs and baseline not extracted from the primary table (flagged verified:false).",
+    "disposition": "structural_candidate_only"
+  },
+  {
+    "family": "Online / network mobilization (social contagion)",
+    "registry_id": null,
+    "current_registry_status": "not_registered (no dedicated family; would combine a direct-treatment term with a peer-contagion term)",
+    "current_executable_status": "not_executable (no code_ref)",
+    "primary_sources": [
+      {
+        "title": "A 61-million-person experiment in social influence and political mobilization",
+        "authors": "Robert M. Bond; Christopher J. Fariss; Jason J. Jones; Adam D. I. Kramer; Cameron Marlow; Jaime E. Settle; James H. Fowler",
+        "year": 2012,
+        "venue": "Nature 489(7415):295-298",
+        "doi_or_url": "10.1038/nature11421",
+        "verified": true,
+        "what_it_provides": "Randomized Facebook GOTV experiment (2010 US midterms, ~61M users): direct effect of a social message vs informational vs control on validated turnout, self-expression, information-seeking, and close-friend social contagion."
+      }
+    ],
+    "formal_model": "Two-component mobilization: (1) direct treatment effect of the social message on ego's turnout; (2) peer-contagion term where ego's turnout probability rises with the number of treated close friends. Contagion concentrated in strong (face-to-face) ties.",
+    "causal_assumptions": [
+      "Randomized assignment of social vs informational vs (small) control message",
+      "Validated turnout via matched public voter records (not self-report)",
+      "Contagion identified by comparing friends of treated vs friends of control egos; assumes tie-strength proxies (interaction frequency) capture influence channel",
+      "No large unmodeled confounding of friendship and co-turnout beyond controls"
+    ],
+    "required_variables": ["treatment_assignment (social/informational/control)", "count_treated_close_friends", "tie_strength", "validated_turnout"],
+    "temporal_scale": "event (single election day)",
+    "evidence_type": "causal_estimate",
+    "reported_coefficients": [
+      {"name": "Direct effect: social message on validated turnout", "value_or_null": "+0.39pp vs no-message control", "uncertainty_or_null": null, "source_ref": "Bond et al 2012 Nature", "context": "Social message (friend faces) vs control on real (validated) voting", "verified": true},
+      {"name": "Effect on 'I Voted' self-expression", "value_or_null": "+2.08% (social ~20% vs informational ~18% clicking 'I Voted')", "uncertainty_or_null": null, "source_ref": "Bond et al 2012 Nature", "context": "Self-expression / button click", "verified": true},
+      {"name": "Effect on polling-place information seeking", "value_or_null": "+0.26pp", "uncertainty_or_null": null, "source_ref": "Bond et al 2012 Nature", "context": "Clicking the polling-place locator", "verified": true},
+      {"name": "Close-friend contagion on validated turnout", "value_or_null": "+0.224pp per close friend who received the social message", "uncertainty_or_null": null, "source_ref": "Bond et al 2012 Nature", "context": "Per-treated-close-friend increase in ego's real voting; ordinary (weak-tie) friends showed ~no transmission", "verified": true},
+      {"name": "Total additional votes generated", "value_or_null": "~340,000 (~60,000 direct + ~280,000 via contagion)", "uncertainty_or_null": null, "source_ref": "Bond et al 2012 Nature", "context": "Contagion effect exceeded the direct effect", "verified": true}
+    ],
+    "datasets_in_literature": ["Facebook 2010 user activity logs matched to validated public voter records (proprietary; not publicly redistributable)"],
+    "replication_evidence": "Jones et al. (2017, PLOS ONE) re-ran a randomized social-mobilization experiment in the 2012 US presidential election with consistent (further) evidence. Bond 2012 itself is a single-platform, single-election result.",
+    "critiques_or_nulls": [
+      "Per-user effects are tiny in absolute terms; societal impact is driven by scale (60M users)",
+      "Data proprietary; independent re-analysis constrained",
+      "External validity to non-Facebook platforms/elections unestablished"
+    ],
+    "applicability_limits": ["Large online social platforms with observable friend networks", "Elections with validated-vote matching"],
+    "transport_risks": ["Single platform (2010 Facebook), single US election", "Close-friend definition is platform/interaction-specific", "Effects likely differ under different feed designs and message-fatigue regimes"],
+    "local_refit_feasible": "no - proprietary platform data unavailable; enters only as a published_research pack with an explicit platform-transport caveat",
+    "best_validation_route": "Keep as a published_research pack (direct +0.39pp; per-close-friend +0.224pp) with a strong platform/era transport warning; validate only that model spillover magnitudes stay within this envelope",
+    "expected_applicability": "medium (narrow: large online networks only)",
+    "expected_transport_risk": "high",
+    "priority": "medium",
+    "planned_implementation": "Optional network-mobilization pack layering a direct-message term and a peer-contagion term (scaled by count of treated strong ties) on the turnout family",
+    "planned_parameter_packs": ["online_social_message_direct (+0.39pp)", "close_friend_contagion (+0.224pp per treated close friend)"],
+    "promotion_blocker": "No executable family and no accessible dataset; single-platform/single-election provenance gives high transport risk. All extracted numbers verified.",
+    "disposition": "structural_candidate_only"
+  },
+  {
+    "family": "Donation / charitable giving response to an ask",
+    "registry_id": "donation_response",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable (code_ref swm.world_model_v2.registry.families.interaction:donation_amount resolves; test_ref present); no validation record, no pack",
+    "primary_sources": [
+      {
+        "title": "Does Price Matter in Charitable Giving? Evidence from a Large-Scale Natural Field Experiment",
+        "authors": "Dean Karlan; John A. List",
+        "year": 2007,
+        "venue": "American Economic Review 97(5):1774-1793",
+        "doi_or_url": "10.1257/aer.97.5.1774",
+        "verified": true,
+        "what_it_provides": "Randomized direct-mail experiment (>50,000 prior donors): presence of a matching grant, match ratio (1:1/2:1/3:1), match cap, and suggested-amount, on probability of donating and revenue per solicitation."
+      },
+      {
+        "title": "Testing for Altruism and Social Pressure in Charitable Giving",
+        "authors": "Stefano DellaVigna; John A. List; Ulrike Malmendier",
+        "year": 2012,
+        "venue": "Quarterly Journal of Economics 127(1):1-56",
+        "doi_or_url": "10.1093/qje/qjr050",
+        "verified": true,
+        "what_it_provides": "Door-to-door fundraising with pre-announcement flyers (opt-out option) that separates altruism from social pressure; structural estimate of the social-pressure cost of declining a solicitor."
+      }
+    ],
+    "formal_model": "Bounded donation response: give-probability and amount increase in ask/match-generosity/affinity/history and saturate at capacity. Structural decomposition (DLM): utility of giving = altruism/warm-glow term minus a social-pressure cost S incurred when declining a face-to-face ask; observed giving = argmax over give/decline including S.",
+    "causal_assumptions": [
+      "Randomized treatment (match presence/ratio; flyer/opt-out)",
+      "Karlan-List: match manipulations exogenous to donor propensity",
+      "DLM: flyer timing randomizes ability to sort into/out of the solicitation; structural identification of S from opt-out take-up and giving shifts",
+      "Donations observed (revealed behavior, not self-report)"
+    ],
+    "required_variables": ["ask_amount / suggested_amount", "match_ratio", "solicitation_channel (mail vs door)", "prior_gifts", "affinity/in-state-vs-out", "social_pressure_context (avoidable vs unavoidable ask)"],
+    "temporal_scale": "event (single solicitation)",
+    "evidence_type": "causal_estimate",
+    "reported_coefficients": [
+      {"name": "Match offer on probability of donating", "value_or_null": "+~22% (relative increase in P(donate) vs no-match control)", "uncertainty_or_null": null, "source_ref": "Karlan & List 2007 AER", "context": "Announcing a match raises response rate", "verified": true},
+      {"name": "Match offer on revenue per solicitation", "value_or_null": "+~19%", "uncertainty_or_null": null, "source_ref": "Karlan & List 2007 AER", "context": "Amount raised per letter", "verified": true},
+      {"name": "Match ratio (2:1, 3:1 vs 1:1)", "value_or_null": "no additional effect", "uncertainty_or_null": null, "source_ref": "Karlan & List 2007 AER", "context": "Larger match ratios do NOT beat 1:1 (price-insensitivity)", "verified": true},
+      {"name": "Social-pressure cost of saying no (in-person ask)", "value_or_null": "$3.5 in-state charity; $1.4 out-of-state charity", "uncertainty_or_null": null, "source_ref": "DellaVigna, List & Malmendier 2012 QJE", "context": "Structural estimate of utility cost of declining a door-to-door solicitor", "verified": true},
+      {"name": "Opt-out flyer on door-opening", "value_or_null": "-10% to -25% share opening the door", "uncertainty_or_null": null, "source_ref": "DLM 2012 QJE", "context": "Pre-announcement lets households avoid the ask", "verified": true},
+      {"name": "'Do Not Disturb' box on giving", "value_or_null": "-30% giving (concentrated in gifts < $10)", "uncertainty_or_null": null, "source_ref": "DLM 2012 QJE", "context": "Removing social pressure lowers small, pressure-driven gifts", "verified": true}
+    ],
+    "datasets_in_literature": ["Karlan-List nonprofit direct-mail donor file (>50,000 prior donors)", "DLM door-to-door fundraising field data (charity solicitation with flyer randomization)"],
+    "replication_evidence": "Match-effect and ratio-insensitivity broadly consistent with subsequent giving experiments; social-pressure mechanism corroborated by related door-to-door and 'avoid-the-ask' studies (e.g., DellaVigna-List-Malmendier-Rao on voting-to-tell-others). Small-match literature (e.g., Karlan-List-Shafir) refines magnitudes.",
+    "critiques_or_nulls": [
+      "Match generosity is nearly price-insensitive (2:1/3:1 no better than 1:1) - a null on the intensive price margin",
+      "Door-to-door welfare can be negative (DLM): much giving is pressure-driven, not altruistic",
+      "Registry's donation_amount coefficients are labeled priors, not fit to these studies"
+    ],
+    "applicability_limits": ["Solicited giving (mail/door) with a defined ask", "Effects specific to prior-donor lists (Karlan-List) and cold door-to-door (DLM)"],
+    "transport_risks": ["Match/pressure magnitudes vary by cause, donor relationship, and channel; dollar-valued pressure cost is US-context specific"],
+    "local_refit_feasible": "no - no donation dataset is committed on disk (Upworthy is content A/B, not giving); packs seed from Karlan-List / DLM published_research",
+    "best_validation_route": "Attach match-offer and social-pressure packs to donation_response; validate on an external fundraising replication as held-out before any local claim",
+    "expected_applicability": "high (well-identified solicited-giving effects)",
+    "expected_transport_risk": "medium",
+    "priority": "high",
+    "planned_implementation": "Bind donation_amount/ P(donate) to packs: match-presence multiplier (+~19% revenue, +~22% response, ratio-insensitive) and a social-pressure cost term S ($3.5/$1.4) for avoidable-vs-unavoidable asks",
+    "planned_parameter_packs": ["match_offer_effect (+19% revenue/solicitation; +22% P(donate); ratio-insensitive)", "door_to_door_social_pressure (S=$3.5 in-state / $1.4 out-of-state; -30% giving when avoidable)"],
+    "promotion_blocker": "No committed donation dataset for local refit and no in-model validation record; packs are transferable published_research priors until a held-out fundraising replication passes.",
+    "disposition": "software_implemented"
+  },
+  {
+    "family": "Political persuasion (campaign contact on vote choice)",
+    "registry_id": null,
+    "current_registry_status": "not_registered (NONE explicit; important as a near-null guardrail prior, distinct from mobilization which moves turnout not choice)",
+    "current_executable_status": "not_executable (no code_ref)",
+    "primary_sources": [
+      {
+        "title": "The Minimal Persuasive Effects of Campaign Contact in General Elections: Evidence from 49 Field Experiments",
+        "authors": "Joshua L. Kalla; David E. Broockman",
+        "year": 2018,
+        "venue": "American Political Science Review 112(1):148-166",
+        "doi_or_url": "https://www.cambridge.org/core/journals/american-political-science-review/article/abs/minimal-persuasive-effects-of-campaign-contact-in-general-elections-evidence-from-49-field-experiments/753665A313C4AB433DBF7110299B7433",
+        "verified": true,
+        "what_it_provides": "Meta-analysis of 40 field experiments + 9 original experiments (49 total) on campaign contact/advertising and candidate choice in general elections: best estimate of the average persuasive effect is ZERO."
+      },
+      {
+        "title": "Persuasion: Empirical Evidence",
+        "authors": "Stefano DellaVigna; Matthew Gentzkow",
+        "year": 2010,
+        "venue": "Annual Review of Economics 2:643-669",
+        "doi_or_url": "10.1146/annurev.economics.102308.124309",
+        "verified": true,
+        "what_it_provides": "Survey/framework for persuasion effects across consumers/voters/donors/investors; defines the persuasion-rate metric and reviews media-effects magnitudes (generally modest, context-dependent)."
+      }
+    ],
+    "formal_model": "Persuasion-rate framing (DellaVigna-Gentzkow): fraction of the exposed population whose behavior shifts, f = (change in behavior) / (exposure * (persuadable share)). Estimand here is the ATE of campaign contact on candidate choice / vote share; Kalla-Broockman best estimate ~0 in general elections, with rare nonzero regimes.",
+    "causal_assumptions": [
+      "Randomized contact/advertising assignment across the pooled experiments",
+      "Outcome = candidate choice / vote intention or vote share (persuasion), NOT turnout (mobilization)",
+      "Meta-analytic pooling assumes comparable estimands; publication-bias corrections applied by authors",
+      "General-election context (competitive, well-known candidates, late campaign)"
+    ],
+    "required_variables": ["contact_type", "timing_relative_to_election", "candidate_position_extremity", "targeting_quality (persuadable identification)", "election_type (general vs primary/ballot-measure)"],
+    "temporal_scale": "event (campaign cycle); persuasion effects that do appear tend to decay",
+    "evidence_type": "meta_analysis",
+    "reported_coefficients": [
+      {"name": "Average persuasive effect of campaign contact (general elections)", "value_or_null": "~0 (best estimate zero) across 49 experiments (40 meta + 9 original)", "uncertainty_or_null": "tightly bounded near zero; authors' central claim", "source_ref": "Kalla & Broockman 2018 APSR", "context": "Applies to persuasion (candidate choice) in general elections, not turnout", "verified": true},
+      {"name": "Nonzero-persuasion regimes (exceptions)", "value_or_null": "detectable only (a) when candidates take unusually unpopular positions AND campaigns invest heavily in identifying persuadables, or (b) when contact occurs long before election day - and that early effect decays", "uncertainty_or_null": null, "source_ref": "Kalla & Broockman 2018 APSR", "context": "Boundary conditions where persuasion is not zero", "verified": true}
+    ],
+    "datasets_in_literature": ["49 pooled campaign field-experiment datasets (Kalla-Broockman)", "media-effects studies surveyed in DellaVigna-Gentzkow 2010"],
+    "replication_evidence": "The near-zero general-election persuasion finding is corroborated by Broockman & Kalla's later work (e.g., 2020 US presidential campaign field experiments, AJPS 2023) showing small/decaying persuasion. Robust and much-cited.",
+    "critiques_or_nulls": [
+      "THIS IS THE KEY NULL: do NOT encode large persuasion effects. Average general-election persuasion from campaign contact is best estimated at zero.",
+      "Persuasion CAN be nonzero for ballot measures, primaries, early contact, and unusually unpopular positions - so a flat zero is a prior, not a law",
+      "Distinguish sharply from mobilization (which has real positive effects on turnout)"
+    ],
+    "applicability_limits": ["General-election candidate persuasion via direct contact/ads", "Does not govern turnout, ballot-measure, or primary persuasion, which can differ"],
+    "transport_risks": ["Zero-average is regime-specific (competitive general elections, late campaign); early-campaign and low-information contexts can show transient effects"],
+    "local_refit_feasible": "no - meta-analytic near-null; encode as a prior/guardrail rather than a fitted coefficient",
+    "best_validation_route": "Encode as a near-zero persuasion prior with wide-but-zero-centered uncertainty; validate that the world model does NOT over-attribute vote-choice change to campaign contact in general-election scenarios",
+    "expected_applicability": "medium-high as a guardrail (prevents over-estimating persuasion)",
+    "expected_transport_risk": "medium",
+    "priority": "medium-high",
+    "planned_implementation": "Add a persuasion guardrail: default general-election contact->vote-choice effect ~0 with documented exception regimes; never a large default",
+    "planned_parameter_packs": ["campaign_persuasion_null (general-election ATE ~0)", "persuasion_exception_regimes (small, decaying; unpopular-position + heavy targeting, or early contact)"],
+    "promotion_blocker": "No executable family; and the credible 'estimate' is a near-zero prior with strong context-dependence, so it serves as a guardrail rather than a positive mechanism. Central null verified.",
+    "disposition": "structural_candidate_only"
+  }
+]

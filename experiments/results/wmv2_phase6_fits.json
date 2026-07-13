@@ -1,0 +1,431 @@
+{
+ "_meta": {
+  "harness": "experiments/wmv2_phase6_fits.py",
+  "note": "real held-out fits; test split never used for fitting or form selection"
+ },
+ "datasets": {
+  "telco_attrition": {
+   "family": "attrition_dropout_hazard",
+   "result": {
+    "n_total": 7032,
+    "n_train": 5625,
+    "n_test": 1407,
+    "seed": 13,
+    "base_rate": 0.2644,
+    "test": {
+     "brier": 0.14087,
+     "logloss": 0.43165,
+     "calibration": {
+      "reliability": [
+       {
+        "conf": 0.0364,
+        "acc": 0.0482,
+        "n": 498
+       },
+       {
+        "conf": 0.15,
+        "acc": 0.1391,
+        "n": 230
+       },
+       {
+        "conf": 0.2482,
+        "acc": 0.296,
+        "n": 125
+       },
+       {
+        "conf": 0.3526,
+        "acc": 0.2992,
+        "n": 127
+       },
+       {
+        "conf": 0.4431,
+        "acc": 0.4297,
+        "n": 128
+       },
+       {
+        "conf": 0.5582,
+        "acc": 0.5083,
+        "n": 120
+       },
+       {
+        "conf": 0.649,
+        "acc": 0.7462,
+        "n": 130
+       },
+       {
+        "conf": 0.7285,
+        "acc": 0.7755,
+        "n": 49
+       }
+      ],
+      "ece": 0.0311
+     }
+    },
+    "baseline_base_rate": {
+     "brier": 0.19784,
+     "logloss": 0.58488
+    },
+    "paired_brier_model_minus_base": {
+     "mean": -0.056965,
+     "ci95": [
+      -0.066393,
+      -0.048032
+     ],
+     "n": 1407
+    },
+    "beats_base_rate": true
+   },
+   "coefs": {
+    "intercept": -1.38815,
+    "weights": {
+     "senior": 0.28231,
+     "partner": -0.05032,
+     "dependents": -0.13599,
+     "tenure": -0.95016,
+     "phone_service": -0.60162,
+     "paperless_billing": 0.33324,
+     "monthly_charges": 0.44216,
+     "total_charges": 0.08811,
+     "contract": -0.84131,
+     "internet_service": 0.54216,
+     "is_female": 0.02709
+    },
+    "standardized": [
+     "tenure",
+     "monthly_charges",
+     "total_charges"
+    ],
+    "link": "logistic",
+    "fit": "gradient-descent MLE + L2=1e-3"
+   },
+   "transfer": {
+    "n_fit": 3875,
+    "n_test": 3157,
+    "fit_base_rate": 0.4271,
+    "test_base_rate": 0.0678,
+    "test_brier": 0.07122,
+    "target_base_brier": 0.06319,
+    "paired_brier_model_minus_base": {
+     "mean": 0.008027,
+     "ci95": [
+      0.003956,
+      0.011754
+     ],
+     "n": 3157
+    },
+    "beats_target_base_rate": false,
+    "calibration": {
+     "reliability": [
+      {
+       "conf": 0.0462,
+       "acc": 0.0202,
+       "n": 1434
+      },
+      {
+       "conf": 0.1481,
+       "acc": 0.065,
+       "n": 861
+      },
+      {
+       "conf": 0.2449,
+       "acc": 0.1245,
+       "n": 482
+      },
+      {
+       "conf": 0.3425,
+       "acc": 0.177,
+       "n": 226
+      },
+      {
+       "conf": 0.4464,
+       "acc": 0.2,
+       "n": 100
+      },
+      {
+       "conf": 0.5383,
+       "acc": 0.1951,
+       "n": 41
+      },
+      {
+       "conf": 0.6387,
+       "acc": 0.0,
+       "n": 12
+      },
+      {
+       "conf": 0.7515,
+       "acc": 1.0,
+       "n": 1
+      }
+     ],
+     "ece": 0.0795
+    },
+    "weights": {
+     "senior": 0.38482,
+     "partner": 0.01218,
+     "dependents": -0.19473,
+     "tenure": -0.92416,
+     "phone_service": -0.73213,
+     "paperless_billing": 0.37729,
+     "monthly_charges": 0.34041,
+     "total_charges": 0.2144,
+     "internet_service": 0.5686,
+     "is_female": 0.05659
+    },
+    "intercept": -0.83906,
+    "direction": "fit=month-to-month contract, test=one/two-year contract (contract excluded)"
+   },
+   "sha256": "17e51ade11fd39b07cff0802b3faea577b3f868a75dbad17ff5438f09950b7be",
+   "path": "experiments/results/harvest_extra/telco_churn.json",
+   "identifies": "PREDICTIVE association of contract/tenure/billing with customer churn (dropout).",
+   "causally_identified": false,
+   "forbidden": [
+    "do NOT read as causal effects of any single feature",
+    "do NOT generalize to arbitrary social-relationship or trust decay",
+    "do NOT transport off telecom subscription churn without refit + widening"
+   ],
+   "missing_variables": [
+    "competitor pricing",
+    "service outages",
+    "life events"
+   ],
+   "transport": "domain_restricted"
+  },
+  "stackexchange_response": {
+   "family": "response_occurrence_hazard",
+   "result": {
+    "n_total": 2500,
+    "n_train": 2000,
+    "n_test": 500,
+    "seed": 13,
+    "base_rate": 0.578,
+    "test": {
+     "brier": 0.24883,
+     "logloss": 0.6909,
+     "calibration": {
+      "reliability": [
+       {
+        "conf": 0.3561,
+        "acc": 1.0,
+        "n": 2
+       },
+       {
+        "conf": 0.483,
+        "acc": 0.5952,
+        "n": 42
+       },
+       {
+        "conf": 0.5656,
+        "acc": 0.5719,
+        "n": 285
+       },
+       {
+        "conf": 0.6142,
+        "acc": 0.5439,
+        "n": 171
+       }
+      ],
+      "ece": 0.0397
+     }
+    },
+    "baseline_base_rate": {
+     "brier": 0.24579,
+     "logloss": 0.6847
+    },
+    "paired_brier_model_minus_base": {
+     "mean": 0.003039,
+     "ci95": [
+      -0.000995,
+      0.006763
+     ],
+     "n": 500
+    },
+    "beats_base_rate": false
+   },
+   "coefs": {
+    "intercept": 0.00558,
+    "weights": {
+     "title_len": -0.00961,
+     "body_len": -0.1192,
+     "n_tags": -0.02456,
+     "code_present": 0.40075,
+     "has_code_kw": -0.04978,
+     "is_howto": 0.05576,
+     "title_qmark": -0.09195,
+     "hour": 0.00684,
+     "dayofweek": 0.05277
+    },
+    "standardized": [
+     "title_len",
+     "body_len",
+     "n_tags",
+     "hour",
+     "dayofweek"
+    ],
+    "link": "logistic",
+    "fit": "gradient-descent MLE + L2=1e-3"
+   },
+   "sha256": "4339aee2ecaa58dbc99f27d9d82786e5e82468f39da4542c6d280443bb113e13",
+   "path": "experiments/results/harvest_extra/stackexchange.json",
+   "identifies": "PREDICTIVE association of question features with receiving an answer (a response-occurrence signal in a Q&A community).",
+   "causally_identified": false,
+   "forbidden": [
+    "do NOT read as trust, obligation, reciprocity, or workload",
+    "do NOT read features as causal levers on answerer behavior",
+    "do NOT transport to email/DM reply without refit"
+   ],
+   "missing_variables": [
+    "answerer availability",
+    "topic expert supply",
+    "reputation incentives"
+   ],
+   "transport": "domain_restricted"
+  },
+  "cmv_persuasion": {
+   "family": "argument_persuasion_success",
+   "result": {
+    "n_total": 1200,
+    "n_train": 960,
+    "n_test": 240,
+    "seed": 13,
+    "base_rate": 0.6479,
+    "test": {
+     "brier": 0.21993,
+     "logloss": 0.63155,
+     "calibration": {
+      "reliability": [
+       {
+        "conf": 0.4619,
+        "acc": 0.25,
+        "n": 4
+       },
+       {
+        "conf": 0.5689,
+        "acc": 0.5152,
+        "n": 33
+       },
+       {
+        "conf": 0.6628,
+        "acc": 0.6946,
+        "n": 203
+       }
+      ],
+      "ece": 0.0378
+     }
+    },
+    "baseline_base_rate": {
+     "brier": 0.22381,
+     "logloss": 0.63983
+    },
+    "paired_brier_model_minus_base": {
+     "mean": -0.003874,
+     "ci95": [
+      -0.009533,
+      0.001343
+     ],
+     "n": 240
+    },
+    "beats_base_rate": false
+   },
+   "coefs": {
+    "intercept": 0.61355,
+    "weights": {
+     "arg_words": -0.00627,
+     "arg_op_ratio": 0.00866,
+     "n_question": -0.13849,
+     "n_url": -0.04186,
+     "n_quote_lines": -0.0952,
+     "hedge_frac": -0.00829,
+     "certainty_frac": -0.00092,
+     "you_frac": -0.00291
+    },
+    "standardized": [
+     "arg_words",
+     "arg_op_ratio",
+     "n_question",
+     "n_url",
+     "n_quote_lines"
+    ],
+    "link": "logistic",
+    "fit": "gradient-descent MLE + L2=1e-3"
+   },
+   "sha256": "ecf5a7d8d91fb6f2db045e909df5451d2ddc588b17f61d8c5c5b3aef97472dad",
+   "path": "experiments/results/exp021_cmv/cmv_common.json",
+   "identifies": "PREDICTIVE association of surface argument features with earning a delta (view change) on r/ChangeMyView. Matched successful/unsuccessful challengers.",
+   "causally_identified": false,
+   "forbidden": [
+    "do NOT read surface features as causal persuasion levers (confounded by content)",
+    "do NOT transport to political/health persuasion (platform-specific, self-selected)",
+    "do NOT interpret as general attitude change"
+   ],
+   "missing_variables": [
+    "argument semantic content/quality",
+    "OP prior receptivity",
+    "timing/order"
+   ],
+   "citation": "Tan, Niculae, Danescu-Niculescu-Mizil & Lee 2016, WWW (CMV dataset)",
+   "transport": "domain_restricted"
+  },
+  "upworthy_content_response": {
+   "family": "content_response_click",
+   "result": {
+    "n_tests_total": 2594,
+    "n_train": 1556,
+    "n_test": 1038,
+    "split": "time-forward by ObjectId timestamp (earliest 60% train, latest 40% test)",
+    "population": {
+     "precision_at_1": 0.2794,
+     "random_precision_at_1": 0.2446,
+     "pairwise_accuracy": 0.7187,
+     "n_pairs": 9737,
+     "lift_over_random_p1": 0.0348
+    },
+    "no_population_ablation": {
+     "precision_at_1": 0.2775,
+     "random_precision_at_1": 0.2446,
+     "pairwise_accuracy": 0.5586,
+     "n_pairs": 9737,
+     "lift_over_random_p1": 0.0328
+    },
+    "beats_random": true
+   },
+   "coefs": {
+    "surface_features": [
+     "len_words",
+     "has_number",
+     "has_question",
+     "has_quote",
+     "has_you",
+     "all_caps_word"
+    ],
+    "surface_w": [
+     0.0549,
+     0.0151,
+     -0.1887,
+     0.0099,
+     0.0302,
+     -0.0822
+    ],
+    "n_train_variants": 6282,
+    "target": "within-test CTR z-score",
+    "link": "linear + population-heterogeneity ranking"
+   },
+   "sha256": "e27fddc9e123f98383b92587ee30934a834227d1ccf2bebd093232b320bc0b21",
+   "path": "experiments/results/exp054_upworthy/upworthy_parsed.json",
+   "identifies": "CAUSAL ordering of content-driven click response: arms were shown to RANDOMIZED traffic within each test, so the higher-CTR headline is causally more clicked.",
+   "causally_identified": true,
+   "identified_scope": "content-response ranking only",
+   "forbidden": [
+    "does NOT identify position/examination bias (rank not experimentally varied here)",
+    "surface-feature weights are a PREDICTIVE summary, not causal feature effects",
+    "do NOT transport clickbait-era Upworthy CTR levels to other platforms"
+   ],
+   "missing_variables": [
+    "image/thumbnail",
+    "audience segment",
+    "time-of-day targeting"
+   ],
+   "citation": "Upworthy Research Archive (Matias et al. 2021), CC-BY",
+   "transport": "domain_restricted"
+  }
+ }
+}

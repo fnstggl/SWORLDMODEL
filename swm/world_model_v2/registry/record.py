@@ -21,8 +21,18 @@ from __future__ import annotations
 import time as _time
 from dataclasses import dataclass, field, asdict
 
-STATUSES = ("proposed", "implemented", "locally_validated", "transfer_validated",
-            "production_eligible", "quarantined", "rejected")
+STATUSES = ("proposed", "research_encoded", "implemented", "locally_validated", "transfer_validated",
+            "production_eligible", "domain_restricted", "quarantined", "rejected")
+# Lifecycle (Phase 6, Part 12). `implemented` == the spec's "software_implemented".
+#   proposed          conceptual entry only
+#   research_encoded  verified research metadata + formal model + citations-with-limits stored
+#   implemented       executable typed transition + tests (produces StateDelta)
+#   locally_validated passed a real held-out / posterior-predictive check in ONE supported context
+#   transfer_validated retained value under >=1 meaningful transfer
+#   production_eligible executable + provenance + uncertainty + applicability + PASSED held-out/transfer + citation
+#   domain_restricted validated/parameterized but valid ONLY in declared contexts (transport limited)
+#   quarantined       failed validation/calibration/transport (failure preserved)
+#   rejected          invalid assumptions / failed replication / non-identifiable / harmful
 
 PARAMETER_SOURCES = ("observed", "inferred_from_data", "fitted", "published_research",
                      "reference_class_prior", "experimental", "assumed", "unsupported")
