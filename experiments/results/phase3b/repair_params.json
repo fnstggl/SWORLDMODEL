@@ -9,7 +9,7 @@
     "w_phase2": 0.5
   },
   "gate": {
-    "min_effective_obs": 6
+    "min_effective_obs": 4
   },
   "family_map": {
     "trump_2024": "us_pres_2024",
@@ -115,8 +115,8 @@
       "val_logloss": 0.6607
     },
     "gate_selected": {
-      "min_effective_obs": 6,
-      "val_logloss": 0.6617
+      "min_effective_obs": 4,
+      "val_logloss": 0.6513
     }
   },
   "contract": "repaired_p = (n_effective<gate.min ? p_phase2 : sigmoid(w*logit(p_phase2) + (1-w)*logit(p3_calibrated_rate_mean))); w in [0,1] (convex, Phase-2 never inverted); p3_calibrated from rate_posterior with gamma/no_info_mix/post_temp and optional reference-class prior (shrinks toward the per-question prior). Frozen on DEV; TEST untouched."

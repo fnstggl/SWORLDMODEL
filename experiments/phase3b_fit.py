@@ -45,8 +45,14 @@ def p3_rate(r, *, gamma, no_info_mix, post_temp, use_ref_prior):
                                         r.get("outcome_lean", "neutral"))
         if ra is not None:
             a0, b0, ref = ra, rb, rd
-    m, sd, _ = rate_posterior(r["tags"], a0, b0, gamma=gamma, no_info_mix=no_info_mix, post_temp=post_temp)
-    return m, sd, ref
+    m, sd, n_eff = rate_posterior(r["tags"], a0, b0, gamma=gamma, no_info_mix=no_info_mix, post_temp=post_temp)
+    return m, sd, n_eff
+
+
+def _nonneutral(r):
+    """Support measure used by BOTH the gate fit and the serving-time combine(): the number of non-neutral
+    effective (dependence-collapsed) observations that actually move the rate."""
+    return rate_posterior(r["tags"], r["prior"]["alpha"], r["prior"]["beta"])[2]
 
 
 def _mean(xs):
@@ -115,7 +121,7 @@ def fit():
 
     gate_cands = []
     for thr in (0, 1, 2, 3, 4, 5, 6):
-        va_preds = [(r["p_phase2"] if (r.get("n_effective_observations") or 0) < thr else blended(r), r["outcome"])
+        va_preds = [(r["p_phase2"] if _nonneutral(r) < thr else blended(r), r["outcome"])
                     for r in val]
         gate_cands.append({"min_effective_obs": thr, "val_logloss": round(_mean([logloss(p, y) for p, y in va_preds]), 4)})
     gbest = min(c["val_logloss"] for c in gate_cands)
