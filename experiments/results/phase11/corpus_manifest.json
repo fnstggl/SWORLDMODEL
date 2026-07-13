@@ -1,0 +1,56 @@
+{
+ "corpus_version": "phase11-corpus-1.0",
+ "n_episodes": 135,
+ "n_real_grounded": 2,
+ "n_adversarial": 133,
+ "n_changed": 81,
+ "n_unchanged_controls": 54,
+ "n_trigger_families": 10,
+ "trigger_families": [
+  "authority_change",
+  "coalition_change",
+  "evidence_contradiction",
+  "exogenous_shock",
+  "impossible_event",
+  "mechanism_regime_change",
+  "network_restructuring",
+  "new_actor",
+  "outcome_space_change",
+  "rule_change"
+ ],
+ "n_domains": 9,
+ "domains": [
+  "adversarial",
+  "court",
+  "election",
+  "fundraising",
+  "legislature",
+  "negotiation",
+  "organization",
+  "platform",
+  "social_diffusion"
+ ],
+ "split_counts": {
+  "train": 72,
+  "calibration": 18,
+  "test": 30,
+  "validation": 15
+ },
+ "targets": {
+  "total": 120,
+  "real": 60,
+  "adversarial": 60,
+  "families": 8,
+  "domains": 6
+ },
+ "targets_met": {
+  "total": true,
+  "real": false,
+  "adversarial": true,
+  "families": true,
+  "domains": true
+ },
+ "corpus_sha256": "fe7f22f63ac083929cbe05d65996502e",
+ "resumable": true,
+ "honest_note": "real-grounded episodes use documented real change dates/regimes (e.g. the 2013/2017 Senate nuclear option) with sources; the real-record REPLAY arm (actual roll-call streams) is the declared remaining expansion \u2014 see WMV2_PHASE11_VALIDATION.md. The corpus is NOT relabelled as meeting the 60-real target when it does not."
+}

@@ -72,6 +72,12 @@ class ExecutionAdapter:
     def assimilate(self, worlds, weights, obs):
         return weights                                     # default: no reweight (adapter-specific)
 
+    def post_migration(self, worlds, weights, obs, sim_time):
+        """Apply the ADOPTED structural revision's effect on the execution substrate. In the real V2 path this
+        is init_state re-sampling the revised/new components; the spec (§15) requires introducing BROAD
+        uncertainty for newly-created variables so a structural change is not falsely certain. Default: no-op."""
+        return worlds, weights
+
     def terminal(self, worlds, weights):
         from swm.world_model_v2.posterior import _read_path
         num, z = 0.0, 0.0
@@ -112,6 +118,14 @@ class RecompilationController:
     min_new_evidence: int = 1
     llm: object = None
     seed: int = 0
+    # ---- ablation / baseline-arm knobs (spec §24/§26). Inert at their defaults = full Phase 11 (B5). ----
+    recompile_enabled: bool = True        # B0: no recompilation
+    forced_scope: str = ""                # B1 parameter_only / B2 full_plan (override scope selection)
+    require_score_gate: bool = True       # B3 LLM-only: skip evidence-based scoring gate
+    branch_only: bool = False             # B6: only add a competing hypothesis; never migrate/replace
+    oracle: dict = None                   # B4: {change_time, scope} supplied from labels
+    fusion_enabled: bool = True           # ablation: no dependence-aware fusion
+    scope_selection_enabled: bool = True  # ablation: always full recompile
 
     def run(self, *, plan, worlds, weights, pending_events, observations, horizon_ts, as_of,
             execution: ExecutionAdapter = None, terminal_sensitivity=0.6, plan_facts=None) -> ControllerResult:
@@ -148,7 +162,7 @@ class RecompilationController:
             if isinstance(observed, (int, float)):
                 value_hist.append(float(observed))
 
-            if eligible:
+            if eligible and self.recompile_enabled:
                 res.n_eligible += 1
                 ess = D.ess_diagnostic(weights)
                 ctx = TriggerContext(observation=obs, surprise=surprise, ess=ess,
@@ -157,7 +171,9 @@ class RecompilationController:
                                      plan_facts=plan_facts or {}, declared=_declared(obs),
                                      cooldown=fusion.cooldown_state())
                 fired = detect_all(ctx, th)
-                fused = fusion.fuse(fired)
+                fused = fusion.fuse(fired) if self.fusion_enabled else self._nofuse(fired)
+                if self.oracle is not None:               # B4 oracle: fire at the labelled change time
+                    fused.proceed = abs(reveal - float(self.oracle.get("change_time", -1))) < 8 * 86400.0 or fused.proceed
                 if fused.proceed and n_recompiles < self.max_recompiles:
                     trace = self._recompile(active_plan, worlds, weights, pending_events, obs, fused,
                                             sim_time, lineage, terminal_sensitivity, ex, plan_facts)
@@ -193,10 +209,37 @@ class RecompilationController:
             res.status = "completed_with_degradation"
         return res
 
+    def _nofuse(self, fired):
+        """Ablation: no dependence-aware fusion — treat each detector independently (over-counts)."""
+        from swm.world_model_v2.phase11.fusion import FusedAssessment
+        if not fired:
+            return FusedAssessment()
+        top = max(fired, key=lambda e: e.trigger_probability)
+        fa = FusedAssessment(fused_probability=top.trigger_probability,
+                             by_family={e.trigger_family: e.trigger_probability for e in fired},
+                             dominant_family=top.trigger_family,
+                             scope_candidates=sorted({s for e in fired for s in e.affected_scope_candidates}),
+                             classification="local_structural", proceed=top.trigger_probability >= 0.5,
+                             n_evidence=len(fired))
+        return fa
+
     def _recompile(self, plan, worlds, weights, pending, obs, fused, sim_time, lineage, tsens, ex, plan_facts):
         """One recompilation cycle. Returns a RecompilationTrace dict (with the migrated ensemble under
         _worlds/_weights/_pending), or None if nothing was activated (rolled back)."""
         sel = select_scope(fused, plan=plan, terminal_sensitivity=tsens)
+        # baseline-arm scope overrides (inert by default)
+        if not self.scope_selection_enabled:
+            sel.scope, sel.action = "full_plan", "full_recompile"
+        if self.branch_only:
+            from swm.world_model_v2.phase11.scope import SCOPE_ACTION
+            sel.scope, sel.action = "structural_hypothesis", SCOPE_ACTION["structural_hypothesis"]
+        if self.forced_scope:
+            from swm.world_model_v2.phase11.scope import SCOPE_ACTION
+            sel.scope, sel.action = self.forced_scope, SCOPE_ACTION.get(self.forced_scope, "parameter_update")
+        if self.oracle is not None and self.oracle.get("scope"):
+            from swm.world_model_v2.phase11.scope import SCOPE_ACTION
+            sel.scope = self.oracle["scope"]
+            sel.action = SCOPE_ACTION.get(sel.scope, sel.action)
         cands = generate_candidates(plan, sel, fused, obs, llm=self.llm)
         llm_calls = 1 if self.llm is not None else 0
         # validate candidates
@@ -212,14 +255,18 @@ class RecompilationController:
 
         # score (current plan included) BEFORE committing to migration
         score = score_candidates([(c, o) for c, o, _ in valid], plan, obs, fused)
-        if not score.recompile_warranted:
+        if self.require_score_gate and not score.recompile_warranted:
             dec = RecompileDecision(decision_id=f"dec::{obs.observation_id}", current_plan_hash=plan_content_hash(plan),
                                     decision_time=sim_time, action="no_change", selected_scope="no_model_change",
                                     rationale="current plan retained after scoring — recompilation not warranted")
             return self._noop_trace(plan, worlds, weights, pending, obs, fused, sel, score, dec, sim_time)
 
         # oscillation guard: refuse to re-activate a recently-active plan without new evidence
-        winner = next((c, o, r) for c, o, r in valid if c.candidate_id == score.top_candidate_id)
+        if not self.require_score_gate:
+            # B3 LLM-only: adopt the first non-current revision without evidence scoring (diagnostic baseline)
+            winner = next(((c, o, r) for c, o, r in valid if not c.is_current_plan), valid[0])
+        else:
+            winner = next((c, o, r) for c, o, r in valid if c.candidate_id == score.top_candidate_id)
         cand, ops, revised = winner
         dest_hash = plan_content_hash(revised)
         if lineage.oscillation(dest_hash):
@@ -237,6 +284,9 @@ class RecompilationController:
         act = tx.run(build, standard_invariants)
         if not act["activated"]:
             return self._failed_trace(plan, obs, fused, sel, sim_time, act["reason"])
+        # the adopted structure now governs execution: let the adapter reflect it (broad uncertainty over the
+        # revised/new components — §15). This is what makes recompilation help BEYOND posterior updating.
+        act["worlds"], act["weights"] = ex.post_migration(act["worlds"], act["weights"], obs, sim_time)
 
         # lineage + plan mixture from the scored mixture
         node = PlanLineageNode(plan_id=f"p{lineage.depth()}", plan_hash=dest_hash,
