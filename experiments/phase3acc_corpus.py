@@ -1,0 +1,115 @@
+"""Phase 3 accuracy — the NEW locked-test corpus.
+
+~70 resolved binary questions, event-family- and temporally-disjoint from BOTH frozen prior sets (the 23-question
+Phase-3B diagnostic and the 34-question Phase-3B locked test). Outcomes are matters of public record; only
+high-confidence resolutions are included (label errors poison everything — Part 20). Every as_of is strictly
+before resolution. These are ALL locked test: fitting/selection reuse the frozen 23-question diagnostic capture
+(a dev artifact), so none of these questions is ever seen during fitting.
+
+Fields: (qid, question, as_of, horizon, domain, outcome[1=yes], family, note)
+"""
+
+QUESTIONS = [
+    # ---------- elections (families disjoint from india_ge/eu_parl/france_leg/mexico_pres/japan_ge/venezuela_pres/us_pres/uk_ge) ----------
+    ("arg_2023",     "Will Javier Milei win Argentina's 2023 presidential runoff?", "2023-11-15", "2023-11-19", "elections", 1, "argentina_pres", "Milei won the runoff 2023-11-19."),
+    ("poland_2023",  "Will the Law and Justice (PiS) party retain a governing majority after Poland's October 2023 election?", "2023-10-10", "2023-11-15", "elections", 0, "poland_ge", "PiS lost its majority; Tusk coalition governed."),
+    ("nl_2023",      "Will Geert Wilders' PVV finish first in the Netherlands' November 2023 general election?", "2023-11-15", "2023-11-23", "elections", 1, "netherlands_ge", "PVV finished first 2023-11-22."),
+    ("turkey_2023",  "Will Recep Tayyip Erdogan win Turkey's May 2023 presidential runoff?", "2023-05-22", "2023-05-28", "elections", 1, "turkey_pres", "Erdogan won the runoff 2023-05-28."),
+    ("taiwan_2024",  "Will Lai Ching-te win Taiwan's January 2024 presidential election?", "2024-01-05", "2024-01-13", "elections", 1, "taiwan_pres", "Lai won 2024-01-13."),
+    ("indonesia_2024","Will Prabowo Subianto win Indonesia's 2024 presidential election in a single round?", "2024-02-10", "2024-03-20", "elections", 1, "indonesia_pres", "Prabowo won outright."),
+    ("sa_2024",      "Will the ANC lose its parliamentary majority in South Africa's 2024 election?", "2024-05-25", "2024-06-02", "elections", 1, "south_africa_ge", "ANC dropped below 50%, formed a coalition."),
+    ("iran_2024",    "Will Masoud Pezeshkian win Iran's July 2024 presidential runoff?", "2024-07-04", "2024-07-06", "elections", 1, "iran_pres", "Pezeshkian won the runoff."),
+    ("srilanka_2024","Will Anura Kumara Dissanayake win Sri Lanka's September 2024 presidential election?", "2024-09-18", "2024-09-23", "elections", 1, "srilanka_pres", "Dissanayake won 2024-09-22."),
+    ("romania_2024", "Will Romania's Constitutional Court annul the first round of its 2024 presidential election?", "2024-11-28", "2024-12-10", "elections", 1, "romania_pres", "First round annulled 2024-12-06."),
+    ("ghana_2024",   "Will John Mahama win Ghana's December 2024 presidential election?", "2024-12-05", "2024-12-09", "elections", 1, "ghana_pres", "Mahama won 2024-12-07."),
+    ("senegal_2024", "Will Bassirou Diomaye Faye win Senegal's March 2024 presidential election?", "2024-03-22", "2024-03-26", "elections", 1, "senegal_pres", "Faye won in the first round."),
+    ("austria_2024", "Will the Freedom Party (FPO) finish first in Austria's September 2024 legislative election?", "2024-09-25", "2024-09-30", "elections", 1, "austria_ge", "FPO finished first 2024-09-29."),
+    ("germany_2025", "Will the CDU/CSU finish first in Germany's February 2025 federal election?", "2025-02-15", "2025-02-24", "elections", 1, "germany_ge", "CDU/CSU finished first 2025-02-23."),
+    ("canada_2025",  "Will the Liberal Party win the most seats in Canada's 2025 federal election?", "2025-04-20", "2025-04-29", "elections", 1, "canada_ge", "Liberals won the most seats 2025-04-28."),
+    ("australia_2025","Will the Labor Party retain government in Australia's 2025 federal election?", "2025-05-01", "2025-05-04", "elections", 1, "australia_ge", "Labor retained government 2025-05-03."),
+    ("poland_2025",  "Will Karol Nawrocki win Poland's 2025 presidential runoff?", "2025-05-20", "2025-06-02", "elections", 1, "poland_pres", "Nawrocki won the runoff 2025-06-01."),
+    ("uruguay_2024", "Will Yamandu Orsi win Uruguay's 2024 presidential runoff?", "2024-11-20", "2024-11-25", "elections", 1, "uruguay_pres", "Orsi won the runoff 2024-11-24."),
+    ("moldova_2024", "Will Maia Sandu win Moldova's 2024 presidential runoff?", "2024-10-25", "2024-11-04", "elections", 1, "moldova_pres", "Sandu won the runoff 2024-11-03."),
+    ("slovakia_2023","Will Robert Fico become Slovakia's prime minister after the 2023 election?", "2023-10-01", "2023-10-26", "elections", 1, "slovakia_ge", "Fico formed a government in Oct 2023."),
+    ("bangladesh_2024","Will Bangladeshi Prime Minister Sheikh Hasina leave office in 2024?", "2024-07-15", "2024-12-31", "elections", 1, "bangladesh", "Hasina resigned and fled 2024-08-05."),
+    # ---------- central banks (disjoint from FOMC/ECB/BoE/BoJ) ----------
+    ("rba_nov24",    "Will the Reserve Bank of Australia hold its cash rate at its November 2024 meeting?", "2024-10-28", "2024-11-05", "econ", 1, "rba", "RBA held at 4.35% 2024-11-05."),
+    ("boc_oct24",    "Will the Bank of Canada cut its policy rate by 50 basis points in October 2024?", "2024-10-15", "2024-10-23", "econ", 1, "boc", "BoC cut 50bp 2024-10-23."),
+    ("snb_mar24",    "Will the Swiss National Bank cut interest rates at its March 2024 meeting?", "2024-03-18", "2024-03-21", "econ", 1, "snb", "SNB cut 25bp 2024-03-21 (surprise)."),
+    ("rbnz_aug24",   "Will the Reserve Bank of New Zealand cut its official cash rate in August 2024?", "2024-08-10", "2024-08-14", "econ", 1, "rbnz", "RBNZ cut 25bp 2024-08-14."),
+    ("riksbank_2024","Will Sweden's Riksbank cut its policy rate in 2024?", "2024-04-01", "2024-12-31", "econ", 1, "riksbank", "Riksbank cut starting May 2024."),
+    ("brazil_2024",  "Will Brazil's central bank raise the Selic rate in 2024?", "2024-08-01", "2024-12-31", "econ", 1, "bcb", "Copom hiked starting Sep 2024."),
+    ("rbi_2024",     "Will the Reserve Bank of India hold its repo rate through all of 2024?", "2024-02-01", "2024-12-31", "econ", 1, "rbi", "RBI held the repo rate all year."),
+    # ---------- macro / markets (disjoint from us_cpi/us_jobs/gold/ust_yield/eth/index/crypto/mktcap) ----------
+    ("wti_100_2024", "Will WTI crude oil exceed 100 US dollars per barrel at any point in 2024?", "2024-04-01", "2024-12-31", "macro", 0, "oil", "WTI stayed below $100 all year."),
+    ("silver_40_2024","Will silver exceed 40 US dollars per ounce in 2024?", "2024-05-01", "2024-12-31", "finance", 0, "silver", "Silver peaked around $35 in 2024."),
+    ("vix_50_2024",  "Will the VIX volatility index exceed 50 intraday at any point in 2024?", "2024-06-01", "2024-12-31", "finance", 1, "vix", "VIX spiked above 60 on 2024-08-05."),
+    ("nikkei_crash_2024","Will Japan's Nikkei 225 fall more than 10 percent in a single day in 2024?", "2024-07-01", "2024-12-31", "finance", 1, "nikkei", "Nikkei fell ~12% on 2024-08-05."),
+    ("us_downgrade_2023","Will a major credit rating agency downgrade the US sovereign rating in 2023?", "2023-06-01", "2023-12-31", "macro", 1, "sovereign_rating", "Fitch downgraded the US 2023-08-01."),
+    ("uk_recession_2024","Will the United Kingdom be in recession as of the first quarter 2024 GDP release?", "2024-01-15", "2024-05-15", "macro", 1, "uk_macro", "The UK entered technical recession (H2 2023 data, reported Feb 2024)."),
+    ("reddit_ipo_2024","Will Reddit complete its initial public offering in 2024?", "2024-01-15", "2024-12-31", "finance", 1, "reddit_ipo", "Reddit IPO'd 2024-03-21."),
+    ("arm_ipo_2023", "Will Arm Holdings complete its initial public offering in 2023?", "2023-08-01", "2023-12-31", "finance", 1, "arm_ipo", "Arm IPO'd 2023-09-14."),
+    ("opec_2023",    "Will OPEC+ extend oil production cuts into 2024 at its late-2023 meeting?", "2023-11-01", "2023-12-31", "macro", 1, "opec", "OPEC+ extended cuts at the Nov 2023 meeting."),
+    ("spirit_bk_2024","Will Spirit Airlines file for bankruptcy in 2024?", "2024-10-01", "2024-12-31", "finance", 1, "spirit", "Spirit filed Chapter 11 2024-11-18."),
+    # ---------- tech / regulatory (disjoint from openai/apple/xai/meta/tiktok/tesla/sec_etf/disney) ----------
+    ("google_monopoly_2024","Will a US court rule that Google illegally holds a monopoly in search in 2024?", "2024-05-01", "2024-12-31", "tech", 1, "google_antitrust", "Court ruled against Google 2024-08-05."),
+    ("ms_activision_2023","Will Microsoft complete its acquisition of Activision Blizzard in 2023?", "2023-07-01", "2023-12-31", "tech", 1, "ms_activision", "Deal closed 2023-10-13."),
+    ("vision_pro_2024","Will Apple release the Vision Pro headset in 2024?", "2024-01-05", "2024-12-31", "tech", 1, "vision_pro", "Vision Pro launched 2024-02-02."),
+    ("crowdstrike_2024","Will a CrowdStrike software update cause a major global IT outage in 2024?", "2024-06-01", "2024-12-31", "tech", 1, "crowdstrike", "Global outage 2024-07-19."),
+    ("intel_ceo_2024","Will Intel's chief executive Pat Gelsinger leave the company in 2024?", "2024-09-01", "2024-12-31", "tech", 1, "intel_ceo", "Gelsinger departed 2024-12-01."),
+    ("blackwell_2024","Will Nvidia announce its Blackwell GPU architecture in 2024?", "2024-01-01", "2024-12-31", "tech", 1, "nvidia_blackwell", "Blackwell announced at GTC 2024-03-18."),
+    ("x_rebrand_2023","Will Twitter rebrand to X in 2023?", "2023-06-01", "2023-12-31", "tech", 1, "x_rebrand", "Twitter rebranded to X 2023-07-23."),
+    # ---------- geopolitics (disjoint from gaza/syria/ru_ua/iran_israel/taiwan/guyana) ----------
+    ("sweden_nato_2024","Will Sweden formally join NATO in 2024?", "2024-01-15", "2024-12-31", "geopolitics", 1, "sweden_nato", "Sweden joined NATO 2024-03-07."),
+    ("finland_nato_2023","Will Finland join NATO in 2023?", "2023-02-01", "2023-12-31", "geopolitics", 1, "finland_nato", "Finland joined NATO 2023-04-04."),
+    ("nasrallah_2024","Will Hezbollah leader Hassan Nasrallah be killed in 2024?", "2024-09-01", "2024-12-31", "geopolitics", 1, "hezbollah", "Nasrallah killed 2024-09-27."),
+    ("nagorno_2023", "Will Azerbaijan take full control of Nagorno-Karabakh in 2023?", "2023-09-01", "2023-12-31", "geopolitics", 1, "nagorno", "Azerbaijan took control 2023-09."),
+    ("niger_2023",   "Will a military coup remove Niger's president in 2023?", "2023-07-20", "2023-12-31", "geopolitics", 1, "niger_coup", "Coup removed President Bazoum 2023-07-26."),
+    ("nk_russia_2024","Will North Korea deploy troops to support Russia's war effort in 2024?", "2024-09-01", "2024-12-31", "geopolitics", 1, "nk_russia", "NK troops confirmed in Oct 2024."),
+    ("ukraine_nato_2024","Will Ukraine become a NATO member in 2024?", "2024-01-15", "2024-12-31", "geopolitics", 0, "ukraine_nato", "Ukraine did not join NATO in 2024."),
+    ("sudan_2024",   "Will Sudan's civil war end with a nationwide ceasefire in 2024?", "2024-03-01", "2024-12-31", "geopolitics", 0, "sudan", "No nationwide ceasefire in 2024."),
+    ("assange_2024", "Will Julian Assange remain imprisoned in the UK at the end of 2024?", "2024-03-01", "2024-12-31", "geopolitics", 0, "assange", "Assange was freed in a plea deal 2024-06."),
+    # ---------- sports (disjoint from cricket/UCL/nba/euro/f1/golf/nhl) ----------
+    ("superbowl_2024","Will the Kansas City Chiefs win Super Bowl LVIII in February 2024?", "2024-02-05", "2024-02-12", "sports", 1, "nfl", "Chiefs won 2024-02-11."),
+    ("worldseries_2024","Will the Los Angeles Dodgers win the 2024 World Series?", "2024-10-22", "2024-11-01", "sports", 1, "mlb", "Dodgers won 2024-10-30."),
+    ("wimbledon_2024","Will Carlos Alcaraz win the 2024 men's Wimbledon singles title?", "2024-07-01", "2024-07-14", "sports", 1, "wimbledon", "Alcaraz won 2024-07-14."),
+    ("ballondor_2024","Will Rodri win the 2024 men's Ballon d'Or?", "2024-10-01", "2024-10-28", "sports", 1, "ballon_dor", "Rodri won 2024-10-28."),
+    ("tdf_2024",     "Will Tadej Pogacar win the 2024 Tour de France?", "2024-07-01", "2024-07-21", "sports", 1, "tour_de_france", "Pogacar won 2024-07-21."),
+    ("copa_2024",    "Will Argentina win the 2024 Copa America?", "2024-07-10", "2024-07-15", "sports", 1, "copa_america", "Argentina won 2024-07-14."),
+    ("ausopen_2024", "Will Jannik Sinner win the 2024 Australian Open men's singles title?", "2024-01-15", "2024-01-28", "sports", 1, "aus_open", "Sinner won 2024-01-28."),
+    ("champtrophy_2025","Will India win the 2025 ICC Champions Trophy?", "2025-02-15", "2025-03-09", "sports", 1, "champions_trophy", "India won 2025-03-09."),
+    # ---------- science / space (disjoint from moon/starliner/hurricane) ----------
+    ("chandrayaan3_2023","Will India's Chandrayaan-3 successfully soft-land near the Moon's south pole in 2023?", "2023-08-01", "2023-08-31", "science", 1, "chandrayaan", "Soft landing 2023-08-23."),
+    ("odysseus_2024","Will a privately built spacecraft soft-land on the Moon in early 2024?", "2024-02-01", "2024-03-15", "science", 1, "im_odysseus", "Intuitive Machines' Odysseus landed 2024-02-22."),
+    ("polaris_2024", "Will the Polaris Dawn mission conduct the first commercial spacewalk in 2024?", "2024-08-01", "2024-12-31", "science", 1, "polaris_dawn", "First commercial spacewalk 2024-09-12."),
+    ("europa_2024",  "Will NASA launch the Europa Clipper spacecraft in 2024?", "2024-09-01", "2024-12-31", "science", 1, "europa_clipper", "Launched 2024-10-14."),
+    ("quake_m8_2024","Will a magnitude 8.0 or greater earthquake occur anywhere in 2024?", "2024-02-01", "2024-12-31", "science", 0, "earthquake", "No M8.0+ earthquake in 2024."),
+    ("h5n1_dairy_2024","Will H5N1 bird flu be detected in US dairy cattle in 2024?", "2024-02-01", "2024-12-31", "science", 1, "h5n1_dairy", "Confirmed in dairy cattle 2024-03."),
+    ("mpox_2024",    "Will the WHO declare mpox a public health emergency of international concern in 2024?", "2024-07-01", "2024-12-31", "science", 1, "mpox", "WHO declared a PHEIC 2024-08-14."),
+    ("nobel_ai_2024","Will the 2024 Nobel Prize in Physics recognize work related to machine learning or neural networks?", "2024-09-01", "2024-10-15", "science", 1, "nobel_physics", "Awarded to Hopfield and Hinton 2024-10-08."),
+    # ---------- legal / corporate / labor (disjoint from ma/boeing_ceo/corp_action) ----------
+    ("sbf_2023",     "Will Sam Bankman-Fried be convicted of fraud in 2023?", "2023-10-01", "2023-12-31", "politics", 1, "sbf_trial", "Convicted 2023-11-02."),
+    ("trump_fraud_2024","Will Donald Trump be found liable in the New York civil fraud case in early 2024?", "2024-01-15", "2024-03-01", "politics", 1, "ny_civil_fraud", "Ruled liable 2024-02-16."),
+    ("uaw_2023",     "Will the United Auto Workers reach a tentative deal with the Detroit automakers in 2023?", "2023-10-01", "2023-12-31", "politics", 1, "uaw_strike", "Tentative deals reached late Oct 2023."),
+    ("sag_2023",     "Will the SAG-AFTRA actors' strike end with a tentative agreement in 2023?", "2023-10-01", "2023-12-31", "politics", 1, "sag_strike", "Deal reached 2023-11-08."),
+    ("boeing_strike_2024","Will Boeing factory workers go on strike in 2024?", "2024-08-15", "2024-12-31", "politics", 1, "boeing_strike", "Machinists struck starting 2024-09-13."),
+    # ---------- confident NO outcomes (new families) to balance the base rate ----------
+    ("macron_resign_2024","Will Emmanuel Macron resign as President of France in 2024?", "2024-07-08", "2024-12-31", "elections", 0, "france_pres", "Macron did not resign in 2024."),
+    ("nasdaq_bear_2024","Will the Nasdaq Composite fall more than 20 percent from its peak in 2024?", "2024-06-01", "2024-12-31", "finance", 0, "nasdaq", "Max 2024 drawdown was well under 20%."),
+    ("copper_12k_2024","Will LME copper exceed 12000 US dollars per tonne in 2024?", "2024-06-01", "2024-12-31", "finance", 0, "copper", "Copper peaked around $11,100/t in 2024."),
+    ("natgas_5_2024","Will US Henry Hub natural gas exceed 5 dollars per MMBtu in 2024?", "2024-05-01", "2024-12-31", "finance", 0, "natgas", "Henry Hub stayed well below $5 in 2024."),
+    ("jpy_130_2024", "Will the yen strengthen below 130 per US dollar at any point in 2024?", "2024-05-01", "2024-12-31", "finance", 0, "jpy", "USD/JPY never strengthened below ~139 in 2024."),
+    ("gme_100_2024", "Will GameStop's share price exceed 100 US dollars in 2024?", "2024-04-01", "2024-12-31", "finance", 0, "gme", "GameStop peaked around $64 in 2024."),
+    ("ai_reg_2024",  "Will the United States enact comprehensive federal AI regulation legislation in 2024?", "2024-03-01", "2024-12-31", "tech", 0, "us_ai_reg", "No comprehensive federal AI law passed in 2024."),
+    ("humanoid_2024","Will a humanoid robot go on sale to consumers in 2024?", "2024-03-01", "2024-12-31", "tech", 0, "humanoid_robot", "No consumer humanoid robot shipped in 2024."),
+    ("saudi_israel_2024","Will Saudi Arabia and Israel formally normalize diplomatic relations in 2024?", "2024-03-01", "2024-12-31", "geopolitics", 0, "saudi_israel", "No normalization in 2024."),
+    ("unsc_palestine_2024","Will the UN Security Council admit Palestine as a full member state in 2024?", "2024-03-01", "2024-12-31", "geopolitics", 0, "unsc_palestine", "US vetoed full membership in Apr 2024."),
+    ("djokovic_2024","Will Novak Djokovic win a Grand Slam singles title in 2024?", "2024-01-15", "2024-12-31", "sports", 0, "djokovic_slam", "Djokovic won no Grand Slam singles title in 2024."),
+    ("mancity_2025", "Will Manchester City win the 2024-25 Premier League title?", "2024-12-01", "2025-05-25", "sports", 0, "epl", "Liverpool won the 2024-25 Premier League."),
+    ("covid_voc_2024","Will the WHO designate a new COVID-19 variant of concern in 2024?", "2024-03-01", "2024-12-31", "science", 0, "covid_variant", "No new variant of concern designated in 2024."),
+    ("bank_fail_2024","Will a US bank with over 100 billion dollars in assets fail in 2024?", "2024-01-15", "2024-12-31", "finance", 0, "us_bank_failure", "No US bank over $100B failed in 2024."),
+    ("us_gdp_2024",  "Will US real GDP contract in any quarter of 2024?", "2024-04-01", "2024-12-31", "macro", 0, "us_gdp", "US GDP grew every quarter of 2024."),
+    ("ez_recession_2024","Will the Eurozone enter a technical recession during 2024?", "2024-01-15", "2024-12-31", "macro", 0, "eurozone_gdp", "The Eurozone avoided a technical recession in 2024."),
+    ("cny_2024",     "Will China's yuan weaken past 7.5 per US dollar in 2024?", "2024-05-01", "2024-12-31", "finance", 0, "cny", "USD/CNY stayed below ~7.35 in 2024."),
+    ("nk_nuke_2024", "Will North Korea conduct a nuclear weapons test in 2024?", "2024-02-01", "2024-12-31", "geopolitics", 0, "nk_nuclear", "No North Korean nuclear test in 2024."),
+]
