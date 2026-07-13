@@ -207,6 +207,32 @@ def test_world_particles_change_policy_probabilities():
     assert p1.action_probabilities != pm.action_probabilities
 
 
+def test_world_particle_weights_are_retained_by_runtime():
+    w1 = world(); w2 = copy.deepcopy(w1); w2.branch_id = "weighted-b1"
+    w1.entities["alice"].set("past_actions", F([{"action": "approve"}] * 8))
+    w2.entities["alice"].set("past_actions", F([{"action": "defer"}] * 8))
+    runtime = ActorPolicyRuntime(ActorPolicyModel({
+        **ActorPolicyModel._broad_pack(),
+        "policy_family_weights": {"habit": 1.0}, "habit_strength": 1.0,
+    }))
+    decision = {"candidate_actions": [
+        {"name": "approve", "family": "institutional",
+         "target": {"target_type": "institution", "target_id": "board"},
+         "mechanisms_triggered": ["institution_processing"]},
+        {"name": "defer", "family": "institutional",
+         "target": {"target_type": "institution", "target_id": "board"},
+         "mechanisms_triggered": ["institution_processing"]},
+    ]}
+    _, point, _ = runtime.decide(Plan(), [w1], "alice", decision=decision, seed=9)
+    _, weighted, _ = runtime.decide(Plan(), [w1, w2], "alice", decision=decision, seed=9,
+                                    particle_weights=[1.0, 0.0])
+    assert weighted.action_probabilities == point.action_probabilities
+    assert weighted.provenance["particle_weights"] == [1.0, 0.0]
+    with pytest.raises(ValueError, match="particle weight"):
+        runtime.decide(Plan(), [w1, w2], "alice", decision=decision, seed=9,
+                       particle_weights=[1.0])
+
+
 def test_temperature_calibration_normalizes():
     c = TemperatureCalibrator(2.0, fitted_on="calibration_only")
     out = c.apply({"a": 0.9, "b": 0.1})
