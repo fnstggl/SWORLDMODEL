@@ -1,0 +1,48 @@
+{
+ "question": "Will Alice respond to a follow-up message from Bob within 3 days?",
+ "as_of": "2024-01-01",
+ "horizon": "2024-01-04",
+ "simulation_status": "completed_with_degradation",
+ "support_grade": "exploratory",
+ "raw_probability": 0.5,
+ "phase8": {
+  "materialized": 1,
+  "history_events": 6
+ },
+ "persistent_deltas": [
+  {
+   "at": 1704067200.0,
+   "variable_id": "engagement_propensity",
+   "key": "w0::us::actor::Alice::engagement_propensity",
+   "transition_family": "reinforcement",
+   "before": null,
+   "after": 0.6074744982046366,
+   "driven_by_event_id": "",
+   "reason_codes": [
+    "phase8_materialize"
+   ],
+   "uncertainty": {
+    "sd": 0.1614,
+    "ess": 8.152
+   },
+   "evidence_deps": [
+    "ev_70261d174a2261e36c799f7c",
+    "ev_a4d0c23fc6bd83268a2128ba",
+    "ev_a4ef6c0bfa6cbe2a68adfc80",
+    "ev_5eea21de623e087a568623ea",
+    "ev_d7f25b6a505ba4de2f9b0a97"
+   ],
+   "provenance": {
+    "posterior_hash": "968b87694c6b7feb",
+    "method": "decayed_beta_bernoulli",
+    "n_events": 6,
+    "transition_params": {
+     "decay": 0.85,
+     "prior_strength": 4.0,
+     "source": "reinforcement/forgetting"
+    }
+   }
+  }
+ ],
+ "note": "universal compile->build_world->ingest history->filter->materialize->rollout; the compiled Alice entity received 6 ingested engagement events, filtered to 1 materialized persistent posterior consumed by the standard rollout. No-abstention preserved (completed_with_degradation)."
+}
