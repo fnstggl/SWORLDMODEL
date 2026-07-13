@@ -152,6 +152,133 @@ def fit_conditioned(pairs_with_key, *, min_cell=30, fitted_on="") -> Conditioned
     return ConditionedCalibrator(cells=cells, global_cal=g, min_cell=min_cell)
 
 
+# ------------------------------------------------------------------ identity + beta + registry (Phase 12)
+@dataclass
+class IdentityCalibrator:
+    """The null calibrator: return the raw probability unchanged. The mandatory comparison baseline — a
+    non-identity calibrator is promoted ONLY if it beats this on held-out proper scores/reliability."""
+    n_fit: int = 0
+    fitted_on: str = ""
+    version: str = "1.0"
+
+    def apply(self, p: float) -> float:
+        return p
+
+
+@dataclass
+class BetaCalibrator:
+    """Beta calibration (Kull et al.): logit(p_cal) = a*ln(p) - b*ln(1-p) + c. Handles asymmetric miscalibration
+    that Platt (which is symmetric in logit space) cannot. Fit on train/val only."""
+    a: float = 1.0
+    b: float = 1.0
+    c: float = 0.0
+    n_fit: int = 0
+    fitted_on: str = ""
+    version: str = "1.0"
+
+    def apply(self, p: float) -> float:
+        p = min(1 - 1e-6, max(1e-6, p))
+        z = self.a * math.log(p) - self.b * math.log(1 - p) + self.c
+        return _sig(z)
+
+
+def fit_beta(pairs, *, iters=800, lr=0.05, l2=1e-3, fitted_on="") -> BetaCalibrator:
+    if len(pairs) < 10:
+        return BetaCalibrator(fitted_on="too_small")
+    a, b, c, n = 1.0, 1.0, 0.0, len(pairs)
+    for _ in range(iters):
+        ga = gb = gc = 0.0
+        for p, y in pairs:
+            p = min(1 - 1e-6, max(1e-6, p))
+            f1, f2 = math.log(p), -math.log(1 - p)
+            e = _sig(a * f1 + b * f2 + c) - y
+            ga += e * f1; gb += e * f2; gc += e
+        a -= lr * (ga / n + l2 * (a - 1.0))
+        b -= lr * (gb / n + l2 * (b - 1.0))
+        c -= lr * (gc / n + l2 * c)
+    return BetaCalibrator(a=round(a, 5), b=round(b, 5), c=round(c, 5), n_fit=n, fitted_on=fitted_on)
+
+
+def _brier(pairs):
+    return sum((p - y) ** 2 for p, y in pairs) / len(pairs) if pairs else None
+
+
+def _logloss(pairs):
+    if not pairs:
+        return None
+    return sum(-(y * math.log(min(1 - 1e-6, max(1e-6, p))) + (1 - y) * math.log(min(1 - 1e-6, max(1e-6, 1 - p))))
+               for p, y in pairs) / len(pairs)
+
+
+#: registry of production calibrator families (Part E). Each entry: fitter + typed metadata.
+CALIBRATOR_REGISTRY = {
+    "identity": {"fitter": lambda pairs, **kw: IdentityCalibrator(n_fit=len(pairs), **kw),
+                 "task_family": "binary", "method": "identity", "min_n": 0},
+    "platt": {"fitter": fit_platt, "task_family": "binary", "method": "logistic", "min_n": 20},
+    "beta": {"fitter": fit_beta, "task_family": "binary", "method": "beta", "min_n": 20},
+    "isotonic": {"fitter": fit_isotonic, "task_family": "binary", "method": "isotonic_pav", "min_n": 40},
+}
+
+
+def select_calibrator(cal_pairs, val_pairs, *, primary="logloss", fitted_on="", candidates=None):
+    """Fit every registry candidate on cal_pairs, score on val_pairs, and SELECT the best by the primary proper
+    score — but ONLY promote a non-identity calibrator if it strictly beats identity on BOTH val Brier AND val
+    log-loss (Part F: never promote a calibrator that worsens held-out proper scores). Returns
+    (selected_name, calibrator, comparison[list])."""
+    cand = candidates or list(CALIBRATOR_REGISTRY.keys())
+    score = _logloss if primary == "logloss" else _brier
+    comparison = []
+    fitted = {}
+    for name in cand:
+        spec = CALIBRATOR_REGISTRY[name]
+        if len(cal_pairs) < spec["min_n"] and name != "identity":
+            comparison.append({"name": name, "skipped": "insufficient_cal_n", "cal_n": len(cal_pairs)})
+            continue
+        cal = spec["fitter"](cal_pairs, fitted_on=fitted_on)
+        fitted[name] = cal
+        vp = [(cal.apply(p), y) for p, y in val_pairs]
+        comparison.append({"name": name, "val_brier": round(_brier(vp), 4), "val_logloss": round(_logloss(vp), 4),
+                           "val_ece": ece(vp)})
+    ident = fitted["identity"]
+    id_vp = [(ident.apply(p), y) for p, y in val_pairs]
+    id_b, id_l = _brier(id_vp), _logloss(id_vp)
+    best_name, best_cal, best_score = "identity", ident, (id_l if primary == "logloss" else id_b)
+    for name in cand:
+        if name == "identity" or name not in fitted:
+            continue
+        cal = fitted[name]
+        vp = [(cal.apply(p), y) for p, y in val_pairs]
+        b, l = _brier(vp), _logloss(vp)
+        beats_identity = (b < id_b - 1e-9) and (l < id_l - 1e-9)   # must beat on BOTH proper scores
+        s = l if primary == "logloss" else b
+        if beats_identity and s < best_score - 1e-9:
+            best_name, best_cal, best_score = name, cal, s
+    return best_name, best_cal, comparison
+
+
+def bootstrap_calibration_uncertainty(cal_pairs, p_query, *, method="platt", n_boot=300, seed=917):
+    """Calibration uncertainty (Part H): resample the calibration set, refit, and report the spread of the
+    calibrated probability at p_query. Deterministic LCG. Returns central + 90% interval + sd + eff_n."""
+    if len(cal_pairs) < 10:
+        return {"central": p_query, "ci90": [p_query, p_query], "sd": None, "eff_n": len(cal_pairs),
+                "note": "insufficient_calibration_data"}
+    st = seed & 0xFFFFFFFF
+    n = len(cal_pairs)
+    fitter = CALIBRATOR_REGISTRY.get(method, CALIBRATOR_REGISTRY["platt"])["fitter"]
+    outs = []
+    for _ in range(n_boot):
+        samp = []
+        for _ in range(n):
+            st = (1103515245 * st + 12345) & 0x7FFFFFFF
+            samp.append(cal_pairs[st % n])
+        outs.append(fitter(samp, fitted_on="bootstrap").apply(p_query))
+    outs.sort()
+    mean = sum(outs) / len(outs)
+    var = sum((o - mean) ** 2 for o in outs) / len(outs)
+    return {"central": round(mean, 4), "ci90": [round(outs[int(0.05 * len(outs))], 4),
+            round(outs[int(0.95 * len(outs))], 4)], "sd": round(var ** 0.5, 4), "eff_n": n}
+
+
 # ------------------------------------------------------------------ calibration metrics
 def ece(pairs, *, bins=(0.0, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0)) -> float:
     """Expected calibration error over confidence buckets (weighted by bucket mass)."""
