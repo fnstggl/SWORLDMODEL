@@ -1,0 +1,86 @@
+{
+ "track_B_dyadic_enron": {
+  "task": "Enron dyadic link persistence (predict 2nd-half interaction from 1st-half history)",
+  "n_dyads_scored": 251,
+  "n_windows": 6,
+  "second_half_activity_rate": 0.5219,
+  "detail": {
+   "no_history": {
+    "brier": 0.24952,
+    "logloss": 0.6922,
+    "auroc": 0.5,
+    "ece": 0.0281
+   },
+   "frequency": {
+    "brier": 0.37572,
+    "logloss": 1.0223,
+    "auroc": 0.5,
+    "ece": 0.3719
+   },
+   "persist_shared_world": {
+    "brier": 0.26376,
+    "logloss": 0.7211,
+    "auroc": 0.5042,
+    "ece": 0.0751
+   }
+  },
+  "persist_vs_frequency": {
+   "mean": -0.111962,
+   "ci95": [
+    -0.141659,
+    -0.083639
+   ],
+   "n": 251
+  },
+  "persist_vs_no_history": {
+   "mean": 0.014237,
+   "ci95": [
+    -0.000398,
+    0.028623
+   ],
+   "n": 251
+  },
+  "verdict": "dyadic history beats the frequency baseline but does NOT beat the base-rate baseline (AUROC 0.5042); Enron's late-2001 collapse is a regime change that washes out dyadic persistence \u2014 HONEST WEAK result"
+ },
+ "track_C_institutional_congress": {
+  "task": "US Senate S117 roll-call pass persistence (predict next pass from prior decisions)",
+  "n_scored": 882,
+  "n_bills_total": 928,
+  "base_pass_rate": 0.8039,
+  "detail": {
+   "no_history": {
+    "brier": 0.15836,
+    "logloss": 0.4966,
+    "auroc": 0.5,
+    "ece": 0.0473
+   },
+   "persist_shared_world": {
+    "brier": 0.15438,
+    "logloss": 0.4848,
+    "auroc": 0.6085,
+    "ece": 0.0195
+   }
+  },
+  "persist_vs_no_history": {
+   "mean": -0.003985,
+   "ci95": [
+    -0.008449,
+    0.000148
+   ],
+   "n": 882
+  },
+  "power": {
+   "n": 882,
+   "se_per_paired_brier": 0.002224,
+   "power_at_observed_effect": 0.433,
+   "min_detectable_effect_80pct": 0.006227,
+   "se_basis": "empirical paired-difference sd (CI-consistent)"
+  },
+  "adequately_powered": false,
+  "verdict": "institutional pass-persistence NOT DETECTABLE (CI spans 0)"
+ },
+ "summary": {
+  "track_B_verdict": "dyadic history beats the frequency baseline but does NOT beat the base-rate baseline (AUROC 0.5042); Enron's late-2001 collapse is a regime change that washes out dyadic persistence \u2014 HONEST WEAK result",
+  "track_C_verdict": "institutional pass-persistence NOT DETECTABLE (CI spans 0)"
+ }
+}
