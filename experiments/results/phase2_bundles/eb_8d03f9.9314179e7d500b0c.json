@@ -1,0 +1,1046 @@
+{
+ "bundle_id": "eb_8d03f9",
+ "question": "Will the public apology stem the customer boycott?",
+ "as_of": 1688169600.0,
+ "compiler_plan_hash": "a1d2ab19dbf4",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_724d4ad8d5",
+   "claim_or_quantity": "If the customer boycott's impact (e.g., sales drop, participation rate) decreases by at least 20% from its peak within the horizon, classify as 'boycott_stems'; otherwise 'boycott_continues'.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "company_ceo",
+    "company"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_ee9bbd9113",
+   "claim_or_quantity": "value/context of apology_sincerity_perception",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "apology_sincerity_perception",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_7535a46039",
+   "claim_or_quantity": "value/context of customers.segments.boycott_activists.moral_conviction",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "customers.segments.boycott_activists.moral_conviction",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_7151cfaaa4",
+   "claim_or_quantity": "value/context of trust_change",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "trust_change",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_9c49c8c4e1",
+   "claim_or_quantity": "evidence discriminating structural hypothesis apology_effective",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:apology_effective",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_37cbdda189",
+   "claim_or_quantity": "evidence discriminating structural hypothesis apology_ineffective",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:apology_ineffective",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_f813c256d8",
+   "claim_or_quantity": "decision rules / process of company",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "company",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-07-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_724d4ad8d5",
+   "terms": "public apology stem customer boycott company ceo company",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_ee9bbd9113",
+   "terms": "apology sincerity perception",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_7535a46039",
+   "terms": "customers segments boycott activists moral conviction",
+   "after": "2023-02-01",
+   "before": "2023-07-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_724d4ad8d5",
+   "logical_query": "public apology stem customer boycott company ceo company after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=public+apology+stem+customer+boycott+company+ceo+company+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783908135.246412,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:02:15 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw15BiSO44w5ACxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcy_suXmITOPBv6g1mJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwC0uzkT\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "1da5c6404452ee823a51a461a0e86d6b81eca6be66f8148496ac08fe6617bbe0",
+   "n_bytes": 1277,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.647
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_ee9bbd9113",
+   "logical_query": "apology sincerity perception after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=apology+sincerity+perception+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783908135.8945067,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:02:16 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw1JBiSO44w5ACxJVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDsaLv4iU2gYYVtz8zKikn5RfGp-SXFBcX5CQWZxSnFpWlFsUbGRiZGZgbmOkZmMQXGAAAm4Y2-g\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "9ce455ce6a0d27abaddf66a5a60b2c1b9be7dc5b56b021fb5ff40905ba9539c0",
+   "n_bytes": 6475,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 5,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.521
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_7535a46039",
+   "logical_query": "customers segments boycott activists moral conviction after:2023-02-01 before:2023-07-01",
+   "wire_url": "https://news.google.com/rss/search?q=customers+segments+boycott+activists+moral+conviction+after%3A2023-02-01+before%3A2023-07-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-02-01",
+   "before_date": "2023-07-01",
+   "retrieved_at": 1783908136.416811,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:02:16 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjytDikmJw15BiSO44w5AKxHVA3ADEfBXPmVpvnmOdDMQli86zNgFxFxDPAGJDhUus9kB8Of0Sa5HEFdYGIP5UdYNVoPoG67diXzaWEiB-689mGhLI5gzEWzSD2YR4OFb0XbzEJvDj5tkzzErKSfmF8Sn5JcXFBTmJxRnFqUVlqUXxRgZGZgbmBmZ6BibxBQYAmH06vw\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "cf6156e94e05b507ebd2cf89e6fdbf6524d2dad534950447c22527fc4e9a50ad",
+   "n_bytes": 1271,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 0,
+   "connector_status": "zero_results",
+   "error": "",
+   "latency_s": 0.454
+  }
+ ],
+ "raw_content_refs": [
+  "9ce455ce6a0d27abaddf66a5a60b2c1b9be7dc5b56b021fb5ff40905ba9539c0"
+ ],
+ "documents": [
+  {
+   "id": "2afaf723372d48f8",
+   "source": "vox.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMicEFVX3lxTE5ZQnM5a0s0d1lsNXdCUXVSU3VvTm9sWUdOZzdtTThrZ283YXlBSUlhRXlJckE0ZmZvWlV0akRPNlRrZTlpN0paaW4wRUgyZGFoZEhwYWFtbkFOUVdvajFmb0lDWFBOa241dUVNaUNEdUE?oc=5",
+   "title": "The six (and a half) steps to an effective apology - vox.com",
+   "text": "The six (and a half) steps to an effective apology - vox.com. The six (and a half) steps to an effective apology vox.com",
+   "content_hash": "c3302c9094227137",
+   "raw_feed_hash": "9ce455ce6a0d27abaddf66a5a60b2c1b9be7dc5b56b021fb5ff40905ba9539c0",
+   "published_at": 1678003200.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_ee9bbd9113",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4c043f564f298491",
+   "source": "PsyPost",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOT2NVTzk4UVdBR1NXZUowbEFXbGZFZHoxV3lZTU8tWFRoZDRkcWR4dVdYdVFKYll3RmRFdFJzTGk1T1Q4U2kxSzRDeWRBZWJlbEZod1ktMmJzejhkZ1RrcjlvSkk5bG1NN09DcUVBQklaUTJ5SGdJNElBR0FadzZoTFU4OHd4MkJEVHVIbUtYS3J0RlRaSmRsVjdiZUs5UnlWbEltek9xMjh5MzJsR1dxMkFqYlJVSlhROUVRcGZ3?oc=5",
+   "title": "Are you a frequent apologizer? New research indicates you might actually reap downstream benefits - PsyPost",
+   "text": "Are you a frequent apologizer? New research indicates you might actually reap downstream benefits - PsyPost. Are you a frequent apologizer? New research indicates you might actually reap downstream benefits PsyPost",
+   "content_hash": "e7280594b3afc09f",
+   "raw_feed_hash": "9ce455ce6a0d27abaddf66a5a60b2c1b9be7dc5b56b021fb5ff40905ba9539c0",
+   "published_at": 1679900400.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_ee9bbd9113",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "bcd365b68ac1dee3",
+   "source": "Nature",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE0zbmRfSFIxcFdUamVURmFETnZad0xpeC1pOFdnRjRMZDQtckZOQnFfNDJUZG9zazRQVGpZdTN0OVJ3dzJnX1E3cU9wZC15cmFRMUZpQ3F0MzhMSmY4UE5r?oc=5",
+   "title": "The theory of mind and human\u2013robot trust repair - Nature",
+   "text": "The theory of mind and human\u2013robot trust repair - Nature. The theory of mind and human\u2013robot trust repair Nature",
+   "content_hash": "8f1ca8d33d3ffa66",
+   "raw_feed_hash": "9ce455ce6a0d27abaddf66a5a60b2c1b9be7dc5b56b021fb5ff40905ba9539c0",
+   "published_at": 1687158000.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_ee9bbd9113",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d97648ff8d30bd3f",
+   "source": "Stylist",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE5yTW9DYUlCMS1vb1AtVDYtc1FmMXJPSER5WTI5ejNNMzlrVFZqWUhmeFNMNjVTR1B5SF9OZzhXekFRMWYxQmVYUm9TWWJocDNUSnphcTdBX0d6aHF1Mld2dlN0d2VCdXRwVjV5S2pKaG5LM3lGNnc?oc=5",
+   "title": "Saying sorry too much isn't such a bad thing - Stylist",
+   "text": "Saying sorry too much isn't such a bad thing - Stylist. Saying sorry too much isn't such a bad thing Stylist",
+   "content_hash": "0b39eb3638799761",
+   "raw_feed_hash": "9ce455ce6a0d27abaddf66a5a60b2c1b9be7dc5b56b021fb5ff40905ba9539c0",
+   "published_at": 1680159600.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_ee9bbd9113",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "68c81fc0bd9bdd96",
+   "source": "Xinhua",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMifEFVX3lxTE5jYTFOYmZ5TlhFSWl3d3FIdEQtYi1GTkVvQ0hyWXVHMXlFMmZGWlRRN3ljaVUxcUFNWHAydXlUNHk3YnJaOWMxU2FmOWE5dElXWXo1b0NNQmF0X2o5NVlhNkVpUFNQVWo3S3QyVUlwUXFtSlhXUG56c1FPYVo?oc=5",
+   "title": "South Koreans protest Japanese PM's visit to Seoul - Xinhua",
+   "text": "South Koreans protest Japanese PM's visit to Seoul - Xinhua. South Koreans protest Japanese PM's visit to Seoul Xinhua",
+   "content_hash": "13f5dc4777a15f3d",
+   "raw_feed_hash": "9ce455ce6a0d27abaddf66a5a60b2c1b9be7dc5b56b021fb5ff40905ba9539c0",
+   "published_at": 1683529200.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_ee9bbd9113",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "2afaf723372d48f8:c0",
+   "source_id": "2afaf723372d48f8",
+   "subject": "The six (and a half) steps to an effective apology",
+   "predicate": "is a resource from",
+   "object": "vox.com",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The six (and a half) steps to an effective apology - vox.com",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678003200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "vox.com"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_b2b138d96c",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ee9bbd9113"
+   }
+  },
+  {
+   "claim_id": "4c043f564f298491:c0",
+   "source_id": "4c043f564f298491",
+   "subject": "frequent apologizer",
+   "predicate": "might reap downstream benefits",
+   "object": "downstream benefits",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "hedged",
+   "polarity": "affirm",
+   "claim_class": "forecast",
+   "supporting_span": "New research indicates you might actually reap downstream benefits",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1679900400.0,
+   "extraction_confidence": 0.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "frequent apologizer"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_1d7e82f5c4",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ee9bbd9113"
+   }
+  },
+  {
+   "claim_id": "bcd365b68ac1dee3:c0",
+   "source_id": "bcd365b68ac1dee3",
+   "subject": "The theory of mind and human\u2013robot trust repair",
+   "predicate": "is a topic of",
+   "object": "Nature",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The theory of mind and human\u2013robot trust repair - Nature",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1687158000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "theory of mind",
+    "human\u2013robot trust repair",
+    "Nature"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_acbd8c21dc",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ee9bbd9113"
+   }
+  },
+  {
+   "claim_id": "d97648ff8d30bd3f:c0",
+   "source_id": "d97648ff8d30bd3f",
+   "subject": "Saying sorry too much",
+   "predicate": "isn't such a bad thing",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "Saying sorry too much isn't such a bad thing - Stylist",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1680159600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Stylist"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_db9900fbd6",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ee9bbd9113"
+   }
+  },
+  {
+   "claim_id": "68c81fc0bd9bdd96:c0",
+   "source_id": "68c81fc0bd9bdd96",
+   "subject": "South Koreans",
+   "predicate": "protest",
+   "object": "Japanese PM's visit to Seoul",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "South Koreans protest Japanese PM's visit to Seoul",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683529200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "South Koreans",
+    "Japanese PM",
+    "Seoul"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_06ae073f94",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_ee9bbd9113"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "vox.com",
+   "normalized": "vox com",
+   "candidates": [
+    {
+     "entity_id": "ent_3de0b2d230",
+     "canonical": "vox com",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "vox.com"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "frequent apologizer",
+   "normalized": "frequent apologizer",
+   "candidates": [
+    {
+     "entity_id": "ent_add4960833",
+     "canonical": "frequent apologizer",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "frequent apologizer"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "theory of mind",
+   "normalized": "theory of mind",
+   "candidates": [
+    {
+     "entity_id": "ent_af54bbd148",
+     "canonical": "theory of mind",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "theory of mind"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "human\u2013robot trust repair",
+   "normalized": "human\u2013robot trust repair",
+   "candidates": [
+    {
+     "entity_id": "ent_995dc1debb",
+     "canonical": "human\u2013robot trust repair",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "human\u2013robot trust repair"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Nature",
+   "normalized": "nature",
+   "candidates": [
+    {
+     "entity_id": "ent_a5197f1026",
+     "canonical": "nature",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Nature"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Stylist",
+   "normalized": "stylist",
+   "candidates": [
+    {
+     "entity_id": "ent_554ba0c678",
+     "canonical": "stylist",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Stylist"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "South Koreans",
+   "normalized": "south koreans",
+   "candidates": [
+    {
+     "entity_id": "ent_4e0d3ecbf1",
+     "canonical": "south koreans",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "South Koreans"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Japanese PM",
+   "normalized": "japanese pm",
+   "candidates": [
+    {
+     "entity_id": "ent_e898599f0f",
+     "canonical": "japanese pm",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Japanese PM"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Seoul",
+   "normalized": "seoul",
+   "candidates": [
+    {
+     "entity_id": "ent_0916bf5bc6",
+     "canonical": "seoul",
+     "support": 0.6111,
+     "evidence_mentions": [
+      "Seoul"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "2afaf723372d48f8": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1678003200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678003200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4c043f564f298491": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1679900400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1679900400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "bcd365b68ac1dee3": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1687158000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687158000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d97648ff8d30bd3f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1680159600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680159600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "68c81fc0bd9bdd96": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1688169600.0,
+   "claimed_pubdate_ts": 1683529200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683529200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_b2b138d96c",
+   "member_ids": [
+    "2afaf723372d48f8"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "vox.com",
+   "primary_source": "vox.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_1d7e82f5c4",
+   "member_ids": [
+    "4c043f564f298491"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "PsyPost",
+   "primary_source": "PsyPost",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_acbd8c21dc",
+   "member_ids": [
+    "bcd365b68ac1dee3"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Nature",
+   "primary_source": "Nature",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_db9900fbd6",
+   "member_ids": [
+    "d97648ff8d30bd3f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Stylist",
+   "primary_source": "Stylist",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_06ae073f94",
+   "member_ids": [
+    "68c81fc0bd9bdd96"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Xinhua",
+   "primary_source": "Xinhua",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "2afaf723372d48f8:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678003200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "4c043f564f298491:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1679900400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "bcd365b68ac1dee3:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1687158000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "d97648ff8d30bd3f:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1680159600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "68c81fc0bd9bdd96:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683529200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "2afaf723372d48f8:c0",
+  "4c043f564f298491:c0",
+  "bcd365b68ac1dee3:c0",
+  "d97648ff8d30bd3f:c0",
+  "68c81fc0bd9bdd96:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_724d4ad8d5": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_ee9bbd9113": {
+   "status": "fulfilled",
+   "n_claims": 5,
+   "n_included": 5
+  },
+  "req_7535a46039": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_7151cfaaa4": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_9c49c8c4e1": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_37cbdda189": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_f813c256d8": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_724d4ad8d5",
+  "req_7535a46039",
+  "req_7151cfaaa4",
+  "req_9c49c8c4e1",
+  "req_37cbdda189",
+  "req_f813c256d8"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 5,
+  "n_contradictions": 0,
+  "n_documents": 5
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 10.928,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "9314179e7d500b0c",
+ "bundle_hash": "9314179e7d500b0c",
+ "_persisted_at": "2026-07-13T02:02:33Z"
+}

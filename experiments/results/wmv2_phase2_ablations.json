@@ -31,7 +31,7 @@
      "post_asof_share": 0.0
     },
     "paired_plus_temporal_filter": {
-     "n_admitted": 6,
+     "n_admitted": 7,
      "post_asof_share": 0.0
     }
    },
@@ -149,13 +149,13 @@
  },
  "pipeline_ablations": {
   "n_bundles": 40,
-  "no_dependence_collapse_would_overcount_share": 0.0,
+  "no_dependence_collapse_would_overcount_share": 0.15,
   "no_temporal_verification_would_leak_share": 0.0,
   "no_actor_visibility_would_leak_share": 0.0,
   "interpretation": "each share is the fraction of bundles where removing the safeguard would cause overcounting / post-as-of leakage / actor-information leakage"
  },
  "_meta": {
-  "runtime_s": 14.1,
+  "runtime_s": 13.8,
   "note": "before:-only is an evaluation arm only; production always uses paired after:/before:"
  }
 }

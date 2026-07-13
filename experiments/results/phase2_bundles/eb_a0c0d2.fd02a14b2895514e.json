@@ -1,0 +1,1808 @@
+{
+ "bundle_id": "eb_a0c0d2",
+ "question": "Will the commodity price fall below its six-month low this month?",
+ "as_of": 1690848000.0,
+ "compiler_plan_hash": "df0499ddc580",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_3376186a57",
+   "claim_or_quantity": "If the daily settlement price of the commodity (as reported by the primary exchange) on any day from 2023-08-01 to 2023-08-31 inclusive is strictly less than the lowest daily settlement price observed in the six months prior to 2023-08-01 (i.e., from 2023-02-01 to 2023-07-31), then outcome is price_",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "commodity",
+    "central_bank",
+    "major_producer_nation"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_9060de722b",
+   "claim_or_quantity": "value/context of commodity.fundamental_value",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "commodity.fundamental_value",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_de2e1db15c",
+   "claim_or_quantity": "value/context of major_producer_nation.supply_disruption",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "major_producer_nation.supply_disruption",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_e5b12d46f1",
+   "claim_or_quantity": "evidence discriminating structural hypothesis supply_driven",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:supply_driven",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_e18d4a2c75",
+   "claim_or_quantity": "evidence discriminating structural hypothesis demand_driven",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:demand_driven",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_50ccf38539",
+   "claim_or_quantity": "value/context of market_participants.risk_appetite",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "market_participants.risk_appetite",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_2efd79ad03",
+   "claim_or_quantity": "decision rules / process of commodity_exchange",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "commodity_exchange",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_a158142f16",
+   "claim_or_quantity": "decision rules / process of regulatory_body",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "regulatory_body",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_3376186a57",
+   "terms": "commodity price fall below six low commodity central bank major producer nation",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_9060de722b",
+   "terms": "commodity fundamental value",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_de2e1db15c",
+   "terms": "major producer nation supply disruption",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_3376186a57",
+   "logical_query": "commodity price fall below six low commodity central bank major producer nation after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=commodity+price+fall+below+six+low+commodity+central+bank+major+producer+nation+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783908019.1947684,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:00:19 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw0JBiSO44w5AKxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTDsbn34iU2gR8fT59iVlJOyi-MT8kvKS4uyEkszihOLSpLLYo3MjAyMzA3MNMzMIkvMAAAttw3kw\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "437b5d1d2635e4df2ddf66c515267df94fab14954ff77874c0913261d73def8b",
+   "n_bytes": 7383,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 5,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.671
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_9060de722b",
+   "logical_query": "commodity fundamental value after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=commodity+fundamental+value+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783908019.867739,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:00:20 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw0pBiSO44w5ACxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcW3ovXmITeHF9w3tGJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwC3QzlD\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "ded4047d4b7f64b36b78beb8a110c6ef162ac0a18632e96712eb98ff01f24802",
+   "n_bytes": 24590,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.562
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_de2e1db15c",
+   "logical_query": "major producer nation supply disruption after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=major+producer+nation+supply+disruption+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783908020.4313734,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:00:21 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmJw1JBiSO44w5AKxBVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwcW3svXmIT-HF-treSclJ-YXxKfklxcUFOYnFGcWpRWWpRvJGBkZmBuYGZnoFJfIEBAGy7OIs\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "22ed9592321df16cc49eac28c8c124dc441bfeef4a13fbb4aa5d4719627c567b",
+   "n_bytes": 59721,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.679
+  }
+ ],
+ "raw_content_refs": [
+  "22ed9592321df16cc49eac28c8c124dc441bfeef4a13fbb4aa5d4719627c567b",
+  "437b5d1d2635e4df2ddf66c515267df94fab14954ff77874c0913261d73def8b",
+  "ded4047d4b7f64b36b78beb8a110c6ef162ac0a18632e96712eb98ff01f24802"
+ ],
+ "documents": [
+  {
+   "id": "5f6f0c016030d0db",
+   "source": "Global X ETFs",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiigFBVV95cUxOMVl5T0NsYklqOFpZTWoxVlBsdDZWc3c5ZHVMaWRLWkR1dERoUG5tWGV4Tk1VN2VNMGJzMGh3NjNmYlZ3bFZRNTlDSHlFdmppeV9xdm9WWkkxY2JEcHVpenRRSHRIVkNLRjd4ZG9ITlpaMEVSNnNhZEg2b05RRVVFMzZqMGI5WXJVOUE?oc=5",
+   "title": "Emerging Markets Outlook 2023: Midyear Update - Global X ETFs",
+   "text": "Emerging Markets Outlook 2023: Midyear Update - Global X ETFs. Emerging Markets Outlook 2023: Midyear Update Global X ETFs",
+   "content_hash": "5b43756c7698aadd",
+   "raw_feed_hash": "437b5d1d2635e4df2ddf66c515267df94fab14954ff77874c0913261d73def8b",
+   "published_at": 1688540400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_3376186a57",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "a487536fee24041e",
+   "source": "Elements by Visual Capitalist",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxNeEt4eFAzS2hfN1ZOdUg3V29GbUFVVVhiQktwOE9mV2hONllIUWlhZE1id0k5dGhFTVRvaEgxTnR3cE9DNEdoQ2xyem5tTGdlb29yakpzbDF5ejdzakIyX0lDQUIwN1RmWG1Ja19yYVN1WlVneHlyNERzSWF5Z3dvVUFsTkdtTjlzTVVV?oc=5",
+   "title": "Charted: 30 Years of Central Bank Gold Demand - Elements by Visual Capitalist",
+   "text": "Charted: 30 Years of Central Bank Gold Demand - Elements by Visual Capitalist. Charted: 30 Years of Central Bank Gold Demand Elements by Visual Capitalist",
+   "content_hash": "190ca13029939753",
+   "raw_feed_hash": "437b5d1d2635e4df2ddf66c515267df94fab14954ff77874c0913261d73def8b",
+   "published_at": 1678690800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_3376186a57",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "dda3ba7d1f5c8baf",
+   "source": "Credendo",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxOM3o1TElMOXctb2daSUhROGoteXdzMkxYVV9qek1VVUM5QVRvUE1Tem1lN3ROek81Y2p0cW9JWUU2bm1ES19hM1p2Q0ktVk9vRHVYLVBHaF95SEphekZXTUsyZDhZcUxJRllhTFJnVTB5THBBZzMyN3ZSWHNxRGdpMUJrWlQ5M3c?oc=5",
+   "title": "Bolivia: Downgrade from 6/7 to 7/7 for MLT political risk - Credendo",
+   "text": "Bolivia: Downgrade from 6/7 to 7/7 for MLT political risk - Credendo. Bolivia: Downgrade from 6/7 to 7/7 for MLT political risk Credendo",
+   "content_hash": "dc858a4907ea62c6",
+   "raw_feed_hash": "437b5d1d2635e4df2ddf66c515267df94fab14954ff77874c0913261d73def8b",
+   "published_at": 1686207600.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_3376186a57",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "c672bd1c5602dc43",
+   "source": "McKinsey & Company",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi4gFBVV95cUxPN1EzZFNJRlNIY1JLZjNxT0ZWR1d2Uy1qemdUbXBPYnRoYUlhMnI2Vl9PR0hhcFQtZ2FHREhTM3NUTllEZU5oR2tLTzZvbEV3MTFSN2RhSTgtMzNaTFBlYkduN0xkSWNCem9NaDJZbEV6NEVJOWVzczh2ZWg2cWY5eVkxeEZ2MjhyMm1KM3U1dHB2eThadkxSNWRjSXlTYjNtM0kyQUpxRlU2dU5fWVZ1TEFvc2s2MG1pYzM5Uk1Ec1BuX05Zb3luQjlJZzN2MklndVBkekVSSVZ6NjZUVXhoRmhR?oc=5",
+   "title": "UK inflation has fallen below 10 percent: How should businesses approach the next phase? - McKinsey & Company",
+   "text": "UK inflation has fallen below 10 percent: How should businesses approach the next phase? - McKinsey & Company. UK inflation has fallen below 10 percent: How should businesses approach the next phase? McKinsey & Company",
+   "content_hash": "1ac509f87d6e90f0",
+   "raw_feed_hash": "437b5d1d2635e4df2ddf66c515267df94fab14954ff77874c0913261d73def8b",
+   "published_at": 1686639600.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_3376186a57",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "1493045b4120756e",
+   "source": "Reuters",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxPQUxIUTZRMUo0QUJyNjljdEdOeWxuYmZ2Wi1hc3Q2NE5Bb0xyUG9ZTFdmeFJkMndHUWREcnZMTjhCZDQ0X3JoYnk4MUJxZjR0N2xzbFBVVkRvakg0dWFUVWpCRkl5ZzRfUV8xbGZDeW9xV0dPZHN4a2VhaG5iVFhzX3ZNSjdyYUtLUGhMQTRuWGtzV1lxeldUQ09PUmsxQQ?oc=5",
+   "title": "The release and refill of the Strategic Petroleum Reserve - Reuters",
+   "text": "The release and refill of the Strategic Petroleum Reserve - Reuters. The release and refill of the Strategic Petroleum Reserve Reuters",
+   "content_hash": "c4dbf8e4f322be6a",
+   "raw_feed_hash": "437b5d1d2635e4df2ddf66c515267df94fab14954ff77874c0913261d73def8b",
+   "published_at": 1684980077.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_3376186a57",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "949633f475eced87",
+   "source": "Better Markets",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOZUhDemR1bHB3aVJBNDMxeWxaeTZQRUtMeXBKejYwdUtKV3JOb3Z6WWdIdWFSUTZSVUtEUi04U2x3RGVvT0VYMTl0dmxZdmIwUzF1MUFWX3F1MlhxcjIxMWwzcjBUU2ZmbHpBV0NITU16U2YtWEE5MXo3djlQMG84MFFsbXY5VGpmWVJORmxuUFZrM3lFeXMybkVwMmdwMGpsdnh5VWlobTBhNDZlMHZ1N2dSdTRPMEIzNUlWZEU0bW0?oc=5",
+   "title": "Fact Sheet: Stop Speculators From Driving Gas Prices Higher and Ruining Summer Vacations - Better Markets",
+   "text": "Fact Sheet: Stop Speculators From Driving Gas Prices Higher and Ruining Summer Vacations - Better Markets. Fact Sheet: Stop Speculators From Driving Gas Prices Higher and Ruining Summer Vacations Better Markets",
+   "content_hash": "b086b3af008985c0",
+   "raw_feed_hash": "ded4047d4b7f64b36b78beb8a110c6ef162ac0a18632e96712eb98ff01f24802",
+   "published_at": 1684998000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_9060de722b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6095e779eceae8b9",
+   "source": "Yahoo Finance",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMigAFBVV95cUxQV3RXQXBFeFJPcXJBNGRUUDhYRmI4NlNnbTJOVGNqQWtNemlyYk56ZG1HZ0JoaGVCYkpsd3BHTGoxSENncU5OR09ZeDVjUklVUE5fd2JmelFReDJhLVpSVl8xbjlUSVJ3OGF4Qi0wc3FFcUZpbXMyNkZWU3d2UHRTZw?oc=5",
+   "title": "3 High-Yield Commodity Stocks to Buy for Income and Growth - Yahoo Finance",
+   "text": "3 High-Yield Commodity Stocks to Buy for Income and Growth - Yahoo Finance. 3 High-Yield Commodity Stocks to Buy for Income and Growth Yahoo Finance",
+   "content_hash": "94aabebc0706048e",
+   "raw_feed_hash": "ded4047d4b7f64b36b78beb8a110c6ef162ac0a18632e96712eb98ff01f24802",
+   "published_at": 1683615600.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_9060de722b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "b82cb3b582a37a04",
+   "source": "Klement on Investing",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMidkFVX3lxTE8yd0tlWVdVRVRCRkZXSGxLUndJaHFpWEJObUdPaVhsek9XejZOUU5FRmxwaE0xenpYZEY5MnJ5cHB6eUN1MjdwZTVhQmlaalR0UTRPd2lHUzFXYjB2RXBCSnRfM2JhM0xMV3lIWTFtbXFtVTJvenc?oc=5",
+   "title": "When narratives take over - Klement on Investing",
+   "text": "When narratives take over - Klement on Investing. When narratives take over Klement on Investing",
+   "content_hash": "2b2d7f899d3906b8",
+   "raw_feed_hash": "ded4047d4b7f64b36b78beb8a110c6ef162ac0a18632e96712eb98ff01f24802",
+   "published_at": 1683010800.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_9060de722b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6bc79b08a3956a8f",
+   "source": "LP Gas Magazine",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMib0FVX3lxTFBkc2pSSExmMnR2dHh4V0xIQ051QnJKb1Eyci1XMDlnMkZzMkpGTVhiUTREY1VvZzBndnN1czBZRzRBOUpXeUlDTUQ1TlI3ZkdrV3dPdlpQdmdCcnBfdVdBcFJXN2s1VHJjUmoyOU9CNA?oc=5",
+   "title": "Crude could push propane prices - LP Gas Magazine",
+   "text": "Crude could push propane prices - LP Gas Magazine. Crude could push propane prices LP Gas Magazine",
+   "content_hash": "50d9120efd2384e0",
+   "raw_feed_hash": "ded4047d4b7f64b36b78beb8a110c6ef162ac0a18632e96712eb98ff01f24802",
+   "published_at": 1681110000.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_9060de722b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "e02806f9226563a1",
+   "source": "Investopedia",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMibEFVX3lxTE5NVUtkWDF4Z3RnYTY4dDZvWFdTT3J2ZWc1Tk53SzhSYm1PYURDaS1UcEEyalg4UWJUZzFwRkRYQ05QbHA0SnI3eThCVmQ4MldWZVpUZmZjWVBsbTJ5UFl5MDhIeWpUdmpKYmRxbg?oc=5",
+   "title": "Top Gold Stocks for Q2 2023 - Investopedia",
+   "text": "Top Gold Stocks for Q2 2023 - Investopedia. Top Gold Stocks for Q2 2023 Investopedia",
+   "content_hash": "ab377d2e0c6b0c68",
+   "raw_feed_hash": "ded4047d4b7f64b36b78beb8a110c6ef162ac0a18632e96712eb98ff01f24802",
+   "published_at": 1680073200.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_9060de722b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2a531f9bb473390e",
+   "source": "S&P Global",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOSlUzUzF1YkdCQnJGY0ZHOEpaZElqcnY1TDE0UWg3Z2xoTGVPVXdSV1RscUp2UWUyWUlLTmVtLXpLU210MjBQdFFVMklGOUpHNjRMMm1SQjMyanlqY0g4c0FEWHBmQkxDckVlM0ptcTRUeHJKbWUwREN0emlHeXBDSkl2LThVMlBlYmtBeUk1WnJ2LWlEa0J3dlVtd01vSXVwak9kLV9MeXBSbW5OUllUTlBGLWVEOXNsZG94NmUzZ2Q?oc=5",
+   "title": "Ammonia Market to Triple by 2050 with Nearly All Growth Coming from Low-Carbon Supply - S&P Global",
+   "text": "Ammonia Market to Triple by 2050 with Nearly All Growth Coming from Low-Carbon Supply - S&P Global. Ammonia Market to Triple by 2050 with Nearly All Growth Coming from Low-Carbon Supply S&P Global",
+   "content_hash": "c69f8fbb58ebe342",
+   "raw_feed_hash": "ded4047d4b7f64b36b78beb8a110c6ef162ac0a18632e96712eb98ff01f24802",
+   "published_at": 1689058800.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_9060de722b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "156b33f3ac481446",
+   "source": "Money Crashers",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTFB4d1BRZUpzUDNuU2l6R1ZDeVVZWDRwaU1yeElIRkx2THprTFBEMmh1X0Eyd2UybnFkVUpvOHpqUXFaVk1ubjdyQVU1eExRLUk5RUJubjNoVHI1NExlYkUxQmcyRGlzWWNDV1YxVjRtUWxTazFOWWcw?oc=5",
+   "title": "8 Investments to Protect Against an Inflation Spike - Money Crashers",
+   "text": "8 Investments to Protect Against an Inflation Spike - Money Crashers. 8 Investments to Protect Against an Inflation Spike Money Crashers",
+   "content_hash": "114e011afa0fd299",
+   "raw_feed_hash": "ded4047d4b7f64b36b78beb8a110c6ef162ac0a18632e96712eb98ff01f24802",
+   "published_at": 1684911600.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_9060de722b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d17187bf3851d4a4",
+   "source": "McKinsey & Company",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi2gFBVV95cUxNelF6WktwamR0R3F4OTFxSXBBQXNCUFFacVA1R3YxeTczN2JWd1FydmliTFdxYkxkNWxKSEtKME9fMjBpSGg5YmFzZ25sSlZOTVZtUUxBZU9fTGNmZHo1N2lYaWh3NVJGX2JoM1l3dV9kVWNGNnE3SVlBUnZvdHZSeDItQUtybC0wQnVKcllkN2hYdVRNTHNzNlNLT3kzQjJHNGhUeXRWVENDd1NLOXZqRl9oZXNhOUJQNHl3OXd6N1pIa3BTQ3EtNG9waDNzZjRvZFBwclFtVHlLQQ?oc=5",
+   "title": "Navigating economic uncertainty: New guidance for credit risk management - McKinsey & Company",
+   "text": "Navigating economic uncertainty: New guidance for credit risk management - McKinsey & Company. Navigating economic uncertainty: New guidance for credit risk management McKinsey & Company",
+   "content_hash": "cbbfbda7bb7b9e77",
+   "raw_feed_hash": "ded4047d4b7f64b36b78beb8a110c6ef162ac0a18632e96712eb98ff01f24802",
+   "published_at": 1681369200.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_9060de722b",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "1d59ef2f3b3ff67c",
+   "source": "Federal Reserve Bank of Cleveland",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxOSEl1Z3o5c0YzZmE3a0Z4TVpFNW5TaVhjUTRiX0dRa19iTU5FV1phMnowWjBzY3huRnJZc3hrNkhQNEZjN1Z5QV9ZTGJMUUc3ZFZ3UDUwYmlwU0ZxcmhmTkxSU1BxbXdWSjZfRjdvRzcwb2g4VzdoZm9hVGY2aVpzUU1Na3V4ZmtJTWI2YXVuT3E1RGt3YU14YURoS1ZUY00zNUw4MkhlVzNXS1pvNTBETENOVGoxVkMxOFpRU1lxNA?oc=5",
+   "title": "The Impacts of Supply Chain Disruptions on Inflation - Federal Reserve Bank of Cleveland",
+   "text": "The Impacts of Supply Chain Disruptions on Inflation - Federal Reserve Bank of Cleveland. The Impacts of Supply Chain Disruptions on Inflation Federal Reserve Bank of Cleveland",
+   "content_hash": "a3d9359640722d36",
+   "raw_feed_hash": "22ed9592321df16cc49eac28c8c124dc441bfeef4a13fbb4aa5d4719627c567b",
+   "published_at": 1683734216.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_de2e1db15c",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "25f6817adb16d163",
+   "source": "RMI",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMickFVX3lxTE45WTV4OFZZQ2tXNnRzQUJVNklzY1o3UktoQ1g5QW4xMkJiX1R2LXRFSjEtaEpVSUo0X0QwNF9GNXVlcHVhWnBoMFVCRW81dWFXLXpCNndBYThvVHB3eE1MbGhYaG5idXVKc1dEVWtqQll5dw?oc=5",
+   "title": "The EV Battery Supply Chain Explained - RMI",
+   "text": "The EV Battery Supply Chain Explained - RMI. The EV Battery Supply Chain Explained RMI",
+   "content_hash": "218eb93f89098fad",
+   "raw_feed_hash": "22ed9592321df16cc49eac28c8c124dc441bfeef4a13fbb4aa5d4719627c567b",
+   "published_at": 1683270000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_de2e1db15c",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f742604cfa0b93ea",
+   "source": "The Fletcher Forum of World Affairs",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxNZFVTS2FjVDVRcUthLXBSX3V1WEotUFcyeExpbDc4SEdLcUxPZTBNMDdaWFQzYkxXVTUzR3J0QUFrSHVxZ1RnWFJwcURTNHpuMkNodlBNSnVDS1lLQkJtNkJzQW9lWEIxOUp2UUl2QmpwaC0yRUdEM0pycDY0SkdyeVpIbll4eFVLZGJUSmd0RjBmNWlteWo2RnpEVFZ1SFh5aEFWUWJxaVA0am93NVYwOWF6YmNLVmVqXzM5VGp3NXp6QUFWQVB1NGs4UXRFRjZiTFMzT1VTeTU?oc=5",
+   "title": "U.S. Grain Exports Poised to Rise as the Russian War in Ukraine Disrupts Global Grain Trade - The Fletcher Forum of World Affairs",
+   "text": "U.S. Grain Exports Poised to Rise as the Russian War in Ukraine Disrupts Global Grain Trade - The Fletcher Forum of World Affairs. U.S. Grain Exports Poised to Rise as the Russian War in Ukraine Disrupts Global Grain Trade The Fletcher Forum of World Affairs",
+   "content_hash": "77c959c76d9dc964",
+   "raw_feed_hash": "22ed9592321df16cc49eac28c8c124dc441bfeef4a13fbb4aa5d4719627c567b",
+   "published_at": 1690009200.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_de2e1db15c",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d361a43eb78e8610",
+   "source": "Lawfare",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMilAFBVV95cUxPOFY5anBCaUxUT0dPXzhWMGZERnhPWS1jcm9XZ2NsVGdfdnFxZlJTN3hHU1RFdHFjRHBTUkQxS0JMZlZaTC11NjNVYm1aSXVfVkJNaFJPQzBaSHhkUzZ2SDhKeXVOcTV3M214ekJEOGdTS0NrS1pKblJ1ckRyY1VGaDJNQ0RtZjJDOGxzVTlTZ2FrOEZi?oc=5",
+   "title": "The Defense Production Act\u2019s Role in the Clean Energy Transition - Lawfare",
+   "text": "The Defense Production Act\u2019s Role in the Clean Energy Transition - Lawfare. The Defense Production Act\u2019s Role in the Clean Energy Transition Lawfare",
+   "content_hash": "d230b5b2ab63d0ef",
+   "raw_feed_hash": "22ed9592321df16cc49eac28c8c124dc441bfeef4a13fbb4aa5d4719627c567b",
+   "published_at": 1689577200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_de2e1db15c",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "1ac0d21eb832e364",
+   "source": "War on the Rocks",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxQR2NiN0RfVWQ4THZleV9iMUppbHRaUkJUVnBiSTJoNW02RDZFNU1hZC03RTE3Nm5SMW01d0Vwb3lsZFdYTnNFbmhadjBYakNUM2V3NHV0MWFEMUpmZUJ2TGFjeFVxMVVTTGVxel9oWXE0RWNvcFktdV9SbmRwdFNhTVVSQVdWSnQ5VlF0TElmUUxJbGx6RUMwN19qS1FUbW1yUjZQUnhTdGgtV3paZTRrTEtR?oc=5",
+   "title": "In the Dark: How the Pentagon\u2019s Limited Supplier Visibility Risks U.S. National Security - War on the Rocks",
+   "text": "In the Dark: How the Pentagon\u2019s Limited Supplier Visibility Risks U.S. National Security - War on the Rocks. In the Dark: How the Pentagon\u2019s Limited Supplier Visibility Risks U.S. National Security War on the Rocks",
+   "content_hash": "e9af4aa21180c10d",
+   "raw_feed_hash": "22ed9592321df16cc49eac28c8c124dc441bfeef4a13fbb4aa5d4719627c567b",
+   "published_at": 1686726000.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_de2e1db15c",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "1afcfff57cfb5c8c",
+   "source": "U.S. Energy Information Administration (EIA) (.gov)",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxPZnE0anNWeUJzZDN0cmFpS3N6MTRYTG9WWmRSUHVGdVNFMjNTdG1icExJaFNEc2tVc3lEVmxJVjY0RnFNdGpGLUlHaFZ5TTZ4RWl4blZEeHl0ZVg4WWhiOG9IRlJOS25xNmhNMmtLaWlzeHVoVF9iOFROdUNoTzFJYjRlMGhtTVh6NDhhdw?oc=5",
+   "title": "Short-Term Energy Outlook - U.S. Energy Information Administration (EIA) (.gov)",
+   "text": "Short-Term Energy Outlook - U.S. Energy Information Administration (EIA) (.gov). Short-Term Energy Outlook U.S. Energy Information Administration (EIA) (.gov)",
+   "content_hash": "19a4d2d77a3457ce",
+   "raw_feed_hash": "22ed9592321df16cc49eac28c8c124dc441bfeef4a13fbb4aa5d4719627c567b",
+   "published_at": 1689663600.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_de2e1db15c",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "070d839527896413",
+   "source": "California Local",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMivwFBVV95cUxQVmJsVFdOYXVXU2NYUVhDX1VRZlhXc3E5Zk5YeE5jTG5JNjBoeFp2M0h0U3A2cXRvT0thMkNGY1BqQnNyU09hRXV5aWdhcWYxLWs5anhvYnJpcjRkUWprWGxwWTJUZFlOSWFyLXZzYXhqVWxBQnJLYzdfU3pURTY3azR5X1JWeVo5WnRtSEZsUHBwa1ZNd2RRNVh5bnZvSDZiN0NsOTdfTEF3VTdzVWFSQ3F1NWhjZ2FiTThTSkpDNA?oc=5",
+   "title": "How California Agriculture has Shaped the State and the Country - California Local",
+   "text": "How California Agriculture has Shaped the State and the Country - California Local. How California Agriculture has Shaped the State and the Country California Local",
+   "content_hash": "dfe67cb0b38c0213",
+   "raw_feed_hash": "22ed9592321df16cc49eac28c8c124dc441bfeef4a13fbb4aa5d4719627c567b",
+   "published_at": 1683587057.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_de2e1db15c",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "80e65b735ee8e4d0",
+   "source": "Schroders",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMitgFBVV95cUxOaXVmSTZjUFdPT2U4Ymc0RDZSc0g2U0QzVkwxUGtDbzl2Rjk1aXJHclRTc1p5QW5sYnA5U3RORS1RYjVxTWdQMWVNSGs1dWZod0JTOU9vaV9KeFNhNGxWMGtUbktHZWc3OUV0MjhNd0tVclFYUC1zRHI1bHdiaXdfTEFhTUZyYVVWWEdHV3J4RW1FU3ZOQkswLTVwTm5LSlM4dlBJcmg1d2dmeEZWSm9GckY5WDd0QQ?oc=5",
+   "title": "Regime shift: new world order will challenge globalisation - Schroders",
+   "text": "Regime shift: new world order will challenge globalisation - Schroders. Regime shift: new world order will challenge globalisation Schroders",
+   "content_hash": "4ea377984944d955",
+   "raw_feed_hash": "22ed9592321df16cc49eac28c8c124dc441bfeef4a13fbb4aa5d4719627c567b",
+   "published_at": 1681369200.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_de2e1db15c",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "5f6f0c016030d0db:c0",
+   "source_id": "5f6f0c016030d0db",
+   "subject": "Global X ETFs",
+   "predicate": "published",
+   "object": "Emerging Markets Outlook 2023: Midyear Update",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Emerging Markets Outlook 2023: Midyear Update - Global X ETFs",
+   "span_verified": true,
+   "event_time": "2023",
+   "publication_time": 1688540400.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Global X ETFs"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_8b3f20fa8c",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_3376186a57"
+   }
+  },
+  {
+   "claim_id": "949633f475eced87:c0",
+   "source_id": "949633f475eced87",
+   "subject": "Better Markets",
+   "predicate": "released",
+   "object": "Fact Sheet: Stop Speculators From Driving Gas Prices Higher and Ruining Summer Vacations",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Fact Sheet: Stop Speculators From Driving Gas Prices Higher and Ruining Summer Vacations - Better Markets",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1684998000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Better Markets"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_8e7aeb51b4",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_9060de722b"
+   }
+  },
+  {
+   "claim_id": "1d59ef2f3b3ff67c:c0",
+   "source_id": "1d59ef2f3b3ff67c",
+   "subject": "The Impacts of Supply Chain Disruptions on Inflation",
+   "predicate": "is a publication of",
+   "object": "Federal Reserve Bank of Cleveland",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The Impacts of Supply Chain Disruptions on Inflation - Federal Reserve Bank of Cleveland",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683734216.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Federal Reserve Bank of Cleveland"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_15ba852c37",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_de2e1db15c"
+   }
+  },
+  {
+   "claim_id": "a487536fee24041e:c0",
+   "source_id": "a487536fee24041e",
+   "subject": "Central Bank Gold Demand",
+   "predicate": "is charted for",
+   "object": "30 Years",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Charted: 30 Years of Central Bank Gold Demand",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678690800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Central Bank Gold Demand"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_256b91f716",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_3376186a57"
+   }
+  },
+  {
+   "claim_id": "a487536fee24041e:c1",
+   "source_id": "a487536fee24041e",
+   "subject": "Visual Capitalist",
+   "predicate": "published",
+   "object": "Elements by Visual Capitalist",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Elements by Visual Capitalist",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1678690800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Visual Capitalist"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_256b91f716",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_3376186a57"
+   }
+  },
+  {
+   "claim_id": "6095e779eceae8b9:c0",
+   "source_id": "6095e779eceae8b9",
+   "subject": "Yahoo Finance",
+   "predicate": "recommends",
+   "object": "3 high-yield commodity stocks to buy for income and growth",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "3 High-Yield Commodity Stocks to Buy for Income and Growth - Yahoo Finance",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683615600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Yahoo Finance"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_26c6b7a963",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_9060de722b"
+   }
+  },
+  {
+   "claim_id": "25f6817adb16d163:c0",
+   "source_id": "25f6817adb16d163",
+   "subject": "RMI",
+   "predicate": "explained",
+   "object": "the EV Battery Supply Chain",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The EV Battery Supply Chain Explained - RMI",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683270000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "RMI",
+    "EV Battery Supply Chain"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_5e1f547396",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_de2e1db15c"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Global X ETFs",
+   "normalized": "global x etfs",
+   "candidates": [
+    {
+     "entity_id": "ent_bfc2da0985",
+     "canonical": "global x etfs",
+     "support": 0.625,
+     "evidence_mentions": [
+      "Global X ETFs"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Better Markets",
+   "normalized": "better markets",
+   "candidates": [
+    {
+     "entity_id": "ent_a12d0b30e3",
+     "canonical": "better markets",
+     "support": 0.625,
+     "evidence_mentions": [
+      "Better Markets"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Federal Reserve Bank of Cleveland",
+   "normalized": "federal reserve bank of cleveland",
+   "candidates": [
+    {
+     "entity_id": "ent_2482538a46",
+     "canonical": "federal reserve bank of cleveland",
+     "support": 0.625,
+     "evidence_mentions": [
+      "Federal Reserve Bank of Cleveland"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Central Bank Gold Demand",
+   "normalized": "central bank gold demand",
+   "candidates": [
+    {
+     "entity_id": "ent_a7943a24d1",
+     "canonical": "central bank gold demand",
+     "support": 0.625,
+     "evidence_mentions": [
+      "Central Bank Gold Demand"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Visual Capitalist",
+   "normalized": "visual capitalist",
+   "candidates": [
+    {
+     "entity_id": "ent_19d4f44064",
+     "canonical": "visual capitalist",
+     "support": 0.625,
+     "evidence_mentions": [
+      "Visual Capitalist"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Yahoo Finance",
+   "normalized": "yahoo finance",
+   "candidates": [
+    {
+     "entity_id": "ent_220a89d588",
+     "canonical": "yahoo finance",
+     "support": 0.625,
+     "evidence_mentions": [
+      "Yahoo Finance"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "RMI",
+   "normalized": "rmi",
+   "candidates": [
+    {
+     "entity_id": "ent_a2f9d531ae",
+     "canonical": "rmi",
+     "support": 0.625,
+     "evidence_mentions": [
+      "RMI"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "EV Battery Supply Chain",
+   "normalized": "ev battery supply chain",
+   "candidates": [
+    {
+     "entity_id": "ent_0c41f3f51d",
+     "canonical": "ev battery supply chain",
+     "support": 0.625,
+     "evidence_mentions": [
+      "EV Battery Supply Chain"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "5f6f0c016030d0db": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1688540400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1688540400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "a487536fee24041e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1678690800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1678690800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "dda3ba7d1f5c8baf": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1686207600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686207600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "c672bd1c5602dc43": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1686639600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686639600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "1493045b4120756e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1684980077.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684980077.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "949633f475eced87": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1684998000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684998000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6095e779eceae8b9": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1683615600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683615600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "b82cb3b582a37a04": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1683010800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683010800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6bc79b08a3956a8f": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1681110000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681110000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "e02806f9226563a1": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1680073200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1680073200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2a531f9bb473390e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1689058800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689058800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "156b33f3ac481446": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1684911600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1684911600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d17187bf3851d4a4": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1681369200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681369200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "1d59ef2f3b3ff67c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1683734216.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683734216.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "25f6817adb16d163": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1683270000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683270000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f742604cfa0b93ea": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1690009200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690009200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d361a43eb78e8610": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1689577200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689577200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "1ac0d21eb832e364": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1686726000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686726000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "1afcfff57cfb5c8c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1689663600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689663600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "070d839527896413": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1683587057.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683587057.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "80e65b735ee8e4d0": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1681369200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681369200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_8b3f20fa8c",
+   "member_ids": [
+    "5f6f0c016030d0db"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Global X ETFs",
+   "primary_source": "Global X ETFs",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_256b91f716",
+   "member_ids": [
+    "a487536fee24041e"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Elements by Visual Capitalist",
+   "primary_source": "Elements by Visual Capitalist",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b62739fe2e",
+   "member_ids": [
+    "dda3ba7d1f5c8baf"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Credendo",
+   "primary_source": "Credendo",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_16145b56b7",
+   "member_ids": [
+    "c672bd1c5602dc43"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "McKinsey & Company",
+   "primary_source": "McKinsey & Company",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_46926f8857",
+   "member_ids": [
+    "1493045b4120756e"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Reuters",
+   "primary_source": "Reuters",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_8e7aeb51b4",
+   "member_ids": [
+    "949633f475eced87"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Better Markets",
+   "primary_source": "Better Markets",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_26c6b7a963",
+   "member_ids": [
+    "6095e779eceae8b9"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Yahoo Finance",
+   "primary_source": "Yahoo Finance",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_2cf22ed48d",
+   "member_ids": [
+    "b82cb3b582a37a04"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Klement on Investing",
+   "primary_source": "Klement on Investing",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_2a76351ada",
+   "member_ids": [
+    "6bc79b08a3956a8f"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "LP Gas Magazine",
+   "primary_source": "LP Gas Magazine",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_7afb4ddeb5",
+   "member_ids": [
+    "e02806f9226563a1"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Investopedia",
+   "primary_source": "Investopedia",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_07d356721b",
+   "member_ids": [
+    "2a531f9bb473390e"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "S&P Global",
+   "primary_source": "S&P Global",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_4330f98a00",
+   "member_ids": [
+    "156b33f3ac481446"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Money Crashers",
+   "primary_source": "Money Crashers",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_6070b2ce8b",
+   "member_ids": [
+    "d17187bf3851d4a4"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "McKinsey & Company",
+   "primary_source": "McKinsey & Company",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_15ba852c37",
+   "member_ids": [
+    "1d59ef2f3b3ff67c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Federal Reserve Bank of Cleveland",
+   "primary_source": "Federal Reserve Bank of Cleveland",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_5e1f547396",
+   "member_ids": [
+    "25f6817adb16d163"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "RMI",
+   "primary_source": "RMI",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_0e194b3159",
+   "member_ids": [
+    "f742604cfa0b93ea"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Fletcher Forum of World Affairs",
+   "primary_source": "The Fletcher Forum of World Affairs",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9dd7041ffe",
+   "member_ids": [
+    "d361a43eb78e8610"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Lawfare",
+   "primary_source": "Lawfare",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_1b93ef3f28",
+   "member_ids": [
+    "1ac0d21eb832e364"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "War on the Rocks",
+   "primary_source": "War on the Rocks",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_c51a974595",
+   "member_ids": [
+    "1afcfff57cfb5c8c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "U.S. Energy Information Administration (EIA) (.gov)",
+   "primary_source": "U.S. Energy Information Administration (EIA) (.gov)",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_a2179c6fcd",
+   "member_ids": [
+    "070d839527896413"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "California Local",
+   "primary_source": "California Local",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_0baff97a21",
+   "member_ids": [
+    "80e65b735ee8e4d0"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Schroders",
+   "primary_source": "Schroders",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "5f6f0c016030d0db:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1688540400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "949633f475eced87:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1684998000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "1d59ef2f3b3ff67c:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683734216.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "a487536fee24041e:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678690800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "a487536fee24041e:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1678690800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "6095e779eceae8b9:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683615600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "25f6817adb16d163:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683270000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "5f6f0c016030d0db:c0",
+  "949633f475eced87:c0",
+  "1d59ef2f3b3ff67c:c0",
+  "a487536fee24041e:c0",
+  "a487536fee24041e:c1",
+  "6095e779eceae8b9:c0",
+  "25f6817adb16d163:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_3376186a57": {
+   "status": "fulfilled",
+   "n_claims": 3,
+   "n_included": 3
+  },
+  "req_9060de722b": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_de2e1db15c": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_e5b12d46f1": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_e18d4a2c75": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_50ccf38539": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_2efd79ad03": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_a158142f16": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_e5b12d46f1",
+  "req_e18d4a2c75",
+  "req_50ccf38539",
+  "req_2efd79ad03",
+  "req_a158142f16"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 21,
+  "n_contradictions": 0,
+  "n_documents": 21
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 13.928,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "fd02a14b2895514e",
+ "bundle_hash": "fd02a14b2895514e",
+ "_persisted_at": "2026-07-13T02:00:38Z"
+}

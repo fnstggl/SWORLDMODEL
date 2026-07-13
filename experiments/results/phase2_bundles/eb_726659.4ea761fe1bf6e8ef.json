@@ -1,0 +1,1656 @@
+{
+ "bundle_id": "eb_726659",
+ "question": "Will the landlord accept a rent reduction in exchange for a longer lease?",
+ "as_of": 1693526400.0,
+ "compiler_plan_hash": "c81d0cb595b3",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_d3d75dc841",
+   "claim_or_quantity": "The landlord's final decision as of the horizon date.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "landlord",
+    "tenant"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_366ba85ab8",
+   "claim_or_quantity": "value/context of landlord.financial_need",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "landlord.financial_need",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_4499d810db",
+   "claim_or_quantity": "value/context of landlord.risk_tolerance",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "landlord.risk_tolerance",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_6641468c0e",
+   "claim_or_quantity": "evidence discriminating structural hypothesis financial_rationality",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:financial_rationality",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_5768fb949d",
+   "claim_or_quantity": "evidence discriminating structural hypothesis relationship_based",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:relationship_based",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_1d5fc9fc00",
+   "claim_or_quantity": "value/context of landlord.alternative_tenants",
+   "why_relevant": "high-sensitivity latent (0.70) driving the outcome distribution",
+   "affected_component": "landlord.alternative_tenants",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_03ca3f8acb",
+   "claim_or_quantity": "decision rules / process of rental_contract_law",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "rental_contract_law",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-09-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_d3d75dc841",
+   "terms": "landlord accept rent reduction exchange longer lease landlord tenant",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_366ba85ab8",
+   "terms": "landlord financial need",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_4499d810db",
+   "terms": "landlord risk tolerance",
+   "after": "2023-04-04",
+   "before": "2023-09-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_d3d75dc841",
+   "logical_query": "landlord accept rent reduction exchange longer lease landlord tenant after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=landlord+accept+rent+reduction+exchange+longer+lease+landlord+tenant+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783908328.4407485,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:05:29 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmII1pBiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTN8bL_4iU2gR2nrnAoKSflF8an5JcUFxfkJBZnFKcWlaUWxRsZGJkZmBuY6RmYxBcYAABvBzax\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "4894119a6acb3ab2209ae5de90bdb5a556b98eeafd1c584c8aa1f0f31e150016",
+   "n_bytes": 11284,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 6,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.482
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_366ba85ab8",
+   "logical_query": "landlord financial need after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=landlord+financial+need+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783908328.9242575,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:05:29 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmII0JBiSO44w5AKxHVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcL_svXmITOPHy734mJeWk_ML4lPyS4uKCnMTijOLUorLUongjAyMzA3MDMz0Dk_gCAwDMpjmZ\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "8076f007755dd0ca3362d016fe0387014cd055490cf19df317165cc5ffbb10d0",
+   "n_bytes": 71630,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 8,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.715
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_4499d810db",
+   "logical_query": "landlord risk tolerance after:2023-04-04 before:2023-09-01",
+   "wire_url": "https://news.google.com/rss/search?q=landlord+risk+tolerance+after%3A2023-04-04+before%3A2023-09-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-04-04",
+   "before_date": "2023-09-01",
+   "retrieved_at": 1783908329.6420054,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:05:30 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw1pBiSO44w5ACxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwcr_ovXmITeDHhYwOjknJSfmF8Sn5JcXFBTmJxRnFqUVlqUbyRgZGZgbmBmZ6BSXyBAQC1TzkQ\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "3616e102ebb84676694cdf8ebc600ea5f63aa96424a4cd895971f5694c496bd4",
+   "n_bytes": 6120,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 4,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.536
+  }
+ ],
+ "raw_content_refs": [
+  "3616e102ebb84676694cdf8ebc600ea5f63aa96424a4cd895971f5694c496bd4",
+  "4894119a6acb3ab2209ae5de90bdb5a556b98eeafd1c584c8aa1f0f31e150016",
+  "8076f007755dd0ca3362d016fe0387014cd055490cf19df317165cc5ffbb10d0"
+ ],
+ "documents": [
+  {
+   "id": "f60cdaa34a10fce6",
+   "source": "Financial Samurai",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMikAFBVV95cUxNVWU3bFhscGVBQzZNM1JreXFheWlhNUY5NUhvNU8tMFlPTzA1ajJOZy10MXJzdkxaQXNuZGtfRHdMUXNSb3BvLUhMS0toOW5yNC1va2phdmpXT3RjMlB6cnBrdzlfV3pINWtMODNrOGVodW1rTXpiVVZGRHMxcE81V01pUEZYa0p3M2YzOWFIUms?oc=5",
+   "title": "The Easiest Way Landlords Can Automatically Increase Rent (With Minimum Tension) - Financial Samurai",
+   "text": "The Easiest Way Landlords Can Automatically Increase Rent (With Minimum Tension) - Financial Samurai. The Easiest Way Landlords Can Automatically Increase Rent (With Minimum Tension) Financial Samurai",
+   "content_hash": "addecfc9525b35e7",
+   "raw_feed_hash": "4894119a6acb3ab2209ae5de90bdb5a556b98eeafd1c584c8aa1f0f31e150016",
+   "published_at": 1686166378.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_d3d75dc841",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "1a0aaaa5ca195cdc",
+   "source": "Brick Underground",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMic0FVX3lxTE9rV0RpeEo4dlo4TG1WN2VzSkk2d3VVVkRTZjFweGszRTR2LUphMzJXLW5EVFlEeUFQTTFldjlDRm85eXBmS05GbW5fa0l5Q0g5WTZZOG5Zd3ZWbDNtTFZhUGZYdDZPSkxRcmtxeHN2NzJXZm8?oc=5",
+   "title": "Ask Sam: Is my landlord allowed to charge a J-51 fee after the tax abatement expires? - Brick Underground",
+   "text": "Ask Sam: Is my landlord allowed to charge a J-51 fee after the tax abatement expires? - Brick Underground. Ask Sam: Is my landlord allowed to charge a J-51 fee after the tax abatement expires? Brick Underground",
+   "content_hash": "d664709145655eb5",
+   "raw_feed_hash": "4894119a6acb3ab2209ae5de90bdb5a556b98eeafd1c584c8aa1f0f31e150016",
+   "published_at": 1692169200.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_d3d75dc841",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "2a0a92e0bdf8e4f2",
+   "source": "Jacobin",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPOENSUmZRbTVQd19Gbng4TlZfUFBLN21QSXlfdV9kRzgwUmVlWmNMb1kzVlQ5ajNLZ01UcmI0YlZ0MHBCVjNJekhHOFo2WXZnaHo3a19XajcxTXdDVjdCZ2VMeU05SURnLXlfWDRPME1DcnVJM016VTlrdGRpaHRfVVRB?oc=5",
+   "title": "Why We Need Rent Control - Jacobin",
+   "text": "Why We Need Rent Control - Jacobin. Why We Need Rent Control Jacobin",
+   "content_hash": "7b65d5bc8fa1b330",
+   "raw_feed_hash": "4894119a6acb3ab2209ae5de90bdb5a556b98eeafd1c584c8aa1f0f31e150016",
+   "published_at": 1689836400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_d3d75dc841",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "9b0b1df414f08594",
+   "source": "The Conversation",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxQM19KRThNdGlCdjJnc2JWakN1T0Y1Wl9MMnhKdXBXTEZUQkRQTi03b29CNEduMnVoXzE0WWQ1MEdoZmxfTFh2WFR6bl9JZk5QRDNhbE52TnpweFRHbWpqU2dGYWRTWDNhYkEwSHM5REFGRlVJWFBwMnBRTHBqZXBSSUhTdDJYaUFUYnRJQmlrSnhZTFhjOHJEQUxWM3lSMU1GaXVDXzBTeEdiVHBkM0FuNW9FQQ?oc=5",
+   "title": "Rent freezes and rent caps will only worsen, not solve Australia\u2019s rental crisis - The Conversation",
+   "text": "Rent freezes and rent caps will only worsen, not solve Australia\u2019s rental crisis - The Conversation. Rent freezes and rent caps will only worsen, not solve Australia\u2019s rental crisis The Conversation",
+   "content_hash": "68c712223405bb24",
+   "raw_feed_hash": "4894119a6acb3ab2209ae5de90bdb5a556b98eeafd1c584c8aa1f0f31e150016",
+   "published_at": 1687762800.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_d3d75dc841",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d2104cd52fb07c99",
+   "source": "The Australian",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimAJBVV95cUxNRHhXalpwSk5iY0g3SG1WN2Nva0tNMlIzejlybTdQSUdwaV9zUWgxLVRsQ2JNcDdrMC00amJyMHVHNjhxLWFCUEdqQ3p1WVVnYjdvWEhNY3ZBYlRhVXBsTlM5WUd2clZhS3otTmM2NS1ocUVXRkUzYzBhWnIxMXlHQm9IZTQ4aDJybVJCZzBQRzBKWGpUbFJnQXRqRzEzaTBWVW4tUk5MOVlGRTFDNE4xVThRMUdoNkx2SGE0ZGZZWnV2dGJUX1Yya0M1UHc0RjZVem1Sb1dLMkh2bFZkeV91QUQxWVhYZmRhLUJCR2JmeEQ3azNuN3JLcXltVExEZTFIbTJCb0hRbWlCaXlFMEhBQmYzZmpKTGlm0gGeAkFVX3lxTE1KRExKQmtHbWJZcWd0R2QydnQwWjU3cDduem5tWDRFb29hSHFZOEw5aUY4MzdmVnd6V0tFeDlnVkR0UE84bVNKTUdURTNBVzB3eWRrZl9JS1ZDVmdtZy1vN3JTS0F3YVlfVmdORnFoVVV6R0xOWEhmV0FTb0VEalVLSUFxRElOb0k1MFREZXd6aTZGUHJGcjY1RjZ0RW1ScVZkQzRFb0QwMTBUdkdHVno0bHpETUx3Z0t2UTJIOWJsNWJGMDVQSDBQeXh1MjJ0TGNLWlBKeEZmTmFVdWllOEpQaEh6TGxNNTg1SWt1RHlHYVlMLW5fYS1HMFhUQlZzYkt4ZEQzTjVHM2NUQkFESTlMUnBGUlJEOW1aamZNMlE?oc=5",
+   "title": "Rent crisis hits new low: free dump, if you do the reno - The Australian",
+   "text": "Rent crisis hits new low: free dump, if you do the reno - The Australian. Rent crisis hits new low: free dump, if you do the reno The Australian",
+   "content_hash": "0eb5c635cda9a167",
+   "raw_feed_hash": "4894119a6acb3ab2209ae5de90bdb5a556b98eeafd1c584c8aa1f0f31e150016",
+   "published_at": 1681714800.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_d3d75dc841",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4f3d4b86f4ca746a",
+   "source": "7NEWS",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi3wFBVV95cUxOQ0VmY2lVR3dSV2UyT1ZENzN2RHhnVUFpeTRaMDJ1MTZBcVJ1SlU4S2dNVUlpX0w0V0lMWGhnVlN3b0k2V3p6M29IRW9ZUy1tczk5RzY4TWxrUTBDRHo3c29ZTHg1SWI2eDFTTlhhWEhMcWd4WEVCeUgzUDVWX0U5MGFnVXZDbnpwVncyYkFPYjlyZjVfQTBQaW03UWEzUjF0RGNiVG1US0pZb0Ryc1N1OHJVWDAybTVaenVtaDBHSmd6TGo1YndYWWhSTGVTQ1hMNDNxd1MwZUVGTWdtMU5v0gHkAUFVX3lxTE55ckZ5MmtYcnNhenNyWS1DR0hhWGNLSHFHNU44aElJMlIydGxIRG1UVkh3OWVEenFrSW9zT045d2JyZE02TE52RV85THd3THRFVG5Tcjl2TE5NVWdjTm1GOTRtLTlxZi1zdjlmOXYxMU0wRkVJMzVLdGg2NkFqbVU4NWkzSTJ2bExoOFJPV0hnSnpnM1lNbERILVA3UVBYSC1aR0J1OE1wbTZvY0kyeWFXWVV6bEVnYl9tZW1kM2FmWnRLa3ByNERqWHhGbnFJdDBPRm51eGYzNFplWGtHcHZPTTk0Zg?oc=5",
+   "title": "Online rental listing sparks outrage with request for tenants to renovate \u201cuninhabitable\u201d Sydney home in exchange for free rent - 7NEWS",
+   "text": "Online rental listing sparks outrage with request for tenants to renovate \u201cuninhabitable\u201d Sydney home in exchange for free rent - 7NEWS. Online rental listing sparks outrage with request for tenants to renovate \u201cuninhabitable\u201d Sydney home in exchange for free rent 7NEWS",
+   "content_hash": "7fb4efadfc58b736",
+   "raw_feed_hash": "4894119a6acb3ab2209ae5de90bdb5a556b98eeafd1c584c8aa1f0f31e150016",
+   "published_at": 1681714800.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_d3d75dc841",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "96febafee4bb2a8d",
+   "source": "Maricopa County (.gov)",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiX0FVX3lxTE1DWk52V3J5WnhQMklwYWtOa3V3T3hyZ295ck1sZzdrM0QzeS12VXRMZ2tNMTNJYWcwM0YxUlB1cHpLSVc0NUctX3diZXNYaUs1WmNDdy1pSnUwRW05X1Zn?oc=5",
+   "title": "Threshold: Landlord Engagement Expands Housing Options for People Exiting Homelessness - Maricopa County (.gov)",
+   "text": "Threshold: Landlord Engagement Expands Housing Options for People Exiting Homelessness - Maricopa County (.gov). Threshold: Landlord Engagement Expands Housing Options for People Exiting Homelessness Maricopa County (.gov)",
+   "content_hash": "fcc6ecfb20e24b9e",
+   "raw_feed_hash": "8076f007755dd0ca3362d016fe0387014cd055490cf19df317165cc5ffbb10d0",
+   "published_at": 1683615600.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_366ba85ab8",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "ee47c289b5569ea2",
+   "source": "Alaska Housing Finance Corporation",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNa2ZnbXZ1RnpCRkhzZHlBd1VXN24tUE9RTmJBQVktYmMzUl9FTGw5ZzljX3BNWlZTaE55QzlGemRNeHREbkVtQVFDOFVMSi1Cd2Fob1VwLWJJWGdTT3Z4d1FuOVQ5cDExWll1MnpQVm45aWtDQXdmUXBocVBuMjM0bVdCMmVxUnpwUUZxSEJQVEFzUnVQejBpWmdMSG1tOFk?oc=5",
+   "title": "Rent Relief FAQs - Alaska Housing Finance Corporation",
+   "text": "Rent Relief FAQs - Alaska Housing Finance Corporation. Rent Relief FAQs Alaska Housing Finance Corporation",
+   "content_hash": "017b1b9644a03528",
+   "raw_feed_hash": "8076f007755dd0ca3362d016fe0387014cd055490cf19df317165cc5ffbb10d0",
+   "published_at": 1688626800.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_366ba85ab8",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "4dd09c6792df41a6",
+   "source": "Los Angeles Times",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi4AFBVV95cUxPT2U0SXBWa3Q5YTRUQ1BTLVduWXZtZ2g0U3NwUS1qXzdMQXU3MXhSS3NieDFOV1hXUHF0UkxHSEJ6eTVORmlSdktCcllnSGxuTlB6NGVYU1R0OG5mR0VCTkwwTDF4SEQ4bWZkTWY4N1JuakQxNmlzek1ZcmJ0WkJ2ZDY1c24tcEdzR1U4VVhBVHc0YVhUenVrZU1zME1VNzhIaUF4aEpUUVRxQ1R6VGVwWGlfdGU4T0RneGNhbHIwZHp0MjN2bDk2TnBpNVhueUN2NWRFNGNiZ2ZBN09lMUM3Ng?oc=5",
+   "title": "State reaches settlement over pandemic rent relief: What tenants and landlords need to know - Los Angeles Times",
+   "text": "State reaches settlement over pandemic rent relief: What tenants and landlords need to know - Los Angeles Times. State reaches settlement over pandemic rent relief: What tenants and landlords need to know Los Angeles Times",
+   "content_hash": "f11d7a366d148c43",
+   "raw_feed_hash": "8076f007755dd0ca3362d016fe0387014cd055490cf19df317165cc5ffbb10d0",
+   "published_at": 1686294000.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_366ba85ab8",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "e9329c4d9cae1ce7",
+   "source": "Colorado Newsline",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxNSlZJc1Jmc3dwcUNWS3RiWkkxNzF0aEtMekZaWFpCLTV6MS12eEY1Q0FZbWVHQzVxMloxb1ZuVTJLRGZ6SkpuYTY4OUVvdFRDQlhkbWVlbW9TdVRkRE1fUDA2aEdPMEtoU3RkVDhsN3l5ckdtQldPeThfd0plcnhnQW5NOThVTlk?oc=5",
+   "title": "Income requirements for renters would be capped under Colorado bill - Colorado Newsline",
+   "text": "Income requirements for renters would be capped under Colorado bill - Colorado Newsline. Income requirements for renters would be capped under Colorado bill Colorado Newsline",
+   "content_hash": "c497b61c5e4754cb",
+   "raw_feed_hash": "8076f007755dd0ca3362d016fe0387014cd055490cf19df317165cc5ffbb10d0",
+   "published_at": 1681369200.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_366ba85ab8",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "9d5d26092ce5aef6",
+   "source": "Fall River Reporter",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxOMldKT0xQZGZUZFI4ZnVYbThMcEMyVVpCZ21RaVZLc1RVZ01JOTZkTW0tU3lFbHpLUXdnY2pIV1VTaFZ4R3p1cnB4OHpPNUZuZkxxMi1GM0ZBbGptX2pWTTBRUmk0RVYyUlR6a1AwYkl2T09iejREa2RZQUZoVHVuLWtGZEdGY3Q1YUczOHItbllEWnlLN0NUVUlR0gGaAUFVX3lxTE4yV0pPTFBkZlRkUjhmdVhtOExwQzJVWkJnbVFpVktzVFVnTUk5NmRNbS1TeUVsektRd2djakhXVVNoVnhHenVycHg4ek81Rm5mTHEyLUYzRkFsam1falZNMFFSaTRFVjJSVHprUDBiSXZPT2J6NERrZFlBRmhUdW4ta0ZkR0ZjdDVhRzM4ci1uWURaeUs3Q1RVSVE?oc=5",
+   "title": "Massachusetts legislature reviving program to prevent evictions - Fall River Reporter",
+   "text": "Massachusetts legislature reviving program to prevent evictions - Fall River Reporter. Massachusetts legislature reviving program to prevent evictions Fall River Reporter",
+   "content_hash": "dae99c43c3ae9dcb",
+   "raw_feed_hash": "8076f007755dd0ca3362d016fe0387014cd055490cf19df317165cc5ffbb10d0",
+   "published_at": 1690786800.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_366ba85ab8",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "6d4d9f24758abb93",
+   "source": "KERA News",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxQTHE3c2picEFiUjhibnZaNUU5NUtvRFNfU1VDUkZtaEtJLURTVjJRLS1VQWVNdFVFdE02bTRjdmMwMXBRREVYQmdtV3RXR3hIZWE3WHdHTU9UVWZMOGV1R1JjRTNoYndzMkNVNGRQaS0tQ1M5Z3NpUFRwV2RPRXRKTndscXhWTHI3Rnd6b1NzVGtLeGdqdHBSMGltMkR1VG5JTG5qWEhKNXY3dGFKMmMwTjdBLVd3d1E1dVE?oc=5",
+   "title": "How some North Texas landlords go outside the legal eviction process to force tenants out - KERA News",
+   "text": "How some North Texas landlords go outside the legal eviction process to force tenants out - KERA News. How some North Texas landlords go outside the legal eviction process to force tenants out KERA News",
+   "content_hash": "afc9016bc153ccd7",
+   "raw_feed_hash": "8076f007755dd0ca3362d016fe0387014cd055490cf19df317165cc5ffbb10d0",
+   "published_at": 1691478000.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_366ba85ab8",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "71a7512bc1c6e9e9",
+   "source": "www.hlc.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi2AFBVV95cUxQdkU1U25qaTluaHM4YXJyZEFlWDA2ZlM4OVFyMmt6UFBiMEdGQlFldEpMT0dMSjVQVkNIRTItYThDSGQ2ZVVCcnFjT0ZhTUVYYXc3YVZSZTBSM3J2b1pJVlE4RHF1cF9kaHpManhDVGpSWVhUWE5UT3owNG5sZlQ0R1ctYjA5T2w5eWJFc2NZLV9TVWJBNk5DWEhPMUhWZ0xoRWtzOFBNelpVWnNOSHZvWWhwOEg5c3pxckswNHBqWi1fUTg5Sk5KdzhBTUxyQTl5ZEFNZVFTaE0?oc=5",
+   "title": "UK Building Safety Act Landlord Certificates: What supporting information must a landlord provide? - www.hlc.com",
+   "text": "UK Building Safety Act Landlord Certificates: What supporting information must a landlord provide? - www.hlc.com. UK Building Safety Act Landlord Certificates: What supporting information must a landlord provide? www.hlc.com",
+   "content_hash": "83bee179e52bff9f",
+   "raw_feed_hash": "8076f007755dd0ca3362d016fe0387014cd055490cf19df317165cc5ffbb10d0",
+   "published_at": 1687417200.0,
+   "connector_id": "google_news_rss",
+   "rank": 7,
+   "requirement_id": "req_366ba85ab8",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "8e2af0b07414ab1c",
+   "source": "Cape Cod Times",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi0gFBVV95cUxPVUVXRFI0TnVldGhJbVJKcFpicmMxY0ZnTzNfSHJad0FaYl8tWjZ3YnNiUXNGSDlVYkIwTDZRSG1CVkFxVlR2TFl2LXNQbkZxRUFMY2R0MkU3QUl1bnpBRFlQQTlWNWhUczB6b055d0J2bjdVNzZOanVoU21SRlVFa05TSmxxS3JHLWM4ZXlYODRoQmpEblBPMHJ3TzMzTEFsMGhIMnB1b3JhYnZXa05fSktCNld4U0hOcEVQVUxtbWNXa2wycUhrNHhYZnJQTGQwZkE?oc=5",
+   "title": "Give me shelter: Cape housing advocates try to stay ahead of curve on evictions - Cape Cod Times",
+   "text": "Give me shelter: Cape housing advocates try to stay ahead of curve on evictions - Cape Cod Times. Give me shelter: Cape housing advocates try to stay ahead of curve on evictions Cape Cod Times",
+   "content_hash": "186d92f27ce955a5",
+   "raw_feed_hash": "8076f007755dd0ca3362d016fe0387014cd055490cf19df317165cc5ffbb10d0",
+   "published_at": 1683270000.0,
+   "connector_id": "google_news_rss",
+   "rank": 8,
+   "requirement_id": "req_366ba85ab8",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "d4a20a934ebe6345",
+   "source": "AgWeb",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQWlpyYVRmZ3BZNU11eHZpQm5FMW5OcEpSRmNpYmlqcE1LbUVGekRrVGtLbkNNRDYtT3JfR055R1JPOGphT19LOENVUTdNOW5rWEEyemNfTXpDbTBuMmdyMzlpRGJfaEk0OXJrQjBybDNINW0yeDlpcE9zWlhPbTRfR0l1dUs4YVlWeUdvT0tYX19rdklraGVDRXREWDE3Z29ZbDdIX0Q4OXU?oc=5",
+   "title": "Net Benefit: See if A Net-Share Lease Arrangement is A Fit For Your Farm - AgWeb",
+   "text": "Net Benefit: See if A Net-Share Lease Arrangement is A Fit For Your Farm - AgWeb. Net Benefit: See if A Net-Share Lease Arrangement is A Fit For Your Farm AgWeb",
+   "content_hash": "f6b2824703fca134",
+   "raw_feed_hash": "3616e102ebb84676694cdf8ebc600ea5f63aa96424a4cd895971f5694c496bd4",
+   "published_at": 1685084400.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_4499d810db",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "8c2406c078052d3a",
+   "source": "moneywise.com",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiXkFVX3lxTFBLa3NsQXRUTDJPVnJESmZEREpFZzI5N2t2Q1dCWGV0MVNOS25ZUWJIZXdCSXI3djdkSk9TVGJnZkN4Mm1zNm9fZmhXUzR5QndyQWEtOGc5YVlCY0hCWGc?oc=5",
+   "title": "6 Best Bond Alternatives (Plus One Bonus Pick for 2024) - moneywise.com",
+   "text": "6 Best Bond Alternatives (Plus One Bonus Pick for 2024) - moneywise.com. 6 Best Bond Alternatives (Plus One Bonus Pick for 2024) moneywise.com",
+   "content_hash": "dc2d682fbf17ee3c",
+   "raw_feed_hash": "3616e102ebb84676694cdf8ebc600ea5f63aa96424a4cd895971f5694c496bd4",
+   "published_at": 1692666374.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_4499d810db",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "bb1cd99207067ad8",
+   "source": "Inside Housing",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMixwFBVV95cUxNbm9fN2dENDc3UU5iYjFmeVNyeFoxeWw5M2FvbVl4ME1WbDM1akxtVWo3QlU0V3ZpSWNBTG1Ucm85TktseTVBOEc0bzRGUm9BRnhEVURPVlJabERvQkViOG1WbzRIdXJRaG9SUC1oNFJ5SEdXRzdKM1JOcmI2SEJKalRpbVZZM2hEYWc5YkJJY2ZySkZpZWVHUGdBOHFIdWh5b0JFcVl4UFJWbHJNMldGLUgxWWlnNS1EQlZNRmVfeWdqVElzNFRB?oc=5",
+   "title": "Governance downgrade for 32,000-home landlord in latest batch of regulatory judgements - Inside Housing",
+   "text": "Governance downgrade for 32,000-home landlord in latest batch of regulatory judgements - Inside Housing. Governance downgrade for 32,000-home landlord in latest batch of regulatory judgements Inside Housing",
+   "content_hash": "786a4f9b25019ca5",
+   "raw_feed_hash": "3616e102ebb84676694cdf8ebc600ea5f63aa96424a4cd895971f5694c496bd4",
+   "published_at": 1688540400.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_4499d810db",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "cb7a838d3c9e074e",
+   "source": "Social Housing",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxOZ2dxcWRRVEtfUjBmcjRLZm8wNG95ejJDN0NnZ0stbXpoOHozTFlsTVJCZ0FkVFhLZndBTWMzMnA3WF9nV0tIVjFmMjFNOXFISnh6T1A4Wm9DMGJ5T1lwRFdYc3B6WkUzNl92d0dRVEdnWEhrbTBuNkhaa0J2c3VRclJLNXFfaTVqdEM3aFVxSTNIdlNlVlZhRUVtbGxXSUdkRGg1WTZRWDZ3TlFCN1dhaGhKaTRsalRQMklJTUVqMEJrMU0?oc=5",
+   "title": "News - Flagship downgraded for governance - Social Housing",
+   "text": "News - Flagship downgraded for governance - Social Housing. News - Flagship downgraded for governance Social Housing",
+   "content_hash": "468b1e4219d3a138",
+   "raw_feed_hash": "3616e102ebb84676694cdf8ebc600ea5f63aa96424a4cd895971f5694c496bd4",
+   "published_at": 1688626800.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_4499d810db",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "f60cdaa34a10fce6:c0",
+   "source_id": "f60cdaa34a10fce6",
+   "subject": "The Easiest Way Landlords Can Automatically Increase Rent (With Minimum Tension) - Financial Samurai",
+   "predicate": "is",
+   "object": "a title of an article",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The Easiest Way Landlords Can Automatically Increase Rent (With Minimum Tension) - Financial Samurai",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1686166378.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Financial Samurai"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_d86d804984",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_d3d75dc841"
+   }
+  },
+  {
+   "claim_id": "96febafee4bb2a8d:c0",
+   "source_id": "96febafee4bb2a8d",
+   "subject": "Threshold: Landlord Engagement",
+   "predicate": "expands",
+   "object": "housing options for people exiting homelessness",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Threshold: Landlord Engagement Expands Housing Options for People Exiting Homelessness",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1683615600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Threshold: Landlord Engagement",
+    "Maricopa County"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_bbd7a15c97",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_366ba85ab8"
+   }
+  },
+  {
+   "claim_id": "d4a20a934ebe6345:c0",
+   "source_id": "d4a20a934ebe6345",
+   "subject": "Net-Share Lease Arrangement",
+   "predicate": "is a fit for your farm",
+   "object": "your farm",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "hedged",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "See if A Net-Share Lease Arrangement is A Fit For Your Farm",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1685084400.0,
+   "extraction_confidence": 0.8,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Net-Share Lease Arrangement"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_5953c8ac54",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_4499d810db"
+   }
+  },
+  {
+   "claim_id": "1a0aaaa5ca195cdc:c0",
+   "source_id": "1a0aaaa5ca195cdc",
+   "subject": "landlord",
+   "predicate": "is allowed to charge",
+   "object": "J-51 fee",
+   "value": "",
+   "units": "",
+   "qualifiers": "after the tax abatement expires",
+   "modality": "hedged",
+   "polarity": "affirm",
+   "claim_class": "inferred_implication",
+   "supporting_span": "Is my landlord allowed to charge a J-51 fee after the tax abatement expires?",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1692169200.0,
+   "extraction_confidence": 0.5,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "landlord",
+    "J-51 fee",
+    "tax abatement"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_9bbdfda452",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_d3d75dc841"
+   }
+  },
+  {
+   "claim_id": "ee47c289b5569ea2:c0",
+   "source_id": "ee47c289b5569ea2",
+   "subject": "Rent Relief FAQs",
+   "predicate": "is related to",
+   "object": "Alaska Housing Finance Corporation",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "official_record",
+   "supporting_span": "Rent Relief FAQs - Alaska Housing Finance Corporation",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1688626800.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Rent Relief FAQs",
+    "Alaska Housing Finance Corporation"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_5deb8a2957",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_366ba85ab8"
+   }
+  },
+  {
+   "claim_id": "8c2406c078052d3a:c0",
+   "source_id": "8c2406c078052d3a",
+   "subject": "moneywise.com",
+   "predicate": "published",
+   "object": "article titled '6 Best Bond Alternatives (Plus One Bonus Pick for 2024)'",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "6 Best Bond Alternatives (Plus One Bonus Pick for 2024) - moneywise.com",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1692666374.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "moneywise.com"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_78a48a3dff",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_4499d810db"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Financial Samurai",
+   "normalized": "financial samurai",
+   "candidates": [
+    {
+     "entity_id": "ent_fb94084bee",
+     "canonical": "financial samurai",
+     "support": 0.6,
+     "evidence_mentions": [
+      "Financial Samurai"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Threshold: Landlord Engagement",
+   "normalized": "threshold: landlord engagement",
+   "candidates": [
+    {
+     "entity_id": "ent_a22caaa560",
+     "canonical": "threshold: landlord engagement",
+     "support": 0.6,
+     "evidence_mentions": [
+      "Threshold: Landlord Engagement"
+     ]
+    },
+    {
+     "entity_id": "ent_3a3c203606",
+     "canonical": "landlord",
+     "support": 0.25,
+     "evidence_mentions": [
+      "landlord"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Maricopa County",
+   "normalized": "maricopa county",
+   "candidates": [
+    {
+     "entity_id": "ent_4c349d6fc9",
+     "canonical": "maricopa county",
+     "support": 0.6,
+     "evidence_mentions": [
+      "Maricopa County"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Net-Share Lease Arrangement",
+   "normalized": "net-share lease arrangement",
+   "candidates": [
+    {
+     "entity_id": "ent_ddba89bb68",
+     "canonical": "net-share lease arrangement",
+     "support": 0.6,
+     "evidence_mentions": [
+      "Net-Share Lease Arrangement"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "landlord",
+   "normalized": "landlord",
+   "candidates": [
+    {
+     "entity_id": "ent_3a3c203606",
+     "canonical": "landlord",
+     "support": 0.6,
+     "evidence_mentions": [
+      "landlord"
+     ]
+    },
+    {
+     "entity_id": "ent_a22caaa560",
+     "canonical": "threshold: landlord engagement",
+     "support": 0.25,
+     "evidence_mentions": [
+      "Threshold: Landlord Engagement"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "J-51 fee",
+   "normalized": "j-51 fee",
+   "candidates": [
+    {
+     "entity_id": "ent_07696539e7",
+     "canonical": "j-51 fee",
+     "support": 0.6,
+     "evidence_mentions": [
+      "J-51 fee"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "tax abatement",
+   "normalized": "tax abatement",
+   "candidates": [
+    {
+     "entity_id": "ent_1245568256",
+     "canonical": "tax abatement",
+     "support": 0.6,
+     "evidence_mentions": [
+      "tax abatement"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Rent Relief FAQs",
+   "normalized": "rent relief faqs",
+   "candidates": [
+    {
+     "entity_id": "ent_8325332333",
+     "canonical": "rent relief faqs",
+     "support": 0.6,
+     "evidence_mentions": [
+      "Rent Relief FAQs"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Alaska Housing Finance Corporation",
+   "normalized": "alaska housing finance corporation",
+   "candidates": [
+    {
+     "entity_id": "ent_d5047d5ca7",
+     "canonical": "alaska housing finance corporation",
+     "support": 0.6,
+     "evidence_mentions": [
+      "Alaska Housing Finance Corporation"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "moneywise.com",
+   "normalized": "moneywise com",
+   "candidates": [
+    {
+     "entity_id": "ent_1425bc8239",
+     "canonical": "moneywise com",
+     "support": 0.6,
+     "evidence_mentions": [
+      "moneywise.com"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "f60cdaa34a10fce6": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1686166378.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686166378.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "1a0aaaa5ca195cdc": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1692169200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1692169200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "2a0a92e0bdf8e4f2": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1689836400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689836400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "9b0b1df414f08594": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1687762800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687762800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d2104cd52fb07c99": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1681714800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681714800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4f3d4b86f4ca746a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1681714800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681714800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "96febafee4bb2a8d": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1683615600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683615600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "ee47c289b5569ea2": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1688626800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1688626800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "4dd09c6792df41a6": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1686294000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686294000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "e9329c4d9cae1ce7": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1681369200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681369200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "9d5d26092ce5aef6": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1690786800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1690786800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "6d4d9f24758abb93": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1691478000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1691478000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "71a7512bc1c6e9e9": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1687417200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1687417200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "8e2af0b07414ab1c": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1683270000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683270000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "d4a20a934ebe6345": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1685084400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685084400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "8c2406c078052d3a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1692666374.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1692666374.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "bb1cd99207067ad8": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1688540400.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1688540400.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "cb7a838d3c9e074e": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1693526400.0,
+   "claimed_pubdate_ts": 1688626800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1688626800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_d86d804984",
+   "member_ids": [
+    "f60cdaa34a10fce6"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Financial Samurai",
+   "primary_source": "Financial Samurai",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9bbdfda452",
+   "member_ids": [
+    "1a0aaaa5ca195cdc"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Brick Underground",
+   "primary_source": "Brick Underground",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_ac167fe29a",
+   "member_ids": [
+    "2a0a92e0bdf8e4f2"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Jacobin",
+   "primary_source": "Jacobin",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_fa3b4b5af2",
+   "member_ids": [
+    "9b0b1df414f08594"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Conversation",
+   "primary_source": "The Conversation",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_84588751e5",
+   "member_ids": [
+    "d2104cd52fb07c99"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Australian",
+   "primary_source": "The Australian",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_adefc2439e",
+   "member_ids": [
+    "4f3d4b86f4ca746a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "7NEWS",
+   "primary_source": "7NEWS",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_bbd7a15c97",
+   "member_ids": [
+    "96febafee4bb2a8d"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Maricopa County (.gov)",
+   "primary_source": "Maricopa County (.gov)",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_5deb8a2957",
+   "member_ids": [
+    "ee47c289b5569ea2"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Alaska Housing Finance Corporation",
+   "primary_source": "Alaska Housing Finance Corporation",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_efe0a1725b",
+   "member_ids": [
+    "4dd09c6792df41a6"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Los Angeles Times",
+   "primary_source": "Los Angeles Times",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_0eb77b2e32",
+   "member_ids": [
+    "e9329c4d9cae1ce7"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Colorado Newsline",
+   "primary_source": "Colorado Newsline",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_603fdc162a",
+   "member_ids": [
+    "9d5d26092ce5aef6"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Fall River Reporter",
+   "primary_source": "Fall River Reporter",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_35ff72878d",
+   "member_ids": [
+    "6d4d9f24758abb93"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "KERA News",
+   "primary_source": "KERA News",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_624aef084d",
+   "member_ids": [
+    "71a7512bc1c6e9e9"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "www.hlc.com",
+   "primary_source": "www.hlc.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_28298f6c7d",
+   "member_ids": [
+    "8e2af0b07414ab1c"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Cape Cod Times",
+   "primary_source": "Cape Cod Times",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_5953c8ac54",
+   "member_ids": [
+    "d4a20a934ebe6345"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "AgWeb",
+   "primary_source": "AgWeb",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_78a48a3dff",
+   "member_ids": [
+    "8c2406c078052d3a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "moneywise.com",
+   "primary_source": "moneywise.com",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9b4c90b919",
+   "member_ids": [
+    "bb1cd99207067ad8"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Inside Housing",
+   "primary_source": "Inside Housing",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_40e02a0888",
+   "member_ids": [
+    "cb7a838d3c9e074e"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Social Housing",
+   "primary_source": "Social Housing",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "f60cdaa34a10fce6:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1686166378.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "96febafee4bb2a8d:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1683615600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "d4a20a934ebe6345:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685084400.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "1a0aaaa5ca195cdc:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1692169200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "ee47c289b5569ea2:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1688626800.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "8c2406c078052d3a:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1692666374.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "f60cdaa34a10fce6:c0",
+  "96febafee4bb2a8d:c0",
+  "d4a20a934ebe6345:c0",
+  "1a0aaaa5ca195cdc:c0",
+  "ee47c289b5569ea2:c0",
+  "8c2406c078052d3a:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_d3d75dc841": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_366ba85ab8": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_4499d810db": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_6641468c0e": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_5768fb949d": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_1d5fc9fc00": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_03ca3f8acb": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_6641468c0e",
+  "req_5768fb949d",
+  "req_1d5fc9fc00",
+  "req_03ca3f8acb"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 18,
+  "n_contradictions": 0,
+  "n_documents": 18
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 13.552,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "4ea761fe1bf6e8ef",
+ "bundle_hash": "4ea761fe1bf6e8ef",
+ "_persisted_at": "2026-07-13T02:05:43Z"
+}

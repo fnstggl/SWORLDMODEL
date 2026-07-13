@@ -1,0 +1,1645 @@
+{
+ "bundle_id": "eb_d9a176",
+ "question": "Will the IPO price above its indicated range?",
+ "as_of": 1690848000.0,
+ "compiler_plan_hash": "f7ad316f6f94",
+ "schema_version": "evidence-bundle-v2.0",
+ "evidence_system_version": "phase2-1.0",
+ "prior_bundle_hash": "",
+ "version": 1,
+ "requirements": [
+  {
+   "requirement_id": "req_147d08473f",
+   "claim_or_quantity": "The outcome is 'above_range' if the final IPO price exceeds the upper bound of the indicated price range; otherwise 'at_or_below_range'.",
+   "why_relevant": "the terminal outcome standing as of the question date sets the base rate",
+   "affected_component": "terminal_outcome",
+   "expected_sensitivity": 1.0,
+   "expected_voi": 1.0,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [
+    "company_issuing",
+    "lead_underwriter",
+    "sec"
+   ],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_a4042723de",
+   "claim_or_quantity": "value/context of company_issuing.fundamentals_quality",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "company_issuing.fundamentals_quality",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_30c3345f0d",
+   "claim_or_quantity": "value/context of institutional_investors.demand_strength",
+   "why_relevant": "high-sensitivity latent (0.90) driving the outcome distribution",
+   "affected_component": "institutional_investors.demand_strength",
+   "expected_sensitivity": 0.9,
+   "expected_voi": 0.9,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_0ddf71abee",
+   "claim_or_quantity": "value/context of lead_underwriter.pricing_strategy_aggressiveness",
+   "why_relevant": "high-sensitivity latent (0.80) driving the outcome distribution",
+   "affected_component": "lead_underwriter.pricing_strategy_aggressiveness",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_013eab0baf",
+   "claim_or_quantity": "evidence discriminating structural hypothesis strong_demand_push",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:strong_demand_push",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_065d48b79e",
+   "claim_or_quantity": "evidence discriminating structural hypothesis conservative_pricing",
+   "why_relevant": "a fact that reweights competing structural hypotheses materially changes the outcome",
+   "affected_component": "structural_hypothesis:conservative_pricing",
+   "expected_sensitivity": 0.8,
+   "expected_voi": 0.8,
+   "preferred_source_types": [
+    "news",
+    "wire"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "paired_after_before",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": false,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_201641fa9c",
+   "claim_or_quantity": "decision rules / process of stock_exchange",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "stock_exchange",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  },
+  {
+   "requirement_id": "req_47e92d9ffe",
+   "claim_or_quantity": "decision rules / process of underwriting_syndicate",
+   "why_relevant": "institutional rules determine which actions are feasible and when the outcome resolves",
+   "affected_component": "underwriting_syndicate",
+   "expected_sensitivity": 0.7,
+   "expected_voi": 0.7,
+   "preferred_source_types": [
+    "official_filing",
+    "regulatory",
+    "news"
+   ],
+   "fallback_source_types": [
+    "wikipedia_revision"
+   ],
+   "disallowed_source_types": [],
+   "as_of_constraint": "2023-08-01",
+   "event_time_scope": "",
+   "publication_time_scope": "",
+   "geographic_scope": "",
+   "jurisdiction": "",
+   "entity_scope": [],
+   "structured_fields": [],
+   "actor_visibility_assumption": "public",
+   "absence_informative": true,
+   "retrieval_cost_estimate": 1.0,
+   "stopping_criteria": "coverage>=1 claim or 2 queries",
+   "missing_consequence": "widen prior; lower support grade",
+   "uncertainty_if_unmet": "broad",
+   "status": "open"
+  }
+ ],
+ "retrieval_plan": [
+  {
+   "requirement_id": "req_147d08473f",
+   "terms": "IPO price above indicated range company issuing lead underwriter sec",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_a4042723de",
+   "terms": "company issuing fundamentals quality",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  },
+  {
+   "requirement_id": "req_30c3345f0d",
+   "terms": "institutional investors demand strength",
+   "after": "2023-03-04",
+   "before": "2023-08-01",
+   "preferred": [
+    "news",
+    "wire"
+   ]
+  }
+ ],
+ "retrieval_traces": [
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_147d08473f",
+   "logical_query": "IPO price above indicated range company issuing lead underwriter sec after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=IPO+price+above+indicated+range+company+issuing+lead+underwriter+sec+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783908686.2547982,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:11:27 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Content-Security-Policy": "script-src 'unsafe-inline' https: http:;object-src 'none';base-uri 'self';report-uri /_/DotsSplashUi/cspreport;worker-src 'self'",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw15BiSO44w5ACxJVA3ADErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQtwc5yddvMQm0PBqpY6SclJ-YXxKfklxcUFOYnFGcWpRWWpRvJGBkZmBuYGZnoFJfIEBAGjnOEo\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "f422ecbcff8c978bb86496481fe7637783b4ecf8863bb586e3acedf85956a160",
+   "n_bytes": 2323,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 1,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.739
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_a4042723de",
+   "logical_query": "company issuing fundamentals quality after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=company+issuing+fundamentals+quality+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783908686.9951432,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:11:27 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStHikmLw15BiSO44w5ACxHVA3AjErTfPsU4G4pJF51mbgLgLiGcAsaHCJVZ7IL6cfom1SOIKawMQf6q6wSpQfYP1W7EvG0sJEL_1ZzMNCWRzBuItmsFsQjwc5yddvMQmMGPb801MSspJ-YXxKfklxcUFOYnFGcWpRWWpRfFGBkZmBuYGZnoGJvEFBgCyQjj7\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "1607835eb6b415e342e0f4993bc4e324b210da38918865926c27e613de74bb27",
+   "n_bytes": 2643,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 1,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.551
+  },
+  {
+   "connector_id": "google_news_rss",
+   "connector_version": "1.0",
+   "requirement_id": "req_30c3345f0d",
+   "logical_query": "institutional investors demand strength after:2023-03-04 before:2023-08-01",
+   "wire_url": "https://news.google.com/rss/search?q=institutional+investors+demand+strength+after%3A2023-03-04+before%3A2023-08-01&hl=en-US&gl=US&ceid=US%3Aen",
+   "after_date": "2023-03-04",
+   "before_date": "2023-08-01",
+   "retrieved_at": 1783908687.547616,
+   "status_code": 200,
+   "redirects": [],
+   "response_headers": {
+    "Content-Type": "application/xml; charset=utf-8",
+    "Cache-Control": "no-cache, no-store, max-age=0, must-revalidate",
+    "Pragma": "no-cache",
+    "Expires": "Mon, 01 Jan 1990 00:00:00 GMT",
+    "Date": "Mon, 13 Jul 2026 02:11:28 GMT",
+    "Strict-Transport-Security": "max-age=31536000",
+    "Accept-CH": "Sec-CH-UA-Arch, Sec-CH-UA-Bitness, Sec-CH-UA-Full-Version, Sec-CH-UA-Full-Version-List, Sec-CH-UA-Model, Sec-CH-UA-WoW64, Sec-CH-UA-Form-Factors, Sec-CH-UA-Platform, Sec-CH-UA-Platform-Version",
+    "Cross-Origin-Resource-Policy": "same-site",
+    "Content-Security-Policy": "require-trusted-types-for 'script';report-uri /_/DotsSplashUi/cspreport",
+    "Cross-Origin-Opener-Policy": "same-origin-allow-popups",
+    "Permissions-Policy": "ch-ua-arch=*, ch-ua-bitness=*, ch-ua-full-version=*, ch-ua-full-version-list=*, ch-ua-model=*, ch-ua-wow64=*, ch-ua-form-factors=*, ch-ua-platform=*, ch-ua-platform-version=*",
+    "reporting-endpoints": "default=\"/_/DotsSplashUi/web-reports?context=eJzjStDikmLw15BiSO44w5ACxHVA3HrzHOtkIC5ZdJ61CYi7gHgGEBsqXGK1B-LL6ZdYiySusDYA8aeqG6wC1TdYvxX7srGUAPFbfzbTkEA2ZyDeohnMJsTNcWHSxUtsAj8OzslQUk7KL4xPyS8pLi7ISSzOKE4tKkstijcyMDIzMDcw0zMwiS8wAAB3Ujb2\"",
+    "Server": "ESF",
+    "X-XSS-Protection": "0",
+    "X-Frame-Options": "SAMEORIGIN",
+    "X-Content-Type-Options": "nosniff",
+    "Accept-Ranges": "none",
+    "Vary": "Sec-Fetch-Dest, Sec-Fetch-Mode, Sec-Fetch-Site,Accept-Encoding",
+    "Connection": "close"
+   },
+   "raw_content_hash": "d8d5b636a49fd2fd0857675bdbc0752e12ff0a3638490123a2fa3cd756354b6c",
+   "n_bytes": 9193,
+   "feed_parser_version": "gnews-rss-parser-1.0",
+   "n_items": 6,
+   "connector_status": "ok",
+   "error": "",
+   "latency_s": 0.57
+  }
+ ],
+ "raw_content_refs": [
+  "1607835eb6b415e342e0f4993bc4e324b210da38918865926c27e613de74bb27",
+  "d8d5b636a49fd2fd0857675bdbc0752e12ff0a3638490123a2fa3cd756354b6c",
+  "f422ecbcff8c978bb86496481fe7637783b4ecf8863bb586e3acedf85956a160"
+ ],
+ "documents": [
+  {
+   "id": "5f0276e338377cef",
+   "source": "Investopedia",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxQRU5ockNhSGpTaHZ5RGVRYmNqRDBNS1pLTXNIMlBVWE9TNFU3NDBfZ1RaRHBnZHVZQlIwb2ZKY2tiYW12Z255UFF4dDFEVUtCcnRXSnR2TWU2aUJsSGNRUDFDRWREbjJpaE5nSDFhbzRMcUxjV0ZsTVVGTk9IVXpBOU5n?oc=5",
+   "title": "The Road to Creating an IPO - Investopedia",
+   "text": "The Road to Creating an IPO - Investopedia. The Road to Creating an IPO Investopedia",
+   "content_hash": "0c15ab0dccb4b790",
+   "raw_feed_hash": "f422ecbcff8c978bb86496481fe7637783b4ecf8863bb586e3acedf85956a160",
+   "published_at": 1682665200.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_147d08473f",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "fefbfbd7fa8f62c2",
+   "source": "The Business Times",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxOUzFTVEV4THlySGVYZWpwbW1UR05jdUR1OWVadUttd3JQTEdXVTVhVUFQTUhEaXF0ZTdWWGxETGJVYmFzUWFOdXU5ZkpoNWtlUExZM3VJblFIQzFvZmRuNHpoYUJsOWVYemVzMkliamJNamNnQlo5TWVIbkJqVUxXazVYUEwwdTl2amo3TzdPVDN0Zk16MG8xNFRsanlOYnFnWVpTSUVGaVlJRm1ZUGNHMVNIOGhzYnc3Wm9BTXVydW8wdw?oc=5",
+   "title": "Singapore\u2019s first listed retail PE bonds redeemed, additional 0.5% bonus paid - The Business Times",
+   "text": "Singapore\u2019s first listed retail PE bonds redeemed, additional 0.5% bonus paid - The Business Times. Singapore\u2019s first listed retail PE bonds redeemed, additional 0.5% bonus paid The Business Times",
+   "content_hash": "2ce3d9580644e3d2",
+   "raw_feed_hash": "1607835eb6b415e342e0f4993bc4e324b210da38918865926c27e613de74bb27",
+   "published_at": 1686726000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_a4042723de",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "61d12224c33b1bc3",
+   "source": "CoinDesk",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxNTkI1a1BOZUhrQmMyWDI0NExqYzZia0pJRi1GQlBTNDZ2TDIydjUwSjdLR2Vic0FTZXJFS0puNjBlRFNYSGktbTJPbDh4Q3pmYkc1cXFkclFaRnFINUdvZlYzM1hINExjSFNfWVZ6U1FRckYyejFQNWxqMGFNYktwaW1YYk03YWdNY2lpSjBNRmU1M0lBVWUtU0J4VDdPeXRyWEJSQ2dkY3RNYTJwcTRxakpkbHhyUDExdGRv?oc=5",
+   "title": "U.S. Investors Are Driving Bitcoin\u2019s Price Surge as Institutional Demand Rises - CoinDesk",
+   "text": "U.S. Investors Are Driving Bitcoin\u2019s Price Surge as Institutional Demand Rises - CoinDesk. U.S. Investors Are Driving Bitcoin\u2019s Price Surge as Institutional Demand Rises CoinDesk",
+   "content_hash": "0a512eddc59e8258",
+   "raw_feed_hash": "d8d5b636a49fd2fd0857675bdbc0752e12ff0a3638490123a2fa3cd756354b6c",
+   "published_at": 1688022000.0,
+   "connector_id": "google_news_rss",
+   "rank": 1,
+   "requirement_id": "req_30c3345f0d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "172543accca5cf40",
+   "source": "TradingView",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxPMEpmay1hVkRrVDQ1TGNEbEgwam9JTHVkSkdXOXF1dTd0U2lKU0hQekltVzB3VGdxQnZfWmdGVGYtX3Rlc2p6OWY0aVNvOHo5QVJFczdOYUZlU0Q1Q3F2VVdfczZ1REZYbmZTdkQzSUdZak55SnVOTW1lcm1PTzBzYkd0UExGTkRac3pGNWNRNnUydjRFSzBVZG43X0JGNmZaMUpEb0RB?oc=5",
+   "title": "Institutional Vs. Retail Investors: Who Ya Got? - TradingView",
+   "text": "Institutional Vs. Retail Investors: Who Ya Got? - TradingView. Institutional Vs. Retail Investors: Who Ya Got? TradingView",
+   "content_hash": "0a0fed1906e3fb61",
+   "raw_feed_hash": "d8d5b636a49fd2fd0857675bdbc0752e12ff0a3638490123a2fa3cd756354b6c",
+   "published_at": 1689750000.0,
+   "connector_id": "google_news_rss",
+   "rank": 2,
+   "requirement_id": "req_30c3345f0d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "0e88333da3f887fc",
+   "source": "Oxford Properties",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMi7wFBVV95cUxQY1pxd0VfaE5xUXRJTUZSV1hHR1B1T0liam84bS15b1hENU1QbVRUT09scWVJNkMyUE5pX09OQVhfWTNYZmdBY3ZyajB5T1R1SEszb3JEaVFlTkM3cXF5djFjbWU4S1l3dkJUT05peXNBYXVTc0NYYW13eEsyNXlScDFZeGMwTnAyTjViY2hpc2NFOE51R05vODY2Rl9ocDRjeWQyanRVcjQ0NGN6YlFYWl9FV1FicDU2eXFyekw1Q0JrVU9hRjktbm5HQlh5cEhmVUN3ZVZPQk9qdVZGYWRHVlBHbG9fOVFaTUtNYnhsWQ?oc=5",
+   "title": "Oxford completes US$91 million sale of newly constructed, 140,000 SF Boston GMP facility to pioneering biotech firm Moderna - Oxford Properties",
+   "text": "Oxford completes US$91 million sale of newly constructed, 140,000 SF Boston GMP facility to pioneering biotech firm Moderna - Oxford Properties. Oxford completes US$91 million sale of newly constructed, 140,000 SF Boston GMP facility to pioneering biotech firm Moderna Oxford Properties",
+   "content_hash": "3a140736380e0a0e",
+   "raw_feed_hash": "d8d5b636a49fd2fd0857675bdbc0752e12ff0a3638490123a2fa3cd756354b6c",
+   "published_at": 1685343600.0,
+   "connector_id": "google_news_rss",
+   "rank": 3,
+   "requirement_id": "req_30c3345f0d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "f8852e27f39eff90",
+   "source": "Techsauce",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMieEFVX3lxTE9rM2NiNXJuZGVqYmhOaHh1THdFRm56Q0otM1FQZkZxSll1ZGtHOWlFSHBvYkRGZ2xkajJkcVpqUEM0a1FPVDcyZ1RvMkE4LWo2VHVKTzFLUkY1OGNWZk1NWENGTVdRR1FDWFNyc0dseW1LYVN2Z2hSWQ?oc=5",
+   "title": "FINNOMENA has elevated its strength by raising over $5.5 million in Series B+ funding. - Techsauce",
+   "text": "FINNOMENA has elevated its strength by raising over $5.5 million in Series B+ funding. - Techsauce. FINNOMENA has elevated its strength by raising over $5.5 million in Series B+ funding. Techsauce",
+   "content_hash": "db2950458dd5efc8",
+   "raw_feed_hash": "d8d5b636a49fd2fd0857675bdbc0752e12ff0a3638490123a2fa3cd756354b6c",
+   "published_at": 1685775600.0,
+   "connector_id": "google_news_rss",
+   "rank": 4,
+   "requirement_id": "req_30c3345f0d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "20ac3ea651e3020a",
+   "source": "Portal Rasmi Kementerian Kewangan",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxPeTFLeEdITjRIMGtkOEVqWVY4czc1NG4zbFJRd0JtbHFpYU56QkhaamRMOFFwek10cmJSaFV6Q1k2cTNyTWxVSXJYOGJlTUtDaVRFb3FSNVlNMnlzWFAwcWI2VG4tOHBjaG96UGlzVldnNlpuVEUxdW1PODZoSTMtcTdCai1fVVNjME5nZzRaMDA3aDRiOVpyanJ6QWxBU0hjRFB4Ym40aHNNRmRQRWRLQ1dFZW1VMlUwbFZ2OVk1ZzI?oc=5",
+   "title": "Moody\u2019s Affirms Malaysia\u2019s Sovereign Credit Rating At \u2018A3\u2019: Outlook Stable - Portal Rasmi Kementerian Kewangan",
+   "text": "Moody\u2019s Affirms Malaysia\u2019s Sovereign Credit Rating At \u2018A3\u2019: Outlook Stable - Portal Rasmi Kementerian Kewangan. Moody\u2019s Affirms Malaysia\u2019s Sovereign Credit Rating At \u2018A3\u2019: Outlook Stable Portal Rasmi Kementerian Kewangan",
+   "content_hash": "b23c275a72ae0fa7",
+   "raw_feed_hash": "d8d5b636a49fd2fd0857675bdbc0752e12ff0a3638490123a2fa3cd756354b6c",
+   "published_at": 1681455600.0,
+   "connector_id": "google_news_rss",
+   "rank": 5,
+   "requirement_id": "req_30c3345f0d",
+   "temporal_status": "likely_pre_asof"
+  },
+  {
+   "id": "e064635ba8c97f67",
+   "source": "Place North West",
+   "source_type": "news",
+   "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxOWk53YVVadUFaanpnUzB2ZklqNUl0a2d2M2prbjRqd0hwT2N3c0tYcUxETHNLZ3J2TlR0aDJOVkF0WmhKN3NBMW1laGVaMmd2UXdfQ3dPRnF3eXlxYi1mY0FRR0t0anlzTENBUTBEMWFkODlUaXpfdk85NUhXMmRBV2xYSG9zSGRGUW5FNUFMa0k1bjd6T3NZYVY0QQ?oc=5",
+   "title": "UKREiiF | Why Manchester is the UK\u2019s leading city for investment - Place North West",
+   "text": "UKREiiF | Why Manchester is the UK\u2019s leading city for investment - Place North West. UKREiiF | Why Manchester is the UK\u2019s leading city for investment Place North West",
+   "content_hash": "f95d186acb12d0b3",
+   "raw_feed_hash": "d8d5b636a49fd2fd0857675bdbc0752e12ff0a3638490123a2fa3cd756354b6c",
+   "published_at": 1683874800.0,
+   "connector_id": "google_news_rss",
+   "rank": 6,
+   "requirement_id": "req_30c3345f0d",
+   "temporal_status": "likely_pre_asof"
+  }
+ ],
+ "claims": [
+  {
+   "claim_id": "5f0276e338377cef:c0",
+   "source_id": "5f0276e338377cef",
+   "subject": "The Road to Creating an IPO",
+   "predicate": "is a resource from",
+   "object": "Investopedia",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "The Road to Creating an IPO - Investopedia",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1682665200.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Investopedia"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_f73ab13c70",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_147d08473f"
+   }
+  },
+  {
+   "claim_id": "fefbfbd7fa8f62c2:c0",
+   "source_id": "fefbfbd7fa8f62c2",
+   "subject": "Singapore\u2019s first listed retail PE bonds",
+   "predicate": "redeemed",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Singapore\u2019s first listed retail PE bonds redeemed",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1686726000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Singapore\u2019s first listed retail PE bonds"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_2d15f3d808",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_a4042723de"
+   }
+  },
+  {
+   "claim_id": "fefbfbd7fa8f62c2:c1",
+   "source_id": "fefbfbd7fa8f62c2",
+   "subject": "additional 0.5% bonus",
+   "predicate": "paid",
+   "object": "",
+   "value": "0.5",
+   "units": "%",
+   "qualifiers": "bonus",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "additional 0.5% bonus paid",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1686726000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "additional 0.5% bonus"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_2d15f3d808",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_a4042723de"
+   }
+  },
+  {
+   "claim_id": "61d12224c33b1bc3:c0",
+   "source_id": "61d12224c33b1bc3",
+   "subject": "U.S. Investors",
+   "predicate": "are driving",
+   "object": "Bitcoin\u2019s Price Surge",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "U.S. Investors Are Driving Bitcoin\u2019s Price Surge as Institutional Demand Rises",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1688022000.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "U.S. Investors",
+    "Bitcoin"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_93072ecd84",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_30c3345f0d"
+   }
+  },
+  {
+   "claim_id": "61d12224c33b1bc3:c1",
+   "source_id": "61d12224c33b1bc3",
+   "subject": "Institutional Demand",
+   "predicate": "is rising",
+   "object": "",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "U.S. Investors Are Driving Bitcoin\u2019s Price Surge as Institutional Demand Rises",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1688022000.0,
+   "extraction_confidence": 0.9,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Institutional Demand"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_93072ecd84",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_30c3345f0d"
+   }
+  },
+  {
+   "claim_id": "172543accca5cf40:c0",
+   "source_id": "172543accca5cf40",
+   "subject": "Institutional Vs. Retail Investors: Who Ya Got?",
+   "predicate": "is a headline of",
+   "object": "TradingView article",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Institutional Vs. Retail Investors: Who Ya Got? - TradingView",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1689750000.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Institutional Vs. Retail Investors: Who Ya Got?",
+    "TradingView"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_b330a5b819",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_30c3345f0d"
+   }
+  },
+  {
+   "claim_id": "0e88333da3f887fc:c0",
+   "source_id": "0e88333da3f887fc",
+   "subject": "Oxford",
+   "predicate": "completed sale of",
+   "object": "newly constructed, 140,000 SF Boston GMP facility",
+   "value": "91",
+   "units": "million US dollars",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Oxford completes US$91 million sale of newly constructed, 140,000 SF Boston GMP facility to pioneering biotech firm Moderna",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1685343600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Oxford",
+    "Moderna"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_bba06f4450",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_30c3345f0d"
+   }
+  },
+  {
+   "claim_id": "0e88333da3f887fc:c1",
+   "source_id": "0e88333da3f887fc",
+   "subject": "the facility",
+   "predicate": "was sold to",
+   "object": "Moderna",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Oxford completes US$91 million sale of newly constructed, 140,000 SF Boston GMP facility to pioneering biotech firm Moderna",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1685343600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Moderna"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_bba06f4450",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_30c3345f0d"
+   }
+  },
+  {
+   "claim_id": "0e88333da3f887fc:c2",
+   "source_id": "0e88333da3f887fc",
+   "subject": "the facility",
+   "predicate": "is",
+   "object": "newly constructed",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "newly constructed, 140,000 SF Boston GMP facility",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1685343600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [],
+   "contradiction_links": [],
+   "dependence_group": "dep_bba06f4450",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_30c3345f0d"
+   }
+  },
+  {
+   "claim_id": "0e88333da3f887fc:c3",
+   "source_id": "0e88333da3f887fc",
+   "subject": "the facility",
+   "predicate": "has size of",
+   "object": "140,000 SF",
+   "value": "140000",
+   "units": "square feet",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "140,000 SF Boston GMP facility",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1685343600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [],
+   "contradiction_links": [],
+   "dependence_group": "dep_bba06f4450",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_30c3345f0d"
+   }
+  },
+  {
+   "claim_id": "0e88333da3f887fc:c4",
+   "source_id": "0e88333da3f887fc",
+   "subject": "the facility",
+   "predicate": "is located in",
+   "object": "Boston",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "Boston GMP facility",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1685343600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Boston"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_bba06f4450",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_30c3345f0d"
+   }
+  },
+  {
+   "claim_id": "0e88333da3f887fc:c5",
+   "source_id": "0e88333da3f887fc",
+   "subject": "Moderna",
+   "predicate": "is",
+   "object": "pioneering biotech firm",
+   "value": "",
+   "units": "",
+   "qualifiers": "",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "opinion",
+   "supporting_span": "pioneering biotech firm Moderna",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1685343600.0,
+   "extraction_confidence": 0.8,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "Moderna"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_bba06f4450",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_30c3345f0d"
+   }
+  },
+  {
+   "claim_id": "f8852e27f39eff90:c0",
+   "source_id": "f8852e27f39eff90",
+   "subject": "FINNOMENA",
+   "predicate": "raised",
+   "object": "over $5.5 million",
+   "value": "5.5",
+   "units": "million USD",
+   "qualifiers": "Series B+ funding",
+   "modality": "asserted",
+   "polarity": "affirm",
+   "claim_class": "observed_fact",
+   "supporting_span": "FINNOMENA has elevated its strength by raising over $5.5 million in Series B+ funding.",
+   "span_verified": true,
+   "event_time": "",
+   "publication_time": 1685775600.0,
+   "extraction_confidence": 1.0,
+   "temporal_validity_status": "likely_pre_asof",
+   "actor_visibility": "public",
+   "entities": [
+    "FINNOMENA"
+   ],
+   "contradiction_links": [],
+   "dependence_group": "dep_9ae875fc25",
+   "provenance": {
+    "extractor": "llm",
+    "prompt_version": "claims-extract-1.0",
+    "span_verified": true,
+    "requirement_id": "req_30c3345f0d"
+   }
+  }
+ ],
+ "entities": [
+  {
+   "mention": "Investopedia",
+   "normalized": "investopedia",
+   "candidates": [
+    {
+     "entity_id": "ent_59b07b4aa8",
+     "canonical": "investopedia",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Investopedia"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Singapore\u2019s first listed retail PE bonds",
+   "normalized": "singapore\u2019s first listed retail pe bonds",
+   "candidates": [
+    {
+     "entity_id": "ent_70eb2c34e3",
+     "canonical": "singapore\u2019s first listed retail pe bonds",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Singapore\u2019s first listed retail PE bonds"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "additional 0.5% bonus",
+   "normalized": "additional 0 5% bonus",
+   "candidates": [
+    {
+     "entity_id": "ent_457bb5772f",
+     "canonical": "additional 0 5% bonus",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "additional 0.5% bonus"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "U.S. Investors",
+   "normalized": "u s investors",
+   "candidates": [
+    {
+     "entity_id": "ent_aa2d95fcc8",
+     "canonical": "u s investors",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "U.S. Investors"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Bitcoin",
+   "normalized": "bitcoin",
+   "candidates": [
+    {
+     "entity_id": "ent_ed1b8d8079",
+     "canonical": "bitcoin",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Bitcoin"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Institutional Demand",
+   "normalized": "institutional demand",
+   "candidates": [
+    {
+     "entity_id": "ent_f979ac4acb",
+     "canonical": "institutional demand",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Institutional Demand"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Institutional Vs. Retail Investors: Who Ya Got?",
+   "normalized": "institutional vs retail investors: who ya got?",
+   "candidates": [
+    {
+     "entity_id": "ent_51cb1f6b17",
+     "canonical": "institutional vs retail investors: who ya got?",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Institutional Vs. Retail Investors: Who Ya Got?"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "TradingView",
+   "normalized": "tradingview",
+   "candidates": [
+    {
+     "entity_id": "ent_5510cef5cc",
+     "canonical": "tradingview",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "TradingView"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Oxford",
+   "normalized": "oxford",
+   "candidates": [
+    {
+     "entity_id": "ent_0b083e56ad",
+     "canonical": "oxford",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Oxford"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Moderna",
+   "normalized": "moderna",
+   "candidates": [
+    {
+     "entity_id": "ent_7e6ed55e5d",
+     "canonical": "moderna",
+     "support": 0.7143,
+     "evidence_mentions": [
+      "Moderna",
+      "Moderna",
+      "Moderna"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Moderna",
+   "normalized": "moderna",
+   "candidates": [
+    {
+     "entity_id": "ent_7e6ed55e5d",
+     "canonical": "moderna",
+     "support": 0.7143,
+     "evidence_mentions": [
+      "Moderna",
+      "Moderna",
+      "Moderna"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Boston",
+   "normalized": "boston",
+   "candidates": [
+    {
+     "entity_id": "ent_6092a03235",
+     "canonical": "boston",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "Boston"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "Moderna",
+   "normalized": "moderna",
+   "candidates": [
+    {
+     "entity_id": "ent_7e6ed55e5d",
+     "canonical": "moderna",
+     "support": 0.7143,
+     "evidence_mentions": [
+      "Moderna",
+      "Moderna",
+      "Moderna"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  },
+  {
+   "mention": "FINNOMENA",
+   "normalized": "finnomena",
+   "candidates": [
+    {
+     "entity_id": "ent_1f732f82d5",
+     "canonical": "finnomena",
+     "support": 0.5714,
+     "evidence_mentions": [
+      "FINNOMENA"
+     ]
+    }
+   ],
+   "resolved": true,
+   "method": "normalized_alias",
+   "valid_time": ""
+  }
+ ],
+ "temporal_records": {
+  "5f0276e338377cef": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1682665200.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1682665200.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "fefbfbd7fa8f62c2": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1686726000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1686726000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "61d12224c33b1bc3": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1688022000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1688022000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "172543accca5cf40": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1689750000.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1689750000.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "0e88333da3f887fc": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1685343600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685343600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "f8852e27f39eff90": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1685775600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1685775600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "20ac3ea651e3020a": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1681455600.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1681455600.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  },
+  "e064635ba8c97f67": {
+   "status": "likely_pre_asof",
+   "confidence": 0.75,
+   "as_of": 1690848000.0,
+   "claimed_pubdate_ts": 1683874800.0,
+   "verified_pubdate_ts": null,
+   "signals": [
+    {
+     "signal": "feed_pubdate",
+     "ts": 1683874800.0,
+     "source": "rss",
+     "note": "claimed publication time (unverified)"
+    }
+   ],
+   "margin_s": 86400.0
+  }
+ },
+ "dependence_groups": [
+  {
+   "group_id": "dep_f73ab13c70",
+   "member_ids": [
+    "5f0276e338377cef"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Investopedia",
+   "primary_source": "Investopedia",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_2d15f3d808",
+   "member_ids": [
+    "fefbfbd7fa8f62c2"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "The Business Times",
+   "primary_source": "The Business Times",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_93072ecd84",
+   "member_ids": [
+    "61d12224c33b1bc3"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "CoinDesk",
+   "primary_source": "CoinDesk",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_b330a5b819",
+   "member_ids": [
+    "172543accca5cf40"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "TradingView",
+   "primary_source": "TradingView",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_bba06f4450",
+   "member_ids": [
+    "0e88333da3f887fc"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Oxford Properties",
+   "primary_source": "Oxford Properties",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_9ae875fc25",
+   "member_ids": [
+    "f8852e27f39eff90"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Techsauce",
+   "primary_source": "Techsauce",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_d1fc4696fd",
+   "member_ids": [
+    "20ac3ea651e3020a"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Portal Rasmi Kementerian Kewangan",
+   "primary_source": "Portal Rasmi Kementerian Kewangan",
+   "confidence": 1.0
+  },
+  {
+   "group_id": "dep_23b3ba140f",
+   "member_ids": [
+    "e064635ba8c97f67"
+   ],
+   "dependence_type": "independent",
+   "likely_origin": "Place North West",
+   "primary_source": "Place North West",
+   "confidence": 1.0
+  }
+ ],
+ "contradiction_graph": [],
+ "actor_visibility": [
+  {
+   "claim_id": "5f0276e338377cef:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1682665200.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "fefbfbd7fa8f62c2:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1686726000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "fefbfbd7fa8f62c2:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1686726000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "61d12224c33b1bc3:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1688022000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "61d12224c33b1bc3:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1688022000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "172543accca5cf40:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1689750000.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "0e88333da3f887fc:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685343600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "0e88333da3f887fc:c1",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685343600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "0e88333da3f887fc:c2",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685343600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "0e88333da3f887fc:c3",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685343600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "0e88333da3f887fc:c4",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685343600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "0e88333da3f887fc:c5",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685343600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  },
+  {
+   "claim_id": "f8852e27f39eff90:c0",
+   "visibility": "public",
+   "actors": [
+    "*"
+   ],
+   "earliest_observation_time": 1685775600.0,
+   "method": "public_source_default",
+   "uncertainty": 0.1,
+   "communication_path": "",
+   "evidence": "public source type=news"
+  }
+ ],
+ "leakage_flags": [],
+ "included_claim_ids": [
+  "5f0276e338377cef:c0",
+  "fefbfbd7fa8f62c2:c0",
+  "fefbfbd7fa8f62c2:c1",
+  "61d12224c33b1bc3:c0",
+  "61d12224c33b1bc3:c1",
+  "172543accca5cf40:c0",
+  "0e88333da3f887fc:c0",
+  "0e88333da3f887fc:c1",
+  "0e88333da3f887fc:c2",
+  "0e88333da3f887fc:c3",
+  "0e88333da3f887fc:c4",
+  "0e88333da3f887fc:c5",
+  "f8852e27f39eff90:c0"
+ ],
+ "excluded_claim_ids": [],
+ "suspicious_claim_ids": [],
+ "requirement_coverage": {
+  "req_147d08473f": {
+   "status": "fulfilled",
+   "n_claims": 1,
+   "n_included": 1
+  },
+  "req_a4042723de": {
+   "status": "fulfilled",
+   "n_claims": 2,
+   "n_included": 2
+  },
+  "req_30c3345f0d": {
+   "status": "fulfilled",
+   "n_claims": 10,
+   "n_included": 10
+  },
+  "req_0ddf71abee": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_013eab0baf": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_065d48b79e": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_201641fa9c": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  },
+  "req_47e92d9ffe": {
+   "status": "unmet",
+   "n_claims": 0,
+   "n_included": 0
+  }
+ },
+ "missing_evidence": [
+  "req_0ddf71abee",
+  "req_013eab0baf",
+  "req_065d48b79e",
+  "req_201641fa9c",
+  "req_47e92d9ffe"
+ ],
+ "evidence_uncertainty": {
+  "n_independent_sources": 8,
+  "n_contradictions": 0,
+  "n_documents": 8
+ },
+ "connector_failures": [],
+ "cost_usd": 0.0,
+ "latency_s": 16.69,
+ "seed": 7,
+ "versions": {
+  "evidence_system": "phase2-1.0",
+  "temporal": "1.0",
+  "claims": "claims-extract-1.0"
+ },
+ "frozen": true,
+ "_hash": "d244ad8b098a7327",
+ "bundle_hash": "d244ad8b098a7327",
+ "_persisted_at": "2026-07-13T02:11:44Z"
+}
