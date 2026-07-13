@@ -165,3 +165,40 @@ PYTHONPATH=. python experiments/wmv2_phase9_discovery_eval.py           # univer
 ```
 No PR was merged. "Mergeable clean" (Git) does NOT mean the production/scientific gates passed — gates 100-Q,
 2nd-graph, fitted-likelihoods, and predictive-lift remain open.
+
+---
+
+## 7. FINAL HARDENING RUN — gate closures + remaining honest limitations
+
+### Closed this run
+- **2nd real graph domain (Enron email)** — future-edge temporal prediction, calibrated (ECE 0.048),
+  reconstruction distinguished. Gate C's "2 real graph datasets" now met.
+- **Fitted vs fixed observation likelihoods** — fitted on real Enron (node-disjoint); beats the fixed table on
+  held-out log-loss, mixed on Brier/ECE. Honest: the broad fixed table is not badly misspecified.
+- **Real-outcome validation with baselines + paired bootstrap CIs** — population lift significant; network lift
+  honest-null.
+
+### Remaining honest limitations (unchanged truth)
+1. **Network real-outcome LIFT is NULL.** The structured edge posterior does not beat a simple past-frequency
+   baseline on Brier for future-edge prediction (congress: past-agreement dominates; Enron: frequency
+   dominates). The edge posterior's value is **calibration + uncertainty propagation into execution**, not
+   raw predictive ranking over a strong frequency baseline. This is the single most important caveat: on the
+   real-outcome network task tested, Phase-9 graph inference does not improve point prediction over a trivial
+   baseline. It DOES change execution (ablations) and IS calibrated — but "changes execution" ≠ "predicts
+   better", and we do not conflate them.
+2. **Population lift is real but on a specific task** (poststratification correcting sampling bias). It has not
+   been shown to improve a downstream *terminal social forecast* against a strong baseline — only the
+   population-margin estimate.
+3. **Fitted likelihoods** were fit for ONE edge class (`repeated_interaction`) on ONE dataset. A full
+   hierarchical fit (global→class→domain→source→horizon) across evidence classes is not done.
+4. **Temporal evolution + 10+ layers** are implemented and unit-tested but not validated against real temporal
+   graph sequences (only synthetic + mechanism tests).
+5. **The universal path's susceptibility / contagion** remain broad defaults, not evidence-inferred.
+
+### Production verdict (unchanged)
+**NOT production eligible.** The universal automatic path works and is broadly exercised (see the 100-question
+run in the validation doc), 2 real population + 2 real graph datasets are validated, but the **network
+component shows no real-outcome predictive lift over simple baselines**. Phase 9 should ship as an
+**exploratory/transfer-grade** structural + population layer whose graph inference is trusted for calibrated
+uncertainty and execution structure, NOT for point-prediction superiority. Phase 2 remains the production
+default for evidence-grounded outcome forecasts.

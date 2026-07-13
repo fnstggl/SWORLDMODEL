@@ -1,0 +1,55 @@
+{
+  "population_real_outcome": {
+    "n_evals": 24,
+    "mean_err": {
+      "naive": 0.0185,
+      "poststrat": 0.0017,
+      "homogeneous": 0.017,
+      "prior_only": 0.2092
+    },
+    "paired_naive_minus_poststrat": {
+      "mean": 0.01681,
+      "ci95": [
+        0.01252,
+        0.02089
+      ]
+    },
+    "paired_homogeneous_minus_poststrat": {
+      "mean": 0.01533,
+      "ci95": [
+        0.01294,
+        0.01752
+      ]
+    },
+    "poststrat_beats_naive_sig": true,
+    "poststrat_beats_homogeneous_sig": true
+  },
+  "network_real_outcome": {
+    "n_pairs": 3036,
+    "mean_brier": {
+      "posterior": 0.0971,
+      "frequency": 0.0902,
+      "prior_only": 0.0902
+    },
+    "paired_frequency_minus_posterior": {
+      "mean": -0.00691,
+      "ci95": [
+        -0.01514,
+        0.00165
+      ]
+    },
+    "paired_prior_minus_posterior": {
+      "mean": -0.00684,
+      "ci95": [
+        -0.01145,
+        -0.00234
+      ]
+    },
+    "posterior_beats_frequency_sig": false,
+    "posterior_beats_prior_sig": false
+  },
+  "verdict": {
+    "population_lift": "poststratification significantly beats naive AND homogeneous baselines",
+    "network_lift": "edge posterior does not significantly beat baselines"
+  }
+}

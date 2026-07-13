@@ -1,0 +1,31 @@
+{
+  "dataset": "Enron email communication (CMU)",
+  "n_messages_parsed": 45000,
+  "n_nodes": 70,
+  "n_edges": 592,
+  "temporal_link_prediction_PREDICTION": {
+    "task": "predict post-cutoff email edges from pre-cutoff communication (temporal, no leakage)",
+    "n_candidate_pairs": 3036,
+    "base_rate": 0.0975,
+    "auroc": 0.7043,
+    "pr_auc": 0.207,
+    "brier": 0.0971,
+    "log_loss": 1.2859,
+    "ece": 0.0477,
+    "auroc_frequency_baseline": 0.6991,
+    "pr_auc_frequency_baseline": 0.3067
+  },
+  "reconstruction_baseline": {
+    "task": "RECONSTRUCTION (train-period edges from train frequency)",
+    "auroc": 1.0,
+    "pr_auc": 1.0
+  },
+  "build_latency_s": 18.6,
+  "gates": {
+    "second_distinct_graph_domain": true,
+    "temporal_prediction_above_chance": true,
+    "temporal_prediction_beats_frequency_baseline": true,
+    "reconstruction_labeled_distinct": true
+  },
+  "all_gates_pass": true
+}
