@@ -90,21 +90,28 @@ def _systematic_resample(particles, weights, rng):
 
 def infer_posterior(plan, bundle, tags, *, n_rate_particles: int = 400, seed: int = 0,
                     resample_threshold: float = 0.5, use_dependence: bool = True,
-                    use_structural: bool = True) -> PosteriorResult:
+                    use_structural: bool = True, prior_spec=None) -> PosteriorResult:
     """Assimilate the tagged claims into a joint posterior. `use_dependence`/`use_structural` toggles exist
-    for the ablations. Deterministic under `seed`."""
+    for the ablations. `prior_spec` (a phase3_priors.PriorSpec) overrides the default lean-Beta with a
+    provenance-carrying, transport-risk-inflated reference-class prior. Deterministic under `seed`."""
     rng = random.Random(seed * 104729 + 17)
     res = PosteriorResult()
 
-    # ---- prior: outcome-rate ~ Beta(lean) (broad, weakly-informative, labeled) ----
+    # ---- prior: outcome-rate Beta (reference-class + transport-inflated if a PriorSpec is supplied, else the
+    #      fixed qualitative-lean broad Beta — both broad, weakly-informative, and explicitly labeled) ----
     lean = str((plan.provenance or {}).get("outcome_lean", "neutral"))
-    a0, b0 = LEAN_BETA.get(lean, (1.0, 1.0))
+    if prior_spec is not None:
+        a0, b0 = float(prior_spec.alpha), float(prior_spec.beta)
+        res.prior_provenance = {"outcome_rate": prior_spec.as_dict(),
+                                "structural": {"source": "compiler structural prior", "class": "compiler"}}
+    else:
+        a0, b0 = LEAN_BETA.get(lean, (1.0, 1.0))
+        res.prior_provenance = {"outcome_rate": {"family": "beta", "alpha": a0, "beta": b0,
+                                                 "source": f"qualitative lean '{lean}' → fixed broad Beta",
+                                                 "class": "generic_weakly_informative",
+                                                 "transport_risk": "high (no held-out-validated reference class)"},
+                                "structural": {"source": "compiler structural prior", "class": "compiler"}}
     res.outcome_rate_prior_mean = a0 / (a0 + b0)
-    res.prior_provenance = {"outcome_rate": {"family": "beta", "alpha": a0, "beta": b0,
-                                             "source": f"qualitative lean '{lean}' → fixed broad Beta",
-                                             "class": "generic_weakly_informative",
-                                             "transport_risk": "high (no held-out-validated reference class)"},
-                            "structural": {"source": "compiler structural prior", "class": "compiler"}}
     rate_particles = [_beta_sample(rng, a0, b0) for _ in range(n_rate_particles)]
     log_w = [0.0] * n_rate_particles
 

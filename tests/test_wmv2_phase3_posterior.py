@@ -272,3 +272,46 @@ def test_scalar_baseline_loses_to_structured_representation():
                                 candidates=["scalar_point", "mixture", "continuous_probabilistic"])
     assert card.winner != "scalar_point"                               # the arbitrary scalar never wins here
     assert card.metrics["mixture"]["held_out_logloss"] < card.metrics["scalar_point"]["held_out_logloss"]
+
+
+# ============================================================ Part B: prior construction + transport-risk
+def _beta_var(spec):
+    a, b = spec.alpha, spec.beta
+    return (a * b) / ((a + b) ** 2 * (a + b + 1))
+
+
+def test_transport_risk_widens_reference_prior():
+    from swm.world_model_v2.phase3_priors import reference_class_prior
+    low = reference_class_prior("comparable Fed meetings", 30, 100, transport_risk="low")
+    high = reference_class_prior("comparable Fed meetings", 30, 100, transport_risk="high")
+    severe = reference_class_prior("comparable Fed meetings", 30, 100, transport_risk="severe")
+    # the reference MEAN is preserved across transport levels (~0.3)
+    for s in (low, high, severe):
+        assert abs(s.mean - 0.3) < 0.12
+    # more transport risk ⇒ fewer retained effective observations ⇒ WIDER prior (higher variance)
+    assert low.retained_effective_n > high.retained_effective_n > severe.retained_effective_n
+    assert _beta_var(severe) > _beta_var(high) > _beta_var(low)
+
+
+def test_no_reference_data_falls_back_to_generic_lean():
+    from swm.world_model_v2.phase3_priors import reference_class_prior
+    spec = reference_class_prior("some class", 0, 0, transport_risk="low", lean="weak_yes")
+    assert spec.source_class == "generic_weakly_informative"           # no data → NOT a reference-class prior
+    assert spec.provenance.get("class") == "generic_weakly_informative"
+
+
+def test_reference_prior_never_tighter_than_cap():
+    from swm.world_model_v2.phase3_priors import reference_class_prior, MAX_EFFECTIVE_N
+    huge = reference_class_prior("big class", 5000, 10000, transport_risk="none")
+    assert huge.retained_effective_n <= MAX_EFFECTIVE_N + 1e-6         # a reference prior stays broad
+    assert abs(huge.mean - 0.5) < 0.05
+
+
+def test_prior_spec_changes_posterior_starting_point():
+    plan = _binary_plan(lean="neutral")
+    from swm.world_model_v2.phase3_priors import reference_class_prior
+    low_prior = reference_class_prior("class", 20, 100, transport_risk="none")   # centered 0.2, fairly tight
+    post = infer_posterior(plan, None, [], seed=0, prior_spec=low_prior)
+    assert post.n_effective_observations == 0
+    assert abs(post.outcome_rate_prior_mean - 0.2) < 0.05              # the prior mean flows through
+    assert post.outcome_rate_mean < 0.4                               # with no evidence, posterior ~ prior

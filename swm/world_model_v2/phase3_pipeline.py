@@ -37,6 +37,7 @@ from swm.world_model_v2.evidence_recompile import recompile_with_evidence
 from swm.world_model_v2.evidence_requirements import requirements_from_plan
 from swm.world_model_v2.phase3_latent_spec import outcome_rate_spec, structural_spec, tag_claims
 from swm.world_model_v2.phase3_posterior import infer_posterior
+from swm.world_model_v2.phase3_priors import build_outcome_rate_prior
 from swm.world_model_v2.pipeline import result_from_run
 from swm.world_model_v2.result import ClarificationRequired, CompilerExecutionError, SimulationResult
 
@@ -56,7 +57,8 @@ def simulate_with_posterior(question: str, *, llm, as_of: str, horizon: str, int
                             user_documents: list | None = None, dataset_path: str = "",
                             prior_bundle_path: str = "", store=None, n_rate_particles: int = 400,
                             use_dependence: bool = True, use_structural: bool = True,
-                            consume_posterior: bool = True) -> tuple:
+                            consume_posterior: bool = True, reference_data: dict = None,
+                            use_reference_prior: bool = True) -> tuple:
     """Run the posterior-conditioned simulation. Returns (SimulationResult, artifacts).
 
     `consume_posterior=False` is the ABLATION arm: the posterior is still computed and reported, but NOT
@@ -94,11 +96,18 @@ def simulate_with_posterior(question: str, *, llm, as_of: str, horizon: str, int
     # ---- LLM SEMANTIC MAPPING ONLY: qualitative claim tags (no numbers) ----
     tags = tag_claims(question, bundle, plan, llm=llm)
 
+    # ---- PRIOR: reference-class prior with provenance + transport-risk inflation (Part B). LLM names the
+    #      reference class + qualitative transport risk; the base rate comes from `reference_data` (DATA) when
+    #      supplied, else it falls back to the honestly-labeled generic lean prior. ----
+    prior_spec = build_outcome_rate_prior(plan, llm=llm, reference_data=reference_data) \
+        if use_reference_prior else None
+
     # ---- POSTERIOR: registered observation models → dependence-corrected likelihood → particle posterior ----
     # Inferred on the ORIGINAL compiled plan's lean + structural priors (the PRE-evidence prior), so the
     # evidence is assimilated exactly once (not double-counted with any Phase-2 heuristic lean shift).
     posterior = infer_posterior(plan, bundle, tags, n_rate_particles=n_rate_particles, seed=seed,
-                                use_dependence=use_dependence, use_structural=use_structural)
+                                use_dependence=use_dependence, use_structural=use_structural,
+                                prior_spec=prior_spec)
     latent_specs = _latent_specs(question, plan, bundle)
     planes["posterior"] = {"posterior_hash": _posterior_hash(posterior),
                            "prior_mean": posterior.outcome_rate_prior_mean,
