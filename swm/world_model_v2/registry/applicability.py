@@ -92,6 +92,8 @@ def score_applicability(rec: MechanismRecord, scenario: dict) -> ApplicabilitySc
     passed = [v for v in recs if v.passed]
     failed = [v for v in recs if v.passed is False]
     eq = 0.15                                   # citation-only floor
+    if any(v.kind == "published_estimate" for v in passed):
+        eq = max(eq, 0.4)                        # a VERIFIED published causal estimate (Tier-4), not local
     if any(v.kind == "posterior_predictive" for v in passed):
         eq = max(eq, 0.45)
     if any(v.kind == "held_out" for v in passed):
@@ -124,16 +126,50 @@ def score_applicability(rec: MechanismRecord, scenario: dict) -> ApplicabilitySc
               f"{widening} per transport risk {app.transport_risk!r}") if transported and best_pack else "")
 
 
-def rank_mechanisms(store, scenario: dict, *, threshold: float = 0.45,
-                    statuses=("locally_validated", "transfer_validated", "production_eligible")) -> list:
-    """The compiler's selection call: score every family whose lifecycle status allows execution, return
-    usable ones ranked. Families below threshold or hard-excluded return in `rejected` with reasons —
-    selection provenance is part of the plan."""
+#: statuses whose families may be SELECTED for execution (research_encoded/domain_restricted enter at
+#: Tier 4 — published mechanism, widened; locally/transfer/production at Tiers 1-3).
+SELECTABLE = ("locally_validated", "transfer_validated", "production_eligible",
+              "domain_restricted", "research_encoded")
+
+
+#: tokens that carry no causal-process meaning — excluded from overlap so "X_after_Y" and "Z_after_W"
+#: don't spuriously match on "after".
+_PROC_STOPWORDS = {"after", "before", "of", "the", "and", "vs", "per", "on", "to", "a", "for", "by",
+                   "update", "change", "response"}
+
+
+def _process_match(rec: MechanismRecord, process: str) -> float:
+    """Does this family ANSWER this causal process? 1.0 declared match, 0.6 CONTENT-token overlap with a
+    declared process, 0.3 ontology-word overlap, 0.0 otherwise. This is what makes selection causal-need-
+    driven rather than name-driven: a family is a candidate for a process only if it declares (or plausibly
+    overlaps on a meaningful token) that process — a similarly-NAMED but process-incompatible family (or one
+    that only shares a stopword like 'after') scores 0."""
+    if not process:
+        return 0.5
+    proc = process.lower().strip()
+    declared = [p.lower() for p in (rec.applicability.answers_processes or [])]
+    if proc in declared:
+        return 1.0
+    ptoks = set(proc.replace("-", "_").replace(" ", "_").split("_")) - _PROC_STOPWORDS
+    if ptoks:
+        for d in declared:
+            dtoks = set(d.split("_")) - _PROC_STOPWORDS
+            shared = ptoks & dtoks
+            if shared and len(shared) >= max(1, min(len(ptoks), len(dtoks)) // 2):
+                return 0.6
+    if rec.ontology_type in ptoks or any(t in rec.ontology_type for t in ptoks if len(t) > 3):
+        return 0.3
+    return 0.0
+
+
+def rank_mechanisms(store, scenario: dict, *, threshold: float = 0.45, statuses=SELECTABLE) -> dict:
+    """Scenario-level ranking: score every selectable family against the scenario, return usable ones
+    ranked (kept for the plan's provenance). Prefer select_for_process() for per-causal-process selection."""
     usable, rejected = [], []
     for rec in store.records.values():
         if rec.status not in statuses:
-            rejected.append({"family_id": rec.family_id, "reason": f"status={rec.status} not executable "
-                            f"in production selection (allowed: {statuses})"})
+            rejected.append({"family_id": rec.family_id, "reason": f"status={rec.status} not selectable "
+                            f"(allowed: {statuses})"})
             continue
         s = score_applicability(rec, scenario)
         if s.usable(threshold):
@@ -143,4 +179,38 @@ def rank_mechanisms(store, scenario: dict, *, threshold: float = 0.45,
                              "reason": ("; ".join(s.hard_exclusions) or f"overall {s.overall} < {threshold}"),
                              "subscores": s.subscores})
     usable.sort(key=lambda s: -s.overall)
-    return [{"selected": [s.__dict__ for s in usable], "rejected": rejected}][0]
+    return {"selected": [s.__dict__ for s in usable], "rejected": rejected}
+
+
+def select_for_process(store, process: str, scenario: dict, *, threshold: float = 0.4,
+                       statuses=SELECTABLE) -> dict:
+    """Phase 6 per-process selection: for ONE required causal process, find the families that ANSWER it,
+    score applicability, and rank. The combined score multiplies process-match by applicability so a family
+    that is applicable to the scenario but does NOT answer this process cannot be selected for it (the
+    Phase-1 flaw where one top-ranked scenario family was reused for every process). Returns the winner,
+    the runners-up (competing mechanisms), and the rejected candidates with reasons."""
+    cands, rejected = [], []
+    for rec in store.records.values():
+        if rec.status not in statuses:
+            continue
+        pm = _process_match(rec, process)
+        if pm <= 0.0:
+            continue                            # does not answer this causal process — not a candidate
+        s = score_applicability(rec, scenario)
+        if s.hard_exclusions:
+            rejected.append({"family_id": rec.family_id, "process_match": pm,
+                             "reason": "; ".join(s.hard_exclusions)})
+            continue
+        combined = round(pm * (0.4 + 0.6 * s.overall), 4)   # process fit gates; applicability refines
+        entry = {"family_id": rec.family_id, "process_match": pm, "applicability": s.overall,
+                 "combined": combined, "status": rec.status, "pack_id": s.pack_id,
+                 "pack_is_transported": s.pack_is_transported, "transport_widening": s.transport_widening,
+                 "subscores": s.subscores}
+        if combined >= threshold:
+            cands.append(entry)
+        else:
+            rejected.append({"family_id": rec.family_id, "process_match": pm,
+                             "reason": f"combined {combined} < {threshold}"})
+    cands.sort(key=lambda e: -e["combined"])
+    return {"process": process, "selected": cands[0] if cands else None,
+            "competing": cands[1:4], "rejected": rejected, "n_candidates": len(cands)}

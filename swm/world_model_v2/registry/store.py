@@ -155,9 +155,10 @@ class RegistryStore:
         if rec.status in ("quarantined", "rejected"):
             lean._REGISTRY.pop(rec.family_id, None)
             return
-        cal = {"proposed": "experimental", "implemented": "experimental",
-               "locally_validated": "prior", "transfer_validated": "calibrated",
-               "production_eligible": "calibrated"}[rec.status]
+        cal = {"proposed": "experimental", "research_encoded": "experimental",
+               "implemented": "experimental", "locally_validated": "prior",
+               "transfer_validated": "calibrated", "production_eligible": "calibrated",
+               "domain_restricted": "prior"}[rec.status]
         lean.register_mechanism(lean.MechanismEntry(
             rec.family_id, _lean_type(rec.ontology_type), rec.title,
             required_state=tuple(rec.required_state),

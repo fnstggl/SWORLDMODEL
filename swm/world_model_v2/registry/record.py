@@ -21,8 +21,18 @@ from __future__ import annotations
 import time as _time
 from dataclasses import dataclass, field, asdict
 
-STATUSES = ("proposed", "implemented", "locally_validated", "transfer_validated",
-            "production_eligible", "quarantined", "rejected")
+STATUSES = ("proposed", "research_encoded", "implemented", "locally_validated", "transfer_validated",
+            "production_eligible", "domain_restricted", "quarantined", "rejected")
+# Lifecycle (Phase 6, Part 12). `implemented` == the spec's "software_implemented".
+#   proposed          conceptual entry only
+#   research_encoded  verified research metadata + formal model + citations-with-limits stored
+#   implemented       executable typed transition + tests (produces StateDelta)
+#   locally_validated passed a real held-out / posterior-predictive check in ONE supported context
+#   transfer_validated retained value under >=1 meaningful transfer
+#   production_eligible executable + provenance + uncertainty + applicability + PASSED held-out/transfer + citation
+#   domain_restricted validated/parameterized but valid ONLY in declared contexts (transport limited)
+#   quarantined       failed validation/calibration/transport (failure preserved)
+#   rejected          invalid assumptions / failed replication / non-identifiable / harmful
 
 PARAMETER_SOURCES = ("observed", "inferred_from_data", "fitted", "published_research",
                      "reference_class_prior", "experimental", "assumed", "unsupported")
@@ -123,6 +133,9 @@ class ApplicabilityRule:
     time_scales: list = field(default_factory=list)           # e.g. ["hours","days"]
     population_kinds: list = field(default_factory=list)      # e.g. ["online_social","organizational"]
     exclusion_conditions: list = field(default_factory=list)  # free-text, precise
+    answers_processes: list = field(default_factory=list)     # canonical causal-process tags this family
+    #                                                           answers — the compiler requests BY PROCESS,
+    #                                                           not by name similarity (Phase 6, Part 9)
     transport_risk: str = "high"              # low | medium | high — default pessimistic
 
 
@@ -186,6 +199,27 @@ class MechanismRecord:
         if target in ("quarantined", "rejected"):
             return []                          # demotion is always allowed (with a reason)
         blockers = []
+        # research_encoded: verified research + formal model stored (executable not required)
+        if target == "research_encoded":
+            if not (self.citations or any(p.citations for p in self.packs)):
+                blockers.append("no citation with limits — research_encoded needs verified provenance")
+            if not self.formal_description.strip():
+                blockers.append("no formal description")
+            return blockers
+        # domain_restricted: executable + parameterized + a real support record, valid ONLY in declared
+        # domains (not a wildcard). A published-estimate pack with broad transport uncertainty lives here —
+        # it is NOT locally/transfer validated or production-eligible for arbitrary scenarios.
+        if target == "domain_restricted":
+            if not self.executable():
+                blockers.append(f"code_ref {self.code_ref!r} does not resolve to a callable")
+            if not self.packs:
+                blockers.append("no parameter pack")
+            if not (self.validation or any(p.validation for p in self.packs)) and not (
+                    self.citations or any(p.citations for p in self.packs)):
+                blockers.append("no validation record and no published-estimate citation")
+            if list(self.applicability.domains) in ([], ["*"]):
+                blockers.append("domain_restricted requires DECLARED domains, not a wildcard")
+            return blockers
         if target not in order:
             return [f"unknown target status {target!r}"]
         if order[target] >= order["implemented"]:
@@ -195,23 +229,31 @@ class MechanismRecord:
                 blockers.append("no test_ref")
             if not self.formal_description.strip():
                 blockers.append("no formal description")
+        all_val = list(self.validation) + [v for p in self.packs for v in p.validation]
         if order[target] >= order["locally_validated"]:
             if not self.packs:
                 blockers.append("no parameter pack")
-            if not self.has_validation(("held_out", "posterior_predictive")):
-                blockers.append("no held-out or posterior-predictive validation record")
+            # a PASSED held-out / posterior-predictive / transfer check (transfer is a stronger, out-of-
+            # distribution held-out) — a RECORDED-but-FAILED check does not make a mechanism validated
+            if not any(v.kind in ("held_out", "posterior_predictive", "transfer") and v.passed
+                       for v in all_val):
+                blockers.append("no PASSED held-out / posterior-predictive / transfer validation "
+                                "(a recorded-but-failed check does not count)")
         if order[target] >= order["transfer_validated"]:
-            if not self.has_validation(("transfer",)):
-                blockers.append("no transfer validation record")
+            if not any(v.kind == "transfer" and v.passed for v in all_val):
+                blockers.append("no PASSED transfer validation record")
         if order[target] >= order["production_eligible"]:
             if not self.citations and not any(p.citations for p in self.packs):
                 blockers.append("no supporting research/dataset citation")
-            held = [v for v in self.validation +
-                    [v for p in self.packs for v in p.validation]
-                    if v.kind in ("held_out", "transfer") and v.passed]
+            held = [v for v in all_val if v.kind in ("held_out", "transfer") and v.passed]
             if not held:
                 blockers.append("no PASSED held-out/transfer validation — paper citations and synthetic "
                                 "tests alone cannot make a mechanism production eligible")
+            # a KNOWN failed transfer is disqualifying: the family is at best domain_restricted until the
+            # negative transfer is resolved (honest status discipline — do not ship a failed transport)
+            if any(v.kind == "transfer" and v.passed is False for v in all_val):
+                blockers.append("an on-record FAILED transfer validation — resolve it or keep the family "
+                                "domain_restricted; a failed transport cannot be production eligible")
         return blockers
 
     def as_dict(self) -> dict:

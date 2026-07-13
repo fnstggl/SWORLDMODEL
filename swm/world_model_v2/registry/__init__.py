@@ -13,7 +13,8 @@ from swm.world_model_v2.registry.record import (ApplicabilityRule, Citation, Mec
                                                 ParameterPack, ParameterSpec, RegistryError,
                                                 ValidationRecord)
 from swm.world_model_v2.registry.store import RegistryStore
-from swm.world_model_v2.registry.applicability import rank_mechanisms, score_applicability
+from swm.world_model_v2.registry.applicability import (rank_mechanisms, score_applicability,
+                                                       select_for_process)
 
 _STORE = None
 

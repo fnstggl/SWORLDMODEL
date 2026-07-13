@@ -1,0 +1,780 @@
+[
+  {
+    "family": "Experience-Weighted Attraction (EWA) learning",
+    "registry_id": "experience_weighted_attraction",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable",
+    "primary_sources": [
+      {
+        "title": "Experience-weighted Attraction Learning in Normal Form Games",
+        "authors": "Colin Camerer; Teck-Hua Ho",
+        "year": 1999,
+        "venue": "Econometrica 67(4):827-874",
+        "doi_or_url": "10.1111/1468-0262.00054",
+        "verified": true,
+        "what_it_provides": "structural_model"
+      },
+      {
+        "title": "Self-tuning experience weighted attraction learning in games",
+        "authors": "Teck-Hua Ho; Colin Camerer; Juin-Kuan Chong",
+        "year": 2007,
+        "venue": "Journal of Economic Theory 133(1):177-198",
+        "doi_or_url": "https://www.sciencedirect.com/science/article/abs/pii/S0022053106000056",
+        "verified": true,
+        "what_it_provides": "structural_model"
+      }
+    ],
+    "formal_model": "Attraction update A_i^j(t) = [phi*N(t-1)*A_i^j(t-1) + (delta + (1-delta)*I(j=chosen))*payoff_i^j(t)] / N(t), with experience weight N(t) = rho*N(t-1) + 1; choice via logit P_i^j = exp(lambda*A_i^j)/sum_k exp(lambda*A_i^k). Nests cumulative reinforcement (delta=0, rho=0) and weighted fictitious play / belief learning (delta=1, rho=phi). Parameters: phi (decay of prior attractions), delta (foregone-payoff weight), rho (decay of experience weight), kappa (cumulative vs averaging), lambda (logit precision), N(0) (initial experience weight).",
+    "causal_assumptions": [
+      "Repeated play of a fixed normal-form game with a stationary payoff structure across rounds",
+      "Player observes (or can compute) foregone payoffs for unchosen strategies",
+      "Attractions are a sufficient statistic for choice; choice is logit in attractions",
+      "Parameters are constant over rounds and homogeneous within the estimated population (representative-agent MLE)",
+      "No sophisticated/anticipatory reasoning about opponents beyond the belief-learning special case"
+    ],
+    "required_variables": [
+      "per-round chosen strategy",
+      "realized payoff",
+      "foregone payoffs of unchosen strategies",
+      "full payoff matrix",
+      "round index",
+      "strategy set"
+    ],
+    "temporal_scale": "event (per round of repeated play; identification needs many rounds)",
+    "evidence_type": "structural_model",
+    "reported_coefficients": [
+      {
+        "name": "delta (foregone-payoff weight)",
+        "value_or_null": {
+          "constant_sum_games": 0.42,
+          "median_action_games": 0.85,
+          "beauty_contest_games": 0.23,
+          "raw_average": 0.5
+        },
+        "uncertainty_or_null": null,
+        "source_ref": "Camerer & Ho 1999, Discussion p.868 (and abstract: 'delta generally around .50')",
+        "context": "Per game-class averages of the foregone-payoff weight from MLE calibration; jackknife SEs used in paper but not extracted here",
+        "verified": true
+      },
+      {
+        "name": "phi (decay of prior attractions)",
+        "value_or_null": {
+          "constant_sum": 1.0,
+          "median_action": 0.8,
+          "beauty_contest": 1.33
+        },
+        "uncertainty_or_null": null,
+        "source_ref": "Camerer & Ho 1999 p.869 ('decay parameters phi and rho average ...')",
+        "context": "phi>1 in beauty contests flagged by authors as likely misspecification (adaptive model cannot extrapolate trends)",
+        "verified": true
+      },
+      {
+        "name": "rho (decay of experience weight)",
+        "value_or_null": {
+          "constant_sum": 0.94,
+          "median_action": 0.0,
+          "beauty_contest": 0.94
+        },
+        "uncertainty_or_null": null,
+        "source_ref": "Camerer & Ho 1999 p.869; abstract ('rho varies from 0 to phi')",
+        "context": "rho=0 (median-action) => cumulative reinforcement-like; rho~phi => averaging/belief-like. rho,phi correlated ~0.88 in constant-sum (partial identification)",
+        "verified": true
+      },
+      {
+        "name": "N(0) (initial experience weight)",
+        "value_or_null": {
+          "constant_sum": 15.8,
+          "median_action": 0.65,
+          "beauty_contest": 16.82
+        },
+        "uncertainty_or_null": null,
+        "source_ref": "Camerer & Ho 1999 p.869",
+        "context": "Large N(0) => slow learning (heavy weight on lagged attractions). N(0),rho not separately identified when declining-effect constraint binds",
+        "verified": true
+      },
+      {
+        "name": "lambda (logit precision)",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Camerer & Ho 1999",
+        "context": "Estimated jointly per game class; payoff-scale-dependent; specific values not extracted this session",
+        "verified": false
+      }
+    ],
+    "datasets_in_literature": [
+      "4x4 and 6x6 constant-sum games in rupees (Mookherjee & Sopher 1997)",
+      "Median-action / weak-link order-statistic coordination games (Van Huyck, Battalio & Beil)",
+      "p-beauty contest / dominance-solvable games (Ho, Camerer & Weigelt 1998)"
+    ],
+    "replication_evidence": "Self-tuning EWA (Ho, Camerer & Chong 2007, JET) reproduces fit with far fewer free parameters, addressing the over-parameterization critique. EWA has been widely re-estimated. However Salmon 2001 (Econometrica 69:1597) shows learning-model discrimination has low power, and Wilcox 2006 (Econometrica 74:1271) shows representative-agent EWA estimates are biased under unmodeled heterogeneity.",
+    "critiques_or_nulls": [
+      "4-6 free parameters; identification needs many rounds (authors note rho-phi correlation ~0.88 in constant-sum games)",
+      "Parameter estimates vary widely across game classes (delta 0.23-0.85; phi 0.80-1.33), so no single transportable parameterization",
+      "Salmon 2001: econometric tests have low power to distinguish EWA from reinforcement/belief special cases",
+      "Wilcox 2006: representative-agent estimation biased when individual heterogeneity is present"
+    ],
+    "applicability_limits": [
+      "Repeated normal-form games with cardinal, observable (and foregone) payoffs",
+      "Laboratory settings with many rounds and small strategy sets",
+      "Not directly applicable to one-shot or field social choices without a repeated-feedback structure"
+    ],
+    "transport_risks": [
+      "Parameters are payoff-scale- and game-class-dependent",
+      "phi>1 misspecification in dominance-solvable games",
+      "Transport from lab repeated games to field/social decisions unvalidated (high)"
+    ],
+    "local_refit_feasible": "Limited. EWA dynamics require repeated-play panels with round-by-round realized AND foregone payoffs. In-repo MobLab/BehaviorBench economic games (dictator, ultimatum, trust, public goods, guessing) are largely one-shot cross-sections, so the (phi,delta,rho,N0) dynamics are not identifiable without a multi-round game panel (a repeated p-beauty/guessing panel would be the only candidate, if round-level data exist).",
+    "best_validation_route": "Refit MLE on an external repeated-game dataset with feedback (Camerer-Ho / Van Huyck data), hold out later rounds or a left-out game class, and test EWA against its reinforcement (delta=0) and belief (delta=1,rho=phi) special cases via out-of-sample choice-probability MSD.",
+    "expected_applicability": "narrow (repeated strategic games with feedback)",
+    "expected_transport_risk": "high",
+    "priority": "medium",
+    "planned_implementation": "Keep EWAState executable; add an MLE fitter for (phi,delta,rho,kappa,lambda,N0) on repeated-game panels; expose the reinforcement and belief special-case restrictions as selectable variants; adopt self-tuning EWA as a low-parameter default.",
+    "planned_parameter_packs": [
+      "ewa_camererho1999_reference: constant_sum(delta0.42/phi1.00/rho0.94/N0 15.80), median_action(delta0.85/phi0.80/rho0/N0 0.65), beauty_contest(delta0.23/phi1.33/rho0.94/N0 16.82) -- labeled lab-reference priors, NOT fit on target domain"
+    ],
+    "promotion_blocker": "No local held-out validation record; no repeated-game panel in-repo to identify the learning dynamics; published coefficients are lab-reference priors that vary by game class and are not fit on any target domain.",
+    "disposition": "software_implemented"
+  },
+  {
+    "family": "Quantal Response Equilibrium / logit choice",
+    "registry_id": "quantal_response_choice",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable",
+    "primary_sources": [
+      {
+        "title": "Quantal Response Equilibria for Normal Form Games",
+        "authors": "Richard D. McKelvey; Thomas R. Palfrey",
+        "year": 1995,
+        "venue": "Games and Economic Behavior 10(1):6-38",
+        "doi_or_url": "10.1006/game.1995.1023",
+        "verified": true,
+        "what_it_provides": "structural_model"
+      },
+      {
+        "title": "Quantal Response Equilibrium: A Stochastic Theory of Games",
+        "authors": "Jacob K. Goeree; Charles A. Holt; Thomas R. Palfrey",
+        "year": 2016,
+        "venue": "Princeton University Press",
+        "doi_or_url": "10.23943/princeton/9780691124230",
+        "verified": true,
+        "what_it_provides": "methodological"
+      }
+    ],
+    "formal_model": "Logit QRE: each player's choice probability P_i(a) = exp(lambda * EU_i(a; P))/sum_b exp(lambda * EU_i(b; P)), a fixed point in which expected utilities are computed against the equilibrium mixed profile. As lambda->0 choices are uniform; as lambda->infinity QRE converges to Nash. The single-agent 'logit choice' reduction takes expected utilities as given (no equilibrium fixed point).",
+    "causal_assumptions": [
+      "Players best-respond stochastically with logit (extreme-value) payoff noise",
+      "Beliefs are consistent with the actual mixed profile (equilibrium version) or exogenously supplied (logit-choice reduction)",
+      "Payoffs are cardinal and on a common, known scale",
+      "A single precision parameter lambda governs all players"
+    ],
+    "required_variables": [
+      "action set",
+      "expected utilities / full payoff matrix",
+      "observed choice frequencies"
+    ],
+    "temporal_scale": "event (static choice / one-shot game)",
+    "evidence_type": "structural_model",
+    "reported_coefficients": [
+      {
+        "name": "lambda (logit precision)",
+        "value_or_null": "reported ~0.25 to ~4.64 across the experimental datasets McKelvey-Palfrey re-estimated",
+        "uncertainty_or_null": null,
+        "source_ref": "McKelvey & Palfrey 1995 (as summarized in secondary literature)",
+        "context": "NOT verified against the 1995 primary table in this session; lambda is payoff-scale-dependent and not comparable across games",
+        "verified": false
+      },
+      {
+        "name": "lambda limiting behavior",
+        "value_or_null": {
+          "lambda->0": "uniform random",
+          "lambda->inf": "Nash equilibrium"
+        },
+        "uncertainty_or_null": null,
+        "source_ref": "McKelvey & Palfrey 1995 (structural property)",
+        "context": "Structural limiting property of logit QRE (verified from the model definition)",
+        "verified": true
+      }
+    ],
+    "datasets_in_literature": [
+      "Normal-form matrix-game experiments re-analyzed by McKelvey-Palfrey (e.g., Ochs 1995 games)",
+      "In-repo: BehaviorBench/MobLab games -- lambda_per_game already fitted inside the social_preference_population record (wmv2_behaviorbench_policy.json)"
+    ],
+    "replication_evidence": "QRE is one of the most widely re-estimated behavioral-game models; Goeree-Holt-Palfrey 2016 monograph consolidates it. BUT Haile, Hortacsu & Kosenok 2008 (AER 98:180-200) show that logit QRE without restrictions on the error distribution is essentially unfalsifiable -- it can rationalize almost any choice data -- so predictive content depends on imposing the logit form and cross-game lambda restrictions.",
+    "critiques_or_nulls": [
+      "Haile, Hortacsu & Kosenok 2008: unrestricted QRE can fit any data; falsifiability requires the logit/structural assumption",
+      "lambda is not comparable across payoff scales; must be refit per game",
+      "In-repo, QRE+Fehr-Schmidt (social_preference_population) beats naive baselines but LOSES to a per-game fitted histogram in-distribution (W1 0.099 vs 0.038)"
+    ],
+    "applicability_limits": [
+      "Requires cardinal payoffs and a defined action set",
+      "Equilibrium version assumes belief consistency; better suited to static discrete choice",
+      "lambda payoff-scale-dependent"
+    ],
+    "transport_risks": [
+      "lambda refit per game / payoff scale (medium-high)",
+      "logit error form is a modeling choice that carries the model's falsifiability"
+    ],
+    "local_refit_feasible": "Yes. The logit_choice operator is executable and lambda is already fit per game on BehaviorBench inside social_preference_population; logit choice can also be fit as a generic stochastic-choice layer to any in-repo choice-frequency dataset (Upworthy CTR, StackExchange answered).",
+    "best_validation_route": "Held-out choice-distribution prediction on BehaviorBench per game with lambda refit, benchmarked against the per-game histogram and hand-crafted baselines (note the existing in-distribution failure vs histogram); require payoff-scale normalization before comparing lambda across games.",
+    "expected_applicability": "broad for static discrete choice",
+    "expected_transport_risk": "medium",
+    "priority": "high",
+    "planned_implementation": "Keep logit_choice; add per-game lambda MLE with a payoff-scale normalizer and a falsifiability guard (reject when lambda absorbs arbitrary structure); optionally add a QRE fixed-point solver for the equilibrium version.",
+    "planned_parameter_packs": [
+      "qre_lambda_per_game_behaviorbench: fitted lambda per MobLab game (already in wmv2_behaviorbench_policy.json) -- lab economic games, transport to field unvalidated"
+    ],
+    "promotion_blocker": "No PASSED held-out record that beats a strong per-game baseline (current best in-distribution loses to the histogram); lambda not transportable across payoff scales; falsifiability requires imposing scale-normalized cross-game restrictions.",
+    "disposition": "software_implemented"
+  },
+  {
+    "family": "Reinforcement learning in games (Roth-Erev)",
+    "registry_id": "reinforcement_learning",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable",
+    "primary_sources": [
+      {
+        "title": "Predicting How People Play Games: Reinforcement Learning in Experimental Games with Unique, Mixed Strategy Equilibria",
+        "authors": "Ido Erev; Alvin E. Roth",
+        "year": 1998,
+        "venue": "American Economic Review 88(4):848-881",
+        "doi_or_url": "https://www.jstor.org/stable/117009",
+        "verified": true,
+        "what_it_provides": "structural_model"
+      },
+      {
+        "title": "Learning in Extensive-Form Games: Experimental Data and Simple Dynamic Models in the Intermediate Term",
+        "authors": "Alvin E. Roth; Ido Erev",
+        "year": 1995,
+        "venue": "Games and Economic Behavior 8(1):164-212",
+        "doi_or_url": "10.1016/S0899-8256(05)80020-X",
+        "verified": false,
+        "what_it_provides": "structural_model"
+      },
+      {
+        "title": "Q-learning",
+        "authors": "Christopher J. C. H. Watkins; Peter Dayan",
+        "year": 1992,
+        "venue": "Machine Learning 8:279-292",
+        "doi_or_url": "10.1007/BF00992698",
+        "verified": true,
+        "what_it_provides": "methodological"
+      }
+    ],
+    "formal_model": "Roth-Erev propensity model: q_nj(t+1) = (1-phi)*q_nj(t) + E_k(j, R(x)), choice P = q_nj / sum_k q_nk, with reinforcement R(x)=payoff - x_min, forgetting/recency parameter phi, and a 'three-step' generalization/experimentation function E_k with parameter epsilon that spreads reinforcement to similar strategies. Basic 1-parameter model has only the initial-propensity strength s(1). A 4-parameter FP-like generalization adds a foregone-info weight d, a maximization parameter m, and a habit/past-experience weight h. Generic value form: Q <- Q + alpha*(r-Q).",
+    "causal_assumptions": [
+      "Choices are reinforced by realized payoff only (law of effect); foregone payoffs ignored in the basic model",
+      "Propensities map to probabilities by normalization (relative strength)",
+      "Stationary environment; many repetitions with small strategy sets",
+      "Recency (forgetting) and local generalization (experimentation) add responsiveness"
+    ],
+    "required_variables": [
+      "per-round chosen action",
+      "realized payoff (reinforcement = payoff - min payoff)",
+      "round index",
+      "strategy set"
+    ],
+    "temporal_scale": "event (per round; designed for 100+ round games)",
+    "evidence_type": "structural_model",
+    "reported_coefficients": [
+      {
+        "name": "s(1) basic 1-parameter model (initial-propensity strength)",
+        "value_or_null": 54,
+        "uncertainty_or_null": null,
+        "source_ref": "Erev & Roth 1998 p.862",
+        "context": "Best single value over 12 games; model MSD 1.0 (<30% of equilibrium error); predictive (leave-one-game-out) MSD 1.02; random-choice MSD 1.87",
+        "verified": true
+      },
+      {
+        "name": "3-parameter RE model {s(1), experimentation epsilon, forgetting phi} aggregate fit",
+        "value_or_null": {
+          "MSD_all_games_jointly": 0.59
+        },
+        "uncertainty_or_null": null,
+        "source_ref": "Erev & Roth 1998 p.867 (Roth-Erev 1995 three-parameter RE model)",
+        "context": "Specific fitted epsilon and phi values not extracted this session; aggregate mean-squared-deviation 0.59 when fit simultaneously to all games",
+        "verified": true
+      },
+      {
+        "name": "4-parameter FP-like generalization optimal set {d, m, h, s(1)}",
+        "value_or_null": {
+          "d": 0.9,
+          "m": 1.5,
+          "h": 0.1,
+          "s1": 27,
+          "MSD": 0.72
+        },
+        "uncertainty_or_null": null,
+        "source_ref": "Erev & Roth 1998 p.867",
+        "context": "d=foregone-info weight, m=maximization, h=force of habit; only h (habit) meaningfully improves fit -- the two 'rationality' params (m, FP-expectations) add only ~7% of the 0.16 gain",
+        "verified": true
+      },
+      {
+        "name": "generic Q-learning learning rate alpha",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Watkins & Dayan 1992 (algorithm; not a fitted game value)",
+        "context": "alpha in (0,1] is a reference-class parameter, must be fit per environment",
+        "verified": false
+      }
+    ],
+    "datasets_in_literature": [
+      "12 experimental games with unique mixed-strategy equilibria (Suppes & Atkinson; Ochs 1995; O'Neill 1987; Rapoport-Boebel; etc.) plus a new Erev-Roth experiment"
+    ],
+    "replication_evidence": "Erev-Roth's own out-of-sample prediction (basic predictive MSD 1.02; FP-like 0.84) and very wide subsequent reuse (Bornstein, Nagel, Slonim-Roth, etc.). Salmon 2001 (Econometrica) cautions that learning-model discrimination has low power.",
+    "critiques_or_nulls": [
+      "Basic reinforcement misses late convergence toward equilibrium (fails the observed late 'direction shift')",
+      "Only the habit parameter h improves the generalized model; added 'rationality' (maximization, FP beliefs) contributes ~7%",
+      "Salmon 2001: low statistical power to distinguish reinforcement from belief/EWA",
+      "s(1) and reinforcement scale with payoff magnitude -- not transportable across payoff scales"
+    ],
+    "applicability_limits": [
+      "Repeated games, many rounds, small strategy sets, stationary environment; laboratory",
+      "Generic Q-update is reusable as a value-learning primitive but the fitted game values are lab-specific"
+    ],
+    "transport_risks": [
+      "s(1)/alpha scale with payoffs and game class (high)",
+      "Designed for 100+ round mixed-equilibrium games; transport to field behavior unvalidated"
+    ],
+    "local_refit_feasible": "Limited. Requires repeated-play panels with per-round payoffs; in-repo MobLab games are mostly one-shot. OmniBehavior/Kuaishou repeated daily engagement could support a loose 'reinforcement of a binary action' fit, but not the mixed-equilibrium game setting the model was built for.",
+    "best_validation_route": "Refit the propensity model on an external repeated-game dataset (hold out later rounds / a left-out game), or map the Q-update onto OmniBehavior repeat-engagement and test whether payoff-reinforced propensity beats an AR/momentum baseline held-out.",
+    "expected_applicability": "narrow for game learning; the Q-update primitive is broadly reusable",
+    "expected_transport_risk": "high",
+    "priority": "medium",
+    "planned_implementation": "Keep reinforcement_update; add the full Roth-Erev propensity model with {s(1), epsilon, phi} and an MLE fitter; expose forgetting and local-experimentation; keep generic Q-learning alpha as a labeled prior.",
+    "planned_parameter_packs": [
+      "roth_erev1998_reference: basic s(1)=54; 4-param FP-like d0.9/m1.5/h0.1/s1 27 (MSD 0.72) -- labeled lab-reference priors from 12-game calibration"
+    ],
+    "promotion_blocker": "No local held-out validation; no repeated-game panel in-repo; published parameters are payoff-scale-dependent lab-reference priors.",
+    "disposition": "software_implemented"
+  },
+  {
+    "family": "Belief learning / fictitious play",
+    "registry_id": "belief_learning",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable",
+    "primary_sources": [
+      {
+        "title": "Individual Learning in Normal Form Games: Some Laboratory Results",
+        "authors": "Yin-Wong Cheung; Daniel Friedman",
+        "year": 1997,
+        "venue": "Games and Economic Behavior 19(1):46-76",
+        "doi_or_url": "10.1006/game.1997.0544",
+        "verified": true,
+        "what_it_provides": "structural_model"
+      },
+      {
+        "title": "The Theory of Learning in Games",
+        "authors": "Drew Fudenberg; David K. Levine",
+        "year": 1998,
+        "venue": "MIT Press (companion survey: 'Learning in games', European Economic Review 42:631-639)",
+        "doi_or_url": "10.1016/S0014-2921(98)00011-7",
+        "verified": true,
+        "what_it_provides": "methodological"
+      }
+    ],
+    "formal_model": "gamma-weighted beliefs over an opponent's action frequencies: recent observations weighted more, older observations discounted by gamma per period. gamma=0 => Cournot best-response (last period only); gamma=1 => (unweighted) fictitious play. Expected payoffs are computed against these beliefs and mapped to choice via a probabilistic best-response with response sensitivity beta. Registry executable form is a Dirichlet-style count updater.",
+    "causal_assumptions": [
+      "Opponent's play is treated as a stationary (gamma-weighted) distribution",
+      "Player best-responds probabilistically to belief-weighted expected payoffs",
+      "Recency weight gamma and response sensitivity beta are constant per player",
+      "Opponent actions are observable (full or sampled history)"
+    ],
+    "required_variables": [
+      "history of opponents' actions",
+      "payoff matrix",
+      "own chosen action",
+      "round index"
+    ],
+    "temporal_scale": "event (per round of repeated play)",
+    "evidence_type": "structural_model",
+    "reported_coefficients": [
+      {
+        "name": "gamma (belief-decay / recency) -- median across individuals, 3-parameter model",
+        "value_or_null": {
+          "Hawk_Dove": 0.32,
+          "Coordination": 0.41,
+          "Battle_of_Sexes": 0.26,
+          "BoS_variant": 0.33
+        },
+        "uncertainty_or_null": null,
+        "source_ref": "Cheung & Friedman 1997, Table II (3-par rows)",
+        "context": "Medians fall in the lower half of the adaptive (0,1) range, sometimes near the Cournot value 0; the fictitious-play hypothesis gamma=1 is firmly rejected",
+        "verified": true
+      },
+      {
+        "name": "beta (response sensitivity / choice precision) -- median",
+        "value_or_null": {
+          "typical_median": "near or above 0.42",
+          "range_across_games_3par": "0.17-0.93"
+        },
+        "uncertainty_or_null": null,
+        "source_ref": "Cheung & Friedman 1997, Table II; text p.64-65",
+        "context": "0.42 is retained as the Hawk-Dove benchmark; beta plays the role of logit precision on the belief-based expected payoffs",
+        "verified": true
+      }
+    ],
+    "datasets_in_literature": [
+      "Cheung-Friedman laboratory normal-form games: Hawk-Dove, Coordination, Battle-of-Sexes, Buyer-Seller, under varying information and matching protocols"
+    ],
+    "replication_evidence": "Consistent with Camerer & Ho 1999, in which belief learning is the EWA special case (delta=1, rho=phi) and is usually dominated by EWA (belief models win only in some constant-sum games). Fudenberg-Levine provide the convergence theory.",
+    "critiques_or_nulls": [
+      "EWA (Camerer-Ho 1999) nests belief learning as a restricted case and generally fits better out-of-sample",
+      "Individual gamma estimates are noisy: Camerer-Ho note about 1/3 of some parameter estimates are negative and 1/6 above one",
+      "Assumes a stationary opponent; fails against adaptive/teaching opponents"
+    ],
+    "applicability_limits": [
+      "Repeated games with observable opponent actions and a stationary opponent",
+      "Laboratory settings; not for one-shot or non-strategic choice"
+    ],
+    "transport_risks": [
+      "gamma and beta are game- and population-specific (high)",
+      "Stationarity assumption breaks with strategic teaching"
+    ],
+    "local_refit_feasible": "Limited. Requires repeated games with observable opponent history; in-repo MobLab games are mostly one-shot, so gamma is not identifiable without a repeated-game panel.",
+    "best_validation_route": "Refit gamma,beta on an external repeated-game panel; test the Cournot (gamma=0), fictitious-play (gamma=1) and EWA nesting via out-of-sample fit.",
+    "expected_applicability": "narrow (repeated strategic games)",
+    "expected_transport_risk": "high",
+    "priority": "low-medium",
+    "planned_implementation": "Upgrade belief_update_counts to an explicit gamma-weighted (recency-discounted) belief with a logit response beta; expose the Cournot and fictitious-play endpoints as selectable limits.",
+    "planned_parameter_packs": [
+      "cheung_friedman1997_reference: median gamma ~0.26-0.41, beta ~0.42 -- labeled lab-reference priors"
+    ],
+    "promotion_blocker": "No local validation; no repeated-game panel in-repo; empirically dominated by EWA where directly compared.",
+    "disposition": "software_implemented"
+  },
+  {
+    "family": "Habit formation",
+    "registry_id": "habit_formation",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable",
+    "primary_sources": [
+      {
+        "title": "How are habits formed: Modelling habit formation in the real world",
+        "authors": "Phillippa Lally; Cornelia H. M. van Jaarsveld; Henry W. W. Potts; Jane Wardle",
+        "year": 2010,
+        "venue": "European Journal of Social Psychology 40(6):998-1009",
+        "doi_or_url": "10.1002/ejsp.674",
+        "verified": true,
+        "what_it_provides": "descriptive"
+      },
+      {
+        "title": "A new look at habits and the habit-goal interface",
+        "authors": "Wendy Wood; David T. Neal",
+        "year": 2007,
+        "venue": "Psychological Review 114(4):843-863",
+        "doi_or_url": "10.1037/0033-295X.114.4.843",
+        "verified": true,
+        "what_it_provides": "methodological"
+      },
+      {
+        "title": "Reflections on past behavior: A self-report index of habit strength (SRHI)",
+        "authors": "Bas Verplanken; Sheina Orbell",
+        "year": 2003,
+        "venue": "Journal of Applied Social Psychology 33(6):1313-1330",
+        "doi_or_url": null,
+        "verified": false,
+        "what_it_provides": "methodological"
+      }
+    ],
+    "formal_model": "Automaticity (habit strength) grows with repetition in a stable context following an asymptotic exponential-approach curve toward a plateau; the increment per repetition diminishes as the asymptote is neared. Registry executable form: H <- (1-gamma)*H + gamma*1[acted] (habit-stock accumulation), and habit raises the probability of repeating the behavior (logit boost). Wood & Neal add the context-cue -> response associative account.",
+    "causal_assumptions": [
+      "Repetition of a behavior in a consistent context increases automaticity (context-cue -> behavior association)",
+      "Diminishing returns: automaticity approaches an asymptote",
+      "A missed single repetition does not materially reset the process",
+      "Automaticity, once formed, biases behavior independent of current goals/intentions"
+    ],
+    "required_variables": [
+      "repetition count or elapsed days",
+      "context stability",
+      "behavior-performed indicator",
+      "automaticity (SRHI) or behavior frequency"
+    ],
+    "temporal_scale": "longitudinal (days-to-months; ~66-day median plateau)",
+    "evidence_type": "descriptive",
+    "reported_coefficients": [
+      {
+        "name": "median time to 95% of asymptotic automaticity",
+        "value_or_null": 66,
+        "uncertainty_or_null": {
+          "range_across_individuals_days": [
+            18,
+            254
+          ]
+        },
+        "source_ref": "Lally et al. 2010 (EJSP)",
+        "context": "Units = days; from fitting individual asymptotic curves to daily Self-Report Habit Index scores over 84 days; N=96 self-selected behaviors",
+        "verified": true
+      },
+      {
+        "name": "N (participants)",
+        "value_or_null": 96,
+        "uncertainty_or_null": null,
+        "source_ref": "Lally et al. 2010",
+        "context": "Daily-diary field study; behaviors self-chosen (food/drink/activity)",
+        "verified": true
+      },
+      {
+        "name": "per-step accumulation rate gamma (registry parameter)",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "n/a",
+        "context": "Not reported as a single value; strongly behavior- and context-dependent (a labeled prior in the registry)",
+        "verified": false
+      }
+    ],
+    "datasets_in_literature": [
+      "Lally 2010 UCL daily-diary cohort (SRHI automaticity over 84 days)",
+      "Wood, Quinn & Kashy 2002 experience-sampling diary studies (habit in everyday life)"
+    ],
+    "replication_evidence": "The 66-day figure is very widely cited and has debunked the '21-day' myth, but it is a single-study median with a wide CI (18-254 days) on self-selected behaviors; it has not been independently replicated at scale. Automaticity is measured by self-report (SRHI), not behavior.",
+    "critiques_or_nulls": [
+      "Automaticity is self-reported (SRHI), not a behavioral measure",
+      "Enormous individual variation (18-254 days) and strong dependence on behavior complexity (simple drinking << exercise)",
+      "Observational: repetition is not experimentally manipulated, so the asymptote is descriptive not causal",
+      "gamma / time-to-automaticity is context-dependent and not transportable as a fixed constant"
+    ],
+    "applicability_limits": [
+      "Individual behavior repetition in stable contexts",
+      "Self-report automaticity domain; not group/strategic behavior"
+    ],
+    "transport_risks": [
+      "Habit is a robust cross-domain phenomenon but the accumulation rate / plateau time is strongly behavior- and context-dependent (medium)"
+    ],
+    "local_refit_feasible": "Partially. OmniBehavior/Kuaishou repeated daily engagement can support a behavioral habit-stock fit (does prior-repetition raise next-period engagement beyond a momentum/AR baseline?). Baby-names data is cultural diffusion, not individual habit. No in-repo dataset has the SRHI automaticity measure.",
+    "best_validation_route": "Fit habit-stock accumulation on OmniBehavior repeat-engagement and test held-out whether accumulated repetition predicts next-day behavior beyond the engagement_momentum_persistence baseline (which already validated on OmniBehavior).",
+    "expected_applicability": "medium (broad behavioral-repetition domains)",
+    "expected_transport_risk": "medium",
+    "priority": "medium-high",
+    "planned_implementation": "Keep habit_update; add a fitter for gamma / time-to-plateau on repeat-behavior panels; explicitly separate self-report automaticity from behavioral repeat-rate; guard against conflating habit with momentum/autocorrelation.",
+    "planned_parameter_packs": [
+      "lally2010_reference: time-to-95%-automaticity median 66 days (range 18-254) -- a reference prior for automaticity growth, NOT a behavioral repeat-rate"
+    ],
+    "promotion_blocker": "No local held-out validation; the registry gamma is a labeled prior not fit on target data; primary evidence is self-report and correlational; must be disentangled from the already-validated momentum/persistence family.",
+    "disposition": "software_implemented"
+  },
+  {
+    "family": "Satisficing / bounded search",
+    "registry_id": null,
+    "current_registry_status": "none (not registered)",
+    "current_executable_status": "not_implemented",
+    "primary_sources": [
+      {
+        "title": "A Behavioral Model of Rational Choice",
+        "authors": "Herbert A. Simon",
+        "year": 1955,
+        "venue": "Quarterly Journal of Economics 69(1):99-118",
+        "doi_or_url": "10.2307/1884852",
+        "verified": true,
+        "what_it_provides": "methodological"
+      },
+      {
+        "title": "Search and Satisficing",
+        "authors": "Andrew Caplin; Mark Dean; Daniel Martin",
+        "year": 2011,
+        "venue": "American Economic Review 101(7):2899-2922",
+        "doi_or_url": "10.1257/aer.101.7.2899",
+        "verified": true,
+        "what_it_provides": "structural_model"
+      }
+    ],
+    "formal_model": "Sequential search with a reservation utility u*: the agent examines options in sequence, accumulating a consideration set, and STOPS as soon as an option with utility >= u* is encountered (Caplin-Dean-Martin 'Condition 1'). The reservation level is fixed within a standard-choice environment and responds to the environment (rising with set size and object complexity). Simon (1955) is the origin: choose the first option that meets an aspiration level.",
+    "causal_assumptions": [
+      "Agents search sequentially and can be observed switching between provisional choices (choice-process data)",
+      "Stopping is governed by a reservation/aspiration threshold on utility",
+      "Utility is revealed by incentivized payoffs",
+      "Reservation level is fixed within an environment (a declining level is optimal for choice-process settings but is NOT observed empirically)"
+    ],
+    "required_variables": [
+      "ordered sequence of options considered (choice process)",
+      "option utilities/payoffs",
+      "final choice",
+      "set size",
+      "object complexity"
+    ],
+    "temporal_scale": "event (within-decision sequential search)",
+    "evidence_type": "structural_model",
+    "reported_coefficients": [
+      {
+        "name": "consistency with sequential search (Houtman-Maks index)",
+        "value_or_null": {
+          "pct_subjects_HM_gt_0.95": ">40",
+          "pct_subjects_HM_gt_0.9": "~70",
+          "subjects_above_95th_pctile_of_random": "68 of 76"
+        },
+        "uncertainty_or_null": null,
+        "source_ref": "Caplin, Dean & Martin 2011, Figure 2 / p.~?",
+        "context": "HM index = largest fraction of a subject's observations consistent with reservation-based sequential search; N=76 subjects",
+        "verified": true
+      },
+      {
+        "name": "failure to select the best option",
+        "value_or_null": {
+          "avg_across_treatments_pct": 38,
+          "worst_treatment_size40_complexity7_pct": 65
+        },
+        "uncertainty_or_null": null,
+        "source_ref": "Caplin, Dean & Martin 2011 (Results)",
+        "context": "Average money left on table $3.12 (17% of max per round); $7.12 in the hardest treatment -- evidence of incomplete/bounded search",
+        "verified": true
+      },
+      {
+        "name": "reservation utility level",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Caplin, Dean & Martin 2011",
+        "context": "Not a single scalar; estimated per treatment and shown to INCREASE with set size and object complexity",
+        "verified": true
+      },
+      {
+        "name": "sample size",
+        "value_or_null": {
+          "subjects_exp1_2": 76,
+          "exp3_subjects": 21,
+          "exp3_choice_sets": 206
+        },
+        "uncertainty_or_null": null,
+        "source_ref": "Caplin, Dean & Martin 2011",
+        "context": "Incentivized search experiment with a select-and-update choice-process interface",
+        "verified": true
+      }
+    ],
+    "datasets_in_literature": [
+      "Caplin-Dean-Martin incentivized sequential-search experiment (choice-process data recording which option is provisionally selected over time)"
+    ],
+    "replication_evidence": "Consistent with Reutskaja, Nagel, Camerer & Rangel 2011 (AER) eye-tracking evidence of satisficing/bounded search in consumer choice, and with the York 'When and How to Satisfice' experiments; part of a broad, converging bounded-rationality literature.",
+    "critiques_or_nulls": [
+      "Reservation levels can only be identified with choice-process data (what was examined, in what order) -- rarely available in field data",
+      "A declining reservation level is optimal in choice-process settings but is NOT observed (subjects use a fixed, sub-optimal reservation)",
+      "Satisficing is one of several competing bounded-search / consideration-set models"
+    ],
+    "applicability_limits": [
+      "Requires sequential-search / choice-process observation",
+      "Individual multi-alternative choice; laboratory"
+    ],
+    "transport_risks": [
+      "Reservation levels are environment-specific (rise with set size/complexity) (medium)",
+      "Requires observing the search process, not just the final choice"
+    ],
+    "local_refit_feasible": "No. In-repo datasets record final choices/outcomes but NOT the choice process (which options were examined, in what order, with provisional switches). Reservation utilities and search order are therefore not identifiable from BehaviorBench, Upworthy, StackExchange, CMV, or OmniBehavior.",
+    "best_validation_route": "Cannot be validated on current in-repo data. Requires a choice-process/search dataset (eye-tracking, or click-stream logs of option examination by a single decider). Would first need a new operator + such a dataset.",
+    "expected_applicability": "medium (consideration-set / bounded search is common) but data-hungry",
+    "expected_transport_risk": "medium",
+    "priority": "low-medium",
+    "planned_implementation": "NEW family: a reservation-threshold sequential-search operator -- given an ordered option stream and reservation u*, stop at the first option >= u*; expose u* as a fitted/prior consideration-set gate placed before the choice operator; add executable code + test to reach 'implemented'.",
+    "planned_parameter_packs": [
+      "caplin_dean_martin2011_reference (sanity target only, not fittable locally): HM>0.95 for >40% of subjects; ~38% best-option miss rate; reservation rises with set size/complexity"
+    ],
+    "promotion_blocker": "Not implemented (no executable code or test); no local choice-process data to identify reservation utility; requires both a new operator and a search-process dataset before any validation is possible.",
+    "disposition": "structural_candidate_only"
+  },
+  {
+    "family": "Norm compliance",
+    "registry_id": "norm_compliance",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable",
+    "primary_sources": [
+      {
+        "title": "Identifying Social Norms Using Coordination Games: Why Does Dictator Game Sharing Vary?",
+        "authors": "Erin L. Krupka; Roberto A. Weber",
+        "year": 2013,
+        "venue": "Journal of the European Economic Association 11(3):495-524",
+        "doi_or_url": "10.1111/jeea.12006",
+        "verified": true,
+        "what_it_provides": "structural_model"
+      },
+      {
+        "title": "The Grammar of Society: The Nature and Dynamics of Social Norms",
+        "authors": "Cristina Bicchieri",
+        "year": 2006,
+        "venue": "Cambridge University Press",
+        "doi_or_url": "10.1017/CBO9780511616037",
+        "verified": true,
+        "what_it_provides": "methodological"
+      }
+    ],
+    "formal_model": "Utility U_i(a) = V(pi_i(a)) + gamma_i * N(a), where pi_i(a) is the monetary payoff of action a, N(a) in [-1,+1] is the elicited social-appropriateness rating of a (incentive-compatibly elicited via a coordination game), and gamma_i >= 0 is heterogeneous norm-sensitivity. Choice maximizes (or is logit over) U. Appropriateness is elicited on a 4-point scale mapped to {-1 very inappropriate, -1/3 somewhat inappropriate, +1/3 somewhat appropriate, +1 very appropriate}.",
+    "causal_assumptions": [
+      "Behavior is driven by money payoff PLUS concern for the injunctive norm (elicited appropriateness)",
+      "Elicited appropriateness ratings capture common-knowledge social consensus (coordination-game incentive)",
+      "gamma_i (norm-sensitivity) is heterogeneous across agents; V() is common",
+      "Framing that shifts appropriateness (e.g., 'bully'/take vs standard/give) causally shifts behavior via N(a)"
+    ],
+    "required_variables": [
+      "action payoffs pi(a)",
+      "elicited appropriateness ratings N(a) per action and context",
+      "(optional) individual norm-sensitivity"
+    ],
+    "temporal_scale": "event (single allocation/choice)",
+    "evidence_type": "structural_model",
+    "reported_coefficients": [
+      {
+        "name": "social-appropriateness rating scale N(a)",
+        "value_or_null": {
+          "very_inappropriate": -1.0,
+          "somewhat_inappropriate": -0.333,
+          "somewhat_appropriate": 0.333,
+          "very_appropriate": 1.0
+        },
+        "uncertainty_or_null": null,
+        "source_ref": "Krupka & Weber 2013 (elicitation method)",
+        "context": "4-point evaluation mapped to [-1,+1]; ratings are the elicited norm inputs to the utility model",
+        "verified": true
+      },
+      {
+        "name": "example elicited ratings (standard dictator game)",
+        "value_or_null": {
+          "keep_$5_equal_split": 0.9,
+          "keep_$9": -0.71,
+          "difference": 1.61
+        },
+        "uncertainty_or_null": null,
+        "source_ref": "Krupka & Weber 2013 (Table 1; text p.~13)",
+        "context": "In the standard DG the equal split is rated appropriate (+0.90) and keeping $9 inappropriate (-0.71); the 1.61 gap drives the predicted preference for sharing",
+        "verified": true
+      },
+      {
+        "name": "behavioral prediction test (frame manipulation)",
+        "value_or_null": "predicted behavior shifts across treatments confirmed",
+        "uncertainty_or_null": "p < 0.01 (ordered logit, Table 2)",
+        "source_ref": "Krupka & Weber 2013, Table 2 (Experiment 2)",
+        "context": "More agents choose the equal split in the 'bully'/take frame than the standard/give frame, as predicted by the norm+money model",
+        "verified": true
+      },
+      {
+        "name": "fitted gamma (norm-sensitivity coefficient)",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Krupka & Weber 2013",
+        "context": "NOT point-identified in the original paper (gamma modeled as heterogeneous; predictions are directional). Later work (e.g., Kimbrough & Vostroknutov 2016) fits a norm-sensitivity coefficient",
+        "verified": false
+      }
+    ],
+    "datasets_in_literature": [
+      "Krupka-Weber dictator-game variants (standard, bully/take, and others) plus reanalysis of prior DG studies (List 2007; Bardsley 2008); norms elicited via a coordination game"
+    ],
+    "replication_evidence": "The Krupka-Weber elicitation method is very widely replicated and yields robust, incentive-compatible norm ratings that predict behavior across many domains (Kimbrough-Vostroknutov 2016 fit a structural norm-sensitivity; 'When in Rome' and many follow-ups). But a single structural gamma is context-specific.",
+    "critiques_or_nulls": [
+      "Elicited norm ratings are frame/context-specific (bully vs standard differ substantially) -- they must be re-elicited per setting",
+      "Coordination-game elicitation can conflate the injunctive norm with focal-point salience",
+      "The original paper gives directional predictions; gamma is not point-identified without additional structure"
+    ],
+    "applicability_limits": [
+      "Requires elicited appropriateness ratings for the specific action set",
+      "Individual allocation/dictator-type decisions; laboratory"
+    ],
+    "transport_risks": [
+      "Norm ratings and gamma are population- and context-specific; cannot transport ratings across frames/cultures without re-elicitation (high)"
+    ],
+    "local_refit_feasible": "No for the identified model. In-repo BehaviorBench dictator/ultimatum games record choices but NOT the elicited appropriateness ratings N(a) that the model requires as inputs; a norm-elicitation experiment would be needed. A reduced-form norm proxy could be fit but would not identify the Krupka-Weber model.",
+    "best_validation_route": "Pair BehaviorBench allocation choices with a fresh elicited norm-rating table and test whether V(pi)+gamma*N(a) predicts choice shifts across variants held-out; without elicited norms the model is not identifiable.",
+    "expected_applicability": "medium-high (norms pervade social behavior) but requires elicited-norm inputs",
+    "expected_transport_risk": "high",
+    "priority": "high",
+    "planned_implementation": "Upgrade norm_compliance from the generic relationship_modulator stand-in to the Krupka-Weber utility U=V(pi)+gamma*N(a); require an elicited norm-rating table as input; expose gamma as fitted/prior; add logit choice over U.",
+    "planned_parameter_packs": [
+      "krupka_weber2013_reference: standard-DG appropriateness ratings (equal-split +0.90, keep-$9 -0.71; scale [-1,+1]) as a reference norm table for allocation frames; gamma as a labeled prior needing per-setting fit"
+    ],
+    "promotion_blocker": "No elicited-norm inputs in local data; no local validation record; gamma not point-identified without new elicitation; the current registry operator is a generic modulator, not the identified Krupka-Weber norm model.",
+    "disposition": "software_implemented"
+  }
+]

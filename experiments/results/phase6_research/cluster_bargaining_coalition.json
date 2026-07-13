@@ -1,0 +1,464 @@
+[
+  {
+    "family": "Alternating-offer bargaining (Rubinstein SPE + ultimatum behavior)",
+    "registry_id": "bargaining_rubinstein",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable: swm.world_model_v2.registry.families.interaction:rubinstein_split (x*=(1-delta_b)/(1-delta_a*delta_b)); test_ref tests/test_interaction_families.py::test_rubinstein_split_favors_patient_player",
+    "primary_sources": [
+      {
+        "title": "Perfect Equilibrium in a Bargaining Model",
+        "authors": "Rubinstein, A.",
+        "year": 1982,
+        "venue": "Econometrica 50(1):97-109",
+        "doi_or_url": "10.2307/1912531",
+        "verified": true,
+        "what_it_provides": "structural_model: unique subgame-perfect equilibrium of infinite-horizon alternating-offers bargaining with discounting; first-mover share x* = (1-delta_b)/(1-delta_a*delta_b). No estimation - identity from discount factors."
+      },
+      {
+        "title": "An experimental analysis of ultimatum bargaining",
+        "authors": "Guth, W.; Schmittberger, R.; Schwarze, B.",
+        "year": 1982,
+        "venue": "Journal of Economic Behavior & Organization 3(4):367-388",
+        "doi_or_url": "10.1016/0167-2681(82)90011-7",
+        "verified": true,
+        "what_it_provides": "causal_estimate (lab): founding ultimatum-game experiment; proposers offer far above the subgame-perfect ~0 split (modal offers near equal split), and low offers are rejected - the anomaly that motivates behavioral corrections to Rubinstein."
+      },
+      {
+        "title": "Cultural Differences in Ultimatum Game Experiments: Evidence from a Meta-Analysis",
+        "authors": "Oosterbeek, H.; Sloof, R.; van de Kuilen, G.",
+        "year": 2004,
+        "venue": "Experimental Economics 7(2):171-188",
+        "doi_or_url": "10.1023/B:EXEC.0000026978.14316.74",
+        "verified": true,
+        "what_it_provides": "meta_analysis: 37 papers / 75 results. Pooled mean proposer offer = 40% of pie; mean rejection rate = 16% of offers. Offer falls with pie size; rejection falls with offered share. Responder (not proposer) behavior differs across regions."
+      },
+      {
+        "title": "Behavioral Game Theory: Experiments in Strategic Interaction",
+        "authors": "Camerer, C. F.",
+        "year": 2003,
+        "venue": "Princeton University Press (ISBN 0-691-09039-4), ch. 2",
+        "doi_or_url": "Princeton University Press 2003 (no DOI)",
+        "verified": true,
+        "what_it_provides": "descriptive/meta synthesis: modal and median ultimatum offers are 40-50% of the stake; offers below ~20% of the pie are rejected roughly half the time. The best-replicated behavioral regularities in the family."
+      }
+    ],
+    "formal_model": "Rubinstein alternating-offers: two players split a unit pie, alternating proposals each round, per-round discount factors delta_a, delta_b in (0,1). Unique SPE: agreement in round 1 at proposer share x* = (1-delta_b)/(1-delta_a*delta_b); more patient player (higher delta) gets more; as delta->1 the split approaches Nash bargaining. Ultimatum game is the one-round limit (delta_b=0 => x*=1), whose SPE (offer ~0) is empirically violated; behavioral layer replaces it with an offer distribution centered ~0.4-0.5 and a responder rejection hazard increasing as the offered share falls below ~0.2 (inequity-aversion / negative-reciprocity correction).",
+    "causal_assumptions": [
+      "Common knowledge of the pie, alternating protocol, and both discount factors (complete information) => immediate agreement, no delay.",
+      "Money-maximizing preferences for the pure SPE prediction; the behavioral offer/rejection layer requires social preferences (fairness / negative reciprocity), which are the actual causal drivers of observed offers.",
+      "Stationarity of preferences across rounds; time enters only through discounting.",
+      "Ultimatum rejection is causal on proposer offers only under learning/reputation; in one-shot anonymous play the ~40% offer is driven by proposer beliefs about rejection."
+    ],
+    "required_variables": [
+      "per-round discount factors / patience delta_a, delta_b (or outside options)",
+      "pie / stake size",
+      "protocol (who moves first, deadline, one-shot vs repeated)",
+      "proposer offered share",
+      "responder accept/reject",
+      "for behavioral layer: fairness / inequity-aversion parameter, responder rejection threshold"
+    ],
+    "temporal_scale": "interaction/episode: one-shot to short multi-round horizon (bargaining rounds).",
+    "evidence_type": "structural_model (Rubinstein SPE) + causal_estimate (lab experiments) + meta_analysis (Oosterbeek)",
+    "reported_coefficients": [
+      {"name": "mean proposer offer (share of pie)", "value_or_null": 0.40, "uncertainty_or_null": null, "source_ref": "Oosterbeek et al. 2004 (Exp Econ 7:171-188)", "context": "meta-analysis pooled mean over 37 papers / 75 results; decreases with pie size", "verified": true},
+      {"name": "overall responder rejection rate", "value_or_null": 0.16, "uncertainty_or_null": null, "source_ref": "Oosterbeek et al. 2004", "context": "share of offers rejected on average; falls as offered share rises", "verified": true},
+      {"name": "modal/median proposer offer", "value_or_null": "0.40-0.50", "uncertainty_or_null": null, "source_ref": "Camerer 2003; Guth et al. 1982", "context": "modal and median offers are 40-50% of the stake across many replications", "verified": true},
+      {"name": "rejection probability of low (<20% pie) offers", "value_or_null": "~0.5", "uncertainty_or_null": null, "source_ref": "Camerer 2003 Behavioral Game Theory", "context": "offers below ~20% of the pie are rejected roughly half the time", "verified": true},
+      {"name": "MobLab ultimatum proposer mean offer (LOCAL)", "value_or_null": 45.15, "uncertainty_or_null": null, "source_ref": "experiments/results/behaviorbench_eval.json (arm deepseek, per_game)", "context": "human_mean in points 0-100, n_human=20 held-out subset; ultimatum_responder human_mean=43.8; MobLab game_behavior, cc-by-nc-nd benchmark-only. Matches literature 40-50% modal offer.", "verified": true},
+      {"name": "Rubinstein SPE first-mover share x*", "value_or_null": null, "uncertainty_or_null": null, "source_ref": "Rubinstein 1982", "context": "structural identity (1-delta_b)/(1-delta_a*delta_b), NOT an estimated parameter - no fitting required", "verified": true}
+    ],
+    "datasets_in_literature": [
+      "Guth et al. 1982 lab sessions (Cologne)",
+      "Roth, Prasnikar, Okuno-Fujiwara & Zamir 1991 four-country ultimatum experiments",
+      "Henrich et al. 2001/2005 small-scale-society ultimatum data (cross-cultural)",
+      "Oosterbeek et al. 2004 meta-analytic dataset (37 papers / 75 results)",
+      "MobLab game_behavior (ultimatum_proposer / ultimatum_responder) - present in-repo as parsed means and 50/50 train/test split"
+    ],
+    "replication_evidence": "Very strong. The 40-50% modal offer and rejection of low offers replicate across hundreds of studies, dozens of countries (Roth et al. 1991; Henrich et al. 2005) and are meta-analyzed (Oosterbeek 2004: mean offer 0.40, rejection 0.16). The pure Rubinstein SPE prediction (~0 offer) is robustly falsified for one-shot ultimatum; the discount-comparative-statics (patience -> larger share) is supported in structured multi-round bargaining.",
+    "critiques_or_nulls": [
+      "Rubinstein SPE assumes complete information and self-interest; both fail in the ultimatum limit - the empirically useful content is the behavioral offer/rejection distribution, not the ~0 SPE offer.",
+      "Comparative-statics of discounting are clean, but real bargaining shows delay and breakdown that the complete-information model rules out (see delay & escalation family).",
+      "Local MobLab n_human is small (~20-100/game) and license is cc-by-nc-nd (benchmark use only) - validation, not redistribution."
+    ],
+    "applicability_limits": [
+      "One-shot / low-stakes anonymous lab settings drive the canonical numbers; high-stakes and repeated play shift offers.",
+      "Offer levels are culture- and context-sensitive (responder side); transporting a single mean across populations is risky."
+    ],
+    "transport_risks": [
+      "Mean offer ~0.40 is a WEIRD-lab central tendency; small-scale societies range widely (Henrich).",
+      "Rejection threshold depends on framing (earned vs windfall stake, strategy method vs direct response)."
+    ],
+    "local_refit_feasible": "YES (validate, not identify de novo): MobLab ultimatum_proposer/responder distributions are in-repo (behaviorbench_eval.json means + wmv2_behaviorbench.json 50/50 split, seed 13). Can validate a proposer-offer distribution and a responder rejection-threshold against held-out human choices via normalized Wasserstein-1. License cc-by-nc-nd (benchmark only).",
+    "best_validation_route": "Held-out MobLab ultimatum: fit offer distribution + rejection hazard on train split, score W1 vs held-out human sample; cross-check pooled targets (mean 0.40 / reject 0.16) from Oosterbeek. Structural Rubinstein SPE needs no fit (identity from delta).",
+    "expected_applicability": "High for lab/game-like negotiation and any two-party split-the-surplus interaction; moderate for real high-stakes bargaining where delay/incomplete information dominate.",
+    "expected_transport_risk": "medium (offer level travels moderately; rejection threshold is culture/framing sensitive)",
+    "priority": "medium-high (already implemented; cheap, high-value win = attach a behavioral ultimatum parameter pack + local held-out record to reach locally_validated)",
+    "planned_implementation": "Keep rubinstein_split as the structural SPE. Add a behavioral readout: proposer offer ~ distribution centered 0.40-0.50 and responder rejection hazard rising below ~0.20 offered share. Register a parameter pack sourced from Oosterbeek/Camerer priors and refined on MobLab train split; record a held-out W1 PPC to promote.",
+    "planned_parameter_packs": [
+      "rubinstein_spe_structural: {delta_a, delta_b priors} - identity, no fit",
+      "ultimatum_behavioral: {mean_offer=0.40 (Oosterbeek), modal_offer=0.40-0.50 (Camerer), rejection_rate=0.16 (Oosterbeek), low_offer_reject~0.5 (Camerer)} + MobLab-refit offer distribution"
+    ],
+    "promotion_blocker": "No committed parameter pack and no held-out/PPC validation record for the ultimatum behavioral layer (the SPE itself is structural and needs none). MobLab data present but not yet fit/scored for this family.",
+    "disposition": "software_implemented"
+  },
+  {
+    "family": "Concession dynamics (time-dependent negotiation tactics)",
+    "registry_id": "negotiation_concession",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable: swm.world_model_v2.registry.families.interaction:concession_offer (offer decays initial->reservation as deadline nears, rate governed by beta); test_ref tests/test_interaction_families.py::test_concession_moves_toward_reservation_near_deadline",
+    "primary_sources": [
+      {
+        "title": "Negotiation Decision Functions for Autonomous Agents",
+        "authors": "Faratin, P.; Sierra, C.; Jennings, N. R.",
+        "year": 1998,
+        "venue": "Robotics and Autonomous Systems 24(3-4):159-182",
+        "doi_or_url": "10.1016/S0921-8890(98)00029-3",
+        "verified": true,
+        "what_it_provides": "structural_model (agent-design heuristic): parameterized families of time-dependent (polynomial/exponential, Boulware vs Conceder), resource-dependent, and behavior-dependent (tit-for-tat) concession tactics. Defines the functional form used in the registry; parameters are engineering choices, NOT estimated from human data."
+      },
+      {
+        "title": "An experimental analysis of ultimatum bargaining",
+        "authors": "Guth, W.; Schmittberger, R.; Schwarze, B.",
+        "year": 1982,
+        "venue": "Journal of Economic Behavior & Organization 3(4):367-388",
+        "doi_or_url": "10.1016/0167-2681(82)90011-7",
+        "verified": true,
+        "what_it_provides": "causal_estimate (lab) reference-class: human bargaining shows concession toward a reservation value as interaction proceeds; supplies behavioral plausibility that concession moves from an anchored initial demand toward reservation (but not the beta parameter)."
+      }
+    ],
+    "formal_model": "Time-dependent concession: offer(t) = initial + (reservation - initial) * (min(1, t/deadline))^(1/beta). beta<1 => Boulware (tough, concede late); beta=1 => linear; beta>1 => Conceder (concede early). Agreement when the two agents' offers cross. Faratin also defines resource-dependent (concede faster as time/resources deplete) and behavior-dependent (imitate opponent's concessions) tactic families. This is a prescriptive/engineering model of a bargaining trajectory, not an estimated law of human concession.",
+    "causal_assumptions": [
+      "A well-defined initial demand (anchor), reservation value, and shared deadline exist and are exogenous.",
+      "Concession is a deterministic function of elapsed fraction of the deadline (time-dependent tactic) - time is the causal driver.",
+      "beta is an agent 'type' parameter set by design/strategy, not identified from behavior without a rich offer time-series.",
+      "Opponent modeling (behavior-dependent tactics) requires observed opponent concessions."
+    ],
+    "required_variables": [
+      "initial demand / anchor",
+      "reservation value",
+      "elapsed time and deadline",
+      "concession-rate type beta (tough/linear/conceder)",
+      "opponent's prior offers (for behavior-dependent tactics)"
+    ],
+    "temporal_scale": "interaction/episode: within a single negotiation, indexed by deadline-relative time.",
+    "evidence_type": "structural_model / agent-design heuristic (no empirical parameter estimation)",
+    "reported_coefficients": [
+      {"name": "concession-rate exponent beta", "value_or_null": null, "uncertainty_or_null": null, "source_ref": "Faratin et al. 1998", "context": "beta<1 Boulware / beta>1 Conceder; a FREE DESIGN parameter, never fitted to human data in the source", "verified": false},
+      {"name": "human concession rate", "value_or_null": null, "uncertainty_or_null": null, "source_ref": "none in-repo", "context": "no human negotiation offer-sequence dataset in the repository to identify beta", "verified": false}
+    ],
+    "datasets_in_literature": [
+      "Faratin et al. 1998 simulated agent-agent negotiations (no human ground truth)",
+      "ANAC (Automated Negotiating Agents Competition) logs - agent tournaments, not human",
+      "Human negotiation corpora (e.g., Inspire, CraigslistBargain, JobInterview dialogues) exist externally but are NOT in this repo"
+    ],
+    "replication_evidence": "The functional form is widely reused in automated-negotiation research and is internally consistent, but there is NO human-behavior replication that pins beta. The qualitative claim (offers move from anchor toward reservation as a deadline nears) is supported by bargaining experiments; the specific decay shape is an engineering choice.",
+    "critiques_or_nulls": [
+      "Registry-implemented but essentially a structural/engineering heuristic: beta is unidentified, so this is closer to structural_candidate_only in validation terms despite having code + tests.",
+      "No in-repo human concession time-series -> cannot estimate or validate the decay shape locally.",
+      "Deterministic time-dependence ignores information/strategic delay and outside-option shifts that drive real concessions."
+    ],
+    "applicability_limits": [
+      "Best suited to deadline-driven, single-issue split negotiations; multi-issue / integrative bargaining needs the resource- and issue-weighted variants.",
+      "Assumes a known reservation value; if reservation is private, the model cannot be applied without belief updating."
+    ],
+    "transport_risks": [
+      "beta chosen for one agent/context does not transport - it is a strategy, not a population parameter.",
+      "Deadline effects in humans are noisy and emotion-driven (end-game rushes), not smooth power-law decays."
+    ],
+    "local_refit_feasible": "LOW / NO: the repo has no human negotiation offer-by-time dataset. MobLab ultimatum is one-shot (no concession trajectory). Refit would require importing an external negotiation-dialogue corpus.",
+    "best_validation_route": "External human negotiation transcripts with timestamped offer sequences (e.g. Inspire / CraigslistBargain); fit beta per role and score predicted vs actual offer path. Not achievable with current in-repo data.",
+    "expected_applicability": "Moderate as a scaffold for deadline-driven agent negotiation; low as a validated model of human concession.",
+    "expected_transport_risk": "high (beta is a per-agent strategy, not an estimated population coefficient)",
+    "priority": "low (implemented and useful as a heuristic; not worth a validation pack until a human concession corpus is added)",
+    "planned_implementation": "Retain concession_offer as an engineering tactic. Do NOT promote past software_implemented without a human offer-sequence dataset. If added later: fit beta per role/domain and record a held-out trajectory error.",
+    "planned_parameter_packs": [
+      "concession_tactic_priors: {beta_boulware<1, beta_linear=1, beta_conceder>1} - labeled DESIGN priors, explicitly unidentified"
+    ],
+    "promotion_blocker": "beta is an unidentified design parameter and there is no in-repo human concession dataset; the primary source is an agent-design paper, not a causal estimate. Cannot reach locally_validated.",
+    "disposition": "software_implemented"
+  },
+  {
+    "family": "Delay & escalation (costly delay, war of attrition, dollar-auction entrapment)",
+    "registry_id": null,
+    "current_registry_status": "NONE (not registered)",
+    "current_executable_status": "not implemented: no code_ref / test_ref in swm.world_model_v2.registry",
+    "primary_sources": [
+      {
+        "title": "Perfect Equilibrium in a Bargaining Model",
+        "authors": "Rubinstein, A.",
+        "year": 1982,
+        "venue": "Econometrica 50(1):97-109",
+        "doi_or_url": "10.2307/1912531",
+        "verified": true,
+        "what_it_provides": "structural_model: costly delay is priced by discounting. Under COMPLETE information the unique SPE has immediate agreement (zero delay); delay is only rational under incomplete information / reputation - the theoretical baseline for the family."
+      },
+      {
+        "title": "The theory of games and the evolution of animal conflicts",
+        "authors": "Maynard Smith, J.",
+        "year": 1974,
+        "venue": "Journal of Theoretical Biology 47(1):209-221",
+        "doi_or_url": "10.1016/0022-5193(74)90110-6",
+        "verified": true,
+        "what_it_provides": "structural_model: the war of attrition. Two contestants pay a cost proportional to time spent persisting for a prize of value V; the symmetric ESS is a mixed strategy in which giving-up times are exponentially distributed with rate 1/V, and expected payoff is dissipated to zero. Canonical model of costly-delay standoffs."
+      },
+      {
+        "title": "The Dollar Auction game: a paradox in noncooperative behavior and escalation",
+        "authors": "Shubik, M.",
+        "year": 1971,
+        "venue": "Journal of Conflict Resolution 15(1):109-111",
+        "doi_or_url": "10.1177/002200277101500111",
+        "verified": true,
+        "what_it_provides": "structural_model: all-pay escalation trap. A prize is auctioned but the top TWO bidders both pay their last bid; rational players are drawn into bidding past the prize's value (sunk-cost entrapment). Canonical model of conflict escalation / commitment traps."
+      }
+    ],
+    "formal_model": "Three linked structural mechanisms of costly persistence: (1) Discounted-delay (Rubinstein): payoff of agreement at round t is delta^t * share; complete info => immediate deal, incomplete info => screening delay. (2) War of attrition (Maynard Smith): cost accrues linearly with time persisted; each side chooses a stopping time; symmetric mixed-strategy equilibrium has memoryless (exponential) concession hazard with mean tied to prize value V, dissipating rents. (3) Dollar-auction / all-pay escalation (Shubik): both leading bidders pay; the unique subgame structure has no interior stopping point below V, producing bids exceeding the prize (escalation/entrapment). Common core: sunk costs + second-mover loss => persistence beyond the myopic optimum.",
+    "causal_assumptions": [
+      "Delay is costly (discounting or per-period cost) and this cost is common knowledge.",
+      "War of attrition: cost is linear in time persisted; the prize value V is the key driver of the equilibrium concession hazard.",
+      "Dollar auction: the second-highest bidder also pays (all-pay structure) - this is the causal source of escalation, absent in standard auctions.",
+      "Rational-persistence prediction requires forward-looking agents; observed over-escalation is amplified by sunk-cost / commitment biases (Teger 'too much invested to quit')."
+    ],
+    "required_variables": [
+      "per-period delay cost or discount factor",
+      "prize / stake value V",
+      "each party's accumulated sunk cost / current bid",
+      "outside option / quitting payoff",
+      "information structure (complete vs private valuations) for delay"
+    ],
+    "temporal_scale": "interaction/episode to protracted: escalation and delay unfold over repeated rounds / extended standoffs (strikes, bidding wars, attrition conflicts).",
+    "evidence_type": "structural_model (game-theoretic); qualitative experimental support, no verified point estimates extracted",
+    "reported_coefficients": [
+      {"name": "war-of-attrition equilibrium concession hazard", "value_or_null": null, "uncertainty_or_null": null, "source_ref": "Maynard Smith 1974", "context": "ESS give-up time is exponential with rate 1/V; structural, not an empirical estimate", "verified": true},
+      {"name": "dollar-auction escalation (bids > prize value)", "value_or_null": null, "uncertainty_or_null": null, "source_ref": "Shubik 1971; Teger 1980", "context": "experimentally, subjects routinely bid past $1 for a $1 prize; well-documented qualitatively but no single canonical coefficient extracted here", "verified": true},
+      {"name": "complete-information bargaining delay", "value_or_null": 0, "uncertainty_or_null": null, "source_ref": "Rubinstein 1982", "context": "SPE has ZERO delay under complete information; positive delay requires incomplete information", "verified": true}
+    ],
+    "datasets_in_literature": [
+      "Dollar-auction lab experiments (Teger 1980 'Too Much Invested to Quit'; Murnighan escalation studies)",
+      "Animal-contest duration data (war-of-attrition tests in behavioral ecology)",
+      "Strike / bargaining-delay data and surveys (Kennan & Wilson 1993 JEL bargaining-with-private-information survey)"
+    ],
+    "replication_evidence": "The structural predictions are classic and robust; escalation past prize value in the dollar auction and rent dissipation in wars of attrition are repeatedly reproduced qualitatively in the lab and in animal contests. Precise human parameters (how far past V, hazard shapes) are context-specific and not consolidated into a single meta-estimate.",
+    "critiques_or_nulls": [
+      "No in-repo dataset for delay/escalation - cannot fit or validate locally.",
+      "Human over-escalation exceeds rational-equilibrium predictions (sunk-cost bias), so a pure game-theoretic pack will under-predict entrapment.",
+      "War-of-attrition ESS assumes symmetric valuations; asymmetric-information versions change the hazard substantially."
+    ],
+    "applicability_limits": [
+      "Escalation model applies to all-pay / second-price-loss structures (bidding wars, arms races, litigation, patent races) - not to standard single-payer settings.",
+      "Delay model needs an information-structure specification; complete-information version predicts no delay and is uninformative for real standoffs."
+    ],
+    "transport_risks": [
+      "Behavioral escalation magnitude depends heavily on framing, emotions, and audience/commitment - transports poorly as a fixed coefficient.",
+      "Prize value V and cost rate are domain-specific; the hazard rate 1/V does not carry across contexts."
+    ],
+    "local_refit_feasible": "NO: repository contains no war-of-attrition, auction-escalation, or strike/delay dataset. Would require importing external escalation-experiment or strike-duration data.",
+    "best_validation_route": "External dollar-auction or all-pay-auction experiment data (stopping bids vs prize value) and/or strike-duration data; validate the concession hazard and escalation ceiling. Structural predictions (zero complete-info delay; exponential ESS hazard) can be unit-tested without data.",
+    "expected_applicability": "Moderate but high-value for conflict/negotiation-breakdown, bidding wars, arms races, and commitment traps - phenomena the current registry cannot represent.",
+    "expected_transport_risk": "high (behavioral escalation is emotion/commitment-driven; parameters are context-bound)",
+    "priority": "medium (fills a real registry gap - no delay/escalation family exists - but has no local data, so structural-only initially)",
+    "planned_implementation": "New interaction family module: (a) discounted_delay(delta, t); (b) war_of_attrition equilibrium concession hazard given V and cost rate; (c) dollar_auction / all-pay escalation dynamics with sunk-cost tracking and optional behavioral over-escalation multiplier. Register as structural with unit tests on the equilibrium properties.",
+    "planned_parameter_packs": [
+      "war_of_attrition_structural: {prize V, per-period cost c} -> exponential give-up hazard (no fit)",
+      "dollar_auction_structural: {prize, bid increment, all-pay=2} (no fit)",
+      "delay_incomplete_info: {discount delta, screening prior} - structural priors, unidentified without data"
+    ],
+    "promotion_blocker": "Not implemented (no code_ref/test_ref) and no in-repo escalation/delay dataset. Can reach software_implemented as a structural family; blocked from locally_validated by absence of data.",
+    "disposition": "structural_candidate_only"
+  },
+  {
+    "family": "Coalition formation (minimal-winning coalitions + voting-power indices)",
+    "registry_id": "coalition_formation",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable: swm.world_model_v2.registry.families.interaction:banzhaf_power (exact swing-enumeration) + coalition_forms (greedy MWC by support share); test_ref tests/test_interaction_families.py",
+    "primary_sources": [
+      {
+        "title": "The Theory of Political Coalitions",
+        "authors": "Riker, W. H.",
+        "year": 1962,
+        "venue": "Yale University Press, New Haven",
+        "doi_or_url": "Yale University Press 1962 (book, no DOI)",
+        "verified": true,
+        "what_it_provides": "structural_model + descriptive claim: the 'size principle' - in n-person zero-sum games with side-payments, rational players form MINIMAL winning coalitions (just large enough to win, no larger). Basis for the greedy-MWC operator."
+      },
+      {
+        "title": "Weighted Voting Doesn't Work: A Mathematical Analysis",
+        "authors": "Banzhaf III, J. F.",
+        "year": 1965,
+        "venue": "Rutgers Law Review 19:317-343",
+        "doi_or_url": "Rutgers Law Review 19:317-343 (1965), no DOI",
+        "verified": true,
+        "what_it_provides": "structural_model (exact index): the Banzhaf power index = fraction of swing/critical coalitions in which a member is pivotal. No parameters to fit - a deterministic function of weights and quota. Directly implemented (banzhaf_power)."
+      },
+      {
+        "title": "A Method for Evaluating the Distribution of Power in a Committee System",
+        "authors": "Shapley, L. S.; Shubik, M.",
+        "year": 1954,
+        "venue": "American Political Science Review 48(3):787-792",
+        "doi_or_url": "10.2307/1951053",
+        "verified": true,
+        "what_it_provides": "structural_model (exact index): Shapley-Shubik power index = probability a member is pivotal over all orderings (Shapley value of the simple voting game). Complementary exact power measure; no fitting."
+      }
+    ],
+    "formal_model": "Two structural pieces. (1) Minimal winning coalition (Riker size principle): among coalitions whose summed weight/seats >= quota, rational side-payment bargaining selects a MINIMAL one (no dispensable member); registry uses a greedy MWC by descending support share. (2) Power indices on the weighted voting game [q; w_1..w_n]: Banzhaf index beta_i = (number of coalitions in which i is critical) / (total critical swings); Shapley-Shubik phi_i = (orderings in which i is pivotal)/n!. Both are EXACT combinatorial functions of (weights, quota) - no free parameters, no estimation. Power != weight (a large bloc can have zero pivotality; Banzhaf's Nassau County result).",
+    "causal_assumptions": [
+      "Power indices: the ONLY inputs are voting weights and the quota; the index is exact by construction (no causal-inference assumptions, no estimand).",
+      "Size principle (empirical claim): zero-sum stakes, transferable side-payments, rationality, and (near) complete information - under these, minimal winning coalitions form.",
+      "The empirical MWC prediction is CONTESTED: real governments are often oversized (surplus) or minority, violating strict minimality when policy (not just spoils) is at stake."
+    ],
+    "required_variables": [
+      "member voting weights / seat shares",
+      "decision quota (votes needed to pass)",
+      "member set and which are 'in' vs 'out'",
+      "for size-principle prediction: whether stakes are office/spoils (zero-sum) vs policy"
+    ],
+    "temporal_scale": "institutional/episode: a coalition-formation event; power structure is otherwise static between reweightings.",
+    "evidence_type": "structural_model (exact power indices - no fit) + descriptive/contested empirical (size principle)",
+    "reported_coefficients": [
+      {"name": "Banzhaf power index", "value_or_null": null, "uncertainty_or_null": null, "source_ref": "Banzhaf 1965", "context": "computed EXACTLY by swing enumeration; a structural function of (weights, quota) with NO parameters to fit or validate", "verified": true},
+      {"name": "Shapley-Shubik power index", "value_or_null": null, "uncertainty_or_null": null, "source_ref": "Shapley & Shubik 1954", "context": "exact pivotality probability over orderings; structural, no fitting", "verified": true},
+      {"name": "share of real governments that are minimal winning", "value_or_null": null, "uncertainty_or_null": null, "source_ref": "coalition literature (contested)", "context": "MWC is far from universal empirically (many surplus/minority governments); no single verified fraction extracted here", "verified": false}
+    ],
+    "datasets_in_literature": [
+      "Weighted voting bodies (US Electoral College, EU Council of Ministers, IMF, UN Security Council, Nassau County Board) - used to compute/illustrate indices",
+      "European government-formation datasets (which coalitions formed) - to test the size principle; not in this repo",
+      "VoteView congress roll-calls (in-repo buildable) - relevant to bloc/coalition analysis but tangential to formation"
+    ],
+    "replication_evidence": "Power indices are mathematically exact and 'replicate' by definition (verified by recomputation). The size principle is only PARTIALLY supported: minimal winning coalitions are common but oversized and minority governments are frequent, so strict minimality is not a universal empirical law.",
+    "critiques_or_nulls": [
+      "The size principle assumes zero-sum office motivation; with policy-motivated parties, connected/oversized coalitions are rational - a well-known critique (Axelrod, de Swaan, Laver-Schofield).",
+      "Greedy MWC by support share is a heuristic and can miss minimal coalitions that require dropping a large early member; it is not guaranteed minimal.",
+      "Standard power indices are themselves critiqued as models of real influence (Gelman/Katz/Bafumi: 'standard voting power indexes don't work' empirically for turnout/decisiveness)."
+    ],
+    "applicability_limits": [
+      "Power indices apply cleanly only to weighted YES/NO voting games with a fixed quota.",
+      "Size principle applies where side-payments/spoils dominate; weak where policy proximity governs coalition choice."
+    ],
+    "transport_risks": [
+      "Power indices transport perfectly as computations (structural); the size-principle behavioral claim transports poorly across institutional contexts.",
+      "Greedy-MWC selection depends on the support-ordering and quota specification."
+    ],
+    "local_refit_feasible": "PARTIAL: power indices require NO data (exact - just unit-test correctness). The size-principle/formation claim would need a government-formation dataset (which coalitions actually formed), which is NOT in-repo; VoteView congress data (buildable) supports bloc analysis but not multiparty government formation.",
+    "best_validation_route": "Power indices: verify by exact recomputation against textbook cases (Nassau County, EU Council) - no statistical validation needed. Size principle: external government-formation dataset (formed vs feasible coalitions); score MWC hit-rate. Not feasible with current in-repo data.",
+    "expected_applicability": "High and reliable for the power-index computations (committees, weighted votes, boards); moderate/contested for predicting which coalition forms.",
+    "expected_transport_risk": "low for power indices (structural); high for the size-principle prediction",
+    "priority": "medium (index computation is done and exact; the valuable extension is a validated formation/selection model, which needs external data)",
+    "planned_implementation": "Keep banzhaf_power / coalition_forms. Add Shapley-Shubik index as a second exact operator. Treat power indices as structurally exact (unit tests, no pack). For formation, mark the greedy-MWC as a heuristic and, if a government-formation dataset is added, validate MWC hit-rate.",
+    "planned_parameter_packs": [
+      "power_indices_structural: exact Banzhaf + Shapley-Shubik (NO parameters - do not create a fitted pack)",
+      "size_principle_prior: MWC-selection heuristic; flagged contested, needs external formation data to validate"
+    ],
+    "promotion_blocker": "Power-index portion has no blocker (structurally exact - arguably production-eligible as computation, but registry treats it as implemented). Formation/size-principle portion is blocked from validation by the absence of an in-repo government-formation dataset and any held-out record.",
+    "disposition": "software_implemented"
+  },
+  {
+    "family": "Coalition stability & defection (core/nucleolus, Gamson's law payoffs, legislative defection)",
+    "registry_id": null,
+    "current_registry_status": "NONE (not registered)",
+    "current_executable_status": "not implemented: no code_ref / test_ref in swm.world_model_v2.registry",
+    "primary_sources": [
+      {
+        "title": "A Theory of Coalition Formation",
+        "authors": "Gamson, W. A.",
+        "year": 1961,
+        "venue": "American Sociological Review 26(3):373-382",
+        "doi_or_url": "10.2307/2090664",
+        "verified": true,
+        "what_it_provides": "structural_model + associational law: the parity/proportionality norm - a member expects a share of the coalition payoff proportional to the resources it contributes. Origin of 'Gamson's law' for portfolio allocation and a stability condition (deviations invite defection)."
+      },
+      {
+        "title": "Aspects of Coalition Payoffs in European Parliamentary Democracies",
+        "authors": "Browne, E. C.; Franklin, M. N.",
+        "year": 1973,
+        "venue": "American Political Science Review 67(2):453-469",
+        "doi_or_url": "https://www.cambridge.org/core/journals/american-political-science-review/article/abs/aspects-of-coalition-payoffs-in-european-parliamentary-democracies/0E7C4BA92EA01477DEB3A568B8400D0D",
+        "verified": true,
+        "what_it_provides": "associational (classic empirical test): across 13 postwar European democracies, cabinet-portfolio share is strongly proportional to a party's seat contribution; systematic small-party overpayment / large-party underpayment at the extremes."
+      },
+      {
+        "title": "The portfolio allocation paradox: An investigation into the nature of a very strong but puzzling relationship",
+        "authors": "Warwick, P. V.; Druckman, J. N.",
+        "year": 2006,
+        "venue": "European Journal of Political Research 45",
+        "doi_or_url": "10.1111/j.1475-6765.2006.00632.x",
+        "verified": true,
+        "what_it_provides": "associational (refinement/replication): confirms near-1:1 portfolio-to-seat proportionality (very high R^2); regression through the origin yields a slope close to one, with a small-party bonus captured by a positive intercept in the free-intercept specification."
+      },
+      {
+        "title": "The Nucleolus of a Characteristic Function Game",
+        "authors": "Schmeidler, D.",
+        "year": 1969,
+        "venue": "SIAM Journal on Applied Mathematics 17(6):1163-1170",
+        "doi_or_url": "10.1137/0117107",
+        "verified": true,
+        "what_it_provides": "structural_model: the nucleolus - a unique, always-existing stable payoff allocation that lexicographically minimizes the maximum coalition 'excess' (dissatisfaction). With the CORE, provides the formal stability/defection-proofness criterion for coalition payoffs."
+      },
+      {
+        "title": "Estimating Party Influence in Congressional Roll-Call Voting",
+        "authors": "Snyder, J. M.; Groseclose, T.",
+        "year": 2000,
+        "venue": "American Journal of Political Science 44(2):193-211",
+        "doi_or_url": "10.2307/2669305",
+        "verified": true,
+        "what_it_provides": "causal_estimate: a two-stage method separating members' preferences from party pressure; detects significant majority-party influence on roll-call voting (concentrated on party-dividing / agenda votes) - the causal counterpart of legislative-coalition defection/discipline."
+      }
+    ],
+    "formal_model": "Two layers. (1) Cooperative-game STABILITY: given a characteristic function v(S) over coalitions, the CORE is the set of payoff vectors x with sum(x)=v(N) and sum_{i in S} x_i >= v(S) for all S (no subcoalition can profitably defect); when the core is empty or non-unique the NUCLEOLUS (Schmeidler) selects the allocation minimizing the lexicographically ordered vector of maximal excesses e(S,x)=v(S)-sum_{i in S}x_i - the most 'defection-resistant' split. (2) Empirical payoff/stability regularity: Gamson's law - realized payoff share s_i ~= seat/resource contribution share r_i (near-proportional, slope just under 1 with small-party bonus); large deviations from proportionality predict instability and portfolio renegotiation. Defection at the individual level (legislators leaving the party-line coalition) is modeled as party pressure vs member ideal-point pull (Snyder-Groseclose).",
+    "causal_assumptions": [
+      "Core/nucleolus: transferable utility and a specified characteristic function v(S); stability is defined relative to what each subcoalition can guarantee itself.",
+      "Gamson's law: payoff (portfolio) allocation is driven by seat contribution, holding bargaining structure fixed; the residual small-party bonus reflects bargaining power / formateur effects, not measurement error.",
+      "Legislative defection (Snyder-Groseclose): a member's vote = f(revealed preference/ideal point) + party pressure; identifying party influence requires separating the two (e.g., comparing high- vs low-stakes-to-party votes).",
+      "Stability prediction assumes payoffs, not policy alone, motivate members; policy-seeking coalitions can be stable while violating payoff-proportionality."
+    ],
+    "required_variables": [
+      "coalition value function v(S) or approximation (for core/nucleolus)",
+      "member resource/seat contribution shares",
+      "realized payoff/portfolio shares",
+      "member ideal points (e.g. NOMINATE) and party membership (for defection)",
+      "roll-call votes / observed defections",
+      "outside options and threat points"
+    ],
+    "temporal_scale": "institutional/medium-to-long: government duration and legislative sessions; defection observed vote-by-vote, stability over the coalition's life.",
+    "evidence_type": "structural_model (core/nucleolus) + associational (Gamson's law) + causal_estimate (party influence on defection)",
+    "reported_coefficients": [
+      {"name": "Gamson's law: portfolio share vs seat share", "value_or_null": "near 1:1 (near-proportional)", "uncertainty_or_null": "R^2 approx 0.9", "source_ref": "Browne & Franklin 1973 (APSR 67:453-469); Warwick & Druckman 2006 (EJPR 45)", "context": "portfolio share strongly proportional to seat contribution; among the most robust regularities in comparative politics", "verified": true},
+      {"name": "small-party payoff bonus (intercept>0, slope<1)", "value_or_null": null, "uncertainty_or_null": null, "source_ref": "Browne & Franklin 1973; Warwick & Druckman 2006", "context": "large parties proportionately underpaid, small parties overpaid; commonly cited free-intercept OLS slope ~0.8 / intercept ~0.07 NOT read from the primary table here", "verified": false},
+      {"name": "nucleolus / core stability allocation", "value_or_null": null, "uncertainty_or_null": null, "source_ref": "Schmeidler 1969", "context": "structural: unique lexicographic-min-excess allocation; computed, not estimated", "verified": true},
+      {"name": "majority-party influence on roll-call voting", "value_or_null": null, "uncertainty_or_null": null, "source_ref": "Snyder & Groseclose 2000 (AJPS 44:193-211)", "context": "significant party influence detected, concentrated on party-dividing/agenda votes; specific magnitude not verified here", "verified": false}
+    ],
+    "datasets_in_literature": [
+      "European coalition-government portfolio datasets (Browne-Franklin 1973; Warwick-Druckman 2006; ParlGov / Woldendorp-Keman-Budge)",
+      "Comparative Political Data Set / Database of Political Institutions (party seats, cabinet posts)",
+      "VoteView congressional roll-calls + DW-NOMINATE ideal points (Snyder-Groseclose) - BUILDABLE in-repo via experiments/build_congress_votes.py"
+    ],
+    "replication_evidence": "Gamson's law is one of the best-replicated empirical regularities in comparative politics (Browne-Franklin 1973 -> Warwick-Druckman 2006 -> many country studies; consistently R^2 ~0.8-0.9 with a small-party bonus). Core/nucleolus are mathematically exact stability constructs. Party-influence-on-defection (Snyder-Groseclose) is a well-cited causal method, with the magnitude debated (Krehbiel; McCarty-Poole-Rosenthal).",
+    "critiques_or_nulls": [
+      "The 'portfolio allocation paradox': proportionality is far stronger than bargaining models (which predict formateur/pivotal advantages) imply - the mechanism behind Gamson's law is itself unsettled.",
+      "Core can be empty; nucleolus always exists but is computationally heavy for large n and requires a specified v(S) that is rarely observable directly.",
+      "Party-influence magnitude is contested (Krehbiel: much apparent party effect is preference sorting, not pressure) - defection coefficients must be reported with this caveat; no verified point estimate extracted.",
+      "Gamson's-law numeric slope/intercept vary by dataset and specification; only the near-proportional pattern + small-party bonus are asserted as verified."
+    ],
+    "applicability_limits": [
+      "Gamson's law is calibrated on parliamentary cabinet portfolios; extending 'proportional payoff' to other coalition types (legislative, business, alliances) is by analogy.",
+      "Core/nucleolus require a credible v(S); without it the stability layer is not operational.",
+      "Legislative-defection estimates are institution- and era-specific (US Congress)."
+    ],
+    "transport_risks": [
+      "Portfolio-proportionality slope and small-party bonus differ across countries/formation rules.",
+      "US-Congress party-influence estimates do not transport to parliamentary or non-legislative coalitions.",
+      "Payoff-based stability under-predicts stability when parties are policy- rather than office-motivated."
+    ],
+    "local_refit_feasible": "PARTIAL-YES: legislative-defection sub-model IS locally refittable - experiments/build_congress_votes.py fetches public VoteView members/rollcalls/votes (proxy-reachable) with leakage-safe prior-congress NOMINATE ideal points; can fit party-line defection = f(ideal-point distance, party) and validate held-out roll-calls. RAW not committed (builder present, must run). Gamson's-law payoff layer needs a portfolio dataset (NOT in-repo). Core/nucleolus need no data (structural).",
+    "best_validation_route": "Build the VoteView senate cache and fit/validate a defection (party-line vs ideal-point) model on held-out congresses (leakage-free grounding already implemented in the builder). Separately, verify core/nucleolus by exact recomputation on textbook games. Gamson's-law validation requires importing a cabinet-portfolio dataset.",
+    "expected_applicability": "High for legislative coalition discipline/defection (local congress data) and for cabinet payoff prediction (Gamson's law); moderate for general cooperative-game stability where v(S) is unobserved.",
+    "expected_transport_risk": "medium (Gamson's law replicates broadly but slope varies; legislative estimates are institution-specific)",
+    "priority": "high (registry GAP with the strongest empirical support in this cluster: a near-law (Gamson) AND a real in-repo local-validation route (VoteView congress) AND a causal method for defection)",
+    "planned_implementation": "New coalition-stability family module: (a) core_membership / nucleolus allocation given v(S) (structural, unit-tested); (b) gamson_payoff: predicted payoff share = proportional-to-seats with a small-party-bonus term (pack from Browne-Franklin/Warwick-Druckman priors); (c) legislative_defection: P(defect) as a function of ideal-point distance to party median and party pressure, refit on VoteView. Record held-out roll-call validation to promote toward locally_validated.",
+    "planned_parameter_packs": [
+      "gamson_payoff: {slope ~1 (near-proportional), small-party bonus} - priors from Browne-Franklin 1973 / Warwick-Druckman 2006; refine on portfolio data",
+      "core_nucleolus_structural: exact allocation given v(S) (no fit)",
+      "legislative_defection: {ideal-point-distance coefficient, party-pressure term} - to be FIT on VoteView congress cache (build_congress_votes.py), held-out by congress"
+    ],
+    "promotion_blocker": "Not implemented (no code_ref/test_ref). To reach locally_validated: build the VoteView cache and record a held-out defection PPC (feasible); Gamson's-law and core/nucleolus layers additionally need a portfolio dataset / specified v(S) respectively.",
+    "disposition": "structural_candidate_only"
+  }
+]

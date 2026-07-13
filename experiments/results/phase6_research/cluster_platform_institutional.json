@@ -1,0 +1,661 @@
+[
+  {
+    "family": "Examination / position bias",
+    "registry_id": "platform_examination",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable: code_ref resolves + test_ref present (status=implemented). Registry 'parameters' empty; defaults are labeled PRIORS, no validation history. code_ref=families.interaction:position_examination, formal P(examine|rank)=gamma^rank (default gamma=0.8).",
+    "primary_sources": [
+      {
+        "title": "An Experimental Comparison of Click Position-Bias Models",
+        "authors": "Craswell, N.; Zoeter, O.; Taylor, M.; Ramsey, B.",
+        "year": 2008,
+        "venue": "WSDM 2008 (pp. 87-94)",
+        "doi_or_url": "10.1145/1341531.1341545",
+        "verified": true,
+        "what_it_provides": "Cascade/examination click models; shows lower-rank CTR is explained by an examination process that decays down a ranked list (structural click model)."
+      },
+      {
+        "title": "Accurately Interpreting Clickthrough Data as Implicit Feedback",
+        "authors": "Joachims, T.; Granka, L.; Pan, B.; Hembrooke, H.; Gay, G.",
+        "year": 2005,
+        "venue": "SIGIR 2005 (pp. 154-161)",
+        "doi_or_url": "10.1145/1076034.1076063",
+        "verified": true,
+        "what_it_provides": "Eye-tracking evidence that users scan top-down and attention drops sharply below the top 1-2 ranks; motivates clicks as position-biased implicit feedback."
+      },
+      {
+        "title": "Unbiased Learning-to-Rank with Biased Feedback",
+        "authors": "Joachims, T.; Swaminathan, A.; Schnabel, T.",
+        "year": 2017,
+        "venue": "WSDM 2017 (pp. 781-789); arXiv:1608.04468",
+        "doi_or_url": "10.1145/3018661.3018699",
+        "verified": true,
+        "what_it_provides": "Position-based propensity q_r=(1/r)^eta and inverse-propensity-scoring counterfactual LTR; propensities estimated by a swap/interventional experiment. PDF read directly."
+      }
+    ],
+    "formal_model": "Examination hypothesis: P(click|rank,doc)=P(examine|rank)·P(relevant|doc). Decay forms: (a) Cascade (Craswell 2008): sequential top-down, P(examine r1)=1, P(examine r+1)=P(examine r)·(1-P(click at r)); (b) Position-Based propensity (Joachims 2017): q_r=(1/r)^eta, content-independent. Repo implements geometric variant P(examine|rank)=gamma^rank.",
+    "causal_assumptions": [
+      "Separability: click = examination × relevance.",
+      "Examination depends only on rank/layout, not content (position-based model).",
+      "No trust/post-click bias in basic cascade.",
+      "Rank randomized/logged for propensity identification (swap/interventional)."
+    ],
+    "required_variables": [
+      "item rank/position",
+      "click/no-click",
+      "interventional swap or randomized rank",
+      "item relevance / held-out label"
+    ],
+    "temporal_scale": "event (per-impression / per-session)",
+    "evidence_type": "structural_model (+ causal_estimate for propensity from swap experiments)",
+    "reported_coefficients": [
+      {
+        "name": "position_bias_severity_eta",
+        "value_or_null": 1.0,
+        "uncertainty_or_null": "swept eta in [0,2]",
+        "source_ref": "Joachims 2017 (10.1145/3018661.3018699)",
+        "context": "q_r=(1/r)^eta; eta=1 default/estimated severity regime. Overestimating small propensities (eta<1) tolerable; underestimating (eta>1) harmful. Verified from PDF.",
+        "verified": true
+      },
+      {
+        "name": "examination_probability_by_rank_eta1",
+        "value_or_null": [
+          1.0,
+          0.5,
+          0.333,
+          0.25,
+          0.2
+        ],
+        "uncertainty_or_null": null,
+        "source_ref": "Joachims 2017 (derived from q_r=(1/r)^1)",
+        "context": "Typical position-bias decay ranks 1-5 under eta=1 (rank10=0.1). The requested examination-probability-by-rank curve.",
+        "verified": true
+      },
+      {
+        "name": "repo_examination_prior_gamma",
+        "value_or_null": 0.8,
+        "uncertainty_or_null": null,
+        "source_ref": "repo interaction.py:position_examination",
+        "context": "P(examine|rank)=gamma^rank, gamma=0.8 is a LABELED PRIOR (not fitted); ranks0-4=1.0,0.8,0.64,0.512,0.41. Distinct from (1/r)^eta.",
+        "verified": true
+      },
+      {
+        "name": "cascade_examination_decay_closed_form",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Craswell 2008 (10.1145/1341531.1341545)",
+        "context": "Cascade decay is content-dependent (product of (1-click) above); no single universal rank curve / transportable point estimate.",
+        "verified": false
+      }
+    ],
+    "datasets_in_literature": [
+      "Search-engine click logs with logged/randomized rank (arXiv Full-Text Search, Joachims 2017)",
+      "Eye-tracking lab data (Joachims/Granka 2005)",
+      "Yandex Relevance Prediction click-model benchmark"
+    ],
+    "replication_evidence": "Position bias and top-down decay are among the most replicated IR findings (eye-tracking 2005; cascade/PBM/DBN 2008-2015; IPS-LTR 2017+). eta near 1 recurs but is platform-specific.",
+    "critiques_or_nulls": [
+      "eta/gamma NOT transportable: severity depends on layout, device, vertical, presentation.",
+      "Cascade vs PBM vs DBN disagree at lower ranks; single-parameter decay is an approximation.",
+      "Trust/contextual effects violate pure separability."
+    ],
+    "applicability_limits": [
+      "Only where items are shown in an ordered list/feed and rank is observed.",
+      "Needs position variation to identify; fixed presentation gives no identification."
+    ],
+    "transport_risks": [
+      "High: refit per platform/surface; web-search eta will not transfer to a social feed or grid.",
+      "Layout changes silently invalidate a fitted decay."
+    ],
+    "local_refit_feasible": "NO. No local dataset varies/logs rank with clicks. Upworthy RANDOMIZES content (headline/image) but NOT position, so it identifies content-response/click-propensity, NOT position/examination bias. StackExchange answer order is not an examination log.",
+    "best_validation_route": "External IPS/swap estimation on a rank-varying click log. Locally only the structural form is unit-testable; the decay parameter is a prior, unidentifiable from repo datasets.",
+    "expected_applicability": "medium-high in ranked-feed/search domains; null in non-ranked settings.",
+    "expected_transport_risk": "high",
+    "priority": "medium",
+    "planned_implementation": "Keep structural family; expose both parameterizations (gamma^rank and (1/r)^eta); add IPS hook for an externally-estimated propensity vector per surface. Do NOT claim local validation.",
+    "planned_parameter_packs": [
+      "prior_pack: gamma=0.8 (labeled prior)",
+      "literature_pack: eta=1.0 (Joachims 2017), rank curve [1,0.5,0.33,0.25,0.2]"
+    ],
+    "promotion_blocker": "No position-varying local click log -> examination parameter unidentifiable locally; cannot reach locally_validated. Upworthy explicitly does not identify position bias.",
+    "disposition": "software_implemented"
+  },
+  {
+    "family": "Ranking allocation",
+    "registry_id": "platform_ranking",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable: code_ref resolves + test_ref present (status=implemented). Registry 'parameters' empty; defaults are labeled PRIORS, no validation history. code_ref=families.interaction:rank_by_score (deterministic sort by score desc -> rank).",
+    "primary_sources": [
+      {
+        "title": "Unbiased Learning-to-Rank with Biased Feedback",
+        "authors": "Joachims, T.; Swaminathan, A.; Schnabel, T.",
+        "year": 2017,
+        "venue": "WSDM 2017 (pp. 781-789); arXiv:1608.04468",
+        "doi_or_url": "10.1145/3018661.3018699",
+        "verified": true,
+        "what_it_provides": "Position-based propensity q_r=(1/r)^eta and inverse-propensity-scoring counterfactual LTR; propensities estimated by a swap/interventional experiment. PDF read directly."
+      },
+      {
+        "title": "An Experimental Comparison of Click Position-Bias Models",
+        "authors": "Craswell, N.; Zoeter, O.; Taylor, M.; Ramsey, B.",
+        "year": 2008,
+        "venue": "WSDM 2008 (pp. 87-94)",
+        "doi_or_url": "10.1145/1341531.1341545",
+        "verified": true,
+        "what_it_provides": "Cascade/examination click models; shows lower-rank CTR is explained by an examination process that decays down a ranked list (structural click model)."
+      }
+    ],
+    "formal_model": "Attention/slot allocation by ranking: rank(i)=argsort_desc(score_i). Unbiased LTR minimizes IPS-weighted rank risk R_IPS=sum_{clicked i} rankloss/q_{rank(i)} (Joachims 2017). The sort is a deterministic order statistic (structural); learning the score is the fitted part.",
+    "causal_assumptions": [
+      "Deterministic score->rank map (ties broken by rule).",
+      "(Learning) click propensities q_r known/estimated and positive (overlap).",
+      "Relevance is the intended allocation target."
+    ],
+    "required_variables": [
+      "per-item score/utility",
+      "slot/rank capacity",
+      "(learning) clicks + propensities"
+    ],
+    "temporal_scale": "event",
+    "evidence_type": "structural_model (+ methodological for IPS learning-to-rank)",
+    "reported_coefficients": [
+      {
+        "name": "ranking_operator_parameters",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "structural (order statistic)",
+        "context": "Sort has no free parameters; only the upstream scoring model is fitted. No transportable coefficient.",
+        "verified": true
+      }
+    ],
+    "datasets_in_literature": [
+      "LTR benchmarks: LETOR, MSLR-WEB10K/30K, Yahoo! LTR Challenge",
+      "Production click logs for counterfactual LTR (Joachims 2017)"
+    ],
+    "replication_evidence": "LTR and IPS-LTR are extensively benchmarked; the deterministic allocation step is analytic and needs no replication.",
+    "critiques_or_nulls": [
+      "Only as good as the score it sorts; ranking asserts nothing causal.",
+      "Feedback loops: today's ranking shapes tomorrow's training clicks (position-bias confounding)."
+    ],
+    "applicability_limits": [
+      "Requires a defined per-item score and slotting/capacity structure.",
+      "Not behavioral; it is an allocation rule."
+    ],
+    "transport_risks": [
+      "Low for the sort operator (universal); high for any fitted scoring model behind it."
+    ],
+    "local_refit_feasible": "Operator is structural (no refit). A scorer could be fit on Upworthy CTR but that validates content-response, not the allocation rule.",
+    "best_validation_route": "Structural correctness tests (order invariants, capacity). Optionally fit a CTR scorer on Upworthy to exercise the pipeline end-to-end.",
+    "expected_applicability": "high (any feed/marketplace/search)",
+    "expected_transport_risk": "low (operator) / high (scorer)",
+    "priority": "low",
+    "planned_implementation": "Retain as structural operator; document that only the scorer needs data; provide optional IPS-trained scorer pack tied to platform_examination propensities.",
+    "planned_parameter_packs": [
+      "structural_operator (no params)",
+      "optional: Upworthy content-response scorer (identifies click-propensity, not ranking)"
+    ],
+    "promotion_blocker": "Structural operator has nothing to validate against data; promotion beyond software_implemented not meaningful without a paired validated scorer.",
+    "disposition": "software_implemented"
+  },
+  {
+    "family": "Institutional approval / voting rules",
+    "registry_id": "institutional_vote",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable: code_ref resolves + test_ref present (status=implemented). Registry 'parameters' empty; defaults are labeled PRIORS, no validation history. code_ref=transitions:InstitutionalVoteOperator (deterministic vote execution / tally).",
+    "primary_sources": [
+      {
+        "title": "A Spatial Model for Legislative Roll Call Analysis",
+        "authors": "Poole, K. T.; Rosenthal, H.",
+        "year": 1985,
+        "venue": "American Journal of Political Science 29(2):357-384",
+        "doi_or_url": "10.2307/2111172",
+        "verified": true,
+        "what_it_provides": "NOMINATE spatial-voting model; low-dimensional ideal-point model predicting legislator yea/nay (basis of DW-NOMINATE)."
+      }
+    ],
+    "formal_model": "Two layers: (a) deterministic aggregation R(votes)->outcome (majority/supermajority/weighted) — structural, exact. (b) Predictive spatial voting P(yea_ij)=F(-||x_i-O_yea||^2+||x_i-O_nay||^2) with ideal points x_i (NOMINATE/DW-NOMINATE), MLE-fit. Registry operator implements (a); (b) is a fittable overlay.",
+    "causal_assumptions": [
+      "Rule execution deterministic and known.",
+      "(Spatial) single-peaked preferences in low-dimensional policy space; utility-maximizing votes with stochastic error.",
+      "Ideal points stable within window."
+    ],
+    "required_variables": [
+      "individual votes/weights",
+      "quorum + threshold rule",
+      "(spatial) roll-call matrix, cutting lines/outcome coordinates"
+    ],
+    "temporal_scale": "event (discrete decision)",
+    "evidence_type": "structural_model (rule) + descriptive/associational (spatial-voting classification fit)",
+    "reported_coefficients": [
+      {
+        "name": "nominate_correct_classification_2d",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Poole & Rosenthal (NOMINATE); voteview DW-NOMINATE joint fit",
+        "context": "2-D spatial model reportedly classifies ~85% of individual roll-call choices; a voteview DW-NOMINATE joint fit of ~87.2% appeared in secondary summaries. Exact figure NOT confirmed from a primary page -> null.",
+        "verified": false
+      },
+      {
+        "name": "aggregation_rule_params",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "structural",
+        "context": "Tally rule exact/deterministic; no free parameter.",
+        "verified": true
+      }
+    ],
+    "datasets_in_literature": [
+      "US Congress roll-call votes (Voteview / DW-NOMINATE)",
+      "Parliamentary roll calls (EU, UK)"
+    ],
+    "replication_evidence": "DW-NOMINATE ideal points re-estimated every Congress; low-dimensionality of US roll calls replicates across decades.",
+    "critiques_or_nulls": [
+      "Spatial classification % is aggregate, inflated by lopsided votes; close votes harder.",
+      "Deterministic tally ignores abstention/strategic voting/whipping.",
+      "Dimensionality and cutpoints era-dependent."
+    ],
+    "applicability_limits": [
+      "Tally rule needs the exact procedure (retrieved, not fabricated).",
+      "Spatial layer needs enough votes per member."
+    ],
+    "transport_risks": [
+      "Tally rule: low (exact once retrieved).",
+      "Ideal points: high — chamber/era/party-system specific."
+    ],
+    "local_refit_feasible": "PARTIAL. Local congress-votes dataset supports (i) validating the deterministic tally and (ii) fitting/holding-out a spatial-voting predictor. Tally itself is structural.",
+    "best_validation_route": "Deterministic-tally unit tests on congress votes; held-out roll-call prediction accuracy for the optional spatial overlay.",
+    "expected_applicability": "high for legislatures/committees/boards with explicit rules.",
+    "expected_transport_risk": "low (rule) / high (fitted ideal points)",
+    "priority": "medium",
+    "planned_implementation": "Keep deterministic operator; add optional spatial-voting predictor validated on held-out congress roll calls (predictive overlay could reach locally_validated while rule stays structural).",
+    "planned_parameter_packs": [
+      "structural_rule (majority/supermajority/quorum)",
+      "optional: congress spatial-voting pack (held-out classification)"
+    ],
+    "promotion_blocker": "Rule layer structural (nothing to validate). Predictive overlay has no held-out record yet; needs a hold-out roll-call evaluation to advance.",
+    "disposition": "software_implemented"
+  },
+  {
+    "family": "Veto / quorum / agenda control / stage transitions",
+    "registry_id": "agenda_stage_control",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable: code_ref resolves + test_ref present (status=implemented). Registry 'parameters' empty; defaults are labeled PRIORS, no validation history. code_ref=institutions:Rule (procedure rule gates actions by stage variable).",
+    "primary_sources": [
+      {
+        "title": "Political Resource Allocation, Controlled Agendas, and the Status Quo",
+        "authors": "Romer, T.; Rosenthal, H.",
+        "year": 1978,
+        "venue": "Public Choice 33(4):27-43",
+        "doi_or_url": "10.1007/BF03187594",
+        "verified": true,
+        "what_it_provides": "Agenda-setter model: a monopoly proposer facing a reversion (status-quo) point extracts outcomes far from the median; formal comparative statics of gatekeeping/agenda control."
+      }
+    ],
+    "formal_model": "Rule-based gatekeeping/stage machine: an action is admissible only if stage/quorum/veto predicates hold; transitions deterministic given inputs. Game-theoretic backing (Romer-Rosenthal 1978): setter proposes x, voters compare to reversion q; equilibrium can sit far from the median, bounded by setter monopoly and status-quo. Structural/analytic — institutional constants, not fitted.",
+    "causal_assumptions": [
+      "Procedure (proposers, thresholds, veto points, quorum) known and correctly encoded.",
+      "Reversion/status-quo well-defined.",
+      "(Setter) monopoly agenda power; sincere voting on take-it-or-leave-it offer."
+    ],
+    "required_variables": [
+      "stage/phase variable",
+      "quorum count + threshold",
+      "veto-player set",
+      "reversion/status-quo outcome"
+    ],
+    "temporal_scale": "event / episodic (procedural stages)",
+    "evidence_type": "structural_model (game-theoretic + rule execution)",
+    "reported_coefficients": [
+      {
+        "name": "agenda_setter_outcome_bound",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Romer & Rosenthal 1978 (10.1007/BF03187594)",
+        "context": "Comparative-statics result (outcome pinned by setter ideal point vs reversion), not a numeric coefficient; no transportable point estimate.",
+        "verified": true
+      }
+    ],
+    "datasets_in_literature": [
+      "Legislative/committee procedure records",
+      "School-budget referenda (classic Romer-Rosenthal application)",
+      "Veto-player datasets (comparative politics)"
+    ],
+    "replication_evidence": "Agenda-setting/gatekeeping is foundational and repeatedly formalized; setter-power effects documented in budget-referendum studies. Analytic, not statistically fitted.",
+    "critiques_or_nulls": [
+      "Hinges on the often-unobserved reversion point and monopoly-proposer assumption.",
+      "Real procedures allow amendments/multiple veto players, weakening the clean result."
+    ],
+    "applicability_limits": [
+      "Requires the actual procedure retrieved and encoded correctly.",
+      "No data-fitting step."
+    ],
+    "transport_risks": [
+      "Low as a mechanism form; specific rules must be re-specified per institution (retrieval risk, not statistical transport risk)."
+    ],
+    "local_refit_feasible": "N/A (structural). No fitting; validate by rule-execution correctness. Congress data can sanity-check quorum/threshold gating.",
+    "best_validation_route": "Scenario/rule-execution tests: verify gating, quorum, veto, stage transitions on constructed procedural traces.",
+    "expected_applicability": "high wherever explicit procedure governs action admissibility.",
+    "expected_transport_risk": "low (mechanism) / retrieval-dependent (specific rules)",
+    "priority": "low",
+    "planned_implementation": "Keep as structural rule engine; add a library of encoded procedures (quorum, supermajority, veto, agenda-setter) with correctness tests. No parameter fitting.",
+    "planned_parameter_packs": [
+      "structural procedures (quorum/veto/agenda-setter) — no fitted params"
+    ],
+    "promotion_blocker": "Structural family: no statistical validation target, so stays software_implemented by design; 'validation' = procedure-encoding correctness, not held-out fit.",
+    "disposition": "software_implemented"
+  },
+  {
+    "family": "Enforcement (deterrence / costly punishment)",
+    "registry_id": null,
+    "current_registry_status": "NONE (no registry family)",
+    "current_executable_status": "not_implemented: no code_ref, no registry record, no test_ref.",
+    "primary_sources": [
+      {
+        "title": "Cooperation and Punishment in Public Goods Experiments",
+        "authors": "Fehr, E.; Gächter, S.",
+        "year": 2000,
+        "venue": "American Economic Review 90(4):980-994",
+        "doi_or_url": "10.1257/aer.90.4.980",
+        "verified": true,
+        "what_it_provides": "Public-goods game (n=4, 20 tokens, MPCR a=0.4, 10 periods, Partner/Stranger x punish/no-punish). Extracted final-period means and punishment technology (PDF read directly)."
+      },
+      {
+        "title": "Altruistic Punishment in Humans",
+        "authors": "Fehr, E.; Gächter, S.",
+        "year": 2002,
+        "venue": "Nature 415:137-140",
+        "doi_or_url": "10.1038/415137a",
+        "verified": true,
+        "what_it_provides": "Perfect-stranger public-goods experiment (n=4, 20 MU, 6 periods): cooperation high/sustained with costly punishment, collapses toward free-riding without."
+      },
+      {
+        "title": "Crime and Punishment: An Economic Approach",
+        "authors": "Becker, G. S.",
+        "year": 1968,
+        "venue": "Journal of Political Economy 76(2):169-217",
+        "doi_or_url": "10.1086/259394",
+        "verified": true,
+        "what_it_provides": "Structural deterrence model: offenses fall in apprehension probability p and severity f; supply-of-offenses O(p,f,u) as a rational cost-benefit response."
+      }
+    ],
+    "formal_model": "(a) Becker (1968) deterrence: offenses O=O(p,f,u) decreasing in apprehension probability p and sanction severity f; optimal enforcement trades cost vs harm. (b) Fehr-Gächter costly/altruistic punishment: players pay c(p) to cut a target's payoff; credible punishment threat sustains cooperation. contribution_{t+1} rises with expected punishment for below-average contribution.",
+    "causal_assumptions": [
+      "(Becker) rational expected-utility offenders respond to p and f.",
+      "(Fehr-Gächter) punishment costly to punisher and materially non-beneficial (identifies norm-enforcing motive); RANDOMIZED punish/no-punish treatment gives causal identification.",
+      "Perfect-stranger design (FG2002) removes reputation/repeated-game confounds."
+    ],
+    "required_variables": [
+      "contribution/cooperation level",
+      "punishment cost schedule c(p) and impact",
+      "apprehension probability p, severity f (Becker)",
+      "deviation from group norm/average"
+    ],
+    "temporal_scale": "event-to-episodic (per-round punishment; deterrence over repeated interaction)",
+    "evidence_type": "causal_estimate (randomized lab experiment) + structural_model (Becker)",
+    "reported_coefficients": [
+      {
+        "name": "final_period_contribution_with_punishment",
+        "value_or_null": 18.0,
+        "uncertainty_or_null": ">18 tokens",
+        "source_ref": "Fehr & Gächter 2000 AER (10.1257/aer.90.4.980), Partner final period",
+        "context": "Out of 20-token endowment; converges toward full cooperation. Verified from PDF text.",
+        "verified": true
+      },
+      {
+        "name": "final_period_contribution_no_punishment",
+        "value_or_null": 3.0,
+        "uncertainty_or_null": "'slightly above 3 tokens'",
+        "source_ref": "Fehr & Gächter 2000 AER, Partner final period",
+        "context": "Out of 20; decays toward free-riding without punishment. Verified from PDF text.",
+        "verified": true
+      },
+      {
+        "name": "punishment_vs_nopunishment_ratio_stranger",
+        "value_or_null": "2 to 4x",
+        "uncertainty_or_null": "Wilcoxon p<0.0001",
+        "source_ref": "Fehr & Gächter 2000 AER, Stranger, mean over 10 periods",
+        "context": "Contributions 2-4x higher with punishment; significant at all conventional levels. Verified from PDF.",
+        "verified": true
+      },
+      {
+        "name": "punishment_impact_per_point",
+        "value_or_null": 0.1,
+        "uncertainty_or_null": null,
+        "source_ref": "Fehr & Gächter 2000 AER",
+        "context": "Each punishment point reduces target's first-stage payoff by 10%; cost schedule c(p)=[0,1,2,4,6,9,12,16,20,25,30] for p=0..10. Verified from PDF.",
+        "verified": true
+      },
+      {
+        "name": "sustained_cooperation_range_with_punishment",
+        "value_or_null": [
+          0.5,
+          0.95
+        ],
+        "uncertainty_or_null": null,
+        "source_ref": "Fehr & Gächter 2000 AER",
+        "context": "With punishment, average contribution rates of 50-95% of endowment maintained. Verified from PDF.",
+        "verified": true
+      },
+      {
+        "name": "design_params",
+        "value_or_null": {
+          "n": 4,
+          "endowment": 20,
+          "MPCR_a": 0.4,
+          "periods": 10
+        },
+        "uncertainty_or_null": null,
+        "source_ref": "Fehr & Gächter 2000 AER",
+        "context": "Group size, endowment (tokens), MPCR, periods. Verified from PDF.",
+        "verified": true
+      },
+      {
+        "name": "fg2002_nature_figure2_point_values",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Fehr & Gächter 2002 Nature (10.1038/415137a)",
+        "context": "Exact per-period Figure-2 means (perfect-stranger, 6 periods) not machine-readable from the primary Nature PDF (blocked); qualitative result verified, point values not.",
+        "verified": false
+      },
+      {
+        "name": "becker_deterrence_elasticity",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Becker 1968 (10.1086/259394)",
+        "context": "Theory paper gives signs/structure (dO/dp<0, dO/df<0), not fitted elasticities; certainty>severity is from later empirical work, not this source.",
+        "verified": false
+      }
+    ],
+    "datasets_in_literature": [
+      "Public-goods-with-punishment lab experiments (Fehr-Gächter; cross-cultural Herrmann/Thöni/Gächter 2008 Science)",
+      "Crime deterrence panels (Becker-tradition econometrics)"
+    ],
+    "replication_evidence": "Costly-punishment-sustains-cooperation replicates across labs/cultures (with antisocial-punishment variation). Certainty>severity deterrence is a robust criminology finding.",
+    "critiques_or_nulls": [
+      "Altruistic punishment can reduce net group welfare (early-sequence relative-gain losses).",
+      "Cross-cultural 'antisocial punishment' of high contributors undermines the clean result in some societies.",
+      "Becker elasticities are not in the original theory paper; must not be fabricated."
+    ],
+    "applicability_limits": [
+      "Lab public-goods magnitudes may not transport to field enforcement.",
+      "Needs a defined punishment technology (cost+impact) and observable norm deviations."
+    ],
+    "transport_risks": [
+      "High: effectiveness depends on cost:impact ratio, anonymity, culture, repeated-vs-one-shot."
+    ],
+    "local_refit_feasible": "NO local dataset has a punishment/enforcement treatment (Upworthy/congress/StackExchange lack costly-punishment or deviation-punishment structure). Refit needs public-goods-with-punishment data.",
+    "best_validation_route": "Implement the family, then validate costly-punishment against Fehr-Gächter-style experimental data (external); for deterrence, calibrate O(p,f) signs against a crime panel. No local route.",
+    "expected_applicability": "medium-high for norm-enforcement/moderation/sanctioning (conceptually general).",
+    "expected_transport_risk": "high",
+    "priority": "HIGH (registry gap with the strongest verified numeric evidence in this cluster).",
+    "planned_implementation": "Add 'enforcement' family with two operators: (i) Becker deterrence O(p,f); (ii) costly-punishment update contribution_{t+1}=g(deviation, expected_punishment) with the FG cost schedule as a labeled pack. Ship with external-validation record only (honest: no local data).",
+    "planned_parameter_packs": [
+      "fehr_gachter_2000_pack: impact=0.10/point, c(p)=[0,1,2,4,6,9,12,16,20,25,30], n=4, endow=20, a=0.4 (VERIFIED)",
+      "becker_structural_pack: signs only (no fitted elasticity)"
+    ],
+    "promotion_blocker": "Not implemented (no code_ref/test_ref) AND no local dataset to identify enforcement parameters -> cannot exceed structural_candidate_only until built + externally validated.",
+    "disposition": "structural_candidate_only"
+  },
+  {
+    "family": "Resource depletion / capacity / queueing",
+    "registry_id": "resource_depletion",
+    "current_registry_status": "resource_depletion: implemented; capacity/queueing: NONE",
+    "current_executable_status": "resource_depletion executable (code_ref=transitions:ResourceUpdateOperator, conservation-checked consumption). capacity/queueing NOT implemented as a mechanism family (EventQueue classes in events.py/simulation are discrete-event ENGINE plumbing, not a fitted queue model).",
+    "primary_sources": [
+      {
+        "title": "A Proof for the Queuing Formula: L = λW",
+        "authors": "Little, J. D. C.",
+        "year": 1961,
+        "venue": "Operations Research 9(3):383-387",
+        "doi_or_url": "10.1287/opre.9.3.383",
+        "verified": true,
+        "what_it_provides": "Little's Law L=λW (mean number in system = arrival rate × mean sojourn); distribution-free analytic queueing identity underpinning capacity/queue models."
+      }
+    ],
+    "formal_model": "(a) Resource depletion: conservation accounting r_{t+1}=r_t - consumption + replenishment with non-negativity/conservation checks — structural. (b) Queueing/capacity: Little's Law L=λW; M/M/1 stationary results (utilization ρ=λ/μ, mean wait W=1/(μ-λ)) — analytic; Little's Law distribution-free. Parameters (λ,μ,capacity) measured, not regression-fit.",
+    "causal_assumptions": [
+      "Conservation: resource neither created nor destroyed except by modeled flows.",
+      "(Little) system stable (arrivals=departures long-run), stationary over averaging window.",
+      "(M/M/1) Poisson arrivals, exponential service, single server, FIFO, infinite buffer for closed forms."
+    ],
+    "required_variables": [
+      "resource stock, consumption/replenishment flows",
+      "arrival rate λ, service rate μ, server/slot count, buffer/capacity",
+      "sojourn/wait times, queue length"
+    ],
+    "temporal_scale": "continuous/event (rates over time)",
+    "evidence_type": "structural_model / methodological (analytic identities)",
+    "reported_coefficients": [
+      {
+        "name": "littles_law",
+        "value_or_null": "L = λ·W",
+        "uncertainty_or_null": null,
+        "source_ref": "Little 1961 (10.1287/opre.9.3.383)",
+        "context": "Exact distribution-free identity; no free parameter — λ and W are measured. Verified citation.",
+        "verified": true
+      },
+      {
+        "name": "mm1_mean_number_in_system",
+        "value_or_null": "L = ρ/(1-ρ), ρ=λ/μ",
+        "uncertainty_or_null": null,
+        "source_ref": "standard M/M/1 queueing theory",
+        "context": "Analytic result for Poisson/exponential single-server queue; structural, not fitted.",
+        "verified": true
+      },
+      {
+        "name": "resource_conservation_params",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "structural (accounting identity)",
+        "context": "Depletion operator has no free parameter beyond measured flow rates.",
+        "verified": true
+      }
+    ],
+    "datasets_in_literature": [
+      "Service-system / call-center logs",
+      "Hospital and network-queue measurements",
+      "Web-server request logs (arrival/service rates)"
+    ],
+    "replication_evidence": "Little's Law and M/M/1 are mathematically proven, not empirically replicated; hold by derivation. Empirical use = plug measured λ, μ, W.",
+    "critiques_or_nulls": [
+      "Closed-form M/M/1 fails under bursty (non-Poisson) arrivals, heavy tails, or feedback; Little's Law still holds with correct stationary averages.",
+      "Depletion accounting says nothing about the behavioral demand generating consumption."
+    ],
+    "applicability_limits": [
+      "Queue closed-forms need stability (ρ<1) and distributional assumptions; else use Little's Law only or simulate.",
+      "Capacity as a mechanism must be added; currently absent from the registry."
+    ],
+    "transport_risks": [
+      "Low for analytic identities (universal); parameters (λ,μ) are setting-specific and measured, not transported."
+    ],
+    "local_refit_feasible": "PARTIAL. StackExchange answer-arrival is queue-like (response-occurrence timing) and supports DESCRIPTIVE arrival/service-rate estimation and Little's-Law bookkeeping. Depletion is structural (unit-test conservation). Not causal identification.",
+    "best_validation_route": "Structural: conservation unit tests for depletion; simulate M/M/1 and verify L=λW. Descriptive: estimate arrival/service rates on StackExchange answer timings and check Little's-Law consistency.",
+    "expected_applicability": "high wherever throughput/capacity/backlog matter (moderation queues, support, attention budgets).",
+    "expected_transport_risk": "low (identities) / measured (rates)",
+    "priority": "medium (add explicit capacity/queueing family; depletion already covered).",
+    "planned_implementation": "Add a 'capacity_queue' structural family exposing Little's Law + M/M/1 / M/M/c closed forms and a stability guard; keep resource_depletion as the conservation operator. Parameters measured per setting (labeled measured, not fitted).",
+    "planned_parameter_packs": [
+      "structural_queue: Little's Law + M/M/1 closed forms (no fitted params)",
+      "stackexchange_rate_pack: descriptive arrival/service-rate estimates (associational)"
+    ],
+    "promotion_blocker": "Analytic families have no held-out statistical target; capacity/queueing also not yet implemented. Depletion stays software_implemented; queueing needs building (structural_candidate) first.",
+    "disposition": "software_implemented"
+  },
+  {
+    "family": "Exogenous shocks / regime changes",
+    "registry_id": "rare_event_arrival",
+    "current_registry_status": "implemented",
+    "current_executable_status": "executable: code_ref resolves + test_ref present (status=implemented). Registry 'parameters' empty; defaults are labeled PRIORS, no validation history. code_ref=transitions:RareEventArrivalOperator (Poisson rare-event arrival by deadline).",
+    "primary_sources": [
+      {
+        "title": "A New Approach to the Economic Analysis of Nonstationary Time Series and the Business Cycle",
+        "authors": "Hamilton, J. D.",
+        "year": 1989,
+        "venue": "Econometrica 57(2):357-384",
+        "doi_or_url": "10.2307/1912559",
+        "verified": true,
+        "what_it_provides": "Markov regime-switching model: discrete unobserved state governs the DGP; MLE + filter/smoother to infer regime probabilities and transition matrix."
+      }
+    ],
+    "formal_model": "(a) Rare-event arrival: Poisson process N(t)~Poisson(λt); P(>=1 by T)=1-e^{-λT} — structural. (b) Regime switching (Hamilton 1989): latent state s_t follows a Markov chain with transition matrix P; y_t=μ_{s_t}+ε_t; regimes inferred by MLE + Hamilton filter/smoother — FITTABLE (methodological), unlike Poisson arrival.",
+    "causal_assumptions": [
+      "(Poisson) memoryless, constant-rate, independent arrivals over the window.",
+      "(Regime-switching) finite hidden states; Markov transitions; parameters constant within regime; correct state count K."
+    ],
+    "required_variables": [
+      "arrival timestamps / rate λ, deadline",
+      "(regime) time series of target variable",
+      "assumed number of regimes K"
+    ],
+    "temporal_scale": "event (arrivals) to episodic/long (regime durations)",
+    "evidence_type": "structural_model (Poisson) + methodological (Markov-switching estimator)",
+    "reported_coefficients": [
+      {
+        "name": "poisson_arrival_form",
+        "value_or_null": "P(>=1 by T)=1-exp(-λT)",
+        "uncertainty_or_null": null,
+        "source_ref": "structural (Poisson process)",
+        "context": "λ measured per setting; no universal value.",
+        "verified": true
+      },
+      {
+        "name": "regime_switching_estimator",
+        "value_or_null": null,
+        "uncertainty_or_null": null,
+        "source_ref": "Hamilton 1989 (10.2307/1912559)",
+        "context": "Provides MLE/filter for a 2-state Markov-switching model of US GNP growth; transition probabilities and state means are dataset-specific (no transportable point estimate).",
+        "verified": true
+      }
+    ],
+    "datasets_in_literature": [
+      "Macroeconomic series (US GNP growth — Hamilton 1989)",
+      "Financial return/volatility regimes",
+      "Structural-break panels"
+    ],
+    "replication_evidence": "Markov-switching is a workhorse of nonlinear time-series econometrics (thousands of applications); Poisson arrival is textbook structural. Both established methodologically rather than as a single replicated effect size.",
+    "critiques_or_nulls": [
+      "Regime count K and labeling are researcher choices; identification issues with many states.",
+      "Poisson constant-rate fails for clustered/self-exciting shocks (repo already PRESERVES a Hawkes self-excitation FAILURE vs Poisson — do not overclaim Poisson).",
+      "Regime parameters series-specific; importing another study's transition matrix is a transport error."
+    ],
+    "applicability_limits": [
+      "Poisson arrival for genuinely rare, independent shocks only.",
+      "Regime-switching needs a long-enough series to identify states."
+    ],
+    "transport_risks": [
+      "High for fitted regime parameters; medium for assumed arrival rates."
+    ],
+    "local_refit_feasible": "LIMITED. No clean local regime/shock series among Upworthy/congress/StackExchange; Poisson arrival is structural (calibrate λ where an arrival stream exists, e.g., StackExchange). Regime-switching needs an external macro/finance series.",
+    "best_validation_route": "Structural: verify Poisson arrival calibration and deadline probabilities. Methodological: fit a 2-state Markov-switching model on an external macro/finance series and check out-of-sample regime recovery. Preserve the existing Hawkes-vs-Poisson failure note.",
+    "expected_applicability": "medium (shocks/regimes common but data-hungry to identify).",
+    "expected_transport_risk": "high (fitted regimes) / medium (arrival rates)",
+    "priority": "low-medium (Poisson done; regime-switching is an optional fittable add).",
+    "planned_implementation": "Keep Poisson operator; optionally add a Markov-switching operator (Hamilton filter) with parameters fit per external series and clearly labeled non-transportable. Carry forward the Hawkes-failure caveat.",
+    "planned_parameter_packs": [
+      "structural_poisson (measured λ)",
+      "optional: markov_switching_2state (external-series fit, non-transportable)"
+    ],
+    "promotion_blocker": "Poisson layer structural (no held-out target); regime-switching not implemented and has no local identifying series -> stays software_implemented until a regime operator is built + externally validated.",
+    "disposition": "software_implemented"
+  }
+]
