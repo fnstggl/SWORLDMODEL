@@ -66,6 +66,11 @@ class SimulationResult:
     uncertainty_decomposition: dict = field(default_factory=dict)
     structural_disagreement: dict = None
     mechanism_disagreement: dict = None
+    # Phase 3: evidence-updated posterior over hidden world-state (rate) + structure. Present only when the
+    # posterior pipeline ran AND ≥1 effective (dependence-collapsed) observation actually updated it; the
+    # decomposition names prior→posterior deltas, ESS, and the per-observation assimilation ledger so a
+    # reviewer can trace every terminal-affecting number back to a verified claim. None on the prior-only path.
+    posterior_inference: dict = None
     evidence_quality: str = ""
     limitations: list = field(default_factory=list)
     fallbacks_used: list = field(default_factory=list)      # [{process, tier, family, why}]
