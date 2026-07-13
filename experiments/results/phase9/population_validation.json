@@ -1,0 +1,171 @@
+{
+  "dataset": "GSS 1972-2024 (cumulative)",
+  "n_records": 72521,
+  "segmentation": "degree",
+  "levels": [
+    "lt_highschool",
+    "highschool",
+    "junior_college",
+    "bachelor",
+    "graduate"
+  ],
+  "n_seeds": 5,
+  "poststratification": [
+    {
+      "item": "gunlaw",
+      "true_margin": 0.7504,
+      "naive_biased": 0.7599,
+      "poststratified": 0.7511,
+      "independent_pooled": 0.7599,
+      "err_naive": 0.0095,
+      "err_poststratified": 0.0007,
+      "sample_frac": 0.568
+    },
+    {
+      "item": "gunlaw",
+      "true_margin": 0.7504,
+      "naive_biased": 0.7561,
+      "poststratified": 0.7461,
+      "independent_pooled": 0.7561,
+      "err_naive": 0.0057,
+      "err_poststratified": 0.0044,
+      "sample_frac": 0.567
+    },
+    {
+      "item": "gunlaw",
+      "true_margin": 0.7504,
+      "naive_biased": 0.7579,
+      "poststratified": 0.7489,
+      "independent_pooled": 0.7579,
+      "err_naive": 0.0075,
+      "err_poststratified": 0.0016,
+      "sample_frac": 0.567
+    },
+    {
+      "item": "gunlaw",
+      "true_margin": 0.7504,
+      "naive_biased": 0.7558,
+      "poststratified": 0.7461,
+      "independent_pooled": 0.7558,
+      "err_naive": 0.0053,
+      "err_poststratified": 0.0043,
+      "sample_frac": 0.569
+    },
+    {
+      "item": "gunlaw",
+      "true_margin": 0.7504,
+      "naive_biased": 0.759,
+      "poststratified": 0.7498,
+      "independent_pooled": 0.759,
+      "err_naive": 0.0085,
+      "err_poststratified": 0.0006,
+      "sample_frac": 0.568
+    },
+    {
+      "item": "premarsx",
+      "true_margin": 0.3321,
+      "naive_biased": 0.3018,
+      "poststratified": 0.3293,
+      "independent_pooled": 0.3018,
+      "err_naive": 0.0303,
+      "err_poststratified": 0.0028,
+      "sample_frac": 0.567
+    },
+    {
+      "item": "premarsx",
+      "true_margin": 0.3321,
+      "naive_biased": 0.3027,
+      "poststratified": 0.3305,
+      "independent_pooled": 0.3027,
+      "err_naive": 0.0294,
+      "err_poststratified": 0.0017,
+      "sample_frac": 0.572
+    },
+    {
+      "item": "premarsx",
+      "true_margin": 0.3321,
+      "naive_biased": 0.3034,
+      "poststratified": 0.3323,
+      "independent_pooled": 0.3034,
+      "err_naive": 0.0288,
+      "err_poststratified": 0.0002,
+      "sample_frac": 0.571
+    },
+    {
+      "item": "premarsx",
+      "true_margin": 0.3321,
+      "naive_biased": 0.3044,
+      "poststratified": 0.3333,
+      "independent_pooled": 0.3044,
+      "err_naive": 0.0277,
+      "err_poststratified": 0.0011,
+      "sample_frac": 0.57
+    },
+    {
+      "item": "premarsx",
+      "true_margin": 0.3321,
+      "naive_biased": 0.3028,
+      "poststratified": 0.3344,
+      "independent_pooled": 0.3028,
+      "err_naive": 0.0293,
+      "err_poststratified": 0.0023,
+      "sample_frac": 0.571
+    }
+  ],
+  "poststratification_summary": {
+    "mean_err_naive": 0.0182,
+    "mean_err_poststratified": 0.002,
+    "poststrat_wins_frac": 1.0
+  },
+  "temporal_transfer": [
+    {
+      "item": "gunlaw",
+      "split_year": 2000,
+      "true_late_margin": 0.7353,
+      "transfer_pred": 0.7753,
+      "naive_early_margin": 0.7632,
+      "err_transfer": 0.04,
+      "err_naive": 0.0279
+    },
+    {
+      "item": "premarsx",
+      "split_year": 2000,
+      "true_late_margin": 0.2718,
+      "transfer_pred": 0.354,
+      "naive_early_margin": 0.3862,
+      "err_transfer": 0.0821,
+      "err_naive": 0.1144
+    }
+  ],
+  "temporal_transfer_summary": {
+    "mean_err_transfer": 0.0611,
+    "mean_err_naive": 0.0712
+  },
+  "compositional_recovery": {
+    "true_weights": {
+      "lt_highschool": 0.1936,
+      "highschool": 0.5022,
+      "junior_college": 0.0612,
+      "bachelor": 0.1581,
+      "graduate": 0.0849
+    },
+    "posterior_mean": {
+      "lt_highschool": 0.185,
+      "highschool": 0.5067,
+      "junior_college": 0.0628,
+      "bachelor": 0.1641,
+      "graduate": 0.0813
+    },
+    "L1_error": 0.0243,
+    "sum_to_one": 1.0,
+    "ess": 400.0,
+    "moved_from_prior": 0.6135
+  },
+  "gates": {
+    "poststratification_beats_naive_on_average": true,
+    "poststratification_wins_majority": true,
+    "compositional_normalized": true,
+    "compositional_recovers_real_composition": true
+  },
+  "all_gates_pass": true
+}

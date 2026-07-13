@@ -253,44 +253,44 @@ def infer_compositional_posterior(segment_ids, prior_alpha, count_observations, 
     # dependence collapse
     obs = _collapse_count_obs(count_observations) if use_dependence else list(count_observations)
     res.n_effective_observations = len(obs)
-    particles = [_dirichlet(rng, a0) for _ in range(n_particles)]
-    log_w = [0.0] * n_particles
+    # Dirichlet is conjugate to multinomial counts: the posterior is Dirichlet(alpha0 + Σ reliability-tempered
+    # counts) — EXACT, and it avoids the importance-sampling degeneracy that a diffuse Dirichlet proposal
+    # suffers under a peaked count likelihood. The per-observation ledger below still records the (importance-
+    # sampling) ESS + dependence collapse for the audit trail; the FINAL particles are drawn from the exact
+    # conjugate posterior so materialized populations are true posterior samples.
     conj = list(a0)
+    diffuse = [_dirichlet(rng, a0) for _ in range(min(64, n_particles))]   # a small proposal set, for the ESS trace
+    dlog = [0.0] * len(diffuse)
     for o in obs:
         counts = [float(o.get("counts", {}).get(s, 0.0)) for s in segment_ids]
         rel = max(0.0, min(1.0, float(o.get("reliability", 0.8))))
         eff = [c * rel for c in counts]                     # reliability-tempered effective counts
-        ess_before = _ess(_normalized(log_w))
-        for i, p in enumerate(particles):
-            log_w[i] += _multinomial_loglik(eff, p)
+        ess_before = _ess(_normalized(dlog))
+        for i, p in enumerate(diffuse):
+            dlog[i] += _multinomial_loglik(eff, p)
         for j in range(K):
             conj[j] += eff[j]
-        w = _normalized(log_w)
-        ess_after = _ess(w)
-        resampled = False
-        if ess_after / max(1, n_particles) < resample_threshold:
-            particles = _systematic_resample(particles, w, rng)
-            particles = [_dirichlet_jitter(rng, p) for p in particles]
-            log_w = [0.0] * n_particles
-            resampled = True
+        ess_after = _ess(_normalized(dlog))
         res.assimilation_ledger.append({
             "source": o.get("source", "survey"), "method": o.get("method", "counts"),
             "n_total": sum(counts), "reliability": round(rel, 3),
             "n_collapsed": o.get("n_collapsed", 1),
-            "ess_before": round(ess_before, 1), "ess_after": round(ess_after, 1), "resampled": resampled})
-    w = _normalized(log_w)
-    res.particles = list(zip(particles, w))
-    res.posterior_mean = [sum(p[j] * wi for p, wi in res.particles) for j in range(K)]
-    res.posterior_sd = [math.sqrt(max(0.0, sum(wi * (p[j] - res.posterior_mean[j]) ** 2
-                                               for p, wi in res.particles))) for j in range(K)]
+            "ess_before": round(ess_before, 1), "ess_after": round(ess_after, 1),
+            "conjugate_update": {segment_ids[j]: round(eff[j], 1) for j in range(K) if eff[j] > 0}})
     res.conjugate_alpha = conj
-    res.ess = round(_ess(w), 2)
+    A = sum(conj) or 1.0
+    res.posterior_mean = [a / A for a in conj]              # exact Dirichlet posterior mean
+    res.posterior_sd = [math.sqrt(max(0.0, a * (A - a) / (A * A * (A + 1)))) for a in conj]
+    # materialize N exact posterior samples (Dirichlet(conj)) — non-degenerate, true composition draws
+    particles = [_dirichlet(rng, conj) for _ in range(n_particles)]
+    res.particles = [(p, 1.0 / n_particles) for p in particles]
+    res.ess = float(n_particles)                            # exact posterior samples are equally weighted
     res.diagnostics = {"n_particles": n_particles, "seed": seed, "K": K,
+                       "posterior_family": "dirichlet_conjugate",
+                       "effective_prior_plus_data_N": round(A, 2),
                        "sum_to_one": round(sum(res.posterior_mean), 6),
                        "moved_from_prior": round(sum(abs(a - b) for a, b in
                                                      zip(res.posterior_mean, res.prior_mean)), 4)}
-    if res.ess < 0.1 * n_particles and obs:
-        res.warnings.append("low compositional ESS — posterior may be degenerate")
     return res
 
 
@@ -310,12 +310,10 @@ def _collapse_count_obs(observations):
             singletons.append(o)
     out = list(singletons)
     for g, members in groups.items():
+        # syndicated copies of ONE survey → count it ONCE (the most-reliable member's counts), NOT the sum
+        # (summing would N-count the same underlying sample — the over-counting dependence correction prevents).
         best = max(members, key=lambda o: float(o.get("reliability", 0.8)))
-        merged = {}
-        for m in members:
-            for s, n in (m.get("counts") or {}).items():
-                merged[s] = merged.get(s, 0.0) + float(n)
-        out.append({"counts": merged, "reliability": float(best.get("reliability", 0.8)),
+        out.append({"counts": dict(best.get("counts") or {}), "reliability": float(best.get("reliability", 0.8)),
                     "dependence_group": g, "source": best.get("source", "survey"),
                     "method": best.get("method", "counts"), "n_collapsed": len(members)})
     return out
