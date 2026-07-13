@@ -133,3 +133,87 @@ dataset_registry_is_valid_and_honest` — neither imports `swm.world_model_v2`; 
 (and before Phase 3). **Zero regressions.** No production code weakened to pass a gate; every gate failure
 encountered during development was diagnosed (SBM uniform-saddle collapse, count-observation over-counting,
 edge-calibration harness misspecification, inert alliance diffusion layer) and fixed at the root.
+
+---
+
+## 7. COMPLETION RUN — universal path, 2nd datasets, prediction, honest re-grade
+
+*This section reports the completion run that closed the universal-path gaps. Prior sections' real-data
+results stand; the additions below.*
+
+### 7.1 Automatic cross-domain discovery (Part 11) — `discovery_eval.json`
+14 held-out questions across **14 materially different domains** (messaging, org approval, election,
+legislation, acquisition, product adoption, social diffusion, protest, fundraising, regulatory, reputation
+crisis, market reaction, coalition, institutional) through `simulate_with_populations_networks(question, as_of,
+horizon)` — **caller supplies ONLY the question + dates.**
+
+| metric | value |
+|---|---|
+| completed / harness errors | **14 / 0** |
+| no-abstention rate | **1.00** |
+| discovery success (actors or segments found) | **1.00** |
+| relevant-layers rate | **1.00** |
+| structure-reaches-execution rate | **1.00** |
+| mean auto-discovered actors / candidate edges | 5.5 / 8.9 |
+| support-grade distribution | 13 highly_speculative, 1 exploratory (honest: thin live evidence) |
+| mean latency / total LLM calls | 37.5 s / 128 |
+
+All 7 discovery gates pass: caller-supplies-only-question, no-benchmark-structure, no-LLM-minted-numbers,
+≥12 domains, no-abstention, discovery-success ≥0.85, structure-reaches-execution ≥0.85. **Honest scope: 14 of
+the requested 100 questions** were run (live cost/latency); the harness scales to any N and the 100-question
+gate is graded **partially met** (universal path works at 100% across 14 domains; not run at N=100).
+
+### 7.2 Second real POPULATION dataset (Part 5) — `population_validation.json`
+US **Senate roll-call** (voteview S117, 928 bills) — a materially different population (legislators) +
+process (legislative voting) than the GSS survey — through the **same** `phase9_population` subsystem.
+Poststratification corrects a party-biased vote sample: mean margin error **naive 0.151 → poststratified
+0.045**, wins **84.8%**. Two real population datasets satisfied (gate B).
+
+### 7.3 Reconstruction vs PREDICTION (Part 13) — corrected — `network_validation.json`
+- The same-congress link-prediction (AUROC **0.999**) is **RELABELED RECONSTRUCTION** — it predicts held-out
+  edges from the same co-voting signal that DEFINES them. It is not general hidden-edge prediction.
+- New genuine **temporal prediction** (no leakage): predict S117 high-agreement edges from **past S116**
+  structure. AUROC **0.954** (full) vs **0.934** party-only baseline vs **0.964** past-agreement-only.
+  **Honest finding preserved:** past agreement alone is the strongest single predictor (Senate co-voting is
+  highly autocorrelated), so the structured model does not beat the raw past feature here — a real, retained
+  negative-ish result. This is a real-outcome (future-edge) network validation.
+
+### 7.4 Informative absence / variable exposure (Part 4)
+`infer_edge_posterior_exposure` (Binomial detection under exposure): calibrated under VARIABLE observation
+exposure — reliability-diagram ECE **≤ 0.06** (test), vs the prior present-only model's ECE 0.21 under a
+mis-specified generator (that documented result is retained). Non-observation is informative in proportion to
+opportunities; zero opportunities is uninformative (not evidence of absence).
+
+### 7.5 Temporal evolution (Part 7)
+8 typed transitions execute, emit StateDeltas, carry valid-time, and change future behavior: `role_change`
+grants authority so a previously-blocked `authority_gate` action becomes feasible; `alliance_defection` on a
+bridge edge cuts diffusion (terminal drops); deterministic replay holds.
+
+### 7.6 Honest acceptance-gate RE-GRADE (Part 15)
+| gate | first run | completion run |
+|---|---|---|
+| A universal discovery (caller supplies only question; ≥12 domains; 0 benchmark structure) | ❌ | ✅ (14 domains; N=100 partial) |
+| B two real population datasets, same subsystem, poststrat, real-outcome | ⚠️ 1 dataset | ✅ 2 datasets (GSS + Senate) + GSS temporal |
+| C two real graph datasets + future/independent prediction + exposure calibration | ⚠️ reconstruction only | ⚠️ **1 real graph** (S116↔S117 temporal prediction added); 2nd distinct-domain graph (Enron) still pending |
+| D Phase-3 integration (typed latents, likelihoods, dependence, hashes, no 2nd engine) | ✅ | ✅ + informative absence |
+| E temporal evolution ≥5 transitions | ❌ | ✅ (8 transitions) |
+| F multilayer execution ≥10 deep layers | ⚠️ ~5 | ✅ (10+ layers) |
+| G causal consumption ≥50% scenarios | ✅ | ✅ |
+| H real-outcome validation (pop + net) | ❌ | ✅ pop (GSS temporal, Senate) + net (S116→S117); congress lift honest-null |
+| I actor observability / no leakage | ✅ | ✅ |
+| J action feasibility + reason codes | ✅ | ✅ (more layers) |
+| K no-abstention | ✅ | ✅ (14/14) |
+| L reproducibility (discovery/posterior/terminal hashes) | ✅ | ✅ + discovery hash |
+| 100-question generality | ❌ | ⚠️ partial (14 domains @100%) |
+| 2nd distinct-domain real graph (Enron) | ❌ | ❌ (loader present; resumable) |
+
+### 7.7 Five-status production grading (Part 15M)
+- **Software implemented:** ✅
+- **Automatic universal path implemented:** ✅ (this run's core addition)
+- **Executes end-to-end:** ✅ (14 domains live, 0 errors)
+- **Empirically validated:** ✅ 2 real population datasets + 1 real graph (reconstruction + temporal
+  prediction) + synthetic recovery + calibration
+- **Broadly validated:** ⚠️ partial — 14/100 discovery questions; 1 (not 2) distinct-domain real graph;
+  congress predictive lift is honest-null
+- **Production eligible:** ❌ **not yet** — see gate C/100-question/Enron gaps in
+  `WMV2_PHASE9_LIMITATIONS_AND_DEPENDENCIES.md`. Ship exploratory/transfer-grade.

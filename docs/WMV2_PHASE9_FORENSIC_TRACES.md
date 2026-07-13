@@ -87,3 +87,49 @@ diffusion, protest, …). This run delivers **one deep trace on a real inferred 
 plus the ablation series and unit-level feasibility/visibility traces. Broader cross-domain traces reuse the
 SAME `simulate_populations_networks` path (no per-domain code) and are a documented, resumable follow-up in
 `WMV2_PHASE9_LIMITATIONS_AND_DEPENDENCIES.md` — not a separate engine.
+
+---
+
+## COMPLETION RUN — genuinely AUTOMATIC traces + correction of the prior Senate trace
+
+### Correction: the prior "Senate" trace was a FIXTURE, not a production trace
+The first Phase-9 run's Senate co-voting trace was described as "non-scripted production." **That was
+incorrect.** The harness manually supplied the segments (dem/rep), the candidate edges (built from co-voting),
+the structural hypotheses, the susceptibility, the seeds and the contagion family. It is a legitimate
+**mechanism-isolation FIXTURE** (it shows the backend consumes structure and produces StateDeltas), but it is
+NOT evidence of automatic discovery. It is retained as Trace 1 above with this corrected label.
+
+### Automatic Trace A — UN Security Council (live, universal path)
+Input to the system: ONLY `question="Will the members of the UN Security Council agree on a resolution?"`,
+`as_of=2024-09-01`, `horizon=2024-10-15`. **Automatically discovered** (nothing supplied):
+- segments: permanent / non_permanent; representation: explicit_individuals
+- actors: usa, russia, china, uk, france, unsc_non_permanent
+- relation layers: communication, alliance, influence
+- candidate edges: usa–uk, usa–france, russia–china, non_permanent→P5 (realistic bloc structure)
+- structural hypotheses: bloc_polarization, swing_vote
+- seeds: usa, russia, china
+→ terminal 0.40 ± 0.06, 5 StateDeltas, `discovery_source=llm_augmented_heuristic`, provenance hashed,
+support grade highly_speculative (thin live evidence — no-abstention preserved).
+
+### Automatic Trace B — startup acquisition (live) — `automatic_forensic_trace.json`
+Input: ONLY the question + dates. **Automatically discovered:** actors {acquirer, lead_investor, startup,
+board_of_directors, employees, founder_1, founder_2}; 7 relation layers {authority, communication, reporting,
+influence, trust, affiliation, resource}; structural hypotheses {founder_control, investor_drive,
+factional_split}; segments {founder_1, founder_2}. → terminal 0.35 ± 0.06, 6 StateDeltas, grade
+highly_speculative. The persisted artifact records `CALLER_SUPPLIED = [question, as_of, horizon]` and
+`AUTOMATICALLY_DISCOVERED = {...}` explicitly.
+
+### What is and is NOT automatic (honest)
+- **Automatic:** relevance decision, target population + segmentation, actor/institution set, relation layers,
+  candidate edges, structural hypotheses, representation choice, seeds — all from the question + plan + evidence.
+- **From evidence:** edge observations (claims → typed observations via `construct_observations`).
+- **From priors / weakly-informative defaults (NOT the LLM, NOT the caller):** segment susceptibility (broad
+  0.3), edge priors, contagion family (simple default). These are documented weakly-informative defaults the
+  evidence could refine — see limitations.
+- **Numeric:** every posterior number is a Phase-3 prior×likelihood update; the LLM minted none.
+
+### Cross-domain automatic traces (14 domains) — `discovery_eval.json`
+14 questions across 14 domains ran the SAME universal path with only (question, as_of, horizon): 14/14
+completed, 0 errors, 100% discovery success, 100% structure-reaches-execution, zero abstention. Per-domain
+auto-discovered actor/layer/edge counts are in the artifact. (Full per-question forensic persistence for all 14
+is a documented follow-up; Traces A/B persist the complete chain.)

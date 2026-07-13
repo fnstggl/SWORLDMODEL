@@ -1,0 +1,170 @@
+{
+  "question": "Will the startup founders accept the acquisition offer from the larger company?",
+  "as_of": "2024-06-01",
+  "horizon": "2024-09-01",
+  "CALLER_SUPPLIED": [
+    "question",
+    "as_of",
+    "horizon"
+  ],
+  "AUTOMATICALLY_DISCOVERED": {
+    "population_segments": [
+      "founder_1",
+      "founder_2"
+    ],
+    "segmentation_dimension": "role",
+    "representation": "explicit_individuals",
+    "actors": [
+      "acquirer",
+      "lead_investor",
+      "startup",
+      "board_of_directors",
+      "employees",
+      "founder_1",
+      "founder_2"
+    ],
+    "relation_layers": [
+      "authority",
+      "communication",
+      "reporting",
+      "influence",
+      "trust",
+      "affiliation",
+      "resource"
+    ],
+    "candidate_edges": [
+      [
+        "founder_1",
+        "startup",
+        "communication"
+      ],
+      [
+        "founder_2",
+        "startup",
+        "communication"
+      ],
+      [
+        "board_of_directors",
+        "startup",
+        "communication"
+      ],
+      [
+        "lead_investor",
+        "board_of_directors",
+        "authority"
+      ],
+      [
+        "acquirer",
+        "startup",
+        "communication"
+      ],
+      [
+        "founder_1",
+        "acquirer",
+        "communication"
+      ],
+      [
+        "founder_2",
+        "acquirer",
+        "communication"
+      ],
+      [
+        "employees",
+        "startup",
+        "reporting"
+      ],
+      [
+        "founder_1",
+        "startup",
+        "authority"
+      ],
+      [
+        "founder_2",
+        "startup",
+        "authority"
+      ],
+      [
+        "board_of_directors",
+        "startup",
+        "authority"
+      ],
+      [
+        "lead_investor",
+        "board_of_directors",
+        "influence"
+      ],
+      [
+        "lead_investor",
+        "startup",
+        "resource"
+      ],
+      [
+        "acquirer",
+        "startup",
+        "affiliation"
+      ],
+      [
+        "founder_1",
+        "acquirer",
+        "trust"
+      ],
+      [
+        "founder_2",
+        "acquirer",
+        "trust"
+      ],
+      [
+        "employees",
+        "startup",
+        "affiliation"
+      ]
+    ],
+    "structural_hypotheses": [
+      "founder_control",
+      "investor_drive",
+      "factional_split"
+    ],
+    "seeds": [
+      "founder_1",
+      "founder_2",
+      "lead_investor"
+    ],
+    "discovery_source": {
+      "source": "llm_augmented_heuristic",
+      "llm": true
+    }
+  },
+  "n_edge_observations_from_evidence": 1,
+  "terminal": {
+    "terminal_mean": 0.35287,
+    "terminal_sd": 0.05633,
+    "terminal_lo": 0.21126,
+    "terminal_hi": 0.47164,
+    "n_particles": 40,
+    "mean_edges_per_world": 1.7,
+    "n_deltas": 6,
+    "contagion": "simple",
+    "seeds": [
+      "founder_1",
+      "founder_2",
+      "lead_investor"
+    ]
+  },
+  "support_grade": "highly_speculative",
+  "simulation_status": "completed",
+  "provenance": {
+    "population_posterior_hash": "783bb33a1709",
+    "graph_posterior_hash": "e3692f0e7ab8",
+    "structural_posterior_hash": "3f1b8d84fa64",
+    "terminal_hash": "9f6838163d84",
+    "seed": 0,
+    "llm_role": "may propose segments/nodes/edges/hypotheses; NO probabilities minted here",
+    "discovery_hash": "8798e2044c66",
+    "plan_hash": "864f1f3abf41",
+    "evidence_bundle_hash": "e09757d903220dbf",
+    "universal_path": true
+  },
+  "limitations": [
+    "support grade highly_speculative: 17 hypothesized edges, 0 effective survey observations"
+  ]
+}

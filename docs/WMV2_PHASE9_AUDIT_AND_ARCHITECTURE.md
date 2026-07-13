@@ -115,3 +115,64 @@ integration boundary — see `WMV2_PHASE9_LIMITATIONS_AND_DEPENDENCIES.md`.)
 
 Validation, ablations, gates, and the four-status grading are in `WMV2_PHASE9_VALIDATION.md`; the full
 evidence→posterior→execution trace is in `WMV2_PHASE9_FORENSIC_TRACES.md`.
+
+---
+
+## Part 3 — Completion run: corrected audit + universal discovery architecture
+
+*This section supersedes the "production" framing of the first Phase-9 run where it overclaimed. The prior run
+built a real posterior + execution BACKEND but the universal automatic path was unwired.*
+
+### Corrected audit of the first run (prepared-input findings)
+The first run's `simulate_populations_networks(...)` and its "forensic trace" required the CALLER to supply the
+entire model structure. Honest labels:
+
+| element | first-run source | corrected status |
+|---|---|---|
+| `segments` (dem/rep) | supplied by the harness | **prepared input** — not discovered |
+| `candidate_edges` | built from congress co-voting by the harness | **prepared input** |
+| `structural_hypotheses` | hand-listed in the harness | **prepared input** |
+| `segment_susceptibility` | hand-set in the harness | **prepared input** |
+| `seeds`, `contagion` | hand-set in the harness | **prepared input** |
+| the "non-scripted production" Senate trace | model structure supplied by the harness | **MISLABELED** — it was a mechanism-isolation FIXTURE, not a production trace |
+| congress link-prediction AUROC 0.999 | co-voting signal defined AND predicted the edge | **RECONSTRUCTION**, not general hidden-edge prediction |
+
+These are corrected in `WMV2_PHASE9_VALIDATION.md` and `WMV2_PHASE9_FORENSIC_TRACES.md`.
+
+### Universal discovery architecture (this run)
+`phase9_discovery.py`:
+- `discover(question, plan, bundle, *, llm)` → `Phase9DiscoveryPlan`: population relevance, segmentation
+  dimension + segments, representation choice, actors, institutions, relation layers, candidate edges (with an
+  edge→claim map), structural hypotheses, seeds. A deterministic **plan-derived heuristic fallback** runs with
+  no LLM; the LLM (when present) **augments** it with semantic proposals only — it mints no numbers.
+- `construct_observations(discovery, bundle)` → typed `(survey_observations, edge_observations)` built from
+  Phase-2 CLAIMS. A claim becomes an edge only via a typed observation model (`_edge_class_for_claim` maps
+  predicate/class → layer + evidence class); reliability comes from source-type tables; dependence groups carry
+  through so syndicated copies collapse.
+
+`phase9_pipeline.simulate_with_populations_networks(question, *, as_of, horizon, ...)` — the **universal
+production entry**: caller supplies ONLY question + as-of + horizon (+ optional user facts). Internally it
+compiles → gathers Phase-2 evidence → **discovers** → constructs observations → infers all posteriors
+(compositional + edge + community + structural) → materializes → executes. No caller-supplied
+segments/edges/hypotheses/susceptibility/seeds. Records discovery/plan/evidence hashes. No-abstention preserved.
+
+**Proof it works (live):** "Will the UN Security Council agree on a resolution?" → auto-discovered the P5 +
+non-permanent members, permanent/non-permanent segments, communication/alliance/influence layers, realistic
+alliance edges, bloc-polarization vs swing-vote hypotheses, and seeds — terminal 0.40 ± 0.06, 5 StateDeltas,
+provenance hashed. Across **14 domains** (discovery eval): 14/14 completed, 100% discovery success, 100%
+structure-reaches-execution, zero abstention.
+
+### Informative absence + temporal evolution (this run)
+- `phase3_posterior.infer_edge_posterior_exposure` (Part 4): a Binomial detection-under-exposure model where
+  non-observations are informative (many opportunities + few records → edge unlikely; zero opportunities →
+  uninformative). Calibrated under variable exposure (ECE ≤ 0.06), fixing the present-only overconfidence.
+- `phase9_temporal.py` (Part 7): 8 typed transitions (trust gain/loss, alliance formation/defection,
+  relationship decay via half-life hazard, edge expiration, rewiring, role change) — parameters from
+  log-odds/Bayesian updates + hazards, never fixed constants; each emits a StateDelta, carries valid-time, and
+  changes future action feasibility + terminals.
+
+### Deep multilayer execution (this run)
+`phase9_execution.py` now has typed mechanisms for **10+ layers**: communication, exposure, trust, influence,
+authority, reporting (multi-hop escalation), alliance/coordination, conflict (blocks coordination), resource
+(capacity-gated transfer), jurisdiction (scope-gated institutional action) — each emitting StateDeltas with
+reason codes on blocked actions.
