@@ -273,3 +273,168 @@ An allocation-sensitive legacy observer-panel test failed once in a selected-sui
 8. Establish at least two credible cold-start or transfer wins and a justified aggregate baseline comparison.
 
 Until then, the correct product decision is **do not merge as production-ready and do not promote any Phase 4 policy family to production eligible**.
+
+## 2026-07-13 empirical-completion validation
+
+The completion protocol was committed and pushed before final evaluation in
+commit `1322d2d`. Its canonical payload checksum is
+`ec3a661177219a6f6a7c7642cd637044010f095e77d83cf81ee1e2d514f7d06c`.
+The original 21-artifact namespace remains byte-for-byte untouched, with tree
+hash `9d946bf3e77e829706ab3bd0e9cba723f1a4b4d7`; the frozen audit is recorded
+separately under `phase4_completion/`.
+
+### Data and held-out scale
+
+| Dataset | Real decisions evaluated | Held-out decisions | Main split discipline |
+|---|---:|---:|---|
+| IPD longitudinal | 18,800 | 2,600 | chronological sessions/rounds; fixed and shuffled partner regimes retained |
+| VoteView Senate | 283,675 | 62,175 | Congress 115 train, 117 family validation, 118 test |
+| Enron repaired | 309,441 | 59,598 | time-forward split, seven-day label maturation, and temporal purge |
+| **Total** | **448,168** | **124,373** | untouched test partitions after model-family selection |
+
+### B0–B8 calibrated test log loss
+
+Lower is better. B2/B3 are omitted from the confirmatory table because their
+strict-schema coverage gate failed; conditional metrics are shown separately
+and are selection-biased diagnostics.
+
+| Dataset | B0 | B1 | B4 | B5 flat | B6 hierarchy | B7 actor policy | B8 specialist |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| IPD | 0.692613 | 0.692613 | 0.601129 | 0.683103 | 0.403027 | **0.403027** | 0.409799 |
+| Senate | 0.826259 | 0.826259 | 0.797018 | 1.058703 | 0.998450 | **0.700671** | 1.491123 |
+| Enron | 0.396829 | 0.401407 | 0.461165 | 0.415117 | 0.378601 | **0.372049** | 0.401231 |
+
+The equal-domain B7−B6 macro log-loss delta is approximately **−0.10144**.
+B7 is non-inferior at the frozen 0.01 margin in all three domains. Clustered
+B7−B6 comparisons are:
+
+| Dataset | Mean delta | Cluster-bootstrap 95% CI | Result |
+|---|---:|---:|---|
+| IPD | −0.000000 | [−0.000000, +0.000000] | exact practical tie; only two held-out session clusters make this CI weak |
+| Senate | −0.297779 | [−0.334652, −0.261329] | superiority |
+| Enron | −0.006552 | [−0.009055, −0.004037] | superiority |
+
+B7 also beats the flat B5 log loss in every domain, with mean deltas
+−0.280076 (IPD), −0.358031 (Senate), and −0.043069 (Enron). It beats the
+preregistered handcrafted B4 in every domain. This does not erase the fact that
+IPD B7 is exactly B6 and that no consequence component survived validation.
+
+### DeepSeek B2/B3
+
+The frozen design contained 288 action-stratified packets and five lenses per
+packet: 1,440 request identities, with up to two retries. All request identities
+completed. Of them, 1,181 produced strictly valid frozen-schema responses and
+259 did not. The run preserved 2,259 corrected-run raw attempts plus 33
+preflight attempts. The preflight exposed a provider-default drift toward
+thinking mode; the wire request was corrected to explicitly disable thinking,
+which enforces rather than changes the preregistered non-thinking intent.
+
+| Dataset | B2 test coverage | B3 panel test coverage | Cost-matched lens coverage |
+|---|---:|---:|---:|
+| IPD | 85.94% (55/64) | 40.63% (26/64) | 79.69% (51/64) |
+| Senate | 54.69% (35/64) | 29.69% (19/64) | 75.00% (48/64) |
+| Enron | 92.19% (59/64) | 53.13% (34/64) | 89.06% (57/64) |
+
+Conditional calibrated log losses are stored in
+`llm_baseline_results.json`, but they are diagnostic only because provider
+schema compliance selects the covered rows. Consequently there is **no valid
+confirmatory B7-versus-B2/B3 conclusion**.
+
+### Uncertainty, particles, sequences, and outcomes
+
+| Dataset | 90% conformal coverage | Mean set size | Particle collapse | Mean action TV across particles |
+|---|---:|---:|---:|---:|
+| IPD | 89.62% | 1.194 | 0 | 0.00000 |
+| Senate | 84.97% | 1.441 | 0 | 0.03920 |
+| Enron | 88.16% | 0.991 | 0 | 0.01461 |
+
+All runs used 64 unique Phase 3 particles per decision, equal weights, ESS
+fraction 1.0, maximum particle weight 1/64, and no collapse. Yet every domain
+misses the nominal 90% conformal target. IPD assigns zero weight to the particle
+component; point-world/no-particle comparisons do not show uncertainty value.
+The correct verdict is that particles were consumed and numerically stable,
+but posterior uncertainty was **not empirically validated**.
+
+Sequential scoring ran on the chronological test rows. Downstream diagnostics
+include IPD payoff MAE 1.07535 and opponent-reaction log loss 0.50795, Senate
+passage Brier 0.241785/log loss 0.677830 across 691 rolls, and Enron reply-delay
+MAE 24.765 hours. These are observational predictions. There is no held-out
+intervention demonstrating that B7 execution improved later decisions or
+terminal outcomes.
+
+### Transfer, cold start, and ablations
+
+VoteView provides temporal transport to Congress 118; Enron provides a
+time-forward test and cold-start slices. IPD fixed/shuffled regime slices were
+measured, but fixed→shuffled and shuffled→fixed refits were not run. Therefore
+the transfer gate fails as incomplete, and the evidence does not contain two
+credible transfer/cold-start wins.
+
+The family-selection ablation is non-ornamental: IPD selects hierarchy only,
+Senate propensity particles only, and Enron a 50/50 hierarchy/propensity mix.
+The consequence family receives zero weight everywhere. Point-world,
+no-particle, and no-consequence comparisons do not establish value for four
+rich world-state components. The historical execution inputs are identical to
+prediction inputs, but execution itself has no empirical causal lift.
+
+### Costs and tests
+
+The corrected LLM collection made 2,259 HTTP attempts and used 1,392,703
+provider-reported tokens. Summed per-request latency is approximately 5.90
+million ms; it is not wall-clock elapsed time because eight requests ran
+concurrently. Monetary cost is deliberately not claimed because the provider
+price schedule was not frozen. Numeric timing, memory, per-domain LLM usage,
+and latency are preserved in `cost_latency.json`.
+
+Focused completion/contracts tests: 36 passed. All Phase 4 tests: 56 passed.
+The complete repository run: 957 passed, 3 failed, 11 warnings in 130.50s.
+The three failures are pre-existing/environmental: a missing dataset registry,
+unchanged backtest-toggle behavior, and absent optional `fastapi`. An affected
+V2 run also exposed one allocation-sensitive legacy `id(self)` test; relevant
+code is unchanged. No introduced regression was identified.
+
+### Production gates and recommendation
+
+| Gate | Result |
+|---|---:|
+| Three real held-out settings and reconstructed action sets | Pass |
+| Frozen B0–B8 numeric evaluation | Pass |
+| B2/B3 confirmatory coverage | **Fail** |
+| B7 non-inferior to B5 and B6 | Pass |
+| B7 predictive lift over B6 in at least two domains | Pass |
+| Nominal uncertainty coverage | **Fail** |
+| Posterior-uncertainty incremental value | **Fail** |
+| Consequence-family incremental value | **Fail** |
+| Two credible transfer/cold-start wins | **Fail** |
+| Four rich-state components with non-ornamental value | **Fail** |
+| Real execution/sequence causal value | **Fail** |
+| Production promotion | **Withheld** |
+
+The result supports a new **draft** PR for forensic review, not a production
+merge. The old PR #87 is already merged; its production status is not revised
+by this addendum.
+
+### Frozen-evidence answers
+
+1. **Was the original frozen Phase 4 result reproduced? Yes.** All frozen artifacts and the immutable tree were checksum-verified; they were not overwritten by rerunning the old writer.
+2. **Were B2 and B3 successfully frozen and evaluated? No.** They were frozen and attempted completely, but 259 strict-schema failures invalidate confirmatory evaluation.
+3. **Were at least three rich-state real settings added? Yes.** IPD, Senate, and repaired Enron ran, although state richness differs by domain.
+4. **Were real action sets reconstructed? Yes.** Each adapter reconstructs the feasible set without the current label/result.
+5. **Were real Phase 3 posterior particles consumed? Yes.** B7 consumes 64 typed compositional-posterior particles per decision; family selection can assign them zero weight.
+6. **Did posterior uncertainty improve calibration or prediction? No.** Particle propensity helps as a mean feature in two domains, but uncertainty itself has no established incremental value and conformal coverage fails.
+7. **Did B7-PREDICT beat raw LLM? No confirmatory answer.** Incomplete schema coverage makes the conditional LLM comparison invalid.
+8. **Did B7-PREDICT beat handcrafted policy? Yes, predictively.** B7 has lower held-out calibrated log loss than B4 in all three domains.
+9. **Was B7-PREDICT non-inferior to the strongest flat fitted model? Yes.** It beats B5 log loss in all three domains under the frozen test.
+10. **Did B7-PREDICT add predictive value over B6? Yes, but only in two domains.** It improves Senate and Enron and exactly ties IPD.
+11. **Did execution add real sequence or downstream-outcome value? No.** Observational sequence/outcome scoring ran; causal execution value did not.
+12. **Were at least two credible cold-start or transfer wins achieved? No.** Directional transfer evidence is incomplete.
+13. **Did at least four rich world-state components show non-ornamental value? No.** Validation identified at most hierarchy and historical propensity; consequences received zero weight.
+14. **Was policy uncertainty empirically validated? No.** All three conformal coverage gates miss.
+15. **Did any major domain fail catastrophically? Yes, for the LLM baseline.** Senate B3 covers only 19/64 test packets; the numeric B7 Senate arm itself does not fail catastrophically.
+16. **Which policy families were validated?** None for production. Predictively, hierarchy is selected in IPD, propensity in Senate, and their mixture in Enron.
+17. **Which were quarantined?** The consequence heuristic, universal/causal interpretations, incomplete LLM comparisons, and all production policy-family claims remain quarantined.
+18. **Is Phase 4 software implemented? Yes.**
+19. **Does it execute end to end? Yes.**
+20. **Is it empirically validated? No overall.** It has partial predictive validation only.
+21. **Is it production eligible? No.**
+22. **Is PR #87 ready for production merge? No/not applicable.** It is already merged; this completion belongs in a new draft PR and is not production-ready.

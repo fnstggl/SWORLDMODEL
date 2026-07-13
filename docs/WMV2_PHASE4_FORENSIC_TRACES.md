@@ -135,3 +135,76 @@ They also expose the remaining weaknesses rather than hiding them:
 - no trace establishes production-eligible intervention guidance.
 
 The correct interpretation is: **the software models and executes an actor decision rather than merely returning a label, but the current empirical evidence is not sufficient to trust its general behavioral probabilities in production.**
+
+## 2026-07-13 empirical-completion traces
+
+The previous real one-step traces and synthetic causal-integration traces above
+remain intact. The completion adds a third category: 18 deterministic rich
+prediction forensics, six from each new real test domain, stored in
+`experiments/results/phase4_completion/forensic_traces.json`. It also adds a
+fourth category—explicit failure traces—through low-entropy errors, missing LLM
+panels, zero-weight policy components, and missing per-record particle paths.
+
+Each new trace contains the exact label-blind actor-visible request, candidate
+actions, observed action, B6/B7 distributions, entropy, actor/relationship
+support flags, selected family weights, aggregate 64-particle diagnostics,
+predict/execute invariance evidence, and any available B2/B3 distribution.
+Labels are present only in the scored trace envelope, never in the model
+packet.
+
+| Domain | Trace category | Record | Observed | B7 modal action (probability) | Complete B3 panel? |
+|---|---|---|---|---|---:|
+| Enron | correct, low entropy | `enron:73061852e88174bb94c3d931` | no reply within 7d | no reply within 7d (0.9947) | No |
+| Enron | error, low entropy | `enron:1bf5bcfa2a63701782f11fde` | reply within 24h | no reply within 7d (0.9907) | Yes |
+| Enron | maximum uncertainty | `enron:960167a439e682b7dc2692bb` | reply within 24h | no reply within 7d (0.6875) | No |
+| Enron | panel available | `enron:7d9ff6a740cd089813b0c834` | reply in 1–7d | no reply within 7d (0.7032) | Yes |
+| Enron | panel unavailable | `enron:eaa89d6b3798436047042182` | no reply within 7d | no reply within 7d (0.9330) | No |
+| Enron | deterministic fill | `enron:016d0fbc847a26a4ee22262e` | reply within 24h | no reply within 7d (0.8504) | No |
+| IPD | correct, low entropy | `ipd:s1m5:s1m5usuario1:85` | cooperate | cooperate (0.9868) | Yes |
+| IPD | error, low entropy | `ipd:s1m5:s1m5usuario5:2` | defect | cooperate (0.9138) | No |
+| IPD | maximum uncertainty | `ipd:s1m5:s1m5usuario5:76` | cooperate | defect (0.5032) | No |
+| IPD | panel available | `ipd:s1m5:s1m5usuario4:2` | cooperate | cooperate (0.9836) | Yes |
+| IPD | deterministic fill | `ipd:s11n9:s11n9usuario10:21` | defect | defect (0.8189) | Yes |
+| IPD | deterministic fill | `ipd:s11n9:s11n9usuario10:69` | defect | defect (0.9536) | No |
+| Senate | correct, low entropy | `voteview:118:0602:40702` | support | support (0.8301) | Yes |
+| Senate | error, low entropy | `voteview:118:0071:21743` | oppose | support (0.8976) | Yes |
+| Senate | maximum uncertainty | `voteview:118:0292:21173` | abstain/absent | oppose (0.4857) | No |
+| Senate | panel available | `voteview:118:0069:20735` | oppose | support (0.8842) | Yes |
+| Senate | panel unavailable | `voteview:118:0006:14226` | oppose | support (0.6361) | No |
+| Senate | deterministic fill | `voteview:118:0008:29142` | support | support (0.7337) | No |
+
+### Representative trace interpretation
+
+The Enron low-entropy error is an important failure, not an anecdote to remove:
+B7 assigns 0.9907 to no reply even though a reply arrives within 24 hours. It
+shows that hierarchy/history can be sharply wrong for a particular dyad and
+message. The IPD maximum-uncertainty trace is close to a coin flip and wrong;
+the selected B7 weights are `[1,0,0]`, so the 64 Phase 3 particles cannot rescue
+it. The Senate low-entropy error predicts support at 0.8976 for an opposing
+vote; the propensity-only selected family is strong in aggregate but can miss
+the current legislator/roll context.
+
+The panel-available and panel-unavailable pairs make the B2/B3 coverage failure
+concrete. A panel is emitted only when all five raw responses pass the exact
+schema and action-key parser. No missing member is imputed and no malformed
+`schema_version` is silently repaired.
+
+### What these traces do not prove
+
+The new traces are historical one-step prediction forensics. They do not claim
+that a real intervention was executed, that a real institution reacted, or
+that a StateDelta caused the recorded downstream outcome. The earlier
+synthetic integration traces demonstrate those software mechanics only.
+
+The compact numeric run retained aggregate particle diagnostics and five
+unkeyed particle examples per domain, but it did not retain a keyed 64-particle
+path for each of these 18 sampled records. The new artifact says so explicitly
+rather than joining unrelated particles to a record. Consequently the trace
+contract is complete for actor-visible input, action distribution, LLM
+availability, and prediction/execution identity, but **incomplete for
+per-record particle forensics and real causal execution chains**.
+
+That incompleteness, the three deliberately retained confident errors, and the
+missing B3 panels are new failure evidence. They reinforce the completion
+verdict: useful partial predictive validation, no empirical validation of
+policy uncertainty or causal execution, and no production eligibility.

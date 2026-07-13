@@ -1,0 +1,144 @@
+{
+  "all_domain_noninferiority": true,
+  "all_domain_superiority": false,
+  "artifact_checksum": "75888676e896c3822862c8d48cb82ebd2b36522d4475cec37fc72f425d2b6aeb",
+  "datasets": {
+    "enron_repaired": {
+      "b6_log_loss": 0.3786008375491424,
+      "b7_log_loss": 0.37204903093963665,
+      "b7_minus_b6": {
+        "ci95": [
+          -0.00905541080194034,
+          -0.004036816391102962
+        ],
+        "cluster_unit": "dataset_preregistered_cluster",
+        "clusters": 5917,
+        "estimand": "log_loss_arm_a_minus_arm_b",
+        "mean": -0.006551806609505782,
+        "n_boot": 2000,
+        "seed": 404,
+        "two_sided_p": 0.0
+      },
+      "invalid_action_gate": true,
+      "particle_collapse_gate": true,
+      "predictive_noninferiority_margin_0_01": true,
+      "predictive_superiority": true
+    },
+    "ipd_long": {
+      "b6_log_loss": 0.4030270895376163,
+      "b7_log_loss": 0.4030270895376163,
+      "b7_minus_b6": {
+        "ci95": [
+          -1.5404344466674047e-18,
+          7.806255641895632e-20
+        ],
+        "cluster_unit": "dataset_preregistered_cluster",
+        "clusters": 2,
+        "estimand": "log_loss_arm_a_minus_arm_b",
+        "mean": -5.444362909219517e-19,
+        "n_boot": 2000,
+        "seed": 404,
+        "two_sided_p": 0.479
+      },
+      "invalid_action_gate": true,
+      "particle_collapse_gate": true,
+      "predictive_noninferiority_margin_0_01": true,
+      "predictive_superiority": false
+    },
+    "voteview_senate": {
+      "b6_log_loss": 0.9984501932589506,
+      "b7_log_loss": 0.7006712752218209,
+      "b7_minus_b6": {
+        "ci95": [
+          -0.3346524838799414,
+          -0.2613291037890747
+        ],
+        "cluster_unit": "dataset_preregistered_cluster",
+        "clusters": 691,
+        "estimand": "log_loss_arm_a_minus_arm_b",
+        "mean": -0.29777891803712964,
+        "n_boot": 2000,
+        "seed": 404,
+        "two_sided_p": 0.0
+      },
+      "invalid_action_gate": true,
+      "particle_collapse_gate": true,
+      "predictive_noninferiority_margin_0_01": true,
+      "predictive_superiority": true
+    }
+  },
+  "equal_domain_b7_minus_b6_log_loss": -0.1014435748822118,
+  "llm_complete": false,
+  "llm_coverage": {
+    "enron_repaired": {
+      "B2": {
+        "calibration": 0.8125,
+        "calibration_n": 26,
+        "test": 0.921875,
+        "test_n": 59
+      },
+      "B3": {
+        "calibration": 0.5,
+        "calibration_n": 16,
+        "test": 0.53125,
+        "test_n": 34
+      },
+      "B3_COST_MATCHED": {
+        "calibration": 0.84375,
+        "calibration_n": 27,
+        "test": 0.890625,
+        "test_n": 57
+      }
+    },
+    "ipd_long": {
+      "B2": {
+        "calibration": 1.0,
+        "calibration_n": 32,
+        "test": 0.859375,
+        "test_n": 55
+      },
+      "B3": {
+        "calibration": 0.40625,
+        "calibration_n": 13,
+        "test": 0.40625,
+        "test_n": 26
+      },
+      "B3_COST_MATCHED": {
+        "calibration": 0.875,
+        "calibration_n": 28,
+        "test": 0.796875,
+        "test_n": 51
+      }
+    },
+    "voteview_senate": {
+      "B2": {
+        "calibration": 0.59375,
+        "calibration_n": 19,
+        "test": 0.546875,
+        "test_n": 35
+      },
+      "B3": {
+        "calibration": 0.3125,
+        "calibration_n": 10,
+        "test": 0.296875,
+        "test_n": 19
+      },
+      "B3_COST_MATCHED": {
+        "calibration": 0.75,
+        "calibration_n": 24,
+        "test": 0.75,
+        "test_n": 48
+      }
+    }
+  },
+  "predictive_gain_domains": 2,
+  "production_promotion": "withheld",
+  "promotion_blockers": [
+    "LLM B2/B3 confirmatory coverage failed",
+    "90 percent conformal coverage missed in all three test domains",
+    "IPD B7 was exactly B6 after validation assigned zero particle/consequence weight",
+    "subjective-consequence family received zero validation weight in every domain",
+    "full directional transfer and several rich-state ablations remain untested"
+  ],
+  "schema_version": "wmv2.phase4-completion.summary.v1"
+}
