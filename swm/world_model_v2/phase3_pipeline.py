@@ -58,7 +58,8 @@ def simulate_with_posterior(question: str, *, llm, as_of: str, horizon: str, int
                             prior_bundle_path: str = "", store=None, n_rate_particles: int = 400,
                             use_dependence: bool = True, use_structural: bool = True,
                             consume_posterior: bool = True, reference_data: dict = None,
-                            use_reference_prior: bool = True, bundle=None, tags=None, plan=None) -> tuple:
+                            use_reference_prior: bool = True, bundle=None, tags=None, plan=None,
+                            posterior_point_estimate: bool = False) -> tuple:
     """Run the posterior-conditioned simulation. Returns (SimulationResult, artifacts).
 
     `consume_posterior=False` is the ABLATION arm: the posterior is still computed and reported, but NOT
@@ -137,7 +138,13 @@ def simulate_with_posterior(question: str, *, llm, as_of: str, horizon: str, int
     # ---- WORLD-STATE materialization: place the posterior where a mechanism will read it ----
     consumed = False
     if consume_posterior and posterior.n_effective_observations > 0:
-        revised.posterior_rate_particles = list(posterior.outcome_rate_particles)
+        if posterior_point_estimate:
+            # ABLATION: collapse the posterior to a scalar (its mean) — the anti-scalar antipattern.
+            # Every particle equals the posterior mean, discarding the calibrated uncertainty spread.
+            m = posterior.outcome_rate_mean
+            revised.posterior_rate_particles = [(m, w) for (_v, w) in posterior.outcome_rate_particles]
+        else:
+            revised.posterior_rate_particles = list(posterior.outcome_rate_particles)
         if use_structural and posterior.structural_posterior:
             revised.structural_posterior = dict(posterior.structural_posterior)
         consumed = True
