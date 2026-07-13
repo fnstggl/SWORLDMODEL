@@ -50,12 +50,22 @@ def _make_llm():
     return llm, meter
 
 
+def _load_questions():
+    import json as _j
+    from pathlib import Path as _P
+    f = _P("experiments/results/phase9/discovery_questions_100.json")
+    if f.exists():
+        return [tuple(r) for r in _j.loads(f.read_text())]
+    return QUESTIONS
+
+
 def run(limit=None, seed=0):
     from swm.world_model_v2.phase9_pipeline import simulate_with_populations_networks
     llm, meter = _make_llm()
     if llm is None:
         return {"error": "no llm"}
-    rows, qs = [], QUESTIONS[:limit] if limit else QUESTIONS
+    allq = _load_questions()
+    rows, qs = [], allq[:limit] if limit else allq
     for q, as_of, horizon, domain in qs:
         t0 = time.time()
         rec = {"question": q, "domain": domain}
@@ -71,6 +81,8 @@ def run(limit=None, seed=0):
                 "representation": d.population_representation,
                 "n_structural_hypotheses": len(d.structural_hypotheses),
                 "n_edge_observations_from_evidence": len(art.get("edge_observations", [])),
+                "unsupported_edge_rate": round(1 - min(1.0, len(art.get("edge_observations", [])) /
+                                               max(1, len(d.candidate_edges))), 3),
                 "discovery_source": d.provenance.get("source"),
                 "terminal_mean": res.terminal.get("terminal_mean"),
                 "terminal_sd": res.terminal.get("terminal_sd"),
@@ -104,7 +116,10 @@ def _aggregate(rows, meter):
         "mean_actors": round(sum(r.get("n_actors", 0) for r in ok) / max(1, len(ok)), 1),
         "mean_candidate_edges": round(sum(r.get("n_candidate_edges", 0) for r in ok) / max(1, len(ok)), 1),
         "mean_latency_s": round(sum(r.get("latency_s", 0) for r in rows) / n, 1),
+        "mean_unsupported_edge_rate": round(sum(r.get("unsupported_edge_rate", 1.0) for r in ok) /
+                                            max(1, len(ok)), 3),
         "llm_calls": meter["calls"],
+        "est_cost_usd": round(meter["calls"] * 2200 * (0.27e-6 + 1.1e-6) / 2, 3),
         "support_grade_distribution": {g: sum(1 for r in ok if r.get("support_grade") == g)
                                        for g in ("empirically_supported", "transfer_supported", "exploratory",
                                                  "highly_speculative")}}
