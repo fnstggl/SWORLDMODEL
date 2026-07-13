@@ -258,9 +258,13 @@ def run_collect_llm(args) -> None:
                 print(f"collected {len(collection_rows)}/{len(expected)}", flush=True)
     manifest = collection_manifest(collection_rows, expected_request_hashes=expected)
     manifest["planned_total_requests"] = len(expected)
-    assert_complete_collection(manifest)
     write_artifact(output / "llm_collection_manifest.json", manifest)
     client._api_key = ""
+    if manifest["invalid"]:
+        print(f"sealed collection requests={len(expected)} valid={manifest['valid']} "
+              f"invalid={manifest['invalid']}; confirmatory scoring blocked", flush=True)
+        return
+    assert_complete_collection(manifest)
     print(f"sealed collection requests={len(expected)} valid={manifest['valid']}", flush=True)
 
 
@@ -272,25 +276,33 @@ def _git_head() -> str:
 def run_score_llm(args) -> None:
     output = Path(args.output)
     manifest = read_artifact(output / "llm_collection_manifest.json")
-    assert_complete_collection(manifest)
+    if not args.allow_partial_diagnostic:
+        assert_complete_collection(manifest)
+    elif not manifest.get("complete"):
+        raise ValueError("even diagnostic scoring requires every planned request to have completed attempts")
     grouped = defaultdict(lambda: defaultdict(dict))
     metadata = {}
     for row in manifest["rows"]:
         key = (row["dataset"], row["split"], row["record_key"])
-        grouped[key][row["lens"]] = row["probabilities"]
+        if row.get("valid"):
+            grouped[key][row["lens"]] = row["probabilities"]
         metadata[key] = row
     assembled = defaultdict(lambda: defaultdict(list))
-    for key, lenses in grouped.items():
+    request_manifest = read_artifact(output / "llm_request_manifest.json")
+    expected_keys = [(row["dataset"], row["split"], row["record_key"])
+                     for row in request_manifest["rows"]]
+    for key in expected_keys:
+        lenses = grouped[key]
         dataset, split, record_key = key
-        if set(lenses) != set(LENSES):
-            raise ValueError("B3 requires all five frozen panel members")
         row = metadata[key]
-        panel = logarithmic_pool([lenses[lens] for lens in LENSES], row["actions"])
         lens_index = int(stable_hash("cost-matched", dataset, record_key)[:8], 16) % len(LENSES)
+        panel = (logarithmic_pool([lenses[lens] for lens in LENSES], row["actions"])
+                 if set(lenses) == set(LENSES) else None)
         assembled[dataset][split].append({
             "record_key": record_key, "label": row["label"], "actions": row["actions"],
-            "weight": row["inverse_sampling_weight"], "B2": lenses[LENSES[0]], "B3": panel,
-            "B3_COST_MATCHED": lenses[LENSES[lens_index]], "cost_matched_lens": LENSES[lens_index],
+            "weight": row["inverse_sampling_weight"], "B2": lenses.get(LENSES[0]), "B3": panel,
+            "B3_COST_MATCHED": lenses.get(LENSES[lens_index]),
+            "cost_matched_lens": LENSES[lens_index],
         })
     results = {}
     for dataset, partitions in assembled.items():
@@ -298,37 +310,57 @@ def run_score_llm(args) -> None:
         test = sorted(partitions["test"], key=lambda row: row["record_key"])
         dataset_result = {"calibration_n": len(calibration), "test_n": len(test), "arms": {}}
         for arm in ("B2", "B3", "B3_COST_MATCHED"):
-            artifact = fit_temperature([row[arm] for row in calibration],
-                                       [row["label"] for row in calibration],
+            available_calibration = [row for row in calibration if row[arm] is not None]
+            available_test = [row for row in test if row[arm] is not None]
+            if not available_calibration or not available_test:
+                dataset_result["arms"][arm] = {
+                    "coverage": {"calibration": len(available_calibration) / max(1, len(calibration)),
+                                 "test": len(available_test) / max(1, len(test))},
+                    "status": "unscorable_no_covered_rows"}
+                continue
+            artifact = fit_temperature([row[arm] for row in available_calibration],
+                                       [row["label"] for row in available_calibration],
                                        f"llm-sample:{dataset}:calibration",
-                                       [row["weight"] for row in calibration])
-            calibrated = [apply_calibration(row[arm], artifact) for row in test]
+                                       [row["weight"] for row in available_calibration])
+            calibrated = [apply_calibration(row[arm], artifact) for row in available_test]
             dataset_result["arms"][arm] = {
+                "coverage": {"calibration": len(available_calibration) / len(calibration),
+                             "test": len(available_test) / len(test),
+                             "calibration_n": len(available_calibration), "test_n": len(available_test)},
                 "calibrator": artifact.__dict__,
-                "uncalibrated": evaluate_predictions([row[arm] for row in test],
-                                                       [row["label"] for row in test],
-                                                       [row["actions"] for row in test],
-                                                       [row["weight"] for row in test]),
-                "calibrated": evaluate_predictions(calibrated, [row["label"] for row in test],
-                                                    [row["actions"] for row in test],
-                                                    [row["weight"] for row in test]),
+                "uncalibrated": evaluate_predictions([row[arm] for row in available_test],
+                                                       [row["label"] for row in available_test],
+                                                       [row["actions"] for row in available_test],
+                                                       [row["weight"] for row in available_test]),
+                "calibrated": evaluate_predictions(calibrated,
+                                                    [row["label"] for row in available_test],
+                                                    [row["actions"] for row in available_test],
+                                                    [row["weight"] for row in available_test]),
             }
         dataset_result["predictions"] = test
+        dataset_result["confirmatory_coverage_gate"] = all(
+            values.get("coverage", {}).get("test") == 1.0 for values in dataset_result["arms"].values())
         results[dataset] = dataset_result
     write_artifact(output / "llm_baseline_results.json", {
         "schema_version": "wmv2.phase4-completion.llm-baselines.v1", "datasets": results,
-        "coverage_complete": True, "raw_attempts_preserved_before_parse": True,
+        "coverage_complete": manifest["invalid"] == 0,
+        "confirmatory_valid": manifest["invalid"] == 0,
+        "partial_metrics_status": ("confirmatory" if manifest["invalid"] == 0 else
+                                   "diagnostic_only_selection_biased_by_provider_schema_compliance"),
+        "raw_attempts_preserved_before_parse": True,
     })
     usage = defaultdict(Counter)
     for row in manifest["rows"]:
-        selected = row["selected_attempt"] - 1
-        path = row["attempts"][selected]["path"]
-        raw = read_artifact(path)
-        for key, value in raw.get("usage", {}).items():
-            if isinstance(value, (int, float)):
-                usage[row["dataset"]][key] += value
-        usage[row["dataset"]]["latency_ms"] += raw.get("latency_ms", 0.0)
-        usage[row["dataset"]]["requests"] += 1
+        for attempt in row["attempts"]:
+            path = attempt.get("path")
+            if not path:
+                continue
+            raw = read_artifact(path)
+            for key, value in raw.get("usage", {}).items():
+                if isinstance(value, (int, float)):
+                    usage[row["dataset"]][key] += value
+            usage[row["dataset"]]["latency_ms"] += raw.get("latency_ms", 0.0)
+            usage[row["dataset"]]["requests"] += 1
     write_artifact(output / "llm_cost_latency.json", {
         "schema_version": "wmv2.phase4-completion.llm-cost-latency.v1",
         "provider_reported_usage": {key: dict(value) for key, value in usage.items()},
@@ -412,7 +444,8 @@ def parser() -> argparse.ArgumentParser:
     collect.add_argument("--api-key-stdin", action="store_true")
     collect.add_argument("--code-commit", default="")
     collect.add_argument("--workers", type=int, default=8, choices=range(1, 17))
-    commands.add_parser("score-llm")
+    score = commands.add_parser("score-llm")
+    score.add_argument("--allow-partial-diagnostic", action="store_true")
     commands.add_parser("finalize")
     return out
 

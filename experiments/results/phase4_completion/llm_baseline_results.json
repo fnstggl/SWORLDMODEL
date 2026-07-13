@@ -1,0 +1,6138 @@
+{
+  "artifact_checksum": "1470f5d159249d3f5f355276eba2544b8237029d41deb60e3b940a43e2a387c0",
+  "confirmatory_valid": false,
+  "coverage_complete": false,
+  "datasets": {
+    "enron_repaired": {
+      "arms": {
+        "B2": {
+          "calibrated": {
+            "confusion_matrix": {
+              "no_reply_within_7d": {
+                "no_reply_within_7d": 11,
+                "reply_in_1_to_7d": 1,
+                "reply_within_24h": 8
+              },
+              "reply_in_1_to_7d": {
+                "no_reply_within_7d": 4,
+                "reply_in_1_to_7d": 2,
+                "reply_within_24h": 15
+              },
+              "reply_within_24h": {
+                "no_reply_within_7d": 3,
+                "reply_in_1_to_7d": 1,
+                "reply_within_24h": 14
+              }
+            },
+            "ece": 0.21351889224917642,
+            "effective_weight": 55976.220779220785,
+            "invalid_action_rate": 0.0,
+            "log_loss": 1.0485516924975689,
+            "mean_entropy": 0.9333742018585693,
+            "multiclass_brier": 0.5998401429910873,
+            "n": 59,
+            "reliability": [
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.1,
+                "lo": 0.0,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.2,
+                "lo": 0.1,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.3,
+                "lo": 0.2,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": 0.06878073840098868,
+                "confidence": 0.3911558373596641,
+                "hi": 0.4,
+                "lo": 0.3,
+                "n": 10,
+                "weight": 8506.798701298701
+              },
+              {
+                "accuracy": 0.4742792299056295,
+                "confidence": 0.47798401483044,
+                "hi": 0.5,
+                "lo": 0.4,
+                "n": 5,
+                "weight": 5373.266233766234
+              },
+              {
+                "accuracy": 0.9683821026204211,
+                "confidence": 0.5688742791036197,
+                "hi": 0.6,
+                "lo": 0.5,
+                "n": 14,
+                "weight": 13847.779220779223
+              },
+              {
+                "accuracy": 0.5288146783317157,
+                "confidence": 0.6576501692111398,
+                "hi": 0.7,
+                "lo": 0.6,
+                "n": 29,
+                "weight": 27971.967532467534
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.8,
+                "lo": 0.7,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": 1.0,
+                "confidence": 0.8060285243795767,
+                "hi": 0.9,
+                "lo": 0.8,
+                "n": 1,
+                "weight": 276.40909090909093
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 1.0,
+                "lo": 0.9,
+                "n": 0,
+                "weight": 0
+              }
+            ],
+            "top1_accuracy": 0.5647374847714788
+          },
+          "calibrator": {
+            "checksum": "4b0a5d7d804b1b278cda4a74d70e2963627c3b5105b7c776fca5419700ece1f5",
+            "fit_split_id": "llm-sample:enron_repaired:calibration",
+            "method": "temperature_scaling",
+            "n_calibration": 26,
+            "post_log_loss": 0.9392731512870672,
+            "pre_log_loss": 0.9419150983580593,
+            "temperature": 1.15
+          },
+          "coverage": {
+            "calibration": 0.8125,
+            "calibration_n": 26,
+            "test": 0.921875,
+            "test_n": 59
+          },
+          "uncalibrated": {
+            "confusion_matrix": {
+              "no_reply_within_7d": {
+                "no_reply_within_7d": 11,
+                "reply_in_1_to_7d": 1,
+                "reply_within_24h": 8
+              },
+              "reply_in_1_to_7d": {
+                "no_reply_within_7d": 4,
+                "reply_in_1_to_7d": 2,
+                "reply_within_24h": 15
+              },
+              "reply_within_24h": {
+                "no_reply_within_7d": 3,
+                "reply_in_1_to_7d": 1,
+                "reply_within_24h": 14
+              }
+            },
+            "ece": 0.23022179060728246,
+            "effective_weight": 55976.220779220785,
+            "invalid_action_rate": 0.0,
+            "log_loss": 1.068956418766006,
+            "mean_entropy": 0.8892697504697423,
+            "multiclass_brier": 0.6031722248013941,
+            "n": 59,
+            "reliability": [
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.1,
+                "lo": 0.0,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.2,
+                "lo": 0.1,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.3,
+                "lo": 0.2,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.4,
+                "lo": 0.3,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": 0.06878073840098868,
+                "confidence": 0.4000000000000001,
+                "hi": 0.5,
+                "lo": 0.4,
+                "n": 10,
+                "weight": 8506.798701298701
+              },
+              {
+                "accuracy": 0.4742792299056295,
+                "confidence": 0.5,
+                "hi": 0.6,
+                "lo": 0.5,
+                "n": 5,
+                "weight": 5373.266233766234
+              },
+              {
+                "accuracy": 0.9683821026204211,
+                "confidence": 0.5999999999999999,
+                "hi": 0.7,
+                "lo": 0.6,
+                "n": 14,
+                "weight": 13847.779220779223
+              },
+              {
+                "accuracy": 0.5288146783317157,
+                "confidence": 0.7,
+                "hi": 0.8,
+                "lo": 0.7,
+                "n": 29,
+                "weight": 27971.967532467534
+              },
+              {
+                "accuracy": 1.0,
+                "confidence": 0.85,
+                "hi": 0.9,
+                "lo": 0.8,
+                "n": 1,
+                "weight": 276.40909090909093
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 1.0,
+                "lo": 0.9,
+                "n": 0,
+                "weight": 0
+              }
+            ],
+            "top1_accuracy": 0.5647374847714788
+          }
+        },
+        "B3": {
+          "calibrated": {
+            "confusion_matrix": {
+              "no_reply_within_7d": {
+                "no_reply_within_7d": 10,
+                "reply_in_1_to_7d": 0,
+                "reply_within_24h": 2
+              },
+              "reply_in_1_to_7d": {
+                "no_reply_within_7d": 4,
+                "reply_in_1_to_7d": 1,
+                "reply_within_24h": 7
+              },
+              "reply_within_24h": {
+                "no_reply_within_7d": 4,
+                "reply_in_1_to_7d": 0,
+                "reply_within_24h": 6
+              }
+            },
+            "ece": 0.2657543929313791,
+            "effective_weight": 33345.23376623377,
+            "invalid_action_rate": 0.0,
+            "log_loss": 0.8161886108592801,
+            "mean_entropy": 0.9835095262908375,
+            "multiclass_brier": 0.45674476192343205,
+            "n": 34,
+            "reliability": [
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.1,
+                "lo": 0.0,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.2,
+                "lo": 0.1,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.3,
+                "lo": 0.2,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": 0.975288393198841,
+                "confidence": 0.39491462403314576,
+                "hi": 0.4,
+                "lo": 0.3,
+                "n": 4,
+                "weight": 2613.0
+              },
+              {
+                "accuracy": 0.4686771528429395,
+                "confidence": 0.45933501018552897,
+                "hi": 0.5,
+                "lo": 0.4,
+                "n": 8,
+                "weight": 5958.370129870131
+              },
+              {
+                "accuracy": 0.9677381385852858,
+                "confidence": 0.5439566055716601,
+                "hi": 0.6,
+                "lo": 0.5,
+                "n": 13,
+                "weight": 13571.37012987013
+              },
+              {
+                "accuracy": 0.741459286337889,
+                "confidence": 0.6078584057157612,
+                "hi": 0.7,
+                "lo": 0.6,
+                "n": 8,
+                "weight": 10926.084415584417
+              },
+              {
+                "accuracy": 1.0,
+                "confidence": 0.7162495073946931,
+                "hi": 0.8,
+                "lo": 0.7,
+                "n": 1,
+                "weight": 276.40909090909093
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.9,
+                "lo": 0.8,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 1.0,
+                "lo": 0.9,
+                "n": 0,
+                "weight": 0
+              }
+            ],
+            "top1_accuracy": 0.8052775703842876
+          },
+          "calibrator": {
+            "checksum": "11373cb4f0f3a3ba9ac4280d8fd56f98d545bf2ab2411df9108a29b77ede6ef7",
+            "fit_split_id": "llm-sample:enron_repaired:calibration",
+            "method": "temperature_scaling",
+            "n_calibration": 16,
+            "post_log_loss": 0.9827268695398574,
+            "pre_log_loss": 0.9971759248077904,
+            "temperature": 1.4
+          },
+          "coverage": {
+            "calibration": 0.5,
+            "calibration_n": 16,
+            "test": 0.53125,
+            "test_n": 34
+          },
+          "uncalibrated": {
+            "confusion_matrix": {
+              "no_reply_within_7d": {
+                "no_reply_within_7d": 10,
+                "reply_in_1_to_7d": 0,
+                "reply_within_24h": 2
+              },
+              "reply_in_1_to_7d": {
+                "no_reply_within_7d": 4,
+                "reply_in_1_to_7d": 1,
+                "reply_within_24h": 7
+              },
+              "reply_within_24h": {
+                "no_reply_within_7d": 4,
+                "reply_in_1_to_7d": 0,
+                "reply_within_24h": 6
+              }
+            },
+            "ece": 0.1912716302758602,
+            "effective_weight": 33345.23376623377,
+            "invalid_action_rate": 0.0,
+            "log_loss": 0.7651975233260327,
+            "mean_entropy": 0.8911292481674763,
+            "multiclass_brier": 0.4115190364639069,
+            "n": 34,
+            "reliability": [
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.1,
+                "lo": 0.0,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.2,
+                "lo": 0.1,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.3,
+                "lo": 0.2,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": 0.0,
+                "confidence": 0.3825812663145768,
+                "hi": 0.4,
+                "lo": 0.3,
+                "n": 1,
+                "weight": 32.285714285714285
+              },
+              {
+                "accuracy": 0.4971589285755101,
+                "confidence": 0.4479335421876997,
+                "hi": 0.5,
+                "lo": 0.4,
+                "n": 7,
+                "weight": 5681.96103896104
+              },
+              {
+                "accuracy": 0.9254203649989791,
+                "confidence": 0.5591354058497192,
+                "hi": 0.6,
+                "lo": 0.5,
+                "n": 7,
+                "weight": 5437.837662337663
+              },
+              {
+                "accuracy": 0.9660378562426998,
+                "confidence": 0.6337219485995832,
+                "hi": 0.7,
+                "lo": 0.6,
+                "n": 10,
+                "weight": 10990.655844155845
+              },
+              {
+                "accuracy": 0.741459286337889,
+                "confidence": 0.7054290291269324,
+                "hi": 0.8,
+                "lo": 0.7,
+                "n": 8,
+                "weight": 10926.084415584417
+              },
+              {
+                "accuracy": 1.0,
+                "confidence": 0.8259426383381355,
+                "hi": 0.9,
+                "lo": 0.8,
+                "n": 1,
+                "weight": 276.40909090909093
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 1.0,
+                "lo": 0.9,
+                "n": 0,
+                "weight": 0
+              }
+            ],
+            "top1_accuracy": 0.8052775703842876
+          }
+        },
+        "B3_COST_MATCHED": {
+          "calibrated": {
+            "confusion_matrix": {
+              "no_reply_within_7d": {
+                "no_reply_within_7d": 14,
+                "reply_in_1_to_7d": 0,
+                "reply_within_24h": 5
+              },
+              "reply_in_1_to_7d": {
+                "no_reply_within_7d": 7,
+                "reply_in_1_to_7d": 2,
+                "reply_within_24h": 10
+              },
+              "reply_within_24h": {
+                "no_reply_within_7d": 5,
+                "reply_in_1_to_7d": 0,
+                "reply_within_24h": 14
+              }
+            },
+            "ece": 0.22343107979348362,
+            "effective_weight": 53671.91558441559,
+            "invalid_action_rate": 0.0,
+            "log_loss": 1.000232622126531,
+            "mean_entropy": 0.6598973532563053,
+            "multiclass_brier": 0.5058900652414391,
+            "n": 57,
+            "reliability": [
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.1,
+                "lo": 0.0,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.2,
+                "lo": 0.1,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.3,
+                "lo": 0.2,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.4,
+                "lo": 0.3,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": 0.9108716226402452,
+                "confidence": 0.4278644420504866,
+                "hi": 0.5,
+                "lo": 0.4,
+                "n": 4,
+                "weight": 3101.2467532467535
+              },
+              {
+                "accuracy": 0.10458781211216053,
+                "confidence": 0.5707363040605473,
+                "hi": 0.6,
+                "lo": 0.5,
+                "n": 2,
+                "weight": 308.6948051948052
+              },
+              {
+                "accuracy": 0.9670673978618987,
+                "confidence": 0.6902121591602338,
+                "hi": 0.7,
+                "lo": 0.6,
+                "n": 12,
+                "weight": 13294.96103896104
+              },
+              {
+                "accuracy": 0.0,
+                "confidence": 0.70208734802013,
+                "hi": 0.8,
+                "lo": 0.7,
+                "n": 1,
+                "weight": 32.285714285714285
+              },
+              {
+                "accuracy": 0.6331585287884507,
+                "confidence": 0.8136278196189866,
+                "hi": 0.9,
+                "lo": 0.8,
+                "n": 35,
+                "weight": 36593.746753246756
+              },
+              {
+                "accuracy": 0.8106301536820857,
+                "confidence": 0.9357324799956108,
+                "hi": 1.0,
+                "lo": 0.9,
+                "n": 3,
+                "weight": 340.9805194805195
+              }
+            ],
+            "top1_accuracy": 0.7296236453440366
+          },
+          "calibrator": {
+            "checksum": "4cb4e2b33ef3cc2e5bb140799ba9d6fd32a3ed8f8f500a0e8c735a0979f35736",
+            "fit_split_id": "llm-sample:enron_repaired:calibration",
+            "method": "temperature_scaling",
+            "n_calibration": 27,
+            "post_log_loss": 0.7489622133957573,
+            "pre_log_loss": 0.7756120421552436,
+            "temperature": 0.7000000000000001
+          },
+          "coverage": {
+            "calibration": 0.84375,
+            "calibration_n": 27,
+            "test": 0.890625,
+            "test_n": 57
+          },
+          "uncalibrated": {
+            "confusion_matrix": {
+              "no_reply_within_7d": {
+                "no_reply_within_7d": 14,
+                "reply_in_1_to_7d": 0,
+                "reply_within_24h": 5
+              },
+              "reply_in_1_to_7d": {
+                "no_reply_within_7d": 7,
+                "reply_in_1_to_7d": 2,
+                "reply_within_24h": 10
+              },
+              "reply_within_24h": {
+                "no_reply_within_7d": 5,
+                "reply_in_1_to_7d": 0,
+                "reply_within_24h": 14
+              }
+            },
+            "ece": 0.1681506205027539,
+            "effective_weight": 53671.91558441559,
+            "invalid_action_rate": 0.0,
+            "log_loss": 0.9284243505491728,
+            "mean_entropy": 0.8413864164531722,
+            "multiclass_brier": 0.5046071163484253,
+            "n": 57,
+            "reliability": [
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.1,
+                "lo": 0.0,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.2,
+                "lo": 0.1,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.3,
+                "lo": 0.2,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.4,
+                "lo": 0.3,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": 0.9108716226402452,
+                "confidence": 0.4,
+                "hi": 0.5,
+                "lo": 0.4,
+                "n": 4,
+                "weight": 3101.2467532467535
+              },
+              {
+                "accuracy": 0.10458781211216053,
+                "confidence": 0.5,
+                "hi": 0.6,
+                "lo": 0.5,
+                "n": 2,
+                "weight": 308.6948051948052
+              },
+              {
+                "accuracy": 0.9647246437821941,
+                "confidence": 0.6,
+                "hi": 0.7,
+                "lo": 0.6,
+                "n": 13,
+                "weight": 13327.246753246754
+              },
+              {
+                "accuracy": 0.6331585287884507,
+                "confidence": 0.7,
+                "hi": 0.8,
+                "lo": 0.7,
+                "n": 35,
+                "weight": 36593.746753246756
+              },
+              {
+                "accuracy": 0.8106301536820857,
+                "confidence": 0.8452657538420522,
+                "hi": 0.9,
+                "lo": 0.8,
+                "n": 3,
+                "weight": 340.9805194805195
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 1.0,
+                "lo": 0.9,
+                "n": 0,
+                "weight": 0
+              }
+            ],
+            "top1_accuracy": 0.7296236453440366
+          }
+        }
+      },
+      "calibration_n": 32,
+      "confirmatory_coverage_gate": false,
+      "predictions": [
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "reply_within_24h",
+          "record_key": "enron:016d0fbc847a26a4ee22262e",
+          "weight": 276.40909090909093
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.6,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.1
+          },
+          "B3": {
+            "no_reply_within_7d": 0.5132137767688691,
+            "reply_in_1_to_7d": 0.3540481352392716,
+            "reply_within_24h": 0.1327380879918592
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.6,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.1
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "reply_in_1_to_7d",
+          "record_key": "enron:04b4b99a54dfce83fc004397",
+          "weight": 32.285714285714285
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "B3": {
+            "no_reply_within_7d": 0.5547316344487078,
+            "reply_in_1_to_7d": 0.252235295156411,
+            "reply_within_24h": 0.19303307039488116
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.7,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.1
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "no_reply_within_7d",
+          "record_key": "enron:060c2c39c471c1230751f976",
+          "weight": 2516.1428571428573
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "reply_within_24h",
+          "record_key": "enron:0cceb9fbe5c1daa649bac3d0",
+          "weight": 276.40909090909093
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "reply_within_24h",
+          "record_key": "enron:0dd74dea53f2eae625c47502",
+          "weight": 276.40909090909093
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "reply_in_1_to_7d",
+          "record_key": "enron:0efb01329315969ab94e6427",
+          "weight": 32.285714285714285
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.7,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.1
+          },
+          "B3": {
+            "no_reply_within_7d": 0.7,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.10000000000000003
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.7,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.1
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "reply_within_24h",
+          "record_key": "enron:120f90e4328f79415b241267",
+          "weight": 276.40909090909093
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "reply_within_24h",
+          "record_key": "enron:1397267910721f5cc1bc2b8e",
+          "weight": 276.40909090909093
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.6,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.1
+          },
+          "B3": {
+            "no_reply_within_7d": 0.6216341651753413,
+            "reply_in_1_to_7d": 0.27790558193553844,
+            "reply_within_24h": 0.10046025288912021
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.7,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.1
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "no_reply_within_7d",
+          "record_key": "enron:18412d78163b765c0610c66c",
+          "weight": 2516.1428571428573
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.5,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.3
+          },
+          "B3": {
+            "no_reply_within_7d": 0.6327084782011143,
+            "reply_in_1_to_7d": 0.20681728085041926,
+            "reply_within_24h": 0.16047424094846646
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.7,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.1
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "reply_within_24h",
+          "record_key": "enron:1bf5bcfa2a63701782f11fde",
+          "weight": 276.40909090909093
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "no_reply_within_7d",
+          "record_key": "enron:26c1110b760a40f95c478c58",
+          "weight": 2516.1428571428573
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.7,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.1
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.8,
+            "reply_in_1_to_7d": 0.15,
+            "reply_within_24h": 0.05
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "reply_in_1_to_7d",
+          "record_key": "enron:2a579887476e912b392a7e04",
+          "weight": 32.285714285714285
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.3,
+            "reply_in_1_to_7d": 0.4,
+            "reply_within_24h": 0.3
+          },
+          "B3": {
+            "no_reply_within_7d": 0.4012379499673947,
+            "reply_in_1_to_7d": 0.3455980186165014,
+            "reply_within_24h": 0.253164031416104
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.3,
+            "reply_in_1_to_7d": 0.4,
+            "reply_within_24h": 0.3
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "reply_in_1_to_7d",
+          "record_key": "enron:2cbde0f5989f6e28f63a60f5",
+          "weight": 32.285714285714285
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "B3": {
+            "no_reply_within_7d": 0.2817658478626899,
+            "reply_in_1_to_7d": 0.2893921468397464,
+            "reply_within_24h": 0.42884200529756367
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.7,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.1
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "reply_in_1_to_7d",
+          "record_key": "enron:323010a4d462bd82fc78f057",
+          "weight": 32.285714285714285
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.2,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.5
+          },
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "no_reply_within_7d",
+          "record_key": "enron:33d9ee3c2cca48950ae50b55",
+          "weight": 2516.1428571428573
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.5,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.3
+          },
+          "B3": {
+            "no_reply_within_7d": 0.42023818304533556,
+            "reply_in_1_to_7d": 0.2338273219453515,
+            "reply_within_24h": 0.3459344950093129
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "no_reply_within_7d",
+          "record_key": "enron:43c2ae0e682ed9be63e76a86",
+          "weight": 2516.1428571428573
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "reply_within_24h",
+          "record_key": "enron:43cf4d71359883a05ec99f11",
+          "weight": 276.40909090909093
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "reply_in_1_to_7d",
+          "record_key": "enron:453134dfd40315a08dd906da",
+          "weight": 32.285714285714285
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "B3": {
+            "no_reply_within_7d": 0.11560764094784637,
+            "reply_in_1_to_7d": 0.20128459389696743,
+            "reply_within_24h": 0.6831077651551861
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "reply_in_1_to_7d",
+          "record_key": "enron:4b2e287faa4eb6cb06f36bc2",
+          "weight": 32.285714285714285
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "reply_in_1_to_7d",
+          "record_key": "enron:4f8b5928de47a341454d83b0",
+          "weight": 32.285714285714285
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "no_reply_within_7d",
+          "record_key": "enron:5b4bd7298bc968e478cffb61",
+          "weight": 2516.1428571428573
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "B3": {
+            "no_reply_within_7d": 0.10000000000000003,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "no_reply_within_7d",
+          "record_key": "enron:5d3583494df8b309f661bb9f",
+          "weight": 2516.1428571428573
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "reply_within_24h",
+          "record_key": "enron:60a80249829a8aa29562fc65",
+          "weight": 276.40909090909093
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.7,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.1
+          },
+          "B3": {
+            "no_reply_within_7d": 0.7,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.10000000000000003
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.7,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.1
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "no_reply_within_7d",
+          "record_key": "enron:67281455bf38760d51121716",
+          "weight": 2516.1428571428573
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.6,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.1
+          },
+          "B3": {
+            "no_reply_within_7d": 0.6625425929755937,
+            "reply_in_1_to_7d": 0.2367887027183005,
+            "reply_within_24h": 0.1006687043061058
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.6,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.1
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "no_reply_within_7d",
+          "record_key": "enron:688e2cd1765f825048eee6bc",
+          "weight": 2516.1428571428573
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.6
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "reply_within_24h",
+          "record_key": "enron:6b1648125298c6831263e3a5",
+          "weight": 276.40909090909093
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.6,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.1
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "no_reply_within_7d",
+          "record_key": "enron:73061852e88174bb94c3d931",
+          "weight": 2516.1428571428573
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "reply_within_24h",
+          "record_key": "enron:7557db35d15292b9a90a1a24",
+          "weight": 276.40909090909093
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.25,
+            "reply_in_1_to_7d": 0.35,
+            "reply_within_24h": 0.4
+          },
+          "B3": {
+            "no_reply_within_7d": 0.18890588566605812,
+            "reply_in_1_to_7d": 0.28517319529178475,
+            "reply_within_24h": 0.5259209190421572
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "reply_in_1_to_7d",
+          "record_key": "enron:7d9ff6a740cd089813b0c834",
+          "weight": 32.285714285714285
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.6,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.1
+          },
+          "B3": {
+            "no_reply_within_7d": 0.5658041893815136,
+            "reply_in_1_to_7d": 0.30679933570482404,
+            "reply_within_24h": 0.12739647491366238
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.6,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.1
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "no_reply_within_7d",
+          "record_key": "enron:7f6cd85287ed560bf4a58418",
+          "weight": 2516.1428571428573
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.6,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.1
+          },
+          "B3": {
+            "no_reply_within_7d": 0.6216341651753413,
+            "reply_in_1_to_7d": 0.27790558193553844,
+            "reply_within_24h": 0.10046025288912021
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.6,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.1
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "no_reply_within_7d",
+          "record_key": "enron:801a12d8a5668e0be9b2f945",
+          "weight": 2516.1428571428573
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.3,
+            "reply_in_1_to_7d": 0.4,
+            "reply_within_24h": 0.3
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.7,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.1
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "no_reply_within_7d",
+          "record_key": "enron:89640fc38a35ee562c6f813a",
+          "weight": 2516.1428571428573
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "B3": {
+            "no_reply_within_7d": 0.10000000000000003,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "reply_within_24h",
+          "record_key": "enron:8a83aa5c65a64233c5392fbe",
+          "weight": 276.40909090909093
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.6,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.1
+          },
+          "B3": {
+            "no_reply_within_7d": 0.5414597962284441,
+            "reply_in_1_to_7d": 0.32940483259414666,
+            "reply_within_24h": 0.1291353711774093
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.6,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.1
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "reply_within_24h",
+          "record_key": "enron:8b96c2b1b78dc09f8f149e95",
+          "weight": 276.40909090909093
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.3,
+            "reply_in_1_to_7d": 0.4,
+            "reply_within_24h": 0.3
+          },
+          "B3": {
+            "no_reply_within_7d": 0.48532113038838387,
+            "reply_in_1_to_7d": 0.3071829348575802,
+            "reply_within_24h": 0.2074959347540358
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.5,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.3
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "reply_within_24h",
+          "record_key": "enron:8d4c20db644076a93992f3db",
+          "weight": 276.40909090909093
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.3,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.4
+          },
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "no_reply_within_7d",
+          "record_key": "enron:8f0227d35b2ab4ee5c7de427",
+          "weight": 2516.1428571428573
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "B3": {
+            "no_reply_within_7d": 0.07702689312762824,
+            "reply_in_1_to_7d": 0.15405378625525645,
+            "reply_within_24h": 0.7689193206171153
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.05,
+            "reply_in_1_to_7d": 0.1,
+            "reply_within_24h": 0.85
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "reply_in_1_to_7d",
+          "record_key": "enron:91485058e4869416dc6bf2e5",
+          "weight": 32.285714285714285
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.6
+          },
+          "B3": {
+            "no_reply_within_7d": 0.1091061540856883,
+            "reply_in_1_to_7d": 0.26834762093829256,
+            "reply_within_24h": 0.6225462249760192
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.6
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "reply_in_1_to_7d",
+          "record_key": "enron:953c146588a28378e0f493fe",
+          "weight": 32.285714285714285
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "reply_within_24h",
+          "record_key": "enron:960167a439e682b7dc2692bb",
+          "weight": 276.40909090909093
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.25,
+            "reply_in_1_to_7d": 0.35,
+            "reply_within_24h": 0.4
+          },
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "reply_in_1_to_7d",
+          "record_key": "enron:961d9edf9bc039d36311659c",
+          "weight": 32.285714285714285
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.6,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.1
+          },
+          "B3": {
+            "no_reply_within_7d": 0.6216341651753413,
+            "reply_in_1_to_7d": 0.27790558193553844,
+            "reply_within_24h": 0.10046025288912021
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.6,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.1
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "no_reply_within_7d",
+          "record_key": "enron:98692023f7ccfb2c7782ef68",
+          "weight": 2516.1428571428573
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.3,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.4
+          },
+          "B3": {
+            "no_reply_within_7d": 0.24960206960308248,
+            "reply_in_1_to_7d": 0.2867174867569163,
+            "reply_within_24h": 0.4636804436400012
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "reply_within_24h",
+          "record_key": "enron:9fa9c024683bdb496bb4eb7b",
+          "weight": 276.40909090909093
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "reply_in_1_to_7d",
+          "record_key": "enron:a420f753a2eda31bbcc73628",
+          "weight": 32.285714285714285
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.25,
+            "reply_in_1_to_7d": 0.35,
+            "reply_within_24h": 0.4
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.4,
+            "reply_in_1_to_7d": 0.25,
+            "reply_within_24h": 0.35
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "reply_within_24h",
+          "record_key": "enron:a934326b0f9bf38fd4de127c",
+          "weight": 276.40909090909093
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.6
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.6
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "reply_within_24h",
+          "record_key": "enron:aef6c018f67b0dd9b5003bb1",
+          "weight": 276.40909090909093
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.7,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.1
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.7,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.1
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "no_reply_within_7d",
+          "record_key": "enron:b5b3010a4a83629368df8363",
+          "weight": 2516.1428571428573
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.7,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.1
+          },
+          "B3": {
+            "no_reply_within_7d": 0.7226906516373843,
+            "reply_in_1_to_7d": 0.189800894945046,
+            "reply_within_24h": 0.08750845341756962
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.7,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.1
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "no_reply_within_7d",
+          "record_key": "enron:b713bc44d03b289a539ad6bc",
+          "weight": 2516.1428571428573
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.2,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.5
+          },
+          "B3": {
+            "no_reply_within_7d": 0.14820038204420502,
+            "reply_in_1_to_7d": 0.26418236530350053,
+            "reply_within_24h": 0.5876172526522945
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "reply_in_1_to_7d",
+          "record_key": "enron:b8a8f1e68fa5259a2015ef80",
+          "weight": 32.285714285714285
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.2,
+            "reply_in_1_to_7d": 0.5,
+            "reply_within_24h": 0.3
+          },
+          "B3": {
+            "no_reply_within_7d": 0.21476571328346455,
+            "reply_in_1_to_7d": 0.40359632748883534,
+            "reply_within_24h": 0.3816379592277001
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.2,
+            "reply_in_1_to_7d": 0.5,
+            "reply_within_24h": 0.3
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "reply_in_1_to_7d",
+          "record_key": "enron:bb1bc29f490dd88a2ffbf106",
+          "weight": 32.285714285714285
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "B3": {
+            "no_reply_within_7d": 0.3825812663145768,
+            "reply_in_1_to_7d": 0.3330563368966993,
+            "reply_within_24h": 0.28436239678872394
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.6,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.1
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "reply_in_1_to_7d",
+          "record_key": "enron:bd5308e90628f25a33dc8016",
+          "weight": 32.285714285714285
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.6,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.1
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.6,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.1
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "reply_in_1_to_7d",
+          "record_key": "enron:c1a932cb01f21f2168b91eae",
+          "weight": 32.285714285714285
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.25,
+            "reply_in_1_to_7d": 0.35,
+            "reply_within_24h": 0.4
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "reply_within_24h",
+          "record_key": "enron:d1255577a7c1cf17b1ff2247",
+          "weight": 276.40909090909093
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.6
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "reply_in_1_to_7d",
+          "record_key": "enron:d6ce8cf248ecdd89a9fb48c3",
+          "weight": 32.285714285714285
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "B3": {
+            "no_reply_within_7d": 0.10000000000000003,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "reply_within_24h",
+          "record_key": "enron:db4e729fc76ab4003628c957",
+          "weight": 276.40909090909093
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.05,
+            "reply_in_1_to_7d": 0.1,
+            "reply_within_24h": 0.85
+          },
+          "B3": {
+            "no_reply_within_7d": 0.05801912055395483,
+            "reply_in_1_to_7d": 0.11603824110790968,
+            "reply_within_24h": 0.8259426383381355
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.05,
+            "reply_in_1_to_7d": 0.1,
+            "reply_within_24h": 0.85
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "reply_within_24h",
+          "record_key": "enron:e6419a6659876c75b7bf79b1",
+          "weight": 276.40909090909093
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.7,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.1
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.7,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.1
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "no_reply_within_7d",
+          "record_key": "enron:e9771bdf2ece36bd35e108d1",
+          "weight": 2516.1428571428573
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "B3": {
+            "no_reply_within_7d": 0.11647626413253569,
+            "reply_in_1_to_7d": 0.2199275726596265,
+            "reply_within_24h": 0.6635961632078378
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "reply_within_24h",
+          "record_key": "enron:ea150482d7e0cf96bd1aa07d",
+          "weight": 276.40909090909093
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "no_reply_within_7d",
+          "record_key": "enron:eaa89d6b3798436047042182",
+          "weight": 2516.1428571428573
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "B3": {
+            "no_reply_within_7d": 0.10043765300459528,
+            "reply_in_1_to_7d": 0.21784359889766655,
+            "reply_within_24h": 0.6817187480977381
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "reply_in_1_to_7d",
+          "record_key": "enron:f4156046075adef069927990",
+          "weight": 32.285714285714285
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.3,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.4
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.6,
+            "reply_in_1_to_7d": 0.25,
+            "reply_within_24h": 0.15
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "reply_in_1_to_7d",
+          "record_key": "enron:f649408f5db748b92a6e4f4e",
+          "weight": 32.285714285714285
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.6,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.1
+          },
+          "B3": {
+            "no_reply_within_7d": 0.5845960273571612,
+            "reply_in_1_to_7d": 0.2843180233081795,
+            "reply_within_24h": 0.13108594933465936
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.6,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.1
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "reply_in_1_to_7d",
+          "record_key": "enron:f90ada5acbac3c8a884a8c45",
+          "weight": 32.285714285714285
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.7,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.1
+          },
+          "B3": {
+            "no_reply_within_7d": 0.7,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.10000000000000003
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.7,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.1
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "no_reply_within_7d",
+          "record_key": "enron:fa749e1f05998a7e2e28a988",
+          "weight": 2516.1428571428573
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.3,
+            "reply_within_24h": 0.6
+          },
+          "B3": {
+            "no_reply_within_7d": 0.1006687043061058,
+            "reply_in_1_to_7d": 0.2367887027183005,
+            "reply_within_24h": 0.6625425929755937
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.1,
+            "reply_in_1_to_7d": 0.2,
+            "reply_within_24h": 0.7
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "reply_within_24h",
+          "record_key": "enron:fdef1f6269d587189bf87e86",
+          "weight": 276.40909090909093
+        },
+        {
+          "B2": {
+            "no_reply_within_7d": 0.25,
+            "reply_in_1_to_7d": 0.35,
+            "reply_within_24h": 0.4
+          },
+          "B3": {
+            "no_reply_within_7d": 0.19950433301638812,
+            "reply_in_1_to_7d": 0.32929076441386146,
+            "reply_within_24h": 0.47120490256975045
+          },
+          "B3_COST_MATCHED": {
+            "no_reply_within_7d": 0.4,
+            "reply_in_1_to_7d": 0.35,
+            "reply_within_24h": 0.25
+          },
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "no_reply_within_7d",
+          "record_key": "enron:ff36562e383c9e19c9616c4c",
+          "weight": 2516.1428571428573
+        }
+      ],
+      "test_n": 64
+    },
+    "ipd_long": {
+      "arms": {
+        "B2": {
+          "calibrated": {
+            "confusion_matrix": {
+              "cooperate": {
+                "cooperate": 20,
+                "defect": 10
+              },
+              "defect": {
+                "cooperate": 1,
+                "defect": 24
+              }
+            },
+            "ece": 0.027906216181795902,
+            "effective_weight": 2205.15625,
+            "invalid_action_rate": 0.0,
+            "log_loss": 0.4073098337584012,
+            "mean_entropy": 0.4334685359108438,
+            "multiclass_brier": 0.26021463364364633,
+            "n": 55,
+            "reliability": [
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.1,
+                "lo": 0.0,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.2,
+                "lo": 0.1,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.3,
+                "lo": 0.2,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.4,
+                "lo": 0.3,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.5,
+                "lo": 0.4,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": 0.0,
+                "confidence": 0.5,
+                "hi": 0.6,
+                "lo": 0.5,
+                "n": 1,
+                "weight": 46.46875
+              },
+              {
+                "accuracy": 0.7273729332516841,
+                "confidence": 0.6763853030619535,
+                "hi": 0.7,
+                "lo": 0.6,
+                "n": 14,
+                "weight": 510.3125
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.8,
+                "lo": 0.7,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": 0.8271112722000725,
+                "confidence": 0.8235434389478121,
+                "hi": 0.9,
+                "lo": 0.8,
+                "n": 30,
+                "weight": 1207.0625
+              },
+              {
+                "accuracy": 1.0,
+                "confidence": 0.981924442949418,
+                "hi": 1.0,
+                "lo": 0.9,
+                "n": 10,
+                "weight": 441.3125
+              }
+            ],
+            "top1_accuracy": 0.8212003117692908
+          },
+          "calibrator": {
+            "checksum": "c85bfbc87333a165b50a8a771b19950ba8f4563140553d172cff7086050ba34c",
+            "fit_split_id": "llm-sample:ipd_long:calibration",
+            "method": "temperature_scaling",
+            "n_calibration": 32,
+            "post_log_loss": 0.4538968886342901,
+            "pre_log_loss": 0.4887082684262804,
+            "temperature": 0.55
+          },
+          "coverage": {
+            "calibration": 1.0,
+            "calibration_n": 32,
+            "test": 0.859375,
+            "test_n": 55
+          },
+          "uncalibrated": {
+            "confusion_matrix": {
+              "cooperate": {
+                "cooperate": 20,
+                "defect": 10
+              },
+              "defect": {
+                "cooperate": 1,
+                "defect": 24
+              }
+            },
+            "ece": 0.12960391128746554,
+            "effective_weight": 2205.15625,
+            "invalid_action_rate": 0.0,
+            "log_loss": 0.4549097378764524,
+            "mean_entropy": 0.5697875244265591,
+            "multiclass_brier": 0.288066605257564,
+            "n": 55,
+            "reliability": [
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.1,
+                "lo": 0.0,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.2,
+                "lo": 0.1,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.3,
+                "lo": 0.2,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.4,
+                "lo": 0.3,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.5,
+                "lo": 0.4,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": 0.0,
+                "confidence": 0.5,
+                "hi": 0.6,
+                "lo": 0.5,
+                "n": 1,
+                "weight": 46.46875
+              },
+              {
+                "accuracy": 0.7273729332516841,
+                "confidence": 0.6,
+                "hi": 0.7,
+                "lo": 0.6,
+                "n": 14,
+                "weight": 510.3125
+              },
+              {
+                "accuracy": 0.8271112722000725,
+                "confidence": 0.7,
+                "hi": 0.8,
+                "lo": 0.7,
+                "n": 30,
+                "weight": 1207.0625
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.9,
+                "lo": 0.8,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": 1.0,
+                "confidence": 0.8999999999999999,
+                "hi": 1.0,
+                "lo": 0.9,
+                "n": 10,
+                "weight": 441.3125
+              }
+            ],
+            "top1_accuracy": 0.8212003117692908
+          }
+        },
+        "B3": {
+          "calibrated": {
+            "confusion_matrix": {
+              "cooperate": {
+                "cooperate": 15,
+                "defect": 3
+              },
+              "defect": {
+                "cooperate": 0,
+                "defect": 8
+              }
+            },
+            "ece": 0.02683339099626632,
+            "effective_weight": 997.8125,
+            "invalid_action_rate": 0.0,
+            "log_loss": 0.30420759979993534,
+            "mean_entropy": 0.339352101593105,
+            "multiclass_brier": 0.17789552290765973,
+            "n": 26,
+            "reliability": [
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.1,
+                "lo": 0.0,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.2,
+                "lo": 0.1,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.3,
+                "lo": 0.2,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.4,
+                "lo": 0.3,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.5,
+                "lo": 0.4,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.6,
+                "lo": 0.5,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.7,
+                "lo": 0.6,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": 1.0,
+                "confidence": 0.7541776870711745,
+                "hi": 0.8,
+                "lo": 0.7,
+                "n": 2,
+                "weight": 69.5625
+              },
+              {
+                "accuracy": 0.8572527895344363,
+                "confidence": 0.8660172369679326,
+                "hi": 0.9,
+                "lo": 0.8,
+                "n": 19,
+                "weight": 730.96875
+              },
+              {
+                "accuracy": 1.0,
+                "confidence": 0.9834341016926493,
+                "hi": 1.0,
+                "lo": 0.9,
+                "n": 5,
+                "weight": 197.28125
+              }
+            ],
+            "top1_accuracy": 0.8954274976511118
+          },
+          "calibrator": {
+            "checksum": "a57de77c5df193d35966fbd42165b914ca14c22fd31ad974133bd39936ce9827",
+            "fit_split_id": "llm-sample:ipd_long:calibration",
+            "method": "temperature_scaling",
+            "n_calibration": 13,
+            "post_log_loss": 0.3166350001520457,
+            "pre_log_loss": 0.42255556916379833,
+            "temperature": 0.4
+          },
+          "coverage": {
+            "calibration": 0.40625,
+            "calibration_n": 13,
+            "test": 0.40625,
+            "test_n": 26
+          },
+          "uncalibrated": {
+            "confusion_matrix": {
+              "cooperate": {
+                "cooperate": 15,
+                "defect": 3
+              },
+              "defect": {
+                "cooperate": 0,
+                "defect": 8
+              }
+            },
+            "ece": 0.18541097237694346,
+            "effective_weight": 997.8125,
+            "invalid_action_rate": 0.0,
+            "log_loss": 0.41847388356924364,
+            "mean_entropy": 0.5845342333193884,
+            "multiclass_brier": 0.2484243379637676,
+            "n": 26,
+            "reliability": [
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.1,
+                "lo": 0.0,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.2,
+                "lo": 0.1,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.3,
+                "lo": 0.2,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.4,
+                "lo": 0.3,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.5,
+                "lo": 0.4,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": 1.0,
+                "confidence": 0.5999999999999999,
+                "hi": 0.6,
+                "lo": 0.5,
+                "n": 1,
+                "weight": 34.78125
+              },
+              {
+                "accuracy": 0.8378732702112163,
+                "confidence": 0.6597337893016275,
+                "hi": 0.7,
+                "lo": 0.6,
+                "n": 12,
+                "weight": 429.0625
+              },
+              {
+                "accuracy": 0.9063683015058467,
+                "confidence": 0.7050078381157566,
+                "hi": 0.8,
+                "lo": 0.7,
+                "n": 9,
+                "weight": 371.46875
+              },
+              {
+                "accuracy": 1.0,
+                "confidence": 0.8777797217713172,
+                "hi": 0.9,
+                "lo": 0.8,
+                "n": 4,
+                "weight": 162.5
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 1.0,
+                "lo": 0.9,
+                "n": 0,
+                "weight": 0
+              }
+            ],
+            "top1_accuracy": 0.8954274976511118
+          }
+        },
+        "B3_COST_MATCHED": {
+          "calibrated": {
+            "confusion_matrix": {
+              "cooperate": {
+                "cooperate": 19,
+                "defect": 10
+              },
+              "defect": {
+                "cooperate": 1,
+                "defect": 21
+              }
+            },
+            "ece": 0.05919806108122322,
+            "effective_weight": 2030.96875,
+            "invalid_action_rate": 0.0,
+            "log_loss": 0.4595068625269502,
+            "mean_entropy": 0.5008927769499335,
+            "multiclass_brier": 0.2949322702736702,
+            "n": 51,
+            "reliability": [
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.1,
+                "lo": 0.0,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.2,
+                "lo": 0.1,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.3,
+                "lo": 0.2,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.4,
+                "lo": 0.3,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.5,
+                "lo": 0.4,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": 0.0,
+                "confidence": 0.5,
+                "hi": 0.6,
+                "lo": 0.5,
+                "n": 1,
+                "weight": 46.46875
+              },
+              {
+                "accuracy": 0.8235713719584687,
+                "confidence": 0.6510805954373344,
+                "hi": 0.7,
+                "lo": 0.6,
+                "n": 11,
+                "weight": 394.28125
+              },
+              {
+                "accuracy": 0.7800286575423687,
+                "confidence": 0.7864293451282517,
+                "hi": 0.8,
+                "lo": 0.7,
+                "n": 32,
+                "weight": 1264.9375
+              },
+              {
+                "accuracy": 1.0,
+                "confidence": 0.8940467924177131,
+                "hi": 0.9,
+                "lo": 0.8,
+                "n": 3,
+                "weight": 139.40625
+              },
+              {
+                "accuracy": 1.0,
+                "confidence": 0.9670846050375463,
+                "hi": 1.0,
+                "lo": 0.9,
+                "n": 4,
+                "weight": 185.875
+              }
+            ],
+            "top1_accuracy": 0.8058654275207336
+          },
+          "calibrator": {
+            "checksum": "6553fa1ad21c8ac3680541b722e408d3fa48132769a56bd7638a953856cc68d6",
+            "fit_split_id": "llm-sample:ipd_long:calibration",
+            "method": "temperature_scaling",
+            "n_calibration": 28,
+            "post_log_loss": 0.46543162810160316,
+            "pre_log_loss": 0.48735858045272823,
+            "temperature": 0.65
+          },
+          "coverage": {
+            "calibration": 0.875,
+            "calibration_n": 28,
+            "test": 0.796875,
+            "test_n": 51
+          },
+          "uncalibrated": {
+            "confusion_matrix": {
+              "cooperate": {
+                "cooperate": 19,
+                "defect": 10
+              },
+              "defect": {
+                "cooperate": 1,
+                "defect": 21
+              }
+            },
+            "ece": 0.12756689387761394,
+            "effective_weight": 2030.96875,
+            "invalid_action_rate": 0.0,
+            "log_loss": 0.4921038042556974,
+            "mean_entropy": 0.5910749490831437,
+            "multiclass_brier": 0.3162964102721915,
+            "n": 51,
+            "reliability": [
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.1,
+                "lo": 0.0,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.2,
+                "lo": 0.1,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.3,
+                "lo": 0.2,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.4,
+                "lo": 0.3,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.5,
+                "lo": 0.4,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": 0.0,
+                "confidence": 0.5,
+                "hi": 0.6,
+                "lo": 0.5,
+                "n": 1,
+                "weight": 46.46875
+              },
+              {
+                "accuracy": 0.8235713719584687,
+                "confidence": 0.6,
+                "hi": 0.7,
+                "lo": 0.6,
+                "n": 11,
+                "weight": 394.28125
+              },
+              {
+                "accuracy": 0.7800286575423687,
+                "confidence": 0.6999999999999998,
+                "hi": 0.8,
+                "lo": 0.7,
+                "n": 32,
+                "weight": 1264.9375
+              },
+              {
+                "accuracy": 1.0,
+                "confidence": 0.8,
+                "hi": 0.9,
+                "lo": 0.8,
+                "n": 3,
+                "weight": 139.40625
+              },
+              {
+                "accuracy": 1.0,
+                "confidence": 0.9,
+                "hi": 1.0,
+                "lo": 0.9,
+                "n": 4,
+                "weight": 185.875
+              }
+            ],
+            "top1_accuracy": 0.8058654275207336
+          }
+        }
+      },
+      "calibration_n": 32,
+      "confirmatory_coverage_gate": false,
+      "predictions": [
+        {
+          "B2": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "B3": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "B3_COST_MATCHED": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "defect",
+          "record_key": "ipd:s11n9:s11n9usuario10:21",
+          "weight": 46.46875
+        },
+        {
+          "B2": {
+            "cooperate": 0.1,
+            "defect": 0.9
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "cooperate": 0.2,
+            "defect": 0.8
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "defect",
+          "record_key": "ipd:s11n9:s11n9usuario10:69",
+          "weight": 46.46875
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "defect",
+          "record_key": "ipd:s11n9:s11n9usuario10:90",
+          "weight": 46.46875
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "defect",
+          "record_key": "ipd:s11n9:s11n9usuario1:73",
+          "weight": 46.46875
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "defect",
+          "record_key": "ipd:s11n9:s11n9usuario2:40",
+          "weight": 46.46875
+        },
+        {
+          "B2": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "defect",
+          "record_key": "ipd:s11n9:s11n9usuario2:52",
+          "weight": 46.46875
+        },
+        {
+          "B2": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "defect",
+          "record_key": "ipd:s11n9:s11n9usuario2:54",
+          "weight": 46.46875
+        },
+        {
+          "B2": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "defect",
+          "record_key": "ipd:s11n9:s11n9usuario2:59",
+          "weight": 46.46875
+        },
+        {
+          "B2": {
+            "cooperate": 0.4,
+            "defect": 0.6
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "cooperate": 0.4,
+            "defect": 0.6
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "cooperate",
+          "record_key": "ipd:s11n9:s11n9usuario2:67",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "B3": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "B3_COST_MATCHED": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "defect",
+          "record_key": "ipd:s11n9:s11n9usuario3:16",
+          "weight": 46.46875
+        },
+        {
+          "B2": {
+            "cooperate": 0.5,
+            "defect": 0.5
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "cooperate": 0.5,
+            "defect": 0.5
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "defect",
+          "record_key": "ipd:s11n9:s11n9usuario3:3",
+          "weight": 46.46875
+        },
+        {
+          "B2": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "cooperate",
+          "record_key": "ipd:s11n9:s11n9usuario3:68",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.4,
+            "defect": 0.6
+          },
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "defect",
+          "record_key": "ipd:s11n9:s11n9usuario4:53",
+          "weight": 46.46875
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "cooperate": 0.2,
+            "defect": 0.8
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "defect",
+          "record_key": "ipd:s11n9:s11n9usuario5:14",
+          "weight": 46.46875
+        },
+        {
+          "B2": {
+            "cooperate": 0.1,
+            "defect": 0.9
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "defect",
+          "record_key": "ipd:s11n9:s11n9usuario5:32",
+          "weight": 46.46875
+        },
+        {
+          "B2": {
+            "cooperate": 0.1,
+            "defect": 0.9
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "defect",
+          "record_key": "ipd:s11n9:s11n9usuario5:69",
+          "weight": 46.46875
+        },
+        {
+          "B2": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "B3": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "B3_COST_MATCHED": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "cooperate",
+          "record_key": "ipd:s11n9:s11n9usuario6:26",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.4,
+            "defect": 0.6
+          },
+          "B3": {
+            "cooperate": 0.33837039323897994,
+            "defect": 0.66162960676102
+          },
+          "B3_COST_MATCHED": {
+            "cooperate": 0.4,
+            "defect": 0.6
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "defect",
+          "record_key": "ipd:s11n9:s11n9usuario6:5",
+          "weight": 46.46875
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "cooperate",
+          "record_key": "ipd:s11n9:s11n9usuario6:73",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "cooperate",
+          "record_key": "ipd:s11n9:s11n9usuario7:76",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "defect",
+          "record_key": "ipd:s11n9:s11n9usuario8:73",
+          "weight": 46.46875
+        },
+        {
+          "B2": {
+            "cooperate": 0.1,
+            "defect": 0.9
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "cooperate": 0.2,
+            "defect": 0.8
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "defect",
+          "record_key": "ipd:s11n9:s11n9usuario9:49",
+          "weight": 46.46875
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "defect",
+          "record_key": "ipd:s11n9:s11n9usuario9:73",
+          "weight": 46.46875
+        },
+        {
+          "B2": {
+            "cooperate": 0.4,
+            "defect": 0.6
+          },
+          "B3": {
+            "cooperate": 0.3584269428023385,
+            "defect": 0.6415730571976616
+          },
+          "B3_COST_MATCHED": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario10:70",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.4,
+            "defect": 0.6
+          },
+          "B3": {
+            "cooperate": 0.3584269428023385,
+            "defect": 0.6415730571976616
+          },
+          "B3_COST_MATCHED": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario10:73",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "defect",
+          "record_key": "ipd:s1m5:s1m5usuario10:96",
+          "weight": 46.46875
+        },
+        {
+          "B2": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "B3": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "B3_COST_MATCHED": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "defect",
+          "record_key": "ipd:s1m5:s1m5usuario10:98",
+          "weight": 46.46875
+        },
+        {
+          "B2": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "B3": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "B3_COST_MATCHED": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "defect",
+          "record_key": "ipd:s1m5:s1m5usuario11:61",
+          "weight": 46.46875
+        },
+        {
+          "B2": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "defect",
+          "record_key": "ipd:s1m5:s1m5usuario11:90",
+          "weight": 46.46875
+        },
+        {
+          "B2": {
+            "cooperate": 0.1,
+            "defect": 0.9
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "cooperate": 0.1,
+            "defect": 0.9
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "defect",
+          "record_key": "ipd:s1m5:s1m5usuario12:82",
+          "weight": 46.46875
+        },
+        {
+          "B2": {
+            "cooperate": 0.1,
+            "defect": 0.9
+          },
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "defect",
+          "record_key": "ipd:s1m5:s1m5usuario12:92",
+          "weight": 46.46875
+        },
+        {
+          "B2": {
+            "cooperate": 0.6,
+            "defect": 0.4
+          },
+          "B3": {
+            "cooperate": 0.5999999999999999,
+            "defect": 0.4
+          },
+          "B3_COST_MATCHED": {
+            "cooperate": 0.6,
+            "defect": 0.4
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario13:22",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.6,
+            "defect": 0.4
+          },
+          "B3": {
+            "cooperate": 0.621008656868642,
+            "defect": 0.37899134313135807
+          },
+          "B3_COST_MATCHED": {
+            "cooperate": 0.6,
+            "defect": 0.4
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario13:28",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.7,
+            "defect": 0.3
+          },
+          "B3": {
+            "cooperate": 0.6811216646529927,
+            "defect": 0.31887833534700727
+          },
+          "B3_COST_MATCHED": {
+            "cooperate": 0.7,
+            "defect": 0.3
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario13:37",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.7,
+            "defect": 0.3
+          },
+          "B3": {
+            "cooperate": 0.6811216646529927,
+            "defect": 0.31887833534700727
+          },
+          "B3_COST_MATCHED": {
+            "cooperate": 0.7,
+            "defect": 0.3
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario13:43",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.7,
+            "defect": 0.3
+          },
+          "B3": {
+            "cooperate": 0.7,
+            "defect": 0.3
+          },
+          "B3_COST_MATCHED": {
+            "cooperate": 0.7,
+            "defect": 0.3
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario13:67",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.7,
+            "defect": 0.3
+          },
+          "B3": {
+            "cooperate": 0.7,
+            "defect": 0.3
+          },
+          "B3_COST_MATCHED": {
+            "cooperate": 0.7,
+            "defect": 0.3
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario13:93",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "defect",
+          "record_key": "ipd:s1m5:s1m5usuario14:49",
+          "weight": 46.46875
+        },
+        {
+          "B2": {
+            "cooperate": 0.6,
+            "defect": 0.4
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "cooperate": 0.6,
+            "defect": 0.4
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario15:46",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.6,
+            "defect": 0.4
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "cooperate": 0.6,
+            "defect": 0.4
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario15:57",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "B3": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "B3_COST_MATCHED": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "defect",
+          "record_key": "ipd:s1m5:s1m5usuario15:59",
+          "weight": 46.46875
+        },
+        {
+          "B2": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario16:56",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.9,
+            "defect": 0.1
+          },
+          "B3": {
+            "cooperate": 0.7534844309811316,
+            "defect": 0.24651556901886826
+          },
+          "B3_COST_MATCHED": {
+            "cooperate": 0.7,
+            "defect": 0.3
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario1:51",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.7,
+            "defect": 0.3
+          },
+          "B3": {
+            "cooperate": 0.843717744196111,
+            "defect": 0.15628225580388896
+          },
+          "B3_COST_MATCHED": {
+            "cooperate": 0.7,
+            "defect": 0.3
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario1:62",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.9,
+            "defect": 0.1
+          },
+          "B3": {
+            "cooperate": 0.888616060250409,
+            "defect": 0.11138393974959106
+          },
+          "B3_COST_MATCHED": {
+            "cooperate": 0.7,
+            "defect": 0.3
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario1:85",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.1,
+            "defect": 0.9
+          },
+          "B3": {
+            "cooperate": 0.12705647016686417,
+            "defect": 0.872943529833136
+          },
+          "B3_COST_MATCHED": {
+            "cooperate": 0.1,
+            "defect": 0.9
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "defect",
+          "record_key": "ipd:s1m5:s1m5usuario2:7",
+          "weight": 46.46875
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "cooperate": 0.1,
+            "defect": 0.9
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "defect",
+          "record_key": "ipd:s1m5:s1m5usuario2:83",
+          "weight": 46.46875
+        },
+        {
+          "B2": {
+            "cooperate": 0.1,
+            "defect": 0.9
+          },
+          "B3": {
+            "cooperate": 0.10000000000000003,
+            "defect": 0.8999999999999999
+          },
+          "B3_COST_MATCHED": {
+            "cooperate": 0.1,
+            "defect": 0.9
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "defect",
+          "record_key": "ipd:s1m5:s1m5usuario2:84",
+          "weight": 46.46875
+        },
+        {
+          "B2": {
+            "cooperate": 0.7,
+            "defect": 0.3
+          },
+          "B3": {
+            "cooperate": 0.6811216646529927,
+            "defect": 0.31887833534700727
+          },
+          "B3_COST_MATCHED": {
+            "cooperate": 0.6,
+            "defect": 0.4
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario4:2",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.7,
+            "defect": 0.3
+          },
+          "B3": {
+            "cooperate": 0.6811216646529927,
+            "defect": 0.31887833534700727
+          },
+          "B3_COST_MATCHED": {
+            "cooperate": 0.6,
+            "defect": 0.4
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario4:55",
+          "weight": 34.78125
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "cooperate": 0.7,
+            "defect": 0.3
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario4:87",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.7,
+            "defect": 0.3
+          },
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario4:92",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "defect",
+          "record_key": "ipd:s1m5:s1m5usuario5:2",
+          "weight": 46.46875
+        },
+        {
+          "B2": {
+            "cooperate": 0.4,
+            "defect": 0.6
+          },
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario5:40",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "defect",
+          "record_key": "ipd:s1m5:s1m5usuario5:56",
+          "weight": 46.46875
+        },
+        {
+          "B2": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario5:76",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario5:93",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.7,
+            "defect": 0.3
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "cooperate": 0.7,
+            "defect": 0.3
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario6:19",
+          "weight": 34.78125
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "cooperate": 0.3,
+            "defect": 0.7
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "defect",
+          "record_key": "ipd:s1m5:s1m5usuario7:77",
+          "weight": 46.46875
+        },
+        {
+          "B2": {
+            "cooperate": 0.6,
+            "defect": 0.4
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "cooperate": 0.4,
+            "defect": 0.6
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario8:46",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.6,
+            "defect": 0.4
+          },
+          "B3": {
+            "cooperate": 0.66162960676102,
+            "defect": 0.33837039323897994
+          },
+          "B3_COST_MATCHED": {
+            "cooperate": 0.7,
+            "defect": 0.3
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario9:29",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.6,
+            "defect": 0.4
+          },
+          "B3": {
+            "cooperate": 0.6415730571976616,
+            "defect": 0.3584269428023385
+          },
+          "B3_COST_MATCHED": {
+            "cooperate": 0.6,
+            "defect": 0.4
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario9:56",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.6,
+            "defect": 0.4
+          },
+          "B3": {
+            "cooperate": 0.6415730571976616,
+            "defect": 0.3584269428023385
+          },
+          "B3_COST_MATCHED": {
+            "cooperate": 0.6,
+            "defect": 0.4
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario9:85",
+          "weight": 34.78125
+        },
+        {
+          "B2": {
+            "cooperate": 0.7,
+            "defect": 0.3
+          },
+          "B3": {
+            "cooperate": 0.6811216646529927,
+            "defect": 0.31887833534700727
+          },
+          "B3_COST_MATCHED": {
+            "cooperate": 0.7,
+            "defect": 0.3
+          },
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "cooperate",
+          "record_key": "ipd:s1m5:s1m5usuario9:88",
+          "weight": 34.78125
+        }
+      ],
+      "test_n": 64
+    },
+    "voteview_senate": {
+      "arms": {
+        "B2": {
+          "calibrated": {
+            "confusion_matrix": {
+              "abstain_or_absent": {
+                "abstain_or_absent": 0,
+                "oppose": 9,
+                "support": 4
+              },
+              "oppose": {
+                "abstain_or_absent": 0,
+                "oppose": 5,
+                "support": 5
+              },
+              "support": {
+                "abstain_or_absent": 0,
+                "oppose": 3,
+                "support": 9
+              }
+            },
+            "ece": 0.19873051028793087,
+            "effective_weight": 32486.025974025975,
+            "invalid_action_rate": 0.0,
+            "log_loss": 0.9091662650577691,
+            "mean_entropy": 0.4915224759255881,
+            "multiclass_brier": 0.5417539206061485,
+            "n": 35,
+            "reliability": [
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.1,
+                "lo": 0.0,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.2,
+                "lo": 0.1,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.3,
+                "lo": 0.2,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.4,
+                "lo": 0.3,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.5,
+                "lo": 0.4,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": 0.4071907998533967,
+                "confidence": 0.5575687198093643,
+                "hi": 0.6,
+                "lo": 0.5,
+                "n": 2,
+                "weight": 2752.073593073593
+              },
+              {
+                "accuracy": 0.3420815113468626,
+                "confidence": 0.6810675021565733,
+                "hi": 0.7,
+                "lo": 0.6,
+                "n": 6,
+                "weight": 3275.883116883117
+              },
+              {
+                "accuracy": 0.6311992060724727,
+                "confidence": 0.7610594895384268,
+                "hi": 0.8,
+                "lo": 0.7,
+                "n": 6,
+                "weight": 1775.3809523809525
+              },
+              {
+                "accuracy": 0.6855819234184237,
+                "confidence": 0.8414811573554104,
+                "hi": 0.9,
+                "lo": 0.8,
+                "n": 16,
+                "weight": 17547.08658008658
+              },
+              {
+                "accuracy": 0.6859076249572292,
+                "confidence": 0.9613582704574032,
+                "hi": 1.0,
+                "lo": 0.9,
+                "n": 5,
+                "weight": 7135.601731601731
+              }
+            ],
+            "top1_accuracy": 0.624458841577171
+          },
+          "calibrator": {
+            "checksum": "6eca310536d96f2c400b1e1d7418248ce58a1ed6b85fbddec66a6a1afbd8f9a1",
+            "fit_split_id": "llm-sample:voteview_senate:calibration",
+            "method": "temperature_scaling",
+            "n_calibration": 19,
+            "post_log_loss": 0.5815624253455515,
+            "pre_log_loss": 0.6158536766814801,
+            "temperature": 0.65
+          },
+          "coverage": {
+            "calibration": 0.59375,
+            "calibration_n": 19,
+            "test": 0.546875,
+            "test_n": 35
+          },
+          "uncalibrated": {
+            "confusion_matrix": {
+              "abstain_or_absent": {
+                "abstain_or_absent": 0,
+                "oppose": 9,
+                "support": 4
+              },
+              "oppose": {
+                "abstain_or_absent": 0,
+                "oppose": 5,
+                "support": 5
+              },
+              "support": {
+                "abstain_or_absent": 0,
+                "oppose": 3,
+                "support": 9
+              }
+            },
+            "ece": 0.09423013984567725,
+            "effective_weight": 32486.025974025975,
+            "invalid_action_rate": 0.0,
+            "log_loss": 0.8069216157460605,
+            "mean_entropy": 0.7218340677401167,
+            "multiclass_brier": 0.49380779172183525,
+            "n": 35,
+            "reliability": [
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.1,
+                "lo": 0.0,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.2,
+                "lo": 0.1,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.3,
+                "lo": 0.2,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.4,
+                "lo": 0.3,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.5,
+                "lo": 0.4,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": 0.3563255097532069,
+                "confidence": 0.5074950549155585,
+                "hi": 0.6,
+                "lo": 0.5,
+                "n": 5,
+                "weight": 3144.930735930736
+              },
+              {
+                "accuracy": 0.48111685617958316,
+                "confidence": 0.6134334703724217,
+                "hi": 0.7,
+                "lo": 0.6,
+                "n": 9,
+                "weight": 4658.406926406927
+              },
+              {
+                "accuracy": 0.6855819234184237,
+                "confidence": 0.7124907577064754,
+                "hi": 0.8,
+                "lo": 0.7,
+                "n": 16,
+                "weight": 17547.08658008658
+              },
+              {
+                "accuracy": 0.5928092001466033,
+                "confidence": 0.8500000000000001,
+                "hi": 0.9,
+                "lo": 0.8,
+                "n": 4,
+                "weight": 5504.147186147186
+              },
+              {
+                "accuracy": 1.0,
+                "confidence": 0.95,
+                "hi": 1.0,
+                "lo": 0.9,
+                "n": 1,
+                "weight": 1631.4545454545455
+              }
+            ],
+            "top1_accuracy": 0.624458841577171
+          }
+        },
+        "B3": {
+          "calibrated": {
+            "confusion_matrix": {
+              "abstain_or_absent": {
+                "abstain_or_absent": 0,
+                "oppose": 3,
+                "support": 3
+              },
+              "oppose": {
+                "abstain_or_absent": 0,
+                "oppose": 2,
+                "support": 3
+              },
+              "support": {
+                "abstain_or_absent": 0,
+                "oppose": 2,
+                "support": 6
+              }
+            },
+            "ece": 0.2412603344784331,
+            "effective_weight": 19440.445887445887,
+            "invalid_action_rate": 0.0,
+            "log_loss": 0.9767833320379535,
+            "mean_entropy": 0.4352322211904288,
+            "multiclass_brier": 0.5757749347792577,
+            "n": 19,
+            "reliability": [
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.1,
+                "lo": 0.0,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.2,
+                "lo": 0.1,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.3,
+                "lo": 0.2,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.4,
+                "lo": 0.3,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.5,
+                "lo": 0.4,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.6,
+                "lo": 0.5,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": 0.0,
+                "confidence": 0.6896368705171141,
+                "hi": 0.7,
+                "lo": 0.6,
+                "n": 3,
+                "weight": 1893.3593073593074
+              },
+              {
+                "accuracy": 0.0,
+                "confidence": 0.7253939053815547,
+                "hi": 0.8,
+                "lo": 0.7,
+                "n": 1,
+                "weight": 130.95238095238096
+              },
+              {
+                "accuracy": 0.7359860506478068,
+                "confidence": 0.8474764330761473,
+                "hi": 0.9,
+                "lo": 0.8,
+                "n": 11,
+                "weight": 11911.987012987014
+              },
+              {
+                "accuracy": 0.5928092001466033,
+                "confidence": 0.9491612337663473,
+                "hi": 1.0,
+                "lo": 0.9,
+                "n": 4,
+                "weight": 5504.147186147186
+              }
+            ],
+            "top1_accuracy": 0.6188111855877747
+          },
+          "calibrator": {
+            "checksum": "cf90fdb44d036c5ad2b65e926438dda59170dea3b10177738eb903a13d50b409",
+            "fit_split_id": "llm-sample:voteview_senate:calibration",
+            "method": "temperature_scaling",
+            "n_calibration": 10,
+            "post_log_loss": 0.47445183573971655,
+            "pre_log_loss": 0.5191441568127956,
+            "temperature": 0.65
+          },
+          "coverage": {
+            "calibration": 0.3125,
+            "calibration_n": 10,
+            "test": 0.296875,
+            "test_n": 19
+          },
+          "uncalibrated": {
+            "confusion_matrix": {
+              "abstain_or_absent": {
+                "abstain_or_absent": 0,
+                "oppose": 3,
+                "support": 3
+              },
+              "oppose": {
+                "abstain_or_absent": 0,
+                "oppose": 2,
+                "support": 3
+              },
+              "support": {
+                "abstain_or_absent": 0,
+                "oppose": 2,
+                "support": 6
+              }
+            },
+            "ece": 0.1250439635653207,
+            "effective_weight": 19440.445887445887,
+            "invalid_action_rate": 0.0,
+            "log_loss": 0.8356730386452822,
+            "mean_entropy": 0.6906092417709367,
+            "multiclass_brier": 0.5148944807160244,
+            "n": 19,
+            "reliability": [
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.1,
+                "lo": 0.0,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.2,
+                "lo": 0.1,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.3,
+                "lo": 0.2,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.4,
+                "lo": 0.3,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.5,
+                "lo": 0.4,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": 0.0,
+                "confidence": 0.5726845971767234,
+                "hi": 0.6,
+                "lo": 0.5,
+                "n": 2,
+                "weight": 261.9047619047619
+              },
+              {
+                "accuracy": 0.3718072645638145,
+                "confidence": 0.6320878382116351,
+                "hi": 0.7,
+                "lo": 0.6,
+                "n": 4,
+                "weight": 3013.978354978355
+              },
+              {
+                "accuracy": 0.7172738406761106,
+                "confidence": 0.7270627278800773,
+                "hi": 0.8,
+                "lo": 0.7,
+                "n": 9,
+                "weight": 10660.415584415585
+              },
+              {
+                "accuracy": 0.5928092001466033,
+                "confidence": 0.8457253951890877,
+                "hi": 0.9,
+                "lo": 0.8,
+                "n": 4,
+                "weight": 5504.147186147186
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 1.0,
+                "lo": 0.9,
+                "n": 0,
+                "weight": 0
+              }
+            ],
+            "top1_accuracy": 0.6188111855877747
+          }
+        },
+        "B3_COST_MATCHED": {
+          "calibrated": {
+            "confusion_matrix": {
+              "abstain_or_absent": {
+                "abstain_or_absent": 0,
+                "oppose": 9,
+                "support": 7
+              },
+              "oppose": {
+                "abstain_or_absent": 0,
+                "oppose": 7,
+                "support": 7
+              },
+              "support": {
+                "abstain_or_absent": 0,
+                "oppose": 4,
+                "support": 14
+              }
+            },
+            "ece": 0.1605037343507852,
+            "effective_weight": 47150.08658008658,
+            "invalid_action_rate": 0.0,
+            "log_loss": 0.8169704132512141,
+            "mean_entropy": 0.5631457543479527,
+            "multiclass_brier": 0.49568226885825295,
+            "n": 48,
+            "reliability": [
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.1,
+                "lo": 0.0,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.2,
+                "lo": 0.1,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.3,
+                "lo": 0.2,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.4,
+                "lo": 0.3,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.5,
+                "lo": 0.4,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": 0.4071907998533967,
+                "confidence": 0.5377457384763349,
+                "hi": 0.6,
+                "lo": 0.5,
+                "n": 2,
+                "weight": 2752.073593073593
+              },
+              {
+                "accuracy": 0.30545063653494664,
+                "confidence": 0.6367981775817677,
+                "hi": 0.7,
+                "lo": 0.6,
+                "n": 9,
+                "weight": 3668.7402597402597
+              },
+              {
+                "accuracy": 0.6155867036823764,
+                "confidence": 0.7832673464674785,
+                "hi": 0.8,
+                "lo": 0.7,
+                "n": 21,
+                "weight": 22192.51948051948
+              },
+              {
+                "accuracy": 0.8773292474195442,
+                "confidence": 0.8469743657323138,
+                "hi": 0.9,
+                "lo": 0.8,
+                "n": 10,
+                "weight": 11270.199134199134
+              },
+              {
+                "accuracy": 0.67354671286461,
+                "confidence": 0.939075405766624,
+                "hi": 1.0,
+                "lo": 0.9,
+                "n": 6,
+                "weight": 7266.554112554113
+              }
+            ],
+            "top1_accuracy": 0.6507877120772113
+          },
+          "calibrator": {
+            "checksum": "292f15a12f5486185540de9f7bd05166e59da9f75ab18cec67ae780169eb89ae",
+            "fit_split_id": "llm-sample:voteview_senate:calibration",
+            "method": "temperature_scaling",
+            "n_calibration": 24,
+            "post_log_loss": 0.5357681769015145,
+            "pre_log_loss": 0.5537278171753633,
+            "temperature": 0.75
+          },
+          "coverage": {
+            "calibration": 0.75,
+            "calibration_n": 24,
+            "test": 0.75,
+            "test_n": 48
+          },
+          "uncalibrated": {
+            "confusion_matrix": {
+              "abstain_or_absent": {
+                "abstain_or_absent": 0,
+                "oppose": 9,
+                "support": 7
+              },
+              "oppose": {
+                "abstain_or_absent": 0,
+                "oppose": 7,
+                "support": 7
+              },
+              "support": {
+                "abstain_or_absent": 0,
+                "oppose": 4,
+                "support": 14
+              }
+            },
+            "ece": 0.06879682179133217,
+            "effective_weight": 47150.08658008658,
+            "invalid_action_rate": 0.0,
+            "log_loss": 0.7741851764140034,
+            "mean_entropy": 0.7180409579998644,
+            "multiclass_brier": 0.4709256244818288,
+            "n": 48,
+            "reliability": [
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.1,
+                "lo": 0.0,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.2,
+                "lo": 0.1,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.3,
+                "lo": 0.2,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.4,
+                "lo": 0.3,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": null,
+                "confidence": null,
+                "hi": 0.5,
+                "lo": 0.4,
+                "n": 0,
+                "weight": 0
+              },
+              {
+                "accuracy": 0.509777548464344,
+                "confidence": 0.519595122844607,
+                "hi": 0.6,
+                "lo": 0.5,
+                "n": 7,
+                "weight": 4396.502164502164
+              },
+              {
+                "accuracy": 0.32893253822528934,
+                "confidence": 0.6202904397703114,
+                "hi": 0.7,
+                "lo": 0.6,
+                "n": 7,
+                "weight": 3406.8354978354982
+              },
+              {
+                "accuracy": 0.6765396756818239,
+                "confidence": 0.7169014039144329,
+                "hi": 0.8,
+                "lo": 0.7,
+                "n": 26,
+                "weight": 29838.95670995671
+              },
+              {
+                "accuracy": 0.7106356864358278,
+                "confidence": 0.8355317843217914,
+                "hi": 0.9,
+                "lo": 0.8,
+                "n": 6,
+                "weight": 7745.385281385282
+              },
+              {
+                "accuracy": 0.92569685298539,
+                "confidence": 0.9462848426492694,
+                "hi": 1.0,
+                "lo": 0.9,
+                "n": 2,
+                "weight": 1762.4069264069265
+              }
+            ],
+            "top1_accuracy": 0.6507877120772113
+          }
+        }
+      },
+      "calibration_n": 32,
+      "confirmatory_coverage_gate": false,
+      "predictions": [
+        {
+          "B2": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.2,
+            "support": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.2,
+            "support": 0.7
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "oppose",
+          "record_key": "voteview:118:0006:14226",
+          "weight": 1120.6190476190477
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.01,
+            "oppose": 0.04,
+            "support": 0.95
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.01,
+            "oppose": 0.04,
+            "support": 0.95
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "support",
+          "record_key": "voteview:118:0008:29142",
+          "weight": 1631.4545454545455
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.7,
+            "support": 0.2
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.75,
+            "support": 0.15
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "oppose",
+          "record_key": "voteview:118:0012:41111",
+          "weight": 1120.6190476190477
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.05,
+            "support": 0.9
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "abstain_or_absent",
+          "record_key": "voteview:118:0049:42105",
+          "weight": 130.95238095238096
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.8,
+            "support": 0.15
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "oppose",
+          "record_key": "voteview:118:0067:41107",
+          "weight": 1120.6190476190477
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.1,
+            "support": 0.85
+          },
+          "B3": {
+            "abstain_or_absent": 0.05000000000000002,
+            "oppose": 0.10000000000000005,
+            "support": 0.85
+          },
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.1,
+            "support": 0.85
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "oppose",
+          "record_key": "voteview:118:0069:20735",
+          "weight": 1120.6190476190477
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.1,
+            "support": 0.85
+          },
+          "B3": {
+            "abstain_or_absent": 0.05000000000000002,
+            "oppose": 0.10000000000000005,
+            "support": 0.85
+          },
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.1,
+            "support": 0.85
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "oppose",
+          "record_key": "voteview:118:0071:21743",
+          "weight": 1120.6190476190477
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.7,
+            "support": 0.25
+          },
+          "B3": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.7,
+            "support": 0.25000000000000006
+          },
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.7,
+            "support": 0.25
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "support",
+          "record_key": "voteview:118:0087:41500",
+          "weight": 1631.4545454545455
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.25,
+            "support": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.25,
+            "support": 0.7
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "oppose",
+          "record_key": "voteview:118:0090:49703",
+          "weight": 1120.6190476190477
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.1,
+            "support": 0.85
+          },
+          "B3": {
+            "abstain_or_absent": 0.045450074808125504,
+            "oppose": 0.11994346650908282,
+            "support": 0.8346064586827918
+          },
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.2,
+            "support": 0.75
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "support",
+          "record_key": "voteview:118:0117:14871",
+          "weight": 1631.4545454545455
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.6,
+            "support": 0.35
+          },
+          "B3": {
+            "abstain_or_absent": 0.057618778645426624,
+            "oppose": 0.6019207224745298,
+            "support": 0.3404604988800436
+          },
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.6,
+            "support": 0.35
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "support",
+          "record_key": "voteview:118:0154:41500",
+          "weight": 1631.4545454545455
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.7,
+            "support": 0.25
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "support",
+          "record_key": "voteview:118:0188:29534",
+          "weight": 1631.4545454545455
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.03,
+            "oppose": 0.22,
+            "support": 0.75
+          },
+          "B3": {
+            "abstain_or_absent": 0.04712319158696578,
+            "oppose": 0.228638450511879,
+            "support": 0.7242383579011552
+          },
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.25,
+            "support": 0.7
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "support",
+          "record_key": "voteview:118:0211:42105",
+          "weight": 1631.4545454545455
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.5,
+            "support": 0.4
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.5,
+            "support": 0.4
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "oppose",
+          "record_key": "voteview:118:0222:41504",
+          "weight": 1120.6190476190477
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.6,
+            "support": 0.35
+          },
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "oppose",
+          "record_key": "voteview:118:0224:29534",
+          "weight": 1120.6190476190477
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "oppose",
+          "record_key": "voteview:118:0229:21338",
+          "weight": 1120.6190476190477
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.15,
+            "oppose": 0.6,
+            "support": 0.25
+          },
+          "B3": {
+            "abstain_or_absent": 0.15,
+            "oppose": 0.6,
+            "support": 0.25
+          },
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.15,
+            "oppose": 0.6,
+            "support": 0.25
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "abstain_or_absent",
+          "record_key": "voteview:118:0235:21173",
+          "weight": 130.95238095238096
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.02,
+            "oppose": 0.2,
+            "support": 0.78
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "support",
+          "record_key": "voteview:118:0251:41305",
+          "weight": 1631.4545454545455
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "support",
+          "record_key": "voteview:118:0264:20713",
+          "weight": 1631.4545454545455
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.7,
+            "support": 0.25
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "oppose",
+          "record_key": "voteview:118:0269:41104",
+          "weight": 1120.6190476190477
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.02,
+            "oppose": 0.23,
+            "support": 0.75
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "oppose",
+          "record_key": "voteview:118:0280:20330",
+          "weight": 1120.6190476190477
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "oppose",
+          "record_key": "voteview:118:0285:20735",
+          "weight": 1120.6190476190477
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.2,
+            "support": 0.7
+          },
+          "B3": {
+            "abstain_or_absent": 0.08733619099218273,
+            "oppose": 0.20064587784885438,
+            "support": 0.7120179311589628
+          },
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.2,
+            "support": 0.7
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "support",
+          "record_key": "voteview:118:0290:42104",
+          "weight": 1631.4545454545455
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.2,
+            "oppose": 0.55,
+            "support": 0.25
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "abstain_or_absent",
+          "record_key": "voteview:118:0292:21173",
+          "weight": 130.95238095238096
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.2,
+            "support": 0.75
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "support",
+          "record_key": "voteview:118:0309:29389",
+          "weight": 1631.4545454545455
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.25,
+            "support": 0.7
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "support",
+          "record_key": "voteview:118:0332:41700",
+          "weight": 1631.4545454545455
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "abstain_or_absent",
+          "record_key": "voteview:118:0346:20146",
+          "weight": 130.95238095238096
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "support",
+          "record_key": "voteview:118:0349:20923",
+          "weight": 1631.4545454545455
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "abstain_or_absent",
+          "record_key": "voteview:118:0352:40305",
+          "weight": 130.95238095238096
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.6,
+            "support": 0.35
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.6,
+            "support": 0.35
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "abstain_or_absent",
+          "record_key": "voteview:118:0360:41707",
+          "weight": 130.95238095238096
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.2,
+            "support": 0.7
+          },
+          "B3": {
+            "abstain_or_absent": 0.08761131776796727,
+            "oppose": 0.218280258408087,
+            "support": 0.6941084238239458
+          },
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.2,
+            "support": 0.7
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "abstain_or_absent",
+          "record_key": "voteview:118:0364:29566",
+          "weight": 130.95238095238096
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "oppose",
+          "record_key": "voteview:118:0379:20953",
+          "weight": 1120.6190476190477
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "support",
+          "record_key": "voteview:118:0399:41902",
+          "weight": 1631.4545454545455
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.75,
+            "support": 0.15
+          },
+          "B3": {
+            "abstain_or_absent": 0.05800889938597071,
+            "oppose": 0.7561467426027454,
+            "support": 0.18584435801128388
+          },
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.8,
+            "support": 0.15
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "oppose",
+          "record_key": "voteview:118:0401:41104",
+          "weight": 1120.6190476190477
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.1,
+            "support": 0.85
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "support",
+          "record_key": "voteview:118:0408:49308",
+          "weight": 1631.4545454545455
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.03,
+            "oppose": 0.22,
+            "support": 0.75
+          },
+          "B3": {
+            "abstain_or_absent": 0.047477175325059295,
+            "oppose": 0.1834127149361238,
+            "support": 0.769110109738817
+          },
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.2,
+            "support": 0.7
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "support",
+          "record_key": "voteview:118:0423:14435",
+          "weight": 1631.4545454545455
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.2,
+            "support": 0.7
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "oppose",
+          "record_key": "voteview:118:0435:40910",
+          "weight": 1120.6190476190477
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "oppose",
+          "record_key": "voteview:118:0455:21173",
+          "weight": 1120.6190476190477
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.65,
+            "support": 0.25
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.65,
+            "support": 0.25
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "abstain_or_absent",
+          "record_key": "voteview:118:0459:41903",
+          "weight": 130.95238095238096
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "oppose",
+          "record_key": "voteview:118:0462:49703",
+          "weight": 1120.6190476190477
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.2,
+            "support": 0.7
+          },
+          "B3": {
+            "abstain_or_absent": 0.06906549814703804,
+            "oppose": 0.20892942839794848,
+            "support": 0.7220050734550135
+          },
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.2,
+            "support": 0.7
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "oppose",
+          "record_key": "voteview:118:0474:40700",
+          "weight": 1120.6190476190477
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.25,
+            "support": 0.7
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "abstain_or_absent",
+          "record_key": "voteview:118:0476:40300",
+          "weight": 130.95238095238096
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.2,
+            "support": 0.75
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "support",
+          "record_key": "voteview:118:0478:29142",
+          "weight": 1631.4545454545455
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.55,
+            "support": 0.35
+          },
+          "B3": {
+            "abstain_or_absent": 0.10920693943493687,
+            "oppose": 0.5827234821346515,
+            "support": 0.3080695784304115
+          },
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.65,
+            "support": 0.25
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "abstain_or_absent",
+          "record_key": "voteview:118:0498:42100",
+          "weight": 130.95238095238096
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.2,
+            "support": 0.7
+          },
+          "B3": {
+            "abstain_or_absent": 0.03498078076294503,
+            "oppose": 0.22424314375636314,
+            "support": 0.7407760754806918
+          },
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.014,
+            "oppose": 0.206,
+            "support": 0.78
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "abstain_or_absent",
+          "record_key": "voteview:118:0501:41700",
+          "weight": 130.95238095238096
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.2,
+            "support": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.2,
+            "support": 0.7
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "support",
+          "record_key": "voteview:118:0506:42105",
+          "weight": 1631.4545454545455
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.25,
+            "support": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.2,
+            "support": 0.75
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "abstain_or_absent",
+          "record_key": "voteview:118:0508:41905",
+          "weight": 130.95238095238096
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.2,
+            "support": 0.7
+          },
+          "B3": {
+            "abstain_or_absent": 0.07619425324568975,
+            "oppose": 0.21025494247193122,
+            "support": 0.713550804282379
+          },
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.2,
+            "support": 0.7
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "support",
+          "record_key": "voteview:118:0516:40906",
+          "weight": 1631.4545454545455
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.15,
+            "oppose": 0.6,
+            "support": 0.25
+          },
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "abstain_or_absent",
+          "record_key": "voteview:118:0528:42100",
+          "weight": 130.95238095238096
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.2,
+            "support": 0.7
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.2,
+            "support": 0.7
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "support",
+          "record_key": "voteview:118:0535:41905",
+          "weight": 1631.4545454545455
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "abstain_or_absent",
+          "record_key": "voteview:118:0539:41900",
+          "weight": 130.95238095238096
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "oppose",
+          "record_key": "voteview:118:0554:20101",
+          "weight": 1120.6190476190477
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.55,
+            "support": 0.35
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "oppose",
+          "record_key": "voteview:118:0555:41707",
+          "weight": 1120.6190476190477
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.55,
+            "support": 0.35
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.55,
+            "support": 0.35
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "abstain_or_absent",
+          "record_key": "voteview:118:0558:41304",
+          "weight": 130.95238095238096
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.5,
+            "support": 0.4
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.5,
+            "support": 0.4
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "support",
+          "record_key": "voteview:118:0572:41504",
+          "weight": 1631.4545454545455
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.2,
+            "support": 0.7
+          },
+          "B3": {
+            "abstain_or_absent": 0.08733619099218273,
+            "oppose": 0.20064587784885438,
+            "support": 0.7120179311589628
+          },
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.2,
+            "support": 0.7
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "actor_goals_and_incentives",
+          "label": "abstain_or_absent",
+          "record_key": "voteview:118:0575:42105",
+          "weight": 130.95238095238096
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.2,
+            "support": 0.7
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "abstain_or_absent",
+          "record_key": "voteview:118:0579:40909",
+          "weight": 130.95238095238096
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "abstain_or_absent",
+          "record_key": "voteview:118:0579:41905",
+          "weight": 130.95238095238096
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.07,
+            "oppose": 0.58,
+            "support": 0.35
+          },
+          "B3": {
+            "abstain_or_absent": 0.08683312250331547,
+            "oppose": 0.5626457122187953,
+            "support": 0.3505211652778892
+          },
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.07,
+            "oppose": 0.58,
+            "support": 0.35
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "abstain_or_absent",
+          "record_key": "voteview:118:0584:41102",
+          "weight": 130.95238095238096
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.1,
+            "support": 0.85
+          },
+          "B3": {
+            "abstain_or_absent": 0.045195647232356605,
+            "oppose": 0.10383233125766868,
+            "support": 0.8509720215099748
+          },
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.1,
+            "support": 0.85
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "direct_judgment",
+          "label": "support",
+          "record_key": "voteview:118:0602:40702",
+          "weight": 1631.4545454545455
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.6,
+            "support": 0.3
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.05,
+            "oppose": 0.6,
+            "support": 0.35
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "relationship_history_skeptical_critic",
+          "label": "abstain_or_absent",
+          "record_key": "voteview:118:0622:21338",
+          "weight": 130.95238095238096
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.15,
+            "oppose": 0.6,
+            "support": 0.25
+          },
+          "B3": null,
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.2,
+            "oppose": 0.55,
+            "support": 0.25
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "behavioral_base_rate",
+          "label": "abstain_or_absent",
+          "record_key": "voteview:118:0633:42100",
+          "weight": 130.95238095238096
+        },
+        {
+          "B2": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.65,
+            "support": 0.25
+          },
+          "B3": {
+            "abstain_or_absent": 0.10054374130119022,
+            "oppose": 0.6725088123582281,
+            "support": 0.22694744634058164
+          },
+          "B3_COST_MATCHED": {
+            "abstain_or_absent": 0.1,
+            "oppose": 0.65,
+            "support": 0.25
+          },
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "oppose",
+          "record_key": "voteview:118:0671:42102",
+          "weight": 1120.6190476190477
+        },
+        {
+          "B2": null,
+          "B3": null,
+          "B3_COST_MATCHED": null,
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "cost_matched_lens": "institution_and_feasibility",
+          "label": "support",
+          "record_key": "voteview:118:0690:20735",
+          "weight": 1631.4545454545455
+        }
+      ],
+      "test_n": 64
+    }
+  },
+  "partial_metrics_status": "diagnostic_only_selection_biased_by_provider_schema_compliance",
+  "raw_attempts_preserved_before_parse": true,
+  "schema_version": "wmv2.phase4-completion.llm-baselines.v1"
+}
