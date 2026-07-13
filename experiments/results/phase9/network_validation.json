@@ -1,0 +1,75 @@
+{
+  "dataset": "voteview S117 Senate co-voting",
+  "n_senators": 100,
+  "n_edges": 2228,
+  "community_recovery": {
+    "n_senators": 100,
+    "n_edges": 2228,
+    "party_recovery_accuracy": 0.98,
+    "block_matrix": [
+      [
+        0.8275,
+        0.0016
+      ],
+      [
+        0.0016,
+        0.994
+      ]
+    ]
+  },
+  "structural_posterior": {
+    "prior": {
+      "one_bloc": 0.33,
+      "two_party": 0.34,
+      "four_faction": 0.33
+    },
+    "posterior": {
+      "four_faction": 1.0,
+      "two_party": 0.0,
+      "one_bloc": 0.0
+    },
+    "fits": {
+      "one_bloc": {
+        "K": 1,
+        "loglik": -3406.387,
+        "bic_penalty": 8.51,
+        "score": -3414.89
+      },
+      "two_party": {
+        "K": 2,
+        "loglik": -658.972,
+        "bic_penalty": 25.52,
+        "score": -684.49
+      },
+      "four_faction": {
+        "K": 4,
+        "loglik": -246.803,
+        "bic_penalty": 85.07,
+        "score": -331.87
+      }
+    }
+  },
+  "link_prediction": {
+    "n_test": 950,
+    "auroc": 0.9988,
+    "base_rate_edges": 0.478,
+    "prior_same_party": 0.928,
+    "prior_diff_party": 0.017
+  },
+  "synthetic_edge_calibration": {
+    "n": 3000,
+    "auroc": 0.9205,
+    "ece": 0.0198,
+    "model": "fully_specified_measurement",
+    "note": "validates log-odds edge-engine calibration under a fully-modeled observation process; present-only typed edge models add a documented absence/exposure approximation"
+  },
+  "structural_finding": "the S117 co-voting graph's structural posterior prefers 'four_faction' over one_bloc: the Senate has real INTRA-party sub-factions, so a 4-faction model out-fits a flat 2-party model even under BIC (2-party recovery is still 0.98 at K=2). Detecting >2 blocs is a correct finding, not a failure.",
+  "gates": {
+    "sbm_recovers_party_at_K2": true,
+    "structural_detects_bloc_structure": true,
+    "link_prediction_above_chance": true,
+    "synthetic_edge_auroc_high": true,
+    "synthetic_edge_calibrated": true
+  },
+  "all_gates_pass": true
+}
