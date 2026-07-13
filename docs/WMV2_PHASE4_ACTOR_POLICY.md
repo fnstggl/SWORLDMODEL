@@ -234,7 +234,8 @@ the prior-result reproduction audit has SHA-256
 | VoteView U.S. Senate | support, oppose, or abstain/absent with current result and future roll-call information hidden | 54,602 / 72,000 / 94,898 / 62,175 |
 | Enron repaired reply trajectories | reply within 24h, reply in 1–7d, or no reply within 7d, with a seven-day maturation window and temporal purge | 166,190 / 37,673 / 25,478 / 59,598 |
 
-The numeric run evaluated 448,168 real decisions. Enron messages are
+The numeric run ingested 611,916 real source decisions and scored 124,373
+untouched test decisions. Enron messages are
 deduplicated, timezone-aware, restricted to one primary recipient, and labeled
 only after the response window matures. IPD rounds are chronological. VoteView
 rows hide the current result, current vote counts, and the observed action.
@@ -290,7 +291,7 @@ integration tests, not empirical causal validation.
 | Question | Status | Reason |
 |---|---:|---|
 | Is the software implemented? | **Yes** | Real adapters, B0–B8, weighted particle execution, strict LLM collection, artifacts, and tests are present. |
-| Does it execute end to end? | **Yes** | 448,168 numeric decisions, 1,440 completed LLM request identities, scoring, finalization, and checksums ran. |
+| Does it execute end to end? | **Yes** | 611,916 source decisions, 124,373 held-out predictions, 1,440 completed LLM request identities, scoring, finalization, and checksums ran. |
 | Is the actor policy empirically validated overall? | **No** | Two numeric domains improve over B6, but IPD ties it, conformal coverage misses everywhere, LLM confirmatory coverage fails, and causal/transfer evidence is incomplete. |
 | Is it production eligible? | **No** | The preregistered promotion blockers remain active. |
 

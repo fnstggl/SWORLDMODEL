@@ -290,7 +290,7 @@ separately under `phase4_completion/`.
 | IPD longitudinal | 18,800 | 2,600 | chronological sessions/rounds; fixed and shuffled partner regimes retained |
 | VoteView Senate | 283,675 | 62,175 | Congress 115 train, 117 family validation, 118 test |
 | Enron repaired | 309,441 | 59,598 | time-forward split, seven-day label maturation, and temporal purge |
-| **Total** | **448,168** | **124,373** | untouched test partitions after model-family selection |
+| **Total** | **611,916** | **124,373** | untouched test partitions after model-family selection |
 
 ### B0–B8 calibrated test log loss
 
