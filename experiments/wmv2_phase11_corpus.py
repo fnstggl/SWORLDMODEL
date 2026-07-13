@@ -173,11 +173,14 @@ def _real_grounded():
                            "date": "2013-11-21", "sources": ["S. Res.; Riddick's Senate Procedure; VoteView"],
                            "regime": "nomination-cloture success rose sharply post-change"})
     obs = []
-    for s in range(8):
+    announced = False
+    for s in range(12):
         t = as_of + (s + 1) * 40 * DAY
         post = t >= change
         val = 0.9 if post else 0.55
-        if post and (parse_time("2013-11-21") <= t < parse_time("2013-11-21") + 45 * DAY):
+        # the model SEES the (already-effective) rule change at the first reveal on/after 2013-11-21
+        if post and not announced:
+            announced = True
             obs.append(_obs("rule_change", "external_evidence", t, observed=val,
                             declared={"rule_change": {"institution": "senate", "kind": "cloture_threshold",
                                       "params": {"nominations": "simple_majority"}, "effective_date": change,
@@ -197,7 +200,7 @@ def _real_grounded():
                 grounding={"event": "stable Senate procedure period (no cloture rule change)",
                            "sources": ["VoteView 108th Congress"]})
     c.observations = [_obs("routine", "simulation_internal", as_of2 + (s + 1) * 40 * DAY, observed=0.6,
-                           representable=True) for s in range(8)]
+                           representable=True) for s in range(12)]
     c.true_terminal = 0.6
     eps.append(c)
     return eps
