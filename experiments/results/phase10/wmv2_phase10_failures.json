@@ -1,0 +1,30 @@
+{
+ "_meta": {
+  "n": 3,
+  "note": "append-only preserved negatives (Part 26)"
+ },
+ "failures": [
+  {
+   "failure_id": "naive_cloture_uniform_3_5",
+   "family": "legislative_process",
+   "template": "us_congress_legislative",
+   "failure_type": "wrong_threshold_version",
+   "detail": "Applying a UNIFORM 3/5 cloture rule to all cloture votes reconstructs only ~0.77 of real outcomes \u2014 WORSE than majority-only (0.95) \u2014 because the nuclear option (2013/2017) made cloture on NOMINATIONS a simple majority. As-of + matter-type versioning recovers 0.96. Preserved: naive rule application can hurt.",
+   "artifact": "experiments/results/phase10/wmv2_phase10_replay.json"
+  },
+  {
+   "failure_id": "no_verified_templates_for_agency_queue_election_moderation",
+   "family": "administrative_agency/queue_capacity_service/electoral_administration/moderation_appeals",
+   "failure_type": "evidence_gap",
+   "detail": "The agency/queue/election/moderation FAMILIES are executable, but no template-specific official evidence was core-verified this run, so no evidence-backed TEMPLATE exists for them \u2014 they select at Tier 3 (structural) with rule uncertainty. Honest gap, not faked.",
+   "artifact": "experiments/results/phase10/wmv2_phase10_summary.json"
+  },
+  {
+   "failure_id": "scotus_cert_count_not_fraction",
+   "template": "scotus_certiorari",
+   "failure_type": "rule_shape_limitation",
+   "detail": "The Rule of Four is a COUNT (4 of 9), an informal custom; it is stored as evidence but the decision engine's fraction-of-present threshold does not natively execute a fixed count. SCOTUS cert stays `executable` (informal), not historically replayed.",
+   "artifact": "experiments/results/phase10/wmv2_phase10_summary.json"
+  }
+ ]
+}

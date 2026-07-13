@@ -102,9 +102,10 @@ class InstitutionOperator(TransitionOperator):
             matter["stage"] = rt.instance.current_stage
         d.change(f"institution[{rt.template.template_id}].stage", stage_before, rt.instance.current_stage)
 
-        # terminal outcome projection
+        # terminal outcome projection: a formal DECISION is a terminal institutional consequence for the
+        # matter (its outcome projects into the terminal state), as is reaching a terminal stage.
         var = a.get("outcome_var")
-        if var and (rt.stages.is_terminal(rt.instance.current_stage) or nxt is None):
+        if var and (a.get("decision") or rt.stages.is_terminal(rt.instance.current_stage) or nxt is None):
             register_quantity_type(var, units="institutional_outcome")
             before = world.quantities[var].value if var in world.quantities else None
             val = outcome

@@ -1,0 +1,78 @@
+{
+ "_meta": {
+  "harness": "experiments/wmv2_phase10_execute.py",
+  "note": "real WorldState execution: authorization blocking, decision engine on real-style votes, StateDelta, terminal outcome, counterfactual sensitivity"
+ },
+ "legislative_trace": {
+  "scenario": "US Senate floor passage of a bill (as-of 2021-06-01)",
+  "template": "us_congress_legislative",
+  "status": "production_eligible",
+  "provenance": "U.S. Const. art. I \u00a75 (quorum) / \u00a77 (passage) \u2014 verified",
+  "steps": [
+   {
+    "step": "unauthorized_vote_attempt",
+    "actor": "lobbyist",
+    "blocked": true,
+    "reason": "'lobbyist' authority does not cover subject 'senate_vote'"
+   },
+   {
+    "step": "floor_vote",
+    "authorized": true,
+    "yes": 50.0,
+    "no": 45.0,
+    "quorum_met": true,
+    "passed": true,
+    "state_delta_changes": [
+     {
+      "path": "institution[us_congress_legislative].stage",
+      "before": "floor_first",
+      "after": "floor_second"
+     },
+     {
+      "path": "quantities[bill_enacted]",
+      "before": null,
+      "after": "passed"
+     }
+    ],
+    "future_events": [
+     "institutional_action"
+    ]
+   },
+   {
+    "step": "terminal",
+    "bill_enacted": "passed"
+   }
+  ]
+ },
+ "counterfactuals": {
+  "votes": "55 yea / 45 nay (fixed)",
+  "counterfactuals": [
+   {
+    "counterfactual": "baseline_majority",
+    "rule": "simple_majority",
+    "passed": true,
+    "terminal": "passed"
+   },
+   {
+    "counterfactual": "raise_to_supermajority_2_3",
+    "rule": "supermajority",
+    "passed": false,
+    "terminal": "failed"
+   },
+   {
+    "counterfactual": "raise_to_cloture_3_5",
+    "rule": "supermajority",
+    "passed": false,
+    "terminal": "failed"
+   },
+   {
+    "counterfactual": "majority_of_all_members",
+    "rule": "absolute_majority",
+    "passed": true,
+    "terminal": "passed"
+   }
+  ],
+  "coherent": true,
+  "note": "same votes, different institutional rule \u2192 different terminal outcome (causal sensitivity)"
+ }
+}
