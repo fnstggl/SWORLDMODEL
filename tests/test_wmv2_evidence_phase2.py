@@ -167,3 +167,66 @@ def test_contradiction_graph_numerical_and_denial():
     assert has_material_contradiction(edges)
     assert edges[0].ctype == "numerical_disagreement" and edges[0].temporal_order == "a_before_b"
     assert "b" in a.contradiction_links and "a" in b.contradiction_links   # claims cross-linked
+
+
+# ---------------------------------------------------------------- actor visibility (adversarial)
+def test_actor_visibility_enforcement():
+    from swm.world_model_v2.evidence_visibility import ClaimVisibility, assign_visibility, actor_view
+    import time as _t
+    pub_ts = _t.mktime(_t.strptime("2023-08-15", "%Y-%m-%d"))
+    # public news: visible to everyone, but only AFTER publication time
+    pub = assign_visibility(claim_id="c1", source_type="news", publication_time=pub_ts)
+    assert pub.visibility == "public"
+    assert pub.observable_by("anyone", pub_ts + 10) is True
+    assert pub.observable_by("anyone", pub_ts - 10) is False       # not knowable before it was published
+    # private finance discussion: manager NOT in the room cannot see it
+    priv = assign_visibility(claim_id="c2", source_type="user_provided", publication_time=pub_ts,
+                             hint={"visibility": "private_group", "actors": ["cfo", "ceo"]})
+    assert priv.observable_by("cfo", pub_ts + 10) is True
+    assert priv.observable_by("line_manager", pub_ts + 10) is False
+    # negotiation reservation value: other party cannot see it
+    resv = ClaimVisibility(claim_id="c3", visibility="confidential", actors=["party_a"])
+    assert resv.observable_by("party_a", None) is False            # confidential is never actor-observable
+    assert resv.observable_by("party_b", None) is False
+    # unknown visibility is NOT public by default (fail-safe)
+    unk = assign_visibility(claim_id="c4", source_type="unknown", publication_time=pub_ts)
+    assert unk.visibility == "uncertain" and unk.observable_by("someone", pub_ts + 10) is False
+    view = actor_view([pub, priv], actor_id="cfo", at_time=pub_ts + 10)
+    assert "c1" in view and "c2" in view
+
+
+# ---------------------------------------------------------------- immutable bundle (hash + versioning)
+def test_evidence_bundle_immutability_and_versioning():
+    from swm.world_model_v2.evidence_bundle_v2 import EvidenceBundleV2
+    b = EvidenceBundleV2(bundle_id="eb", question="Will X?", as_of=1.0e9,
+                         claims=[{"claim_id": "s:c0", "subject": "x", "predicate": "y", "object": "",
+                                  "value": "", "claim_class": "observed_fact", "polarity": "affirm",
+                                  "supporting_span": "s", "span_verified": True,
+                                  "temporal_validity_status": "likely_pre_asof", "actor_visibility": "public",
+                                  "dependence_group": ""}], included_claim_ids=["s:c0"])
+    h1 = b.freeze()
+    assert b.frozen and b.bundle_hash() == h1 == b.compute_hash()   # deterministic
+    nxt = b.new_version()                                           # a correction → NEW version, links prior
+    assert nxt.version == 2 and nxt.prior_bundle_hash == h1 and not nxt.frozen
+    nxt.claims.append({"claim_id": "s:c1", "subject": "z", "predicate": "w", "claim_class": "correction",
+                       "span_verified": True, "temporal_validity_status": "likely_pre_asof"})
+    assert nxt.compute_hash() != h1                                 # different evidence → different hash
+
+
+@pytest.mark.skipif(not _network_ok(), reason="no live network for orchestrator")
+def test_orchestrator_end_to_end_live():
+    import json
+    from swm.world_model_v2.evidence_requirements import EvidenceRequirement
+    from swm.world_model_v2.evidence_orchestrator import gather_evidence, OrchestratorConfig
+    llm = lambda p: json.dumps({"claims": [{"subject": "o", "predicate": "reported",
+        "claim_class": "observed_fact", "supporting_span": p.split("TEXT:\n", 1)[-1].split(".")[0][:50],
+        "entities": ["union"], "confidence": 0.7}]})
+    reqs = [EvidenceRequirement(requirement_id="req_o", claim_or_quantity="nurses ratify contract",
+            why_relevant="terminal", affected_component="terminal_outcome", entity_scope=["nurses union"])]
+    b = gather_evidence("Will the nurses ratify the contract?", as_of="2023-09-30", requirements=reqs,
+                        llm=llm, config=OrchestratorConfig(lookback_days=90, use_wikipedia=False),
+                        store=RawContentStore(root="/tmp/swm_orch_live"))
+    assert b.retrieval_traces and "after:" in b.retrieval_traces[0]["logical_query"]
+    assert "before:" in b.retrieval_traces[0]["logical_query"]
+    assert b.documents and all(d["temporal_status"] != "verified_post_asof" for d in b.documents)
+    assert b.bundle_hash() == b.compute_hash()                     # deterministic after live retrieval
