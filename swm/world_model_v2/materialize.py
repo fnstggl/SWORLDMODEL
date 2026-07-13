@@ -16,6 +16,7 @@ Production contract (Tier A1 of the gap audit):
 """
 from __future__ import annotations
 
+import copy
 import random
 from dataclasses import dataclass
 
@@ -168,7 +169,7 @@ def operators_from_plan(plan, *, llm=None, allow_experimental=False) -> tuple:
             continue
         seen.add(opname)
         try:
-            cls = get_operator(opname, allow_experimental=allow_experimental)
+            factory = get_operator(opname, allow_experimental=allow_experimental)
         except (KeyError, PermissionError) as e:
             rejections.append({"mech_id": m.get("mech_id"), "reason": str(e)[:200]})
             continue
@@ -176,10 +177,14 @@ def operators_from_plan(plan, *, llm=None, allow_experimental=False) -> tuple:
             # A3: the LLM reaches agent_decision only when experimental execution is explicitly enabled;
             # even then probability-minting requires the operator's own opt-in flag.
             if opname == "agent_decision":
-                ops.append(cls(llm=(llm if allow_experimental else None),
-                               allow_llm_probabilities=allow_experimental))
+                ops.append(factory(llm=(llm if allow_experimental else None),
+                                   allow_llm_probabilities=allow_experimental))
+            elif hasattr(factory, "run") and hasattr(factory, "applicable") and not isinstance(factory, type):
+                # Phase 7/10 registry entries are configured operator instances.  Treat
+                # them as prototypes instead of assuming every entry is a zero-arg class.
+                ops.append(copy.deepcopy(factory))
             else:
-                ops.append(cls())
+                ops.append(factory())
         except TypeError as e:
             rejections.append({"mech_id": m.get("mech_id"),
                                "reason": f"operator {opname!r} needs bound parameters "

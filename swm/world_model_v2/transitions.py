@@ -59,7 +59,8 @@ class StateDelta:
     def as_dict(self):
         return {"at": rfc3339(self.at), "event_type": self.event_type, "operator": self.operator,
                 "changes": self.changes, "reason_codes": self.reason_codes,
-                "uncertainty": self.uncertainty, "evidence_deps": self.evidence_deps}
+                "uncertainty": self.uncertainty, "evidence_deps": self.evidence_deps,
+                "follow_up_events": self.follow_up_events}
 
 
 @dataclass

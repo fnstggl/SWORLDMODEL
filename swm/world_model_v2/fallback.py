@@ -21,6 +21,7 @@ by the LLM.
 """
 from __future__ import annotations
 
+import hashlib
 import math
 import random
 from dataclasses import dataclass, field
@@ -155,7 +156,11 @@ class GenericOutcomeOperator(TransitionOperator):
         from swm.world_model_v2.quantities import Quantity, register_quantity_type
         a = proposal.action
         var, fam = a["outcome_var"], a["family"]
-        rng = random.Random(hash(world.branch_id) & 0xFFFFFFFF)
+        # Python's process-randomized ``hash`` breaks replay across interpreter
+        # processes.  The branch identifier is public simulator state, so derive
+        # the local stream from a stable digest instead.
+        seed = int.from_bytes(hashlib.sha256(str(world.branch_id).encode()).digest()[:8], "big")
+        rng = random.Random(seed)
         av, bv = LEAN_BETA.get(a["lean"], (1.0, 1.0))
         register_quantity_type(var, units="outcome")
         before = world.quantities[var].value if var in world.quantities else None

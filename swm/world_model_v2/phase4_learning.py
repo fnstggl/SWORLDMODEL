@@ -72,6 +72,7 @@ class TrajectoryRecord:
     action_set_hypotheses: list = field(default_factory=list)
     source_ids: list = field(default_factory=list)
     provenance: dict = field(default_factory=dict)
+    sample_weight: float = 1.0
 
     def validate(self):
         if not self.record_id or not self.actor_id or not self.observed_action:
@@ -80,6 +81,8 @@ class TrajectoryRecord:
             raise ValueError(f"observed action {self.observed_action!r} missing from reconstructed action set")
         if len(set(self.candidate_actions)) != len(self.candidate_actions):
             raise ValueError("candidate action set contains duplicates")
+        if not math.isfinite(float(self.sample_weight)) or float(self.sample_weight) <= 0:
+            raise ValueError("sample_weight must be finite and positive")
         if self.provenance.get("post_action_features"):
             raise ValueError("post-action feature leakage is prohibited")
         return self
@@ -261,11 +264,12 @@ class HierarchicalPolicyFitter:
             except ValueError as exc:
                 invalid_rows.append({"record_id": row.record_id, "reason": str(exc)})
                 continue
-            _inc(global_counts, row.observed_action)
-            _inc_nested(domain, row.dataset_id, row.observed_action)
-            _inc_nested(institutions, row.institution_id or "__missing__", row.observed_action)
-            _inc_nested(roles, row.actor_role or "__missing__", row.observed_action)
-            _inc_nested(actors, row.actor_id, row.observed_action)
+            weight = float(row.sample_weight)
+            _inc(global_counts, row.observed_action, weight)
+            _inc_nested(domain, row.dataset_id, row.observed_action, weight)
+            _inc_nested(institutions, row.institution_id or "__missing__", row.observed_action, weight)
+            _inc_nested(roles, row.actor_role or "__missing__", row.observed_action, weight)
+            _inc_nested(actors, row.actor_id, row.observed_action, weight)
             for feature, value in row.actor_view_features.items():
                 if not isinstance(value, (int, float)):
                     continue
@@ -296,12 +300,48 @@ class HierarchicalPolicyFitter:
         return artifact.seal()
 
 
-def _inc(mapping, action):
-    mapping[action] = mapping.get(action, 0) + 1
+def _inc(mapping, action, amount=1.0):
+    mapping[action] = mapping.get(action, 0) + amount
 
 
-def _inc_nested(mapping, group, action):
-    mapping.setdefault(group, {})[action] = mapping.setdefault(group, {}).get(action, 0) + 1
+def _inc_nested(mapping, group, action, amount=1.0):
+    mapping.setdefault(group, {})[action] = mapping.setdefault(group, {}).get(action, 0) + amount
+
+
+def artifact_parameter_pack(artifact: HierarchicalPolicyArtifact, *, dataset_id: str = "") -> dict:
+    """Bind a fitted artifact to the universal ActorPolicyModel parameter-pack contract."""
+    if not artifact.verify():
+        raise ValueError("corrupt policy artifact checksum")
+
+    def intercepts(counts):
+        actions = sorted(artifact.global_counts)
+        probs = _posterior_mean(counts, actions, float(artifact.config["alpha"]))
+        return {a: math.log(max(1e-12, p)) for a, p in probs.items()}
+
+    domain_counts = artifact.domain_counts.get(dataset_id, {}) if dataset_id else artifact.global_counts
+    return {
+        "schema_version": LEARNING_SCHEMA_VERSION,
+        "pack_id": f"phase4:{artifact.artifact_id}",
+        "family_id": "actor_policy:regime_mixture", "domain": dataset_id or "multi_domain",
+        "population": "training_split_reference_class",
+        "source": "fitted_hierarchical_trajectory_model",
+        # Fitting alone is not validation.  A promotion job may replace this only
+        # after its held-out and transfer gates pass.
+        "support_grade": "experimental_fitted", "precision": 1.0,
+        "partial_pool_strength": artifact.config["actor_pool_strength"],
+        "global": {"success": {"mean": 1.0, "sd": 0.3}},
+        "action_intercepts": intercepts(domain_counts or artifact.global_counts),
+        "role_action_intercepts": {role: intercepts(counts) for role, counts in artifact.role_counts.items()},
+        "actor_action_intercepts": {actor: intercepts(counts) for actor, counts in artifact.actor_counts.items()},
+        "policy_family_weights": dict(artifact.policy_family_weights),
+        "uncertainty": dict(artifact.uncertainty),
+        "fitted_on": artifact.split_id + ":train_only",
+        "fit_method": "hierarchical_empirical_bayes_partial_pooling",
+        "transport_note": "unvalidated outside the dataset/domain encoded by this pack",
+        "fallbacks": [{"tier": 5, "reason": "fitted reference-class pack pending empirical promotion",
+                       "uncertainty_widening": 1.0}],
+        "artifact_checksum": artifact.checksum,
+    }
 
 
 class HierarchicalPolicyPredictor:
@@ -378,17 +418,21 @@ class CalibrationArtifact:
         return self
 
 
-def fit_temperature(predictions: list[dict], labels: list[str], split_id: str) -> CalibrationArtifact:
+def fit_temperature(predictions: list[dict], labels: list[str], split_id: str,
+                    weights: list[float] | None = None) -> CalibrationArtifact:
     if not predictions or len(predictions) != len(labels):
         raise ValueError("calibration predictions/labels must be non-empty and aligned")
+    weights = list(weights) if weights is not None else [1.0] * len(labels)
+    if len(weights) != len(labels) or any(not math.isfinite(w) or w <= 0 for w in weights):
+        raise ValueError("calibration weights must be aligned, finite, and positive")
     grid = [0.4 + 0.05 * i for i in range(33)]
     losses = {}
     for temp in grid:
         calibrated = [_temperature(p, temp) for p in predictions]
-        losses[temp] = log_loss(calibrated, labels)
+        losses[temp] = log_loss(calibrated, labels, weights)
     best = min(losses, key=losses.get)
     return CalibrationArtifact("temperature_scaling", best, split_id, len(labels),
-                               log_loss(predictions, labels), losses[best]).seal()
+                               log_loss(predictions, labels, weights), losses[best]).seal()
 
 
 def apply_calibration(probabilities: dict, artifact: CalibrationArtifact) -> dict:
@@ -403,70 +447,86 @@ def _temperature(probabilities, temp):
     return _softmax(logits)
 
 
-def log_loss(predictions, labels):
-    return -sum(math.log(max(1e-12, p.get(y, 0.0))) for p, y in zip(predictions, labels)) / len(labels)
+def log_loss(predictions, labels, weights=None):
+    weights = list(weights) if weights is not None else [1.0] * len(labels)
+    z = sum(weights) or 1.0
+    return -sum(w * math.log(max(1e-12, p.get(y, 0.0)))
+                for p, y, w in zip(predictions, labels, weights)) / z
 
 
-def multiclass_brier(predictions, labels):
+def multiclass_brier(predictions, labels, weights=None):
+    weights = list(weights) if weights is not None else [1.0] * len(labels)
     rows = []
-    for probabilities, label in zip(predictions, labels):
+    for probabilities, label, weight in zip(predictions, labels, weights):
         actions = set(probabilities) | {label}
-        rows.append(sum((probabilities.get(a, 0.0) - (1.0 if a == label else 0.0)) ** 2
-                        for a in actions))
-    return sum(rows) / len(rows)
+        rows.append(weight * sum((probabilities.get(a, 0.0) - (1.0 if a == label else 0.0)) ** 2
+                                 for a in actions))
+    return sum(rows) / (sum(weights) or 1.0)
 
 
-def expected_calibration_error(predictions, labels, bins=10):
+def expected_calibration_error(predictions, labels, bins=10, weights=None):
+    weights = list(weights) if weights is not None else [1.0] * len(labels)
     bucket = [[] for _ in range(bins)]
-    for p, y in zip(predictions, labels):
+    for p, y, weight in zip(predictions, labels, weights):
         action, confidence = max(p.items(), key=lambda item: item[1])
-        bucket[min(bins - 1, int(confidence * bins))].append((confidence, action == y))
-    n = len(labels)
-    return sum(len(b) / n * abs(sum(c for c, _ in b) / len(b) - sum(ok for _, ok in b) / len(b))
+        bucket[min(bins - 1, int(confidence * bins))].append((confidence, action == y, weight))
+    total = sum(weights) or 1.0
+    return sum(sum(w for _, _, w in b) / total *
+               abs(sum(c * w for c, _, w in b) / sum(w for _, _, w in b) -
+                   sum(float(ok) * w for _, ok, w in b) / sum(w for _, _, w in b))
                for b in bucket if b)
 
 
-def reliability_data(predictions, labels, bins=10):
+def reliability_data(predictions, labels, bins=10, weights=None):
+    weights = list(weights) if weights is not None else [1.0] * len(labels)
     out = []
     for i in range(bins):
         lo, hi = i / bins, (i + 1) / bins
         rows = []
-        for p, y in zip(predictions, labels):
+        for p, y, weight in zip(predictions, labels, weights):
             action, confidence = max(p.items(), key=lambda item: item[1])
             if lo <= confidence < hi or (i == bins - 1 and confidence == 1.0):
-                rows.append((confidence, action == y))
-        out.append({"lo": lo, "hi": hi, "n": len(rows),
-                    "confidence": sum(x for x, _ in rows) / len(rows) if rows else None,
-                    "accuracy": sum(x for _, x in rows) / len(rows) if rows else None})
+                rows.append((confidence, action == y, weight))
+        total = sum(w for _, _, w in rows)
+        out.append({"lo": lo, "hi": hi, "n": len(rows), "weight": total,
+                    "confidence": sum(x * w for x, _, w in rows) / total if rows else None,
+                    "accuracy": sum(float(x) * w for _, x, w in rows) / total if rows else None})
     return out
 
 
-def evaluate_predictions(predictions, labels, candidate_sets=None) -> dict:
+def evaluate_predictions(predictions, labels, candidate_sets=None, weights=None) -> dict:
     if not predictions or len(predictions) != len(labels):
         raise ValueError("evaluation inputs must be non-empty and aligned")
     top = [max(p, key=p.get) for p in predictions]
+    weights = list(weights) if weights is not None else [1.0] * len(labels)
+    total_weight = sum(weights) or 1.0
     invalid = 0
     if candidate_sets is not None:
-        invalid = sum(t not in actions for t, actions in zip(top, candidate_sets))
+        invalid = sum(w for t, actions, w in zip(top, candidate_sets, weights) if t not in actions)
     classes = sorted(set(labels) | {a for p in predictions for a in p})
     confusion = {a: {b: 0 for b in classes} for a in classes}
     for actual, predicted in zip(labels, top):
         confusion[actual][predicted] += 1
     entropy = [-sum(x * math.log(max(1e-12, x)) for x in p.values()) for p in predictions]
     return {
-        "n": len(labels), "log_loss": log_loss(predictions, labels),
-        "multiclass_brier": multiclass_brier(predictions, labels),
-        "ece": expected_calibration_error(predictions, labels),
-        "top1_accuracy": sum(a == b for a, b in zip(labels, top)) / len(labels),
-        "invalid_action_rate": invalid / len(labels), "confusion_matrix": confusion,
-        "mean_entropy": sum(entropy) / len(entropy),
-        "reliability": reliability_data(predictions, labels),
+        "n": len(labels), "effective_weight": total_weight,
+        "log_loss": log_loss(predictions, labels, weights),
+        "multiclass_brier": multiclass_brier(predictions, labels, weights),
+        "ece": expected_calibration_error(predictions, labels, weights=weights),
+        "top1_accuracy": sum(w for a, b, w in zip(labels, top, weights) if a == b) / total_weight,
+        "invalid_action_rate": invalid / total_weight, "confusion_matrix": confusion,
+        "mean_entropy": sum(e * w for e, w in zip(entropy, weights)) / total_weight,
+        "reliability": reliability_data(predictions, labels, weights=weights),
     }
 
 
-def paired_bootstrap(pred_a, pred_b, labels, *, metric="log_loss", n_boot=1000, seed=0):
+def paired_bootstrap(pred_a, pred_b, labels, *, metric="log_loss", n_boot=1000, seed=0,
+                     weights=None):
     if len(labels) < 2:
         return {"mean": None, "ci95": [None, None], "n": len(labels)}
+    weights = list(weights) if weights is not None else [1.0] * len(labels)
+    if len(weights) != len(labels) or any(not math.isfinite(w) or w <= 0 for w in weights):
+        raise ValueError("bootstrap weights must be aligned, finite, and positive")
     rng = random.Random(seed)
 
     def row_loss(p, y):
@@ -475,13 +535,19 @@ def paired_bootstrap(pred_a, pred_b, labels, *, metric="log_loss", n_boot=1000, 
         return -math.log(max(1e-12, p.get(y, 0.0)))
 
     diffs = [row_loss(a, y) - row_loss(b, y) for a, b, y in zip(pred_a, pred_b, labels)]
+    total_weight = sum(weights) or 1.0
     samples = []
     for _ in range(n_boot):
-        samples.append(sum(diffs[rng.randrange(len(diffs))] for _ in diffs) / len(diffs))
+        # Resample observational rows (or aggregate exposure arms) as clusters,
+        # then retain their frequency weights inside the replicate.
+        chosen = [rng.randrange(len(diffs)) for _ in diffs]
+        z = sum(weights[i] for i in chosen) or 1.0
+        samples.append(sum(diffs[i] * weights[i] for i in chosen) / z)
     samples.sort()
-    return {"mean": sum(diffs) / len(diffs),
+    return {"mean": sum(d * w for d, w in zip(diffs, weights)) / total_weight,
             "ci95": [samples[int(0.025 * n_boot)], samples[min(n_boot - 1, int(0.975 * n_boot))]],
-            "n": len(diffs)}
+            "n": len(diffs), "effective_weight": total_weight,
+            "resampling_unit": "trajectory_row_with_frequency_weight"}
 
 
 _ARTIFACT_LOCK = threading.RLock()
@@ -549,4 +615,3 @@ class ResumableEvaluation:
                 handle.write(json.dumps(result, sort_keys=True, default=str) + "\n")
                 handle.flush()
         return self.completed_ids()
-

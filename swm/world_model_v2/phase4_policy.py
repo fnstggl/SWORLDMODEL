@@ -159,10 +159,49 @@ class TypedAction:
 
     @classmethod
     def from_dict(cls, data: dict) -> "TypedAction":
-        d = dict(data)
+        d = migrate_typed_action(data)
         target = d.get("target") or {}
         d["target"] = target if isinstance(target, ActionTarget) else ActionTarget(**target)
         return cls(**d)
+
+
+def migrate_typed_action(data: dict) -> dict:
+    """Migrate an unversioned/3.x semantic action into the strict 4.x contract.
+
+    The migration is intentionally semantic-only.  Historical probability,
+    utility, or score fields are rejected because compiler/LLM numeric values may
+    not cross into the production policy plane.
+    """
+    if not isinstance(data, dict):
+        raise TypeError("typed action payload must be a mapping")
+    forbidden = {"probability", "probabilities", "action_probability", "utility_weight", "score"}
+    present = sorted(forbidden & set(data))
+    if present:
+        raise ValueError(f"behavioral numeric fields cannot be migrated into TypedAction: {present}")
+    d = dict(data)
+    version = str(d.get("semantic_version") or d.get("schema_version") or "3.0.0")
+    try:
+        major = int(version.split(".", 1)[0])
+    except (TypeError, ValueError):
+        raise ValueError(f"invalid typed-action semantic version {version!r}") from None
+    if major > int(SCHEMA_VERSION.split(".", 1)[0]):
+        raise ValueError(f"future typed-action version {version!r} is unsupported")
+    aliases = {"actor": "actor_id", "role": "actor_role", "family": "action_family",
+               "name": "action_name", "inclusion_reason": "compiler_inclusion_reason"}
+    for old, new in aliases.items():
+        if new not in d and old in d:
+            d[new] = d.pop(old)
+    d.pop("schema_version", None)
+    target = d.get("target")
+    if isinstance(target, str):
+        d["target"] = {"target_type": "actor", "target_id": target}
+    d.setdefault("action_family", KNOWN_ACTIONS.get(str(d.get("action_name", "")), "generic"))
+    d.setdefault("actor_role", "unknown")
+    if not d.get("action_id") and d.get("actor_id") and d.get("action_name"):
+        d["action_id"] = "action:" + _hash({
+            "actor": d["actor_id"], "name": d["action_name"], "target": d.get("target", {})})[:20]
+    d["semantic_version"] = SCHEMA_VERSION
+    return d
 
 
 @dataclass
@@ -270,7 +309,9 @@ class ActorViewBuilder:
 
         relations = []
         if world.network is not None:
-            for edge in world.network.edges:
+            visible_edges = (world.network.edges_visible_to(actor_id)
+                             if hasattr(world.network, "edges_visible_to") else world.network.edges)
+            for edge in visible_edges:
                 if actor_id not in (edge.src, edge.dst):
                     continue
                 if edge.visibility == "private" and actor_id not in (edge.src, edge.dst):
@@ -280,13 +321,20 @@ class ActorViewBuilder:
                 if edge.visibility == "dst_only" and actor_id != edge.dst:
                     continue
                 relations.append({
-                    "relation": edge.rel, "other_actor": edge.dst if edge.src == actor_id else edge.src,
+                    "relation": getattr(edge, "rel", getattr(edge, "layer", "relation")),
+                    "other_actor": edge.dst if edge.src == actor_id else edge.src,
                     "direction": "out" if edge.src == actor_id else "in",
-                    "strength": _value(edge.strength, 0.5), "trust": edge.trust,
-                    "channel": edge.channel, "uncertainty": _uncertainty(edge.strength),
+                    "strength": (_value(edge.strength, 0.5) if hasattr(edge, "strength")
+                                 else float(getattr(edge, "strength_mean", 0.5))),
+                    "trust": getattr(edge, "trust", None), "channel": getattr(edge, "channel", ""),
+                    "uncertainty": (_uncertainty(edge.strength) if hasattr(edge, "strength") else
+                                    {"existence_p": getattr(edge, "existence_p", 1.0),
+                                     "posterior_ref": getattr(edge, "posterior_ref", {})}),
                 })
 
         rules, authority = [], list(own("authority", []) or [])
+        institution_boundaries = institution_boundaries or world.uncertainty_meta.get(
+            "institution_boundaries", {})
         for inst_id, inst in (world.institutions or {}).items():
             boundary = (institution_boundaries or {}).get(inst_id)
             for rule in getattr(inst, "rules", []):
@@ -640,6 +688,20 @@ class UtilityInference:
             tier = 1 if n_actor >= 5 else (2 if view.actor_role in parameters.get("roles", {}) else 7)
             source = "actor_history" if tier == 1 else ("role_parameter_pack" if tier == 2 else "broad_prior")
             comps.append(UtilityComponent(name, value, abs(signals[name]) * sd, source, tier))
+        intercept = float(parameters.get("action_intercepts", {}).get(action.action_name, 0.0) or 0.0)
+        role_intercept = float(parameters.get("role_action_intercepts", {}).get(
+            view.actor_role, {}).get(action.action_name, intercept) or 0.0)
+        actor_intercept = parameters.get("actor_action_intercepts", {}).get(
+            view.actor_id, {}).get(action.action_name)
+        if actor_intercept is not None:
+            n_actor = int(parameters.get("actors", {}).get(view.actor_id, {}).get("n", 0) or
+                          len(view.action_history))
+            shrink = n_actor / (n_actor + float(parameters.get("partial_pool_strength", 10.0) or 10.0))
+            intercept = shrink * float(actor_intercept) + (1.0 - shrink) * role_intercept
+        else:
+            intercept = role_intercept
+        comps.append(UtilityComponent("choice_intercept", intercept, 0.2,
+                                      "hierarchical_action_frequency", 2))
         eu = sum(c.mean for c in comps)
         usd = math.sqrt(sum(c.sd ** 2 for c in comps) + consequence.uncertainty ** 2)
         return UtilityPosterior(action.action_id, comps, eu, usd)
@@ -650,30 +712,117 @@ class PolicyFamilySpec:
     family_id: str
     assumptions: str
     required_state: tuple
+    required_evidence: tuple = ()
     compatible_families: tuple = ACTION_FAMILIES
+    mathematical_form: str = ""
     parameter_schema: dict = field(default_factory=dict)
+    policy_uncertainty: str = "posterior family weight and parameter distribution"
     fit_method: str = "hierarchical likelihood"
     applicability: str = "state requirements satisfied"
     exclusions: str = ""
     transport_limits: str = "parameters must widen outside fitted domain"
+    execution_behavior: str = "produces a posterior over the actor-perceived feasible TypedAction set"
+    diagnostics: tuple = ("log_loss", "calibration", "family_weight", "posterior_predictive_check")
     validation_status: str = "implemented"
     failure_modes: list = field(default_factory=list)
 
 
 def default_policy_registry() -> dict[str, PolicyFamilySpec]:
+    """Phase-6-governed policy-family specifications used by the numeric runtime.
+
+    These records deliberately say ``implemented``, not ``production_eligible``.
+    The companion :func:`phase6_policy_registry_records` exports the same source
+    of truth as Phase 6 ``MechanismRecord``/``ParameterPack`` objects.
+    """
+    forms = {
+        "random_utility": ("additive random utility errors", (), (), "U_a=V_a+epsilon_a; integrate epsilon"),
+        "multinomial_logit": ("IIA within the choice set", (), ("choices",), "P(a)=exp(lambda U_a)/sum_j exp(lambda U_j)"),
+        "nested_discrete_choice": ("IIA only within action-family nests", (), ("choices",), "P(a)=P(nest(a))*P(a|nest(a))"),
+        "quantal_response": ("noisy response to perceived utility", (), ("choices",), "P(a) proportional to exp(lambda EU_a)"),
+        "satisficing": ("actor accepts an action above an aspiration level", (), ("choices",), "P(a) positive when EU_a>=tau; otherwise residual search mass"),
+        "bounded_search": ("finite ordered consideration set", ("attention",), ("choices",), "search first K perceived actions and choose best encountered"),
+        "habit": ("repetition raises action accessibility", ("action_history",), ("repeated_choices",), "score_a=EU_a+eta*log(1+n_a)"),
+        "reinforcement_learning": ("experienced rewards update cached action values", ("action_history", "policy_state"), ("actions_and_rewards",), "Q_a<-Q_a+alpha(r-Q_a); score=(EU+Q)/2"),
+        "ewa": ("experience-weighted attractions combine reinforcement and forgone payoffs", ("action_history", "policy_state"), ("repeated_actions_payoffs",), "A_a'=(phi*N*A_a+[delta+(1-delta)I_a]*pi_a)/(rho*N+1)"),
+        "belief_planning": ("bounded subjective model predicts consequences", ("beliefs", "expected_reactions"), ("belief_or_reaction_history",), "score_a=EU_a+log P_actor(success|a)"),
+        "norm_compliance": ("perceived norms add utility or penalties", ("obligations",), ("norm_observations",), "score_a=EU_a+kappa*norm_alignment_a"),
+        "obligation": ("binding commitments affect choice", ("commitments", "obligations"), ("commitment_behavior",), "score_a=EU_a+kappa*obligation_alignment_a"),
+        "reciprocity": ("observed partner conduct changes social utility", ("relationships",), ("dyadic_history",), "score_a=EU_a+rho*perceived_partner_kindness"),
+        "imitation": ("observed alters' actions supply social evidence", ("relationships", "perceived_actions"), ("network_actions",), "score_a=EU_a+mu*observed_peer_frequency_a"),
+        "social_proof": ("aggregate observed behavior affects perceived value", ("perceived_actions",), ("exposure_and_actions",), "score_a=EU_a+sigma*log(1+observed_count_a)"),
+        "institutional_obedience": ("perceived legitimate rules affect choice", ("institution_rules", "authority"), ("rule_compliance",), "score_a=EU_a+kappa*perceived_rule_alignment_a"),
+        "risk_sensitive": ("actor penalizes subjective consequence dispersion", ("risk_beliefs",), ("risky_choices",), "score_a=E[U_a]-gamma*SD[U_a]"),
+        "loss_aversion": ("losses relative to an identified reference point loom larger", ("preferences",), ("choices_with_reference_points",), "v(x)=x if x>=0 else lambda_loss*x"),
+        "strategic_anticipation": ("actor anticipates a bounded opponent response", ("beliefs", "expected_reactions"), ("strategic_sequences",), "score_a=EU_a+log P_actor(response|a)"),
+        "limited_depth_reasoning": ("actor recursively reasons to a finite depth", ("beliefs", "expected_reactions"), ("strategic_sequences",), "pi^k=BR_lambda(pi^(k-1)), k<=K"),
+        "delay_hazard": ("inaction and delay are competing time hazards", ("workload", "attention"), ("timed_choices",), "score_a=EU_a-duration_a/one_day"),
+        "regime_mixture": ("latent decision regimes switch by context", (), ("choices",), "P(a|x)=sum_r P(r|x)P(a|r,x)"),
+    }
     specs = {}
     for family in POLICY_FAMILIES:
-        required = ("action_history",) if family in ("habit", "reinforcement_learning", "ewa") else ()
-        if family in ("strategic_anticipation", "limited_depth_reasoning", "belief_planning"):
-            required = ("beliefs", "expected_reactions")
+        assumptions, required, evidence, equation = forms[family]
         specs[family] = PolicyFamilySpec(
-            family, assumptions=family.replace("_", " ") + " is a plausible decision process",
-            required_state=required,
-            parameter_schema={"precision": "distribution", "weight": "posterior_probability"},
+            family, assumptions=assumptions, required_state=required, required_evidence=evidence,
+            mathematical_form=equation,
+            parameter_schema={"precision": "nonnegative distribution",
+                              "weight": "posterior probability",
+                              "family_specific": "provenance-bearing distribution"},
             exclusions="exclude when required actor-visible state is absent",
             failure_modes=["transport shift", "unidentified family", "sparse actor history"],
         )
     return specs
+
+
+def phase6_policy_registry_records() -> list:
+    """Return Phase 4 families in Phase 6's governed three-layer record shape.
+
+    The generic pack is deliberately broad and only software-implemented.  Fitted
+    domain packs are emitted by ``artifact_parameter_pack`` and validation may
+    promote them later; this factory never self-promotes a policy family.
+    """
+    from swm.world_model_v2.registry.record import (
+        ApplicabilityRule, MechanismRecord, ParameterPack, ParameterSpec,
+    )
+    records = []
+    specs = default_policy_registry()
+    for family, spec in specs.items():
+        pack = ParameterPack(
+            pack_id=f"phase4:{family}:tier7:4.0.0", family_id=f"actor_policy:{family}",
+            domain="*", population="cold_start_reference_class",
+            values={
+                "precision": {"value": 0.7, "sd": 0.5, "source": "reference_class_prior",
+                              "method": "deliberately broad Phase 4 fallback"},
+                "family_weight": {"value": 1.0 / len(specs), "sd": 0.15,
+                                  "source": "reference_class_prior",
+                                  "method": "structural mixture prior; refit on trajectories"},
+            },
+            fit_method="unfitted broad structural prior", version=SCHEMA_VERSION,
+            transport_note="Tier 7 only; uncertainty must widen and family weight must be updated in-domain",
+        )
+        records.append(MechanismRecord(
+            family_id=f"actor_policy:{family}", version=SCHEMA_VERSION, ontology_type="decision",
+            title=f"Actor policy: {family.replace('_', ' ')}",
+            formal_description=spec.mathematical_form,
+            causal_inputs=["actor_view", "typed_feasible_actions", "subjective_consequences"],
+            causal_outputs=["action_posterior"], required_state=list(spec.required_state),
+            action_dependencies=list(spec.compatible_families),
+            parameters=[ParameterSpec("precision", "choice precision", lo=0.0,
+                                      default_source="fitted"),
+                        ParameterSpec("family_weight", "posterior structural weight", lo=0.0, hi=1.0,
+                                      default_source="fitted")],
+            applicability=ApplicabilityRule(
+                domains=["*"], requires_state=list(spec.required_state),
+                requires_data=list(spec.required_evidence), answers_processes=["actor_selects_typed_action"],
+                transport_risk="high"),
+            packs=[pack], status="implemented",
+            status_reason="typed numeric execution exists; empirical production promotion is withheld",
+            known_failure_modes=list(spec.failure_modes),
+            code_ref="swm.world_model_v2.phase4_policy:ActorPolicyModel",
+            test_ref="tests/test_wmv2_phase4_contracts.py",
+            uncertainty_note=spec.policy_uncertainty,
+            implementation_note=spec.execution_behavior,
+        ))
+    return records
 
 
 @dataclass
@@ -760,16 +909,28 @@ class ActorPolicyModel:
             if not feasible:
                 continue
             feasible_union.extend(a.action_id for a in feasible)
-            scores = {a.action_id: 0.0 for a in feasible}
+            family_scores = {family: {} for family in family_post.weights}
             for action in feasible:
                 consequence = self.consequences.predict(action, view, self.parameter_pack)
                 utility = self.utility.infer(action, view, consequence, self.parameter_pack)
                 utility_rows.setdefault(action.action_id, []).append(utility)
                 consequence_rows.setdefault(action.action_id, []).append(consequence)
-                for family, weight in family_post.weights.items():
-                    scores[action.action_id] += weight * self._family_score(
+                for family in family_post.weights:
+                    family_scores[family][action.action_id] = self._family_score(
                         family, action, view, utility, consequence)
-            per_particle.append(self._softmax(scores, float(self.parameter_pack.get("precision", 1.0))))
+            # Preserve incompatible family structures until they each produce a
+            # posterior.  Mixing probabilities is Bayesian model averaging;
+            # averaging family utilities first would manufacture a policy that
+            # no structural particle represents.
+            distributions = {
+                family: self._family_distribution(family, scores, feasible)
+                for family, scores in family_scores.items()
+            }
+            marginal = {a.action_id: sum(
+                family_post.weights[family] * distributions[family].get(a.action_id, 0.0)
+                for family in family_post.weights) for a in feasible}
+            z = sum(marginal.values()) or 1.0
+            per_particle.append({aid: p / z for aid, p in marginal.items()})
 
         if not per_particle:
             raise ValueError("actor perceives no feasible action; action-space fallback contract was violated")
@@ -816,10 +977,13 @@ class ActorPolicyModel:
             spec = self.registry.get(family)
             if spec is None:
                 continue
-            if "action_history" in spec.required_state and not view.action_history:
-                weight *= 0.25
-            if "beliefs" in spec.required_state and not view.beliefs:
-                weight *= 0.25
+            missing = []
+            for required in spec.required_state:
+                value = getattr(view, required, None)
+                if value is None or value == [] or value == {}:
+                    missing.append(required)
+            if missing:
+                weight *= 0.25 ** len(missing)
             valid[family] = max(0.0, float(weight))
         z = sum(valid.values()) or 1.0
         weights = {k: v / z for k, v in valid.items()}
@@ -856,6 +1020,29 @@ class ActorPolicyModel:
         if family == "delay_hazard":
             return u - action.expected_duration_s / 86400.0
         return u
+
+    def _family_distribution(self, family: str, scores: dict,
+                             actions: list[TypedAction]) -> dict:
+        precision = float(self.parameter_pack.get("precision", 1.0))
+        if family in ("satisficing", "bounded_search"):
+            acceptable = [a.action_id for a in actions if scores[a.action_id] >= 0.0]
+            if acceptable:
+                mass = 1.0 / len(acceptable)
+                return {a.action_id: mass if a.action_id in acceptable else 0.0 for a in actions}
+        if family == "nested_discrete_choice":
+            nests = {}
+            for action in actions:
+                nests.setdefault(action.action_family, []).append(action.action_id)
+            within = {nest: self._softmax({aid: scores[aid] for aid in aids}, precision)
+                      for nest, aids in nests.items()}
+            nest_scale = max(0.05, float(self.parameter_pack.get("nest_scale", 0.7) or 0.7))
+            nest_scores = {nest: math.log(sum(math.exp(max(-40.0, min(40.0,
+                precision * scores[aid]))) for aid in aids) or 1e-12) * nest_scale
+                           for nest, aids in nests.items()}
+            nest_probs = self._softmax(nest_scores, 1.0)
+            return {aid: nest_probs[nest] * within[nest][aid]
+                    for nest, aids in nests.items() for aid in aids}
+        return self._softmax(scores, precision)
 
     @staticmethod
     def _softmax(scores: dict, precision: float) -> dict:

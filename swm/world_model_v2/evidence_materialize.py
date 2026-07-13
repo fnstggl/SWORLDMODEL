@@ -38,10 +38,12 @@ class EvidenceObservationOperator(TransitionOperator):
         return TransitionProposal(operator=self.name, action={
             "quantity": f"evidence::{p.get('claim_id', 'c')}", "claim_id": p.get("claim_id", ""),
             "subject": p.get("subject", ""), "value": p.get("value", "observed"),
-            "source": p.get("source", ""), "visibility": p.get("visibility", "public")},
+            "source": p.get("source", ""), "visibility": p.get("visibility", "public"),
+            "actors": list(p.get("actors") or [])},
             reason_codes=["evidence_observation", f"claim={p.get('claim_id', '')}"])
 
     def apply(self, world, proposal):
+        from swm.world_model_v2.information import InformationItem
         from swm.world_model_v2.quantities import Quantity, register_quantity_type
         a = proposal.action
         var = a["quantity"]
@@ -51,11 +53,28 @@ class EvidenceObservationOperator(TransitionOperator):
         # record into the omniscient evidence store on the world
         store = world.uncertainty_meta.setdefault("evidence_store", {})
         store[a["claim_id"]] = {"subject": a["subject"], "value": a["value"], "source": a["source"],
-                                "visibility": a["visibility"], "observed_at": world.clock.now}
+                                "visibility": a["visibility"], "actors": list(a.get("actors") or []),
+                                "observed_at": world.clock.now}
+        # Bridge Phase-2 visibility into the ledger consumed by production ActorViews.
+        item_id = a["claim_id"]
+        permitted = list(world.entities) if a["visibility"] == "public" else list(a.get("actors") or [])
+        if world.information is not None and item_id:
+            if item_id not in world.information.items:
+                world.information.publish(InformationItem(
+                    item_id=item_id, content=f"{a['subject']}: {a['value']}",
+                    kind="public" if a["visibility"] == "public" else "private",
+                    source=a["source"], created_at=world.clock.now, about=a["subject"]))
+            already = {(e.actor_id, e.item_id) for e in world.information.exposures}
+            for actor_id in permitted:
+                if actor_id in world.entities and (actor_id, item_id) not in already:
+                    world.information.expose(actor_id, item_id, world.clock.now,
+                                             channel="evidence_bundle", observed=True)
         d = StateDelta(at=world.clock.now, event_type="observe_evidence", operator=self.name,
                        reason_codes=proposal.reason_codes,
                        uncertainty={"provenance": f"evidence_claim:{a['claim_id']}", "source": a["source"]})
-        return d.change(f"quantities[{var}]", before, a["value"])
+        d.change(f"quantities[{var}]", before, a["value"])
+        d.change(f"information.exposures[{item_id}]", None, sorted(permitted))
+        return d
 
 
 register_operator("evidence_observation", EvidenceObservationOperator, requires=("quantities",),
@@ -91,13 +110,18 @@ def attach_evidence_observations(plan, bundle, *, max_obs: int = 8):
         if c["claim_id"] not in inc or added >= max_obs:
             continue
         v = vis_by_claim.get(c["claim_id"], {})
-        obs_ts = v.get("earliest_observation_time") or c.get("publication_time") or as_of_ts
-        obs_ts = min(float(obs_ts), as_of_ts)             # never observe evidence after the as-of horizon
+        earliest = v.get("earliest_observation_time") or c.get("publication_time") or as_of_ts
+        # Included evidence is context already available at the simulation as-of. Queue
+        # it on the initial clock; a historical timestamp would be correctly skipped as stale.
+        obs_ts = as_of_ts
         rp.scheduled_events.append({
             "etype": "observe_evidence", "ts": obs_ts, "participants": [],
             "payload": {"claim_id": c["claim_id"], "subject": c.get("subject", ""),
                         "value": c.get("value") or c.get("object") or "reported",
-                        "source": c.get("source_id", ""), "visibility": c.get("actor_visibility", "public")}})
+                        "source": c.get("source_id", ""),
+                        "visibility": v.get("visibility", c.get("actor_visibility", "public")),
+                        "actors": list(v.get("actors") or []),
+                        "earliest_observation_time": earliest}})
         added += 1
     rp.provenance["n_evidence_observations"] = added
     return rp

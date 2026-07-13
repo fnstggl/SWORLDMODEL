@@ -49,12 +49,14 @@ class ActorPolicyRuntime:
         self._lock = threading.RLock()
 
     def decide(self, plan, posterior_worlds: list, actor_id: str, *, decision: dict,
-               seed: int, question_id: str = "") -> tuple[TypedAction, ActionPosterior, DecisionTrace]:
+               seed: int, question_id: str = "", observed_events=None
+               ) -> tuple[TypedAction, ActionPosterior, DecisionTrace]:
         """Compute and sample a policy without exposing a ``WorldState`` to numeric policy code."""
         started = time.monotonic()
         if not posterior_worlds:
             raise ValueError("posterior_worlds cannot be empty")
-        views = [self.views.build(world, actor_id) for world in posterior_worlds]
+        views = [self.views.build(world, actor_id, observed_events=observed_events)
+                 for world in posterior_worlds]
         # Build once from the first particle; feasibility and consequences are particle-specific.
         decision = {**decision, "plan": plan}
         actions = self.actions.build(plan, posterior_worlds[0], views[0], decision=decision)
@@ -272,6 +274,7 @@ class ProductionActorPolicyOperator:
         selected, posterior, trace = self.runtime.decide(
             None, [world], actor_id, decision=decision, seed=seed,
             question_id=str(decision.get("question_id", "")),
+            observed_events=[event],
         )
         delta, _events = self.runtime.execute(world, selected, posterior, trace, seed=seed)
         self.traces.append(trace)

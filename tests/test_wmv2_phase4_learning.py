@@ -110,6 +110,17 @@ def test_calibration_uses_separate_rows_and_preserves_normalization():
     assert artifact.post_log_loss <= artifact.pre_log_loss
 
 
+def test_calibration_and_bootstrap_honor_aggregate_frequency_weights():
+    preds = [{"click": 0.8, "ignore": 0.2}, {"click": 0.2, "ignore": 0.8}]
+    labels = ["ignore", "click"]
+    weights = [100.0, 1.0]
+    artifact = fit_temperature(preds, labels, "weighted-calibration", weights)
+    assert artifact.post_log_loss <= artifact.pre_log_loss
+    result = paired_bootstrap(preds, list(reversed(preds)), labels, weights=weights, n_boot=100, seed=3)
+    assert result["effective_weight"] == 101.0
+    assert result["resampling_unit"] == "trajectory_row_with_frequency_weight"
+
+
 def test_metrics_keep_invalid_actions_in_denominator():
     predictions = [{"support": 0.8, "oppose": 0.2}, {"invalid": 0.9, "support": 0.1}]
     labels = ["support", "oppose"]
@@ -154,4 +165,3 @@ def test_resumable_evaluation_timeout_preserves_completed_rows(tmp_path):
     with pytest.raises(TimeoutError):
         job.run(records(3), lambda r: {})
     assert path.exists()
-

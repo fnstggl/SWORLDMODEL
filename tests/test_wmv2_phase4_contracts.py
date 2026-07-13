@@ -1,6 +1,7 @@
 """Phase 4 action, observability, feasibility, policy, and execution acceptance tests."""
 import copy
 import random
+from types import SimpleNamespace
 
 import pytest
 
@@ -14,7 +15,8 @@ from swm.world_model_v2.phase4_execution import (
 )
 from swm.world_model_v2.phase4_policy import (
     ACTION_ONTOLOGY, ActionSpaceBuilder, ActionTarget, ActorPolicyModel, ActorViewBuilder,
-    FeasibilityEngine, TemperatureCalibrator, TypedAction,
+    FeasibilityEngine, SCHEMA_VERSION, TemperatureCalibrator, TypedAction,
+    phase6_policy_registry_records,
 )
 from swm.world_model_v2.state import Entity, F, SimulationClock, WorldState
 
@@ -85,6 +87,24 @@ def test_typed_action_round_trip_and_extension_requires_mechanism():
     assert novel.action_name == "novel_action"
 
 
+def test_typed_action_legacy_migration_is_semantic_only():
+    migrated = TypedAction.from_dict({
+        "actor": "alice", "role": "manager", "family": "institutional", "name": "approve",
+        "target": "board", "mechanisms_triggered": ["institution_processing"],
+    })
+    assert migrated.semantic_version == SCHEMA_VERSION
+    assert migrated.actor_id == "alice" and migrated.target.target_id == "board"
+    assert migrated.action_id.startswith("action:")
+    with pytest.raises(ValueError, match="behavioral numeric fields"):
+        TypedAction.from_dict({**migrated.as_dict(), "probability": 0.99})
+
+
+def test_policy_families_export_through_phase6_governed_records():
+    records = phase6_policy_registry_records()
+    assert len(records) == 22 and all(r.status == "implemented" for r in records)
+    assert all(r.executable() and r.packs and r.promotion_blockers("production_eligible") for r in records)
+
+
 def test_actor_view_excludes_private_future_hidden_and_other_actor_state():
     v = ActorViewBuilder().build(world(), "alice")
     assert v.observed_evidence_ids == ["public1"]
@@ -94,6 +114,19 @@ def test_actor_view_excludes_private_future_hidden_and_other_actor_state():
     assert "omniscient_truth" not in rendered
     assert "private_belief" not in rendered
     assert "private_information" in v.hidden_fields_excluded
+
+
+def test_phase2_visibility_bridge_populates_only_permitted_actor_ledger():
+    from swm.world_model_v2.evidence_materialize import EvidenceObservationOperator
+    w = world(); op = EvidenceObservationOperator()
+    ev = SimpleNamespace(etype="observe_evidence", payload={
+        "claim_id": "claim:sealed", "subject": "proposal", "value": "has defect",
+        "source": "audit", "visibility": "private_actor", "actors": ["alice"],
+    })
+    delta, vr = op.run(w, ev, random.Random(1))
+    assert vr.ok and any(c["path"].startswith("information.exposures") for c in delta.changes)
+    assert "claim:sealed" in ActorViewBuilder().build(w, "alice").observed_evidence_ids
+    assert "claim:sealed" not in ActorViewBuilder().build(w, "bob").observed_evidence_ids
 
 
 @pytest.mark.parametrize("payload", [
@@ -210,6 +243,7 @@ def test_execution_consumes_resources_creates_commitment_events_and_delta():
     assert w.entity("alice").value("commitments")[0]["id"] == "deliver"
     assert w.quantities["approval_progress"].value == 1.0
     assert {e.etype for e in result["executions"][0]["events"]} >= {"actor_action", "institution_submission"}
+    assert delta.as_dict()["follow_up_events"]
 
 
 def test_attempted_but_actually_invalid_action_is_explicit_delta():
@@ -227,12 +261,20 @@ def test_attempted_but_actually_invalid_action_is_explicit_delta():
 
 
 def test_reaction_chain_uses_same_policy_operator():
-    w = world(); op = ProductionActorPolicyOperator()
+    class CapturingPolicy(ActorPolicyModel):
+        seen = None
+
+        def decide(self, views, actions, feasibility, *, seed=0):
+            self.seen = views[0].observed_events
+            return super().decide(views, actions, feasibility, seed=seed)
+
+    w = world(); model = CapturingPolicy(); op = ProductionActorPolicyOperator(model)
     ev = Event(T0, etype="actor_reaction", participants=["bob", "alice"],
                payload={"candidate_actions": ["acknowledge", "ignore"]})
     delta, vr = op.run(w, ev, random.Random(4))
     assert vr.ok and delta.event_type == "actor_action"
     assert w.entity("bob").value("current_action")["action_name"] in ("acknowledge", "ignore")
+    assert any(row.get("etype") == "actor_reaction" for row in model.seen)
 
 
 def test_adaptation_and_history_change_later_probabilities():
