@@ -1,0 +1,129 @@
+{
+  "real_graph": "voteview S117 co-voting",
+  "n_edges": 889,
+  "network_ablations": {
+    "full_posterior_graph": 0.47375,
+    "point_estimate_graph": 0.01667,
+    "observed_edges_only": 0.5375,
+    "no_graph_consumed": 0.01667,
+    "posterior_graph_terminal_sd": 0.18678
+  },
+  "population_ablations": {
+    "high_susceptibility": 0.85708,
+    "low_susceptibility": 0.04708,
+    "mixed_population": 0.38583,
+    "heterogeneity_effect": 0.81
+  },
+  "contagion_ablation": {
+    "simple_contagion": 0.52958,
+    "complex_contagion": 0.01917
+  },
+  "forensic_trace": {
+    "question": "Will a position adopted by one senator spread across the Senate alliance graph?",
+    "graph_source": "voteview S117 co-voting (REAL, inferred \u2014 not manually supplied)",
+    "n_senators": 40,
+    "n_edges_inferred": 375,
+    "edges_observed": 0,
+    "edges_hypothesized": 0,
+    "population_posterior_mean": {
+      "dem": 0.5,
+      "rep": 0.5
+    },
+    "structural_posterior": {
+      "one_bloc": 1.0,
+      "two_party": 0.0,
+      "four_faction": 0.0
+    },
+    "community_block_matrix": null,
+    "terminal": {
+      "terminal_mean": 0.19837,
+      "terminal_sd": 0.1735,
+      "terminal_lo": 0.01689,
+      "terminal_hi": 0.50777,
+      "n_particles": 40,
+      "mean_edges_per_world": 54.9,
+      "n_deltas": 279,
+      "contagion": "simple",
+      "seeds": [
+        "14226"
+      ]
+    },
+    "support_grade": "exploratory",
+    "uncertainty_decomposition": {
+      "terminal_sd": 0.1735,
+      "graph_edges_observed_frac": 0.0,
+      "population_effective_obs": 1
+    },
+    "provenance": {
+      "population_posterior_hash": "837f4be8829f",
+      "graph_posterior_hash": "5037cb490547",
+      "structural_posterior_hash": "afcca9530fd9",
+      "terminal_hash": "5dae139b419a",
+      "seed": 0,
+      "llm_role": "may propose segments/nodes/edges/hypotheses; NO probabilities minted here"
+    },
+    "forensic": {
+      "n_agents": 40,
+      "n_edges_realized_mean": 54.9,
+      "n_deltas": 279,
+      "observed_status_breakdown": {
+        "observed": 0,
+        "hypothesized": 0
+      }
+    },
+    "limitations": [
+      "support grade exploratory: 0 hypothesized edges, 1 effective survey observations"
+    ],
+    "sample_edge_posterior": {
+      "src": "14226",
+      "dst": "14921",
+      "layer": "alliance",
+      "existence_p": 0.14396728016359925,
+      "strength_mean": 0.5,
+      "directed": true,
+      "visibility": "public",
+      "observed_status": "inferred",
+      "evidence_ids": [
+        "vote:14226:14921"
+      ],
+      "valid_from": null,
+      "valid_to": null,
+      "posterior_ref": {
+        "src": "14226",
+        "dst": "14921",
+        "layer": "alliance",
+        "prior_p": 0.08,
+        "posterior_p": 0.144,
+        "log_odds_shift": 0.6596,
+        "n_observations": 1,
+        "observed_status": "inferred",
+        "ledger": [
+          {
+            "evidence_class": "voting_alignment",
+            "strength": "moderate",
+            "reliability": 0.85,
+            "n_collapsed": 1,
+            "log_lr": 0.6596
+          }
+        ]
+      },
+      "consumed_by": [
+        "exposure_mechanism",
+        "authority_gate",
+        "communication_delivery"
+      ],
+      "transport_risk": "moderate"
+    }
+  },
+  "ablation_gates": {
+    "graph_consumption_changes_terminal": true,
+    "posterior_vs_point_estimate_differs": true,
+    "posterior_graph_propagates_uncertainty": true,
+    "population_heterogeneity_changes_outcome": true,
+    "contagion_model_matters": true,
+    "forensic_graph_inferred_not_manual": true,
+    "forensic_posterior_consumed": true,
+    "point_estimate_destroys_uncertain_graph": true
+  },
+  "all_ablation_gates_pass": true
+}
