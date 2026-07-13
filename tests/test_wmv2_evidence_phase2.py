@@ -230,3 +230,80 @@ def test_orchestrator_end_to_end_live():
     assert "before:" in b.retrieval_traces[0]["logical_query"]
     assert b.documents and all(d["temporal_status"] != "verified_post_asof" for d in b.documents)
     assert b.bundle_hash() == b.compute_hash()                     # deterministic after live retrieval
+
+
+# ---------------------------------------------------------------- evidence changes the WORLD, not just lean
+def _plan_with_hyps():
+    import json
+    from swm.world_model_v2.compiler import compile_world
+    d = {"outcome": {"family": "binary", "options": ["approved", "not_approved"],
+                     "resolution_rule": "the VP approves the hire", "readout_var": "decision"},
+         "outcome_lean": "neutral", "entities": [{"id": "vp", "type": "person", "fields": {}}],
+         "structural_hypotheses": [{"id": "H_direct", "lean": "weak_yes", "prior": 0.5},
+                                   {"id": "H_needs_finance", "lean": "weak_no", "prior": 0.5}],
+         "required_causal_processes": ["approval_decision"], "rationale": "vp decides"}
+    return compile_world("Will the VP approve the two backend hires?", llm=lambda p: json.dumps(d),
+                         evidence="", as_of="2023-07-01", horizon="2023-09-30")
+
+
+def _finance_bundle(plan):
+    from swm.world_model_v2.evidence_bundle_v2 import EvidenceBundleV2
+    b = EvidenceBundleV2(bundle_id="eb_fin", question=plan.question, as_of=plan.as_of,
+        claims=[{"claim_id": "d1:c0", "source_id": "d1", "subject": "finance department",
+                 "predicate": "must approve", "object": "hiring above budget", "value": "required",
+                 "claim_class": "official_record", "polarity": "affirm",
+                 "supporting_span": "all hires above budget require finance sign-off", "span_verified": True,
+                 "temporal_validity_status": "likely_pre_asof", "actor_visibility": "public",
+                 "dependence_group": ""}],
+        included_claim_ids=["d1:c0"],
+        actor_visibility=[{"claim_id": "d1:c0", "visibility": "public", "actors": ["*"],
+                           "earliest_observation_time": plan.as_of, "method": "m", "uncertainty": 0.1,
+                           "communication_path": "", "evidence": ""}],
+        requirement_coverage={"req_outcome": {"status": "fulfilled", "n_included": 1, "n_claims": 1}})
+    b.freeze()
+    return b
+
+
+def _revise_llm(prompt):
+    import json
+    return json.dumps({
+        "new_institutions": [{"id": "finance_dept", "rules": [{"kind": "approval",
+            "params": {"actions": ["hire"], "approver": "finance_dept"}}], "claim_ids": ["d1:c0"]}],
+        "new_events": [{"etype": "approval", "at": "2023-08-15", "participants": ["finance_dept"],
+                        "claim_ids": ["d1:c0"]}],
+        "hypothesis_reweight": [{"id": "H_needs_finance", "direction": "up", "claim_ids": ["d1:c0"]}],
+        "outcome_lean": "weak_no", "lean_claim_ids": ["d1:c0"], "uncertainty": "widen"})
+
+
+def test_evidence_changes_plan_structure_not_only_lean():
+    from swm.world_model_v2.evidence_materialize import evidence_causal_effect
+    plan = _plan_with_hyps()
+    eff = evidence_causal_effect(plan, _finance_bundle(plan), llm=_revise_llm, horizon="2023-09-30",
+                                 seed=7, n_particles=60)
+    assert eff["evidence_is_causal"] and not eff["lean_only"]
+    assert eff["n_institutions_post"] > eff["n_institutions_pre"]       # institution ADDED from evidence
+    assert eff["n_events_post"] > eff["n_events_pre"]                   # approval + observe events ADDED
+    assert eff["observation_state_deltas"] > 0                         # evidence produced StateDeltas
+    assert eff["terminal_changed"]                                     # terminal distribution changed
+    kinds = {e["kind"] for e in eff["plan_diff"]["entries"]}
+    assert {"institution_added", "event_added", "hypothesis_reweighted"} <= kinds
+
+
+def test_plan_diff_grounds_changes_in_claim_ids():
+    from swm.world_model_v2.evidence_recompile import recompile_with_evidence
+    plan = _plan_with_hyps()
+    revised, diff = recompile_with_evidence(plan, _finance_bundle(plan), llm=_revise_llm, horizon="2023-09-30")
+    inst = [e for e in diff.entries if e.kind == "institution_added"][0]
+    assert inst.supporting_claim_ids == ["d1:c0"]                      # change traces to the exact claim
+    assert revised.provenance.get("evidence_conditioned") is True
+    assert plan.provenance.get("evidence_conditioned") is not True     # pre-evidence plan untouched
+
+
+def test_no_evidence_means_no_revision():
+    from swm.world_model_v2.evidence_bundle_v2 import EvidenceBundleV2
+    from swm.world_model_v2.evidence_recompile import recompile_with_evidence
+    plan = _plan_with_hyps()
+    empty = EvidenceBundleV2(bundle_id="eb0", question=plan.question, as_of=plan.as_of)
+    empty.freeze()
+    revised, diff = recompile_with_evidence(plan, empty, llm=_revise_llm, horizon="2023-09-30")
+    assert diff.n_structural_changes == 0 and len(diff.entries) == 0    # no admissible claims → no change
