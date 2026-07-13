@@ -1,0 +1,124 @@
+{
+  "artifact_checksum": "47a9d07504aa0a6ced4df1d01cf71a6abb8d8bae02d6e6fe658be74cdd9fd897",
+  "datasets": [
+    {
+      "action_mapping": {
+        "success=0": "hold_position",
+        "success=1": "award_delta"
+      },
+      "action_set_method": "known response options; observed delta outcome mapped as the OP's response action",
+      "available_actor_state": [
+        "original post",
+        "challenger argument",
+        "actor IDs",
+        "timestamp"
+      ],
+      "content_hash": "ed5048e78afe78edb4889628668a94940a27707da1768840dd9eb149eb925851",
+      "dataset_id": "cmv",
+      "institution_information": "CMV delta convention",
+      "leakage_risks": [
+        "future/current success label",
+        "actor overlap",
+        "thread overlap"
+      ],
+      "license": "research cache; Reddit-derived",
+      "limitations": [
+        "delta award is inferred from the outcome label, not a timestamped button event"
+      ],
+      "missing_actor_state": [
+        "private beliefs",
+        "off-platform history",
+        "full thread state"
+      ],
+      "network_information": "OP/challenger dyad only",
+      "population": "CMV original posters responding to challengers",
+      "schema_version": "4.0.0",
+      "source": "Winning Arguments / ChangeMyView committed cache",
+      "split_methods": [
+        "person_disjoint",
+        "context_disjoint",
+        "time_forward"
+      ],
+      "time_period": "Unix timestamps in committed corpus"
+    },
+    {
+      "action_mapping": {
+        "answer_idx=0": "select_option_0",
+        "answer_idx=1": "select_option_1"
+      },
+      "action_set_method": "two indexed options recorded by source cache",
+      "available_actor_state": [
+        "respondent UID",
+        "question ID",
+        "wave",
+        "demographics"
+      ],
+      "content_hash": "1304c09d0867fdbdc8eddc9a1e3079c8f8edd178236123bd0d620817b73f7b79",
+      "dataset_id": "opinionqa",
+      "institution_information": "Pew survey administration",
+      "leakage_risks": [
+        "UID overlap",
+        "option-polarity reversal",
+        "missing question text"
+      ],
+      "license": "research cache; source survey terms apply",
+      "limitations": [
+        "indexed choice only; semantic support/oppose interpretation is prohibited"
+      ],
+      "missing_actor_state": [
+        "question wording",
+        "option text/polarity",
+        "response time"
+      ],
+      "network_information": "",
+      "population": "American Trends Panel respondents",
+      "schema_version": "4.0.0",
+      "source": "OpinionQA parsed committed cache",
+      "split_methods": [
+        "person_disjoint",
+        "sequence_disjoint"
+      ],
+      "time_period": "15 survey waves"
+    },
+    {
+      "action_mapping": {
+        "clicks": "click",
+        "impressions-clicks": "ignore"
+      },
+      "action_set_method": "randomized exposure gives click/ignore per impression; stored as weighted binomial rows",
+      "available_actor_state": [
+        "headline text",
+        "test ID",
+        "impression exposure"
+      ],
+      "content_hash": "c0be6af9e6169f7f821b16335d31a58fa224fca035926f5d5cb0f5f8fb9dc56d",
+      "dataset_id": "upworthy",
+      "institution_information": "randomized Upworthy headline test",
+      "leakage_risks": [
+        "headline duplicates across tests",
+        "aggregate actors",
+        "archive problem flag absent"
+      ],
+      "license": "Upworthy archive terms",
+      "limitations": [
+        "aggregate exposure counts; not person-disjoint",
+        "cache lacks archive problem flag"
+      ],
+      "missing_actor_state": [
+        "individual IDs",
+        "position",
+        "device",
+        "full randomization flags"
+      ],
+      "network_information": "representative weighted audience only",
+      "population": "randomized headline-test audience impressions",
+      "schema_version": "4.0.0",
+      "source": "Upworthy Research Archive committed parsed cache",
+      "split_methods": [
+        "context_disjoint",
+        "time_forward"
+      ],
+      "time_period": "ObjectID timestamp order"
+    }
+  ]
+}

@@ -116,7 +116,9 @@ def test_operatorless_mechanism_rejected_but_fallback_still_forecasts():
     assert any(r["id"] == "whipcount_binomial" for r in plan.rejected_mechanisms)
     # the domain mechanism is accepted AND the generic resolver is appended as the terminal safety net
     accepted_ids = [m["mech_id"] for m in plan.accepted_mechanisms]
-    assert accepted_ids == ["agent_decision", "generic_outcome_prior"]
+    # Phase 4 migration: the legacy semantic ID is compiled into the actor-view,
+    # feasibility, calibrated-policy, event, and StateDelta production operator.
+    assert accepted_ids == ["production_actor_policy", "generic_outcome_prior"]
 
 
 def test_poisson_arrival_is_now_executable():
