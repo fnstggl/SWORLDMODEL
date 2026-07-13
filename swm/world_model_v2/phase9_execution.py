@@ -118,18 +118,27 @@ def trust_weighted_credibility(world: Phase9World, receiver: str, source: str, b
     return min(1.0, base + 0.4) if trusts else base
 
 
+SPREAD_LAYERS = ("influence", "communication", "alliance", "friendship")
+
+
 def influence_diffusion(world: Phase9World, seeds, *, contagion: str = "simple", max_rounds: int = 6,
-                        seed: int = 0) -> tuple:
-    """Behavior diffusion over the INFLUENCE (+ communication) layers, gated by per-agent susceptibility.
-    `simple` contagion: adopt if ANY influencing neighbor adopted (prob = susceptibility). `complex` contagion:
-    adopt only if a FRACTION ≥ threshold of influencing neighbors adopted. Returns (adopted set, deltas)."""
+                        seed: int = 0, spread_layers=SPREAD_LAYERS) -> tuple:
+    """Behavior diffusion over the social-transmission layers (influence/communication/alliance/friendship by
+    default), gated by per-agent susceptibility. `simple` contagion: adopt if ANY transmitting neighbor adopted
+    (prob rises with #active neighbors). `complex` contagion: adopt only if a FRACTION ≥ threshold of neighbors
+    adopted. `spread_layers` selects which relation layers carry the behavior. Returns (adopted set, deltas)."""
     rng = random.Random(seed * 3 + 7)
     adopted = set(seeds)
     deltas = []
-    influ_edges = world.net.layer_edges("influence") + world.net.layer_edges("communication")
+    influ_edges = [e for layer in spread_layers for e in world.net.layer_edges(layer)]
+    # undirected social layers (alliance/friendship) transmit both ways; directed layers (influence/reporting)
+    # transmit src→dst only. The agreement/alliance graph is symmetric.
+    undirected = {"alliance", "friendship", "affiliation", "membership"}
     in_nbrs = {}
     for e in influ_edges:
         in_nbrs.setdefault(e.dst, set()).add(e.src)
+        if e.layer in undirected:
+            in_nbrs.setdefault(e.src, set()).add(e.dst)
     for rnd in range(max_rounds):
         new = set()
         for node, nbrs in in_nbrs.items():
