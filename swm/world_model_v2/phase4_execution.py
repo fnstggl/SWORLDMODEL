@@ -1,0 +1,343 @@
+"""Phase 4 actor-policy execution through the shared event world.
+
+Selected actions become events and explicit ``StateDelta`` records.  Actual
+feasibility is rechecked after actor-perceived feasibility; mistaken attempts are
+represented as blocked-action deltas rather than silently disappearing.
+"""
+from __future__ import annotations
+
+import copy
+import hashlib
+import json
+import random
+import threading
+import time
+from dataclasses import asdict
+
+from swm.world_model_v2.events import Event, register_event_type
+from swm.world_model_v2.phase4_policy import (
+    ActionPosterior, ActionSpaceBuilder, ActorPolicyModel, ActorViewBuilder, DecisionTrace,
+    FeasibilityEngine, TypedAction, build_trace,
+)
+from swm.world_model_v2.state import F, StateField
+from swm.world_model_v2.transitions import StateDelta, ValidationResult, register_operator
+
+
+for _name, _visibility in (
+    ("actor_action", "participants"), ("action_blocked", "participants"),
+    ("actor_reaction", "participants"), ("delayed_action_effect", "participants"),
+    ("institution_submission", "institutional"), ("message_delivered", "participants"),
+):
+    register_event_type(_name, scheduling="endogenous", visibility=_visibility, validated=True,
+                        parameter_source="phase4 typed action execution")
+
+
+def _id(prefix: str, payload) -> str:
+    raw = json.dumps(payload, sort_keys=True, separators=(",", ":"), default=str)
+    return f"{prefix}_{hashlib.sha256(raw.encode()).hexdigest()[:20]}"
+
+
+class ActorPolicyRuntime:
+    """Orchestrates one universal actor-policy decision across posterior worlds."""
+
+    def __init__(self, model: ActorPolicyModel | None = None, *, view_builder=None,
+                 action_builder=None, feasibility=None):
+        self.model = model or ActorPolicyModel()
+        self.views = view_builder or ActorViewBuilder()
+        self.actions = action_builder or ActionSpaceBuilder()
+        self.feasibility = feasibility or FeasibilityEngine()
+        self._lock = threading.RLock()
+
+    def decide(self, plan, posterior_worlds: list, actor_id: str, *, decision: dict,
+               seed: int, question_id: str = "", observed_events=None
+               ) -> tuple[TypedAction, ActionPosterior, DecisionTrace]:
+        """Compute and sample a policy without exposing a ``WorldState`` to numeric policy code."""
+        started = time.monotonic()
+        if not posterior_worlds:
+            raise ValueError("posterior_worlds cannot be empty")
+        views = [self.views.build(world, actor_id, observed_events=observed_events)
+                 for world in posterior_worlds]
+        # Build once from the first particle; feasibility and consequences are particle-specific.
+        decision = {**decision, "plan": plan}
+        actions = self.actions.build(plan, posterior_worlds[0], views[0], decision=decision)
+        decisions = [[self.feasibility.classify(action, view, world) for action in actions]
+                     for view, world in zip(views, posterior_worlds)]
+        posterior = self.model.decide(views, actions, decisions, seed=seed)
+        selected_id = posterior.sample(random.Random(seed))
+        selected = next(action for action in actions if action.action_id == selected_id)
+        trace = build_trace(
+            question_id=question_id or _id("question", getattr(plan, "question", "")),
+            plan=plan, worlds=posterior_worlds, views=views, actions=actions,
+            feasibility=decisions, posterior=posterior, selected_action_id=selected_id,
+            seed=seed, started_at=started,
+        )
+        return selected, posterior, trace
+
+    def execute(self, world, action: TypedAction, posterior: ActionPosterior, trace: DecisionTrace,
+                *, seed: int = 0) -> tuple[StateDelta, list[Event]]:
+        """Recheck actual feasibility, mutate shared state, and return follow-up events."""
+        with self._lock:
+            view = self.views.build(world, action.actor_id)
+            fd = self.feasibility.classify(action, view, world)
+            if not fd.actually_feasible:
+                delta = StateDelta(
+                    at=world.clock.now, event_type="action_blocked", operator="production_actor_policy",
+                    reason_codes=["attempted_but_blocked", fd.actual_status] + fd.actual_reasons[:4],
+                    uncertainty={"trace_id": trace.trace_id, "action": action.as_dict(),
+                                 "p_dist": posterior.action_probabilities},
+                )
+                self._append_history(world, action, "blocked", delta)
+                event = Event(ts=world.clock.now, etype="action_blocked",
+                              participants=[action.actor_id],
+                              payload={"action_id": action.action_id, "status": fd.actual_status,
+                                       "reasons": fd.actual_reasons, "trace_id": trace.trace_id},
+                              source="endogenous:production_actor_policy")
+                trace.resulting_event_ids.append(_id("event", event.__dict__))
+                trace.resulting_state_delta_ids.append(_id("delta", delta.as_dict()))
+                trace.warnings.append("actor attempted an action it believed feasible; world blocked it")
+                trace.seal()
+                return delta, [event]
+
+            delta = StateDelta(
+                at=world.clock.now, event_type="actor_action", operator="production_actor_policy",
+                reason_codes=["calibrated_actor_policy", f"support={posterior.support_grade}"],
+                uncertainty={"trace_id": trace.trace_id, "p_dist": posterior.action_probabilities,
+                             "policy_families": posterior.policy_family_posterior.weights,
+                             "credible_intervals": posterior.credible_intervals},
+                evidence_deps=list(trace.observed_evidence_ids),
+            )
+            actor = world.entity(action.actor_id)
+            before = actor.value("current_action")
+            actor.set("current_action", F(action.as_dict(), status="derived",
+                                           method="production_actor_policy", updated_at=world.clock.now))
+            delta.change(f"{action.actor_id}.current_action", before, action.as_dict())
+            self._append_history(world, action, "executed", delta)
+            self._consume_resources(world, action, delta)
+            self._create_commitments(world, action, delta)
+            self._apply_immediate_consequences(world, action, delta)
+            events = self._follow_up_events(world, action, posterior, trace, seed)
+            delta.follow_up_events = [self._event_record(event) for event in events]
+            event = Event(ts=world.clock.now, etype="actor_action",
+                          participants=[x for x in (action.actor_id, action.target.target_id) if x],
+                          payload={"action": action.as_dict(), "trace_id": trace.trace_id},
+                          visibility=action.observability.get("default", "participants"),
+                          source="endogenous:production_actor_policy")
+            events.insert(0, event)
+            trace.resulting_event_ids.extend(_id("event", e.__dict__) for e in events)
+            trace.resulting_state_delta_ids.append(_id("delta", delta.as_dict()))
+            trace.downstream_reactions.extend([self._event_record(e) for e in events[1:]])
+            trace.seal()
+            return delta, events
+
+    @staticmethod
+    def _append_history(world, action: TypedAction, status: str, delta: StateDelta):
+        actor = world.entity(action.actor_id)
+        current = actor.get("past_actions")
+        before = list(current.value) if isinstance(current, StateField) and isinstance(current.value, list) else []
+        after = before + [{"at": world.clock.now, "action": action.action_name,
+                           "action_id": action.action_id, "status": status,
+                           "target": action.target.target_id, "public": True}]
+        actor.set("past_actions", F(after, status="derived", method="production_actor_policy",
+                                    updated_at=world.clock.now))
+        delta.change(f"{action.actor_id}.past_actions", before, after)
+
+    @staticmethod
+    def _consume_resources(world, action: TypedAction, delta: StateDelta):
+        actor = world.entity(action.actor_id)
+        resources = actor.get("resources")
+        for name, cost in action.resource_costs.items():
+            sf = resources.get(name) if isinstance(resources, dict) else None
+            before = float(sf.value) if isinstance(sf, StateField) and isinstance(sf.value, (int, float)) else 0.0
+            after = before - abs(float(cost))
+            actor.set("resources", F(after, status="derived", method="production_actor_policy",
+                                     updated_at=world.clock.now), key=name)
+            delta.change(f"{action.actor_id}.resources[{name}]", before, after)
+
+    @staticmethod
+    def _create_commitments(world, action: TypedAction, delta: StateDelta):
+        if not action.commitments_created:
+            return
+        actor = world.entity(action.actor_id)
+        sf = actor.get("commitments")
+        before = list(sf.value) if isinstance(sf, StateField) and isinstance(sf.value, list) else []
+        created = [{**c, "created_by_action_id": action.action_id, "created_at": world.clock.now}
+                   for c in action.commitments_created]
+        after = before + created
+        actor.set("commitments", F(after, status="derived", method="production_actor_policy",
+                                   updated_at=world.clock.now))
+        delta.change(f"{action.actor_id}.commitments", before, after)
+
+    @staticmethod
+    def _apply_immediate_consequences(world, action: TypedAction, delta: StateDelta):
+        """Apply only typed, bounded consequences.  No action can assign a terminal probability."""
+        from swm.world_model_v2.quantities import Quantity, register_quantity_type
+        for consequence in action.possible_consequences:
+            if not isinstance(consequence, dict):
+                continue
+            kind = consequence.get("kind")
+            if kind == "quantity_delta":
+                name = str(consequence.get("name", ""))
+                if not name or "probab" in name.lower():
+                    continue
+                before = float(world.quantities[name].value) if name in world.quantities else 0.0
+                after = before + float(consequence.get("delta", 0.0) or 0.0)
+                register_quantity_type(name, units=str(consequence.get("units", "unit")))
+                world.quantities[name] = Quantity(name=name, qtype=name, value=after,
+                                                  timestamp=world.clock.now)
+                delta.change(f"quantities[{name}]", before, after)
+            elif kind == "belief_delta" and action.target.target_id in world.entities:
+                target = world.entity(action.target.target_id)
+                key = str(consequence.get("belief", "action_effect"))
+                beliefs = target.get("beliefs") or {}
+                sf = beliefs.get(key) if isinstance(beliefs, dict) else None
+                before = float(sf.value) if isinstance(sf, StateField) and isinstance(sf.value, (int, float)) else 0.5
+                shift = max(-0.25, min(0.25, float(consequence.get("delta", 0.0) or 0.0)))
+                after = min(1.0, max(0.0, before + shift))
+                target.set("beliefs", F(after, status="derived", method="production_actor_policy",
+                                        updated_at=world.clock.now), key=key)
+                delta.change(f"{target.identity}.beliefs[{key}]", before, after)
+
+    @staticmethod
+    def _follow_up_events(world, action: TypedAction, posterior: ActionPosterior,
+                          trace: DecisionTrace, seed: int) -> list[Event]:
+        events = []
+        participants = [x for x in (action.actor_id, action.target.target_id) if x]
+        for mechanism in action.mechanisms_triggered:
+            if mechanism == "message_delivery" and action.target.target_id:
+                events.append(Event(ts=world.clock.now + max(0.0, action.expected_duration_s),
+                                    etype="message_delivered", participants=participants,
+                                    payload={"action_id": action.action_id,
+                                             "content": action.parameters.get("content", ""),
+                                             "trace_id": trace.trace_id},
+                                    visibility=action.observability.get("default", "participants"),
+                                    source="endogenous:production_actor_policy"))
+            elif mechanism == "institution_processing":
+                events.append(Event(ts=world.clock.now, etype="institution_submission",
+                                    participants=participants,
+                                    payload={"action_id": action.action_id,
+                                             "institution_id": action.target.target_id,
+                                             "action": action.as_dict(), "trace_id": trace.trace_id},
+                                    visibility="institutional",
+                                    source="endogenous:production_actor_policy"))
+            elif (mechanism == "reaction_scheduling" and action.target.target_id
+                  and action.target.target_id in world.entities):
+                delay = max(1.0, float(action.parameters.get("reaction_delay_s", 60.0) or 60.0))
+                events.append(Event(ts=world.clock.now + delay, etype="actor_reaction",
+                                    participants=[action.target.target_id, action.actor_id],
+                                    payload={"trigger_action_id": action.action_id,
+                                             "candidate_actions": action.parameters.get(
+                                                 "reaction_actions", ["acknowledge", "ignore"]),
+                                             "trace_id": trace.trace_id},
+                                    visibility="participants",
+                                    source="endogenous:production_actor_policy"))
+        for delayed in action.possible_delayed_consequences:
+            if not isinstance(delayed, dict):
+                continue
+            events.append(Event(ts=world.clock.now + max(1.0, float(delayed.get("delay_s", 1.0) or 1.0)),
+                                etype="delayed_action_effect", participants=participants,
+                                payload={"action_id": action.action_id, "effect": delayed,
+                                         "trace_id": trace.trace_id},
+                                visibility=action.observability.get("default", "participants"),
+                                source="endogenous:production_actor_policy"))
+        return events
+
+    @staticmethod
+    def _event_record(event: Event) -> dict:
+        return {"etype": event.etype, "ts": event.ts, "participants": list(event.participants),
+                "payload": copy.deepcopy(event.payload), "visibility": event.visibility}
+
+
+class ProductionActorPolicyOperator:
+    """Registry-compatible production decision operator.
+
+    The generic constructor uses the deliberately broad Tier-7 parameter pack.  A
+    deployment may bind a fitted ``ActorPolicyModel`` without changing the shared
+    execution path.  Unlike the legacy ``FittedDecisionOperator``, numeric policy
+    code receives ActorViews, never the omniscient WorldState.
+    """
+
+    name = "production_actor_policy"
+
+    def __init__(self, model: ActorPolicyModel | None = None):
+        self.runtime = ActorPolicyRuntime(model)
+        self.traces = []
+
+    def applicable(self, world, event):
+        return event.etype in ("decision_opportunity", "actor_reaction") and bool(event.participants)
+
+    def run(self, world, event, rng):
+        actor_id = event.participants[0]
+        seed = rng.randrange(0, 2**31 - 1)
+        decision = dict(event.payload or {})
+        if "candidate_actions" not in decision and "actions" in decision:
+            decision["candidate_actions"] = decision["actions"]
+        selected, posterior, trace = self.runtime.decide(
+            None, [world], actor_id, decision=decision, seed=seed,
+            question_id=str(decision.get("question_id", "")),
+            observed_events=[event],
+        )
+        delta, _events = self.runtime.execute(world, selected, posterior, trace, seed=seed)
+        self.traces.append(trace)
+        return delta, ValidationResult(ok=True)
+
+
+register_operator(
+    "production_actor_policy", ProductionActorPolicyOperator,
+    requires=("posterior_world_state", "actor_view", "typed_action_space"),
+    modifies=("entity.current_action", "entity.past_actions", "entity.resources",
+              "entity.commitments", "event_queue"), temporal_scale="event",
+    parameter_source="hierarchical fitted pack or explicit Tier-7 broad structural mixture",
+    invariants=("no omniscient actor view", "zero known-impossible action mass",
+                "selected action emits StateDelta"), validated=True,
+)
+
+
+def decide_and_execute_particles(runtime: ActorPolicyRuntime, plan, worlds: list, actor_id: str, *,
+                                 decision: dict, seed: int, question_id: str = ""):
+    """Posterior-integrated decision followed by matched execution in every world particle.
+
+    A single calibrated marginal posterior is computed across all particles.  The
+    selected typed action is then attempted in each particle, where actual
+    feasibility and consequences may differ.  This is the explicit Phase-3 to
+    Phase-4 bridge used by validation and forensic traces.
+    """
+    selected, posterior, trace = runtime.decide(
+        plan, worlds, actor_id, decision=decision, seed=seed, question_id=question_id)
+    executions = []
+    for index, world in enumerate(worlds):
+        delta, events = runtime.execute(world, selected, posterior, trace, seed=seed * 7919 + index)
+        executions.append({"world_id": world.world_id, "branch_id": world.branch_id,
+                           "delta": delta, "events": events})
+    return {"selected_action": selected, "posterior": posterior, "trace": trace,
+            "executions": executions}
+
+
+def apply_adaptation(world, *, actor_id: str, action_name: str, reward: float,
+                     outcome: str, source_event_id: str, learning_rate: float = 0.2) -> StateDelta:
+    """Phase 4 persistent-state contract: update actor-local policy state in WorldState.
+
+    This is intentionally not a Phase 8 persistence service.  It stores a typed,
+    provenance-bearing update in the current world so later decisions change.
+    """
+    actor = world.entity(actor_id)
+    latent = actor.get("latent_state") or {}
+    key = f"phase4_policy_value:{action_name}"
+    sf = latent.get(key) if isinstance(latent, dict) else None
+    before = float(sf.value) if isinstance(sf, StateField) and isinstance(sf.value, (int, float)) else 0.0
+    lr = min(1.0, max(0.0, float(learning_rate)))
+    after = before + lr * (float(reward) - before)
+    actor.set("latent_state", F(after, status="derived", sources=[source_event_id],
+                                method="phase4_temporal_difference_update", updated_at=world.clock.now), key=key)
+    hist_key = "phase4_policy_updates"
+    hs = latent.get(hist_key) if isinstance(latent, dict) else None
+    hist = list(hs.value) if isinstance(hs, StateField) and isinstance(hs.value, list) else []
+    hist.append({"at": world.clock.now, "action": action_name, "reward": reward, "outcome": outcome,
+                 "source_event_id": source_event_id, "before": before, "after": after})
+    actor.set("latent_state", F(hist, status="derived", sources=[source_event_id],
+                                method="phase4_policy_update_log", updated_at=world.clock.now), key=hist_key)
+    delta = StateDelta(at=world.clock.now, event_type="actor_reaction", operator="phase4_adaptation",
+                       reason_codes=["reinforcement_update", outcome], evidence_deps=[source_event_id],
+                       uncertainty={"learning_rate": lr})
+    delta.change(f"{actor_id}.latent_state[{key}]", before, after)
+    delta.change(f"{actor_id}.latent_state[{hist_key}]", hist[:-1], hist)
+    return delta

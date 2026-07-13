@@ -73,6 +73,14 @@ Return ONLY JSON:
  "quantities": [{{"name": "...", "qtype": "...", "value": <num or null>, "sd": <num or null>}}],
  "latents": [{{"path": "<entity.field>", "why": "...", "lo": <num>, "hi": <num>, "sensitivity": <0..1>}}],
  "structural_hypotheses": [{{"id": "...", "describe": "<a competing causal structure>", "prior": <0..1>, "lean": "<how THIS structure leans the outcome: strong_no|weak_no|neutral|weak_yes|strong_yes>"}}],
+ "actor_decisions": [{{"actor": "<entity id>", "role": "<role>", "at": "<RFC3339 or YYYY-MM-DD>",
+   "candidate_actions": [{{"name": "<typed semantic action>", "family": "<action family>",
+      "target": {{"target_type": "actor|institution|population|resource|none", "target_id": "..."}},
+      "preconditions": [], "information_requirements": [], "authority_requirements": [],
+      "resource_requirements": {{}}, "resource_costs": {{}}, "expected_duration_s": 0,
+      "mechanisms_triggered": ["record_action|message_delivery|institution_processing|reaction_scheduling"],
+      "possible_consequences": [], "possible_delayed_consequences": [],
+      "inclusion_reason": "<causal relevance>"}}]}}],
  "scheduled_events": [{{"etype": "...", "at": "<RFC3339 or YYYY-MM-DD>", "participants": [...], "payload": {{}}}}],
  "hazards": [{{"etype": "...", "rate_per_day": <num>, "participants": [...]}}],
  "mechanisms": ["<registry id>", ...],
@@ -105,6 +113,7 @@ class WorldExecutionPlan:
     candidate_experimental_mechanisms: list = field(default_factory=list)
     rejected_mechanisms: list = field(default_factory=list)
     structural_hypotheses: list = field(default_factory=list)         # [{id, describe, prior}]
+    actor_decisions: list = field(default_factory=list)               # compiler semantic proposals; no probabilities
     mechanism_choices: list = field(default_factory=list)             # [MechanismChoice.as_dict()]
     fallbacks_used: list = field(default_factory=list)
     support_grade: str = "exploratory"
@@ -413,6 +422,27 @@ def compile_world(question: str, *, llm, evidence="", as_of: str, horizon: str,
                      "status": "experimental — handled by fallback hierarchy, not executed as validated"}
                     for m in (raw.get("missing_mechanisms") or []) if isinstance(m, dict)]
 
+    # ---- Phase 4 production decision path -----------------------------------------------
+    # A compiler may propose semantic actions, never numeric behavior probabilities.  Every
+    # compiled decision is routed through the ActorView/feasibility/posterior operator.  If a
+    # legacy `agent_decision` was proposed for the same event it is replaced, preventing two
+    # decision operators from firing and preventing the old uniform/LLM path from bypassing Phase 4.
+    actor_decisions = [d for d in (raw.get("actor_decisions") or []) if isinstance(d, dict)]
+    has_decision_event = bool(actor_decisions) or any(
+        isinstance(e, dict) and e.get("etype") == "decision_opportunity"
+        for e in (raw.get("scheduled_events") or []))
+    if has_decision_event:
+        accepted = [m for m in accepted if m.get("operator") != "agent_decision"]
+        if not any(m.get("operator") == "production_actor_policy" for m in accepted):
+            pm = registry.get("production_actor_policy")
+            if pm is not None:
+                accepted.append({"mech_id": pm.mech_id, "ontology_type": pm.ontology_type,
+                                 "causal_role": pm.causal_role,
+                                 "parameter_source": pm.parameter_source,
+                                 "temporal_scale": pm.temporal_scale,
+                                 "calibration_status": pm.calibration_status,
+                                 "operator": pm.operator, "sensitivity": 0.8})
+
     # ---- FALLBACK HIERARCHY: guarantee ≥1 executable mechanism + a canonical outcome resolver ----
     scenario = _scenario_descriptor(raw)
     mechanism_selection = _score_production_registry(scenario)
@@ -485,7 +515,7 @@ def compile_world(question: str, *, llm, evidence="", as_of: str, horizon: str,
         quantities=quantities, latents=latents, scheduled_events=sched, stochastic_hazards=hazards,
         accepted_mechanisms=accepted, candidate_experimental_mechanisms=experimental,
         rejected_mechanisms=rejected,
-        structural_hypotheses=list(raw.get("structural_hypotheses") or []),
+        structural_hypotheses=list(raw.get("structural_hypotheses") or []), actor_decisions=actor_decisions,
         mechanism_choices=[c.as_dict() for c in choices], fallbacks_used=fallbacks_used,
         support_grade=support, interpretations=interpretations,
         omissions=list(raw.get("omitted") or []), degraded=degraded,
@@ -603,6 +633,24 @@ def _build_events(raw, contract, resolve_var, o, lean, horizon):
             continue
         sched.append({"etype": et, "ts": ts, "participants": list(ev.get("participants") or []),
                       "payload": dict(ev.get("payload") or {})})
+    # Compiler-produced actor decisions use the same event queue as every other mechanism.
+    # Numeric probabilities are intentionally not part of this semantic proposal contract.
+    existing = {(e["etype"], tuple(e["participants"]), e["ts"]) for e in sched}
+    for dec in raw.get("actor_decisions") or []:
+        if not isinstance(dec, dict) or not dec.get("actor"):
+            continue
+        try:
+            ts = parse_time(dec.get("at"))
+        except (ValueError, TypeError):
+            ts = parse_time(horizon) - 2.0
+        key = ("decision_opportunity", (str(dec["actor"]),), ts)
+        if key in existing:
+            continue
+        payload = {k: v for k, v in dec.items() if k not in ("actor", "at", "role")}
+        payload["actor_role"] = str(dec.get("role", ""))
+        sched.append({"etype": "decision_opportunity", "ts": ts,
+                      "participants": [str(dec["actor"])], "payload": payload})
+        existing.add(key)
     hazards = []
     for h in (raw.get("hazards") or []):
         if not isinstance(h, dict):

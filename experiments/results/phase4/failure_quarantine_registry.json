@@ -1,0 +1,53 @@
+{
+  "artifact_checksum": "76b184af0b3ea3d9277ff71783a7cdd850324dc13938904d0fa7c75ebd70836e",
+  "new_failures": [
+    "No leakage-safe same-row raw-LLM or LLM-panel baseline was available offline.",
+    "Committed CMV action is reconstructed from the delta outcome rather than a timestamped action event.",
+    "OpinionQA cache lacks question/option text, so only indexed choice is identified.",
+    "Upworthy is aggregate weighted population behavior, not person-disjoint behavior.",
+    "Many causal ablations are ornamental on these one-step caches because required state is absent.",
+    "B7 adds execution but no credible aggregate predictive lift over B6; CMV and Upworthy are statistically indistinguishable from B5.",
+    "Both structural cross-domain transfers fail badly; OpinionQA is excluded because indexed options have no stable polarity."
+  ],
+  "prior_negative_results": [
+    {
+      "path": "experiments/results/wmv2_enron_actor_ladder.json",
+      "preserved_unchanged": true,
+      "sha256": "54ba3a3e273c2aea40564ed95dfa3870f54ca258859e3cd71c9b0d7f58d56178"
+    },
+    {
+      "path": "experiments/results/wmv2_behaviorbench_policy.json",
+      "preserved_unchanged": true,
+      "sha256": "1b358853033ee958d72e2a9830ae04887dd3ebded9282c4d4a29fd2d5879be66"
+    },
+    {
+      "path": "experiments/results/wmv2_higgs.json",
+      "preserved_unchanged": true,
+      "sha256": "83141f0788ac2f63d9d5b23c37ce057ec3ca5b8bdcf67608feadfa079e95bfbf"
+    },
+    {
+      "path": "experiments/results/wmv2_omnibehavior_v2.json",
+      "preserved_unchanged": true,
+      "sha256": "9257f9afc3c1ab7a50d0d414b520ade94335b1a84bad47693aef5553eb41e018"
+    },
+    {
+      "path": "experiments/results/phase3/real_backtest.json",
+      "preserved_unchanged": true,
+      "sha256": "b4acc225d939ec2801178613c68ab2440949cc9a5ecbae71062b832a7703dba4"
+    }
+  ],
+  "quarantined_policy_families": [
+    {
+      "family": "raw_llm_behavioral_probability",
+      "reason": "unavailable and prohibited as numeric production policy"
+    },
+    {
+      "family": "enron_existing_actor_policy_evidence",
+      "reason": "temporal history leakage found in prior loader"
+    },
+    {
+      "family": "omnibehavior_persistence_lift",
+      "reason": "prior effect approximately zero"
+    }
+  ]
+}

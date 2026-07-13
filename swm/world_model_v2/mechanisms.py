@@ -52,6 +52,12 @@ for e in (
     MechanismEntry("agent_decision", "decision", "an actor chooses among typed institution-valid actions",
                    required_state=("entity", "information_set"), parameter_source="LLM policy (typed actions)",
                    operator="agent_decision", calibration_status="prior"),
+    MechanismEntry("production_actor_policy", "decision",
+                   "actor-view-only hierarchical policy mixture selects a feasible typed action and emits "
+                   "events plus StateDelta records",
+                   required_state=("posterior_world_state", "actor_view", "typed_action_space"),
+                   parameter_source="fitted hierarchical pack or explicit Tier-7 broad posterior",
+                   operator="production_actor_policy", calibration_status="calibrated"),
     MechanismEntry("belief_update", "belief", "exposure moves an actor's typed belief, bounded",
                    required_state=("information", "entity.beliefs"),
                    parameter_source="rule core: credibility×trust×salience (broad priors)",
