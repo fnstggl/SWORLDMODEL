@@ -300,3 +300,43 @@ edges but live retrieval rarely produces a typed edge OBSERVATION for them, so ~
 question domain has rich retrievable relational records (e.g. the congress/Enron datasets). This is the honest
 state of automatic discovery: relevance + structure are found reliably; **edge confirmation from live evidence
 is weak.**
+
+---
+
+## 9. FINAL HARD PRODUCTION GATES — honest scorecard
+
+| hard gate | status | evidence |
+|---|---|---|
+| 100-question automatic discovery completed | ✅ | 112 Q × 14 domains, 112/112 completed, `discovery_eval.json` |
+| ≥2 materially different real population datasets | ✅ | GSS survey + Senate roll-call, same subsystem |
+| ≥2 materially different real graph datasets | ✅ | congress co-voting + Enron email communication |
+| no benchmark-supplied production structure | ✅ | universal entry; caller supplies only the question |
+| no LLM-minted numeric parameters | ✅ | all numbers from Phase-3 prior×likelihood; enforced |
+| fitted likelihoods beat or honestly fail vs fixed | ✅ | fitted wins log-loss (0.855<1.027), honest-mixed on Brier/ECE |
+| ≥6 genuinely automatic traces | ✅ | 6 domains in the forensic doc + 2 full-chain persisted |
+| population + network real-outcome evaluations completed | ✅ | population lift **significant**; network lift **honest-null** |
+| no-abstention preserved | ✅ | 112/112 forecast; grades lowered, never refused |
+| deterministic replay + hashes | ✅ | discovery/posterior/terminal hashes; `test_pipeline_reproducible` |
+| full test suite — no new regressions | ✅ | see §6 (2 pre-existing environmental fails only) |
+
+### Brutally honest verdict
+- **Which gates passed?** All 11 hard production gates above (the 100-question run, both dataset-pair gates,
+  no-manual-structure, no-minted-numbers, fitted-likelihood comparison, 6 traces, real-outcome evals,
+  no-abstention, reproducibility, no-regressions).
+- **Which failed?** None of the *hard* gates. The substantive scientific shortfall is **network real-outcome
+  predictive lift**: the graph edge posterior does NOT beat a simple frequency baseline on future-edge Brier
+  (congress + Enron). And the live-discovery **unsupported-edge rate is 0.904** — discovered graphs are mostly
+  hypothesized on live questions.
+- **Did Phase 9 improve real held-out outcomes?** **Population: YES** (poststratification significantly beats
+  naive + homogeneous, CIs exclude zero). **Network: NO** (no significant lift over baselines on the tasks
+  tested).
+- **Is Phase 9 broadly validated?** **Partially.** Software + universal path + 2 real population + 2 real graph
+  datasets + synthetic recovery + 100-question generality = yes on breadth; but the network component lacks a
+  real-outcome predictive-lift result, and live edge confirmation is weak.
+- **Is it production eligible?** **NO.** The population subsystem is near-production for margin estimation; the
+  network subsystem is calibrated + causally consumed but **not shown to predict better than a trivial
+  baseline**. Ship exploratory/transfer-grade. **Phase 2 remains the outcome-forecast default.**
+- **Should this PR be merged?** **Not on scientific grounds** — it closes the engineering/validation gates and
+  is safe to review, but network production readiness is not established. Do not merge.
+- **Is Phase 9 finally complete?** **Software + universal path + broad validation: yes. Production-ready
+  network prediction: no.** Phase 9 is *validation-complete and honestly graded*, not production-complete.
