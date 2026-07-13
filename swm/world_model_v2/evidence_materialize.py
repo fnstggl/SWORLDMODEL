@@ -76,6 +76,8 @@ def attach_evidence_observations(plan, bundle, *, max_obs: int = 8):
     as_of_ts = bundle.as_of
     vis_by_claim = {v["claim_id"]: v for v in bundle.actor_visibility}
     inc = set(bundle.included_claim_ids)
+    if not inc:
+        return rp                                        # no admissible evidence → plan unchanged (no obs)
     # ensure the evidence_observation operator is in the rollout (operators_from_plan reads accepted_mechanisms)
     if not any(m.get("operator") == "evidence_observation" for m in rp.accepted_mechanisms):
         rp.accepted_mechanisms.append({

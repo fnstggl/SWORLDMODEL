@@ -40,6 +40,8 @@ class OrchestratorConfig:
     verify_online: bool = False                 # Wayback verification (network); off by default for speed
     use_wikipedia: bool = True
     extract_claims: bool = True
+    max_requirements_retrieved: int = 3         # cap RSS queries to the top-VoI requirements
+    max_claim_docs: int = 8                     # cap LLM claim-extraction calls per question
 
 
 def _window(as_of_ts: float, lookback_days: int) -> tuple:
@@ -72,8 +74,9 @@ def gather_evidence(question: str, *, as_of: str, requirements: list, llm=None,
     traces, documents, retrieval_plan, connector_failures = [], [], [], []
     after, before = _window(as_of_ts, cfg.lookback_days)
 
-    # ---- retrieval per requirement ----
-    for req in requirements:
+    # ---- retrieval per requirement (top-VoI requirements only, to bound retrieval + LLM cost) ----
+    retrieved_reqs = sorted(requirements, key=lambda r: -r.expected_voi)[:cfg.max_requirements_retrieved]
+    for req in retrieved_reqs:
         terms = _query_terms(req, question)
         retrieval_plan.append({"requirement_id": req.requirement_id, "terms": terms,
                                "after": after, "before": before,
@@ -127,12 +130,20 @@ def gather_evidence(question: str, *, as_of: str, requirements: list, llm=None,
         for mid in g.member_ids:
             doc_to_group[mid] = g.group_id
 
-    # ---- claim extraction (only from temporally-plausible docs) ----
+    # ---- claim extraction (dedup docs, cap count, skip post-as-of) ----
     claims = []
     if cfg.extract_claims and llm is not None:
-        for d in documents:
+        seen_hashes, claim_docs = set(), []
+        for d in sorted(documents, key=lambda x: (x.get("temporal_status") != "likely_pre_asof", x.get("rank", 99))):
+            if d.get("content_hash") in seen_hashes:
+                continue                                 # one claim-extraction per distinct article
             if d.get("temporal_status") in ("verified_post_asof", "likely_post_asof"):
                 continue                                 # never extract claims from post-as-of content
+            seen_hashes.add(d.get("content_hash"))
+            claim_docs.append(d)
+            if len(claim_docs) >= cfg.max_claim_docs:
+                break
+        for d in claim_docs:
             cs = extract_claims(d.get("text", ""), source_id=d["id"], llm=llm,
                                 publication_time=d.get("published_at"))
             for c in cs:
