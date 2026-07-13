@@ -34,7 +34,7 @@ def causal_rate(row, fitted_params=None):
     prop = row.get("causal_proposal") or {}
     if not prop.get("latents"):
         return None, {}
-    lr_lookup = (lambda tag: fo.fitted_lr(tag, fitted_params)) if fitted_params else None
+    lr_lookup = (lambda tag: fo.fitted_lr_magnitude(tag, fitted_params)) if fitted_params else None
     rate, post = cl.causal_latent_rate(prop, row.get("causal_claim_map") or {}, tag_by_claim(row),
                                        lr_lookup=lr_lookup)
     return rate, post

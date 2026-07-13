@@ -96,11 +96,19 @@ def predict_rate(row, params):
 
 
 def fitted_lr(tag, params):
-    """Per-observation likelihood ratio for a 'favors/supports_yes' directional observation of this class,
-    for feeding the causal-latent / generic-rate inference. >1 => raises the favorable state."""
+    """Direction-SIGNED per-observation likelihood ratio for the YES outcome: a supports_yes claim gives >1,
+    a supports_no claim gives <1, neutral gives 1. Used by the generic-rate path."""
     fe = claim_features(tag)
     w = w_for_class(params, fe["class"])
-    return math.exp(w * fe["strength"] * fe["reliability"])
+    return math.exp(w * fe["sign"] * fe["strength"] * fe["reliability"])
+
+
+def fitted_lr_magnitude(tag, params):
+    """Direction-AGNOSTIC discrimination MAGNITUDE (always >=1) of a claim of this class/strength. The consumer
+    (e.g. the causal-latent inference) applies the link direction itself, so sign is excluded here."""
+    fe = claim_features(tag)
+    w = w_for_class(params, fe["class"])
+    return math.exp(abs(w) * fe["strength"] * fe["reliability"])
 
 
 def save(params, path):
