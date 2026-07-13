@@ -48,22 +48,22 @@
       "sharpness": 0.0365
     },
     "direct_llm": {
-      "n": 11,
-      "brier": 0.2189,
-      "log_loss": 0.6161,
-      "ece": 0.3591,
-      "auroc": 0.95,
-      "directional_acc": 0.6364,
-      "sharpness": 0.0825
+      "n": 41,
+      "brier": 0.2191,
+      "log_loss": 0.6275,
+      "ece": 0.2573,
+      "auroc": 0.8348,
+      "directional_acc": 0.6585,
+      "sharpness": 0.0801
     },
     "direct_ensemble": {
-      "n": 11,
-      "brier": 0.2076,
-      "log_loss": 0.5924,
-      "ece": 0.3584,
-      "auroc": 1.0,
-      "directional_acc": 0.6364,
-      "sharpness": 0.0719
+      "n": 41,
+      "brier": 0.2101,
+      "log_loss": 0.6032,
+      "ece": 0.2507,
+      "auroc": 0.8448,
+      "directional_acc": 0.6585,
+      "sharpness": 0.0726
     }
   },
   "baseline_comparisons": {
@@ -86,38 +86,38 @@
       "note": "arm_a - arm_b; negative => arm_a better"
     },
     "full_v2_raw_vs_direct_llm": {
-      "n": 11,
-      "mean_brier_diff": 0.0363,
+      "n": 41,
+      "mean_brier_diff": 0.0217,
       "ci95": [
-        -0.1474,
-        0.194
+        -0.0715,
+        0.1043
       ],
       "note": "arm_a - arm_b; negative => arm_a better"
     },
     "full_v2_calibrated_vs_direct_llm": {
-      "n": 11,
-      "mean_brier_diff": 0.0363,
+      "n": 41,
+      "mean_brier_diff": 0.0217,
       "ci95": [
-        -0.1474,
-        0.194
+        -0.0715,
+        0.1043
       ],
       "note": "arm_a - arm_b; negative => arm_a better"
     },
     "full_v2_raw_vs_direct_ensemble": {
-      "n": 11,
-      "mean_brier_diff": 0.0476,
+      "n": 41,
+      "mean_brier_diff": 0.0306,
       "ci95": [
-        -0.1316,
-        0.2027
+        -0.0599,
+        0.1097
       ],
       "note": "arm_a - arm_b; negative => arm_a better"
     },
     "full_v2_calibrated_vs_direct_ensemble": {
-      "n": 11,
-      "mean_brier_diff": 0.0476,
+      "n": 41,
+      "mean_brier_diff": 0.0306,
       "ci95": [
-        -0.1316,
-        0.2027
+        -0.0599,
+        0.1097
       ],
       "note": "arm_a - arm_b; negative => arm_a better"
     },
@@ -151,22 +151,22 @@
       "sharpness": 0.1032
     },
     "A1_direct_llm": {
-      "n": 11,
-      "brier": 0.2189,
-      "log_loss": 0.6161,
-      "ece": 0.3591,
-      "auroc": 0.95,
-      "directional_acc": 0.6364,
-      "sharpness": 0.0825
+      "n": 41,
+      "brier": 0.2191,
+      "log_loss": 0.6275,
+      "ece": 0.2573,
+      "auroc": 0.8348,
+      "directional_acc": 0.6585,
+      "sharpness": 0.0801
     },
     "A2_direct_ensemble": {
-      "n": 11,
-      "brier": 0.2076,
-      "log_loss": 0.5924,
-      "ece": 0.3584,
-      "auroc": 1.0,
-      "directional_acc": 0.6364,
-      "sharpness": 0.0719
+      "n": 41,
+      "brier": 0.2101,
+      "log_loss": 0.6032,
+      "ece": 0.2507,
+      "auroc": 0.8448,
+      "directional_acc": 0.6585,
+      "sharpness": 0.0726
     },
     "A4_full_v2_no_evidence(prior)": {
       "n": 41,
@@ -216,11 +216,11 @@
     }
   },
   "critic_evaluation": {
-    "n_warned": 6,
-    "n_unwarned": 5,
-    "mean_brier_warned": 0.2537,
-    "mean_brier_unwarned": 0.257,
-    "error_lift_when_warned": -0.0033,
+    "n_warned": 14,
+    "n_unwarned": 27,
+    "mean_brier_warned": 0.2612,
+    "mean_brier_unwarned": 0.2301,
+    "error_lift_when_warned": 0.0311,
     "critic_can_overwrite_v2": false
   },
   "critic_rows": [
@@ -312,6 +312,73 @@
         "large disagreement with direct/ensemble (0.44) \u2014 check compiler/mechanisms"
       ],
       "brier": 0.0452
+    },
+    {
+      "row_id": "phase3acc_locked:vision_pro_2024",
+      "v2_p": 0.7273,
+      "direct_p": 0.95,
+      "warnings": [],
+      "brier": 0.0744
+    },
+    {
+      "row_id": "phase3acc_locked:worldseries_2024",
+      "v2_p": 0.3333,
+      "direct_p": 0.35,
+      "warnings": [],
+      "brier": 0.4445
+    },
+    {
+      "row_id": "phase3acc_locked:tdf_2024",
+      "v2_p": 0.475,
+      "direct_p": 0.65,
+      "warnings": [],
+      "brier": 0.2756
+    },
+    {
+      "row_id": "phase3acc_locked:chandrayaan3_2023",
+      "v2_p": 0.6552,
+      "direct_p": 0.75,
+      "warnings": [],
+      "brier": 0.1189
+    },
+    {
+      "row_id": "phase3acc_locked:polaris_2024",
+      "v2_p": 0.8971,
+      "direct_p": 0.75,
+      "warnings": [],
+      "brier": 0.0106
+    },
+    {
+      "row_id": "phase3acc_locked:h5n1_dairy_2024",
+      "v2_p": 0.6984,
+      "direct_p": 0.15,
+      "warnings": [
+        "large disagreement with direct/ensemble (0.57) \u2014 check compiler/mechanisms"
+      ],
+      "brier": 0.091
+    },
+    {
+      "row_id": "phase3acc_locked:nobel_ai_2024",
+      "v2_p": 0.4918,
+      "direct_p": 0.65,
+      "warnings": [],
+      "brier": 0.2583
+    },
+    {
+      "row_id": "phase3acc_locked:sbf_2023",
+      "v2_p": 0.8,
+      "direct_p": 0.85,
+      "warnings": [],
+      "brier": 0.04
+    },
+    {
+      "row_id": "phase3acc_locked:boeing_strike_2024",
+      "v2_p": 0.7879,
+      "direct_p": 0.35,
+      "warnings": [
+        "large disagreement with direct/ensemble (0.44) \u2014 check compiler/mechanisms"
+      ],
+      "brier": 0.045
     }
   ],
   "acceptance_gates": {
@@ -347,7 +414,7 @@
     },
     "G8_critic": {
       "status": "PASS",
-      "detail": "critic cannot overwrite V2; warning error-lift=-0.0033."
+      "detail": "critic cannot overwrite V2; warning error-lift=0.0311."
     },
     "G9_predictive_comparison": {
       "status": "REPORTED",
@@ -373,7 +440,7 @@
   "predictive_signal_summary": {
     "full_v2_raw_brier": 0.2407,
     "base_rate_brier": 0.2176,
-    "direct_llm_brier": 0.2189,
-    "ensemble_brier": 0.2076
+    "direct_llm_brier": 0.2191,
+    "ensemble_brier": 0.2101
   }
 }

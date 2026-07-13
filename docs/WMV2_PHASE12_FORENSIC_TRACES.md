@@ -28,6 +28,7 @@ as_of **2024-01-15**, horizon **351d**, realized outcome **0**
 - raw forecast **0.5077** → calibrator **identity** → calibrated **0.5077** (provisional, eff cal n=75)
 - **support grade** `transfer_supported` (expected_error=0.22)
 - **uncertainty decomposition** (epistemic 0.08333, aleatoric 0.16667): {'parameter_hidden_state': 0.08333, 'evidence': 0.0, 'structural': 0.0}
+- **direct-model disagreement (critic)**: {'direct_p': 0.35, 'ensemble_p': 0.3824, 'disagreement': 0.158, 'flag': 'ok', 'note': 'critic annotates only; never overwrites the simulation number'}
 - **limitations**: provisional calibrator (pre-Phase-11); Phases 8/9/11 not on the forecast path for this row
 
 ## `phase3acc_locked:silver_40_2024` — finance
@@ -57,6 +58,7 @@ as_of **2024-02-01**, horizon **334d**, realized outcome **0**
 - raw forecast **0.7237** → calibrator **identity** → calibrated **0.7237** (provisional, eff cal n=75)
 - **support grade** `empirically_supported` (expected_error=0.1084)
 - **uncertainty decomposition** (epistemic 0.08333, aleatoric 0.16667): {'parameter_hidden_state': 0.08333, 'evidence': 0.0, 'structural': 0.0}
+- **direct-model disagreement (critic)**: {'direct_p': 0.15, 'ensemble_p': 0.15, 'disagreement': 0.574, 'flag': 'large_disagreement', 'note': 'critic annotates only; never overwrites the simulation number'}
 - **limitations**: provisional calibrator (pre-Phase-11); Phases 8/9/11 not on the forecast path for this row
 
 ## `phase3acc_locked:worldseries_2024` — sports
