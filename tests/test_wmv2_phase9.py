@@ -136,3 +136,85 @@ def test_edge_dependence_collapse_counts_once():
 def test_no_edge_evidence_returns_prior():
     post = infer_edge_posterior("a", "b", "communication", [], prior_p=0.15)
     assert abs(post.posterior_p - 0.15) < 1e-6 and post.observed_status == "hypothesized"
+
+
+# ============================================================ multilayer network + SBM + structure + visibility
+def _planted_two_block(rng, n_per=8, p_in=0.6, p_out=0.05):
+    nodes = [f"a{i}" for i in range(n_per)] + [f"b{i}" for i in range(n_per)]
+    true = {v: (0 if v.startswith("a") else 1) for v in nodes}
+    adj = set()
+    for i, u in enumerate(nodes):
+        for v in nodes[i + 1:]:
+            p = p_in if true[u] == true[v] else p_out
+            if rng.random() < p:
+                adj.add((u, v))
+    return nodes, adj, true
+
+
+def _cluster_accuracy(hard, true):
+    # best of the two label permutations for 2 blocks
+    import itertools
+    ks = sorted(set(true.values()))
+    best = 0.0
+    for perm in itertools.permutations(ks):
+        mp = dict(zip(ks, perm))
+        acc = sum(1 for v in true if hard[v] == mp[true[v]]) / len(true)
+        best = max(best, acc)
+    return best
+
+
+def test_sbm_recovers_planted_communities():
+    from swm.world_model_v2.phase9_network import infer_communities
+    rng = random.Random(3)
+    nodes, adj, true = _planted_two_block(rng)
+    fit = infer_communities(nodes, adj, 2, seed=0)
+    assert _cluster_accuracy(fit["hard"], true) > 0.85       # recovers the planted 2-block structure
+    # memberships are a normalized posterior per node
+    for v, m in fit["membership"].items():
+        assert abs(sum(m.values()) - 1.0) < 1e-6
+
+
+def test_graph_structural_posterior_prefers_true_regime():
+    from swm.world_model_v2.phase9_network import graph_structural_posterior
+    rng = random.Random(5)
+    nodes, adj, _ = _planted_two_block(rng, n_per=9)
+    hyps = [{"id": "centralized", "K": 1, "prior": 0.33},
+            {"id": "two_bloc", "K": 2, "prior": 0.34},
+            {"id": "multi_faction", "K": 4, "prior": 0.33}]
+    res = graph_structural_posterior(nodes, adj, hyps, seed=0)
+    assert abs(sum(res["posterior"].values()) - 1.0) < 1e-6
+    # the true 2-block regime should carry the most posterior mass (BIC-penalized likelihood)
+    assert max(res["posterior"], key=res["posterior"].get) == "two_bloc"
+
+
+def test_infer_network_edges_are_posterior_backed():
+    from swm.world_model_v2.phase9_network import infer_network_edges
+    obs = [EdgeObservation("x", "y", "direct_communication_record", "strong", 0.9, claim_id="c1")]
+    edges = infer_network_edges([("x", "y", "communication"), ("x", "z", "communication")], obs)
+    by = {(e.src, e.dst): e for e in edges}
+    assert by[("x", "y")].existence_p > by[("x", "z")].existence_p   # evidence raises the observed edge
+    assert by[("x", "y")].observed_status == "observed"
+    assert by[("x", "z")].observed_status == "hypothesized"          # no evidence → stays hypothesized
+    assert by[("x", "y")].posterior_ref and by[("x", "y")].consumed_by   # posterior-referenced + consumed
+
+
+def test_missing_edge_posterior_keeps_unobserved_uncertain():
+    from swm.world_model_v2.phase9_network import missing_edge_posterior, NetworkEdge
+    present = [NetworkEdge("a", "b", "communication", existence_p=0.9)]
+    miss = missing_edge_posterior(["a", "b", "c"], present, "communication", base_rate=0.05)
+    pairs = {(m["src"], m["dst"]) for m in miss}
+    assert ("a", "b") not in pairs and ("a", "c") in pairs          # unobserved pairs kept, at base rate
+    assert all(m["existence_p"] == 0.05 for m in miss)
+
+
+def test_actor_view_has_no_omniscient_leakage():
+    from swm.world_model_v2.phase9_network import MultilayerNetwork, NetworkNode, NetworkEdge
+    net = MultilayerNetwork(nodes={n: NetworkNode(n) for n in ("a", "b", "c")})
+    net.edges = [NetworkEdge("a", "b", "trust", visibility="private"),          # only a,b see it
+                 NetworkEdge("a", "c", "communication", visibility="public")]
+    # c must NOT see the private a–b trust edge (adversarial no-leakage)
+    c_view = net.edges_visible_to("c")
+    assert all(not (e.layer == "trust" and e.visibility == "private") for e in c_view)
+    assert any(e.layer == "communication" for e in c_view)          # but sees the public edge
+    a_view = net.edges_visible_to("a")
+    assert any(e.layer == "trust" for e in a_view)                  # endpoint a DOES see its private edge
