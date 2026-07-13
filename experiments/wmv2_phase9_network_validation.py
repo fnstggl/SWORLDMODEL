@@ -145,6 +145,39 @@ def link_prediction(data, seed=0):
             "prior_same_party": round(prior_same, 3), "prior_diff_party": round(prior_diff, 3)}
 
 
+def temporal_link_prediction():
+    """GENUINE prediction (Part 13), not reconstruction: predict S117 high-agreement edges from PAST S116
+    structure (S116 agreement + same-party) — a temporal split, no leakage (S117 labels never used as input).
+    Distinguishes from the same-congress reconstruction result. Reported with baselines."""
+    past = json.loads((OUT / "congress_covote_S116.json").read_text())
+    fut = json.loads((OUT / "congress_covote_S117.json").read_text())
+    past_agree = {(e["a"], e["b"]): e["agree"] for e in past["edges"]}
+    both = set(past["party"]) & set(fut["party"])
+    scored_full, scored_party, scored_past = [], [], []
+    for e in fut["edges"]:
+        a, b = e["a"], e["b"]
+        if a not in both or b not in both:
+            continue
+        key = (a, b) if (a, b) in past_agree else (b, a)
+        pa = past_agree.get(key)
+        if pa is None:
+            continue                                          # need a past observation (no future leakage)
+        label = 1 if e["agree"] >= 0.7 else 0
+        same_party = fut["party"][a] == fut["party"][b]
+        # PAST agreement → a voting_alignment observation; party homophily → the prior. Future label unused.
+        strength = "strong" if pa >= 0.85 else ("moderate" if pa >= 0.72 else "weak")
+        obs = [EdgeObservation(a, b, "voting_alignment", strength=strength, reliability=0.85)] if pa >= 0.6 else []
+        prior = 0.75 if same_party else 0.08
+        post = infer_edge_posterior(a, b, "alliance", obs, prior_p=prior)
+        scored_full.append((post.posterior_p, label))
+        scored_party.append((0.75 if same_party else 0.08, label))   # party-only baseline
+        scored_past.append((pa, label))                              # past-agreement-only baseline
+    return {"task": "predict S117 high-agreement edges from S116 (temporal, no leakage)",
+            "n_pairs": len(scored_full), "base_rate": round(sum(l for _, l in scored_full) / max(1, len(scored_full)), 3),
+            "auroc_full": _auroc(scored_full), "auroc_party_only": _auroc(scored_party),
+            "auroc_past_agreement_only": _auroc(scored_past)}
+
+
 def synthetic_edge_calibration(seed=0, n=3000):
     """Fully-specified noisy-measurement edge recovery (posterior recovery, not a real-data claim). Each edge
     gets K binary measurements with known sensitivity/specificity; BOTH a positive and a negative reading
@@ -182,10 +215,15 @@ def main():
     cr = community_recovery(data)
     st = structural(data)
     lp = link_prediction(data)
+    lp["TASK_TYPE"] = ("RECONSTRUCTION — held-out edges predicted from the SAME co-voting signal that DEFINES "
+                       "them; NOT general hidden-edge prediction. See temporal_link_prediction for real "
+                       "future-edge prediction.")
     syn = synthetic_edge_calibration()
+    temporal = temporal_link_prediction()
     report = {"dataset": f"voteview {CONGRESS} Senate co-voting", "n_senators": cr["n_senators"],
               "n_edges": cr["n_edges"], "community_recovery": cr, "structural_posterior": st,
-              "link_prediction": lp, "synthetic_edge_calibration": syn}
+              "link_prediction_RECONSTRUCTION": lp, "temporal_link_prediction_PREDICTION": temporal,
+              "synthetic_edge_calibration": syn}
     top_structure = max(st["posterior"], key=st["posterior"].get)
     report["structural_finding"] = (
         f"the S117 co-voting graph's structural posterior prefers '{top_structure}' over one_bloc: the Senate "
@@ -194,7 +232,10 @@ def main():
     report["gates"] = {
         "sbm_recovers_party_at_K2": cr["party_recovery_accuracy"] >= 0.8,
         "structural_detects_bloc_structure": top_structure != "one_bloc" and st["posterior"]["one_bloc"] < 0.05,
-        "link_prediction_above_chance": (lp["auroc"] or 0) >= 0.7,
+        "reconstruction_above_chance": (lp["auroc"] or 0) >= 0.7,
+        "temporal_prediction_above_chance": (temporal["auroc_full"] or 0) >= 0.7,
+        "temporal_prediction_beats_party_baseline":
+            (temporal["auroc_full"] or 0) >= (temporal["auroc_party_only"] or 0),
         "synthetic_edge_auroc_high": (syn["auroc"] or 0) >= 0.75,
         "synthetic_edge_calibrated": syn["ece"] <= 0.1}
     report["all_gates_pass"] = all(report["gates"].values())
