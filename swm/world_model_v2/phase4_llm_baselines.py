@@ -266,7 +266,10 @@ def collect_one(*, client, packet: dict, lens: str, raw_root: Path,
             attempt_records.append({"attempt": attempt + 1, "path": str(path),
                                     "valid": False, "error_class": type(exc).__name__,
                                     "replayed": replayed})
-            if attempt < retries:
+            # A replayed attempt already observed its preregistered backoff during
+            # the original collection.  Do not sleep again merely because a
+            # resumable run is walking durable cache entries.
+            if attempt < retries and not replayed:
                 sleeper(float(2 ** attempt))
     return {"request_hash": request_hash, "lens": lens, "valid": False,
             "attempts": attempt_records, "selected_attempt": None}

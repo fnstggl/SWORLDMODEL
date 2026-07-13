@@ -20,6 +20,7 @@ import sys
 import termios
 import time
 from collections import Counter, defaultdict
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
 from swm.world_model_v2.phase4_completion import (
@@ -216,9 +217,9 @@ def run_collect_llm(args) -> None:
     secret = _read_stdin_secret()
     client = DeepSeekEnvelopeClient(secret)
     secret = ""
-    collection_rows, expected = [], []
+    collection_rows, expected, jobs = [], [], []
     code_commit = args.code_commit or _git_head()
-    for index, item in enumerate(request_manifest["rows"], 1):
+    for item in request_manifest["rows"]:
         dataset = item["dataset"]
         manifest_hash = dataset_manifest["datasets"][dataset]["checksum"]
         split_checksum = split_manifest["datasets"][dataset]["checksum"]
@@ -227,23 +228,34 @@ def run_collect_llm(args) -> None:
                 item["packet"], lens, code_commit=code_commit,
                 dataset_manifest_hash=manifest_hash, split_checksum=split_checksum)
             expected.append(request_hash)
-            result = collect_one(
-                client=client, packet=item["packet"], lens=lens,
-                raw_root=output / "raw_llm", code_commit=code_commit,
-                dataset_manifest_hash=manifest_hash, split_checksum=split_checksum,
-                retries=2,
-            )
-            collection_rows.append({
-                "dataset": dataset, "split": item["split"], "record_key": item["record_key"],
-                "label": item["label"], "actions": item["actions"],
-                "inverse_sampling_weight": item["inverse_sampling_weight"], **result,
-            })
-        if index % 8 == 0:
-            partial = collection_manifest(collection_rows, expected_request_hashes=expected)
-            partial["complete"] = False
-            partial["planned_total_requests"] = len(request_manifest["rows"]) * len(LENSES)
-            write_artifact(output / "llm_collection_progress.json", partial)
-            print(f"collected {len(collection_rows)}/{len(request_manifest['rows']) * len(LENSES)}", flush=True)
+            jobs.append((item, lens, manifest_hash, split_checksum))
+
+    def execute_job(job):
+        item, lens, manifest_hash, split_checksum = job
+        dataset = item["dataset"]
+        result = collect_one(
+            client=client, packet=item["packet"], lens=lens,
+            raw_root=output / "raw_llm", code_commit=code_commit,
+            dataset_manifest_hash=manifest_hash, split_checksum=split_checksum,
+            retries=2,
+        )
+        return {
+            "dataset": dataset, "split": item["split"], "record_key": item["record_key"],
+            "label": item["label"], "actions": item["actions"],
+            "inverse_sampling_weight": item["inverse_sampling_weight"], **result,
+        }
+
+    with ThreadPoolExecutor(max_workers=args.workers, thread_name_prefix="phase4-llm") as pool:
+        futures = [pool.submit(execute_job, job) for job in jobs]
+        for index, future in enumerate(as_completed(futures), 1):
+            collection_rows.append(future.result())
+            if index % 40 == 0:
+                partial = collection_manifest(collection_rows, expected_request_hashes=expected)
+                partial["complete"] = False
+                partial["planned_total_requests"] = len(expected)
+                partial["transport_workers"] = args.workers
+                write_artifact(output / "llm_collection_progress.json", partial)
+                print(f"collected {len(collection_rows)}/{len(expected)}", flush=True)
     manifest = collection_manifest(collection_rows, expected_request_hashes=expected)
     manifest["planned_total_requests"] = len(expected)
     assert_complete_collection(manifest)
@@ -399,6 +411,7 @@ def parser() -> argparse.ArgumentParser:
     collect = commands.add_parser("collect-llm")
     collect.add_argument("--api-key-stdin", action="store_true")
     collect.add_argument("--code-commit", default="")
+    collect.add_argument("--workers", type=int, default=8, choices=range(1, 17))
     commands.add_parser("score-llm")
     commands.add_parser("finalize")
     return out
