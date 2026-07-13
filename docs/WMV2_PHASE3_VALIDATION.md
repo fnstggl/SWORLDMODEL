@@ -170,7 +170,9 @@ syndicated`, `dependence_correction_reduces_overconfidence_on_syndicated`.
 ---
 
 ## 6. Full test suite
-`tests/test_wmv2_phase3_posterior.py`: **27 passed**. Core regression suites
-(`test_no_abstention_contract`, `test_world_model_v2`, `test_wmv2_tier_a_fixes`): pass, no regressions from the
-`fallback.py` / `materialize.py` / `result.py` edits. Whole-suite status recorded at the end of this doc after
-the final run.
+`tests/test_wmv2_phase3_posterior.py`: **27 passed**. **Whole suite: 770 passed, 2 failed in 272 s.** The 2
+failures are **pre-existing environmental** issues unrelated to Phase 3 — `test_state_world_model.py::test_
+predict_and_rollout_are_distinct` (`ModuleNotFoundError: No module named 'fastapi'`) and `test_agent_engine.py
+::test_dataset_registry_is_valid_and_honest` (agent-engine dataset registry). Neither imports
+`swm.world_model_v2`; both are the same environmental fails present before this phase. **Zero regressions** from
+the `fallback.py` / `materialize.py` / `result.py` / pipeline edits.
