@@ -1,0 +1,123 @@
+{
+  "schema_version": "wmv2.phase4-completion.frozen-audit.v1",
+  "audited_utc": "2026-07-13T21:20:00Z",
+  "audited_from_commit": "a233024b61a6e5d70d31881099e6a0cf758aca5d",
+  "original_phase4_code_commit": "b3823d4284c63d3e35eafd51ae56ca3ca03a676c",
+  "original_phase4_results_tree_sha1_at_28bc034": "9d946bf3e77e829706ab3bd0e9cba723f1a4b4d7",
+  "current_phase4_results_tree_sha1": "9d946bf3e77e829706ab3bd0e9cba723f1a4b4d7",
+  "immutable_tree_identical": true,
+  "artifact_count": 21,
+  "embedded_checksums_verified": 21,
+  "checksum_failures": [],
+  "reproduction_method": "Read-only verification of every checksum-sealed artifact, Git tree identity, metric extraction, and evaluator path audit. The old writer was not rerun because it hard-codes the immutable namespace and contains volatile timestamps/runtime fields.",
+  "reproduction_status": "verified_without_rewriting_or_regenerating_prior_artifacts",
+  "baselines": {
+    "B0": "present",
+    "B1": "present",
+    "B2": "absent: no frozen same-row raw LLM cache or model configuration",
+    "B3": "absent: no frozen same-row panel cache",
+    "B4": "present",
+    "B5": "present",
+    "B6": "present",
+    "B7": "present",
+    "B8": "absent: no leakage-safe same-row specialist predictions"
+  },
+  "held_out_log_loss": {
+    "cmv": {
+      "B0": 0.6238184701848881,
+      "B1": 0.6238184701848881,
+      "B4": 1.1563558690075981,
+      "B5": 0.6234381893215158,
+      "B6": 0.6173547358933845,
+      "B7": 0.6175852915555647,
+      "B7_uncalibrated": 0.6238184701848881,
+      "n": 180
+    },
+    "opinionqa": {
+      "B0": 0.694282667184076,
+      "B1": 0.694282667184076,
+      "B4": 0.6931471805599453,
+      "B5": 0.6942826671840759,
+      "B6": 0.6934776549415929,
+      "B7": 0.6934776549415929,
+      "B7_uncalibrated": 0.6942826671840759,
+      "n": 3511
+    },
+    "upworthy": {
+      "B0": 0.0793646303933633,
+      "B1": 0.0793646303933633,
+      "B4": 0.08692944253112583,
+      "B5": 0.07936462746969411,
+      "B6": 0.07936462746969411,
+      "B7": 0.07936463039336342,
+      "B7_uncalibrated": 0.07936463039336342,
+      "n_weighted_rows": 6771,
+      "effective_impressions": 12283525.0
+    }
+  },
+  "cold_start": {
+    "cmv_person_disjoint_B7_log_loss": 0.6175852915555647,
+    "opinionqa_person_disjoint_B7_log_loss": 0.6934776549415929,
+    "upworthy": "not person identifiable",
+    "verdict": "only one small cold-start win; gate failed"
+  },
+  "temporal": {
+    "cmv_time_forward_B7_log_loss": 0.6684319254225396,
+    "n": 180
+  },
+  "transfer": {
+    "cmv_to_upworthy_active_passive_log_loss": 1.1662035277102778,
+    "upworthy_to_cmv_active_passive_log_loss": 2.9049630058759175,
+    "opinionqa": "excluded because option index has no stable polarity",
+    "verdict": "two catastrophic semantically weak transfers; both remain prior evidence"
+  },
+  "execution": {
+    "selected_invalid_action_rate": 0.0,
+    "state_delta_rate": 1.0,
+    "terminal_effect_rate": 1.0,
+    "limitation": "terminal effect was a constructed action counter, not a real downstream outcome"
+  },
+  "why_B7_nearly_equals_B6": [
+    "the real-row runner passes one point world per decision",
+    "past_actions is always empty and the world is not persistent",
+    "candidate actions receive the same generic consequence structure",
+    "the fitted pack carries action intercepts but not meaningful feature effects into B7",
+    "actor shrinkage is effectively zero in B7",
+    "policy-family weights are hard-coded rather than likelihood-fitted",
+    "execution happens after the scored action distribution and cannot add one-step predictive lift"
+  ],
+  "real_row_state_gaps": {
+    "history": "empty in B7 worlds",
+    "relationships": "identifier present but no empirical relationship state consumed",
+    "networks": "absent",
+    "institutions": "generic identifier/rule only",
+    "reactions": "synthetic integration only",
+    "posterior_particles": "one point world",
+    "subjective_consequence_labels": "absent",
+    "real_downstream_outcome": "absent"
+  },
+  "implemented_but_empirically_unidentified": [
+    "history",
+    "belief variation",
+    "relationship state",
+    "network state",
+    "institutional feasibility",
+    "posterior world uncertainty",
+    "subjective consequences",
+    "strategic response",
+    "habit and reinforcement",
+    "policy-family uncertainty",
+    "reaction execution",
+    "real downstream execution value"
+  ],
+  "ablation_audit": "At least twelve state/family/execution ablations were explicitly identical or unavailable; only calibration materially changed predictions on some domains. The prior non-ornamental-state gate failed.",
+  "bootstrap_audit": "Prior paired bootstrap resampled trajectory rows with frequency weights rather than actor, relationship, sequence, or headline clusters.",
+  "aggregation_audit": "No equal-domain primary aggregate was present; pooled impression weighting could allow Upworthy to dominate.",
+  "four_status_verdict": {
+    "software_implemented": true,
+    "executes_end_to_end": true,
+    "empirically_validated": false,
+    "production_eligible": false
+  },
+  "artifact_checksum": "b4a821031d8cbf80c350886595f29f3d38e273bf07f174e7fab845dcb9cbbaa4"
+}
