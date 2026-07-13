@@ -301,3 +301,20 @@ def test_materialize_trust_onto_network_edge():
     post = tf.filter([("e1", "promise_fulfilled", 1.0), ("e2", "promise_fulfilled", 2.0)])
     deltas = materialize_persistent_state(w, [post])
     assert deltas                                                   # a network-edge trust delta was emitted
+
+
+# ------------------------------------------------------------------ universal entry robustness (no-abstention)
+def test_universal_entry_fails_gracefully_not_crashes():
+    """The universal simulate_with_persistence must degrade to a typed execution_failed on an LLM/compile
+    error (no-abstention contract) rather than raising — the happy path is validated live in
+    experiments/results/phase8/universal_path_trace.json."""
+    from swm.world_model_v2.phase8_pipeline import simulate_with_persistence
+    from swm.world_model_v2.phase8_service import PersistentStore
+
+    def broken_llm(_prompt):
+        raise RuntimeError("simulated LLM outage")
+    ctx_store = PersistentStore("uw", "us")
+    res, art = simulate_with_persistence("Will X happen?", llm=broken_llm, as_of="2024-01-01",
+                                         horizon="2024-01-04", context=None, seed=0)
+    assert res.simulation_status in ("execution_failed", "clarification_required")
+    assert res.failure_taxonomy or res.clarification_reason or res.simulation_status == "clarification_required"
