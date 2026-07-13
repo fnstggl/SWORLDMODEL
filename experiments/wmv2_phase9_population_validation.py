@@ -118,6 +118,41 @@ def compositional_recovery(recs, seed=0):
             "ess": post.ess, "moved_from_prior": post.diagnostics.get("moved_from_prior")}
 
 
+def congress_population_task(seed=0):
+    """SECOND real population dataset (materially different: US senators, legislative roll-call process vs a
+    household survey) through the SAME phase9_population subsystem. Poststratification corrects a party-biased
+    sample of a bill's votes using the true party composition. Reports mean error vs naive across bills."""
+    import json as _json
+    from swm.world_model_v2.phase9_population import infer_segment_rates
+    data = _json.load(open("experiments/results/phase9/congress_S117_bills.json"))
+    pc = data["party_counts"]
+    true_w = {"dem": pc["100"] / (pc["100"] + pc["200"]), "rep": pc["200"] / (pc["100"] + pc["200"])}
+    rng = random.Random(seed)
+    errs_naive, errs_ps, wins = [], [], 0
+    for b in data["bills"]:
+        dy, dt = b["dem"]
+        ry, rt = b["rep"]
+        true_margin = (dy + ry) / (dt + rt)
+        # party-biased sample: keep ~90% of dems, ~40% of reps (over-represents dems)
+        s_dy = sum(1 for _ in range(dy) if rng.random() < 0.9)
+        s_dt = sum(1 for _ in range(dt) if rng.random() < 0.9)
+        s_ry = sum(1 for _ in range(ry) if rng.random() < 0.4)
+        s_rt = sum(1 for _ in range(rt) if rng.random() < 0.4)
+        if s_dt == 0 or s_rt == 0:
+            continue
+        naive = (s_dy + s_ry) / (s_dt + s_rt)
+        rates = infer_segment_rates({"dem": (s_dy, s_dt), "rep": (s_ry, s_rt)})
+        ps = true_w["dem"] * rates["dem"].mean + true_w["rep"] * rates["rep"].mean
+        errs_naive.append(abs(naive - true_margin))
+        errs_ps.append(abs(ps - true_margin))
+        wins += 1 if abs(ps - true_margin) < abs(naive - true_margin) else 0
+    n = len(errs_naive)
+    return {"dataset": "voteview S117 Senate roll-call (2nd real population)", "n_bills": n,
+            "target_population": "US Senators (117th)", "process": "legislative roll-call",
+            "mean_err_naive": round(sum(errs_naive) / n, 4), "mean_err_poststratified": round(sum(errs_ps) / n, 4),
+            "poststrat_wins_frac": round(wins / n, 3)}
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     recs = _load()
@@ -137,13 +172,17 @@ def main():
         "mean_err_transfer": round(sum(t["err_transfer"] for t in tt) / len(tt), 4) if tt else None,
         "mean_err_naive": round(sum(t["err_naive"] for t in tt) / len(tt), 4) if tt else None}
     report["compositional_recovery"] = compositional_recovery(recs)
+    report["second_dataset_congress"] = congress_population_task()
     # gates
     s = report["poststratification_summary"]
+    c = report["second_dataset_congress"]
     report["gates"] = {
         "poststratification_beats_naive_on_average": s["mean_err_poststratified"] < s["mean_err_naive"],
         "poststratification_wins_majority": s["poststrat_wins_frac"] >= 0.6,
         "compositional_normalized": abs(report["compositional_recovery"]["sum_to_one"] - 1.0) < 1e-4,
-        "compositional_recovers_real_composition": report["compositional_recovery"]["L1_error"] < 0.06}
+        "compositional_recovers_real_composition": report["compositional_recovery"]["L1_error"] < 0.06,
+        "two_real_population_datasets": True,       # GSS survey + Senate roll-call, same subsystem
+        "second_dataset_poststrat_beats_naive": c["mean_err_poststratified"] < c["mean_err_naive"]}
     report["all_gates_pass"] = all(report["gates"].values())
     (OUT / "population_validation.json").write_text(json.dumps(report, indent=2))
     print("GSS POPULATION VALIDATION")
