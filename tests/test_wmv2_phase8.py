@@ -515,3 +515,94 @@ def test_cross_run_closed_loop_changes_execution(tmp_path):
     empty_mean = list(empty_cp.posteriors.values())[0]["mean"]
     assert abs(hot_mean - empty_mean) > 0.1                     # removing history changes the derived state
     be2.close()
+
+
+# ================================================================== completion pass: automatic provider
+def test_provider_auto_creates_context_with_stable_identity():
+    from swm.world_model_v2.phase8_provider import PersistenceContextProvider
+    prov = PersistenceContextProvider(backend_kind="memory")
+    ctx, meta = prov.for_request("Will Alice reply?", "2024-01-01", actor_tokens=["Alice"])
+    assert ctx is not None and meta["world_id"] and meta["scenario_id"] and meta["actor_ids"] == ["alice"]
+    # same request reuses the SAME store within the provider (deterministic identity keys)
+    ctx2, meta2 = prov.for_request("Will Alice reply?", "2024-01-01", actor_tokens=["Alice"])
+    assert ctx2.store is ctx.store and meta2["world_id"] == meta["world_id"]
+
+
+def test_provider_reloads_prior_state_after_restart(tmp_path):
+    from swm.world_model_v2.phase8_provider import PersistenceContextProvider
+    from swm.world_model_v2.phase8_events import PersistentEvent
+    from swm.world_model_v2.phase8_persistence import PersistentStateKey
+    # RUN 1: provider A builds an sqlite-backed store, writes history + checkpoint
+    provA = PersistenceContextProvider(backend_kind="sqlite", db_dir=str(tmp_path))
+    ctxA, _ = provA.for_request("q", "2024-01-01", actor_tokens=["u"])
+    wid, sid = ctxA.store.world_id, ctxA.store.scenario_id
+    for i in range(6):
+        ctxA.store.log.append(PersistentEvent(world_id=wid, scenario_id=sid, event_type="passive_exposure",
+                                              event_time=float(i), actor_ids=("u",), outcome=1))
+    key = PersistentStateKey(wid, sid, "actor", "u", "engagement_propensity")
+    ctxA.store.commit_checkpoint(ctxA.store.checkpoint(as_of=10.0, variable_keys=[key]))
+    ctxA.store.log.backend.close()
+    # RESTART: a FRESH provider reads the durable store from disk
+    provB = PersistenceContextProvider(backend_kind="sqlite", db_dir=str(tmp_path))
+    ctxB, _ = provB.for_request("q", "2024-01-01", actor_tokens=["u"])
+    assert len(ctxB.store.log) == 6                             # history reloaded automatically
+    assert ctxB.store.load_latest_checkpoint() is not None      # checkpoint reloaded
+    ctxB.store.log.backend.close()
+
+
+def test_direct_and_facade_paths_use_identical_identity(tmp_path):
+    """Any caller (direct pipeline, batch, HTTP facade) that reaches build_provider() with the same request
+    resolves to the SAME durable identity keys — so the paths behave identically."""
+    from swm.world_model_v2.phase8_provider import build_provider
+    p_direct = build_provider(backend_kind="memory")
+    p_facade = build_provider(backend_kind="memory")
+    _, m1 = p_direct.for_request("same q", "2024-01-01", actor_tokens=["a"])
+    _, m2 = p_facade.for_request("same q", "2024-01-01", actor_tokens=["a"])
+    assert (m1["world_id"], m1["scenario_id"], m1["actor_ids"]) == (m2["world_id"], m2["scenario_id"],
+                                                                    m2["actor_ids"])
+
+
+def test_pipeline_auto_invokes_provider_and_explicit_overrides():
+    """simulate() auto-requests a context from the provider (before compile). An explicit persistence= wins:
+    the provider is never consulted."""
+    from swm.world_model_v2.phase8_provider import PersistenceContextProvider
+    from swm.world_model_v2.pipeline import simulate
+
+    class _SpyProvider(PersistenceContextProvider):
+        consulted = False
+        def for_request(self, *a, **k):
+            _SpyProvider.consulted = True
+            return None, {"degraded": "spy"}
+
+    def broken_llm(_p):
+        raise RuntimeError("no llm in test")
+    # auto path: provider consulted because actor_history is present (compile fails after — that's fine)
+    _SpyProvider.consulted = False
+    simulate("q", llm=broken_llm, as_of="2024-01-01", horizon="2024-01-04",
+             actor_history={"u": []}, persistence_provider=_SpyProvider(backend_kind="memory"))
+    assert _SpyProvider.consulted is True
+    # explicit override: provider NOT consulted
+    _SpyProvider.consulted = False
+    from swm.world_model_v2.phase8_pipeline import PersistenceContext
+    from swm.world_model_v2.phase8_service import PersistentStore
+    simulate("q", llm=broken_llm, as_of="2024-01-01", horizon="2024-01-04", actor_history={"u": []},
+             persistence=PersistenceContext(store=PersistentStore("w", "s")),
+             persistence_provider=_SpyProvider(backend_kind="memory"))
+    assert _SpyProvider.consulted is False
+
+
+def test_anonymous_request_is_safe_no_persistence():
+    from swm.world_model_v2.phase8_provider import PersistenceContextProvider
+    prov = PersistenceContextProvider(backend_kind="memory")
+    ctx, meta = prov.for_request("anonymous q", "2024-01-01", actor_tokens=[])
+    assert ctx is None and meta["degraded"] == "anonymous_no_durable_identity"   # stateless → no persistence
+
+
+def test_storage_failure_degrades_not_crashes(tmp_path):
+    from swm.world_model_v2.phase8_provider import PersistenceContextProvider
+    # sqlite backend pointed at an un-creatable path (a file where a dir is expected) → honest degradation
+    bad = tmp_path / "afile"
+    bad.write_text("x")
+    prov = PersistenceContextProvider(backend_kind="sqlite", db_dir=str(bad / "cannot"))
+    ctx, meta = prov.for_request("q", "2024-01-01", actor_tokens=["u"])
+    assert ctx is None and meta["degraded"] and "storage_unavailable" in meta["degraded"]   # no raise
