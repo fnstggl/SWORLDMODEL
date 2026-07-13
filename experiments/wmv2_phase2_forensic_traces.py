@@ -20,19 +20,35 @@ import json
 import time
 from pathlib import Path
 
-from experiments.wmv2_compiler_generality import QUESTIONS, _expand_to_100
-
 RESULT = "experiments/results/wmv2_phase2_forensic_traces.json"
 DOC = "docs/WMV2_PHASE2_FORENSIC_TRACES.md"
 CACHE = Path("experiments/results/phase2_forensic")
 
+# One NAMED-ENTITY question per domain, dated so that contemporaneous public evidence exists as of the
+# question date (the generic held-out bank lacks named entities, so it retrieves little — see VALIDATION).
+# These are real 2023-2024 situations; the as-of precedes the resolution so retrieval is genuinely as-of.
+NAMED_EVENTS = [
+    ("messaging", "Will Elon Musk respond publicly to the FTC inquiry about Twitter?", "2023-07-01", "2023-08-01"),
+    ("negotiation", "Will the UAW and Ford reach a tentative labor agreement?", "2023-10-01", "2023-11-01"),
+    ("organizational_decision", "Will Disney's board extend Bob Iger's contract as CEO?", "2023-06-01", "2023-08-01"),
+    ("election", "Will the Republicans win the Kentucky governor race in 2023?", "2023-10-15", "2023-11-08"),
+    ("legislation", "Will the US Congress pass a stopgap funding bill to avoid a shutdown?", "2023-09-20", "2023-10-01"),
+    ("acquisition", "Will Microsoft complete its acquisition of Activision Blizzard?", "2023-08-01", "2023-11-01"),
+    ("product_launch", "Will Apple release the iPhone 15 on its announced date?", "2023-09-01", "2023-10-01"),
+    ("social_media_diffusion", "Will Meta's Threads app reach 100 million users in its first month?", "2023-07-06", "2023-08-06"),
+    ("protest", "Will the climate protests disrupt the UN General Assembly in New York?", "2023-09-10", "2023-09-25"),
+    ("strike", "Will the SAG-AFTRA actors strike end with a studio agreement?", "2023-10-01", "2023-11-15"),
+    ("court_ruling", "Will a US court rule on the Google antitrust search case?", "2023-09-01", "2024-01-01"),
+    ("fundraising", "Will OpenAI raise a new funding round valuing it above 80 billion?", "2023-10-01", "2024-01-01"),
+    ("coalition", "Will the Dutch parties form a governing coalition after the November election?", "2023-11-25", "2024-03-01"),
+    ("market", "Will the US Federal Reserve raise interest rates at its September 2023 meeting?", "2023-09-01", "2023-09-21"),
+    ("reputation_crisis", "Will Bud Light sales recover after the boycott controversy?", "2023-07-01", "2023-10-01"),
+    ("best_action", "Should the Writers Guild accept the studios' latest contract offer?", "2023-09-20", "2023-10-01"),
+]
+
 
 def _one_per_domain():
-    seen, out = set(), []
-    for domain, q, as_of, horizon in _expand_to_100(QUESTIONS):
-        if domain not in seen:
-            seen.add(domain); out.append((domain, q, as_of, horizon))
-    return out
+    return NAMED_EVENTS
 
 
 def _digest(q):
