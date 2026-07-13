@@ -544,6 +544,7 @@ def _register_research_encoded(s):
         dict(fid="weak_tie_transmission", onto="network", title="Weak-tie information transmission (inverted-U)",
              form="transmission opportunity rises then falls with tie strength (inverted-U); moderately weak "
                   "ties maximize novel-information/mobility access.",
+             code="swm.world_model_v2.registry.families.structural:weak_tie_transmission_shape",
              proc=["network_edge_change", "information_transmission"],
              cite=Citation(ref="Rajkumar, Saint-Jacques, Bojinov, Brynjolfsson & Aral 2022, Science 377:1304-1310",
                            doi_or_url="10.1126/science.abl4476",
@@ -553,8 +554,9 @@ def _register_research_encoded(s):
                                   "reverses in less-digital industries"),
              domains=["labor_market", "information_network"]),
         dict(fid="network_targeting_seeding", onto="network", title="Network targeting / friendship-nomination seeding",
-             form="seed via friendship-nomination (friendship paradox: E[deg(friend)]>E[deg]) to reach high-"
-                  "degree nodes; nomination > random; in-degree targeting ≈ random.",
+             form="seed via friendship-nomination (friendship paradox: E[deg(friend)]=E[d²]/E[d]≥E[deg]) to "
+                  "reach high-degree nodes; nomination > random; in-degree targeting ≈ random.",
+             code="swm.world_model_v2.registry.families.structural:nomination_seed_expected_degree",
              proc=["network_targeting", "network_edge_change"],
              cite=Citation(ref="Kim et al. 2015, Lancet 386:145-153", doi_or_url="10.1016/S0140-6736(15)60095-2",
                            study_population="32 Honduras villages, 5,773 people (cluster RCT)",
@@ -565,7 +567,9 @@ def _register_research_encoded(s):
              domains=["public_health", "community_intervention"]),
         dict(fid="altruistic_punishment", onto="norm", title="Altruistic punishment sustaining cooperation",
              form="costly peer punishment of free-riders raises/sustains cooperation in public-goods games; "
-                  "each punishment point cuts target payoff ~10%.",
+                  "each punishment point cuts target payoff ~10% (magnitudes broad — scanned tables not "
+                  "core-verified this run).",
+             code="swm.world_model_v2.registry.families.structural:altruistic_punishment_cooperation",
              proc=["norm_enforcement", "actor_selects_typed_action"],
              cite=Citation(ref="Fehr & Gächter 2000, American Economic Review 90(4):980-994",
                            doi_or_url="10.1257/aer.90.4.980",
@@ -588,18 +592,72 @@ def _register_research_encoded(s):
              domains=["political_persuasion", "campaign"]),
     ]
     for f in fams:
+        has_code = bool(f.get("code"))
         s.register(MechanismRecord(
             family_id=f["fid"], version="1.0.0", ontology_type=f["onto"], title=f["title"],
             formal_description=f["form"], causal_inputs=["structure"], causal_outputs=["effect"],
             required_state=["network" if f["onto"] == "network" else "entities"], temporal_scale="event",
-            code_ref="", test_ref="",
+            code_ref=f.get("code", ""), test_ref=("tests/test_wmv2_phase6.py" if has_code else ""),
             applicability=ApplicabilityRule(domains=f["domains"], answers_processes=f["proc"],
                                             transport_risk="high"),
-            citations=[f["cite"]], uncertainty_note="verified published effect; no transportable numeric "
-            "transition pack this run (structural/directional) — broad uncertainty",
+            citations=[f["cite"]], uncertainty_note="verified published effect; structural FORM implemented "
+            "where executable; magnitude carries broad uncertainty (no core-verified numeric pack this run)",
             status="proposed", status_reason="registering",
-            implementation_note="research_encoded: verified research + formal model stored; executable "
-            "transition + numeric pack are the remaining work (see priority matrix)"))
+            implementation_note=("executable structural form; empirical magnitude + local validation are the "
+                                 "remaining work" if has_code else
+                                 "research_encoded: verified research + formal model stored; executable "
+                                 "transition + numeric pack are the remaining work (see priority matrix)")))
+
+    # ---- NEW: position-bias propensity (Joachims 2017 eq.7, η=1 CORE-VERIFIED) → domain_restricted ----
+    s.register(MechanismRecord(
+        family_id="position_bias_propensity", version="1.0.0", ontology_type="platform",
+        title="Position-bias examination propensity (Joachims 2017)",
+        formal_description="p(examine|rank)=(1/rank)^η (Joachims-Swaminathan-Schnabel 2017 WSDM eq.7); "
+                           "P(click)=p(examine)·relevance. η=1 default (core-verified).",
+        causal_inputs=["rank", "relevance"], causal_outputs=["click_probability"], required_state=["quantities"],
+        temporal_scale="event", code_ref="swm.world_model_v2.registry.families.structural:position_bias_propensity",
+        test_ref="tests/test_wmv2_phase6.py",
+        parameters=[ParameterSpec("eta", "position-bias severity exponent", 0.0, 2.0, "published_research")],
+        applicability=ApplicabilityRule(domains=["search_ranking", "ranked_feed", "learning_to_rank"],
+                                        requires_state=["quantities"],
+                                        answers_processes=["examination_by_rank", "attention_after_exposure"],
+                                        transport_risk="high",
+                                        exclusion_conditions=["non_ranked_feed: no position to debias",
+                                                              "click_as_relevance: needs IPS correction"]),
+        citations=[Citation(ref="Joachims, Swaminathan & Schnabel 2017, WSDM pp.781-789",
+                            doi_or_url="10.1145/3018661.3018699",
+                            study_population="Arxiv Full-Text Search + semi-synthetic click logs",
+                            finding="examination propensity (1/rank)^η; η=1 default; real-world propensities "
+                                    "decay to ≈0.12 by rank ~21; underestimating small propensities is harmful",
+                            limits="ranked search/feed; click≠relevance without inverse-propensity weighting")],
+        uncertainty_note="η prior around the verified default 1.0", status="proposed", status_reason="registering"))
+    s.add_pack("position_bias_propensity", ParameterPack(
+        pack_id="joachims_2017_eta1", family_id="position_bias_propensity", domain="search_ranking",
+        population="ranked search/feed click logs",
+        values={"eta": {"value": 1.0, "sd": 0.3, "lo": 0.5, "hi": 1.5, "source": "published_research",
+                        "method": "default/estimated severity exponent (eq.7)", "dataset": "Joachims 2017"}},
+        fit_method="published (core-verified from primary PDF eq.7)", time_scale="event",
+        citations=[Citation(ref="Joachims et al. 2017 WSDM", doi_or_url="10.1145/3018661.3018699",
+                            finding="(1/rank)^η, η=1", limits="ranked feed; platform-specific severity")],
+        transport_note="severity η is platform-specific; refit per platform where randomized swaps exist"))
+
+    # ---- NEW: Gamson coalition payoff (structural proportionality) → software_implemented ----
+    s.register(MechanismRecord(
+        family_id="coalition_payoff_gamson", version="1.0.0", ontology_type="coalition",
+        title="Gamson's law coalition portfolio share",
+        formal_description="portfolio share ≈ seat contribution share (slope≈1, R²≈0.9; small-party bonus). "
+                           "Structural proportionality; slope/intercept research-encoded (not core-verified).",
+        causal_inputs=["seat_share"], causal_outputs=["portfolio_share"], required_state=["quantities"],
+        temporal_scale="event", code_ref="swm.world_model_v2.registry.families.structural:coalition_payoff_gamson",
+        test_ref="tests/test_wmv2_phase6.py",
+        applicability=ApplicabilityRule(domains=["coalition_government", "legislature"],
+                                        answers_processes=["coalition_payoff", "coalition_formation"],
+                                        transport_risk="high"),
+        citations=[Citation(ref="Gamson 1961 (ASR); Browne & Franklin 1973 (APSR 67:453-469)",
+                            finding="portfolio share ≈ seat share (R²≈0.9)",
+                            limits="parliamentary coalitions; slope≈1 with a small-party bonus; not core-"
+                                   "verified this run")],
+        uncertainty_note="structural proportionality; slope broad", status="proposed", status_reason="registering"))
 
 
 def _embed_higgs_coefficients(s):

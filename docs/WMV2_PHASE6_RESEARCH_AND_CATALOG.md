@@ -35,8 +35,17 @@ I (the orchestrating agent) do not convert an agent summary into a pack. For eve
 | platform_institutional | ✓ (summary) | did NOT re-verify Joachims/Fehr-Gächter myself | Upworthy identifies CONTENT-response, NOT position/examination bias; ~22% caching randomization failure noted | recorded `altruistic_punishment` as research_encoded; did not re-pack `platform_examination` this run |
 
 **Unverified-and-therefore-not-packed** (stored as research only): EWA/RL/belief/habit/norm lab coefficients;
-weak-tie/targeting/homophily magnitudes; Joachims position propensity; Fehr-Gächter numbers; Gamson slope.
-These are candidates for future promotion once core-verified and given an executable numeric transition.
+weak-tie/targeting/homophily magnitudes; Fehr-Gächter contribution levels (scanned PDF, could not core-verify);
+Gamson slope. These are candidates for future promotion once core-verified and given a numeric pack.
+
+**Deepened after the first tranche** (structural FORM now executable, magnitude still broad): the
+`weak_tie_transmission` (inverted-U), `network_targeting_seeding` (friendship-paradox E[d²]/E[d]),
+`altruistic_punishment` (punishment-sustains-cooperation), and `coalition_payoff_gamson` (portfolio≈seats)
+families gained executable transitions in `registry/families/structural.py` — they are now
+software-implemented (executable + tested) while remaining `research_encoded` (Tier-4 selectable) because
+they lack a core-verified numeric pack / local validation. `position_bias_propensity` was **core-verified**
+by me from the Joachims 2017 primary PDF (eq. 7: p(examine|rank)=(1/rank)^η, η=1) → a `domain_restricted`
+pack.
 
 ## 3. Verified packs minted (each core-verified)
 

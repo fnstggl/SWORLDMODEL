@@ -177,8 +177,8 @@
     "terminal_sensitivity": {
      "varied": "offer_frac",
      "sweep": {
-      "0.05": 0.027,
-      "0.4": 0.957
+      "0.05": 0.017,
+      "0.4": 0.97
      },
      "moves": true
     }
@@ -514,7 +514,7 @@
     "terminal_sensitivity": {
      "varied": "treatment",
      "sweep": {
-      "control": 0.287,
+      "control": 0.307,
       "neighbors": 0.387
      },
      "moves": true
@@ -657,7 +657,7 @@
       {
        "path": "quantities[donated]",
        "before": null,
-       "after": "False"
+       "after": "True"
       }
      ],
      "reason_codes": [
@@ -674,13 +674,13 @@
      "evidence_deps": []
     },
     "world_after": {
-     "donated": "False"
+     "donated": "True"
     },
     "terminal_sensitivity": {
      "varied": "match_offered",
      "sweep": {
-      "False": 0.247,
-      "True": 0.27
+      "False": 0.223,
+      "True": 0.273
      },
      "moves": true
     }
@@ -849,10 +849,10 @@
     "terminal_sensitivity": {
      "varied": "q",
      "sweep": {
-      "0.1": 1.0,
+      "0.1": 0.997,
       "0.38": 1.0
      },
-     "moves": false
+     "moves": true
     }
    }
   },
@@ -1045,6 +1045,11 @@
      "family_id": "content_response_click",
      "process_match": 0.6,
      "reason": "required state absent: ['populations']"
+    },
+    {
+     "family_id": "position_bias_propensity",
+     "process_match": 0.6,
+     "reason": "required state absent: ['quantities']"
     }
    ],
    "selected_family": "exposure_response_hazard",
@@ -1175,47 +1180,11 @@
      "network"
     ]
    },
-   "registry_candidates": [
-    "network_targeting_seeding",
-    "weak_tie_transmission"
-   ],
+   "registry_candidates": [],
    "rejected_candidates": [],
-   "selected_family": "network_targeting_seeding",
-   "status": "research_encoded",
-   "applicability": {
-    "combined": 0.838,
-    "process_match": 1.0,
-    "applicability": 0.73,
-    "subscores": {
-     "domain_match": 1.0,
-     "population_match": 0.5,
-     "time_scale_match": 0.5,
-     "variable_compatibility": 1.0,
-     "data_availability": 1.0,
-     "institutional_compatibility": 1.0,
-     "evidence_quality": 0.15
-    }
-   },
-   "selected_pack": null,
-   "parameter_posterior": "no pack (research_encoded / structural)",
-   "transport": null,
-   "provenance": [
-    {
-     "ref": "Kim et al. 2015, Lancet 386:145-153",
-     "doi_or_url": "10.1016/S0140-6736(15)60095-2",
-     "limits": "rural health intervention; magnitude context-specific; friendship paradox is structural"
-    }
-   ],
-   "support_tier": 4,
-   "support_grade": "transfer_supported",
-   "competing_mechanisms": [
-    "weak_tie_transmission"
-   ],
-   "limitations": [],
-   "evidence_class": "research-encoded structural family (broad uncertainty)",
-   "execution": {
-    "note": "executes in the reference world / family test (); selection+applicability+transport shown here"
-   }
+   "selected": null,
+   "support_tier": 6,
+   "note": "no evidence-backed family answers this process \u2192 generic/competing fallback"
   },
   {
    "category": "opinion",

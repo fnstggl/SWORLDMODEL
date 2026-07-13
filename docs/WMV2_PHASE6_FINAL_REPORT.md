@@ -8,16 +8,20 @@ committed artifacts by `experiments/wmv2_phase6_report.py`; the registry is `swm
 
 | Quantity | Before (base `claude/world-model-v2`) | After Phase 6 |
 |---|---|---|
-| Named families | 47 | **61** |
-| Software-implemented families (executable + tests) | ~47 | **57** |
+| Named families | 47 | **63** |
+| Software-implemented families (executable + tests) | ~47 | **62** |
 | Empirically-validated families (passed held-out/PPC/transfer) | 3 | **5** |
 | Production-eligible families | 2 | **3** |
-| Parameter packs | 6 | **16** |
+| Parameter packs | 6 | **17** |
 | — with local held-out validation | 3 | **4** |
 | — with a transfer record (passed) | 2 | **3** |
-| — published-estimate (verified) packs | 0 | **6** |
-| Statuses | impl 43 / local 1 / prod 2 / quar 1 | impl 45 / **research_encoded 4** / local 2 / **domain_restricted 6** / prod 3 / quar 1 |
+| — published-estimate (verified) packs | 0 | **7** |
+| Statuses | impl 43 / local 1 / prod 2 / quar 1 | impl 45 / **research_encoded 5** / local 2 / **domain_restricted 7** / prod 3 / quar 1 |
 | Preserved negative results | (Hawkes, BehaviorBench PG, ...) | **7** (all prior + telco negative-transfer + StackExchange/CMV nulls) |
+
+(The 4 `research_encoded` structural families — weak ties, targeting, altruistic punishment, Gamson — are
+now **executable** [software plane] while staying `research_encoded` so they remain selectable at Tier 4;
+`position_bias_propensity` gained a core-verified Joachims η=1 pack → `domain_restricted`.)
 
 Selection quality (mechanism routing, NOT outcome accuracy) over a 12-scenario / 22-process stratified bank
 (`experiments/results/wmv2_phase6_selection_eval.json`):
@@ -35,8 +39,9 @@ processes correctly fall to Tier 6–7 because no evidence-backed family answers
 
 ## 2. The 20 anti-scaffolding answers
 
-1. **How many genuinely implemented families now exist?** 57 software-implemented (executable transition +
-   tests). 61 named (4 are `research_encoded` structural records with no executable numeric transition yet).
+1. **How many genuinely implemented families now exist?** 62 software-implemented (executable transition +
+   tests). 63 named (only `persuasion_minimal_effects` — a Kalla-Broockman near-zero guardrail — has no
+   executable transition).
 2. **How many are empirically validated?** 5 (passed a real held-out / posterior-predictive / transfer check):
    `content_response_click`, `engagement_momentum_persistence`, `social_preference_population` (transfer),
    `attrition_dropout_hazard` (held-out), `exposure_response_hazard` (held-out).
@@ -48,9 +53,10 @@ processes correctly fall to Tier 6–7 because no evidence-backed family answers
    pairwise 0.738 + out-of-time transfer 0.719, population ablation, LLM-free); `exposure_response_hazard` &
    `engagement_momentum_persistence` (Higgs / OmniBehavior held-out).
 6. **Which remain structural candidates only?** `weak_tie_transmission`, `network_targeting_seeding`,
-   `altruistic_punishment`, `persuasion_minimal_effects` (`research_encoded`: verified research + formal
-   model, no executable numeric transition this run) plus ~19 registry families the priority matrix marks
-   `structural_candidate_only`.
+   `altruistic_punishment`, `coalition_payoff_gamson` are now `research_encoded` **and executable** (verified
+   research + formal structural transition, but no core-verified numeric pack or local validation);
+   `persuasion_minimal_effects` is a research-only guardrail. Plus ~19 priority-matrix families still marked
+   `structural_candidate_only` (DeGroot-vs-Bayesian, enforcement, queueing, EWA/RL lab coefficients, …).
 7. **Which are quarantined?** `hawkes_self_excitation` (held-out count forecast FAILED vs Poisson on Higgs —
    preserved, never overwritten).
 8. **Which were rejected?** None outright rejected; the honest NULLs (`response_occurrence_hazard`,
@@ -106,14 +112,17 @@ processes correctly fall to Tier 6–7 because no evidence-backed family answers
 | response_occurrence_hazard | ✓ | ✓ | stackexchange_answered | **NULL** (preserved) | — | — | surface features ≈ base rate |
 | argument_persuasion_success | ✓ | ✓ | cmv_delta | **NULL** (preserved) | — | — | surface features ≈ base rate |
 | hawkes_self_excitation | ✓ | ✓ | higgs_2012_stream | **FAILED** (preserved) | — | **quarantined** | underfits burst vs Poisson |
-| weak_tie_transmission / network_targeting_seeding / altruistic_punishment / persuasion_minimal_effects | — | — | 0 (research record) | — | — | research_encoded | verified research; no numeric transition yet |
+| position_bias_propensity | ✓ | ✓ | joachims_2017_eta1 (η=1 core-verified) | published estimate only | — | — (domain_restricted) | ranked feeds; click≠relevance w/o IPS |
+| weak_tie_transmission / network_targeting_seeding / altruistic_punishment / coalition_payoff_gamson | ✓ | ✓ | 0 (structural form) | — | — | research_encoded (Tier-4 selectable) | executable structural form; magnitude broad, no local validation |
+| persuasion_minimal_effects | — | — | 0 (guardrail) | — | — | research_encoded | Kalla-Broockman near-zero prior; no transition |
 
 ## 4. Exactly what remains (not relabeled as done)
 
-- **Executable numeric transitions** for the 4 `research_encoded` families and ~19 `structural_candidate_only`
-  matrix families (weak ties, targeting, punishment, coalition defection/Gamson, DeGroot vs Bayesian,
-  position-bias propensity form, enforcement, queueing).
-- **Local validation** of the 6 `domain_restricted` published packs against real local data (the blocker to
+- **Core-verified numeric packs + local validation** for the 4 executable `research_encoded` structural
+  families (weak ties, targeting, punishment, Gamson — the structural transition is implemented; the
+  empirical magnitude is a broad prior) and ~19 `structural_candidate_only` matrix families (DeGroot vs
+  Bayesian, enforcement, queueing, EWA/RL lab coefficients).
+- **Local validation** of the 7 `domain_restricted` published packs against real local data (the blocker to
   promotion is stated per-family in `wmv2_phase6_validation_summary.json`): mobilization/turnout on a real
   GOTV dataset, Bass on real product-sales curves, trust/ultimatum against per-subject MobLab distributions.
 - **Downstream dependency (documented, not faked):** the compiler binds packs to scenario instances using
@@ -125,7 +134,7 @@ processes correctly fall to Tier 6–7 because no evidence-backed family answers
 
 - **Software implemented:** YES.
 - **Executes end to end:** YES (behavioral + feature-hazard families; 5 forensic traces + tests).
-- **Empirically validated:** PARTIAL — 5 families / 4 packs on real held-out; the +6 published packs are
+- **Empirically validated:** PARTIAL — 5 families / 4 packs on real held-out; the +7 published packs are
   verified-but-transported, honestly graded `domain_restricted`, not locally validated.
 - **Registry production eligible:** the infrastructure is; the *coverage* is 3 production families. This run
   materially increased validated + parameterized coverage across 9 categories and fixed the selection flaw,

@@ -177,6 +177,20 @@ def _behavioral_probability(mechanism: str, params: dict) -> tuple[float, dict]:
                                multiplier=float(params.get("multiplier", 3.0)))
         # readout: P(trust paid off) proxied by whether investor nets positive (deterministic here)
         return (1.0 if o["investor_net_from_trust"] > 0 else 0.0), o
+    if mechanism in ("position_bias_propensity", "altruistic_punishment", "coalition_payoff_gamson"):
+        from swm.world_model_v2.registry.families import structural as S
+        if mechanism == "position_bias_propensity":
+            p = S.click_probability(int(params["rank"]), float(params.get("relevance", 1.0)),
+                                    float(params.get("eta", 1.0)))
+            return p, {"readout": "P(click)=P(examine|rank)·relevance",
+                       "examine": S.position_bias_propensity(int(params["rank"]), float(params.get("eta", 1.0)))}
+        if mechanism == "altruistic_punishment":
+            p = S.altruistic_punishment_cooperation(bool(params.get("has_punishment", False)),
+                                                    int(params.get("period", 9)),
+                                                    int(params.get("n_periods", 10)))
+            return p, {"readout": "cooperation fraction"}
+        p = S.coalition_payoff_gamson(float(params["seat_share"]))
+        return p, {"readout": "portfolio share ≈ seat share"}
     raise ValueError(f"unknown behavioral mechanism {mechanism!r}")
 
 

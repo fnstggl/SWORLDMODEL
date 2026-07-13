@@ -195,3 +195,49 @@ def test_published_estimate_cannot_reach_production_without_local_validation():
     s = build()
     blockers = s.records["social_pressure_turnout"].promotion_blockers("production_eligible")
     assert blockers   # a verified published estimate is NOT production-eligible for arbitrary scenarios
+
+
+# ---------------- structural families (deepened from research_encoded → executable) ----------------
+def test_structural_families_execute():
+    from swm.world_model_v2.registry.families import structural as S
+    # Joachims position bias (core-verified eq.7): (1/rank)^1 = 1, .5, .33, .25, .2
+    assert S.position_bias_propensity(1) == 1.0 and S.position_bias_propensity(2) == pytest.approx(0.5)
+    assert S.position_bias_propensity(4) == pytest.approx(0.25)
+    # friendship paradox: a graph with degree variance → friends have higher mean degree (Feld 1991)
+    g = S.friendship_paradox_gain([1, 1, 1, 10])
+    assert g["mean_friend_degree"] > g["mean_degree"] and g["gain"] > 1.0
+    # weak-tie inverted-U: moderate strength beats both extremes
+    assert S.weak_tie_transmission_shape(0.25) > S.weak_tie_transmission_shape(0.02)
+    assert S.weak_tie_transmission_shape(0.25) > S.weak_tie_transmission_shape(0.95)
+    # punishment sustains cooperation; without it decays
+    assert S.altruistic_punishment_cooperation(True, 9) > S.altruistic_punishment_cooperation(False, 9)
+    # Gamson proportionality
+    assert S.coalition_payoff_gamson(0.4) == pytest.approx(0.4)
+
+
+def test_structural_families_now_software_implemented():
+    from swm.world_model_v2.registry.build_registry import build
+    from swm.world_model_v2.registry.applicability import SELECTABLE
+    s = build()
+    for fam in ("weak_tie_transmission", "network_targeting_seeding", "altruistic_punishment",
+                "coalition_payoff_gamson"):
+        # software-implemented PLANE (executable), while STATUS stays research_encoded (research-backed,
+        # no core-verified pack / local validation) so they remain SELECTABLE at Tier 4 (not a bare
+        # `implemented` family, which would be unselectable).
+        assert s.records[fam].executable(), f"{fam} should resolve to a callable"
+        assert s.records[fam].status == "research_encoded"
+        assert s.records[fam].status in SELECTABLE
+    # position bias got a CORE-VERIFIED pack → domain_restricted
+    assert s.records["position_bias_propensity"].status == "domain_restricted"
+    assert s.records["persuasion_minimal_effects"].status == "research_encoded"
+
+
+def test_position_bias_executes_through_world():
+    op = B.BehavioralMechanismOperator()
+    w = _world()
+    ev = Event(ts=T0, etype="behavioral_mechanism",
+               payload={"hazard_spec": {"kind": "behavioral", "mechanism": "position_bias_propensity",
+                                        "params": {"rank": 1, "relevance": 1.0}, "outcome_var": "clicked"}})
+    w.clock.advance_to(ev.ts)
+    delta, vr = op.run(w, ev, random.Random(0))
+    assert delta is not None and "clicked" in w.quantities

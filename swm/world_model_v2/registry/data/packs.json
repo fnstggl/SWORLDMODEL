@@ -1,8 +1,8 @@
 {
  "_integrity": {
-  "n_top_level": 16,
-  "saved_at": "2026-07-13T03:45:26Z",
-  "sha256": "224013cb1f9e437ea1022dfc7e570f0cdc9b462bd91cede14e5aae6eb5b45342"
+  "n_top_level": 17,
+  "saved_at": "2026-07-13T03:56:07Z",
+  "sha256": "501c8b787b53198cbc9ffac081f3c716954b8b35d428641c5db05a75d99f3e29"
  },
  "payload": {
   "argument_persuasion_success": [
@@ -17,7 +17,7 @@
       "study_population": ""
      }
     ],
-    "created_at": "2026-07-13T03:45:26Z",
+    "created_at": "2026-07-13T03:56:07Z",
     "domain": "online_debate",
     "family_id": "argument_persuasion_success",
     "fit_method": "logistic MLE + L2",
@@ -82,7 +82,7 @@
   "attrition_dropout_hazard": [
    {
     "citations": [],
-    "created_at": "2026-07-13T03:45:26Z",
+    "created_at": "2026-07-13T03:56:07Z",
     "domain": "subscription_churn",
     "family_id": "attrition_dropout_hazard",
     "fit_method": "logistic MLE + L2",
@@ -174,7 +174,7 @@
       "study_population": ""
      }
     ],
-    "created_at": "2026-07-13T03:45:26Z",
+    "created_at": "2026-07-13T03:56:07Z",
     "domain": "innovation_diffusion",
     "family_id": "bass_diffusion",
     "fit_method": "published meta-analytic means (verified)",
@@ -210,7 +210,7 @@
   "complex_contagion_hazard": [
    {
     "citations": [],
-    "created_at": "2026-07-13T03:45:26Z",
+    "created_at": "2026-07-13T03:56:07Z",
     "domain": "social_media_diffusion",
     "family_id": "complex_contagion_hazard",
     "fit_method": "profile likelihood",
@@ -260,7 +260,7 @@
       "study_population": ""
      }
     ],
-    "created_at": "2026-07-13T03:45:26Z",
+    "created_at": "2026-07-13T03:56:07Z",
     "domain": "content_ab_test",
     "family_id": "content_response_click",
     "fit_method": "linear CTR + population-heterogeneity rank",
@@ -345,7 +345,7 @@
   "engagement_momentum_persistence": [
    {
     "citations": [],
-    "created_at": "2026-07-13T03:45:26Z",
+    "created_at": "2026-07-13T03:56:07Z",
     "domain": "platform_engagement",
     "family_id": "engagement_momentum_persistence",
     "fit_method": "momentum ratio + hierarchical user-rate shrinkage",
@@ -406,7 +406,7 @@
   "exposure_response_hazard": [
    {
     "citations": [],
-    "created_at": "2026-07-13T03:45:26Z",
+    "created_at": "2026-07-13T03:56:07Z",
     "domain": "social_media_diffusion",
     "family_id": "exposure_response_hazard",
     "fit_method": "Bernoulli-hazard GLM",
@@ -482,7 +482,7 @@
   "hawkes_self_excitation": [
    {
     "citations": [],
-    "created_at": "2026-07-13T03:45:26Z",
+    "created_at": "2026-07-13T03:56:07Z",
     "domain": "social_media_diffusion",
     "family_id": "hawkes_self_excitation",
     "fit_method": "EM/MLE exponential kernel",
@@ -538,7 +538,7 @@
       "study_population": ""
      }
     ],
-    "created_at": "2026-07-13T03:45:26Z",
+    "created_at": "2026-07-13T03:56:07Z",
     "domain": "fundraising",
     "family_id": "matching_donation_response",
     "fit_method": "randomized natural field experiment (verified)",
@@ -586,6 +586,42 @@
     "version": "1.0.0"
    }
   ],
+  "position_bias_propensity": [
+   {
+    "citations": [
+     {
+      "doi_or_url": "10.1145/3018661.3018699",
+      "finding": "(1/rank)^\u03b7, \u03b7=1",
+      "limits": "ranked feed; platform-specific severity",
+      "ref": "Joachims et al. 2017 WSDM",
+      "study_period": "",
+      "study_population": ""
+     }
+    ],
+    "created_at": "2026-07-13T03:56:07Z",
+    "domain": "search_ranking",
+    "family_id": "position_bias_propensity",
+    "fit_method": "published (core-verified from primary PDF eq.7)",
+    "fitted_on": "",
+    "pack_id": "joachims_2017_eta1",
+    "population": "ranked search/feed click logs",
+    "time_scale": "event",
+    "transport_note": "severity \u03b7 is platform-specific; refit per platform where randomized swaps exist",
+    "validation": [],
+    "values": {
+     "eta": {
+      "dataset": "Joachims 2017",
+      "hi": 1.5,
+      "lo": 0.5,
+      "method": "default/estimated severity exponent (eq.7)",
+      "sd": 0.3,
+      "source": "published_research",
+      "value": 1.0
+     }
+    },
+    "version": "1.0.0"
+   }
+  ],
   "reputation_updating": [
    {
     "citations": [
@@ -598,7 +634,7 @@
       "study_population": ""
      }
     ],
-    "created_at": "2026-07-13T03:45:26Z",
+    "created_at": "2026-07-13T03:56:07Z",
     "domain": "online_marketplace",
     "family_id": "reputation_updating",
     "fit_method": "randomized field experiment (verified)",
@@ -625,7 +661,7 @@
   "response_occurrence_hazard": [
    {
     "citations": [],
-    "created_at": "2026-07-13T03:45:26Z",
+    "created_at": "2026-07-13T03:56:07Z",
     "domain": "qa_community",
     "family_id": "response_occurrence_hazard",
     "fit_method": "logistic MLE + L2",
@@ -691,7 +727,7 @@
   "simple_contagion_hazard": [
    {
     "citations": [],
-    "created_at": "2026-07-13T03:45:26Z",
+    "created_at": "2026-07-13T03:56:07Z",
     "domain": "social_media_diffusion",
     "family_id": "simple_contagion_hazard",
     "fit_method": "profile likelihood",
@@ -732,7 +768,7 @@
   "social_preference_population": [
    {
     "citations": [],
-    "created_at": "2026-07-13T03:45:26Z",
+    "created_at": "2026-07-13T03:56:07Z",
     "domain": "economic_game",
     "family_id": "social_preference_population",
     "fit_method": "exponentiated-gradient on W1",
@@ -796,7 +832,7 @@
       "study_population": ""
      }
     ],
-    "created_at": "2026-07-13T03:45:26Z",
+    "created_at": "2026-07-13T03:56:07Z",
     "domain": "voter_turnout",
     "family_id": "social_pressure_turnout",
     "fit_method": "randomized field experiment ITT (verified)",
@@ -851,7 +887,7 @@
       "study_population": ""
      }
     ],
-    "created_at": "2026-07-13T03:45:26Z",
+    "created_at": "2026-07-13T03:56:07Z",
     "domain": "trust_game",
     "family_id": "trust_game_transfer",
     "fit_method": "published meta-analytic means (verified)",
@@ -892,7 +928,7 @@
       "study_population": ""
      }
     ],
-    "created_at": "2026-07-13T03:45:26Z",
+    "created_at": "2026-07-13T03:56:07Z",
     "domain": "economic_game",
     "family_id": "ultimatum_offer_response",
     "fit_method": "published meta-analytic means (verified)",
