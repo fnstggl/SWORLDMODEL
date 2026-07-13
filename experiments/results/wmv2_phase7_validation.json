@@ -1,0 +1,2847 @@
+{
+ "_meta": {
+  "seed": 0,
+  "note": "validation-only selection; test scored once; nulls preserved",
+  "runtime_s": 12.7,
+  "llm_calls": 0
+ },
+ "telco": {
+  "dataset": "telco",
+  "category": "persistence_attrition",
+  "hypothesis": "tenure\u2192churn declining hazard is nonlinear; contract\u00d7tenure interaction",
+  "n": 7032,
+  "base_rate": 0.2658,
+  "split": "random 60/20/20 seed=0",
+  "dataset_hash": "ca2f2292c44d1255",
+  "val_scores": {
+   "constant": {
+    "brier": 0.188869,
+    "logloss": 0.565517,
+    "pred_rate": 0.27376,
+    "real_rate": 0.25178,
+    "n": 1406,
+    "auroc": 0.5,
+    "calibration": {
+     "ece": 0.02198,
+     "reliability": [
+      {
+       "bin": 2,
+       "n": 1406,
+       "conf": 0.2738,
+       "acc": 0.2518
+      }
+     ]
+    }
+   },
+   "logistic": {
+    "brier": 0.134324,
+    "logloss": 0.415752,
+    "pred_rate": 0.26374,
+    "real_rate": 0.25178,
+    "n": 1406,
+    "auroc": 0.839,
+    "calibration": {
+     "ece": 0.02206,
+     "reliability": [
+      {
+       "bin": 0,
+       "n": 523,
+       "conf": 0.037,
+       "acc": 0.0344
+      },
+      {
+       "bin": 1,
+       "n": 210,
+       "conf": 0.1462,
+       "acc": 0.1524
+      },
+      {
+       "bin": 2,
+       "n": 126,
+       "conf": 0.2472,
+       "acc": 0.2302
+      },
+      {
+       "bin": 3,
+       "n": 119,
+       "conf": 0.3499,
+       "acc": 0.3361
+      },
+      {
+       "bin": 4,
+       "n": 133,
+       "conf": 0.4457,
+       "acc": 0.3835
+      },
+      {
+       "bin": 5,
+       "n": 104,
+       "conf": 0.5517,
+       "acc": 0.4904
+      },
+      {
+       "bin": 6,
+       "n": 115,
+       "conf": 0.6535,
+       "acc": 0.6174
+      },
+      {
+       "bin": 7,
+       "n": 76,
+       "conf": 0.7394,
+       "acc": 0.8158
+      }
+     ]
+    }
+   },
+   "logistic_interaction": {
+    "brier": 0.134014,
+    "logloss": 0.413976,
+    "pred_rate": 0.26423,
+    "real_rate": 0.25178,
+    "n": 1406,
+    "auroc": 0.8403,
+    "calibration": {
+     "ece": 0.02068,
+     "reliability": [
+      {
+       "bin": 0,
+       "n": 514,
+       "conf": 0.0381,
+       "acc": 0.035
+      },
+      {
+       "bin": 1,
+       "n": 234,
+       "conf": 0.1472,
+       "acc": 0.1496
+      },
+      {
+       "bin": 2,
+       "n": 116,
+       "conf": 0.2466,
+       "acc": 0.2328
+      },
+      {
+       "bin": 3,
+       "n": 120,
+       "conf": 0.3506,
+       "acc": 0.3333
+      },
+      {
+       "bin": 4,
+       "n": 126,
+       "conf": 0.4481,
+       "acc": 0.381
+      },
+      {
+       "bin": 5,
+       "n": 101,
+       "conf": 0.5505,
+       "acc": 0.5149
+      },
+      {
+       "bin": 6,
+       "n": 106,
+       "conf": 0.6507,
+       "acc": 0.5943
+      },
+      {
+       "bin": 7,
+       "n": 89,
+       "conf": 0.7391,
+       "acc": 0.7978
+      }
+     ]
+    }
+   },
+   "gam": {
+    "brier": 0.13147,
+    "logloss": 0.408174,
+    "pred_rate": 0.26553,
+    "real_rate": 0.25178,
+    "n": 1406,
+    "auroc": 0.8451,
+    "calibration": {
+     "ece": 0.01794,
+     "reliability": [
+      {
+       "bin": 0,
+       "n": 501,
+       "conf": 0.0391,
+       "acc": 0.0279
+      },
+      {
+       "bin": 1,
+       "n": 209,
+       "conf": 0.1428,
+       "acc": 0.1292
+      },
+      {
+       "bin": 2,
+       "n": 171,
+       "conf": 0.2478,
+       "acc": 0.2281
+      },
+      {
+       "bin": 3,
+       "n": 121,
+       "conf": 0.3471,
+       "acc": 0.314
+      },
+      {
+       "bin": 4,
+       "n": 103,
+       "conf": 0.4496,
+       "acc": 0.4272
+      },
+      {
+       "bin": 5,
+       "n": 134,
+       "conf": 0.5462,
+       "acc": 0.5149
+      },
+      {
+       "bin": 6,
+       "n": 76,
+       "conf": 0.6422,
+       "acc": 0.6579
+      },
+      {
+       "bin": 7,
+       "n": 55,
+       "conf": 0.751,
+       "acc": 0.7636
+      },
+      {
+       "bin": 8,
+       "n": 36,
+       "conf": 0.8317,
+       "acc": 0.8611
+      }
+     ]
+    }
+   },
+   "gam_interaction": {
+    "brier": 0.131381,
+    "logloss": 0.408136,
+    "pred_rate": 0.26549,
+    "real_rate": 0.25178,
+    "n": 1406,
+    "auroc": 0.8453,
+    "calibration": {
+     "ece": 0.01804,
+     "reliability": [
+      {
+       "bin": 0,
+       "n": 503,
+       "conf": 0.0385,
+       "acc": 0.0278
+      },
+      {
+       "bin": 1,
+       "n": 208,
+       "conf": 0.1435,
+       "acc": 0.1298
+      },
+      {
+       "bin": 2,
+       "n": 169,
+       "conf": 0.2493,
+       "acc": 0.2249
+      },
+      {
+       "bin": 3,
+       "n": 120,
+       "conf": 0.3467,
+       "acc": 0.325
+      },
+      {
+       "bin": 4,
+       "n": 104,
+       "conf": 0.449,
+       "acc": 0.4327
+      },
+      {
+       "bin": 5,
+       "n": 135,
+       "conf": 0.5456,
+       "acc": 0.5037
+      },
+      {
+       "bin": 6,
+       "n": 76,
+       "conf": 0.6414,
+       "acc": 0.6579
+      },
+      {
+       "bin": 7,
+       "n": 55,
+       "conf": 0.7506,
+       "acc": 0.7636
+      },
+      {
+       "bin": 8,
+       "n": 36,
+       "conf": 0.8314,
+       "acc": 0.8611
+      }
+     ]
+    }
+   }
+  },
+  "test_scores": {
+   "constant": {
+    "brier": 0.190718,
+    "logloss": 0.569503,
+    "pred_rate": 0.27376,
+    "real_rate": 0.25586,
+    "n": 1407,
+    "auroc": 0.5,
+    "calibration": {
+     "ece": 0.0179,
+     "reliability": [
+      {
+       "bin": 2,
+       "n": 1407,
+       "conf": 0.2738,
+       "acc": 0.2559
+      }
+     ]
+    }
+   },
+   "logistic": {
+    "brier": 0.140367,
+    "logloss": 0.426573,
+    "pred_rate": 0.26149,
+    "real_rate": 0.25586,
+    "n": 1407,
+    "auroc": 0.8289,
+    "calibration": {
+     "ece": 0.02579,
+     "reliability": [
+      {
+       "bin": 0,
+       "n": 517,
+       "conf": 0.0356,
+       "acc": 0.0387
+      },
+      {
+       "bin": 1,
+       "n": 229,
+       "conf": 0.15,
+       "acc": 0.1703
+      },
+      {
+       "bin": 2,
+       "n": 120,
+       "conf": 0.2531,
+       "acc": 0.2583
+      },
+      {
+       "bin": 3,
+       "n": 127,
+       "conf": 0.3494,
+       "acc": 0.3307
+      },
+      {
+       "bin": 4,
+       "n": 126,
+       "conf": 0.4456,
+       "acc": 0.4206
+      },
+      {
+       "bin": 5,
+       "n": 85,
+       "conf": 0.5508,
+       "acc": 0.4353
+      },
+      {
+       "bin": 6,
+       "n": 134,
+       "conf": 0.6475,
+       "acc": 0.597
+      },
+      {
+       "bin": 7,
+       "n": 69,
+       "conf": 0.7348,
+       "acc": 0.8406
+      }
+     ]
+    }
+   },
+   "logistic_interaction": {
+    "brier": 0.140069,
+    "logloss": 0.425461,
+    "pred_rate": 0.2619,
+    "real_rate": 0.25586,
+    "n": 1407,
+    "auroc": 0.8303,
+    "calibration": {
+     "ece": 0.03052,
+     "reliability": [
+      {
+       "bin": 0,
+       "n": 520,
+       "conf": 0.0386,
+       "acc": 0.0423
+      },
+      {
+       "bin": 1,
+       "n": 227,
+       "conf": 0.149,
+       "acc": 0.163
+      },
+      {
+       "bin": 2,
+       "n": 126,
+       "conf": 0.2474,
+       "acc": 0.2778
+      },
+      {
+       "bin": 3,
+       "n": 123,
+       "conf": 0.3502,
+       "acc": 0.3333
+      },
+      {
+       "bin": 4,
+       "n": 127,
+       "conf": 0.4487,
+       "acc": 0.4016
+      },
+      {
+       "bin": 5,
+       "n": 81,
+       "conf": 0.5548,
+       "acc": 0.4568
+      },
+      {
+       "bin": 6,
+       "n": 126,
+       "conf": 0.6485,
+       "acc": 0.5714
+      },
+      {
+       "bin": 7,
+       "n": 75,
+       "conf": 0.735,
+       "acc": 0.84
+      },
+      {
+       "bin": 8,
+       "n": 2,
+       "conf": 0.8005,
+       "acc": 1.0
+      }
+     ]
+    }
+   },
+   "gam": {
+    "brier": 0.1352,
+    "logloss": 0.413971,
+    "pred_rate": 0.26022,
+    "real_rate": 0.25586,
+    "n": 1407,
+    "auroc": 0.8396,
+    "calibration": {
+     "ece": 0.02307,
+     "reliability": [
+      {
+       "bin": 0,
+       "n": 500,
+       "conf": 0.0378,
+       "acc": 0.036
+      },
+      {
+       "bin": 1,
+       "n": 228,
+       "conf": 0.1479,
+       "acc": 0.136
+      },
+      {
+       "bin": 2,
+       "n": 161,
+       "conf": 0.2481,
+       "acc": 0.2609
+      },
+      {
+       "bin": 3,
+       "n": 123,
+       "conf": 0.3473,
+       "acc": 0.3333
+      },
+      {
+       "bin": 4,
+       "n": 119,
+       "conf": 0.4478,
+       "acc": 0.4706
+      },
+      {
+       "bin": 5,
+       "n": 114,
+       "conf": 0.5467,
+       "acc": 0.4825
+      },
+      {
+       "bin": 6,
+       "n": 78,
+       "conf": 0.6492,
+       "acc": 0.5641
+      },
+      {
+       "bin": 7,
+       "n": 63,
+       "conf": 0.7489,
+       "acc": 0.8571
+      },
+      {
+       "bin": 8,
+       "n": 21,
+       "conf": 0.8296,
+       "acc": 0.9048
+      }
+     ]
+    }
+   },
+   "gam_interaction": {
+    "brier": 0.135095,
+    "logloss": 0.413571,
+    "pred_rate": 0.26013,
+    "real_rate": 0.25586,
+    "n": 1407,
+    "auroc": 0.84,
+    "calibration": {
+     "ece": 0.02113,
+     "reliability": [
+      {
+       "bin": 0,
+       "n": 503,
+       "conf": 0.0372,
+       "acc": 0.0378
+      },
+      {
+       "bin": 1,
+       "n": 226,
+       "conf": 0.1492,
+       "acc": 0.1372
+      },
+      {
+       "bin": 2,
+       "n": 158,
+       "conf": 0.2486,
+       "acc": 0.2595
+      },
+      {
+       "bin": 3,
+       "n": 124,
+       "conf": 0.3476,
+       "acc": 0.3306
+      },
+      {
+       "bin": 4,
+       "n": 121,
+       "conf": 0.4484,
+       "acc": 0.4545
+      },
+      {
+       "bin": 5,
+       "n": 113,
+       "conf": 0.5467,
+       "acc": 0.4956
+      },
+      {
+       "bin": 6,
+       "n": 79,
+       "conf": 0.6491,
+       "acc": 0.557
+      },
+      {
+       "bin": 7,
+       "n": 62,
+       "conf": 0.7491,
+       "acc": 0.871
+      },
+      {
+       "bin": 8,
+       "n": 21,
+       "conf": 0.8293,
+       "acc": 0.9048
+      }
+     ]
+    }
+   }
+  },
+  "validation_selected": "gam_interaction",
+  "paired_test_deltas": {
+   "gam_interaction_vs_constant": {
+    "mean": -0.055623,
+    "ci95": [
+     -0.065154,
+     -0.047072
+    ],
+    "n": 1407
+   },
+   "gam_interaction_vs_logistic": {
+    "mean": -0.005273,
+    "ci95": [
+     -0.008016,
+     -0.002546
+    ],
+    "n": 1407
+   },
+   "gam_interaction_vs_logistic_interaction": {
+    "mean": -0.004974,
+    "ci95": [
+     -0.007654,
+     -0.002266
+    ],
+    "n": 1407
+   },
+   "gam_interaction_vs_gam": {
+    "mean": -0.000105,
+    "ci95": [
+     -0.00025,
+     2.9e-05
+    ],
+    "n": 1407
+   }
+  },
+  "parsimony_decision": {
+   "promoted": "gam_interaction",
+   "beat_baseline": true,
+   "reason": "nonlinear gam_interaction beats logistic on held-out (paired \u0394Brier -0.005273 CI [-0.008016, -0.002546])"
+  },
+  "fitted_params": {
+   "logistic": {
+    "form_id": "logistic",
+    "params": {
+     "weights": {
+      "senior": 0.10966442195670922,
+      "partner": -0.04605835261700965,
+      "dependents": -0.08322587183830112,
+      "tenure": -0.8664843356719469,
+      "phone_service": -0.16353717621865352,
+      "paperless_billing": 0.168249047163659,
+      "monthly_charges": 0.33382212531303596,
+      "contract": -0.6358200429007246,
+      "internet_service": 0.5829581541681154,
+      "is_female": 0.028374213310646636
+     },
+     "intercept": -1.5853191732683314,
+     "standardizer": {
+      "senior": [
+       0.15738326617681916,
+       0.3642049061581391
+      ],
+      "partner": [
+       0.48234178715335385,
+       0.4997473195435251
+      ],
+      "dependents": [
+       0.2988859919412183,
+       0.45782402345638556
+      ],
+      "tenure": [
+       32.0542782649917,
+       24.38656873233834
+      ],
+      "phone_service": [
+       0.9044797345342498,
+       0.2939670510083535
+      ],
+      "paperless_billing": [
+       0.5954017539701351,
+       0.49087230249892194
+      ],
+      "monthly_charges": [
+       65.19586394880297,
+       29.95463839913651
+      ],
+      "contract": [
+       0.6748044560322352,
+       0.8285779510558492
+      ],
+      "internet_service": [
+       1.2358378762739985,
+       0.7757498877609712
+      ],
+      "is_female": [
+       0.4901635458639488,
+       0.4999624896203036
+      ]
+     }
+    },
+    "provenance": {
+     "dataset": "telco",
+     "split": "",
+     "seed": 0,
+     "method": "scipy_lbfgs_logistic_MLE",
+     "n_train": 4219,
+     "software": {
+      "python_fit": "pure",
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "sklearn": "1.9.0"
+     },
+     "source": "fitted"
+    },
+    "diagnostics": {}
+   },
+   "logistic_interaction": {
+    "form_id": "logistic",
+    "params": {
+     "weights": {
+      "senior": 0.11284881509683937,
+      "partner": -0.04567523913776107,
+      "dependents": -0.07868262315125585,
+      "tenure": -0.9226028303123261,
+      "phone_service": -0.1678211461500572,
+      "paperless_billing": 0.16623403445715887,
+      "monthly_charges": 0.338473341145816,
+      "contract": -0.9248735818328971,
+      "internet_service": 0.575260738993641,
+      "is_female": 0.027801918649513816
+     },
+     "intercept": -1.5597341672529064,
+     "standardizer": {
+      "senior": [
+       0.15738326617681916,
+       0.3642049061581391
+      ],
+      "partner": [
+       0.48234178715335385,
+       0.4997473195435251
+      ],
+      "dependents": [
+       0.2988859919412183,
+       0.45782402345638556
+      ],
+      "tenure": [
+       32.0542782649917,
+       24.38656873233834
+      ],
+      "phone_service": [
+       0.9044797345342498,
+       0.2939670510083535
+      ],
+      "paperless_billing": [
+       0.5954017539701351,
+       0.49087230249892194
+      ],
+      "monthly_charges": [
+       65.19586394880297,
+       29.95463839913651
+      ],
+      "contract": [
+       0.6748044560322352,
+       0.8285779510558492
+      ],
+      "internet_service": [
+       1.2358378762739985,
+       0.7757498877609712
+      ],
+      "is_female": [
+       0.4901635458639488,
+       0.4999624896203036
+      ]
+     },
+     "interactions": {
+      "tenure*contract": 0.41066301268471206
+     },
+     "interactions_std": {
+      "tenure*contract": [
+       35.1784783123963,
+       50.22007660604795
+      ]
+     }
+    },
+    "provenance": {
+     "dataset": "telco",
+     "split": "",
+     "seed": 0,
+     "method": "scipy_lbfgs_logistic_MLE",
+     "n_train": 4219,
+     "software": {
+      "python_fit": "pure",
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "sklearn": "1.9.0"
+     },
+     "source": "fitted"
+    },
+    "diagnostics": {}
+   },
+   "gam": {
+    "form_id": "gam",
+    "params": {
+     "linear": {
+      "senior": 0.12090021364512768,
+      "partner": -0.02547298317864037,
+      "dependents": -0.07491761196677245,
+      "phone_service": -0.17029826416561067,
+      "paperless_billing": 0.16485740117883943,
+      "contract": -0.4767285421884272,
+      "internet_service": 0.344266521090498,
+      "is_female": 0.027347731850567665
+     },
+     "smooth": {
+      "tenure": {
+       "knots": [
+        4.0,
+        14.0,
+        29.0,
+        46.0,
+        63.0
+       ],
+       "coefs": [
+        -0.24983279582941298,
+        0.1919895823393479,
+        0.011119811592445152,
+        0.03481409144950294,
+        -0.035138656523981626,
+        -0.012371798705604408
+       ]
+      },
+      "monthly_charges": {
+       "knots": [
+        38.6,
+        70.65,
+        90.1
+       ],
+       "coefs": [
+        0.026361359377276263,
+        -0.017015592899589708,
+        0.02974391947059135,
+        -0.01883946968223923
+       ]
+      }
+     },
+     "intercept": -0.8961787873540821,
+     "standardizer": {
+      "senior": [
+       0.15738326617681916,
+       0.3642049061581391
+      ],
+      "partner": [
+       0.48234178715335385,
+       0.4997473195435251
+      ],
+      "dependents": [
+       0.2988859919412183,
+       0.45782402345638556
+      ],
+      "phone_service": [
+       0.9044797345342498,
+       0.2939670510083535
+      ],
+      "paperless_billing": [
+       0.5954017539701351,
+       0.49087230249892194
+      ],
+      "contract": [
+       0.6748044560322352,
+       0.8285779510558492
+      ],
+      "internet_service": [
+       1.2358378762739985,
+       0.7757498877609712
+      ],
+      "is_female": [
+       0.4901635458639488,
+       0.4999624896203036
+      ]
+     },
+     "link": "logit"
+    },
+    "provenance": {
+     "dataset": "telco",
+     "split": "",
+     "seed": 0,
+     "method": "scipy_lbfgs_gam",
+     "n_train": 4219,
+     "software": {
+      "python_fit": "pure",
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "sklearn": "1.9.0"
+     },
+     "source": "fitted"
+    },
+    "diagnostics": {
+     "knots": {
+      "tenure": [
+       4.0,
+       14.0,
+       29.0,
+       46.0,
+       63.0
+      ],
+      "monthly_charges": [
+       38.6,
+       70.65,
+       90.1
+      ]
+     },
+     "n_smooth_terms": 10
+    }
+   },
+   "gam_interaction": {
+    "form_id": "gam",
+    "params": {
+     "linear": {
+      "senior": 0.11900872124303148,
+      "partner": -0.025478384597046242,
+      "dependents": -0.07522528848002139,
+      "phone_service": -0.1702514441470876,
+      "paperless_billing": 0.16463257812287793,
+      "contract": -0.42914660332357646,
+      "internet_service": 0.3393525655672129,
+      "is_female": 0.027857246467180387
+     },
+     "smooth": {
+      "tenure": {
+       "knots": [
+        4.0,
+        14.0,
+        29.0,
+        46.0,
+        63.0
+       ],
+       "coefs": [
+        -0.25219873717872554,
+        0.19449954612003675,
+        0.01135615317429147,
+        0.03524824752748412,
+        -0.033374166084084576,
+        -0.004173355685157483
+       ]
+      },
+      "monthly_charges": {
+       "knots": [
+        38.6,
+        70.65,
+        90.1
+       ],
+       "coefs": [
+        0.026519732064720716,
+        -0.016920109652907033,
+        0.029463465785345724,
+        -0.01848528769985277
+       ]
+      }
+     },
+     "intercept": -0.9402685775755781,
+     "standardizer": {
+      "senior": [
+       0.15738326617681916,
+       0.3642049061581391
+      ],
+      "partner": [
+       0.48234178715335385,
+       0.4997473195435251
+      ],
+      "dependents": [
+       0.2988859919412183,
+       0.45782402345638556
+      ],
+      "phone_service": [
+       0.9044797345342498,
+       0.2939670510083535
+      ],
+      "paperless_billing": [
+       0.5954017539701351,
+       0.49087230249892194
+      ],
+      "contract": [
+       0.6748044560322352,
+       0.8285779510558492
+      ],
+      "internet_service": [
+       1.2358378762739985,
+       0.7757498877609712
+      ],
+      "is_female": [
+       0.4901635458639488,
+       0.4999624896203036
+      ]
+     },
+     "link": "logit",
+     "interactions": {
+      "tenure*contract": -0.10995325487885757
+     },
+     "interactions_std": {
+      "tenure*contract": [
+       35.1784783123963,
+       50.22007660604795
+      ]
+     }
+    },
+    "provenance": {
+     "dataset": "telco",
+     "split": "",
+     "seed": 0,
+     "method": "scipy_lbfgs_gam",
+     "n_train": 4219,
+     "software": {
+      "python_fit": "pure",
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "sklearn": "1.9.0"
+     },
+     "source": "fitted"
+    },
+    "diagnostics": {
+     "knots": {
+      "tenure": [
+       4.0,
+       14.0,
+       29.0,
+       46.0,
+       63.0
+      ],
+      "monthly_charges": [
+       38.6,
+       70.65,
+       90.1
+      ]
+     },
+     "n_smooth_terms": 10
+    }
+   }
+  }
+ },
+ "stackexchange": {
+  "dataset": "stackexchange",
+  "category": "participation_response",
+  "hypothesis": "NULL expected (Phase-6 found features do not beat base rate)",
+  "n": 2500,
+  "base_rate": 0.5756,
+  "split": "random 60/20/20 seed=0",
+  "dataset_hash": "4de3faeb054530ca",
+  "val_scores": {
+   "constant": {
+    "brier": 0.24538,
+    "logloss": 0.683879,
+    "pred_rate": 0.566,
+    "real_rate": 0.568,
+    "n": 500,
+    "auroc": 0.5,
+    "calibration": {
+     "ece": 0.002,
+     "reliability": [
+      {
+       "bin": 5,
+       "n": 500,
+       "conf": 0.566,
+       "acc": 0.568
+      }
+     ]
+    }
+   },
+   "logistic": {
+    "brier": 0.244809,
+    "logloss": 0.682716,
+    "pred_rate": 0.56557,
+    "real_rate": 0.568,
+    "n": 500,
+    "auroc": 0.5233,
+    "calibration": {
+     "ece": 0.00995,
+     "reliability": [
+      {
+       "bin": 4,
+       "n": 32,
+       "conf": 0.4851,
+       "acc": 0.5
+      },
+      {
+       "bin": 5,
+       "n": 396,
+       "conf": 0.5641,
+       "acc": 0.5707
+      },
+      {
+       "bin": 6,
+       "n": 72,
+       "conf": 0.6094,
+       "acc": 0.5833
+      }
+     ]
+    }
+   },
+   "logistic_interaction": {
+    "brier": 0.244875,
+    "logloss": 0.682854,
+    "pred_rate": 0.56555,
+    "real_rate": 0.568,
+    "n": 500,
+    "auroc": 0.522,
+    "calibration": {
+     "ece": 0.02077,
+     "reliability": [
+      {
+       "bin": 4,
+       "n": 31,
+       "conf": 0.4837,
+       "acc": 0.4516
+      },
+      {
+       "bin": 5,
+       "n": 391,
+       "conf": 0.5632,
+       "acc": 0.578
+      },
+      {
+       "bin": 6,
+       "n": 78,
+       "conf": 0.61,
+       "acc": 0.5641
+      }
+     ]
+    }
+   },
+   "gam": {
+    "brier": 0.249263,
+    "logloss": 0.691914,
+    "pred_rate": 0.56317,
+    "real_rate": 0.568,
+    "n": 500,
+    "auroc": 0.4814,
+    "calibration": {
+     "ece": 0.05833,
+     "reliability": [
+      {
+       "bin": 4,
+       "n": 52,
+       "conf": 0.4803,
+       "acc": 0.5385
+      },
+      {
+       "bin": 5,
+       "n": 318,
+       "conf": 0.551,
+       "acc": 0.5912
+      },
+      {
+       "bin": 6,
+       "n": 129,
+       "conf": 0.6253,
+       "acc": 0.5271
+      },
+      {
+       "bin": 7,
+       "n": 1,
+       "conf": 0.7057,
+       "acc": 0.0
+      }
+     ]
+    }
+   },
+   "gam_interaction": {
+    "brier": 0.249104,
+    "logloss": 0.691526,
+    "pred_rate": 0.56472,
+    "real_rate": 0.568,
+    "n": 500,
+    "auroc": 0.4647,
+    "calibration": {
+     "ece": 0.044,
+     "reliability": [
+      {
+       "bin": 4,
+       "n": 21,
+       "conf": 0.4824,
+       "acc": 0.4286
+      },
+      {
+       "bin": 5,
+       "n": 371,
+       "conf": 0.553,
+       "acc": 0.5849
+      },
+      {
+       "bin": 6,
+       "n": 108,
+       "conf": 0.6208,
+       "acc": 0.537
+      }
+     ]
+    }
+   }
+  },
+  "test_scores": {
+   "constant": {
+    "brier": 0.239572,
+    "logloss": 0.672194,
+    "pred_rate": 0.566,
+    "real_rate": 0.612,
+    "n": 500,
+    "auroc": 0.5,
+    "calibration": {
+     "ece": 0.046,
+     "reliability": [
+      {
+       "bin": 5,
+       "n": 500,
+       "conf": 0.566,
+       "acc": 0.612
+      }
+     ]
+    }
+   },
+   "logistic": {
+    "brier": 0.239069,
+    "logloss": 0.671092,
+    "pred_rate": 0.56821,
+    "real_rate": 0.612,
+    "n": 500,
+    "auroc": 0.5381,
+    "calibration": {
+     "ece": 0.04379,
+     "reliability": [
+      {
+       "bin": 4,
+       "n": 27,
+       "conf": 0.487,
+       "acc": 0.7407
+      },
+      {
+       "bin": 5,
+       "n": 391,
+       "conf": 0.5654,
+       "acc": 0.6036
+      },
+      {
+       "bin": 6,
+       "n": 82,
+       "conf": 0.6086,
+       "acc": 0.6098
+      }
+     ]
+    }
+   },
+   "logistic_interaction": {
+    "brier": 0.238687,
+    "logloss": 0.670319,
+    "pred_rate": 0.56831,
+    "real_rate": 0.612,
+    "n": 500,
+    "auroc": 0.5412,
+    "calibration": {
+     "ece": 0.04369,
+     "reliability": [
+      {
+       "bin": 4,
+       "n": 23,
+       "conf": 0.4857,
+       "acc": 0.6957
+      },
+      {
+       "bin": 5,
+       "n": 390,
+       "conf": 0.5641,
+       "acc": 0.6026
+      },
+      {
+       "bin": 6,
+       "n": 87,
+       "conf": 0.6093,
+       "acc": 0.6322
+      }
+     ]
+    }
+   },
+   "gam": {
+    "brier": 0.24153,
+    "logloss": 0.67635,
+    "pred_rate": 0.56437,
+    "real_rate": 0.612,
+    "n": 500,
+    "auroc": 0.5168,
+    "calibration": {
+     "ece": 0.07769,
+     "reliability": [
+      {
+       "bin": 4,
+       "n": 50,
+       "conf": 0.4794,
+       "acc": 0.58
+      },
+      {
+       "bin": 5,
+       "n": 327,
+       "conf": 0.5526,
+       "acc": 0.633
+      },
+      {
+       "bin": 6,
+       "n": 123,
+       "conf": 0.6302,
+       "acc": 0.5691
+      }
+     ]
+    }
+   },
+   "gam_interaction": {
+    "brier": 0.240219,
+    "logloss": 0.673433,
+    "pred_rate": 0.56457,
+    "real_rate": 0.612,
+    "n": 500,
+    "auroc": 0.5201,
+    "calibration": {
+     "ece": 0.04743,
+     "reliability": [
+      {
+       "bin": 4,
+       "n": 31,
+       "conf": 0.4825,
+       "acc": 0.6774
+      },
+      {
+       "bin": 5,
+       "n": 345,
+       "conf": 0.5524,
+       "acc": 0.5942
+      },
+      {
+       "bin": 6,
+       "n": 124,
+       "conf": 0.6189,
+       "acc": 0.6452
+      }
+     ]
+    }
+   }
+  },
+  "validation_selected": "logistic",
+  "paired_test_deltas": {
+   "logistic_vs_constant": {
+    "mean": -0.000503,
+    "ci95": [
+     -0.003697,
+     0.002534
+    ],
+    "n": 500
+   },
+   "logistic_vs_logistic_interaction": {
+    "mean": 0.000382,
+    "ci95": [
+     3.3e-05,
+     0.000729
+    ],
+    "n": 500
+   },
+   "logistic_vs_gam": {
+    "mean": -0.002461,
+    "ci95": [
+     -0.005903,
+     0.00131
+    ],
+    "n": 500
+   },
+   "logistic_vs_gam_interaction": {
+    "mean": -0.00115,
+    "ci95": [
+     -0.004835,
+     0.002667
+    ],
+    "n": 500
+   }
+  },
+  "parsimony_decision": {
+   "promoted": "logistic",
+   "reason": "validation winner is already a simple form",
+   "beat_baseline": true
+  },
+  "fitted_params": {
+   "logistic": {
+    "form_id": "logistic",
+    "params": {
+     "weights": {
+      "title_len": 0.04269051937690781,
+      "body_len": -0.09299930711341906,
+      "n_tags": 0.0026294117872071917,
+      "code_present": 0.09684496302958935,
+      "has_code_kw": -0.020399525815333493,
+      "is_howto": 0.02627879084131615,
+      "title_qmark": -0.01762358068696487,
+      "hour": -0.022109165382921323,
+      "dayofweek": 0.09210116529940462
+     },
+     "intercept": 0.26673119766676096,
+     "standardizer": {
+      "title_len": [
+       62.544666666666664,
+       25.15131004845785
+      ],
+      "body_len": [
+       2040.0826666666667,
+       2703.972967759318
+      ],
+      "n_tags": [
+       3.05,
+       1.2107066285274257
+      ],
+      "code_present": [
+       0.8506666666666667,
+       0.3565355998749775
+      ],
+      "has_code_kw": [
+       0.42533333333333334,
+       0.4945583358114298
+      ],
+      "is_howto": [
+       0.23533333333333334,
+       0.42434844560935914
+      ],
+      "title_qmark": [
+       0.254,
+       0.435442771139857
+      ],
+      "hour": [
+       10.76,
+       6.503224427310501
+      ],
+      "dayofweek": [
+       3.708,
+       2.9162314043532294
+      ]
+     }
+    },
+    "provenance": {
+     "dataset": "stackexchange",
+     "split": "",
+     "seed": 0,
+     "method": "scipy_lbfgs_logistic_MLE",
+     "n_train": 1500,
+     "software": {
+      "python_fit": "pure",
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "sklearn": "1.9.0"
+     },
+     "source": "fitted"
+    },
+    "diagnostics": {}
+   },
+   "logistic_interaction": {
+    "form_id": "logistic",
+    "params": {
+     "weights": {
+      "title_len": 0.04320190314722272,
+      "body_len": -0.09303220651613066,
+      "n_tags": 0.002487523693856012,
+      "code_present": 0.08557343104393844,
+      "has_code_kw": -0.020068084534545647,
+      "is_howto": -0.01446936027159907,
+      "title_qmark": -0.01798375839550495,
+      "hour": -0.022289172652458732,
+      "dayofweek": 0.09291840658930549
+     },
+     "intercept": 0.2667581871858087,
+     "standardizer": {
+      "title_len": [
+       62.544666666666664,
+       25.15131004845785
+      ],
+      "body_len": [
+       2040.0826666666667,
+       2703.972967759318
+      ],
+      "n_tags": [
+       3.05,
+       1.2107066285274257
+      ],
+      "code_present": [
+       0.8506666666666667,
+       0.3565355998749775
+      ],
+      "has_code_kw": [
+       0.42533333333333334,
+       0.4945583358114298
+      ],
+      "is_howto": [
+       0.23533333333333334,
+       0.42434844560935914
+      ],
+      "title_qmark": [
+       0.254,
+       0.435442771139857
+      ],
+      "hour": [
+       10.76,
+       6.503224427310501
+      ],
+      "dayofweek": [
+       3.708,
+       2.9162314043532294
+      ]
+     },
+     "interactions": {
+      "code_present*is_howto": 0.04617046534803441
+     },
+     "interactions_std": {
+      "code_present*is_howto": [
+       0.19333333333333333,
+       0.3950437890737515
+      ]
+     }
+    },
+    "provenance": {
+     "dataset": "stackexchange",
+     "split": "",
+     "seed": 0,
+     "method": "scipy_lbfgs_logistic_MLE",
+     "n_train": 1500,
+     "software": {
+      "python_fit": "pure",
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "sklearn": "1.9.0"
+     },
+     "source": "fitted"
+    },
+    "diagnostics": {}
+   },
+   "gam": {
+    "form_id": "gam",
+    "params": {
+     "linear": {
+      "n_tags": -0.006557227430237491,
+      "code_present": 0.06864295336374343,
+      "has_code_kw": -0.010095179650006282,
+      "is_howto": 0.006806024610390553,
+      "title_qmark": -0.0054740132524146315,
+      "dayofweek": 0.05071092597916668
+     },
+     "smooth": {
+      "title_len": {
+       "knots": [
+        43.0,
+        53.0,
+        64.0,
+        79.0
+       ],
+       "coefs": [
+        0.012580304631545457,
+        -0.0215482541687716,
+        0.03865945990229004,
+        -0.05397995931545795,
+        0.030114215946489966
+       ]
+      },
+      "body_len": {
+       "knots": [
+        618.0,
+        1033.0,
+        1562.0,
+        2611.0
+       ],
+       "coefs": [
+        -0.0007286903313010404,
+        0.0012759203910482568,
+        -0.0002070867512110543,
+        -0.0007231826156739105,
+        0.00036674039863935417
+       ]
+      },
+      "hour": {
+       "knots": [
+        6.0,
+        10.0,
+        17.0
+       ],
+       "coefs": [
+        -0.003173710527586899,
+        0.0180706972299042,
+        -0.008074810784445862,
+        -0.040216392936327845
+       ]
+      }
+     },
+     "intercept": 0.005360157561612041,
+     "standardizer": {
+      "n_tags": [
+       3.05,
+       1.2107066285274257
+      ],
+      "code_present": [
+       0.8506666666666667,
+       0.3565355998749775
+      ],
+      "has_code_kw": [
+       0.42533333333333334,
+       0.4945583358114298
+      ],
+      "is_howto": [
+       0.23533333333333334,
+       0.42434844560935914
+      ],
+      "title_qmark": [
+       0.254,
+       0.435442771139857
+      ],
+      "dayofweek": [
+       3.708,
+       2.9162314043532294
+      ]
+     },
+     "link": "logit"
+    },
+    "provenance": {
+     "dataset": "stackexchange",
+     "split": "",
+     "seed": 0,
+     "method": "scipy_lbfgs_gam",
+     "n_train": 1500,
+     "software": {
+      "python_fit": "pure",
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "sklearn": "1.9.0"
+     },
+     "source": "fitted"
+    },
+    "diagnostics": {
+     "knots": {
+      "title_len": [
+       43.0,
+       53.0,
+       64.0,
+       79.0
+      ],
+      "body_len": [
+       618.0,
+       1033.0,
+       1562.0,
+       2611.0
+      ],
+      "hour": [
+       6.0,
+       10.0,
+       17.0
+      ]
+     },
+     "n_smooth_terms": 14
+    }
+   },
+   "gam_interaction": {
+    "form_id": "gam",
+    "params": {
+     "linear": {
+      "n_tags": -0.0008253300400138696,
+      "code_present": 0.005227197462820578,
+      "has_code_kw": -0.0008452013133483324,
+      "is_howto": 0.00048265225380621777,
+      "title_qmark": -0.00048317160655258335,
+      "dayofweek": 0.004266495579754289
+     },
+     "smooth": {
+      "title_len": {
+       "knots": [
+        43.0,
+        53.0,
+        64.0,
+        79.0
+       ],
+       "coefs": [
+        0.012506122174634532,
+        -0.008635150142912154,
+        -0.00437941093283411,
+        -0.005934745661008301,
+        0.010554982449070398
+       ]
+      },
+      "body_len": {
+       "knots": [
+        618.0,
+        1033.0,
+        1562.0,
+        2611.0
+       ],
+       "coefs": [
+        -0.0008435607357408933,
+        0.001557376333098829,
+        -0.000369190394089802,
+        -0.0007239847235414875,
+        0.0003621218026461858
+       ]
+      },
+      "hour": {
+       "knots": [
+        6.0,
+        10.0,
+        17.0
+       ],
+       "coefs": [
+        0.003211677601256791,
+        0.0028684988715264336,
+        -0.0004028408991699186,
+        -0.0035963002830180463
+       ]
+      }
+     },
+     "intercept": 0.000759821725275046,
+     "standardizer": {
+      "n_tags": [
+       3.05,
+       1.2107066285274257
+      ],
+      "code_present": [
+       0.8506666666666667,
+       0.3565355998749775
+      ],
+      "has_code_kw": [
+       0.42533333333333334,
+       0.4945583358114298
+      ],
+      "is_howto": [
+       0.23533333333333334,
+       0.42434844560935914
+      ],
+      "title_qmark": [
+       0.254,
+       0.435442771139857
+      ],
+      "dayofweek": [
+       3.708,
+       2.9162314043532294
+      ]
+     },
+     "link": "logit",
+     "interactions": {
+      "code_present*is_howto": 0.002174820254181109
+     },
+     "interactions_std": {
+      "code_present*is_howto": [
+       0.19333333333333333,
+       0.3950437890737515
+      ]
+     }
+    },
+    "provenance": {
+     "dataset": "stackexchange",
+     "split": "",
+     "seed": 0,
+     "method": "scipy_lbfgs_gam",
+     "n_train": 1500,
+     "software": {
+      "python_fit": "pure",
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "sklearn": "1.9.0"
+     },
+     "source": "fitted"
+    },
+    "diagnostics": {
+     "knots": {
+      "title_len": [
+       43.0,
+       53.0,
+       64.0,
+       79.0
+      ],
+      "body_len": [
+       618.0,
+       1033.0,
+       1562.0,
+       2611.0
+      ],
+      "hour": [
+       6.0,
+       10.0,
+       17.0
+      ]
+     },
+     "n_smooth_terms": 14
+    }
+   }
+  }
+ },
+ "cmv": {
+  "dataset": "cmv",
+  "category": "persuasion_belief",
+  "hypothesis": "NULL/weak expected; test entrenchment\u00d7crux interaction; REJECT unsupported backfire",
+  "n": 1200,
+  "base_rate": 0.6508,
+  "split": "random 60/20/20 seed=0",
+  "dataset_hash": "063edb54c3decdc7",
+  "val_scores": {
+   "constant": {
+    "brier": 0.228764,
+    "logloss": 0.650056,
+    "pred_rate": 0.65139,
+    "real_rate": 0.64583,
+    "n": 240,
+    "auroc": 0.5,
+    "calibration": {
+     "ece": 0.00556,
+     "reliability": [
+      {
+       "bin": 6,
+       "n": 240,
+       "conf": 0.6514,
+       "acc": 0.6458
+      }
+     ]
+    }
+   },
+   "logistic": {
+    "brier": 0.216726,
+    "logloss": 0.620472,
+    "pred_rate": 0.65902,
+    "real_rate": 0.64583,
+    "n": 240,
+    "auroc": 0.6648,
+    "calibration": {
+     "ece": 0.08101,
+     "reliability": [
+      {
+       "bin": 1,
+       "n": 1,
+       "conf": 0.1575,
+       "acc": 1.0
+      },
+      {
+       "bin": 2,
+       "n": 4,
+       "conf": 0.2626,
+       "acc": 0.75
+      },
+      {
+       "bin": 3,
+       "n": 4,
+       "conf": 0.3693,
+       "acc": 0.25
+      },
+      {
+       "bin": 4,
+       "n": 21,
+       "conf": 0.4533,
+       "acc": 0.4762
+      },
+      {
+       "bin": 5,
+       "n": 48,
+       "conf": 0.5532,
+       "acc": 0.4583
+      },
+      {
+       "bin": 6,
+       "n": 57,
+       "conf": 0.6516,
+       "acc": 0.6842
+      },
+      {
+       "bin": 7,
+       "n": 56,
+       "conf": 0.737,
+       "acc": 0.625
+      },
+      {
+       "bin": 8,
+       "n": 48,
+       "conf": 0.8342,
+       "acc": 0.8958
+      },
+      {
+       "bin": 9,
+       "n": 1,
+       "conf": 0.947,
+       "acc": 1.0
+      }
+     ]
+    }
+   },
+   "logistic_interaction": {
+    "brier": 0.217798,
+    "logloss": 0.623114,
+    "pred_rate": 0.65926,
+    "real_rate": 0.64583,
+    "n": 240,
+    "auroc": 0.6616,
+    "calibration": {
+     "ece": 0.08307,
+     "reliability": [
+      {
+       "bin": 1,
+       "n": 1,
+       "conf": 0.1469,
+       "acc": 1.0
+      },
+      {
+       "bin": 2,
+       "n": 4,
+       "conf": 0.2501,
+       "acc": 0.75
+      },
+      {
+       "bin": 3,
+       "n": 6,
+       "conf": 0.3766,
+       "acc": 0.3333
+      },
+      {
+       "bin": 4,
+       "n": 20,
+       "conf": 0.46,
+       "acc": 0.5
+      },
+      {
+       "bin": 5,
+       "n": 48,
+       "conf": 0.5564,
+       "acc": 0.4583
+      },
+      {
+       "bin": 6,
+       "n": 57,
+       "conf": 0.6548,
+       "acc": 0.6667
+      },
+      {
+       "bin": 7,
+       "n": 55,
+       "conf": 0.7385,
+       "acc": 0.6182
+      },
+      {
+       "bin": 8,
+       "n": 48,
+       "conf": 0.8338,
+       "acc": 0.9167
+      },
+      {
+       "bin": 9,
+       "n": 1,
+       "conf": 0.9494,
+       "acc": 1.0
+      }
+     ]
+    }
+   },
+   "gam": {
+    "brier": 0.217946,
+    "logloss": 0.625206,
+    "pred_rate": 0.65236,
+    "real_rate": 0.64583,
+    "n": 240,
+    "auroc": 0.6556,
+    "calibration": {
+     "ece": 0.06443,
+     "reliability": [
+      {
+       "bin": 1,
+       "n": 1,
+       "conf": 0.1844,
+       "acc": 1.0
+      },
+      {
+       "bin": 3,
+       "n": 5,
+       "conf": 0.3418,
+       "acc": 0.6
+      },
+      {
+       "bin": 4,
+       "n": 16,
+       "conf": 0.457,
+       "acc": 0.5
+      },
+      {
+       "bin": 5,
+       "n": 50,
+       "conf": 0.5519,
+       "acc": 0.42
+      },
+      {
+       "bin": 6,
+       "n": 84,
+       "conf": 0.6538,
+       "acc": 0.631
+      },
+      {
+       "bin": 7,
+       "n": 63,
+       "conf": 0.7545,
+       "acc": 0.8095
+      },
+      {
+       "bin": 8,
+       "n": 21,
+       "conf": 0.8244,
+       "acc": 0.8571
+      }
+     ]
+    }
+   },
+   "gam_interaction": {
+    "brier": 0.217194,
+    "logloss": 0.622651,
+    "pred_rate": 0.65783,
+    "real_rate": 0.64583,
+    "n": 240,
+    "auroc": 0.6641,
+    "calibration": {
+     "ece": 0.0544,
+     "reliability": [
+      {
+       "bin": 1,
+       "n": 1,
+       "conf": 0.1647,
+       "acc": 1.0
+      },
+      {
+       "bin": 2,
+       "n": 3,
+       "conf": 0.2707,
+       "acc": 1.0
+      },
+      {
+       "bin": 3,
+       "n": 4,
+       "conf": 0.3595,
+       "acc": 0.25
+      },
+      {
+       "bin": 4,
+       "n": 15,
+       "conf": 0.4635,
+       "acc": 0.4667
+      },
+      {
+       "bin": 5,
+       "n": 45,
+       "conf": 0.5536,
+       "acc": 0.4444
+      },
+      {
+       "bin": 6,
+       "n": 81,
+       "conf": 0.6547,
+       "acc": 0.6296
+      },
+      {
+       "bin": 7,
+       "n": 62,
+       "conf": 0.7514,
+       "acc": 0.7419
+      },
+      {
+       "bin": 8,
+       "n": 28,
+       "conf": 0.8238,
+       "acc": 0.8929
+      },
+      {
+       "bin": 9,
+       "n": 1,
+       "conf": 0.9161,
+       "acc": 1.0
+      }
+     ]
+    }
+   }
+  },
+  "test_scores": {
+   "constant": {
+    "brier": 0.22624,
+    "logloss": 0.644846,
+    "pred_rate": 0.65139,
+    "real_rate": 0.65417,
+    "n": 240,
+    "auroc": 0.5,
+    "calibration": {
+     "ece": 0.00278,
+     "reliability": [
+      {
+       "bin": 6,
+       "n": 240,
+       "conf": 0.6514,
+       "acc": 0.6542
+      }
+     ]
+    }
+   },
+   "logistic": {
+    "brier": 0.20993,
+    "logloss": 0.608497,
+    "pred_rate": 0.65085,
+    "real_rate": 0.65417,
+    "n": 240,
+    "auroc": 0.6749,
+    "calibration": {
+     "ece": 0.05176,
+     "reliability": [
+      {
+       "bin": 2,
+       "n": 1,
+       "conf": 0.2136,
+       "acc": 0.0
+      },
+      {
+       "bin": 3,
+       "n": 10,
+       "conf": 0.3535,
+       "acc": 0.7
+      },
+      {
+       "bin": 4,
+       "n": 22,
+       "conf": 0.4637,
+       "acc": 0.4545
+      },
+      {
+       "bin": 5,
+       "n": 45,
+       "conf": 0.5515,
+       "acc": 0.4444
+      },
+      {
+       "bin": 6,
+       "n": 69,
+       "conf": 0.6517,
+       "acc": 0.6667
+      },
+      {
+       "bin": 7,
+       "n": 60,
+       "conf": 0.7417,
+       "acc": 0.7667
+      },
+      {
+       "bin": 8,
+       "n": 28,
+       "conf": 0.8352,
+       "acc": 0.8571
+      },
+      {
+       "bin": 9,
+       "n": 5,
+       "conf": 0.9166,
+       "acc": 0.8
+      }
+     ]
+    }
+   },
+   "logistic_interaction": {
+    "brier": 0.209818,
+    "logloss": 0.608283,
+    "pred_rate": 0.6516,
+    "real_rate": 0.65417,
+    "n": 240,
+    "auroc": 0.6753,
+    "calibration": {
+     "ece": 0.06295,
+     "reliability": [
+      {
+       "bin": 2,
+       "n": 1,
+       "conf": 0.2173,
+       "acc": 0.0
+      },
+      {
+       "bin": 3,
+       "n": 10,
+       "conf": 0.3559,
+       "acc": 0.7
+      },
+      {
+       "bin": 4,
+       "n": 21,
+       "conf": 0.4655,
+       "acc": 0.4286
+      },
+      {
+       "bin": 5,
+       "n": 48,
+       "conf": 0.5555,
+       "acc": 0.4375
+      },
+      {
+       "bin": 6,
+       "n": 68,
+       "conf": 0.6544,
+       "acc": 0.6912
+      },
+      {
+       "bin": 7,
+       "n": 59,
+       "conf": 0.7408,
+       "acc": 0.7627
+      },
+      {
+       "bin": 8,
+       "n": 28,
+       "conf": 0.8346,
+       "acc": 0.8571
+      },
+      {
+       "bin": 9,
+       "n": 5,
+       "conf": 0.9182,
+       "acc": 0.8
+      }
+     ]
+    }
+   },
+   "gam": {
+    "brier": 0.210896,
+    "logloss": 0.610805,
+    "pred_rate": 0.64854,
+    "real_rate": 0.65417,
+    "n": 240,
+    "auroc": 0.6629,
+    "calibration": {
+     "ece": 0.05693,
+     "reliability": [
+      {
+       "bin": 2,
+       "n": 2,
+       "conf": 0.2733,
+       "acc": 0.0
+      },
+      {
+       "bin": 3,
+       "n": 4,
+       "conf": 0.3843,
+       "acc": 0.75
+      },
+      {
+       "bin": 4,
+       "n": 22,
+       "conf": 0.4627,
+       "acc": 0.5455
+      },
+      {
+       "bin": 5,
+       "n": 48,
+       "conf": 0.5544,
+       "acc": 0.4375
+      },
+      {
+       "bin": 6,
+       "n": 81,
+       "conf": 0.6551,
+       "acc": 0.679
+      },
+      {
+       "bin": 7,
+       "n": 60,
+       "conf": 0.7453,
+       "acc": 0.7833
+      },
+      {
+       "bin": 8,
+       "n": 23,
+       "conf": 0.8258,
+       "acc": 0.8261
+      }
+     ]
+    }
+   },
+   "gam_interaction": {
+    "brier": 0.208158,
+    "logloss": 0.60485,
+    "pred_rate": 0.65254,
+    "real_rate": 0.65417,
+    "n": 240,
+    "auroc": 0.6842,
+    "calibration": {
+     "ece": 0.07901,
+     "reliability": [
+      {
+       "bin": 2,
+       "n": 1,
+       "conf": 0.2728,
+       "acc": 0.0
+      },
+      {
+       "bin": 3,
+       "n": 6,
+       "conf": 0.3718,
+       "acc": 0.6667
+      },
+      {
+       "bin": 4,
+       "n": 18,
+       "conf": 0.4629,
+       "acc": 0.3333
+      },
+      {
+       "bin": 5,
+       "n": 48,
+       "conf": 0.5575,
+       "acc": 0.4375
+      },
+      {
+       "bin": 6,
+       "n": 85,
+       "conf": 0.6556,
+       "acc": 0.7176
+      },
+      {
+       "bin": 7,
+       "n": 58,
+       "conf": 0.7456,
+       "acc": 0.7586
+      },
+      {
+       "bin": 8,
+       "n": 23,
+       "conf": 0.8316,
+       "acc": 0.913
+      },
+      {
+       "bin": 9,
+       "n": 1,
+       "conf": 0.9193,
+       "acc": 0.0
+      }
+     ]
+    }
+   }
+  },
+  "validation_selected": "logistic",
+  "paired_test_deltas": {
+   "logistic_vs_constant": {
+    "mean": -0.01631,
+    "ci95": [
+     -0.03181,
+     -0.000554
+    ],
+    "n": 240
+   },
+   "logistic_vs_logistic_interaction": {
+    "mean": 0.000112,
+    "ci95": [
+     -0.000824,
+     0.001066
+    ],
+    "n": 240
+   },
+   "logistic_vs_gam": {
+    "mean": -0.000965,
+    "ci95": [
+     -0.00663,
+     0.004851
+    ],
+    "n": 240
+   },
+   "logistic_vs_gam_interaction": {
+    "mean": 0.001772,
+    "ci95": [
+     -0.001108,
+     0.004814
+    ],
+    "n": 240
+   }
+  },
+  "parsimony_decision": {
+   "promoted": "logistic",
+   "reason": "validation winner is already a simple form",
+   "beat_baseline": true
+  },
+  "fitted_params": {
+   "logistic": {
+    "form_id": "logistic",
+    "params": {
+     "weights": {
+      "op_openness": 0.6221283374962667,
+      "op_skepticism": -0.03990183565792975,
+      "op_entrenchment": 0.32893653810466117,
+      "arg_addresses_crux": 0.20452293392714258,
+      "arg_evidence": 0.3452528599341003,
+      "arg_clarity": -0.2616052702724249,
+      "arg_respectfulness": 0.2663786391912595,
+      "arg_expertise": -0.24407090093102496
+     },
+     "intercept": 0.6817683455791428,
+     "standardizer": {
+      "op_openness": [
+       0.5956805555555559,
+       0.11986122322996409
+      ],
+      "op_skepticism": [
+       0.5087222222222226,
+       0.0979385891181228
+      ],
+      "op_entrenchment": [
+       0.4554999999999994,
+       0.10424254908785457
+      ],
+      "arg_addresses_crux": [
+       0.6328472222222232,
+       0.1628478440086135
+      ],
+      "arg_evidence": [
+       0.3986805555555557,
+       0.168454673696203
+      ],
+      "arg_clarity": [
+       0.6607638888888893,
+       0.11220808122637599
+      ],
+      "arg_respectfulness": [
+       0.7687361111111146,
+       0.1074210895882765
+      ],
+      "arg_expertise": [
+       0.43881944444444515,
+       0.15961312985099785
+      ]
+     }
+    },
+    "provenance": {
+     "dataset": "cmv",
+     "split": "",
+     "seed": 0,
+     "method": "scipy_lbfgs_logistic_MLE",
+     "n_train": 720,
+     "software": {
+      "python_fit": "pure",
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "sklearn": "1.9.0"
+     },
+     "source": "fitted"
+    },
+    "diagnostics": {}
+   },
+   "logistic_interaction": {
+    "form_id": "logistic",
+    "params": {
+     "weights": {
+      "op_openness": 0.6282135150877332,
+      "op_skepticism": -0.04367189243986036,
+      "op_entrenchment": 0.1742420870320718,
+      "arg_addresses_crux": 0.012105871219541152,
+      "arg_evidence": 0.3419707695123526,
+      "arg_clarity": -0.25905441241800775,
+      "arg_respectfulness": 0.25814595710061605,
+      "arg_expertise": -0.23973157840841308
+     },
+     "intercept": 0.6818218067205774,
+     "standardizer": {
+      "op_openness": [
+       0.5956805555555559,
+       0.11986122322996409
+      ],
+      "op_skepticism": [
+       0.5087222222222226,
+       0.0979385891181228
+      ],
+      "op_entrenchment": [
+       0.4554999999999994,
+       0.10424254908785457
+      ],
+      "arg_addresses_crux": [
+       0.6328472222222232,
+       0.1628478440086135
+      ],
+      "arg_evidence": [
+       0.3986805555555557,
+       0.168454673696203
+      ],
+      "arg_clarity": [
+       0.6607638888888893,
+       0.11220808122637599
+      ],
+      "arg_respectfulness": [
+       0.7687361111111146,
+       0.1074210895882765
+      ],
+      "arg_expertise": [
+       0.43881944444444515,
+       0.15961312985099785
+      ]
+     },
+     "interactions": {
+      "op_entrenchment*arg_addresses_crux": 0.24850559655104953
+     },
+     "interactions_std": {
+      "op_entrenchment*arg_addresses_crux": [
+       0.28736944444444473,
+       0.0977448050245515
+      ]
+     }
+    },
+    "provenance": {
+     "dataset": "cmv",
+     "split": "",
+     "seed": 0,
+     "method": "scipy_lbfgs_logistic_MLE",
+     "n_train": 720,
+     "software": {
+      "python_fit": "pure",
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "sklearn": "1.9.0"
+     },
+     "source": "fitted"
+    },
+    "diagnostics": {}
+   },
+   "gam": {
+    "form_id": "gam",
+    "params": {
+     "linear": {
+      "op_openness": 0.40165161653815934,
+      "op_skepticism": -0.06026320592828045,
+      "arg_evidence": 0.2704197890425776,
+      "arg_clarity": -0.11953325439232051,
+      "arg_respectfulness": 0.2198745124212799,
+      "arg_expertise": -0.1185108802563711
+     },
+     "smooth": {
+      "op_entrenchment": {
+       "knots": [
+        0.4,
+        0.45,
+        0.5
+       ],
+       "coefs": [
+        0.14688922819057074,
+        0.1157204431380071,
+        0.09455091619821353,
+        0.05979158511558644
+       ]
+      },
+      "arg_addresses_crux": {
+       "knots": [
+        0.55,
+        0.7,
+        0.75
+       ],
+       "coefs": [
+        0.10274810548616446,
+        -0.050020189147495626,
+        -0.0210143393823402,
+        0.0012117025308233241
+       ]
+      }
+     },
+     "intercept": 0.5224264313174056,
+     "standardizer": {
+      "op_openness": [
+       0.5956805555555559,
+       0.11986122322996409
+      ],
+      "op_skepticism": [
+       0.5087222222222226,
+       0.0979385891181228
+      ],
+      "arg_evidence": [
+       0.3986805555555557,
+       0.168454673696203
+      ],
+      "arg_clarity": [
+       0.6607638888888893,
+       0.11220808122637599
+      ],
+      "arg_respectfulness": [
+       0.7687361111111146,
+       0.1074210895882765
+      ],
+      "arg_expertise": [
+       0.43881944444444515,
+       0.15961312985099785
+      ]
+     },
+     "link": "logit"
+    },
+    "provenance": {
+     "dataset": "cmv",
+     "split": "",
+     "seed": 0,
+     "method": "scipy_lbfgs_gam",
+     "n_train": 720,
+     "software": {
+      "python_fit": "pure",
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "sklearn": "1.9.0"
+     },
+     "source": "fitted"
+    },
+    "diagnostics": {
+     "knots": {
+      "op_entrenchment": [
+       0.4,
+       0.45,
+       0.5
+      ],
+      "arg_addresses_crux": [
+       0.55,
+       0.7,
+       0.75
+      ]
+     },
+     "n_smooth_terms": 8
+    }
+   },
+   "gam_interaction": {
+    "form_id": "gam",
+    "params": {
+     "linear": {
+      "op_openness": 0.4871723423455999,
+      "op_skepticism": -0.05386420708696271,
+      "arg_evidence": 0.2239695783354313,
+      "arg_clarity": -0.20840545036360986,
+      "arg_respectfulness": 0.22339693031259336,
+      "arg_expertise": -0.1585374707696681
+     },
+     "smooth": {
+      "op_entrenchment": {
+       "knots": [
+        0.4,
+        0.45,
+        0.5
+       ],
+       "coefs": [
+        0.048464980391247206,
+        0.038671801515104416,
+        0.03616982980405901,
+        0.021719470831815368
+       ]
+      },
+      "arg_addresses_crux": {
+       "knots": [
+        0.55,
+        0.7,
+        0.75
+       ],
+       "coefs": [
+        -0.005595769219293226,
+        -0.10534862436409229,
+        -0.038406073513060815,
+        -0.007117319843418105
+       ]
+      }
+     },
+     "intercept": 0.6554082971161902,
+     "standardizer": {
+      "op_openness": [
+       0.5956805555555559,
+       0.11986122322996409
+      ],
+      "op_skepticism": [
+       0.5087222222222226,
+       0.0979385891181228
+      ],
+      "arg_evidence": [
+       0.3986805555555557,
+       0.168454673696203
+      ],
+      "arg_clarity": [
+       0.6607638888888893,
+       0.11220808122637599
+      ],
+      "arg_respectfulness": [
+       0.7687361111111146,
+       0.1074210895882765
+      ],
+      "arg_expertise": [
+       0.43881944444444515,
+       0.15961312985099785
+      ]
+     },
+     "link": "logit",
+     "interactions": {
+      "op_entrenchment*arg_addresses_crux": 0.277094962075628
+     },
+     "interactions_std": {
+      "op_entrenchment*arg_addresses_crux": [
+       0.28736944444444473,
+       0.0977448050245515
+      ]
+     }
+    },
+    "provenance": {
+     "dataset": "cmv",
+     "split": "",
+     "seed": 0,
+     "method": "scipy_lbfgs_gam",
+     "n_train": 720,
+     "software": {
+      "python_fit": "pure",
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "sklearn": "1.9.0"
+     },
+     "source": "fitted"
+    },
+    "diagnostics": {
+     "knots": {
+      "op_entrenchment": [
+       0.4,
+       0.45,
+       0.5
+      ],
+      "arg_addresses_crux": [
+       0.55,
+       0.7,
+       0.75
+      ]
+     },
+     "n_smooth_terms": 8
+    }
+   }
+  }
+ },
+ "upworthy": {
+  "dataset": "upworthy",
+  "category": "platform_content_response",
+  "n_test_arms": 4591,
+  "global_ctr": 0.0152,
+  "impression_weighted_brier": {
+   "global_mean": 0.000146,
+   "pooled_prior": 0.000146,
+   "linear_headline": 0.000145,
+   "nonlinear_headline": 0.000146
+  },
+  "hypothesis": "headline features are weak vs the per-test baseline; partial pooling regularizes",
+  "verdict": "headline effects weak/null \u2014 pooled per-test baseline dominates (honest)"
+ },
+ "telco_transfer": {
+  "dataset": "telco",
+  "transfer": "fit contract=month-to-month \u2192 test contract=1yr/2yr",
+  "n_train": 3875,
+  "n_test": 3157,
+  "logistic": {
+   "brier": 0.069617,
+   "logloss": 0.255032,
+   "pred_rate": 0.1406,
+   "real_rate": 0.06779,
+   "n": 3157,
+   "auroc": 0.7403,
+   "calibration": {
+    "ece": 0.07298,
+    "reliability": [
+     {
+      "bin": 0,
+      "n": 1422,
+      "conf": 0.0496,
+      "acc": 0.0197
+     },
+     {
+      "bin": 1,
+      "n": 1004,
+      "conf": 0.1442,
+      "acc": 0.0737
+     },
+     {
+      "bin": 2,
+      "n": 407,
+      "conf": 0.244,
+      "acc": 0.14
+     },
+     {
+      "bin": 3,
+      "n": 197,
+      "conf": 0.3422,
+      "acc": 0.1472
+     },
+     {
+      "bin": 4,
+      "n": 87,
+      "conf": 0.4471,
+      "acc": 0.2414
+     },
+     {
+      "bin": 5,
+      "n": 30,
+      "conf": 0.5475,
+      "acc": 0.1333
+     },
+     {
+      "bin": 6,
+      "n": 9,
+      "conf": 0.6381,
+      "acc": 0.0
+     },
+     {
+      "bin": 7,
+      "n": 1,
+      "conf": 0.7421,
+      "acc": 1.0
+     }
+    ]
+   }
+  },
+  "gam": {
+   "brier": 0.072768,
+   "logloss": 0.264331,
+   "pred_rate": 0.15927,
+   "real_rate": 0.06779,
+   "n": 3157,
+   "auroc": 0.7551,
+   "calibration": {
+    "ece": 0.09161,
+    "reliability": [
+     {
+      "bin": 0,
+      "n": 1365,
+      "conf": 0.0514,
+      "acc": 0.0176
+     },
+     {
+      "bin": 1,
+      "n": 770,
+      "conf": 0.1438,
+      "acc": 0.061
+     },
+     {
+      "bin": 2,
+      "n": 552,
+      "conf": 0.2444,
+      "acc": 0.0996
+     },
+     {
+      "bin": 3,
+      "n": 285,
+      "conf": 0.3439,
+      "acc": 0.1719
+     },
+     {
+      "bin": 4,
+      "n": 128,
+      "conf": 0.4443,
+      "acc": 0.1953
+     },
+     {
+      "bin": 5,
+      "n": 47,
+      "conf": 0.5444,
+      "acc": 0.2766
+     },
+     {
+      "bin": 6,
+      "n": 9,
+      "conf": 0.6382,
+      "acc": 0.0
+     },
+     {
+      "bin": 8,
+      "n": 1,
+      "conf": 0.8011,
+      "acc": 1.0
+     }
+    ]
+   }
+  },
+  "paired_delta_gam_minus_logistic": {
+   "mean": 0.003151,
+   "ci95": [
+    0.001754,
+    0.0044
+   ],
+   "n": 3157
+  },
+  "verdict": "nonlinear does NOT beat linear out-of-group \u2014 domain-restrict / widen",
+  "note": "different contract types have different tenure support \u2014 a real transport stress test"
+ }
+}

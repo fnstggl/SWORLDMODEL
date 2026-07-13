@@ -137,12 +137,20 @@ def fit_logistic_form(rows, feat_keys, *, interactions=None, dataset="", split="
           for row in X]
     inter_pairs = list(interactions or [])
     inter_keys = [f"{a}*{b}" for a, b in inter_pairs]
+    inter_std = {}
     if inter_pairs:
-        for i, r in enumerate(rows):
-            for (a, b) in inter_pairs:
-                va = (float(r["features"].get(a, 0.0) or 0.0) - stdz.get(a, [0, 1])[0]) / stdz.get(a, [0, 1])[1]
-                vb = (float(r["features"].get(b, 0.0) or 0.0) - stdz.get(b, [0, 1])[0]) / stdz.get(b, [0, 1])[1]
-                Xs[i].append(va * vb)
+        # RAW products, then a dedicated per-interaction standardizer (matches runtime _interaction_term)
+        raw_cols = {f"{a}*{b}": [float(r["features"].get(a, 0.0) or 0.0)
+                                 * float(r["features"].get(b, 0.0) or 0.0) for r in rows]
+                    for (a, b) in inter_pairs}
+        for key, col in raw_cols.items():
+            mu = sum(col) / len(col)
+            sd = (sum((v - mu) ** 2 for v in col) / max(1, len(col) - 1)) ** 0.5 or 1.0
+            inter_std[key] = [mu, sd]
+        for i in range(len(rows)):
+            for key in inter_keys:
+                mu, sd = inter_std[key]
+                Xs[i].append((raw_cols[key][i] - mu) / sd)
     allkeys = feat_keys + inter_keys
     method = "pure_python_logistic_MLE"
     if _np is not None and _opt is not None:
@@ -157,6 +165,7 @@ def fit_logistic_form(rows, feat_keys, *, interactions=None, dataset="", split="
     params = {"weights": weights, "intercept": b, "standardizer": stdz}
     if inter_map:
         params["interactions"] = inter_map
+        params["interactions_std"] = inter_std
     return FitResult("logistic", params, _prov(dataset, split, seed, method, len(rows)))
 
 
@@ -419,6 +428,72 @@ def _nelder_mead(f, x0, *, iters=2000, step=0.5):
                     simplex[i] = [simplex[0][j] + 0.5 * (simplex[i][j] - simplex[0][j]) for j in range(n)]
                     fv[i] = f(simplex[i])
     return simplex[0]
+
+
+def fit_gam(rows, linear_keys, smooth_specs, *, interactions=None, dataset="", split="", seed=0, l2=1e-2):
+    """Fit a GAM: logistic on standardized linear terms + piecewise-linear spline bases for the smooth
+    variables + optional interactions. Knots are quantile-placed on TRAIN. Serializes to the runtime `gam`
+    form. Uses scipy L-BFGS when available (better-conditioned than raw GD for the wider basis)."""
+    from swm.world_model_v2.nonlinear.forms import _hinge_basis
+    # standardizer for linear terms
+    stdz = {}
+    for k in linear_keys:
+        col = [float(r["features"].get(k, 0.0) or 0.0) for r in rows]
+        mu = sum(col) / len(col)
+        sd = (sum((v - mu) ** 2 for v in col) / max(1, len(col) - 1)) ** 0.5 or 1.0
+        stdz[k] = [mu, sd]
+    # quantile knots per smooth var (on train)
+    knots = {}
+    for var, nk in smooth_specs.items():
+        vals = sorted(float(r["features"].get(var, 0.0) or 0.0) for r in rows)
+        knots[var] = [vals[int((j + 1) * len(vals) / (nk + 1))] for j in range(nk)]
+    inter_pairs = list(interactions or [])
+    inter_std = {}
+    for (a, b) in inter_pairs:
+        col = [float(r["features"].get(a, 0.0) or 0.0) * float(r["features"].get(b, 0.0) or 0.0)
+               for r in rows]
+        mu = sum(col) / len(col)
+        sd = (sum((v - mu) ** 2 for v in col) / max(1, len(col) - 1)) ** 0.5 or 1.0
+        inter_std[f"{a}*{b}"] = [mu, sd]
+
+    def design(r):
+        f = r["features"]
+        row = []
+        for k in linear_keys:
+            v = (float(f.get(k, 0.0) or 0.0) - stdz[k][0]) / stdz[k][1]
+            row.append(v)
+        for var in smooth_specs:
+            row.extend(_hinge_basis(float(f.get(var, 0.0) or 0.0), knots[var]))
+        for a, b in inter_pairs:
+            mu, sd = inter_std[f"{a}*{b}"]
+            row.append((float(f.get(a, 0.0) or 0.0) * float(f.get(b, 0.0) or 0.0) - mu) / sd)
+        return row
+    X = [design(r) for r in rows]
+    Y = [int(r["y"]) for r in rows]
+    if _np is not None and _opt is not None:
+        w, b = _sk_logistic(X, Y, l2)
+        method = "scipy_lbfgs_gam"
+    else:
+        w, b = _pyfit_logistic(X, Y, l2=l2)
+        method = "pure_python_gam"
+    # unpack coefficients back into named structure
+    idx = 0
+    linear = {}
+    for k in linear_keys:
+        linear[k] = w[idx]; idx += 1
+    smooth = {}
+    for var, nk in smooth_specs.items():
+        nb = nk + 1
+        smooth[var] = {"knots": knots[var], "coefs": w[idx:idx + nb]}; idx += nb
+    inter_map = {}
+    for (a, b_) in inter_pairs:
+        inter_map[f"{a}*{b_}"] = w[idx]; idx += 1
+    params = {"linear": linear, "smooth": smooth, "intercept": b, "standardizer": stdz, "link": "logit"}
+    if inter_map:
+        params["interactions"] = inter_map
+        params["interactions_std"] = inter_std
+    return FitResult("gam", params, _prov(dataset, split, seed, method, len(rows)),
+                     {"knots": knots, "n_smooth_terms": sum(nk + 1 for nk in smooth_specs.values())})
 
 
 FITTERS = {"logistic": fit_logistic_form, "hill": fit_hill_form, "threshold_smooth": fit_smooth_threshold,

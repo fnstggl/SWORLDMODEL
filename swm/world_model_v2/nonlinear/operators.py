@@ -294,7 +294,68 @@ class NonlinearContagionOperator(TransitionOperator):
         return d
 
 
+class NonlinearStateStepOperator(TransitionOperator):
+    """Step a scalar latent state forward through time via a fitted nonlinear form, scheduling the next step.
+
+    This is the state-space / trajectory executor (diffusion adoption curves, accumulating momentum, saturating
+    growth). payload['step_spec'] = {state_var, form_id, params, dt, horizon_ts, input_key}. Each firing reads
+    the current state quantity, evaluates ΔS via the form (e.g. logistic/Bass saturation vs a linear trend),
+    writes the new state with a StateDelta, and schedules the NEXT step event — so the whole trajectory is
+    executed event-by-event and its terminal value is read from world state, never curve-extrapolated in one
+    shot. The nonlinearity (saturation → the curve bends and peaks) genuinely changes the terminal outcome."""
+    name = "nonlinear_state_step"
+
+    def applicable(self, world, event):
+        return event.etype == "state_step" and isinstance(event.payload.get("step_spec"), dict)
+
+    def propose(self, world, event, rng):
+        spec = event.payload["step_spec"]
+        var = spec["state_var"]
+        cur = world.quantities.get(var)
+        s = float(cur.value) if cur is not None else float(spec.get("s0", 0.0))
+        form = _forms.get_form(spec["form_id"])
+        # the form returns the increment ΔS (or the new rate); inputs carry current state + covariates
+        inputs = {"x": s, "features": dict(spec.get("features") or {}, x=s)}
+        inputs.update(spec.get("inputs") or {})
+        report = _safety.GuardReport()
+        raw = form.eval(spec.get("params", {}), inputs)
+        mode = spec.get("mode", "increment")
+        new_s = s + raw if mode == "increment" else raw
+        if spec.get("clamp"):
+            lo, hi = spec["clamp"]
+            new_s = max(lo, min(hi, new_s))
+        return TransitionProposal(operator=self.name,
+                                  action={"state_var": var, "before": s, "after": new_s,
+                                          "next_ts": event.ts + float(spec.get("dt", 1.0)) * 86400.0,
+                                          "spec": spec},
+                                  reason_codes=[f"state_step:{spec['form_id']}", f"S={round(new_s,5)}"],
+                                  uncertainty={"form_id": spec["form_id"], "mode": mode,
+                                               **({"stability_guards": report.reasons} if report.clamped
+                                                  else {})})
+
+    def apply(self, world, proposal):
+        from swm.world_model_v2.quantities import Quantity, register_quantity_type
+        a = proposal.action
+        var = a["state_var"]
+        register_quantity_type(var, units="state")
+        before = world.quantities[var].value if var in world.quantities else None
+        world.quantities[var] = Quantity(name=var, qtype=var, value=a["after"], timestamp=world.clock.now)
+        d = StateDelta(at=world.clock.now, event_type="state_step", operator=self.name,
+                       reason_codes=proposal.reason_codes, uncertainty=proposal.uncertainty)
+        d.change(f"quantities[{var}]", before, a["after"])
+        # schedule the next step (future event) until the horizon
+        spec = a["spec"]
+        if a["next_ts"] <= float(spec.get("horizon_ts", 0.0)):
+            d.follow_up_events = [{"etype": "state_step", "ts": a["next_ts"], "participants": [],
+                                   "payload": {"step_spec": spec}}]
+        return d
+
+
 # ---------------------------------------------------------------- registration (import side effects)
+register_operator("nonlinear_state_step", NonlinearStateStepOperator(), requires=("quantities",),
+                  modifies=("quantities",), temporal_scale="interval",
+                  parameter_source="fitted nonlinear growth/saturation form; state stepped event-by-event",
+                  validated=True)
 register_operator("nonlinear_mechanism", NonlinearMechanismOperator(), requires=("entities",),
                   modifies=("quantities", "entities"), temporal_scale="event",
                   parameter_source="fitted nonlinear structural form + Phase-3 posterior particles; "
@@ -307,7 +368,7 @@ register_operator("nonlinear_contagion", NonlinearContagionOperator(), requires=
                   validated=True)
 
 from swm.world_model_v2.events import event_type_registered, register_event_type  # noqa: E402
-for _et in ("nonlinear_transition", "contagion_exposure"):
+for _et in ("nonlinear_transition", "contagion_exposure", "state_step"):
     if not event_type_registered(_et):
         register_event_type(_et, scheduling="scheduled", reads=("entities",), deltas=("quantities",),
                             parameter_source="Phase 7 nonlinear mechanism", validated=True)

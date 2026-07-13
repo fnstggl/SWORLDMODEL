@@ -161,11 +161,25 @@ def _linpred(params, inputs):
             mu, sd = stdz[k]
             v = (v - mu) / (sd or 1.0)
         s += float(w) * v
-    # explicit pairwise interactions (Part 4H) — evidence-selected, carried as {("a","b"): coef}
-    for pair, c in (params.get("interactions") or {}).items():
-        a, b = pair if isinstance(pair, (list, tuple)) else str(pair).split("*")
-        s += float(c) * float(feats.get(a, 0.0) or 0.0) * float(feats.get(b, 0.0) or 0.0)
+    s += _interaction_term(params, feats)
     return s
+
+
+def _interaction_term(params, feats):
+    """Explicit pairwise interactions (Part 4H). The raw product is standardized by a DEDICATED interaction
+    standardizer (params['interactions_std'][key] = [mu, sd]) so fit and runtime agree exactly and the term is
+    numerically safe regardless of the component feature scales (a raw tenure×contract product is huge)."""
+    out = 0.0
+    istd = params.get("interactions_std") or {}
+    for pair, c in (params.get("interactions") or {}).items():
+        key = pair if isinstance(pair, str) else f"{pair[0]}*{pair[1]}"
+        a, b = key.split("*")
+        prod = float(feats.get(a, 0.0) or 0.0) * float(feats.get(b, 0.0) or 0.0)
+        if key in istd:
+            mu, sd = istd[key]
+            prod = (prod - mu) / (sd or 1.0)
+        out += float(c) * prod
+    return out
 
 
 # ================================================================ the forms (real, evaluable)
@@ -653,9 +667,82 @@ def _register_core_forms():
         * get_form(p["drift"]["form_id"]).eval(p["drift"]["params"], i)))
 
 
+def _register_growth_forms():
+    # logistic (Verhulst) growth increment ΔS = r·S·(1−S/L) — the saturating adoption ODE, executed as a
+    # per-step increment by the state-step operator. Bends and peaks; the nonlinearity that stops overshoot.
+    register_form(StructuralForm(
+        form_id="logistic_growth", version="1.0.0", title="Logistic growth increment r·S·(1−S/L)",
+        output_domain="real", monotonicity="non_monotone",
+        phenomena=("saturation", "finite_population", "tipping"),
+        param_schema={"r": {"desc": "intrinsic growth rate"}, "L": {"desc": "carrying capacity"}},
+        required_inputs=("x",), fitting_method="nonlinear LS on the observed trajectory ≤ cutoff",
+        invariants=("increment→0 as S→L", "self-limiting"), extrapolation_behavior="saturates_at_L",
+        theory="Verhulst/Bass adoption saturation: growth slows as the susceptible pool depletes — the "
+               "mechanism a linear/exponential extrapolation lacks (and why it overshoots)",
+        maturity="fitted_available",
+        _eval=lambda p, i: float(p["r"]) * _x(i, "x") * (1.0 - _x(i, "x") / (float(p["L"]) or 1e-9))))
+    # linear/constant growth increment (the simpler Phase-6-style extrapolation baseline)
+    register_form(StructuralForm(
+        form_id="linear_growth", version="1.0.0", title="Linear/exponential growth increment g·S + c",
+        output_domain="real", monotonicity="unconstrained", phenomena=("none",),
+        param_schema={"g": {"desc": "proportional rate (exponential)"}, "c": {"desc": "constant slope"}},
+        required_inputs=("x",), fitting_method="log-linear / linear trend on recent window",
+        invariants=("no saturation — grows without bound",), extrapolation_behavior="unbounded_growth",
+        theory="the non-saturating extrapolation a nonlinear saturation form must beat on a peaking trajectory",
+        maturity="fitted_available",
+        _eval=lambda p, i: float(p.get("g", 0.0)) * _x(i, "x") + float(p.get("c", 0.0))))
+
+
+def _hinge_basis(x, knots):
+    """Piecewise-linear spline basis: [x, (x−k1)+, (x−k2)+, …] — the standard GAM smooth-term basis,
+    evaluable in pure Python from serialized knots."""
+    return [x] + [max(0.0, x - k) for k in knots]
+
+
+def _register_gam():
+    def _gam(p, i):
+        feats = i.get("features") or i
+        s = float(p.get("intercept", 0.0))
+        stdz = p.get("standardizer") or {}
+        # linear terms
+        for k, w in (p.get("linear") or {}).items():
+            v = float(feats.get(k, 0.0) or 0.0)
+            if k in stdz:
+                mu, sd = stdz[k]
+                v = (v - mu) / (sd or 1.0)
+            s += float(w) * v
+        # smooth (spline-basis) terms — nonlinear, additive
+        for var, sm in (p.get("smooth") or {}).items():
+            x = float(feats.get(var, 0.0) or 0.0)
+            basis = _hinge_basis(x, sm["knots"])
+            for b, coef in zip(basis, sm["coefs"]):
+                s += float(coef) * b
+        # explicit interactions (dedicated interaction standardizer — see _interaction_term)
+        s += _interaction_term(p, feats)
+        return sigmoid(s) if p.get("link", "logit") == "logit" else s
+    register_form(StructuralForm(
+        form_id="gam", version="1.0.0", title="Generalized additive model σ(Σ linear + Σ smooth(x))",
+        output_domain="unit_interval", monotonicity="non_monotone",
+        phenomena=("saturation", "diminishing_returns", "inverted_u", "interaction", "threshold"),
+        param_schema={"linear": {"desc": "{feat: coef} linear terms"},
+                      "smooth": {"desc": "{var: {knots, coefs}} piecewise-linear spline smooths"},
+                      "interactions": {"desc": "{a*b: coef}", "required": False},
+                      "intercept": {"desc": "bias"}, "standardizer": {"desc": "{feat:[mu,sd]}",
+                                                                      "required": False},
+                      "link": {"desc": "logit|identity", "required": False}},
+        required_inputs=("features",), fitting_method="penalized IRLS / spline-basis logistic (offline)",
+        regularization="knot count + ridge (validation-selected)",
+        invariants=("additive in smooth terms",), extrapolation_behavior="linear_tails",
+        theory="a nonlinear response that stays additive + interpretable: each feature gets its own fitted "
+               "shape (the churn tenure hazard, the Upworthy headline-length curve) without a black box",
+        maturity="fitted_available", _eval=_gam))
+
+
 def inputs_get(inputs, key, default):
     v = inputs.get(key, default)
     return v if v is not None else default
 
 
 _register_core_forms()
+_register_gam()
+_register_growth_forms()
