@@ -108,3 +108,62 @@ def test_live_google_news_rss_paired_query():
     assert "after:2023-08-01" in trace.logical_query and "before:2023-09-30" in trace.logical_query
     for it in items:
         assert it.rank >= 1 and it.wire_url.startswith("https://news.google.com/rss/search")
+    # returned items fall within the intended discovery window (feed pubDate ≤ before:)
+    import time as _t
+    before_ts = _t.mktime(_t.strptime("2023-09-30", "%Y-%m-%d")) + 86400
+    for it in items:
+        if it.feed_pubdate_ts is not None:
+            assert it.feed_pubdate_ts <= before_ts + 7 * 86400          # within window (+ tz slack)
+
+
+# ---------------------------------------------------------------- claim extraction (span validation)
+def test_claim_extraction_rejects_unsupported_spans():
+    import json
+    from swm.world_model_v2.evidence_claims import extract_claims, valid_claims
+    text = "The nurses union said members voted to ratify the contract. Management denied any layoffs."
+    llm = lambda p: json.dumps({"claims": [
+        {"subject": "nurses union", "predicate": "voted to ratify", "claim_class": "actor_statement",
+         "supporting_span": "members voted to ratify the contract", "confidence": 0.8},
+        {"subject": "management", "predicate": "denied", "claim_class": "denial", "polarity": "negate",
+         "supporting_span": "Management denied any layoffs", "confidence": 0.7},
+        {"subject": "x", "predicate": "y", "claim_class": "observed_fact",
+         "supporting_span": "THIS SPAN IS NOT IN THE TEXT", "confidence": 0.9}]})
+    claims = extract_claims(text, source_id="d1", llm=llm)
+    assert len(claims) == 3 and len(valid_claims(claims)) == 2          # fabricated span rejected
+    assert {c.claim_class for c in valid_claims(claims)} == {"actor_statement", "denial"}
+
+
+# ---------------------------------------------------------------- entity resolution (ambiguity preserved)
+def test_entity_resolution_preserves_ambiguity():
+    from swm.world_model_v2.evidence_entities import EntityResolver
+    res = {e.mention: e for e in EntityResolver().resolve(["Joe Biden", "Biden", "President Biden"])}
+    assert res["Biden"].candidates and res["Biden"].top.canonical  # has candidates
+    assert all(len(e.candidates) >= 1 for e in res.values())
+
+
+# ---------------------------------------------------------------- dependence (syndication collapse)
+def test_syndication_collapses_independent_count():
+    from swm.world_model_v2.evidence_dependence import cluster_dependence, independent_count
+    docs = [{"id": "d1", "text": "Reuters: the merger was approved by regulators today.",
+             "url": "http://reuters.com/x", "source": "Reuters", "content_hash": "h1"},
+            {"id": "d2", "text": "Reuters: the merger was approved by regulators today.",
+             "url": "http://yahoo.com/x", "source": "Yahoo", "content_hash": "h1"},
+            {"id": "d3", "text": "A completely different story about spring weather patterns.",
+             "url": "http://w.com/y", "source": "W", "content_hash": "h3"}]
+    groups = cluster_dependence(docs)
+    assert independent_count(groups) == 2                              # two copies → one independent source
+    assert any(g.dependence_type == "exact_duplicate" for g in groups)
+
+
+# ---------------------------------------------------------------- contradiction graph
+def test_contradiction_graph_numerical_and_denial():
+    from swm.world_model_v2.evidence_claims import Claim
+    from swm.world_model_v2.evidence_contradictions import build_contradiction_graph, has_material_contradiction
+    a = Claim(claim_id="a", source_id="s1", subject="turnout", predicate="was", value="40",
+              object="percent", publication_time=1.0)
+    b = Claim(claim_id="b", source_id="s2", subject="turnout", predicate="was", value="55",
+              object="percent", publication_time=2.0)
+    edges = build_contradiction_graph([a, b])
+    assert has_material_contradiction(edges)
+    assert edges[0].ctype == "numerical_disagreement" and edges[0].temporal_order == "a_before_b"
+    assert "b" in a.contradiction_links and "a" in b.contradiction_links   # claims cross-linked
