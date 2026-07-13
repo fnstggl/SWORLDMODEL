@@ -123,18 +123,23 @@ def _order_key(e: PersistentEvent):
 
 @dataclass
 class EventLog:
-    """The durable, append-only event store for one (world, scenario). In-memory index + optional JSONL
-    backing file for cross-run persistence. Thread-safe appends; idempotent by content id."""
+    """The durable, append-only event store for one (world, scenario). In-memory index + a pluggable durable
+    backend (JSONL by default via ``path``, or a transactional ``SqliteBackend`` via ``backend`` — see
+    ``phase8_storage``) for cross-run persistence. Thread-safe appends; idempotent by content id."""
     world_id: str
     scenario_id: str
     path: str | None = None                 # JSONL backing file; None = in-memory only
+    backend: object = None                  # phase8_storage.PersistentStorageBackend (overrides `path`)
     _events: dict = field(default_factory=dict)     # event_id -> PersistentEvent
     _seq: int = 0
     _watermark: str = ""                    # running tamper-evident chain hash
     _lock: object = field(default_factory=threading.RLock, repr=False)
 
     def __post_init__(self):
-        if self.path and Path(self.path).exists():
+        if self.backend is None and self.path:
+            from swm.world_model_v2.phase8_storage import JsonlBackend
+            self.backend = JsonlBackend(self.path)
+        if self.backend is not None:
             self._load()
 
     # ---- append (idempotent, retry-safe, concurrency-safe) ----------------------------------------
@@ -153,8 +158,8 @@ class EventLog:
             self._events[event.event_id] = event
             self._watermark = hashlib.sha256(
                 (self._watermark + "|" + event.event_id).encode()).hexdigest()[:24]
-            if self.path:
-                self._flush_one(event)
+            if self.backend is not None:
+                self.backend.append_event(event.as_dict(), self._watermark)
             return event, True
 
     def ingest(self, event: PersistentEvent) -> bool:
@@ -290,25 +295,15 @@ class EventLog:
         return {"ok": (chain == self._watermark) and not forged, "recomputed_watermark": chain,
                 "stored_watermark": self._watermark, "forged_ids": forged, "n_events": len(self._events)}
 
-    def _flush_one(self, event: PersistentEvent):
-        p = Path(self.path)
-        p.parent.mkdir(parents=True, exist_ok=True)
-        with p.open("a") as f:
-            f.write(_canonical(event.as_dict()) + "\n")
-
     def _load(self):
-        with Path(self.path).open() as f:
-            for line in f:
-                line = line.strip()
-                if not line:
-                    continue
-                ev = PersistentEvent.from_dict(json.loads(line))
-                if ev.event_id not in self._events:
-                    self._seq += 1
-                    ev.seq = self._seq
-                    self._events[ev.event_id] = ev
-                    self._watermark = hashlib.sha256(
-                        (self._watermark + "|" + ev.event_id).encode()).hexdigest()[:24]
+        for d in self.backend.load_events():
+            ev = PersistentEvent.from_dict(d)
+            if ev.event_id not in self._events:
+                self._seq += 1
+                ev.seq = self._seq
+                self._events[ev.event_id] = ev
+                self._watermark = hashlib.sha256(
+                    (self._watermark + "|" + ev.event_id).encode()).hexdigest()[:24]
 
     def __len__(self):
         return len(self._events)
@@ -320,4 +315,5 @@ class EventLog:
             kinds[e.kind] = kinds.get(e.kind, 0) + 1
         return {"world_id": self.world_id, "scenario_id": self.scenario_id, "n_stored": len(self._events),
                 "n_effective": len(eff), "kinds": kinds, "watermark": self._watermark,
-                "durable": bool(self.path)}
+                "durable": self.backend is not None,
+                "backend": type(self.backend).__name__ if self.backend is not None else "memory"}

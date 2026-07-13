@@ -186,6 +186,32 @@ class PersistentStore:
         self.verify(cp)                                    # corruption + schema check on load
         return cp
 
+    # ---- durable checkpoint commit / load through the event-log's storage backend ----------------
+    def commit_checkpoint(self, cp: PersistentCheckpoint) -> str:
+        """Atomically commit a checkpoint to the durable backend (SQLite transaction / JSONL append). The
+        event↔checkpoint watermark link is stored so a mismatch is detectable across runs."""
+        backend = getattr(self.log, "backend", None)
+        if backend is None:
+            raise MigrationError("no durable backend on the event log — attach a JsonlBackend/SqliteBackend "
+                                 "(or pass path=) to persist checkpoints across runs")
+        d = cp.as_dict()
+        d["_seq"] = self.log._seq
+        return backend.commit_checkpoint(d)
+
+    def load_latest_checkpoint(self, as_of: float | None = None) -> PersistentCheckpoint | None:
+        """Load the newest durably-committed checkpoint with as_of ≤ the argument (cross-run resume). Verifies
+        integrity + schema before returning; returns None when none exists."""
+        backend = getattr(self.log, "backend", None)
+        if backend is None:
+            return None
+        d = backend.latest_checkpoint(as_of)
+        if d is None:
+            return None
+        d.pop("_seq", None)
+        cp = PersistentCheckpoint.from_dict(d)
+        self.verify(cp)
+        return cp
+
     def verify(self, cp: PersistentCheckpoint) -> dict:
         """Corruption + schema check. Raises CorruptionError / MigrationError — never silently loads a bad
         or incompatible checkpoint."""

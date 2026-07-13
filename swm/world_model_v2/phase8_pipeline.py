@@ -125,21 +125,163 @@ def run_history_ablation(build_and_execute, *, ablations=("full", "no_history", 
                         if changed else "ORNAMENTAL: removing history does not change execution")}
 
 
-# ------------------------------------------------------------------ universal entry (compile→rollout)
-def simulate_with_persistence(question: str, *, llm=None, as_of: str, horizon: str, context=None,
-                              actor_history=None, intervention: str = "", seed: int = 0, n_particles=None):
-    """Universal production entry: compile → build world → ingest history → filter → materialize → rollout.
+# ------------------------------------------------------------------ THE canonical persistence-aware run
+def run_with_persistence(question, plan, *, llm=None, context=None, actor_history=None, family_ids=None,
+                         intervention="", t0=None, n_particles=None, seed=0, calibrator=None, cal_key=""):
+    """The single canonical persistence-aware run, shared by ``pipeline.simulate(persistence=…)`` and the
+    compatibility wrapper ``simulate_with_persistence``. Given a compiled ``plan``, it:
 
-    ``context`` is a ``PersistenceContext`` (durable log + store); ``actor_history`` optionally maps a plan
-    entity id to a list of raw event dicts to ingest for that actor. No-abstention preserved: weak/absent
-    history widens uncertainty and lowers the grade, never blocks. Returns (SimulationResult, artifacts)."""
-    from swm.world_model_v2.compiler import compile_world
+      resolve identity → load prior checkpoint + watermark → ingest leakage-safe new history → replay
+      sequential filters → SELECT causally-relevant families (block only quarantined/incompatible) →
+      materialize into WorldState → expose actor-visible memory → rollout (persistence operators enabled) →
+      persist feedback → commit a new versioned checkpoint → attach lineage/versions/support/limitations.
+
+    No-abstention preserved. When no history/checkpoint exists it runs the ordinary path with broad priors."""
     from swm.world_model_v2.materialize import (build_world, check_readout_binding, operators_from_plan,
                                                 queue_builder_from_plan)
     from swm.world_model_v2.init_state import InitialStateModel
     from swm.world_model_v2.rollout import WorldModelV2Run
-    from swm.world_model_v2.result import (ClarificationRequired, CompilerExecutionError, SimulationResult)
     from swm.world_model_v2.pipeline import result_from_run
+    from swm.world_model_v2.phase8_runtime import (family_runtime_manifest, select_families,
+                                                   support_grade_effect)
+    t0 = t0 if t0 is not None else _time.time()
+    base = build_world(plan, evidence_hash=(plan.provenance or {}).get("evidence_bundle_hash", ""))
+    family_ids = list(family_ids or ["engagement_propensity"])
+    meta = {"materialized": 0, "history_events": 0, "checkpoint_loaded": False,
+            "checkpoint_committed": False, "families_selected": [], "families_blocked": []}
+    materialized, family_manifests = [], []
+    prior_watermark = ""
+
+    if context is not None and actor_history:
+        from swm.world_model_v2.phase8_events import PersistentEvent
+        # 1) resolve scenario/actor identity + load prior checkpoint watermark
+        scenario = context.store.scenario_id
+        prior_cp = None
+        try:
+            prior_cp = context.store.load_latest_checkpoint(base.clock.as_of)
+        except Exception:
+            prior_cp = None
+        if prior_cp is not None:
+            meta["checkpoint_loaded"] = True
+            prior_watermark = prior_cp.event_watermark
+        # 2) ingest new leakage-safe history (observed_time ≤ as_of enforced by the log's query)
+        for eid, events in actor_history.items():
+            for ev in events:
+                context.store.log.append(PersistentEvent(
+                    world_id=base.world_id, scenario_id=scenario,
+                    event_type=ev.get("event_type", "passive_exposure"),
+                    event_time=float(ev.get("event_time", 0.0)), actor_ids=(eid,),
+                    observed_time=float(ev.get("observed_time", ev.get("event_time", 0.0))),
+                    outcome=ev.get("outcome")))
+                meta["history_events"] += 1
+        # 3) SELECT causally-relevant families (block only quarantined/incompatible)
+        selections = select_families(family_ids)
+        selected_ids = [s.variable_id for s in selections if s.selected]
+        meta["families_selected"] = selected_ids
+        meta["families_blocked"] = [s.variable_id for s in selections if not s.selected]
+        # 4) replay filters → posteriors, for the selected families over the present actors
+        keys = [PersistentStateKey(base.world_id, scenario, "actor", eid, vid)
+                for eid in actor_history for vid in selected_ids
+                if get_persistent_variable_scope(vid) == "actor"]
+        posteriors = context.store.replay(base.clock.as_of, variable_keys=keys) if keys else {}
+        posteriors = {k: v for k, v in posteriors.items() if v.key.entity_id in base.entities}
+        # 5) materialize into the base world
+        materialized = materialize_persistent_state(base, list(posteriors.values()))
+        meta["materialized"] = len(materialized)
+        # 6) expose actor-visible memory (leakage-safe recall) into entity.memory
+        _expose_actor_memory(base, context, actor_history, base.clock.as_of)
+        # 7) family manifests + support-grade effect
+        by_var = {}
+        for p in posteriors.values():
+            by_var.setdefault(p.variable_id, p)
+        for s in selections:
+            family_manifests.append(family_runtime_manifest(
+                s.variable_id, posterior=by_var.get(s.variable_id)))
+        load_bearing = [s.variable_id for s in selections if s.selected and by_var.get(s.variable_id)]
+        grade_effect = support_grade_effect(plan.support_grade, selections, load_bearing_ids=load_bearing)
+        meta["support_grade_effect"] = grade_effect
+
+    check_readout_binding(plan, base)
+    ops, _rej = operators_from_plan(plan, llm=llm)
+    import swm.world_model_v2.phase8_transitions as _p8t
+    ops = ops + [_p8t.PersistenceUpdateOperator(), _p8t.MemoryConsolidationOperator()]
+    init = InitialStateModel(base_world=base, latents=list(plan.latents))
+    npart = n_particles or plan.compute_plan.get("n_particles", 30)
+    run = WorldModelV2Run(initial=init, queue_builder=queue_builder_from_plan(plan),
+                          operators=ops, contract=plan.outcome_contract, n_particles=npart)
+    result, branches = run.run(seed=seed)
+    result["omissions"] = list(getattr(base, "omissions", []))
+    res = result_from_run(question, plan, result, branches, intervention=intervention, t0=t0,
+                          calibrator=calibrator, cal_key=cal_key)
+
+    # 8) persist feedback + commit a new versioned checkpoint (advance lineage) + attach support effect
+    if context is not None and actor_history:
+        try:
+            new_cp = context.store.checkpoint(base.clock.as_of,
+                                              variable_keys=[PersistentStateKey(base.world_id,
+                                                             context.store.scenario_id, "actor", eid,
+                                                             "engagement_propensity")
+                                                             for eid in actor_history])
+            if getattr(context.store.log, "backend", None) is not None:
+                context.store.commit_checkpoint(new_cp)
+                meta["checkpoint_committed"] = True
+            meta["checkpoint_watermark"] = new_cp.event_watermark
+            meta["prior_watermark"] = prior_watermark
+            meta["lineage_advanced"] = new_cp.event_watermark != prior_watermark
+        except Exception as e:  # noqa: BLE001 — checkpoint commit is best-effort; the log stays the truth
+            meta["checkpoint_error"] = str(e)[:120]
+        eff = meta.get("support_grade_effect", {})
+        if eff.get("support_grade") and eff["support_grade"] != res.support_grade:
+            res.support_grade = eff["support_grade"]           # experimental load-bearing family lowers grade
+            res.limitations = list(res.limitations) + list(eff.get("limitations", []))
+    res.provenance = {**(res.provenance or {}), "phase8": meta,
+                      "phase8_family_manifests": family_manifests[:12],
+                      "persistent_deltas": [d.as_dict() for d in materialized][:10]}
+    return res, {"plan_hash": plan.plan_hash(), "materialized": materialized, "persistence_meta": meta,
+                 "family_manifests": family_manifests}
+
+
+def get_persistent_variable_scope(vid: str) -> str:
+    from swm.world_model_v2.phase8_persistence import get_persistent_variable
+    try:
+        return get_persistent_variable(vid).scope
+    except KeyError:
+        return "actor"
+
+
+def _expose_actor_memory(world, context, actor_history, as_of):
+    """Materialize ONLY actor-recallable memories into each actor's ``memory`` field (leakage-safe). The
+    omniscient event log keeps everything; the actor gets a probabilistic, recency/salience-weighted subset
+    via the episodic store — never perfect recall (Part 8)."""
+    from swm.world_model_v2.state import F
+    store = getattr(context, "memory_store", None)
+    for eid in actor_history:
+        if eid not in world.entities:
+            continue
+        recalled = []
+        if store is not None and hasattr(store, "retrieve"):
+            try:
+                hits = store.retrieve(eid, "", as_of=as_of, k=8)
+                recalled = [{"at": getattr(h.get("episode"), "timestamp", as_of),
+                             "text": getattr(h.get("episode"), "text", ""),
+                             "salience": round(h.get("score", 0.5), 3), "recalled": True}
+                            for h in hits]
+            except Exception:
+                recalled = []
+        if recalled:
+            world.entities[eid].set("memory", F(recalled, status="derived", method="phase8_actor_recall",
+                                                updated_at=as_of))
+
+
+# ------------------------------------------------------------------ compatibility wrapper (compiles first)
+def simulate_with_persistence(question: str, *, llm=None, as_of: str, horizon: str, context=None,
+                              actor_history=None, family_ids=None, intervention: str = "", seed: int = 0,
+                              n_particles=None):
+    """Compatibility wrapper preserved as an internal API: compiles the question then delegates to the
+    canonical ``run_with_persistence``. Production callers should prefer ``pipeline.simulate(persistence=…)``
+    — there is now ONE canonical execution path (this just compiles first)."""
+    from swm.world_model_v2.compiler import compile_world
+    from swm.world_model_v2.result import (ClarificationRequired, CompilerExecutionError, SimulationResult)
     t0 = _time.time()
     try:
         plan = compile_world(question, llm=llm, evidence="", as_of=as_of, horizon=horizon,
@@ -150,41 +292,6 @@ def simulate_with_persistence(question: str, *, llm=None, as_of: str, horizon: s
     except CompilerExecutionError as e:
         return SimulationResult(question=question, simulation_status="execution_failed",
                                 failure_taxonomy=e.taxonomy, latency_s=round(_time.time() - t0, 3)), {}
-    base = build_world(plan, evidence_hash=(plan.provenance or {}).get("evidence_bundle_hash", ""))
-    # ---- ingest history + replay filters + materialize into the base world ----
-    materialized = []
-    persistence_meta = {"materialized": 0, "history_events": 0}
-    if context is not None and actor_history:
-        from swm.world_model_v2.phase8_events import PersistentEvent
-        for eid, events in actor_history.items():
-            for ev in events:
-                context.store.log.append(PersistentEvent(
-                    world_id=base.world_id, scenario_id=context.store.scenario_id,
-                    event_type=ev.get("event_type", "passive_exposure"),
-                    event_time=float(ev.get("event_time", 0.0)), actor_ids=(eid,),
-                    observed_time=float(ev.get("observed_time", ev.get("event_time", 0.0))),
-                    outcome=ev.get("outcome")))
-                persistence_meta["history_events"] += 1
-        keys = [PersistentStateKey(base.world_id, context.store.scenario_id, "actor", eid,
-                                   "engagement_propensity") for eid in actor_history]
-        posteriors = context.store.replay(base.clock.as_of, variable_keys=keys)
-        # only materialize for entities that exist in the compiled world
-        posteriors = {k: v for k, v in posteriors.items() if v.key.entity_id in base.entities}
-        materialized = materialize_persistent_state(base, list(posteriors.values()))
-        persistence_meta["materialized"] = len(materialized)
-    check_readout_binding(plan, base)
-    ops, rejections = operators_from_plan(plan, llm=llm)
-    # add persistence operators so the closed loop (action→persistent update→future) runs
-    import swm.world_model_v2.phase8_transitions as _p8t
-    ops = ops + [_p8t.PersistenceUpdateOperator(), _p8t.MemoryConsolidationOperator()]
-    init = InitialStateModel(base_world=base, latents=list(plan.latents))
-    npart = n_particles or plan.compute_plan.get("n_particles", 30)
-    run = WorldModelV2Run(initial=init, queue_builder=queue_builder_from_plan(plan),
-                          operators=ops, contract=plan.outcome_contract, n_particles=npart)
-    result, branches = run.run(seed=seed)
-    result["omissions"] = list(getattr(base, "omissions", []))
-    res = result_from_run(question, plan, result, branches, intervention=intervention, t0=t0)
-    res.provenance = {**(res.provenance or {}), "phase8": persistence_meta,
-                      "persistent_deltas": [d.as_dict() for d in materialized][:10]}
-    return res, {"plan_hash": plan.plan_hash(), "materialized": materialized,
-                 "persistence_meta": persistence_meta}
+    return run_with_persistence(question, plan, llm=llm, context=context, actor_history=actor_history,
+                                family_ids=family_ids, intervention=intervention, t0=t0,
+                                n_particles=n_particles, seed=seed)
