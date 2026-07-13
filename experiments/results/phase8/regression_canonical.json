@@ -1,0 +1,83 @@
+{
+ "omnibehavior_regression": {
+  "established_result_preserved": true,
+  "established_file": "experiments/results/phase8/shared_world_trackA.json",
+  "rerun_file": "experiments/results/phase8/shared_world_trackA_canonical_rerun.json",
+  "established_persist_vs_userrate": {
+   "mean": -0.01186,
+   "ci95": [
+    -0.01341,
+    -0.010263
+   ],
+   "n": 7074
+  },
+  "canonical_persist_vs_userrate": {
+   "mean": -0.01186,
+   "ci95": [
+    -0.01341,
+    -0.010263
+   ],
+   "n": 7074
+  },
+  "established_persist_brier": 0.09109,
+  "canonical_persist_brier": 0.09109,
+  "n_test_events": 7074,
+  "power": 1.0,
+  "persistence_win_not_regressed": true,
+  "verdict": "canonical integration PRESERVES the persistence win (CI still excludes 0, effect not materially worse)"
+ },
+ "canonical_ablations": {
+  "A14_storage_backend_equivalence": {
+   "sqlite_mean": 0.607474,
+   "jsonl_mean": 0.607474,
+   "identical": true,
+   "note": "production SQLite backend and JSONL testing backend derive identical state"
+  },
+  "A20_checkpoint_reuse": {
+   "reuse_available": true,
+   "changes_execution": true,
+   "note": "checkpoint restore reconstructs prior state deterministically"
+  },
+  "A9_experimental_family_enabled_vs_removed": {
+   "with_experimental_grade": "highly_speculative",
+   "with_widening": 2.0,
+   "without_experimental_grade": "empirically_supported",
+   "changes_support_grade": true,
+   "note": "enabling a load-bearing experimental family lowers the grade + widens uncertainty (an ABLATION arm \u2014 'experimental disabled' is NOT the preferred production arm)"
+  },
+  "A13_all_applicable_families_enabled": {
+   "n_selected": 3,
+   "n_blocked": 0,
+   "all_causally_relevant_execute_by_default": true
+  }
+ },
+ "cross_run_trace": {
+  "RUN1": {
+   "events": 6,
+   "posterior_mean": 0.6075,
+   "watermark": "67fd717f886e33fe3e9214cc"
+  },
+  "PROCESS_RESTART": "in-memory state disposed; service recreated from SQLite",
+  "RUN2": {
+   "reloaded_events": 7,
+   "checkpoint_loaded": true,
+   "posterior_mean": 0.5076,
+   "watermark": "b419dc9b76b4d690b259cc0e",
+   "lineage_advanced": true
+  },
+  "history_changes_execution": true,
+  "verdict": "cross-run persistence is automatic: RUN2 loads RUN1's checkpoint from disk, a new event shifts the posterior, and lineage advances"
+ },
+ "storage_benchmark": {
+  "backend": "sqlite_wal",
+  "n_events": 5000,
+  "n_actors": 50,
+  "ingest_throughput_events_per_s": 4322,
+  "sqlite_checkpoint_commit_s": 0.0428,
+  "replay_latency_s": 0.2111,
+  "checkpoint_restore_s": 0.0222,
+  "db_size_bytes": 3698688,
+  "deterministic_replay_parity": true,
+  "integrity_ok": true
+ }
+}

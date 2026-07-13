@@ -318,3 +318,200 @@ def test_universal_entry_fails_gracefully_not_crashes():
                                          horizon="2024-01-04", context=None, seed=0)
     assert res.simulation_status in ("execution_failed", "clarification_required")
     assert res.failure_taxonomy or res.clarification_reason or res.simulation_status == "clarification_required"
+
+
+# ================================================================== completion pass: runtime status
+def test_all_families_default_selectable_none_blocked():
+    from swm.world_model_v2.phase8_runtime import select_families, runtime_status_table
+    sels = select_families(list(registered_variables()))
+    assert all(s.selected for s in sels)                        # none quarantined/incompatible → all usable
+    table = runtime_status_table()
+    assert all(r["production_usable"] for r in table)           # production_usable != empirically_validated
+
+
+def test_experimental_family_executes_by_default_no_flag():
+    """An exploratory/highly_speculative family must be SELECTED without any experimental flag."""
+    from swm.world_model_v2.phase8_runtime import select_families
+    sels = {s.variable_id: s for s in select_families(["reputation", "risk_tolerance"])}
+    assert sels["reputation"].selected and sels["reputation"].runtime_status == "highly_speculative"
+    assert sels["reputation"].transition_tier == 7             # drops to competing-hypotheses tier, not removed
+
+
+def test_load_bearing_experimental_family_lowers_support_grade():
+    from swm.world_model_v2.phase8_runtime import select_families, support_grade_effect
+    sels = select_families(["engagement_propensity", "reputation"])
+    eff = support_grade_effect("empirically_supported", sels, load_bearing_ids=["reputation"])
+    assert eff["support_grade"] == "highly_speculative" and eff["uncertainty_widening"] > 1.0
+    assert eff["limitations"]                                   # discloses the load-bearing experimental family
+
+
+def test_quarantined_family_is_blocked():
+    from swm.world_model_v2.phase8_persistence import register_persistent_variable, PersistentVariableSpec
+    from swm.world_model_v2.phase8_runtime import select_families
+    register_persistent_variable(PersistentVariableSpec(
+        variable_id="harmful_demo", definition="a family quarantined after harmful validation", scope="actor",
+        materializes_into="entity.beliefs[harmful_demo]", consumed_by=("phase4_policy.risk_sensitive",),
+        runtime_status="quarantined"))
+    sel = select_families(["harmful_demo"])[0]
+    assert not sel.selected and "BLOCKED" in sel.reason        # ONLY quarantined/incompatible are blocked
+
+
+def test_transition_tier_never_removes_uncertain_transition():
+    from swm.world_model_v2.phase8_runtime import resolve_transition_tier
+    t = resolve_transition_tier("trust")                       # exploratory, no pack
+    assert t["tier"] == 6 and t["simulate_competing_hypotheses"] and "never removed" in t["note"]
+    assert resolve_transition_tier("engagement_propensity", fitted_pack=True)["tier"] == 1
+
+
+# ================================================================== completion pass: SQLite storage
+def _sqlite_store(tmp_path, name="p8.db"):
+    from swm.world_model_v2.phase8_storage import SqliteBackend
+    be = SqliteBackend(str(tmp_path / name))
+    log = EventLog("w", "s", backend=be)
+    store = PersistentStore("w", "s", log=log)
+    store.register_filter("engagement_propensity", lambda k, obs, ao, sd: DecayedBetaBernoulliFilter(
+        key=k, prior_mean=0.2, decay=0.85).filter([(e, 1 if o else 0, t) for e, o, t in obs], as_of=ao))
+    return store, be
+
+
+def test_sqlite_cross_run_reload_and_idempotency(tmp_path):
+    store, be = _sqlite_store(tmp_path)
+    for i in range(6):
+        store.log.append(PersistentEvent(world_id="w", scenario_id="s", event_type="passive_exposure",
+                                         event_time=float(i), actor_ids=("u",), outcome=1))
+    cp = store.checkpoint(as_of=10.0)
+    store.commit_checkpoint(cp)
+    be.close()
+    # RESTART: fresh backend from disk
+    store2, be2 = _sqlite_store(tmp_path)
+    assert len(store2.log) == 6 and be2.verify_integrity()["ok"]
+    loaded = store2.load_latest_checkpoint()
+    assert loaded is not None and loaded.as_of == 10.0
+    # deterministic cross-run replay parity
+    cp2 = store2.checkpoint(as_of=10.0)
+    assert PersistentStore.compare(cp, cp2)["identical"]
+    # idempotent retry after restart
+    _, is_new = store2.log.append(PersistentEvent(world_id="w", scenario_id="s",
+                                                  event_type="passive_exposure", event_time=0.0,
+                                                  actor_ids=("u",), outcome=1))
+    assert is_new is False and len(store2.log) == 6
+
+
+def test_sqlite_concurrent_processes_write(tmp_path):
+    """Two independent backend connections (two 'processes') both append; all events land, dedup holds."""
+    from swm.world_model_v2.phase8_storage import SqliteBackend
+    db = str(tmp_path / "multi.db")
+    be_a, be_b = SqliteBackend(db), SqliteBackend(db)
+    log_a, log_b = EventLog("w", "s", backend=be_a), EventLog("w", "s", backend=be_b)
+    for i in range(5):
+        log_a.append(PersistentEvent(world_id="w", scenario_id="s", event_type="passive_exposure",
+                                     event_time=float(i), actor_ids=("a",), outcome=1))
+    for i in range(5):
+        log_b.append(PersistentEvent(world_id="w", scenario_id="s", event_type="passive_exposure",
+                                     event_time=float(i), actor_ids=("b",), outcome=0))
+    be_a.close(); be_b.close()
+    be_c = SqliteBackend(db)
+    reread = EventLog("w", "s", backend=be_c)
+    assert len(reread) == 10                                    # both writers' events durably present
+    be_c.close()
+
+
+def test_sqlite_corrupt_checkpoint_detected(tmp_path):
+    store, be = _sqlite_store(tmp_path)
+    store.log.append(PersistentEvent(world_id="w", scenario_id="s", event_type="passive_exposure",
+                                     event_time=1.0, actor_ids=("u",), outcome=1))
+    cp = store.checkpoint(as_of=10.0)
+    tok = list(cp.posteriors)[0]
+    cp.posteriors[tok]["mean"] = 0.999                          # tamper before commit
+    with pytest.raises(CorruptionError):
+        store.verify(cp)
+
+
+def test_sqlite_watermark_integrity_after_tamper(tmp_path):
+    import sqlite3
+    store, be = _sqlite_store(tmp_path)
+    for i in range(4):
+        store.log.append(PersistentEvent(world_id="w", scenario_id="s", event_type="passive_exposure",
+                                         event_time=float(i), actor_ids=("u",), outcome=1))
+    assert be.verify_integrity()["ok"]
+    be.close()
+    # tamper a stored watermark directly → integrity must fail
+    c = sqlite3.connect(str(tmp_path / "p8.db"))
+    c.execute("UPDATE events SET watermark='deadbeef' WHERE seq=2")
+    c.commit(); c.close()
+    from swm.world_model_v2.phase8_storage import SqliteBackend
+    be2 = SqliteBackend(str(tmp_path / "p8.db"))
+    assert be2.verify_integrity()["ok"] is False
+    be2.close()
+
+
+def test_sqlite_compaction_preserves_events(tmp_path):
+    store, be = _sqlite_store(tmp_path)
+    for i in range(10):
+        store.log.append(PersistentEvent(world_id="w", scenario_id="s", event_type="passive_exposure",
+                                         event_time=float(i), actor_ids=("u",), outcome=1))
+        store.commit_checkpoint(store.checkpoint(as_of=float(i + 1)))
+    res = be.compact(keep_checkpoints=3)
+    assert res["checkpoints_after"] <= 3 and res["events_preserved"]
+    assert be.stats()["n_events"] == 10                        # events never pruned (source of truth)
+    be.close()
+
+
+# ================================================================== completion pass: identity resolution
+def test_identity_probabilistic_linkage():
+    from swm.world_model_v2.phase8_identity import IdentityResolver
+    r = IdentityResolver(aliases={"jsmith": [("john_smith", 0.6), ("jane_smith", 0.4)]})
+    hyps = r.resolve("jsmith")
+    assert len(hyps) == 2 and abs(sum(h.weight for h in hyps) - 1.0) < 1e-6
+    assert r.link_uncertainty("jsmith") > 0                     # ambiguous → uncertainty > 0
+    assert r.link_uncertainty("unknown_token") == 0.0          # pass-through is certain
+
+
+def test_identity_merge_and_rename():
+    from swm.world_model_v2.phase8_identity import IdentityResolver, dyad_id
+    r = IdentityResolver(merges={"acct_2": "acct_1"}, renames={"OldCorp": "NewCorp"})
+    assert r.resolve("acct_2")[0].canonical_id == "acct_1"
+    assert r.resolve("OldCorp")[0].canonical_id == "NewCorp"
+    assert dyad_id("b", "a", directed=False) == dyad_id("a", "b", directed=False)   # undirected symmetric
+
+
+# ================================================================== completion pass: memory recall
+def test_actor_recall_is_leakage_safe_and_not_perfect():
+    """The canonical actor view exposes only recallable memories strictly before as_of, not the full log."""
+    from swm.memory.memory import EpisodicStore
+    from swm.world_model_v2.phase8_pipeline import _expose_actor_memory, PersistenceContext
+    store = EpisodicStore(half_life=30)
+    for t in range(1, 6):
+        store.record_contact("u", ts=float(t), text=f"past pricing chat {t}", responded=True, topic="pricing")
+    store.record_contact("u", ts=50.0, text="FUTURE event being predicted", responded=True, topic="pricing")
+    w = _world()
+    ctx = PersistenceContext(store=None, memory_store=store)
+    _expose_actor_memory(w, ctx, {"u": [{"event_time": 1.0}]}, as_of=10.0)
+    mem = w.entities["u"].value("memory") or []
+    assert mem and all(m["at"] < 10.0 for m in mem)            # leakage-safe: nothing at/after as_of
+    assert all("FUTURE" not in m["text"] for m in mem)
+
+
+# ================================================================== completion pass: cross-run closed loop
+def test_cross_run_closed_loop_changes_execution(tmp_path):
+    """RUN1 writes hot history + checkpoint; RESTART reloads from disk; the reloaded posterior differs from a
+    no-history posterior — proving cross-run persistence changes execution and history removal is causal."""
+    store, be = _sqlite_store(tmp_path)
+    for i in range(6):
+        store.log.append(PersistentEvent(world_id="w", scenario_id="s", event_type="passive_exposure",
+                                         event_time=float(i), actor_ids=("u",), outcome=1))
+    key = PersistentStateKey("w", "s", "actor", "u", "engagement_propensity")
+    hot = store.checkpoint(as_of=10.0, variable_keys=[key])
+    store.commit_checkpoint(hot)
+    be.close()
+    # RESTART
+    store2, be2 = _sqlite_store(tmp_path)
+    reloaded = store2.load_latest_checkpoint()
+    assert reloaded is not None
+    hot_mean = list(reloaded.posteriors.values())[0]["mean"]
+    # a no-history store's posterior for the same key
+    empty_store, _ = _sqlite_store(tmp_path, name="empty.db")
+    empty_cp = empty_store.checkpoint(as_of=10.0, variable_keys=[key])
+    empty_mean = list(empty_cp.posteriors.values())[0]["mean"]
+    assert abs(hot_mean - empty_mean) > 0.1                     # removing history changes the derived state
+    be2.close()

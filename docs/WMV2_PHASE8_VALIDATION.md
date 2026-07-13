@@ -156,6 +156,38 @@ ornamental. These are causal-change checks on the real filters, **not** faked as
 
 ---
 
+## 7b — Production-completion results (canonical integration, storage, regression, habit)
+
+The completion pass added the canonical-pipeline integration + transactional storage + default family
+selection, then re-verified nothing regressed.
+
+**OmniBehavior regression (Part 10) — PRESERVED.** Re-ran Track A through the shared-world core the canonical
+path uses, to a **separate file** (`shared_world_trackA_canonical_rerun.json` — the established result is not
+overwritten). Canonical persist Brier **0.09109 = established 0.09109** (byte-identical, deterministic);
+persist − memoryless **−0.0119 [−0.0134, −0.0103], power 1.0**. The canonical integration does not erase the
+win.
+
+**Habit held-out (Part 9) — NEW WIN.** OmniBehavior per-user cumulative positive-action state vs no-history:
+Brier 0.0988 vs 0.1609, **−0.0622 [−0.0668, −0.0578], power 1.0** (n=7290). A held-out data point for
+`habit_strength` → `transfer_supported`. (Honest caveat: this shares the engagement substrate — it is the
+per-user repetition signal, not an independent domain.)
+
+**Canonical-path ablations (Part 11).** Storage-backend equivalence: SQLite and JSONL derive **identical**
+state (0.607474 both). Experimental-family enable vs remove: enabling a load-bearing experimental family
+lowers the grade `empirically_supported → highly_speculative` and widens uncertainty ×2 — the ablation shows
+"experimental disabled" is *not* the preferred production arm. All causally-relevant families execute by
+default (0 blocked).
+
+**Cross-run closed loop (Part 5).** RUN1 (6 hot events → posterior 0.6075, checkpoint committed to SQLite) →
+**process restart from durable storage** → RUN2 (checkpoint loaded, +1 cold event → posterior 0.5076, lineage
+advanced). Automatic; history removal changes the derived state (tested + traced).
+
+**Storage benchmark (SQLite WAL, 5000 events / 50 actors).** ingest **4322 durable events/s** (vs 77k
+in-memory — the fsync-per-event durability cost, reported honestly), checkpoint commit 0.043 s, replay
+0.21 s, restore 0.022 s, db 3.7 MB, deterministic parity ✓, integrity ✓.
+
+---
+
 ## 8 — Four separate phase statuses (Part 21)
 
 Never one "complete" label. Graded per state family.
@@ -177,12 +209,33 @@ shared world, time-forward **and** person-disjoint (both CIs exclude 0, power 1.
 for trust / commitment / institutional-stage / resource / reputation / risk / relationship / habit as
 *outcomes*. Track B (dyadic) is a weak result; Track C (institutional) is a null.
 
-### 8.4 PRODUCTION ELIGIBLE — **one family, with caveats (engagement_propensity)**
-Meets code + execution + validation + provenance + uncertainty + reliability gates: fitted transition params
-(train-only), uncertainty propagates, actor visibility enforced, checkpoint/replay deterministic, real
-held-out validation, transport limits recorded (OmniBehavior domain; Kuaishou platform), ablation establishes
-causal relevance. **All other families are experimental / quarantined** — implemented and executable but not
-production-eligible. Phase 8 is **not** promoted as a whole; grading is per-family.
+### 8.4 PRODUCTION USABLE — **all nine families (usability ≠ validation)**
+After the completion pass the correct axis is **production-usable**, not "production-eligible". A family is
+production-usable when it has an executable typed mechanism, changes the shared world, has explicit
+assumptions + parameter provenance, propagates uncertainty, has an honest support status, and is not
+quarantined/incompatible. **All nine families meet this** and execute by default. That is deliberately *not*
+the same as empirically validated: `engagement_propensity` and `habit_strength` are empirically supported;
+the rest are usable with broader uncertainty, a lower support grade, and a sensitivity contribution.
+Quarantine is reserved for evidence of active harm (none observed). Phase 8 is graded per-family, never
+promoted as one "complete".
+
+### 8.5 FINAL FAMILY TABLE (Part 14)
+
+| Family | Canonical path | Default selectable | Cross-run | Parameter source | Held-out validation | Runtime status | Support-grade effect | Production usable |
+|---|---|---|---|---|---|---|---|---|
+| engagement_propensity | ✓ | ✓ | ✓ | fitted (train) | **YES** — n=7074, −0.0119 [−0.0134,−0.0103] p1.0; transfer −0.0189 | empirically_supported | strong | **YES** |
+| habit_strength | ✓ | ✓ | ✓ | broad prior | **YES** — n=7290, −0.0622 [−0.0668,−0.0578] p1.0 (shares engagement substrate) | transfer_supported | medium | **YES** |
+| resource_level | ✓ | ✓ | ✓ | observed | structural (accounting) — no dataset | transfer_supported | low | **YES** |
+| trust | ✓ | ✓ | ✓ | reference pack | proxy only (Enron, weak) | exploratory | lowers grade | **YES** |
+| relationship_strength | ✓ | ✓ | ✓ | broad prior | weak (Enron regime change) | exploratory | lowers grade | **YES** |
+| commitment | ✓ | ✓ | ✓ | observed | none in-repo | exploratory | lowers grade | **YES** |
+| institutional_stage | ✓ | ✓ | ✓ | observed | **null** (Senate, underpowered) | exploratory | lowers grade | **YES** |
+| reputation | ✓ | ✓ | ✓ | broad prior | none in-repo | highly_speculative | lowers grade + widens ×2 | **YES** |
+| risk_tolerance | ✓ | ✓ | ✓ | broad prior | none in-repo | highly_speculative | lowers grade + widens ×2 | **YES** |
+
+Production-usable is YES for every family (none quarantined/incompatible); empirical validation is uneven and
+honestly graded. A family may be production-usable, default-selected, exploratory, and not-yet-validated at
+once — an acceptable and expected state.
 
 ---
 

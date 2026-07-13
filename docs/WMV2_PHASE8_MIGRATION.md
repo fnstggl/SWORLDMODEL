@@ -130,6 +130,45 @@ update live during a rollout (reinforcement of the engagement Q-value, asymmetri
 
 ---
 
+## 4b — Production-completion additions (canonical path, storage, runtime status)
+
+**Canonical usage (one entry point).** Persistence is now part of the ordinary `pipeline.simulate`:
+
+```python
+from swm.world_model_v2.pipeline import simulate
+from swm.world_model_v2.phase8_pipeline import PersistenceContext
+from swm.world_model_v2.phase8_service import PersistentStore
+from swm.world_model_v2.phase8_events import EventLog
+from swm.world_model_v2.phase8_storage import SqliteBackend
+
+store = PersistentStore(world_id, scenario_id, log=EventLog(world_id, scenario_id,
+                        backend=SqliteBackend("state.db")))
+store.register_filter("engagement_propensity", <builder>)
+res = simulate(question, llm=llm, as_of=..., horizon=...,
+               persistence=PersistenceContext(store=store),
+               actor_history={actor_id: [<events>]})     # loads checkpoint, replays, materializes, re-checkpoints
+```
+No `actor_history`/`persistence` ⇒ behaviour is byte-identical to before (no regression).
+`simulate_with_persistence` remains as a compile-first wrapper over the shared `run_with_persistence`.
+
+**Storage backends (`phase8_storage`).** `EventLog(path=...)` ⇒ `JsonlBackend` (portable/testing, unchanged
+behaviour). `EventLog(backend=SqliteBackend(db))` ⇒ production WAL backend: atomic idempotent append,
+transactional checkpoint commit/rollback, multi-process writers, crash recovery, `verify_integrity`,
+`compact(keep_checkpoints=N)`. Checkpoints round-trip via `PersistentStore.commit_checkpoint` /
+`load_latest_checkpoint`. **Migration note:** an existing JSONL log is read as-is; to move to SQLite, replay
+the JSONL events into a `SqliteBackend`-backed log (the event log is the source of truth, so this is a
+lossless re-ingest — idempotent by content id).
+
+**Runtime-status contract (`phase8_runtime`).** Each family carries an executable `runtime_status`. Consumers
+call `select_families(candidate_ids)` (blocks only `quarantined`/`incompatible`), `family_runtime_manifest`
+(full per-family provenance for the result), `support_grade_effect` (grade/uncertainty impact of load-bearing
+experimental families), and `resolve_transition_tier` (1→7 fallback; uncertain transitions are never removed).
+`runtime_status_table()` produces the family status table. A new family registers via
+`register_persistent_variable` with a `runtime_status` (defaults `exploratory`).
+
+**Identity contract (`phase8_identity`).** `IdentityResolver.resolve(raw, as_of=…)` returns weighted
+hypotheses (uncertain linkage preserved), with `world_id`/`scenario_id`/`dyad_id`/`edge_id` helpers.
+
 ## 5 — Reproducibility commands
 
 All pure compute (no LLM) except the one live universal-path trace. Datasets auto-download to
@@ -151,6 +190,14 @@ PYTHONPATH=. python -m experiments.wmv2_phase8_tracks
 # causal ablations + forensic traces + checkpoint/performance bench
 PYTHONPATH=. python -m experiments.wmv2_phase8_ablations --n-users 140
 #   → experiments/results/phase8/ablations.json, forensic_traces.json
+
+# completion pass: OmniBehavior regression protection + canonical ablations + cross-run + storage bench
+PYTHONPATH=. python -m experiments.wmv2_phase8_regression --n-users 140
+#   → experiments/results/phase8/regression_canonical.json (established result NOT overwritten)
+
+# completion pass: targeted habit held-out + honest family-evidence map
+PYTHONPATH=. python -m experiments.wmv2_phase8_empirical --n-users 140
+#   → experiments/results/phase8/empirical_completion.json
 ```
 
 ### Dataset acquisition / provenance
@@ -169,9 +216,12 @@ an integrity hash; identical (log, as_of, seed) reproduce identical posteriors +
 
 ## 6 — What a consumer should know
 
-* Phase 8 is **production-eligible for one family** (`engagement_propensity`); everything else is
-  implemented + executable but experimental/quarantined (see the validation doc's four-status grading).
-  Treat non-engagement persistent state as structurally sound but empirically unproven.
+* Phase 8 is **production-usable for all nine families by default** (none quarantined/incompatible), but
+  empirical validation is uneven: `engagement_propensity` + `habit_strength` are empirically supported;
+  the rest are usable with broader uncertainty + a lower support grade (see the validation doc's final family
+  table). Production-usable is not the same as validated — treat exploratory/highly_speculative persistent
+  state as structurally sound and executable but empirically unproven, and read the per-family support status
+  in the result's `phase8_family_manifests`.
 * Persistence **lowers the support grade** when history is thin and **never abstains** (no-abstention
   contract). Recommendation eligibility is withheld where a longitudinal causal effect is unsupported, while
   the simulation still runs.

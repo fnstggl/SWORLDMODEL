@@ -101,7 +101,14 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
 
 
 def simulate(question: str, *, llm, evidence="", as_of: str, horizon: str, intervention: str = "",
-             n_particles=None, seed: int = 0, calibrator=None, cal_key: str = "") -> SimulationResult:
+             n_particles=None, seed: int = 0, calibrator=None, cal_key: str = "",
+             persistence=None, actor_history=None, persistence_families=None) -> SimulationResult:
+    """The one canonical production entry. When `persistence` (a phase8 PersistenceContext) and
+    `actor_history` are supplied — or a compatible checkpoint exists — persistence is part of THIS path:
+    prior history/checkpoint are loaded, sequential posteriors are updated, persistent state is materialized
+    into the standard WorldState, causally-relevant families execute by default (only quarantined/incompatible
+    are blocked), and lineage/support effects are returned in the standard result. Without them, behaviour is
+    unchanged (no regression). Callers no longer need a separate `simulate_with_persistence` entry point."""
     t0 = _time.time()
     # ---- compile (never epistemically abstains) ----
     try:
@@ -117,6 +124,27 @@ def simulate(question: str, *, llm, evidence="", as_of: str, horizon: str, inter
         return SimulationResult(question=question, simulation_status="execution_failed",
                                 failure_taxonomy=e.taxonomy, limitations=[f"compiler: {e}"],
                                 latency_s=round(_time.time() - t0, 3))
+
+    # ---- CANONICAL PERSISTENCE PATH: when history/checkpoint is available, persistence is part of the
+    #      ordinary simulate() flow (no separate entry point). Delegates to the shared run_with_persistence.
+    if persistence is not None and (actor_history or getattr(persistence, "store", None) is not None):
+        try:
+            from swm.world_model_v2.phase8_pipeline import run_with_persistence
+            res, _artifacts = run_with_persistence(
+                question, plan, llm=llm, context=persistence, actor_history=actor_history,
+                family_ids=persistence_families, intervention=intervention, t0=t0,
+                n_particles=n_particles, seed=seed, calibrator=calibrator, cal_key=cal_key)
+            return res
+        except CompilerExecutionError as e:
+            return SimulationResult(question=question, simulation_status="execution_failed",
+                                    failure_taxonomy=e.taxonomy, plan_hash=plan.plan_hash(),
+                                    support_grade=plan.support_grade, limitations=[f"persistence: {e}"],
+                                    latency_s=round(_time.time() - t0, 3))
+        except Exception as e:  # noqa: BLE001 — persistence must never crash the canonical path
+            return SimulationResult(question=question, simulation_status="execution_failed",
+                                    failure_taxonomy="runtime_exception", plan_hash=plan.plan_hash(),
+                                    limitations=[f"persistence runtime: {type(e).__name__}: {e}"],
+                                    latency_s=round(_time.time() - t0, 3))
 
     # ---- run (technical failure → execution_failed, NOT abstention) ----
     from swm.world_model_v2.materialize import run_from_plan

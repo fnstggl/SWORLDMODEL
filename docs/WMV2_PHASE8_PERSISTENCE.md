@@ -212,14 +212,66 @@ an honest reflection of magnitude, not a manufactured effect.
 
 ---
 
+## Part 8 — Production completion (canonical integration, storage, runtime status)
+
+A focused completion pass closed the remaining architectural/operational gaps so persistence is part of the
+**canonical** production path — not a separate entry point.
+
+**8.1 Canonical pipeline integration.** `pipeline.simulate(question, …, persistence=ctx, actor_history=…)`
+is now the one product entry. When history or a compatible checkpoint exists it automatically: resolves
+world/scenario/actor identity → loads the prior checkpoint + event-log watermark → ingests leakage-safe new
+history → replays sequential filters → **selects causally-relevant families** → materializes into the
+standard `WorldState` → exposes only actor-visible memory → runs the ordinary policy/mechanism rollout →
+persists feedback → commits a new versioned checkpoint → returns lineage/versions/support-effect/limitations
+in the standard `SimulationResult`. With no history it initializes broad priors and continues (no abstention).
+`simulate_with_persistence` is retained as a thin compile-first wrapper over the shared `run_with_persistence`
+— there is exactly one canonical execution path. Verified live across a process restart through SQLite.
+
+**8.2 Default use of all causally-relevant families (`phase8_runtime`).** Every implemented family may be
+selected and executed **by default** when causally relevant. `select_families` blocks ONLY `quarantined`/
+`incompatible`; `exploratory`/`highly_speculative` families execute with broader uncertainty, a lower support
+grade, and a sensitivity contribution — never behind an experimental flag. The distinction is *validated →
+stronger support* vs *experimental → broader uncertainty*, not *usable vs disabled*. A load-bearing
+experimental family lowers the overall support grade (`support_grade_effect`) and widens terminal
+uncertainty. Uncertain transitions drop to the strongest available fallback tier (1 fitted → 7 competing
+hypotheses) and are **never removed** (`resolve_transition_tier`).
+
+**8.3 Runtime support + provenance enforcement.** Each `PersistentVariableSpec` carries an executable
+`runtime_status` (validated at registration) + `supporting_evidence` + `transport_risk`.
+`family_runtime_manifest` exposes, per used family: id, version, status, transition family, parameter source,
+supporting dataset/paper, posterior uncertainty (mean+sd+ESS — never a silent point estimate), applicability,
+transport risk, sensitivity contribution, affected state variables, downstream consumers, and limitations.
+
+**8.4 Transactional storage (`phase8_storage`).** A typed `PersistentStorageBackend` with two
+implementations: `JsonlBackend` (portable/testing) and `SqliteBackend` (**production**, WAL journal). SQLite
+gives idempotent atomic event append (INSERT-OR-IGNORE on the content-hash PK), transactional atomic
+checkpoint commit + rollback, multi-process writers + concurrent readers, automatic crash recovery (WAL),
+integrity verification (watermark chain + event↔checkpoint consistency), compaction (bounded checkpoint
+growth; events never pruned), and deterministic replay. `EventLog(backend=SqliteBackend(...))` swaps it in
+with no other change. Throughput is lower than in-memory (durable fsync per event) — the honest cost of
+transactional durability.
+
+**8.5 Canonical identity resolution (`phase8_identity`).** Stable world/scenario/actor/dyad/edge ids
+(deterministic, no wall clock); aliases, merges, institution renames, role-at-time, and **probabilistic
+linkage** (several weighted hypotheses when uncertain — history is never forced onto one actor with false
+certainty).
+
+**8.6 Actor-visible memory in the canonical view.** `_expose_actor_memory` materializes only
+recency/salience-weighted, strictly-before-`as_of` recalled traces into `entity.memory` (via the episodic
+store) — the omniscient log keeps everything, the actor gets probabilistic, non-perfect recall.
+
+---
+
 ## Part 7 — Limitations (honest)
 
-* **One strongly-validated family.** Only `engagement_propensity` (behavioral/momentum persistence) has an
-  adequately-powered real held-out win *through the shared world*. `trust`, `commitment`,
-  `institutional_stage`, `resource_level`, `reputation`, `risk_tolerance`, `relationship_strength`,
-  `habit_strength` are **software-implemented + execute end-to-end + causally consume history**, but are
-  **empirically unvalidated** against real held-out outcomes here (no defensible labeled longitudinal dataset
-  was run for them). They are quarantined as experimental — see the validation doc's four-status grading.
+* **Production-usable ≠ empirically validated.** All nine families are **production-usable and selected by
+  default** (none quarantined/incompatible). But held-out validation is uneven: `engagement_propensity`
+  (n=7074) and `habit_strength` (n=7290) have adequately-powered wins; `resource_level` is structurally
+  sound (accounting-driven) but has no held-out dataset; `trust`/`relationship_strength`/`commitment`/
+  `institutional_stage` are exploratory (Track B weak, Track C null, or no dataset); `reputation`/
+  `risk_tolerance` are highly_speculative (broad priors, no dataset). Experimental families still execute —
+  with broader uncertainty and a lower support grade — they are NOT disabled. See the validation doc's
+  four-status grading and final family table.
 * **Dyadic persistence is weak on Enron.** Track B beats the frequency baseline but not the base-rate
   baseline (AUROC ≈ 0.50); the 2001 collapse is a regime change that washes out dyadic momentum.
 * **Institutional pass-persistence is a null.** Track C is not detectable vs the base rate and is
