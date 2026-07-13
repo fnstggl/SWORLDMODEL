@@ -111,15 +111,18 @@ def select_scope(fused, *, plan=None, terminal_sensitivity: float = 0.5, compute
         chosen = min(local, key=lambda c: SCOPE_RANK.get(c, 99)) if local else "structural_hypothesis"
         rationale = "localized structural change — revise the smallest sufficient component"
 
-    # terminal-sensitivity escalation: if the change's causal descendants reach the outcome with high
-    # sensitivity, prefer adding a competing STRUCTURAL HYPOTHESIS (retain uncertainty) over a silent local edit
+    # terminal-sensitivity handling: when the change's causal descendants reach the outcome with high
+    # sensitivity AND the trigger is NOT near-certain (ambiguous), retain structural uncertainty. We do this by
+    # RECOMMENDING a competing structural-hypothesis ALTERNATIVE (the candidate generator adds it and the
+    # scoring mixture retains it) — we do NOT downgrade a confident, verified edit into a mere hypothesis.
     layer = _SCOPE_TO_LAYER.get(chosen, "outcome")
     impacted = graph.downstream(layer)
-    if terminal_sensitivity >= 0.7 and "outcome" in impacted and cls == "local_structural" \
-            and SCOPE_RANK.get(chosen, 0) < SCOPE_RANK["structural_hypothesis"]:
-        alt_note = f"escalated from {chosen}: high terminal sensitivity → retain structural uncertainty"
-        chosen = "structural_hypothesis"
-        rationale += "; " + alt_note
+    retain_uncertainty = (terminal_sensitivity >= 0.7 and "outcome" in impacted
+                          and cls == "local_structural"
+                          and float(getattr(fused, "fused_probability", 1.0)) < 0.85)
+    if retain_uncertainty and "structural_hypothesis" not in [a["scope"] for a in ([])]:
+        rationale += "; high terminal sensitivity + ambiguous evidence → also retain a competing structural " \
+                     "hypothesis (mixture), primary scope kept minimal"
 
     # budget check: full_plan under a tight budget degrades to the largest affordable scope (recorded)
     within_budget = True
