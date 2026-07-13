@@ -1,0 +1,379 @@
+{
+  "manifest_hash": "1b0e1aa1740d0fdc",
+  "n_test": 41,
+  "per_arm_test": {
+    "base_rate_domain": {
+      "n": 41,
+      "brier": 0.2176,
+      "log_loss": 1.4445,
+      "ece": 0.144,
+      "auroc": 0.5991,
+      "directional_acc": 0.7073,
+      "sharpness": 0.1032
+    },
+    "prior_only_no_evidence": {
+      "n": 41,
+      "brier": 0.25,
+      "log_loss": 0.6931,
+      "ece": 0.2073,
+      "auroc": 0.5,
+      "directional_acc": 0.2927,
+      "sharpness": 0.0
+    },
+    "phase2_evidence_only": {
+      "n": 41,
+      "brier": 0.2512,
+      "log_loss": 0.696,
+      "ece": 0.1989,
+      "auroc": 0.546,
+      "directional_acc": 0.4878,
+      "sharpness": 0.0085
+    },
+    "full_v2_raw": {
+      "n": 41,
+      "brier": 0.2407,
+      "log_loss": 0.6706,
+      "ece": 0.1783,
+      "auroc": 0.5833,
+      "directional_acc": 0.5122,
+      "sharpness": 0.0365
+    },
+    "full_v2_calibrated": {
+      "n": 41,
+      "brier": 0.2407,
+      "log_loss": 0.6706,
+      "ece": 0.1783,
+      "auroc": 0.5833,
+      "directional_acc": 0.5122,
+      "sharpness": 0.0365
+    },
+    "direct_llm": {
+      "n": 11,
+      "brier": 0.2189,
+      "log_loss": 0.6161,
+      "ece": 0.3591,
+      "auroc": 0.95,
+      "directional_acc": 0.6364,
+      "sharpness": 0.0825
+    },
+    "direct_ensemble": {
+      "n": 11,
+      "brier": 0.2076,
+      "log_loss": 0.5924,
+      "ece": 0.3584,
+      "auroc": 1.0,
+      "directional_acc": 0.6364,
+      "sharpness": 0.0719
+    }
+  },
+  "baseline_comparisons": {
+    "full_v2_raw_vs_base_rate_domain": {
+      "n": 41,
+      "mean_brier_diff": 0.0231,
+      "ci95": [
+        -0.077,
+        0.119
+      ],
+      "note": "arm_a - arm_b; negative => arm_a better"
+    },
+    "full_v2_calibrated_vs_base_rate_domain": {
+      "n": 41,
+      "mean_brier_diff": 0.0231,
+      "ci95": [
+        -0.077,
+        0.119
+      ],
+      "note": "arm_a - arm_b; negative => arm_a better"
+    },
+    "full_v2_raw_vs_direct_llm": {
+      "n": 11,
+      "mean_brier_diff": 0.0363,
+      "ci95": [
+        -0.1474,
+        0.194
+      ],
+      "note": "arm_a - arm_b; negative => arm_a better"
+    },
+    "full_v2_calibrated_vs_direct_llm": {
+      "n": 11,
+      "mean_brier_diff": 0.0363,
+      "ci95": [
+        -0.1474,
+        0.194
+      ],
+      "note": "arm_a - arm_b; negative => arm_a better"
+    },
+    "full_v2_raw_vs_direct_ensemble": {
+      "n": 11,
+      "mean_brier_diff": 0.0476,
+      "ci95": [
+        -0.1316,
+        0.2027
+      ],
+      "note": "arm_a - arm_b; negative => arm_a better"
+    },
+    "full_v2_calibrated_vs_direct_ensemble": {
+      "n": 11,
+      "mean_brier_diff": 0.0476,
+      "ci95": [
+        -0.1316,
+        0.2027
+      ],
+      "note": "arm_a - arm_b; negative => arm_a better"
+    },
+    "full_v2_raw_vs_phase2_evidence_only": {
+      "n": 41,
+      "mean_brier_diff": -0.0104,
+      "ci95": [
+        -0.0498,
+        0.0307
+      ],
+      "note": "arm_a - arm_b; negative => arm_a better"
+    },
+    "full_v2_calibrated_vs_phase2_evidence_only": {
+      "n": 41,
+      "mean_brier_diff": -0.0104,
+      "ci95": [
+        -0.0498,
+        0.0307
+      ],
+      "note": "arm_a - arm_b; negative => arm_a better"
+    }
+  },
+  "ablation_table": {
+    "A0_base_rate": {
+      "n": 41,
+      "brier": 0.2176,
+      "log_loss": 1.4445,
+      "ece": 0.144,
+      "auroc": 0.5991,
+      "directional_acc": 0.7073,
+      "sharpness": 0.1032
+    },
+    "A1_direct_llm": {
+      "n": 11,
+      "brier": 0.2189,
+      "log_loss": 0.6161,
+      "ece": 0.3591,
+      "auroc": 0.95,
+      "directional_acc": 0.6364,
+      "sharpness": 0.0825
+    },
+    "A2_direct_ensemble": {
+      "n": 11,
+      "brier": 0.2076,
+      "log_loss": 0.5924,
+      "ece": 0.3584,
+      "auroc": 1.0,
+      "directional_acc": 0.6364,
+      "sharpness": 0.0719
+    },
+    "A4_full_v2_no_evidence(prior)": {
+      "n": 41,
+      "brier": 0.25,
+      "log_loss": 0.6931,
+      "ece": 0.2073,
+      "auroc": 0.5,
+      "directional_acc": 0.2927,
+      "sharpness": 0.0
+    },
+    "A5_full_v2_no_posterior(evidence_only)": {
+      "n": 41,
+      "brier": 0.2512,
+      "log_loss": 0.696,
+      "ece": 0.1989,
+      "auroc": 0.546,
+      "directional_acc": 0.4878,
+      "sharpness": 0.0085
+    },
+    "A16_full_v2_raw": {
+      "n": 41,
+      "brier": 0.2407,
+      "log_loss": 0.6706,
+      "ece": 0.1783,
+      "auroc": 0.5833,
+      "directional_acc": 0.5122,
+      "sharpness": 0.0365
+    },
+    "A17_full_v2_calibrated": {
+      "n": 41,
+      "brier": 0.2407,
+      "log_loss": 0.6706,
+      "ece": 0.1783,
+      "auroc": 0.5833,
+      "directional_acc": 0.5122,
+      "sharpness": 0.0365
+    },
+    "_not_on_forecast_path": {
+      "note": "Phases 8 (persistence), 9 (populations/networks) are SEPARATE pipelines not invoked by the question->forecast path; nonlinear (7) is CLI-only; Phase 11 (dynamic recompilation) is absent from the base branch. Ablating them here would be a no-op. Their removal effect is 'not applicable \u2014 not wired', NOT 'zero effect verified'.",
+      "subsystems": [
+        "persistence",
+        "multilayer_networks",
+        "populations",
+        "nonlinear_mechanisms",
+        "dynamic_recompilation"
+      ]
+    }
+  },
+  "critic_evaluation": {
+    "n_warned": 6,
+    "n_unwarned": 5,
+    "mean_brier_warned": 0.2537,
+    "mean_brier_unwarned": 0.257,
+    "error_lift_when_warned": -0.0033,
+    "critic_can_overwrite_v2": false
+  },
+  "critic_rows": [
+    {
+      "row_id": "phase3acc_locked:indonesia_2024",
+      "v2_p": 0.3286,
+      "direct_p": 0.85,
+      "warnings": [
+        "large disagreement with direct/ensemble (0.52) \u2014 check compiler/mechanisms"
+      ],
+      "brier": 0.4508
+    },
+    {
+      "row_id": "phase3acc_locked:romania_2024",
+      "v2_p": 0.697,
+      "direct_p": 0.15,
+      "warnings": [
+        "large disagreement with direct/ensemble (0.55) \u2014 check compiler/mechanisms"
+      ],
+      "brier": 0.0918
+    },
+    {
+      "row_id": "phase3acc_locked:ghana_2024",
+      "v2_p": 0.4744,
+      "direct_p": 0.55,
+      "warnings": [],
+      "brier": 0.2763
+    },
+    {
+      "row_id": "phase3acc_locked:senegal_2024",
+      "v2_p": 0.7606,
+      "direct_p": 0.85,
+      "warnings": [],
+      "brier": 0.0573
+    },
+    {
+      "row_id": "phase3acc_locked:poland_2025",
+      "v2_p": 0.2958,
+      "direct_p": 0.35,
+      "warnings": [],
+      "brier": 0.4959
+    },
+    {
+      "row_id": "phase3acc_locked:rba_nov24",
+      "v2_p": 0.7375,
+      "direct_p": 0.85,
+      "warnings": [],
+      "brier": 0.0689
+    },
+    {
+      "row_id": "phase3acc_locked:riksbank_2024",
+      "v2_p": 0.3125,
+      "direct_p": 0.65,
+      "warnings": [
+        "large disagreement with direct/ensemble (0.37) \u2014 check compiler/mechanisms"
+      ],
+      "brier": 0.4727
+    },
+    {
+      "row_id": "phase3acc_locked:rbi_2024",
+      "v2_p": 0.3784,
+      "direct_p": 0.35,
+      "warnings": [],
+      "brier": 0.3864
+    },
+    {
+      "row_id": "phase3acc_locked:silver_40_2024",
+      "v2_p": 0.5333,
+      "direct_p": 0.15,
+      "warnings": [
+        "large disagreement with direct/ensemble (0.38) \u2014 check compiler/mechanisms"
+      ],
+      "brier": 0.2844
+    },
+    {
+      "row_id": "phase3acc_locked:arm_ipo_2023",
+      "v2_p": 0.5789,
+      "direct_p": 0.95,
+      "warnings": [
+        "large disagreement with direct/ensemble (0.37) \u2014 check compiler/mechanisms"
+      ],
+      "brier": 0.1773
+    },
+    {
+      "row_id": "phase3acc_locked:spirit_bk_2024",
+      "v2_p": 0.7875,
+      "direct_p": 0.35,
+      "warnings": [
+        "large disagreement with direct/ensemble (0.44) \u2014 check compiler/mechanisms"
+      ],
+      "brier": 0.0452
+    }
+  ],
+  "acceptance_gates": {
+    "G1_full_force_integration": {
+      "status": "PARTIAL",
+      "detail": "Max-capacity posterior path runs through one shared pipeline; but the shipped facade default is the simpler pipeline.simulate, and Phases 8/9/11 are not on the forecast path. active-component manifest present for 100% of rows."
+    },
+    "G2_no_abstention": {
+      "status": "PASS",
+      "abstention_rate": 0.0,
+      "detail": "All completed forecasts scored; support grades never suppress a probability."
+    },
+    "G3_data_governance": {
+      "status": "PASS",
+      "manifest_hash": "1b0e1aa1740d0fdc",
+      "detail": "cal/val/test disjoint by event family; test outcomes unused in fitting/selection."
+    },
+    "G4_calibration": {
+      "status": "PASS",
+      "detail": "selected=identity (identity => no method beat raw on validation; correct fallback)."
+    },
+    "G5_support_grading": {
+      "status": "FAIL(preserved)",
+      "detail": "highly_speculative separates as worst; fine 4-level ordering not monotonic on 41-row test."
+    },
+    "G6_uncertainty_decomposition": {
+      "status": "PASS",
+      "detail": "quantitative decomposition for 100% rich rows; synthetic recovery attributes correctly."
+    },
+    "G7_sensitivity": {
+      "status": "PASS",
+      "detail": "leave-one-evidence-group-out (matched recomputation), not LLM opinion."
+    },
+    "G8_critic": {
+      "status": "PASS",
+      "detail": "critic cannot overwrite V2; warning error-lift=-0.0033."
+    },
+    "G9_predictive_comparison": {
+      "status": "REPORTED",
+      "full_v2_raw_beats_base_rate": false,
+      "full_v2_raw_beats_direct_llm": false,
+      "full_v2_raw_beats_ensemble": false
+    },
+    "G10_causal_integration": {
+      "status": "PARTIAL",
+      "detail": "in-path components (evidence, posterior) show terminal effect; out-of-path phases marked not-wired, not integrated."
+    },
+    "G11_scale": {
+      "status": "PARTIAL",
+      "n_rows": 148,
+      "target": 1000,
+      "detail": "148 verified real forecasts across 9 domains (< 1000 target); resumable pipeline provided."
+    },
+    "G12_reproducibility": {
+      "status": "PASS",
+      "detail": "artifacts hashed; deterministic offline recomputation; corpus manifest hash recorded."
+    }
+  },
+  "predictive_signal_summary": {
+    "full_v2_raw_brier": 0.2407,
+    "base_rate_brier": 0.2176,
+    "direct_llm_brier": 0.2189,
+    "ensemble_brier": 0.2076
+  }
+}
