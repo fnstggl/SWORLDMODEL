@@ -1,0 +1,12 @@
+{
+  "n": 23,
+  "corr_logit_phase2_phase3": 0.7136,
+  "learned_stack": {
+    "a": null,
+    "b_phase2": null,
+    "c_phase3": null
+  },
+  "interpretation": "Mechanism: when consumed, the Phase-3 posterior particles OVERRIDE the terminal rate (materialize -> _inject_posterior_rate), so Phase-3 does not ADD to Phase-2 \u2014 it REPLACES the rate with its own assimilation of the SAME bundle. This is redundant/competing assimilation, not additive double-counting. The learned stack coefficient c on logit(p_phase3) measures the INDEPENDENT information Phase-3 carries beyond Phase-2: c near 0 => Phase-3 adds ~nothing beyond Phase-2 (redundant); high corr(logit p2, logit p3) confirms the two forecasts move together off the shared evidence.",
+  "total_nonneutral_effective_obs_across_dev": 79,
+  "mechanism_verdict": "override_not_additive"
+}

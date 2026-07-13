@@ -1,0 +1,123 @@
+{
+  "rate_calibration": {
+    "use_ref_prior": false,
+    "gamma": 0.7,
+    "no_info_mix": 0.0,
+    "post_temp": 1.0
+  },
+  "blend": {
+    "w_phase2": 0.5
+  },
+  "gate": {
+    "min_effective_obs": 4
+  },
+  "family_map": {
+    "trump_2024": "us_pres_2024",
+    "harris_2024": "us_pres_2024",
+    "biden_nominee": "us_pres_2024",
+    "uk_labour": "uk_ge_2024",
+    "shutdown_oct24": "us_shutdown",
+    "shutdown_dec24": "us_shutdown",
+    "fed_sep24": "fomc",
+    "fed_nov24": "fomc",
+    "fed_dec24": "fomc",
+    "fed_jan25": "fomc",
+    "btc_100k": "crypto_threshold",
+    "recession_24": "us_macro",
+    "nvda_split": "corp_action",
+    "sp500_6000": "index_threshold",
+    "gpt5_2024": "openai_release",
+    "gpt5_2025": "openai_release",
+    "apple_intel": "apple_release",
+    "gaza_ceasefire24": "gaza",
+    "gaza_ceasefire25": "gaza",
+    "assad_fall": "syria",
+    "ru_ua_cf24": "ru_ua",
+    "india_t20": "cricket",
+    "real_ucl": "football"
+  },
+  "val_families": [
+    "corp_action",
+    "cricket",
+    "fomc",
+    "gaza",
+    "index_threshold",
+    "openai_release"
+  ],
+  "fit_log": {
+    "n_dev": 23,
+    "n_train": 12,
+    "n_val": 11,
+    "fidelity": {
+      "n": 23,
+      "max_abs_diff": 0.0077,
+      "mean_abs_diff": 0.0053
+    },
+    "train_qids": [
+      "trump_2024",
+      "harris_2024",
+      "biden_nominee",
+      "uk_labour",
+      "shutdown_dec24",
+      "btc_100k",
+      "recession_24",
+      "apple_intel",
+      "assad_fall",
+      "ru_ua_cf24",
+      "real_ucl",
+      "starship_catch"
+    ],
+    "val_qids": [
+      "fed_sep24",
+      "fed_nov24",
+      "fed_dec24",
+      "fed_jan25",
+      "nvda_split",
+      "sp500_6000",
+      "gpt5_2024",
+      "gpt5_2025",
+      "gaza_ceasefire24",
+      "gaza_ceasefire25",
+      "india_t20"
+    ],
+    "rate_calibration_best_val_logloss": 0.604,
+    "rate_calibration_selected": {
+      "use_ref_prior": false,
+      "gamma": 0.7,
+      "no_info_mix": 0.0,
+      "post_temp": 1.0,
+      "val_logloss": 0.604
+    },
+    "blend_candidates": [
+      {
+        "w_phase2": 1.0,
+        "val_logloss": 0.7384
+      },
+      {
+        "w_phase2": 0.9,
+        "val_logloss": 0.7212
+      },
+      {
+        "w_phase2": 0.75,
+        "val_logloss": 0.6969
+      },
+      {
+        "w_phase2": 0.6,
+        "val_logloss": 0.6745
+      },
+      {
+        "w_phase2": 0.5,
+        "val_logloss": 0.6607
+      }
+    ],
+    "blend_selected": {
+      "w_phase2": 0.5,
+      "val_logloss": 0.6607
+    },
+    "gate_selected": {
+      "min_effective_obs": 4,
+      "val_logloss": 0.6513
+    }
+  },
+  "contract": "repaired_p = (n_effective<gate.min ? p_phase2 : sigmoid(w*logit(p_phase2) + (1-w)*logit(p3_calibrated_rate_mean))); w in [0,1] (convex, Phase-2 never inverted); p3_calibrated from rate_posterior with gamma/no_info_mix/post_temp and optional reference-class prior (shrinks toward the per-question prior). Frozen on DEV; TEST untouched."
+}
