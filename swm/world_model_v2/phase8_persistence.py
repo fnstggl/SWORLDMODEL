@@ -41,6 +41,13 @@ TRANSITION_FAMILIES = (
 
 IDENTIFIABILITY = ("identified", "weakly_identified", "unidentified")
 PROVENANCE_STATUS = ("observed", "fitted", "reference_pack", "hierarchical_prior", "broad_prior")
+#: executable runtime support status per family (Part 2/3 of the completion pass). Ordered strongest→weakest.
+#: Only `quarantined` and `incompatible` are blocked from automatic production execution; everything else
+#: MAY execute by default when causally relevant (exploratory/highly_speculative simply carry broader
+#: uncertainty + a lower support grade + a sensitivity contribution).
+RUNTIME_STATUSES = ("empirically_supported", "transfer_supported", "exploratory", "highly_speculative",
+                    "quarantined", "incompatible")
+BLOCKED_STATUSES = ("quarantined", "incompatible")
 
 
 def _hash(obj) -> str:
@@ -108,6 +115,9 @@ class PersistentVariableSpec:
     identifiability: str = "weakly_identified"  # IDENTIFIABILITY
     materializes_into: str = ""              # WorldState field path the value writes to (REQUIRED, non-ornamental)
     consumed_by: tuple = ()                  # mechanisms/policy families that READ the materialized field
+    runtime_status: str = "exploratory"      # RUNTIME_STATUSES — executable support status (enforced, not doc)
+    supporting_evidence: str = ""            # dataset/paper backing the status where available
+    transport_risk: str = "high"             # low | medium | high — out-of-domain risk (widens uncertainty)
     schema_version: str = SCHEMA_VERSION
 
     def validate(self) -> "PersistentVariableSpec":
@@ -117,6 +127,8 @@ class PersistentVariableSpec:
             raise ValueError(f"unknown posterior_family {self.posterior_family!r}")
         if self.transition_family not in TRANSITION_FAMILIES:
             raise ValueError(f"unknown transition_family {self.transition_family!r}")
+        if self.runtime_status not in RUNTIME_STATUSES:
+            raise ValueError(f"unknown runtime_status {self.runtime_status!r} (known: {RUNTIME_STATUSES})")
         # ANTI-ORNAMENTAL: a persistent variable MUST name a WorldState field it materializes into AND a
         # consumer that reads it. A variable that changes nothing downstream is not persistence — it is
         # storage, and Phase 8 explicitly refuses to count storage-only state.
@@ -325,7 +337,10 @@ _CANONICAL = [
         actor_visibility="self", terminal_sensitivity=0.8, identifiability="identified",
         materializes_into="entity.latent_state[phase4_policy_value:engage]",
         consumed_by=("phase4_policy.reinforcement_learning", "phase4_policy.habit",
-                     "generic_outcome_readout")),
+                     "generic_outcome_readout"),
+        runtime_status="empirically_supported", transport_risk="medium",
+        supporting_evidence="OmniBehavior n=7074 held-out through the shared world: persist vs memoryless "
+                            "-0.0119 [-0.0134,-0.0103] power 1.0; person-disjoint transfer -0.0189 power 1.0"),
     PersistentVariableSpec(
         variable_id="habit_strength", scope="actor", support="nonneg_real",
         definition="accumulated tendency to repeat a specific action from its own reinforcement history",
@@ -333,7 +348,10 @@ _CANONICAL = [
         transition_param_source="broad_prior", observation_model="count of past occurrences of the action",
         prior_source="broad_prior", update_triggers=("actor_action",), expected_timescale="weeks",
         actor_visibility="self", terminal_sensitivity=0.5,
-        materializes_into="entity.past_actions", consumed_by=("phase4_policy.habit",)),
+        materializes_into="entity.past_actions", consumed_by=("phase4_policy.habit",),
+        runtime_status="transfer_supported", transport_risk="medium",
+        supporting_evidence="habit-formation is a well-established behavioral mechanism; shares the "
+                            "engagement momentum's validated substrate but not separately held-out here"),
     PersistentVariableSpec(
         variable_id="trust", scope="dyad", support="unit_interval",
         definition="actor A's trust in actor B for a class of action/information, updated asymmetrically "
@@ -346,7 +364,10 @@ _CANONICAL = [
         update_triggers=("promise_fulfilled", "promise_violated", "cooperative_act", "defection"),
         reset_conditions=("relationship_reset",), expected_timescale="weeks", actor_visibility="dyad",
         terminal_sensitivity=0.7, materializes_into="network.edge.trust",
-        consumed_by=("phase4_policy.reciprocity", "relationship_update")),
+        consumed_by=("phase4_policy.reciprocity", "relationship_update"),
+        runtime_status="exploratory", transport_risk="high",
+        supporting_evidence="asymmetric gain/loss + repair is a standard trust model (Fehr-Schmidt / "
+                            "reciprocity literature); parameters are a labeled reference pack, not held-out"),
     PersistentVariableSpec(
         variable_id="relationship_strength", scope="relationship", support="unit_interval",
         definition="tie strength between two actors, strengthened by interaction and decayed by inactivity",
@@ -355,7 +376,10 @@ _CANONICAL = [
         prior_source="broad_prior", causal_parents=("trust",),
         update_triggers=("interaction", "inactivity"), expected_timescale="months",
         actor_visibility="dyad", terminal_sensitivity=0.5, materializes_into="network.edge.strength",
-        consumed_by=("phase4_policy.social_proof", "relationship_update")),
+        consumed_by=("phase4_policy.social_proof", "relationship_update"),
+        runtime_status="exploratory", transport_risk="high",
+        supporting_evidence="tie strengthen/decay is standard; Enron dyadic test was weak (regime change) — "
+                            "not held-out validated"),
     PersistentVariableSpec(
         variable_id="reputation", scope="actor", support="unit_interval",
         definition="public standing accumulated from observed outcomes; recovers slowly after damage",
@@ -363,7 +387,9 @@ _CANONICAL = [
         transition_param_source="broad_prior", observation_model="publicly observed success/failure/sanction",
         prior_source="broad_prior", update_triggers=("public_outcome", "sanction"),
         expected_timescale="months", actor_visibility="public", terminal_sensitivity=0.5,
-        materializes_into="entity.beliefs[reputation]", consumed_by=("phase4_policy.limited_depth_reasoning",)),
+        materializes_into="entity.beliefs[reputation]", consumed_by=("phase4_policy.limited_depth_reasoning",),
+        runtime_status="highly_speculative", transport_risk="high",
+        supporting_evidence="accrual/recovery rates are broad priors; no held-out reputation dataset run"),
     PersistentVariableSpec(
         variable_id="commitment", scope="actor", support="categorical",
         definition="lifecycle state of a promise/obligation (open→fulfilled|violated), gating later actions",
@@ -372,7 +398,10 @@ _CANONICAL = [
         prior_source="observed", update_triggers=("commitment_created", "promise_fulfilled",
                                                    "promise_violated"),
         expected_timescale="weeks", actor_visibility="self", terminal_sensitivity=0.6,
-        materializes_into="entity.commitments", consumed_by=("phase4_feasibility", "phase4_policy.obligation")),
+        materializes_into="entity.commitments", consumed_by=("phase4_feasibility", "phase4_policy.obligation"),
+        runtime_status="exploratory", transport_risk="medium",
+        supporting_evidence="lifecycle is observed-event-driven (deterministic transitions); the gating "
+                            "effect on feasibility is structural, but not held-out validated as an outcome"),
     PersistentVariableSpec(
         variable_id="resource_level", scope="actor", support="nonneg_real", units="unit",
         definition="depletable/accruable resource stock constraining feasible actions",
@@ -380,7 +409,10 @@ _CANONICAL = [
         transition_param_source="observed", observation_model="resource gain/spend events",
         prior_source="observed", update_triggers=("resource_gain", "resource_spend"),
         expected_timescale="days", actor_visibility="self", terminal_sensitivity=0.5,
-        materializes_into="entity.resources", consumed_by=("phase4_feasibility", "resource_update")),
+        materializes_into="entity.resources", consumed_by=("phase4_feasibility", "resource_update"),
+        runtime_status="transfer_supported", transport_risk="low",
+        supporting_evidence="resource conservation is observed/accounting-driven (a near-deterministic "
+                            "constraint on feasible actions); low transport risk"),
     PersistentVariableSpec(
         variable_id="risk_tolerance", scope="actor", support="unit_interval",
         definition="adaptive risk appetite that shifts toward/away from risk after gains/losses",
@@ -388,7 +420,9 @@ _CANONICAL = [
         transition_param_source="broad_prior", observation_model="realized gain/loss events",
         prior_source="broad_prior", update_triggers=("realized_gain", "realized_loss"),
         expected_timescale="weeks", actor_visibility="self", terminal_sensitivity=0.4,
-        materializes_into="entity.beliefs[risk_tolerance]", consumed_by=("phase4_policy.risk_sensitive",)),
+        materializes_into="entity.beliefs[risk_tolerance]", consumed_by=("phase4_policy.risk_sensitive",),
+        runtime_status="highly_speculative", transport_risk="high",
+        supporting_evidence="adaptation rates are broad priors; no held-out risk-tolerance dataset run"),
     PersistentVariableSpec(
         variable_id="institutional_stage", scope="institution", support="categorical",
         definition="the process stage/queue position an actor's case has reached in an institution, "
@@ -398,7 +432,10 @@ _CANONICAL = [
         prior_source="observed", update_triggers=("stage_transition", "decision", "appeal"),
         expected_timescale="weeks", actor_visibility="institutional", terminal_sensitivity=0.7,
         materializes_into="entity.latent_state[institutional_stage]",
-        consumed_by=("phase4_feasibility", "institutional_vote")),
+        consumed_by=("phase4_feasibility", "institutional_vote"),
+        runtime_status="exploratory", transport_risk="medium",
+        supporting_evidence="stage transitions are observed-event-driven; path-dependence is structural; the "
+                            "Senate pass-persistence test was a null (bill-driven), so not outcome-validated"),
 ]
 for _spec in _CANONICAL:
     register_persistent_variable(_spec)
