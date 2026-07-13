@@ -154,6 +154,7 @@ def request_identity(packet: dict, lens: str, *, code_commit: str,
         "prompt_version": PROMPT_VERSION,
         "provider_url": BASE_URL,
         "model": MODEL,
+        "thinking": {"type": "disabled"},
         "system_prompt": SYSTEM_PROMPT,
         "user_prompt": render_prompt(packet, lens),
         "temperature": 0.0,
@@ -196,6 +197,7 @@ class DeepSeekEnvelopeClient:
             ],
             "temperature": request["temperature"],
             "max_tokens": request["max_tokens"],
+            "thinking": request["thinking"],
             "response_format": {"type": "json_object"},
         }).encode("utf-8")
         started = time.monotonic()
