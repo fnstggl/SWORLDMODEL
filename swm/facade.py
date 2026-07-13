@@ -80,13 +80,18 @@ def forecast(question: str, *, architecture: str, llm=None, evidence: str = "", 
                                 f"choose one of {ARCHITECTURES}")
     rec = RunRecord(architecture=architecture)
     if architecture == "world_model_v2":
-        # NO-ABSTENTION production path: every coherent question simulates. The pipeline returns a
-        # SimulationResult (simulation_status / support_grade / recommendation_status), never a forecast
-        # refusal. Epistemic weakness lowers the support grade; only technical failures → execution_failed;
-        # only genuinely incoherent questions → clarification_required.
-        from swm.world_model_v2.pipeline import simulate
-        res = simulate(question, llm=llm, evidence=evidence, as_of=as_of, horizon=horizon,
-                       intervention=kw.get("intervention", ""), seed=kw.get("seed", 0))
+        # NO-ABSTENTION production path: every coherent question simulates through the ONE canonical,
+        # maximum-capacity, DEFAULT-ON unified runtime (Phases 1-11 threaded through one plan/world/queue/
+        # StateDelta/terminal). The caller does NOT opt subsystems in — the compiler selects causally-relevant
+        # ones and omissions are recorded. Returns a SimulationResult (never a forecast refusal). The legacy
+        # lightweight `pipeline.simulate` is retained only as an internal compatibility helper (see
+        # `_legacy_pipeline_simulate` / deprecation test); it is NOT the public default anymore.
+        from swm.world_model_v2.unified_runtime import simulate_world
+        res = simulate_world(question, as_of=as_of, horizon=horizon, llm=llm,
+                             intervention=kw.get("intervention", ""), seed=kw.get("seed", 0),
+                             user_context=kw.get("user_context"), prior_checkpoint=kw.get("prior_checkpoint"),
+                             compute_budget=kw.get("compute_budget"),
+                             execution_policy=kw.get("execution_policy"))
         rec.plan_hash = res.plan_hash
         return {"question": question, **res.as_dict(), "run": rec.finalize().as_dict()}
     # ---- explicit baselines (deprecated for new development; preserved for science) ----
