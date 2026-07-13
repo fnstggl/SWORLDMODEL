@@ -176,3 +176,25 @@ structure-reaches-execution, zero abstention.
 authority, reporting (multi-hop escalation), alliance/coordination, conflict (blocks coordination), resource
 (capacity-gated transfer), jurisdiction (scope-gated institutional action) — each emitting StateDeltas with
 reason codes on blocked actions.
+
+---
+
+## Part 4 — Final hardening run (no architecture redesign)
+
+No architecture was redesigned this run; only production gates were closed:
+- **2nd real graph domain** (`wmv2_phase9_enron_graph.py`): Enron email communication → future-edge temporal
+  prediction through the same exposure edge posterior.
+- **Fitted likelihoods** (`wmv2_phase9_fit_likelihoods.py`): the `repeated_interaction` detect/false rates fit
+  on real Enron with a node-disjoint split, compared against the fixed `EDGE_OBS_MODELS` table.
+- **Real-outcome validation** (`wmv2_phase9_real_outcome.py`): population (GSS) + network (Enron) vs strong
+  baselines with paired bootstrap CIs.
+- **100-question automatic discovery** (`wmv2_phase9_discovery_eval.py`, 112 questions × 14 domains): the
+  universal `simulate_with_populations_networks(question, as_of, horizon)` path — caller supplies only the
+  question.
+
+The central architectural finding this run: **graph inference is calibrated and causally consumed but does NOT
+beat a simple frequency baseline on real-outcome point prediction** — so the correct production posture is to
+use Phase-9 graph structure for calibrated uncertainty + execution structure, and keep Phase-2 as the
+outcome-forecast default. Interfaces later phases should consume: `simulate_with_populations_networks`
+(universal entry), `phase9_discovery.discover` (typed discovery plan), `infer_edge_posterior_exposure`
+(informative-absence edge posterior), `phase9_temporal.evolve` (temporal transitions).
