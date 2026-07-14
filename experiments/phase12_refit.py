@@ -34,6 +34,14 @@ def main():
         print(f"\n=== running {mod} ===")
         m = importlib.import_module(mod)
         m.main()
+    try:
+        from swm.world_model_v2.runtime_fingerprint import runtime_fingerprint
+        fp = runtime_fingerprint()
+        print(f"\nRUNTIME FINGERPRINT REQUIRED FOR PRODUCT-ELIGIBLE REFIT: {fp['fingerprint_hash']} "
+              f"(commit {fp['commit']}). Any corpus not stamped with this fingerprint is diagnostic_only. "
+              "Regenerate the corpus through simulate_world before finalizing calibration.")
+    except Exception:  # noqa: BLE001
+        pass
     print("\nphase12 refit complete. NOTE: still PROVISIONAL until the corpus is regenerated from the "
           "post-Phase-11 maximum-capacity path (set maximum_capacity_available=True).")
 
