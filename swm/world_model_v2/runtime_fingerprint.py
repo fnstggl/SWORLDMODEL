@@ -33,6 +33,8 @@ def runtime_fingerprint():
         "persistence": "phase8-1.0",
         "recompilation": "phase11",
         "integration_completion": "integration-completion-1.0",
+        "activation_synthesis": "activation-synthesis-1.0 (relevance gate + consumers)",
+        "phase_consumers": "phase-consumers-1.0 (institutional_decision/population/network/actor-polarity)",
         "commit": _commit(),
     }
     fp["fingerprint_hash"] = hashlib.sha256(json.dumps(fp, sort_keys=True).encode()).hexdigest()[:16]

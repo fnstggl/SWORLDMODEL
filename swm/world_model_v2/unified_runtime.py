@@ -51,7 +51,7 @@ def _mani(available=True, selected=False, executed=False, omitted=False, reason=
 def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention: str = "",
                    user_context=None, prior_checkpoint=None, compute_budget=None, seed: int = 0,
                    llm=None, execution_policy: dict = None, trace_level: str = "standard",
-                   config=None) -> SimulationResult:
+                   config=None, prebuilt_bundle=None) -> SimulationResult:
     """THE canonical public V2 entry. One shared plan/world/queue/StateDelta/terminal path across all phases.
 
     The ordinary caller does NOT choose which phases run — the compiler selects causally-relevant subsystems.
@@ -98,11 +98,19 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
     bundle = None
     if "phase2_evidence" not in drop and as_of:
         try:
-            reqs = requirements_from_plan(plan, as_of_iso=_iso(as_of), question=question)
-            bundle = gather_evidence(question, as_of=as_of, requirements=reqs, llm=llm, config=cfg,
-                                     plan_hash=plan.plan_hash(), seed=seed)
-            manifest["phase2_evidence"].update(selected=True, executed=True, version="phase2-1.0",
-                                                reason=f"{len(bundle.included_claim_ids)} as-of claims")
+            if prebuilt_bundle is not None:
+                # sealed-replay injection point: a FROZEN, time-locked bundle built by the Temporal Replay
+                # Laboratory (possibly causally blinded) replaces live retrieval. Recorded, never silent.
+                bundle = prebuilt_bundle
+                manifest["phase2_evidence"].update(
+                    selected=True, executed=True, version="phase2-1.0",
+                    reason=f"injected_replay_bundle: {len(bundle.included_claim_ids)} as-of claims")
+            else:
+                reqs = requirements_from_plan(plan, as_of_iso=_iso(as_of), question=question)
+                bundle = gather_evidence(question, as_of=as_of, requirements=reqs, llm=llm, config=cfg,
+                                         plan_hash=plan.plan_hash(), seed=seed)
+                manifest["phase2_evidence"].update(selected=True, executed=True, version="phase2-1.0",
+                                                   reason=f"{len(bundle.included_claim_ids)} as-of claims")
             revised, diff = recompile_with_evidence(plan, bundle, llm=llm, horizon=horizon)
             plan = attach_evidence_observations(revised, bundle)
             lineage["plan_hashes"].append(plan.plan_hash())
@@ -156,6 +164,26 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
             lineage["completeness_diagnostics"] = completeness_diagnostics(plan)
         except Exception as e:  # noqa: BLE001
             manifest["phase10_institutions"]["normalization"] = {"error": type(e).__name__}
+
+    # ---------- Activation synthesis: relevance-gated completion of the execution chain ----------
+    # For each phase the compiler's own causal analysis marks REQUIRED, complete the missing execution
+    # linkage from DECLARED components (institutional_decision events, population/network consumers,
+    # nonlinear state chains, registry pack events); for NOT-required phases, gate off ornamental
+    # execution. Default-on; ablation policy can drop it whole or per phase.
+    if "activation_synthesis" not in drop:
+        try:
+            from swm.world_model_v2.activation_synthesis import phase_requirements, synthesize_activation
+            req = phase_requirements(plan)
+            # respect per-phase ablation drops: a dropped phase must not be synthesized back in
+            for ph in list(req):
+                if ph in drop:
+                    req[ph] = {"required": False, "why": "dropped_by_policy"}
+            lineage["activation_synthesis"] = synthesize_activation(plan, req)
+            for ph, r in req.items():
+                if ph in manifest:
+                    manifest[ph]["relevance"] = {"required": r["required"], "why": r["why"]}
+        except Exception as e:  # noqa: BLE001 — synthesis must never block the forecast
+            lineage["activation_synthesis"] = {"error": f"{type(e).__name__}: {e}"[:160]}
 
     # ---------- Phase 11: dynamic-recompilation loop over the as-of observations (same plan lineage) --------
     if "phase11_recompilation" not in drop and bundle is not None:
