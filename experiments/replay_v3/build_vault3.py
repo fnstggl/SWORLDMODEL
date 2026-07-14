@@ -31,7 +31,7 @@ R_MAX = "2026-07-12"
 MIN_VOLUME, MIN_LIFETIME_D = 1_000.0, 12.0
 CUTOFF_FRACS = (0.15, 0.40, 0.65, 0.88)
 N_REPR = 100
-QUOTA_PER_DOMAIN = 15
+QUOTA_PER_DOMAIN = 999  # pool-proportional: the archive composition IS the representative distribution
 SPLITS = (("calibration", 0, 40), ("validation", 40, 60), ("locked_test", 60, 100))
 COVERAGE_TARGET, COVERAGE_PER_CAT = 60, 10
 
