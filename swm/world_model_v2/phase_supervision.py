@@ -32,7 +32,7 @@ STATUSES = ("causally_active", "no_op_causally_irrelevant", "blocked_missing_sta
 PHASE_OPERATORS = {
     "phase4_actor_policy": ("production_actor_policy", "agent_decision", "fitted_decision",
                             "actor_action_aggregation"),
-    "phase6_registry": ("behavioral_mechanism", "feature_hazard"),
+    "phase6_registry": ("behavioral_mechanism", "feature_hazard", "structural_process_prior"),
     "phase7_nonlinear": ("nonlinear_state_step", "nonlinear_mechanism", "nonlinear_contagion"),
     "phase9_populations": ("population_aggregation",),
     "phase9_networks": ("network_diffusion",),

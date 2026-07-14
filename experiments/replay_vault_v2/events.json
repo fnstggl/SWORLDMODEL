@@ -1,0 +1,2770 @@
+{
+ "note": "PUBLIC vault v2 \u2014 no outcomes/trajectory resolutions here (sealed store, scorer-only).",
+ "frozen_rules": "see build_vault.py docstring (rules frozen before any model run)",
+ "n_worlds": 53,
+ "domain_counts": {
+  "economics": 8,
+  "other": 15,
+  "elections": 15,
+  "geopolitics": 15
+ },
+ "causal_category_counts": {
+  "institutional": 17,
+  "population": 19,
+  "network_diffusion": 0,
+  "strategic_negotiation": 17,
+  "structural_change": 4
+ },
+ "n_multicontract": 20,
+ "splits": {
+  "pm_10262": "calibration",
+  "pm_12547": "calibration",
+  "pm_10451": "calibration",
+  "pm_11202": "calibration",
+  "pm_10443": "calibration",
+  "pm_12206": "calibration",
+  "pm_11942": "calibration",
+  "pm_10611": "calibration",
+  "pm_10169": "calibration",
+  "pm_10249": "calibration",
+  "pm_11232": "calibration",
+  "pm_12047": "calibration",
+  "pm_10260": "calibration",
+  "pm_11040": "calibration",
+  "pm_11209": "calibration",
+  "pm_10588": "calibration",
+  "pm_10257": "calibration",
+  "pm_10253": "calibration",
+  "pm_10862": "calibration",
+  "pm_11639": "calibration",
+  "pm_10219": "calibration",
+  "pm_12037": "calibration",
+  "pm_11901": "calibration",
+  "pm_11652": "calibration",
+  "pm_10133": "calibration",
+  "pm_11002": "calibration",
+  "pm_12473": "calibration",
+  "pm_12114": "calibration",
+  "pm_10020": "calibration",
+  "pm_11794": "calibration",
+  "pm_12152": "calibration",
+  "pm_11095": "calibration",
+  "pm_10803": "calibration",
+  "pm_12563": "calibration",
+  "pm_11815": "calibration",
+  "pm_10166": "calibration",
+  "pm_11696": "calibration",
+  "pm_11821": "calibration",
+  "pm_11874": "calibration",
+  "pm_10799": "calibration",
+  "pm_10766": "validation",
+  "pm_10798": "validation",
+  "pm_11878": "validation",
+  "pm_11074": "validation",
+  "pm_10250": "validation",
+  "pm_10606": "validation",
+  "pm_11913": "validation",
+  "pm_11827": "validation",
+  "pm_11022": "validation",
+  "pm_11541": "validation",
+  "pm_10483": "validation",
+  "pm_11872": "validation",
+  "pm_10259": "validation"
+ },
+ "worlds": [
+  {
+   "event_id": "pm_10262",
+   "question": "U.S. Recession in 2024?",
+   "domain": "economics",
+   "event_family": "us-recession-in-2024-1",
+   "causal_categories": [],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-09-04",
+    "2024-10-11",
+    "2024-11-17",
+    "2024-12-17"
+   ],
+   "horizon": "2025-01-02",
+   "market_snapshots": {
+    "2024-09-04": {
+     "price": 0.085,
+     "exact_t": 1725408002,
+     "requested_t": 1725459841,
+     "staleness_s": 51839
+    },
+    "2024-10-11": {
+     "price": 0.0485,
+     "exact_t": 1728604803,
+     "requested_t": 1728656642,
+     "staleness_s": 51839
+    },
+    "2024-11-17": {
+     "price": 0.023,
+     "exact_t": 1731801603,
+     "requested_t": 1731853443,
+     "staleness_s": 51840
+    },
+    "2024-12-17": {
+     "price": 0.0115,
+     "exact_t": 1734393604,
+     "requested_t": 1734410883,
+     "staleness_s": 17279
+    }
+   },
+   "primary_volume_usdc": 875848.13851399,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "10262",
+    "condition_id": "0x6015c53496b7a099d952edf8d74f2d2e839aa09d2084df79be603e1db949da71",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_12547",
+   "question": "Eric Adams out as NYC mayor before 2025?",
+   "domain": "other",
+   "event_family": "eric-adams-out-as-nyc-mayor-before-2025",
+   "causal_categories": [],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-10-05",
+    "2024-11-01",
+    "2024-11-29",
+    "2024-12-21"
+   ],
+   "horizon": "2025-01-02",
+   "market_snapshots": {
+    "2024-10-05": {
+     "price": 0.465,
+     "exact_t": 1728086402,
+     "requested_t": 1728086402,
+     "staleness_s": 0
+    },
+    "2024-11-01": {
+     "price": 0.265,
+     "exact_t": 1730419203,
+     "requested_t": 1730462402,
+     "staleness_s": 43199
+    },
+    "2024-11-29": {
+     "price": 0.051,
+     "exact_t": 1732752003,
+     "requested_t": 1732838403,
+     "staleness_s": 86400
+    },
+    "2024-12-21": {
+     "price": 0.0125,
+     "exact_t": 1734739203,
+     "requested_t": 1734739203,
+     "staleness_s": 0
+    }
+   },
+   "primary_volume_usdc": 619061.010346995,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "12547",
+    "condition_id": "0x2daa46e920f98ed95cdd31e5674ac135ef3164bb18341bbc4094ec3b624d4eab",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_10451",
+   "question": "Israel and Saudi Arabia normalize relations before U.S. election?",
+   "domain": "elections",
+   "event_family": "israel-and-saudi-arabia-normalize-relations-before-us-election",
+   "causal_categories": [
+    "population"
+   ],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-06-01",
+    "2024-07-20",
+    "2024-09-07",
+    "2024-10-16"
+   ],
+   "horizon": "2024-11-06",
+   "market_snapshots": {
+    "2024-06-01": {
+     "price": 0.175,
+     "exact_t": 1717200003,
+     "requested_t": 1717217282,
+     "staleness_s": 17279
+    },
+    "2024-07-20": {
+     "price": 0.105,
+     "exact_t": 1721433601,
+     "requested_t": 1721450882,
+     "staleness_s": 17281
+    },
+    "2024-09-07": {
+     "price": 0.0325,
+     "exact_t": 1725667202,
+     "requested_t": 1725684482,
+     "staleness_s": 17280
+    },
+    "2024-10-16": {
+     "price": 0.013,
+     "exact_t": 1729036803,
+     "requested_t": 1729071362,
+     "staleness_s": 34559
+    }
+   },
+   "primary_volume_usdc": 133184.532627,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "10451",
+    "condition_id": "0xa307945df868b9b1e7378bab702f82da547144e5d264e2894a3c163db348ae03",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_11202",
+   "question": "Will the election be called on Nov 5? ",
+   "domain": "elections",
+   "event_family": "will-the-us-presidential-election-be-called-on-nov-5",
+   "causal_categories": [
+    "population"
+   ],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-07-18",
+    "2024-08-22",
+    "2024-09-25",
+    "2024-10-23"
+   ],
+   "horizon": "2024-11-07",
+   "market_snapshots": {
+    "2024-07-18": {
+     "price": 0.305,
+     "exact_t": 1721260802,
+     "requested_t": 1721312642,
+     "staleness_s": 51840
+    },
+    "2024-08-22": {
+     "price": 0.335,
+     "exact_t": 1724284802,
+     "requested_t": 1724293442,
+     "staleness_s": 8640
+    },
+    "2024-09-25": {
+     "price": 0.23,
+     "exact_t": 1727222402,
+     "requested_t": 1727274242,
+     "staleness_s": 51840
+    },
+    "2024-10-23": {
+     "price": 0.215,
+     "exact_t": 1729641602,
+     "requested_t": 1729658882,
+     "staleness_s": 17280
+    }
+   },
+   "primary_volume_usdc": 156127.158527,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "11202",
+    "condition_id": "0x16e3a18c6d91e872fe9acfaff758ecc1cbdf6d4b1acbdc18f8bef14076639aca",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_10443",
+   "question": "Will Trump be Speaker by July 1?",
+   "domain": "other",
+   "event_family": "will-trump-be-speaker-by-july-1",
+   "causal_categories": [],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-05-07",
+    "2024-05-24",
+    "2024-06-11",
+    "2024-06-25"
+   ],
+   "horizon": "2024-07-03",
+   "market_snapshots": {
+    "2024-05-07": {
+     "price": 0.0205,
+     "exact_t": 1715040002,
+     "requested_t": 1715040002,
+     "staleness_s": 0
+    },
+    "2024-05-24": {
+     "price": 0.0255,
+     "exact_t": 1716508803,
+     "requested_t": 1716552002,
+     "staleness_s": 43199
+    },
+    "2024-06-11": {
+     "price": 0.012,
+     "exact_t": 1718064002,
+     "requested_t": 1718064002,
+     "staleness_s": 0
+    },
+    "2024-06-25": {
+     "price": 0.01,
+     "exact_t": 1719187203,
+     "requested_t": 1719273602,
+     "staleness_s": 86399
+    }
+   },
+   "primary_volume_usdc": 140097.295466,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "10443",
+    "condition_id": "0xc5d7be203f5fb918cb4bc2e715875b503f87b7ec68071fcf2a22ceabc7976606",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_12206",
+   "question": "Yahya Sinwar still Hamas leader by October 31?",
+   "domain": "geopolitics",
+   "event_family": "yahya-sinwar-still-hamas-leader-through-november",
+   "causal_categories": [
+    "strategic_negotiation"
+   ],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-09-06",
+    "2024-09-19",
+    "2024-10-02",
+    "2024-10-12"
+   ],
+   "horizon": "2024-10-19",
+   "market_snapshots": {
+    "2024-09-06": {
+     "price": 0.765,
+     "exact_t": 1725580802,
+     "requested_t": 1725615361,
+     "staleness_s": 34559
+    },
+    "2024-09-19": {
+     "price": 0.89,
+     "exact_t": 1726704001,
+     "requested_t": 1726738561,
+     "staleness_s": 34560
+    },
+    "2024-10-02": {
+     "price": 0.72,
+     "exact_t": 1727827202,
+     "requested_t": 1727861761,
+     "staleness_s": 34559
+    },
+    "2024-10-12": {
+     "price": 0.815,
+     "exact_t": 1728691202,
+     "requested_t": 1728760321,
+     "staleness_s": 69119
+    }
+   },
+   "primary_volume_usdc": 398934.13104,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "12206",
+    "condition_id": "0x44a23a99b4106399813d921551bc08e69c699fc8c14a8868724eea8b1827a435",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_11942",
+   "question": "Will South Dakota's abortion protection measure pass?",
+   "domain": "other",
+   "event_family": "which-state-amendments-protecting-abortion-will-pass",
+   "causal_categories": [
+    "institutional"
+   ],
+   "n_correlated_contracts": 10,
+   "forecast_cutoffs": [
+    "2024-08-27",
+    "2024-09-18",
+    "2024-10-11",
+    "2024-10-29"
+   ],
+   "horizon": "2024-11-08",
+   "market_snapshots": {
+    "2024-08-27": {
+     "price": 0.755,
+     "exact_t": 1724716801,
+     "requested_t": 1724716802,
+     "staleness_s": 1
+    },
+    "2024-09-18": {
+     "price": 0.635,
+     "exact_t": 1726617602,
+     "requested_t": 1726660802,
+     "staleness_s": 43200
+    },
+    "2024-10-11": {
+     "price": 0.645,
+     "exact_t": 1728518402,
+     "requested_t": 1728604802,
+     "staleness_s": 86400
+    },
+    "2024-10-29": {
+     "price": 0.52,
+     "exact_t": 1730160002,
+     "requested_t": 1730160002,
+     "staleness_s": 0
+    }
+   },
+   "primary_volume_usdc": 190067.178621,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "11942",
+    "condition_id": "0x4736c0f30bacb26bb49ac51c7ef277423658c153c44d56808d2a36d5a87b56a7",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary_primary_of_categorical_event"
+  },
+  {
+   "event_id": "pm_10611",
+   "question": "Friend.Tech airdrop by June 30?",
+   "domain": "other",
+   "event_family": "friendtech-airdrop-by-june-30",
+   "causal_categories": [],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-03-01",
+    "2024-03-21",
+    "2024-04-10",
+    "2024-04-26"
+   ],
+   "horizon": "2024-05-05",
+   "market_snapshots": {
+    "2024-03-01": {
+     "price": 0.595,
+     "exact_t": 1709251202,
+     "requested_t": 1709320323,
+     "staleness_s": 69121
+    },
+    "2024-03-21": {
+     "price": 0.665,
+     "exact_t": 1710979203,
+     "requested_t": 1711026723,
+     "staleness_s": 47520
+    },
+    "2024-04-10": {
+     "price": 0.62,
+     "exact_t": 1712707203,
+     "requested_t": 1712733123,
+     "staleness_s": 25920
+    },
+    "2024-04-26": {
+     "price": 0.595,
+     "exact_t": 1714089602,
+     "requested_t": 1714098243,
+     "staleness_s": 8641
+    }
+   },
+   "primary_volume_usdc": 89774.951101,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "10611",
+    "condition_id": "0x77947a083492123c1b8d56e5959c5feb0ea3c5a4ab490e3abca7e6765799d65e",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_10169",
+   "question": "Will a candidate from another party win New Mexico Presidential Election?",
+   "domain": "elections",
+   "event_family": "new-mexico-presidential-election-winner-2024",
+   "causal_categories": [
+    "population"
+   ],
+   "n_correlated_contracts": 3,
+   "forecast_cutoffs": [
+    "2024-05-12",
+    "2024-07-06",
+    "2024-08-31",
+    "2024-10-14"
+   ],
+   "horizon": "2024-11-07",
+   "market_snapshots": {
+    "2024-05-12": {
+     "price": 0.0085,
+     "exact_t": 1715472003,
+     "requested_t": 1715506562,
+     "staleness_s": 34559
+    },
+    "2024-07-06": {
+     "price": 0.0095,
+     "exact_t": 1720224002,
+     "requested_t": 1720301762,
+     "staleness_s": 77760
+    },
+    "2024-08-31": {
+     "price": 0.002,
+     "exact_t": 1725062402,
+     "requested_t": 1725096962,
+     "staleness_s": 34560
+    },
+    "2024-10-14": {
+     "price": 0.0015,
+     "exact_t": 1728864002,
+     "requested_t": 1728933122,
+     "staleness_s": 69120
+    }
+   },
+   "primary_volume_usdc": 999722.941966,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "10169",
+    "condition_id": "0x208938ca6a4b6474fc1a9346b6415c69bca34854f27e232200dea09eb18d23aa",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary_primary_of_categorical_event"
+  },
+  {
+   "event_id": "pm_10249",
+   "question": "Will a Republican win Virginia US Senate Election?",
+   "domain": "elections",
+   "event_family": "virginia-us-senate-election-winner",
+   "causal_categories": [
+    "institutional",
+    "population"
+   ],
+   "n_correlated_contracts": 3,
+   "forecast_cutoffs": [
+    "2024-05-24",
+    "2024-07-15",
+    "2024-09-05",
+    "2024-10-17"
+   ],
+   "horizon": "2024-11-08",
+   "market_snapshots": {
+    "2024-05-24": {
+     "price": 0.095,
+     "exact_t": 1716508803,
+     "requested_t": 1716560642,
+     "staleness_s": 51839
+    },
+    "2024-07-15": {
+     "price": 0.105,
+     "exact_t": 1721001603,
+     "requested_t": 1721053442,
+     "staleness_s": 51839
+    },
+    "2024-09-05": {
+     "price": 0.055,
+     "exact_t": 1725494402,
+     "requested_t": 1725546242,
+     "staleness_s": 51840
+    },
+    "2024-10-17": {
+     "price": 0.06,
+     "exact_t": 1729123202,
+     "requested_t": 1729140482,
+     "staleness_s": 17280
+    }
+   },
+   "primary_volume_usdc": 71515.839387,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "10249",
+    "condition_id": "0xfd17ee27498ae7f11983620f9e7377a25d94a9046dd75eaa00b8b30b600b0bef",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary_primary_of_categorical_event"
+  },
+  {
+   "event_id": "pm_11232",
+   "question": "Israel parliament dissolves in 2024?",
+   "domain": "other",
+   "event_family": "israel-parliament-dissolves-in-2024",
+   "causal_categories": [
+    "institutional",
+    "structural_change"
+   ],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-08-02",
+    "2024-09-18",
+    "2024-11-05",
+    "2024-12-13"
+   ],
+   "horizon": "2025-01-02",
+   "market_snapshots": {
+    "2024-08-02": {
+     "price": 0.31,
+     "exact_t": 1722556801,
+     "requested_t": 1722556803,
+     "staleness_s": 2
+    },
+    "2024-09-18": {
+     "price": 0.145,
+     "exact_t": 1726617602,
+     "requested_t": 1726660803,
+     "staleness_s": 43201
+    },
+    "2024-11-05": {
+     "price": 0.105,
+     "exact_t": 1730764802,
+     "requested_t": 1730764803,
+     "staleness_s": 1
+    },
+    "2024-12-13": {
+     "price": 0.028,
+     "exact_t": 1734048003,
+     "requested_t": 1734048003,
+     "staleness_s": 0
+    }
+   },
+   "primary_volume_usdc": 57947.961291,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "11232",
+    "condition_id": "0xac2210c0991c3d0a54651d31a5d209fd1cf203a524dc51770c6464410dcc53ca",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_12047",
+   "question": "Walz and Vance debate on Oct 1?",
+   "domain": "other",
+   "event_family": "will-walz-and-vance-debate-on-oct-1",
+   "causal_categories": [],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-08-24",
+    "2024-09-05",
+    "2024-09-17",
+    "2024-09-27"
+   ],
+   "horizon": "2024-10-03",
+   "market_snapshots": {
+    "2024-08-24": {
+     "price": 0.935,
+     "exact_t": 1724457602,
+     "requested_t": 1724509442,
+     "staleness_s": 51840
+    },
+    "2024-09-05": {
+     "price": 0.94,
+     "exact_t": 1725494402,
+     "requested_t": 1725546242,
+     "staleness_s": 51840
+    },
+    "2024-09-17": {
+     "price": 0.956,
+     "exact_t": 1726531202,
+     "requested_t": 1726583042,
+     "staleness_s": 51840
+    },
+    "2024-09-27": {
+     "price": 0.9835,
+     "exact_t": 1727395202,
+     "requested_t": 1727412482,
+     "staleness_s": 17280
+    }
+   },
+   "primary_volume_usdc": 254330.690378,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "12047",
+    "condition_id": "0xbe8f56d5063856692b8adda06b54789f8f27dcb5bfed31063e374f59f52a5a49",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_10260",
+   "question": "Will a candidate from another party win Maine US Senate Election?",
+   "domain": "elections",
+   "event_family": "maine-us-senate-election-winner",
+   "causal_categories": [
+    "institutional",
+    "population"
+   ],
+   "n_correlated_contracts": 3,
+   "forecast_cutoffs": [
+    "2024-05-25",
+    "2024-07-16",
+    "2024-09-07",
+    "2024-10-19"
+   ],
+   "horizon": "2024-11-10",
+   "market_snapshots": {
+    "2024-05-25": {
+     "price": 0.0135,
+     "exact_t": 1716508803,
+     "requested_t": 1716595202,
+     "staleness_s": 86399
+    },
+    "2024-07-16": {
+     "price": 0.0135,
+     "exact_t": 1721088002,
+     "requested_t": 1721131202,
+     "staleness_s": 43200
+    },
+    "2024-09-07": {
+     "price": 0.0035,
+     "exact_t": 1725667202,
+     "requested_t": 1725667202,
+     "staleness_s": 0
+    },
+    "2024-10-19": {
+     "price": 0.0025,
+     "exact_t": 1729296002,
+     "requested_t": 1729296002,
+     "staleness_s": 0
+    }
+   },
+   "primary_volume_usdc": 138199.08668,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "10260",
+    "condition_id": "0x4508a8705c853ca5727dec327449916f7524acbc4d8abc4685f25aad29c7c4d3",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary_primary_of_categorical_event"
+  },
+  {
+   "event_id": "pm_11040",
+   "question": "Hunter Biden sentenced to 4-10 years in gun case?",
+   "domain": "other",
+   "event_family": "hunter-biden-prison-time-in-gun-sentence",
+   "causal_categories": [],
+   "n_correlated_contracts": 6,
+   "forecast_cutoffs": [
+    "2024-07-16",
+    "2024-08-28",
+    "2024-10-11",
+    "2024-11-14"
+   ],
+   "horizon": "2024-12-03",
+   "market_snapshots": {
+    "2024-07-16": {
+     "price": 0.0065,
+     "exact_t": 1721088002,
+     "requested_t": 1721139843,
+     "staleness_s": 51841
+    },
+    "2024-08-28": {
+     "price": 0.028,
+     "exact_t": 1724803201,
+     "requested_t": 1724876643,
+     "staleness_s": 73442
+    },
+    "2024-10-11": {
+     "price": 0.04,
+     "exact_t": 1728604803,
+     "requested_t": 1728613443,
+     "staleness_s": 8640
+    },
+    "2024-11-14": {
+     "price": 0.0345,
+     "exact_t": 1731542403,
+     "requested_t": 1731602883,
+     "staleness_s": 60480
+    }
+   },
+   "primary_volume_usdc": 96117.088177,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "11040",
+    "condition_id": "0x14743b6c99e4f22bba3e6502cf950a623ff22543d18794b0ea1025df2cc15fb8",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary_primary_of_categorical_event"
+  },
+  {
+   "event_id": "pm_11209",
+   "question": "Will Ahsha Safai win the San Francisco Mayoral Election?",
+   "domain": "elections",
+   "event_family": "who-will-win-san-francisco-mayoral-election",
+   "causal_categories": [
+    "population"
+   ],
+   "n_correlated_contracts": 6,
+   "forecast_cutoffs": [
+    "2024-07-20",
+    "2024-08-24",
+    "2024-09-28",
+    "2024-10-26"
+   ],
+   "horizon": "2024-11-10",
+   "market_snapshots": {
+    "2024-07-20": {
+     "price": 0.0055,
+     "exact_t": 1721433601,
+     "requested_t": 1721433602,
+     "staleness_s": 1
+    },
+    "2024-08-24": {
+     "price": 0.0055,
+     "exact_t": 1724457602,
+     "requested_t": 1724457602,
+     "staleness_s": 0
+    },
+    "2024-09-28": {
+     "price": 0.004,
+     "exact_t": 1727481602,
+     "requested_t": 1727481602,
+     "staleness_s": 0
+    },
+    "2024-10-26": {
+     "price": 0.003,
+     "exact_t": 1729814403,
+     "requested_t": 1729900802,
+     "staleness_s": 86399
+    }
+   },
+   "primary_volume_usdc": 992452.22775,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "11209",
+    "condition_id": "0x03ae1b62fa4eea75c286e9d461afa30d943be864f61dcc1f86f6764c4ec099c6",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary_primary_of_categorical_event"
+  },
+  {
+   "event_id": "pm_10588",
+   "question": "Will Doug Burgum win the 2024 Republican VP nomination?",
+   "domain": "other",
+   "event_family": "republican-vp-supplemental",
+   "causal_categories": [
+    "population"
+   ],
+   "n_correlated_contracts": 14,
+   "forecast_cutoffs": [
+    "2024-05-21",
+    "2024-06-07",
+    "2024-06-25",
+    "2024-07-09"
+   ],
+   "horizon": "2024-07-17",
+   "market_snapshots": {
+    "2024-05-21": {
+     "price": 0.175,
+     "exact_t": 1716163203,
+     "requested_t": 1716249602,
+     "staleness_s": 86399
+    },
+    "2024-06-07": {
+     "price": 0.155,
+     "exact_t": 1717718402,
+     "requested_t": 1717761602,
+     "staleness_s": 43200
+    },
+    "2024-06-25": {
+     "price": 0.515,
+     "exact_t": 1719187203,
+     "requested_t": 1719273602,
+     "staleness_s": 86399
+    },
+    "2024-07-09": {
+     "price": 0.295,
+     "exact_t": 1720483202,
+     "requested_t": 1720483202,
+     "staleness_s": 0
+    }
+   },
+   "primary_volume_usdc": 2687918.069755,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "10588",
+    "condition_id": "0xa3e0185c69a933ea5a47b6b188570fa711ad66914c70f9149a1ff7902b1973ef",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary_primary_of_categorical_event"
+  },
+  {
+   "event_id": "pm_10257",
+   "question": "Will a candidate from another party win Massachusetts US Senate Election?",
+   "domain": "elections",
+   "event_family": "massachusetts-us-senate-election-winner",
+   "causal_categories": [
+    "institutional",
+    "population"
+   ],
+   "n_correlated_contracts": 3,
+   "forecast_cutoffs": [
+    "2024-05-24",
+    "2024-07-15",
+    "2024-09-04",
+    "2024-10-16"
+   ],
+   "horizon": "2024-11-07",
+   "market_snapshots": {
+    "2024-05-24": {
+     "price": 0.012,
+     "exact_t": 1716508803,
+     "requested_t": 1716543362,
+     "staleness_s": 34559
+    },
+    "2024-07-15": {
+     "price": 0.012,
+     "exact_t": 1721001603,
+     "requested_t": 1721014562,
+     "staleness_s": 12959
+    },
+    "2024-09-04": {
+     "price": 0.003,
+     "exact_t": 1725408002,
+     "requested_t": 1725485762,
+     "staleness_s": 77760
+    },
+    "2024-10-16": {
+     "price": 0.0025,
+     "exact_t": 1729036803,
+     "requested_t": 1729062722,
+     "staleness_s": 25919
+    }
+   },
+   "primary_volume_usdc": 327358.528444,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "10257",
+    "condition_id": "0x84ce4228388d675bc145b41f362a00fdea9d72616d1eb13987e11215d772a9a5",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary_primary_of_categorical_event"
+  },
+  {
+   "event_id": "pm_10253",
+   "question": "Will a Republican win New York US Senate Election?",
+   "domain": "elections",
+   "event_family": "new-york-us-senate-election-winner",
+   "causal_categories": [
+    "institutional",
+    "population"
+   ],
+   "n_correlated_contracts": 3,
+   "forecast_cutoffs": [
+    "2024-05-24",
+    "2024-07-15",
+    "2024-09-05",
+    "2024-10-17"
+   ],
+   "horizon": "2024-11-08",
+   "market_snapshots": {
+    "2024-05-24": {
+     "price": 0.075,
+     "exact_t": 1716508803,
+     "requested_t": 1716560642,
+     "staleness_s": 51839
+    },
+    "2024-07-15": {
+     "price": 0.045,
+     "exact_t": 1721001603,
+     "requested_t": 1721053442,
+     "staleness_s": 51839
+    },
+    "2024-09-05": {
+     "price": 0.0295,
+     "exact_t": 1725494402,
+     "requested_t": 1725546242,
+     "staleness_s": 51840
+    },
+    "2024-10-17": {
+     "price": 0.0395,
+     "exact_t": 1729123202,
+     "requested_t": 1729140482,
+     "staleness_s": 17280
+    }
+   },
+   "primary_volume_usdc": 100506.14701,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "10253",
+    "condition_id": "0x1a98a4c6a8e9af6340bdb4e076ee0f07eb7363fb752fe028aa9d9b337e189767",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary_primary_of_categorical_event"
+  },
+  {
+   "event_id": "pm_10862",
+   "question": "Roaring Kitty charged in 2024?",
+   "domain": "other",
+   "event_family": "roaring-kitty-charged-in-2024",
+   "causal_categories": [],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-07-16",
+    "2024-09-06",
+    "2024-10-29",
+    "2024-12-10"
+   ],
+   "horizon": "2025-01-02",
+   "market_snapshots": {
+    "2024-07-16": {
+     "price": 0.14,
+     "exact_t": 1721088002,
+     "requested_t": 1721105282,
+     "staleness_s": 17280
+    },
+    "2024-09-06": {
+     "price": 0.105,
+     "exact_t": 1725580802,
+     "requested_t": 1725662882,
+     "staleness_s": 82080
+    },
+    "2024-10-29": {
+     "price": 0.045,
+     "exact_t": 1730160002,
+     "requested_t": 1730220483,
+     "staleness_s": 60481
+    },
+    "2024-12-10": {
+     "price": 0.024,
+     "exact_t": 1733788803,
+     "requested_t": 1733866563,
+     "staleness_s": 77760
+    }
+   },
+   "primary_volume_usdc": 217074.19372,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "10862",
+    "condition_id": "0xe75c666e62a1d86aa9c8320ff13626d633fcd3ea19d52270a4fe49135936c5ea",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_11639",
+   "question": "Will Biden resign before the election?",
+   "domain": "elections",
+   "event_family": "biden-resigns-from-presidency-before-election",
+   "causal_categories": [
+    "population",
+    "strategic_negotiation",
+    "structural_change"
+   ],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-08-12",
+    "2024-09-07",
+    "2024-10-04",
+    "2024-10-25"
+   ],
+   "horizon": "2024-11-06",
+   "market_snapshots": {
+    "2024-08-12": {
+     "price": 0.055,
+     "exact_t": 1723420801,
+     "requested_t": 1723438081,
+     "staleness_s": 17280
+    },
+    "2024-09-07": {
+     "price": 0.055,
+     "exact_t": 1725667202,
+     "requested_t": 1725727681,
+     "staleness_s": 60479
+    },
+    "2024-10-04": {
+     "price": 0.0195,
+     "exact_t": 1728000002,
+     "requested_t": 1728017281,
+     "staleness_s": 17279
+    },
+    "2024-10-25": {
+     "price": 0.011,
+     "exact_t": 1729814403,
+     "requested_t": 1729848961,
+     "staleness_s": 34558
+    }
+   },
+   "primary_volume_usdc": 11004839.289589,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "11639",
+    "condition_id": "0x40e783a12a83c36df40550c3f5a2433ba55a9cd312c31d808cc0c2c3ea747b1d",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_10219",
+   "question": "Will a Republican win Maryland US Senate Election?",
+   "domain": "elections",
+   "event_family": "maryland-us-senate-election-winner",
+   "causal_categories": [
+    "institutional",
+    "population"
+   ],
+   "n_correlated_contracts": 3,
+   "forecast_cutoffs": [
+    "2024-05-17",
+    "2024-07-10",
+    "2024-09-02",
+    "2024-10-16"
+   ],
+   "horizon": "2024-11-08",
+   "market_snapshots": {
+    "2024-05-17": {
+     "price": 0.255,
+     "exact_t": 1715904003,
+     "requested_t": 1715938563,
+     "staleness_s": 34560
+    },
+    "2024-07-10": {
+     "price": 0.2,
+     "exact_t": 1720569603,
+     "requested_t": 1720625763,
+     "staleness_s": 56160
+    },
+    "2024-09-02": {
+     "price": 0.145,
+     "exact_t": 1725235202,
+     "requested_t": 1725312963,
+     "staleness_s": 77761
+    },
+    "2024-10-16": {
+     "price": 0.095,
+     "exact_t": 1729036803,
+     "requested_t": 1729062723,
+     "staleness_s": 25920
+    }
+   },
+   "primary_volume_usdc": 311778.388761,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "10219",
+    "condition_id": "0x3ceadb2db8926fcc1e9f5b28d765ee20721f2aa9537bdb5d17f0fa2ab7cbd5cc",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary_primary_of_categorical_event"
+  },
+  {
+   "event_id": "pm_12037",
+   "question": "Trump fires campaign manager? ",
+   "domain": "other",
+   "event_family": "trump-fires-campaign-manager-before-election",
+   "causal_categories": [],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-08-31",
+    "2024-09-20",
+    "2024-10-11",
+    "2024-10-27"
+   ],
+   "horizon": "2024-11-06",
+   "market_snapshots": {
+    "2024-08-31": {
+     "price": 0.355,
+     "exact_t": 1725062402,
+     "requested_t": 1725096962,
+     "staleness_s": 34560
+    },
+    "2024-09-20": {
+     "price": 0.315,
+     "exact_t": 1726790402,
+     "requested_t": 1726868162,
+     "staleness_s": 77760
+    },
+    "2024-10-11": {
+     "price": 0.035,
+     "exact_t": 1728604803,
+     "requested_t": 1728639362,
+     "staleness_s": 34559
+    },
+    "2024-10-27": {
+     "price": 0.009,
+     "exact_t": 1729987203,
+     "requested_t": 1730056322,
+     "staleness_s": 69119
+    }
+   },
+   "primary_volume_usdc": 312849.647775,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "12037",
+    "condition_id": "0xf65b67971ba4332ef0472a13f263e19fd5babd0be19ecc0aad6312d0dd19000b",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_11901",
+   "question": "Israel x Hamas ceasefire in 2024?",
+   "domain": "geopolitics",
+   "event_family": "israel-x-hamas-ceasefire-in-2024",
+   "causal_categories": [
+    "strategic_negotiation"
+   ],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-09-06",
+    "2024-10-12",
+    "2024-11-18",
+    "2024-12-17"
+   ],
+   "horizon": "2025-01-02",
+   "market_snapshots": {
+    "2024-09-06": {
+     "price": 0.49,
+     "exact_t": 1725580802,
+     "requested_t": 1725598081,
+     "staleness_s": 17279
+    },
+    "2024-10-12": {
+     "price": 0.175,
+     "exact_t": 1728691202,
+     "requested_t": 1728751682,
+     "staleness_s": 60480
+    },
+    "2024-11-18": {
+     "price": 0.175,
+     "exact_t": 1731888003,
+     "requested_t": 1731905283,
+     "staleness_s": 17280
+    },
+    "2024-12-17": {
+     "price": 0.445,
+     "exact_t": 1734393604,
+     "requested_t": 1734428163,
+     "staleness_s": 34559
+    }
+   },
+   "primary_volume_usdc": 3950958.939736,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "11901",
+    "condition_id": "0xb88b4e226ed108c28835808fbd12a1900a73b3151963c862ed64e99505c436e6",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_11652",
+   "question": "VP debate before election?",
+   "domain": "elections",
+   "event_family": "vp-debate-before-election",
+   "causal_categories": [
+    "population"
+   ],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-08-06",
+    "2024-08-23",
+    "2024-09-10",
+    "2024-09-24"
+   ],
+   "horizon": "2024-10-03",
+   "market_snapshots": {
+    "2024-08-06": {
+     "price": 0.735,
+     "exact_t": 1722902401,
+     "requested_t": 1722919681,
+     "staleness_s": 17280
+    },
+    "2024-08-23": {
+     "price": 0.944,
+     "exact_t": 1724371202,
+     "requested_t": 1724453281,
+     "staleness_s": 82079
+    },
+    "2024-09-10": {
+     "price": 0.9515,
+     "exact_t": 1725926402,
+     "requested_t": 1725986881,
+     "staleness_s": 60479
+    },
+    "2024-09-24": {
+     "price": 0.9875,
+     "exact_t": 1727136002,
+     "requested_t": 1727213761,
+     "staleness_s": 77759
+    }
+   },
+   "primary_volume_usdc": 1329920.103204,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "11652",
+    "condition_id": "0x75b11a483569e10a365536325111eaad75ccc9b02cfa7f26dd4695772943f5f8",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_10133",
+   "question": "Will Trump announce his VP pick later?",
+   "domain": "other",
+   "event_family": "trump-vp-announcement-when",
+   "causal_categories": [],
+   "n_correlated_contracts": 6,
+   "forecast_cutoffs": [
+    "2024-04-18",
+    "2024-05-15",
+    "2024-06-12",
+    "2024-07-04"
+   ],
+   "horizon": "2024-07-17",
+   "market_snapshots": {
+    "2024-04-18": {
+     "price": 0.0505,
+     "exact_t": 1713398403,
+     "requested_t": 1713415682,
+     "staleness_s": 17279
+    },
+    "2024-05-15": {
+     "price": 0.0165,
+     "exact_t": 1715731204,
+     "requested_t": 1715813282,
+     "staleness_s": 82078
+    },
+    "2024-06-12": {
+     "price": 0.0275,
+     "exact_t": 1718150403,
+     "requested_t": 1718210882,
+     "staleness_s": 60479
+    },
+    "2024-07-04": {
+     "price": 0.031,
+     "exact_t": 1720051203,
+     "requested_t": 1720128962,
+     "staleness_s": 77759
+    }
+   },
+   "primary_volume_usdc": 140195.79014,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "10133",
+    "condition_id": "0xa1e0c9d7d0e9a60bfca235ac43f17284654ae825e73808e41b1ad69f7dec85fd",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary_primary_of_categorical_event"
+  },
+  {
+   "event_id": "pm_11002",
+   "question": "Will Trump appeal his hush money conviction?",
+   "domain": "other",
+   "event_family": "will-trump-appeal-his-hush-money-conviction",
+   "causal_categories": [],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-07-25",
+    "2024-09-22",
+    "2024-11-20",
+    "2025-01-06"
+   ],
+   "horizon": "2025-01-31",
+   "market_snapshots": {
+    "2024-07-25": {
+     "price": 0.8945,
+     "exact_t": 1721865601,
+     "requested_t": 1721882882,
+     "staleness_s": 17281
+    },
+    "2024-09-22": {
+     "price": 0.8965,
+     "exact_t": 1726963202,
+     "requested_t": 1726980483,
+     "staleness_s": 17281
+    },
+    "2024-11-20": {
+     "price": 0.079,
+     "exact_t": 1732060803,
+     "requested_t": 1732078084,
+     "staleness_s": 17281
+    },
+    "2025-01-06": {
+     "price": 0.9185,
+     "exact_t": 1736121603,
+     "requested_t": 1736156164,
+     "staleness_s": 34561
+    }
+   },
+   "primary_volume_usdc": 458770.902875,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "11002",
+    "condition_id": "0xd987b38ecf3bdf4cb69734004c51238875411e0924dd0e9b30e3b31e623c4f00",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_12473",
+   "question": "Will Playboi Carti release new album in 2024?",
+   "domain": "other",
+   "event_family": "will-playboi-carti-release-new-album-in-2024",
+   "causal_categories": [
+    "strategic_negotiation"
+   ],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-10-02",
+    "2024-10-30",
+    "2024-11-28",
+    "2024-12-20"
+   ],
+   "horizon": "2025-01-02",
+   "market_snapshots": {
+    "2024-10-02": {
+     "price": 0.59,
+     "exact_t": 1727827202,
+     "requested_t": 1727879042,
+     "staleness_s": 51840
+    },
+    "2024-10-30": {
+     "price": 0.525,
+     "exact_t": 1730246403,
+     "requested_t": 1730319842,
+     "staleness_s": 73439
+    },
+    "2024-11-28": {
+     "price": 0.415,
+     "exact_t": 1732752003,
+     "requested_t": 1732760643,
+     "staleness_s": 8640
+    },
+    "2024-12-20": {
+     "price": 0.14,
+     "exact_t": 1734652804,
+     "requested_t": 1734713283,
+     "staleness_s": 60479
+    }
+   },
+   "primary_volume_usdc": 218033.22565,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "12473",
+    "condition_id": "0x1945ddcae20951cf32dbc1663deb2b395ce6951d0c8b3429284007489d0c941c",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_12114",
+   "question": "Trump nominates Elon Musk to Cabinet?",
+   "domain": "other",
+   "event_family": "trump-wins-and-appoints-elon-musk-to-cabinet",
+   "causal_categories": [],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-09-22",
+    "2024-11-02",
+    "2024-12-13",
+    "2025-01-15"
+   ],
+   "horizon": "2025-02-02",
+   "market_snapshots": {
+    "2024-09-22": {
+     "price": 0.115,
+     "exact_t": 1726876802,
+     "requested_t": 1726963201,
+     "staleness_s": 86399
+    },
+    "2024-11-02": {
+     "price": 0.23,
+     "exact_t": 1730505603,
+     "requested_t": 1730527202,
+     "staleness_s": 21599
+    },
+    "2024-12-13": {
+     "price": 0.057,
+     "exact_t": 1734048003,
+     "requested_t": 1734091203,
+     "staleness_s": 43200
+    },
+    "2025-01-15": {
+     "price": 0.0195,
+     "exact_t": 1736899203,
+     "requested_t": 1736942404,
+     "staleness_s": 43201
+    }
+   },
+   "primary_volume_usdc": 3034048.738935,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "12114",
+    "condition_id": "0xac51c43100e1aaf4968aa61fe72eb320dd308959dc6a7a14a6f3ebe758e7f88d",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_10020",
+   "question": "Will a Republican win Wisconsin US Senate Election?",
+   "domain": "elections",
+   "event_family": "wisconsin-us-senate-election-winner",
+   "causal_categories": [
+    "institutional",
+    "population"
+   ],
+   "n_correlated_contracts": 3,
+   "forecast_cutoffs": [
+    "2024-05-17",
+    "2024-07-10",
+    "2024-09-02",
+    "2024-10-16"
+   ],
+   "horizon": "2024-11-08",
+   "market_snapshots": {
+    "2024-05-17": {
+     "price": 0.285,
+     "exact_t": 1715904003,
+     "requested_t": 1715938563,
+     "staleness_s": 34560
+    },
+    "2024-07-10": {
+     "price": 0.32,
+     "exact_t": 1720569603,
+     "requested_t": 1720625763,
+     "staleness_s": 56160
+    },
+    "2024-09-02": {
+     "price": 0.185,
+     "exact_t": 1725235202,
+     "requested_t": 1725312963,
+     "staleness_s": 77761
+    },
+    "2024-10-16": {
+     "price": 0.235,
+     "exact_t": 1729036803,
+     "requested_t": 1729062723,
+     "staleness_s": 25920
+    }
+   },
+   "primary_volume_usdc": 444672.057025,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "10020",
+    "condition_id": "0x352ac53453f995e751d2d90c7d781441eba9d1c4c7ebbc8e738fc570a543665b",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary_primary_of_categorical_event"
+  },
+  {
+   "event_id": "pm_11794",
+   "question": "GPT-5 released in 2024?",
+   "domain": "other",
+   "event_family": "will-openai-release-gpt-5-in-2024",
+   "causal_categories": [
+    "strategic_negotiation"
+   ],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-08-31",
+    "2024-10-08",
+    "2024-11-16",
+    "2024-12-16"
+   ],
+   "horizon": "2025-01-02",
+   "market_snapshots": {
+    "2024-08-31": {
+     "price": 0.44,
+     "exact_t": 1725062402,
+     "requested_t": 1725114242,
+     "staleness_s": 51840
+    },
+    "2024-10-08": {
+     "price": 0.29,
+     "exact_t": 1728345602,
+     "requested_t": 1728419042,
+     "staleness_s": 73440
+    },
+    "2024-11-16": {
+     "price": 0.0465,
+     "exact_t": 1731715203,
+     "requested_t": 1731723843,
+     "staleness_s": 8640
+    },
+    "2024-12-16": {
+     "price": 0.0155,
+     "exact_t": 1734307203,
+     "requested_t": 1734367683,
+     "staleness_s": 60480
+    }
+   },
+   "primary_volume_usdc": 753918.232534,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "11794",
+    "condition_id": "0x3fce809e37646d54bf5e13b8919cf26a939f71c0c84d09fee395f4d69cc0f388",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_12152",
+   "question": "Will Trump go on Joe Rogan before election?",
+   "domain": "elections",
+   "event_family": "will-trump-go-on-rogan-before-election",
+   "causal_categories": [
+    "population"
+   ],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-09-04",
+    "2024-09-20",
+    "2024-10-06",
+    "2024-10-19"
+   ],
+   "horizon": "2024-10-27",
+   "market_snapshots": {
+    "2024-09-04": {
+     "price": 0.225,
+     "exact_t": 1725408002,
+     "requested_t": 1725408002,
+     "staleness_s": 0
+    },
+    "2024-09-20": {
+     "price": 0.15,
+     "exact_t": 1726790402,
+     "requested_t": 1726812002,
+     "staleness_s": 21600
+    },
+    "2024-10-06": {
+     "price": 0.25,
+     "exact_t": 1728172802,
+     "requested_t": 1728216002,
+     "staleness_s": 43200
+    },
+    "2024-10-19": {
+     "price": 0.675,
+     "exact_t": 1729296002,
+     "requested_t": 1729339202,
+     "staleness_s": 43200
+    }
+   },
+   "primary_volume_usdc": 3228953.231524,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "12152",
+    "condition_id": "0x6689c157a7c57f0ee8ab7feace215061cbb8828191854fe81f17976ef33b023e",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_11095",
+   "question": "Mike Johnson out as Speaker before Election?",
+   "domain": "elections",
+   "event_family": "mike-johnson-out-as-speaker-before-election",
+   "causal_categories": [
+    "population"
+   ],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-07-12",
+    "2024-08-17",
+    "2024-09-22",
+    "2024-10-21"
+   ],
+   "horizon": "2024-11-06",
+   "market_snapshots": {
+    "2024-07-12": {
+     "price": 0.115,
+     "exact_t": 1720742402,
+     "requested_t": 1720811522,
+     "staleness_s": 69120
+    },
+    "2024-08-17": {
+     "price": 0.035,
+     "exact_t": 1723852802,
+     "requested_t": 1723921922,
+     "staleness_s": 69120
+    },
+    "2024-09-22": {
+     "price": 0.0465,
+     "exact_t": 1726963202,
+     "requested_t": 1727032322,
+     "staleness_s": 69120
+    },
+    "2024-10-21": {
+     "price": 0.0055,
+     "exact_t": 1729468802,
+     "requested_t": 1729520642,
+     "staleness_s": 51840
+    }
+   },
+   "primary_volume_usdc": 104371.403856,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "11095",
+    "condition_id": "0x9c88772e37d1faa66b346c8f3d96fc166a779898b7cf1acc009c43d50ebcf3c4",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_10803",
+   "question": "Yahya Sinwar still Hamas leader before September?",
+   "domain": "geopolitics",
+   "event_family": "yahya-sinwar-still-hamas-leader-by-september",
+   "causal_categories": [
+    "strategic_negotiation"
+   ],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-06-17",
+    "2024-07-11",
+    "2024-08-03",
+    "2024-08-22"
+   ],
+   "horizon": "2024-09-02",
+   "market_snapshots": {
+    "2024-06-17": {
+     "price": 0.725,
+     "exact_t": 1718582404,
+     "requested_t": 1718651522,
+     "staleness_s": 69118
+    },
+    "2024-07-11": {
+     "price": 0.85,
+     "exact_t": 1720656003,
+     "requested_t": 1720681922,
+     "staleness_s": 25919
+    },
+    "2024-08-03": {
+     "price": 0.83,
+     "exact_t": 1722643202,
+     "requested_t": 1722712322,
+     "staleness_s": 69120
+    },
+    "2024-08-22": {
+     "price": 0.96,
+     "exact_t": 1724284802,
+     "requested_t": 1724336642,
+     "staleness_s": 51840
+    }
+   },
+   "primary_volume_usdc": 52709.440255,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "10803",
+    "condition_id": "0x3538387b73b008cc3948592999d43fc03d9191a8c1bc9963bcc4689dbf7d71fa",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_12563",
+   "question": "Will Israel invade Syria in 2024?",
+   "domain": "geopolitics",
+   "event_family": "will-israel-invade-syria-in-2024",
+   "causal_categories": [
+    "strategic_negotiation"
+   ],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-10-03",
+    "2024-10-28",
+    "2024-11-21",
+    "2024-12-11"
+   ],
+   "horizon": "2024-12-22",
+   "market_snapshots": {
+    "2024-10-03": {
+     "price": 0.16,
+     "exact_t": 1727913602,
+     "requested_t": 1727965442,
+     "staleness_s": 51840
+    },
+    "2024-10-28": {
+     "price": 0.135,
+     "exact_t": 1730073603,
+     "requested_t": 1730082242,
+     "staleness_s": 8639
+    },
+    "2024-11-21": {
+     "price": 0.045,
+     "exact_t": 1732147203,
+     "requested_t": 1732199042,
+     "staleness_s": 51839
+    },
+    "2024-12-11": {
+     "price": 0.793,
+     "exact_t": 1733875203,
+     "requested_t": 1733892482,
+     "staleness_s": 17279
+    }
+   },
+   "primary_volume_usdc": 16819559.7366551,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "12563",
+    "condition_id": "0x7949174f6cb3b0781fbd1a63a51fb7d2e72ac2d7cff1628f2c62477b64734bff",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_11815",
+   "question": "Ukraine election scheduled in 2024?",
+   "domain": "elections",
+   "event_family": "ukraine-election-scheduled-in-2024",
+   "causal_categories": [
+    "population"
+   ],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-09-01",
+    "2024-10-09",
+    "2024-11-16",
+    "2024-12-16"
+   ],
+   "horizon": "2025-01-02",
+   "market_snapshots": {
+    "2024-09-01": {
+     "price": 0.075,
+     "exact_t": 1725148802,
+     "requested_t": 1725183361,
+     "staleness_s": 34559
+    },
+    "2024-10-09": {
+     "price": 0.18,
+     "exact_t": 1728432002,
+     "requested_t": 1728466562,
+     "staleness_s": 34560
+    },
+    "2024-11-16": {
+     "price": 0.05,
+     "exact_t": 1731715203,
+     "requested_t": 1731749763,
+     "staleness_s": 34560
+    },
+    "2024-12-16": {
+     "price": 0.007,
+     "exact_t": 1734307203,
+     "requested_t": 1734376323,
+     "staleness_s": 69120
+    }
+   },
+   "primary_volume_usdc": 177779.984517003,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "11815",
+    "condition_id": "0xfeed873361d49869c14cf9b9f5bbc4d1eb8810921e17d67d10db8dbe326bd7a6",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_10166",
+   "question": "Will a Republican win Delaware Presidential Election?",
+   "domain": "geopolitics",
+   "event_family": "delaware-presidential-election-winner-2024",
+   "causal_categories": [
+    "institutional",
+    "population"
+   ],
+   "n_correlated_contracts": 3,
+   "forecast_cutoffs": [
+    "2024-05-12",
+    "2024-07-06",
+    "2024-08-31",
+    "2024-10-14"
+   ],
+   "horizon": "2024-11-07",
+   "market_snapshots": {
+    "2024-05-12": {
+     "price": 0.065,
+     "exact_t": 1715472003,
+     "requested_t": 1715506562,
+     "staleness_s": 34559
+    },
+    "2024-07-06": {
+     "price": 0.0305,
+     "exact_t": 1720224002,
+     "requested_t": 1720301762,
+     "staleness_s": 77760
+    },
+    "2024-08-31": {
+     "price": 0.0275,
+     "exact_t": 1725062402,
+     "requested_t": 1725096962,
+     "staleness_s": 34560
+    },
+    "2024-10-14": {
+     "price": 0.022,
+     "exact_t": 1728864002,
+     "requested_t": 1728933122,
+     "staleness_s": 69120
+    }
+   },
+   "primary_volume_usdc": 196611.238974,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "10166",
+    "condition_id": "0x05a16ffcfaa6948233c1cc448f87acddf1ea144597b424739dd4a2e07f397b04",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary_primary_of_categorical_event"
+  },
+  {
+   "event_id": "pm_11696",
+   "question": "No change in Fed interest rates after 2024 September meeting?",
+   "domain": "economics",
+   "event_family": "fed-interest-rates-september-2024",
+   "causal_categories": [
+    "institutional",
+    "strategic_negotiation"
+   ],
+   "n_correlated_contracts": 4,
+   "forecast_cutoffs": [
+    "2024-08-05",
+    "2024-08-19",
+    "2024-09-01",
+    "2024-09-12"
+   ],
+   "horizon": "2024-09-19",
+   "market_snapshots": {
+    "2024-08-05": {
+     "price": 0.0465,
+     "exact_t": 1722816001,
+     "requested_t": 1722885122,
+     "staleness_s": 69121
+    },
+    "2024-08-19": {
+     "price": 0.065,
+     "exact_t": 1724025602,
+     "requested_t": 1724051522,
+     "staleness_s": 25920
+    },
+    "2024-09-01": {
+     "price": 0.051,
+     "exact_t": 1725148802,
+     "requested_t": 1725217922,
+     "staleness_s": 69120
+    },
+    "2024-09-12": {
+     "price": 0.02,
+     "exact_t": 1726099202,
+     "requested_t": 1726151042,
+     "staleness_s": 51840
+    }
+   },
+   "primary_volume_usdc": 23499210.730061,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "11696",
+    "condition_id": "0xb20072387cd12bc73f3a6fd30fdd5aa1644c8f72f958803d90fc05c51db0ac49",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary_primary_of_categorical_event"
+  },
+  {
+   "event_id": "pm_11821",
+   "question": "Fed emergency rate cut in 2024?",
+   "domain": "economics",
+   "event_family": "fed-emergency-rate-cut-in-2024",
+   "causal_categories": [
+    "institutional",
+    "structural_change"
+   ],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-09-02",
+    "2024-10-09",
+    "2024-11-16",
+    "2024-12-16"
+   ],
+   "horizon": "2025-01-02",
+   "market_snapshots": {
+    "2024-09-02": {
+     "price": 0.095,
+     "exact_t": 1725235202,
+     "requested_t": 1725252482,
+     "staleness_s": 17280
+    },
+    "2024-10-09": {
+     "price": 0.045,
+     "exact_t": 1728432002,
+     "requested_t": 1728514082,
+     "staleness_s": 82080
+    },
+    "2024-11-16": {
+     "price": 0.028,
+     "exact_t": 1731715203,
+     "requested_t": 1731775683,
+     "staleness_s": 60480
+    },
+    "2024-12-16": {
+     "price": 0.014,
+     "exact_t": 1734307203,
+     "requested_t": 1734384963,
+     "staleness_s": 77760
+    }
+   },
+   "primary_volume_usdc": 835804.641916001,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "11821",
+    "condition_id": "0x4e861381d9a9f4eca9e90c15638dfac88f727ab13ddc153ab09dc1f3a4056d0c",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_11874",
+   "question": "UK civil war in 2024?",
+   "domain": "geopolitics",
+   "event_family": "uk-civil-war-in-2024",
+   "causal_categories": [
+    "strategic_negotiation"
+   ],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-09-04",
+    "2024-10-11",
+    "2024-11-17",
+    "2024-12-17"
+   ],
+   "horizon": "2025-01-02",
+   "market_snapshots": {
+    "2024-09-04": {
+     "price": 0.024,
+     "exact_t": 1725408002,
+     "requested_t": 1725459841,
+     "staleness_s": 51839
+    },
+    "2024-10-11": {
+     "price": 0.0215,
+     "exact_t": 1728604803,
+     "requested_t": 1728656642,
+     "staleness_s": 51839
+    },
+    "2024-11-17": {
+     "price": 0.006,
+     "exact_t": 1731801603,
+     "requested_t": 1731853443,
+     "staleness_s": 51840
+    },
+    "2024-12-17": {
+     "price": 0.001,
+     "exact_t": 1734393604,
+     "requested_t": 1734410883,
+     "staleness_s": 17279
+    }
+   },
+   "primary_volume_usdc": 422061.00515,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "11874",
+    "condition_id": "0xe0eb66d0f614bedb1b730345d9069766d144ccecb52fba8fd42d5356cd1a2830",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_10799",
+   "question": "Israel x Hamas ceasefire before September?",
+   "domain": "geopolitics",
+   "event_family": "israel-x-hamas-ceasefire-before-september",
+   "causal_categories": [
+    "strategic_negotiation"
+   ],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-06-17",
+    "2024-07-11",
+    "2024-08-03",
+    "2024-08-22"
+   ],
+   "horizon": "2024-09-02",
+   "market_snapshots": {
+    "2024-06-17": {
+     "price": 0.545,
+     "exact_t": 1718582404,
+     "requested_t": 1718651522,
+     "staleness_s": 69118
+    },
+    "2024-07-11": {
+     "price": 0.585,
+     "exact_t": 1720656003,
+     "requested_t": 1720681922,
+     "staleness_s": 25919
+    },
+    "2024-08-03": {
+     "price": 0.105,
+     "exact_t": 1722643202,
+     "requested_t": 1722712322,
+     "staleness_s": 69120
+    },
+    "2024-08-22": {
+     "price": 0.1,
+     "exact_t": 1724284802,
+     "requested_t": 1724336642,
+     "staleness_s": 51840
+    }
+   },
+   "primary_volume_usdc": 972382.169621,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "10799",
+    "condition_id": "0x0590ee8929a1178e5490b8a98915d2e3697b5b67ec7872cf3d102814db65e5ad",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_10766",
+   "question": "Ceasefire between Russia and Ukraine before October?",
+   "domain": "geopolitics",
+   "event_family": "ceasefire-between-russia-and-ukraine-before-october",
+   "causal_categories": [
+    "strategic_negotiation"
+   ],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-06-19",
+    "2024-07-22",
+    "2024-08-23",
+    "2024-09-18"
+   ],
+   "horizon": "2024-10-02",
+   "market_snapshots": {
+    "2024-06-19": {
+     "price": 0.11,
+     "exact_t": 1718755203,
+     "requested_t": 1718824322,
+     "staleness_s": 69119
+    },
+    "2024-07-22": {
+     "price": 0.085,
+     "exact_t": 1721606401,
+     "requested_t": 1721610722,
+     "staleness_s": 4321
+    },
+    "2024-08-23": {
+     "price": 0.07,
+     "exact_t": 1724371202,
+     "requested_t": 1724397122,
+     "staleness_s": 25920
+    },
+    "2024-09-18": {
+     "price": 0.0185,
+     "exact_t": 1726617602,
+     "requested_t": 1726626242,
+     "staleness_s": 8640
+    }
+   },
+   "primary_volume_usdc": 315612.939817,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "10766",
+    "condition_id": "0x4727f17403578f6dcde55e284c0c62fa2b773bf14f9ea1478426b26f0e5a439d",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_10798",
+   "question": "Will Israel invade Lebanon before September?",
+   "domain": "geopolitics",
+   "event_family": "will-israel-invade-lebanon-before-september",
+   "causal_categories": [
+    "strategic_negotiation"
+   ],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-06-17",
+    "2024-07-11",
+    "2024-08-03",
+    "2024-08-22"
+   ],
+   "horizon": "2024-09-02",
+   "market_snapshots": {
+    "2024-06-17": {
+     "price": 0.225,
+     "exact_t": 1718582404,
+     "requested_t": 1718651522,
+     "staleness_s": 69118
+    },
+    "2024-07-11": {
+     "price": 0.295,
+     "exact_t": 1720656003,
+     "requested_t": 1720681922,
+     "staleness_s": 25919
+    },
+    "2024-08-03": {
+     "price": 0.365,
+     "exact_t": 1722643202,
+     "requested_t": 1722712322,
+     "staleness_s": 69120
+    },
+    "2024-08-22": {
+     "price": 0.09,
+     "exact_t": 1724284802,
+     "requested_t": 1724336642,
+     "staleness_s": 51840
+    }
+   },
+   "primary_volume_usdc": 1345780.163692,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "10798",
+    "condition_id": "0x229c4674926a0d042e5f02f74d6ec4c6afe63847b0fdfb6c63fe18ae338b2628",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_11878",
+   "question": "Fed decreases interest rates by 75+ bps after December 2024 meeting?",
+   "domain": "economics",
+   "event_family": "fed-interest-rates-december-2024",
+   "causal_categories": [
+    "institutional",
+    "strategic_negotiation"
+   ],
+   "n_correlated_contracts": 6,
+   "forecast_cutoffs": [
+    "2024-09-02",
+    "2024-10-05",
+    "2024-11-08",
+    "2024-12-04"
+   ],
+   "horizon": "2024-12-19",
+   "market_snapshots": {
+    "2024-09-02": {
+     "price": 0.075,
+     "exact_t": 1725235202,
+     "requested_t": 1725287041,
+     "staleness_s": 51839
+    },
+    "2024-10-05": {
+     "price": 0.02,
+     "exact_t": 1728086402,
+     "requested_t": 1728159841,
+     "staleness_s": 73439
+    },
+    "2024-11-08": {
+     "price": 0.0055,
+     "exact_t": 1731024002,
+     "requested_t": 1731032642,
+     "staleness_s": 8640
+    },
+    "2024-12-04": {
+     "price": 0.0035,
+     "exact_t": 1733270403,
+     "requested_t": 1733330882,
+     "staleness_s": 60479
+    }
+   },
+   "primary_volume_usdc": 13304399.0156328,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "11878",
+    "condition_id": "0xde507497bdd5d63090dfd8e6e29167216c66576bf8d029d87c99bef4e357c696",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary_primary_of_categorical_event"
+  },
+  {
+   "event_id": "pm_11074",
+   "question": "Fed decreases interest rates by 25 bps after July 2024 meeting?",
+   "domain": "economics",
+   "event_family": "fed-interest-rates-july-2024",
+   "causal_categories": [
+    "institutional",
+    "strategic_negotiation"
+   ],
+   "n_correlated_contracts": 4,
+   "forecast_cutoffs": [
+    "2024-06-22",
+    "2024-07-04",
+    "2024-07-16",
+    "2024-07-26"
+   ],
+   "horizon": "2024-08-01",
+   "market_snapshots": {
+    "2024-06-22": {
+     "price": 0.0655,
+     "exact_t": 1719014402,
+     "requested_t": 1719066242,
+     "staleness_s": 51840
+    },
+    "2024-07-04": {
+     "price": 0.067,
+     "exact_t": 1720051203,
+     "requested_t": 1720103042,
+     "staleness_s": 51839
+    },
+    "2024-07-16": {
+     "price": 0.0885,
+     "exact_t": 1721088002,
+     "requested_t": 1721139842,
+     "staleness_s": 51840
+    },
+    "2024-07-26": {
+     "price": 0.0765,
+     "exact_t": 1721952002,
+     "requested_t": 1721969282,
+     "staleness_s": 17280
+    }
+   },
+   "primary_volume_usdc": 884827.576621,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "11074",
+    "condition_id": "0x813e44dd1717ed1e1ccfa5f67b5e4d681f7a91cf12dfd8278608698f03b0f89d",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary_primary_of_categorical_event"
+  },
+  {
+   "event_id": "pm_10250",
+   "question": "Will a candidate from another party win Delaware US Senate Election?",
+   "domain": "geopolitics",
+   "event_family": "delaware-us-senate-election-winner",
+   "causal_categories": [
+    "institutional",
+    "population"
+   ],
+   "n_correlated_contracts": 3,
+   "forecast_cutoffs": [
+    "2024-05-24",
+    "2024-07-15",
+    "2024-09-04",
+    "2024-10-16"
+   ],
+   "horizon": "2024-11-07",
+   "market_snapshots": {
+    "2024-05-24": {
+     "price": 0.012,
+     "exact_t": 1716508803,
+     "requested_t": 1716543362,
+     "staleness_s": 34559
+    },
+    "2024-07-15": {
+     "price": 0.0125,
+     "exact_t": 1721001603,
+     "requested_t": 1721014562,
+     "staleness_s": 12959
+    },
+    "2024-09-04": {
+     "price": 0.003,
+     "exact_t": 1725408002,
+     "requested_t": 1725485762,
+     "staleness_s": 77760
+    },
+    "2024-10-16": {
+     "price": 0.005,
+     "exact_t": 1729036803,
+     "requested_t": 1729062722,
+     "staleness_s": 25919
+    }
+   },
+   "primary_volume_usdc": 86696.449043,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "10250",
+    "condition_id": "0x47aa18816785d40fb11c68fa6a66a426a35c9bbe82643cef8eab21bddf78781e",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary_primary_of_categorical_event"
+  },
+  {
+   "event_id": "pm_10606",
+   "question": "Will a candidate from another party win Delaware Governor Election?",
+   "domain": "geopolitics",
+   "event_family": "delaware-governor-election-winner",
+   "causal_categories": [
+    "institutional",
+    "population"
+   ],
+   "n_correlated_contracts": 3,
+   "forecast_cutoffs": [
+    "2024-06-14",
+    "2024-07-29",
+    "2024-09-12",
+    "2024-10-18"
+   ],
+   "horizon": "2024-11-07",
+   "market_snapshots": {
+    "2024-06-14": {
+     "price": 0.008,
+     "exact_t": 1718323203,
+     "requested_t": 1718340482,
+     "staleness_s": 17279
+    },
+    "2024-07-29": {
+     "price": 0.01,
+     "exact_t": 1722211202,
+     "requested_t": 1722250082,
+     "staleness_s": 38880
+    },
+    "2024-09-12": {
+     "price": 0.0035,
+     "exact_t": 1726099202,
+     "requested_t": 1726159682,
+     "staleness_s": 60480
+    },
+    "2024-10-18": {
+     "price": 0.003,
+     "exact_t": 1729209602,
+     "requested_t": 1729287362,
+     "staleness_s": 77760
+    }
+   },
+   "primary_volume_usdc": 54326.519984,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "10606",
+    "condition_id": "0x8009308fb5bea84c1eedc10fec72fb1d9ebc33d31fffd89f65a34247a724f246",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary_primary_of_categorical_event"
+  },
+  {
+   "event_id": "pm_11913",
+   "question": "Will Israel invade Lebanon before November?",
+   "domain": "geopolitics",
+   "event_family": "will-israel-enter-lebanon-before-November",
+   "causal_categories": [
+    "strategic_negotiation"
+   ],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-08-19",
+    "2024-09-03",
+    "2024-09-18",
+    "2024-09-30"
+   ],
+   "horizon": "2024-10-07",
+   "market_snapshots": {
+    "2024-08-19": {
+     "price": 0.27,
+     "exact_t": 1724025602,
+     "requested_t": 1724094721,
+     "staleness_s": 69119
+    },
+    "2024-09-03": {
+     "price": 0.12,
+     "exact_t": 1725321602,
+     "requested_t": 1725369121,
+     "staleness_s": 47519
+    },
+    "2024-09-18": {
+     "price": 0.255,
+     "exact_t": 1726617602,
+     "requested_t": 1726643521,
+     "staleness_s": 25919
+    },
+    "2024-09-30": {
+     "price": 0.55,
+     "exact_t": 1727654403,
+     "requested_t": 1727663041,
+     "staleness_s": 8638
+    }
+   },
+   "primary_volume_usdc": 5313533.726507,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "11913",
+    "condition_id": "0x37a570f13c5e78f85eef34de2430736e15691dca8f5820946388bc15b9d956e7",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_11827",
+   "question": "Fed increases interest rates by 25+ bps after November 2024 meeting?",
+   "domain": "economics",
+   "event_family": "fed-interest-rates-november-2024",
+   "causal_categories": [
+    "institutional",
+    "strategic_negotiation"
+   ],
+   "n_correlated_contracts": 6,
+   "forecast_cutoffs": [
+    "2024-08-22",
+    "2024-09-15",
+    "2024-10-09",
+    "2024-10-28"
+   ],
+   "horizon": "2024-11-08",
+   "market_snapshots": {
+    "2024-08-22": {
+     "price": 0.0075,
+     "exact_t": 1724284802,
+     "requested_t": 1724302082,
+     "staleness_s": 17280
+    },
+    "2024-09-15": {
+     "price": 0.005,
+     "exact_t": 1726358402,
+     "requested_t": 1726375682,
+     "staleness_s": 17280
+    },
+    "2024-10-09": {
+     "price": 0.0025,
+     "exact_t": 1728432002,
+     "requested_t": 1728449282,
+     "staleness_s": 17280
+    },
+    "2024-10-28": {
+     "price": 0.0015,
+     "exact_t": 1730073603,
+     "requested_t": 1730108162,
+     "staleness_s": 34559
+    }
+   },
+   "primary_volume_usdc": 133955589.249666,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "11827",
+    "condition_id": "0x1fc1e5595adab4d8160b2fe72cfed61131e3d5e61b5c334160d1729d7380ab16",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary_primary_of_categorical_event"
+  },
+  {
+   "event_id": "pm_11022",
+   "question": "No Israel x Hamas ceasefire in 2024?",
+   "domain": "geopolitics",
+   "event_family": "next-israel-x-hamas-ceasefire-in",
+   "causal_categories": [
+    "strategic_negotiation"
+   ],
+   "n_correlated_contracts": 8,
+   "forecast_cutoffs": [
+    "2024-07-21",
+    "2024-09-10",
+    "2024-10-31",
+    "2024-12-11"
+   ],
+   "horizon": "2025-01-02",
+   "market_snapshots": {
+    "2024-07-21": {
+     "price": 0.22,
+     "exact_t": 1721520001,
+     "requested_t": 1721589122,
+     "staleness_s": 69121
+    },
+    "2024-09-10": {
+     "price": 0.58,
+     "exact_t": 1725926402,
+     "requested_t": 1725995522,
+     "staleness_s": 69120
+    },
+    "2024-10-31": {
+     "price": 0.555,
+     "exact_t": 1730332803,
+     "requested_t": 1730401923,
+     "staleness_s": 69120
+    },
+    "2024-12-11": {
+     "price": 0.52,
+     "exact_t": 1733875203,
+     "requested_t": 1733927043,
+     "staleness_s": 51840
+    }
+   },
+   "primary_volume_usdc": 617817.708213,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "11022",
+    "condition_id": "0x88bb7db9b140476cfb392b8ec1ffa9dae79b99b6a033c70839f6ea9f6e65f81d",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary_primary_of_categorical_event"
+  },
+  {
+   "event_id": "pm_11541",
+   "question": "Vivek replaces Vance as U.S. senator for Ohio?",
+   "domain": "geopolitics",
+   "event_family": "vivek-takes-vance-place-as-us-senator-for-oh",
+   "causal_categories": [
+    "structural_change"
+   ],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-08-23",
+    "2024-10-10",
+    "2024-11-26",
+    "2025-01-03"
+   ],
+   "horizon": "2025-01-23",
+   "market_snapshots": {
+    "2024-08-23": {
+     "price": 0.115,
+     "exact_t": 1724371202,
+     "requested_t": 1724440321,
+     "staleness_s": 69119
+    },
+    "2024-10-10": {
+     "price": 0.115,
+     "exact_t": 1728518402,
+     "requested_t": 1728522721,
+     "staleness_s": 4319
+    },
+    "2024-11-26": {
+     "price": 0.0295,
+     "exact_t": 1732579204,
+     "requested_t": 1732605122,
+     "staleness_s": 25918
+    },
+    "2025-01-03": {
+     "price": 0.006,
+     "exact_t": 1735862404,
+     "requested_t": 1735871042,
+     "staleness_s": 8638
+    }
+   },
+   "primary_volume_usdc": 237968.170638,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "11541",
+    "condition_id": "0x6476382e722f0f97fb5aab486dac797ac6b6c050698995cad38ed997b4d2fdd1",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_10483",
+   "question": "Fed rate hike in 2024?",
+   "domain": "economics",
+   "event_family": "fed-rate-hike-in-2024",
+   "causal_categories": [
+    "institutional"
+   ],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-06-12",
+    "2024-08-10",
+    "2024-10-08",
+    "2024-11-24"
+   ],
+   "horizon": "2024-12-19",
+   "market_snapshots": {
+    "2024-06-12": {
+     "price": 0.105,
+     "exact_t": 1718150403,
+     "requested_t": 1718167682,
+     "staleness_s": 17279
+    },
+    "2024-08-10": {
+     "price": 0.045,
+     "exact_t": 1723248002,
+     "requested_t": 1723265282,
+     "staleness_s": 17280
+    },
+    "2024-10-08": {
+     "price": 0.036,
+     "exact_t": 1728345602,
+     "requested_t": 1728362882,
+     "staleness_s": 17280
+    },
+    "2024-11-24": {
+     "price": 0.017,
+     "exact_t": 1732406403,
+     "requested_t": 1732440962,
+     "staleness_s": 34559
+    }
+   },
+   "primary_volume_usdc": 1492300.328789,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "10483",
+    "condition_id": "0x4a5b5f52c6e7f2af6b06462c92d12ea7bd1662c87be11828da0722ff32373b36",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_11872",
+   "question": "US GDP declines in Q3 2024?",
+   "domain": "economics",
+   "event_family": "us-gdp-declines-in-q3-2024",
+   "causal_categories": [],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-08-23",
+    "2024-09-13",
+    "2024-10-04",
+    "2024-10-21"
+   ],
+   "horizon": "2024-10-31",
+   "market_snapshots": {
+    "2024-08-23": {
+     "price": 0.085,
+     "exact_t": 1724284802,
+     "requested_t": 1724371201,
+     "staleness_s": 86399
+    },
+    "2024-09-13": {
+     "price": 0.0545,
+     "exact_t": 1726185602,
+     "requested_t": 1726207201,
+     "staleness_s": 21599
+    },
+    "2024-10-04": {
+     "price": 0.0185,
+     "exact_t": 1728000002,
+     "requested_t": 1728043202,
+     "staleness_s": 43200
+    },
+    "2024-10-21": {
+     "price": 0.0115,
+     "exact_t": 1729468802,
+     "requested_t": 1729512002,
+     "staleness_s": 43200
+    }
+   },
+   "primary_volume_usdc": 346721.350513,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "11872",
+    "condition_id": "0x6d32c5bce4996f995dd0c9930889e898fb0442395e0a6b4fc3ffce06a331327b",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  },
+  {
+   "event_id": "pm_10259",
+   "question": "Will Ukraine join NATO in 2024?",
+   "domain": "geopolitics",
+   "event_family": "will-ukraine-join-nato-in-2024",
+   "causal_categories": [],
+   "n_correlated_contracts": 1,
+   "forecast_cutoffs": [
+    "2024-05-29",
+    "2024-08-04",
+    "2024-10-11",
+    "2024-12-04"
+   ],
+   "horizon": "2025-01-02",
+   "market_snapshots": {
+    "2024-05-29": {
+     "price": 0.075,
+     "exact_t": 1716940804,
+     "requested_t": 1716958083,
+     "staleness_s": 17279
+    },
+    "2024-08-04": {
+     "price": 0.055,
+     "exact_t": 1722729601,
+     "requested_t": 1722811683,
+     "staleness_s": 82082
+    },
+    "2024-10-11": {
+     "price": 0.019,
+     "exact_t": 1728604803,
+     "requested_t": 1728665283,
+     "staleness_s": 60480
+    },
+    "2024-12-04": {
+     "price": 0.011,
+     "exact_t": 1733270403,
+     "requested_t": 1733348163,
+     "staleness_s": 77760
+    }
+   },
+   "primary_volume_usdc": 2220103.217027,
+   "source": {
+    "archive": "polymarket_gamma+clob",
+    "event_id": "10259",
+    "condition_id": "0xb36d9c4fb1fac427ee93c27730c7c2b88c8e6000c7ff693bbcab68458b658f6c",
+    "retrieved_at_note": "deterministic hash-order sampling; frozen rules in build_vault.py"
+   },
+   "target_type": "binary"
+  }
+ ]
+}

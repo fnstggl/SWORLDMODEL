@@ -933,7 +933,31 @@ class ActorPolicyModel:
             per_particle.append({aid: p / z for aid, p in marginal.items()})
 
         if not per_particle:
-            raise ValueError("actor perceives no feasible action; action-space fallback contract was violated")
+            # Every particle filtered every action as infeasible. Under mandatory phase supervision this is
+            # a visible NO-OP decision (the actor genuinely cannot act), not a runtime crash that kills the
+            # whole simulation: return a degenerate posterior over a canonical wait/no-action option, loudly
+            # flagged so the PhaseExecutionRecord and support grading see it.
+            wait_id = next((a.action_id for a in actions
+                            if str(getattr(a, "action_id", "")).lower() in ("wait", "no_action", "abstain")),
+                           actions[0].action_id if actions else "wait")
+            return ActionPosterior(
+                schema_version=SCHEMA_VERSION, actor_id=views[0].actor_id,
+                feasible_actions=[wait_id], action_probabilities={wait_id: 1.0},
+                unnormalized_scores={wait_id: 0.0}, expected_utilities={},
+                expected_consequences={}, policy_family_posterior=family_post,
+                parameter_uncertainty=dict(self.parameter_pack.get("uncertainty", {})),
+                credible_intervals={wait_id: [1.0, 1.0]}, entropy=0.0,
+                feasibility_diagnostics=[asdict(d) for row in feasibility for d in row],
+                support_grade="highly_speculative",
+                fallbacks_used=list(self.parameter_pack.get("fallbacks", [])) +
+                               [{"why": "no_feasible_action_all_particles — degenerate wait posterior"}],
+                sensitivity_contributors=[],
+                provenance={"actor_view_hashes": [v.view_hash() for v in views],
+                            "numeric_source": "degenerate_wait_no_feasible_action",
+                            "llm_probability_minting": False, "seed": seed},
+                model_version=self.model_version,
+                parameter_pack_versions=[str(self.parameter_pack.get("pack_id", "tier7:4.0.0"))],
+            )
         probs = {aid: sum(p.get(aid, 0.0) for p in per_particle) / len(per_particle)
                  for aid in sorted(set(feasible_union))}
         probs = self.calibrator.apply(probs)
