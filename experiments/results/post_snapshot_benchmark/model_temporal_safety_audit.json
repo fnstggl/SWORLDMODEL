@@ -1,0 +1,105 @@
+{
+  "schema_version": "1.0",
+  "audited_at": "2026-07-14T00:00:00-04:00",
+  "model_name": "DeepSeek-V4-Flash",
+  "provider": "DeepSeek",
+  "api_alias": "deepseek-v4-flash",
+  "api_mode": "non-thinking",
+  "official_release_time": "2026-04-24",
+  "release_time_precision": "official release date; exact wall-clock time not published",
+  "claimed_knowledge_cutoff": null,
+  "knowledge_cutoff_source": null,
+  "knowledge_cutoff_audit_result": "No documented knowledge or training cutoff was found in the official API release notes, API model documentation, or official model card. Model self-reports are not accepted as provider attestation.",
+  "downloadable_checkpoint_available": true,
+  "downloadable_repository": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash",
+  "checkpoint_commit": "60d8d70770c6776ff598c94bb586a859a38244f1",
+  "checkpoint_last_modified": "2026-06-22T12:12:13Z",
+  "checkpoint_weight_shards": 46,
+  "checkpoint_total_parameters_reported": 158069433298,
+  "checkpoint_precision": "FP8 repository; official model card describes mixed FP4+FP8 for the instruct checkpoint",
+  "weight_hash_manifest": "model_hash_manifest.json",
+  "tokenizer_sha256": "d2175c15ca41d2b4664b1835c659cef2d5b5ddf82173c1c71e6f9b5b551bfa04",
+  "tokenizer_config_sha256": "f094ed50a5d61c0f579c14e5970cace0511b81d64b6dfa9d51535724cb5fd59e",
+  "model_index_sha256": "4c7980ca0d3f8c9545325a7d30930c5ba6d38c9e10ddfaead5d38574d35329e4",
+  "hosted_api_matches_checkpoint_attested": false,
+  "hosted_api_immutable_version_identifier": null,
+  "mutable_serving_risk": "high: the alias is a provider-controlled serving target and the API response contract does not expose a checkpoint commit or weight hash",
+  "tier_a_attempt": {
+    "eligible": false,
+    "reason": "An immutable downloadable checkpoint exists, but the provider does not document its knowledge/training cutoff and this run has no authorized 160 GB-class inference deployment with a pinned container image. Tier A requires both.",
+    "external_requirement_to_unblock": "A pinned inference deployment of deepseek-ai/DeepSeek-V4-Flash@60d8d70770c6776ff598c94bb586a859a38244f1 plus a provider-authored training/knowledge cutoff statement and a recorded inference-container digest."
+  },
+  "tier_b_attempt": {
+    "eligible": false,
+    "reason": "The official API names V4 Flash, but exposes neither a stable immutable serving revision nor a documented knowledge cutoff. Release date alone is not a knowledge cutoff.",
+    "external_requirement_to_unblock": "DeepSeek provider attestation naming the exact served revision, its stable lifetime, and its documented knowledge cutoff."
+  },
+  "selected_temporal_safety_tier": "causally_blinded_historical",
+  "selected_tier_code": "C",
+  "selected_tier_reason": "Tier A and B fail explicit cutoff/version requirements. Tier C is the strongest currently defensible arm and requires complete causal blinding plus six leakage probes on every row.",
+  "headline_mixing_allowed": false,
+  "eligible_event_window": {
+    "rule": "Historical rows are eligible only after capsule construction proves every evidence byte existed by forecast cutoff, blinding and all six leakage probes pass, the forecaster cannot access outcomes, and the question/cutoff/resolution ordering is proven. No immutable-snapshot S<Q claim is made under Tier C.",
+    "candidate_dates": "to be frozen by the representative selection manifest",
+    "status": "not_yet_frozen"
+  },
+  "official_sources": [
+    {
+      "claim": "V4 Flash API release and explicit alias",
+      "url": "https://api-docs.deepseek.com/updates/",
+      "observed_statement": "API supports V4-Pro and V4-Flash; alias deepseek-v4-flash"
+    },
+    {
+      "claim": "official V4 release/model characteristics",
+      "url": "https://api-docs.deepseek.com/news/news260424/",
+      "observed_statement": "DeepSeek V4 Preview released; V4 Flash 284B total/13B active; API available"
+    },
+    {
+      "claim": "official API model IDs and request contract",
+      "url": "https://api-docs.deepseek.com/api/create-chat-completion",
+      "observed_statement": "model IDs deepseek-v4-flash and deepseek-v4-pro"
+    },
+    {
+      "claim": "official downloadable checkpoint and model card",
+      "url": "https://huggingface.co/deepseek-ai/DeepSeek-V4-Flash",
+      "observed_statement": "official repository and model card; no knowledge cutoff claim found"
+    },
+    {
+      "claim": "immutable repository metadata",
+      "url": "https://huggingface.co/api/models/deepseek-ai/DeepSeek-V4-Flash",
+      "observed_statement": "commit 60d8d70770c6776ff598c94bb586a859a38244f1"
+    }
+  ],
+  "decision_record": {
+    "blocker_id": "TEMPORAL_MODEL_VERSION_001",
+    "blocked_requirement": "Tier A immutable post-snapshot model or Tier B provider-attested post-cutoff model",
+    "root_cause": "Official materials omit a knowledge cutoff and the hosted alias lacks an immutable serving revision.",
+    "classification": "external",
+    "scientific_invariant_at_risk": "The model could know a historical outcome through training or a silent serving update.",
+    "candidate_alternatives": [
+      "Self-host the pinned 158B-parameter checkpoint",
+      "Use the hosted provider alias as Tier B",
+      "Run a fully causally blinded current-model Tier C arm"
+    ],
+    "alternative_comparison": {
+      "self_host": "Reproducible weights, but still lacks an official cutoff and requires unprovided large-model inference infrastructure.",
+      "provider_tier_b": "Operationally feasible, but scientifically invalid as Tier B without a documented cutoff and stable serving revision.",
+      "tier_c": "Retains model-memory risk but actively measures and labels it through blinding and leakage probes; explicitly permitted by the protocol."
+    },
+    "selected_approach": "Tier C causally_blinded_historical",
+    "implementation_steps": [
+      "freeze stable pseudonym/date mappings before forecasts",
+      "blind questions and evidence consistently",
+      "run recognition, name-only, no-evidence, identity-permutation, counterfactual-evidence, and temporal-fact probes",
+      "exclude or visibly fail rows that do not pass",
+      "do not label the result immutable-snapshot"
+    ],
+    "validation_evidence": [
+      "official-source audit above",
+      "pinned downloadable checkpoint/hash manifest",
+      "per-row leakage probes required before representative freeze"
+    ],
+    "residual_limitation": "Causal blinding reduces and measures memorization risk but cannot prove absence of all training-data recognition.",
+    "benchmark_execution_may_continue": true
+  }
+}
