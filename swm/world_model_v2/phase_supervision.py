@@ -230,12 +230,15 @@ def finalize(records: dict, plan, res, *, phase_meta: dict = None) -> dict:
 def _terminal_influence(phase, plan, written) -> str:
     rev = next((e for e in plan.scheduled_events if e.get("etype") == "resolve_outcome"), None)
     outcome_var = (rev or {}).get("payload", {}).get("outcome_var", "outcome")
-    mods = {m.get("var") for m in ((rev or {}).get("payload", {}).get("rate_modulation") or [])}
+    consumed = set()
+    for e in plan.scheduled_events:
+        if e.get("etype") in ("institutional_decision", "aggregate_outcome_resolution"):
+            consumed |= {m.get("var") for m in (e.get("payload", {}).get("consume") or [])}
     for w in written:
         if outcome_var in w:
             return "direct_resolution"
-        if any(mv and mv in w for mv in mods):
-            return "rate_modulation"
+        if any(cv and cv in w for cv in consumed):
+            return "consumed_by_mechanism"
     if phase == "phase10_institutions":
         return "constraint"
     return "state_only"

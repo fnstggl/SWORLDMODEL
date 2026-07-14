@@ -192,15 +192,16 @@ def _add_mechanism(plan, mech_id, operator, role, source):
 
 
 def _add_modulation(plan, var, weight):
-    """Register a bounded terminal-rate modulation on the canonical resolve_outcome event (total capped)."""
-    rev = _resolve_event(plan)
-    if rev is None:
-        return False
-    mods = rev.setdefault("payload", {}).setdefault("rate_modulation", [])
+    """Register a consumer-written state variable for CONSUMPTION BY A MECHANISM (the institutional
+    decision or the aggregate-outcome realization mechanism). The terminal resolver never consumes these
+    (Part 4: no resolver-level probability modulation). Total weight capped at synthesis time."""
+    if not hasattr(plan, "_consumed_state"):
+        plan._consumed_state = []
+    mods = plan._consumed_state
     if any(m.get("var") == var for m in mods):
         return False
     total = sum(float(m.get("weight", 0.0)) for m in mods)
-    w = max(0.0, min(float(weight), 0.45 - total))            # bounded channel: modulators never dominate
+    w = max(0.0, min(float(weight), 0.45 - total))
     if w <= 0.0:
         return False
     mods.append({"var": var, "weight": round(w, 3)})
@@ -418,6 +419,29 @@ def synthesize_activation(plan, req=None) -> dict:
         rep["actions"].append({"phase": "phase4_actor_policy", "action": "gated_off_ornamental_decisions",
                                "n_events_removed": n_before - len(plan.scheduled_events),
                                "why": req["phase4_actor_policy"]["why"]})
+
+    # ---- route consumer state into a CONSUMING MECHANISM (Part 4: the terminal resolver never modulates).
+    # An institutional decision consumes it (members respond to population/actor/network/nonlinear state);
+    # otherwise the aggregate-outcome realization mechanism resolves the outcome from that state in the
+    # event loop, ahead of the generic safety net.
+    consumed = list(getattr(plan, "_consumed_state", []) or [])
+    if consumed:
+        inst_ev = next((e for e in plan.scheduled_events if e.get("etype") == "institutional_decision"),
+                       None)
+        if inst_ev is not None:
+            inst_ev.setdefault("payload", {})["consume"] = consumed
+            rep["actions"].append({"phase": "state_consumption", "action": "institution_consumes_state",
+                                   "vars": [m["var"] for m in consumed]})
+        elif not _has_event("aggregate_outcome_resolution"):
+            plan.scheduled_events.append({
+                "etype": "aggregate_outcome_resolution", "ts": resolve_ts - 0.5, "participants": [],
+                "payload": {"outcome_var": resolve_var, "options": options, "lean": lean,
+                            "consume": consumed}})
+            _add_mechanism(plan, "aggregate_outcome_mechanism", "aggregate_outcome_mechanism",
+                           "realize the aggregate-behavior outcome from consumed causal state",
+                           "posterior base rate + bounded state consumption (inside the mechanism)")
+            rep["actions"].append({"phase": "state_consumption", "action": "aggregate_mechanism_resolves",
+                                   "vars": [m["var"] for m in consumed]})
     return rep
 
 

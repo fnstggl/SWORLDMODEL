@@ -207,7 +207,8 @@ def _inject_posterior_rate(plan) -> bool:
     for ev in plan.scheduled_events:
         # institutional_decision (Phase 10) consumes the SAME evidence-updated base rate as the terminal
         # resolver — the institution's rule TRANSFORMS the posterior, it never invents its own rate.
-        if ev.get("etype") in ("resolve_outcome", "institutional_decision"):
+        if ev.get("etype") in ("resolve_outcome", "institutional_decision",
+                               "aggregate_outcome_resolution"):
             ev.setdefault("payload", {})["posterior_rate_particles"] = parts
             injected = True
     return injected

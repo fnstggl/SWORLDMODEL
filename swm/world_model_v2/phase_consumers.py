@@ -108,6 +108,7 @@ class CollectiveThresholdDecisionOperator(TransitionOperator):
             "institution_id": str(p.get("institution_id", "")), "n_members": n, "needed": int(needed),
             "outcome_var": str(p["outcome_var"]), "options": list(p.get("options") or ["True", "False"]),
             "posterior_rate_particles": p.get("posterior_rate_particles"),
+            "consume": list(p.get("consume") or []),
             "lean": str(p.get("lean", "neutral"))},
             reason_codes=[f"institution={p.get('institution_id', '?')}", f"rule={needed}/{n}"])
 
@@ -122,6 +123,10 @@ class CollectiveThresholdDecisionOperator(TransitionOperator):
         else:
             av, bv = LEAN_BETA.get(a["lean"], (1.0, 1.0))
             prop, src = _beta_sample(rng, av, bv), "prior_beta"
+        # the institution CONSUMES upstream causal state: members respond to the population aggregate,
+        # actor-action polarity, diffusion reach and nonlinear momentum written into this world (bounded,
+        # inside the mechanism — never at the terminal resolver)
+        prop, consumed = consume_state_rate(world, prop, a.get("consume") or [])
         yes = sum(1 for _ in range(a["n_members"]) if rng.random() < prop)
         passed = yes >= a["needed"]
         opts = a["options"] if len(a["options"]) == 2 else ["True", "False"]
@@ -133,6 +138,7 @@ class CollectiveThresholdDecisionOperator(TransitionOperator):
         d = StateDelta(at=world.clock.now, event_type="institutional_decision", operator=self.name,
                        reason_codes=proposal.reason_codes,
                        uncertainty={"member_propensity": round(prop, 4), "propensity_source": src,
+                                    "consumed_state": consumed,
                                     "yes": yes, "needed": a["needed"], "n_members": a["n_members"],
                                     "note": "declared threshold rule over posterior-informed member votes "
                                             "(structural; member correlation not modeled — broad prior)"})
@@ -189,6 +195,89 @@ class PopulationAggregationOperator(TransitionOperator):
                        uncertainty={"segments": seg_values,
                                     "note": "segment heterogeneity sampled from labeled broad priors"})
         return d.change(f"quantities[{var}]", before, round(agg, 4))
+
+
+# ---------------------------------------------------------------- aggregate outcome mechanism
+#: bounded weight each consumed state variable may carry inside a consuming MECHANISM (never at the
+#: terminal resolver — Part 4 prohibits resolver-level probability modulation).
+MAX_CONSUMED_STATE_WEIGHT = 0.45
+
+
+def consume_state_rate(world, base_p: float, consume: list) -> tuple:
+    """A MECHANISM's bounded consumption of upstream causal state: p' = (1-Σw)·p + Σ wᵢ·vᵢ over quantities
+    that upstream operators (population aggregation, network diffusion, actor polarity, nonlinear state)
+    actually wrote into THIS world's state. Unwritten variables contribute nothing. This runs inside a
+    consuming operator's apply() — the terminal resolver never calls it."""
+    used, blended, total = [], 0.0, 0.0
+    for m in (consume or []):
+        var, w = str(m.get("var", "")), float(m.get("weight", 0.0) or 0.0)
+        q = world.quantities.get(var)
+        v = getattr(q, "value", None)
+        if w <= 0.0 or not isinstance(v, (int, float)):
+            continue
+        blended += w * max(0.0, min(1.0, float(v)))
+        total += w
+        used.append(var)
+    if not used:
+        return base_p, []
+    if total > MAX_CONSUMED_STATE_WEIGHT:
+        blended *= MAX_CONSUMED_STATE_WEIGHT / total
+        total = MAX_CONSUMED_STATE_WEIGHT
+    return (1.0 - total) * base_p + blended, used
+
+
+class AggregateOutcomeOperator(TransitionOperator):
+    """The aggregate-behavior REALIZATION mechanism: when the outcome the question asks about IS an
+    aggregate-behavior event (adoption/turnout/diffusion/momentum reaching what was asked) and no
+    institutional procedure decides it, this mechanism — not the terminal resolver — realizes the outcome
+    from the causal state upstream consumers wrote (population aggregate, diffusion reach, actor-action
+    polarity, nonlinear state), blended with the evidence-updated posterior base rate, inside the event
+    loop, with a StateDelta naming exactly which state it consumed. The generic resolver then no-ops
+    (already-resolved precedence). payload = {outcome_var, options, lean, consume:[{var,weight}],
+    posterior_rate_particles?}."""
+    name = "aggregate_outcome_mechanism"
+
+    def applicable(self, world, event):
+        return event.etype == "aggregate_outcome_resolution" and bool(event.payload.get("outcome_var"))
+
+    def validate(self, world, proposal):
+        return ValidationResult(ok=True)
+
+    def propose(self, world, event, rng):
+        p = event.payload
+        return TransitionProposal(operator=self.name, action={
+            "outcome_var": str(p["outcome_var"]), "options": list(p.get("options") or ["True", "False"]),
+            "lean": str(p.get("lean", "neutral")), "consume": list(p.get("consume") or []),
+            "posterior_rate_particles": p.get("posterior_rate_particles")},
+            reason_codes=["aggregate_realization"])
+
+    def apply(self, world, proposal):
+        from swm.world_model_v2.fallback import LEAN_BETA, _beta_sample
+        from swm.world_model_v2.quantities import Quantity, register_quantity_type
+        a = proposal.action
+        var = a["outcome_var"]
+        if var in world.quantities and world.quantities[var].value is not None:
+            return None                                      # a stronger domain mechanism already resolved it
+        rng = _branch_rng(world, "aggregate_outcome")
+        post = a.get("posterior_rate_particles")
+        if post:
+            base, src = _draw_rate(post, rng), "posterior"
+        else:
+            av, bv = LEAN_BETA.get(a["lean"], (1.0, 1.0))
+            base, src = _beta_sample(rng, av, bv), "prior_beta"
+        p, used = consume_state_rate(world, base, a["consume"])
+        if not used:
+            return None                                      # no upstream state written → nothing to realize
+        opts = a["options"] if len(a["options"]) == 2 else ["True", "False"]
+        val = opts[0] if rng.random() < p else opts[1]
+        register_quantity_type(var, units="outcome")
+        before = world.quantities[var].value if var in world.quantities else None
+        world.quantities[var] = Quantity(name=var, qtype=var, value=val, timestamp=world.clock.now)
+        d = StateDelta(at=world.clock.now, event_type="aggregate_outcome_resolution", operator=self.name,
+                       reason_codes=proposal.reason_codes + [f"consumed:{','.join(used)}"],
+                       uncertainty={"base_rate_source": src, "realized_rate": round(p, 4),
+                                    "consumed_state": used})
+        return d.change(f"quantities[{var}]", before, val)
 
 
 # ---------------------------------------------------------------- Phase 6: structural process fallback
@@ -372,6 +461,11 @@ register_operator("population_aggregation", PopulationAggregationOperator(),
                   requires=("populations",), modifies=("quantities",), temporal_scale="scheduled",
                   parameter_source="declared segment weights; heterogeneity from labeled broad priors",
                   validated=True)
+register_operator("aggregate_outcome_mechanism", AggregateOutcomeOperator(),
+                  requires=("quantities",), modifies=("quantities",), temporal_scale="scheduled",
+                  parameter_source="posterior base rate + bounded consumption of upstream causal state "
+                                   "(inside the mechanism; the terminal resolver never modulates)",
+                  validated=True)
 register_operator("structural_process_prior", StructuralProcessPriorOperator(),
                   requires=("quantities",), modifies=("quantities",), temporal_scale="scheduled",
                   parameter_source="broad Beta prior; EXPLORATORY registry-gap fallback (labeled)",
@@ -387,6 +481,7 @@ register_operator("network_diffusion", NetworkDiffusionOperator(),
 
 from swm.world_model_v2.events import event_type_registered, register_event_type  # noqa: E402
 for _et, _reads, _deltas in (("institutional_decision", ("institutions", "quantities"), ("quantities",)),
+                             ("aggregate_outcome_resolution", ("quantities",), ("quantities",)),
                              ("structural_process_prior", ("quantities",), ("quantities",)),
                              ("population_aggregation", ("populations",), ("quantities",)),
                              ("actor_action_aggregation", ("entities",), ("quantities",)),
