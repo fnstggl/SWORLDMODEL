@@ -16,8 +16,8 @@ import urllib.request
 DEEPSEEK_URL = "https://api.deepseek.com/chat/completions"
 
 
-def deepseek_chat_fn(model: str = "deepseek-chat", *, system: str = "", max_tokens: int = 800,
-                     temperature: float = 0.0):
+def deepseek_chat_fn(model: str = "deepseek-v4-flash", *, system: str = "", max_tokens: int = 800,
+                     temperature: float = 0.0, thinking: bool = False):
     """Return a callable(prompt) -> text using the DeepSeek API. Reads DEEPSEEK_API_KEY from env only.
     model: 'deepseek-chat' (flagship V3 chat) or 'deepseek-reasoner' (R1)."""
     key = os.environ.get("DEEPSEEK_API_KEY", "").strip()
@@ -30,8 +30,11 @@ def deepseek_chat_fn(model: str = "deepseek-chat", *, system: str = "", max_toke
     def fn(prompt: str) -> str:
         msgs = ([{"role": "system", "content": system}] if system else []) + \
                [{"role": "user", "content": prompt}]
-        body = json.dumps({"model": model, "messages": msgs, "max_tokens": max_tokens,
-                           "temperature": temperature}).encode()
+        payload = {"model": model, "messages": msgs, "max_tokens": max_tokens,
+                   "temperature": temperature}
+        if model.startswith("deepseek-v4") and not thinking:
+            payload["thinking"] = {"type": "disabled"}       # deterministic non-thinking mode (recorded)
+        body = json.dumps(payload).encode()
         # bounded retry on TRANSIENT failures (connection resets, 429/5xx, timeouts) so a single network
         # blip cannot kill a long batch. Deterministic backoff (no jitter — Math.random is unavailable
         # in some sandboxes and determinism aids replay). Non-transient errors (4xx auth) raise at once.

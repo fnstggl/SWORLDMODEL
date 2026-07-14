@@ -1,0 +1,24 @@
+{
+  "attempts": [
+    {"attack": "post-cutoff evidence in a capsule", "result": "BLOCKED: EvidenceCapsule.items() raises on first_proven_available_at>cutoff (unit-tested); scorer re-checks per row."},
+    {"attack": "edited historical pages", "result": "MITIGATED: Wikipedia content is revision-pinned (oldid) — later edits cannot alter fetched bytes; Wayback bytes are capture-pinned. Residual: a page edited BEFORE the cutoff to include forward-looking text is admissible evidence by definition."},
+    {"attack": "leaked resolution language in question wording", "result": "MITIGATED: questions are pre-resolution market questions by construction (opened before resolution); blinding strips identifying anchors. Residual: none identified."},
+    {"attack": "memorized outcomes via silently-updated serving weights", "result": "MEASURED, not assumed: post-release question opening + name-only/recognition/no-evidence probes per row; contaminated rows classified and censused."},
+    {"attack": "recognizable blinded events", "result": "MEASURED: recognition probe; rows that identify the real event are contamination_susceptible."},
+    {"attack": "future-dated market snapshot", "result": "BLOCKED: snapshot = last archived tick at-or-before cutoff; staleness recorded; builder rejects worlds without a valid pre-cutoff tick."},
+    {"attack": "incorrect resolution rules", "result": "MITIGATED: UMA-resolved outcomePrices (0/1 only accepted); ambiguous/unresolved markets ineligible."},
+    {"attack": "duplicate/correlated worlds", "result": "BLOCKED: markets grouped by underlying gamma event; one world per event; clusters used for CIs."},
+    {"attack": "baseline evidence mismatch", "result": "BLOCKED: baselines receive the byte-identical rendered capsule text + blinded question, same model alias, in the same row execution."},
+    {"attack": "hidden internet access at forecast time", "result": "PARTIAL: capsules are pre-frozen and the runtime consumes prebuilt_bundle (no retrieval call path); the LLM API is the only network dependency; OS-level egress lock unavailable in this environment — recorded per row, isolation gate reported PARTIAL."},
+    {"attack": "scorer files visible to forecaster", "result": "BLOCKED: sealed store raises without REPLAY_SCORER=1; forecaster never imports the sealed loader; freeze hashes detect post-hoc edits."},
+    {"attack": "direct LLM probability injection into V2", "result": "BLOCKED: terminal from resolve_outcome over terminal WorldStates; LEAN_BETA maps qualitative leans only; regression test forbids benchmark-ID branching; terminal_source recorded."},
+    {"attack": "phases recorded active without executing", "result": "BLOCKED: PhaseExecutionRecords derive from the branch-log operator census, not from declarations."},
+    {"attack": "StateDeltas that never affect trajectories", "result": "RESIDUAL RISK acknowledged: the bounded rate-modulation channel consumes consumer-written quantities; it is state-mediated but shallow. Recorded as a limitation; coverage ablations report magnitude so reviewers can judge."},
+    {"attack": "calibration trained on val/test outcomes", "result": "BLOCKED: fit=calibration worlds only, select=validation only, locked single-open log; chronological splits prevent temporal bleed."},
+    {"attack": "locked outcomes opened early", "result": "BLOCKED: single-open access log; scorer refuses a second open; locked rows generated and hashed before any open."},
+    {"attack": "failed rows silently dropped", "result": "BLOCKED: every attempted row is appended with failure_reason; completion gates count required rows explicitly."},
+    {"attack": "event replacement after performance known", "result": "BLOCKED: candidate pool + selection frozen and committed before any forecast; chronological fill rule is deterministic."}
+  ],
+  "fixed_before_scoring": ["capsule cutoff enforcement", "snapshot at-or-before rule", "event grouping", "sealed-store guard", "freeze hashes", "split governance"],
+  "residual_limitations": ["OS-level network isolation unavailable (partial)", "rate-modulation channel is shallow state mediation", "market-question corpus skews short-horizon binary", "provider serving-weight mutation risk (measured, not eliminated)"]
+}
