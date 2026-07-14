@@ -141,6 +141,22 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
     # ---------- Phase 9: populations + multilayer networks — instantiate into the shared plan when declared --
     _thread_populations_networks(plan, manifest, drop)
 
+    # ---------- Phase 10 completion: normalize declared institution rule kinds onto the EXECUTABLE set so a
+    #            declared institution is not silently dropped to an empty (ornamental) RuleSystem. Records the
+    #            report + completeness diagnostics. Does NOT invent institutions. ----
+    if "phase10_institutions" not in drop:
+        try:
+            from swm.world_model_v2.integration_completion import (normalize_institution_rules,
+                                                                   executable_rule_count, completeness_diagnostics)
+            before = executable_rule_count(plan)
+            norm = normalize_institution_rules(plan)
+            after = executable_rule_count(plan)
+            manifest["phase10_institutions"]["normalization"] = {
+                "executable_rules_before": before, "executable_rules_after": after, **norm}
+            lineage["completeness_diagnostics"] = completeness_diagnostics(plan)
+        except Exception as e:  # noqa: BLE001
+            manifest["phase10_institutions"]["normalization"] = {"error": type(e).__name__}
+
     # ---------- Phase 11: dynamic-recompilation loop over the as-of observations (same plan lineage) --------
     if "phase11_recompilation" not in drop and bundle is not None:
         _run_recompilation(plan, bundle, as_of, horizon, seed, llm, manifest, lineage, costs)
