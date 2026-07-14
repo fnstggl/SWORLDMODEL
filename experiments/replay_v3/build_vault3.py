@@ -27,8 +27,8 @@ import experiments.replay_v2.build_vault as V2B                      # reuse ver
 
 VAULT = Path("experiments/replay_vault_v3")
 S_RELEASE = "2026-04-25"                                             # first eligible question-open day
-R_MAX = "2026-07-10"
-MIN_VOLUME, MIN_LIFETIME_D = 5_000.0, 14.0
+R_MAX = "2026-07-12"
+MIN_VOLUME, MIN_LIFETIME_D = 1_000.0, 12.0
 CUTOFF_FRACS = (0.15, 0.40, 0.65, 0.88)
 N_REPR = 100
 QUOTA_PER_DOMAIN = 15
@@ -40,7 +40,7 @@ def _ts(iso):
     return time.mktime(time.strptime(iso[:10], "%Y-%m-%d"))
 
 
-def fetch_recent(max_pages=100):
+def fetch_recent(max_pages=200):
     """Market-first fetch: gamma /markets supports the exact frozen filters server-side (closed, opened
     after the model release, resolved in-window, volume floor). Markets are then grouped into their
     underlying EVENT so correlated contracts become one world."""
