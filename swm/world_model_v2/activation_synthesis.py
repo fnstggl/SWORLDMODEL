@@ -121,7 +121,12 @@ def phase_requirements(plan) -> dict:
     req["phase10_institutions"] = {"required": ok, "why": why, "signal": sig}
     ok, why, sig = gate(signal("aggregate_population_behavior", _P9POP_TOKENS), pops, "populations")
     req["phase9_populations"] = {"required": ok, "why": why, "signal": sig}
-    ok, why, sig = gate(signal("networked_transmission", _P9NET_TOKENS), rels, "relations")
+    # Part 7: relations may be INFERRED from the declared causal world when transmission is causally
+    # required — >=2 declared entities (or a declared population to expose) are inferable structure.
+    net_substrate = rels or (len([e for e in (getattr(plan, "entities", []) or [])
+                                  if isinstance(e, dict)]) >= 2) or pops
+    ok, why, sig = gate(signal("networked_transmission", _P9NET_TOKENS), net_substrate,
+                        "relations (or inferable entity/population substrate)")
     req["phase9_networks"] = {"required": ok, "why": why, "signal": sig}
     hits7 = signal("nonlinear_dynamics", _P7_TOKENS)
     req["phase7_nonlinear"] = {"required": bool(hits7),
@@ -136,11 +141,14 @@ def phase_requirements(plan) -> dict:
                       "networked_transmission", "nonlinear_dynamics", "institutional_decision_process"))
     procs = [str(c.get("process", "")) for c in (getattr(plan, "mechanism_choices", []) or [])
              if isinstance(c, dict) and c.get("process") and c.get("process") != "outcome_resolution"]
+    other_social = any(req.get(k, {}).get("required") for k in
+                       ("phase10_institutions", "phase9_populations", "phase9_networks"))
     req["phase6_registry"] = {
-        "required": bool(p6_sel) or (social_dep and bool(procs)),
+        "required": bool(p6_sel) or social_dep or other_social,
         "why": (f"registry answers {sorted(p6_sel)[:3]}" if p6_sel else
-                (f"social causal mechanism required for processes {procs[:3]}" if social_dep and procs
-                 else "no social behavioral mechanism required"))}
+                ("social causal mechanism required (dependency signal)" if social_dep else
+                 ("another social phase is causally required — a behavioral mechanism carries it"
+                  if other_social else "no social behavioral mechanism required")))}
     hits4 = signal("strategic_actor_decisions", _P4_TOKENS)
     # a compiler-proposed decision whose candidate actions carry outcome POLARITY (approve/reject/veto…)
     # is itself structural evidence of a strategic actor — generic act/wait proposals are not.
@@ -288,6 +296,29 @@ def synthesize_activation(plan, req=None) -> dict:
         rep["actions"].append({"phase": "phase9_populations", "action": "aggregation_consumer",
                                "populations": [p.get("id") for p in plan.populations[:2]
                                                if isinstance(p, dict)]})
+
+    # ---- Phase 9 networks: infer relations from the declared causal world when transmission is required
+    #      but the compiler declared no explicit edges (Part 7: "build or infer multilayer relations") ----
+    if req["phase9_networks"]["required"] and not plan.relations:
+        ents = [e for e in plan.entities if isinstance(e, dict) and e.get("id")]
+        ents.sort(key=lambda e: -float(e.get("sensitivity", 0.5) or 0.5))
+        inferred = []
+        if len(ents) >= 2:
+            hub = str(ents[0]["id"])
+            for e in ents[1:5]:
+                inferred.append({"src": hub, "rel": "influences", "dst": str(e["id"]),
+                                 "_inferred": "causal_world_hub_influence"})
+                inferred.append({"src": str(e["id"]), "rel": "communicates_with", "dst": hub,
+                                 "_inferred": "causal_world_communication"})
+        elif plan.populations:
+            pid = str(plan.populations[0].get("id"))
+            aid = str(ents[0]["id"]) if ents else pid
+            inferred.append({"src": aid, "rel": "observes", "dst": pid,
+                             "_inferred": "population_exposure_layer"})
+        if inferred:
+            plan.relations.extend(inferred)
+            rep["actions"].append({"phase": "phase9_networks", "action": "relations_inferred_from_causal_world",
+                                   "n": len(inferred)})
 
     # ---- Phase 9 networks: declared relations + diffusion process → multilayer percolation consumer ----
     if req["phase9_networks"]["required"] and plan.relations and not _has_event("network_diffusion"):
@@ -445,6 +476,12 @@ def _synthesize_p6(plan, resolve_ts) -> list:
     # ---- fallback: required processes NOTHING answers still execute (transparent broad prior) ----
     procs = [str(c.get("process", "")) for c in (getattr(plan, "mechanism_choices", []) or [])
              if isinstance(c, dict) and c.get("process") and c.get("process") != "outcome_resolution"]
+    if not procs:
+        # the compiler returned no process list — derive the required processes from its structured
+        # dependency signals so the behavioral mechanism still executes (never silently omitted)
+        deps = (getattr(plan, "provenance", {}) or {}).get("causal_dependencies") or {}
+        procs = [k for k, v in deps.items() if v is True and k != "structural_change_monitoring"][:2] \
+            or ["social_outcome_process"]
     lean = (getattr(plan, "provenance", {}) or {}).get("outcome_lean", "neutral")
     n_fb = 0
     for proc in procs:

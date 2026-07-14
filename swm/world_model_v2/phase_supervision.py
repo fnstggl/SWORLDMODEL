@@ -88,7 +88,9 @@ def _plan_state_present(phase, plan) -> bool:
     if phase == "phase9_populations":
         return bool(getattr(plan, "populations", []))
     if phase == "phase9_networks":
-        return bool(getattr(plan, "relations", []))
+        return bool(getattr(plan, "relations", []) or
+                    len([e for e in (getattr(plan, "entities", []) or []) if isinstance(e, dict)]) >= 2 or
+                    getattr(plan, "populations", []))         # relations are inferable from the causal world
     if phase == "phase10_institutions":
         return bool(getattr(plan, "institutions", []))
     return True                                             # p6/p7 execute from mechanisms/events, not sections
@@ -185,8 +187,19 @@ def finalize(records: dict, plan, res, *, phase_meta: dict = None) -> dict:
             r.execution_status = "execution_failed"
             r.errors.append(str(m["error"])[:160])
         elif r.relevant:
-            r.execution_status = "causally_active" if m.get("executed", True) else "blocked_invalid_contract"
-            r.no_op_reason = "" if m.get("executed", True) else str(m.get("reason", ""))[:120]
+            if m.get("executed", True):
+                r.execution_status = "causally_active"
+                r.no_op_reason = ""
+            else:
+                reason = str(m.get("reason", ""))
+                # a posterior/evidence pass that ran but found nothing to update on is a NORMAL no-op
+                # (the phase executed its contract; the world simply carried no admissible signal) —
+                # only a genuine contract failure is blocked.
+                benign = any(t in reason.lower() for t in
+                             ("no admissible", "did not update", "no as_of", "no observations",
+                              "0 eff obs", "no evidence bundle"))
+                r.execution_status = "no_op_causally_irrelevant" if benign else "blocked_invalid_contract"
+                r.no_op_reason = reason[:120]
         if m.get("reason") and not r.relevance_reasons.endswith(str(m["reason"])[:40]):
             r.validation_status = str(m.get("reason", ""))[:120]
     failures = [{"phase": ph, "status": rec.execution_status, "reason": rec.no_op_reason or

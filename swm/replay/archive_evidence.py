@@ -168,10 +168,14 @@ class ReplayBundle:
         self.claims, self.included_claim_ids = [], []
         self.quarantine = []
         self.items = []
+        self.documents = []
         for i, it in enumerate(capsule_dict["items"]):
             cid = f"cl_{i}"
             self.claims.append({"claim_id": cid, "text": it["text"][:1200], "title": it.get("title", ""),
                                 "claim_class": "archived_document",
+                                # phase-3 tagger contract: subject/predicate/object triple + quote
+                                "subject": it.get("title", "")[:80], "predicate": "archived_state_asof",
+                                "object": it["text"][:200], "quote": it["text"][:300],
                                 "publication_time": it["first_proven_available_at"],
                                 "source": it["source"], "raw_sha256": it["raw_sha256"],
                                 "archive_retrieval_id": it["archive_retrieval_id"]})
@@ -180,6 +184,9 @@ class ReplayBundle:
 
     def bundle_hash(self):
         return self._hash
+
+    def included_claims(self):
+        return list(self.claims)
 
     def render(self, max_chars=4000):
         out = []

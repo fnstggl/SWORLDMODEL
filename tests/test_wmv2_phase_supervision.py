@@ -58,8 +58,12 @@ def test_relevant_executed_phase_is_causally_active_with_delta_evidence():
     p.accepted_mechanisms = [{"operator": "institutional_decision", "mech_id": "x",
                               "parameter_source": "declared rule"}]
     recs = PS.assess(p, has_as_of=True, has_bundle=True)
-    out = PS.finalize(recs, p, _res({"institutional_decision": {
-        "n_deltas": 30, "fields_written": ["quantities[outcome]"], "event_types": ["institutional_decision"]}}),
+    out = PS.finalize(recs, p, _res({
+        "institutional_decision": {"n_deltas": 30, "fields_written": ["quantities[outcome]"],
+                                   "event_types": ["institutional_decision"]},
+        # p6 is co-required whenever an institutional/social phase is (a behavioral mechanism carries it)
+        "structural_process_prior": {"n_deltas": 30, "fields_written": ["quantities[mech]"],
+                                     "event_types": ["structural_process_prior"]}}),
         phase_meta={k: {"executed": True} for k in ("phase1_compiler", "phase2_evidence",
                                                     "phase3_posterior", "phase8_persistence",
                                                     "phase11_recompilation")})
