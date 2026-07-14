@@ -1,0 +1,972 @@
+{
+  "artifact_checksum": "972015128273f19960dcd959c534f07d041e8ffa86092b8e7e351ec994ea3f94",
+  "datasets": {
+    "enron_repaired": {
+      "b0_global_counts": {
+        "no_reply_within_7d": 154684.0,
+        "reply_in_1_to_7d": 1865.0,
+        "reply_within_24h": 9641.0
+      },
+      "b1_contexts": 67159,
+      "b5": {
+        "actions": [
+          "reply_within_24h",
+          "reply_in_1_to_7d",
+          "no_reply_within_7d"
+        ],
+        "epochs": 7,
+        "feature_names": [
+          "body_chars_scaled",
+          "commitment_markers_scaled",
+          "hour_cos",
+          "hour_sin",
+          "inbox_load_scaled",
+          "subject_chars_scaled",
+          "weekend"
+        ],
+        "fit_rows": 1163330,
+        "regularization": 0.01,
+        "weights": [
+          [
+            -2.897942185933085,
+            -0.18975923764474179,
+            0.03387133180787973,
+            -0.23666849610087876,
+            0.1869473296423626,
+            0.8354585010489011,
+            -0.22211424254392287,
+            -0.7298430909443232
+          ],
+          [
+            -4.648530851598525,
+            -0.0732442824766703,
+            0.18742769947537327,
+            -0.01806332064377461,
+            -0.22593039387594271,
+            0.2540343427912009,
+            -0.6763359123480427,
+            0.672824667253965
+          ],
+          [
+            0.13834019614360646,
+            0.26300352012142225,
+            -0.22129903128324555,
+            0.25473181674463913,
+            0.03898306423358156,
+            -1.0894928438401397,
+            0.898450154891854,
+            0.057018423690350296
+          ]
+        ]
+      },
+      "b5_selection": {
+        "b6_regularization_selection": {
+          "candidates": [
+            {
+              "regularization": 0.01,
+              "validation_log_loss": 0.2698896599649416
+            },
+            {
+              "regularization": 0.1,
+              "validation_log_loss": 0.2698896606446301
+            },
+            {
+              "regularization": 1.0,
+              "validation_log_loss": 0.2698896674415202
+            },
+            {
+              "regularization": 10.0,
+              "validation_log_loss": 0.2698897354108603
+            }
+          ],
+          "final_epochs": 7,
+          "selected_regularization": 0.01,
+          "selection_split": "validation"
+        },
+        "candidates": [
+          {
+            "regularization": 0.01,
+            "validation_log_loss": 0.3028657470744832
+          },
+          {
+            "regularization": 0.1,
+            "validation_log_loss": 0.3028657471167971
+          },
+          {
+            "regularization": 1.0,
+            "validation_log_loss": 0.3028657475399372
+          },
+          {
+            "regularization": 10.0,
+            "validation_log_loss": 0.3028657517714321
+          }
+        ],
+        "final_epochs": 7,
+        "selected_regularization": 0.01,
+        "selection_split": "validation"
+      },
+      "b6": {
+        "actor_groups": 13850,
+        "base": {
+          "actions": [
+            "reply_within_24h",
+            "reply_in_1_to_7d",
+            "no_reply_within_7d"
+          ],
+          "epochs": 7,
+          "feature_names": [
+            "body_chars_scaled",
+            "commitment_markers_scaled",
+            "dyad_any_reply_rate",
+            "dyad_history",
+            "hour_cos",
+            "hour_sin",
+            "inbox_load_scaled",
+            "partner_any_reply_rate",
+            "partner_reply_history",
+            "prior_any_reply_rate",
+            "prior_history",
+            "prior_timely_rate",
+            "subject_chars_scaled",
+            "weekend"
+          ],
+          "fit_rows": 1163330,
+          "regularization": 0.01,
+          "weights": [
+            [
+              -3.2309029516123835,
+              -0.15238914801082573,
+              0.06621924174316358,
+              0.5317536320595829,
+              -0.06477277815172386,
+              -0.14119205630232642,
+              0.18744300240692688,
+              0.1930505548656838,
+              0.2513018070823912,
+              0.08408133826903444,
+              0.15262505772660845,
+              0.24917162459265935,
+              1.0722512836943476,
+              -0.06690449070424032,
+              -0.6755437941628941
+            ],
+            [
+              -4.63001678335071,
+              -0.07884930574419714,
+              0.16058308921817854,
+              0.2392953521010693,
+              -0.6536246107631996,
+              -0.009129291895819751,
+              -0.22729572215156094,
+              -0.21251104930909478,
+              0.1913393012203073,
+              0.780396233005223,
+              1.1878660766128437,
+              0.23886187318625907,
+              -1.2319908890062938,
+              -0.5704906239606329,
+              0.6669748580567092
+            ],
+            [
+              0.4527868935756526,
+              0.23123845375501023,
+              -0.22680233096132693,
+              -0.771048984160677,
+              0.7183973889149601,
+              0.15032134819815654,
+              0.03985271974464276,
+              0.019460494443411216,
+              -0.44264110830273645,
+              -0.8644775712742929,
+              -1.3404911343394608,
+              -0.48803349777896926,
+              0.15973960531204082,
+              0.6373951146648915,
+              0.008568936106184139
+            ]
+          ]
+        },
+        "relationship_groups": 50274,
+        "strength": 20.0
+      },
+      "b7": {
+        "actions": [
+          "reply_within_24h",
+          "reply_in_1_to_7d",
+          "no_reply_within_7d"
+        ],
+        "family_weights": [
+          0.5,
+          0.5,
+          0.0
+        ],
+        "prior_alpha": [
+          1.5801191407425237,
+          1.1122209519224984,
+          10.307659907334978
+        ],
+        "validation_candidates": [
+          {
+            "validation_log_loss": 0.39242790428001223,
+            "weights": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          },
+          {
+            "validation_log_loss": 0.35054064261710843,
+            "weights": [
+              0.0,
+              0.25,
+              0.75
+            ]
+          },
+          {
+            "validation_log_loss": 0.3234250854813392,
+            "weights": [
+              0.0,
+              0.5,
+              0.5
+            ]
+          },
+          {
+            "validation_log_loss": 0.3081326081804527,
+            "weights": [
+              0.0,
+              0.75,
+              0.25
+            ]
+          },
+          {
+            "validation_log_loss": 0.30295130351448774,
+            "weights": [
+              0.0,
+              1.0,
+              0.0
+            ]
+          },
+          {
+            "validation_log_loss": 0.31927902753652887,
+            "weights": [
+              0.25,
+              0.0,
+              0.75
+            ]
+          },
+          {
+            "validation_log_loss": 0.29981664220878373,
+            "weights": [
+              0.25,
+              0.25,
+              0.5
+            ]
+          },
+          {
+            "validation_log_loss": 0.28979731828764227,
+            "weights": [
+              0.25,
+              0.5,
+              0.25
+            ]
+          },
+          {
+            "validation_log_loss": 0.2877778188387971,
+            "weights": [
+              0.25,
+              0.75,
+              0.0
+            ]
+          },
+          {
+            "validation_log_loss": 0.2929012461452108,
+            "weights": [
+              0.5,
+              0.0,
+              0.5
+            ]
+          },
+          {
+            "validation_log_loss": 0.28630362990291597,
+            "weights": [
+              0.5,
+              0.25,
+              0.25
+            ]
+          },
+          {
+            "validation_log_loss": 0.28611099272289064,
+            "weights": [
+              0.5,
+              0.5,
+              0.0
+            ]
+          },
+          {
+            "validation_log_loss": 0.2919961298250044,
+            "weights": [
+              0.75,
+              0.0,
+              0.25
+            ]
+          },
+          {
+            "validation_log_loss": 0.2926612653220993,
+            "weights": [
+              0.75,
+              0.25,
+              0.0
+            ]
+          },
+          {
+            "validation_log_loss": 0.3043126404729193,
+            "weights": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      },
+      "b8_contexts": 32,
+      "dataset": "enron_repaired",
+      "phase3_prior_alpha": [
+        1.5801191407425237,
+        1.1122209519224984,
+        10.307659907334978
+      ],
+      "schema_version": "wmv2.phase4-completion.model-pack.v1"
+    },
+    "ipd_long": {
+      "b0_global_counts": {
+        "cooperate": 3984.0,
+        "defect": 5016.0
+      },
+      "b1_contexts": 10,
+      "b5": {
+        "actions": [
+          "cooperate",
+          "defect"
+        ],
+        "epochs": 7,
+        "feature_names": [
+          "first_round",
+          "fixed_partner",
+          "round_scaled"
+        ],
+        "fit_rows": 63000,
+        "regularization": 10.0,
+        "weights": [
+          [
+            -1.0600386279122445,
+            0.19333819360454538,
+            0.7665416337252849,
+            0.1010917760588669
+          ],
+          [
+            -0.3394854640849656,
+            -0.19333819360454554,
+            -0.7665416337252879,
+            -0.10109177605886484
+          ]
+        ]
+      },
+      "b5_selection": {
+        "b6_regularization_selection": {
+          "candidates": [
+            {
+              "regularization": 0.01,
+              "validation_log_loss": 0.37154783546267556
+            },
+            {
+              "regularization": 0.1,
+              "validation_log_loss": 0.3715478222372971
+            },
+            {
+              "regularization": 1.0,
+              "validation_log_loss": 0.3715476899879751
+            },
+            {
+              "regularization": 10.0,
+              "validation_log_loss": 0.371546367941276
+            }
+          ],
+          "final_epochs": 7,
+          "selected_regularization": 10.0,
+          "selection_split": "validation"
+        },
+        "candidates": [
+          {
+            "regularization": 0.01,
+            "validation_log_loss": 0.6877661338982486
+          },
+          {
+            "regularization": 0.1,
+            "validation_log_loss": 0.6877660601742572
+          },
+          {
+            "regularization": 1.0,
+            "validation_log_loss": 0.6877653229378174
+          },
+          {
+            "regularization": 10.0,
+            "validation_log_loss": 0.6877579509208018
+          }
+        ],
+        "final_epochs": 7,
+        "selected_regularization": 10.0,
+        "selection_split": "validation"
+      },
+      "b6": {
+        "actor_groups": 188,
+        "base": {
+          "actions": [
+            "cooperate",
+            "defect"
+          ],
+          "epochs": 7,
+          "feature_names": [
+            "cumulative_payoff_per_game",
+            "first_round",
+            "fixed_partner",
+            "own_cooperation_rate",
+            "previous_payoff_scaled",
+            "prior_meetings_scaled",
+            "prior_opponent_cooperate",
+            "prior_opponent_defect",
+            "prior_own_cooperate",
+            "prior_own_defect",
+            "round_scaled"
+          ],
+          "fit_rows": 63000,
+          "regularization": 10.0,
+          "weights": [
+            [
+              -1.3705117800372566,
+              0.028073498696682228,
+              0.7402548493718693,
+              0.20856538282741666,
+              1.9136730283898853,
+              0.6065629058171113,
+              -0.08850180218213548,
+              0.2380905050105407,
+              -0.10894732878294727,
+              -0.22148340528655017,
+              -1.0741908408314453,
+              0.23001589806494047
+            ],
+            [
+              -0.029012311959897986,
+              -0.02807349869668035,
+              -0.7402548493718693,
+              -0.20856538282741685,
+              -1.9136730283898853,
+              -0.6065629058171121,
+              0.0885018021821366,
+              -0.23809050501054124,
+              0.10894732878294852,
+              0.2214834052865515,
+              1.074190840831456,
+              -0.23001589806493808
+            ]
+          ]
+        },
+        "relationship_groups": 790,
+        "strength": 20.0
+      },
+      "b7": {
+        "actions": [
+          "cooperate",
+          "defect"
+        ],
+        "family_weights": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "prior_alpha": [
+          5.426666666666667,
+          6.573333333333333
+        ],
+        "validation_candidates": [
+          {
+            "validation_log_loss": 0.6140012148058285,
+            "weights": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          },
+          {
+            "validation_log_loss": 0.5459230053742306,
+            "weights": [
+              0.0,
+              0.25,
+              0.75
+            ]
+          },
+          {
+            "validation_log_loss": 0.4995036483573407,
+            "weights": [
+              0.0,
+              0.5,
+              0.5
+            ]
+          },
+          {
+            "validation_log_loss": 0.47598126256700446,
+            "weights": [
+              0.0,
+              0.75,
+              0.25
+            ]
+          },
+          {
+            "validation_log_loss": 0.4736829727748197,
+            "weights": [
+              0.0,
+              1.0,
+              0.0
+            ]
+          },
+          {
+            "validation_log_loss": 0.5033226794861396,
+            "weights": [
+              0.25,
+              0.0,
+              0.75
+            ]
+          },
+          {
+            "validation_log_loss": 0.45400918146163943,
+            "weights": [
+              0.25,
+              0.25,
+              0.5
+            ]
+          },
+          {
+            "validation_log_loss": 0.427075013774162,
+            "weights": [
+              0.25,
+              0.5,
+              0.25
+            ]
+          },
+          {
+            "validation_log_loss": 0.42090945931039475,
+            "weights": [
+              0.25,
+              0.75,
+              0.0
+            ]
+          },
+          {
+            "validation_log_loss": 0.42722759258292003,
+            "weights": [
+              0.5,
+              0.0,
+              0.5
+            ]
+          },
+          {
+            "validation_log_loss": 0.3975717649468464,
+            "weights": [
+              0.5,
+              0.25,
+              0.25
+            ]
+          },
+          {
+            "validation_log_loss": 0.3878800465653909,
+            "weights": [
+              0.5,
+              0.5,
+              0.0
+            ]
+          },
+          {
+            "validation_log_loss": 0.38318247710442765,
+            "weights": [
+              0.75,
+              0.0,
+              0.25
+            ]
+          },
+          {
+            "validation_log_loss": 0.37049128903074324,
+            "weights": [
+              0.75,
+              0.25,
+              0.0
+            ]
+          },
+          {
+            "validation_log_loss": 0.36496334749534476,
+            "weights": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      },
+      "b8_contexts": 10,
+      "dataset": "ipd_long",
+      "phase3_prior_alpha": [
+        5.426666666666667,
+        6.573333333333333
+      ],
+      "schema_version": "wmv2.phase4-completion.model-pack.v1"
+    },
+    "voteview_senate": {
+      "b0_global_counts": {
+        "abstain_or_absent": 1457.0,
+        "oppose": 17138.0,
+        "support": 36007.0
+      },
+      "b1_contexts": 9,
+      "b5": {
+        "actions": [
+          "support",
+          "oppose",
+          "abstain_or_absent"
+        ],
+        "epochs": 7,
+        "feature_names": [
+          "legislation",
+          "nomination",
+          "party_democrat",
+          "party_other",
+          "party_republican",
+          "prior_ideology",
+          "resolution",
+          "session_two",
+          "supermajority"
+        ],
+        "fit_rows": 382214,
+        "regularization": 10.0,
+        "weights": [
+          [
+            -0.39512982911139277,
+            0.1078676899570916,
+            0.02418505578886957,
+            -0.07408059362797906,
+            0.016824661292973137,
+            0.07850836925411221,
+            0.5129604210046727,
+            -0.11080030882685202,
+            -0.1582876114848186,
+            0.07063628557027796
+          ],
+          [
+            -0.9541544278006955,
+            -0.028818267716447275,
+            -0.27009795765090305,
+            0.11533389247704391,
+            0.4724414225621318,
+            -0.3831724098999764,
+            -0.5760863342961223,
+            0.5035191305065382,
+            -0.177432529714323,
+            -0.08121283922759953
+          ],
+          [
+            -3.8489287660493874,
+            -0.07904942224063895,
+            0.2459129018620364,
+            -0.041253298849054626,
+            -0.4892660838551054,
+            0.3046640406458749,
+            0.0631259132914721,
+            -0.3927188216796821,
+            0.33572014119916427,
+            0.010576553657320808
+          ]
+        ]
+      },
+      "b5_selection": {
+        "b6_regularization_selection": {
+          "candidates": [
+            {
+              "regularization": 0.01,
+              "validation_log_loss": 0.8827658808434271
+            },
+            {
+              "regularization": 0.1,
+              "validation_log_loss": 0.8827658697036075
+            },
+            {
+              "regularization": 1.0,
+              "validation_log_loss": 0.882765758305467
+            },
+            {
+              "regularization": 10.0,
+              "validation_log_loss": 0.8827646443295513
+            }
+          ],
+          "final_epochs": 7,
+          "selected_regularization": 10.0,
+          "selection_split": "validation"
+        },
+        "candidates": [
+          {
+            "regularization": 0.01,
+            "validation_log_loss": 1.0401770011225968
+          },
+          {
+            "regularization": 0.1,
+            "validation_log_loss": 1.0401769782881993
+          },
+          {
+            "regularization": 1.0,
+            "validation_log_loss": 1.0401767499442516
+          },
+          {
+            "regularization": 10.0,
+            "validation_log_loss": 1.0401744665075603
+          }
+        ],
+        "final_epochs": 7,
+        "selected_regularization": 10.0,
+        "selection_split": "validation"
+      },
+      "b6": {
+        "actor_groups": 123,
+        "base": {
+          "actions": [
+            "support",
+            "oppose",
+            "abstain_or_absent"
+          ],
+          "epochs": 7,
+          "feature_names": [
+            "legislation",
+            "nomination",
+            "own_abstain_rate",
+            "own_oppose_rate",
+            "own_support_rate",
+            "party_democrat",
+            "party_oppose_rate",
+            "party_other",
+            "party_republican",
+            "party_support_rate",
+            "prior_ideology",
+            "prior_votes_scaled",
+            "resolution",
+            "session_two",
+            "supermajority"
+          ],
+          "fit_rows": 382214,
+          "regularization": 10.0,
+          "weights": [
+            [
+              -0.5872631758586757,
+              0.06802691664924418,
+              -0.0629099217185745,
+              -2.9982811831561094,
+              -0.7898773085067846,
+              2.8220905721926295,
+              -0.317762097607891,
+              1.379266523515132,
+              -0.3122218708726233,
+              0.4591167372532803,
+              -1.9609164799337455,
+              -0.28070885610625873,
+              -0.7386761081585197,
+              -0.17598422615789924,
+              0.2092167200149176,
+              0.09159381526467555
+            ],
+            [
+              -1.2344861275285255,
+              -0.13845482906215284,
+              -0.3991567419364535,
+              -2.543391923033654,
+              1.962691525236998,
+              0.1710339528229246,
+              0.03653894339281306,
+              -0.6865776225758566,
+              0.3689731189298567,
+              -0.48122132443479737,
+              -0.15496386439270335,
+              0.013895044941658403,
+              0.15328884926598796,
+              0.4619023088864571,
+              -0.22898249039388346,
+              -0.07995222326491253
+            ],
+            [
+              -3.37646371957429,
+              0.07042791241289928,
+              0.4620666636550243,
+              5.541673106189702,
+              -1.1728142167302207,
+              -2.9931245250155665,
+              0.2812231542150704,
+              -0.6926889009391863,
+              -0.05675124805723238,
+              0.022104587181510454,
+              2.11588034432626,
+              0.2668138111645986,
+              0.5853872588925627,
+              -0.28591808272857294,
+              0.019765770378958464,
+              -0.011641591999757096
+            ]
+          ]
+        },
+        "relationship_groups": 6,
+        "strength": 20.0
+      },
+      "b7": {
+        "actions": [
+          "support",
+          "oppose",
+          "abstain_or_absent"
+        ],
+        "family_weights": [
+          0.0,
+          1.0,
+          0.0
+        ],
+        "prior_alpha": [
+          7.594447089850188,
+          4.138712867660525,
+          1.266840042489286
+        ],
+        "validation_candidates": [
+          {
+            "validation_log_loss": 0.7722615434048878,
+            "weights": [
+              0.0,
+              0.0,
+              1.0
+            ]
+          },
+          {
+            "validation_log_loss": 0.7484468657809242,
+            "weights": [
+              0.0,
+              0.25,
+              0.75
+            ]
+          },
+          {
+            "validation_log_loss": 0.7318928816382398,
+            "weights": [
+              0.0,
+              0.5,
+              0.5
+            ]
+          },
+          {
+            "validation_log_loss": 0.722366223608847,
+            "weights": [
+              0.0,
+              0.75,
+              0.25
+            ]
+          },
+          {
+            "validation_log_loss": 0.7197276625281059,
+            "weights": [
+              0.0,
+              1.0,
+              0.0
+            ]
+          },
+          {
+            "validation_log_loss": 0.804251964030652,
+            "weights": [
+              0.25,
+              0.0,
+              0.75
+            ]
+          },
+          {
+            "validation_log_loss": 0.7815243156289926,
+            "weights": [
+              0.25,
+              0.25,
+              0.5
+            ]
+          },
+          {
+            "validation_log_loss": 0.7660115594589826,
+            "weights": [
+              0.25,
+              0.5,
+              0.25
+            ]
+          },
+          {
+            "validation_log_loss": 0.7574254412184044,
+            "weights": [
+              0.25,
+              0.75,
+              0.0
+            ]
+          },
+          {
+            "validation_log_loss": 0.859922387800285,
+            "weights": [
+              0.5,
+              0.0,
+              0.5
+            ]
+          },
+          {
+            "validation_log_loss": 0.8379142607675287,
+            "weights": [
+              0.5,
+              0.25,
+              0.25
+            ]
+          },
+          {
+            "validation_log_loss": 0.8228307078791481,
+            "weights": [
+              0.5,
+              0.5,
+              0.0
+            ]
+          },
+          {
+            "validation_log_loss": 0.9368974955109287,
+            "weights": [
+              0.75,
+              0.0,
+              0.25
+            ]
+          },
+          {
+            "validation_log_loss": 0.9151494765780347,
+            "weights": [
+              0.75,
+              0.25,
+              0.0
+            ]
+          },
+          {
+            "validation_log_loss": 1.031837801096261,
+            "weights": [
+              1.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      },
+      "b8_contexts": 66,
+      "dataset": "voteview_senate",
+      "phase3_prior_alpha": [
+        7.594447089850188,
+        4.138712867660525,
+        1.266840042489286
+      ],
+      "schema_version": "wmv2.phase4-completion.model-pack.v1"
+    }
+  },
+  "schema_version": "wmv2.phase4-completion.parameter-packs.v1"
+}

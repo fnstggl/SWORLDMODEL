@@ -895,15 +895,26 @@ class ActorPolicyModel:
         self.consequences = SubjectiveConsequenceModel()
 
     def decide(self, views: list[ActorView], actions: list[TypedAction],
-               feasibility: list[list[FeasibilityDecision]], *, seed: int = 0) -> ActionPosterior:
+               feasibility: list[list[FeasibilityDecision]], *, seed: int = 0,
+               particle_weights: list[float] | None = None) -> ActionPosterior:
         if not views:
             raise ValueError("at least one posterior ActorView particle is required")
         if len(feasibility) != len(views):
             raise ValueError("one feasibility vector is required per ActorView particle")
+        if particle_weights is None:
+            particle_weights = [1.0 / len(views)] * len(views)
+        if len(particle_weights) != len(views):
+            raise ValueError("one particle weight is required per ActorView particle")
+        if any(not math.isfinite(float(w)) or float(w) < 0.0 for w in particle_weights):
+            raise ValueError("particle weights must be finite and nonnegative")
+        weight_total = sum(float(w) for w in particle_weights)
+        if weight_total <= 0.0:
+            raise ValueError("particle weights must have positive total mass")
+        normalized_weights = [float(w) / weight_total for w in particle_weights]
         family_post = self._family_posterior(views[0], actions)
-        per_particle, utility_rows, consequence_rows = [], {}, {}
+        per_particle, retained_weights, utility_rows, consequence_rows = [], [], {}, {}
         feasible_union = []
-        for view, decisions in zip(views, feasibility):
+        for view, decisions, particle_weight in zip(views, feasibility, normalized_weights):
             by_id = {d.action_id: d for d in decisions}
             feasible = [a for a in actions if by_id[a.action_id].perceived_feasible]
             if not feasible:
@@ -913,7 +924,7 @@ class ActorPolicyModel:
             for action in feasible:
                 consequence = self.consequences.predict(action, view, self.parameter_pack)
                 utility = self.utility.infer(action, view, consequence, self.parameter_pack)
-                utility_rows.setdefault(action.action_id, []).append(utility)
+                utility_rows.setdefault(action.action_id, []).append((particle_weight, utility))
                 consequence_rows.setdefault(action.action_id, []).append(consequence)
                 for family in family_post.weights:
                     family_scores[family][action.action_id] = self._family_score(
@@ -931,19 +942,27 @@ class ActorPolicyModel:
                 for family in family_post.weights) for a in feasible}
             z = sum(marginal.values()) or 1.0
             per_particle.append({aid: p / z for aid, p in marginal.items()})
+            retained_weights.append(particle_weight)
 
         if not per_particle:
             raise ValueError("actor perceives no feasible action; action-space fallback contract was violated")
-        probs = {aid: sum(p.get(aid, 0.0) for p in per_particle) / len(per_particle)
+        retained_total = sum(retained_weights) or 1.0
+        retained_weights = [w / retained_total for w in retained_weights]
+        probs = {aid: sum(w * p.get(aid, 0.0) for w, p in zip(retained_weights, per_particle))
                  for aid in sorted(set(feasible_union))}
         probs = self.calibrator.apply(probs)
         # Known-impossible in every actor particle receives exactly zero and is omitted from sampling.
         intervals = {}
         for aid in probs:
-            vals = sorted(p.get(aid, 0.0) for p in per_particle)
-            intervals[aid] = [vals[max(0, int(0.05 * len(vals)) - 1)],
-                              vals[min(len(vals) - 1, int(0.95 * len(vals)))]]
-        eu = {aid: sum(u.expected_utility for u in rows) / len(rows) for aid, rows in utility_rows.items()}
+            vals = sorted((p.get(aid, 0.0), w) for p, w in zip(per_particle, retained_weights))
+            intervals[aid] = [self._weighted_quantile(vals, 0.05),
+                              self._weighted_quantile(vals, 0.95)]
+        # A utility can be missing in a particle where an action is perceived as
+        # infeasible.  Renormalize only over particles that emitted that utility.
+        eu = {}
+        for aid, weighted in utility_rows.items():
+            z = sum(w for w, _ in weighted) or 1.0
+            eu[aid] = sum(w * row.expected_utility for w, row in weighted) / z
         scores = {aid: math.log(max(1e-12, p)) for aid, p in probs.items()}
         entropy = -sum(p * math.log(max(1e-12, p)) for p in probs.values())
         fallbacks = list(self.parameter_pack.get("fallbacks", []))
@@ -958,13 +977,29 @@ class ActorPolicyModel:
             feasibility_diagnostics=[asdict(d) for row in feasibility for d in row],
             support_grade=str(self.parameter_pack.get("support_grade", "highly_speculative")),
             fallbacks_used=fallbacks,
-            sensitivity_contributors=self._sensitivity(views, utility_rows),
+            sensitivity_contributors=self._sensitivity(
+                views, {aid: [row for _, row in rows] for aid, rows in utility_rows.items()}),
             provenance={"actor_view_hashes": [v.view_hash() for v in views],
+                        "particle_weights": normalized_weights,
+                        "retained_particle_weight": retained_total,
                         "numeric_source": self.parameter_pack.get("source", "reference_class_prior"),
                         "llm_probability_minting": False, "seed": seed},
             model_version=self.model_version,
             parameter_pack_versions=[str(self.parameter_pack.get("pack_id", "tier7:4.0.0"))],
         )
+
+    @staticmethod
+    def _weighted_quantile(value_weights: list[tuple[float, float]], q: float) -> float:
+        """Left-continuous weighted empirical quantile for posterior summaries."""
+        if not value_weights:
+            raise ValueError("weighted quantile requires at least one value")
+        target = min(1.0, max(0.0, float(q))) * sum(w for _, w in value_weights)
+        cumulative = 0.0
+        for value, weight in value_weights:
+            cumulative += weight
+            if cumulative >= target:
+                return value
+        return value_weights[-1][0]
 
     def _family_posterior(self, view: ActorView, actions: list[TypedAction]) -> PolicyFamilyPosterior:
         prior = dict(self.parameter_pack.get("policy_family_weights") or {})

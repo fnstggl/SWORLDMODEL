@@ -1,0 +1,204 @@
+{
+  "artifact_checksum": "d226c24099d1ba9cf4642532fec2f114f2829b59a225eefcf7acbd6d64010921",
+  "datasets": {
+    "enron_repaired": {
+      "actions": [
+        "reply_within_24h",
+        "reply_in_1_to_7d",
+        "no_reply_within_7d"
+      ],
+      "actor_visible_fields": [
+        "beliefs_or_signals",
+        "commitments",
+        "context",
+        "history",
+        "relationships",
+        "resources"
+      ],
+      "actors": 14463,
+      "checksum": "b3c9c79de04d98007a39701e6b8fcc31b92a9db3976795c15b6eac81451601db",
+      "content_sha256": "478a38d86f1553138fbbb5a9fcf8cd752543bc0f6c368fdd0492b92496ead6aa",
+      "dataset": "enron_repaired",
+      "label_excluded_from_visible_state": true,
+      "limitations": [
+        "A reply match requires a reversed dyad and exact normalized subject; unmatched aliases are censored.",
+        "Single-primary-recipient messages only; forwarding and delegation are outside the action set.",
+        "Quoted text is retained as actor-visible historical content and treated as untrusted prompt data."
+      ],
+      "numeric_feature_fields": [
+        "body_chars_scaled",
+        "commitment_markers_scaled",
+        "dyad_any_reply_rate",
+        "dyad_history",
+        "hour_cos",
+        "hour_sin",
+        "inbox_load_scaled",
+        "partner_any_reply_rate",
+        "partner_reply_history",
+        "prior_any_reply_rate",
+        "prior_history",
+        "prior_timely_rate",
+        "subject_chars_scaled",
+        "weekend"
+      ],
+      "parsing_diagnostics": {
+        "archive_files": 517401,
+        "bad_time": 971,
+        "empty_subject": 28537,
+        "not_single_primary_recipient": 178452,
+        "retained_unique_messages": 309441
+      },
+      "post_action_features_excluded": true,
+      "relationships": 52959,
+      "rows": 309441,
+      "schema_version": "wmv2.phase4-completion.dataset-manifest.v1",
+      "sequences": 14463,
+      "source": {
+        "name": "CMU CALO Enron Email Dataset",
+        "raw_bytes": 443254787,
+        "raw_sha256": "b3da1b3fe0369ec3140bb4fbce94702c33b7da810ec15d718b3fadf5cd748ca7",
+        "url": "https://www.cs.cmu.edu/~enron/enron_mail_20150507.tar.gz"
+      },
+      "time_max": "2005-12-29T10:14:21Z",
+      "time_min": "1998-01-04T17:46:00Z",
+      "time_split_details": {
+        "boundary_timestamps": [
+          984567600.0,
+          990524700.0,
+          1001659138.0
+        ],
+        "counts": {
+          "calibration": 37673,
+          "purged": 20502,
+          "test": 59598,
+          "train": 166190,
+          "validation": 25478
+        },
+        "cut_indices": [
+          170193,
+          216609,
+          247553
+        ]
+      }
+    },
+    "ipd_long": {
+      "actions": [
+        "cooperate",
+        "defect"
+      ],
+      "actor_visible_fields": [
+        "commitments",
+        "context",
+        "history",
+        "relationships",
+        "resources"
+      ],
+      "actors": 188,
+      "checksum": "9f2750c97115803688471ada53f657ab2ec6ceb870a77e115e1dc0ad79a2dd66",
+      "content_sha256": "4876f3083bac41948f85664087195aec8f5a797200f5d2d724f681227dee9d83",
+      "dataset": "ipd_long",
+      "label_excluded_from_visible_state": true,
+      "limitations": [
+        "Opponent identity is anonymized.",
+        "Current simultaneous opponent action and response time are post-decision outcomes."
+      ],
+      "numeric_feature_fields": [
+        "cumulative_payoff_per_game",
+        "first_round",
+        "fixed_partner",
+        "own_cooperation_rate",
+        "previous_payoff_scaled",
+        "prior_meetings_scaled",
+        "prior_opponent_cooperate",
+        "prior_opponent_defect",
+        "prior_own_cooperate",
+        "prior_own_defect",
+        "round_scaled"
+      ],
+      "post_action_features_excluded": true,
+      "relationships": 790,
+      "rows": 18800,
+      "schema_version": "wmv2.phase4-completion.dataset-manifest.v1",
+      "sequences": 188,
+      "source": {
+        "doi": "10.5061/dryad.37pvmcvmk",
+        "license": "CC0-1.0",
+        "mirror_commit": "4743f74d8a03a031b8f70aff64956f8ad5155182",
+        "raw_sha256": {
+          "fix.csv": "c2adc0d68dbc15c4f5ec5f0eb9a05a988cc049a9c086b82f796521a642b6eae9",
+          "rand.csv": "bc2999d6ad44c60f2b93361eb46b75614b1f600967ae061c76ae51184a80848a"
+        }
+      },
+      "time_max": "session=s9n3;round=99",
+      "time_min": "session=s10n5;round=1"
+    },
+    "voteview_senate": {
+      "actions": [
+        "support",
+        "oppose",
+        "abstain_or_absent"
+      ],
+      "actor_visible_fields": [
+        "beliefs_or_signals",
+        "commitments",
+        "history",
+        "institution",
+        "network_or_party_structure"
+      ],
+      "actors": 123,
+      "checksum": "14b05e6360b6d7d8b5196be2035c88ddea1f620fd58329a2f23ad9bd5f576c89",
+      "content_sha256": "6b9ef70b1db3d9d4483944d9ddbb44089b4b7b6ea6e38252eaf67585d6b67123",
+      "dataset": "voteview_senate",
+      "label_excluded_from_visible_state": true,
+      "limitations": [
+        "Abstention and absence remain a combined action.",
+        "Prior-Congress ideology falls back to the prior party median for new members.",
+        "VoteView current-vote probability, current counts, and result are excluded from actor-visible state."
+      ],
+      "numeric_feature_fields": [
+        "legislation",
+        "nomination",
+        "own_abstain_rate",
+        "own_oppose_rate",
+        "own_support_rate",
+        "party_democrat",
+        "party_oppose_rate",
+        "party_other",
+        "party_republican",
+        "party_support_rate",
+        "prior_ideology",
+        "prior_votes_scaled",
+        "resolution",
+        "session_two",
+        "supermajority"
+      ],
+      "post_action_features_excluded": true,
+      "relationships": 6,
+      "rows": 283675,
+      "schema_version": "wmv2.phase4-completion.dataset-manifest.v1",
+      "sequences": 388,
+      "source": {
+        "citation": "https://voteview.com/data",
+        "name": "Voteview Congressional Roll-Call Votes Database",
+        "raw_sha256": {
+          "members_S114.csv": "9777591e099a0a03e1da95c5ce7e3b153ff0e8651d04e908a5cb7263151bd754",
+          "members_S115.csv": "f4531d2a3f7beb9793a4d005d072ad88d1efc838857aec4d4890a04d76b2eff1",
+          "members_S116.csv": "469aa7ee58c717f629ec15f7f5951050033e29dfd0678ed78a7bd8186422d39b",
+          "members_S117.csv": "2b8ec62575c27e641427c2706a55dc8d91be36f6aa85ea596f66a1d17c8ce835",
+          "members_S118.csv": "5379269bd514fabd74d853af5d5d41ed8c066ecbb68b359f044e0dce4c3969b2",
+          "rollcalls_S115.csv": "e8bb08c09d6d469f9f5a9960a12ce64f67970e87242fa6990b6dd333d47ce305",
+          "rollcalls_S116.csv": "f23d37dd06cb860707710d2635fddc9dbe62ed2976cc91c23314663045fc9319",
+          "rollcalls_S117.csv": "c3321eef9f641c474ce03f91d0ac2be2a2a607647b7b0fb578f2cea6669b313b",
+          "rollcalls_S118.csv": "92c554474b1a90f64a21b2fc94df59ea835a8d424b7ad172c80f80035a3db7ae",
+          "votes_S115.csv": "fbaa6968056a462d29c88e09e60e73a18a25e676546700759cf4f89e6f03b8e0",
+          "votes_S116.csv": "f1c3ff256fa7cdccb24238792d3b8f4502433e6a23bd1760692a247c5f018c2b",
+          "votes_S117.csv": "290b2440fadf1040b5ffccc264f4f5d7eb04dc74508cb7c34877d45ff1abd0ff",
+          "votes_S118.csv": "0db5b5637485220253557b2b4ea88414ab080e5a5d049c33ad48f2aaced959b3"
+        }
+      },
+      "time_max": "2024-12-21;congress=118;roll=691",
+      "time_min": "2017-01-04;congress=115;roll=1"
+    }
+  },
+  "schema_version": "wmv2.phase4-completion.dataset-manifests.v1"
+}

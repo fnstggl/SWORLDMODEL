@@ -49,7 +49,8 @@ class ActorPolicyRuntime:
         self._lock = threading.RLock()
 
     def decide(self, plan, posterior_worlds: list, actor_id: str, *, decision: dict,
-               seed: int, question_id: str = "", observed_events=None
+               seed: int, question_id: str = "", observed_events=None,
+               particle_weights: list[float] | None = None
                ) -> tuple[TypedAction, ActionPosterior, DecisionTrace]:
         """Compute and sample a policy without exposing a ``WorldState`` to numeric policy code."""
         started = time.monotonic()
@@ -62,7 +63,10 @@ class ActorPolicyRuntime:
         actions = self.actions.build(plan, posterior_worlds[0], views[0], decision=decision)
         decisions = [[self.feasibility.classify(action, view, world) for action in actions]
                      for view, world in zip(views, posterior_worlds)]
-        posterior = self.model.decide(views, actions, decisions, seed=seed)
+        model_kwargs = {"seed": seed}
+        if particle_weights is not None:
+            model_kwargs["particle_weights"] = particle_weights
+        posterior = self.model.decide(views, actions, decisions, **model_kwargs)
         selected_id = posterior.sample(random.Random(seed))
         selected = next(action for action in actions if action.action_id == selected_id)
         trace = build_trace(

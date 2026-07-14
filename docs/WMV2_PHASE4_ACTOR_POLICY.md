@@ -215,3 +215,115 @@ Exact validation commit: `b3823d4284c63d3e35eafd51ae56ca3ca03a676c`. All 21 gene
 22. **Which policy families were quarantined or rejected?** No universal family was falsely rejected from unidentified one-step evidence. Raw-LLM numeric policy is quarantined as unavailable/non-production; the prior Enron actor evidence is quarantined for temporal leakage; prior Omnibehavior persistence lift remains a preserved near-zero result.
 23. **What remains incomplete?** Leakage-safe B2/B3, richer sequential/institutional/person histories, full posterior-particle real backtests, identified family comparison, uncertainty coverage, two transfer/cold-start wins, causal outcome validation, and production monitoring/persistence.
 24. **Why is this more than a classifier or LLM wrapper?** The numeric policy is fitted/calibrated without LLM probabilities, sees only actor-local state, masks infeasible actions, preserves structural uncertainty, samples a typed action, mutates the shared world through events/deltas, schedules reactions, changes later policy state, and can affect terminal quantities. The evidence still does not make it production eligible.
+
+## 2026-07-13 empirical-completion addendum
+
+This addendum records the follow-on evaluation in
+`experiments/results/phase4_completion/`. It does not revise or overwrite the
+frozen Phase 4 results in `experiments/results/phase4/`. The preregistered
+protocol payload has SHA-256
+`ec3a661177219a6f6a7c7642cd637044010f095e77d83cf81ee1e2d514f7d06c`;
+the prior-result reproduction audit has SHA-256
+`b4a821031d8cbf80c350886595f29f3d38e273bf07f174e7fab845dcb9cbbaa4`.
+
+### Real decision settings
+
+| Setting | Reconstructed decision | Train / calibration / validation / test |
+|---|---|---:|
+| IPD longitudinal experiments | cooperate or defect using only pre-round personal, partner, treatment, and payoff history | 9,000 / 3,600 / 3,600 / 2,600 |
+| VoteView U.S. Senate | support, oppose, or abstain/absent with current result and future roll-call information hidden | 54,602 / 72,000 / 94,898 / 62,175 |
+| Enron repaired reply trajectories | reply within 24h, reply in 1–7d, or no reply within 7d, with a seven-day maturation window and temporal purge | 166,190 / 37,673 / 25,478 / 59,598 |
+
+The numeric run ingested 611,916 real source decisions and scored 124,373
+untouched test decisions. Enron messages are
+deduplicated, timezone-aware, restricted to one primary recipient, and labeled
+only after the response window matures. IPD rounds are chronological. VoteView
+rows hide the current result, current vote counts, and the observed action.
+
+### Completion implementation
+
+- The completion path is dependency-free Python: deterministic real-data
+  adapters, sparse softmax fitting, calibration, clustered bootstrap,
+  conformal sets, cold-start slices, sequence scoring, and downstream outcome
+  scoring.
+- B5 is a flat fitted policy. B6 adds actor/relationship pooling. B7 stacks
+  three preregistered components: the hierarchical actor-visible policy,
+  Phase 3 propensity particles, and a typed subjective-consequence heuristic.
+  B8 is a domain specialist.
+- Every B7 decision calls the typed Phase 3 compositional-posterior API and
+  constructs 64 particles. The actor-policy API now accepts validated
+  `particle_weights`; aggregation and quantiles use those weights, and the
+  execution runtime carries them through the same prediction path.
+- Predict and execute inputs were byte-identical on all 124,373 B7 test rows:
+  2,600 IPD, 62,175 Senate, and 59,598 Enron.
+- The LLM adapter is isolated from the numeric policy. It receives the same
+  label-blind actor-visible packet, has no route to hidden outcomes, persists
+  raw envelopes before strict parsing, and never repairs invalid action names
+  or response schemas.
+
+Validation selected these B7 component weights:
+
+| Setting | Hierarchical visible policy | Phase 3 propensity particles | Typed consequence heuristic |
+|---|---:|---:|---:|
+| IPD | 1.00 | 0.00 | 0.00 |
+| Senate | 0.00 | 1.00 | 0.00 |
+| Enron | 0.50 | 0.50 | 0.00 |
+
+These weights are a substantive negative result. The subjective-consequence
+component received zero weight in every setting. IPD B7 therefore equals B6.
+Senate and Enron use posterior-derived action-history propensity, but the
+uniform 64-particle weights have no collapse and the point-world/no-particle
+ablations do not establish incremental value from posterior *uncertainty*.
+
+### Sequential and downstream interpretation
+
+The completion run scores temporally ordered decisions and domain downstream
+targets: later IPD choices/payoffs and opponent reactions, Senate roll-call
+passage, and Enron reply delay. That is predictive evidence, not evidence that
+executing B7 caused a later real-world decision or outcome. The selected
+consequence weight is zero in all three domains, directional IPD transfer
+refits were not run, and the historical rows do not contain policy
+interventions. Earlier typed StateDelta/reaction fixtures remain software
+integration tests, not empirical causal validation.
+
+### Status after empirical completion
+
+| Question | Status | Reason |
+|---|---:|---|
+| Is the software implemented? | **Yes** | Real adapters, B0–B8, weighted particle execution, strict LLM collection, artifacts, and tests are present. |
+| Does it execute end to end? | **Yes** | 611,916 source decisions, 124,373 held-out predictions, 1,440 completed LLM request identities, scoring, finalization, and checksums ran. |
+| Is the actor policy empirically validated overall? | **No** | Two numeric domains improve over B6, but IPD ties it, conformal coverage misses everywhere, LLM confirmatory coverage fails, and causal/transfer evidence is incomplete. |
+| Is it production eligible? | **No** | The preregistered promotion blockers remain active. |
+
+The narrow defensible claim is that hierarchical/propensity actor-visible
+prediction improves calibrated log loss on Senate and Enron and is
+non-inferior on IPD. The completion does not validate a universal behavioral
+policy family, calibrated posterior uncertainty, subjective consequence
+reasoning, cross-regime intervention transport, or production use.
+
+### Updated anti-scaffolding answers
+
+1. **What real policy object was constructed?** One universal B7 empirical scorer combining hierarchical visible-state probabilities, typed Phase 3 propensity particles, and typed consequence heuristics; it is not a benchmark-name router.
+2. **What evidence parameterized it?** Training-only IPD trajectories, VoteView rolls/members, and matured Enron messages, with checksummed sources and serialized packs.
+3. **What uncertainty was represented?** Sixty-four Phase 3 particles, family-selection uncertainty, calibration, entropy, conformal sets, and clustered intervals; their empirical coverage is inadequate.
+4. **What actor-visible state entered?** Only each adapter's preregistered pre-action role, time, history, relationship, resources, commitments, and institutional context.
+5. **What hidden state was excluded?** The current action, current/future result, post-action reply, future payoff, other private state, and all test labels.
+6. **How were action sets built?** From game rules, Senate vote ontology/current roll availability, and reply-window semantics; the observed action was checked for membership but not used to create test features.
+7. **Which families were compared?** Hierarchical visible policy, Phase 3 propensity particles, and typed consequence heuristic, stacked only by validation loss.
+8. **How were family weights chosen?** A frozen validation grid; test rows never selected weights.
+9. **Where did utility parameters come from?** Training/calibration data and typed priors, never an LLM probability or test outcome.
+10. **How were consequences formed?** A preregistered typed heuristic from actor-visible fields. Validation assigned it zero weight in every domain.
+11. **What distribution was produced?** A calibrated normalized B7 distribution on each reconstructed action set, preserved for every held-out row.
+12. **What action was selected?** The historical evaluation scores the observed action; it does not pretend that B7 intervened and sampled the archival event.
+13. **What event did it create?** None in the real historical evaluation. Separate runtime tests still create typed action events.
+14. **What StateDelta did it cause?** None in these archival datasets. Earlier integration fixtures demonstrate the mechanism only.
+15. **How did another actor/institution react?** Opponent reaction, passage, and reply delay are observed downstream targets, not reactions caused by a deployed B7 action.
+16. **How did it affect later decisions?** It did not experimentally affect them; the run only predicts/scores chronological sequences.
+17. **How did it affect a terminal outcome?** No causal effect is claimed. Payoff, passage, and delay are observational outcomes.
+18. **Which real held-out datasets support it?** IPD, VoteView Senate, and repaired Enron, with 124,373 held-out decisions.
+19. **Which transfers passed?** Temporal Senate/Enron evaluation ran, but directional regime refits are incomplete; the frozen transfer gate fails.
+20. **Which ablations add value?** Hierarchy/propensity composition changes predictions in Senate and Enron; consequences do not, and particle uncertainty itself is not established.
+21. **What failed?** Confirmatory LLM coverage, 90% conformal coverage, causal execution value, two transfer/cold-start wins, and four rich-state component wins.
+22. **Which families are quarantined?** Consequence reasoning, universal causal interpretations, and every production family claim; partial LLM metrics are diagnostic only.
+23. **What remains incomplete?** Keyed per-record particle forensics, posterior coverage, intervention data, directional transfer, identified consequences, and production monitoring.
+24. **Why is it more than an LLM wrapper?** B7 is numerical, typed, calibrated, particle-aware, and LLM-independent. However, the large empirical scorer does not instantiate a full shared-world `ActorPolicyRuntime` for every archival row; weighted runtime behavior is verified by contract/integration tests. That boundary is a remaining empirical limitation.
