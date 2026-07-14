@@ -112,9 +112,14 @@ def test_p9_population_aggregation_executes_and_modulates():
     rep = synthesize_activation(p)
     assert any(a["phase"] == "phase9_populations" for a in rep["actions"])
     res, branches = run_from_plan(p, llm=None, seed=3)
-    assert _deltas_by_op(branches).get("population_aggregation", 0) > 0
+    ops = _deltas_by_op(branches)
+    assert ops.get("population_aggregation", 0) > 0
+    # Part 4: consumer state is consumed by a MECHANISM (aggregate realization), never by the resolver
+    agg = [e for e in p.scheduled_events if e["etype"] == "aggregate_outcome_resolution"]
+    assert agg and any("population_aggregate" in m["var"] for m in agg[0]["payload"]["consume"])
+    assert ops.get("aggregate_outcome_mechanism", 0) > 0
     rev = [e for e in p.scheduled_events if e["etype"] == "resolve_outcome"][0]
-    assert rev["payload"]["rate_modulation"]                     # consumer wired into the terminal
+    assert "rate_modulation" not in rev["payload"]               # resolver-level modulation removed
 
 
 def test_p9_network_diffusion_executes():
@@ -125,13 +130,20 @@ def test_p9_network_diffusion_executes():
     assert _deltas_by_op(branches).get("network_diffusion", 0) > 0
 
 
-def test_modulation_total_weight_capped():
+def test_resolver_never_modulates_probability():
+    """Part-4 prohibition: the generic terminal resolver must contain no rate-modulation consumption."""
+    import inspect
+    from swm.world_model_v2 import fallback as F
+    src = inspect.getsource(F.GenericOutcomeOperator)
+    assert "_modulate_rate" not in src and 'get("rate_modulation")' not in src
+
+
+def test_consumed_state_total_weight_capped():
     from swm.world_model_v2.activation_synthesis import _add_modulation
     p = _plan(processes=[])
     for i in range(6):
         _add_modulation(p, f"v{i}", 0.2)
-    rev = [e for e in p.scheduled_events if e["etype"] == "resolve_outcome"][0]
-    assert sum(m["weight"] for m in rev["payload"]["rate_modulation"]) <= 0.45 + 1e-9
+    assert sum(m["weight"] for m in p._consumed_state) <= 0.45 + 1e-9
 
 
 # ---------------------------------------------------------------- P7 + P4

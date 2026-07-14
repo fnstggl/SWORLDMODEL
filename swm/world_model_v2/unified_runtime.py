@@ -178,7 +178,9 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
             for ph in list(req):
                 if ph in drop:
                     req[ph] = {"required": False, "why": "dropped_by_policy"}
-            lineage["activation_synthesis"] = synthesize_activation(plan, req)
+            rep = synthesize_activation(plan, req)
+            rep["_pre_synthesis_requirements"] = req         # the ONE relevance verdict, reused by assess
+            lineage["activation_synthesis"] = rep
             for ph, r in req.items():
                 if ph in manifest:
                     manifest[ph]["relevance"] = {"required": r["required"], "why": r["why"]}
@@ -196,6 +198,36 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
     # ---------- Terminal projection through the ONE funnel (Phase 8 persistence + P4/P6/P7/P10 operators) ----
     res = _project_terminal(question, plan, as_of, horizon, intervention, seed, llm, user_context,
                             prior_checkpoint, manifest, drop, t0)
+
+    # ---------- MANDATORY PHASE SUPERVISION: one PhaseExecutionRecord per phase, every run ----------
+    # The manifest is DERIVED from these records; a relevant phase that did not execute is a recorded
+    # integration failure (blocked_*) that lowers support — a phase can never disappear silently.
+    if res.has_forecast():
+        try:
+            from swm.world_model_v2 import phase_supervision as PS
+            pre_req = (lineage.get("activation_synthesis") or {}).get("_pre_synthesis_requirements")
+            recs = PS.assess(plan, has_as_of=bool(as_of), has_bundle=bundle is not None,
+                             versions={p: manifest[p].get("version", "") for p in manifest},
+                             req=pre_req)
+            core_meta = {p: {"executed": bool(manifest[p].get("executed")),
+                             "reason": manifest[p].get("reason", "")}
+                         for p in ("phase1_compiler", "phase2_evidence", "phase3_posterior",
+                                   "phase8_persistence", "phase11_recompilation")}
+            sup = PS.finalize(recs, plan, res, phase_meta=core_meta)
+            for ph, m in sup["manifest"].items():
+                manifest[ph].update(m)
+            res.provenance["phase_execution_records"] = {p: r.as_dict() for p, r in sup["records"].items()}
+            res.provenance["phase_integration_failures"] = sup["integration_failures"]
+            res.provenance["fully_integrated"] = sup["fully_integrated"]
+            if sup["integration_failures"]:
+                if res.support_grade in ("empirically_supported", "transfer_supported"):
+                    res.support_grade = "exploratory"
+                res.limitations = list(res.limitations) + [
+                    f"integration failure: {f['phase']} {f['status']} ({f['reason'][:60]})"
+                    for f in sup["integration_failures"][:4]]
+        except Exception as e:  # noqa: BLE001 — supervision must not kill the forecast, but never hides
+            res.provenance["phase_supervision_error"] = f"{type(e).__name__}: {e}"[:160]
+            res.provenance["fully_integrated"] = False
 
     # ---------- attach unified provenance + manifest + Phase-12 incompatibility ----------
     res.provenance["runtime"] = RUNTIME_VERSION

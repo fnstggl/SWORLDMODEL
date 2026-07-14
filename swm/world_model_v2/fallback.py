@@ -148,7 +148,6 @@ class GenericOutcomeOperator(TransitionOperator):
             "lean": str(p.get("lean", "neutral")),
             "options": list(p.get("options") or ["True", "False"]),
             "posterior_rate_particles": p.get("posterior_rate_particles"),
-            "rate_modulation": list(p.get("rate_modulation") or []),
             "lo": p.get("lo"), "hi": p.get("hi")},
             reason_codes=["posterior_rate" if p.get("posterior_rate_particles") else "generic_fallback",
                           f"lean={p.get('lean', 'neutral')}"])
@@ -181,13 +180,9 @@ class GenericOutcomeOperator(TransitionOperator):
             else:
                 p = _beta_sample(rng, av, bv)                # per-particle base-rate draw (broad prior)
                 rate_src = "prior_beta"
-            # Phase 9/7 CONSUMER CHANNEL: bounded rate modulation from quantities that upstream causal
-            # consumers (population aggregation, network diffusion, nonlinear state) wrote into THIS world.
-            # Each modulator blends its [0,1] value with weight w (total capped at synthesis time), so the
-            # declared structure genuinely moves the terminal — and its removal genuinely changes it.
-            p, mod_used = _modulate_rate(world, p, a.get("rate_modulation") or [])
-            if mod_used:
-                proposal.reason_codes = list(proposal.reason_codes) + [f"rate_modulated:{','.join(mod_used)}"]
+            # Part-4 prohibition: the TERMINAL RESOLVER never consumes phase-specific state to modulate
+            # its probability. Upstream causal state is consumed by MECHANISMS (institutional_decision /
+            # aggregate_outcome_mechanism), which resolve the outcome quantity ahead of this safety net.
             opts = a["options"] if len(a["options"]) == 2 else ["True", "False"]
             val = opts[0] if rng.random() < p else opts[1]
         elif fam == "categorical":
