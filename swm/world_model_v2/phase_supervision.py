@@ -86,7 +86,7 @@ def _plan_state_present(phase, plan) -> bool:
     if phase == "phase4_actor_policy":
         return bool(getattr(plan, "entities", []) or getattr(plan, "actor_decisions", []))
     if phase == "phase9_populations":
-        return bool(getattr(plan, "populations", []))
+        return True                                          # segments constructible from broad priors
     if phase == "phase9_networks":
         return bool(getattr(plan, "relations", []) or
                     len([e for e in (getattr(plan, "entities", []) or []) if isinstance(e, dict)]) >= 2 or
@@ -96,11 +96,17 @@ def _plan_state_present(phase, plan) -> bool:
     return True                                             # p6/p7 execute from mechanisms/events, not sections
 
 
-def assess(plan, *, has_as_of=True, has_bundle=None, has_posterior=None, versions=None) -> dict:
+def assess(plan, *, has_as_of=True, has_bundle=None, has_posterior=None, versions=None,
+           req=None) -> dict:
     """The supervisor pass: one PhaseExecutionRecord per phase, relevance + input-contract verdicts filled.
-    Execution evidence (deltas, terminal influence) is finalized after the rollout via `finalize`."""
+    Execution evidence (deltas, terminal influence) is finalized after the rollout via `finalize`.
+
+    `req` must be the SAME relevance verdict the synthesis step used (computed BEFORE synthesis mutated
+    the plan): re-deriving it afterwards lets synthesis-added mechanism prose lexically trigger unrelated
+    phases (e.g. an institutional 'threshold rule' phrase firing the nonlinear detector), producing
+    phantom blocked-relevant verdicts."""
     from swm.world_model_v2.activation_synthesis import phase_requirements
-    req = phase_requirements(plan)
+    req = req if req is not None else phase_requirements(plan)
     versions = versions or {}
     records = {}
     for ph in PHASES:

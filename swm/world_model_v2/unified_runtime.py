@@ -178,7 +178,9 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
             for ph in list(req):
                 if ph in drop:
                     req[ph] = {"required": False, "why": "dropped_by_policy"}
-            lineage["activation_synthesis"] = synthesize_activation(plan, req)
+            rep = synthesize_activation(plan, req)
+            rep["_pre_synthesis_requirements"] = req         # the ONE relevance verdict, reused by assess
+            lineage["activation_synthesis"] = rep
             for ph, r in req.items():
                 if ph in manifest:
                     manifest[ph]["relevance"] = {"required": r["required"], "why": r["why"]}
@@ -203,8 +205,10 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
     if res.has_forecast():
         try:
             from swm.world_model_v2 import phase_supervision as PS
+            pre_req = (lineage.get("activation_synthesis") or {}).get("_pre_synthesis_requirements")
             recs = PS.assess(plan, has_as_of=bool(as_of), has_bundle=bundle is not None,
-                             versions={p: manifest[p].get("version", "") for p in manifest})
+                             versions={p: manifest[p].get("version", "") for p in manifest},
+                             req=pre_req)
             core_meta = {p: {"executed": bool(manifest[p].get("executed")),
                              "reason": manifest[p].get("reason", "")}
                          for p in ("phase1_compiler", "phase2_evidence", "phase3_posterior",

@@ -119,7 +119,10 @@ def phase_requirements(plan) -> dict:
     req = {}
     ok, why, sig = gate(signal("institutional_decision_process", _P10_TOKENS), insts, "institutions")
     req["phase10_institutions"] = {"required": ok, "why": why, "signal": sig}
-    ok, why, sig = gate(signal("aggregate_population_behavior", _P9POP_TOKENS), pops, "populations")
+    # an aggregate-behavior signal implies a population by definition — segments are constructible from
+    # broad priors when the compiler declared none (Part: Phase 9 populations, "construct weighted segments")
+    ok, why, sig = gate(signal("aggregate_population_behavior", _P9POP_TOKENS), pops or True,
+                        "populations (constructible)")
     req["phase9_populations"] = {"required": ok, "why": why, "signal": sig}
     # Part 7: relations may be INFERRED from the declared causal world when transmission is causally
     # required — >=2 declared entities (or a declared population to expose) are inferable structure.
@@ -281,6 +284,16 @@ def synthesize_activation(plan, req=None) -> dict:
                            "declared rule numbers; posterior member propensity")
             rep["actions"].append({"phase": "phase10_institutions", "action": "institutional_decision_event",
                                    "institution": inst.get("id"), **nums})
+
+    # ---- Phase 9 populations: construct weighted segments when the aggregate signal has no declared
+    #      structure (broad-prior segments; recorded as inferred — never a decorative quantity) ----
+    if req["phase9_populations"]["required"] and not plan.populations:
+        plan.populations.append({"id": "affected_population", "_inferred": "aggregate_behavior_signal",
+                                 "segments": [
+                                     {"id": "engaged", "weight": 0.5, "differs_on": ["participation"]},
+                                     {"id": "marginal", "weight": 0.5, "differs_on": ["participation"]}]})
+        rep["actions"].append({"phase": "phase9_populations",
+                               "action": "population_constructed_from_signal"})
 
     # ---- Phase 9 populations: declared population + aggregate process → aggregation consumer ----
     if req["phase9_populations"]["required"] and plan.populations and not _has_event("population_aggregation"):
