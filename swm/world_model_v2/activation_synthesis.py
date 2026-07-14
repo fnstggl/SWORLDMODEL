@@ -163,11 +163,16 @@ def phase_requirements(plan) -> dict:
                 if isinstance(a, dict) and action_polarity(a.get("name") or a.get("type")) != 0:
                     polar_decision = True
                     break
+    # organizations and institutions are strategic actors too — any declared entity is executable
+    # actor substrate (the ontology has organizational_market/institutional action families)
+    actor_substrate = decs or persons or [e for e in (getattr(plan, "entities", []) or [])
+                                          if isinstance(e, dict) and e.get("id")]
     if polar_decision and not hits4:
-        req["phase4_actor_policy"] = {"required": bool(decs or persons),
-                                      "why": "compiler-proposed decision with outcome-polar actions"}
+        req["phase4_actor_policy"] = {"required": bool(actor_substrate),
+                                      "why": "compiler-proposed decision with outcome-polar actions",
+                                      "signal": True}
     else:
-        ok, why, sig = gate(hits4, decs or persons, "strategic actors")
+        ok, why, sig = gate(hits4, actor_substrate, "strategic actors")
         req["phase4_actor_policy"] = {"required": ok, "why": why, "signal": sig}
     return req
 
@@ -394,9 +399,12 @@ def synthesize_activation(plan, req=None) -> dict:
                        "aggregate chosen typed actions' polarity into the terminal rate",
                        "lexical polarity; nonpolar actions skipped")
     if p4 and not has_dec_ev:
-        persons = [e for e in plan.entities
-                   if isinstance(e, dict) and str(e.get("type", "")) == "person"]
-        actor = max(persons, key=lambda e: float(e.get("sensitivity", 0.5) or 0.5), default=None)
+        # organizations/institutions are strategic actors too (the action ontology has an
+        # organizational_market family) — prefer persons, but never leave a required strategic phase
+        # with a selected mechanism and no decision event just because no `person` was declared.
+        cands = [e for e in plan.entities if isinstance(e, dict) and e.get("id")]
+        persons = [e for e in cands if str(e.get("type", "")) == "person"]
+        actor = max(persons or cands, key=lambda e: float(e.get("sensitivity", 0.5) or 0.5), default=None)
         if actor is not None:
             plan.scheduled_events.append({
                 "etype": "decision_opportunity", "ts": resolve_ts - 4.0,
