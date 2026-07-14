@@ -77,9 +77,17 @@ def _hit(text: str, tokens) -> list:
 
 
 def phase_requirements(plan) -> dict:
-    """The relevance gate: per-phase {required, why, evidence}. Requirement = the compiler's causal analysis
-    names a process of this phase's kind AND the structural section the phase executes over is declared."""
+    """The relevance gate: per-phase {required, why, evidence}.
+
+    Requirement = a CAUSAL signal of this phase's kind AND the structural section the phase executes over is
+    declared. The causal signal is semantic first, lexical second: the compiler's `causal_dependencies`
+    block (a structured judgment about what the outcome causally depends on — strategic actors, aggregate
+    behavior, networked transmission, nonlinear dynamics, institutional decision) is the primary signal;
+    the process-token vocabularies remain as a lexical backstop for older plans that lack the block.
+    The runtime — not the LLM — still owns the final verdict: a signal with no declared structure to
+    execute over is NOT required (it is a blocked/missing-state diagnostic instead)."""
     text = _process_text(plan)
+    deps = ((getattr(plan, "provenance", {}) or {}).get("causal_dependencies")) or {}
     insts = getattr(plan, "institutions", []) or []
     pops = getattr(plan, "populations", []) or []
     rels = getattr(plan, "relations", []) or []
@@ -91,29 +99,49 @@ def phase_requirements(plan) -> dict:
     p6_sel = {p: s for p, s in pps.items() if isinstance(s, dict) and s.get("selected")}
 
     def gate(hits, declared, declared_name):
+        """Returns (required, why, signal_present). A causal signal WITHOUT declared structure is not
+        `required` for synthesis, but the supervisor records it as blocked_missing_state, never a no-op."""
         if hits and declared:
-            return True, f"process tokens {hits[:3]} + declared {declared_name}"
+            return True, f"causal signal {hits[:3]} + declared {declared_name}", True
         if hits:
-            return False, f"process tokens {hits[:3]} but no declared {declared_name} (nothing to execute)"
+            return (False, f"causal signal {hits[:3]} but no declared {declared_name} "
+                           f"(nothing to execute)", True)
         if declared:
-            return False, f"{declared_name} declared but no causal process of this kind — context only"
-        return False, f"no process token and no declared {declared_name}"
+            return False, f"{declared_name} declared but no causal process of this kind — context only", False
+        return False, f"no causal signal and no declared {declared_name}", False
+
+    def signal(dep_key, tokens):
+        """Semantic-first causal signal: the compiler's structured dependency judgment, or a lexical hit."""
+        if deps.get(dep_key) is True:
+            return [f"causal_dependencies.{dep_key}"]
+        return _hit(text, tokens)
 
     req = {}
-    ok, why = gate(_hit(text, _P10_TOKENS), insts, "institutions")
-    req["phase10_institutions"] = {"required": ok, "why": why}
-    ok, why = gate(_hit(text, _P9POP_TOKENS), pops, "populations")
-    req["phase9_populations"] = {"required": ok, "why": why}
-    ok, why = gate(_hit(text, _P9NET_TOKENS), rels, "relations")
-    req["phase9_networks"] = {"required": ok, "why": why}
-    hits7 = _hit(text, _P7_TOKENS)
+    ok, why, sig = gate(signal("institutional_decision_process", _P10_TOKENS), insts, "institutions")
+    req["phase10_institutions"] = {"required": ok, "why": why, "signal": sig}
+    ok, why, sig = gate(signal("aggregate_population_behavior", _P9POP_TOKENS), pops, "populations")
+    req["phase9_populations"] = {"required": ok, "why": why, "signal": sig}
+    ok, why, sig = gate(signal("networked_transmission", _P9NET_TOKENS), rels, "relations")
+    req["phase9_networks"] = {"required": ok, "why": why, "signal": sig}
+    hits7 = signal("nonlinear_dynamics", _P7_TOKENS)
     req["phase7_nonlinear"] = {"required": bool(hits7),
-                               "why": (f"nonlinear process tokens {hits7[:3]}" if hits7
+                               "why": (f"nonlinear causal structure: {hits7[:3]}" if hits7
                                        else "no nonlinear causal structure named")}
-    req["phase6_registry"] = {"required": bool(p6_sel),
-                              "why": (f"registry answers {sorted(p6_sel)[:3]}" if p6_sel
-                                      else "no registry family answers a required process")}
-    hits4 = _hit(text, _P4_TOKENS)
+    # Phase 6 owns causal-process → mechanism resolution. It is required whenever the outcome depends on a
+    # SOCIAL/behavioral causal mechanism (any structured dependency signal true, or a registry family already
+    # answers a process) — a required process may never be silently omitted: it resolves to a validated
+    # family or to a transparent broad-prior fallback that still executes (registry gap recorded).
+    social_dep = any(deps.get(k) is True for k in
+                     ("strategic_actor_decisions", "aggregate_population_behavior",
+                      "networked_transmission", "nonlinear_dynamics", "institutional_decision_process"))
+    procs = [str(c.get("process", "")) for c in (getattr(plan, "mechanism_choices", []) or [])
+             if isinstance(c, dict) and c.get("process") and c.get("process") != "outcome_resolution"]
+    req["phase6_registry"] = {
+        "required": bool(p6_sel) or (social_dep and bool(procs)),
+        "why": (f"registry answers {sorted(p6_sel)[:3]}" if p6_sel else
+                (f"social causal mechanism required for processes {procs[:3]}" if social_dep and procs
+                 else "no social behavioral mechanism required"))}
+    hits4 = signal("strategic_actor_decisions", _P4_TOKENS)
     # a compiler-proposed decision whose candidate actions carry outcome POLARITY (approve/reject/veto…)
     # is itself structural evidence of a strategic actor — generic act/wait proposals are not.
     polar_decision = False
@@ -128,8 +156,8 @@ def phase_requirements(plan) -> dict:
         req["phase4_actor_policy"] = {"required": bool(decs or persons),
                                       "why": "compiler-proposed decision with outcome-polar actions"}
     else:
-        ok, why = gate(hits4, decs or persons, "strategic actors")
-        req["phase4_actor_policy"] = {"required": ok, "why": why}
+        ok, why, sig = gate(hits4, decs or persons, "strategic actors")
+        req["phase4_actor_policy"] = {"required": ok, "why": why, "signal": sig}
     return req
 
 
@@ -357,12 +385,15 @@ _P6_DISPATCHABLE = {
 
 
 def _synthesize_p6(plan, resolve_ts) -> list:
-    """Promote per-process registry selections (previously recorded in provenance and DROPPED) into real
-    executable pack events, for families whose published pack satisfies the behavioral dispatch. Families
-    without a dispatchable pack are recorded as an honest omission (tier stays generic), never faked."""
+    """Phase-6 causal-process resolution (Part 3): required process → registry family → validated pack →
+    executable event → StateDelta. A process a validated family answers gets that family's published pack
+    event; a process NOTHING answers gets the transparent broad-prior `structural_process_prior` fallback —
+    it still executes through the shared runtime, labeled exploratory with the registry gap recorded.
+    A required causal process is never silently omitted."""
     prov = getattr(plan, "provenance", {}) or {}
     pps = prov.get("per_process_selection", {}) or {}
     added = []
+    answered = set()
     for proc, sel in pps.items():
         fam = (sel or {}).get("selected")
         if not fam or fam not in _P6_DISPATCHABLE:
@@ -408,6 +439,31 @@ def _synthesize_p6(plan, resolve_ts) -> list:
                            f"registry family {fam} answering process {proc}",
                            f"published pack {pack.pack_id} (transported; widened)")
             added.append(fam)
+            answered.add(proc)
         except Exception:  # noqa: BLE001 — a registry hiccup must not block the forecast
             continue
+    # ---- fallback: required processes NOTHING answers still execute (transparent broad prior) ----
+    procs = [str(c.get("process", "")) for c in (getattr(plan, "mechanism_choices", []) or [])
+             if isinstance(c, dict) and c.get("process") and c.get("process") != "outcome_resolution"]
+    lean = (getattr(plan, "provenance", {}) or {}).get("outcome_lean", "neutral")
+    n_fb = 0
+    for proc in procs:
+        if proc in answered or n_fb >= 2:                    # bounded: modulation channel is capped anyway
+            continue
+        var = f"mechanism_outcome:fallback:{proc[:40]}"
+        if any(e.get("etype") == "structural_process_prior" and
+               e.get("payload", {}).get("out_var") == var for e in plan.scheduled_events):
+            continue
+        plan.scheduled_events.append({
+            "etype": "structural_process_prior", "ts": resolve_ts - 2.5, "participants": [],
+            "payload": {"process": proc, "out_var": var, "lean": lean}})
+        _add_modulation(plan, var, 0.1)
+        _add_mechanism(plan, f"structural_prior:{proc[:40]}", "structural_process_prior",
+                       f"broad-prior fallback for unanswered required process {proc!r}",
+                       "broad Beta prior; EXPLORATORY (registry gap)")
+        plan.fallbacks_used.append({"process": proc, "tier": 6, "family": "structural_process_prior",
+                                    "why": "no validated registry family answers this required causal "
+                                           "process — transparent broad-prior fallback (registry gap)"})
+        added.append(f"fallback:{proc[:40]}")
+        n_fb += 1
     return added

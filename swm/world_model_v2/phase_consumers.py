@@ -191,6 +191,48 @@ class PopulationAggregationOperator(TransitionOperator):
         return d.change(f"quantities[{var}]", before, round(agg, 4))
 
 
+# ---------------------------------------------------------------- Phase 6: structural process fallback
+class StructuralProcessPriorOperator(TransitionOperator):
+    """The strongest TRANSPARENT broad-prior fallback for a required causal process no validated registry
+    family answers (Phase 6, Part 3): the process still executes through the shared event runtime — it is
+    never silently omitted. Per particle it draws the process's contribution from a broad Beta prior
+    (uniform-ish; labeled exploratory), writes a typed quantity the terminal consumes via the bounded
+    modulation channel, and records the registry gap on the delta. This is honest ignorance made
+    executable — not a fabricated fitted mechanism.
+
+    payload = {process, out_var, lean?}."""
+    name = "structural_process_prior"
+
+    def applicable(self, world, event):
+        return event.etype == "structural_process_prior" and bool(event.payload.get("out_var"))
+
+    def propose(self, world, event, rng):
+        p = event.payload
+        return TransitionProposal(operator=self.name,
+                                  action={"process": str(p.get("process", ""))[:60],
+                                          "out_var": str(p["out_var"]),
+                                          "lean": str(p.get("lean", "neutral"))},
+                                  reason_codes=["registry_gap_fallback", "exploratory"])
+
+    def apply(self, world, proposal):
+        from swm.world_model_v2.fallback import LEAN_BETA, _beta_sample
+        from swm.world_model_v2.quantities import Quantity, register_quantity_type
+        a = proposal.action
+        rng = _branch_rng(world, f"proc:{a['process']}")
+        av, bv = LEAN_BETA.get(a["lean"], (1.5, 1.5))
+        val = round(_beta_sample(rng, av, bv), 4)
+        var = a["out_var"]
+        register_quantity_type(var, units="share")
+        before = world.quantities[var].value if var in world.quantities else None
+        world.quantities[var] = Quantity(name=var, qtype=var, value=val, timestamp=world.clock.now)
+        d = StateDelta(at=world.clock.now, event_type="structural_process_prior", operator=self.name,
+                       reason_codes=proposal.reason_codes,
+                       uncertainty={"process": a["process"], "prior": f"Beta({av},{bv})",
+                                    "note": "no validated registry family answers this required causal "
+                                            "process — transparent broad-prior fallback (registry gap)"})
+        return d.change(f"quantities[{var}]", before, val)
+
+
 # ---------------------------------------------------------------- Phase 4: actor-action polarity consumer
 #: action-name tokens that read as AFFIRMATIVE toward the outcome (the negative side reuses the compiler's
 #: curated negation lexicon). Actions with no polarity (act/wait/monitor) are skipped — never guessed.
@@ -330,6 +372,10 @@ register_operator("population_aggregation", PopulationAggregationOperator(),
                   requires=("populations",), modifies=("quantities",), temporal_scale="scheduled",
                   parameter_source="declared segment weights; heterogeneity from labeled broad priors",
                   validated=True)
+register_operator("structural_process_prior", StructuralProcessPriorOperator(),
+                  requires=("quantities",), modifies=("quantities",), temporal_scale="scheduled",
+                  parameter_source="broad Beta prior; EXPLORATORY registry-gap fallback (labeled)",
+                  validated=True)
 register_operator("actor_action_aggregation", ActorActionPolarityOperator(),
                   requires=("entities",), modifies=("quantities",), temporal_scale="scheduled",
                   parameter_source="lexical polarity of chosen typed actions (nonpolar actions skipped)",
@@ -341,6 +387,7 @@ register_operator("network_diffusion", NetworkDiffusionOperator(),
 
 from swm.world_model_v2.events import event_type_registered, register_event_type  # noqa: E402
 for _et, _reads, _deltas in (("institutional_decision", ("institutions", "quantities"), ("quantities",)),
+                             ("structural_process_prior", ("quantities",), ("quantities",)),
                              ("population_aggregation", ("populations",), ("quantities",)),
                              ("actor_action_aggregation", ("entities",), ("quantities",)),
                              ("network_diffusion", ("network",), ("quantities",))):

@@ -36,6 +36,22 @@ def _recommendation_status(intervention: str, support_grade: str) -> str:
     return "withheld"                                          # exploratory/highly_speculative → withhold
 
 
+def _operator_delta_census(branches) -> dict:
+    """{operator: {n_deltas, fields_written[:8], event_types[:6]}} across all branches."""
+    census = {}
+    for b in (branches or []):
+        for d in getattr(b, "log", []):
+            c = census.setdefault(d.operator, {"n_deltas": 0, "fields_written": [], "event_types": []})
+            c["n_deltas"] += 1
+            for ch in (d.changes or [])[:2]:
+                p = str(ch.get("path", ""))
+                if p and p not in c["fields_written"] and len(c["fields_written"]) < 8:
+                    c["fields_written"].append(p)
+            if d.event_type not in c["event_types"] and len(c["event_types"]) < 6:
+                c["event_types"].append(d.event_type)
+    return census
+
+
 def result_from_run(question, plan, result, branches, *, intervention="", t0=None, calibrator=None,
                     cal_key="") -> SimulationResult:
     """Build the shipped SimulationResult from a completed (plan, terminal result, branches). Extracted so
@@ -96,7 +112,11 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
                     "prompt_hash": plan.provenance.get("prompt_hash"),
                     "readout_var": plan.outcome_contract.readout_var,
                     "readout_repaired": plan.provenance.get("readout_repaired"),
-                    "n_deltas": result.get("n_deltas"), "n_particles": plan.compute_plan.get("n_particles")},
+                    "n_deltas": result.get("n_deltas"), "n_particles": plan.compute_plan.get("n_particles"),
+                    # phase-supervision inputs: exactly which operators produced StateDeltas, and which
+                    # state paths they wrote — the PhaseExecutionRecord is derived from THIS census, so
+                    # activation accounting cannot drift from what actually executed.
+                    "operator_delta_census": _operator_delta_census(branches)},
         latency_s=round(_time.time() - t0, 3) if t0 is not None else 0.0)
 
 
