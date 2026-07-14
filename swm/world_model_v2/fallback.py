@@ -148,7 +148,6 @@ class GenericOutcomeOperator(TransitionOperator):
             "lean": str(p.get("lean", "neutral")),
             "options": list(p.get("options") or ["True", "False"]),
             "posterior_rate_particles": p.get("posterior_rate_particles"),
-            "rate_modulation": list(p.get("rate_modulation") or []),
             "lo": p.get("lo"), "hi": p.get("hi")},
             reason_codes=["posterior_rate" if p.get("posterior_rate_particles") else "generic_fallback",
                           f"lean={p.get('lean', 'neutral')}"])
@@ -181,13 +180,6 @@ class GenericOutcomeOperator(TransitionOperator):
             else:
                 p = _beta_sample(rng, av, bv)                # per-particle base-rate draw (broad prior)
                 rate_src = "prior_beta"
-            # Phase 9/7 CONSUMER CHANNEL: bounded rate modulation from quantities that upstream causal
-            # consumers (population aggregation, network diffusion, nonlinear state) wrote into THIS world.
-            # Each modulator blends its [0,1] value with weight w (total capped at synthesis time), so the
-            # declared structure genuinely moves the terminal — and its removal genuinely changes it.
-            p, mod_used = _modulate_rate(world, p, a.get("rate_modulation") or [])
-            if mod_used:
-                proposal.reason_codes = list(proposal.reason_codes) + [f"rate_modulated:{','.join(mod_used)}"]
             opts = a["options"] if len(a["options"]) == 2 else ["True", "False"]
             val = opts[0] if rng.random() < p else opts[1]
         elif fam == "categorical":
@@ -215,29 +207,6 @@ class GenericOutcomeOperator(TransitionOperator):
                                     "tier": "3 posterior-updated" if rate_src == "posterior"
                                             else "6/7 generic (broad prior; not empirically validated)"})
         return d.change(f"quantities[{var}]", before, val)
-
-
-def _modulate_rate(world, p: float, modulators) -> tuple:
-    """Blend the base rate with declared-structure consumer outputs: p' = (1-Σw)·p + Σ wᵢ·vᵢ, where vᵢ is a
-    [0,1] quantity a Phase-9/7 consumer wrote and wᵢ its bounded weight (Σw ≤ 0.45, enforced at synthesis).
-    A modulator whose quantity was never written contributes nothing (its consumer was ablated/inapplicable).
-    Returns (p', [vars actually used])."""
-    used, blended, total_w = [], 0.0, 0.0
-    for m in modulators:
-        var, w = str(m.get("var", "")), float(m.get("weight", 0.0) or 0.0)
-        q = world.quantities.get(var)
-        v = getattr(q, "value", None)
-        if w <= 0.0 or not isinstance(v, (int, float)):
-            continue
-        blended += w * max(0.0, min(1.0, float(v)))
-        total_w += w
-        used.append(var)
-    if not used:
-        return p, []
-    if total_w > 0.45:                                       # defense in depth on the synthesis-time cap
-        blended *= 0.45 / total_w
-        total_w = 0.45
-    return (1.0 - total_w) * p + blended, used
 
 
 #: per-hypothesis lean → multiplicative shift on a posterior rate, so competing structures produce genuinely

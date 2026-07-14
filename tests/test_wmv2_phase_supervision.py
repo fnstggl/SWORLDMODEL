@@ -12,13 +12,13 @@ AS_OF = parse_time("2025-01-01")
 HZ = parse_time("2025-02-01")
 
 
-def _plan(processes=(), institutions=None, deps=None):
+def _plan(processes=(), institutions=None, deps=None, question="q"):
     def read(w):
         q = w.quantities.get("outcome")
         return q.value if q else None
     c = OutcomeContract(family="binary", options=["yes", "no"], resolution_rule="r",
                         readout=read, readout_var="outcome", horizon_ts=HZ).validate()
-    p = WorldExecutionPlan(question="q", outcome_contract=c, as_of=AS_OF, horizon_ts=HZ)
+    p = WorldExecutionPlan(question=question, outcome_contract=c, as_of=AS_OF, horizon_ts=HZ)
     p.mechanism_choices = [{"process": pr} for pr in processes]
     p.institutions = institutions or []
     p.scheduled_events = [{"etype": "resolve_outcome", "ts": HZ - 1.0, "participants": [],
@@ -47,20 +47,27 @@ def test_irrelevant_phase_is_explicit_no_op():
 
 
 def test_relevant_phase_without_declared_state_is_blocked_missing_state():
-    p = _plan(deps={"institutional_decision_process": True})  # signal but NO institution declared
+    p = _plan(deps={"institutional_decision_process": True},
+              question="Will the senate confirm the nominee?")  # relevant but NO institution declared
     recs = PS.assess(p, has_as_of=True, has_bundle=True)
     assert recs["phase10_institutions"].execution_status == "blocked_missing_state"
 
 
 def test_relevant_executed_phase_is_causally_active_with_delta_evidence():
     p = _plan(deps={"institutional_decision_process": True},
+              question="Will the senate confirm the nominee?",
               institutions=[{"id": "senate", "rules": [{"kind": "quorum", "params": {"quorum": 51}}]}])
-    p.accepted_mechanisms = [{"operator": "institutional_decision", "mech_id": "x",
-                              "parameter_source": "declared rule"}]
+    p.entities = [{"id": "senator", "type": "person", "fields": {}}]
+    p.accepted_mechanisms = [
+        {"operator": "institutional_decision", "mech_id": "x", "parameter_source": "declared rule"},
+        {"operator": "production_actor_policy", "mech_id": "actor", "parameter_source": "broad prior"},
+    ]
     recs = PS.assess(p, has_as_of=True, has_bundle=True)
     out = PS.finalize(recs, p, _res({
         "institutional_decision": {"n_deltas": 30, "fields_written": ["quantities[outcome]"],
                                    "event_types": ["institutional_decision"]},
+        "production_actor_policy": {"n_deltas": 30, "fields_written": ["senator.current_action"],
+                                    "event_types": ["actor_action"]},
         # p6 is co-required whenever an institutional/social phase is (a behavioral mechanism carries it)
         "structural_process_prior": {"n_deltas": 30, "fields_written": ["quantities[mech]"],
                                      "event_types": ["structural_process_prior"]}}),
@@ -75,6 +82,7 @@ def test_relevant_executed_phase_is_causally_active_with_delta_evidence():
 
 def test_relevant_phase_with_no_deltas_is_blocked_and_fails_integration():
     p = _plan(deps={"institutional_decision_process": True},
+              question="Will the senate confirm the nominee?",
               institutions=[{"id": "senate", "rules": []}])
     recs = PS.assess(p, has_as_of=True, has_bundle=True)
     out = PS.finalize(recs, p, _res({}), phase_meta={})
@@ -100,7 +108,8 @@ def test_p6_fallback_makes_required_process_executable():
     from swm.world_model_v2.activation_synthesis import synthesize_activation
     from swm.world_model_v2.materialize import run_from_plan
     p = _plan(processes=["union_bargaining_pressure"],
-              deps={"strategic_actor_decisions": True})
+              deps={"strategic_actor_decisions": True},
+              question="Will the union reach a contract before the strike deadline?")
     p.quantities = [{"name": "outcome", "qtype": "outcome", "value": None}]
     p.accepted_mechanisms = [{"mech_id": "generic_outcome_prior", "operator": "generic_outcome_prior",
                               "causal_role": "safety net"}]
@@ -115,9 +124,16 @@ def test_p6_fallback_makes_required_process_executable():
     assert ops.get("structural_process_prior", 0) > 0        # the process EXECUTES, never silently omitted
 
 
-def test_semantic_dependency_signal_drives_relevance_without_keywords():
+def test_unchecked_compiler_dependency_does_not_drive_relevance():
     from swm.world_model_v2.activation_synthesis import phase_requirements
     p = _plan(processes=["household_purchase_accumulation"],   # no population keyword anywhere
               deps={"aggregate_population_behavior": True})
     p.populations = [{"id": "buyers", "segments": [{"id": "s", "weight": 1.0, "differs_on": ["budget"]}]}]
+    assert not phase_requirements(p)["phase9_populations"]["required"]
+
+
+def test_question_level_population_semantics_drive_relevance():
+    from swm.world_model_v2.activation_synthesis import phase_requirements
+    p = _plan(processes=["household_purchase_accumulation"],
+              question="Will household adoption exceed half of eligible households?")
     assert phase_requirements(p)["phase9_populations"]["required"]

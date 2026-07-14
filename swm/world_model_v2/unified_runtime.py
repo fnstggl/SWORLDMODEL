@@ -34,7 +34,7 @@ try:
 except Exception:  # noqa: BLE001
     _NONLINEAR_OPERATORS_REGISTERED = False
 
-RUNTIME_VERSION = "unified-1.0"
+RUNTIME_VERSION = "unified-2.0-post-snapshot"
 # Phases that are default-on and threaded through the one funnel.
 _PHASES = ["phase1_compiler", "phase2_evidence", "phase3_posterior", "phase4_actor_policy",
            "phase6_registry", "phase7_nonlinear", "phase8_persistence", "phase9_populations",
@@ -74,6 +74,7 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
     manifest = {p: _mani(available=True) for p in _PHASES}
     lineage = {"plan_hashes": [], "recompilations": []}
     costs = {"llm_calls": 0}
+    phase_req = {}
 
     def _iso(s):
         return s
@@ -174,6 +175,7 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
         try:
             from swm.world_model_v2.activation_synthesis import phase_requirements, synthesize_activation
             req = phase_requirements(plan)
+            phase_req = req
             # respect per-phase ablation drops: a dropped phase must not be synthesized back in
             for ph in list(req):
                 if ph in drop:
@@ -186,12 +188,15 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
             lineage["activation_synthesis"] = {"error": f"{type(e).__name__}: {e}"[:160]}
 
     # ---------- Phase 11: dynamic-recompilation loop over the as-of observations (same plan lineage) --------
-    if "phase11_recompilation" not in drop and bundle is not None:
+    p11_required = bool(phase_req.get("phase11_recompilation", {}).get("required"))
+    if "phase11_recompilation" not in drop and p11_required and bundle is not None:
         _run_recompilation(plan, bundle, as_of, horizon, seed, llm, manifest, lineage, costs)
     else:
         manifest["phase11_recompilation"].update(
-            omitted=True, reason=("dropped_by_policy" if "phase11_recompilation" in drop
-                                  else "no observations"))
+            omitted=True, causally_irrelevant=not p11_required,
+            reason=("dropped_by_policy" if "phase11_recompilation" in drop else
+                    ("no observations for required structural-change monitoring" if p11_required
+                     else "no structural-change cue; explicit causal no-op")))
 
     # ---------- Terminal projection through the ONE funnel (Phase 8 persistence + P4/P6/P7/P10 operators) ----
     res = _project_terminal(question, plan, as_of, horizon, intervention, seed, llm, user_context,

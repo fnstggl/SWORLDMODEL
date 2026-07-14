@@ -106,15 +106,18 @@ def test_p10_threshold_rule_transforms_posterior_not_invents_rate():
 
 
 # ---------------------------------------------------------------- P9 consumers
-def test_p9_population_aggregation_executes_and_modulates():
+def test_p9_population_aggregation_executes_through_causal_state_path():
     p = _plan(question="Will turnout exceed the threshold?", processes=["turnout_participation"],
               populations=POPS)
     rep = synthesize_activation(p)
     assert any(a["phase"] == "phase9_populations" for a in rep["actions"])
     res, branches = run_from_plan(p, llm=None, seed=3)
     assert _deltas_by_op(branches).get("population_aggregation", 0) > 0
+    transition = [e for e in p.scheduled_events if e["etype"] == "causal_state_transition"][0]
+    assert any(d["var"].startswith("population_aggregate:")
+               for d in transition["payload"]["driver_vars"])
     rev = [e for e in p.scheduled_events if e["etype"] == "resolve_outcome"][0]
-    assert rev["payload"]["rate_modulation"]                     # consumer wired into the terminal
+    assert "rate_modulation" not in rev["payload"]
 
 
 def test_p9_network_diffusion_executes():
@@ -125,13 +128,13 @@ def test_p9_network_diffusion_executes():
     assert _deltas_by_op(branches).get("network_diffusion", 0) > 0
 
 
-def test_modulation_total_weight_capped():
+def test_direct_terminal_modulation_is_prohibited():
     from swm.world_model_v2.activation_synthesis import _add_modulation
     p = _plan(processes=[])
-    for i in range(6):
-        _add_modulation(p, f"v{i}", 0.2)
+    with pytest.raises(RuntimeError, match="prohibited"):
+        _add_modulation(p, "v", 0.2)
     rev = [e for e in p.scheduled_events if e["etype"] == "resolve_outcome"][0]
-    assert sum(m["weight"] for m in rev["payload"]["rate_modulation"]) <= 0.45 + 1e-9
+    assert "rate_modulation" not in rev["payload"]
 
 
 # ---------------------------------------------------------------- P7 + P4
@@ -149,7 +152,7 @@ def test_p4_gated_off_removes_ornamental_decisions():
                                "payload": {"actions": [{"type": "act"}, {"type": "wait"}]}})
     rep = synthesize_activation(p)
     assert not any(e["etype"] == "decision_opportunity" for e in p.scheduled_events)
-    assert any(a["action"] == "gated_off_ornamental_decisions" for a in rep["actions"])
+    assert any(a["action"] == "irrelevant_execution_gated_off" for a in rep["actions"])
 
 
 def test_p4_undeclared_actor_decision_dropped_not_crashing():

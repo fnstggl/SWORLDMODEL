@@ -69,7 +69,7 @@ class PhaseExecutionRecord:
     state_fields_read: list = field(default_factory=list)
     state_fields_written: list = field(default_factory=list)
     downstream_events_produced: list = field(default_factory=list)
-    terminal_influence: str = ""            # direct_resolution | rate_modulation | constraint | none | unknown
+    terminal_influence: str = ""            # direct_resolution | state_transition | constraint | none | unknown
     ablation_influence: float = None        # filled by the ablation harness, not here
     latency_s: float = 0.0
     cost: dict = field(default_factory=dict)
@@ -122,9 +122,9 @@ def assess(plan, *, has_as_of=True, has_bundle=None, has_posterior=None, version
             r.relevant, r.relevance_reasons = True, "default-on persistence-aware rollout"
             r.input_state_present = True
         elif ph == "phase11_recompilation":
-            r.relevant = bool(has_bundle) if has_bundle is not None else bool(has_as_of)
-            r.relevance_reasons = "observations available" if r.relevant else "no observations"
-            r.input_state_present = r.relevant
+            g = req.get(ph, {"required": False, "why": "not assessed"})
+            r.relevant, r.relevance_reasons = bool(g["required"]), str(g["why"])
+            r.input_state_present = bool(has_bundle) if has_bundle is not None else bool(has_as_of)
         else:
             g = req.get(ph, {"required": False, "why": "not assessed"})
             r.relevant, r.relevance_reasons = bool(g["required"]), str(g["why"])
@@ -224,12 +224,15 @@ def finalize(records: dict, plan, res, *, phase_meta: dict = None) -> dict:
 def _terminal_influence(phase, plan, written) -> str:
     rev = next((e for e in plan.scheduled_events if e.get("etype") == "resolve_outcome"), None)
     outcome_var = (rev or {}).get("payload", {}).get("outcome_var", "outcome")
-    mods = {m.get("var") for m in ((rev or {}).get("payload", {}).get("rate_modulation") or [])}
+    transition = next((e for e in plan.scheduled_events
+                       if e.get("etype") == "causal_state_transition"), None)
+    drivers = {d.get("var") for d in ((transition or {}).get("payload", {}).get("driver_vars") or [])}
+    outcome_path = f"quantities[{outcome_var}]"
     for w in written:
-        if outcome_var in w:
+        if w == outcome_path:
             return "direct_resolution"
-        if any(mv and mv in w for mv in mods):
-            return "rate_modulation"
+        if any(var and w == f"quantities[{var}]" for var in drivers):
+            return "state_transition"
     if phase == "phase10_institutions":
         return "constraint"
     return "state_only"
