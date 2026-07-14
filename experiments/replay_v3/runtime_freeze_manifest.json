@@ -22,5 +22,14 @@
  "model_reference": "hf:deepseek-ai/DeepSeek-V4-Flash@60d8d70770c6776ff598c94bb586a859a38244f1",
  "vault": "experiments/replay_vault_v3/events.json (100 worlds, chronological 40/20/40)",
  "preflight": "12/12 qualified rows, zero blocked relevant phases",
- "rule": "any runtime/model change after this point invalidates subsequently generated forecasts"
+ "rule": "any runtime/model change after this point invalidates subsequently generated forecasts",
+ "refrozen_after_engineering_repair": {
+  "commit": "7320a21ed542100272055d58e54ab3a5c3773543",
+  "repairs": [
+   "relation-name normalization (blocked_no_mechanism p9net)",
+   "org actors as strategic substrate"
+  ],
+  "note": "repairs made WITHOUT accessing any outcome; all previously generated forecasts invalidated and regenerated under the refrozen runtime",
+  "fingerprint": "9ba1511f5a47a619"
+ }
 }

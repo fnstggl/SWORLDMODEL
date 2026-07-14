@@ -316,6 +316,27 @@ def synthesize_activation(plan, req=None) -> dict:
                                "populations": [p.get("id") for p in plan.populations[:2]
                                                if isinstance(p, dict)]})
 
+    # ---- Phase 9 networks: normalize compiler-declared relation names onto the REGISTERED relation
+    #      registry (an unregistered rel is dropped at materialization, leaving the diffusion mechanism an
+    #      empty graph — the preflight-found blocked_no_mechanism defect). Never drops an edge. ----
+    if req["phase9_networks"]["required"] and plan.relations:
+        from swm.world_model_v2.network import _RELATIONS
+        _REL_MAP = {"trust": "trusts", "influence": "influences", "communicat": "communicates_with",
+                    "observ": "observes", "report": "reports_to", "fund": "funds", "endors": "endorses",
+                    "oppos": "opposes", "compet": "opposes", "member": "belongs_to", "belong": "belongs_to",
+                    "depend": "depends_on", "control": "controls", "ally": "influences",
+                    "partner": "communicates_with"}
+        n_norm = 0
+        for r in plan.relations:
+            if isinstance(r, dict) and str(r.get("rel")) not in _RELATIONS:
+                orig = str(r.get("rel", ""))
+                mapped = next((v for k, v in _REL_MAP.items() if k in orig.lower()), "influences")
+                r["_original_rel"], r["rel"] = orig, mapped
+                n_norm += 1
+        if n_norm:
+            rep["actions"].append({"phase": "phase9_networks", "action": "relation_names_normalized",
+                                   "n": n_norm})
+
     # ---- Phase 9 networks: infer relations from the declared causal world when transmission is required
     #      but the compiler declared no explicit edges (Part 7: "build or infer multilayer relations") ----
     if req["phase9_networks"]["required"] and not plan.relations:
