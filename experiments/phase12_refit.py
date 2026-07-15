@@ -38,7 +38,8 @@ def main():
         from swm.world_model_v2.runtime_fingerprint import runtime_fingerprint
         fp = runtime_fingerprint()
         print(f"\nRUNTIME FINGERPRINT REQUIRED FOR PRODUCT-ELIGIBLE REFIT: {fp['fingerprint_hash']} "
-              f"(commit {fp['commit']}). Any corpus not stamped with this fingerprint is diagnostic_only. "
+              f"(runtime-source commit {fp['runtime_source_commit']}). Any corpus not stamped with this "
+              "fingerprint is diagnostic_only. "
               "Regenerate the corpus through simulate_world before finalizing calibration.")
     except Exception:  # noqa: BLE001
         pass

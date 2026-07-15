@@ -11,7 +11,8 @@ from swm.replay.blinding import apply_mapping
 
 P_NAME_ONLY = """Question: {q}
 Do you know, as a matter of historical fact, how this resolved? Answer ONLY JSON:
-{{"known": true|false, "resolution": "<one sentence or null>", "confidence": <0..1>}}"""
+{{"known": true|false, "resolved_yes": true|false|null,
+  "resolution": "<one sentence or null>", "confidence": <0..1>}}"""
 
 P_NO_EVIDENCE = """You are given ONLY this question, no evidence. Estimate the probability of YES.
 Question: {q}
@@ -31,7 +32,8 @@ Return ONLY JSON: {{"p_yes": <0..1>, "driver": "<which evidence item drove your 
 
 P_TEMPORAL_FACT = """Today is {cutoff}. Answer from the perspective of that date ONLY.
 {q_fact}
-Return ONLY JSON: {{"answer": "<short>", "confidence": <0..1>}}"""
+Return ONLY JSON: {{"already_resolved": true|false|null, "answer": "<short>",
+                    "confidence": <0..1>}}"""
 
 
 def _ask(llm, prompt):
@@ -124,7 +126,8 @@ def classify_row_v2(probes: dict, *, arm: str, name_only_correct: bool | None) -
             return "contamination_susceptible"
     temporal = (probes.get("temporal_fact") or {}).get("output") or {}
     temporal_answer = str(temporal.get("answer", "")).lower()
-    temporally_positive = (temporal_answer.strip().startswith("yes") or
+    temporally_positive = (temporal.get("already_resolved") is True or
+                           temporal_answer.strip().startswith("yes") or
                            ("already resolved" in temporal_answer and "not already" not in temporal_answer) or
                            ("has occurred" in temporal_answer and "not occurred" not in temporal_answer) or
                            ("definitively failed" in temporal_answer and
