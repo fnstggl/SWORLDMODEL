@@ -164,7 +164,9 @@ class GenericOutcomeOperator(TransitionOperator):
         av, bv = LEAN_BETA.get(a["lean"], (1.0, 1.0))
         register_quantity_type(var, units="outcome")
         before = world.quantities[var].value if var in world.quantities else None
-        if before is not None:
+        options = list(a.get("options") or [])
+        compatible = _terminal_value_compatible(before, fam, options)
+        if before is not None and compatible:
             # SAFETY NET: a domain mechanism already resolved the outcome — do not overwrite it. A value in a
             # different vocabulary (a boolean True/False vs yes/no options) is reconciled at projection time
             # (contract canonicalizes truthy→affirmative), so a legitimate mechanism write is never clobbered.
@@ -200,13 +202,35 @@ class GenericOutcomeOperator(TransitionOperator):
             val = min(hi, max(lo, rng.gauss(mid, (hi - lo) / 3.0)))
         world.quantities[var] = Quantity(name=var, qtype=var, value=val, timestamp=world.clock.now)
         rate_src = locals().get("rate_src", "prior_beta")
+        reasons = list(proposal.reason_codes)
+        if before is not None and not compatible:
+            reasons.append("invalid_domain_terminal_overwritten_by_contract_safety_net")
         d = StateDelta(at=world.clock.now, event_type="resolve_outcome", operator=self.name,
-                       reason_codes=proposal.reason_codes,
+                       reason_codes=reasons,
                        uncertainty={"rate_source": rate_src,
                                     "prior": f"Beta({av},{bv})" if fam != "continuous" else "wide Normal",
                                     "tier": "3 posterior-updated" if rate_src == "posterior"
                                             else "6/7 generic (broad prior; not empirically validated)"})
         return d.change(f"quantities[{var}]", before, val)
+
+
+def _terminal_value_compatible(value, family, options):
+    """Whether an earlier domain write satisfies the declared outcome contract."""
+    if value is None:
+        return False
+    normalized = str(value).strip().lower()
+    declared = {str(option).strip().lower() for option in options}
+    if normalized in declared:
+        return True
+    if family in ("binary", "response_occurrence", "best_action") and len(options) == 2:
+        truthy = {"true", "yes", "1", "1.0", "occurred", "success", "pass", "accept",
+                  "approved", "ratified", "won", "happened"}
+        falsy = {"false", "no", "0", "0.0", "not_occurred", "failure", "fail", "reject",
+                 "declined", "lost", "did_not_happen"}
+        return normalized in truthy | falsy
+    if family in ("continuous", "response_delay", "reach_distribution"):
+        return isinstance(value, (int, float))
+    return False
 
 
 #: per-hypothesis lean → multiplicative shift on a posterior rate, so competing structures produce genuinely

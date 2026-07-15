@@ -214,8 +214,14 @@ def _materialize_required_structure(plan, req) -> list:
     prov = getattr(plan, "provenance", {}) or {}
     inferred = prov.setdefault("runtime_inferred_structure", [])
 
+    # A relevant actor-policy phase needs at least one actor the production
+    # policy can bind. Merely having an organization/entity in the plan is
+    # insufficient because decision_opportunity dispatches to person actors.
+    has_person = any(isinstance(e, dict) and e.get("id") and
+                     str(e.get("type", "person")) == "person"
+                     for e in (getattr(plan, "entities", []) or []))
     if req["phase4_actor_policy"]["required"] and not (
-            getattr(plan, "entities", []) or getattr(plan, "actor_decisions", [])):
+            has_person or getattr(plan, "actor_decisions", [])):
         plan.entities.append({"id": "strategic_actor", "type": "person",
                               "fields": {"role": "outcome-relevant decision maker"},
                               "_inferred": "question-level strategic process"})
@@ -233,18 +239,36 @@ def _materialize_required_structure(plan, req) -> list:
         actions.append({"phase": "phase9_populations", "action": "abstract_population_materialized"})
 
     if req["phase9_networks"]["required"]:
-        entities = [e for e in (getattr(plan, "entities", []) or [])
-                    if isinstance(e, dict) and e.get("id")]
+        entities, seen_ids = [], set()
+        for entity in (getattr(plan, "entities", []) or []):
+            if not isinstance(entity, dict) or not entity.get("id"):
+                continue
+            eid = str(entity["id"])
+            if eid not in seen_ids:
+                entities.append(entity)
+                seen_ids.add(eid)
         while len(entities) < 2:
             eid = "transmission_source" if not entities else "exposed_target"
-            if any(str(e.get("id")) == eid for e in entities):
+            if eid in seen_ids:
                 eid = f"network_node_{len(entities) + 1}"
             node = {"id": eid, "type": "organization",
                     "fields": {"role": "abstract transmission substrate"},
                     "_inferred": "question-level transmission process"}
             plan.entities.append(node)
             entities.append(node)
-        if not getattr(plan, "relations", []):
+            seen_ids.add(eid)
+
+        # Compiler-proposed relation names are not automatically executable:
+        # the materializer rejects names outside the typed relation registry.
+        # Treat an all-invalid relation list as missing state and add one
+        # explicit registered edge while preserving invalid proposals in the
+        # omission trail.
+        from swm.world_model_v2.network import _RELATIONS
+        materializable = any(
+            isinstance(rel, dict) and rel.get("src") and rel.get("dst") and
+            str(rel.get("src")) != str(rel.get("dst")) and rel.get("rel") in _RELATIONS
+            for rel in (getattr(plan, "relations", []) or []))
+        if not materializable:
             plan.relations.append({"src": str(entities[0]["id"]), "rel": "influences",
                                    "dst": str(entities[1]["id"]),
                                    "_inferred": "minimal transmission edge"})
@@ -299,6 +323,32 @@ def _gate_irrelevant_execution(plan, req) -> list:
     return actions
 
 
+def _bound_hazard_event_budget(plan, max_expected_events=100.0) -> list:
+    """Prevent compiler hazards from starving scheduled causal mechanisms.
+
+    The rollout has a hard event ceiling for safety. An unconstrained LLM rate
+    can otherwise consume that ceiling on background hazards before the
+    horizon-time phase events execute. Preserve the relative rates but scale
+    their total expected count to a conservative budget, recording the exact
+    repair in provenance.
+    """
+    hazards = list(getattr(plan, "stochastic_hazards", []) or [])
+    horizon_days = max(0.0, (float(plan.horizon_ts) - float(plan.as_of)) / 86400.0)
+    expected = sum(max(0.0, float(h.get("rate_per_day", 0.0) or 0.0)) * horizon_days
+                   for h in hazards if isinstance(h, dict))
+    if expected <= max_expected_events or expected <= 0.0:
+        return []
+    scale = max_expected_events / expected
+    for hazard in hazards:
+        if isinstance(hazard, dict):
+            hazard["rate_per_day"] = max(
+                0.0, float(hazard.get("rate_per_day", 0.0) or 0.0) * scale)
+    return [{"phase": "cross_phase", "action": "hazard_event_budget_bounded",
+             "expected_before": round(expected, 3),
+             "expected_after": round(max_expected_events, 3),
+             "scale": round(scale, 8)}]
+
+
 def synthesize_activation(plan, req=None) -> dict:
     """Complete the execution chain for required phases; gate off ornamental execution for non-required ones.
     Mutates the plan in place; returns the per-phase synthesis report (for the manifest). Idempotent."""
@@ -307,6 +357,7 @@ def synthesize_activation(plan, req=None) -> dict:
     rep = {"requirements": {k: v["required"] for k, v in req.items()}, "actions": []}
     rep["actions"].extend(_materialize_required_structure(plan, req))
     rep["actions"].extend(_gate_irrelevant_execution(plan, req))
+    rep["actions"].extend(_bound_hazard_event_budget(plan))
     rev = _resolve_event(plan)
     if rev is not None:
         # Defense in depth for plans compiled by the pre-fix runtime.

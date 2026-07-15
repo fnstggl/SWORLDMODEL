@@ -86,7 +86,8 @@ _P7 = (
     "fuel rationing", "margin calls", "reserve depletion", "rolling blackouts", "active users",
     "household adoption", "most downloaded", "subscriber target", "half its user base",
     "seventy percent uptake", "eligible households", "product endorsement", "solvency trigger",
-    "default management auction", "curfew halve", "contact tracing app",
+    "default management auction", "curfew halve", "contact tracing app", "lockout trigger",
+    "sympathy actions",
 )
 
 # Heterogeneous aggregate behaviour of many people.  Institutional member
@@ -181,6 +182,9 @@ def adjudicate_question(question: str) -> dict:
         "climate summit adopt", "border dispute be referred", "interconnector project receive",
         "gas storage facility reach", "transition fund be approved", "lease auction clear",
         "exchange rate breach", "separatist region hold", "mutiny spread",
+        # These phrases encode collective/strategic choices even when the
+        # question elides the decision makers themselves.
+        "supermajority requirement", "border skirmishes escalate",
     ))
     p4 = p4 or bool(explicit_strategic)
     phase_hits = {

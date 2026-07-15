@@ -11,7 +11,7 @@ blocked-relevant ≤ 0.02; PhaseExecutionRecord coverage 100%; matched-ablation 
 cases (terminal shift ≥ 0.02 or a StateDelta-trajectory change).
 """
 from __future__ import annotations
-import argparse, copy, json, threading
+import argparse, copy, hashlib, json, threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
@@ -37,6 +37,26 @@ def _p_aff(res, plan):
     dist = res.get("distribution") or {}
     opts = list(plan.outcome_contract.options)
     return float(dist.get(str(opts[0]) if opts else "True", 0.0) or 0.0)
+
+
+def _trajectory_signature(branches):
+    """Stable structural signature of the StateDelta trajectory.
+
+    The gate accepts either a terminal shift or a StateDelta-trajectory
+    change. Compare branch/order/timestamp/operator, event type, and written
+    paths; omit values so floating-point serialization noise cannot create an
+    effect.
+    """
+    trajectory = []
+    for branch_index, branch in enumerate(branches):
+        for delta_index, delta in enumerate(branch.log):
+            trajectory.append([
+                branch_index, delta_index, round(float(delta.at), 6),
+                str(delta.operator), str(delta.event_type),
+                [str(change.get("path", "")) for change in (delta.changes or [])],
+            ])
+    payload = json.dumps(trajectory, sort_keys=True, separators=(",", ":")).encode()
+    return {"sha256": hashlib.sha256(payload).hexdigest(), "n_state_deltas": len(trajectory)}
 
 
 def _run_supervised(plan, seed=3, force_off=None):
@@ -72,7 +92,7 @@ def _run_supervised(plan, seed=3, force_off=None):
                    else "no natural structural-change cue")}
     out = PS.finalize(recs, plan, stub, phase_meta=phase_meta)
     terminal = dict(res.get("distribution") or {})
-    return out["records"], _p_aff(res, plan), terminal
+    return out["records"], _p_aff(res, plan), terminal, _trajectory_signature(branches)
 
 
 def _run_p11_development_trigger(plan, seed):
@@ -102,7 +122,7 @@ def _one(qrow, llm):
     rec = {"qid": qid, "domain": domain, "family": family, "required_labels": sorted(flags)}
     try:
         base = compile_world(q, llm=llm, evidence="", as_of=as_of, horizon=horizon, seed=0)
-        records, p_full, terminal_full = _run_supervised(copy.deepcopy(base))
+        records, p_full, terminal_full, trajectory_full = _run_supervised(copy.deepcopy(base))
         rec["phase_records"] = {ph: {"status": r.execution_status, "relevant": r.relevant,
                                      "n_deltas": r.n_state_deltas,
                                      "terminal_influence": r.terminal_influence}
@@ -113,25 +133,37 @@ def _one(qrow, llm):
             if ph == "phase11_recompilation":
                 continue
             if records[ph].execution_status == "causally_active":
-                _, p_abl, terminal_abl = _run_supervised(copy.deepcopy(base), force_off=ph)
+                _, p_abl, terminal_abl, trajectory_abl = _run_supervised(
+                    copy.deepcopy(base), force_off=ph)
                 keys = set(terminal_full) | set(terminal_abl)
                 tv = 0.5 * sum(abs(float(terminal_full.get(k, 0.0)) -
                                    float(terminal_abl.get(k, 0.0))) for k in keys)
+                trajectory_changed = trajectory_full["sha256"] != trajectory_abl["sha256"]
                 abls[f] = {"delta_terminal": round(abs(p_full - p_abl), 4),
                            "terminal_total_variation": round(tv, 4),
-                           "effect": tv >= ABL_EPS}
+                           "state_trajectory_changed": trajectory_changed,
+                           "full_state_deltas": trajectory_full["n_state_deltas"],
+                           "ablated_state_deltas": trajectory_abl["n_state_deltas"],
+                           "effect": tv >= ABL_EPS or trajectory_changed,
+                           "effect_criterion": "terminal_tv_ge_0.02_or_state_trajectory_change"}
         rec["ablations"] = abls
     except Exception as e:  # noqa: BLE001
         rec["error"] = f"{type(e).__name__}: {e}"[:160]
     return rec
 
 
-def run(limit=None, workers=6, api_key=None):
+def _write_artifact(artifact, payload):
+    tmp = artifact.with_suffix(artifact.suffix + ".tmp")
+    tmp.write_text(json.dumps(payload, indent=1))
+    tmp.replace(artifact)
+
+
+def run(limit=None, workers=6, api_key=None, artifact=ART):
     OUT.mkdir(parents=True, exist_ok=True)
     llm = _make_llm(api_key=api_key)
     rows, done = [], set()
-    if ART.exists():
-        rows = [r for r in json.loads(ART.read_text()).get("rows", []) if not r.get("error")]
+    if artifact.exists():
+        rows = [r for r in json.loads(artifact.read_text()).get("rows", []) if not r.get("error")]
         done = {r["qid"] for r in rows}
     qs = [q for q in (QUESTIONS[:limit] if limit else QUESTIONS) if q[0] not in done]
     with ThreadPoolExecutor(max_workers=workers) as ex:
@@ -140,16 +172,16 @@ def run(limit=None, workers=6, api_key=None):
             rec = fut.result()
             with _LOCK:
                 rows.append(rec)
-                ART.write_text(json.dumps({"rows": rows}, indent=1))
+                _write_artifact(artifact, {"rows": rows})
             st = rec.get("phase_records", {})
             active = [k for k, v in st.items() if v["status"] == "causally_active"]
             print(f"{rec['qid']:16s} req={','.join(rec['required_labels']) or '-':22s} "
                   f"active={','.join(a.replace('phase', 'p') for a in active) or '-':40s} "
                   f"err={rec.get('error', '')[:50]}", flush=True)
-    _aggregate(rows)
+    _aggregate(rows, artifact=artifact)
 
 
-def _aggregate(rows):
+def _aggregate(rows, artifact=ART):
     ok = [r for r in rows if not r.get("error")]
     per = {}
     for f, ph in _FLAG_PHASE.items():
@@ -182,7 +214,7 @@ def _aggregate(rows):
            "gates_passed": sum(gates.values()), "gates_total": len(gates),
            "all_pass": all(gates.values())}
     payload = {"rows": rows, "aggregate": agg}
-    ART.write_text(json.dumps(payload, indent=1))
+    _write_artifact(artifact, payload)
     print("\nAGGREGATE:", json.dumps(agg["per_phase"], indent=1))
     print("GATES:", json.dumps(gates, indent=1))
 
@@ -191,14 +223,21 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--workers", type=int, default=6)
+    ap.add_argument("--artifact", type=Path, default=ART,
+                    help="write a separate resumable artifact (existing non-error rows are reused)")
     ap.add_argument("--api-key-tty", action="store_true",
                     help="read DeepSeek credential from an echo-disabled TTY into process memory")
+    ap.add_argument("--credential-source", type=Path,
+                    help="read the credential into memory from a user-owned source; never persisted")
     args = ap.parse_args()
     api_key = None
     if args.api_key_tty:
         import getpass
         api_key = getpass.getpass("DeepSeek API key: ")
-    run(limit=args.limit, workers=args.workers, api_key=api_key)
+    elif args.credential_source:
+        from experiments.post_snapshot_benchmark.credentials import read_deepseek_key
+        api_key = read_deepseek_key(args.credential_source)
+    run(limit=args.limit, workers=args.workers, api_key=api_key, artifact=args.artifact)
 
 
 if __name__ == "__main__":

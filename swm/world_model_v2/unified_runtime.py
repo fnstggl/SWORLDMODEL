@@ -79,10 +79,18 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
     def _iso(s):
         return s
 
+    if isinstance(compute_budget, dict):
+        compiler_budget = int(compute_budget.get("n_budget", 30))
+    elif isinstance(compute_budget, (int, float)):
+        compiler_budget = int(compute_budget)
+    else:
+        compiler_budget = 30
+    compiler_budget = max(12, min(80, compiler_budget))
+
     # ---------- Phase 1: universal compiler → the ONE shared plan ----------
     try:
         plan = compile_world(question, llm=llm, evidence="", as_of=as_of, horizon=horizon,
-                             intervention=intervention, seed=seed)
+                             intervention=intervention, n_budget=compiler_budget, seed=seed)
     except ClarificationRequired as e:
         return SimulationResult(question=question, simulation_status="clarification_required",
                                 clarification_reason=str(e), latency_s=round(_time.time() - t0, 3),
