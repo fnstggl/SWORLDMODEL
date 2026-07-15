@@ -5,7 +5,8 @@
 | Item | Identity |
 |---|---|
 | Scored runtime fingerprint | `79537cdec279fd8f` |
-| Forward repaired runtime fingerprint | `66c735b4201edc17` |
+| Intermediate forward repair fingerprint (`b1da180`) | `66c735b4201edc17` |
+| Final merged forward repair fingerprint (`40237a9`) | `1a77f7a553aba15d` |
 | Representative selection | `4d4acab326144a794f7e531e0232bf87ede662aaa40f5644cf3d0886d4dea822` |
 | Locked forecast file | `5005c8fe098f59feb157dabd34db37f3716c43d6b0cb26764735c12f9e0e1e6c` |
 | Locked baseline file | `8acf4924d07db7b1f133060aaf0c823904dae970f1416f0a9d2e05e4169eacf8` |
@@ -46,7 +47,7 @@ All 400 primary rows have:
 - empty Phase 2 error list because the runtime caught the exception;
 - formal `full_system_qualified: true`.
 
-The failure occurred after the capsule adapter had supplied claims but before evidence-conditioned plan replacement completed. The adapter omitted `requirement_coverage` and `actor_visibility`, while the supervisor retained an earlier executed flag. The scored results remain immutable and fail the strict integration gate. Commit `b1da180` adds the missing adapter fields and makes any core `_error:` state an `execution_failed` record for future runs. That creates a new runtime fingerprint and invalidates reuse of the scored Phase 12 artifacts.
+The failure occurred after the capsule adapter had supplied claims but before evidence-conditioned plan replacement completed. The adapter omitted `requirement_coverage` and `actor_visibility`, while the supervisor retained an earlier executed flag. The scored results remain immutable and fail the strict integration gate. Commit `b1da180` introduced the repair; merge commit `40237a9` reapplied it over the latest PR #100 runtime. The final fingerprint is `1a77f7a553aba15d`, so reuse of the scored Phase 12 artifacts is invalid.
 
 ## Phase 11 controlled example
 

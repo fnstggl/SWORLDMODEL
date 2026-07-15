@@ -2,7 +2,7 @@
 
 ## Scope and status
 
-This benchmark is a stacked, separate PR built from `claude/world-model-v2-full-activation-replay-v2`. It does not modify PR #100, does not start Phase 13, and does not merge anything. The representative run is bound to runtime fingerprint `79537cdec279fd8f`; the forward Phase 2 repair made after scoring has fingerprint `66c735b4201edc17` and has no product-performance claim.
+This benchmark is a stacked, separate PR built from `claude/world-model-v2-full-activation-replay-v2`. It does not modify PR #100, does not start Phase 13, and does not merge either PR. The representative run is bound to runtime fingerprint `79537cdec279fd8f`. The intermediate forward repair at `b1da180` had fingerprint `66c735b4201edc17`; after integrating the latest PR #100 head, the final repaired runtime has fingerprint `1a77f7a553aba15d`. Neither repaired fingerprint has a product-performance claim.
 
 The execution produced all required forecasts and a single-open locked score, but it fails the strict completion standard. Phase 2's capsule adapter degraded on every primary row, Phase 4 had one blocked controlled-ablation row, Phases 8 and 11 had no meaningful controlled ablation effect, the market-informed comparison was not run, and the final merged-tree repository suite has 3 failures. The authoritative status is `experiments/results/post_snapshot_benchmark/exact_completion_gate_report.json`.
 
