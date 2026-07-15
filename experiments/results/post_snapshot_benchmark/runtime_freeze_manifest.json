@@ -1,0 +1,82 @@
+{
+  "activation": {
+    "artifact": "activation200_execution_v4.json",
+    "gates_passed": 28,
+    "gates_total": 28,
+    "rows": 200,
+    "sha256": "208cec5b261f58d9d140071dda0282d959a90f01a2ed302592341badaff1a806"
+  },
+  "capsules": {
+    "artifact": "evidence_capsule_manifest.json",
+    "rows": 400,
+    "sha256": "0559cb1ef1789c9d5c86e668c94c08abae6235d830a870c99afcacc0b6ecb7c6"
+  },
+  "forecast_environment": {
+    "allowed_destination": "api.deepseek.com:443",
+    "open_internet": false,
+    "pseudonym_mapping_mounted": false,
+    "resolution_store_mounted": false
+  },
+  "freeze_sha256": "4e23221b6da2b76e03e685e08ef9b56e4ba5964173d4efbe5a24b241e1d7d574",
+  "frozen_at": "2026-07-15T16:20:04.055836Z",
+  "isolation": {
+    "artifact": "isolation_manifest_v3.json",
+    "sandbox_profile_sha256": "817caea791378fd11ad20fa7784b48869ce460536f04229cb497b0f3a3eb0a3e",
+    "sha256": "6e60e44856cde5b3ed8be5498efb90c5ac7e646a7b02719c9a16f63a9cbab836"
+  },
+  "locked_outcomes_opened": false,
+  "model_temporal_safety": {
+    "audit_sha256": "9eacb637ced402660b0e2c410dd9a25244a84fa59eccc3e4bbd9c320f7ee31e1",
+    "model_hash_manifest_sha256": "379a41012f0b850421e4cfc250d8b8d106383df77670e02e67fc09173e44f7ba",
+    "model_identifier": "deepseek-v4-flash",
+    "model_revision": "mutable_api_alias",
+    "tier": "causally_blinded_historical"
+  },
+  "outcomes_accessed": false,
+  "preflight": {
+    "all_gates_pass": true,
+    "artifact": "preflight_report.json",
+    "sha256": "6a387ed72ad498983bc7aa5b7fc8e79ff0d9429bbc7e0503a6de578919c76a34"
+  },
+  "runtime_fingerprint": {
+    "activation_synthesis": "activation-synthesis-2.0 (question adjudication + state-path consumers)",
+    "actor_policy": "phase4",
+    "compiler": "compiler",
+    "evidence": "phase2-1.0",
+    "fingerprint_hash": "79537cdec279fd8f",
+    "institutions": "phase10 + integration-completion rule-normalization",
+    "integration_completion": "integration-completion-1.0",
+    "mechanism_registry": "phase6",
+    "nonlinear": "phase7",
+    "persistence": "phase8-1.0",
+    "phase_consumers": "phase-consumers-2.0 (causal-state transition; no terminal modulation)",
+    "populations_networks": "phase9",
+    "posterior": "phase3",
+    "recompilation": "phase11",
+    "runtime_source_commit": "b6d3f8d",
+    "source_sha256": {
+      "swm/api/deepseek_backend.py": "d3fb8d345a5a3e3e5699ae3a922966787c7757e05e067a498d9815f92605898f",
+      "swm/world_model_v2/activation_synthesis.py": "d794de3be8181f7913e18db38d82598da3053d488b6e716d12db74fa67086706",
+      "swm/world_model_v2/causal_relevance.py": "c60e81b0aadc89c107fac9e2a60bfb73daa90c3b4ad2941ab347609098ebba3c",
+      "swm/world_model_v2/fallback.py": "bae79d018b5fe5c0530ba5e02f0a0e989d89ed68812c24bb959da246d161da41",
+      "swm/world_model_v2/materialize.py": "6b9244d1409f3c9f8c4f9d0340d999613cf7babe16e8a610e7f61fe11df8d93a",
+      "swm/world_model_v2/phase_consumers.py": "ce3680a07e1a0a93911c2b61cd63d109c96b4a2c8976d1f2b998854436959a2d",
+      "swm/world_model_v2/phase_supervision.py": "47b9c75932cb799dcca75ce1b86ae0359df5b0563ba806e9882366665b440544",
+      "swm/world_model_v2/runtime_fingerprint.py": "484d53c216255a92babae1b130568a8fd95b2dbd70f703edc4fdda2436aae258",
+      "swm/world_model_v2/unified_runtime.py": "cf7270a9795bf5a0c1a81cc438d80cfc4c47cf0bf51d73d34a9fdf4e6e6a9784"
+    },
+    "unified_runtime": "unified-2.0-post-snapshot"
+  },
+  "schema_version": 1,
+  "selection": {
+    "artifact": "frozen_selection_manifest.json",
+    "chronological_splits": {
+      "calibration": 40,
+      "locked_test": 40,
+      "validation": 20
+    },
+    "cutoffs_per_world": 4,
+    "sha256": "8842ee6f06f9b51085060ec82de0dcddeb01559884462a8fbb31c9434f4ffc7c",
+    "worlds": 100
+  }
+}

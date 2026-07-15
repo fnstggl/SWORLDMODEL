@@ -1,0 +1,122 @@
+{
+  "schema_version": "1.0",
+  "reviewed_at": "2026-07-15",
+  "outcomes_accessed": false,
+  "locked_execution_allowed": false,
+  "locked_execution_blockers": [
+    "fresh 40-row preflight is not yet bound to runtime fingerprint 79537cdec279fd8f",
+    "six Tier-C leakage probes are not complete for all 400 forecast rows",
+    "calibration and validation forecasts/baselines are not complete",
+    "Phase 12 has not been fit and selected on calibration/validation only",
+    "locked raw forecasts and selected calibrator have not been frozen"
+  ],
+  "design_responses": [
+    {
+      "question": "What exactly are we trying to measure?",
+      "response": "Two separate estimands: clustered predictive accuracy on a representative 100-world historical corpus, and mechanism/trajectory validity on a separate causal-coverage corpus. Neither is used as a proxy for the other."
+    },
+    {
+      "question": "What would constitute outcome leakage?",
+      "response": "Any outcome, settlement, post-cutoff evidence, resolution-revealing model memory, scorer artifact, or post-cutoff market state that can influence selection, compilation, forecasting, calibration, or method choice."
+    },
+    {
+      "question": "Through which channels could leakage occur?",
+      "response": "Live retrieval, edited pages, mutable archives, model training memory, recognizable question wording, pseudonym maps, filesystem visibility, scorer imports, market settlement data, logs, retries, and selection replacement. Each channel requires an explicit manifest check."
+    },
+    {
+      "question": "What information did a real forecaster possess at time T?",
+      "response": "Only the frozen event contract, evidence bytes with proven first availability at or before T, and a market snapshot at or before T. Current web pages and later revisions are inadmissible."
+    },
+    {
+      "question": "Can the language model already know the event or resolution?",
+      "response": "Yes. Official sources provide no V4 Flash knowledge cutoff and the API alias is mutable. The primary arm is therefore Tier C causally_blinded_historical with six mandatory recognition/memory probes."
+    },
+    {
+      "question": "Is the question itself present in the model training data?",
+      "response": "Unknown and not provable for historical questions. Stable pseudonyms, transformed dates, quote removal, fingerprint reduction, and recognition/no-evidence/name-only probes are required; failures are excluded visibly, not silently replaced."
+    },
+    {
+      "question": "Are the evidence bytes provably available before T?",
+      "response": "All 400 capsules contain only frozen canonical provider records whose provider creation timestamp is at or before T, with raw hashes and first-proven availability recorded. This is weaker than an independent archive revision and is labeled provider_creation_timestamp rather than immutable-archive proof."
+    },
+    {
+      "question": "Does the full world model add value beyond the underlying LLM?",
+      "response": "This is tested directly against single-call DeepSeek, a call-matched ensemble, observer panel, analogical retrieval, simple priors, and contemporaneous markets using identical capsules."
+    },
+    {
+      "question": "Are direct baselines receiving exactly the same information?",
+      "response": "They must consume the same blinded question and immutable capsule manifest. Per-row capsule hashes are joined across arms; any mismatch fails the completion gate."
+    },
+    {
+      "question": "Does the market baseline use the same timestamp?",
+      "response": "Market snapshots must be at or before the forecast cutoff, with exact timestamp and staleness recorded. A future candle or settlement-derived price is a hard row failure."
+    },
+    {
+      "question": "Are repeated cutoffs being mistaken for independent samples?",
+      "response": "No. Four cutoffs are repeated measures inside one event-world cluster. Confidence intervals and comparisons resample/cluster by event world."
+    },
+    {
+      "question": "Are related contracts being mistaken for separate events?",
+      "response": "A pre-model clustering pass groups related contracts into one event world. Selection operates on clusters and the clustering map is frozen before forecasts."
+    },
+    {
+      "question": "Is every relevant phase actually affecting the simulated world?",
+      "response": "Relevance, state materialization, mechanism selection, event execution, StateDeltas, downstream causal-state consumption, and terminal influence are separate audited fields. Supervisor invocation alone never counts as activation."
+    },
+    {
+      "question": "Is a numerical perturbation being mistaken for a meaningful causal effect?",
+      "response": "No direct terminal rate modulation is permitted. A credited effect requires matched common randomness, an upstream StateDelta, a downstream state-transition path, event timing, and terminal-distribution or trajectory-target change."
+    },
+    {
+      "question": "Does the terminal probability come from simulated trajectories?",
+      "response": "The only V2 readout is the empirical distribution over terminal WorldState quantities. LLM output cannot write a V2 probability; generic resolution is only a fallback event in the same queue."
+    },
+    {
+      "question": "Are we evaluating predictive accuracy, causal accuracy or both?",
+      "response": "Both, in separate corpora and tables. Representative predictive metrics never claim causal identification; causal-coverage results never replace the 100-world accuracy headline."
+    },
+    {
+      "question": "Is the selected corpus representative of intended product use?",
+      "response": "Within-source representativeness is established from 3,000 examined events, 1,430 binary-eligible contracts, and 1,174 independent event worlds before an outcome-independent frozen selection of 100. External representativeness is not established: all selected worlds come from one provider, sports reaches the predeclared cap of 30, and technology/weather each have one world. Results must be labeled single-source and domain-stratified."
+    },
+    {
+      "question": "Is there enough statistical power to support conclusions?",
+      "response": "One hundred independent event-world clusters permit paired uncertainty estimates but only moderate power for small effects. Exact clustered intervals and source-stratified results are mandatory; absence of significance is reported as inconclusive, not a tie by fiat."
+    },
+    {
+      "question": "Could the locked test influence any development choice?",
+      "response": "No. Runtime changes use only the 200-question activation corpus. Phase 12 fits on 40 calibration worlds and selects on 20 validation worlds. The 40 locked-test worlds open once only after all raw forecasts and calibrator selection are frozen."
+    },
+    {
+      "question": "Would an independent reviewer consider the result valid?",
+      "response": "Only if the pending isolation, candidate-pool, preflight, row-count, baseline-equality, and single-open checks pass. This review explicitly prevents locked execution before those artifacts exist."
+    }
+  ],
+  "freeze_policy": {
+    "selection_before_model": true,
+    "four_cutoffs_per_world": true,
+    "chronological_splits": {"calibration_worlds": 40, "validation_worlds": 20, "locked_test_worlds": 40},
+    "primary_required_forecasts": 400,
+    "failed_selected_rows_repaired_not_replaced": true,
+    "negative_results_preserved": true
+  },
+  "calibration_policy": {
+    "fit_data": "40 calibration worlds / 160 rows only",
+    "method_selection": "20 validation worlds / 80 rows only",
+    "locked_test": "40 worlds / 160 rows; opened once",
+    "identity_fallback": "required when no candidate improves validation"
+  },
+  "checkpoint": {
+    "full_unified_system_tested": true,
+    "prediction_not_infrastructure_only": false,
+    "model_can_know_answer": true,
+    "retrieval_can_expose_answer_until_capsules_freeze": false,
+    "scorer_can_influence_forecast_until_isolation_complete": false,
+    "baselines_fair": true,
+    "event_selection_frozen": true,
+    "phase_relevance_semantics_pass": true,
+    "failures_preserved": true,
+    "required_forecast_count_complete": false,
+    "stronger_alternative_selected": "Tier C rather than falsely claiming Tier A/B"
+  }
+}

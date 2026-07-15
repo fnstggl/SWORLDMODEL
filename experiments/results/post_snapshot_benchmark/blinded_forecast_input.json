@@ -1,0 +1,2484 @@
+{
+  "n_rows": 400,
+  "n_worlds": 100,
+  "outcomes_present": false,
+  "pseudonym_mappings_present": false,
+  "schema_version": 1,
+  "worlds": [
+    {
+      "description": "In the upcoming Entity A game between the Team A and Team B, scheduled for relative-date-1 at specified-time ET: This market will resolve to \"Yes[identifying quotation removed]No\" if no runs are scored in the 1st inning by either team. If the game is postponed, this market will remain open until the game has been completed. If the game is canceled entirely, with no make-up game, this market will resolve 50-50. To know when a postponed game will be played, please check the home team's schedule on Entity B for the listed team and look for the game described as a makeup game. The primary resolution source for this market is the official final statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 24 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "sports",
+      "event_id": "pm_413232",
+      "event_world_cluster": "pm_413232",
+      "forecast_cutoffs": [
+        "2026-04-25T20:01:29.924150Z",
+        "2026-04-27T10:47:47.447853Z",
+        "2026-04-29T01:34:04.971556Z",
+        "2026-04-30T08:35:06.990519Z"
+      ],
+      "mapping_sha256": "8891d9f2872e96d5d737618638159a1aa8aef22053ca8141146e96cb9e9a75cc",
+      "question": "Will there be a run scored in the first inning?: Team A vs. Team B",
+      "question_open_time": "2026-04-24T13:00:27.905187Z",
+      "resolution_rule": "https://www.Entity B/scores",
+      "resolution_time": "2026-05-01T00:05:38Z",
+      "source_raw_sha256": "71bf4bd9ebc37764d17d475033ed806bae652952f4d3f19a3f16f20cf4cbc6d2",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming game, scheduled for relative-date-1 If Team A wins, this market will resolve to \"Yes[identifying quotation removed]No[identifying quotation removed]No\". This market refers only to the outcome within the first 90 minutes of regular play plus stoppage time. The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "other",
+      "event_id": "pm_415393",
+      "event_world_cluster": "pm_415393",
+      "forecast_cutoffs": [
+        "2026-04-27T22:39:18.538571Z",
+        "2026-05-01T09:58:24.620268Z",
+        "2026-05-04T21:17:30.701964Z",
+        "2026-05-07T15:56:47.567321Z"
+      ],
+      "mapping_sha256": "9e9f332a68b70914d6c1a490fd68bdb2ee9b693a73da8369503b93493b4fd8e5",
+      "question": "Will Team A win on relative-date-1 ?",
+      "question_open_time": "2026-04-25T04:00:01.673214Z",
+      "resolution_rule": "https://www.ligue1.com/",
+      "resolution_time": "2026-05-09T01:16:26Z",
+      "source_raw_sha256": "8c4c833b8703b3e5f3d16db1ac4983382444808ea378ed02403e28ff77166c88",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming Entity A game between the Team A and Team B, scheduled for relative-date-1 at specified-time ET: This market will resolve to \"Yes[identifying quotation removed]No\" if no runs are scored in the 1st inning by either team. If the game is postponed, this market will remain open until the game has been completed. If the game is canceled entirely, with no make-up game, this market will resolve 50-50. To know when a postponed game will be played, please check the home team's schedule on Entity A.com for the listed team and look for the game described as a makeup game. The primary resolution source for this market is the official final statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 24 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "sports",
+      "event_id": "pm_416698",
+      "event_world_cluster": "pm_416698",
+      "forecast_cutoffs": [
+        "2026-04-26T20:03:11.819372Z",
+        "2026-04-28T10:51:38.125818Z",
+        "2026-04-30T01:40:04.432265Z",
+        "2026-05-01T08:42:49.477422Z"
+      ],
+      "mapping_sha256": "7d1ca04d018b2d4810a8d06556f06d58bc1777cc64ec93da24557213f91a64a2",
+      "question": "Will there be a run scored in the first inning?: Team A vs. Team B",
+      "question_open_time": "2026-04-25T13:00:26.774215Z",
+      "resolution_rule": "https://www.Entity A.com/scores",
+      "resolution_time": "2026-05-02T00:14:12Z",
+      "source_raw_sha256": "5bee97569dcb2a96bfa3c578c2ded3b55555507a76a01820d18c6263d21a6cc4",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve according to the number of times Person A (@elonmusk), posts on X from relative-date-1 specified-time ET to relative-date-2 specified-time ET. For the purposes of this market, only main feed posts, quote posts and reposts will count. Replies will NOT count towards the total - however, replies on the main feed such as https://x.com/elonmusk/status/1786073478711353576 will be counted by the tracker. Deleted posts will count as long as they remain available long enough to be captured by the tracker (~5 minutes). Community reposts which are not counted by the tracker not count toward the total. The resolution source for this market is the 'Post Counter' figure for posts found at https://xtracker.Entity A.com. Individual posts can be viewed by clicking \"Export Data\". If the tracker does not update correctly in accordance with the rules, X itself may be used as a secondary resolution source.",
+      "domain": "geopolitics",
+      "event_id": "pm_417097",
+      "event_world_cluster": "pm_417097",
+      "forecast_cutoffs": [
+        "2026-04-26T11:53:09.540393Z",
+        "2026-04-27T12:44:34.684020Z",
+        "2026-04-28T13:35:59.827647Z",
+        "2026-04-29T09:29:07.942549Z"
+      ],
+      "mapping_sha256": "697eb37406924c09e1171b803e29b139e9a9d703e7fc52a513c58558d5b29108",
+      "question": "Will Person A post 40-64 tweets from relative-date-1 to relative-date-2 ?",
+      "question_open_time": "2026-04-25T16:00:01.425491Z",
+      "resolution_rule": "https://x.com/elonmusk",
+      "resolution_time": "2026-04-29T19:25:42Z",
+      "source_raw_sha256": "c260e2a1a48a26239761314a398fe48ddb9a059d59cdb4ea06c4c328e954a81a",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming game, scheduled for relative-date-1 If Team A wins, this market will resolve to \"Yes[identifying quotation removed]No[identifying quotation removed]No\". This market refers only to the outcome within the first 90 minutes of regular play plus stoppage time. The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "other",
+      "event_id": "pm_418796",
+      "event_world_cluster": "pm_418796",
+      "forecast_cutoffs": [
+        "2026-04-28T22:01:04.039870Z",
+        "2026-05-02T08:32:13.402411Z",
+        "2026-05-05T19:03:22.764951Z",
+        "2026-05-08T13:04:18.254984Z"
+      ],
+      "mapping_sha256": "5a450ea39c8b4ba3da995960dd8156abcd59ee36613b3033f08810066368cdf9",
+      "question": "Will Team A win on relative-date-1 ?",
+      "question_open_time": "2026-04-26T04:00:08.549837Z",
+      "resolution_rule": "https://www.bundesliga.com/en/bundesliga",
+      "resolution_time": "2026-05-09T22:04:46Z",
+      "source_raw_sha256": "97c1a208b87137994e178a0c4de259a1fbbfe388f6cc3d36395e29538cbbcc29",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming game, scheduled for relative-date-1 If Team A wins, this market will resolve to \"Yes[identifying quotation removed]No[identifying quotation removed]No\". This market refers only to the outcome within the first 90 minutes of regular play plus stoppage time. The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "other",
+      "event_id": "pm_421718",
+      "event_world_cluster": "pm_421718",
+      "forecast_cutoffs": [
+        "2026-04-29T16:54:23.234763Z",
+        "2026-05-03T03:17:19.723900Z",
+        "2026-05-06T13:40:16.213036Z",
+        "2026-05-09T07:34:37.404346Z"
+      ],
+      "mapping_sha256": "9c6222522b8969a0f5d45bd1f761c47a745b553810ffcb8aeae32c2027a06879",
+      "question": "Will Team A win on relative-date-1 ?",
+      "question_open_time": "2026-04-26T23:00:02.043454Z",
+      "resolution_rule": "https://www.legaseriea.it/",
+      "resolution_time": "2026-05-10T16:31:48Z",
+      "source_raw_sha256": "39830203410445e7e09ee5918f3d5a53fc898e1cc48542f31aec2cb9509daed9",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming game, scheduled for relative-date-1 If Team A wins, this market will resolve to \"Yes[identifying quotation removed]No[identifying quotation removed]No\". This market refers only to the outcome within the first 90 minutes of regular play plus stoppage time. The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "other",
+      "event_id": "pm_421720",
+      "event_world_cluster": "pm_421720",
+      "forecast_cutoffs": [
+        "2026-04-29T17:09:46.712068Z",
+        "2026-05-03T03:51:54.302047Z",
+        "2026-05-06T14:34:01.892025Z",
+        "2026-05-09T08:43:43.964009Z"
+      ],
+      "mapping_sha256": "5fc3037bc17aab7214372146f9092d90c82be32212982d6b368a98c3d5bf775e",
+      "question": "Will Team A win on relative-date-1 ?",
+      "question_open_time": "2026-04-26T23:00:04.640085Z",
+      "resolution_rule": "https://www.legaseriea.it/",
+      "resolution_time": "2026-05-10T17:48:35Z",
+      "source_raw_sha256": "5612eaaf972454d523335aab1ef17ee4b06d13c710a4b322b8f86dd24a08be29",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market refers to whether the cricket match between Team A and Team B scheduled for relative-date-1 in Tournament A is completed under the competition's official playing conditions. This market resolves according to the finalized match status as published by https://www.Entity A.com/. Any match where an official result is declared \u2014 including results decided by DLS/DRS, over-rate penalties, a Super Over, forfeit/walkover, or any other on-field ruling \u2014 will resolve Yes. (Draws count as completed results when recognized by the competition.) If the match is abandoned, ends in No Result, is permanently canceled, or otherwise concludes without an official result, the market will resolve No. If the match is postponed or rescheduled, the market remains open until the listed fixture is completed or permanently canceled, after which it will resolve as described above.",
+      "domain": "sports",
+      "event_id": "pm_422141",
+      "event_world_cluster": "pm_422141",
+      "forecast_cutoffs": [
+        "2026-04-27T20:11:35.861887Z",
+        "2026-04-28T18:39:15.280047Z",
+        "2026-04-29T17:06:54.698207Z",
+        "2026-04-30T11:05:02.232736Z"
+      ],
+      "mapping_sha256": "f1b48bdd4412b9d79b655130220d084c699c9623166589cd326dc9672b8e15a9",
+      "question": "Tournament A: Team A vs Team B - Completed match?",
+      "question_open_time": "2026-04-27T02:13:28.327358Z",
+      "resolution_rule": "https://www.Entity A.com/",
+      "resolution_time": "2026-04-30T20:04:06Z",
+      "source_raw_sha256": "affd5d0de4468a56a4f1766daf7950a8b9e62364329f753a5c5a5ecbc5410a46",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will immediately resolve to \"Yes[identifying quotation removed]High[identifying quotation removed]No[identifying quotation removed]High[identifying quotation removed]1m\" candles selected on the top bar. Please note that the outcome of this market depends solely on the price data from the Entity A Entity B trading pair. Prices from other exchanges, different trading pairs, or spot markets will not be considered for the resolution of this market.",
+      "domain": "crypto",
+      "event_id": "pm_422394",
+      "event_world_cluster": "pm_422394",
+      "forecast_cutoffs": [
+        "2026-04-28T14:07:35.284191Z",
+        "2026-04-30T08:47:03.632881Z",
+        "2026-05-02T03:26:31.981572Z",
+        "2026-05-03T13:34:06.660524Z"
+      ],
+      "mapping_sha256": "f8a1edeb7c1b12b69dcb528af20e28af3a71f165499496e08b67a2defca8d92d",
+      "question": "Will Asset A reach $84,000 relative-date-1 - relative-date-2 ?",
+      "question_open_time": "2026-04-27T04:00:00.605239Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-05-04T06:37:54Z",
+      "source_raw_sha256": "6197819af540ca9de31bd7a19e0a6344e1640f07546523530d242bb59564f478",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming Entity A game between Team A and Team B, scheduled for relative-date-1 at specified-time ET: This market will resolve to \"Yes[identifying quotation removed]No\" if either team fails to score (i.e., if one or both teams finish with zero goals). If the game is postponed, this market will remain open until the game has been completed. If the game is canceled entirely, with no make-up game, this market will resolve 50\u201350. If the game is started but not completed, this market will resolve according to the official final score published on Entity B. This market refers only to the outcome within the first 90 minutes of regular play plus stoppage time. The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "other",
+      "event_id": "pm_422632",
+      "event_world_cluster": "pm_422632",
+      "forecast_cutoffs": [
+        "2026-04-29T22:41:31.285439Z",
+        "2026-05-03T08:48:19.946239Z",
+        "2026-05-06T18:55:08.607040Z",
+        "2026-05-09T12:36:35.535680Z"
+      ],
+      "mapping_sha256": "04f7234e8215c7d10479ea41ea31b6f8665fb79d07bd761f727c37802e599325",
+      "question": "Team A vs. Team B: Both Teams to Score",
+      "question_open_time": "2026-04-27T05:00:04.356799Z",
+      "resolution_rule": "https://www.Entity B/",
+      "resolution_time": "2026-05-10T21:27:19Z",
+      "source_raw_sha256": "20a12d97d499d521da6244f722fbb6136082a86b3d0d413195f15bab905a7548",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve according to the number of views the next Entity B video posted by Entity A gets in the first 24 hours after being posted. This market may not resolve until the 24 hours are complete, regardless of whether a strike is reached earlier. If Entity A does not post a Entity B video by relative-date-1 , specified-time ET, this market will resolve to the lowest range bracket. If the reported value falls exactly between two brackets, then this market will resolve to the higher range bracket. The resolution source for this market is Entity A's Entity B channel (https://www.Entity B.com/@Entity A), specifically the 'views' counter for the described video. Note: This market refers to Entity A's next video to be posted. Shorts, previews, or other videos released other than the referenced video will not be considered.",
+      "domain": "culture",
+      "event_id": "pm_424261",
+      "event_world_cluster": "pm_424261",
+      "forecast_cutoffs": [
+        "2026-04-28T20:08:45.768492Z",
+        "2026-04-30T09:00:09.590838Z",
+        "2026-05-01T21:51:33.413184Z",
+        "2026-05-03T03:20:40.471061Z"
+      ],
+      "mapping_sha256": "4b60897bd93bb2e15d0e30582c338ac56a6de0c467d1c6de1a8d4f4cea8f570e",
+      "question": "Will Entity A's next video get between 35 and 40 million views on day 1?",
+      "question_open_time": "2026-04-27T14:39:38.710615Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-05-03T18:05:14Z",
+      "source_raw_sha256": "3c6ad36705e1ae9f392ab01b38c26166bc9dd5c8803e70c844c09df14c426329",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve to \u201cYes\u201d if Entity A resigns or is removed as Entity B or otherwise ceases to be the Entity B of the Federation A for any period of time by relative-date-1 , specified-time ET. Otherwise, this market will resolve to \u201cNo\u201d. An announcement of Entity A's resignation/removal before this market's end date will immediately resolve this market to \"Yes[identifying quotation removed]Yes\" resolution. The resolution source for this market will be a consensus of credible reporting.",
+      "domain": "politics",
+      "event_id": "pm_424292",
+      "event_world_cluster": "pm_424292",
+      "forecast_cutoffs": [
+        "2026-05-04T13:13:35.250645Z",
+        "2026-05-13T05:07:39.547318Z",
+        "2026-05-21T21:01:43.843992Z",
+        "2026-05-28T19:20:59.281331Z"
+      ],
+      "mapping_sha256": "b0b5e9f9cd6d40d03be3d6bf57c5f1bea1f21b5b7a19ecd1fd1cdc3d1a4e2b84",
+      "question": "Entity A out as Entity B by relative-date-1 ?",
+      "question_open_time": "2026-04-27T14:54:19.813306Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-06-01T06:30:37Z",
+      "source_raw_sha256": "ffcb08af9dd643830f1310b7099a810aa69981a8f96bd3ccc0742cd92bce3616",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market is about whether both teams slay at least one elemental Entity J during Game 2. In Entity A, elemental dragons (Entity B, Entity C, Entity D, Entity E, Entity F, and Entity G) spawn in the Entity J pit starting at 5:00 game time. After being slain, the next Entity J spawns 5 minutes later. Once a team claims the Entity H (by slaying four dragons), all subsequent Entity J spawns become Elder Dragons. This market will resolve to \"Yes[identifying quotation removed]No[identifying quotation removed]No\". If Game 2 is remade, resolution will be based on the remade game only. The resolution source for this market will be official information from https://Entity K/Team A/home. However, if https://Entity K/Team A/home has not published final results within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead including video evidence.",
+      "domain": "sports",
+      "event_id": "pm_428756",
+      "event_world_cluster": "pm_428756",
+      "forecast_cutoffs": [
+        "2026-04-29T02:07:40.805607Z",
+        "2026-04-29T08:31:56.178855Z",
+        "2026-04-29T14:56:11.552103Z",
+        "2026-04-29T20:03:35.850701Z"
+      ],
+      "mapping_sha256": "006f80897aab9ac5d01e01de47d565d2763b6e1496aa1e3fca75dfcd7fe9932e",
+      "question": "Game 2: Both Teams Slay a Entity J?",
+      "question_open_time": "2026-04-28T21:00:16.507009Z",
+      "resolution_rule": "https://Entity K/Team A/home",
+      "resolution_time": "2026-04-29T22:37:18Z",
+      "source_raw_sha256": "c8fce89f69c26b4f12cb24a8ebdd9ce5d24a477d56dcb0e877f423ef9d13020c",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve to \"Yes[identifying quotation removed]Close[identifying quotation removed]No[identifying quotation removed]Close[identifying quotation removed]1m\" and \"Candles\" selected on the top bar. Please note that this market is about the price according to Entity A Entity B, not according to other exchanges or trading pairs. Price precision is determined by the number of decimal places in the source.",
+      "domain": "crypto",
+      "event_id": "pm_431486",
+      "event_world_cluster": "pm_431486",
+      "forecast_cutoffs": [
+        "2026-05-01T02:07:05.542167Z",
+        "2026-05-02T20:45:48.810240Z",
+        "2026-05-04T15:24:32.078313Z",
+        "2026-05-06T01:31:30.692771Z"
+      ],
+      "mapping_sha256": "f8a1edeb7c1b12b69dcb528af20e28af3a71f165499496e08b67a2defca8d92d",
+      "question": "Will the price of Asset A be above $86,000 on relative-date-1 ?",
+      "question_open_time": "2026-04-29T16:00:06.927709Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-05-06T18:35:00Z",
+      "source_raw_sha256": "4918a94a86aa6a2e6b4edda05c3f65478d0e9eb8833cd2d4b3ceca3840354ddf",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming game, scheduled for relative-date-1 If Team A wins, this market will resolve to \"Yes[identifying quotation removed]No[identifying quotation removed]No\". This market refers only to the outcome within the first 90 minutes of regular play plus stoppage time. The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "other",
+      "event_id": "pm_433146",
+      "event_world_cluster": "pm_433146",
+      "forecast_cutoffs": [
+        "2026-05-02T22:20:24.620668Z",
+        "2026-05-06T09:15:45.676709Z",
+        "2026-05-09T20:11:06.732750Z",
+        "2026-05-12T14:31:23.577584Z"
+      ],
+      "mapping_sha256": "21dd2b6e05d4fdb0eb2cea0b60cc320a6bed9100b26d91d7a1f40a060afa6d9c",
+      "question": "Will Team A win on relative-date-1 ?",
+      "question_open_time": "2026-04-30T04:00:07.775835Z",
+      "resolution_rule": "https://www.ligue1.com/",
+      "resolution_time": "2026-05-13T23:41:32Z",
+      "source_raw_sha256": "b07ab4d408ac1412e451e0b729665ee8ef6b795f4d9b92772e1e699249cce0c6",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming game, scheduled for relative-date-1 If Team A wins, this market will resolve to \"Yes[identifying quotation removed]No[identifying quotation removed]No\". This market refers only to the outcome within the first 90 minutes of regular play plus stoppage time. The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "other",
+      "event_id": "pm_433476",
+      "event_world_cluster": "pm_433476",
+      "forecast_cutoffs": [
+        "2026-05-02T23:59:51.863270Z",
+        "2026-05-06T10:29:35.655998Z",
+        "2026-05-09T20:59:19.448726Z",
+        "2026-05-12T14:59:06.482909Z"
+      ],
+      "mapping_sha256": "e23f5f5415a9ee02957da50889d12dfab12ca490c90f238d63b5e1eff99343fe",
+      "question": "Will Team A win on relative-date-1 ?",
+      "question_open_time": "2026-04-30T06:00:04.829088Z",
+      "resolution_rule": "https://www.laliga.com/",
+      "resolution_time": "2026-05-13T23:59:00Z",
+      "source_raw_sha256": "0a636a78640d4089034064ee30fcb1fe7f5db010c1681d23b634925c80ea04df",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming Entity A game between the Team A and Team B, scheduled for relative-date-1 at specified-time ET: This market will resolve to \"Yes[identifying quotation removed]No\" if no runs are scored in the 1st inning by either team. If the game is postponed, this market will remain open until the game has been completed. If the game is canceled entirely, with no make-up game, this market will resolve 50-50. To know when a postponed game will be played, please check the home team's schedule on Entity A.com for the listed team and look for the game described as a makeup game. The primary resolution source for this market is the official final statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 24 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "sports",
+      "event_id": "pm_434472",
+      "event_world_cluster": "pm_434472",
+      "forecast_cutoffs": [
+        "2026-05-01T20:23:36.947270Z",
+        "2026-05-03T11:37:46.026248Z",
+        "2026-05-05T02:51:55.105226Z",
+        "2026-05-06T10:15:14.368409Z"
+      ],
+      "mapping_sha256": "2e6970f7b8b8b67c690574bfb3c2184298870ed4d1777b19ca217f750550a6b3",
+      "question": "Will there be a run scored in the first inning?: Team A vs. Team B",
+      "question_open_time": "2026-04-30T13:00:17.684087Z",
+      "resolution_rule": "https://www.Entity A.com/scores",
+      "resolution_time": "2026-05-07T01:56:54Z",
+      "source_raw_sha256": "b0c1ae72de706bcbd060724abaf109e3d005347b608c636503e908d7367bb719",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will immediately resolve to \"Yes[identifying quotation removed]No.[identifying quotation removed]1m\" for one-minute candles selected on the top bar. Please note that the outcome of this market depends solely on the price data from the Entity A Entity B trading pair. Prices from other exchanges, different trading pairs, or spot markets will not be considered for the resolution of this market.",
+      "domain": "crypto",
+      "event_id": "pm_438065",
+      "event_world_cluster": "pm_438065",
+      "forecast_cutoffs": [
+        "2026-05-07T18:55:07.044436Z",
+        "2026-05-15T12:18:05.780550Z",
+        "2026-05-23T05:41:04.516664Z",
+        "2026-05-29T09:59:27.505554Z"
+      ],
+      "mapping_sha256": "f8a1edeb7c1b12b69dcb528af20e28af3a71f165499496e08b67a2defca8d92d",
+      "question": "Will Asset A reach $150,000 in May?",
+      "question_open_time": "2026-05-01T14:36:44.055545Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-06-01T12:08:39Z",
+      "source_raw_sha256": "b462baf5c05e5086149a890cceae11ea5ccf633c31c073b892a6dd6a21940763",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve to \"Yes[identifying quotation removed]Close[identifying quotation removed]No[identifying quotation removed]Close[identifying quotation removed]1m\" and \"Candles\" selected on the top bar. Please note that this market is about the price according to Entity A Entity B, not according to other exchanges or trading pairs. Price precision is determined by the number of decimal places in the source.",
+      "domain": "crypto",
+      "event_id": "pm_438281",
+      "event_world_cluster": "pm_438281",
+      "forecast_cutoffs": [
+        "2026-05-03T02:27:15.899521Z",
+        "2026-05-04T21:31:12.493421Z",
+        "2026-05-06T16:35:09.087320Z",
+        "2026-05-08T03:02:18.362440Z"
+      ],
+      "mapping_sha256": "f8a1edeb7c1b12b69dcb528af20e28af3a71f165499496e08b67a2defca8d92d",
+      "question": "Will the price of Asset A be above $78,000 on relative-date-1 ?",
+      "question_open_time": "2026-05-01T16:00:06.624401Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-05-08T20:15:53Z",
+      "source_raw_sha256": "6b1cca9b88680af2eae0b2c681704f186b662e6b29d4438b6b2c27299dffd991",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve according to the number of times Person A (@elonmusk), posts on X from relative-date-1 specified-time ET to relative-date-2 specified-time ET. For the purposes of this market, only main feed posts, quote posts and reposts will count. Replies will NOT count towards the total - however, replies on the main feed such as https://x.com/elonmusk/status/1786073478711353576 will be counted by the tracker. Deleted posts will count as long as they remain available long enough to be captured by the tracker (~5 minutes). Community reposts which are not counted by the tracker not count toward the total. The resolution source for this market is the 'Post Counter' figure for posts found at https://xtracker.Entity A.com. Individual posts can be viewed by clicking \"Export Data\". If the tracker does not update correctly in accordance with the rules, X itself may be used as a secondary resolution source.",
+      "domain": "geopolitics",
+      "event_id": "pm_439910",
+      "event_world_cluster": "pm_439910",
+      "forecast_cutoffs": [
+        "2026-05-04T07:05:25.186160Z",
+        "2026-05-06T22:57:07.627985Z",
+        "2026-05-09T14:48:50.069810Z",
+        "2026-05-11T17:54:12.023270Z"
+      ],
+      "mapping_sha256": "697eb37406924c09e1171b803e29b139e9a9d703e7fc52a513c58558d5b29108",
+      "question": "Will Person A post 80-99 tweets from relative-date-1 to relative-date-2 ?",
+      "question_open_time": "2026-05-02T04:00:03.232700Z",
+      "resolution_rule": "https://x.com/elonmusk",
+      "resolution_time": "2026-05-12T19:26:53Z",
+      "source_raw_sha256": "48c659a5655909fecff04f1e2f0a48c70b5ae7f3c00fb05de764512c6dbc8c56",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market is about whether both teams slay at least one elemental Entity J during Game 3. In Entity A, elemental dragons (Entity B, Entity C, Entity D, Entity E, Entity F, and Entity G) spawn in the Entity J pit starting at 5:00 game time. After being slain, the next Entity J spawns 5 minutes later. Once a team claims the Entity H (by slaying four dragons), all subsequent Entity J spawns become Elder Dragons. This market will resolve to \"Yes[identifying quotation removed]No[identifying quotation removed]No\". If Game 3 is remade, resolution will be based on the remade game only. The resolution source for this market will be official information from https://Entity K/esports/home. However, if https://Entity K/esports/home has not published final results within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead including video evidence.",
+      "domain": "sports",
+      "event_id": "pm_441523",
+      "event_world_cluster": "pm_441523",
+      "forecast_cutoffs": [
+        "2026-05-04T06:54:07.190129Z",
+        "2026-05-06T08:09:07.130713Z",
+        "2026-05-08T09:24:07.071298Z",
+        "2026-05-10T00:48:07.023766Z"
+      ],
+      "mapping_sha256": "74d24a15a39e2ab94daf041191e528933164db7dd0854d308a4ff5da4704630a",
+      "question": "Game 3: Both Teams Slay a Entity J?",
+      "question_open_time": "2026-05-02T15:30:07.237661Z",
+      "resolution_rule": "https://Entity K/esports/home",
+      "resolution_time": "2026-05-10T20:30:07Z",
+      "source_raw_sha256": "aa2343f5d83c025a70cc16d528ec9618f4d4cf3b836311d910f3c466c0252add",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve according to the number of times Person A (@elonmusk), posts on X from relative-date-1 specified-time ET to relative-date-2 specified-time ET. For the purposes of this market, only main feed posts, quote posts and reposts will count. Replies will NOT count towards the total - however, replies on the main feed such as https://x.com/elonmusk/status/1786073478711353576 will be counted by the tracker. Deleted posts will count as long as they remain available long enough to be captured by the tracker (~5 minutes). Community reposts which are not counted by the tracker not count toward the total. The resolution source for this market is the 'Post Counter' figure for posts found at https://xtracker.Entity A.com. Individual posts can be viewed by clicking \"Export Data\". If the tracker does not update correctly in accordance with the rules, X itself may be used as a secondary resolution source.",
+      "domain": "geopolitics",
+      "event_id": "pm_441595",
+      "event_world_cluster": "pm_441595",
+      "forecast_cutoffs": [
+        "2026-05-03T12:23:31.344304Z",
+        "2026-05-04T13:52:52.799209Z",
+        "2026-05-05T15:22:14.254114Z",
+        "2026-05-06T11:45:43.418038Z"
+      ],
+      "mapping_sha256": "697eb37406924c09e1171b803e29b139e9a9d703e7fc52a513c58558d5b29108",
+      "question": "Will Person A post <40 tweets from relative-date-1 to relative-date-2 ?",
+      "question_open_time": "2026-05-02T16:00:02.180380Z",
+      "resolution_rule": "https://x.com/elonmusk",
+      "resolution_time": "2026-05-06T21:57:28Z",
+      "source_raw_sha256": "2595bf12b1e4b766295811ef63361ae7ed884b33706b37f1f39984b6f6dd893e",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve to \"Yes[identifying quotation removed]Close[identifying quotation removed]No[identifying quotation removed]Close[identifying quotation removed]1m\" and \"Candles\" selected on the top bar. Please note that this market is about the price according to Entity A Entity B, not according to other exchanges or trading pairs. Price precision is determined by the number of decimal places in the source.",
+      "domain": "crypto",
+      "event_id": "pm_441633",
+      "event_world_cluster": "pm_441633",
+      "forecast_cutoffs": [
+        "2026-05-04T03:04:36.145995Z",
+        "2026-05-05T22:55:11.725372Z",
+        "2026-05-07T18:45:47.304748Z",
+        "2026-05-09T05:50:15.768250Z"
+      ],
+      "mapping_sha256": "f8a1edeb7c1b12b69dcb528af20e28af3a71f165499496e08b67a2defca8d92d",
+      "question": "Will the price of Asset A be above $82,000 on relative-date-1 ?",
+      "question_open_time": "2026-05-02T16:00:07.682494Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-05-09T23:22:30Z",
+      "source_raw_sha256": "fac75ec59ba0a139fbff64c40c524079bee224916637d04006bf9b18ceac4fb9",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming game, scheduled for relative-date-1 If Team A wins, this market will resolve to \"Yes[identifying quotation removed]No[identifying quotation removed]No\". This market refers only to the outcome within the first 90 minutes of regular play plus stoppage time. The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "other",
+      "event_id": "pm_443225",
+      "event_world_cluster": "pm_443225",
+      "forecast_cutoffs": [
+        "2026-05-05T21:17:16.795386Z",
+        "2026-05-09T06:53:46.859328Z",
+        "2026-05-12T16:30:16.923270Z",
+        "2026-05-15T09:47:28.974423Z"
+      ],
+      "mapping_sha256": "5dcb7793f3c2e24381639ad1d4e66e2b8792c873c7fcb5f8557667dbf9fe5135",
+      "question": "Will Team A win on relative-date-1 ?",
+      "question_open_time": "2026-05-03T04:00:04.744232Z",
+      "resolution_rule": "https://www.Entity A.com/en/Entity A",
+      "resolution_time": "2026-05-16T18:26:05Z",
+      "source_raw_sha256": "1979e3b14e1faf28b18c4b1ef091b727ebfbe6ad6d714a91e4eaa9c6269e0247",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve according to the final \"Close[identifying quotation removed]No[identifying quotation removed]Close[identifying quotation removed]1m\" and \"Candles\" selected on the top bar. If the reported value falls exactly between two brackets, then this market will resolve to the higher range bracket. Please note that this market is about the price according to Entity A Entity B, not according to other exchanges or trading pairs.",
+      "domain": "crypto",
+      "event_id": "pm_444951",
+      "event_world_cluster": "pm_444951",
+      "forecast_cutoffs": [
+        "2026-05-05T02:18:47.774840Z",
+        "2026-05-06T21:12:13.470202Z",
+        "2026-05-08T16:05:39.165565Z",
+        "2026-05-10T02:24:23.721855Z"
+      ],
+      "mapping_sha256": "f8a1edeb7c1b12b69dcb528af20e28af3a71f165499496e08b67a2defca8d92d",
+      "question": "Will the price of Asset A be between $76,000 and $78,000 on relative-date-1 ?",
+      "question_open_time": "2026-05-03T16:00:03.218550Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-05-10T19:33:46Z",
+      "source_raw_sha256": "b28c7ba9be21c327337f0759afc1e2e1d3092b96f5977be03e07c7c9f4c41f09",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming game, scheduled for relative-date-1 If Team A wins, this market will resolve to \"Yes[identifying quotation removed]No[identifying quotation removed]No\". This market refers only to the outcome within the first 90 minutes of regular play plus stoppage time. The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "other",
+      "event_id": "pm_446646",
+      "event_world_cluster": "pm_446646",
+      "forecast_cutoffs": [
+        "2026-05-06T22:56:31.349317Z",
+        "2026-05-10T10:37:00.927655Z",
+        "2026-05-13T22:17:30.505994Z",
+        "2026-05-16T17:13:54.168665Z"
+      ],
+      "mapping_sha256": "306a0c8479db98ae06f0d3dd08ad55e39c049845637be092b1edc325617cefcc",
+      "question": "Will Team A win on relative-date-1 ?",
+      "question_open_time": "2026-05-04T04:00:07.686646Z",
+      "resolution_rule": "https://www.ligue1.com/",
+      "resolution_time": "2026-05-18T02:42:06Z",
+      "source_raw_sha256": "1b38cb2f8ad42511807275b51713760dc01b7694e950c7d44dacae0bebe335a9",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming game, scheduled for relative-date-1 If Team A wins, this market will resolve to \"Yes[identifying quotation removed]No[identifying quotation removed]No\". This market refers only to the outcome within the first 90 minutes of regular play plus stoppage time. The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "other",
+      "event_id": "pm_446648",
+      "event_world_cluster": "pm_446648",
+      "forecast_cutoffs": [
+        "2026-05-06T22:30:34.659818Z",
+        "2026-05-10T09:38:38.203625Z",
+        "2026-05-13T20:46:41.747432Z",
+        "2026-05-16T15:17:08.582477Z"
+      ],
+      "mapping_sha256": "c9a276c6529ff3e3b6647c12ba1afebb308e81d0767c7e2285939ce314943d53",
+      "question": "Will Team A win on relative-date-1 ?",
+      "question_open_time": "2026-05-04T04:00:07.824773Z",
+      "resolution_rule": "https://www.premierleague.com/",
+      "resolution_time": "2026-05-18T00:32:22Z",
+      "source_raw_sha256": "363234e16b17a6f2ea333baecd61c4409c6fae70cd3cf0c8a5b338788327e193",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming game, scheduled for relative-date-1 If Team A wins, this market will resolve to \"Yes[identifying quotation removed]No[identifying quotation removed]No\". This market refers only to the outcome within the first 90 minutes of regular play plus stoppage time. The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "other",
+      "event_id": "pm_446655",
+      "event_world_cluster": "pm_446655",
+      "forecast_cutoffs": [
+        "2026-05-06T22:33:01.865297Z",
+        "2026-05-10T09:44:08.782392Z",
+        "2026-05-13T20:55:15.699486Z",
+        "2026-05-16T15:28:09.233162Z"
+      ],
+      "mapping_sha256": "9d67b6c3edef16cca734a4bcf5385c7d2f529b46d17bc947cb52c1e4ef7642ca",
+      "question": "Will Team A win on relative-date-1 ?",
+      "question_open_time": "2026-05-04T04:00:08.331621Z",
+      "resolution_rule": "https://www.premierleague.com/",
+      "resolution_time": "2026-05-18T00:44:36Z",
+      "source_raw_sha256": "f0a2f568ce47dd96d55d6e9dbbb5be3d3218254230154f6aa599f03f6e188c33",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve according to how much \"Entity A[identifying quotation removed]Daily Box Office Performance[identifying quotation removed] tab on this movie's Entity B (https://www.the-Entity B.com/) page will be used to resolve this market once the values for the 3-day opening weekend ( relative-date-1 - relative-date-2 ) are final (i.e., not studio estimates). If the reported value falls exactly between two brackets, then this market will resolve to the higher range bracket. Please note, this market will resolve according to the Entity B figures provided under Weekend Box Office Performance for the 3-day weekend (which typically includes Thursday's previews), regardless of whether domestic refers to only the USA, or to USA and Canada, etc. If there is ambiguity as to whether the resolution source's figures are final, this market will remain open until both https://www.boxofficemojo.com/ and https://www.the-Entity B.com/ have confirmed their finalized figures. If there is no final data available by relative-date-3 , specified-time ET, another credible resolution source will be chosen.",
+      "domain": "culture",
+      "event_id": "pm_449511",
+      "event_world_cluster": "pm_449511",
+      "forecast_cutoffs": [
+        "2026-05-06T09:02:48.338152Z",
+        "2026-05-08T03:14:47.919980Z",
+        "2026-05-09T21:26:47.501807Z",
+        "2026-05-11T07:12:23.167269Z"
+      ],
+      "mapping_sha256": "0c662f7255bd1fe9b5d2f91c994839f05fd2494beee95f46f72cd4ae66bc11dc",
+      "question": "Will \"Entity A\" Opening Weekend Box Office be between 40m and 45m?",
+      "question_open_time": "2026-05-04T23:17:12.672690Z",
+      "resolution_rule": "https://www.the-Entity B.com/",
+      "resolution_time": "2026-05-12T00:05:11Z",
+      "source_raw_sha256": "073c1622c3878113b2362f1de4ddbb58292c60fa3d4cb3db10e2c2e2dbfeaecf",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming Entity A game between the Team A and Team B, scheduled for relative-date-1 at specified-time ET: This market will resolve to \"Yes[identifying quotation removed]No\" if no runs are scored in the 1st inning by either team. If the game is postponed, this market will remain open until the game has been completed. If the game is canceled entirely, with no make-up game, this market will resolve 50-50. To know when a postponed game will be played, please check the home team's schedule on Entity A.com for the listed team and look for the game described as a makeup game. The primary resolution source for this market is the official final statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 24 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "sports",
+      "event_id": "pm_451625",
+      "event_world_cluster": "pm_451625",
+      "forecast_cutoffs": [
+        "2026-05-06T21:11:27.211330Z",
+        "2026-05-08T13:25:24.645290Z",
+        "2026-05-10T05:39:22.079249Z",
+        "2026-05-11T13:50:32.026416Z"
+      ],
+      "mapping_sha256": "b227df97982ae7448ceb483c816b88d56b99540f4a7e643351acf0b04f259765",
+      "question": "Will there be a run scored in the first inning?: Team A vs. Team B",
+      "question_open_time": "2026-05-05T13:00:17.264163Z",
+      "resolution_rule": "https://www.Entity A.com/scores",
+      "resolution_time": "2026-05-12T05:56:07Z",
+      "source_raw_sha256": "39c80f166f31852a1e53d1b21c3c410214495250c00d417645f6f66ad8765c29",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve to \"Yes[identifying quotation removed]No\". A meeting is defined as any encounter where both Xi and one or more Entity A are present and interact with each other in person. An exchange of words, handshake, direct conversation, or other clear personal interaction between the named individuals will qualify as a meeting. Merely standing in proximity, making eye contact, or being present in the same room or event without direct interaction will not qualify. The resolution source will be a consensus of credible reporting.",
+      "domain": "geopolitics",
+      "event_id": "pm_452072",
+      "event_world_cluster": "pm_452072",
+      "forecast_cutoffs": [
+        "2026-05-07T18:59:53.298289Z",
+        "2026-05-10T10:42:28.830074Z",
+        "2026-05-13T02:25:04.361858Z",
+        "2026-05-15T05:23:08.787286Z"
+      ],
+      "mapping_sha256": "f676dc3be4b8e0ebdd974f6cf00319df37a8b8db7eed02b6d363109d7e1f9d93",
+      "question": "Xi meets with Iranian Entity A by relative-date-1 ?",
+      "question_open_time": "2026-05-05T16:01:48.872861Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-05-16T06:52:11Z",
+      "source_raw_sha256": "0277154dc5309422898266e483e63c7be7b1a22702893dc70e0c9e31407b3e61",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve to \u201cYes\u201d if Donald Person A or the Entity A announces a reduction, removal, or suspension of any existing tariffs on Federation A between market creation and relative-date-1 , specified-time ET. Otherwise, this market will resolve to \u201cNo\u201d. Only tariff reductions specifically announced in relation to Federation A, goods from Federation A, or a specific set of countries including Federation A will qualify. For example, an announced reduction in global tariffs will not count toward this market\u2019s resolution. Only definitive announcements qualify. Suggestions, negotiations, expressions of openness, or other non-definitive statements will not qualify. Tariff reductions, removals, or suspensions announced as part of a mutual agreement or deal between the Federation B and Federation A will qualify. Any qualifying action announced within this market\u2019s time frame will count, regardless of whether or when the tariff reduction, removal, or suspension goes into effect. This market\u2019s primary resolution source will be official information from the Entity A; however, a consensus of credible reporting may also be used.",
+      "domain": "geopolitics",
+      "event_id": "pm_453131",
+      "event_world_cluster": "pm_453131",
+      "forecast_cutoffs": [
+        "2026-05-09T19:49:38.568697Z",
+        "2026-05-14T15:39:26.828479Z",
+        "2026-05-19T11:29:15.088261Z",
+        "2026-05-23T08:09:05.696087Z"
+      ],
+      "mapping_sha256": "d54fad521520902138cc30fe413854fb8ddb6118658e7d6f4534fca752cd1b7e",
+      "question": "Will Person A announce a tariff reduction on Federation A?",
+      "question_open_time": "2026-05-05T23:09:47.960871Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-05-25T06:29:01Z",
+      "source_raw_sha256": "88bb6f8a39c24d71b52ca82a413c9993060e28e524cffed4de69fb24f8d5a8da",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming Entity A game between Team A and Team B, scheduled for relative-date-1 at specified-time ET: This market will resolve to \"Yes[identifying quotation removed]No\" if either team fails to score (i.e., if one or both teams finish with zero goals). If the game is postponed, this market will remain open until the game has been completed. If the game is canceled entirely, with no make-up game, this market will resolve 50\u201350. If the game is started but not completed, this market will resolve according to the official final score published on Entity B. This market refers only to the outcome within the first 90 minutes of regular play plus stoppage time. The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "other",
+      "event_id": "pm_453986",
+      "event_world_cluster": "pm_453986",
+      "forecast_cutoffs": [
+        "2026-05-08T22:54:22.417300Z",
+        "2026-05-12T09:17:14.786894Z",
+        "2026-05-15T19:40:07.156487Z",
+        "2026-05-18T13:34:25.052162Z"
+      ],
+      "mapping_sha256": "9152a92b836a329345ec4039d186c39138eb9bf0ca5450351c6b66dfc461b776",
+      "question": "Team A vs. Team B: Both Teams to Score",
+      "question_open_time": "2026-05-06T05:00:04.521625Z",
+      "resolution_rule": "https://www.Entity B/",
+      "resolution_time": "2026-05-19T22:31:34Z",
+      "source_raw_sha256": "ba097c2fe1bea79500113c104370bb5241da159968a1aac8523d7b65705bfc37",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming game, scheduled for relative-date-1 If Team A wins, this market will resolve to \"Yes[identifying quotation removed]No[identifying quotation removed]No\". This market refers only to the outcome within the first 90 minutes of regular play plus stoppage time. The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "other",
+      "event_id": "pm_454122",
+      "event_world_cluster": "pm_454122",
+      "forecast_cutoffs": [
+        "2026-05-08T14:17:54.566286Z",
+        "2026-05-11T12:40:15.014321Z",
+        "2026-05-14T11:02:35.462357Z",
+        "2026-05-16T19:20:27.820786Z"
+      ],
+      "mapping_sha256": "1a7aff8ada5ef864f217fd584f1a65e234edfea21d3ea24c54391ea62ef5e7f4",
+      "question": "Will Team A win on relative-date-1 ?",
+      "question_open_time": "2026-05-06T06:00:02.207857Z",
+      "resolution_rule": "https://www.laliga.com/",
+      "resolution_time": "2026-05-17T23:29:24Z",
+      "source_raw_sha256": "c79282766f0319a68c7a838ef8c87efe1f2abae1b476a996c8235924e4d7535b",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve according to the number of times Person A (@elonmusk), posts on X from relative-date-1 specified-time ET to relative-date-2 specified-time ET. For the purposes of this market, only main feed posts, quote posts and reposts will count. Replies will NOT count towards the total - however, replies on the main feed such as https://x.com/elonmusk/status/1786073478711353576 will be counted by the tracker. Deleted posts will count as long as they remain available long enough to be captured by the tracker (~5 minutes). Community reposts which are not counted by the tracker not count toward the total. The resolution source for this market is the 'Post Counter' figure for posts found at https://xtracker.Entity A.com. Individual posts can be viewed by clicking \"Export Data\". If the tracker does not update correctly in accordance with the rules, X itself may be used as a secondary resolution source.",
+      "domain": "geopolitics",
+      "event_id": "pm_458897",
+      "event_world_cluster": "pm_458897",
+      "forecast_cutoffs": [
+        "2026-05-08T11:47:17.076813Z",
+        "2026-05-09T12:31:21.740309Z",
+        "2026-05-10T13:15:26.403805Z",
+        "2026-05-11T09:02:42.134602Z"
+      ],
+      "mapping_sha256": "697eb37406924c09e1171b803e29b139e9a9d703e7fc52a513c58558d5b29108",
+      "question": "Will Person A post 90-114 tweets from relative-date-1 to relative-date-2 ?",
+      "question_open_time": "2026-05-07T16:00:01.346017Z",
+      "resolution_rule": "https://x.com/elonmusk",
+      "resolution_time": "2026-05-11T18:56:20Z",
+      "source_raw_sha256": "10a033358285eb5fcc8a64103b49e27cd474d85dc0032da68f9a623b03c79445",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve to \"Yes[identifying quotation removed]Close[identifying quotation removed]No[identifying quotation removed]Close[identifying quotation removed]1m\" and \"Candles\" selected on the top bar. Please note that this market is about the price according to Entity A Entity B, not according to other exchanges or trading pairs. Price precision is determined by the number of decimal places in the source.",
+      "domain": "crypto",
+      "event_id": "pm_462397",
+      "event_world_cluster": "pm_462397",
+      "forecast_cutoffs": [
+        "2026-05-10T02:18:59.670167Z",
+        "2026-05-11T21:12:36.335740Z",
+        "2026-05-13T16:06:13.001313Z",
+        "2026-05-15T02:25:06.333771Z"
+      ],
+      "mapping_sha256": "46c5723ea81fa99204ef2cb77bd9c7351d5d27af68bf27a743570a409db4b7f2",
+      "question": "Will the price of Asset A be above $84,000 on relative-date-1 ?",
+      "question_open_time": "2026-05-08T16:00:06.337709Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-05-15T19:34:33Z",
+      "source_raw_sha256": "788f4a21790a05f27585d6dda30951f4385ce87a7fff5f970d7a2257e4f2ea16",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming game, scheduled for relative-date-1 If Team A wins, this market will resolve to \"Yes[identifying quotation removed]No[identifying quotation removed]No\". This market refers only to the outcome within the first 90 minutes of regular play plus stoppage time. The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "other",
+      "event_id": "pm_462880",
+      "event_world_cluster": "pm_462880",
+      "forecast_cutoffs": [
+        "2026-05-11T05:00:38.286333Z",
+        "2026-05-14T06:08:53.509354Z",
+        "2026-05-17T07:17:08.732375Z",
+        "2026-05-19T17:47:44.910792Z"
+      ],
+      "mapping_sha256": "a5ee766033faf92e5c4b148c576c063d01914e743c41c14c1cb0355ae5318a8d",
+      "question": "Will Team A win on relative-date-1 ?",
+      "question_open_time": "2026-05-08T18:30:02.107916Z",
+      "resolution_rule": "https://www.Entity A.com/",
+      "resolution_time": "2026-05-20T23:03:03Z",
+      "source_raw_sha256": "edd90f6a6ef0cfa008c868684b19ab1acc150fc4f4568dbe297c3fc4df91e071",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming Entity A game between the Team A and Team B, scheduled for relative-date-1 at specified-time ET: This market will resolve to \"Yes[identifying quotation removed]No\" if no runs are scored in the 1st inning by either team. If the game is postponed, this market will remain open until the game has been completed. If the game is canceled entirely, with no make-up game, this market will resolve 50-50. To know when a postponed game will be played, please check the home team's schedule on Entity A.com for the listed team and look for the game described as a makeup game. The primary resolution source for this market is the official final statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 24 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "sports",
+      "event_id": "pm_470411",
+      "event_world_cluster": "pm_470411",
+      "forecast_cutoffs": [
+        "2026-05-11T20:26:18.640804Z",
+        "2026-05-13T11:43:54.378053Z",
+        "2026-05-15T03:01:30.115301Z",
+        "2026-05-16T10:27:34.705101Z"
+      ],
+      "mapping_sha256": "fd0befb2f59533c2d7867940de67e5e042a1b854bef0eece2a61ba5ab1473469",
+      "question": "Will there be a run scored in the first inning?: Team A vs. Team B",
+      "question_open_time": "2026-05-10T13:00:14.051005Z",
+      "resolution_rule": "https://www.Entity A.com/scores",
+      "resolution_time": "2026-05-17T02:10:37Z",
+      "source_raw_sha256": "9e93a74f432c89e6adc9758f774c8ededfd10b86cc98b18e14c90742bb1de9a2",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market is about whether any player achieves a Event A during Game 2. In Entity A, a Event A occurs when a single player kills all 5 enemy champions in rapid succession. This market will resolve to \"Yes[identifying quotation removed]No[identifying quotation removed]No\". If Game 2 is remade, resolution will be based on the remade game only. The resolution source for this market will be official information from https://gol.gg/esports/home. However, if https://gol.gg/esports/home has not published final results within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead including video evidence.",
+      "domain": "sports",
+      "event_id": "pm_471074",
+      "event_world_cluster": "pm_471074",
+      "forecast_cutoffs": [
+        "2026-05-12T03:02:27.973098Z",
+        "2026-05-13T21:10:28.294005Z",
+        "2026-05-15T15:18:28.614912Z",
+        "2026-05-17T01:00:52.871637Z"
+      ],
+      "mapping_sha256": "cb403e9d04557586365e8dc34598508a99b6e9a5a1e9709d7280374c0c186a1f",
+      "question": "Game 2: Any Player Event A?",
+      "question_open_time": "2026-05-10T17:20:03.716372Z",
+      "resolution_rule": "https://gol.gg/esports/home",
+      "resolution_time": "2026-05-17T17:52:05Z",
+      "source_raw_sha256": "b1b4fc5d4f8c13cb35620642679a94994b78f3b1f4dff1470287023778a89d1d",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve according to the number of views the next Entity B video posted by Entity A after this market's creation gets in the first 7 days after being posted. If Entity A does not post a Entity B video by relative-date-1 , specified-time ET, this market will resolve to the lowest range bracket. If the reported value falls exactly between two brackets, this market will resolve to the higher range bracket. The resolution source for this is Entity A's Entity B channel (https://www.Entity B.com/@Entity A), specifically the 'views' counter for the described video. Note: This market refers to Entity A's next video posted. Shorts, previews, or other videos released other than the referenced video will not be considered.",
+      "domain": "geopolitics",
+      "event_id": "pm_472216",
+      "event_world_cluster": "pm_472216",
+      "forecast_cutoffs": [
+        "2026-05-13T14:43:32.221126Z",
+        "2026-05-16T18:50:01.839524Z",
+        "2026-05-19T22:56:31.457922Z",
+        "2026-05-22T11:49:43.152641Z"
+      ],
+      "mapping_sha256": "4b60897bd93bb2e15d0e30582c338ac56a6de0c467d1c6de1a8d4f4cea8f570e",
+      "question": "Will Entity A's next video get between 80 and 90 million views on week 1?",
+      "question_open_time": "2026-05-11T01:50:20.526408Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-05-23T18:16:19Z",
+      "source_raw_sha256": "7c9f5562e7f18630fcbae12c9b8bb68bb89f9eae297a868621bd00133af94c5a",
+      "split": "calibration",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming game, scheduled for relative-date-1 If Team A wins, this market will resolve to \"Yes[identifying quotation removed]No[identifying quotation removed]No\". This market refers only to the outcome within the first 90 minutes of regular play plus stoppage time. The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "other",
+      "event_id": "pm_472495",
+      "event_world_cluster": "pm_472495",
+      "forecast_cutoffs": [
+        "2026-05-13T21:27:12.623333Z",
+        "2026-05-17T07:16:08.053541Z",
+        "2026-05-20T17:05:03.483750Z",
+        "2026-05-23T10:32:11.827917Z"
+      ],
+      "mapping_sha256": "c9a276c6529ff3e3b6647c12ba1afebb308e81d0767c7e2285939ce314943d53",
+      "question": "Will Team A win on relative-date-1 ?",
+      "question_open_time": "2026-05-11T04:00:04.279166Z",
+      "resolution_rule": "https://www.premierleague.com/",
+      "resolution_time": "2026-05-24T19:15:46Z",
+      "source_raw_sha256": "aa8617b5803ad95f662208979d6405aa948ab73b7426b9a6c196fb4ccf66a26a",
+      "split": "validation",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming game, scheduled for relative-date-1 If Team A wins, this market will resolve to \"Yes[identifying quotation removed]No[identifying quotation removed]No\". This market refers only to the outcome within the first 90 minutes of regular play plus stoppage time. The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "other",
+      "event_id": "pm_472512",
+      "event_world_cluster": "pm_472512",
+      "forecast_cutoffs": [
+        "2026-05-13T21:34:03.514937Z",
+        "2026-05-17T07:31:28.666519Z",
+        "2026-05-20T17:28:53.818101Z",
+        "2026-05-23T11:02:49.939367Z"
+      ],
+      "mapping_sha256": "7036ac19e9d9b08571e99d0eea60830a52efdcb8a3c9514549d08748bab57335",
+      "question": "Will Team A win on relative-date-1 ?",
+      "question_open_time": "2026-05-11T04:00:07.393671Z",
+      "resolution_rule": "https://www.premierleague.com/",
+      "resolution_time": "2026-05-24T19:49:48Z",
+      "source_raw_sha256": "b34989e7fd431a2104597fd280467be5a0273780eb16e5dfce2e46969e136412",
+      "split": "validation",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve according to the number of times Person A (@elonmusk), posts on X from relative-date-1 specified-time ET to relative-date-2 specified-time ET. For the purposes of this market, only main feed posts, quote posts and reposts will count. Replies will NOT count towards the total - however, replies on the main feed such as https://x.com/elonmusk/status/1786073478711353576 will be counted by the tracker. Deleted posts will count as long as they remain available long enough to be captured by the tracker (~5 minutes). Community reposts which are not counted by the tracker not count toward the total. The resolution source for this market is the 'Post Counter' figure for posts found at https://xtracker.polymarket.com. Individual posts can be viewed by clicking \"Export Data\". If the tracker does not update correctly in accordance with the rules, X itself may be used as a secondary resolution source.",
+      "domain": "geopolitics",
+      "event_id": "pm_474275",
+      "event_world_cluster": "pm_474275",
+      "forecast_cutoffs": [
+        "2026-05-12T16:44:47.986921Z",
+        "2026-05-13T23:40:46.116008Z",
+        "2026-05-15T06:36:44.245095Z",
+        "2026-05-16T07:21:30.748365Z"
+      ],
+      "mapping_sha256": "cb93e40ef9cdd53ef09dc36ace1ed8b484a6c8a6398ec89528022b873554c7a0",
+      "question": "Will Person A post 90-114 tweets from relative-date-1 to relative-date-2 ?",
+      "question_open_time": "2026-05-11T16:00:01.483651Z",
+      "resolution_rule": "https://x.com/elonmusk",
+      "resolution_time": "2026-05-16T19:43:54Z",
+      "source_raw_sha256": "bc3a7b41a4ebacd38a860ab6569b4ea3670690ea16a467e02076815cb67d2993",
+      "split": "validation",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve according to the calendar day, in Federation A Standard Time, on which Person A physically leaves Federation A during his first visit to Federation A that begins by relative-date-1 , specified-time Federation A Standard Time. A \"visit[identifying quotation removed]. If Person A does not visit Federation A by relative-date-4 , specified-time Federation A Standard Time, this market will resolve to [identifying quotation removed]. The resolution source for this market will be official information from the government of the Federation B, official information from Person A or released by his verified social media accounts, and a consensus of credible reporting.",
+      "domain": "geopolitics",
+      "event_id": "pm_474420",
+      "event_world_cluster": "pm_474420",
+      "forecast_cutoffs": [
+        "2026-05-12T10:37:14.256818Z",
+        "2026-05-13T09:16:40.739062Z",
+        "2026-05-14T07:56:07.221307Z",
+        "2026-05-15T02:03:40.407102Z"
+      ],
+      "mapping_sha256": "562d1c87fef26eecdd3a4569f6b65a418456a1639fc29f7fe55f90d16584c3ad",
+      "question": "Will Person A Leave Federation A after relative-date-1 ?",
+      "question_open_time": "2026-05-11T16:29:41.071022Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-05-15T11:07:27Z",
+      "source_raw_sha256": "e3dba7d16ea5105579aadebcfa77b2fa9847bb40779715667b14e87b172c8ca1",
+      "split": "validation",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming Entity A International Friendlies game between Federation A and Federation B, scheduled for relative-date-1 at specified-time ET: This market will resolve to \"Yes[identifying quotation removed]No\" if either team fails to score (i.e., if one or both teams finish with zero goals). If the game is postponed, this market will remain open until the game has been completed. If the game is canceled entirely, with no make-up game, this market will resolve 50\u201350. If the game is started but not completed, this market will resolve according to the official final score published on Entity A.com. This market refers only to the outcome within the first 90 minutes of regular play plus stoppage time. The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "geopolitics",
+      "event_id": "pm_474858",
+      "event_world_cluster": "pm_474858",
+      "forecast_cutoffs": [
+        "2026-05-17T06:45:24.245809Z",
+        "2026-05-24T02:49:15.731493Z",
+        "2026-05-30T22:53:07.217178Z",
+        "2026-06-05T10:08:12.405726Z"
+      ],
+      "mapping_sha256": "2c26a6373bab6982db0df70b14f1ecabd57ba9eb0764f1f018c3184b96310652",
+      "question": "Federation A vs. Federation B: Both Teams to Score",
+      "question_open_time": "2026-05-11T19:30:19.057261Z",
+      "resolution_rule": "https://www.Entity A.com",
+      "resolution_time": "2026-06-08T03:45:45Z",
+      "source_raw_sha256": "a69da73ffdfdac17c8ae69b1d5afc5322e38b101eabd65d2c30cc508982bd857",
+      "split": "validation",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve to \"Yes[identifying quotation removed]Close[identifying quotation removed]No[identifying quotation removed]Close[identifying quotation removed]1m\" and \"Candles\" selected on the top bar. Please note that this market is about the price according to Entity A Entity B, not according to other exchanges or trading pairs. Price precision is determined by the number of decimal places in the source.",
+      "domain": "crypto",
+      "event_id": "pm_477908",
+      "event_world_cluster": "pm_477908",
+      "forecast_cutoffs": [
+        "2026-05-14T02:04:07.183044Z",
+        "2026-05-15T20:39:15.563343Z",
+        "2026-05-17T15:14:23.943641Z",
+        "2026-05-19T01:18:30.647881Z"
+      ],
+      "mapping_sha256": "79c46693521aa307189b9a781631602d34a8c2f0b18ebf79c55f9f6a0a8624db",
+      "question": "Will the price of Asset A be above $2,000 on relative-date-1 ?",
+      "question_open_time": "2026-05-12T16:00:00.478805Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-05-19T18:20:34Z",
+      "source_raw_sha256": "5d23c86941746fe1ef00b8c447b045c79381591736d4971da0697a8d80b4d852",
+      "split": "validation",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve according to how much \"Entity A[identifying quotation removed]Daily Box Office Performance[identifying quotation removed] tab on this movie's Entity B (https://www.the-Entity B.com/) page will be used to resolve this market once the values for the 4-day opening weekend ( relative-date-1 - relative-date-2 ) are final (i.e., not studio estimates). If the reported value falls exactly between two brackets, then this market will resolve to the higher range bracket. Please note, this market will resolve according to the Entity B figures provided under Weekend Box Office Performance for the 4-day weekend (which typically includes Thursday's previews), regardless of whether domestic refers to only the USA, or to USA and Canada, etc. If there is ambiguity as to whether the resolution source's figures are final, this market will remain open until both https://www.boxofficemojo.com/ and https://www.the-Entity B.com/ have confirmed their finalized figures. If there is no final data available by relative-date-3 , specified-time ET, another credible resolution source will be chosen.",
+      "domain": "culture",
+      "event_id": "pm_478328",
+      "event_world_cluster": "pm_478328",
+      "forecast_cutoffs": [
+        "2026-05-15T15:18:56.493678Z",
+        "2026-05-19T05:44:39.464403Z",
+        "2026-05-22T20:10:22.435129Z",
+        "2026-05-25T17:18:56.811710Z"
+      ],
+      "mapping_sha256": "dcdbdf5f473279add8fc12db0428834f59a3f1578a6b53868bbb6bc6d7e859e1",
+      "question": "Will \"Entity A\" 4-day Opening Weekend Box Office be less than 92m?",
+      "question_open_time": "2026-05-12T18:10:22.117097Z",
+      "resolution_rule": "https://www.the-Entity B.com/",
+      "resolution_time": "2026-05-27T03:53:14Z",
+      "source_raw_sha256": "6bb608b8b95cc1ee47cbbfe95859f0d2ee795f1262a7b8b197ab9fc1fcff1d59",
+      "split": "validation",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve to the temperature range that contains the lowest temperature recorded at the Entity A in degrees Celsius on 17 May '26. The resolution source for this market will be information from Entity B, specifically the lowest temperature recorded for all times on this day by the Forecast for the Entity A once information is finalized, available here: https://www.Entity B.com/history/daily/kr/incheon/RKSI. To toggle between Fahrenheit and Celsius, click the gear icon next to the search bar and switch the Temperature setting between \u00b0F and \u00b0C. This market can not resolve to \"Yes\" until all data for this date has been finalized. The resolution source for this market measures temperatures to whole degrees Celsius (eg, 9\u00b0C). Thus, this is the level of precision that will be used when resolving the market. Any revisions to temperatures recorded after data is finalized for this market's timeframe will not be considered for this market's resolution.",
+      "domain": "weather_science",
+      "event_id": "pm_481554",
+      "event_world_cluster": "pm_481554",
+      "forecast_cutoffs": [
+        "2026-05-15T06:56:42.762030Z",
+        "2026-05-17T06:59:55.648896Z",
+        "2026-05-19T07:03:08.535761Z",
+        "2026-05-20T21:29:42.845254Z"
+      ],
+      "mapping_sha256": "6bccb94508a50357458e2e185f634331479c00053843956391469cf8150c7ba6",
+      "question": "Will the lowest temperature in City A be 14\u00b0C on relative-date-1 ?",
+      "question_open_time": "2026-05-13T16:30:08.452538Z",
+      "resolution_rule": "https://www.Entity B.com/history/daily/kr/incheon/RKSI",
+      "resolution_time": "2026-05-21T16:43:00Z",
+      "source_raw_sha256": "4f39052130906d2856f03a28e65ffde6ea3651dac255da6263bb3195b12bb60c",
+      "split": "validation",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "The Election A A will be held on relative-date-1 , to elect the mayor of City A, California. If no candidate receives a majority of the vote, a runoff Election A will be held on relative-date-2 . This market will resolve according to the listed candidate who receives the second-most valid votes in the first round of this Election A. The named candidates will be primarily ranked by the number of valid votes received in the specified Election A. If two or more candidates are tied on valid votes, ties will be broken by alphabetical order of the candidates' last names. This market will resolve to the candidate that occupies the second-highest finishing position after applying this ranking. If the results are not known definitively by relative-date-3 , specified-time ET, this market will resolve to \"Other\". This market will resolve based on the results of this Election A as indicated by a consensus of credible reporting. If there is ambiguity, this market will resolve based solely on the official results as reported by the city and county of City A.",
+      "domain": "politics",
+      "event_id": "pm_482896",
+      "event_world_cluster": "pm_482896",
+      "forecast_cutoffs": [
+        "2026-05-19T06:05:26.051602Z",
+        "2026-05-25T19:35:58.222976Z",
+        "2026-06-01T09:06:30.394351Z",
+        "2026-06-06T15:06:56.131450Z"
+      ],
+      "mapping_sha256": "16b5a6a9ff60c6ebbbbade24d64da7870b23b72299b49e97794139c394248921",
+      "question": "Will Candidate A finish second in the first round of the Election A A?",
+      "question_open_time": "2026-05-14T00:05:00.314502Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-06-09T06:07:09Z",
+      "source_raw_sha256": "14ae27e395e0d14dacec708ec8cf2e70c53095e8ce787ebd68586dc0dbc3abe2",
+      "split": "validation",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve to \u201cYes\u201d if Person A and any other person kiss by the specified date, specified-time ET. Otherwise, this market will resolve to \"No.\" Reputable video or photographic evidence of the kiss must be released within this market\u2019s time frame to qualify. AI-generated, manipulated, or other non-authentic evidence will not qualify. A qualifying kiss is defined as an in-person greeting or gesture involving the lips of one individual touching another individual. A qualifying kiss need not be reciprocal; a kiss on the cheek or hand from either party will qualify. The resolution source will be reputable photographic/video footage of a kiss.",
+      "domain": "other",
+      "event_id": "pm_485220",
+      "event_world_cluster": "pm_485220",
+      "forecast_cutoffs": [
+        "2026-05-16T08:22:40.723387Z",
+        "2026-05-18T10:40:55.809829Z",
+        "2026-05-20T12:59:10.896270Z",
+        "2026-05-22T05:13:46.965423Z"
+      ],
+      "mapping_sha256": "2a1fb87d11084f512f5ee6e0641ec0edd38dfb795de1dab83a6b42afa3c21b7f",
+      "question": "Person A kiss by Entity A?",
+      "question_open_time": "2026-05-14T16:08:04.654234Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-05-23T01:21:05Z",
+      "source_raw_sha256": "e9523fbcddd987c86031445cbb7d101cfb5b094ef74e4e9761fcc918d547ad55",
+      "split": "validation",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "The Election A A will be held on relative-date-1 , to elect the mayor of City A, California. If no candidate receives a majority of the vote, a runoff Election A will be held on relative-date-2 . This market will resolve according to the listed pair of candidates that advance to the second round of the Election A A. If any candidate wins this Election A outright in the first round, this market will resolve to [identifying quotation removed]. If any candidate pair other than the listed pairs advances to the second round of the Election A A, this market will resolve to \u201cOther\u201d. If the results of the first round of the Election A A are not known by relative-date-3 , specified-time ET, this market will resolve to \"Other\". This market will resolve based on the results of this Election A as indicated by a consensus of credible reporting. If there is ambiguity, this market will resolve based solely on the official results as reported by the city and county of City A.",
+      "domain": "politics",
+      "event_id": "pm_485327",
+      "event_world_cluster": "pm_485327",
+      "forecast_cutoffs": [
+        "2026-05-19T18:49:04.676175Z",
+        "2026-05-26T03:11:09.777370Z",
+        "2026-06-01T11:33:14.878566Z",
+        "2026-06-06T13:26:54.959522Z"
+      ],
+      "mapping_sha256": "04501b1e8af2c85b3aecfee3db2848cb8437bd7d22737524be8200a16544a78d",
+      "question": "Will Candidate A & Candidate B advance to the second round of the Election A A?",
+      "question_open_time": "2026-05-14T16:55:24.595219Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-06-09T02:23:45Z",
+      "source_raw_sha256": "fc65f0b7462ef7514c7e970e6bc0b6e4eb528d0fa2b4416ca3f1dad4a1356e52",
+      "split": "validation",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "A by-election for the Federation A parliamentary constituency of Entity A is expected to be held on relative-date-1 , following the announced resignation of incumbent Entity B. This market will resolve according to the candidate who wins the Entity A parliamentary by-election in specified-year. If the election results are not known definitively by relative-date-2 , specified-time ET, this market will resolve to \"Other\". The resolution source for this market will be a consensus of credible reporting. In case of ambiguity, this market will resolve solely based on official election results as published by Election A (https://www.wigan.gov.uk/).",
+      "domain": "politics",
+      "event_id": "pm_485538",
+      "event_world_cluster": "pm_485538",
+      "forecast_cutoffs": [
+        "2026-05-21T20:38:16.461110Z",
+        "2026-05-30T17:14:50.067013Z",
+        "2026-06-08T13:51:23.672916Z",
+        "2026-06-15T15:56:38.557639Z"
+      ],
+      "mapping_sha256": "b27720a2826d7bba0fcd42659777f5585b6456f48f309769f21f30b4c9fe184a",
+      "question": "Will Candidate A win the specified-year Entity A by-election?",
+      "question_open_time": "2026-05-14T18:33:01.576387Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-06-19T04:59:16Z",
+      "source_raw_sha256": "cb2b5ee1fcdd5c62287596e3f9e4f587edc6a51ec79013541b2e15bdefe9ad34",
+      "split": "validation",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "An interview of Entity A with Entity B is scheduled to air on relative-date-1 , at specified-time ET. ((https://sg.finance.yahoo.com/Entity C/fox-Entity C-channel-conduct-first-172700257.html). This market will resolve to \"Yes[identifying quotation removed]No[identifying quotation removed]joy,\" however, \"killjoy[identifying quotation removed]kill\" and \"joy[identifying quotation removed] a mention of \u201cJoe Biden\u201d will count once). This market is explicitly about Entity A's remarks during the interview by Entity B scheduled for relative-date-2 . (See: https://sg.finance.yahoo.com/Entity C/fox-Entity C-channel-conduct-first-172700257.html). Speeches, events, or comments that occur outside of the named, scheduled event will not qualify toward this market's resolution. If the event contains a Q&A, it will count toward the resolution of this market. AI-generated audio or video will not count toward this market's resolution. If this event is definitively cancelled, or otherwise is not aired by relative-date-3 , specified-time ET, [identifying quotation removed] will resolve to \"Yes[identifying quotation removed]No\". The resolution source will be official audio/video of the event.",
+      "domain": "other",
+      "event_id": "pm_485948",
+      "event_world_cluster": "pm_485948",
+      "forecast_cutoffs": [
+        "2026-05-15T17:13:23.655014Z",
+        "2026-05-16T18:01:44.700322Z",
+        "2026-05-17T18:50:05.745630Z",
+        "2026-05-18T14:40:46.581877Z"
+      ],
+      "mapping_sha256": "9ab45d5cc66ab1254e558d42513f8d0bcac5b12e09741288ec4526a0b834b5d0",
+      "question": "Will Entity A say \"Dumbocrat\" during Entity B interview?",
+      "question_open_time": "2026-05-14T21:22:42.818767Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-05-19T00:36:07Z",
+      "source_raw_sha256": "57720aebf9fd56401f2a9ed5e34fc1e865171d8e73954097a397d41675824db0",
+      "split": "validation",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market is about whether any player achieves a Event A during Game 3. In Entity A, a Event A occurs when a single player kills all 5 enemy champions in rapid succession. This market will resolve to \"Yes[identifying quotation removed]No[identifying quotation removed]No\". If Game 3 is remade, resolution will be based on the remade game only. The resolution source for this market will be official information from https://gol.gg/esports/home. However, if https://gol.gg/esports/home has not published final results within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead including video evidence.",
+      "domain": "sports",
+      "event_id": "pm_488243",
+      "event_world_cluster": "pm_488243",
+      "forecast_cutoffs": [
+        "2026-05-16T14:49:11.054981Z",
+        "2026-05-17T21:24:50.725299Z",
+        "2026-05-19T04:00:30.395618Z",
+        "2026-05-20T04:29:02.131873Z"
+      ],
+      "mapping_sha256": "cb403e9d04557586365e8dc34598508a99b6e9a5a1e9709d7280374c0c186a1f",
+      "question": "Game 3: Any Player Event A?",
+      "question_open_time": "2026-05-15T14:20:39.318726Z",
+      "resolution_rule": "https://gol.gg/esports/home",
+      "resolution_time": "2026-05-20T16:43:18Z",
+      "source_raw_sha256": "77ba3c8e8dfe00aa15f2c5b6ad893108044e1048386d439df5a9d0d483fcf172",
+      "split": "validation",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming game, scheduled for relative-date-1 If Team A wins, this market will resolve to \"Yes[identifying quotation removed]No[identifying quotation removed]No\". This market refers only to the outcome within the first 90 minutes of regular play plus stoppage time. The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead. All markets will settle based on the official final result as recognized by the governing body or event organizers. Revisions to officially declared final scores made after market resolution will not be accounted for in determining the outcome.",
+      "domain": "other",
+      "event_id": "pm_496269",
+      "event_world_cluster": "pm_496269",
+      "forecast_cutoffs": [
+        "2026-05-19T08:46:41.797459Z",
+        "2026-05-21T03:00:00.923253Z",
+        "2026-05-22T21:13:20.049047Z",
+        "2026-05-24T06:59:59.349682Z"
+      ],
+      "mapping_sha256": "0092766a91a8140daaa6f766926d505512972b51eb809c99a0c774982e6f4841",
+      "question": "Will Team A win on relative-date-1 ?",
+      "question_open_time": "2026-05-17T23:00:02.496824Z",
+      "resolution_rule": "https://www.legaseriea.it/",
+      "resolution_time": "2026-05-24T23:53:19Z",
+      "source_raw_sha256": "3088fca04616d360a2beb97e7c81df0757e95d86d17ba0fa33173b09bdc53056",
+      "split": "validation",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming game, scheduled for relative-date-1 If Team A wins, this market will resolve to \"Yes[identifying quotation removed]No[identifying quotation removed]No\". This market refers only to the outcome within the first 90 minutes of regular play plus stoppage time. The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead. All markets will settle based on the official final result as recognized by the governing body or event organizers. Revisions to officially declared final scores made after market resolution will not be accounted for in determining the outcome.",
+      "domain": "other",
+      "event_id": "pm_496299",
+      "event_world_cluster": "pm_496299",
+      "forecast_cutoffs": [
+        "2026-05-19T08:58:55.009582Z",
+        "2026-05-21T03:27:17.194088Z",
+        "2026-05-22T21:55:39.378593Z",
+        "2026-05-24T07:54:21.126198Z"
+      ],
+      "mapping_sha256": "ae17f17c29e34fe6ea5abb6dc9a0407828f273ae0a790bd0818d2a9cd40de503",
+      "question": "Will Team A win on relative-date-1 ?",
+      "question_open_time": "2026-05-17T23:00:13.261978Z",
+      "resolution_rule": "https://www.legaseriea.it/",
+      "resolution_time": "2026-05-25T00:53:42Z",
+      "source_raw_sha256": "358ef61204cda197406e1948cd1697c150c03eac1d2939e17409579464fa1d71",
+      "split": "validation",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve to \"Yes[identifying quotation removed]No\". Index A Prices are published for trading days only and are updated once daily at specified-time ET on the following calendar day. If Index A has not published relevant data for all business dates in the specified period by specified-time ET on relative-date-2 , this market may remain open until specified-time ET on relative-date-3 . If no further data is released by that time, the market will resolve according to the data available. If Index A ceases publishing relevant data prior to the end of the specified period, this market will resolve based on the Index A data published for the period prior to the cessation of coverage, as well as any applicable public market capitalization data following an IPO or direct listing. If the company completes an IPO or direct listing before the end of the specified period, this market will consider, in addition to the relevant Index A valuations published between market creation and the IPO or direct listing date, the valuation implied by the official IPO or direct listing price, and the company's public market capitalization between the IPO or direct listing date and the end of the specified period. Public market capitalization will be determined using the highest/lowest official regular-hours trading price published for the company's primary listed common equity on its primary exchange for any trading day during the specified period, multiplied by the company's total outstanding common shares at the relevant time. If the listed company merges with or acquires another entity and remains the parent company, no change to resolution methodology applies. If the listed company is acquired, merges into another entity and is no longer the surviving parent company, or otherwise ceases to exist as an independent entity prior to the end of the period, only Index A valuations and applicable public market capitalizations achieved prior to completion of the transaction will be considered for resolution. No transaction, acquisition, or merger consideration will be considered for resolution. The resolution source for this market is Index A data published here: (https://fe.secondmarket.com/companies/company-5bc8aa2b-22b5-48cc-b54a-1310145b0a86/data). The resolution source for any period following an IPO, direct listing, or relevant corporate action, will be official exchange trading data and publicly reported share counts. Revisions to previously published Index A data made after their initial release will not be considered, unless made to correct clearly erroneous data.",
+      "domain": "technology",
+      "event_id": "pm_500558",
+      "event_world_cluster": "pm_500558",
+      "forecast_cutoffs": [
+        "2026-05-27T17:11:10.733859Z",
+        "2026-06-07T10:03:54.567028Z",
+        "2026-06-18T02:56:38.400197Z",
+        "2026-06-26T16:26:49.466733Z"
+      ],
+      "mapping_sha256": "a48f2c0738c519c207f119c2cd86537ca5cc1cdeea976477719281b62e100549",
+      "question": "Will Company A's valuation hit (HIGH) $3.0T by relative-date-1 ?",
+      "question_open_time": "2026-05-19T03:40:59.667324Z",
+      "resolution_rule": "https://fe.secondmarket.com/companies/company-5bc8aa2b-22b5-48cc-b54a-1310145b0a86/data?return_url=https://polymarket.com/finance/privates",
+      "resolution_time": "2026-06-30T23:11:55Z",
+      "source_raw_sha256": "ff73a735389e6362dfadf15c8b1269735bbf367bcb1fce59e76e9b399bf151a0",
+      "split": "validation",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve according to the number of times Person A (@elonmusk), posts on X from relative-date-1 specified-time ET to relative-date-2 specified-time ET. For the purposes of this market, only main feed posts, quote posts and reposts will count. Replies will NOT count towards the total - however, replies on the main feed such as https://x.com/elonmusk/status/1786073478711353576 will be counted by the tracker. Deleted posts will count as long as they remain available long enough to be captured by the tracker (~5 minutes). Community reposts which are not counted by the tracker not count toward the total. The resolution source for this market is the 'Post Counter' figure for posts found at https://xtracker.polymarket.com. Individual posts can be viewed by clicking \"Export Data\". If the tracker does not update correctly in accordance with the rules, X itself may be used as a secondary resolution source.",
+      "domain": "geopolitics",
+      "event_id": "pm_506536",
+      "event_world_cluster": "pm_506536",
+      "forecast_cutoffs": [
+        "2026-05-22T13:56:58.649833Z",
+        "2026-05-24T23:03:42.670061Z",
+        "2026-05-27T08:10:26.690290Z",
+        "2026-05-29T05:51:49.906473Z"
+      ],
+      "mapping_sha256": "cb93e40ef9cdd53ef09dc36ace1ed8b484a6c8a6398ec89528022b873554c7a0",
+      "question": "Will Person A post 240-259 tweets from relative-date-1 to relative-date-2 ?",
+      "question_open_time": "2026-05-20T16:15:35.433650Z",
+      "resolution_rule": "https://x.com/elonmusk",
+      "resolution_time": "2026-05-30T04:42:31.514564Z",
+      "source_raw_sha256": "71b7c0b46136d309841ed256d2f6def9a1db3bd5e87eeaca939d8313efcdb7a5",
+      "split": "validation",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming Entity A game between Team A and Team B, scheduled for relative-date-1 at specified-time ET: This market will resolve based on the final score of the Team A vs. Team B match originally scheduled for relative-date-2 at specified-time ET, considering only the result at the end of 90 minutes of regulation plus stoppage time; extra time and penalty shoot-outs are excluded. If the actual score is not one of the explicitly listed outcomes, the market resolves to [identifying quotation removed] If the match is postponed, the market will remain open until it is completed; if it is canceled with no make-up game, the market resolves to \"0-0.\" The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead. All markets will settle based on the official final result as recognized by the governing body or event organizers. Revisions to officially declared final scores made after market resolution will not be accounted for in determining the outcome.",
+      "domain": "geopolitics",
+      "event_id": "pm_510238",
+      "event_world_cluster": "pm_510238",
+      "forecast_cutoffs": [
+        "2026-05-26T18:33:28.121491Z",
+        "2026-06-02T03:18:18.396025Z",
+        "2026-06-08T12:03:08.670559Z",
+        "2026-06-13T14:15:00.890186Z"
+      ],
+      "mapping_sha256": "465b31ed850a4ada0a48c3dedb9af0f148776c25b033f122ee7f1332b20c98a8",
+      "question": "Exact Score: Team A 3 - 3 Team B?",
+      "question_open_time": "2026-05-21T16:21:35.901864Z",
+      "resolution_rule": "https://www.Entity B.com/fifaplus/en/tournaments/mens/worldcup",
+      "resolution_time": "2026-06-16T03:20:57Z",
+      "source_raw_sha256": "daaa1acc39437a08fb8884be712c38e8f35ab6e7c40615603fda4ceb037923e9",
+      "split": "validation",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming Entity A game between Federation A and Federation B, scheduled for relative-date-1 at specified-time ET: This market will resolve based on the final score of the Federation A vs. Federation B match originally scheduled for relative-date-2 at specified-time ET, considering only the result at the end of 90 minutes of regulation plus stoppage time; extra time and penalty shoot-outs are excluded. If the actual score is not one of the explicitly listed outcomes, the market resolves to [identifying quotation removed] If the match is postponed, the market will remain open until it is completed; if it is canceled with no make-up game, the market resolves to \"0-0.\" The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead. All markets will settle based on the official final result as recognized by the governing body or event organizers. Revisions to officially declared final scores made after market resolution will not be accounted for in determining the outcome.",
+      "domain": "sports",
+      "event_id": "pm_510258",
+      "event_world_cluster": "pm_510258",
+      "forecast_cutoffs": [
+        "2026-05-26T23:21:56.239896Z",
+        "2026-06-02T14:06:53.977428Z",
+        "2026-06-09T04:51:51.714961Z",
+        "2026-06-14T11:51:49.904987Z"
+      ],
+      "mapping_sha256": "7ad89d0d72d1de0f588449e7d040e89f174caf594a0f4933614ee90639d7fd6d",
+      "question": "Exact Score: Federation A 3 - 0 Federation B?",
+      "question_open_time": "2026-05-21T16:21:58.049870Z",
+      "resolution_rule": "https://www.Entity B.com/fifaplus/en/tournaments/mens/worldcup",
+      "resolution_time": "2026-06-17T03:21:49Z",
+      "source_raw_sha256": "2d9d546889af703ec9b1f989fc6b64a5d32b28081be14d81adbec08ed20589fe",
+      "split": "validation",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming Entity A game between Federation A and Federation B, scheduled for relative-date-1 at specified-time ET: This market will resolve based on the final score of the Federation A vs. Federation B match originally scheduled for relative-date-2 at specified-time ET, considering only the result at the end of 90 minutes of regulation plus stoppage time; extra time and penalty shoot-outs are excluded. If the actual score is not one of the explicitly listed outcomes, the market resolves to [identifying quotation removed] If the match is postponed, the market will remain open until it is completed; if it is canceled with no make-up game, the market resolves to \"0-0.\" The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead. All markets will settle based on the official final result as recognized by the governing body or event organizers. Revisions to officially declared final scores made after market resolution will not be accounted for in determining the outcome.",
+      "domain": "sports",
+      "event_id": "pm_510310",
+      "event_world_cluster": "pm_510310",
+      "forecast_cutoffs": [
+        "2026-05-28T07:23:14.650702Z",
+        "2026-06-05T14:05:45.072357Z",
+        "2026-06-13T20:48:15.494013Z",
+        "2026-06-20T11:46:15.831338Z"
+      ],
+      "mapping_sha256": "de3c6c83702fc68a54b1af1b3a27914443fbc717bceb8f681c88d8b8d56fc46f",
+      "question": "Exact Score: Federation A 3 - 0 Federation B?",
+      "question_open_time": "2026-05-21T16:25:14.313377Z",
+      "resolution_rule": "https://www.Entity B.com/fifaplus/en/tournaments/mens/worldcup",
+      "resolution_time": "2026-06-23T19:15:16Z",
+      "source_raw_sha256": "8db7a08eca9897e41f907f6e7dacf8b05da1292b67974ed75b23509cf7a75487",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming game, scheduled for relative-date-1 If Team A wins within the first 45 minutes of regular play plus stoppage time, this market will resolve to \"Yes[identifying quotation removed]No[identifying quotation removed]No\". This market refers only to the outcome within the first 45 minutes of regular play plus stoppage time.The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 24 hours after the event's conclusion, a consensus of credible reporting may be used instead. All markets will settle based on the official final result as recognized by the governing body or event organizers. Revisions to officially declared final scores made after market resolution will not be accounted for in determining the outcome.",
+      "domain": "sports",
+      "event_id": "pm_510321",
+      "event_world_cluster": "pm_510321",
+      "forecast_cutoffs": [
+        "2026-05-28T13:12:37.047274Z",
+        "2026-06-06T03:10:56.720001Z",
+        "2026-06-14T17:09:16.392728Z",
+        "2026-06-21T13:55:56.130909Z"
+      ],
+      "mapping_sha256": "8dfb171b311e41617a85172d1b555dba5f98896b7494d1d3965c4b8a76adb1f5",
+      "question": "Team A leading at halftime?",
+      "question_open_time": "2026-05-21T16:25:57.309092Z",
+      "resolution_rule": "https://www.Entity A.com/fifaplus/en/tournaments/mens/worldcup",
+      "resolution_time": "2026-06-25T00:19:16Z",
+      "source_raw_sha256": "ac6913f78dc9fcbd743a9714d9b7b399971b2fc18eb5acabe645ec4ccaa37c34",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming Entity A game between Federation A and Federation B, scheduled for relative-date-1 at specified-time ET: This market will resolve to \"Yes[identifying quotation removed]No\" if either team fails to score (i.e., if one or both teams finish with zero goals). If the game is postponed, this market will remain open until the game has been completed. If the game is canceled entirely, with no make-up game, this market will resolve 50\u201350. If the game is started but not completed, this market will resolve according to the official final score published on Entity B. This market refers only to the outcome within the first 90 minutes of regular play plus stoppage time. The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead. All markets will settle based on the official final result as recognized by the governing body or event organizers. Revisions to officially declared final scores made after market resolution will not be accounted for in determining the outcome.",
+      "domain": "geopolitics",
+      "event_id": "pm_510379",
+      "event_world_cluster": "pm_510379",
+      "forecast_cutoffs": [
+        "2026-05-28T23:51:41.294093Z",
+        "2026-06-07T03:04:29.639689Z",
+        "2026-06-16T06:17:17.985285Z",
+        "2026-06-23T13:39:32.661762Z"
+      ],
+      "mapping_sha256": "5e08f7f94cfaf9600daef06b79b7a2c48bd17edcd0823a4bec0cceb86aa52922",
+      "question": "Federation A vs. Federation B: Both Teams to Score",
+      "question_open_time": "2026-05-21T16:29:26.617616Z",
+      "resolution_rule": "https://www.Entity B/fifaplus/en/tournaments/mens/worldcup",
+      "resolution_time": "2026-06-27T05:20:40Z",
+      "source_raw_sha256": "4dbdbcae201ec5df635d9fbf6cb249e8a4f21a8f68c57ce265307c7f2e1c2504",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming Entity A game between Federation A and Federation B, scheduled for relative-date-1 at specified-time ET: This market will resolve to \"Yes[identifying quotation removed]No\" if either team fails to score (i.e., if one or both teams finish with zero goals). If the game is postponed, this market will remain open until the game has been completed. If the game is canceled entirely, with no make-up game, this market will resolve 50\u201350. If the game is started but not completed, this market will resolve according to the official final score published on Entity B.com. This market refers only to the outcome within the first 90 minutes of regular play plus stoppage time. The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead. All markets will settle based on the official final result as recognized by the governing body or event organizers. Revisions to officially declared final scores made after market resolution will not be accounted for in determining the outcome.",
+      "domain": "sports",
+      "event_id": "pm_510383",
+      "event_world_cluster": "pm_510383",
+      "forecast_cutoffs": [
+        "2026-05-28T22:14:55.529078Z",
+        "2026-06-06T23:26:20.051241Z",
+        "2026-06-16T00:37:44.573404Z",
+        "2026-06-23T06:22:52.191135Z"
+      ],
+      "mapping_sha256": "04b4b6d6cdc0ee32291e37909dee44b667edc1d30ded895768ca451d014267c6",
+      "question": "Federation A vs. Federation B: Both Teams to Score",
+      "question_open_time": "2026-05-21T16:29:47.911348Z",
+      "resolution_rule": "https://www.Entity B.com/fifaplus/en/tournaments/mens/worldcup",
+      "resolution_time": "2026-06-26T21:15:26Z",
+      "source_raw_sha256": "1505a11a7c9e3d532d211d7f2aa0636419dc4cab06abdf0d070f6e8b7a1f241a",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming Entity A game between Federation A and Federation B, scheduled for relative-date-1 at specified-time ET: This market will resolve to \"Yes[identifying quotation removed]No\" if either team fails to score (i.e., if one or both teams finish with zero goals). If the game is postponed, this market will remain open until the game has been completed. If the game is canceled entirely, with no make-up game, this market will resolve 50\u201350. If the game is started but not completed, this market will resolve according to the official final score published on Entity B.com. This market refers only to the outcome within the first 90 minutes of regular play plus stoppage time. The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead. All markets will settle based on the official final result as recognized by the governing body or event organizers. Revisions to officially declared final scores made after market resolution will not be accounted for in determining the outcome.",
+      "domain": "sports",
+      "event_id": "pm_510390",
+      "event_world_cluster": "pm_510390",
+      "forecast_cutoffs": [
+        "2026-05-28T13:51:03.776794Z",
+        "2026-06-06T04:31:46.034046Z",
+        "2026-06-14T19:12:28.291298Z",
+        "2026-06-21T16:33:02.097099Z"
+      ],
+      "mapping_sha256": "c643e8486d031a079d57441f54abdb8026bb6a4f63c3da907eafde94729d5d3a",
+      "question": "Federation A vs. Federation B: Both Teams to Score",
+      "question_open_time": "2026-05-21T16:30:29.970992Z",
+      "resolution_rule": "https://www.Entity B.com/fifaplus/en/tournaments/mens/worldcup",
+      "resolution_time": "2026-06-25T03:13:19Z",
+      "source_raw_sha256": "bd5e4a13e43b9e9169c22c8b1f6acf59aeffeb4c58debb8fbf0030fcfaf3c41c",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming Entity A game between Team A and Team B, scheduled for relative-date-1 at specified-time ET: This market will resolve to \"Yes[identifying quotation removed]No\" if either team fails to score (i.e., if one or both teams finish with zero goals). If the game is postponed, this market will remain open until the game has been completed. If the game is canceled entirely, with no make-up game, this market will resolve 50\u201350. If the game is started but not completed, this market will resolve according to the official final score published on Entity B.com. This market refers only to the outcome within the first 90 minutes of regular play plus stoppage time. The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead. All markets will settle based on the official final result as recognized by the governing body or event organizers. Revisions to officially declared final scores made after market resolution will not be accounted for in determining the outcome.",
+      "domain": "sports",
+      "event_id": "pm_510396",
+      "event_world_cluster": "pm_510396",
+      "forecast_cutoffs": [
+        "2026-05-28T09:15:09.204380Z",
+        "2026-06-05T18:10:13.203011Z",
+        "2026-06-14T03:05:17.201643Z",
+        "2026-06-20T19:49:20.400548Z"
+      ],
+      "mapping_sha256": "3a2cdcd1eef02e57acf1550a75450fc4f8caa5bef7ea82a5d9b8a8507c9a1f60",
+      "question": "Team A vs. Team B: Both Teams to Score",
+      "question_open_time": "2026-05-21T16:31:06.005475Z",
+      "resolution_rule": "https://www.Entity B.com/fifaplus/en/tournaments/mens/worldcup",
+      "resolution_time": "2026-06-24T04:11:22Z",
+      "source_raw_sha256": "8200781182c43541752bd822edbd32a0978e9110f0c1ff0fd7a4d374cc092fdd",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "The second round of the Federation A presidential Election A is scheduled to be held on relative-date-1 . This market will resolve according to the margin of victory between the top two candidates in the second round of the specified-year Peruvian presidential Entity B. For the purpose of this market, the [identifying quotation removed] is defined as the absolute difference between the percentages of valid votes received by the first-place and second-place candidates. Percentages of the valid votes received by each candidate will be determined by dividing the total number of valid votes each of the top two candidates receives by the sum of all valid votes cast in the Election A. If the reported value falls exactly between two brackets, then this market will resolve to the higher range bracket. If two candidates receive the exact same highest number of valid votes and both are listed, this market will resolve to the lowest bracket for the tied candidate whose last name comes first alphabetically. This market will resolve based on the official vote count once the count has been made official. If the results of the specified Election A are not known definitively by relative-date-2 , specified-time ET, this market will resolve to \u201cOther\u201d. This market will resolve based on the results of this Election A, as indicated by a consensus of credible reporting. If there is ambiguity, this market will resolve solely on the official results as reported by the Peruvian government, specifically the Entity A (Oficina Nacional de Procesos Electorales, ONPE) (https://www.onpe.gob.pe/elecciones/) and the Entity B (Jurado Nacional de Elecciones, JNE) (https://portal.jne.gob.pe/portal/) If a recount is initiated before the vote total has been made official, the market will remain open until the recount is completed and the vote is made official.",
+      "domain": "politics",
+      "event_id": "pm_510803",
+      "event_world_cluster": "pm_510803",
+      "forecast_cutoffs": [
+        "2026-05-30T14:52:07.669085Z",
+        "2026-06-10T14:59:30.897496Z",
+        "2026-06-21T15:06:54.125907Z",
+        "2026-06-30T10:24:48.708636Z"
+      ],
+      "mapping_sha256": "305bc6a80df49191f674716a52ba98ae2f234ef5f8653b7b3759c4100c5d22d7",
+      "question": "Will Candidate A win the 2nd round of the Election A A by 0\u20134%?",
+      "question_open_time": "2026-05-21T19:34:13.086356Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-07-04T20:03:46Z",
+      "source_raw_sha256": "6a61ef8b8897608c3af90c7166e6b81ac37369cb9cb130ad6c76510d0976a762",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming Entity A game between the Team A and Team B, scheduled for relative-date-1 at specified-time ET: This market will resolve to \"Yes[identifying quotation removed]No\" if no runs are scored in the 1st inning by either team. If the game is postponed, this market will remain open until the game has been completed. If the game is canceled entirely, with no make-up game, this market will resolve 50-50. To know when a postponed game will be played, please check the home team's schedule on Entity A.com for the listed team and look for the game described as a makeup game. The primary resolution source for this market is the official final statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 24 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "sports",
+      "event_id": "pm_516891",
+      "event_world_cluster": "pm_516891",
+      "forecast_cutoffs": [
+        "2026-05-24T20:20:52.426847Z",
+        "2026-05-26T11:31:39.168458Z",
+        "2026-05-28T02:42:25.910068Z",
+        "2026-05-29T10:03:03.303356Z"
+      ],
+      "mapping_sha256": "e8f0084cfb7a6aefb039324f9b1b1613e451082336ce94fb00a1ac24737526d3",
+      "question": "Will there be a run scored in the first inning?: Team A vs. Team B",
+      "question_open_time": "2026-05-23T13:00:15.033559Z",
+      "resolution_rule": "https://www.Entity A.com/scores",
+      "resolution_time": "2026-05-30T01:43:22Z",
+      "source_raw_sha256": "6630dc8a798e9e9437ec024dad5812600b5f3f792a8b3c62b6f596939e0ac01a",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market is about whether both teams slay the Entity A at least once during Game 1. Entity A is a powerful neutral objective in Entity B that first spawns at 20:00 game time and respawns 6 minutes after each death, granting the slaying team the Hand of Baron buff. This market will resolve to \"Yes[identifying quotation removed]No[identifying quotation removed]No\". If Game 1 is remade, resolution will be based on the remade game only. The resolution source for this market will be official information from https://gol.gg/esports/home. However, if https://gol.gg/esports/home has not published final results within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead including video evidence.",
+      "domain": "sports",
+      "event_id": "pm_518355",
+      "event_world_cluster": "pm_518355",
+      "forecast_cutoffs": [
+        "2026-05-24T22:06:50.300001Z",
+        "2026-05-26T01:56:41.768750Z",
+        "2026-05-27T05:46:33.237500Z",
+        "2026-05-28T04:02:26.412500Z"
+      ],
+      "mapping_sha256": "848a92ccc8c9ca95408f67483bb787f495d1af9a6acd127daeeaae95203f0669",
+      "question": "Game 1: Both Teams Slay Entity A?",
+      "question_open_time": "2026-05-23T23:50:57.125001Z",
+      "resolution_rule": "https://gol.gg/esports/home",
+      "resolution_time": "2026-05-28T15:10:23Z",
+      "source_raw_sha256": "116291a4a751a64974403713943f581dd16897394ebe550b1245fdb6adff5bf8",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market refers to the tennis match between Entity B and Entity C in the Entity A Entity D, originally scheduled for relative-date-1 at specified-time ET. This market will resolve to \"Yes[identifying quotation removed]No.[identifying quotation removed]No.[identifying quotation removed]No.\" The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "sports",
+      "event_id": "pm_522263",
+      "event_world_cluster": "pm_522263",
+      "forecast_cutoffs": [
+        "2026-05-25T16:43:51.841053Z",
+        "2026-05-26T08:38:33.140724Z",
+        "2026-05-27T00:33:14.440395Z",
+        "2026-05-27T13:16:59.480132Z"
+      ],
+      "mapping_sha256": "4fb92d420e92912c512b6440a0e5b1c296911960403cbfac921210625f67f359",
+      "question": "Entity A Entity D: Completed Match: Entity B vs Entity C",
+      "question_open_time": "2026-05-25T04:00:06.801316Z",
+      "resolution_rule": "https://www.atptour.com/en/scores/current",
+      "resolution_time": "2026-05-27T19:38:52Z",
+      "source_raw_sha256": "4fe663ead2494d9d61d63b603244908dfa29e5014a4c7372e7e2bd9d3bfe0920",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming Entity A game between the Team A and Team B, scheduled for relative-date-1 at specified-time ET: This market will resolve to \"Yes[identifying quotation removed]No\" if no runs are scored in the 1st inning by either team. If the game is postponed, this market will remain open until the game has been completed. If the game is canceled entirely, with no make-up game, this market will resolve 50-50. To know when a postponed game will be played, please check the home team's schedule on Entity A.com for the listed team and look for the game described as a makeup game. The primary resolution source for this market is the official final statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 24 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "sports",
+      "event_id": "pm_523526",
+      "event_world_cluster": "pm_523526",
+      "forecast_cutoffs": [
+        "2026-05-26T21:17:15.533455Z",
+        "2026-05-28T13:38:32.866750Z",
+        "2026-05-30T05:59:50.200046Z",
+        "2026-05-31T14:16:52.066682Z"
+      ],
+      "mapping_sha256": "c29ade77626b77649bf63d9d3def3ee3436a2b327f329951c927a185c84d7a44",
+      "question": "Will there be a run scored in the first inning?: Team A vs. Team B",
+      "question_open_time": "2026-05-25T13:00:13.666819Z",
+      "resolution_rule": "https://www.Entity A.com/scores",
+      "resolution_time": "2026-06-01T06:25:23Z",
+      "source_raw_sha256": "6f2984cd15991bfd37d7b6241f7afcfd40f80e2c1eeb9892caa5ed2e7f9566de",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve to \"Yes[identifying quotation removed]Close[identifying quotation removed]No[identifying quotation removed]Close[identifying quotation removed]1m\" and \"Candles\" selected on the top bar. Please note that this market is about the price according to Entity A Entity B, not according to other exchanges or trading pairs. Price precision is determined by the number of decimal places in the source.",
+      "domain": "crypto",
+      "event_id": "pm_527368",
+      "event_world_cluster": "pm_527368",
+      "forecast_cutoffs": [
+        "2026-05-27T06:01:00.184236Z",
+        "2026-05-28T00:46:37.314162Z",
+        "2026-05-28T19:32:14.444088Z",
+        "2026-05-29T10:32:44.148030Z"
+      ],
+      "mapping_sha256": "f8a1edeb7c1b12b69dcb528af20e28af3a71f165499496e08b67a2defca8d92d",
+      "question": "Will the price of Asset A be above $74,000 on relative-date-1 ?",
+      "question_open_time": "2026-05-26T15:00:30.480295Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-05-29T18:02:59Z",
+      "source_raw_sha256": "a361bc7511267e7934c7c1037cc5cbcaa67afe75503fda1b1385a8de79515864",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will immediately resolve to \"Yes[identifying quotation removed]High[identifying quotation removed]No[identifying quotation removed]High[identifying quotation removed]1m\" candles selected on the top bar. Please note that the outcome of this market depends solely on the price data from the Entity A Entity B trading pair. Prices from other exchanges, different trading pairs, or spot markets will not be considered for the resolution of this market.",
+      "domain": "crypto",
+      "event_id": "pm_529352",
+      "event_world_cluster": "pm_529352",
+      "forecast_cutoffs": [
+        "2026-05-27T09:05:35.941500Z",
+        "2026-05-27T15:27:35.022281Z",
+        "2026-05-27T21:49:34.103063Z",
+        "2026-05-28T02:55:09.367687Z"
+      ],
+      "mapping_sha256": "f8a1edeb7c1b12b69dcb528af20e28af3a71f165499496e08b67a2defca8d92d",
+      "question": "Will Asset A reach $79,000 on relative-date-1 ?",
+      "question_open_time": "2026-05-27T04:00:00.676875Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-05-28T05:27:57Z",
+      "source_raw_sha256": "4a9b6289dd9cc11fb71a59f635d2a7de608321165470b57789530faa1179b65d",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming Entity A game between the Team A and Team B, scheduled for relative-date-1 at specified-time ET: This market will resolve to \"Yes[identifying quotation removed]No\" if no runs are scored in the 1st inning by either team. If the game is postponed, this market will remain open until the game has been completed. If the game is canceled entirely, with no make-up game, this market will resolve 50-50. To know when a postponed game will be played, please check the home team's schedule on Entity A.com for the listed team and look for the game described as a makeup game. The primary resolution source for this market is the official final statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 24 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "sports",
+      "event_id": "pm_530740",
+      "event_world_cluster": "pm_530740",
+      "forecast_cutoffs": [
+        "2026-05-28T21:07:39.122271Z",
+        "2026-05-30T13:16:51.271561Z",
+        "2026-06-01T05:26:03.420852Z",
+        "2026-06-02T13:33:25.140284Z"
+      ],
+      "mapping_sha256": "0df7a65ed590a8df0ce874ffa0782a7211e554e9d11c9c3788d0a481ebc99a7d",
+      "question": "Will there be a run scored in the first inning?: Team A vs. Team B",
+      "question_open_time": "2026-05-27T13:00:17.402839Z",
+      "resolution_rule": "https://www.Entity A.com/scores",
+      "resolution_time": "2026-06-03T05:37:06Z",
+      "source_raw_sha256": "63ea69cfaa17b45a5cb14dfd188afeb725646fb6fa7f1e767e4756e3788c3d2a",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve to \"Yes[identifying quotation removed]. Federation A allowing unrestricted commercial navigation of the Entity A refers to a public agreement by Federation A that commercial vessels may transit the Entity A without Iranian authorization/permission, payment of fees to Federation A, or other Federation A-imposed restrictions. A public agreement that all restrictions imposed on commercial vessels transiting the Entity A by Federation A as part of the US-Federation A conflict which began on relative-date-2 , will be definitively lifted, without replacement by new restrictions, will qualify. A qualifying agreement must clearly indicate that Federation A will not impose restrictions on commercial transit through the Entity A. General statements about the strait being \u201copen\u201d, de-escalation, security, increased transit in the Strait, or stability in the region, which do not clearly indicate that Federation A will allow unrestricted commercial transit through the Entity A, will not qualify. An official pledge by Federation A to allow unrestricted commercial navigation of the Entity A will qualify for a \u201cYes\u201d resolution whether as a unilateral announcement or part of an agreement with the U.S. or Federation B. Any agreement or pledge made before the resolution date of this market will qualify, regardless of if/when the agreement goes into effect. An agreement by Federation A to allow unrestricted commercial navigation of the Entity A as a precondition of a more comprehensive peace process or deal will qualify, even if the agreement is not finalized or part of a formalized peace deal. The primary resolution sources for this market will be official information from the government of Federation A and a consensus of credible reporting.",
+      "domain": "geopolitics",
+      "event_id": "pm_530966",
+      "event_world_cluster": "pm_530966",
+      "forecast_cutoffs": [
+        "2026-06-03T13:04:38.971301Z",
+        "2026-06-12T04:54:57.417769Z",
+        "2026-06-20T20:45:15.864238Z",
+        "2026-06-27T19:01:30.621413Z"
+      ],
+      "mapping_sha256": "a76a072684c8fbd0f234b78ce990eb87d80174a8c3c9d4f5711bd94a0fd1d5de",
+      "question": "Federation A agrees to unrestricted shipping through Entity A by relative-date-1 ?",
+      "question_open_time": "2026-05-27T14:48:24.214126Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-07-01T06:09:38Z",
+      "source_raw_sha256": "36c24cfcdb7793fc615138f2428e9662dde601571a5c8f7ccad2bcaeffdf22f5",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve according to the number of times Person A (@elonmusk), posts on X from relative-date-1 specified-time ET to relative-date-2 specified-time ET. For the purposes of this market, only main feed posts, quote posts and reposts will count. Replies will NOT count towards the total - however, replies on the main feed such as https://x.com/elonmusk/status/1786073478711353576 will be counted by the tracker. Deleted posts will count as long as they remain available long enough to be captured by the tracker (~5 minutes). Community reposts which are not counted by the tracker not count toward the total. The resolution source for this market is the 'Post Counter' figure for posts found at https://xtracker.Entity A.com. Individual posts can be viewed by clicking \"Export Data\". If the tracker does not update correctly in accordance with the rules, X itself may be used as a secondary resolution source.",
+      "domain": "other",
+      "event_id": "pm_540037",
+      "event_world_cluster": "pm_540037",
+      "forecast_cutoffs": [
+        "2026-06-01T07:18:43.836716Z",
+        "2026-06-03T23:27:06.700242Z",
+        "2026-06-06T15:35:29.563769Z",
+        "2026-06-08T18:54:11.854589Z"
+      ],
+      "mapping_sha256": "697eb37406924c09e1171b803e29b139e9a9d703e7fc52a513c58558d5b29108",
+      "question": "Will Person A post 200-219 tweets from relative-date-1 to relative-date-2 ?",
+      "question_open_time": "2026-05-30T04:00:01.545895Z",
+      "resolution_rule": "https://x.com/elonmusk",
+      "resolution_time": "2026-06-09T20:33:33Z",
+      "source_raw_sha256": "61ed0942be90f042d5bd04f6e48596bfa68f6df145634e5f7adc0d48734def10",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming Entity A game between the Team A and Team B, scheduled for relative-date-1 at specified-time ET: This market will resolve to \"Yes[identifying quotation removed]No\" if no runs are scored in the 1st inning by either team. If the game is postponed, this market will remain open until the game has been completed. If the game is canceled entirely, with no make-up game, this market will resolve 50-50. To know when a postponed game will be played, please check the home team's schedule on Entity A.com for the listed team and look for the game described as a makeup game. The primary resolution source for this market is the official final statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 24 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "sports",
+      "event_id": "pm_541276",
+      "event_world_cluster": "pm_541276",
+      "forecast_cutoffs": [
+        "2026-05-31T20:20:58.745026Z",
+        "2026-06-02T11:31:52.574706Z",
+        "2026-06-04T02:42:46.404385Z",
+        "2026-06-05T10:03:29.468128Z"
+      ],
+      "mapping_sha256": "0449cfa892f248e063fe433916eacce39227cf6195eed04dff72bb2c75cd4bfa",
+      "question": "Will there be a run scored in the first inning?: Team A vs. Team B",
+      "question_open_time": "2026-05-30T13:00:15.681283Z",
+      "resolution_rule": "https://www.Entity A.com/scores",
+      "resolution_time": "2026-06-06T01:43:51Z",
+      "source_raw_sha256": "fa052f96d0ece68c88811b1e4ab69d814c6e55d2845dc3d4f7d3eaa1b2086f04",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve according to the finalized 7-day moving average of transit calls ([identifying quotation removed]) for the Entity A that Entity B reports for relative-date-1 . If the reported value falls exactly between two brackets, this market will resolve to the higher range bracket. Transit calls include container, dry bulk, roll-on/roll-off, general cargo, and tanker ships. Ships not reported by Entity B will not be considered. Data for a specific date must be finalized before it is considered for this market (namely, once the next date's data point is available, the previous one is finalized). This market will resolve as soon as the relevant data has been finalized. If the data for the specified date has not been finalized by the end of the third calendar day (ET) after the day on which such data is released, this market will resolve based on data published up to that point. Additionally, if the relevant data is not released and finalized within 14 calendar days of the specified date, this market will resolve based on the most recent data published up to that point. In case of obvious data integrity issues (i.e., erroneous data), the market may remain open until the end of the third calendar day (ET) after the date on which such data is first released to allow for corrections. Data integrity issues refer only to clerical or other similar errors in the underlying data, and do not include cases where Entity B differs from alternative sources. Only revisions to previously published data points made before the applicable resolution time will be considered. The resolution source for this market will be Entity B, specifically the transit calls data published for the Entity A at https://Entity B.imf.org/pages/cb5856222a5b4105adc6ee7e880a1730, both in the chart and through downloadable files.",
+      "domain": "geopolitics",
+      "event_id": "pm_542904",
+      "event_world_cluster": "pm_542904",
+      "forecast_cutoffs": [
+        "2026-06-07T12:41:42.951037Z",
+        "2026-06-16T22:53:54.528838Z",
+        "2026-06-26T09:06:06.106639Z",
+        "2026-07-03T22:03:51.368880Z"
+      ],
+      "mapping_sha256": "dce3d03816c449c0a18068cc2db44a731a20cc8e4e15d6d6827ee7e66c06fcfd",
+      "question": "Will there be between 10 and 20 average daily transits of the Entity A on relative-date-1 ?",
+      "question_open_time": "2026-05-30T23:43:57.688796Z",
+      "resolution_rule": "https://Entity B.imf.org/pages/cb5856222a5b4105adc6ee7e880a1730",
+      "resolution_time": "2026-07-07T16:32:44Z",
+      "source_raw_sha256": "dd8a91c3dc5c2418dc50a6240809fc9c915c0e68c5370431970123eb0a99ccc7",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will immediately resolve to \"Yes[identifying quotation removed]Low[identifying quotation removed]No.[identifying quotation removed]Low[identifying quotation removed]1m\" for one-minute candles selected on the top bar. Please note that the outcome of this market depends solely on the price data from the Entity A Entity B trading pair. Prices from other exchanges, different trading pairs, or spot markets will not be considered for the resolution of this market.",
+      "domain": "crypto",
+      "event_id": "pm_546727",
+      "event_world_cluster": "pm_546727",
+      "forecast_cutoffs": [
+        "2026-06-01T08:58:57.225322Z",
+        "2026-06-01T15:12:37.467409Z",
+        "2026-06-01T21:26:17.709496Z",
+        "2026-06-02T02:25:13.903165Z"
+      ],
+      "mapping_sha256": "f8a1edeb7c1b12b69dcb528af20e28af3a71f165499496e08b67a2defca8d92d",
+      "question": "Will Asset A dip to $71,000 on relative-date-1 ?",
+      "question_open_time": "2026-06-01T04:00:01.031652Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-06-02T04:54:42Z",
+      "source_raw_sha256": "cb7255e2e9e62c560a27f5e1d11f3f3e702cf6cbcaf1b461905d165c4fd56424",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will immediately resolve to \"Yes[identifying quotation removed]No.[identifying quotation removed]1m\" for one-minute candles selected on the top bar. Please note that the outcome of this market depends solely on the price data from the Entity A Entity B trading pair. Prices from other exchanges, different trading pairs, or spot markets will not be considered for the resolution of this market.",
+      "domain": "crypto",
+      "event_id": "pm_548274",
+      "event_world_cluster": "pm_548274",
+      "forecast_cutoffs": [
+        "2026-06-07T12:56:31.110446Z",
+        "2026-06-14T22:49:50.763432Z",
+        "2026-06-22T08:43:10.416417Z",
+        "2026-06-28T07:01:50.138806Z"
+      ],
+      "mapping_sha256": "f8a1edeb7c1b12b69dcb528af20e28af3a71f165499496e08b67a2defca8d92d",
+      "question": "Will Asset A dip to $57,500 in June?",
+      "question_open_time": "2026-06-01T14:37:51.388058Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-07-01T06:11:10Z",
+      "source_raw_sha256": "d26f7aa21ade341c6069b025ab2a2d973cf6383360448a64794f2d426010bf93",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve to \"Yes[identifying quotation removed]Close[identifying quotation removed]No[identifying quotation removed]Close[identifying quotation removed]1m\" and \"Candles\" selected on the top bar. Please note that this market is about the price according to Entity A Entity B, not according to other exchanges or trading pairs. Price precision is determined by the number of decimal places in the source.",
+      "domain": "crypto",
+      "event_id": "pm_548490",
+      "event_world_cluster": "pm_548490",
+      "forecast_cutoffs": [
+        "2026-06-03T02:02:09.911801Z",
+        "2026-06-04T20:34:41.501863Z",
+        "2026-06-06T15:07:13.091925Z",
+        "2026-06-08T01:09:14.363975Z"
+      ],
+      "mapping_sha256": "f8a1edeb7c1b12b69dcb528af20e28af3a71f165499496e08b67a2defca8d92d",
+      "question": "Will the price of Asset A be above $58,000 on relative-date-1 ?",
+      "question_open_time": "2026-06-01T16:00:08.639751Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-06-08T18:10:15Z",
+      "source_raw_sha256": "c697779d9806684539bb60cf3546046f42c61865fd32839d31c0451c9d8855e5",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve according to the number of times Person A (@elonmusk), posts on X from relative-date-1 specified-time ET to relative-date-2 specified-time ET. For the purposes of this market, only main feed posts, quote posts and reposts will count. Replies will NOT count towards the total - however, replies on the main feed such as https://x.com/elonmusk/status/1786073478711353576 will be counted by the tracker. Deleted posts will count as long as they remain available long enough to be captured by the tracker (~5 minutes). Community reposts which are not counted by the tracker not count toward the total. The resolution source for this market is the 'Post Counter' figure for posts found at https://xtracker.Entity A.com. Individual posts can be viewed by clicking \"Export Data\". If the tracker does not update correctly in accordance with the rules, X itself may be used as a secondary resolution source.",
+      "domain": "other",
+      "event_id": "pm_559048",
+      "event_world_cluster": "pm_559048",
+      "forecast_cutoffs": [
+        "2026-06-05T12:03:24.218000Z",
+        "2026-06-06T13:07:37.587375Z",
+        "2026-06-07T14:11:50.956750Z",
+        "2026-06-08T10:15:13.652250Z"
+      ],
+      "mapping_sha256": "697eb37406924c09e1171b803e29b139e9a9d703e7fc52a513c58558d5b29108",
+      "question": "Will Person A post 40-64 tweets from relative-date-1 to relative-date-2 ?",
+      "question_open_time": "2026-06-04T16:00:01.522500Z",
+      "resolution_rule": "https://x.com/elonmusk",
+      "resolution_time": "2026-06-08T20:16:55Z",
+      "source_raw_sha256": "ecaf00c2809e5075277899f5125a4c0cbfe8cd16e159b75d5460717d6445e892",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will immediately resolve to \"Yes[identifying quotation removed]Low[identifying quotation removed]No.[identifying quotation removed]Low[identifying quotation removed]1m\" for one-minute candles selected on the top bar. Please note that the outcome of this market depends solely on the price data from the Entity A Entity B trading pair. Prices from other exchanges, different trading pairs, or spot markets will not be considered for the resolution of this market.",
+      "domain": "crypto",
+      "event_id": "pm_560782",
+      "event_world_cluster": "pm_560782",
+      "forecast_cutoffs": [
+        "2026-06-05T08:51:10.926330Z",
+        "2026-06-05T14:55:08.449352Z",
+        "2026-06-05T20:59:05.972374Z",
+        "2026-06-06T01:50:15.990791Z"
+      ],
+      "mapping_sha256": "f8a1edeb7c1b12b69dcb528af20e28af3a71f165499496e08b67a2defca8d92d",
+      "question": "Will Asset A dip to $59,000 on relative-date-1 ?",
+      "question_open_time": "2026-06-05T04:00:00.907913Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-06-06T04:15:51Z",
+      "source_raw_sha256": "f39098b58abed79906f697cc3f59b62e09492aa85fddcc10785b87ed5f7be211",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming Entity A game between the Team A and Team B, scheduled for relative-date-1 at specified-time ET: This market will resolve to \"Yes[identifying quotation removed]No\" if no runs are scored in the 1st inning by either team. If the game is postponed, this market will remain open until the game has been completed. If the game is canceled entirely, with no make-up game, this market will resolve 50-50. To know when a postponed game will be played, please check the home team's schedule on Entity A.com for the listed team and look for the game described as a makeup game. The primary resolution source for this market is the official final statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 24 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "sports",
+      "event_id": "pm_565771",
+      "event_world_cluster": "pm_565771",
+      "forecast_cutoffs": [
+        "2026-06-07T20:46:48.326409Z",
+        "2026-06-09T12:29:45.411906Z",
+        "2026-06-11T04:12:42.497403Z",
+        "2026-06-12T11:59:04.165801Z"
+      ],
+      "mapping_sha256": "21dfa5a44b179dff916a4934197d77387e774de5c6a8dd10f20c8a8932aa6d1a",
+      "question": "Will there be a run scored in the first inning?: Team A vs. Team B",
+      "question_open_time": "2026-06-06T13:00:26.658011Z",
+      "resolution_rule": "https://www.Entity A.com/scores",
+      "resolution_time": "2026-06-13T03:52:15Z",
+      "source_raw_sha256": "74d59a2640cc589baff76dd8ac097377c4fb9e72bfbcbb9fc3ab2a8b5487ec0f",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve according to the number of times Person A (@elonmusk), posts on X from relative-date-1 specified-time ET to relative-date-2 specified-time ET. For the purposes of this market, only main feed posts, quote posts and reposts will count. Replies will NOT count towards the total - however, replies on the main feed such as https://x.com/elonmusk/status/1786073478711353576 will be counted by the tracker. Deleted posts will count as long as they remain available long enough to be captured by the tracker (~5 minutes). Community reposts which are not counted by the tracker not count toward the total. The resolution source for this market is the 'Post Counter' figure for posts found at https://xtracker.Entity A.com. Individual posts can be viewed by clicking \"Export Data\". If the tracker does not update correctly in accordance with the rules, X itself may be used as a secondary resolution source.",
+      "domain": "other",
+      "event_id": "pm_566154",
+      "event_world_cluster": "pm_566154",
+      "forecast_cutoffs": [
+        "2026-06-07T11:45:20.784098Z",
+        "2026-06-08T12:26:58.351568Z",
+        "2026-06-09T13:08:35.919037Z",
+        "2026-06-10T08:53:53.973012Z"
+      ],
+      "mapping_sha256": "697eb37406924c09e1171b803e29b139e9a9d703e7fc52a513c58558d5b29108",
+      "question": "Will Person A post 40-64 tweets from relative-date-1 to relative-date-2 ?",
+      "question_open_time": "2026-06-06T16:00:02.730123Z",
+      "resolution_rule": "https://x.com/elonmusk",
+      "resolution_time": "2026-06-10T18:46:33Z",
+      "source_raw_sha256": "e29350879255b7f3c37204151cc3cb4ef8e4292df77bc69a423a531082e6e75b",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming Entity A game between the Team A and Team B, scheduled for relative-date-1 at specified-time ET: This market will resolve to \"Yes[identifying quotation removed]No\" if no runs are scored in the 1st inning by either team. If the game is postponed, this market will remain open until the game has been completed. If the game is canceled entirely, with no make-up game, this market will resolve 50-50. To know when a postponed game will be played, please check the home team's schedule on Entity B for the listed team and look for the game described as a makeup game. The primary resolution source for this market is the official final statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 24 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "sports",
+      "event_id": "pm_572669",
+      "event_world_cluster": "pm_572669",
+      "forecast_cutoffs": [
+        "2026-06-09T20:30:21.940610Z",
+        "2026-06-11T11:52:45.084170Z",
+        "2026-06-13T03:15:08.227729Z",
+        "2026-06-14T10:45:02.742576Z"
+      ],
+      "mapping_sha256": "6cddf7aeca87067a11b61e85af1abb9abb743e8e3e6e7371d2c3a487121e815f",
+      "question": "Will there be a run scored in the first inning?: Team A vs. Team B",
+      "question_open_time": "2026-06-08T13:00:27.425763Z",
+      "resolution_rule": "https://www.Entity B/scores",
+      "resolution_time": "2026-06-15T02:30:00Z",
+      "source_raw_sha256": "bb6b60fda1c9314152f99219d18fe80aa6eed6604de8cb061275f5f40673413f",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve to \"Yes[identifying quotation removed]Close[identifying quotation removed]No[identifying quotation removed]Close[identifying quotation removed]1m\" and \"Candles\" selected on the top bar. Please note that this market is about the price according to Entity A Entity B, not according to other exchanges or trading pairs. Price precision is determined by the number of decimal places in the source.",
+      "domain": "crypto",
+      "event_id": "pm_576738",
+      "event_world_cluster": "pm_576738",
+      "forecast_cutoffs": [
+        "2026-06-11T02:01:27.626135Z",
+        "2026-06-12T20:33:10.867968Z",
+        "2026-06-14T15:04:54.109801Z",
+        "2026-06-16T01:06:16.703267Z"
+      ],
+      "mapping_sha256": "f8a1edeb7c1b12b69dcb528af20e28af3a71f165499496e08b67a2defca8d92d",
+      "question": "Will the price of Asset A be above $62,000 on relative-date-1 ?",
+      "question_open_time": "2026-06-09T16:00:05.032669Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-06-16T18:06:58Z",
+      "source_raw_sha256": "690a1b98be3b63cdc2b26d857732a6eb8256b74a035660b419f2f7543f357c23",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve to \"Yes[identifying quotation removed]Close[identifying quotation removed]No[identifying quotation removed]Close[identifying quotation removed]1m\" and \"Candles\" selected on the top bar. Please note that this market is about the price according to Entity A Entity B, not according to other exchanges or trading pairs. Price precision is determined by the number of decimal places in the source.",
+      "domain": "crypto",
+      "event_id": "pm_608804",
+      "event_world_cluster": "pm_608804",
+      "forecast_cutoffs": [
+        "2026-06-20T01:39:19.594417Z",
+        "2026-06-21T19:43:22.533662Z",
+        "2026-06-23T13:47:25.472906Z",
+        "2026-06-24T23:26:39.824302Z"
+      ],
+      "mapping_sha256": "f8a1edeb7c1b12b69dcb528af20e28af3a71f165499496e08b67a2defca8d92d",
+      "question": "Will the price of Asset A be above $58,000 on relative-date-1 ?",
+      "question_open_time": "2026-06-18T16:00:05.243021Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-06-25T16:16:17Z",
+      "source_raw_sha256": "ea4f534c69f02dd25f0c6c831bed59bbf205c9e248197ed53181e49c07fc2782",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve according to the number of times Person A (@elonmusk), posts on X from relative-date-1 specified-time ET to relative-date-2 specified-time ET. For the purposes of this market, only main feed posts, quote posts and reposts will count. Replies will NOT count towards the total - however, replies on the main feed such as https://x.com/elonmusk/status/1786073478711353576 will be counted by the tracker. Deleted posts will count as long as they remain available long enough to be captured by the tracker (~5 minutes). Community reposts which are not counted by the tracker not count toward the total. The resolution source for this market is the 'Post Counter' figure for posts found at https://xtracker.polymarket.com. Individual posts can be viewed by clicking \"Export Data\". If the tracker does not update correctly in accordance with the rules, X itself may be used as a secondary resolution source.",
+      "domain": "other",
+      "event_id": "pm_614048",
+      "event_world_cluster": "pm_614048",
+      "forecast_cutoffs": [
+        "2026-06-22T06:55:47.211389Z",
+        "2026-06-24T22:35:29.020330Z",
+        "2026-06-27T14:15:10.829271Z",
+        "2026-06-29T17:10:56.276424Z"
+      ],
+      "mapping_sha256": "cb93e40ef9cdd53ef09dc36ace1ed8b484a6c8a6398ec89528022b873554c7a0",
+      "question": "Will Person A post 180-199 tweets from relative-date-1 to relative-date-2 ?",
+      "question_open_time": "2026-06-20T04:00:01.764236Z",
+      "resolution_rule": "https://x.com/elonmusk",
+      "resolution_time": "2026-06-30T18:38:49Z",
+      "source_raw_sha256": "9c70828bcc0a3b5ce61ab6b55f13053269bfb6f8ca939a13bfeb916b32a03f3e",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming Entity A game between the Team A and Team B, scheduled for relative-date-1 at specified-time ET: This market will resolve to \"Yes[identifying quotation removed]No\" if no runs are scored in the 1st inning by either team. If the game is postponed, this market will remain open until the game has been completed. If the game is canceled entirely, with no make-up game, this market will resolve 50-50. To know when a postponed game will be played, please check the home team's schedule on Entity A.com for the listed team and look for the game described as a makeup game. The primary resolution source for this market is the official final statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 24 hours after the event's conclusion, a consensus of credible reporting may be used instead.",
+      "domain": "sports",
+      "event_id": "pm_615287",
+      "event_world_cluster": "pm_615287",
+      "forecast_cutoffs": [
+        "2026-06-21T21:24:20.020235Z",
+        "2026-06-23T13:53:56.576412Z",
+        "2026-06-25T06:23:33.132588Z",
+        "2026-06-26T14:47:14.377529Z"
+      ],
+      "mapping_sha256": "ffb1a3a3f761e98c799d3c41c278ed0b616e9c130f8bdbc99bd2a0cf9b1e7128",
+      "question": "Will there be a run scored in the first inning?: Team A vs. Team B",
+      "question_open_time": "2026-06-20T13:00:38.775294Z",
+      "resolution_rule": "https://www.Entity A.com/scores",
+      "resolution_time": "2026-06-27T06:59:05Z",
+      "source_raw_sha256": "1145ba3a7c9bdc20c4a59f76a50228d46d70d830292515333dcdc7b8a60d10d7",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve according to the number of times Person A (@elonmusk), posts on X from relative-date-1 specified-time ET to relative-date-2 specified-time ET. For the purposes of this market, only main feed posts, quote posts and reposts will count. Replies will NOT count towards the total - however, replies on the main feed such as https://x.com/elonmusk/status/1786073478711353576 will be counted by the tracker. Deleted posts will count as long as they remain available long enough to be captured by the tracker (~5 minutes). Community reposts which are not counted by the tracker not count toward the total. The resolution source for this market is the 'Post Counter' figure for posts found at https://xtracker.Entity A.com. Individual posts can be viewed by clicking \"Export Data\". If the tracker does not update correctly in accordance with the rules, X itself may be used as a secondary resolution source.",
+      "domain": "other",
+      "event_id": "pm_615698",
+      "event_world_cluster": "pm_615698",
+      "forecast_cutoffs": [
+        "2026-06-21T11:42:28.292535Z",
+        "2026-06-22T12:20:31.951118Z",
+        "2026-06-23T12:58:35.609701Z",
+        "2026-06-24T08:41:02.536567Z"
+      ],
+      "mapping_sha256": "697eb37406924c09e1171b803e29b139e9a9d703e7fc52a513c58558d5b29108",
+      "question": "Will Person A post 90-114 tweets from relative-date-1 to relative-date-2 ?",
+      "question_open_time": "2026-06-20T16:00:01.365669Z",
+      "resolution_rule": "https://x.com/elonmusk",
+      "resolution_time": "2026-06-24T18:32:16Z",
+      "source_raw_sha256": "f1540166a96c429b60990cdb9b019ed9dc98ba2809fd620c5704e27f2a587cfe",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve to \"Yes[identifying quotation removed]Close[identifying quotation removed]No[identifying quotation removed]Close[identifying quotation removed]1m\" and \"Candles\" selected on the top bar. Please note that this market is about the price according to Entity A Entity B, not according to other exchanges or trading pairs. Price precision is determined by the number of decimal places in the source.",
+      "domain": "crypto",
+      "event_id": "pm_626157",
+      "event_world_cluster": "pm_626157",
+      "forecast_cutoffs": [
+        "2026-06-25T01:41:01.874362Z",
+        "2026-06-26T19:47:10.351124Z",
+        "2026-06-28T13:53:18.827886Z",
+        "2026-06-29T23:34:13.609295Z"
+      ],
+      "mapping_sha256": "f8a1edeb7c1b12b69dcb528af20e28af3a71f165499496e08b67a2defca8d92d",
+      "question": "Will the price of Asset A be above $56,000 on relative-date-1 ?",
+      "question_open_time": "2026-06-23T16:00:07.092952Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-06-30T16:24:41Z",
+      "source_raw_sha256": "415be3ad960ed63ef052d0da5d3f1ead68ad432dfbf1b5340b36bbbb192c2faf",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming game, scheduled for relative-date-1 If Federation A wins, this market will resolve to \"Yes[identifying quotation removed]No[identifying quotation removed]No\". This market refers only to the outcome within the first 90 minutes of regular play plus stoppage time. The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead. All markets will settle based on the official final result as recognized by the governing body or event organizers. Revisions to officially declared final scores made after market resolution will not be accounted for in determining the outcome.",
+      "domain": "sports",
+      "event_id": "pm_640346",
+      "event_world_cluster": "pm_640346",
+      "forecast_cutoffs": [
+        "2026-06-27T22:21:22.987118Z",
+        "2026-06-28T13:48:04.866143Z",
+        "2026-06-29T05:14:46.745169Z",
+        "2026-06-29T17:36:08.248390Z"
+      ],
+      "mapping_sha256": "a2be9d049f821c9638a1ca5a51632dd9ba98613e86584f2dce82e1a2b915b886",
+      "question": "Will Federation A win on relative-date-1 ?",
+      "question_open_time": "2026-06-27T10:00:01.483897Z",
+      "resolution_rule": "https://www.Entity A.com/fifaplus/en/tournaments/mens/worldcup",
+      "resolution_time": "2026-06-29T23:46:49Z",
+      "source_raw_sha256": "fc75001cf4e426afd81b41031e916821d14fce9c2f6a05ca3e4fdc9b9ccfed76",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming Entity A game between Federation A and Federation B, scheduled for relative-date-1 at specified-time ET: This market will resolve based on the final score of the Federation A vs. Federation B match originally scheduled for relative-date-2 at specified-time ET, considering only the result at the end of 90 minutes of regulation plus stoppage time; extra time and penalty shoot-outs are excluded. If the actual score is not one of the explicitly listed outcomes, the market resolves to [identifying quotation removed] If the match is postponed, the market will remain open until it is completed; if it is canceled with no make-up game, the market resolves to \"0-0.\" The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead. All markets will settle based on the official final result as recognized by the governing body or event organizers. Revisions to officially declared final scores made after market resolution will not be accounted for in determining the outcome.",
+      "domain": "sports",
+      "event_id": "pm_640368",
+      "event_world_cluster": "pm_640368",
+      "forecast_cutoffs": [
+        "2026-06-27T22:21:18.791098Z",
+        "2026-06-28T13:47:34.168880Z",
+        "2026-06-29T05:13:49.546662Z",
+        "2026-06-29T17:34:49.848887Z"
+      ],
+      "mapping_sha256": "80c5fdf54882b77c9aceb8f81975be6285f21d00ff09012375faa8af2bea116d",
+      "question": "Exact Score: Federation A 2 - 0 Federation B?",
+      "question_open_time": "2026-06-27T10:00:18.488873Z",
+      "resolution_rule": "https://www.Entity B.com/fifaplus/en/tournaments/mens/worldcup",
+      "resolution_time": "2026-06-29T23:45:20Z",
+      "source_raw_sha256": "658da5d8350a8dcf1e224520a7fb11251a2abd9a8a32685333b21bae60c7656d",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming Entity A game between Federation A and Federation B, scheduled for relative-date-1 at specified-time ET: This market will resolve to \"Yes[identifying quotation removed]No\" if either team fails to score (i.e., if one or both teams finish with zero goals). If the game is postponed, this market will remain open until the game has been completed. If the game is canceled entirely, with no make-up game, this market will resolve 50\u201350. If the game is started but not completed, this market will resolve according to the official final score published on Entity B.com. This market refers only to the outcome within the first 90 minutes of regular play plus stoppage time. The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 2 hours after the event's conclusion, a consensus of credible reporting may be used instead. All markets will settle based on the official final result as recognized by the governing body or event organizers. Revisions to officially declared final scores made after market resolution will not be accounted for in determining the outcome.",
+      "domain": "sports",
+      "event_id": "pm_640444",
+      "event_world_cluster": "pm_640444",
+      "forecast_cutoffs": [
+        "2026-06-28T03:26:31.427449Z",
+        "2026-06-29T00:36:38.793871Z",
+        "2026-06-29T21:46:46.160293Z",
+        "2026-06-30T14:42:52.053431Z"
+      ],
+      "mapping_sha256": "bb980a935012dbf3d341741be4dc1a6220d059e0c7173a3e157f3c54d2a8e025",
+      "question": "Federation A vs. Federation B: Both Teams to Score",
+      "question_open_time": "2026-06-27T10:30:25.534311Z",
+      "resolution_rule": "https://www.Entity B.com/fifaplus/en/tournaments/mens/worldcup",
+      "resolution_time": "2026-06-30T23:10:55Z",
+      "source_raw_sha256": "dc8597f8c15965ac7a21ebfc5b5ebc975f62f65596d63aca218eed82ed40c4a1",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve to \"Yes[identifying quotation removed]Close[identifying quotation removed]No[identifying quotation removed]Close[identifying quotation removed]1m\" and \"Candles\" selected on the top bar. Please note that this market is about the price according to Entity A Entity B, not according to other exchanges or trading pairs. Price precision is determined by the number of decimal places in the source.",
+      "domain": "crypto",
+      "event_id": "pm_648200",
+      "event_world_cluster": "pm_648200",
+      "forecast_cutoffs": [
+        "2026-07-01T01:40:11.446099Z",
+        "2026-07-02T19:45:17.556693Z",
+        "2026-07-04T13:50:23.667287Z",
+        "2026-07-05T23:30:28.555762Z"
+      ],
+      "mapping_sha256": "f8a1edeb7c1b12b69dcb528af20e28af3a71f165499496e08b67a2defca8d92d",
+      "question": "Will the price of Asset A be above $64,000 on relative-date-1 ?",
+      "question_open_time": "2026-06-29T16:00:06.557624Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-07-06T16:20:31Z",
+      "source_raw_sha256": "d7aa3de7772010a55227717c6a6686376daffca9c356a5340b2b228da05350fd",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve to \"Yes[identifying quotation removed]Close[identifying quotation removed]No[identifying quotation removed]Close[identifying quotation removed]1m\" and \"Candles\" selected on the top bar. Please note that this market is about the price according to Entity A Entity B, not according to other exchanges or trading pairs. Price precision is determined by the number of decimal places in the source.",
+      "domain": "crypto",
+      "event_id": "pm_666483",
+      "event_world_cluster": "pm_666483",
+      "forecast_cutoffs": [
+        "2026-07-06T01:41:01.728661Z",
+        "2026-07-07T19:47:11.188454Z",
+        "2026-07-09T13:53:20.648248Z",
+        "2026-07-10T23:34:16.216083Z"
+      ],
+      "mapping_sha256": "f8a1edeb7c1b12b69dcb528af20e28af3a71f165499496e08b67a2defca8d92d",
+      "question": "Will the price of Asset A be above $66,000 on relative-date-1 ?",
+      "question_open_time": "2026-07-04T16:00:06.160826Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-07-11T16:24:44Z",
+      "source_raw_sha256": "2ec9c7adc928e24ecd9bc8392d1f5ef9fbab44307e92f8de44975e01d64f1baa",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "In the upcoming Entity B game between Team A and Team B, scheduled for relative-date-1 at specified-time ET: This market will resolve to \"Yes[identifying quotation removed]No[identifying quotation removed]50-50[identifying quotation removed]No\". The primary resolution source for this market is the official statistics of the event as recognized by the governing body or event organizers. However, if the governing body or event organizers have not published final match statistics within 24 hours after the event's conclusion, a consensus of credible reporting may be used instead. All markets will settle based on the official final result as recognized by the governing body or event organizers. Revisions to officially declared final scores made after market resolution will not be accounted for in determining the outcome.",
+      "domain": "sports",
+      "event_id": "pm_669611",
+      "event_world_cluster": "pm_669611",
+      "forecast_cutoffs": [
+        "2026-07-05T16:29:01.995666Z",
+        "2026-07-05T21:15:13.247020Z",
+        "2026-07-06T02:01:24.498374Z",
+        "2026-07-06T05:50:21.499458Z"
+      ],
+      "mapping_sha256": "4dab04396119762c81a43d4d7688296535f9591be26bc5570131e492d7415115",
+      "question": "Entity A: 1+ goals",
+      "question_open_time": "2026-07-05T12:40:04.994582Z",
+      "resolution_rule": "https://www.Entity C.com/fifaplus/en/tournaments/mens/worldcup",
+      "resolution_time": "2026-07-06T07:44:50Z",
+      "source_raw_sha256": "b50043de92e2bedeef52b547a5211e848d34b315e33e3dd06be3da145daa0b9b",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve to \"Yes[identifying quotation removed]Close[identifying quotation removed]No[identifying quotation removed]Close[identifying quotation removed]1m\" and \"Candles\" selected on the top bar. Please note that this market is about the price according to Entity A Entity B, not according to other exchanges or trading pairs. Price precision is determined by the number of decimal places in the source.",
+      "domain": "crypto",
+      "event_id": "pm_677180",
+      "event_world_cluster": "pm_677180",
+      "forecast_cutoffs": [
+        "2026-07-09T01:39:18.752805Z",
+        "2026-07-10T19:43:17.267554Z",
+        "2026-07-12T13:47:15.782302Z",
+        "2026-07-13T23:26:26.594101Z"
+      ],
+      "mapping_sha256": "f8a1edeb7c1b12b69dcb528af20e28af3a71f165499496e08b67a2defca8d92d",
+      "question": "Will the price of Asset A be above $66,000 on relative-date-1 ?",
+      "question_open_time": "2026-07-07T16:00:07.941007Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-07-14T16:16:02Z",
+      "source_raw_sha256": "4aeb2357abd71244193e0b469fe205a648946b2cfcfb55c8d291846270041f09",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "identifying_quotation_removal",
+        "stable_entity_pseudonymization"
+      ]
+    },
+    {
+      "description": "This market will resolve to the player who wins the Event A, scheduled for relative-date-1 , specified-time ET. If at any point it becomes impossible for a listed player to win the Event A per the rules set by the competition (e.g., disqualification, player withdraws), the corresponding market will resolve to \u201cNo\u201d. If the Event A is cancelled, postponed past relative-date-2 , specified-time ET, or there is otherwise no winner declared within that timeframe, this market will resolve to \"Other\". The primary resolution source for this market will be information from the Entity B.",
+      "domain": "sports",
+      "event_id": "pm_688435",
+      "event_world_cluster": "pm_688435",
+      "forecast_cutoffs": [
+        "2026-07-11T09:06:11.300282Z",
+        "2026-07-12T06:15:06.518944Z",
+        "2026-07-13T03:24:01.737606Z",
+        "2026-07-13T20:19:09.912535Z"
+      ],
+      "mapping_sha256": "16883b5d7d896083af1ad2176fa13ed05730ed9d4228bf2126722361684c0334",
+      "question": "Will Entity A win the Event A?",
+      "question_open_time": "2026-07-10T16:11:03.125353Z",
+      "resolution_rule": "",
+      "resolution_time": "2026-07-14T04:46:44Z",
+      "source_raw_sha256": "f220cd5ac0663d092a3d7a4f1e106f9e3ddc0f1243aef4b4820ec443b65be180",
+      "split": "locked_test",
+      "temporal_safety_tier": "causally_blinded_historical",
+      "transformations": [
+        "absolute_date_and_clock_abstraction",
+        "stable_entity_pseudonymization"
+      ]
+    }
+  ]
+}
