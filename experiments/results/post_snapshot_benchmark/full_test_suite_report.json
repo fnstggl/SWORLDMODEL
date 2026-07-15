@@ -1,5 +1,6 @@
 {
   "schema_version": 1,
+  "scope": "pre_merge_child_tree; preserved historical run",
   "command": "PYTHONPATH=. UV_CACHE_DIR=/private/tmp/codex-uv-cache uv run --frozen --extra dev pytest -q",
   "completed_at": "2026-07-15T17:08:05Z",
   "summary": {
@@ -74,7 +75,7 @@
     }
   ],
   "decision": "Do not re-add changed test files to the stacked PR; preserve failures and validate benchmark gates through committed machine-readable artifacts.",
-  "post_benchmark_forward_repair_validation": {
+  "pre_merge_forward_repair_validation": {
     "command": "PYTHONPATH=. .venv/bin/pytest -q tests/test_wmv2_unified_runtime.py tests/test_wmv2_phase_supervision.py",
     "passed": 12,
     "failed": 5,
@@ -88,5 +89,35 @@
     },
     "full_suite_rerun_after_forward_repair": false,
     "reason": "The targeted failures reproduce five already-preserved stale base-test contracts; the strict full-suite gate remains failed."
+  },
+  "final_merged_tree": {
+    "command": "PYTHONPATH=. .venv/bin/pytest -q",
+    "completed_at": "2026-07-15T18:07:16Z",
+    "summary": {
+      "passed": 1077,
+      "failed": 3,
+      "skipped": 2,
+      "warnings": 11,
+      "duration_s": 178.68
+    },
+    "stacked_pr_test_file_diff_count": 0,
+    "failures": [
+      {
+        "node": "tests/test_agent_engine.py::test_dataset_registry_is_valid_and_honest",
+        "classification": "preexisting_missing_repository_asset",
+        "detail": "data/dataset_registry.json is absent"
+      },
+      {
+        "node": "tests/test_backtest_harness.py::test_apply_toggles_ungrounds_and_limits_vars",
+        "classification": "preexisting_backtest_toggle_mismatch",
+        "detail": "max_vars does not zero the two lower-leverage weights"
+      },
+      {
+        "node": "tests/test_state_world_model.py::test_predict_and_rollout_are_distinct",
+        "classification": "optional_dependency_missing",
+        "detail": "fastapi is not installed in the active test environment"
+      }
+    ],
+    "negative_results_preserved": true
   }
 }

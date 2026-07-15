@@ -4,7 +4,7 @@
 
 This benchmark is a stacked, separate PR built from `claude/world-model-v2-full-activation-replay-v2`. It does not modify PR #100, does not start Phase 13, and does not merge anything. The representative run is bound to runtime fingerprint `79537cdec279fd8f`; the forward Phase 2 repair made after scoring has fingerprint `66c735b4201edc17` and has no product-performance claim.
 
-The execution produced all required forecasts and a single-open locked score, but it fails the strict completion standard. Phase 2's capsule adapter degraded on every primary row, Phase 4 had one blocked controlled-ablation row, Phases 8 and 11 had no meaningful controlled ablation effect, the market-informed comparison was not run, and the full repository suite has 12 failures. The authoritative status is `experiments/results/post_snapshot_benchmark/exact_completion_gate_report.json`.
+The execution produced all required forecasts and a single-open locked score, but it fails the strict completion standard. Phase 2's capsule adapter degraded on every primary row, Phase 4 had one blocked controlled-ablation row, Phases 8 and 11 had no meaningful controlled ablation effect, the market-informed comparison was not run, and the final merged-tree repository suite has 3 failures. The authoritative status is `experiments/results/post_snapshot_benchmark/exact_completion_gate_report.json`.
 
 ## Temporal-safety decision
 
@@ -83,4 +83,3 @@ It covers at least 10 independent worlds for actor policy, mechanism registry, n
 ## Resumability and immutability
 
 Forecasts and baselines use keyed immutable attempt files plus atomically rebuilt canonical JSONL views. Successful attempts are never overwritten; retries remain available for forensics. Calibration, validation, locked forecasts, locked baselines, scorer inputs, scoring code, and the single-open ledger were committed at separate checkpoints.
-

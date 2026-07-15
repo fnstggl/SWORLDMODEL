@@ -69,7 +69,7 @@ class PhaseExecutionRecord:
     state_fields_read: list = field(default_factory=list)
     state_fields_written: list = field(default_factory=list)
     downstream_events_produced: list = field(default_factory=list)
-    terminal_influence: str = ""            # direct_resolution | state_transition | constraint | none | unknown
+    terminal_influence: str = ""            # direct_resolution | rate_modulation | constraint | none | unknown
     ablation_influence: float = None        # filled by the ablation harness, not here
     latency_s: float = 0.0
     cost: dict = field(default_factory=dict)
@@ -86,7 +86,7 @@ def _plan_state_present(phase, plan) -> bool:
     if phase == "phase4_actor_policy":
         return bool(getattr(plan, "entities", []) or getattr(plan, "actor_decisions", []))
     if phase == "phase9_populations":
-        return bool(getattr(plan, "populations", []))
+        return True                                          # segments constructible from broad priors
     if phase == "phase9_networks":
         return bool(getattr(plan, "relations", []) or
                     len([e for e in (getattr(plan, "entities", []) or []) if isinstance(e, dict)]) >= 2 or
@@ -96,11 +96,17 @@ def _plan_state_present(phase, plan) -> bool:
     return True                                             # p6/p7 execute from mechanisms/events, not sections
 
 
-def assess(plan, *, has_as_of=True, has_bundle=None, has_posterior=None, versions=None) -> dict:
+def assess(plan, *, has_as_of=True, has_bundle=None, has_posterior=None, versions=None,
+           req=None) -> dict:
     """The supervisor pass: one PhaseExecutionRecord per phase, relevance + input-contract verdicts filled.
-    Execution evidence (deltas, terminal influence) is finalized after the rollout via `finalize`."""
+    Execution evidence (deltas, terminal influence) is finalized after the rollout via `finalize`.
+
+    `req` must be the SAME relevance verdict the synthesis step used (computed BEFORE synthesis mutated
+    the plan): re-deriving it afterwards lets synthesis-added mechanism prose lexically trigger unrelated
+    phases (e.g. an institutional 'threshold rule' phrase firing the nonlinear detector), producing
+    phantom blocked-relevant verdicts."""
     from swm.world_model_v2.activation_synthesis import phase_requirements
-    req = phase_requirements(plan)
+    req = req if req is not None else phase_requirements(plan)
     versions = versions or {}
     records = {}
     for ph in PHASES:
@@ -122,9 +128,9 @@ def assess(plan, *, has_as_of=True, has_bundle=None, has_posterior=None, version
             r.relevant, r.relevance_reasons = True, "default-on persistence-aware rollout"
             r.input_state_present = True
         elif ph == "phase11_recompilation":
-            g = req.get(ph, {"required": False, "why": "not assessed"})
-            r.relevant, r.relevance_reasons = bool(g["required"]), str(g["why"])
-            r.input_state_present = bool(has_bundle) if has_bundle is not None else bool(has_as_of)
+            r.relevant = bool(has_bundle) if has_bundle is not None else bool(has_as_of)
+            r.relevance_reasons = "observations available" if r.relevant else "no observations"
+            r.input_state_present = r.relevant
         else:
             g = req.get(ph, {"required": False, "why": "not assessed"})
             r.relevant, r.relevance_reasons = bool(g["required"]), str(g["why"])
@@ -224,15 +230,15 @@ def finalize(records: dict, plan, res, *, phase_meta: dict = None) -> dict:
 def _terminal_influence(phase, plan, written) -> str:
     rev = next((e for e in plan.scheduled_events if e.get("etype") == "resolve_outcome"), None)
     outcome_var = (rev or {}).get("payload", {}).get("outcome_var", "outcome")
-    transition = next((e for e in plan.scheduled_events
-                       if e.get("etype") == "causal_state_transition"), None)
-    drivers = {d.get("var") for d in ((transition or {}).get("payload", {}).get("driver_vars") or [])}
-    outcome_path = f"quantities[{outcome_var}]"
+    consumed = set()
+    for e in plan.scheduled_events:
+        if e.get("etype") in ("institutional_decision", "aggregate_outcome_resolution"):
+            consumed |= {m.get("var") for m in (e.get("payload", {}).get("consume") or [])}
     for w in written:
-        if w == outcome_path:
+        if outcome_var in w:
             return "direct_resolution"
-        if any(var and w == f"quantities[{var}]" for var in drivers):
-            return "state_transition"
+        if any(cv and cv in w for cv in consumed):
+            return "consumed_by_mechanism"
     if phase == "phase10_institutions":
         return "constraint"
     return "state_only"

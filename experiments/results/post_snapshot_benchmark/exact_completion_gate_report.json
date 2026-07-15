@@ -1,5 +1,5 @@
 {
-  "artifact_sha256": "e9f38c1da7fead853a9977f3255b07838d738d704f896a74e52e4129a7458417",
+  "artifact_sha256": "ceabf2c54145ccea868ab27c57919badf16725853a0877f0c02384f97ca5322c",
   "benchmark_status": "executed_and_scored_but_strict_completion_failed",
   "causal_coverage": {
     "all_completion_gates_pass": true,
@@ -162,7 +162,7 @@
     "phase_execution_records": 4400,
     "primary_v2_forecasts": 400
   },
-  "generated_at": "2026-07-15T17:57:03.404975Z",
+  "generated_at": "2026-07-15T18:08:05.010748Z",
   "governance": {
     "benchmark_code_freeze_sha256": "6be624c631c6ffc215db5a4edde7ff7d5d797930a9b2e046fc509b02c39b0bf7",
     "benchmark_code_source_commit": "f0760b7d6c3d648e6a2584107fcde821608efe47",
@@ -1099,7 +1099,7 @@
       "required": true
     },
     "full_repository_test_suite": {
-      "achieved": 12,
+      "achieved": 3,
       "evidence": [
         "full_test_suite_report.json"
       ],
@@ -1254,95 +1254,158 @@
     "tier_code": "C"
   },
   "test_suite": {
-    "command": "PYTHONPATH=. UV_CACHE_DIR=/private/tmp/codex-uv-cache uv run --frozen --extra dev pytest -q",
-    "completed_at": "2026-07-15T17:08:05Z",
-    "decision": "Do not re-add changed test files to the stacked PR; preserve failures and validate benchmark gates through committed machine-readable artifacts.",
-    "failures": [
-      {
-        "classification": "preexisting_missing_repository_asset",
-        "detail": "data/dataset_registry.json is absent",
-        "node": "tests/test_agent_engine.py::test_dataset_registry_is_valid_and_honest"
-      },
-      {
-        "classification": "preexisting_backtest_toggle_mismatch",
-        "detail": "max_vars does not zero the two lower-leverage weights",
-        "node": "tests/test_backtest_harness.py::test_apply_toggles_ungrounds_and_limits_vars"
-      },
-      {
-        "classification": "stale_base_test_conflicts_with_ephemeral_credential_contract",
-        "detail": "base test expects construction without a credential",
-        "node": "tests/test_deepseek_backend.py::test_deepseek_fn_is_callable_and_reads_env_only"
-      },
-      {
-        "classification": "optional_dependency_missing",
-        "detail": "fastapi is not installed by the declared dev extra",
-        "node": "tests/test_state_world_model.py::test_predict_and_rollout_are_distinct"
-      },
-      {
-        "classification": "stale_base_test_conflicts_with_causal_state_transition_contract",
-        "detail": "base test expects prohibited terminal rate_modulation",
-        "node": "tests/test_wmv2_activation_synthesis.py::test_p9_population_aggregation_executes_and_modulates"
-      },
-      {
-        "classification": "stale_base_test_conflicts_with_no_terminal_modulation_rule",
-        "detail": "direct terminal probability nudges now raise visibly",
-        "node": "tests/test_wmv2_activation_synthesis.py::test_modulation_total_weight_capped"
-      },
-      {
-        "classification": "stale_base_test_conflicts_with_current_activation_audit_shape",
-        "detail": "base test expects the superseded audit action label",
-        "node": "tests/test_wmv2_activation_synthesis.py::test_p4_gated_off_removes_ornamental_decisions"
-      },
-      {
-        "classification": "stale_base_test_conflicts_with_independent_relevance_contract",
-        "detail": "semantic signal alone no longer declares relevance without a causal mechanism",
-        "node": "tests/test_wmv2_phase_supervision.py::test_relevant_phase_without_declared_state_is_blocked_missing_state"
-      },
-      {
-        "classification": "stale_base_test_conflicts_with_independent_relevance_contract",
-        "detail": "base fixture does not satisfy current semantic relevance inputs",
-        "node": "tests/test_wmv2_phase_supervision.py::test_relevant_executed_phase_is_causally_active_with_delta_evidence"
-      },
-      {
-        "classification": "stale_base_test_conflicts_with_independent_relevance_contract",
-        "detail": "base fixture does not satisfy current semantic relevance inputs",
-        "node": "tests/test_wmv2_phase_supervision.py::test_relevant_phase_with_no_deltas_is_blocked_and_fails_integration"
-      },
-      {
-        "classification": "stale_base_test_conflicts_with_current_fallback_trigger_contract",
-        "detail": "base fixture uses the superseded fallback trigger shape",
-        "node": "tests/test_wmv2_phase_supervision.py::test_p6_fallback_makes_required_process_executable"
-      },
-      {
-        "classification": "stale_base_test_conflicts_with_independent_relevance_contract",
-        "detail": "base fixture omits the current causal mechanism evidence",
-        "node": "tests/test_wmv2_phase_supervision.py::test_semantic_dependency_signal_drives_relevance_without_keywords"
+    "current": {
+      "command": "PYTHONPATH=. .venv/bin/pytest -q",
+      "completed_at": "2026-07-15T18:07:16Z",
+      "failures": [
+        {
+          "classification": "preexisting_missing_repository_asset",
+          "detail": "data/dataset_registry.json is absent",
+          "node": "tests/test_agent_engine.py::test_dataset_registry_is_valid_and_honest"
+        },
+        {
+          "classification": "preexisting_backtest_toggle_mismatch",
+          "detail": "max_vars does not zero the two lower-leverage weights",
+          "node": "tests/test_backtest_harness.py::test_apply_toggles_ungrounds_and_limits_vars"
+        },
+        {
+          "classification": "optional_dependency_missing",
+          "detail": "fastapi is not installed in the active test environment",
+          "node": "tests/test_state_world_model.py::test_predict_and_rollout_are_distinct"
+        }
+      ],
+      "negative_results_preserved": true,
+      "stacked_pr_test_file_diff_count": 0,
+      "summary": {
+        "duration_s": 178.68,
+        "failed": 3,
+        "passed": 1077,
+        "skipped": 2,
+        "warnings": 11
       }
-    ],
-    "negative_results_preserved": true,
-    "post_benchmark_forward_repair_validation": {
-      "adapter_contract_smoke": {
-        "capsule_claims": 1,
-        "fully_integrated": false,
-        "pass": true,
-        "phase2_exception_status": "execution_failed",
-        "scheduled_evidence_events": 1
-      },
-      "command": "PYTHONPATH=. .venv/bin/pytest -q tests/test_wmv2_unified_runtime.py tests/test_wmv2_phase_supervision.py",
-      "failed": 5,
-      "failed_nodes_are_already_in_full_suite_report": true,
-      "full_suite_rerun_after_forward_repair": false,
-      "passed": 12,
-      "reason": "The targeted failures reproduce five already-preserved stale base-test contracts; the strict full-suite gate remains failed."
     },
-    "schema_version": 1,
-    "stacked_pr_test_file_diff_count": 0,
-    "summary": {
-      "duration_s": 172.95,
-      "failed": 12,
-      "passed": 1067,
-      "skipped": 2,
-      "warnings": 11
+    "preserved_history": {
+      "command": "PYTHONPATH=. UV_CACHE_DIR=/private/tmp/codex-uv-cache uv run --frozen --extra dev pytest -q",
+      "completed_at": "2026-07-15T17:08:05Z",
+      "decision": "Do not re-add changed test files to the stacked PR; preserve failures and validate benchmark gates through committed machine-readable artifacts.",
+      "failures": [
+        {
+          "classification": "preexisting_missing_repository_asset",
+          "detail": "data/dataset_registry.json is absent",
+          "node": "tests/test_agent_engine.py::test_dataset_registry_is_valid_and_honest"
+        },
+        {
+          "classification": "preexisting_backtest_toggle_mismatch",
+          "detail": "max_vars does not zero the two lower-leverage weights",
+          "node": "tests/test_backtest_harness.py::test_apply_toggles_ungrounds_and_limits_vars"
+        },
+        {
+          "classification": "stale_base_test_conflicts_with_ephemeral_credential_contract",
+          "detail": "base test expects construction without a credential",
+          "node": "tests/test_deepseek_backend.py::test_deepseek_fn_is_callable_and_reads_env_only"
+        },
+        {
+          "classification": "optional_dependency_missing",
+          "detail": "fastapi is not installed by the declared dev extra",
+          "node": "tests/test_state_world_model.py::test_predict_and_rollout_are_distinct"
+        },
+        {
+          "classification": "stale_base_test_conflicts_with_causal_state_transition_contract",
+          "detail": "base test expects prohibited terminal rate_modulation",
+          "node": "tests/test_wmv2_activation_synthesis.py::test_p9_population_aggregation_executes_and_modulates"
+        },
+        {
+          "classification": "stale_base_test_conflicts_with_no_terminal_modulation_rule",
+          "detail": "direct terminal probability nudges now raise visibly",
+          "node": "tests/test_wmv2_activation_synthesis.py::test_modulation_total_weight_capped"
+        },
+        {
+          "classification": "stale_base_test_conflicts_with_current_activation_audit_shape",
+          "detail": "base test expects the superseded audit action label",
+          "node": "tests/test_wmv2_activation_synthesis.py::test_p4_gated_off_removes_ornamental_decisions"
+        },
+        {
+          "classification": "stale_base_test_conflicts_with_independent_relevance_contract",
+          "detail": "semantic signal alone no longer declares relevance without a causal mechanism",
+          "node": "tests/test_wmv2_phase_supervision.py::test_relevant_phase_without_declared_state_is_blocked_missing_state"
+        },
+        {
+          "classification": "stale_base_test_conflicts_with_independent_relevance_contract",
+          "detail": "base fixture does not satisfy current semantic relevance inputs",
+          "node": "tests/test_wmv2_phase_supervision.py::test_relevant_executed_phase_is_causally_active_with_delta_evidence"
+        },
+        {
+          "classification": "stale_base_test_conflicts_with_independent_relevance_contract",
+          "detail": "base fixture does not satisfy current semantic relevance inputs",
+          "node": "tests/test_wmv2_phase_supervision.py::test_relevant_phase_with_no_deltas_is_blocked_and_fails_integration"
+        },
+        {
+          "classification": "stale_base_test_conflicts_with_current_fallback_trigger_contract",
+          "detail": "base fixture uses the superseded fallback trigger shape",
+          "node": "tests/test_wmv2_phase_supervision.py::test_p6_fallback_makes_required_process_executable"
+        },
+        {
+          "classification": "stale_base_test_conflicts_with_independent_relevance_contract",
+          "detail": "base fixture omits the current causal mechanism evidence",
+          "node": "tests/test_wmv2_phase_supervision.py::test_semantic_dependency_signal_drives_relevance_without_keywords"
+        }
+      ],
+      "final_merged_tree": {
+        "command": "PYTHONPATH=. .venv/bin/pytest -q",
+        "completed_at": "2026-07-15T18:07:16Z",
+        "failures": [
+          {
+            "classification": "preexisting_missing_repository_asset",
+            "detail": "data/dataset_registry.json is absent",
+            "node": "tests/test_agent_engine.py::test_dataset_registry_is_valid_and_honest"
+          },
+          {
+            "classification": "preexisting_backtest_toggle_mismatch",
+            "detail": "max_vars does not zero the two lower-leverage weights",
+            "node": "tests/test_backtest_harness.py::test_apply_toggles_ungrounds_and_limits_vars"
+          },
+          {
+            "classification": "optional_dependency_missing",
+            "detail": "fastapi is not installed in the active test environment",
+            "node": "tests/test_state_world_model.py::test_predict_and_rollout_are_distinct"
+          }
+        ],
+        "negative_results_preserved": true,
+        "stacked_pr_test_file_diff_count": 0,
+        "summary": {
+          "duration_s": 178.68,
+          "failed": 3,
+          "passed": 1077,
+          "skipped": 2,
+          "warnings": 11
+        }
+      },
+      "negative_results_preserved": true,
+      "pre_merge_forward_repair_validation": {
+        "adapter_contract_smoke": {
+          "capsule_claims": 1,
+          "fully_integrated": false,
+          "pass": true,
+          "phase2_exception_status": "execution_failed",
+          "scheduled_evidence_events": 1
+        },
+        "command": "PYTHONPATH=. .venv/bin/pytest -q tests/test_wmv2_unified_runtime.py tests/test_wmv2_phase_supervision.py",
+        "failed": 5,
+        "failed_nodes_are_already_in_full_suite_report": true,
+        "full_suite_rerun_after_forward_repair": false,
+        "passed": 12,
+        "reason": "The targeted failures reproduce five already-preserved stale base-test contracts; the strict full-suite gate remains failed."
+      },
+      "schema_version": 1,
+      "scope": "pre_merge_child_tree; preserved historical run",
+      "stacked_pr_test_file_diff_count": 0,
+      "summary": {
+        "duration_s": 172.95,
+        "failed": 12,
+        "passed": 1067,
+        "skipped": 2,
+        "warnings": 11
+      }
     }
   }
 }

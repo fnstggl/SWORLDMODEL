@@ -77,33 +77,104 @@ def _hit(text: str, tokens) -> list:
 
 
 def phase_requirements(plan) -> dict:
-    """Return the runtime-owned relevance verdict for every conditional phase.
+    """The relevance gate: per-phase {required, why, evidence}.
 
-    The LLM compiler's causal-dependency block is retained as provenance, but
-    cannot turn a phase on: the prior activation run showed that treating those
-    declarations as ground truth caused systematic false execution.  Relevance
-    comes from the reviewable question-level adjudicator.  Missing scenario
-    state remains a separate materialization/integration concern.
-    """
-    from swm.world_model_v2.causal_relevance import adjudicate_question
-
-    judged = adjudicate_question(getattr(plan, "question", ""))
+    Requirement = a CAUSAL signal of this phase's kind AND the structural section the phase executes over is
+    declared. The causal signal is semantic first, lexical second: the compiler's `causal_dependencies`
+    block (a structured judgment about what the outcome causally depends on — strategic actors, aggregate
+    behavior, networked transmission, nonlinear dynamics, institutional decision) is the primary signal;
+    the process-token vocabularies remain as a lexical backstop for older plans that lack the block.
+    The runtime — not the LLM — still owns the final verdict: a signal with no declared structure to
+    execute over is NOT required (it is a blocked/missing-state diagnostic instead)."""
+    text = _process_text(plan)
     deps = ((getattr(plan, "provenance", {}) or {}).get("causal_dependencies")) or {}
-    dep_for = {
-        "phase4_actor_policy": "strategic_actor_decisions",
-        "phase6_registry": None,
-        "phase7_nonlinear": "nonlinear_dynamics",
-        "phase9_populations": "aggregate_population_behavior",
-        "phase9_networks": "networked_transmission",
-        "phase10_institutions": "institutional_decision_process",
-        "phase11_recompilation": "structural_change_monitoring",
-    }
-    out = {}
-    for phase, verdict in judged.items():
-        dep = dep_for.get(phase)
-        out[phase] = {**verdict, "signal": bool(verdict["required"]),
-                      "compiler_corroboration": bool(dep and deps.get(dep) is True)}
-    return out
+    insts = getattr(plan, "institutions", []) or []
+    pops = getattr(plan, "populations", []) or []
+    rels = getattr(plan, "relations", []) or []
+    decs = getattr(plan, "actor_decisions", []) or []
+    persons = [e for e in (getattr(plan, "entities", []) or [])
+               if isinstance(e, dict) and str(e.get("type", "")) == "person"]
+    prov = getattr(plan, "provenance", {}) or {}
+    pps = prov.get("per_process_selection", {}) or {}
+    p6_sel = {p: s for p, s in pps.items() if isinstance(s, dict) and s.get("selected")}
+
+    def gate(hits, declared, declared_name):
+        """Returns (required, why, signal_present). A causal signal WITHOUT declared structure is not
+        `required` for synthesis, but the supervisor records it as blocked_missing_state, never a no-op."""
+        if hits and declared:
+            return True, f"causal signal {hits[:3]} + declared {declared_name}", True
+        if hits:
+            return (False, f"causal signal {hits[:3]} but no declared {declared_name} "
+                           f"(nothing to execute)", True)
+        if declared:
+            return False, f"{declared_name} declared but no causal process of this kind — context only", False
+        return False, f"no causal signal and no declared {declared_name}", False
+
+    def signal(dep_key, tokens):
+        """Semantic-first causal signal: the compiler's structured dependency judgment, or a lexical hit."""
+        if deps.get(dep_key) is True:
+            return [f"causal_dependencies.{dep_key}"]
+        return _hit(text, tokens)
+
+    req = {}
+    ok, why, sig = gate(signal("institutional_decision_process", _P10_TOKENS), insts, "institutions")
+    req["phase10_institutions"] = {"required": ok, "why": why, "signal": sig}
+    # an aggregate-behavior signal implies a population by definition — segments are constructible from
+    # broad priors when the compiler declared none (Part: Phase 9 populations, "construct weighted segments")
+    ok, why, sig = gate(signal("aggregate_population_behavior", _P9POP_TOKENS), pops or True,
+                        "populations (constructible)")
+    req["phase9_populations"] = {"required": ok, "why": why, "signal": sig}
+    # Part 7: relations may be INFERRED from the declared causal world when transmission is causally
+    # required — >=2 declared entities (or a declared population to expose) are inferable structure.
+    net_substrate = rels or (len([e for e in (getattr(plan, "entities", []) or [])
+                                  if isinstance(e, dict)]) >= 2) or pops
+    ok, why, sig = gate(signal("networked_transmission", _P9NET_TOKENS), net_substrate,
+                        "relations (or inferable entity/population substrate)")
+    req["phase9_networks"] = {"required": ok, "why": why, "signal": sig}
+    hits7 = signal("nonlinear_dynamics", _P7_TOKENS)
+    req["phase7_nonlinear"] = {"required": bool(hits7),
+                               "why": (f"nonlinear causal structure: {hits7[:3]}" if hits7
+                                       else "no nonlinear causal structure named")}
+    # Phase 6 owns causal-process → mechanism resolution. It is required whenever the outcome depends on a
+    # SOCIAL/behavioral causal mechanism (any structured dependency signal true, or a registry family already
+    # answers a process) — a required process may never be silently omitted: it resolves to a validated
+    # family or to a transparent broad-prior fallback that still executes (registry gap recorded).
+    social_dep = any(deps.get(k) is True for k in
+                     ("strategic_actor_decisions", "aggregate_population_behavior",
+                      "networked_transmission", "nonlinear_dynamics", "institutional_decision_process"))
+    procs = [str(c.get("process", "")) for c in (getattr(plan, "mechanism_choices", []) or [])
+             if isinstance(c, dict) and c.get("process") and c.get("process") != "outcome_resolution"]
+    other_social = any(req.get(k, {}).get("required") for k in
+                       ("phase10_institutions", "phase9_populations", "phase9_networks"))
+    req["phase6_registry"] = {
+        "required": bool(p6_sel) or social_dep or other_social,
+        "why": (f"registry answers {sorted(p6_sel)[:3]}" if p6_sel else
+                ("social causal mechanism required (dependency signal)" if social_dep else
+                 ("another social phase is causally required — a behavioral mechanism carries it"
+                  if other_social else "no social behavioral mechanism required")))}
+    hits4 = signal("strategic_actor_decisions", _P4_TOKENS)
+    # a compiler-proposed decision whose candidate actions carry outcome POLARITY (approve/reject/veto…)
+    # is itself structural evidence of a strategic actor — generic act/wait proposals are not.
+    polar_decision = False
+    if decs:
+        from swm.world_model_v2.phase_consumers import action_polarity
+        for d in decs:
+            for a in (d.get("candidate_actions") or []):
+                if isinstance(a, dict) and action_polarity(a.get("name") or a.get("type")) != 0:
+                    polar_decision = True
+                    break
+    # organizations and institutions are strategic actors too — any declared entity is executable
+    # actor substrate (the ontology has organizational_market/institutional action families)
+    actor_substrate = decs or persons or [e for e in (getattr(plan, "entities", []) or [])
+                                          if isinstance(e, dict) and e.get("id")]
+    if polar_decision and not hits4:
+        req["phase4_actor_policy"] = {"required": bool(actor_substrate),
+                                      "why": "compiler-proposed decision with outcome-polar actions",
+                                      "signal": True}
+    else:
+        ok, why, sig = gate(hits4, actor_substrate, "strategic actors")
+        req["phase4_actor_policy"] = {"required": ok, "why": why, "signal": sig}
+    return req
 
 
 # ---------------------------------------------------------------- synthesis helpers (per phase)
@@ -126,48 +197,19 @@ def _add_mechanism(plan, mech_id, operator, role, source):
 
 
 def _add_modulation(plan, var, weight):
-    """Removed terminal shortcut retained only as a loud compatibility error.
-
-    Phase effects must travel through causal state-transition events; callers
-    may not attach probability nudges to ``resolve_outcome``.
-    """
-    raise RuntimeError("direct terminal rate_modulation is prohibited; use causal state drivers")
-
-
-def _wire_causal_state_path(plan, drivers, resolve_ts, resolve_var, options, lean) -> bool:
-    """Wire phase outputs into a state transition and then a terminal event.
-
-    This is intentionally two events.  Upstream phases first mutate their own
-    state, ``causal_state_transition`` consumes those fields into a typed latent
-    propensity, and only ``causal_outcome_transition`` may write the terminal
-    WorldState.  The generic resolver remains a safety net and no longer accepts
-    phase-specific probability modifiers.
-    """
-    if not drivers:
+    """Register a consumer-written state variable for CONSUMPTION BY A MECHANISM (the institutional
+    decision or the aggregate-outcome realization mechanism). The terminal resolver never consumes these
+    (Part 4: no resolver-level probability modulation). Total weight capped at synthesis time."""
+    if not hasattr(plan, "_consumed_state"):
+        plan._consumed_state = []
+    mods = plan._consumed_state
+    if any(m.get("var") == var for m in mods):
         return False
-    unique = []
-    for driver in drivers:
-        if driver.get("var") and driver["var"] not in {d["var"] for d in unique}:
-            unique.append(dict(driver))
-    propensity_var = "causal_outcome_propensity"
-    plan.scheduled_events.append({
-        "etype": "causal_state_transition", "ts": resolve_ts - 1.5, "participants": [],
-        "payload": {"driver_vars": unique, "out_var": propensity_var, "lean": lean}})
-    plan.scheduled_events.append({
-        "etype": "causal_outcome_transition", "ts": resolve_ts - 0.75, "participants": [],
-        "payload": {"propensity_var": propensity_var, "outcome_var": resolve_var,
-                    "options": options}})
-    _add_mechanism(plan, "causal_state_transition", "causal_state_transition",
-                   "combine phase state through an equal-weight log-opinion state transition",
-                   "posterior base rate plus labeled phase state; no terminal probability nudge")
-    _add_mechanism(plan, "causal_outcome_transition", "causal_outcome_transition",
-                   "sample the terminal state from the causal propensity state",
-                   "causal state transition output; common-randomness branch stream")
-    # A formal institution consumes the same causal propensity before applying
-    # its declared threshold rule.
-    for ev in plan.scheduled_events:
-        if ev.get("etype") == "institutional_decision":
-            ev.setdefault("payload", {})["propensity_var"] = propensity_var
+    total = sum(float(m.get("weight", 0.0)) for m in mods)
+    w = max(0.0, min(float(weight), 0.45 - total))
+    if w <= 0.0:
+        return False
+    mods.append({"var": var, "weight": round(w, 3)})
     return True
 
 
@@ -201,172 +243,17 @@ def _rule_numbers(inst) -> dict:
             "defaulted": share is None and needed == int(0.5 * n_members) + 1}
 
 
-def _materialize_required_structure(plan, req) -> list:
-    """Repair compiler omissions with minimal, explicitly inferred causal state.
-
-    The question-level relevance gate may find a required population, network,
-    actor, or institution even when the compiler omitted its section.  Leaving
-    that phase blocked would be an integration defect; silently treating it as
-    irrelevant would be worse.  The repair uses abstract state only, labels it
-    as inferred, and never claims scenario-specific facts that were not given.
-    """
-    actions = []
-    prov = getattr(plan, "provenance", {}) or {}
-    inferred = prov.setdefault("runtime_inferred_structure", [])
-
-    # A relevant actor-policy phase needs at least one actor the production
-    # policy can bind. Merely having an organization/entity in the plan is
-    # insufficient because decision_opportunity dispatches to person actors.
-    has_person = any(isinstance(e, dict) and e.get("id") and
-                     str(e.get("type", "person")) == "person"
-                     for e in (getattr(plan, "entities", []) or []))
-    if req["phase4_actor_policy"]["required"] and not (
-            has_person or getattr(plan, "actor_decisions", [])):
-        plan.entities.append({"id": "strategic_actor", "type": "person",
-                              "fields": {"role": "outcome-relevant decision maker"},
-                              "_inferred": "question-level strategic process"})
-        actions.append({"phase": "phase4_actor_policy", "action": "abstract_actor_materialized"})
-
-    if req["phase9_populations"]["required"] and not getattr(plan, "populations", []):
-        plan.populations.append({
-            "id": "affected_population", "sensitivity": 0.7,
-            "segments": [
-                {"id": "lower_propensity", "weight": 0.5,
-                 "differs_on": ["participation_propensity"]},
-                {"id": "higher_propensity", "weight": 0.5,
-                 "differs_on": ["participation_propensity"]},
-            ], "_inferred": "question-level aggregate population process"})
-        actions.append({"phase": "phase9_populations", "action": "abstract_population_materialized"})
-
-    if req["phase9_networks"]["required"]:
-        entities, seen_ids = [], set()
-        for entity in (getattr(plan, "entities", []) or []):
-            if not isinstance(entity, dict) or not entity.get("id"):
-                continue
-            eid = str(entity["id"])
-            if eid not in seen_ids:
-                entities.append(entity)
-                seen_ids.add(eid)
-        while len(entities) < 2:
-            eid = "transmission_source" if not entities else "exposed_target"
-            if eid in seen_ids:
-                eid = f"network_node_{len(entities) + 1}"
-            node = {"id": eid, "type": "organization",
-                    "fields": {"role": "abstract transmission substrate"},
-                    "_inferred": "question-level transmission process"}
-            plan.entities.append(node)
-            entities.append(node)
-            seen_ids.add(eid)
-
-        # Compiler-proposed relation names are not automatically executable:
-        # the materializer rejects names outside the typed relation registry.
-        # Treat an all-invalid relation list as missing state and add one
-        # explicit registered edge while preserving invalid proposals in the
-        # omission trail.
-        from swm.world_model_v2.network import _RELATIONS
-        materializable = any(
-            isinstance(rel, dict) and rel.get("src") and rel.get("dst") and
-            str(rel.get("src")) != str(rel.get("dst")) and rel.get("rel") in _RELATIONS
-            for rel in (getattr(plan, "relations", []) or []))
-        if not materializable:
-            plan.relations.append({"src": str(entities[0]["id"]), "rel": "influences",
-                                   "dst": str(entities[1]["id"]),
-                                   "_inferred": "minimal transmission edge"})
-            actions.append({"phase": "phase9_networks", "action": "abstract_relation_materialized"})
-
-    if req["phase10_institutions"]["required"] and not getattr(plan, "institutions", []):
-        plan.institutions.append({
-            "id": "decision_institution", "sensitivity": 0.7,
-            "rules": [{"kind": "quorum", "params": {"total": 9, "quorum": 5}}],
-            "_inferred": "question-level rule-governed decision process"})
-        actions.append({"phase": "phase10_institutions", "action": "abstract_institution_materialized"})
-
-    if actions:
-        inferred.extend(actions)
-        plan.provenance = prov
-    return actions
-
-
-def _gate_irrelevant_execution(plan, req) -> list:
-    """Remove compiler-proposed operators for phases adjudicated irrelevant."""
-    phase_events = {
-        "phase4_actor_policy": {"decision_opportunity", "actor_action_aggregation"},
-        "phase6_registry": {"behavioral_mechanism", "feature_hazard", "structural_process_prior"},
-        "phase7_nonlinear": {"state_step", "nonlinear_transition"},
-        "phase9_populations": {"population_aggregation"},
-        "phase9_networks": {"network_diffusion"},
-        "phase10_institutions": {"institutional_decision", "collective_vote"},
-    }
-    phase_ops = {
-        "phase4_actor_policy": {"production_actor_policy", "agent_decision", "fitted_decision",
-                                "actor_action_aggregation"},
-        "phase6_registry": {"behavioral_mechanism", "feature_hazard", "structural_process_prior"},
-        "phase7_nonlinear": {"nonlinear_state_step", "nonlinear_mechanism", "nonlinear_contagion"},
-        "phase9_populations": {"population_aggregation"},
-        "phase9_networks": {"network_diffusion"},
-        "phase10_institutions": {"institutional_decision", "institutional_vote", "institution_action"},
-    }
-    actions = []
-    for phase, events in phase_events.items():
-        if req.get(phase, {}).get("required"):
-            continue
-        before_events = len(plan.scheduled_events)
-        before_mechs = len(plan.accepted_mechanisms)
-        plan.scheduled_events = [e for e in plan.scheduled_events if e.get("etype") not in events]
-        plan.accepted_mechanisms = [m for m in plan.accepted_mechanisms
-                                    if m.get("operator") not in phase_ops[phase]]
-        removed = (before_events - len(plan.scheduled_events)) + \
-                  (before_mechs - len(plan.accepted_mechanisms))
-        if removed:
-            actions.append({"phase": phase, "action": "irrelevant_execution_gated_off",
-                            "n_artifacts_removed": removed})
-    return actions
-
-
-def _bound_hazard_event_budget(plan, max_expected_events=100.0) -> list:
-    """Prevent compiler hazards from starving scheduled causal mechanisms.
-
-    The rollout has a hard event ceiling for safety. An unconstrained LLM rate
-    can otherwise consume that ceiling on background hazards before the
-    horizon-time phase events execute. Preserve the relative rates but scale
-    their total expected count to a conservative budget, recording the exact
-    repair in provenance.
-    """
-    hazards = list(getattr(plan, "stochastic_hazards", []) or [])
-    horizon_days = max(0.0, (float(plan.horizon_ts) - float(plan.as_of)) / 86400.0)
-    expected = sum(max(0.0, float(h.get("rate_per_day", 0.0) or 0.0)) * horizon_days
-                   for h in hazards if isinstance(h, dict))
-    if expected <= max_expected_events or expected <= 0.0:
-        return []
-    scale = max_expected_events / expected
-    for hazard in hazards:
-        if isinstance(hazard, dict):
-            hazard["rate_per_day"] = max(
-                0.0, float(hazard.get("rate_per_day", 0.0) or 0.0) * scale)
-    return [{"phase": "cross_phase", "action": "hazard_event_budget_bounded",
-             "expected_before": round(expected, 3),
-             "expected_after": round(max_expected_events, 3),
-             "scale": round(scale, 8)}]
-
-
 def synthesize_activation(plan, req=None) -> dict:
     """Complete the execution chain for required phases; gate off ornamental execution for non-required ones.
     Mutates the plan in place; returns the per-phase synthesis report (for the manifest). Idempotent."""
     import swm.world_model_v2.phase_consumers  # noqa: F401 — registers the consumer operators/events
     req = req or phase_requirements(plan)
     rep = {"requirements": {k: v["required"] for k, v in req.items()}, "actions": []}
-    rep["actions"].extend(_materialize_required_structure(plan, req))
-    rep["actions"].extend(_gate_irrelevant_execution(plan, req))
-    rep["actions"].extend(_bound_hazard_event_budget(plan))
     rev = _resolve_event(plan)
-    if rev is not None:
-        # Defense in depth for plans compiled by the pre-fix runtime.
-        rev.setdefault("payload", {}).pop("rate_modulation", None)
     resolve_var = (rev or {}).get("payload", {}).get("outcome_var", "outcome")
     options = (rev or {}).get("payload", {}).get("options") or ["True", "False"]
     lean = (rev or {}).get("payload", {}).get("lean", "neutral")
     resolve_ts = (rev or {}).get("ts", plan.horizon_ts - 1.0)
-    causal_drivers = []
 
     def _has_event(etype):
         return any(e.get("etype") == etype for e in plan.scheduled_events)
@@ -404,6 +291,16 @@ def synthesize_activation(plan, req=None) -> dict:
             rep["actions"].append({"phase": "phase10_institutions", "action": "institutional_decision_event",
                                    "institution": inst.get("id"), **nums})
 
+    # ---- Phase 9 populations: construct weighted segments when the aggregate signal has no declared
+    #      structure (broad-prior segments; recorded as inferred — never a decorative quantity) ----
+    if req["phase9_populations"]["required"] and not plan.populations:
+        plan.populations.append({"id": "affected_population", "_inferred": "aggregate_behavior_signal",
+                                 "segments": [
+                                     {"id": "engaged", "weight": 0.5, "differs_on": ["participation"]},
+                                     {"id": "marginal", "weight": 0.5, "differs_on": ["participation"]}]})
+        rep["actions"].append({"phase": "phase9_populations",
+                               "action": "population_constructed_from_signal"})
+
     # ---- Phase 9 populations: declared population + aggregate process → aggregation consumer ----
     if req["phase9_populations"]["required"] and plan.populations and not _has_event("population_aggregation"):
         for p in [x for x in plan.populations if isinstance(x, dict)][:2]:
@@ -411,13 +308,34 @@ def synthesize_activation(plan, req=None) -> dict:
             plan.scheduled_events.append({
                 "etype": "population_aggregation", "ts": resolve_ts - 3.0, "participants": [],
                 "payload": {"population_id": str(p.get("id")), "out_var": var}})
-            causal_drivers.append({"var": var, "phase": "phase9_populations", "direction": 1})
+            _add_modulation(plan, var, 0.2)
         _add_mechanism(plan, "population_aggregation", "population_aggregation",
-                       "aggregate declared segment heterogeneity into causal state",
+                       "aggregate declared segment heterogeneity into the terminal rate",
                        "declared weights; labeled broad-prior heterogeneity")
         rep["actions"].append({"phase": "phase9_populations", "action": "aggregation_consumer",
                                "populations": [p.get("id") for p in plan.populations[:2]
                                                if isinstance(p, dict)]})
+
+    # ---- Phase 9 networks: normalize compiler-declared relation names onto the REGISTERED relation
+    #      registry (an unregistered rel is dropped at materialization, leaving the diffusion mechanism an
+    #      empty graph — the preflight-found blocked_no_mechanism defect). Never drops an edge. ----
+    if req["phase9_networks"]["required"] and plan.relations:
+        from swm.world_model_v2.network import _RELATIONS
+        _REL_MAP = {"trust": "trusts", "influence": "influences", "communicat": "communicates_with",
+                    "observ": "observes", "report": "reports_to", "fund": "funds", "endors": "endorses",
+                    "oppos": "opposes", "compet": "opposes", "member": "belongs_to", "belong": "belongs_to",
+                    "depend": "depends_on", "control": "controls", "ally": "influences",
+                    "partner": "communicates_with"}
+        n_norm = 0
+        for r in plan.relations:
+            if isinstance(r, dict) and str(r.get("rel")) not in _RELATIONS:
+                orig = str(r.get("rel", ""))
+                mapped = next((v for k, v in _REL_MAP.items() if k in orig.lower()), "influences")
+                r["_original_rel"], r["rel"] = orig, mapped
+                n_norm += 1
+        if n_norm:
+            rep["actions"].append({"phase": "phase9_networks", "action": "relation_names_normalized",
+                                   "n": n_norm})
 
     # ---- Phase 9 networks: infer relations from the declared causal world when transmission is required
     #      but the compiler declared no explicit edges (Part 7: "build or infer multilayer relations") ----
@@ -448,9 +366,9 @@ def synthesize_activation(plan, req=None) -> dict:
         plan.scheduled_events.append({
             "etype": "network_diffusion", "ts": resolve_ts - 3.0, "participants": [],
             "payload": {"out_var": var}})
-        causal_drivers.append({"var": var, "phase": "phase9_networks", "direction": 1})
+        _add_modulation(plan, var, 0.2)
         _add_mechanism(plan, "network_diffusion", "network_diffusion",
-                       "percolate the declared relation graph into downstream causal state",
+                       "percolate the declared relation graph by semantic layer into the terminal rate",
                        "declared edges; layer transmissibility broad priors")
         rep["actions"].append({"phase": "phase9_networks", "action": "diffusion_consumer",
                                "n_relations": len(plan.relations)})
@@ -474,7 +392,7 @@ def synthesize_activation(plan, req=None) -> dict:
                                       "params": {"r": 0.35, "L": 1.0}, "s0": 0.05, "dt": dt,
                                       "mode": "increment", "clamp": [0.0, 1.0],
                                       "horizon_ts": resolve_ts - 2.0}}})
-        causal_drivers.append({"var": var, "phase": "phase7_nonlinear", "direction": 1})
+        _add_modulation(plan, var, 0.15)
         _add_mechanism(plan, "nonlinear_saturating_trajectory", "nonlinear_state_step",
                        "execute the detected nonlinear (saturating) trajectory event-by-event",
                        "structural logistic form; broad-prior rate (labeled)")
@@ -486,36 +404,10 @@ def synthesize_activation(plan, req=None) -> dict:
         added = _synthesize_p6(plan, resolve_ts)
         if added:
             rep["actions"].append({"phase": "phase6_registry", "action": "pack_events", "families": added})
-        for ev in plan.scheduled_events:
-            if ev.get("etype") == "behavioral_mechanism":
-                var = (ev.get("payload", {}).get("hazard_spec") or {}).get("outcome_var")
-            elif ev.get("etype") == "structural_process_prior":
-                var = ev.get("payload", {}).get("out_var")
-            else:
-                continue
-            if var:
-                causal_drivers.append({"var": var, "phase": "phase6_registry", "direction": 1})
 
     # ---- Phase 4: strategic process required → complete the decision linkage; else gate off ornament ----
     p4 = req["phase4_actor_policy"]["required"]
     has_dec_ev = _has_event("decision_opportunity")
-    if p4 and has_dec_ev:
-        # A compiler decision is not executable merely because an event of the
-        # right type exists. Bind the production operator and ensure the
-        # decision precedes its aggregation/downstream state path.
-        _add_mechanism(plan, "production_actor_policy", "production_actor_policy",
-                       "strategic-actor decision required by the causal analysis",
-                       "Tier-7 broad structural policy unless a fitted pack is bound")
-        latest_decision_ts = resolve_ts - 4.0
-        for event in plan.scheduled_events:
-            if event.get("etype") != "decision_opportunity":
-                continue
-            old_ts = float(event.get("ts", latest_decision_ts))
-            if old_ts > latest_decision_ts:
-                event["ts"] = latest_decision_ts
-                rep["actions"].append({"phase": "phase4_actor_policy",
-                                       "action": "late_decision_moved_before_consumer",
-                                       "old_ts": old_ts, "new_ts": latest_decision_ts})
     if p4 and (has_dec_ev or plan.entities) and not _has_event("actor_action_aggregation"):
         # the CONSUMER: chosen-action polarity aggregated into the terminal (after all decisions, before
         # resolve). Without it, decisions execute but nothing downstream depends on them (the audit gap).
@@ -523,21 +415,23 @@ def synthesize_activation(plan, req=None) -> dict:
         plan.scheduled_events.append({
             "etype": "actor_action_aggregation", "ts": resolve_ts - 2.0, "participants": [],
             "payload": {"out_var": var}})
-        causal_drivers.append({"var": var, "phase": "phase4_actor_policy", "direction": 1})
+        _add_modulation(plan, var, 0.15)
         _add_mechanism(plan, "actor_action_aggregation", "actor_action_aggregation",
-                       "aggregate chosen typed actions' polarity into downstream causal state",
+                       "aggregate chosen typed actions' polarity into the terminal rate",
                        "lexical polarity; nonpolar actions skipped")
     if p4 and not has_dec_ev:
-        persons = [e for e in plan.entities
-                   if isinstance(e, dict) and str(e.get("type", "")) == "person"]
-        actor = max(persons, key=lambda e: float(e.get("sensitivity", 0.5) or 0.5), default=None)
+        # organizations/institutions are strategic actors too (the action ontology has an
+        # organizational_market family) — prefer persons, but never leave a required strategic phase
+        # with a selected mechanism and no decision event just because no `person` was declared.
+        cands = [e for e in plan.entities if isinstance(e, dict) and e.get("id")]
+        persons = [e for e in cands if str(e.get("type", "")) == "person"]
+        actor = max(persons or cands, key=lambda e: float(e.get("sensitivity", 0.5) or 0.5), default=None)
         if actor is not None:
             plan.scheduled_events.append({
                 "etype": "decision_opportunity", "ts": resolve_ts - 4.0,
                 "participants": [str(actor.get("id"))],
                 "payload": {"situation": "strategic decision required by the causal analysis",
-                            "actions": [{"name": "support", "mechanisms_triggered": ["record_action"]},
-                                        {"name": "reject", "mechanisms_triggered": ["record_action"]}]}})
+                            "actions": [{"type": "act"}, {"type": "wait"}]}})
             _add_mechanism(plan, "production_actor_policy", "production_actor_policy",
                            "strategic-actor decision required by the causal analysis",
                            "Tier-7 broad structural policy unless a fitted pack is bound")
@@ -554,26 +448,29 @@ def synthesize_activation(plan, req=None) -> dict:
         rep["actions"].append({"phase": "phase4_actor_policy", "action": "gated_off_ornamental_decisions",
                                "n_events_removed": n_before - len(plan.scheduled_events),
                                "why": req["phase4_actor_policy"]["why"]})
-    if p4:
-        # Ensure an existing compiler decision exposes outcome-polar alternatives;
-        # otherwise the downstream actor state cannot encode a direction.
-        from swm.world_model_v2.phase_consumers import action_polarity
-        for ev in plan.scheduled_events:
-            if ev.get("etype") != "decision_opportunity":
-                continue
-            payload = ev.setdefault("payload", {})
-            acts = payload.get("candidate_actions") or payload.get("actions") or []
-            if not any(action_polarity((a.get("name") or a.get("type")) if isinstance(a, dict) else a)
-                       for a in acts):
-                payload["candidate_actions"] = [
-                    {"name": "support", "mechanisms_triggered": ["record_action"]},
-                    {"name": "reject", "mechanisms_triggered": ["record_action"]},
-                ]
-                rep["actions"].append({"phase": "phase4_actor_policy",
-                                       "action": "outcome_polar_action_space_completed"})
-    if _wire_causal_state_path(plan, causal_drivers, resolve_ts, resolve_var, options, lean):
-        rep["actions"].append({"phase": "cross_phase", "action": "causal_state_path",
-                               "drivers": causal_drivers})
+
+    # ---- route consumer state into a CONSUMING MECHANISM (Part 4: the terminal resolver never modulates).
+    # An institutional decision consumes it (members respond to population/actor/network/nonlinear state);
+    # otherwise the aggregate-outcome realization mechanism resolves the outcome from that state in the
+    # event loop, ahead of the generic safety net.
+    consumed = list(getattr(plan, "_consumed_state", []) or [])
+    if consumed:
+        inst_ev = next((e for e in plan.scheduled_events if e.get("etype") == "institutional_decision"),
+                       None)
+        if inst_ev is not None:
+            inst_ev.setdefault("payload", {})["consume"] = consumed
+            rep["actions"].append({"phase": "state_consumption", "action": "institution_consumes_state",
+                                   "vars": [m["var"] for m in consumed]})
+        elif not _has_event("aggregate_outcome_resolution"):
+            plan.scheduled_events.append({
+                "etype": "aggregate_outcome_resolution", "ts": resolve_ts - 0.5, "participants": [],
+                "payload": {"outcome_var": resolve_var, "options": options, "lean": lean,
+                            "consume": consumed}})
+            _add_mechanism(plan, "aggregate_outcome_mechanism", "aggregate_outcome_mechanism",
+                           "realize the aggregate-behavior outcome from consumed causal state",
+                           "posterior base rate + bounded state consumption (inside the mechanism)")
+            rep["actions"].append({"phase": "state_consumption", "action": "aggregate_mechanism_resolves",
+                                   "vars": [m["var"] for m in consumed]})
     return rep
 
 
@@ -634,6 +531,7 @@ def _synthesize_p6(plan, resolve_ts) -> list:
                 "payload": {"hazard_spec": {"kind": "behavioral", "mechanism": fam, "params": params,
                                             "outcome_var": var, "family": fam,
                                             "pack_id": pack.pack_id, "transport_widening": 1.3}}})
+            _add_modulation(plan, var, 0.2)
             _add_mechanism(plan, fam, "behavioral_mechanism",
                            f"registry family {fam} answering process {proc}",
                            f"published pack {pack.pack_id} (transported; widened)")
@@ -653,7 +551,7 @@ def _synthesize_p6(plan, resolve_ts) -> list:
     lean = (getattr(plan, "provenance", {}) or {}).get("outcome_lean", "neutral")
     n_fb = 0
     for proc in procs:
-        if proc in answered or n_fb >= 2:                    # bounded exploratory mechanism count
+        if proc in answered or n_fb >= 2:                    # bounded: modulation channel is capped anyway
             continue
         var = f"mechanism_outcome:fallback:{proc[:40]}"
         if any(e.get("etype") == "structural_process_prior" and
@@ -662,6 +560,7 @@ def _synthesize_p6(plan, resolve_ts) -> list:
         plan.scheduled_events.append({
             "etype": "structural_process_prior", "ts": resolve_ts - 2.5, "participants": [],
             "payload": {"process": proc, "out_var": var, "lean": lean}})
+        _add_modulation(plan, var, 0.1)
         _add_mechanism(plan, f"structural_prior:{proc[:40]}", "structural_process_prior",
                        f"broad-prior fallback for unanswered required process {proc!r}",
                        "broad Beta prior; EXPLORATORY (registry gap)")

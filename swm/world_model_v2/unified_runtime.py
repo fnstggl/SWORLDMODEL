@@ -34,7 +34,7 @@ try:
 except Exception:  # noqa: BLE001
     _NONLINEAR_OPERATORS_REGISTERED = False
 
-RUNTIME_VERSION = "unified-2.0-post-snapshot"
+RUNTIME_VERSION = "unified-1.0"
 # Phases that are default-on and threaded through the one funnel.
 _PHASES = ["phase1_compiler", "phase2_evidence", "phase3_posterior", "phase4_actor_policy",
            "phase6_registry", "phase7_nonlinear", "phase8_persistence", "phase9_populations",
@@ -74,23 +74,14 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
     manifest = {p: _mani(available=True) for p in _PHASES}
     lineage = {"plan_hashes": [], "recompilations": []}
     costs = {"llm_calls": 0}
-    phase_req = {}
 
     def _iso(s):
         return s
 
-    if isinstance(compute_budget, dict):
-        compiler_budget = int(compute_budget.get("n_budget", 30))
-    elif isinstance(compute_budget, (int, float)):
-        compiler_budget = int(compute_budget)
-    else:
-        compiler_budget = 30
-    compiler_budget = max(12, min(80, compiler_budget))
-
     # ---------- Phase 1: universal compiler → the ONE shared plan ----------
     try:
         plan = compile_world(question, llm=llm, evidence="", as_of=as_of, horizon=horizon,
-                             intervention=intervention, n_budget=compiler_budget, seed=seed)
+                             intervention=intervention, seed=seed)
     except ClarificationRequired as e:
         return SimulationResult(question=question, simulation_status="clarification_required",
                                 clarification_reason=str(e), latency_s=round(_time.time() - t0, 3),
@@ -185,12 +176,13 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
         try:
             from swm.world_model_v2.activation_synthesis import phase_requirements, synthesize_activation
             req = phase_requirements(plan)
-            phase_req = req
             # respect per-phase ablation drops: a dropped phase must not be synthesized back in
             for ph in list(req):
                 if ph in drop:
                     req[ph] = {"required": False, "why": "dropped_by_policy"}
-            lineage["activation_synthesis"] = synthesize_activation(plan, req)
+            rep = synthesize_activation(plan, req)
+            rep["_pre_synthesis_requirements"] = req         # the ONE relevance verdict, reused by assess
+            lineage["activation_synthesis"] = rep
             for ph, r in req.items():
                 if ph in manifest:
                     manifest[ph]["relevance"] = {"required": r["required"], "why": r["why"]}
@@ -198,15 +190,12 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
             lineage["activation_synthesis"] = {"error": f"{type(e).__name__}: {e}"[:160]}
 
     # ---------- Phase 11: dynamic-recompilation loop over the as-of observations (same plan lineage) --------
-    p11_required = bool(phase_req.get("phase11_recompilation", {}).get("required"))
-    if "phase11_recompilation" not in drop and p11_required and bundle is not None:
+    if "phase11_recompilation" not in drop and bundle is not None:
         _run_recompilation(plan, bundle, as_of, horizon, seed, llm, manifest, lineage, costs)
     else:
         manifest["phase11_recompilation"].update(
-            omitted=True, causally_irrelevant=not p11_required,
-            reason=("dropped_by_policy" if "phase11_recompilation" in drop else
-                    ("no observations for required structural-change monitoring" if p11_required
-                     else "no structural-change cue; explicit causal no-op")))
+            omitted=True, reason=("dropped_by_policy" if "phase11_recompilation" in drop
+                                  else "no observations"))
 
     # ---------- Terminal projection through the ONE funnel (Phase 8 persistence + P4/P6/P7/P10 operators) ----
     res = _project_terminal(question, plan, as_of, horizon, intervention, seed, llm, user_context,
@@ -218,8 +207,10 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
     if res.has_forecast():
         try:
             from swm.world_model_v2 import phase_supervision as PS
+            pre_req = (lineage.get("activation_synthesis") or {}).get("_pre_synthesis_requirements")
             recs = PS.assess(plan, has_as_of=bool(as_of), has_bundle=bundle is not None,
-                             versions={p: manifest[p].get("version", "") for p in manifest})
+                             versions={p: manifest[p].get("version", "") for p in manifest},
+                             req=pre_req)
             core_meta = {}
             for p in ("phase1_compiler", "phase2_evidence", "phase3_posterior",
                       "phase8_persistence", "phase11_recompilation"):

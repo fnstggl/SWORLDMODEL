@@ -68,6 +68,7 @@ def build() -> dict:
     selection = _json(RESULTS / "frozen_selection_manifest.json")
     leakage = _json(RESULTS / "leakage_probe_summary.json")
     suite = _json(RESULTS / "full_test_suite_report.json")
+    suite_current = suite.get("final_merged_tree", suite)
     temporal = _json(RESULTS / "model_temporal_safety_audit.json")
     phase12_fit = _json(RESULTS / "phase12_calibration_fit.json")
     phase12_selection = _json(RESULTS / "phase12_validation_selection.json")
@@ -161,7 +162,7 @@ def build() -> dict:
         record.get("full_causally_active_rate") == 1.0
         for record in causal["aggregate"]["per_category"].values()
     )
-    suite_clean = suite["summary"]["failed"] == 0
+    suite_clean = suite_current["summary"]["failed"] == 0
     market_informed_complete = score.get("market_informed_comparison", {}).get("status") == "complete"
 
     gates = {
@@ -215,9 +216,9 @@ def build() -> dict:
             True, causal_full_activation, ["causal_coverage_results.json"]),
         "all_covered_phases_show_meaningful_ablation": _gate(
             True, causal_effects_all, ["causal_coverage_results.json"]),
-        "full_repository_test_suite": _gate(0, suite["summary"]["failed"],
+        "full_repository_test_suite": _gate(0, suite_current["summary"]["failed"],
                                             ["full_test_suite_report.json"], passed=suite_clean),
-        "stacked_pr_test_file_diff": _gate(0, suite.get("stacked_pr_test_file_diff_count"),
+        "stacked_pr_test_file_diff": _gate(0, suite_current.get("stacked_pr_test_file_diff_count"),
                                            ["full_test_suite_report.json"]),
     }
     strict_completion = all(gate["pass"] for gate in gates.values())
@@ -269,7 +270,7 @@ def build() -> dict:
             "locked_outcome_ledger": ledger,
             "negative_results_preserved": True,
         },
-        "test_suite": suite,
+        "test_suite": {"current": suite_current, "preserved_history": suite},
     }
     payload["artifact_sha256"] = _sha(payload)
     return payload

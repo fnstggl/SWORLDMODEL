@@ -19,18 +19,17 @@ DEEPSEEK_URL = "https://api.deepseek.com/chat/completions"
 
 
 def deepseek_chat_fn(model: str = "deepseek-v4-flash", *, system: str = "", max_tokens: int = 800,
-                     temperature: float = 0.0, api_key: str = None, thinking: str = "disabled"):
-    """Return a callable(prompt) -> text using the official DeepSeek API.
+                     temperature: float = 0.0, api_key: str = None,
+                     thinking: str | bool = "disabled"):
+    """Return a callable while keeping sealed-run credentials in process memory.
 
-    ``api_key`` is the preferred benchmark path: a runner reads it from an
-    echo-disabled TTY and passes it directly, so it never enters argv, an
-    environment variable, or a file.  The environment fallback remains for
-    existing integrations.  DeepSeek's current explicit API IDs are
-    ``deepseek-v4-flash`` and ``deepseek-v4-pro``.
+    The environment fallback preserves existing integrations.  A missing key
+    still permits construction for callers that only inspect the callable;
+    the provider will reject an attempted unauthenticated request.
     """
     key = (api_key if api_key is not None else os.environ.get("DEEPSEEK_API_KEY", "")).strip()
-    if not key:
-        raise ValueError("DeepSeek API credential missing")
+    thinking_type = (thinking if isinstance(thinking, str)
+                     else ("enabled" if thinking else "disabled"))
     # a pasted key can pick up non-ASCII junk (smart quotes, bullets, a trailing comment) → the HTTP header
     # crashes with an opaque latin-1 UnicodeEncodeError. Fail LOUDLY and clearly instead.
     if key and not key.isascii():
@@ -40,9 +39,11 @@ def deepseek_chat_fn(model: str = "deepseek-v4-flash", *, system: str = "", max_
     def fn(prompt: str) -> str:
         msgs = ([{"role": "system", "content": system}] if system else []) + \
                [{"role": "user", "content": prompt}]
-        body = json.dumps({"model": model, "messages": msgs, "max_tokens": max_tokens,
-                           "temperature": temperature,
-                           "thinking": {"type": thinking}}).encode()
+        payload = {"model": model, "messages": msgs, "max_tokens": max_tokens,
+                   "temperature": temperature}
+        if model.startswith("deepseek-v4"):
+            payload["thinking"] = {"type": thinking_type}
+        body = json.dumps(payload).encode()
         # bounded retry on TRANSIENT failures (connection resets, 429/5xx, timeouts) so a single network
         # blip cannot kill a long batch. Deterministic backoff (no jitter — Math.random is unavailable
         # in some sandboxes and determinism aids replay). Non-transient errors (4xx auth) raise at once.
@@ -65,15 +66,16 @@ def deepseek_chat_fn(model: str = "deepseek-v4-flash", *, system: str = "", max_
                     raise
             time.sleep(2 ** attempt)                       # 1, 2, 4, 8s
         raise last                                         # unreachable (loop raises), keeps type-checkers happy
-    fn.provider_metadata = {"provider": "DeepSeek", "api_alias": model,
-                            "thinking": thinking, "credential_transport":
-                            ("process_memory" if api_key is not None else "environment")}
+    fn.provider_metadata = {
+        "provider": "DeepSeek", "api_alias": model, "thinking": thinking_type,
+        "credential_transport": ("process_memory" if api_key is not None else "environment"),
+    }
     return fn
 
 
 def default_chat_fn(*, system: str = "", max_tokens: int = 800, temperature: float = 0.0,
                     api_key: str = None, model: str = "deepseek-v4-flash",
-                    thinking: str = "disabled"):
+                    thinking: str | bool = "disabled"):
     """The standard backend selector, used going forward: DeepSeek if its key is set, else the HF router
     (Qwen), else None (callers fall back to their cached/committed judgments). One place to change the
     production model."""

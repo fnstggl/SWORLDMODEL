@@ -1,0 +1,23 @@
+{
+  "q1_what_measured": "Predictive accuracy + calibration of the full supervised WMV2 runtime on real post-model-release resolved questions (representative vault), and causal phase behavior separately (coverage vault). The two are never merged.",
+  "q2_outcome_leakage": "Any path by which the resolved outcome influences the forecast: model weights trained on the outcome, retrieval of post-cutoff content, scorer files, question wording revealing resolution, market snapshot from after the cutoff.",
+  "q3_leakage_channels": ["model weights (mitigated: all questions OPEN after the model release 2026-04-24; serving-mutation risk measured by per-row probes + blinding)", "retrieval (mitigated: frozen capsules; first_proven_available_at<=cutoff enforced at access; no live search)", "scorer (sealed store; freeze-hash verification)", "market snapshot (exact at-or-before-cutoff tick)"],
+  "q4_forecaster_information_at_T": "The frozen capsule (archived bytes proven before T) + the blinded question + the model's pre-release world knowledge.",
+  "q5_model_knows_event": "Impossible at release time (events post-date the snapshot); possible only via silent serving retraining — measured per row by name-only/recognition/no-evidence probes; contaminated rows classified and excluded from the clean census, preserved in the audit.",
+  "q6_question_in_training_data": "No: every question opened after the model release (server timestamps).",
+  "q7_evidence_bytes_provable": "Yes: Wikipedia revision timestamps (server-verified) and Wayback capture timestamps; sha256 of raw bytes stored per item.",
+  "q8_value_beyond_llm": "Measured directly: direct single-call, call-matched ensemble, panel, and analogical baselines run on the SAME blinded question + capsule text with the SAME model.",
+  "q9_baseline_parity": "Same capsule text (byte-identical render), same blinded question, same model alias, recorded per row.",
+  "q10_market_timestamp": "Archived price tick at-or-before the exact cutoff; staleness recorded; never a closing price.",
+  "q11_cutoffs_not_independent": "Correct: 4 cutoffs per world are correlated; all inference clusters by WORLD (bootstrap resamples worlds).",
+  "q12_contracts_clustered": "Correlated contracts grouped into one event world at fetch time (gamma event grouping).",
+  "q13_phases_affect_world": "Per-row PhaseExecutionRecords with StateDelta counts; rows with blocked relevant phases FAIL qualification; coverage vault runs matched ablations.",
+  "q14_perturbation_vs_effect": "Coverage ablations report magnitude + direction + trajectory deltas, not just any float change; the representative headline does not use ablation effects at all.",
+  "q15_terminal_from_trajectories": "raw_terminal_distribution from terminal WorldStates; terminal_source recorded per row; no LLM writes the final probability (contract tested).",
+  "q16_predictive_vs_causal": "Both, separately: representative vault = predictive; coverage vault = causal.",
+  "q17_representative_of_use": "High-volume real market questions across >=10 domains, chronological, no phase quotas; limitation recorded: market questions skew short-horizon/binary.",
+  "q18_statistical_power": "100 worlds / 400 rows; world-clustered bootstrap CIs; power limitation of 40-world locked split recorded in results.",
+  "q19_locked_test_influence": "Locked resolutions sealed (REPLAY_SCORER=1 + single-open access log); calibration fit on cal worlds, selected on val worlds, frozen before locked rows are scored.",
+  "q20_independent_reviewer": "Every row carries evidence hashes, proven timestamps, probes, phase records, freeze hash; the vault, splits and rules are frozen in code committed before forecasts.",
+  "design_responses_complete": true
+}

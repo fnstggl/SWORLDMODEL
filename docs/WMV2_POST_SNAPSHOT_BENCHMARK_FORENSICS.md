@@ -14,7 +14,7 @@
 | Locked aggregate score | `5a2edd4f721e4b77985939be3a924f25d03978fe0f0f01f92fa20385686ea239` |
 | Locked scored rows | `b07ec369d295ae504234bd4cc85632e2b18fb22e728a760bf3957d7b4d4c62ee` |
 | Causal diagnostic | `0a77d86ee0d5d441bf1e43fa08e69a27d936a171d6c14aaf12ed662ddcdc1e14` |
-| Exact completion audit | `e9f38c1da7fead853a9977f3255b07838d738d704f896a74e52e4129a7458417` |
+| Exact completion audit | `ceabf2c54145ccea868ab27c57919badf16725853a0877f0c02384f97ca5322c` |
 
 ## Scorer access proof
 
@@ -81,4 +81,4 @@ Raw V2 Brier was 0.252413 on clean rows versus 0.246966 on all rows. Known-conta
 
 Earlier activation and preflight failures remain in `failure_taxonomy.json`, including terminal-readout failures, missing required activations, and a compiler empty-decomposition failure. The causal run also preserved a transient `legvote_5` compiler failure before a successful retry. Immutable row shards retain every attempt while canonical views retain one successful row per key.
 
-The full test suite completed with 1,067 passed, 12 failed, 2 skipped, and 11 warnings. Four failures are missing/pre-existing repository or environment contracts; eight are stale base-test expectations that conflict with the new no-terminal-modulation and relevance contracts. Per the requested stacked-PR constraint, the diff contains zero test files; the failures are not hidden.
+The final merged-tree full suite completed with 1,077 passed, 3 failed, 2 skipped, and 11 warnings. The remaining failures are a missing dataset registry, a pre-existing backtest-toggle mismatch, and missing `fastapi`. The earlier pre-merge child run—1,067 passed and 12 failed—is preserved in the same machine report; PR #100's newer runtime resolved the stale phase-contract failures. Per the requested stacked-PR constraint, the diff contains zero test files.

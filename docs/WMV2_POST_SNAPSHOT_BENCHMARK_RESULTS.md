@@ -11,7 +11,7 @@ The system is not production eligible. The decisive reasons are:
 - Phase 8 and Phase 11 had zero meaningful controlled ablation effects;
 - the market-informed V2 comparison was not run;
 - the model arm is mutable Tier C, not immutable Tier A or provider-attested Tier B;
-- the full repository suite has 12 failures;
+- the final merged-tree full repository suite has 3 failures;
 - locked performance is weak and sensitive to model-memory strata.
 
 ## Execution counts
@@ -115,7 +115,7 @@ Phase 4's one blocked row, plus the complete absence of Phase 8 and Phase 11 eff
 
 The 160 locked V2 forecasts recorded 641 model calls and 2,938.591 seconds of summed row latency. Auditable USD cost is unavailable because the mutable API response did not expose billed usage.
 
-The full suite result was 1,067 passed, 12 failed, 2 skipped, and 11 warnings in 172.95 seconds. The stacked PR adds or changes zero test files, as requested. The strict test gate fails; the exact nodes and classifications are in `full_test_suite_report.json`.
+The final merged-tree full suite result was 1,077 passed, 3 failed, 2 skipped, and 11 warnings in 178.68 seconds. The earlier 12-failure pre-merge run remains preserved in the same artifact. The stacked PR adds or changes zero test files, as requested. The strict test gate fails; the exact nodes and classifications are in `full_test_suite_report.json`.
 
 ## Explicit answers
 
@@ -164,7 +164,7 @@ The full suite result was 1,067 passed, 12 failed, 2 skipped, and 11 warnings in
 | Causal protocol | 60 worlds, 120 rows | Complete | causal artifact | Pass |
 | Every causal phase active | Required | One Phase 4 block | causal artifact | Fail |
 | Meaningful effect for every causal phase | Required | Phase 8/11 zero | causal artifact | Fail |
-| Full repository suite | 0 failures | 12 failures | suite report | Fail |
+| Full repository suite | 0 failures | 3 failures | suite report | Fail |
 | No test files in stacked diff | 0 | 0 | suite report + git diff | Pass |
 
 | Phase | Invoked on every row | Relevant recall | False causal activation | Blocked rate | Meaningful ablation effect | Status |
