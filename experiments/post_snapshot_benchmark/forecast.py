@@ -49,6 +49,8 @@ class CapsuleBundle:
         self.slack_s = 0.0
         self.claims = []
         self.included_claim_ids = []
+        self.actor_visibility = []
+        self.requirement_coverage = {}
         self.quarantine = []
         self.items = []
         self.documents = []
@@ -64,6 +66,12 @@ class CapsuleBundle:
                 "archive_retrieval_id": item["archive_retrieval_id"],
             })
             self.included_claim_ids.append(claim_id)
+            self.actor_visibility.append({
+                "claim_id": claim_id,
+                "visibility": "public",
+                "actors": [],
+                "earliest_observation_time": _timestamp(item["first_proven_available_at"]),
+            })
         self._hash = capsule["capsule_sha256"]
 
     def bundle_hash(self):
