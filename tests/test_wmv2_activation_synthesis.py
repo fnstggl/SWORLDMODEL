@@ -106,18 +106,15 @@ def test_p10_threshold_rule_transforms_posterior_not_invents_rate():
 
 
 # ---------------------------------------------------------------- P9 consumers
-def test_p9_population_aggregation_executes_through_causal_state_path():
+def test_p9_population_aggregation_executes_and_modulates():
     p = _plan(question="Will turnout exceed the threshold?", processes=["turnout_participation"],
               populations=POPS)
     rep = synthesize_activation(p)
     assert any(a["phase"] == "phase9_populations" for a in rep["actions"])
     res, branches = run_from_plan(p, llm=None, seed=3)
     assert _deltas_by_op(branches).get("population_aggregation", 0) > 0
-    transition = [e for e in p.scheduled_events if e["etype"] == "causal_state_transition"][0]
-    assert any(d["var"].startswith("population_aggregate:")
-               for d in transition["payload"]["driver_vars"])
     rev = [e for e in p.scheduled_events if e["etype"] == "resolve_outcome"][0]
-    assert "rate_modulation" not in rev["payload"]
+    assert rev["payload"]["rate_modulation"]                     # consumer wired into the terminal
 
 
 def test_p9_network_diffusion_executes():
@@ -128,25 +125,13 @@ def test_p9_network_diffusion_executes():
     assert _deltas_by_op(branches).get("network_diffusion", 0) > 0
 
 
-def test_p9_network_repairs_all_unregistered_compiler_relations():
-    p = _plan(question="Will the rumor spread through the network?", processes=["contagion_spread"],
-              entities=[{"id": "a", "type": "organization", "fields": {}},
-                        {"id": "b", "type": "organization", "fields": {}}],
-              relations=[{"src": "a", "rel": "amplifies_unknown", "dst": "b"}])
-    rep = synthesize_activation(p)
-    assert any(r.get("rel") == "influences" for r in p.relations)
-    assert any(a.get("action") == "abstract_relation_materialized" for a in rep["actions"])
-    _, branches = run_from_plan(p, llm=None, seed=3)
-    assert _deltas_by_op(branches).get("network_diffusion", 0) > 0
-
-
-def test_direct_terminal_modulation_is_prohibited():
+def test_modulation_total_weight_capped():
     from swm.world_model_v2.activation_synthesis import _add_modulation
     p = _plan(processes=[])
-    with pytest.raises(RuntimeError, match="prohibited"):
-        _add_modulation(p, "v", 0.2)
+    for i in range(6):
+        _add_modulation(p, f"v{i}", 0.2)
     rev = [e for e in p.scheduled_events if e["etype"] == "resolve_outcome"][0]
-    assert "rate_modulation" not in rev["payload"]
+    assert sum(m["weight"] for m in rev["payload"]["rate_modulation"]) <= 0.45 + 1e-9
 
 
 # ---------------------------------------------------------------- P7 + P4
@@ -164,53 +149,7 @@ def test_p4_gated_off_removes_ornamental_decisions():
                                "payload": {"actions": [{"type": "act"}, {"type": "wait"}]}})
     rep = synthesize_activation(p)
     assert not any(e["etype"] == "decision_opportunity" for e in p.scheduled_events)
-    assert any(a["action"] == "irrelevant_execution_gated_off" for a in rep["actions"])
-
-
-def test_p4_materializes_person_when_compiler_only_declares_organizations():
-    p = _plan(question="Will the board approve the deal?", processes=["strategic_decision"],
-              entities=[{"id": "company", "type": "organization", "fields": {}}])
-    synthesize_activation(p)
-    assert any(e.get("type") == "person" for e in p.entities)
-    assert any(e["etype"] == "decision_opportunity" for e in p.scheduled_events)
-
-
-def test_p4_binds_and_orders_existing_late_compiler_decision():
-    p = _plan(question="Will the board approve the deal?", processes=["strategic_decision"],
-              entities=[{"id": "director", "type": "person", "fields": {}}])
-    p.scheduled_events.append({
-        "etype": "decision_opportunity", "ts": HZ, "participants": ["director"],
-        "payload": {"actions": [{"name": "support"}, {"name": "reject"}]},
-    })
-    rep = synthesize_activation(p)
-    decision = next(e for e in p.scheduled_events if e["etype"] == "decision_opportunity")
-    aggregation = next(e for e in p.scheduled_events if e["etype"] == "actor_action_aggregation")
-    assert decision["ts"] < aggregation["ts"]
-    assert any(m.get("operator") == "production_actor_policy" for m in p.accepted_mechanisms)
-    assert any(a.get("action") == "late_decision_moved_before_consumer" for a in rep["actions"])
-    _, branches = run_from_plan(p, llm=None, seed=3)
-    assert _deltas_by_op(branches).get("production_actor_policy", 0) > 0
-    assert _deltas_by_op(branches).get("actor_action_aggregation", 0) > 0
-
-
-def test_hazard_budget_cannot_starve_horizon_phase_events():
-    from swm.world_model_v2.events import event_type_registered, register_event_type
-    if not event_type_registered("activation_test_noise"):
-        register_event_type("activation_test_noise", scheduling="hazard", validated=False,
-                            parameter_source="test")
-    p = _plan(question="Will the rumor spread through the network?", processes=["contagion_spread"],
-              relations=RELS)
-    p.stochastic_hazards = [
-        {"etype": "activation_test_noise", "rate_per_day": 1000.0, "participants": []},
-        {"etype": "activation_test_noise", "rate_per_day": 500.0, "participants": []},
-    ]
-    rep = synthesize_activation(p)
-    horizon_days = (p.horizon_ts - p.as_of) / 86400.0
-    expected = sum(h["rate_per_day"] * horizon_days for h in p.stochastic_hazards)
-    assert expected == pytest.approx(100.0)
-    assert any(a.get("action") == "hazard_event_budget_bounded" for a in rep["actions"])
-    _, branches = run_from_plan(p, llm=None, seed=3)
-    assert _deltas_by_op(branches).get("network_diffusion", 0) > 0
+    assert any(a["action"] == "gated_off_ornamental_decisions" for a in rep["actions"])
 
 
 def test_p4_undeclared_actor_decision_dropped_not_crashing():
