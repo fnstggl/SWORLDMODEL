@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import argparse
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -28,11 +29,18 @@ def _write(path, payload):
     temporary.replace(path)
 
 
-def build():
-    passing = _rows(ROOT / "preflight_forecasts_v2.jsonl")
-    original = _rows(ROOT / "preflight_forecasts.jsonl")
-    replay = _rows(ROOT / "deterministic_replay_forecasts.jsonl")
-    baselines = _rows(ROOT / "preflight_baselines.jsonl")
+def build(*, passing_path=None, original_path=None, replay_path=None, baselines_path=None,
+          activation_path=None, report_path=None):
+    passing_path = passing_path or ROOT / "preflight_forecasts_v2.jsonl"
+    original_path = original_path or ROOT / "preflight_forecasts.jsonl"
+    replay_path = replay_path or ROOT / "deterministic_replay_forecasts.jsonl"
+    baselines_path = baselines_path or ROOT / "preflight_baselines.jsonl"
+    activation_path = activation_path or ROOT / "activation200_execution.json"
+    report_path = report_path or ROOT / "preflight_report.json"
+    passing = _rows(passing_path)
+    original = _rows(original_path)
+    replay = _rows(replay_path)
+    baselines = _rows(baselines_path)
     first = passing[:4]
     status = lambda row: {phase: rec["execution_status"]
                           for phase, rec in row["phase_execution_records"].items()}
@@ -62,12 +70,15 @@ def build():
         "ensemble_within_v2_call_budget": all(
             row["call_matched_ensemble_within_v2_budget"] for row in baselines),
     }
+    current_fp = runtime_fingerprint()
+    activation = json.loads(activation_path.read_text())
+    activation_aggregate = activation.get("aggregate") or {}
     preflight = {
         "schema_version": 1,
         "audited_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "configuration": "10 calibration worlds x 4 cutoffs; DeepSeek V4 Flash; n_budget=80",
         "passing_run": {
-            "artifact": "preflight_forecasts_v2.jsonl", "rows": len(passing),
+            "artifact": passing_path.name, "rows": len(passing),
             "full_system_qualified": sum(bool(row["full_system_qualified"]) for row in passing),
             "phase_record_coverage_min": min(row["phase_record_count"] for row in passing),
             "blocked_relevant_phases": sum(len(row["blocked_relevant_phases"]) for row in passing),
@@ -76,7 +87,7 @@ def build():
             "runtime_fingerprints": sorted({row["runtime_fingerprint"]["fingerprint_hash"] for row in passing}),
         },
         "preserved_negative_run": {
-            "artifact": "preflight_forecasts.jsonl", "rows": len(original),
+            "artifact": original_path.name, "rows": len(original),
             "qualified": sum(bool(row["full_system_qualified"]) for row in original),
             "failed": sum(not bool(row["full_system_qualified"]) for row in original),
             "failure_keys": [{"event_id": row["event_id"], "forecast_cutoff": row["forecast_cutoff"],
@@ -85,6 +96,15 @@ def build():
         },
         "deterministic_replay": deterministic,
         "baseline_evidence_parity": parity,
+        "activation_gate": {
+            "artifact": activation_path.name,
+            "rows": len(activation.get("rows", [])),
+            "n_errors": activation_aggregate.get("n_errors"),
+            "gates_passed": activation_aggregate.get("gates_passed"),
+            "gates_total": activation_aggregate.get("gates_total"),
+            "all_pass": activation_aggregate.get("all_pass", False),
+        },
+        "current_runtime_fingerprint": current_fp,
     }
     preflight["all_gates_pass"] = (
         preflight["passing_run"]["rows"] == 40 and
@@ -92,11 +112,15 @@ def build():
         preflight["passing_run"]["phase_record_coverage_min"] == 11 and
         preflight["passing_run"]["blocked_relevant_phases"] == 0 and
         preflight["passing_run"]["tampered_rows"] == 0 and
+        preflight["passing_run"]["runtime_fingerprints"] == [current_fp["fingerprint_hash"]] and
+        preflight["activation_gate"]["rows"] == 200 and
+        preflight["activation_gate"]["n_errors"] == 0 and
+        preflight["activation_gate"]["all_pass"] is True and
         all(value == 4 for key, value in deterministic.items() if key != "rows_compared") and
         parity["capsule_hash_matches_v2"] == parity["rows_checked"] and
         parity["byte_hashes_match_v2"] == parity["rows_checked"] and
         parity["all_model_arms_complete"] and parity["ensemble_within_v2_call_budget"])
-    _write(ROOT / "preflight_report.json", preflight)
+    _write(report_path, preflight)
 
     all_records = [record for row in passing for record in row["phase_execution_records"].values()]
     integration = {
@@ -127,17 +151,32 @@ def build():
                                    "terminal_probability_missing" in row["qualification_failures"] or
                                    row["simulation_status"] == "execution_failed"
                                    else "phase-integration failure"),
-                "preserved_in": "preflight_forecasts.jsonl",
+                "preserved_in": original_path.name,
                 "repaired_without_outcomes": True,
-                "rerun_artifact": "preflight_forecasts_v2.jsonl",
+                "rerun_artifact": passing_path.name,
             })
-    activation = json.loads((ROOT / "activation200_execution.json").read_text())
-    for row in activation.get("rows", []):
-        if row.get("error"):
-            failures.append({"stage": "activation200_no_credential_smoke", "event_id": row.get("qid"),
-                             "classification": "compiler failure", "detail": row["error"],
-                             "preserved_in": "activation200_execution.json",
-                             "repaired_without_outcomes": False})
+    flag_phase = {"p4": "phase4_actor_policy", "p6": "phase6_registry",
+                  "p7": "phase7_nonlinear", "p9pop": "phase9_populations",
+                  "p9net": "phase9_networks", "p10": "phase10_institutions",
+                  "p11": "phase11_recompilation"}
+    for activation_file in sorted(ROOT.glob("activation200_execution*.json")):
+        document = json.loads(activation_file.read_text())
+        for row in document.get("rows", []):
+            if row.get("error"):
+                failures.append({"stage": "activation200", "event_id": row.get("qid"),
+                                 "classification": "compiler failure", "detail": row["error"],
+                                 "preserved_in": activation_file.name,
+                                 "repaired_without_outcomes": activation_file != activation_path})
+                continue
+            records = row.get("phase_records") or {}
+            missed = [flag for flag in row.get("required_labels", [])
+                      if (records.get(flag_phase[flag]) or {}).get("status") != "causally_active"]
+            if missed:
+                failures.append({"stage": "activation200", "event_id": row.get("qid"),
+                                 "classification": "required phase integration miss",
+                                 "missed_required_labels": missed,
+                                 "preserved_in": activation_file.name,
+                                 "repaired_without_outcomes": activation_file != activation_path})
     _write(ROOT / "failure_taxonomy.json", {
         "schema_version": 1, "outcomes_accessed": False, "n_failures": len(failures),
         "counts": Counter(row["classification"] for row in failures), "failures": failures,
@@ -146,4 +185,15 @@ def build():
 
 
 if __name__ == "__main__":
-    print(json.dumps(build(), indent=2, sort_keys=True))
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--passing", type=Path)
+    parser.add_argument("--original", type=Path)
+    parser.add_argument("--replay", type=Path)
+    parser.add_argument("--baselines", type=Path)
+    parser.add_argument("--activation", type=Path)
+    parser.add_argument("--report", type=Path)
+    args = parser.parse_args()
+    print(json.dumps(build(
+        passing_path=args.passing, original_path=args.original, replay_path=args.replay,
+        baselines_path=args.baselines, activation_path=args.activation,
+        report_path=args.report), indent=2, sort_keys=True))
