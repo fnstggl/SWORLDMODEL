@@ -142,8 +142,14 @@ def _load_completed(path: Path) -> set[tuple[str, str]]:
     return completed
 
 
-def _atomic_write_attempt(output: Path, row: dict) -> None:
-    """Write a content-addressed attempt shard, then atomically rebuild JSONL."""
+def _atomic_write_attempt(output: Path, row: dict, *, canonical: bool = False) -> None:
+    """Preserve an attempt shard and atomically rebuild its JSONL view.
+
+    The default view retains every attempt for forensic tools.  Forecast and
+    baseline workers pass ``canonical=True`` so their benchmark JSONL contains
+    exactly the latest successful attempt for each key (or the latest failed
+    attempt if no success exists); all attempts still remain in ``*_rows``.
+    """
     shard_dir = output.parent / f"{output.stem}_rows"
     shard_dir.mkdir(parents=True, exist_ok=True)
     cutoff = "".join(ch for ch in row["forecast_cutoff"] if ch.isalnum())
@@ -155,8 +161,22 @@ def _atomic_write_attempt(output: Path, row: dict) -> None:
     temporary.replace(shard)
     aggregate_tmp = output.with_suffix(output.suffix + ".tmp")
     with aggregate_tmp.open("w") as handle:
-        for path in sorted(shard_dir.glob("*.json")):
-            handle.write(path.read_text())
+        if not canonical:
+            for path in sorted(shard_dir.glob("*.json")):
+                handle.write(path.read_text())
+        else:
+            attempts_by_key = {}
+            for path in sorted(shard_dir.glob("*.json")):
+                attempt_row = json.loads(path.read_text())
+                key = (attempt_row["event_id"], attempt_row["forecast_cutoff"])
+                attempts_by_key.setdefault(key, []).append(attempt_row)
+            for key in sorted(attempts_by_key):
+                attempts = attempts_by_key[key]
+                successful = [attempt for attempt in attempts
+                              if attempt.get("full_system_qualified") is True or
+                              attempt.get("all_required_model_arms_complete") is True]
+                selected = (successful or attempts)[-1]
+                handle.write(json.dumps(selected, sort_keys=True, default=str) + "\n")
     aggregate_tmp.replace(output)
 
 
@@ -249,7 +269,7 @@ def run(*, credential_fd: int, forecast_input: Path, capsule_root: Path, output:
             row["model_calls"] = calls["n"] - call_start
             row["forecast_frozen_at"] = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
             row["forecast_sha256"] = _freeze_hash(row)
-            _atomic_write_attempt(output, row)
+            _atomic_write_attempt(output, row, canonical=True)
             if row["full_system_qualified"]:
                 qualified += 1
             print(f"row {attempted}: qualified={row['full_system_qualified']} ", flush=True)

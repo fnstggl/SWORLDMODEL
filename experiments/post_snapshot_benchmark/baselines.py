@@ -5,6 +5,8 @@ import argparse
 import hashlib
 import json
 import os
+import time
+from datetime import datetime, timezone
 from pathlib import Path
 
 from experiments.post_snapshot_benchmark.forecast import _atomic_write_attempt, _freeze_hash, _read_key
@@ -44,6 +46,19 @@ def _v2_calls(path: Path) -> dict:
     return calls
 
 
+def _load_completed(path: Path) -> set[tuple[str, str]]:
+    completed = set()
+    if not path.exists():
+        return completed
+    for line in path.read_text().splitlines():
+        row = json.loads(line)
+        frozen = {key: value for key, value in row.items() if key != "baseline_sha256"}
+        if (row.get("baseline_sha256") == _freeze_hash(frozen)
+                and row.get("all_required_model_arms_complete")):
+            completed.add((row["event_id"], row["forecast_cutoff"]))
+    return completed
+
+
 def run(*, credential_fd: int, forecast_input: Path, capsule_root: Path, v2_forecasts: Path,
         output: Path, split: str, world_limit: int | None = None) -> dict:
     key = _read_key(credential_fd)
@@ -55,12 +70,18 @@ def run(*, credential_fd: int, forecast_input: Path, capsule_root: Path, v2_fore
     if world_limit is not None:
         worlds = worlds[:world_limit]
     call_budgets = _v2_calls(v2_forecasts)
-    attempted = complete = 0
+    completed = _load_completed(output)
+    attempted = complete = skipped = 0
     for world in worlds:
         for cutoff in world["forecast_cutoffs"]:
+            key = (world["event_id"], cutoff)
+            if key in completed:
+                skipped += 1
+                continue
             attempted += 1
+            started = time.time()
             capsule = json.loads(_capsule_path(capsule_root, world["event_id"], cutoff).read_text())
-            budget = max(1, call_budgets.get((world["event_id"], cutoff), 1))
+            budget = max(1, call_budgets.get(key, 1))
             direct_p, direct_trace = _ask(llm, _prompt(
                 world, capsule, "Act as a direct calibrated forecaster. Use only the supplied evidence."))
             ensemble = []
@@ -96,15 +117,20 @@ def run(*, credential_fd: int, forecast_input: Path, capsule_root: Path, v2_fore
                 },
                 "identical_evidence_for_all_model_arms": True,
                 "call_matched_ensemble_within_v2_budget": len(ensemble) <= budget,
+                "model_calls": 2 + len(ensemble) + len(panel),
+                "latency_s": round(time.time() - started, 3),
+                "cost_usd": None,
+                "cost_status": "unavailable_model_alias_usage_not_exposed",
             }
             row["all_required_model_arms_complete"] = all(
                 isinstance(arm.get("p_yes"), (int, float)) for arm in row["arms"].values())
+            row["baseline_frozen_at"] = datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
             row["baseline_sha256"] = _freeze_hash(row)
-            _atomic_write_attempt(output, row)
+            _atomic_write_attempt(output, row, canonical=True)
             complete += int(row["all_required_model_arms_complete"])
             print(f"baseline row {attempted}: complete={row['all_required_model_arms_complete']}", flush=True)
-    return {"split": split, "attempted": attempted, "complete": complete,
-            "expected": len(worlds) * 4}
+    return {"split": split, "attempted": attempted, "complete_this_run": complete,
+            "skipped_frozen": skipped, "expected": len(worlds) * 4}
 
 
 def main():
