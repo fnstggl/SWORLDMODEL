@@ -499,6 +499,23 @@ def synthesize_activation(plan, req=None) -> dict:
     # ---- Phase 4: strategic process required → complete the decision linkage; else gate off ornament ----
     p4 = req["phase4_actor_policy"]["required"]
     has_dec_ev = _has_event("decision_opportunity")
+    if p4 and has_dec_ev:
+        # A compiler decision is not executable merely because an event of the
+        # right type exists. Bind the production operator and ensure the
+        # decision precedes its aggregation/downstream state path.
+        _add_mechanism(plan, "production_actor_policy", "production_actor_policy",
+                       "strategic-actor decision required by the causal analysis",
+                       "Tier-7 broad structural policy unless a fitted pack is bound")
+        latest_decision_ts = resolve_ts - 4.0
+        for event in plan.scheduled_events:
+            if event.get("etype") != "decision_opportunity":
+                continue
+            old_ts = float(event.get("ts", latest_decision_ts))
+            if old_ts > latest_decision_ts:
+                event["ts"] = latest_decision_ts
+                rep["actions"].append({"phase": "phase4_actor_policy",
+                                       "action": "late_decision_moved_before_consumer",
+                                       "old_ts": old_ts, "new_ts": latest_decision_ts})
     if p4 and (has_dec_ev or plan.entities) and not _has_event("actor_action_aggregation"):
         # the CONSUMER: chosen-action polarity aggregated into the terminal (after all decisions, before
         # resolve). Without it, decisions execute but nothing downstream depends on them (the audit gap).

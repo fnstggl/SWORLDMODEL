@@ -175,6 +175,24 @@ def test_p4_materializes_person_when_compiler_only_declares_organizations():
     assert any(e["etype"] == "decision_opportunity" for e in p.scheduled_events)
 
 
+def test_p4_binds_and_orders_existing_late_compiler_decision():
+    p = _plan(question="Will the board approve the deal?", processes=["strategic_decision"],
+              entities=[{"id": "director", "type": "person", "fields": {}}])
+    p.scheduled_events.append({
+        "etype": "decision_opportunity", "ts": HZ, "participants": ["director"],
+        "payload": {"actions": [{"name": "support"}, {"name": "reject"}]},
+    })
+    rep = synthesize_activation(p)
+    decision = next(e for e in p.scheduled_events if e["etype"] == "decision_opportunity")
+    aggregation = next(e for e in p.scheduled_events if e["etype"] == "actor_action_aggregation")
+    assert decision["ts"] < aggregation["ts"]
+    assert any(m.get("operator") == "production_actor_policy" for m in p.accepted_mechanisms)
+    assert any(a.get("action") == "late_decision_moved_before_consumer" for a in rep["actions"])
+    _, branches = run_from_plan(p, llm=None, seed=3)
+    assert _deltas_by_op(branches).get("production_actor_policy", 0) > 0
+    assert _deltas_by_op(branches).get("actor_action_aggregation", 0) > 0
+
+
 def test_hazard_budget_cannot_starve_horizon_phase_events():
     from swm.world_model_v2.events import event_type_registered, register_event_type
     if not event_type_registered("activation_test_noise"):
