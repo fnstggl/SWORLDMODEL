@@ -32,6 +32,7 @@ from swm.world_model_v2.calibration import (
     fit_platt,
     reliability_table,
 )
+from swm.replay.probes2 import classify_row_v2
 
 
 SCHEMA_VERSION = 1
@@ -571,6 +572,18 @@ def score_locked(args) -> dict:
         raise RuntimeError("selection is not bound to support model")
     baseline_by_key = {(row["event_id"], row["forecast_cutoff"]): row for row in baselines}
     market = json.loads(args.market.read_text())
+    leakage_rows = _load_jsonl(args.leakage_probes)
+    leakage_by_key = {}
+    for row in leakage_rows:
+        key = (row.get("event_id"), row.get("forecast_cutoff"))
+        if key in leakage_by_key:
+            raise RuntimeError(f"duplicate leakage-probe key {key}")
+        if not row.get("probe_complete"):
+            raise RuntimeError(f"incomplete leakage probes for {key}")
+        leakage_by_key[key] = row
+    forecast_keys = {(row["event_id"], row["forecast_cutoff"]) for row in forecasts}
+    if not forecast_keys.issubset(leakage_by_key):
+        raise RuntimeError("locked forecasts are missing completed leakage probes")
     preopen = {
         "schema_version": SCHEMA_VERSION,
         "state": "open_started",
@@ -586,6 +599,8 @@ def score_locked(args) -> dict:
         "calibration_fit_sha256": fit["artifact_sha256"],
         "validation_selection_sha256": selection["artifact_sha256"],
         "support_model_sha256": support_model["artifact_sha256"],
+        "leakage_probe_file_sha256": _sha_file(args.leakage_probes),
+        "leakage_probes_verified_before_open": True,
     }
     _exclusive_ledger(args.ledger, preopen)
     # This is the only locked resolution-store read in the benchmark scorer.
@@ -596,6 +611,15 @@ def score_locked(args) -> dict:
     for forecast, outcome in joined:
         key = (forecast["event_id"], forecast["forecast_cutoff"])
         baseline = baseline_by_key[key]
+        leakage = leakage_by_key[key]
+        name_only = ((leakage.get("probes") or {}).get("name_only") or {}).get("output") or {}
+        resolved_yes = name_only.get("resolved_yes")
+        name_only_correct = (bool(resolved_yes) == bool(outcome)
+                             if name_only.get("known") is True and isinstance(resolved_yes, bool)
+                             else None)
+        leakage_classification = classify_row_v2(
+            leakage.get("probes") or {}, arm="causally_blinded_historical",
+            name_only_correct=name_only_correct)
         domain_record = fit["base_rates"]["domains"].get(forecast.get("domain"), {})
         domain_rate = domain_record.get("partial_pooled_rate", fit["base_rates"]["global"])
         market_record = market.get("snapshots", {}).get(forecast["event_id"], {}).get(
@@ -629,6 +653,9 @@ def score_locked(args) -> dict:
             "model_calls": forecast.get("model_calls"),
             "latency_s": forecast.get("latency_s"),
             "market_snapshot_available": probabilities["market_midpoint"] is not None,
+            "leakage_preopen_classification": leakage["preopen_classification"],
+            "leakage_final_classification": leakage_classification,
+            "name_only_outcome_correct": name_only_correct,
         })
     arms = list(scored_rows[0]["probabilities"])
     metrics = {}
@@ -650,6 +677,20 @@ def score_locked(args) -> dict:
         _comparison(scored_rows, "v2_raw", "analogical_retrieval"),
         _comparison(scored_rows, "v2_raw", "market_midpoint"),
     ]
+    leakage_strata = {}
+    for classification in sorted({row["leakage_final_classification"] for row in scored_rows}):
+        stratum = [row for row in scored_rows if row["leakage_final_classification"] == classification]
+        leakage_strata[classification] = {
+            "n_rows": len(stratum),
+            "n_worlds": len({row["event_world_cluster"] for row in stratum}),
+            "v2_raw": _metrics([(row["probabilities"]["v2_raw"], row["outcome"])
+                                for row in stratum]),
+            "v2_calibrated": _metrics([(row["probabilities"]["v2_calibrated"], row["outcome"])
+                                       for row in stratum]),
+        }
+    clean_rows = [row for row in scored_rows
+                  if row["leakage_final_classification"] in
+                  ("clean_blinded", "clean_pre_cutoff_model")]
     output = {
         "schema_version": SCHEMA_VERSION,
         "stage": "locked_test_final_score",
@@ -664,6 +705,14 @@ def score_locked(args) -> dict:
         "selected_calibrator": selection["selected"],
         "metrics": metrics,
         "comparisons": comparisons,
+        "model_memory_sensitivity": {
+            "selection_policy": "all 100 frozen worlds retained; report clean rows separately",
+            "strata": leakage_strata,
+            "clean_only_v2_raw": _metrics([(row["probabilities"]["v2_raw"], row["outcome"])
+                                            for row in clean_rows]),
+            "clean_only_v2_calibrated": _metrics([
+                (row["probabilities"]["v2_calibrated"], row["outcome"]) for row in clean_rows]),
+        },
         "market_informed_comparison": {
             "status": "not_run",
             "reason": "representative V2 arm was prospectively frozen as market-blind; no post-hoc probability blend",
@@ -677,6 +726,7 @@ def score_locked(args) -> dict:
         "input_hashes": {"forecasts": preopen["forecast_file_sha256"],
                          "baselines": preopen["baseline_file_sha256"],
                          "market": _sha_file(args.market),
+                         "leakage_probes": preopen["leakage_probe_file_sha256"],
                          "resolution_store": _sha_bytes(resolution_bytes)},
         "negative_results_preserved": True,
     }
@@ -718,6 +768,7 @@ def _parser() -> argparse.ArgumentParser:
     score.add_argument("--selection", type=Path, required=True)
     score.add_argument("--support-model", type=Path, required=True)
     score.add_argument("--market", type=Path, required=True)
+    score.add_argument("--leakage-probes", type=Path, required=True)
     score.add_argument("--outcomes", type=Path, required=True)
     score.add_argument("--ledger", type=Path, required=True)
     score.add_argument("--output", type=Path, required=True)
