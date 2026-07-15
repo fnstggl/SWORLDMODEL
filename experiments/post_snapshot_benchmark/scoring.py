@@ -668,6 +668,7 @@ def score_locked(args) -> dict:
         probabilities = {
             "v2_raw": float(forecast["p_yes"]),
             "v2_calibrated": _apply_candidate(selected, forecast),
+            "constant_0_50": 0.5,
             "domain_base_rate": float(domain_rate),
             **{name: float(baseline["arms"][name]["p_yes"]) for name in BASELINE_ARMS},
             "market_midpoint": (float(market_record["midpoint"])
