@@ -89,6 +89,26 @@ def _load_jsonl(path: Path) -> list[dict]:
     return [json.loads(line) for line in path.read_text().splitlines() if line.strip()]
 
 
+def _load_leakage_index(path: Path) -> dict[tuple[str, str], dict]:
+    index = {}
+    for row in _load_jsonl(path):
+        key = (row.get("event_id"), row.get("forecast_cutoff"))
+        if key in index:
+            raise RuntimeError(f"duplicate leakage-probe key {key}")
+        if not row.get("probe_complete"):
+            raise RuntimeError(f"incomplete leakage probes for {key}")
+        index[key] = row
+    return index
+
+
+def _preopen_clean(row: dict, leakage_index: dict[tuple[str, str], dict]) -> bool:
+    key = (row["event_id"], row["forecast_cutoff"])
+    if key not in leakage_index:
+        raise RuntimeError(f"missing leakage probes for {key}")
+    return leakage_index[key].get("preopen_classification") in (
+        "clean_blinded", "clean_pre_cutoff_model")
+
+
 def _verify_forecasts(path: Path, split: str, expected: int) -> list[dict]:
     rows = _load_jsonl(path)
     errors = []
@@ -441,8 +461,12 @@ def _comparison(rows: list[dict], left: str, right: str) -> dict:
 
 def fit_calibration(args) -> dict:
     forecasts = _verify_forecasts(args.forecasts, "calibration", 160)
+    leakage_index = _load_leakage_index(args.leakage_probes)
     resolutions, resolution_bytes = _read_resolution_store(args.outcomes, "calibration")
-    joined = _join(forecasts, resolutions)
+    joined_all = _join(forecasts, resolutions)
+    joined = [(row, y) for row, y in joined_all if _preopen_clean(row, leakage_index)]
+    if len(joined) < 100:
+        raise RuntimeError(f"insufficient preopen-clean calibration rows: {len(joined)}")
     candidates = {method: _fit_base(method, [(float(row["p_yes"]), y) for row, y in joined],
                                             "calibration")
                   for method in GLOBAL_METHODS}
@@ -456,7 +480,7 @@ def fit_calibration(args) -> dict:
         candidates[name] = _fit_conditioned(joined, keying=keying, name=name)
     world_outcomes = {}
     world_domains = {}
-    for row, y in joined:
+    for row, y in joined_all:
         world_outcomes[row["event_id"]] = y
         world_domains[row["event_id"]] = row.get("domain", "unknown")
     global_rate = sum(world_outcomes.values()) / len(world_outcomes)
@@ -476,8 +500,13 @@ def fit_calibration(args) -> dict:
         "governance": {"fit_split": "calibration", "validation_outcomes_accessed": False,
                        "locked_outcomes_accessed": False},
         "inputs": {"forecast_path": str(args.forecasts), "forecast_sha256": _sha_file(args.forecasts),
-                   "resolution_store_sha256": _sha_bytes(resolution_bytes)},
-        "counts": {"forecast_rows": len(forecasts), "independent_worlds": len(world_outcomes)},
+                   "resolution_store_sha256": _sha_bytes(resolution_bytes),
+                   "leakage_probe_sha256": _sha_file(args.leakage_probes)},
+        "counts": {"forecast_rows": len(forecasts), "fit_rows": len(joined),
+                   "preopen_memory_risk_rows_excluded_from_fit": len(joined_all) - len(joined),
+                   "independent_worlds": len(world_outcomes),
+                   "fit_independent_worlds": len({row["event_world_cluster"] for row, _ in joined})},
+        "fit_cohort_policy": "preopen clean_blinded or clean_pre_cutoff_model only",
         "candidates": candidates,
         "base_rates": {"global": global_rate, "domains": domain_rates,
                        "fit_unit": "independent_event_world"},
@@ -498,8 +527,12 @@ def select_validation(args) -> dict:
                                                     if k != "artifact_sha256"}):
         raise RuntimeError("calibration-fit artifact hash mismatch")
     forecasts = _verify_forecasts(args.forecasts, "validation", 80)
+    leakage_index = _load_leakage_index(args.leakage_probes)
     resolutions, resolution_bytes = _read_resolution_store(args.outcomes, "validation")
-    joined = _join(forecasts, resolutions)
+    joined_all = _join(forecasts, resolutions)
+    joined = [(row, y) for row, y in joined_all if _preopen_clean(row, leakage_index)]
+    if len(joined) < 50:
+        raise RuntimeError(f"insufficient preopen-clean validation rows: {len(joined)}")
     comparison = []
     for name, candidate in fit["candidates"].items():
         pairs = [(_apply_candidate(candidate, row), y) for row, y in joined]
@@ -529,9 +562,12 @@ def select_validation(args) -> dict:
                        "promotion_rule": "strictly beat identity on validation Brier and log loss"},
         "inputs": {"calibration_fit_sha256": fit["artifact_sha256"],
                    "forecast_sha256": _sha_file(args.forecasts),
-                   "resolution_store_sha256": _sha_bytes(resolution_bytes)},
-        "counts": {"forecast_rows": len(forecasts),
+                   "resolution_store_sha256": _sha_bytes(resolution_bytes),
+                   "leakage_probe_sha256": _sha_file(args.leakage_probes)},
+        "counts": {"forecast_rows": len(forecasts), "selection_rows": len(joined),
+                   "preopen_memory_risk_rows_excluded_from_selection": len(joined_all) - len(joined),
                    "independent_worlds": len({row["event_world_cluster"] for row, _ in joined})},
+        "selection_cohort_policy": "preopen clean_blinded or clean_pre_cutoff_model only",
         "selected": selected["name"],
         "selected_candidate": fit["candidates"][selected["name"]],
         "identity_fallback_selected": selected["name"] == "identity",
@@ -757,11 +793,13 @@ def _parser() -> argparse.ArgumentParser:
     fit = subparsers.add_parser("fit-calibration")
     fit.add_argument("--forecasts", type=Path, required=True)
     fit.add_argument("--outcomes", type=Path, required=True)
+    fit.add_argument("--leakage-probes", type=Path, required=True)
     fit.add_argument("--output", type=Path, required=True)
     fit.add_argument("--access-log", type=Path, required=True)
     select = subparsers.add_parser("select-validation")
     select.add_argument("--forecasts", type=Path, required=True)
     select.add_argument("--outcomes", type=Path, required=True)
+    select.add_argument("--leakage-probes", type=Path, required=True)
     select.add_argument("--fit", type=Path, required=True)
     select.add_argument("--output", type=Path, required=True)
     select.add_argument("--support-output", type=Path, required=True)
