@@ -73,5 +73,20 @@
       "detail": "base fixture omits the current causal mechanism evidence"
     }
   ],
-  "decision": "Do not re-add changed test files to the stacked PR; preserve failures and validate benchmark gates through committed machine-readable artifacts."
+  "decision": "Do not re-add changed test files to the stacked PR; preserve failures and validate benchmark gates through committed machine-readable artifacts.",
+  "post_benchmark_forward_repair_validation": {
+    "command": "PYTHONPATH=. .venv/bin/pytest -q tests/test_wmv2_unified_runtime.py tests/test_wmv2_phase_supervision.py",
+    "passed": 12,
+    "failed": 5,
+    "failed_nodes_are_already_in_full_suite_report": true,
+    "adapter_contract_smoke": {
+      "capsule_claims": 1,
+      "scheduled_evidence_events": 1,
+      "phase2_exception_status": "execution_failed",
+      "fully_integrated": false,
+      "pass": true
+    },
+    "full_suite_rerun_after_forward_repair": false,
+    "reason": "The targeted failures reproduce five already-preserved stale base-test contracts; the strict full-suite gate remains failed."
+  }
 }

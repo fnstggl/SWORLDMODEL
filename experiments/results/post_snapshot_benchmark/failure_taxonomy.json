@@ -1,7 +1,13 @@
 {
   "counts": {
+    "causal ablation no effect": 2,
+    "causal relevant phase blocked": 1,
     "compiler failure": 1,
+    "full repository suite failure": 1,
+    "model-memory sensitivity": 1,
+    "required comparison not run": 1,
     "required phase integration miss": 34,
+    "sealed evidence adapter failure": 1,
     "terminal-readout failure": 3
   },
   "failures": [
@@ -389,9 +395,79 @@
       "preserved_in": "activation200_execution_v4.json",
       "repaired_without_outcomes": false,
       "stage": "activation200"
+    },
+    {
+      "affected_primary_rows": 400,
+      "benchmark_runtime_fingerprint": "79537cdec279fd8f",
+      "classification": "sealed evidence adapter failure",
+      "detail": "Phase 2 was formally recorded causally_active, but the internal manifest preserved evidence_error: AttributeError because the frozen capsule adapter omitted evidence-recompilation contract fields.",
+      "preserved_in": [
+        "calibration_forecasts.jsonl",
+        "validation_forecasts.jsonl",
+        "locked_test_forecasts.jsonl",
+        "exact_completion_gate_report.json"
+      ],
+      "repaired_in_code_after_scoring": true,
+      "repaired_in_scored_benchmark": false,
+      "replacement_runtime_fingerprint": "66c735b4201edc17",
+      "stage": "representative_benchmark"
+    },
+    {
+      "affected_cutoff_rows": 120,
+      "affected_worlds": 60,
+      "classification": "causal ablation no effect",
+      "detail": "Removing Phase 8 changed none of terminal distribution, StateDelta count, or StateDelta sequence under matched common randomness.",
+      "phase": "phase8_persistence",
+      "preserved_in": "causal_coverage_results.json",
+      "stage": "causal_coverage"
+    },
+    {
+      "affected_cutoff_rows": 30,
+      "affected_worlds": 15,
+      "classification": "causal ablation no effect",
+      "detail": "Removing Phase 11 changed none of terminal distribution, StateDelta count, or StateDelta sequence under matched common randomness.",
+      "phase": "phase11_recompilation",
+      "preserved_in": "causal_coverage_results.json",
+      "stage": "causal_coverage"
+    },
+    {
+      "affected_cutoff_rows": 1,
+      "classification": "causal relevant phase blocked",
+      "detail": "Phase 4 returned blocked_no_mechanism for legvote_2 cutoff 1; its matched ablation changed none of the three trajectory targets.",
+      "event_id": "legvote_2",
+      "forecast_cutoff_index": 1,
+      "phase": "phase4_actor_policy",
+      "preserved_in": "causal_coverage_results.json",
+      "row_sha256": "59c8ba368712c966ee7b99670189581e00494eb8f62bac3321f18f143875a4b8",
+      "stage": "causal_coverage"
+    },
+    {
+      "classification": "full repository suite failure",
+      "failed": 12,
+      "passed": 1067,
+      "preserved_in": "full_test_suite_report.json",
+      "stage": "final_validation",
+      "test_files_added_to_stacked_pr": 0
+    },
+    {
+      "classification": "model-memory sensitivity",
+      "clean_locked_rows": 92,
+      "contamination_susceptible_locked_rows": 28,
+      "detail": "Clean-only raw V2 Brier was 0.25241338 versus 0.24696582 on all locked rows; known-contaminated rows materially improved apparent directional performance.",
+      "known_contaminated_locked_rows": 40,
+      "preserved_in": "locked_test_score.json",
+      "stage": "locked_scoring"
+    },
+    {
+      "classification": "required comparison not run",
+      "detail": "The prospectively frozen representative V2 arm was market-blind. A market-informed V2 arm was not generated, and no post-hoc blend was permitted after outcomes opened.",
+      "preserved_in": "locked_test_score.json",
+      "required_comparison": "V2 market-informed versus contemporaneous market",
+      "stage": "locked_scoring"
     }
   ],
-  "n_failures": 38,
-  "outcomes_accessed": false,
+  "n_failures": 45,
+  "outcome_access_scope": "Calibration for fit, validation for selection, and locked test once for final scoring; see access ledgers.",
+  "outcomes_accessed": true,
   "schema_version": 1
 }
