@@ -85,7 +85,7 @@ def run(*, credential_fd: int, forecast_input: Path, capsule_root: Path, v2_fore
             direct_p, direct_trace = _ask(llm, _prompt(
                 world, capsule, "Act as a direct calibrated forecaster. Use only the supplied evidence."))
             ensemble = []
-            for index in range(min(3, budget)):
+            for index in range(budget):
                 p, trace = _ask(llm, _prompt(
                     world, capsule, f"Independent direct forecast replicate {index + 1}; do not simulate a world."))
                 ensemble.append({"p_yes": p, "trace": trace})
@@ -117,6 +117,7 @@ def run(*, credential_fd: int, forecast_input: Path, capsule_root: Path, v2_fore
                 },
                 "identical_evidence_for_all_model_arms": True,
                 "call_matched_ensemble_within_v2_budget": len(ensemble) <= budget,
+                "call_matched_ensemble_exactly_v2_budget": len(ensemble) == budget,
                 "model_calls": 2 + len(ensemble) + len(panel),
                 "latency_s": round(time.time() - started, 3),
                 "cost_usd": None,

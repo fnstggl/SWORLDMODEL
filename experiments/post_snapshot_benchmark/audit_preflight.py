@@ -69,6 +69,11 @@ def build(*, passing_path=None, original_path=None, replay_path=None, baselines_
             for row in baselines),
         "ensemble_within_v2_call_budget": all(
             row["call_matched_ensemble_within_v2_budget"] for row in baselines),
+        "ensemble_exactly_matches_v2_call_budget": all(
+            row.get("call_matched_ensemble_exactly_v2_budget") and
+            len(row["arms"]["call_matched_direct_ensemble"].get("members") or []) ==
+            int(row["v2_call_budget"])
+            for row in baselines),
     }
     current_fp = runtime_fingerprint()
     activation = json.loads(activation_path.read_text())
@@ -119,7 +124,8 @@ def build(*, passing_path=None, original_path=None, replay_path=None, baselines_
         all(value == 4 for key, value in deterministic.items() if key != "rows_compared") and
         parity["capsule_hash_matches_v2"] == parity["rows_checked"] and
         parity["byte_hashes_match_v2"] == parity["rows_checked"] and
-        parity["all_model_arms_complete"] and parity["ensemble_within_v2_call_budget"])
+        parity["all_model_arms_complete"] and parity["ensemble_within_v2_call_budget"] and
+        parity["ensemble_exactly_matches_v2_call_budget"])
     _write(report_path, preflight)
 
     all_records = [record for row in passing for record in row["phase_execution_records"].values()]

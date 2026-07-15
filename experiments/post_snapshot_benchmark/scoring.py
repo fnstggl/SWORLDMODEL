@@ -147,6 +147,11 @@ def _verify_baselines(path: Path, split: str, expected: int, forecasts: list[dic
             errors.append(f"row {index}: evidence parity false")
         if not row.get("call_matched_ensemble_within_v2_budget"):
             errors.append(f"row {index}: ensemble exceeds V2 budget")
+        if not row.get("call_matched_ensemble_exactly_v2_budget"):
+            errors.append(f"row {index}: ensemble is not exactly call-matched")
+        if len((row.get("arms") or {}).get("call_matched_direct_ensemble", {}).get("members") or []) \
+                != int(row.get("v2_call_budget") or -1):
+            errors.append(f"row {index}: ensemble member count does not equal V2 call budget")
         if row.get("evidence_capsule_sha256") != expected_capsules.get(key):
             errors.append(f"row {index}: evidence capsule mismatch")
         for arm in BASELINE_ARMS:
