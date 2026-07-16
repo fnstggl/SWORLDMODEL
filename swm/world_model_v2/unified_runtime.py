@@ -225,6 +225,21 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
         except Exception as e:  # noqa: BLE001 — synthesis must never block the forecast
             lineage["activation_synthesis"] = {"error": f"{type(e).__name__}: {e}"[:160]}
 
+    # ---------- Event-time conversion: "when/how-long" questions are FIRST-PASSAGE problems ----------
+    # The compiler flattens a "when" question into a categorical mode contract and loses time entirely
+    # (the Ukraine failure class). Here — after synthesis/depth/intentions so `_consumed_state` and the
+    # grounded intention factor exist — the point contract is replaced by an EventTimeContract: per-mode
+    # hazard_round chains at the trajectory cadence, a universal absorption monitor observing first
+    # passage, and a censoring-aware CDF/survival/mode×time terminal readout. Universal: routing is
+    # purely linguistic + structural, never scenario-specific.
+    if "event_time" not in drop:
+        try:
+            from swm.world_model_v2.event_time import is_when_question, convert_to_event_time
+            if is_when_question(question):
+                convert_to_event_time(plan, lineage.get("resolution_criterion") or {}, lineage=lineage)
+        except Exception as e:  # noqa: BLE001 — conversion must never block the forecast
+            lineage["event_time"] = {"error": f"{type(e).__name__}: {e}"[:160]}
+
     # ---------- Phase 11: dynamic-recompilation loop over the as-of observations (same plan lineage) --------
     if "phase11_recompilation" not in drop and bundle is not None:
         _run_recompilation(plan, bundle, as_of, horizon, seed, llm, manifest, lineage, costs)
