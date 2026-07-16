@@ -127,9 +127,11 @@ class CollectiveThresholdDecisionOperator(TransitionOperator):
         # actor-action polarity, diffusion reach and nonlinear momentum written into this world (bounded,
         # inside the mechanism — never at the terminal resolver)
         prop, consumed = consume_state_rate(world, prop, a.get("consume") or [])
+        if len(a["options"]) != 2:
+            return None                                      # institutional YES/NO write only fits binary
         yes = sum(1 for _ in range(a["n_members"]) if rng.random() < prop)
         passed = yes >= a["needed"]
-        opts = a["options"] if len(a["options"]) == 2 else ["True", "False"]
+        opts = a["options"]
         val = opts[0] if passed else opts[1]
         var = a["outcome_var"]
         register_quantity_type(var, units="outcome")
@@ -248,6 +250,8 @@ class AggregateOutcomeOperator(TransitionOperator):
         return TransitionProposal(operator=self.name, action={
             "outcome_var": str(p["outcome_var"]), "options": list(p.get("options") or ["True", "False"]),
             "lean": str(p.get("lean", "neutral")), "consume": list(p.get("consume") or []),
+            "fitted_base_rate": p.get("fitted_base_rate"),
+            "base_rate_provenance": p.get("base_rate_provenance"),
             "posterior_rate_particles": p.get("posterior_rate_particles")},
             reason_codes=["aggregate_realization"])
 
@@ -262,13 +266,19 @@ class AggregateOutcomeOperator(TransitionOperator):
         post = a.get("posterior_rate_particles")
         if post:
             base, src = _draw_rate(post, rng), "posterior"
+        elif isinstance(a.get("fitted_base_rate"), (int, float)):
+            # learned family hazard (fit on calibration-split outcomes only; partial pooling)
+            base, src = float(a["fitted_base_rate"]), str(a.get("base_rate_provenance", "fitted_family_prior"))
         else:
             av, bv = LEAN_BETA.get(a["lean"], (1.0, 1.0))
             base, src = _beta_sample(rng, av, bv), "prior_beta"
         p, used = consume_state_rate(world, base, a["consume"])
         if not used:
             return None                                      # no upstream state written → nothing to realize
-        opts = a["options"] if len(a["options"]) == 2 else ["True", "False"]
+        if len(a["options"]) != 2:
+            return None                                      # non-binary contract: never poison the option
+                                                             # space with binary values (readout must bin)
+        opts = a["options"]
         val = opts[0] if rng.random() < p else opts[1]
         register_quantity_type(var, units="outcome")
         before = world.quantities[var].value if var in world.quantities else None

@@ -230,3 +230,41 @@ def test_blinding_preserves_structure_hides_names():
     assert "Trump" not in q and "Harris" not in q and "2024" not in q
     assert "Candidate A" in q and "Candidate B" in q
     assert apply_mapping("Trumpet sound", {"Trump": "X"}) == "Trumpet sound"   # whole-word only
+
+
+# ---------------------------------------------------------------- fidelity layer
+def test_scheduled_fact_operator_is_deterministic_and_entailing():
+    from swm.world_model_v2.scheduled_facts import attach_scheduled_facts
+    p = _plan(processes=["strategic_decision"], entities=[{"id": "x", "type": "person", "fields": {},
+                                                          "sensitivity": 0.8}])
+    facts = [{"fact": "term ends May 15", "ts": HZ - 2.0, "date": "2025-01-31", "entity": "x",
+              "kind": "term_expiry", "source": "model_knowledge", "evidence_quote": None,
+              "confidence": 0.9, "outcome_entailing": True, "entailed_direction": "yes",
+              "entailment_caveat": None}]
+    rep = attach_scheduled_facts(p, facts)
+    assert rep["n_scheduled_in_window"] == 1 and rep["n_outcome_entailing"] == 1
+    assert p._consumed_state[0]["var"] == "fact_entailment"      # dated fact dominates the consumption
+    synthesize_activation(p)
+    _, branches = run_from_plan(p, llm=None, seed=3)
+    ops = _deltas_by_op(branches)
+    assert ops.get("scheduled_fact", 0) > 0                       # the fact EXECUTES deterministically
+
+
+def test_family_hazard_pack_replaces_broad_prior_when_fit():
+    import json
+    from swm.world_model_v2 import family_hazards as FH
+    assert FH.classify_family("Jerome Powell out as Fed Chair by May 15?") == "personnel_out_by_date"
+    if FH.PACK.exists():
+        rate, fam, src = FH.family_base_rate("Someone out as CEO by June?")
+        assert rate is not None and "fitted" in src or src == "global_pooled"
+
+
+def test_trajectory_depth_scales_with_situation():
+    from swm.world_model_v2.fidelity import deepen_trajectory
+    p = _plan(processes=["strategic_decision_negotiation"],
+              entities=[{"id": f"a{i}", "type": "person", "fields": {}, "sensitivity": 0.8}
+                        for i in range(3)])
+    rep = deepen_trajectory(p, {"phase4_actor_policy": {"required": True}}, cadence_days=3.0)
+    assert rep["decision_events_added"] >= 6                      # actors x points, never one decision
+    rep2 = deepen_trajectory(_plan(processes=[]), {"phase4_actor_policy": {"required": False}})
+    assert rep2["decision_events_added"] == 0                     # no strategic phase -> no decisions

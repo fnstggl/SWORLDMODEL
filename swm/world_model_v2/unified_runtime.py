@@ -165,6 +165,39 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
         except Exception as e:  # noqa: BLE001
             manifest["phase10_institutions"]["normalization"] = {"error": type(e).__name__}
 
+    # ---------- Fidelity layer (identity-preserving directive): full actor decomposition, grounded
+    #            institutional parameters, and the Phase-1.5 scheduled-reality (dated public facts) ----
+    if "fidelity" not in drop and llm is not None:
+        try:
+            from swm.world_model_v2.fidelity import fidelity_expand
+            from swm.world_model_v2.scheduled_facts import extract_scheduled_facts, attach_scheduled_facts
+            from swm.world_model_v2.resolution_criteria import (parse_resolution_criterion,
+                                                                ground_actor_intentions)
+            ev_text = bundle.render(max_chars=2400) if bundle is not None else ""
+            # universal resolution-criterion parsing: the precise state that resolves YES anchors the
+            # contract's rule, the fact-entailment judgments, and the intention grounding
+            crit = parse_resolution_criterion(question, horizon=horizon, llm=llm)
+            if crit:
+                lineage["resolution_criterion"] = crit
+                plan.provenance["resolution_criterion"] = crit
+                try:
+                    plan.outcome_contract.resolution_rule = str(crit["resolves_yes_iff"])[:300]
+                except Exception:  # noqa: BLE001
+                    pass
+            crit_q = (f"{question}\nRESOLVES YES IFF: {crit.get('resolves_yes_iff')}"
+                      if crit else question)
+            lineage["fidelity_expansion"] = fidelity_expand(plan, crit_q, as_of=as_of,
+                                                            evidence_text=ev_text, llm=llm)
+            facts = extract_scheduled_facts(crit_q, as_of=as_of, horizon=horizon,
+                                            evidence_text=ev_text, llm=llm)
+            lineage["scheduled_reality"] = attach_scheduled_facts(plan, facts)
+            lineage["scheduled_reality"]["facts"] = facts[:8]
+            # per-actor evidence-grounded intentions (state, not policy guesses)
+            lineage["actor_intentions"] = ground_actor_intentions(plan, question, criterion=crit,
+                                                                  evidence_text=ev_text, llm=llm)
+        except Exception as e:  # noqa: BLE001 — fidelity must never block the forecast
+            lineage["fidelity_expansion"] = {"error": f"{type(e).__name__}: {e}"[:140]}
+
     # ---------- Activation synthesis: relevance-gated completion of the execution chain ----------
     # For each phase the compiler's own causal analysis marks REQUIRED, complete the missing execution
     # linkage from DECLARED components (institutional_decision events, population/network consumers,
@@ -181,11 +214,32 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
             rep = synthesize_activation(plan, req)
             rep["_pre_synthesis_requirements"] = req         # the ONE relevance verdict, reused by assess
             lineage["activation_synthesis"] = rep
+            # situation-dependent trajectory depth (never one decision at horizon-3d)
+            if "fidelity" not in drop:
+                from swm.world_model_v2.fidelity import deepen_trajectory
+                cad = (lineage.get("fidelity_expansion") or {}).get("decision_cadence_days")
+                lineage["trajectory_depth"] = deepen_trajectory(plan, req, cadence_days=cad)
             for ph, r in req.items():
                 if ph in manifest:
                     manifest[ph]["relevance"] = {"required": r["required"], "why": r["why"]}
         except Exception as e:  # noqa: BLE001 — synthesis must never block the forecast
             lineage["activation_synthesis"] = {"error": f"{type(e).__name__}: {e}"[:160]}
+
+    # ---------- Event-time conversion: "when/how-long" questions are FIRST-PASSAGE problems ----------
+    # The compiler flattens a "when" question into a categorical mode contract and loses time entirely
+    # (the Ukraine failure class). Here — after synthesis/depth/intentions so `_consumed_state` and the
+    # grounded intention factor exist — the point contract is replaced by an EventTimeContract: per-mode
+    # hazard_round chains at the trajectory cadence, a universal absorption monitor observing first
+    # passage, and a censoring-aware CDF/survival/mode×time terminal readout. Universal: routing is
+    # purely linguistic + structural, never scenario-specific.
+    if "event_time" not in drop:
+        try:
+            from swm.world_model_v2.event_time import is_when_question, convert_to_event_time
+            if is_when_question(question):
+                convert_to_event_time(plan, lineage.get("resolution_criterion") or {},
+                                      lineage=lineage, llm=llm)
+        except Exception as e:  # noqa: BLE001 — conversion must never block the forecast
+            lineage["event_time"] = {"error": f"{type(e).__name__}: {e}"[:160]}
 
     # ---------- Phase 11: dynamic-recompilation loop over the as-of observations (same plan lineage) --------
     if "phase11_recompilation" not in drop and bundle is not None:
