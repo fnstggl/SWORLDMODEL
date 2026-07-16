@@ -248,6 +248,8 @@ class AggregateOutcomeOperator(TransitionOperator):
         return TransitionProposal(operator=self.name, action={
             "outcome_var": str(p["outcome_var"]), "options": list(p.get("options") or ["True", "False"]),
             "lean": str(p.get("lean", "neutral")), "consume": list(p.get("consume") or []),
+            "fitted_base_rate": p.get("fitted_base_rate"),
+            "base_rate_provenance": p.get("base_rate_provenance"),
             "posterior_rate_particles": p.get("posterior_rate_particles")},
             reason_codes=["aggregate_realization"])
 
@@ -262,6 +264,9 @@ class AggregateOutcomeOperator(TransitionOperator):
         post = a.get("posterior_rate_particles")
         if post:
             base, src = _draw_rate(post, rng), "posterior"
+        elif isinstance(a.get("fitted_base_rate"), (int, float)):
+            # learned family hazard (fit on calibration-split outcomes only; partial pooling)
+            base, src = float(a["fitted_base_rate"]), str(a.get("base_rate_provenance", "fitted_family_prior"))
         else:
             av, bv = LEAN_BETA.get(a["lean"], (1.0, 1.0))
             base, src = _beta_sample(rng, av, bv), "prior_beta"

@@ -462,10 +462,13 @@ def synthesize_activation(plan, req=None) -> dict:
             rep["actions"].append({"phase": "state_consumption", "action": "institution_consumes_state",
                                    "vars": [m["var"] for m in consumed]})
         elif not _has_event("aggregate_outcome_resolution"):
+            from swm.world_model_v2.family_hazards import family_base_rate
+            fbr, fam, fbr_src = family_base_rate(getattr(plan, "question", ""))
             plan.scheduled_events.append({
                 "etype": "aggregate_outcome_resolution", "ts": resolve_ts - 0.5, "participants": [],
                 "payload": {"outcome_var": resolve_var, "options": options, "lean": lean,
-                            "consume": consumed}})
+                            "consume": consumed, "fitted_base_rate": fbr,
+                            "family": fam, "base_rate_provenance": fbr_src}})
             _add_mechanism(plan, "aggregate_outcome_mechanism", "aggregate_outcome_mechanism",
                            "realize the aggregate-behavior outcome from consumed causal state",
                            "posterior base rate + bounded state consumption (inside the mechanism)")

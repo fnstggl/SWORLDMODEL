@@ -131,11 +131,47 @@ class EvidenceCapsule:
                     json.dumps(self._items, sort_keys=True, default=str).encode()).hexdigest()[:16]}
 
 
+def news_asof(question: str, cutoff_iso: str, *, llm=None, k: int = 5) -> list:
+    """Question-specific archived NEWS via Google News RSS with paired after:/before: (evidence-engine v2).
+    Timestamps are RSS-claimed (weaker tier than revision/capture proof) — recorded per item as
+    `claimed_rss_timestamp`; the leakage auditor's future-date/resolution-term scans still apply."""
+    try:
+        from swm.world_model_v2.evidence_connectors import GoogleNewsRSSConnector
+        q_terms = question
+        if llm is not None:
+            from swm.engine.grounding import parse_json
+            raw = parse_json(llm(f'Give the best 3-6 word news search query for this question. Return ONLY '
+                                 f'JSON: {{"query": "..."}}\nQUESTION: {question}')) or {}
+            q_terms = str(raw.get("query") or question)[:80]
+        after = time.strftime("%Y-%m-%d", time.gmtime(_ts(cutoff_iso) - 30 * 86400))
+        items, _trace = GoogleNewsRSSConnector().search_historical(q_terms, after_date=after,
+                                                                   before_date=cutoff_iso[:10], k=k)
+        out = []
+        for it in items[:k]:
+            title = str(getattr(it, "title", "") or (it.get("title") if isinstance(it, dict) else ""))
+            text = str(getattr(it, "text", "") or getattr(it, "snippet", "") or
+                       (it.get("snippet", "") if isinstance(it, dict) else ""))[:1200]
+            pub = getattr(it, "published_at", None) or (it.get("published_at")
+                                                        if isinstance(it, dict) else None)
+            pub_ts = float(pub) if isinstance(pub, (int, float)) else _ts(cutoff_iso)
+            if pub_ts > _ts(cutoff_iso) + 86400.0:
+                continue                                     # cutoff rule, defense in depth
+            raw_b = (title + " " + text).encode()
+            out.append({"source": "google_news_rss_archived", "archive_retrieval_id": f"rss:{after}..{cutoff_iso[:10]}",
+                        "url": str(getattr(it, "url", "") or ""), "title": title, "text": (title + ". " + text)[:2000],
+                        "raw_sha256": hashlib.sha256(raw_b).hexdigest(), "raw_bytes_len": len(raw_b),
+                        "claimed_publication_ts": pub_ts, "first_proven_available_at": pub_ts,
+                        "temporal_verification": "claimed_rss_timestamp (weaker tier; recorded)",
+                        "transformation_history": ["rss_snippet"]})
+        return out
+    except Exception:  # noqa: BLE001 — news layer is additive; failure falls back to wiki/wayback
+        return []
+
+
 def build_capsule(event_id: str, question: str, cutoff_iso: str, *, wiki_titles=(), urls=(),
                   llm=None) -> EvidenceCapsule:
-    """Evidence-construction role (Part 16 process 1): resolve topical wiki titles (LLM may PROPOSE titles —
-    title choice is not outcome-bearing; the CONTENT is revision-pinned), pull as-of revisions + wayback
-    snapshots, freeze."""
+    """Evidence-construction role (Part 16 process 1): question-specific archived NEWS (paired
+    after:/before:) + as-of Wikipedia revisions + Wayback snapshots, frozen together."""
     titles = list(wiki_titles)
     if not titles and llm is not None:
         from swm.engine.grounding import parse_json
@@ -143,7 +179,7 @@ def build_capsule(event_id: str, question: str, cutoff_iso: str, *, wiki_titles=
             f"List up to 4 English Wikipedia article titles most relevant to forecasting this question. "
             f'Return ONLY JSON: {{"titles": ["..."]}}\nQUESTION: {question}')) or {}
         titles = [str(t) for t in (raw.get("titles") or [])][:4]
-    items = []
+    items = list(news_asof(question, cutoff_iso, llm=llm))
     for t in titles:
         it = wiki_revision_asof(t, cutoff_iso)
         if it:

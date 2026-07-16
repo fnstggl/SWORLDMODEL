@@ -32,7 +32,9 @@ VAULT = Path("experiments/replay_vault_v3")
 OUT = Path("experiments/results/replay_v3")
 CAPS = VAULT / "capsules"
 MAPS = VAULT / "blinding_mappings.json"
-ARM = "provider_attested_post_cutoff_blinded"
+IDENTITY_PRESERVING = True        # fidelity directive: real identities; leakage measured, never blinded away
+MARKET_INFORMED = False           # separate arm: cutoff price as a Phase-3 observation (set via --market)
+ARM = "provider_attested_post_cutoff_identity"
 MODEL = "deepseek-v4-flash"
 _LOCK = threading.Lock()
 
@@ -146,21 +148,47 @@ def _row(w, cutoff, fp, split):
         row["evidence_byte_hashes"] = [i["raw_sha256"] for i in cap["items"]]
         row["first_proven_availability"] = [i["first_proven_available_at"] for i in cap["items"]]
         llm = _llm()
-        with _LOCK:
-            mappings = json.loads(MAPS.read_text())["mappings"] if MAPS.exists() else {}
-        mapping = mappings.get(w["event_id"]) or build_mapping(w["question"], llm)
-        with _LOCK:
-            mappings[w["event_id"]] = mapping
-            MAPS.write_text(json.dumps({"note": "pseudonym mappings (no outcomes)",
-                                        "mappings": mappings}, indent=1))
         bundle = ReplayBundle(cap, w["question"])
-        bq = blind_question(w["question"], mapping)
-        bb = blind_bundle(copy.deepcopy(bundle), mapping)
+        if IDENTITY_PRESERVING:
+            # FIDELITY DIRECTIVE: real identities, real facts, maximum-fidelity simulation. Leakage is
+            # MEASURED per row by the probes (name-only / no-evidence / temporal-fact), never hidden by
+            # destroying the world's content. Recognition/permutation probes are blinding-specific → n/a.
+            bq, bb, mapping = w["question"], bundle, {}
+            row["question_blinded"], row["evidence_blinded"] = False, False
+        else:
+            with _LOCK:
+                mappings = json.loads(MAPS.read_text())["mappings"] if MAPS.exists() else {}
+            mapping = mappings.get(w["event_id"]) or build_mapping(w["question"], llm)
+            with _LOCK:
+                mappings[w["event_id"]] = mapping
+                MAPS.write_text(json.dumps({"note": "pseudonym mappings (no outcomes)",
+                                            "mappings": mappings}, indent=1))
+            bq = blind_question(w["question"], mapping)
+            bb = blind_bundle(copy.deepcopy(bundle), mapping)
+            row["question_blinded"], row["evidence_blinded"] = True, True
         ev_text = bb.render(max_chars=2400)
-        row["question_blinded"], row["evidence_blinded"] = True, True
         row["blinded_question"] = bq
         row["leakage_probes"] = run_probes_v2(llm, real_question=w["question"], blinded_question=bq,
                                               mapping=mapping, cutoff=cutoff, evidence_text=ev_text)
+        if MARKET_INFORMED:
+            snap = (w.get("market_snapshots") or {}).get(cutoff) or {}
+            if isinstance(snap.get("price"), (int, float)):
+                # the archived cutoff price enters as a NOISY OBSERVATION through the real Phase-3
+                # posterior machinery (a typed claim, not a probability override) — the model's job
+                # becomes detecting mispricing on top of the crowd, not re-deriving the price.
+                cid = f"cl_market_{cutoff}"
+                bb.claims.append({"claim_id": cid,
+                                  "text": f"An archived prediction market priced YES at "
+                                          f"{snap['price']:.3f} as of {cutoff} (timestamp-matched tick).",
+                                  "title": "market price observation", "claim_class": "market_observation",
+                                  "subject": "prediction market", "predicate": "prices_yes_at",
+                                  "object": f"{snap['price']:.3f}",
+                                  "quote": f"YES={snap['price']:.3f} @ {cutoff}",
+                                  "publication_time": float(snap.get("exact_t") or 0.0),
+                                  "source": "polymarket_archive", "raw_sha256": "",
+                                  "archive_retrieval_id": f"clob_tick_{snap.get('exact_t')}"})
+                bb.included_claim_ids.append(cid)
+                row["market_observation_injected"] = snap["price"]
         res = simulate_world(bq, as_of=cutoff, horizon=w["horizon"], llm=llm, seed=0,
                              prebuilt_bundle=bb)
         prov = getattr(res, "provenance", {}) or {}
@@ -236,7 +264,16 @@ if __name__ == "__main__":
     ap.add_argument("--split", default="calibration",
                     choices=["calibration", "validation", "locked_test", "all"])
     ap.add_argument("--workers", type=int, default=6)
+    ap.add_argument("--market", action="store_true", help="market-informed arm (price as observation)")
+    ap.add_argument("--blind", action="store_true", help="legacy blinded arm")
     a = ap.parse_args()
+    import experiments.replay_v3.run_benchmark as _self
+    if a.market:
+        _self.MARKET_INFORMED = True
+        _self.ARM = "provider_attested_post_cutoff_identity_market_informed"
+    if a.blind:
+        _self.IDENTITY_PRESERVING = False
+        _self.ARM = "provider_attested_post_cutoff_blinded"
     if a.capsules:
         build_capsules(vault_file=a.vault, workers=8)
     else:

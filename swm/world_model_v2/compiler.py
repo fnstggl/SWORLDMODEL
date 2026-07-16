@@ -45,6 +45,11 @@ You propose a CAUSALLY SUFFICIENT decomposition; a validator will type-check, re
 
 Build a model that includes EVERY actor, population, institution, relationship, information flow, latent
 variable, mechanism, constraint and exogenous factor that could MATERIALLY change the outcome distribution.
+Use REAL NAMES for real people and institutions and your world knowledge about them. Represent EACH real
+decision-holder as its OWN entity — never collapse a multi-actor system (president, chamber, board, court,
+company) into one amalgam. Give every institution its REAL structure: composition size, decision threshold,
+procedural stages, authority holders and deadlines — as many executable rules as the real body has, never a
+token one or two.
 Do NOT minimize — include a component whenever its relevance is uncertain (represent the uncertainty).
 Omit a component only if it is clearly negligible. High-sensitivity unknowns that lack evidence must still
 be listed as latents (they will get broad priors), never dropped.

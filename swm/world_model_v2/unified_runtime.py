@@ -165,6 +165,22 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
         except Exception as e:  # noqa: BLE001
             manifest["phase10_institutions"]["normalization"] = {"error": type(e).__name__}
 
+    # ---------- Fidelity layer (identity-preserving directive): full actor decomposition, grounded
+    #            institutional parameters, and the Phase-1.5 scheduled-reality (dated public facts) ----
+    if "fidelity" not in drop and llm is not None:
+        try:
+            from swm.world_model_v2.fidelity import fidelity_expand
+            from swm.world_model_v2.scheduled_facts import extract_scheduled_facts, attach_scheduled_facts
+            ev_text = bundle.render(max_chars=2400) if bundle is not None else ""
+            lineage["fidelity_expansion"] = fidelity_expand(plan, question, as_of=as_of,
+                                                            evidence_text=ev_text, llm=llm)
+            facts = extract_scheduled_facts(question, as_of=as_of, horizon=horizon,
+                                            evidence_text=ev_text, llm=llm)
+            lineage["scheduled_reality"] = attach_scheduled_facts(plan, facts)
+            lineage["scheduled_reality"]["facts"] = facts[:8]
+        except Exception as e:  # noqa: BLE001 — fidelity must never block the forecast
+            lineage["fidelity_expansion"] = {"error": f"{type(e).__name__}: {e}"[:140]}
+
     # ---------- Activation synthesis: relevance-gated completion of the execution chain ----------
     # For each phase the compiler's own causal analysis marks REQUIRED, complete the missing execution
     # linkage from DECLARED components (institutional_decision events, population/network consumers,
@@ -181,6 +197,11 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
             rep = synthesize_activation(plan, req)
             rep["_pre_synthesis_requirements"] = req         # the ONE relevance verdict, reused by assess
             lineage["activation_synthesis"] = rep
+            # situation-dependent trajectory depth (never one decision at horizon-3d)
+            if "fidelity" not in drop:
+                from swm.world_model_v2.fidelity import deepen_trajectory
+                cad = (lineage.get("fidelity_expansion") or {}).get("decision_cadence_days")
+                lineage["trajectory_depth"] = deepen_trajectory(plan, req, cadence_days=cad)
             for ph, r in req.items():
                 if ph in manifest:
                     manifest[ph]["relevance"] = {"required": r["required"], "why": r["why"]}
