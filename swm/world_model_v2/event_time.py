@@ -236,6 +236,11 @@ def family_hazard_curve(question: str) -> tuple:
 
 # ---------------------------------------------------------------- 5. plan conversion (unification)
 _WHEN_TOKENS = ("when will", "when does", "how long until", "how soon", "by what date", "what date will")
+# modes whose absorbing state requires the parties to AGREE — only these are modulated by the grounded
+# intention factor (a stated refusal to negotiate suppresses deal hazards; it does NOT suppress a
+# military-collapse or frozen-conflict hazard)
+_AGREEMENT_TOKENS = ("ceasefire", "treaty", "agreement", "deal", "settlement", "negotiat", "accord",
+                     "truce", "pact", "compromise")
 
 
 def is_when_question(question: str) -> bool:
@@ -243,7 +248,35 @@ def is_when_question(question: str) -> bool:
     return any(t in q for t in _WHEN_TOKENS)
 
 
-def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None) -> dict:
+def _mode_requires_agreement(mode_id: str) -> bool:
+    m = str(mode_id).lower()
+    return any(t in m for t in _AGREEMENT_TOKENS)
+
+
+def _filter_absorbing_modes(modes: list, criterion: dict, llm) -> tuple:
+    """A structural hypothesis is only an ABSORBING mode if the state it describes satisfies the parsed
+    resolution criterion (NATO escalation does not END a conflict). LLM entailment judgment, universal;
+    on any failure every mode is kept (never blocks the forecast)."""
+    iff = (criterion or {}).get("resolves_yes_iff")
+    if llm is None or not iff or len(modes) < 2:
+        return modes, []
+    try:
+        from swm.engine.grounding import parse_json
+        raw = parse_json(llm(
+            "Which of these candidate end-states SATISFY the resolution criterion when reached?\n"
+            f"CRITERION (resolves yes iff): {iff}\n"
+            f"CANDIDATE MODES: {[m['id'] for m in modes]}\n"
+            'Return ONLY JSON: {"absorbing_mode_ids": ["..."], '
+            '"rejected": [{"id": "...", "why": "<does not satisfy the criterion>"}]}')) or {}
+        ids = {str(x) for x in (raw.get("absorbing_mode_ids") or [])}
+        kept = [m for m in modes if m["id"] in ids]
+        rejected = [m["id"] for m in modes if m["id"] not in ids]
+        return (kept, rejected) if kept else (modes, [])
+    except Exception:  # noqa: BLE001 — entailment filtering must never block the forecast
+        return modes, []
+
+
+def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=None) -> dict:
     """Replace the compiled point contract with an EventTimeContract and schedule the timing machinery:
     per-mode hazard_round chains at the trajectory cadence (modes = the compiler's structural hypotheses /
     categorical options — 'how it ends' becomes the absorbed_by marginal), the absorption monitor, and the
@@ -255,6 +288,7 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None) -> dic
     if not modes and len(getattr(plan.outcome_contract, "options", []) or []) > 2:
         modes = [{"id": str(o)[:40], "prior": 1.0} for o in plan.outcome_contract.options[:6]]
     modes = modes or [{"id": "resolution", "prior": 1.0}]
+    modes, rejected_modes = _filter_absorbing_modes(modes, criterion, llm)
     z = sum(m["prior"] for m in modes) or 1.0
     curve, fam, curve_src = family_hazard_curve(getattr(plan, "question", ""))
     # grounded-intention factor: intention_yes_share 0 → crush hazards; 1 → boost (bounded 0.1..1.6)
@@ -268,15 +302,24 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None) -> dic
     n_rounds = max(4, min(20, int(horizon_days / max(1.0, horizon_days / 10.0))))
     consumed = list(getattr(plan, "_consumed_state", []) or [])
     n_ev = 0
+    mode_ifac = {}
     for m in modes[:6]:
+        share = m["prior"] / z
+        # grounded intentions modulate only AGREEMENT modes: refusal to negotiate crushes deal hazards,
+        # never a unilateral end-state's hazard
+        ifac_m = ifac if _mode_requires_agreement(m["id"]) else 1.0
+        mode_ifac[m["id"]] = round(ifac_m, 3)
         for k in range(1, n_rounds + 1):
             ts = plan.as_of + (k / (n_rounds + 1)) * span
+            # per-round per-mode hazard: bucket hazard spread over the bucket's rounds (n_rounds/_BUCKETS)
+            # weighted by the mode's structural share — summed over modes+rounds it reproduces the fitted
+            # family curve exactly (no len(modes) inflation)
             plan.scheduled_events.append({
                 "etype": "hazard_round", "ts": ts, "participants": [],
-                "payload": {"mode": m["id"], "base_hazard": 0.5 / n_rounds * (m["prior"] / z * len(modes)),
-                            "hazard_bucket_curve": ([h * (m["prior"] / z) * len(modes) / n_rounds * _BUCKETS
-                                                     for h in curve] if curve else None),
-                            "intention_factor": ifac, "as_of": plan.as_of, "span_s": span,
+                "payload": {"mode": m["id"], "base_hazard": 0.5 * share / n_rounds,
+                            "hazard_bucket_curve": ([h * share * _BUCKETS / n_rounds for h in curve]
+                                                    if curve else None),
+                            "intention_factor": ifac_m, "as_of": plan.as_of, "span_s": span,
                             "consume": consumed}})
             n_ev += 1
     for mech_id, op in (("absorption_monitor", "absorption_monitor"), ("hazard_rounds", "hazard_round")):
@@ -297,8 +340,10 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None) -> dic
                                               resolves_iff=str((criterion or {}).get("resolves_yes_iff",
                                                                                      ""))[:300],
                                               modes=[m["id"] for m in modes]).validate()
-    rep = {"modes": [m["id"] for m in modes], "n_hazard_rounds": n_ev, "rounds_per_mode": n_rounds,
-           "intention_factor": round(ifac, 3), "family": fam, "hazard_curve_source": curve_src}
+    rep = {"modes": [m["id"] for m in modes], "rejected_non_absorbing_modes": rejected_modes,
+           "n_hazard_rounds": n_ev, "rounds_per_mode": n_rounds,
+           "intention_factor": round(ifac, 3), "intention_factor_by_mode": mode_ifac,
+           "family": fam, "hazard_curve_source": curve_src}
     if lineage is not None:
         lineage["event_time"] = rep
     return rep

@@ -120,6 +120,14 @@ def test_convert_to_event_time_full_rewire():
                                                       "frozen_conflict"}
     assert all(e["payload"]["consume"] == [{"var": "actor_intentions", "weight": 0.2}] for e in rounds)
     assert all(T0 < e["ts"] < T1 for e in rounds)
+    # total scheduled hazard mass equals the base envelope (0.5) — no len(modes) inflation
+    assert sum(e["payload"]["base_hazard"] for e in rounds) == pytest.approx(0.5)
+    # grounded intentions modulate ONLY agreement modes: refusal crushes deal hazards, never a
+    # unilateral end-state's hazard
+    by_mode = {e["payload"]["mode"]: e["payload"]["intention_factor"] for e in rounds}
+    assert by_mode["negotiated_settlement"] == pytest.approx(0.2 + 1.4 * 0.2)
+    assert by_mode["military_collapse"] == 1.0
+    assert by_mode["frozen_conflict"] == 1.0
     ops = {m["operator"] for m in p.accepted_mechanisms}
     assert {"absorption_monitor", "hazard_round"} <= ops
     declared = {q["name"] for q in p.quantities}
@@ -127,6 +135,29 @@ def test_convert_to_event_time_full_rewire():
     assert 0.1 <= rep["intention_factor"] <= 1.6
     assert rep["intention_factor"] == pytest.approx(0.2 + 1.4 * 0.2)  # grounded intentions shape hazards
     assert lin["event_time"] is rep
+
+
+def test_mode_entailment_filter_drops_non_absorbing_modes():
+    p = _plan()
+
+    def fake_llm(prompt):
+        return ('{"absorbing_mode_ids": ["negotiated_settlement", "military_collapse"], '
+                '"rejected": [{"id": "frozen_conflict", "why": "not an end state"}]}')
+    rep = convert_to_event_time(p, {"resolves_yes_iff": "hostilities formally end"}, llm=fake_llm)
+    assert set(rep["modes"]) == {"negotiated_settlement", "military_collapse"}
+    assert rep["rejected_non_absorbing_modes"] == ["frozen_conflict"]
+    rounds = [e for e in p.scheduled_events if e["etype"] == "hazard_round"]
+    assert not any(e["payload"]["mode"] == "frozen_conflict" for e in rounds)
+    assert sum(e["payload"]["base_hazard"] for e in rounds) == pytest.approx(0.5)  # renormalized
+
+
+def test_mode_entailment_filter_fails_open():
+    p = _plan()
+
+    def broken_llm(prompt):
+        raise RuntimeError("llm down")
+    rep = convert_to_event_time(p, {"resolves_yes_iff": "hostilities formally end"}, llm=broken_llm)
+    assert len(rep["modes"]) == 3                              # filter must never block the forecast
 
 
 def test_fit_survival_pack_calibration_only_shape():

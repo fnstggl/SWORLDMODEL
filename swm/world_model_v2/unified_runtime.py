@@ -236,7 +236,8 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
         try:
             from swm.world_model_v2.event_time import is_when_question, convert_to_event_time
             if is_when_question(question):
-                convert_to_event_time(plan, lineage.get("resolution_criterion") or {}, lineage=lineage)
+                convert_to_event_time(plan, lineage.get("resolution_criterion") or {},
+                                      lineage=lineage, llm=llm)
         except Exception as e:  # noqa: BLE001 — conversion must never block the forecast
             lineage["event_time"] = {"error": f"{type(e).__name__}: {e}"[:160]}
 
