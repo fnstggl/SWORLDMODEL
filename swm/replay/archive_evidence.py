@@ -137,17 +137,22 @@ def news_asof(question: str, cutoff_iso: str, *, llm=None, k: int = 5) -> list:
     `claimed_rss_timestamp`; the leakage auditor's future-date/resolution-term scans still apply."""
     try:
         from swm.world_model_v2.evidence_connectors import GoogleNewsRSSConnector
-        q_terms = question
+        queries = [question[:80]]
         if llm is not None:
             from swm.engine.grounding import parse_json
-            raw = parse_json(llm(f'Give the best 3-6 word news search query for this question. Return ONLY '
-                                 f'JSON: {{"query": "..."}}\nQUESTION: {question}')) or {}
-            q_terms = str(raw.get("query") or question)[:80]
+            raw = parse_json(llm(f'Give the TWO best 3-6 word news search queries for this question — one '
+                                 f'for the main event, one for the key actor/entity. Return ONLY JSON: '
+                                 f'{{"queries": ["...", "..."]}}\nQUESTION: {question}')) or {}
+            queries = [str(x)[:80] for x in (raw.get("queries") or [])][:2] or queries
         after = time.strftime("%Y-%m-%d", time.gmtime(_ts(cutoff_iso) - 30 * 86400))
-        items, _trace = GoogleNewsRSSConnector().search_historical(q_terms, after_date=after,
-                                                                   before_date=cutoff_iso[:10], k=k)
+        conn = GoogleNewsRSSConnector()
+        items, seen_h = [], set()
+        for q_terms in queries:
+            got, _trace = conn.search_historical(q_terms, after_date=after,
+                                                 before_date=cutoff_iso[:10], k=k)
+            items.extend(got)
         out = []
-        for it in items[:k]:
+        for it in items[: 2 * k]:
             title = str(getattr(it, "title", "") or (it.get("title") if isinstance(it, dict) else ""))
             text = str(getattr(it, "text", "") or getattr(it, "snippet", "") or
                        (it.get("snippet", "") if isinstance(it, dict) else ""))[:1200]
@@ -157,6 +162,10 @@ def news_asof(question: str, cutoff_iso: str, *, llm=None, k: int = 5) -> list:
             if pub_ts > _ts(cutoff_iso) + 86400.0:
                 continue                                     # cutoff rule, defense in depth
             raw_b = (title + " " + text).encode()
+            h = hashlib.sha256(raw_b).hexdigest()
+            if h in seen_h:
+                continue
+            seen_h.add(h)
             out.append({"source": "google_news_rss_archived", "archive_retrieval_id": f"rss:{after}..{cutoff_iso[:10]}",
                         "url": str(getattr(it, "url", "") or ""), "title": title, "text": (title + ". " + text)[:2000],
                         "raw_sha256": hashlib.sha256(raw_b).hexdigest(), "raw_bytes_len": len(raw_b),

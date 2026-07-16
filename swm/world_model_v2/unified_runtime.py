@@ -171,13 +171,30 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
         try:
             from swm.world_model_v2.fidelity import fidelity_expand
             from swm.world_model_v2.scheduled_facts import extract_scheduled_facts, attach_scheduled_facts
+            from swm.world_model_v2.resolution_criteria import (parse_resolution_criterion,
+                                                                ground_actor_intentions)
             ev_text = bundle.render(max_chars=2400) if bundle is not None else ""
-            lineage["fidelity_expansion"] = fidelity_expand(plan, question, as_of=as_of,
+            # universal resolution-criterion parsing: the precise state that resolves YES anchors the
+            # contract's rule, the fact-entailment judgments, and the intention grounding
+            crit = parse_resolution_criterion(question, horizon=horizon, llm=llm)
+            if crit:
+                lineage["resolution_criterion"] = crit
+                plan.provenance["resolution_criterion"] = crit
+                try:
+                    plan.outcome_contract.resolution_rule = str(crit["resolves_yes_iff"])[:300]
+                except Exception:  # noqa: BLE001
+                    pass
+            crit_q = (f"{question}\nRESOLVES YES IFF: {crit.get('resolves_yes_iff')}"
+                      if crit else question)
+            lineage["fidelity_expansion"] = fidelity_expand(plan, crit_q, as_of=as_of,
                                                             evidence_text=ev_text, llm=llm)
-            facts = extract_scheduled_facts(question, as_of=as_of, horizon=horizon,
+            facts = extract_scheduled_facts(crit_q, as_of=as_of, horizon=horizon,
                                             evidence_text=ev_text, llm=llm)
             lineage["scheduled_reality"] = attach_scheduled_facts(plan, facts)
             lineage["scheduled_reality"]["facts"] = facts[:8]
+            # per-actor evidence-grounded intentions (state, not policy guesses)
+            lineage["actor_intentions"] = ground_actor_intentions(plan, question, criterion=crit,
+                                                                  evidence_text=ev_text, llm=llm)
         except Exception as e:  # noqa: BLE001 — fidelity must never block the forecast
             lineage["fidelity_expansion"] = {"error": f"{type(e).__name__}: {e}"[:140]}
 
