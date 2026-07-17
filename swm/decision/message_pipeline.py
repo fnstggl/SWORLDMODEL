@@ -131,7 +131,10 @@ def optimize_message(recipient: RecipientState, *, proposer=default_proposer, q:
             proposer = llm_proposer(chat_fn, recipient_notes=recipient_notes, sender=sender_brief,
                                     levers=levers)
         if judge_fn is None:
-            judge_fn = llm_sentence_judge(chat_fn)
+            # the judge sees the sender's REAL facts so it can flag fabricated specifics (a number,
+            # dataset, client, or result the facts don't contain) alongside annoying/AI-sounding lines
+            judge_fn = llm_sentence_judge(
+                chat_fn, facts_text=(sender_brief.to_prompt() if sender_brief is not None else ""))
         rewrite_fn = llm_rewriter(chat_fn, recipient_notes=recipient_notes, sender=sender_brief)
 
     scorer = scorer_from_recipient(recipient.vars, recipient.base_mean, seed=seed,

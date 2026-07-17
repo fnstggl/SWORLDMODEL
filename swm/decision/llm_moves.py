@@ -107,7 +107,14 @@ _ANTI_SLOP = ("Write like a sharp, busy human who respects the reader's time. Ea
               "'quick question', 'I know you're busy'), name-dropping the reader's own quotes back at them, "
               "and vague metaphors that don't literally parse. Avoid em dashes and en dashes (— –) in the "
               "body: a comma or a period almost always reads better and overusing dashes reads as AI "
-              "writing (a dash in a sign-off like '— Beckett' is fine). Plain, concrete, specific.")
+              "writing (a dash in a sign-off like '— Beckett' is fine). Plain, concrete, specific.\n"
+              "NEVER SELL CONVENIENCE: do not tell the recipient what they will get, how little effort a "
+              "reply takes, that there is 'no follow-up' or 'no obligation', how quickly they could verify "
+              "something, or what they 'could test' — pre-chewing the reader's next step is presumptuous "
+              "salesmanship dressed as politeness, and it is the single fastest way to sound like AI "
+              "outreach. A real busy person states the thing once and asks one plain question. "
+              "STAY INSIDE THE FACTS: every number, dataset, client, or result you mention must come "
+              "verbatim from the sender facts below; if a detail is not in the facts, you may not use it.")
 
 
 def _extract_list(text: str) -> list:
@@ -172,7 +179,11 @@ def llm_rewriter(chat_fn, *, recipient_notes: str = "", sender: SenderBrief | No
     def rewrite(sentence: str, reasons: list, spec_strategy: dict) -> str:
         rules = spec_to_instructions(spec_strategy)
         prompt = "\n".join([
-            "Rewrite this ONE line of a cold email so it is plainer and better. Keep its role and meaning.",
+            "Rewrite this ONE line of a cold email so it is plainer and better. Keep its role; keep only "
+            "the meaning that a busy human peer would actually say. If the line sells convenience "
+            "(promises what the reader gets, how easy replying is, or how they could verify something), "
+            "DELETE that framing entirely rather than rephrasing it. If it asserts any factual detail "
+            "not in the sender facts, replace it with a listed fact or drop the claim.",
             f"Line: \"{sentence}\"",
             "A critic flagged it for: " + ("; ".join(reasons) if reasons else "sounding like AI slop"),
             _ANTI_SLOP,
@@ -235,18 +246,46 @@ def llm_message_encoder(chat_fn, *, levers: list | None = None):
     return encode
 
 
-def llm_sentence_judge(chat_fn):
-    """Build judge_fn(sentences) -> [{coherent, annoying, reason}] for the SemanticCritic (LLM gate)."""
-    SYSTEM = ("You are a ruthless editor of cold outreach emails. For each numbered sentence decide two "
-              "booleans: COHERENT (it makes a concrete, literally-parseable claim a smart skeptic could "
-              "act on — not vague metaphor or buzzwords) and ANNOYING (tryhard, embellishing, fake-humble, "
-              "or a manipulative tic like 'I'll leave you alone'). Be harsh; when unsure, flag it.")
+def llm_sentence_judge(chat_fn, *, facts_text: str = ""):
+    """Build judge_fn(sentences) -> [{coherent, annoying, ai_sounding, fabricated, reason}] for the
+    SemanticCritic's gate. Four axes, judged by MEANING (never a phrase list):
+
+      COHERENT    — a concrete, literally-parseable claim a smart skeptic could act on.
+      ANNOYING    — reads as a turn-off to a busy, high-status recipient. The big class here is
+                    CONVENIENCE-SELLING: telling the reader what they'll get, how little effort a reply
+                    takes ('no follow-up required'), pre-chewing a verification step they never asked
+                    for ('you could test this yourself by…'), or any benefit-assurance. It performs
+                    'frictionless' and lands as pushy and presumptuous. Also: tryhard, fake-humble,
+                    manipulative tics.
+      AI_SOUNDING — would a real busy founder ever text this to a peer? Templated benefit-framing,
+                    assistant-register politeness, symmetrical setup-payoff clauses, generic demo
+                    instructions, and over-explained asks all read as AI outreach even when polite.
+      FABRICATED  — (only when sender facts are supplied) the sentence asserts a specific factual
+                    detail (a number, dataset, client, event, result) that the facts do not contain.
+                    Rephrasing a fact is fine; inventing or altering one is a flag."""
+    SYSTEM = ("You are a ruthless editor reviewing a cold email to a busy, skeptical, high-status "
+              "recipient. Judge each numbered sentence on the axes defined below, by meaning, not by "
+              "keyword. Be harsh; when unsure, flag it.\n"
+              "COHERENT: concrete, literally parseable, actionable by a skeptic.\n"
+              "ANNOYING: would make this recipient like the sender LESS — especially convenience-"
+              "selling (promising what they'll get, 'no follow-up required', unprompted 'you could "
+              "test/verify this yourself by…' instructions, benefit-assurances, presumptuous "
+              "helpfulness), plus tryhard cleverness, fake humility, or manipulative tics. A natural "
+              "human peer states the thing once and asks one plain question; anything performing "
+              "easiness for the reader is annoying.\n"
+              "AI_SOUNDING: reads like AI-generated outreach rather than something a busy human would "
+              "actually type: templated benefit-framing, assistant-register politeness, symmetrical "
+              "setup-and-payoff phrasing, over-structured explanation of the ask.\n"
+              "FABRICATED: asserts a specific number/dataset/client/result NOT present in the sender "
+              "facts (if facts are given). Rewording a listed fact is NOT fabrication.")
 
     def judge(sentences: list) -> list:
         numbered = "\n".join(f"{i+1}. {s}" for i, s in enumerate(sentences))
-        prompt = (SYSTEM + "\n\nSentences:\n" + numbered +
+        facts = f"\n\nSENDER FACTS (ground truth; anything factual beyond these is fabricated):\n{facts_text}" \
+            if facts_text else ""
+        prompt = (SYSTEM + facts + "\n\nSentences:\n" + numbered +
                   '\n\nReturn ONLY a JSON array; element i = {"coherent": bool, "annoying": bool, '
-                  '"reason": "short"} for sentence i, in order.')
+                  '"ai_sounding": bool, "fabricated": bool, "reason": "short"} for sentence i, in order.')
         try:
             arr = _extract_list_json(chat_fn(prompt))
         except Exception:
@@ -257,6 +296,8 @@ def llm_sentence_judge(chat_fn):
             r = arr[i] if i < len(arr) and isinstance(arr[i], dict) else {}
             out.append({"coherent": bool(r.get("coherent", True)),
                         "annoying": bool(r.get("annoying", False)),
+                        "ai_sounding": bool(r.get("ai_sounding", False)),
+                        "fabricated": bool(r.get("fabricated", False)) if facts_text else False,
                         "reason": r.get("reason", "")})
         return out
     return judge

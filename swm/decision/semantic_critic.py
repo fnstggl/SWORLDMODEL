@@ -46,6 +46,25 @@ _ANNOYING = [
 ]
 _ANNOYING_RE = [re.compile(p, re.I) for p in _ANNOYING]
 
+# --- convenience-selling / benefit-assurance (the pushy-frictionless register) ---------------------
+# STRUCTURAL classes, not memorized lines: promising the reader what they'll get, assuring them a reply
+# costs nothing, or pre-chewing an unrequested verification/demo step. A busy peer never performs
+# easiness for the reader; performing it reads as salesy AI outreach. The production catch for this
+# register is the LLM judge (meaning-level); these patterns are the transparent offline fallback.
+_CONVENIENCE = [
+    r"\byou('| wi|'l)?ll (get|receive|have|walk away with)\b",      # promising the reader a payoff
+    r"\byou get (a|an|the)\b",
+    r"\bno (follow[- ]?up|obligation|commitment|strings|pressure|need to (respond|reply))\b",
+    r"\b(all|only) (it|this) takes is\b",
+    r"\btakes? (just |only |under |less than )?(a |an |\d+ )?(second|seconds|minute|minutes|moment)\b",
+    r"\bin under (a |an |\d+ )?(minute|minutes|hour|hours)\b",
+    r"\byou could (test|verify|check|try|confirm) (this|it|that) (yourself|for yourself)\b",
+    r"\bsee for yourself\b", r"\bjudge for yourself\b",
+    r"\bif (i'?m|i am) wrong,? (just )?(delete|ignore|archive)\b",
+    r"\brequired?: (none|nothing)\b", r"\bzero (effort|commitment|risk)\b",
+]
+_CONVENIENCE_RE = [re.compile(p, re.I) for p in _CONVENIENCE]
+
 # --- incoherence signals (coherence penalty) ------------------------------------------------------
 # vague referent + vacuous verb: "that flips", "this changes everything", "where it unlocks", ...
 _VAGUE_REF = re.compile(r"\b(that|this|it|which|where that|where it)\s+"
@@ -124,6 +143,8 @@ class SentenceVerdict:
     sentence: str
     coherent: bool
     annoying: bool
+    ai_sounding: bool = False   # reads as AI-generated outreach (register, not content)
+    fabricated: bool = False    # asserts a factual detail the sender facts do not contain
     reasons: list = field(default_factory=list)
 
 
@@ -131,28 +152,36 @@ class SentenceVerdict:
 class Critique:
     coherence: float           # 0..1, higher = clearer
     naturalness: float         # 0..1, higher = less annoying
+    humanness: float = 1.0     # 0..1, higher = less AI-sounding (register axis)
+    factuality: float = 1.0    # 0..1, 1 = every claim entailed by the sender facts
     verdicts: list = field(default_factory=list)   # SentenceVerdict per sentence
     source: str = "lexical"
 
     @property
     def quality(self) -> float:
-        """Single 0..1 quality gate for the search: the min of the two axes (a slop line fails EITHER)."""
-        return min(self.coherence, self.naturalness)
+        """Single 0..1 quality gate for the search: the min across ALL axes — a line that is annoying,
+        AI-sounding, or fabricated fails the gate even if it is perfectly coherent."""
+        return min(self.coherence, self.naturalness, self.humanness, self.factuality)
 
     def flags(self) -> list:
         out = []
         for v in self.verdicts:
-            if not v.coherent or v.annoying:
+            if not v.coherent or v.annoying or v.ai_sounding or v.fabricated:
                 issues = []
                 if not v.coherent:
                     issues.append("incoherent/embellished")
                 if v.annoying:
                     issues.append("annoying")
+                if v.ai_sounding:
+                    issues.append("AI-sounding")
+                if v.fabricated:
+                    issues.append("fabricated (not in sender facts)")
                 out.append({"sentence": v.sentence, "issue": " + ".join(issues), "reasons": v.reasons})
         return out
 
     def summary(self) -> dict:
         return {"coherence": round(self.coherence, 3), "naturalness": round(self.naturalness, 3),
+                "humanness": round(self.humanness, 3), "factuality": round(self.factuality, 3),
                 "quality": round(self.quality, 3), "source": self.source, "flags": self.flags()}
 
 
@@ -198,6 +227,11 @@ class SemanticCritic:
             reasons = []
             # annoyance
             ann_hits = [p.pattern for p in _ANNOYING_RE if p.search(s)]
+            conv_hits = [p.pattern for p in _CONVENIENCE_RE if p.search(s)]
+            if conv_hits:
+                ann_hits = ann_hits + conv_hits
+                reasons.append("convenience-selling: promises the reader a payoff / assures zero "
+                               "effort / pre-chews a verification step — pushy-frictionless register")
             # em/en dashes in the BODY are discouraged (LLMs overuse them). A sign-off dash ("— Beckett"
             # / "..., — Beckett" as the final short line) is fine and exempt. This is a soft penalty that
             # biases the search toward commas/periods, NOT a hard ban — a dash survives when it's the best
@@ -234,25 +268,34 @@ class SemanticCritic:
                 reasons.append("no concrete anchor (number, name, or specific noun)")
             coh = 1.0 - _sat(incoh)
             coherent = coh >= 0.5
+            # register axis (offline approximation): convenience-selling is the strongest lexical
+            # signal of AI-outreach register; the LLM judge is the real detector
+            ai_sounding = len(conv_hits) >= 2
             coh_scores.append(coh)
             nat_scores.append(nat)
             verdicts.append(SentenceVerdict(sentence=s, coherent=coherent, annoying=annoying,
-                                            reasons=reasons))
+                                            ai_sounding=ai_sounding, reasons=reasons))
         return Critique(coherence=min(coh_scores), naturalness=min(nat_scores),
+                        humanness=min((0.0 if v.ai_sounding else 1.0) for v in verdicts),
                         verdicts=verdicts, source="lexical")
 
     # ---- production LLM critic ----
     def _llm_critique(self, text: str, sents: list) -> Critique:
         results = self.judge_fn(sents) or []
-        verdicts, coh, nat = [], [], []
+        verdicts, coh, nat, hum, fac = [], [], [], [], []
         for s, r in zip(sents, results):
             coherent = bool(r.get("coherent", True))
             annoying = bool(r.get("annoying", False))
+            ai_sounding = bool(r.get("ai_sounding", False))
+            fabricated = bool(r.get("fabricated", False))
             reasons = [r["reason"]] if r.get("reason") else []
-            verdicts.append(SentenceVerdict(s, coherent, annoying, reasons))
+            verdicts.append(SentenceVerdict(s, coherent, annoying, ai_sounding, fabricated, reasons))
             coh.append(1.0 if coherent else 0.0)
             nat.append(0.0 if annoying else 1.0)
+            hum.append(0.0 if ai_sounding else 1.0)
+            fac.append(0.0 if fabricated else 1.0)
         return Critique(coherence=min(coh) if coh else 0.0, naturalness=min(nat) if nat else 1.0,
+                        humanness=min(hum) if hum else 1.0, factuality=min(fac) if fac else 1.0,
                         verdicts=verdicts, source="llm")
 
 
