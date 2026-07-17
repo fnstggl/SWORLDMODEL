@@ -1,4 +1,5 @@
 """Event-time contract architecture — unit tests (first-passage timing, universal)."""
+import math
 import types
 
 import pytest
@@ -284,6 +285,81 @@ def test_time_indexed_duplicate_modes_merge():
     rounds = [e for e in p.scheduled_events if e["etype"] == "hazard_round"
               and e["payload"]["mode"] == "ceasefire"]
     assert sum(e["payload"]["base_hazard"] for e in rounds) == pytest.approx(0.5 * 0.5)  # priors summed
+
+
+def test_decision_rules_derive_the_combination_law():
+    from swm.world_model_v2.event_time import decision_hazard_ratio
+    opp = {"actor": "a", "role": "veto", "weight": 1.0, "stance": "committed_to_prevent",
+           "reliability": "high"}
+    go = {"actor": "b", "role": "approver", "weight": 1.0, "stance": "formally_committed",
+          "reliability": "high"}
+    # unanimity: any participant can block — most-opposed binds
+    hr = decision_hazard_ratio({"mechanism_class": "actor_decision", "rule": "unanimity",
+                                "participants": [opp, go]})
+    assert hr["binding_actor"] == "a" and hr["median"] == pytest.approx(0.55)
+    # majority: NO single binder — the most-opposed legislator does not decide a 218-vote bill
+    hr = decision_hazard_ratio({"mechanism_class": "actor_decision", "rule": "majority",
+                                "participants": [opp, go]})
+    assert hr["binding_actor"] == "coalition"
+    assert hr["median"] == pytest.approx((0.55 * 2.10) ** 0.5, rel=1e-3)   # weighted geometric mean
+    # hierarchy: the max-weight authority binds — a resistant subordinate does not
+    boss = dict(go, actor="boss", weight=3.0)
+    hr = decision_hazard_ratio({"mechanism_class": "actor_decision", "rule": "hierarchy",
+                                "participants": [opp, boss]})
+    assert hr["binding_actor"] == "boss" and hr["median"] == pytest.approx(2.10)
+    # graded authority: an influencer's log-effect is halved relative to a veto-holder
+    infl = dict(opp, actor="pundit", role="influencer")
+    hr = decision_hazard_ratio({"mechanism_class": "actor_decision", "rule": "unanimity",
+                                "participants": [infl]})
+    assert hr["median"] == pytest.approx(0.55 ** 0.5, rel=1e-3)
+
+
+def test_non_actor_mechanisms_ignore_stances():
+    from swm.world_model_v2.event_time import decision_hazard_ratio
+    opp = {"actor": "a", "role": "veto", "weight": 1.0, "stance": "committed_to_prevent",
+           "reliability": "high"}
+    for mech in ("state_process", "external_stochastic", "population_aggregate",
+                 "scheduled_transition"):
+        hr = decision_hazard_ratio({"mechanism_class": mech, "rule": "unanimity",
+                                    "participants": [opp]})     # a hurricane has no stance
+        assert hr["median"] == 1.0 and hr["binding_level"] == f"non_actor_mechanism:{mech}"
+
+
+def test_mode_scoped_stances_and_policy_conditioning():
+    p = _plan()
+    p.entities = [{"id": "leader_a"}, {"id": "leader_b"}]
+
+    def fake_llm(prompt):
+        if "DECISION STRUCTURE" in prompt:
+            return ('{"structures": ['
+                    '{"mode": "negotiated_settlement", "mechanism_class": "actor_decision",'
+                    ' "rule": "unanimity", "participants": ['
+                    '  {"actor": "leader_a", "role": "veto", "weight": 1,'
+                    '   "stance": "committed_to_prevent", "reliability": "high"},'
+                    '  {"actor": "leader_b", "role": "veto", "weight": 1,'
+                    '   "stance": "inclined_toward", "reliability": "high"}]},'
+                    '{"mode": "military_collapse", "mechanism_class": "actor_decision",'
+                    ' "rule": "unilateral_control", "participants": ['
+                    '  {"actor": "leader_a", "role": "implementer", "weight": 2,'
+                    '   "stance": "actively_pursuing", "reliability": "high"}]},'
+                    '{"mode": "frozen_conflict", "mechanism_class": "state_process",'
+                    ' "rule": null, "participants": []}]}')
+        return ('{"absorbing_mode_ids": ["negotiated_settlement", "military_collapse",'
+                ' "frozen_conflict"]}')
+    rep = convert_to_event_time(p, {"resolves_yes_iff": "x"}, llm=fake_llm)
+    by = rep["hazard_ratio_by_mode"]
+    # the SAME actor can block a deal while pursuing their own unilateral end-state
+    assert by["negotiated_settlement"]["binding_actor"] == "leader_a"
+    assert by["negotiated_settlement"]["median"] == pytest.approx(0.55)
+    assert by["military_collapse"]["binding_actor"] == "leader_a"
+    assert by["military_collapse"]["median"] == pytest.approx(math.exp(0.75 * math.log(1.70)),
+                                                              rel=1e-3)   # implementer role shrink
+    assert by["frozen_conflict"]["median"] == 1.0               # state_process: stances irrelevant
+    # ACTION-FIRST bridge: mode-scoped stances land on entity goals, which ActorView scores
+    goals = p.entities[0]["fields"]["goals"]
+    assert any("committed_to_prevent :: negotiated_settlement" in g for g in goals)
+    assert any("actively_pursuing :: military_collapse" in g for g in goals)
+    assert rep["decision_structures"]["military_collapse"]["rule"] == "unilateral_control"
 
 
 def test_fit_intention_hazard_ratios_pools_toward_no_effect():

@@ -60,6 +60,127 @@ _RELIABILITY_SHRINK = {"high": 1.0, "medium": 0.6, "low": 0.3}
 # a non-controller resisting a pathway they do not control moves its hazard less than a veto-holder
 _NON_CONTROLLER_SHRINK = 0.5
 
+# ---- DECISION-STRUCTURE LAYER (universal): how a mode is actually realized ------------------------
+# Not every outcome is driven by actor stances. mechanism_class separates actor-driven modes from
+# non-actor causal processes; for actor-driven modes the combination law is derived from the
+# declared decision RULE, never a universal "most opposed binds".
+MECHANISM_CLASSES = ("actor_decision", "population_aggregate", "state_process",
+                     "external_stochastic", "scheduled_transition")
+DECISION_RULES = ("unanimity", "weakest_link", "majority", "weighted_coalition", "hierarchy",
+                  "unilateral_control", "strongest_actor", "cumulative_pressure")
+# graded authority: a role shrinks the participant's log-effect (influence ≠ veto)
+_ROLE_SHRINK = {"veto": 1.0, "approver": 1.0, "agenda_setter": 0.75, "implementer": 0.75,
+                "influencer": 0.5}
+
+_STRUCTURE_PROMPT = """For EACH candidate end-state below, describe the DECISION STRUCTURE that realizes it —
+who or what actually makes it happen, and under what combination rule. Stances are toward THAT SPECIFIC
+end-state (an actor can pursue their own victory while blocking a treaty and resisting the rival's victory).
+
+QUESTION: {q}
+RESOLUTION CRITERION: {crit}
+END-STATES: {modes}
+ACTORS: {actors}
+
+mechanism_class per end-state:
+ actor_decision (named actors decide) | population_aggregate (many weakly-coupled decisions: adoption,
+ turnout, demand) | state_process (a physical/economic/military state crosses a threshold: inflation,
+ battlefield collapse, benchmark) | external_stochastic (weather, accident, exogenous shock) |
+ scheduled_transition (a dated rule/term/expiry makes it happen deterministically)
+
+For actor_decision give the rule: unanimity | weakest_link | majority | weighted_coalition | hierarchy |
+unilateral_control | strongest_actor | cumulative_pressure
+Return ONLY JSON:
+{{"structures": [{{"mode": "<end-state id>", "mechanism_class": "<class>", "rule": "<rule or null>",
+  "participants": [{{"actor": "<entity id>", "role": "veto|approver|agenda_setter|implementer|influencer",
+    "weight": <relative decision weight>,
+    "stance": "committed_to_prevent|conditionally_opposed|weakly_opposed|neutral|inclined_toward|actively_pursuing|formally_committed",
+    "reliability": "high|medium|low"}}]}}]}}"""
+
+
+def elicit_decision_structures(question, criterion, modes, actor_ids, llm) -> dict:
+    """One call: mode-scoped stances + decision structure per mode. Fails to {} (callers fall back
+    to pathway-level stance logic), never blocks."""
+    if llm is None or not actor_ids:
+        return {}
+    try:
+        from swm.engine.grounding import parse_json
+        raw = parse_json(llm(_STRUCTURE_PROMPT.format(
+            q=question, crit=(criterion or {}).get("resolves_yes_iff", "(as stated)"),
+            modes=[m["id"] for m in modes], actors=list(actor_ids)[:10]))) or {}
+        out = {}
+        for s in (raw.get("structures") or []):
+            if not isinstance(s, dict) or not s.get("mode"):
+                continue
+            mech = str(s.get("mechanism_class", "actor_decision")).lower()
+            if mech not in MECHANISM_CLASSES:
+                mech = "actor_decision"
+            rule = str(s.get("rule") or "unanimity").lower()
+            if rule not in DECISION_RULES:
+                rule = "unanimity"
+            parts = []
+            for p in (s.get("participants") or []):
+                if isinstance(p, dict) and p.get("actor"):
+                    parts.append({"actor": str(p["actor"]), "role": str(p.get("role", "approver")).lower(),
+                                  "weight": max(0.0, float(p.get("weight", 1.0) or 1.0)),
+                                  "stance": str(p.get("stance", "neutral")).lower(),
+                                  "reliability": str(p.get("reliability", "medium")).lower()})
+            out[str(s["mode"])] = {"mechanism_class": mech, "rule": rule, "participants": parts}
+        return out
+    except Exception:  # noqa: BLE001
+        return {}
+
+
+def decision_hazard_ratio(structure: dict) -> dict:
+    """Derive the mode's hazard-ratio distribution FROM its decision structure. Combination law per
+    rule (documented structural mappings, not fitted):
+     - unanimity / weakest_link: any participant can block — most-opposed binds (min median);
+     - hierarchy / unilateral_control / strongest_actor: the max-weight participant binds; others
+       contribute nothing (they lack authority over this mode);
+     - majority / weighted_coalition / cumulative_pressure: no single binder — weight-weighted
+       geometric mean of participant ratios;
+     - non-actor mechanism classes (population_aggregate, state_process, external_stochastic,
+       scheduled_transition): stances DO NOT modulate the hazard (a hurricane has no stance) —
+       neutral ratio; timing comes from the fitted family curve + consumed causal state (and the
+       scheduled-facts layer for scheduled_transition)."""
+    mech = str((structure or {}).get("mechanism_class", "actor_decision"))
+    neutral = {"median": 1.0, "lo80": 1.0, "hi80": 1.0, "binding_actor": None,
+               "binding_level": f"non_actor_mechanism:{mech}", "rule": None,
+               "mechanism_class": mech}
+    if mech != "actor_decision":
+        return neutral
+    table = _hr_table()
+    parts = []
+    for p in (structure.get("participants") or []):
+        lvl = _LEGACY_LEVELS.get(p.get("stance", ""), p.get("stance", ""))
+        tup = table.get(lvl)
+        if not tup:
+            continue
+        med, lo, hi = _shrink_hr(*tup, p.get("reliability", "medium"))
+        rs = _ROLE_SHRINK.get(p.get("role", "approver"), 0.75)
+        if rs != 1.0:
+            med, lo, hi = (math.exp(rs * math.log(x)) for x in (med, lo, hi))
+        parts.append({"actor": p["actor"], "level": p.get("stance"), "weight": p.get("weight", 1.0),
+                      "median": med, "lo80": lo, "hi80": hi})
+    if not parts:
+        return dict(neutral, binding_level="no_grounded_participants",
+                    rule=structure.get("rule"), mechanism_class=mech)
+    rule = str(structure.get("rule", "unanimity"))
+    if rule in ("unanimity", "weakest_link"):
+        b = min(parts, key=lambda p: p["median"])
+    elif rule in ("hierarchy", "unilateral_control", "strongest_actor"):
+        b = max(parts, key=lambda p: p["weight"])
+    else:                                                     # majority / coalition / cumulative
+        z = sum(p["weight"] for p in parts) or 1.0
+        med, lo, hi = (math.exp(sum(p["weight"] * math.log(p[k]) for p in parts) / z)
+                       for k in ("median", "lo80", "hi80"))
+        return {"median": round(med, 4), "lo80": round(min(lo, hi), 4),
+                "hi80": round(max(lo, hi), 4), "binding_actor": "coalition",
+                "binding_level": f"{rule}({len(parts)} participants)", "rule": rule,
+                "mechanism_class": mech}
+    return {"median": round(b["median"], 4), "lo80": round(b["lo80"], 4),
+            "hi80": round(b["hi80"], 4), "binding_actor": b["actor"],
+            "binding_level": b["level"], "rule": rule, "mechanism_class": mech}
+
 # SENSITIVITY-HARNESS OVERRIDES (experiments only, never production defaults): force the agreement /
 # non-agreement mode hazard ratio to a point value so assumption-dependence is measurable.
 AGREEMENT_HR_OVERRIDE = None
@@ -546,6 +667,26 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=No
                     "binding_level": "sensitivity_override", "binding_pathway": pathway}
         return mode_hazard_ratio(stances, pathway)
     agr_hr = _pathway_hr("cooperative_agreement")             # reported for auditability
+    # DECISION STRUCTURES: mode-scoped stances + rule-derived combination (falls back to the
+    # pathway-level stance logic when elicitation is unavailable). Also the ACTION-FIRST bridge:
+    # each participant's mode-scoped stance is written onto their entity's goals/commitments, which
+    # the Phase-4 ActorView reads into action scoring — stances condition BEHAVIOR, and behavior
+    # feeds back into hazards through the consumed actor_action_share/mechanism state.
+    ents = {str(e.get("id")): e for e in (getattr(plan, "entities", []) or [])
+            if isinstance(e, dict)}
+    structures = elicit_decision_structures(getattr(plan, "question", ""), criterion, modes,
+                                            list(ents), llm)
+    for mid, st in structures.items():
+        for p in st.get("participants", []):
+            e = ents.get(p["actor"])
+            if e is None:
+                continue
+            f = e.setdefault("fields", {})
+            if not isinstance(f.get("goals"), list):
+                f["goals"] = [f["goals"]] if f.get("goals") else []
+            f["goals"].append(f"{p['stance']} :: {mid} (role={p['role']})")
+            if not isinstance(f.get("commitments"), list):
+                f["commitments"] = [f["commitments"]] if f.get("commitments") else []
     span = plan.horizon_ts - plan.as_of
     horizon_days = max(1.0, span / 86400.0)
     n_rounds = max(4, min(20, int(horizon_days / max(1.0, horizon_days / 10.0))))
@@ -554,13 +695,19 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=No
     mode_hr = {}
     for m in modes[:6]:
         share = m["prior"] / z
-        # each mode consumes the stance hazard ratio of ITS OWN causal pathway: a refusal to
-        # negotiate suppresses cooperative modes; a vow to fight on boosts/suppresses the unilateral
-        # modes the vowing actor controls; a whip count moves institutional modes
+        # each mode's hazard ratio comes from ITS OWN decision structure when elicited (mode-scoped
+        # stances, rule-derived combination, non-actor mechanisms untouched by stances); pathway-
+        # level stance logic is the fallback. Sensitivity overrides always win (harness only).
         pathway = _mode_pathway(m)
-        hr_m = _pathway_hr(pathway)
-        mode_hr[m["id"]] = {k: hr_m.get(k) for k in ("median", "lo80", "hi80",
-                                                     "binding_actor", "binding_level")}
+        st = structures.get(m["id"])
+        if AGREEMENT_HR_OVERRIDE is not None or VICTORY_HR_OVERRIDE is not None:
+            hr_m = _pathway_hr(pathway)
+        elif st is not None:
+            hr_m = decision_hazard_ratio(st)
+        else:
+            hr_m = _pathway_hr(pathway)
+        mode_hr[m["id"]] = {k: hr_m.get(k) for k in ("median", "lo80", "hi80", "binding_actor",
+                                                     "binding_level", "rule", "mechanism_class")}
         mode_hr[m["id"]]["pathway"] = pathway
         agreement = pathway == "cooperative_agreement"
         for k in range(1, n_rounds + 1):
@@ -606,6 +753,11 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=No
     rep = {"modes": [m["id"] for m in modes], "rejected_non_absorbing_modes": rejected_modes,
            "n_particles": n_particles,
            "n_hazard_rounds": n_ev, "rounds_per_mode": n_rounds,
+           "decision_structures": {mid: {"mechanism_class": s["mechanism_class"], "rule": s["rule"],
+                                         "participants": [{k: p[k] for k in ("actor", "role",
+                                                                             "weight", "stance")}
+                                                          for p in s["participants"][:8]]}
+                                   for mid, s in structures.items()},
            "agreement_hazard_ratio": agr_hr, "hazard_ratio_by_mode": mode_hr,
            "hazard_ratio_source": ("fitted_pack" if INTENTION_HR_PACK.exists()
                                    else "documented_priors_unfitted"),

@@ -98,7 +98,12 @@ def ground_actor_intentions(plan, question, *, criterion=None, evidence_text="",
         if pathway not in _PATHWAYS:
             pathway = "any"
         strength = _STANCE_WEIGHT[level]
-        e.setdefault("fields", {})["commitments"] = str(it.get("stated_intention", ""))[:160]
+        f = e.setdefault("fields", {})
+        # ActorView (phase4_policy) consumes `commitments` as a LIST into action scoring — the
+        # stated intention conditions the actor's POLICY, not just the hazard layer
+        if not isinstance(f.get("commitments"), list):
+            f["commitments"] = [f["commitments"]] if f.get("commitments") else []
+        f["commitments"].append(str(it.get("stated_intention", ""))[:160])
         e["_intention"] = {"quote": str(it.get("basis_quote", ""))[:160],
                            "source": str(it.get("source", "model_knowledge")),
                            "commitment_level": level, "reliability": reliability,
