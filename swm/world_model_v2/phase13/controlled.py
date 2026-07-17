@@ -33,6 +33,7 @@ from swm.world_model_v2.phase13.ontology import ActionSchema
 T0 = 1.0e9
 DAY = 86400.0
 register_quantity_type("payoff", units="util")
+register_quantity_type("lever", units="util")
 register_event_type("effect_tick", scheduling="scheduled", validated=True)
 
 FAMILIES = ("discrete", "continuous", "combinatorial", "sequential", "partially_observable",
@@ -113,7 +114,14 @@ def _base_world(rng, *, entities=(), noise_sd=0.15):
 
 def _ctx(base, rule, *, horizon_days=8.0, hazard_rate=0.3, n_particles=40, extra_ops=(),
          schedule=()):
-    init = InitialStateModel(base_world=base, latents=[])
+    from swm.world_model_v2.init_state import LatentVariableRecord
+    # the hidden context IS a declared latent: particles materialize it through the canonical
+    # posterior-sampling path (sequential / partially-observable / VOI tasks depend on real
+    # hidden-state variation across particles, not a constant fallback)
+    init = InitialStateModel(base_world=base, latents=[
+        LatentVariableRecord(path="decider.latent_state[context]",
+                             candidates={"mean": 0.5, "sd": 0.25, "lo": 0.0, "hi": 1.0},
+                             method="prior", confidence=0.5)])
 
     def qb(world):
         q = EventQueue(horizon_ts=T0 + horizon_days * DAY)
@@ -181,13 +189,17 @@ def _discrete(rng, task_id):
     best = max(range(len(quals)), key=lambda i: quals[i])
     return {"ctx": _ctx(_base_world(rng), rule), "problem": _std_problem(task_id, acts),
             "optimum": {"action_id": f"arm_{best}", "value": quals[best]},
+            "values": {f"arm_{i}": qv for i, qv in enumerate(quals)},
             "notes": f"analytic: E[payoff]=quality; best arm quality={quals[best]}"}
 
 
 def _continuous(rng, task_id):
+    # the knob is a DEDICATED quantity ("lever"), never the readout: the canonical set_parameter
+    # semantics write the target quantity, so aiming it at "payoff" would change the optimum the
+    # generator claims to know (caught by execution — the label must match the composed world).
     peak = round(rng.uniform(0.25, 0.85), 3)
     levels = [round(i / 8, 3) for i in range(9)]
-    acts = [_act(f"lvl_{str(v).replace('.', 'p')}", op="set_parameter", obj="payoff",
+    acts = [_act(f"lvl_{str(v).replace('.', 'p')}", op="set_parameter", obj="lever",
                  params={"value": v}) for v in levels]
 
     def rule(world, event, rng_):
@@ -197,9 +209,12 @@ def _continuous(rng, task_id):
             return 1.0 - (v - peak) ** 2 + rng_.gauss(0, 0.03)
         return 0.0
     best = min(levels, key=lambda v: abs(v - peak))
-    return {"ctx": _ctx(_base_world(rng), rule), "problem": _std_problem(task_id, acts),
+    base = _base_world(rng)
+    base.quantities["lever"] = Quantity(name="lever", qtype="lever", value=0.0, timestamp=T0)
+    return {"ctx": _ctx(base, rule), "problem": _std_problem(task_id, acts),
             "optimum": {"action_id": f"lvl_{str(best).replace('.', 'p')}",
                         "value": 1.0 - (best - peak) ** 2},
+            "values": {f"lvl_{str(v).replace('.', 'p')}": 1.0 - (v - peak) ** 2 for v in levels},
             "notes": f"concave payoff peaked at {peak}; grid argmax known"}
 
 
@@ -221,6 +236,7 @@ def _combinatorial(rng, task_id):
     best = max(acts, key=lambda a: a.content["quality"])
     return {"ctx": _ctx(_base_world(rng), rule), "problem": _std_problem(task_id, acts),
             "optimum": {"action_id": best.action_id, "value": best.content["quality"]},
+            "values": {a.action_id: a.content["quality"] for a in acts},
             "notes": "additive channel+timing with one interaction; exhaustive over 4 combos"}
 
 
@@ -285,6 +301,7 @@ def _sequential(rng, task_id):
     return {"ctx": ctx, "problem": _std_problem(task_id, [],
                                                 decision_points=("2001-09-12",)),
             "optimum": {"action_id": "adaptive_policy", "value": gain},
+            "values": {"adaptive_policy": gain, "greedy_blind": 0.25 * gain, "do_nothing": 0.0},
             "notes": f"adaptive(after reveal)={gain} vs blind={0.25 * gain}; policy task",
             "policy_task": True, "gain": gain}
 
@@ -339,6 +356,7 @@ def _multi_actor(rng, task_id):
     best = max(levels, key=value)
     return {"ctx": ctx, "problem": _std_problem(task_id, acts),
             "optimum": {"action_id": f"aggr_{str(best).replace('.', 'p')}", "value": value(best)},
+            "values": {f"aggr_{str(v).replace('.', 'p')}": value(v) for v in levels},
             "notes": f"opponent retaliates above threshold {thr}; strategic best response known"}
 
 
@@ -365,6 +383,8 @@ def _institutional(rng, task_id):
         return 0.0
     return {"ctx": _ctx(base, rule), "problem": _std_problem(task_id, acts),
             "optimum": {"action_id": "cap_spend", "value": 0.7},
+            "values": {"small_spend": 0.4, "cap_spend": 0.7},   # over_cap: institutionally infeasible
+            "expect_infeasible": ["over_cap"],
             "notes": f"over_cap (quality 1.5) violates the executable budget rule {budget_cap}; "
                      "best FEASIBLE is cap_spend — tests institutional rejection"}
 
@@ -380,6 +400,7 @@ def _population(rng, task_id):
     best = max(segs, key=segs.get)
     return {"ctx": _ctx(_base_world(rng), rule), "problem": _std_problem(task_id, acts),
             "optimum": {"action_id": f"target_{best}", "value": segs[best]},
+            "values": {f"target_{s}": v for s, v in segs.items()},
             "notes": "segment response rates fixed; best segment known"}
 
 
@@ -399,13 +420,14 @@ def _network(rng, task_id):
     best = max(reach, key=reach.get)
     return {"ctx": _ctx(base, rule), "problem": _std_problem(task_id, acts),
             "optimum": {"action_id": f"seed_{best}", "value": reach[best] * 0.1},
+            "values": {f"seed_{n}": r * 0.1 for n, r in reach.items()},
             "notes": "diffusion reach proportional to degree; hub is optimal"}
 
 
 def _nonlinear(rng, task_id):
     thr = round(rng.uniform(0.4, 0.7), 3)
     levels = [round(thr - 0.15, 3), round(thr + 0.1, 3), round(thr + 0.3, 3)]
-    acts = [_act(f"push_{str(v).replace('.', 'p')}", op="set_parameter", obj="payoff",
+    acts = [_act(f"push_{str(v).replace('.', 'p')}", op="set_parameter", obj="lever",
                  params={"value": v}) for v in levels]
 
     def rule(world, event, rng_):
@@ -416,8 +438,11 @@ def _nonlinear(rng, task_id):
     def value(v):
         return (1.0 if v >= thr else 0.1) - 0.4 * v
     best = max(levels, key=value)
-    return {"ctx": _ctx(_base_world(rng), rule), "problem": _std_problem(task_id, acts),
+    base = _base_world(rng)
+    base.quantities["lever"] = Quantity(name="lever", qtype="lever", value=0.0, timestamp=T0)
+    return {"ctx": _ctx(base, rule), "problem": _std_problem(task_id, acts),
             "optimum": {"action_id": f"push_{str(best).replace('.', 'p')}", "value": value(best)},
+            "values": {f"push_{str(v).replace('.', 'p')}": value(v) for v in levels},
             "notes": f"threshold dynamics at {thr}: just past the threshold is optimal"}
 
 
@@ -447,6 +472,7 @@ def _irreversible(rng, task_id):
     return {"ctx": _ctx(_base_world(rng), rule),
             "problem": _std_problem(task_id, acts, robustness="cvar"),
             "optimum": {"action_id": "safe_reversible", "value": 0.35},
+            "gap_evaluable": False,      # optimum is under the CVaR objective, not expected value
             "notes": f"risky mean={p_win * 1.0 - (1 - p_win) * 0.6:.3f} but CVaR tail=-0.6; "
                      "cvar objective must pick safe_reversible"}
 
@@ -470,6 +496,7 @@ def _constrained(rng, task_id):
     return {"ctx": _ctx(_base_world(rng), rule),
             "problem": _std_problem(task_id, acts, constraints=cons),
             "optimum": {"action_id": "moderate", "value": 0.5},
+            "gap_evaluable": False,      # optimum is defined by the chance constraint, not E[U]
             "notes": f"aggressive blows up with p={p_bad} > chance cap 0.10 → must pick moderate"}
 
 
@@ -503,6 +530,7 @@ def _multi_objective(rng, task_id):
     return {"ctx": _ctx(base, rule),
             "problem": _std_problem(task_id, acts, stakeholders=stak),
             "optimum": {"action_id": best.action_id, "value": round(value(best), 4)},
+            "values": {a.action_id: round(value(a), 4) for a in acts},
             "notes": f"two stakeholders weighted {profit_w}/{1 - profit_w}; all three are "
                      "Pareto-efficient; the weighted optimum is known",
             "pareto_expected": ["profit_max", "balanced", "trust_max"]}
@@ -525,3 +553,37 @@ def build_task(task_id: str) -> dict:
     t["split"] = split_of(task_id)
     t["known_optimum"] = True
     return t
+
+
+def build_search_task(n_arms: int, seed: int, *, n_families: int = 1) -> dict:
+    """Part 19 search-correctness instances (NOT part of the 200-task corpus): n_arms with KNOWN
+    per-arm values and a unique argmax (margin >= 0.04), optionally spread across two operation
+    families so hierarchical search has real coarse-to-fine structure. Deterministic per
+    (n_arms, seed, n_families)."""
+    rng = random.Random(f"phase13-search|{n_arms}|{seed}|{n_families}")
+    vals = [round(0.1 + 0.75 * i / max(1, n_arms - 1) + rng.uniform(-0.015, 0.015), 4)
+            for i in range(n_arms)]
+    best_i = max(range(n_arms), key=lambda i: vals[i])
+    vals[best_i] = round(max(vals) + 0.04, 4)                       # unique argmax with margin
+    acts = []
+    for i, v in enumerate(vals):
+        fam2 = n_families >= 2 and (i % 2 == 1)
+        acts.append(_act(f"sarm_{i:03d}",
+                         op=("set_parameter" if fam2 else "communicate"),
+                         obj=("lever" if fam2 else "decider"),
+                         params=({"value": v} if fam2 else {}),
+                         quality=v))
+    order = list(range(n_arms))
+    rng.shuffle(order)                                              # representative order is arbitrary
+    acts = [acts[i] for i in order]
+
+    def rule(world, event, rng_):
+        if event.etype == "decision_action":
+            return float(event.payload["action"].content.get("quality", 0.0)) + rng_.gauss(0, 0.03)
+        return 0.0
+    base = _base_world(rng)
+    base.quantities["lever"] = Quantity(name="lever", qtype="lever", value=0.0, timestamp=T0)
+    return {"ctx": _ctx(base, rule, n_particles=24), "problem": _std_problem(f"search_{n_arms}_{seed}", acts),
+            "optimum": {"action_id": f"sarm_{best_i:03d}", "value": vals[best_i]},
+            "values": {f"sarm_{i:03d}": v for i, v in enumerate(vals)},
+            "task_id": f"search_{n_arms}_{seed}", "family": "search_correctness"}

@@ -27,11 +27,16 @@ def deepseek_chat_fn(model: str = "deepseek-v4-flash", *, system: str = "", max_
         raise ValueError("DEEPSEEK_API_KEY contains non-ASCII characters — it was likely corrupted on paste. "
                          "Re-set it by hand (no smart quotes / trailing comment): export DEEPSEEK_API_KEY=sk-…")
 
-    def fn(prompt: str) -> str:
+    def fn(prompt: str, *, max_tokens: int = None, temperature: float = None) -> str:
+        """Per-call overrides (both optional): a seam that needs a bigger completion budget than the
+        callable's default (e.g. the sentence judge returning a JSON array for every sentence) can ask
+        for it without the caller having to thread a second chat_fn through the stack. A truncated
+        judge reply used to fail OPEN — every sentence passed — so budgets are a correctness seam."""
         msgs = ([{"role": "system", "content": system}] if system else []) + \
                [{"role": "user", "content": prompt}]
-        payload = {"model": model, "messages": msgs, "max_tokens": max_tokens,
-                   "temperature": temperature}
+        payload = {"model": model, "messages": msgs,
+                   "max_tokens": int(max_tokens if max_tokens is not None else fn.default_max_tokens),
+                   "temperature": (temperature if temperature is not None else fn.default_temperature)}
         if model.startswith("deepseek-v4") and not thinking:
             payload["thinking"] = {"type": "disabled"}       # deterministic non-thinking mode (recorded)
         body = json.dumps(payload).encode()
@@ -57,6 +62,8 @@ def deepseek_chat_fn(model: str = "deepseek-v4-flash", *, system: str = "", max_
                     raise
             time.sleep(2 ** attempt)                       # 1, 2, 4, 8s
         raise last                                         # unreachable (loop raises), keeps type-checkers happy
+    fn.default_max_tokens = int(max_tokens)
+    fn.default_temperature = float(temperature)
     return fn
 
 

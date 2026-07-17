@@ -36,10 +36,12 @@ def belief_state(world, actor_id: str, *, prior_actions: list = None) -> dict:
     info = getattr(world, "information", None)
     if info is not None:
         try:
-            for item in info.visible_to(actor_id, at=world.clock.now):
+            # visible_to returns (InformationItem, Exposure) pairs — the canonical actor-visibility API
+            for item, exp in info.visible_to(actor_id, at=world.clock.now):
                 obs.append({"item_id": getattr(item, "item_id", ""),
                             "content": str(getattr(item, "content", ""))[:120],
-                            "source": getattr(item, "source", "")})
+                            "source": getattr(item, "source", ""),
+                            "observed_at": getattr(exp, "at", None)})
         except Exception:  # noqa: BLE001
             pass
     resources = {}
@@ -95,14 +97,18 @@ class PolicyExecutionOperator(TransitionOperator):
         self.policy = policy
         self.actor_id = actor_id
         self.problem = problem
-        self.taken: list = []
+        # per-BRANCH action history: one operator instance serves every particle in the arm, so a
+        # shared list would leak "already acted" state across particles (belief pollution — particle
+        # 1's policy would see particle 0's actions). Keyed by branch_id.
+        self.taken: dict = {}
 
     def applicable(self, world, event) -> bool:
         return event.etype == "decision_opportunity" and \
             self.actor_id in (event.participants or [self.actor_id])
 
     def propose(self, world, event, rng) -> TransitionProposal:
-        belief = belief_state(world, self.actor_id, prior_actions=self.taken)
+        branch_taken = self.taken.setdefault(world.branch_id, [])
+        belief = belief_state(world, self.actor_id, prior_actions=branch_taken)
         try:
             action = self.policy.decide(belief)
         except Exception as e:  # noqa: BLE001 — a crashing policy is a recorded no-op, not a crash
@@ -110,7 +116,7 @@ class PolicyExecutionOperator(TransitionOperator):
                                       reason_codes=[f"policy_error:{type(e).__name__}"])
         if action is None:
             return TransitionProposal(operator=self.name, reason_codes=["policy_wait"])
-        self.taken.append(action.operation)
+        branch_taken.append(action.operation)
         return TransitionProposal(
             operator=self.name, action={"actor": self.actor_id, "type": "choose_policy_step"},
             reason_codes=[f"policy:{self.policy.policy_id}"],
