@@ -110,12 +110,28 @@ disappointment feels like clarity now"), and chose an observable response; the s
 hypothesis chose consistently across samples. Counted distribution: `reply_now` 78%,
 `reply_later` 22%, labeled `unvalidated`. 9 calls, 79s.
 
-**Multi-actor geopolitical (`qualitative_demo_geopolitical.json`).** Six branches, two
-rounds, frozen ceasefire scenario; Putin and Zelenskyy as Tier-1 qualitative actors with
-grounded stances; per-branch decisions executed through the standard path so pathway
-quantities moved per branch; counted per-actor distributions vs the numeric arm on the same
-scenario. See the artifact for the branch-by-branch decision log, hypothesis labels, state
-evolution, and distribution comparison.
+**Multi-actor geopolitical (`qualitative_demo_geopolitical.json`).** Six branches × two
+rounds, frozen ceasefire scenario, Putin and Zelenskyy as Tier-1 qualitative actors with
+grounded stances; 24 decisions, 330s. What it showed, concretely:
+
+- *Hypothesis-conditioned divergence*: round 1, Putin's `the_cornered_autocrat` branches
+  chose `delay` while `the_calculating_strategist` and `the_weary_guardian` counteroffered;
+  Zelenskyy's `the_fractured_commander` held position while `the_covert_pragmatist` sought a
+  mediator. Same evidence, different hidden realities, different actions — per branch.
+- *State evolution*: by round 2, after observing the cooperative process move (0.30 → ~0.32
+  per their own branches' executed actions), even the cornered-autocrat Putin branches
+  shifted to `counteroffer` — the persistent worldview updated on events, not re-rolled.
+- *Persona-consistent novel action*: the covert-pragmatist Zelenskyy privately proposed
+  `private_call_trump` — a novel action, compiled with communication mechanisms.
+- *Architecture contrast on identical worlds*: the numeric arm (stance term dominant) put
+  Putin's top mass on `mobilize`/`hold_position` (0.22/0.21); the qualitative Putin read the
+  costly-stalemate evidence and negotiated (counteroffer-dominant). No ground truth exists
+  for this hypothetical — the point is that the two behavior models genuinely diverge on the
+  same frozen world.
+- *Clustering weakness in the wild*: Zelenskyy's aggregate splits one semantic action across
+  `counteroffer@Donald_Trump` / `@donald_trump` / `@US_president` / `@US_administration` —
+  target-string paraphrase fragments the counted distribution. Target canonicalization
+  belongs in cluster-2.0 alongside novel-phrase mapping (§7.3).
 
 ## 5. Cost and latency (DeepSeek `deepseek-v4-flash`, sequential)
 
