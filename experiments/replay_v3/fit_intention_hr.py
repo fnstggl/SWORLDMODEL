@@ -82,6 +82,39 @@ def statement_hazard_ratio(hist: list, statement_ts: float, deadline_ts: float,
     return med_post / med_pre
 
 
+def statement_hazard_ratio_placebo(hist: list, statement_ts: float, deadline_ts: float,
+                                   *, window_s: float = WINDOW_S, n_placebo: int = 6) -> dict | None:
+    """PLACEBO-CONTROLLED measurement — the confounding control the naive post/pre ratio lacks:
+    the implied hazard drifts secularly along a market's life (deadline approach mechanically
+    raises λ for the same price), so a raw ratio conflates the statement's effect with the drift.
+    The same post/pre ratio is measured at N deterministic NON-statement dates spread across the
+    path (excluding the statement's own ±window); the reported effect is
+        hr_adjusted = hr(statement) / median(hr(placebos))
+    — what the statement did OVER AND ABOVE what this market was doing anyway. Returns
+    {hazard_ratio (adjusted), raw, placebo_median, n_placebo}; None when the statement itself is
+    unmeasurable; falls back to the raw ratio (flagged) when fewer than 3 placebos are measurable."""
+    raw = statement_hazard_ratio(hist, statement_ts, deadline_ts, window_s=window_s)
+    if raw is None or not hist:
+        return None
+    t0, t1 = float(hist[0]["t"]), float(hist[-1]["t"])
+    placebos = []
+    for k in range(1, n_placebo + 1):
+        t_p = t0 + k / (n_placebo + 1) * (t1 - t0)
+        if abs(t_p - statement_ts) <= window_s:
+            continue                                          # never sample inside the treated window
+        hr_p = statement_hazard_ratio(hist, t_p, deadline_ts, window_s=window_s)
+        if hr_p is not None and hr_p > 0:
+            placebos.append(hr_p)
+    if len(placebos) < 3:
+        return {"hazard_ratio": round(raw, 4), "raw": round(raw, 4), "placebo_median": None,
+                "n_placebo": len(placebos), "placebo_controlled": False}
+    placebos.sort()
+    med_p = placebos[len(placebos) // 2]
+    return {"hazard_ratio": round(raw / med_p, 4), "raw": round(raw, 4),
+            "placebo_median": round(med_p, 4), "n_placebo": len(placebos),
+            "placebo_controlled": True}
+
+
 # ---------------------------------------------------------------- corpus loop (network + LLM)
 def _llm():
     from swm.api.deepseek_backend import deepseek_chat_fn
@@ -143,14 +176,19 @@ def main():
             lvl = str(st.get("commitment_level", "")).strip().lower()
             if ts is None or not lvl or lvl == "neutral":
                 continue
-            hr = statement_hazard_ratio(hist, ts, t_end)
-            if hr is None or not (0.05 <= hr <= 20.0):
+            meas = statement_hazard_ratio_placebo(hist, ts, t_end)
+            if meas is None or not (0.05 <= meas["hazard_ratio"] <= 20.0):
                 continue
+            from swm.world_model_v2.family_hazards import classify_family
+            from swm.world_model_v2.mode_graph import mode_pathway
             row = {"condition_id": cid, "question": question[:120],
                    "actor": str(st.get("actor", ""))[:60], "date": st.get("date"),
                    "quote": str(st.get("quote", ""))[:160],
                    "commitment_level": lvl, "reliability": st.get("reliability"),
-                   "hazard_ratio": round(hr, 4)}
+                   "pathway": mode_pathway({"id": question.lower().replace(" ", "_")[:40]}),
+                   "family": classify_family(question),
+                   "hazard_ratio": meas["hazard_ratio"], "hazard_ratio_raw": meas["raw"],
+                   "placebo_controlled": meas["placebo_controlled"]}
             rows.append(row)
             with ROWS.open("a") as f:
                 f.write(json.dumps(row) + "\n")
@@ -186,9 +224,12 @@ def main():
             if n_stmt >= CORPUS_TARGET:
                 break
 
+    import datetime as dt
     pack = fit_intention_hazard_ratios(rows)
-    pack["measurement"] = ("market-implied hazard ratio, median post/pre ±7d around each classified "
-                           "dated statement; λ = −ln(1−p)/(T−t)")
+    pack["fitted_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
+    pack["measurement"] = ("PLACEBO-CONTROLLED market-implied hazard ratio: median post/pre ±7d at "
+                           "the statement date, normalized by the median of the same measure at "
+                           "non-statement placebo dates; λ = −ln(1−p)/(T−t)")
     pack["governance"] = ("validation/locked benchmark worlds excluded by condition_id and question; "
                           "pack carries stance-class effect sizes only")
     pack["n_markets"] = len({r["condition_id"] for r in rows})

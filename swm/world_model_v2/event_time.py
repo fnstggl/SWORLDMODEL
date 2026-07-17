@@ -88,14 +88,35 @@ AGREEMENT_HR_OVERRIDE = None
 VICTORY_HR_OVERRIDE = None
 
 
-def _hr_table() -> dict:
+def _hr_table(pathway: str = "") -> dict:
+    """Effect-size table: fitted pack when present (pathway-STRATIFIED estimates overlay the pooled
+    ones when the pack carries them — a refusal's effect on a deal differs from its effect on a
+    bill), else the documented priors."""
     if INTENTION_HR_PACK.exists():
         try:
             pack = json.loads(INTENTION_HR_PACK.read_text())
-            return {k: tuple(v) for k, v in (pack.get("hazard_ratios") or {}).items()} or dict(INTENTION_HR_PRIORS)
+            base = {k: tuple(v) for k, v in (pack.get("hazard_ratios") or {}).items()}
+            strat = ((pack.get("hazard_ratios_by_pathway") or {}).get(str(pathway)) or {})
+            base.update({k: tuple(v) for k, v in strat.items()})
+            return base or dict(INTENTION_HR_PRIORS)
         except Exception:  # noqa: BLE001
             return dict(INTENTION_HR_PRIORS)
     return dict(INTENTION_HR_PRIORS)
+
+
+def hr_pack_info() -> dict:
+    """Staleness/provenance surfacing: which effect-size source is serving, and how old it is —
+    stamped into every event-time conversion report."""
+    if INTENTION_HR_PACK.exists():
+        try:
+            p = json.loads(INTENTION_HR_PACK.read_text())
+            return {"source": "fitted_pack", "fitted_at": p.get("fitted_at"),
+                    "n_rows": p.get("n_rows"),
+                    "stratified": bool(p.get("hazard_ratios_by_pathway"))}
+        except Exception:  # noqa: BLE001
+            pass
+    return {"source": "documented_priors_unfitted", "fitted_at": None, "n_rows": None,
+            "stratified": False}
 
 
 def mode_hazard_ratio(stances: list, pathway: str = "cooperative_agreement", *,
@@ -103,9 +124,10 @@ def mode_hazard_ratio(stances: list, pathway: str = "cooperative_agreement", *,
     """One hazard-ratio DISTRIBUTION for a mode, combined from the grounded stances by the mode's
     DECISION STRUCTURE (mode_graph.combine_stances) — unanimity/veto, majority, hierarchy, unilateral,
     weakest-link, cumulative pressure, or aggregation. "Most-opposed binds" is the unanimity case,
-    not a universal law. Effect sizes come from the fitted pack when it exists, else the documented
-    priors; reliability/capability/graded-control shrinks happen inside the combiner."""
-    return combine_stances(stances, pathway, mode=mode, hr_table=_hr_table())
+    not a universal law. Effect sizes come from the fitted pack when it exists (pathway-stratified
+    when fitted), else the documented priors; reliability/capability/graded-control shrinks happen
+    inside the combiner."""
+    return combine_stances(stances, pathway, mode=mode, hr_table=_hr_table(pathway))
 
 
 def agreement_hazard_ratio(stances: list) -> dict:
@@ -115,26 +137,40 @@ def agreement_hazard_ratio(stances: list) -> dict:
 
 def fit_intention_hazard_ratios(rows: list, *, pool_strength: float = 8.0) -> dict:
     """Fit statement-class hazard ratios from RESOLVED historical cases. Each row:
-    {commitment_level, hazard_ratio} where hazard_ratio = (resolving-state hazard after the statement) /
-    (hazard before), measured on archived paths of resolved cases. Partial pooling toward 1.0 (no
-    effect). Writes nothing — caller persists to INTENTION_HR_PACK. Until such labeled data exists the
-    documented INTENTION_HR_PRIORS above serve, and are reported as priors."""
+    {commitment_level, hazard_ratio, pathway?} where hazard_ratio = (resolving-state hazard after
+    the statement) / (hazard before), measured (placebo-controlled) on archived paths of resolved
+    cases. Partial pooling toward 1.0 (no effect); rows carrying a pathway additionally produce
+    PATHWAY-STRATIFIED estimates pooled toward the unstratified level estimate (a refusal moves a
+    deal differently than a bill). Writes nothing — caller persists to INTENTION_HR_PACK. Until
+    such labeled data exists the documented INTENTION_HR_PRIORS above serve, reported as priors."""
     import statistics
-    out = {}
-    by = {}
+
+    def _fit(logs, k_pool, center):
+        k = k_pool / (len(logs) + k_pool)
+        med = math.exp((1 - k) * statistics.median(logs) + k * center)
+        sd = statistics.pstdev(logs) if len(logs) > 1 else 0.35
+        return (round(med, 4), round(med * math.exp(-_Z80 * sd), 4),
+                round(med * math.exp(_Z80 * sd), 4))
+    by, by_pw = {}, {}
     for r in rows:
         lvl = canon_level(r.get("commitment_level"))
         hr = r.get("hazard_ratio")
         if lvl and isinstance(hr, (int, float)) and hr > 0:
             by.setdefault(lvl, []).append(math.log(float(hr)))
-    for lvl, logs in by.items():
-        k = pool_strength / (len(logs) + pool_strength)
-        med = math.exp((1 - k) * statistics.median(logs))            # pooled toward log(1.0)=0
-        sd = statistics.pstdev(logs) if len(logs) > 1 else 0.35
-        out[lvl] = (round(med, 4), round(med * math.exp(-_Z80 * sd), 4),
-                    round(med * math.exp(_Z80 * sd), 4))
-    return {"version": "intention-hr-1.0", "fit_on": "resolved historical statement/outcome pairs",
-            "n_rows": len(rows), "hazard_ratios": {k: list(v) for k, v in out.items()}}
+            pw = str(r.get("pathway") or "").strip().lower()
+            if pw:
+                by_pw.setdefault(pw, {}).setdefault(lvl, []).append(math.log(float(hr)))
+    out = {lvl: _fit(logs, pool_strength, 0.0) for lvl, logs in by.items()}
+    out_pw = {}
+    for pw, levels in by_pw.items():
+        for lvl, logs in levels.items():
+            if lvl in out:                                    # pool strata toward the pooled estimate
+                out_pw.setdefault(pw, {})[lvl] = _fit(logs, pool_strength,
+                                                      math.log(max(1e-6, out[lvl][0])))
+    return {"version": "intention-hr-1.1", "fit_on": "resolved historical statement/outcome pairs",
+            "n_rows": len(rows), "hazard_ratios": {k: list(v) for k, v in out.items()},
+            "hazard_ratios_by_pathway": {pw: {k: list(v) for k, v in lv.items()}
+                                         for pw, lv in out_pw.items()}}
 
 
 # ---------------------------------------------------------------- 1. the contract
@@ -972,6 +1008,7 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=No
            "agreement_hazard_ratio": agr_hr, "hazard_ratio_by_mode": mode_hr,
            "hazard_ratio_source": ("fitted_pack" if INTENTION_HR_PACK.exists()
                                    else "documented_priors_unfitted"),
+           "hr_pack": hr_pack_info(),
            "coupling_source": coupling_pack_info(),
            "categorical_options": list(categorical_options) if categorical_options else None,
            "n_grounded_stances": len(stances),
