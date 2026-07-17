@@ -196,9 +196,12 @@ def run_case(case: dict, *, mode: str, llm, hypo_llm, branches: int = 6, seed: i
     persistence = {"hypothesis_switches": 0, "final_revision_counts": []}
     for bi in range(branches):
         bid = f"b{bi:03d}"
-        hyps = {r["hypothesis_id"] for r in step_rows if r["branch"] == bid and r["hypothesis_id"]}
-        if len(hyps) > 1:
-            persistence["hypothesis_switches"] += 1
+        # persistence is per (branch, ACTOR): each actor holds its own hypothesis in a branch
+        for aid in case["actors"]:
+            hyps = {r["hypothesis_id"] for r in step_rows
+                    if r["branch"] == bid and r["actor"] == aid and r["hypothesis_id"]}
+            if len(hyps) > 1:
+                persistence["hypothesis_switches"] += 1
         state = None
         for aid in case["actors"]:
             state = load_actor_state(worlds[bi], aid)
