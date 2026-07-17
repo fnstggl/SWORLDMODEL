@@ -1,10 +1,10 @@
-"""Score the FROZEN EVENT-TIME VAULT — once, after the window closes (never before).
+"""Score the FROZEN EVENT-TIME VAULT — once per tranche, after THAT tranche's window closes.
 
-Gates, in order:
- 1. TIME GATE: refuses to run before the seal's `opens_after` (the latest frozen end date + 1d).
+Gates, in order (per --tranche near|far|all):
+ 1. TIME GATE: refuses to run before the tranche's `opens_after` (its latest frozen end date + 1d).
  2. SEAL GATE: recomputes the vault SHA-256; a mismatch aborts (the vault was touched).
- 3. SINGLE-OPEN GATE: the seal records `opened`; a second scoring run refuses (the vault is
-    consumed — build a fresh one for the next claim).
+ 3. SINGLE-OPEN GATE: the seal records `opened` per tranche; a second scoring run for the same
+    tranche refuses (that tranche is consumed — build a fresh vault for the next claim).
 
 Per frozen question:
  * the V2 system runs at the FROZEN as_of (archived evidence only — the evidence layer's paired-date
@@ -41,27 +41,39 @@ def market_baseline_cdf(p_yes: float, as_of: float, end_ts: float, grid: list) -
     return [1.0 - math.exp(-lam * max(0.0, g - as_of)) for g in grid]
 
 
-def main():
+def main(tranche: str = None):
+    import argparse
     import datetime as dt
     import experiments.replay_v2.build_vault as V2B
     from experiments.replay_v3.fit_survival_pack import (_iso_ts, _market_by_condition,
                                                          effective_resolution_fraction)
     from swm.world_model_v2.event_time import crps_first_passage, interval_coverage
 
+    if tranche is None:
+        ap = argparse.ArgumentParser()
+        ap.add_argument("--tranche", choices=("near", "far", "all"), default="all")
+        tranche = ap.parse_args().tranche
     seal = json.loads(SEAL.read_text())
     now = time.time()
-    opens = dt.datetime.fromisoformat(seal["opens_after"]).timestamp()
-    if now < opens:                                          # 1. time gate
-        raise SystemExit(f"vault opens after {seal['opens_after']} — refusing to score early "
-                         f"({(opens - now) / 86400.0:.1f} days remain)")
-    if seal.get("opened"):                                   # 3. single-open gate
-        raise SystemExit("vault already opened and scored once — it is consumed; build a fresh one")
+    tr = (seal.get("tranches") or {}).get(tranche) if tranche != "all" else None
+    gate = tr if tr is not None else seal                    # v1 seals / --tranche all → full gate
+    opens = dt.datetime.fromisoformat(gate["opens_after"]).timestamp()
+    if now < opens:                                          # 1. time gate (per tranche)
+        raise SystemExit(f"tranche '{tranche}' opens after {gate['opens_after']} — refusing to "
+                         f"score early ({(opens - now) / 86400.0:.1f} days remain)")
+    if gate.get("opened"):                                   # 3. single-open gate (per tranche)
+        raise SystemExit(f"tranche '{tranche}' already opened and scored once — it is consumed; "
+                         f"build a fresh vault")
     vault = json.loads(OUT.read_text())
     digest = hashlib.sha256(canonical_bytes(vault)).hexdigest()
     if digest != seal["sha256"]:                             # 2. seal gate
         raise SystemExit(f"SEAL MISMATCH: vault sha256 {digest[:16]}… != sealed {seal['sha256'][:16]}…")
-    seal["opened"] = True
-    seal["opened_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
+    gate["opened"] = True
+    gate["opened_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
+    if tranche == "all":
+        for t in (seal.get("tranches") or {}).values():      # opening all consumes every tranche
+            t["opened"] = True
+            t.setdefault("opened_at", gate["opened_at"])
     SEAL.write_text(json.dumps(seal, indent=1))
 
     from swm.api.deepseek_backend import deepseek_chat_fn
@@ -69,7 +81,9 @@ def main():
     llm = deepseek_chat_fn(MODEL, system="Reply ONLY JSON.", max_tokens=2400, temperature=0.2)
     as_of_iso = vault["frozen_at"][:10]
     rows = []
-    for w in vault["questions"]:
+    targets = [w for w in vault["questions"]
+               if tranche == "all" or str(w.get("tranche", "far")) == tranche]
+    for w in targets:
         # ---- realized outcome (resolution-time proxy, censoring-aware) ----
         m = _market_by_condition(w["condition_id"]) or {}
         hist = V2B._history(w.get("yes_token")) if w.get("yes_token") else []
@@ -121,7 +135,19 @@ def main():
         time.sleep(0.5)
 
     scored = [r for r in rows if "crps_v2" in r]
-    out = {"opened_at": seal["opened_at"], "n_questions": len(rows), "n_scored": len(scored),
+    # cluster-aware headline: correlated same-event contracts (winner/draw/exact-score of one
+    # match) are ONE realization — average within clusters first, then across clusters
+    by_cluster = {}
+    for r, w in zip(rows, targets):
+        if "crps_v2" in r:
+            by_cluster.setdefault(str(w.get("event_cluster") or w["condition_id"]), []).append(r)
+    cl_means_v2 = [sum(x["crps_v2"] for x in g) / len(g) for g in by_cluster.values()]
+    cl_means_mkt = [sum(x["crps_market"] for x in g) / len(g) for g in by_cluster.values()]
+    out = {"tranche": tranche, "opened_at": gate["opened_at"],
+           "n_questions": len(rows), "n_scored": len(scored),
+           "n_clusters": len(by_cluster),
+           "cluster_mean_crps_v2": (sum(cl_means_v2) / len(cl_means_v2)) if cl_means_v2 else None,
+           "cluster_mean_crps_market": (sum(cl_means_mkt) / len(cl_means_mkt)) if cl_means_mkt else None,
            "n_censored": sum(1 for r in rows if r.get("censored")),
            "mean_crps_v2": (sum(r["crps_v2"] for r in scored) / len(scored)) if scored else None,
            "mean_crps_market": (sum(r["crps_market"] for r in scored) / len(scored)) if scored else None,
@@ -132,8 +158,10 @@ def main():
                                  / max(1, sum(1 for r in scored if "brier_market" in r))) if scored else None,
            "rows": rows}
     RESULTS.parent.mkdir(parents=True, exist_ok=True)
-    RESULTS.write_text(json.dumps(out, indent=1))
+    results_path = RESULTS.with_name(f"event_time_vault_scores_{tranche}.json")
+    results_path.write_text(json.dumps(out, indent=1))
     print(json.dumps({k: v for k, v in out.items() if k != "rows"}, indent=1))
+    print(f"rows → {results_path}")
 
 
 if __name__ == "__main__":
