@@ -103,10 +103,12 @@ def _plan():
         scheduled_events=[{"etype": "resolve_outcome", "ts": T1 - 1, "participants": [], "payload": {}}],
         accepted_mechanisms=[], quantities=[{"name": "actor_intentions", "qtype": "actor_intentions",
                                              "value": 0.2, "sd": None}],
-        _intention_stances=[{"actor": "leader_a", "commitment_level": "categorical_refusal",
-                             "reliability": "high", "entails": "no"},
-                            {"actor": "leader_b", "commitment_level": "openness_to_agreement",
-                             "reliability": "medium", "entails": "yes"}],
+        _intention_stances=[{"actor": "leader_a", "commitment_level": "committed_to_prevent",
+                             "reliability": "high", "pathway": "cooperative_agreement",
+                             "controls_pathway": True, "entails": "no"},
+                            {"actor": "leader_b", "commitment_level": "inclined_toward",
+                             "reliability": "medium", "pathway": "cooperative_agreement",
+                             "controls_pathway": True, "entails": "yes"}],
         _consumed_state=[{"var": "actor_intentions", "weight": 0.2}],
         compute_plan={"n_particles": 30})
     return p
@@ -189,17 +191,39 @@ def test_sampled_hazard_ratio_is_per_branch_persistent_and_bounded():
 
 def test_agreement_hazard_ratio_binding_actor_and_reliability_shrink():
     from swm.world_model_v2.event_time import agreement_hazard_ratio
-    # most-opposed veto actor binds
+    # most-opposed veto actor binds; legacy agreement-specific labels map onto the universal set
     hr = agreement_hazard_ratio([
         {"actor": "a", "commitment_level": "openness_to_agreement", "reliability": "high"},
         {"actor": "b", "commitment_level": "categorical_refusal", "reliability": "high"}])
     assert hr["binding_actor"] == "b" and hr["median"] == pytest.approx(0.55)
     # low reliability shrinks the effect toward 1.0
     hr_low = agreement_hazard_ratio([
-        {"actor": "b", "commitment_level": "categorical_refusal", "reliability": "low"}])
+        {"actor": "b", "commitment_level": "committed_to_prevent", "reliability": "low"}])
     assert 0.55 < hr_low["median"] < 1.0
     # no grounded stances → no effect, honest default
     assert agreement_hazard_ratio([])["binding_level"] == "no_grounded_stance"
+
+
+def test_mode_hazard_ratio_is_pathway_aware_universal():
+    from swm.world_model_v2.event_time import mode_hazard_ratio
+    ctrl = {"actor": "ceo", "commitment_level": "committed_to_prevent", "reliability": "high",
+            "pathway": "unilateral_action", "controls_pathway": True}
+    # controller of a unilateral pathway binds it at full effect (a CEO refusing to launch)
+    hr = mode_hazard_ratio([ctrl], "unilateral_action")
+    assert hr["binding_actor"] == "ceo" and hr["median"] == pytest.approx(0.55)
+    # ... and their stance does NOT touch cooperative modes (different pathway)
+    assert mode_hazard_ratio([ctrl], "cooperative_agreement")["binding_level"] == "no_grounded_stance"
+    # a NON-controller opposing a unilateral pathway is resistance only: log-effect halved
+    res = dict(ctrl, controls_pathway=False)
+    assert mode_hazard_ratio([res], "unilateral_action")["median"] == pytest.approx(0.55 ** 0.5, rel=1e-3)
+    # an actively-pursuing controller RAISES the pathway's hazard (works for resignations, launches)
+    go = {"actor": "ceo", "commitment_level": "actively_pursuing", "reliability": "high",
+          "pathway": "unilateral_action", "controls_pathway": True}
+    assert mode_hazard_ratio([go], "unilateral_action")["median"] == pytest.approx(1.70)
+    # pathway 'any' stances apply everywhere
+    anyst = {"actor": "x", "commitment_level": "conditionally_opposed", "reliability": "high",
+             "pathway": "any", "controls_pathway": True}
+    assert mode_hazard_ratio([anyst], "institutional_procedure")["median"] == pytest.approx(0.78)
 
 
 def test_sensitivity_overrides_force_point_ratios():
@@ -227,10 +251,10 @@ def test_mode_elicitation_when_compiler_declares_none():
         return '{"absorbing_mode_ids": ["peace_deal", "unilateral_collapse"]}'
     rep = convert_to_event_time(p, {"resolves_yes_iff": "the dispute is settled"}, llm=fake_llm)
     assert set(rep["modes"]) == {"peace_deal", "unilateral_collapse"}
-    # the semantic flag (not keywords) decides which modes the stance ratio touches
-    assert rep["hazard_ratio_by_mode"]["peace_deal"]["requires_agreement"] is True
+    # the semantic pathway label (not keywords) decides which modes the stance ratio touches
+    assert rep["hazard_ratio_by_mode"]["peace_deal"]["pathway"] == "cooperative_agreement"
     assert rep["hazard_ratio_by_mode"]["peace_deal"]["median"] == pytest.approx(0.55)
-    assert rep["hazard_ratio_by_mode"]["unilateral_collapse"]["requires_agreement"] is False
+    assert rep["hazard_ratio_by_mode"]["unilateral_collapse"]["pathway"] == "unilateral_action"
     assert rep["hazard_ratio_by_mode"]["unilateral_collapse"]["median"] == 1.0
 
 

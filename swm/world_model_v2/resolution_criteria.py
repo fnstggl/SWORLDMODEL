@@ -39,7 +39,9 @@ EVIDENCE: {ev}
 Return ONLY JSON:
 {{"intentions": [{{"actor": "<entity id>", "stated_intention": "<one sentence>",
   "basis_quote": "<short quote or knowledge basis>", "source": "evidence|model_knowledge",
-  "commitment_level": "categorical_refusal|conditional_refusal|weak_opposition|neutral|openness_to_agreement|formal_commitment_toward_agreement — the actor's stance toward the AGREEMENT/cooperative path to resolution",
+  "commitment_level": "committed_to_prevent|conditionally_opposed|weakly_opposed|neutral|inclined_toward|actively_pursuing|formally_committed — the actor's stance toward the RESOLVING STATE of the criterion (universal: works for a deal, a resignation, a rate cut, a bill, a launch)",
+  "pathway": "cooperative_agreement|unilateral_action|institutional_procedure|any — which causal pathway to the resolving state this stance concerns (a refusal to negotiate concerns the cooperative path; a vow to fight on concerns the unilateral path; a whip count concerns the institutional path)",
+  "controls_pathway": true_or_false_lowercase — does this actor control or hold a veto over that pathway,
   "reliability": "high|medium|low — how reliable/binding the basis is (law/treaty=high, direct public statement=high, reported leaning=medium, inference=low)",
   "entails_direction": "yes|no|neutral — under the resolution criterion",
   "date": "<YYYY-MM-DD or null>"}}]}}"""
@@ -48,9 +50,13 @@ Return ONLY JSON:
 # through the bounded state channel). These are documented aggregation weights, not effect sizes —
 # the EFFECT of stances on timing hazards lives in event_time.INTENTION_HR_PRIORS (distributions,
 # sampled per particle, replaceable by a fitted pack).
-_STANCE_WEIGHT = {"categorical_refusal": 0.95, "conditional_refusal": 0.75, "weak_opposition": 0.4,
-                  "neutral": 0.0, "openness_to_agreement": 0.6,
-                  "formal_commitment_toward_agreement": 0.9}
+_STANCE_WEIGHT = {"committed_to_prevent": 0.95, "conditionally_opposed": 0.75, "weakly_opposed": 0.4,
+                  "neutral": 0.0, "inclined_toward": 0.6, "actively_pursuing": 0.85,
+                  "formally_committed": 0.95,
+                  # legacy agreement-specific labels (older packs/transcripts) map onto the universal set
+                  "categorical_refusal": 0.95, "conditional_refusal": 0.75, "weak_opposition": 0.4,
+                  "openness_to_agreement": 0.6, "formal_commitment_toward_agreement": 0.95}
+_PATHWAYS = ("cooperative_agreement", "unilateral_action", "institutional_procedure", "any")
 
 
 def parse_resolution_criterion(question, *, horizon, llm=None) -> dict:
@@ -88,11 +94,15 @@ def ground_actor_intentions(plan, question, *, criterion=None, evidence_text="",
         reliability = str(it.get("reliability", "medium")).strip().lower()
         if reliability not in ("high", "medium", "low"):
             reliability = "medium"
+        pathway = str(it.get("pathway", "any")).strip().lower()
+        if pathway not in _PATHWAYS:
+            pathway = "any"
         strength = _STANCE_WEIGHT[level]
         e.setdefault("fields", {})["commitments"] = str(it.get("stated_intention", ""))[:160]
         e["_intention"] = {"quote": str(it.get("basis_quote", ""))[:160],
                            "source": str(it.get("source", "model_knowledge")),
                            "commitment_level": level, "reliability": reliability,
+                           "pathway": pathway, "controls_pathway": bool(it.get("controls_pathway")),
                            "entails": str(it.get("entails_direction", "neutral"))}
         n_grounded += 1
         d = str(it.get("entails_direction", "neutral")).lower()
@@ -100,9 +110,11 @@ def ground_actor_intentions(plan, question, *, criterion=None, evidence_text="",
             num += strength * (1.0 if d == "yes" else 0.0)
             den += strength
         stances.append({"actor": str(it["actor"]), "commitment_level": level,
-                        "reliability": reliability, "entails": d})
+                        "reliability": reliability, "pathway": pathway,
+                        "controls_pathway": bool(it.get("controls_pathway")), "entails": d})
         kept.append({k: it.get(k) for k in ("actor", "stated_intention", "basis_quote", "source",
-                                            "commitment_level", "reliability", "entails_direction")})
+                                            "commitment_level", "pathway", "controls_pathway",
+                                            "reliability", "entails_direction")})
     # the full qualitative record — consumed by event_time to build per-mode hazard-ratio
     # DISTRIBUTIONS (never a point coefficient invented here)
     plan._intention_stances = stances

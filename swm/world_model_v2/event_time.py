@@ -32,22 +32,33 @@ INTENTION_HR_PACK = Path("experiments/replay_vault_v3/intention_hr_pack.json")
 _BUCKETS = 5                                                  # lifetime-fraction hazard buckets
 _Z80 = 1.2816                                                 # 80% two-sided normal quantile
 
-# DOCUMENTED PRIORS — NOT FITTED. Hazard ratio a stated stance implies for AGREEMENT-mode hazards,
-# as (median, lo80, hi80). Deliberately conservative (centered nearer 1.0 than any crushed point
-# value); each PARTICLE samples its own ratio from the lognormal these bounds define, so the
-# uncertainty over the effect size survives into the terminal CDF instead of being collapsed to a
-# point coefficient. Replaced wholesale when intention_hr_pack.json exists (fit from resolved cases
-# via fit_intention_hazard_ratios — statement-class → observed subsequent hazard change).
+# DOCUMENTED PRIORS — NOT FITTED. Hazard ratio a stated stance implies for the hazards of modes on
+# the pathway the stance concerns, as (median, lo80, hi80). The taxonomy is UNIVERSAL — stances are
+# classified against the resolution criterion's resolving state (a deal, a resignation, a rate cut,
+# a bill, a launch), never against "agreement" specifically. Deliberately conservative (centered
+# nearer 1.0 than any crushed point value); each PARTICLE samples its own ratio from the lognormal
+# these bounds define, so the uncertainty over the effect size survives into the terminal CDF
+# instead of being collapsed to a point coefficient. Replaced wholesale when intention_hr_pack.json
+# exists (fit from resolved cases via fit_intention_hazard_ratios).
 INTENTION_HR_PRIORS = {
-    "categorical_refusal": (0.55, 0.30, 0.90),
-    "conditional_refusal": (0.78, 0.50, 1.10),
-    "weak_opposition": (0.90, 0.65, 1.15),
+    "committed_to_prevent": (0.55, 0.30, 0.90),
+    "conditionally_opposed": (0.78, 0.50, 1.10),
+    "weakly_opposed": (0.90, 0.65, 1.15),
     "neutral": (1.00, 0.80, 1.25),
-    "openness_to_agreement": (1.35, 1.00, 1.90),
-    "formal_commitment_toward_agreement": (2.10, 1.30, 3.20),
+    "inclined_toward": (1.35, 1.00, 1.90),
+    "actively_pursuing": (1.70, 1.15, 2.50),
+    "formally_committed": (2.10, 1.30, 3.20),
 }
+# legacy agreement-specific labels map onto the universal taxonomy (old packs/transcripts)
+_LEGACY_LEVELS = {"categorical_refusal": "committed_to_prevent",
+                  "conditional_refusal": "conditionally_opposed",
+                  "weak_opposition": "weakly_opposed",
+                  "openness_to_agreement": "inclined_toward",
+                  "formal_commitment_toward_agreement": "formally_committed"}
 # reliability shrinks the LOG-effect toward 1.0 (an inferred leaning moves hazards less than a law)
 _RELIABILITY_SHRINK = {"high": 1.0, "medium": 0.6, "low": 0.3}
+# a non-controller resisting a pathway they do not control moves its hazard less than a veto-holder
+_NON_CONTROLLER_SHRINK = 0.5
 
 # SENSITIVITY-HARNESS OVERRIDES (experiments only, never production defaults): force the agreement /
 # non-agreement mode hazard ratio to a point value so assumption-dependence is measurable.
@@ -70,23 +81,46 @@ def _shrink_hr(med, lo, hi, reliability):
     return (math.exp(s * math.log(med)), math.exp(s * math.log(lo)), math.exp(s * math.log(hi)))
 
 
-def agreement_hazard_ratio(stances: list) -> dict:
-    """Combine per-actor qualitative stances into ONE agreement-mode hazard-ratio distribution.
-    Agreement requires the consent of every veto player, so the BINDING actor is the most opposed
-    one (minimum shrunk median) — documented structural choice, not a fitted parameter."""
+def mode_hazard_ratio(stances: list, pathway: str = "cooperative_agreement") -> dict:
+    """Combine per-actor qualitative stances into ONE hazard-ratio distribution for modes on the
+    given causal PATHWAY. Universal combination rules (documented structural choices, not fitted):
+     - only stances concerning this pathway (or 'any') are relevant;
+     - cooperative_agreement: every principal can withhold consent — the BINDING actor is the most
+       opposed relevant one (minimum shrunk median), controller or not;
+     - unilateral_action / institutional_procedure: actors who CONTROL the pathway bind (most
+       opposed controller, conservative); when no controller stance is grounded, non-controllers
+       count only as resistance, with their log-effect further shrunk (×_NON_CONTROLLER_SHRINK)."""
     table = _hr_table()
-    best = None
-    for st in stances or []:
-        tup = table.get(str(st.get("commitment_level", "")).lower())
+
+    def _resolved(st, extra_shrink=1.0):
+        lvl = str(st.get("commitment_level", "")).lower()
+        tup = table.get(_LEGACY_LEVELS.get(lvl, lvl))
         if not tup:
-            continue
+            return None
         med, lo, hi = _shrink_hr(*tup, str(st.get("reliability", "medium")).lower())
-        if best is None or med < best["median"]:
-            best = {"median": round(med, 4), "lo80": round(lo, 4), "hi80": round(hi, 4),
-                    "binding_actor": st.get("actor"), "binding_level": st.get("commitment_level"),
-                    "binding_reliability": st.get("reliability")}
+        if extra_shrink != 1.0:
+            med, lo, hi = (math.exp(extra_shrink * math.log(x)) for x in (med, lo, hi))
+        return {"median": round(med, 4), "lo80": round(lo, 4), "hi80": round(hi, 4),
+                "binding_actor": st.get("actor"), "binding_level": st.get("commitment_level"),
+                "binding_reliability": st.get("reliability"), "binding_pathway": pathway}
+    relevant = [st for st in (stances or [])
+                if str(st.get("pathway", "any")).lower() in (pathway, "any")]
+    if pathway == "cooperative_agreement":
+        pool = [_resolved(st) for st in relevant]
+    else:
+        controllers = [st for st in relevant if st.get("controls_pathway")]
+        pool = ([_resolved(st) for st in controllers] if controllers
+                else [_resolved(st, extra_shrink=_NON_CONTROLLER_SHRINK) for st in relevant])
+    pool = [p for p in pool if p]
+    best = min(pool, key=lambda p: p["median"]) if pool else None
     return best or {"median": 1.0, "lo80": 0.8, "hi80": 1.25, "binding_actor": None,
-                    "binding_level": "no_grounded_stance", "binding_reliability": None}
+                    "binding_level": "no_grounded_stance", "binding_reliability": None,
+                    "binding_pathway": pathway}
+
+
+def agreement_hazard_ratio(stances: list) -> dict:
+    """Back-compat wrapper: the cooperative-pathway case of mode_hazard_ratio."""
+    return mode_hazard_ratio(stances, "cooperative_agreement")
 
 
 def fit_intention_hazard_ratios(rows: list, *, pool_strength: float = 8.0) -> dict:
@@ -382,24 +416,37 @@ def is_when_question(question: str) -> bool:
     return any(t in q for t in _WHEN_TOKENS)
 
 
-def _mode_requires_agreement(mode) -> bool:
-    """Prefer the mode's own semantic flag (from elicitation); fall back to keyword matching for
-    compiler hypotheses that carry no flag."""
-    if isinstance(mode, dict) and "requires_agreement" in mode:
-        return bool(mode["requires_agreement"])
+def _mode_pathway(mode) -> str:
+    """The causal pathway a mode is reached through. Prefer the mode's own semantic label (from
+    elicitation); fall back to the requires_agreement flag, then keyword matching, for compiler
+    hypotheses that carry neither."""
+    if isinstance(mode, dict):
+        pw = str(mode.get("pathway", "")).lower()
+        if pw in ("cooperative_agreement", "unilateral_action", "institutional_procedure"):
+            return pw
+        if "requires_agreement" in mode:
+            return "cooperative_agreement" if mode["requires_agreement"] else "unilateral_action"
     mid = str(mode["id"] if isinstance(mode, dict) else mode).lower()
-    return any(t in mid for t in _AGREEMENT_TOKENS)
+    return ("cooperative_agreement" if any(t in mid for t in _AGREEMENT_TOKENS)
+            else "unilateral_action")
+
+
+def _mode_requires_agreement(mode) -> bool:
+    return _mode_pathway(mode) == "cooperative_agreement"
 
 
 _MODES_PROMPT = """Through which mutually exclusive END-STATES can this question's outcome be REACHED?
 List 2-6, each an end-state that SATISFIES the resolution criterion when it holds (not an intermediate
-or escalation state). Mark whether reaching it REQUIRES the principal parties to agree (a treaty/deal
-does; a unilateral collapse/victory/decision does not).
+or escalation state). Label the causal PATHWAY each is reached through: cooperative_agreement (the
+principals must consent — treaty, deal, settlement), unilateral_action (one actor's own act —
+victory, resignation, launch, collapse), or institutional_procedure (a body's procedure decides —
+vote, ruling, approval).
 QUESTION: {q}
 RESOLUTION CRITERION: {crit}
 Return ONLY JSON:
 {{"modes": [{{"id": "<snake_case>", "prior": <0..1 relative weight>,
-   "requires_agreement": true|false, "describe": "<one sentence>"}}]}}"""
+   "pathway": "cooperative_agreement|unilateral_action|institutional_procedure",
+   "describe": "<one sentence>"}}]}}"""
 
 
 def _elicit_modes(question, criterion, llm) -> list:
@@ -415,8 +462,13 @@ def _elicit_modes(question, criterion, llm) -> list:
         out = []
         for m in (raw.get("modes") or []):
             if isinstance(m, dict) and m.get("id"):
-                out.append({"id": str(m["id"])[:40], "prior": float(m.get("prior", 1.0) or 1.0),
-                            "requires_agreement": bool(m.get("requires_agreement"))})
+                ent = {"id": str(m["id"])[:40], "prior": float(m.get("prior", 1.0) or 1.0)}
+                pw = str(m.get("pathway", "")).lower()
+                if pw in ("cooperative_agreement", "unilateral_action", "institutional_procedure"):
+                    ent["pathway"] = pw
+                elif "requires_agreement" in m:               # older elicitation shape
+                    ent["requires_agreement"] = bool(m["requires_agreement"])
+                out.append(ent)
         return out[:6]
     except Exception:  # noqa: BLE001
         return []
@@ -468,27 +520,32 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=No
         base = re.sub(r"_?(?:19|20)\d{2}$", "", m["id"]).strip("_") or m["id"]
         if base in merged:
             merged[base]["prior"] += m["prior"]
-            if "requires_agreement" in m:
-                merged[base].setdefault("requires_agreement", m["requires_agreement"])
+            for k in ("pathway", "requires_agreement"):
+                if k in m:
+                    merged[base].setdefault(k, m[k])
         else:
             merged[base] = dict(m, id=base)
     modes = list(merged.values())
     modes, rejected_modes = _filter_absorbing_modes(modes, criterion, llm)
     z = sum(m["prior"] for m in modes) or 1.0
     curve, fam, curve_src = family_hazard_curve(getattr(plan, "question", ""))
-    # grounded-intention effect on AGREEMENT modes: a hazard-ratio DISTRIBUTION built from the
-    # qualitative stance record (binding = most-opposed veto actor), sampled per particle — never a
-    # point coefficient. Non-agreement (unilateral) modes are unaffected by stances toward agreement.
+    # grounded-stance effect, PATHWAY-AWARE and universal: each mode's hazard-ratio DISTRIBUTION is
+    # combined from the stances concerning ITS causal pathway (cooperative → veto logic; unilateral/
+    # institutional → controller logic with resistance shrink), sampled per particle — never a point
+    # coefficient invented by the LLM.
     stances = list(getattr(plan, "_intention_stances", []) or [])
-    agr_hr = agreement_hazard_ratio(stances)
-    if AGREEMENT_HR_OVERRIDE is not None:                     # sensitivity harness only
-        v = float(AGREEMENT_HR_OVERRIDE)
-        agr_hr = {"median": v, "lo80": v, "hi80": v, "binding_actor": "OVERRIDE",
-                  "binding_level": "sensitivity_override", "binding_reliability": None}
-    vic_hr = {"median": 1.0, "lo80": 1.0, "hi80": 1.0}
-    if VICTORY_HR_OVERRIDE is not None:                       # sensitivity harness only
-        v = float(VICTORY_HR_OVERRIDE)
-        vic_hr = {"median": v, "lo80": v, "hi80": v}
+
+    def _pathway_hr(pathway):
+        if pathway == "cooperative_agreement" and AGREEMENT_HR_OVERRIDE is not None:
+            v = float(AGREEMENT_HR_OVERRIDE)                  # sensitivity harness only
+            return {"median": v, "lo80": v, "hi80": v, "binding_actor": "OVERRIDE",
+                    "binding_level": "sensitivity_override", "binding_pathway": pathway}
+        if pathway != "cooperative_agreement" and VICTORY_HR_OVERRIDE is not None:
+            v = float(VICTORY_HR_OVERRIDE)                    # sensitivity harness only
+            return {"median": v, "lo80": v, "hi80": v, "binding_actor": "OVERRIDE",
+                    "binding_level": "sensitivity_override", "binding_pathway": pathway}
+        return mode_hazard_ratio(stances, pathway)
+    agr_hr = _pathway_hr("cooperative_agreement")             # reported for auditability
     span = plan.horizon_ts - plan.as_of
     horizon_days = max(1.0, span / 86400.0)
     n_rounds = max(4, min(20, int(horizon_days / max(1.0, horizon_days / 10.0))))
@@ -497,12 +554,15 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=No
     mode_hr = {}
     for m in modes[:6]:
         share = m["prior"] / z
-        # grounded stances modulate only AGREEMENT modes: a refusal to negotiate suppresses deal
-        # hazards (by a sampled, uncertain ratio), never a unilateral end-state's hazard
-        agreement = _mode_requires_agreement(m)
-        hr_m = agr_hr if agreement else vic_hr
-        mode_hr[m["id"]] = {k: hr_m.get(k) for k in ("median", "lo80", "hi80")}
-        mode_hr[m["id"]]["requires_agreement"] = agreement
+        # each mode consumes the stance hazard ratio of ITS OWN causal pathway: a refusal to
+        # negotiate suppresses cooperative modes; a vow to fight on boosts/suppresses the unilateral
+        # modes the vowing actor controls; a whip count moves institutional modes
+        pathway = _mode_pathway(m)
+        hr_m = _pathway_hr(pathway)
+        mode_hr[m["id"]] = {k: hr_m.get(k) for k in ("median", "lo80", "hi80",
+                                                     "binding_actor", "binding_level")}
+        mode_hr[m["id"]]["pathway"] = pathway
+        agreement = pathway == "cooperative_agreement"
         for k in range(1, n_rounds + 1):
             ts = plan.as_of + (k / (n_rounds + 1)) * span
             # per-round per-mode hazard: bucket hazard spread over the bucket's rounds (n_rounds/_BUCKETS)
