@@ -179,6 +179,15 @@ def operators_from_plan(plan, *, llm=None, allow_experimental=False) -> tuple:
             if opname == "agent_decision":
                 ops.append(factory(llm=(llm if allow_experimental else None),
                                    allow_llm_probabilities=allow_experimental))
+            elif opname == "production_actor_policy":
+                # Phase 4L: bind first-person LLM persona cognition for consequential actors when a
+                # backend exists (relevance-gated, budgeted, anchored to the numeric posterior, and
+                # stamped llm_probability_minting in provenance — unlike the quarantined raw-minting
+                # agent_decision path above). SWM_LLM_ACTORS=off (or llm=None) leaves the numeric
+                # production runtime exactly as it was.
+                persona_runtime = _persona_runtime(llm)
+                ops.append(factory(runtime=persona_runtime) if persona_runtime is not None
+                           else factory())
             elif hasattr(factory, "run") and hasattr(factory, "applicable") and not isinstance(factory, type):
                 # Phase 7/10 registry entries are configured operator instances.  Treat
                 # them as prototypes instead of assuming every entry is a zero-arg class.
@@ -190,6 +199,19 @@ def operators_from_plan(plan, *, llm=None, allow_experimental=False) -> tuple:
                                "reason": f"operator {opname!r} needs bound parameters "
                                          f"(e.g. a fitted policy pack): {e}"[:200]})
     return ops, rejections
+
+
+def _persona_runtime(llm):
+    """Phase 4L binding: the persona actor runtime, or None (numeric production path unchanged).
+    A failure to construct the persona layer must never block materialization — it is recorded
+    by the absence of persona provenance on the run's decision traces."""
+    if llm is None:
+        return None
+    try:
+        from swm.world_model_v2.llm_actor import build_persona_runtime
+        return build_persona_runtime(llm=llm)
+    except Exception:  # noqa: BLE001
+        return None
 
 
 def _inject_posterior_rate(plan) -> bool:

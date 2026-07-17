@@ -120,6 +120,7 @@ class ActorPolicyRuntime:
             self._create_commitments(world, action, delta)
             self._apply_immediate_consequences(world, action, delta)
             self._apply_pathway_effects(world, action, delta)
+            self._post_execute(world, action, posterior, trace, delta)
             events = self._follow_up_events(world, action, posterior, trace, seed)
             delta.follow_up_events = [self._event_record(event) for event in events]
             event = Event(ts=world.clock.now, etype="actor_action",
@@ -133,6 +134,13 @@ class ActorPolicyRuntime:
             trace.downstream_reactions.extend([self._event_record(e) for e in events[1:]])
             trace.seal()
             return delta, events
+
+    def _post_execute(self, world, action: TypedAction, posterior: ActionPosterior,
+                      trace: DecisionTrace, delta: StateDelta):
+        """Subclass hook, called after the typed consequence writers and BEFORE the delta/trace
+        seal, so actor-local post-action state (e.g. the LLM persona layer's cognition
+        write-back) is recorded on the SAME StateDelta as the action that produced it."""
+        return None
 
     @staticmethod
     def _append_history(world, action: TypedAction, status: str, delta: StateDelta):
@@ -336,8 +344,10 @@ class ProductionActorPolicyOperator:
 
     name = "production_actor_policy"
 
-    def __init__(self, model: ActorPolicyModel | None = None):
-        self.runtime = ActorPolicyRuntime(model)
+    def __init__(self, model: ActorPolicyModel | None = None, *, runtime: ActorPolicyRuntime | None = None):
+        # A deployment may bind a fitted model, or a whole runtime (e.g. the Phase-4L persona
+        # runtime, which keeps this operator's execution semantics and adds actor cognition).
+        self.runtime = runtime or ActorPolicyRuntime(model)
         self.traces = []
 
     def applicable(self, world, event):
