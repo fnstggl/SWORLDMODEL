@@ -215,6 +215,25 @@ def test_sensitivity_overrides_force_point_ratios():
         ET.AGREEMENT_HR_OVERRIDE = ET.VICTORY_HR_OVERRIDE = None
 
 
+def test_mode_elicitation_when_compiler_declares_none():
+    p = _plan()
+    p.structural_hypotheses = []                              # compiler variance: no hypotheses
+    p.outcome_contract = types.SimpleNamespace(options=["yes", "no"])   # and no categorical options
+
+    def fake_llm(prompt):
+        if "END-STATES" in prompt:
+            return ('{"modes": [{"id": "peace_deal", "prior": 0.4, "requires_agreement": true},'
+                    '{"id": "unilateral_collapse", "prior": 0.6, "requires_agreement": false}]}')
+        return '{"absorbing_mode_ids": ["peace_deal", "unilateral_collapse"]}'
+    rep = convert_to_event_time(p, {"resolves_yes_iff": "the dispute is settled"}, llm=fake_llm)
+    assert set(rep["modes"]) == {"peace_deal", "unilateral_collapse"}
+    # the semantic flag (not keywords) decides which modes the stance ratio touches
+    assert rep["hazard_ratio_by_mode"]["peace_deal"]["requires_agreement"] is True
+    assert rep["hazard_ratio_by_mode"]["peace_deal"]["median"] == pytest.approx(0.55)
+    assert rep["hazard_ratio_by_mode"]["unilateral_collapse"]["requires_agreement"] is False
+    assert rep["hazard_ratio_by_mode"]["unilateral_collapse"]["median"] == 1.0
+
+
 def test_fit_intention_hazard_ratios_pools_toward_no_effect():
     from swm.world_model_v2.event_time import fit_intention_hazard_ratios
     rows = [{"commitment_level": "categorical_refusal", "hazard_ratio": r}

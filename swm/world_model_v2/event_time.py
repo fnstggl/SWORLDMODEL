@@ -360,9 +360,44 @@ def is_when_question(question: str) -> bool:
     return any(t in q for t in _WHEN_TOKENS)
 
 
-def _mode_requires_agreement(mode_id: str) -> bool:
-    m = str(mode_id).lower()
-    return any(t in m for t in _AGREEMENT_TOKENS)
+def _mode_requires_agreement(mode) -> bool:
+    """Prefer the mode's own semantic flag (from elicitation); fall back to keyword matching for
+    compiler hypotheses that carry no flag."""
+    if isinstance(mode, dict) and "requires_agreement" in mode:
+        return bool(mode["requires_agreement"])
+    mid = str(mode["id"] if isinstance(mode, dict) else mode).lower()
+    return any(t in mid for t in _AGREEMENT_TOKENS)
+
+
+_MODES_PROMPT = """Through which mutually exclusive END-STATES can this question's outcome be REACHED?
+List 2-6, each an end-state that SATISFIES the resolution criterion when it holds (not an intermediate
+or escalation state). Mark whether reaching it REQUIRES the principal parties to agree (a treaty/deal
+does; a unilateral collapse/victory/decision does not).
+QUESTION: {q}
+RESOLUTION CRITERION: {crit}
+Return ONLY JSON:
+{{"modes": [{{"id": "<snake_case>", "prior": <0..1 relative weight>,
+   "requires_agreement": true|false, "describe": "<one sentence>"}}]}}"""
+
+
+def _elicit_modes(question, criterion, llm) -> list:
+    """When the compiler declared no structural hypotheses, elicit the end-state decomposition
+    directly (criterion-anchored) — a single amalgam 'resolution' mode loses the mode structure a
+    when-question needs. Fails to [] (caller falls back), never blocks."""
+    if llm is None:
+        return []
+    try:
+        from swm.engine.grounding import parse_json
+        raw = parse_json(llm(_MODES_PROMPT.format(
+            q=question, crit=(criterion or {}).get("resolves_yes_iff", "(as stated)")))) or {}
+        out = []
+        for m in (raw.get("modes") or []):
+            if isinstance(m, dict) and m.get("id"):
+                out.append({"id": str(m["id"])[:40], "prior": float(m.get("prior", 1.0) or 1.0),
+                            "requires_agreement": bool(m.get("requires_agreement"))})
+        return out[:6]
+    except Exception:  # noqa: BLE001
+        return []
 
 
 def _filter_absorbing_modes(modes: list, criterion: dict, llm) -> tuple:
@@ -399,6 +434,8 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=No
             modes.append({"id": str(h["id"])[:40], "prior": float(h.get("prior", 1.0) or 1.0)})
     if not modes and len(getattr(plan.outcome_contract, "options", []) or []) > 2:
         modes = [{"id": str(o)[:40], "prior": 1.0} for o in plan.outcome_contract.options[:6]]
+    if not modes:
+        modes = _elicit_modes(getattr(plan, "question", ""), criterion, llm)
     modes = modes or [{"id": "resolution", "prior": 1.0}]
     modes, rejected_modes = _filter_absorbing_modes(modes, criterion, llm)
     z = sum(m["prior"] for m in modes) or 1.0
@@ -426,8 +463,10 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=No
         share = m["prior"] / z
         # grounded stances modulate only AGREEMENT modes: a refusal to negotiate suppresses deal
         # hazards (by a sampled, uncertain ratio), never a unilateral end-state's hazard
-        hr_m = agr_hr if _mode_requires_agreement(m["id"]) else vic_hr
+        agreement = _mode_requires_agreement(m)
+        hr_m = agr_hr if agreement else vic_hr
         mode_hr[m["id"]] = {k: hr_m.get(k) for k in ("median", "lo80", "hi80")}
+        mode_hr[m["id"]]["requires_agreement"] = agreement
         for k in range(1, n_rounds + 1):
             ts = plan.as_of + (k / (n_rounds + 1)) * span
             # per-round per-mode hazard: bucket hazard spread over the bucket's rounds (n_rounds/_BUCKETS)
@@ -439,6 +478,7 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=No
                             "hazard_bucket_curve": ([h * share * _BUCKETS / n_rounds for h in curve]
                                                     if curve else None),
                             "hr": {k: hr_m.get(k) for k in ("median", "lo80", "hi80")},
+                            "requires_agreement": agreement,
                             "as_of": plan.as_of, "span_s": span,
                             "consume": consumed}})
             n_ev += 1
