@@ -623,6 +623,12 @@ for _et in ("hazard_round", "absorption"):
         register_event_type(_et, scheduling="scheduled", reads=("quantities",), deltas=("quantities",),
                             parameter_source="event-time architecture", validated=True)
 
+# the world-dynamics layer (stance reviews, persistence checks, sampled couplings) is PART OF the
+# event-time machinery: importing event_time must register its operators and event types, or the
+# scheduled stance_review/persistence_check events would be dead weight in any process that did not
+# import the runtime (the offline demo caught exactly this)
+import swm.world_model_v2.world_dynamics  # noqa: E402,F401
+
 
 # ---------------------------------------------------------------- 4. fitted survival pack
 def fit_survival_pack(worlds_with_paths: list, *, pool_strength: float = 6.0) -> dict:

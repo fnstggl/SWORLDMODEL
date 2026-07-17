@@ -118,6 +118,40 @@ def test_winning_hardens_and_exhaustion_softens():
     assert live_stances(w2)[0]["commitment_level"] == "inclined_toward"
 
 
+def test_contested_attrition_drains_capacity_by_duration_until_exhaustion():
+    """Wars of attrition exhaust by DURATION: two rivals pursuing the same contested pathway drain
+    capacity every cadence round (sampled coupling), eventually tripping the EXHAUSTION rule — an
+    unopposed pursuer does not drain."""
+    w = _world()
+    _actor(w, "A", capacity=0.5, stances=[
+        {"actor": "A", "commitment_level": "actively_pursuing", "reliability": "high",
+         "capability": "high", "pathway": "unilateral_action", "control": "sole_authority",
+         "target_mode": "a_victory"}])
+    _actor(w, "B", capacity=0.5, stances=[
+        {"actor": "B", "commitment_level": "actively_pursuing", "reliability": "high",
+         "capability": "high", "pathway": "unilateral_action", "control": "sole_authority",
+         "target_mode": "b_victory"}])
+    op = StanceReviewOperator()
+    softened = None
+    for k in range(3, 60, 2):                                 # respect the cooldown spacing
+        ev = types.SimpleNamespace(etype="stance_review", payload={"round": k})
+        d = op.apply(w, op.propose(w, ev, None))
+        if d is not None and any("exhaustion" in r for r in d.reason_codes):
+            softened = k
+            break
+    assert softened is not None                               # attrition → exhaustion → softening
+    assert live_capacity(w)["A"] < 0.31
+    # an UNOPPOSED pursuer does not drain (no contest, no attrition)
+    w2 = _world()
+    _actor(w2, "solo", capacity=0.5, stances=[
+        {"actor": "solo", "commitment_level": "actively_pursuing", "reliability": "high",
+         "capability": "high", "pathway": "unilateral_action", "control": "sole_authority",
+         "target_mode": "solo_win"}])
+    ev = types.SimpleNamespace(etype="stance_review", payload={"round": 5})
+    assert op.apply(w2, op.propose(w2, ev, None)) is None
+    assert live_capacity(w2)["solo"] == pytest.approx(0.5)
+
+
 def test_bandwagon_and_honest_noop():
     w = _world(**{"pathway_progress:cooperative_agreement": 0.75})
     _actor(w, "holdout", stances=[

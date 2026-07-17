@@ -94,8 +94,22 @@
     ]
    },
    "n_particles": 200,
-   "n_hazard_rounds": 40,
-   "rounds_per_mode": 10,
+   "n_hazard_rounds": 160,
+   "rounds_per_mode": 40,
+   "n_stance_reviews": 40,
+   "persistence_window_days": 30.0,
+   "contested_mode_channels": {
+    "mode_channels": {
+     "russian_victory": "mode_progress:unilateral_action:russian_victory",
+     "ukrainian_victory": "mode_progress:unilateral_action:ukrainian_victory"
+    },
+    "principals": {
+     "cooperative_agreement": [
+      "Vladimir_Putin",
+      "Volodymyr_Zelenskyy"
+     ]
+    }
+   },
    "agreement_hazard_ratio": {
     "median": 0.55,
     "lo80": 0.3,
@@ -116,7 +130,8 @@
      "binding_level": "actively_pursuing",
      "combination_rule": "unilateral",
      "endogenous_split": 0.6,
-     "pathway": "unilateral_action"
+     "pathway": "unilateral_action",
+     "split_applied_at": "runtime_sampled"
     },
     "ceasefire": {
      "median": 0.6986,
@@ -126,7 +141,8 @@
      "binding_level": "committed_to_prevent",
      "combination_rule": "unanimity",
      "endogenous_split": 0.6,
-     "pathway": "cooperative_agreement"
+     "pathway": "cooperative_agreement",
+     "split_applied_at": "runtime_sampled"
     },
     "ukrainian_victory": {
      "median": 1.236,
@@ -136,7 +152,8 @@
      "binding_level": "actively_pursuing",
      "combination_rule": "unilateral",
      "endogenous_split": 0.6,
-     "pathway": "unilateral_action"
+     "pathway": "unilateral_action",
+     "split_applied_at": "runtime_sampled"
     },
     "peace_treaty": {
      "median": 0.6986,
@@ -146,10 +163,23 @@
      "binding_level": "committed_to_prevent",
      "combination_rule": "unanimity",
      "endogenous_split": 0.6,
-     "pathway": "cooperative_agreement"
+     "pathway": "cooperative_agreement",
+     "split_applied_at": "runtime_sampled"
     }
    },
    "hazard_ratio_source": "documented_priors_unfitted",
+   "hr_pack": {
+    "source": "documented_priors_unfitted",
+    "fitted_at": null,
+    "n_rows": null,
+    "stratified": false
+   },
+   "coupling_source": {
+    "source": "documented_priors_unfitted",
+    "fitted_at": null,
+    "n_trajectories": null
+   },
+   "categorical_options": null,
    "n_grounded_stances": 8,
    "n_absorbing_institutional_decisions": 0,
    "declared_pathways": [
@@ -286,13 +316,13 @@
    }
   },
   "result_distribution": {
-   "absorbed_by_horizon": 0.125,
-   "censored_beyond_horizon": 0.875
+   "absorbed_by_horizon": 0.085,
+   "censored_beyond_horizon": 0.915
   },
   "event_time_readout": {
    "n_particles": 200,
-   "n_absorbed": 25,
-   "p_censored": 0.875,
+   "n_absorbed": 17,
+   "p_censored": 0.915,
    "cdf_grid_ts": [
     1791927360.0,
     1799694720.0,
@@ -306,81 +336,81 @@
     1861833600.0
    ],
    "cdf": [
-    0.005,
+    0.0,
+    0.0,
+    0.01,
+    0.015,
+    0.015,
     0.02,
-    0.02,
-    0.02,
-    0.025,
-    0.035,
-    0.035,
-    0.07,
-    0.105,
-    0.125
+    0.03,
+    0.045,
+    0.06,
+    0.085
    ],
    "survival": [
-    0.995,
+    1.0,
+    1.0,
+    0.99,
+    0.985,
+    0.985,
     0.98,
-    0.98,
-    0.98,
-    0.975,
-    0.965,
-    0.965,
-    0.93,
-    0.895,
-    0.875
+    0.97,
+    0.955,
+    0.94,
+    0.915
    ],
    "first_passage_quantiles_ts": {
-    "0.1": 1847711127.3,
+    "0.1": null,
     "0.25": null,
     "0.5": null,
     "0.75": null,
     "0.9": null
    },
    "mode_distribution": {
-    "ceasefire": 0.025,
-    "russian_victory": 0.055,
-    "ukrainian_victory": 0.04,
+    "ukrainian_victory": 0.01,
+    "russian_victory": 0.06,
+    "ceasefire": 0.01,
     "peace_treaty": 0.005
    }
   },
   "actions_by_actor": {
    "Vladimir_Putin": {
-    "hold_position": 299,
-    "wait": 223,
-    "delay": 262,
-    "escalate": 374,
-    "reject": 353,
-    "withdraw": 240,
-    "seek_mediator": 95,
-    "mobilize": 304,
-    "counteroffer": 205,
-    "exit": 445
+    "hold_position": 302,
+    "wait": 219,
+    "delay": 264,
+    "escalate": 364,
+    "reject": 361,
+    "withdraw": 249,
+    "seek_mediator": 96,
+    "mobilize": 290,
+    "counteroffer": 199,
+    "exit": 456
    },
    "Volodymyr_Zelenskyy": {
-    "mobilize": 273,
-    "exit": 358,
-    "counteroffer": 236,
-    "seek_mediator": 232,
-    "delay": 273,
-    "reject": 265,
+    "mobilize": 264,
+    "exit": 366,
+    "counteroffer": 237,
+    "seek_mediator": 230,
+    "delay": 272,
+    "reject": 273,
     "accept": 90,
     "hold_position": 260,
-    "withdraw": 233,
-    "escalate": 343,
-    "wait": 237
+    "withdraw": 239,
+    "escalate": 331,
+    "wait": 238
    },
    "Donald_Trump": {
-    "counteroffer": 352,
-    "escalate": 196,
-    "mobilize": 269,
-    "delay": 241,
-    "wait": 289,
-    "seek_mediator": 303,
-    "hold_position": 264,
-    "exit": 114,
-    "reject": 105,
-    "withdraw": 239,
-    "accept": 428
+    "counteroffer": 353,
+    "escalate": 194,
+    "mobilize": 266,
+    "delay": 242,
+    "wait": 284,
+    "seek_mediator": 308,
+    "hold_position": 263,
+    "exit": 113,
+    "reject": 107,
+    "withdraw": 241,
+    "accept": 429
    },
    "Russian_General_Staff": {
     "schedule": 414,
@@ -401,20 +431,20 @@
     "seek_mediator": 401
    },
    "Verkhovna_Rada": {
-    "place_on_agenda": 434,
+    "place_on_agenda": 437,
     "reject": 458,
-    "defer": 448,
-    "approve": 411,
-    "schedule": 404,
-    "wait": 435,
-    "seek_mediator": 210
+    "defer": 444,
+    "approve": 408,
+    "schedule": 406,
+    "wait": 433,
+    "seek_mediator": 214
    }
   },
   "pathway_progress_at_horizon": {
-   "cooperative_agreement": 0.1297,
-   "unilateral_action": 0.6292
+   "cooperative_agreement": 0.1387,
+   "unilateral_action": 0.6004
   },
-  "n_deltas": 24506
+  "n_deltas": 54447
  },
  "cross_domain": {
   "bill": {
@@ -426,7 +456,8 @@
     "binding_level": "committed_to_prevent",
     "combination_rule": "majority",
     "endogenous_split": 0.6,
-    "pathway": "institutional_procedure"
+    "pathway": "institutional_procedure",
+    "split_applied_at": "runtime_sampled"
    },
    "distribution": {
     "absorbed_by_horizon": 0.1125,
@@ -445,11 +476,12 @@
     "binding_level": "formally_committed",
     "combination_rule": "hierarchy",
     "endogenous_split": 0.6,
-    "pathway": "operational_execution"
+    "pathway": "operational_execution",
+    "split_applied_at": "runtime_sampled"
    },
    "distribution": {
-    "absorbed_by_horizon": 0.25,
-    "censored_beyond_horizon": 0.75
+    "absorbed_by_horizon": 0.2375,
+    "censored_beyond_horizon": 0.7625
    }
   },
   "inflation": {
@@ -461,15 +493,16 @@
     "binding_level": "committed_to_prevent",
     "combination_rule": "aggregation",
     "endogenous_split": 0.6,
-    "pathway": "threshold_crossing"
+    "pathway": "threshold_crossing",
+    "split_applied_at": "runtime_sampled"
    },
    "consumed": [
     "nonlinear_state",
     "pathway_progress:threshold_crossing"
    ],
    "distribution": {
-    "absorbed_by_horizon": 0.15,
-    "censored_beyond_horizon": 0.85
+    "absorbed_by_horizon": 0.2625,
+    "censored_beyond_horizon": 0.7375
    }
   }
  }

@@ -1,0 +1,38 @@
+====================================================================================================
+UKRAINE DEMO — When will the Russia-Ukraine conflict end?  (as-of 2026-07-16, horizon 2028-12-31)
+====================================================================================================
+
+-- MODE GRAPH (canonical, 3 sources, agreement 1.0) --
+  russian_victory        pathway=unilateral_action        rule=unilateral prior=0.31 support=3/3+  HR med=1.4081 [1.0943, 1.8058] binder=Vladimir_Putin (split=0.6)
+  ceasefire              pathway=cooperative_agreement    rule=unanimity  prior=0.29 support=3/3+  HR med=0.6986 [0.4856, 0.9387] binder=Vladimir_Putin (split=0.6)
+  ukrainian_victory      pathway=unilateral_action        rule=unilateral prior=0.23 support=3/3+  HR med=1.236 [1.0087, 1.5032] binder=Volodymyr_Zelenskyy (split=0.6)
+  peace_treaty           pathway=cooperative_agreement    rule=unanimity  prior=0.14 support=3/3+  HR med=0.6986 [0.4856, 0.9387] binder=Vladimir_Putin (split=0.6)
+  rejected (not absorbing): []
+  dropped by consensus vote: ['frozen_conflict_stalemate', 'nato_direct_escalation']
+
+-- PATHWAY PROCESSES (grounded) --
+  pathway_progress:cooperative_agreement       init=0.3  state=exploratory  basis=Trump holds separate calls with Putin and Zelenskyy (CBS)
+  pathway_progress:unilateral_action           init=0.5  state=active  basis=Putin likely to escalate Ukraine war, despite Trump peace push (Reuters)
+
+-- GROUNDED STANCES (8 stances, 5 mode-scoped) --
+  Vladimir_Putin             committed_to_prevent   pathway=cooperative_agreement    target=None               control=veto                   rel=high cap=high
+      “Putin likely to escalate Ukraine war, despite Trump peace push (Reuters)”
+  Vladimir_Putin             actively_pursuing      pathway=unilateral_action        target=russian_victory    control=sole_authority         rel=high cap=high
+      “objectives of the special military operation will be achieved”
+  Vladimir_Putin             committed_to_prevent   pathway=unilateral_action        target=ukrainian_victory  control=operational_capability rel=medium cap=high
+      “Russia will never accept defeat on the battlefield”
+  Volodymyr_Zelenskyy        conditionally_opposed  pathway=cooperative_agreement    target=ceasefire          control=veto                   rel=high cap=high
+      “we will not accept a frozen conflict without real security guarantees”
+  Volodymyr_Zelenskyy        actively_pursuing      pathway=unilateral_action        target=ukrainian_victory  control=sole_authority         rel=high cap=medium
+      “we will liberate our land”
+  Donald_Trump               actively_pursuing      pathway=cooperative_agreement    target=None               control=informal_influence     rel=high cap=medium
+      “Trump holds separate calls with Putin and Zelenskyy (CBS)”
+  Verkhovna_Rada             committed_to_prevent   pathway=cooperative_agreement    target=None               control=agenda_setting         rel=high cap=high
+      “the 2022 NSDC decision bans negotiations with Putin (law in force)”
+  Russian_General_Staff      actively_pursuing      pathway=unilateral_action        target=russian_victory    control=operational_capability rel=medium cap=high
+      “summer offensive continues along the eastern front”
+
+-- SCHEDULE --  horizon 899.0d, cadence 7.0d, 6 strategic actors × 14 decision points = 84 decision events; 160 hazard rounds (40/mode × 4 modes); n_particles=200
+  candidate actions per review: ['accept', 'counteroffer', 'hold_position', 'delay', 'reject', 'escalate', 'seek_mediator', 'exit', 'mobilize', 'withdraw', 'wait']
+
+-- RUNNING the production rollout (build_world → phase-4 policies → pathway writes → hazard rounds → absorption monitor) --

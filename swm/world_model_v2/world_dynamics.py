@@ -58,13 +58,16 @@ COUPLING_PRIORS = {
     "world_state_weight":      (0.35, 0.20, 0.60),   # world-driven couplings (nonlinear/population)
     "contested_suppression":   (0.50, 0.30, 0.80),   # rival-mode suppression on contested pathways
     "nonprincipal_step_share": (0.50, 0.30, 0.80),   # non-principals move a shared process at this share
+    "attrition_per_review":    (0.015, 0.008, 0.03), # capacity drain per cadence round while an actor
+                                                     # pursues a CONTESTED pathway (≥2 rivals) — wars
+                                                     # of attrition exhaust by DURATION, not decisions
     "persistence_survival_shared":   (0.75, 0.55, 0.90),  # a provisional agreement holds its window
     "persistence_survival_default":  (0.85, 0.70, 0.95),  # a provisional unilateral end-state holds
 }
 _CLAMPS = {"pathway_step": (0.005, 0.15), "endogenous_stance_split": (0.2, 1.0),
            "own_pathway_weight": (0.3, 2.0), "cross_pathway_weight": (0.0, 1.0),
            "world_state_weight": (0.0, 1.0), "contested_suppression": (0.1, 1.0),
-           "nonprincipal_step_share": (0.1, 1.0),
+           "nonprincipal_step_share": (0.1, 1.0), "attrition_per_review": (0.0, 0.06),
            "persistence_survival_shared": (0.2, 0.99), "persistence_survival_default": (0.3, 0.99)}
 
 #: capability grounding → initial capacity resource
@@ -278,13 +281,55 @@ class StanceReviewOperator(TransitionOperator):
                     return (st, +1, f"bandwagon:{pw}_at_{v:.2f}")
         return None
 
+    @staticmethod
+    def _contested_attrition(world, stances, d) -> int:
+        """Time-based attrition: while an actor PURSUES a contested (non-shared, actor-driven)
+        pathway that at least one RIVAL also pursues, each cadence round drains their capacity by
+        the sampled attrition coupling — wars of attrition exhaust by DURATION, not by how many
+        discrete decisions the policy happened to take. Feeds the EXHAUSTION rule and the live
+        capacity shrink on stance effects. Only actors with a declared capacity resource drain."""
+        from swm.world_model_v2.state import F
+        pursuers = {}
+        for st in stances:
+            lvl = canon_level(st.get("commitment_level"))
+            pw = str(st.get("pathway", ""))
+            pwo = pathway_of(pw)
+            if STANCE_ORIENTATION.get(lvl, 0.0) > 0 and pwo.actor_driven and not pwo.shared_process:
+                pursuers.setdefault(pw, set()).add(str(st.get("actor")))
+        contested = {pw for pw, actors in pursuers.items() if len(actors) >= 2}
+        if not contested:
+            return 0
+        drain = sampled_coupling(world, "attrition_per_review")
+        n = 0
+        for pw in sorted(contested):
+            for aid in sorted(pursuers[pw]):
+                ent = (world.entities or {}).get(aid)
+                if ent is None:
+                    continue
+                cap = ent.value("resources", key="capacity", default=None)
+                if not isinstance(cap, (int, float)):
+                    continue
+                before = float(cap)
+                after = max(0.05, before - drain)
+                if after == before:
+                    continue
+                ent.set("resources", F(round(after, 4), status="derived",
+                                       method="contested_attrition", updated_at=world.clock.now),
+                        key="capacity")
+                d.change(f"{aid}.resources[capacity]", round(before, 4), round(after, 4))
+                n += 1
+        if n:
+            d.reason_codes.append(f"contested_attrition:{','.join(sorted(contested))}")
+        return n
+
     def apply(self, world, proposal):
         from swm.world_model_v2.state import F
         round_idx = int(proposal.action.get("round", 0) or 0)
         stances = live_stances(world)
-        caps = live_capacity(world)
         d = StateDelta(at=world.clock.now, event_type="stance_review", operator=self.name,
                        reason_codes=["stance_review"], uncertainty={"round": round_idx})
+        n_attrition = self._contested_attrition(world, stances, d)
+        caps = live_capacity(world)                            # AFTER attrition — exhaustion sees it
         n_changed = 0
         for aid, ent in sorted((world.entities or {}).items()):
             recs = ent.value("stances", default=None)
@@ -325,9 +370,10 @@ class StanceReviewOperator(TransitionOperator):
                 ent.set("latent_state", F(round_idx, status="derived", method="stance_review",
                                           updated_at=world.clock.now),
                         key="stance_review_last_round")
-        if not n_changed:
+        if not n_changed and not n_attrition:
             return None                                       # honest no-op — nothing triggered
         d.uncertainty["n_stances_changed"] = n_changed
+        d.uncertainty["n_attrition"] = n_attrition
         return d
 
 
