@@ -500,6 +500,18 @@ def test_mode_resolution_and_default_on_wiring(monkeypatch):
     assert type(ops_a[0].runtime) is ActorPolicyRuntime     # arm A untouched and runnable
 
 
+def test_truncated_hypothesis_array_salvages_complete_objects():
+    from swm.world_model_v2.qualitative_actor import QualitativeParticleHypothesizer
+    full = json.dumps({"hypothesis_label": "steady", "core_worldview": "w1",
+                       "current_private_beliefs": ["b1"], "personal_condition": "calm"})
+    second = json.dumps({"hypothesis_label": "doubting", "core_worldview": "w2",
+                         "current_private_beliefs": ["b2"], "personal_condition": "tired"})
+    truncated = f'[{full}, {second}, {{"hypothesis_label": "clipped", "core_worldview": "w3'
+    rows = QualitativeParticleHypothesizer._parse(truncated)
+    assert [r["hypothesis_label"] for r in rows] == ["steady", "doubting"]
+    assert QualitativeParticleHypothesizer._parse("no json at all") is None
+
+
 def _load_benchmark_module():
     import importlib.util
     from pathlib import Path
