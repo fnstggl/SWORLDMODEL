@@ -56,6 +56,26 @@ class FittedElasticities:
         return {"grade": self.grade, "n_train": self.n_train,
                 "weights": {k: [round(v[0], 3), round(v[1], 3)] for k, v in self.weights.items()}}
 
+    def to_json(self) -> str:
+        import json
+        return json.dumps({"weights": {k: [v[0], v[1]] for k, v in self.weights.items()},
+                           "grade": self.grade, "n_train": self.n_train,
+                           "prior_blend": self.prior_blend}, indent=1)
+
+    @classmethod
+    def from_json(cls, s: str) -> "FittedElasticities":
+        import json
+        d = json.loads(s)
+        return cls(weights={k: (float(v[0]), float(v[1])) for k, v in d["weights"].items()},
+                   grade=dict(d.get("grade", {})), n_train=int(d.get("n_train", 0)),
+                   prior_blend=float(d.get("prior_blend", 1.0)))
+
+
+def load_fitted(path: str) -> "FittedElasticities":
+    """Load a persisted fit (the committed calibration artifact) for optimize_message(fit=...)."""
+    with open(path) as f:
+        return FittedElasticities.from_json(f.read())
+
 
 def fit_elasticities(samples: list, *, use_prior: bool = True, prior_strength: float = 1.0,
                      epochs: int = 400, lr: float = 0.2) -> dict:

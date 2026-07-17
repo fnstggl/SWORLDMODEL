@@ -46,6 +46,25 @@ _ANNOYING = [
 ]
 _ANNOYING_RE = [re.compile(p, re.I) for p in _ANNOYING]
 
+# --- convenience-selling / benefit-assurance (the pushy-frictionless register) ---------------------
+# STRUCTURAL classes, not memorized lines: promising the reader what they'll get, assuring them a reply
+# costs nothing, or pre-chewing an unrequested verification/demo step. A busy peer never performs
+# easiness for the reader; performing it reads as salesy AI outreach. The production catch for this
+# register is the LLM judge (meaning-level); these patterns are the transparent offline fallback.
+_CONVENIENCE = [
+    r"\byou('| wi|'l)?ll (get|receive|have|walk away with)\b",      # promising the reader a payoff
+    r"\byou get (a|an|the)\b",
+    r"\bno (follow[- ]?up|obligation|commitment|strings|pressure|need to (respond|reply))\b",
+    r"\b(all|only) (it|this) takes is\b",
+    r"\btakes? (just |only |under |less than )?(a |an |\d+ )?(second|seconds|minute|minutes|moment)\b",
+    r"\bin under (a |an |\d+ )?(minute|minutes|hour|hours)\b",
+    r"\byou could (test|verify|check|try|confirm) (this|it|that) (yourself|for yourself)\b",
+    r"\bsee for yourself\b", r"\bjudge for yourself\b",
+    r"\bif (i'?m|i am) wrong,? (just )?(delete|ignore|archive)\b",
+    r"\brequired?: (none|nothing)\b", r"\bzero (effort|commitment|risk)\b",
+]
+_CONVENIENCE_RE = [re.compile(p, re.I) for p in _CONVENIENCE]
+
 # --- incoherence signals (coherence penalty) ------------------------------------------------------
 # vague referent + vacuous verb: "that flips", "this changes everything", "where it unlocks", ...
 _VAGUE_REF = re.compile(r"\b(that|this|it|which|where that|where it)\s+"
@@ -103,19 +122,38 @@ def _content_words(s: str) -> set:
     return {w for w in re.findall(r"[a-z']+", s.lower()) if w not in _STOP and len(w) > 2}
 
 
+_DISTINCT_NUM = re.compile(r"\d[\d,]*(?:\.\d+)?")
+
+
+def _distinct_numbers(s: str) -> set:
+    """Distinctive numeric tokens (canonical; small counting numbers excluded) — a statistic like
+    '724%' or '1.5M' is allowed to land ONCE in an email."""
+    out = set()
+    for m in _DISTINCT_NUM.findall(s or ""):
+        c = m.replace(",", "")
+        if "." in c:
+            c = c.rstrip("0").rstrip(".")
+        if c and c not in {str(i) for i in range(0, 13)}:
+            out.add(c)
+    return out
+
+
 def _redundant_pairs(sents: list, thresh: float = 0.5) -> set:
-    """Indices of sentences that substantially repeat an earlier one (content-word Jaccard) — the
-    cross-slot repetition an independent per-sentence check misses."""
+    """Indices of sentences that substantially repeat an earlier one — by content-word Jaccard OR by
+    REUSING a distinctive number an earlier sentence already delivered. The numeric check catches the
+    paraphrased-statistic repeat ('a 724% gain…' / 'the 724% result…') that word overlap misses."""
     red = set()
     words = [_content_words(s) for s in sents]
+    nums = [_distinct_numbers(s) for s in sents]
     for i in range(len(sents)):
         for j in range(i):
             a, b = words[i], words[j]
-            if not a or not b:
-                continue
-            jac = len(a & b) / len(a | b)
-            if jac >= thresh:
+            if a and b and len(a & b) / len(a | b) >= thresh:
                 red.add(i)
+                break
+            if nums[i] & nums[j]:
+                red.add(i)
+                break
     return red
 
 
@@ -124,6 +162,8 @@ class SentenceVerdict:
     sentence: str
     coherent: bool
     annoying: bool
+    ai_sounding: bool = False   # reads as AI-generated outreach (register, not content)
+    fabricated: bool = False    # asserts a factual detail the sender facts do not contain
     reasons: list = field(default_factory=list)
 
 
@@ -131,28 +171,36 @@ class SentenceVerdict:
 class Critique:
     coherence: float           # 0..1, higher = clearer
     naturalness: float         # 0..1, higher = less annoying
+    humanness: float = 1.0     # 0..1, higher = less AI-sounding (register axis)
+    factuality: float = 1.0    # 0..1, 1 = every claim entailed by the sender facts
     verdicts: list = field(default_factory=list)   # SentenceVerdict per sentence
     source: str = "lexical"
 
     @property
     def quality(self) -> float:
-        """Single 0..1 quality gate for the search: the min of the two axes (a slop line fails EITHER)."""
-        return min(self.coherence, self.naturalness)
+        """Single 0..1 quality gate for the search: the min across ALL axes — a line that is annoying,
+        AI-sounding, or fabricated fails the gate even if it is perfectly coherent."""
+        return min(self.coherence, self.naturalness, self.humanness, self.factuality)
 
     def flags(self) -> list:
         out = []
         for v in self.verdicts:
-            if not v.coherent or v.annoying:
+            if not v.coherent or v.annoying or v.ai_sounding or v.fabricated:
                 issues = []
                 if not v.coherent:
                     issues.append("incoherent/embellished")
                 if v.annoying:
                     issues.append("annoying")
+                if v.ai_sounding:
+                    issues.append("AI-sounding")
+                if v.fabricated:
+                    issues.append("fabricated (not in sender facts)")
                 out.append({"sentence": v.sentence, "issue": " + ".join(issues), "reasons": v.reasons})
         return out
 
     def summary(self) -> dict:
         return {"coherence": round(self.coherence, 3), "naturalness": round(self.naturalness, 3),
+                "humanness": round(self.humanness, 3), "factuality": round(self.factuality, 3),
                 "quality": round(self.quality, 3), "source": self.source, "flags": self.flags()}
 
 
@@ -160,8 +208,11 @@ class Critique:
 class SemanticCritic:
     """Adversarial text-quality critic. `judge_fn(sentences) -> [{coherent, annoying, reason}]` uses an
     LLM; without it, the transparent lexical fallback runs. `critique(text)` returns per-sentence verdicts
-    and the two aggregate axes."""
+    and the aggregate axes. `allowed_numbers` (optional, canonical numeric tokens from the sender's real
+    facts) arms a DETERMINISTIC factuality overlay: a sentence asserting a distinctive number outside the
+    facts is marked fabricated even if the LLM judge was lenient about it."""
     judge_fn: object = None
+    allowed_numbers: object = None                      # set[str] | None
 
     def critique(self, text: str) -> Critique:
         sents = _sentences(text)
@@ -170,11 +221,31 @@ class SemanticCritic:
         if self.judge_fn is not None:
             try:
                 crit = self._llm_critique(text, sents)
-            except Exception:
+            except Exception:  # noqa: BLE001 — judge outage falls back to the LEXICAL critic (which
+                # flags slop), never to all-pass, and the source label says so honestly
                 crit = self._lexical_critique(sents)
+                crit.source = "lexical_fallback(llm_judge_failed)"
         else:
             crit = self._lexical_critique(sents)
+        crit = self._apply_number_facts(crit, sents)
         return self._apply_redundancy(crit, sents)
+
+    def _apply_number_facts(self, crit: Critique, sents: list) -> Critique:
+        """Deterministic numeric-factuality overlay (both judge paths): distinctive numbers not present
+        in the sender facts mark the sentence fabricated. Belt to the propose-time guard's suspenders."""
+        if self.allowed_numbers is None:
+            return crit
+        allowed = set(self.allowed_numbers)
+        any_bad = False
+        for i, s in enumerate(sents):
+            bad = sorted(_distinct_numbers(s) - allowed)
+            if bad and i < len(crit.verdicts):
+                crit.verdicts[i].fabricated = True
+                crit.verdicts[i].reasons.append(f"number(s) not in sender facts: {bad}")
+                any_bad = True
+        if any_bad:
+            crit.factuality = 0.0
+        return crit
 
     def _apply_redundancy(self, crit: Critique, sents: list) -> Critique:
         """Structural cross-slot check (applies to BOTH the LLM and lexical paths): a sentence that
@@ -198,6 +269,11 @@ class SemanticCritic:
             reasons = []
             # annoyance
             ann_hits = [p.pattern for p in _ANNOYING_RE if p.search(s)]
+            conv_hits = [p.pattern for p in _CONVENIENCE_RE if p.search(s)]
+            if conv_hits:
+                ann_hits = ann_hits + conv_hits
+                reasons.append("convenience-selling: promises the reader a payoff / assures zero "
+                               "effort / pre-chews a verification step — pushy-frictionless register")
             # em/en dashes in the BODY are discouraged (LLMs overuse them). A sign-off dash ("— Beckett"
             # / "..., — Beckett" as the final short line) is fine and exempt. This is a soft penalty that
             # biases the search toward commas/periods, NOT a hard ban — a dash survives when it's the best
@@ -234,42 +310,38 @@ class SemanticCritic:
                 reasons.append("no concrete anchor (number, name, or specific noun)")
             coh = 1.0 - _sat(incoh)
             coherent = coh >= 0.5
+            # register axis (offline approximation): convenience-selling is the strongest lexical
+            # signal of AI-outreach register; the LLM judge is the real detector
+            ai_sounding = len(conv_hits) >= 2
             coh_scores.append(coh)
             nat_scores.append(nat)
             verdicts.append(SentenceVerdict(sentence=s, coherent=coherent, annoying=annoying,
-                                            reasons=reasons))
+                                            ai_sounding=ai_sounding, reasons=reasons))
         return Critique(coherence=min(coh_scores), naturalness=min(nat_scores),
+                        humanness=min((0.0 if v.ai_sounding else 1.0) for v in verdicts),
                         verdicts=verdicts, source="lexical")
 
     # ---- production LLM critic ----
     def _llm_critique(self, text: str, sents: list) -> Critique:
         results = self.judge_fn(sents) or []
-        verdicts, coh, nat = [], [], []
+        verdicts, coh, nat, hum, fac = [], [], [], [], []
         for s, r in zip(sents, results):
             coherent = bool(r.get("coherent", True))
             annoying = bool(r.get("annoying", False))
+            ai_sounding = bool(r.get("ai_sounding", False))
+            fabricated = bool(r.get("fabricated", False))
             reasons = [r["reason"]] if r.get("reason") else []
-            verdicts.append(SentenceVerdict(s, coherent, annoying, reasons))
+            verdicts.append(SentenceVerdict(s, coherent, annoying, ai_sounding, fabricated, reasons))
             coh.append(1.0 if coherent else 0.0)
             nat.append(0.0 if annoying else 1.0)
+            hum.append(0.0 if ai_sounding else 1.0)
+            fac.append(0.0 if fabricated else 1.0)
         return Critique(coherence=min(coh) if coh else 0.0, naturalness=min(nat) if nat else 1.0,
+                        humanness=min(hum) if hum else 1.0, factuality=min(fac) if fac else 1.0,
                         verdicts=verdicts, source="llm")
 
 
-def llm_sentence_judge(client_fn, model: str = "claude-opus-4-8"):
-    """Build a judge_fn(sentences)->[{coherent,annoying,reason}] from an LLM client. `client_fn(system,
-    user, schema)->dict` is the caller's structured-output shim (kept pluggable like the rest of swm)."""
-    SYSTEM = ("You are a ruthless editor of cold outreach. For each sentence, decide: is it COHERENT "
-              "(makes a concrete, literally-parseable claim a smart skeptic could act on — not vague "
-              "metaphor or buzzwords), and is it ANNOYING (tryhard, embellishing, fake-humble, or a "
-              "manipulative tic like 'I'll leave you alone'). Be harsh; default to flagging slop.")
-
-    def judge(sentences):
-        user = "Rate each sentence:\n" + "\n".join(f"{i+1}. {s}" for i, s in enumerate(sentences))
-        schema = {"type": "object", "properties": {"sentences": {"type": "array", "items": {
-            "type": "object", "properties": {"coherent": {"type": "boolean"},
-                                             "annoying": {"type": "boolean"}, "reason": {"type": "string"}},
-            "required": ["coherent", "annoying"]}}}, "required": ["sentences"]}
-        out = client_fn(SYSTEM, user, schema)
-        return out.get("sentences", [])
-    return judge
+# The production sentence judge lives in swm/decision/llm_moves.llm_sentence_judge (four axes:
+# coherent / annoying / ai_sounding / fabricated-vs-facts, strict fail-closed parsing). An older
+# two-axis judge that lived here was removed: it silently defaulted the register and factuality
+# axes to "pass", which is exactly the failure mode this critic exists to prevent.
