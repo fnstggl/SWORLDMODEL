@@ -650,6 +650,30 @@ def test_benchmark_prevents_post_outcome_leakage():
                for c in cases)
 
 
+def test_trajectory_benchmark_guards_leakage_and_debiases_positions():
+    import importlib.util
+    from pathlib import Path
+    spec = importlib.util.spec_from_file_location(
+        "trajectory_benchmark", Path("experiments/trajectory_benchmark.py"))
+    tb = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(tb)
+    cases = tb.load_cases()
+    assert len(cases) >= 3
+    tampered = copy.deepcopy(cases[0])
+    tampered["steps"][0]["evidence_additions"].append({"date": "2100-01-01", "text": "future"})
+    with pytest.raises(ValueError):
+        tb.leakage_check(tampered)
+    reordered = copy.deepcopy(cases[0])
+    reordered["steps"][1]["as_of"] = "1900-01-01"
+    with pytest.raises(ValueError):
+        tb.leakage_check(reordered)
+    # anticipation resolution: unique candidate mention scores; ambiguity is unscored
+    assert tb._resolve_anticipation("they will escalate the lawsuit", ["escalate", "accept"]) \
+        == "escalate"
+    assert tb._resolve_anticipation("they might accept or might escalate",
+                                    ["escalate", "accept"]) is None
+
+
 def test_qualitative_operator_in_the_event_loop_aggregates_per_branch():
     def decide(prompt):
         return qpayload(chosen="delay", target="") if "privately doubts" in prompt \
