@@ -181,14 +181,19 @@ def operators_from_plan(plan, *, llm=None, allow_experimental=False) -> tuple:
                                    allow_llm_probabilities=allow_experimental))
             elif opname == "production_actor_policy":
                 # The actor-policy MODE router (docs/ARCHITECTURE_QUALITATIVE_ACTORS.md §2).
-                # Default-on: with an LLM backend the core V2 funnel runs
-                # hybrid_relevant_actor_policy — persistent qualitative LLM cognition for
-                # causally consequential actors (question-specific tiers from the compiled
-                # plan), the numeric policy for routine actors; with no backend, the numeric
-                # production runtime exactly as it was. SWM_ACTOR_POLICY selects any mode.
-                bound_runtime = _actor_policy_runtime(plan, llm)
-                ops.append(factory(runtime=bound_runtime) if bound_runtime is not None
-                           else factory())
+                # DEFAULT-ON: every run requests hybrid qualitative cognition for consequential
+                # humans; numeric_policy serves only as an explicit benchmark/ablation, the
+                # Tier-3 routine policy, or a LOUDLY-REPORTED degradation (no backend /
+                # construction failure) — never a silent swap. The report rides on the operator
+                # and is attached to every run result by attach_actor_decision_distributions.
+                bound_runtime, policy_report = _actor_policy_runtime(plan, llm)
+                op = factory(runtime=bound_runtime) if bound_runtime is not None else factory()
+                op.actor_policy_report = policy_report
+                if policy_report.get("degraded"):
+                    rejections.append({"mech_id": "production_actor_policy",
+                                       "reason": "actor_policy_degraded: "
+                                                 + policy_report["construction_error"]})
+                ops.append(op)
             elif hasattr(factory, "run") and hasattr(factory, "applicable") and not isinstance(factory, type):
                 # Phase 7/10 registry entries are configured operator instances.  Treat
                 # them as prototypes instead of assuming every entry is a zero-arg class.
@@ -206,54 +211,115 @@ ACTOR_POLICY_MODES = ("numeric_policy", "persona_blended_numeric_policy", "state
                       "persistent_qualitative_llm_policy", "hybrid_relevant_actor_policy")
 
 
-def resolve_actor_policy_mode(llm) -> str:
-    """The run's actor-policy mode: SWM_ACTOR_POLICY when set (validated), else DEFAULT-ON
-    hybrid qualitative cognition with a backend, numeric without. The legacy SWM_LLM_ACTORS=off
-    switch still forces numeric."""
+def resolve_actor_policy_mode(llm=None) -> str:
+    """The REQUESTED actor-policy mode. DEFAULT-ON: hybrid qualitative cognition for
+    consequential humans is the intended default for every run — numeric_policy exists only as
+    an explicit benchmark/ablation request (SWM_ACTOR_POLICY=numeric_policy or the legacy
+    SWM_LLM_ACTORS=off). Whether the request can actually be SERVED (a backend exists, the
+    runtime constructs) is a separate question answered loudly by the actor_policy_report —
+    resolution never silently depends on the backend."""
     import os
     if os.environ.get("SWM_LLM_ACTORS", "").strip().lower() == "off":
         return "numeric_policy"
     mode = os.environ.get("SWM_ACTOR_POLICY", "").strip().lower()
     if mode in ACTOR_POLICY_MODES:
         return mode
-    return "hybrid_relevant_actor_policy" if llm is not None else "numeric_policy"
+    return "hybrid_relevant_actor_policy"
 
 
 def _actor_policy_runtime(plan, llm):
-    """Bind the runtime for the resolved mode, or None (plain numeric operator). A failure to
-    construct an LLM runtime must never block materialization — the numeric path serves and the
-    absence of qualitative/persona provenance on the traces records it."""
-    mode = resolve_actor_policy_mode(llm)
-    if mode == "numeric_policy" or llm is None:
-        return None
+    """Bind the runtime for the requested mode. Returns (runtime_or_None, report). The report
+    ALWAYS states requested vs actual mode and why they differ — a Tier-1 actor silently
+    becoming the old numeric actor is prohibited. A construction error is recorded verbatim
+    (and re-surfaced as a run degradation), never swallowed into a quiet numeric run."""
+    requested = resolve_actor_policy_mode(llm)
+    report = {"requested_actor_policy_mode": requested,
+              "actual_actor_policy_mode": requested, "construction_error": "", "degraded": False}
+    if requested == "numeric_policy":
+        report["actual_actor_policy_mode"] = "numeric_policy"
+        report["reason"] = "numeric_policy explicitly requested (benchmark/ablation)"
+        return None, report
+    if llm is None:
+        # honest capability statement, loudly reported — there is no backend to run cognition
+        report.update(actual_actor_policy_mode="numeric_policy", reason="no_llm_backend",
+                      warning="requested LLM actor policy cannot run without a backend; "
+                              "numeric policy served — supply llm= to simulate_world/run_from_plan")
+        return None, report
     try:
-        if mode == "persona_blended_numeric_policy":
+        if requested == "persona_blended_numeric_policy":
             from swm.world_model_v2.llm_actor import build_persona_runtime
-            return build_persona_runtime(llm=llm)
-        from swm.world_model_v2.qualitative_actor import build_qualitative_runtime
-        return build_qualitative_runtime(plan, llm=llm, mode=mode)
-    except Exception:  # noqa: BLE001
-        return None
+            runtime = build_persona_runtime(llm=llm)
+        else:
+            from swm.world_model_v2.qualitative_actor import build_qualitative_runtime
+            runtime = build_qualitative_runtime(plan, llm=llm, mode=requested,
+                                                fallback_llms=_fallback_backends(llm))
+        if runtime is None:
+            raise RuntimeError("runtime constructor returned None despite a backend")
+        return runtime, report
+    except Exception as e:  # noqa: BLE001 — LOUD degradation, never a silent numeric swap
+        report.update(actual_actor_policy_mode="numeric_policy", degraded=True,
+                      construction_error=f"{type(e).__name__}: {e}"[:300],
+                      reason="qualitative_runtime_construction_failed",
+                      warning="requested actor policy FAILED to construct; numeric policy "
+                              "served as a degraded run — this is a defect, not a mode choice")
+        return None, report
+
+
+def _fallback_backends(primary):
+    """Secondary model families for Tier-1 decisions when the primary call fails: any
+    configured alternate providers (HF router today). Recorded per-decision when they serve."""
+    out = []
+    try:
+        import os
+        if os.environ.get("HF_TOKEN"):
+            from swm.api.hf_backend import hf_chat_fn
+            out.append(hf_chat_fn(max_tokens=2000, temperature=0.8))
+    except Exception:  # noqa: BLE001 — an unavailable fallback family is simply absent
+        pass
+    return out
 
 
 def attach_actor_decision_distributions(ops, container: dict) -> None:
-    """After a rollout, read every qualitative runtime's (posterior, trace) records off the
-    shared operators and attach the counted raw/calibrated action distributions — the
-    statistical layer's output — to the run container. No-op for numeric/persona runs."""
+    """After a rollout: attach the counted action distributions AND the mandatory
+    actor-policy routing report (requested vs actual mode, who was routed where, every
+    fallback and its reason). The report is attached for EVERY run — including numeric ones —
+    so a bypassed qualitative layer is always visible on the result."""
     try:
         from swm.world_model_v2.qualitative_actor import aggregate_actor_decisions
-        records = []
-        mode = ""
+        records, mode, runtime_report = [], "", None
         for op in ops:
             runtime = getattr(op, "runtime", None)
             if runtime is not None and hasattr(runtime, "decision_records"):
                 records.extend(runtime.decision_records)
                 mode = getattr(runtime, "mode", mode)
+            if getattr(op, "actor_policy_report", None):
+                runtime_report = op.actor_policy_report
+        report = dict(runtime_report or {"requested_actor_policy_mode": "numeric_policy",
+                                         "actual_actor_policy_mode": "numeric_policy",
+                                         "reason": "no production_actor_policy operator bound"})
+        qual_actors, num_actors, fallback_reasons = set(), set(), {}
+        for posterior, trace in records:
+            q = (posterior.provenance or {}).get("qualitative") or {}
+            source = q.get("decision_source", "numeric_policy")
+            if source in ("persistent_qualitative_llm", "stateless_llm"):
+                qual_actors.add(trace.actor_id)
+            else:
+                num_actors.add(trace.actor_id)
+                key = f"{trace.actor_id}:{q.get('reason', source)}"
+                fallback_reasons[key] = fallback_reasons.get(key, 0) + 1
+        report.update(
+            actors_routed_qualitatively=sorted(qual_actors),
+            actors_routed_numerically=sorted(num_actors - qual_actors),
+            fallbacks=int(sum(fallback_reasons.values())),
+            fallback_reasons=[{"actor_and_reason": k, "n": n}
+                              for k, n in sorted(fallback_reasons.items())])
+        container["actor_policy_report"] = report
         if records:
             container["actor_decision_distributions"] = aggregate_actor_decisions(records)
             container["actor_policy_mode"] = mode
-    except Exception:  # noqa: BLE001 — aggregation is reporting, never a run blocker
-        pass
+    except Exception as e:  # noqa: BLE001 — reporting must not kill the run, but must not vanish
+        container.setdefault("actor_policy_report", {})["report_error"] = \
+            f"{type(e).__name__}: {e}"[:200]
 
 
 def _inject_posterior_rate(plan) -> bool:

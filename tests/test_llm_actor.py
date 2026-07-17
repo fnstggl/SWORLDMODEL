@@ -409,12 +409,17 @@ def test_build_persona_runtime_gating(monkeypatch):
 
 def test_materialize_binds_persona_baseline_only_when_its_mode_is_selected(monkeypatch):
     from swm.world_model_v2.materialize import _actor_policy_runtime
-    assert _actor_policy_runtime(None, None) is None
+    monkeypatch.delenv("SWM_ACTOR_POLICY", raising=False)
+    rt, report = _actor_policy_runtime(None, None)
+    assert rt is None and report["actual_actor_policy_mode"] == "numeric_policy"
+    assert report["requested_actor_policy_mode"] == "hybrid_relevant_actor_policy"
+    assert report["reason"] == "no_llm_backend" and report["warning"]   # loud, never silent
     monkeypatch.setenv("SWM_ACTOR_POLICY", "persona_blended_numeric_policy")
-    rt = _actor_policy_runtime(None, ScriptedLLM(good_payload()))
-    assert isinstance(rt, PersonaActorPolicyRuntime)
+    rt, report = _actor_policy_runtime(None, ScriptedLLM(good_payload()))
+    assert isinstance(rt, PersonaActorPolicyRuntime) and not report["degraded"]
     monkeypatch.setenv("SWM_ACTOR_POLICY", "numeric_policy")
-    assert _actor_policy_runtime(None, ScriptedLLM(good_payload())) is None
+    rt, report = _actor_policy_runtime(None, ScriptedLLM(good_payload()))
+    assert rt is None and "explicitly requested" in report["reason"]
 
 
 def test_operators_from_plan_mode_router(monkeypatch):

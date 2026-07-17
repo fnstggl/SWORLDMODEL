@@ -75,6 +75,16 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
     lineage = {"plan_hashes": [], "recompilations": []}
     costs = {"llm_calls": 0}
 
+    # ---------- Individual-reaction route: a personal question about how a specific person will
+    # react, with the person's context supplied by the caller (user_context["individual"]),
+    # runs the SAME qualitative actor architecture directly — the person is automatically
+    # Tier 1 and never needs to pre-exist in a compiled world. Named public figures without
+    # supplied context continue through compilation, where the selector's
+    # reaction_is_the_question rule makes them Tier 1.
+    individual = _route_individual_reaction(question, user_context, llm, as_of, seed, t0)
+    if individual is not None:
+        return individual
+
     def _iso(s):
         return s
 
@@ -348,6 +358,70 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
     return res
 
 
+def _route_individual_reaction(question, user_context, llm, as_of, seed, t0):
+    """SimulationResult for a personal reaction question with supplied individual context, or
+    None (ordinary compiled route). The caller's context — who the person is, the relationship,
+    the history, optionally the exact stimulus — is preserved verbatim into the person's
+    actor-local world; the target is automatically Tier 1; the answer is the counted (and
+    externally calibrated or `unvalidated`) distribution over the person's simulated observable
+    responses, with the full per-sample artifact and the actor-policy report in provenance."""
+    from swm.world_model_v2.actor_selection import is_individual_reaction_question
+    person = (user_context or {}).get("individual") if isinstance(user_context, dict) else None
+    if not isinstance(person, dict) or not is_individual_reaction_question(question):
+        return None
+    report = {"requested_actor_policy_mode": "hybrid_relevant_actor_policy",
+              "actual_actor_policy_mode": "persistent_qualitative_llm_policy",
+              "route": "individual_reaction", "reason": "reaction_is_the_question",
+              "degraded": False, "construction_error": ""}
+    if llm is None:
+        return SimulationResult(
+            question=question, simulation_status="execution_failed",
+            failure_taxonomy="missing_required_operator",
+            limitations=["individual-reaction route requires an LLM backend; none supplied"],
+            provenance={"actor_policy_report": {**report, "degraded": True,
+                                                "actual_actor_policy_mode": "none",
+                                                "construction_error": "no_llm_backend"}},
+            latency_s=round(_time.time() - t0, 3))
+    try:
+        from swm.world_model_v2.compiler import parse_time
+        from swm.world_model_v2.individual_reaction import simulate_individual_reaction
+        now = parse_time(as_of) if as_of else _time.time()
+        artifact = simulate_individual_reaction(
+            person_id=str(person.get("person_id", person.get("name", "the_person"))),
+            stimulus=str(person.get("stimulus", question))[:800],
+            context=person, llm=llm,
+            n_hypotheses=int(person.get("n_hypotheses", 3) or 3),
+            samples_per_hypothesis=int(person.get("samples_per_hypothesis", 2) or 2),
+            seed=seed, as_of=now)
+        dist = dict(artifact["raw_qualitative_simulation_distribution"])
+        calibrated = (dict(artifact["calibrated_distribution"])
+                      if artifact["calibration_status"] == "calibrated" else None)
+        fallbacks = int(artifact.get("n_excluded_numeric_fallbacks", 0))
+        return SimulationResult(
+            question=question, simulation_status="completed", support_grade="exploratory",
+            raw_distribution=dist, calibrated_distribution=calibrated,
+            limitations=([] if artifact["calibration_status"] == "calibrated" else
+                         ["reaction distribution is counted from qualitative simulations and "
+                          "is unvalidated (no fitted calibrator for this person/role)"]),
+            provenance={"runtime": RUNTIME_VERSION, "route": "individual_reaction",
+                        "actor_policy_report": {
+                            **report, "actors_routed_qualitatively": [artifact["person_id"]],
+                            "actors_routed_numerically": [], "fallbacks": fallbacks,
+                            "fallback_reasons": ([{"actor_and_reason":
+                                                   f"{artifact['person_id']}:llm_failed", "n": fallbacks}]
+                                                 if fallbacks else [])},
+                        "individual_reaction": artifact},
+            cost_usd=0.0, latency_s=round(_time.time() - t0, 3))
+    except Exception as e:  # noqa: BLE001 — LOUD failure, never a silent fall-through
+        return SimulationResult(
+            question=question, simulation_status="execution_failed",
+            failure_taxonomy="runtime_exception",
+            limitations=[f"individual-reaction route failed: {type(e).__name__}: {e}"[:200]],
+            provenance={"actor_policy_report": {**report, "degraded": True,
+                                                "construction_error": f"{type(e).__name__}: {e}"[:200]}},
+            latency_s=round(_time.time() - t0, 3))
+
+
 def _thread_populations_networks(plan, manifest, drop):
     """Phase 9: instantiate population segments + multilayer-network layers into the shared plan when the
     compiler declared them. Distinct edge layers control distinct causal processes (delivery/exposure/trust/
@@ -425,8 +499,15 @@ def _project_terminal(question, plan, as_of, horizon, intervention, seed, llm, u
         if persistence_dropped:
             from swm.world_model_v2.materialize import run_from_plan
             from swm.world_model_v2.pipeline import result_from_run
+            from swm.world_model_v2.phase8_pipeline import _surface_actor_policy_degradation
             result, branches = run_from_plan(plan, llm=llm, seed=seed)
             res = result_from_run(question, plan, result, branches, intervention=intervention, t0=t0)
+            res.provenance = {**(res.provenance or {}),
+                              "actor_policy_report": result.get("actor_policy_report", {})}
+            if result.get("actor_decision_distributions"):
+                res.provenance["actor_decision_distributions"] = \
+                    result["actor_decision_distributions"]
+            _surface_actor_policy_degradation(res, result.get("actor_policy_report", {}))
             manifest["phase8_persistence"].update(omitted=True, reason="dropped_by_policy")
         else:
             res, _p8meta = run_with_persistence(question, plan, llm=llm, context=user_context,

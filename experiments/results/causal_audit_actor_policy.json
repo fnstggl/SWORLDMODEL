@@ -1,0 +1,500 @@
+{
+ "schema_version": "causal.audit.actor.policy.v2",
+ "matched_worlds": "branch RNG streams keyed by branch id \u2014 coupling draws identical across arms; the ONLY difference is the decision layer",
+ "ON": {
+  "mode": "persistent_qualitative_llm_policy",
+  "final_distribution": {
+   "no_agreement": 1.0
+  },
+  "actor_policy_report": {
+   "requested_actor_policy_mode": "persistent_qualitative_llm_policy",
+   "actual_actor_policy_mode": "persistent_qualitative_llm_policy",
+   "construction_error": "",
+   "degraded": false,
+   "actors_routed_qualitatively": [
+    "leader_a",
+    "leader_b"
+   ],
+   "actors_routed_numerically": [],
+   "fallbacks": 0,
+   "fallback_reasons": []
+  },
+  "actor_decision_distributions": {
+   "leader_a": {
+    "raw_qualitative_simulation_distribution": {
+     "counteroffer@leader_b": 0.1667,
+     "counteroffer@mediator": 0.0417,
+     "counteroffer[multi_part]@leader_b": 0.4583,
+     "counteroffer[multi_part]@mediator": 0.0417,
+     "delay[multi_part]@mediator": 0.0833,
+     "hold_position@mediator": 0.0417,
+     "hold_position[multi_part]@leader_b": 0.0833,
+     "hold_position[multi_part]@mediator": 0.0833
+    },
+    "calibrated_distribution": {
+     "counteroffer@leader_b": 0.1667,
+     "counteroffer@mediator": 0.0417,
+     "counteroffer[multi_part]@leader_b": 0.4583,
+     "counteroffer[multi_part]@mediator": 0.0417,
+     "delay[multi_part]@mediator": 0.0833,
+     "hold_position@mediator": 0.0417,
+     "hold_position[multi_part]@leader_b": 0.0833,
+     "hold_position[multi_part]@mediator": 0.0833
+    },
+    "calibration_status": "unvalidated",
+    "calibration_level": "none",
+    "n_qualitative_branches": 24,
+    "n_excluded_numeric_fallbacks": 0,
+    "cluster_version": "cluster-2.0"
+   },
+   "leader_b": {
+    "raw_qualitative_simulation_distribution": {
+     "accept[multi_part]": 0.027,
+     "acknowledge@mediator": 0.0541,
+     "acknowledge@principal_a": 0.0811,
+     "acknowledge[multi_part]@mediator": 0.1351,
+     "counteroffer@mediator": 0.2432,
+     "counteroffer[multi_part]": 0.027,
+     "counteroffer[multi_part]@mediator": 0.1081,
+     "counteroffer[multi_part]@neutral_third_party": 0.0541,
+     "do_nothing[conditional]": 0.027,
+     "hold_position": 0.027,
+     "hold_position[multi_part]": 0.027,
+     "private_consultation[multi_part]": 0.0541,
+     "private_consultation[private]": 0.027,
+     "seek_mediator@mediator": 0.027,
+     "seek_mediator@neutral_third_party": 0.027,
+     "seek_mediator[multi_part]@mediator": 0.0541
+    },
+    "calibrated_distribution": {
+     "accept[multi_part]": 0.027,
+     "acknowledge@mediator": 0.0541,
+     "acknowledge@principal_a": 0.0811,
+     "acknowledge[multi_part]@mediator": 0.1351,
+     "counteroffer@mediator": 0.2432,
+     "counteroffer[multi_part]": 0.027,
+     "counteroffer[multi_part]@mediator": 0.1081,
+     "counteroffer[multi_part]@neutral_third_party": 0.0541,
+     "do_nothing[conditional]": 0.027,
+     "hold_position": 0.027,
+     "hold_position[multi_part]": 0.027,
+     "private_consultation[multi_part]": 0.0541,
+     "private_consultation[private]": 0.027,
+     "seek_mediator@mediator": 0.027,
+     "seek_mediator@neutral_third_party": 0.027,
+     "seek_mediator[multi_part]@mediator": 0.0541
+    },
+    "calibration_status": "unvalidated",
+    "calibration_level": "none",
+    "n_qualitative_branches": 37,
+    "n_excluded_numeric_fallbacks": 0,
+    "cluster_version": "cluster-2.0"
+   }
+  },
+  "branches": [
+   {
+    "branch": "b000",
+    "actions": [
+     "hold_position",
+     "counteroffer",
+     "hold_position",
+     "counteroffer",
+     "hold_position",
+     "counteroffer"
+    ],
+    "net_cooperative_intent": 0.15,
+    "coop_deltas": [
+     -0.0037,
+     0.0037,
+     -0.0037,
+     0.0037,
+     -0.0037,
+     0.0037
+    ],
+    "terminal_cooperative_progress": 0.3
+   },
+   {
+    "branch": "b001",
+    "actions": [
+     "counteroffer",
+     "counteroffer",
+     "acknowledge",
+     "delay",
+     "counteroffer",
+     "delay",
+     "counteroffer"
+    ],
+    "net_cooperative_intent": 1.0,
+    "coop_deltas": [
+     0.0219,
+     0.0189,
+     -0.0125,
+     0.0189,
+     -0.0125,
+     0.0189
+    ],
+    "terminal_cooperative_progress": 0.3536
+   },
+   {
+    "branch": "b002",
+    "actions": [
+     "hold_position",
+     "private_consultation",
+     "counteroffer",
+     "private_consultation",
+     "counteroffer",
+     "private_consultation"
+    ],
+    "net_cooperative_intent": 0.4,
+    "coop_deltas": [
+     -0.0088,
+     0.0102,
+     0.0102
+    ],
+    "terminal_cooperative_progress": 0.3116
+   },
+   {
+    "branch": "b003",
+    "actions": [
+     "counteroffer",
+     "counteroffer",
+     "acknowledge",
+     "counteroffer",
+     "counteroffer",
+     "acknowledge",
+     "counteroffer",
+     "counteroffer",
+     "acknowledge"
+    ],
+    "net_cooperative_intent": 2.1,
+    "coop_deltas": [
+     0.0083,
+     0.0072,
+     0.0083,
+     0.0072,
+     0.0083,
+     0.0072
+    ],
+    "terminal_cooperative_progress": 0.3465
+   },
+   {
+    "branch": "b004",
+    "actions": [
+     "hold_position",
+     "counteroffer",
+     "counteroffer",
+     "seek_mediator",
+     "counteroffer",
+     "hold_position"
+    ],
+    "net_cooperative_intent": 0.85,
+    "coop_deltas": [
+     -0.0146,
+     0.0147,
+     0.017,
+     0.0168,
+     0.017,
+     -0.0126
+    ],
+    "terminal_cooperative_progress": 0.3383
+   },
+   {
+    "branch": "b005",
+    "actions": [
+     "counteroffer",
+     "seek_mediator",
+     "acknowledge",
+     "counteroffer",
+     "counteroffer",
+     "acknowledge",
+     "counteroffer",
+     "counteroffer",
+     "acknowledge"
+    ],
+    "net_cooperative_intent": 2.15,
+    "coop_deltas": [
+     0.0187,
+     0.0185,
+     0.0187,
+     0.0161,
+     0.0187,
+     0.0161
+    ],
+    "terminal_cooperative_progress": 0.4068
+   },
+   {
+    "branch": "b006",
+    "actions": [
+     "counteroffer",
+     "counteroffer",
+     "deliberate_internal_review",
+     "counteroffer",
+     "hold_position",
+     "do_nothing",
+     "counteroffer",
+     "counteroffer",
+     "acknowledge"
+    ],
+    "net_cooperative_intent": 1.45,
+    "coop_deltas": [
+     0.0294,
+     0.0254,
+     0.0254,
+     0.0294,
+     -0.0217,
+     0.0109,
+     0.0294,
+     0.0254
+    ],
+    "terminal_cooperative_progress": 0.4536
+   },
+   {
+    "branch": "b007",
+    "actions": [
+     "counteroffer",
+     "counteroffer",
+     "acknowledge",
+     "counteroffer",
+     "seek_mediator",
+     "press_mediator_again",
+     "counteroffer",
+     "seek_mediator",
+     "acknowledge"
+    ],
+    "net_cooperative_intent": 2.2,
+    "coop_deltas": [
+     0.0121,
+     0.0104,
+     0.0121,
+     0.0119,
+     0.0298,
+     0.0121,
+     0.0119
+    ],
+    "terminal_cooperative_progress": 0.4003
+   }
+  ],
+  "intelligibility": {
+   "mean_terminal_given_net_cooperative_actions": 0.373,
+   "mean_terminal_given_net_anticooperative_actions": null,
+   "n_cooperative_branches": 7,
+   "n_anticooperative_branches": 0
+  },
+  "wall_s": 558.1
+ },
+ "OFF": {
+  "mode": "numeric_policy",
+  "final_distribution": {
+   "no_agreement": 1.0
+  },
+  "actor_policy_report": {
+   "requested_actor_policy_mode": "numeric_policy",
+   "actual_actor_policy_mode": "numeric_policy",
+   "construction_error": "",
+   "degraded": false,
+   "reason": "numeric_policy explicitly requested (benchmark/ablation)",
+   "actors_routed_qualitatively": [],
+   "actors_routed_numerically": [],
+   "fallbacks": 0,
+   "fallback_reasons": []
+  },
+  "actor_decision_distributions": {},
+  "branches": [
+   {
+    "branch": "b000",
+    "actions": [
+     "delay",
+     "delay",
+     "delay",
+     "accept",
+     "seek_mediator",
+     "counteroffer"
+    ],
+    "net_cooperative_intent": 1.15,
+    "coop_deltas": [
+     -0.0024,
+     -0.0021,
+     -0.0024,
+     0.0105,
+     0.0049,
+     0.0037
+    ],
+    "terminal_cooperative_progress": 0.3122
+   },
+   {
+    "branch": "b001",
+    "actions": [
+     "hold_position",
+     "hold_position",
+     "counteroffer",
+     "accept",
+     "escalate",
+     "counteroffer"
+    ],
+    "net_cooperative_intent": 0.6,
+    "coop_deltas": [
+     -0.0188,
+     -0.0162,
+     0.0219,
+     0.054,
+     0.0189
+    ],
+    "terminal_cooperative_progress": 0.3598
+   },
+   {
+    "branch": "b002",
+    "actions": [
+     "hold_position",
+     "escalate",
+     "delay",
+     "delay",
+     "hold_position",
+     "hold_position"
+    ],
+    "net_cooperative_intent": -1.8,
+    "coop_deltas": [
+     -0.0088,
+     -0.0058,
+     -0.005,
+     -0.0088,
+     -0.0076
+    ],
+    "terminal_cooperative_progress": 0.264
+   },
+   {
+    "branch": "b003",
+    "actions": [
+     "seek_mediator",
+     "seek_mediator",
+     "seek_mediator",
+     "escalate",
+     "hold_position",
+     "seek_mediator"
+    ],
+    "net_cooperative_intent": 0.8,
+    "coop_deltas": [
+     0.0095,
+     0.0082,
+     0.0095,
+     -0.0071,
+     0.0082
+    ],
+    "terminal_cooperative_progress": 0.3283
+   },
+   {
+    "branch": "b004",
+    "actions": [
+     "seek_mediator",
+     "hold_position",
+     "delay",
+     "delay",
+     "delay",
+     "escalate"
+    ],
+    "net_cooperative_intent": -1.0,
+    "coop_deltas": [
+     0.0194,
+     -0.0126,
+     -0.0097,
+     -0.0084,
+     -0.0097
+    ],
+    "terminal_cooperative_progress": 0.279
+   },
+   {
+    "branch": "b005",
+    "actions": [
+     "hold_position",
+     "escalate",
+     "escalate",
+     "accept",
+     "counteroffer",
+     "escalate"
+    ],
+    "net_cooperative_intent": -0.45,
+    "coop_deltas": [
+     -0.016,
+     0.0461,
+     0.0187
+    ],
+    "terminal_cooperative_progress": 0.3488
+   },
+   {
+    "branch": "b006",
+    "actions": [
+     "escalate",
+     "escalate",
+     "escalate",
+     "hold_position",
+     "escalate",
+     "delay"
+    ],
+    "net_cooperative_intent": -2.5,
+    "coop_deltas": [
+     -0.0217,
+     -0.0145
+    ],
+    "terminal_cooperative_progress": 0.2638
+   },
+   {
+    "branch": "b007",
+    "actions": [
+     "accept",
+     "counteroffer",
+     "hold_position",
+     "hold_position",
+     "counteroffer",
+     "delay"
+    ],
+    "net_cooperative_intent": 0.9,
+    "coop_deltas": [
+     0.0345,
+     0.0104,
+     -0.0104,
+     -0.0089,
+     0.0121,
+     -0.006
+    ],
+    "terminal_cooperative_progress": 0.3317
+   }
+  ],
+  "intelligibility": {
+   "mean_terminal_given_net_cooperative_actions": 0.333,
+   "mean_terminal_given_net_anticooperative_actions": 0.2889,
+   "n_cooperative_branches": 4,
+   "n_anticooperative_branches": 4
+  },
+  "wall_s": 0.3
+ },
+ "final_answer_changed": false,
+ "p_agreement_ON": 0.0,
+ "p_agreement_OFF": 0.0,
+ "trajectory_distribution": {
+  "terminal_values_ON": [
+   0.3,
+   0.3116,
+   0.3383,
+   0.3465,
+   0.3536,
+   0.4003,
+   0.4068,
+   0.4536
+  ],
+  "terminal_values_OFF": [
+   0.2638,
+   0.264,
+   0.279,
+   0.3122,
+   0.3283,
+   0.3317,
+   0.3488,
+   0.3598
+  ],
+  "mean_ON": 0.3638,
+  "mean_OFF": 0.3109,
+  "mean_shift": 0.0529,
+  "max_cdf_gap": 0.5,
+  "changed": true
+ },
+ "finding": "The decision layer is LOAD-BEARING through the production funnel: the terminal trajectory distribution shifts decisively between arms on matched worlds. Whether that shift crosses a BINARY threshold is governed by the action->pathway consequence coupling scale (sampled prior ~0.04/action), which bounds few-round scenarios to small state movement - the documented next architectural bottleneck: consequence realism, to be fitted via coupling packs on scored trajectories, not widened by hand."
+}
