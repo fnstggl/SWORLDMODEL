@@ -27,7 +27,7 @@
      "pathway": "unilateral_action"
     },
     {
-     "id": "comprehensive_peace_treaty",
+     "id": "peace_treaty",
      "support": "3/3",
      "pathway": "cooperative_agreement"
     }
@@ -47,11 +47,10 @@
    "modes": [
     "russian_victory",
     "ceasefire",
-    "ukrainian_victory"
+    "ukrainian_victory",
+    "peace_treaty"
    ],
-   "rejected_non_absorbing_modes": [
-    "comprehensive_peace_treaty"
-   ],
+   "rejected_non_absorbing_modes": [],
    "mode_consensus": {
     "n_sources": 3,
     "n_elicitation_passes": 3,
@@ -78,7 +77,7 @@
       "pathway": "unilateral_action"
      },
      {
-      "id": "comprehensive_peace_treaty",
+      "id": "peace_treaty",
       "support": "3/3",
       "pathway": "cooperative_agreement"
      }
@@ -95,7 +94,7 @@
     ]
    },
    "n_particles": 200,
-   "n_hazard_rounds": 30,
+   "n_hazard_rounds": 40,
    "rounds_per_mode": 10,
    "agreement_hazard_ratio": {
     "median": 0.55,
@@ -138,6 +137,16 @@
      "combination_rule": "unilateral",
      "endogenous_split": 0.6,
      "pathway": "unilateral_action"
+    },
+    "peace_treaty": {
+     "median": 0.6986,
+     "lo80": 0.4856,
+     "hi80": 0.9387,
+     "binding_actor": "Vladimir_Putin",
+     "binding_level": "committed_to_prevent",
+     "combination_rule": "unanimity",
+     "endogenous_split": 0.6,
+     "pathway": "cooperative_agreement"
     }
    },
    "hazard_ratio_source": "documented_priors_unfitted",
@@ -277,13 +286,13 @@
    }
   },
   "result_distribution": {
-   "absorbed_by_horizon": 0.145,
-   "censored_beyond_horizon": 0.855
+   "absorbed_by_horizon": 0.125,
+   "censored_beyond_horizon": 0.875
   },
   "event_time_readout": {
    "n_particles": 200,
-   "n_absorbed": 29,
-   "p_censored": 0.855,
+   "n_absorbed": 25,
+   "p_censored": 0.875,
    "cdf_grid_ts": [
     1791927360.0,
     1799694720.0,
@@ -300,25 +309,25 @@
     0.005,
     0.02,
     0.02,
+    0.02,
     0.025,
-    0.03,
-    0.04,
-    0.045,
-    0.085,
-    0.125,
-    0.145
+    0.035,
+    0.035,
+    0.07,
+    0.105,
+    0.125
    ],
    "survival": [
     0.995,
     0.98,
     0.98,
+    0.98,
     0.975,
-    0.97,
-    0.96,
-    0.955,
-    0.915,
-    0.875,
-    0.855
+    0.965,
+    0.965,
+    0.93,
+    0.895,
+    0.875
    ],
    "first_passage_quantiles_ts": {
     "0.1": 1847711127.3,
@@ -328,9 +337,10 @@
     "0.9": null
    },
    "mode_distribution": {
-    "ceasefire": 0.03,
-    "russian_victory": 0.075,
-    "ukrainian_victory": 0.04
+    "ceasefire": 0.025,
+    "russian_victory": 0.055,
+    "ukrainian_victory": 0.04,
+    "peace_treaty": 0.005
    }
   },
   "actions_by_actor": {
@@ -404,7 +414,7 @@
    "cooperative_agreement": 0.1297,
    "unilateral_action": 0.6292
   },
-  "n_deltas": 22556
+  "n_deltas": 24506
  },
  "cross_domain": {
   "bill": {
