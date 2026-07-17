@@ -1,0 +1,385 @@
+{
+  "schema_version": "frozen.decision.cases.v1",
+  "description": "Hand-curated frozen decision cases from real, well-documented corporate and institutional events (product, rebrand, acquisition, executive, pricing, layoffs, regulatory, legal, labor). Each case freezes the world at as_of: every evidence line is public knowledge BEFORE the decision; the actual next action (with its date) is the label and never enters any prompt. Two extra fields per case - domain and posture - support slicing; posture flags whether the actual decision followed or contradicted the actor's prior public stance.",
+  "leakage_rule": "evidence[].date <= as_of < actual_action_date for every case; the harness asserts this and never renders actual_action into any actor input.",
+  "cases": [
+    {
+      "case_id": "coke_1985_classic_return",
+      "actor_id": "Coca_Cola_Leadership", "role": "company_leadership",
+      "as_of": "1985-07-05", "actual_action_date": "1985-07-11",
+      "domain": "product", "posture": "contradicted_public_posture",
+      "situation": "Ten weeks ago the company replaced its 99-year-old flagship formula with a sweeter reformulation and retired the original. Instead of the expected win, a consumer revolt has built: organized protest groups, a flooded complaint hotline, angry bottlers, and relentless negative press. Executives face a choice between standing behind the reformulation they called a triumph or reversing course and bringing the old taste back.",
+      "goals": ["reverse the sales and public-relations crisis", "retain loyal customers", "protect the flagship brand"],
+      "commitments": [{"statement": "Publicly declared the reformulated flagship was permanent and the original would not return", "binding": false}],
+      "evidence": [
+        {"date": "1985-04-23", "text": "Coca-Cola replaced its 99-year-old formula with a sweeter reformulation and discontinued the original."},
+        {"date": "1985-05-30", "text": "Organized consumer protests grew, including a group publicly demanding the original formula's return."},
+        {"date": "1985-06-15", "text": "The company's consumer hotline was flooded with tens of thousands of angry calls and letters; bottlers pressed for action."},
+        {"date": "1985-06-23", "text": "Press coverage widely framed the reformulation as a marketing blunder; loyalists hoarded remaining old-formula stock."}
+      ],
+      "candidate_actions": ["hold_position", "amend", "concede", "delay", "launch"],
+      "actual_action": "concede",
+      "source_note": "On 1985-07-11 Coca-Cola announced the return of the original formula as 'Coca-Cola Classic,' reversing course under consumer pressure."
+    },
+    {
+      "case_id": "google_2022_stadia_shutdown",
+      "actor_id": "Google_Stadia_Leadership", "role": "product_division_leadership",
+      "as_of": "2022-09-24", "actual_action_date": "2022-09-29",
+      "domain": "product", "posture": "contradicted_public_posture",
+      "situation": "The cloud-gaming service has struggled since launch: thin library, low adoption, and the earlier shutdown of its in-house studios. Rumors of closure have circulated for months, which the team publicly denied. Leadership must decide whether to keep funding the platform, pivot it, or shut it down and refund customers.",
+      "goals": ["cut losses on an underperforming service", "redirect resources to core bets", "limit reputational damage"],
+      "commitments": [{"statement": "Publicly stated the service was not shutting down", "binding": false}],
+      "evidence": [
+        {"date": "2019-11-19", "text": "Google launched Stadia to lukewarm reviews and a limited game library."},
+        {"date": "2022-02-01", "text": "Google closed its in-house Stadia game studios, ending first-party development."},
+        {"date": "2022-07-27", "text": "Stadia's official account publicly stated the service was 'not shutting down' amid rumors."},
+        {"date": "2022-09-01", "text": "Developers and users reported dwindling new releases and low engagement on the platform."}
+      ],
+      "candidate_actions": ["hold_position", "exit", "amend", "delay", "sell"],
+      "actual_action": "exit",
+      "source_note": "On 2022-09-29 Google announced it would shut down Stadia in January 2023 and refund hardware and software purchases."
+    },
+    {
+      "case_id": "meta_2025_factchecking_end",
+      "actor_id": "Mark_Zuckerberg", "role": "meta_ceo",
+      "as_of": "2025-01-03", "actual_action_date": "2025-01-07",
+      "domain": "product", "posture": "contradicted_public_posture",
+      "situation": "After years of defending an independent third-party fact-checking program on its platforms, the company faces a changed political environment and persistent accusations of censorship from the right. The incoming U.S. administration has been openly hostile to platform moderation, and the CEO has been signaling accommodation. He must decide whether to keep the fact-checking system, adjust it, or scrap it in favor of a user-driven model.",
+      "goals": ["reduce moderation controversy and censorship criticism", "improve ties with the incoming administration", "cut content-moderation cost and friction"],
+      "commitments": [{"statement": "Long publicly defended the independent third-party fact-checking program as vital against misinformation", "binding": false}],
+      "evidence": [
+        {"date": "2024-11-06", "text": "Donald Trump won the U.S. presidential election, reshaping the political landscape for large platforms."},
+        {"date": "2024-11-27", "text": "Zuckerberg met Trump at Mar-a-Lago as the company signaled a more conciliatory posture."},
+        {"date": "2024-12-12", "text": "The company donated $1 million to the incoming president's inaugural fund."},
+        {"date": "2025-01-02", "text": "The company elevated a Republican policy veteran to lead global affairs as its prior policy chief departed."}
+      ],
+      "candidate_actions": ["delay", "hold_position", "amend", "reveal", "withdraw"],
+      "actual_action": "amend",
+      "source_note": "On 2025-01-07 the company announced it would end its third-party fact-checking program in the U.S. and replace it with a community-notes model."
+    },
+    {
+      "case_id": "jaguar_2024_rebrand",
+      "actor_id": "Jaguar_Leadership", "role": "automaker_brand_leadership",
+      "as_of": "2024-11-14", "actual_action_date": "2024-11-19",
+      "domain": "rebrand", "posture": "followed_public_posture",
+      "situation": "The brand is mid-transition to an all-electric, upmarket relaunch and has wound down most of its existing model range. Leadership has been promising an uncompromising reinvention rather than incremental change. A brand communications rollout is imminent, and leadership must choose whether to debut a radical new identity now, hold the current identity, or delay.",
+      "goals": ["reposition the marque as an exclusive electric luxury brand", "attract younger affluent buyers", "differentiate sharply from rivals"],
+      "commitments": [{"statement": "Committed under its Reimagine strategy to relaunch the brand as an all-electric luxury marque", "binding": false}],
+      "evidence": [
+        {"date": "2021-02-15", "text": "Under its Reimagine strategy, the parent group committed to relaunching the brand as an all-electric luxury marque."},
+        {"date": "2023-11-01", "text": "The company reaffirmed that its combustion-era lineup would be retired as it moved to an electric-only range."},
+        {"date": "2024-06-30", "text": "The brand wound down sales of most existing models in core markets ahead of the relaunch."},
+        {"date": "2024-10-15", "text": "Executives publicly promised a bold, uncompromising reinvention of the brand rather than incremental change."}
+      ],
+      "candidate_actions": ["delay", "hold_position", "launch", "reveal", "amend"],
+      "actual_action": "reveal",
+      "source_note": "On 2024-11-19 the brand unveiled a radical new visual identity and 'Copy Nothing' campaign ahead of its December concept-car reveal."
+    },
+    {
+      "case_id": "hbo_max_2025_name_reversal",
+      "actor_id": "Warner_Bros_Discovery_Leadership", "role": "media_company_leadership",
+      "as_of": "2025-05-09", "actual_action_date": "2025-05-14",
+      "domain": "rebrand", "posture": "contradicted_public_posture",
+      "situation": "Two years ago the company dropped 'HBO' from its flagship streaming service and renamed it, arguing the shorter name signaled a broader content range; executives defended the move publicly. Since then the service has leaned heavily on prestige originals in its marketing. With an annual investor and advertiser presentation imminent, leadership must decide whether to keep the current name, restore the old premium branding, or make some other change.",
+      "goals": ["reassociate the service with a premium reputation", "reverse brand and subscriber confusion", "signal a quality-first strategy"],
+      "commitments": [{"statement": "Publicly defended dropping 'HBO' from the streaming brand as a deliberate strategy", "binding": false}],
+      "evidence": [
+        {"date": "2023-04-12", "text": "The company announced it would drop 'HBO' from the flagship streaming brand and rename the service."},
+        {"date": "2023-05-23", "text": "The service relaunched under the shorter name, combining prestige and unscripted libraries."},
+        {"date": "2023-05-01", "text": "Executives publicly defended removing 'HBO,' saying the shorter name signaled a broader content range."},
+        {"date": "2024-11-01", "text": "The company leaned on prestige originals in marketing as subscriber growth tracked those titles."}
+      ],
+      "candidate_actions": ["hold_position", "reveal", "amend", "delay"],
+      "actual_action": "reveal",
+      "source_note": "On 2025-05-14 the company announced at its upfront that it would restore the 'HBO Max' name, reversing the 2023 rebrand."
+    },
+    {
+      "case_id": "adobe_figma_2023_abandon",
+      "actor_id": "Adobe_Leadership", "role": "company_leadership",
+      "as_of": "2023-12-13", "actual_action_date": "2023-12-18",
+      "domain": "acquisition", "posture": "contradicted_public_posture",
+      "situation": "The company signed a roughly $20 billion agreement to buy a design-software rival more than a year ago and has repeatedly voiced confidence it would close. UK and EU regulators have since turned sharply negative, and the company has resisted offering divestitures, arguing there is no workable remedy. With clearance looking unlikely and a large break fee on the line, leadership must decide whether to keep fighting for the deal or abandon it.",
+      "goals": ["acquire a strategic design-software competitor", "avoid a costly drawn-out regulatory fight", "protect the core business and reputation"],
+      "commitments": [{"statement": "Signed a definitive merger agreement to acquire the target for about $20 billion", "binding": true, "prohibits": []}],
+      "evidence": [
+        {"date": "2022-09-15", "text": "The company agreed to acquire a design-software rival for about $20 billion."},
+        {"date": "2023-11-17", "text": "EU regulators issued a formal statement of objections raising serious competition concerns."},
+        {"date": "2023-11-28", "text": "The UK competition regulator provisionally found the deal would harm competition in design software."},
+        {"date": "2023-12-05", "text": "The company reportedly declined to offer divestitures, arguing no viable remedy existed."}
+      ],
+      "candidate_actions": ["hold_position", "amend", "withdraw", "escalate", "delay"],
+      "actual_action": "withdraw",
+      "source_note": "On 2023-12-18 the two companies mutually terminated the acquisition, with the acquirer paying a $1 billion break fee, citing regulatory obstacles."
+    },
+    {
+      "case_id": "nissan_honda_2025_merger_collapse",
+      "actor_id": "Nissan_Leadership", "role": "automaker_leadership",
+      "as_of": "2025-02-07", "actual_action_date": "2025-02-13",
+      "domain": "acquisition", "posture": "contradicted_public_posture",
+      "situation": "Weeks after signing a memorandum to explore a merger with a larger domestic rival, the talks have soured over structure. The larger partner reportedly wants to fold the company in as a subsidiary rather than merge as equals, which the board resists. Facing deep financial trouble of its own, leadership must decide whether to accept the revised structure, push back, or walk away from the talks entirely.",
+      "goals": ["secure scale to survive a brutal EV transition", "protect the company's autonomy and identity", "reassure investors and creditors"],
+      "commitments": [{"statement": "Signed a non-binding memorandum of understanding to explore a merger", "binding": false}],
+      "evidence": [
+        {"date": "2024-11-07", "text": "The company announced deep cost cuts including thousands of job losses and capacity reductions amid falling profit."},
+        {"date": "2024-12-23", "text": "The two automakers signed a memorandum to explore a merger via a joint holding company."},
+        {"date": "2025-02-05", "text": "Reports said the larger partner proposed making the company a subsidiary, which the board resisted."},
+        {"date": "2025-02-06", "text": "Reports indicated the two sides remained far apart over the deal's structure."}
+      ],
+      "candidate_actions": ["accept", "counteroffer", "withdraw", "delay", "hold_position"],
+      "actual_action": "withdraw",
+      "source_note": "On 2025-02-13 the companies announced they had terminated the merger talks after the structure dispute could not be resolved."
+    },
+    {
+      "case_id": "wiz_2025_google_accept",
+      "actor_id": "Wiz_Leadership", "role": "cybersecurity_company_leadership",
+      "as_of": "2025-03-13", "actual_action_date": "2025-03-18",
+      "domain": "acquisition", "posture": "contradicted_public_posture",
+      "situation": "Last year the company rebuffed a roughly $23 billion buyout approach from a major cloud provider, with its chief executive telling staff it would stay independent and pursue an IPO. Now the same suitor is back with a far larger offer and the two are reportedly in advanced talks. Leadership must decide whether to hold to the independent path it publicly championed or accept an acquisition.",
+      "goals": ["maximize value for founders and investors", "sustain rapid growth with a strong parent or independently", "retain talent and momentum"],
+      "commitments": [{"statement": "Publicly indicated it intended to remain independent and pursue an IPO", "binding": false}],
+      "evidence": [
+        {"date": "2024-05-01", "text": "The company raised about $1 billion at roughly a $12 billion valuation and set aggressive revenue targets."},
+        {"date": "2024-07-22", "text": "Reports said the company walked away from an acquisition offer of about $23 billion from a major cloud provider."},
+        {"date": "2024-07-23", "text": "The chief executive told staff the company would stay independent and head toward an IPO."},
+        {"date": "2025-03-11", "text": "Renewed reports said the suitor and the company were again in advanced acquisition talks."}
+      ],
+      "candidate_actions": ["reject", "accept", "counteroffer", "delay", "hold_position"],
+      "actual_action": "accept",
+      "source_note": "On 2025-03-18 the company agreed to be acquired by the cloud provider for about $32 billion, its largest deal to date."
+    },
+    {
+      "case_id": "openai_2023_altman_reinstate",
+      "actor_id": "OpenAI_Board", "role": "nonprofit_board",
+      "as_of": "2023-11-21", "actual_action_date": "2023-11-22",
+      "domain": "executive", "posture": "contradicted_public_posture",
+      "situation": "Four days ago the board abruptly removed the chief executive and, after reinstatement talks stalled, installed an interim leader. The backlash has been overwhelming: a major backer offered to hire the ousted executive and nearly all staff have signed a letter threatening to quit unless the board reverses course and resigns. The directors must decide whether to hold firm on the removal or agree to bring the executive back under a reconstituted board.",
+      "goals": ["preserve the organization's mission and stability", "retain staff and partners", "maintain board credibility"],
+      "commitments": [{"statement": "Publicly removed the chief executive and installed interim leadership", "binding": false}],
+      "evidence": [
+        {"date": "2023-11-17", "text": "The board abruptly removed the chief executive, saying it had lost confidence in him; the president then quit."},
+        {"date": "2023-11-19", "text": "Talks to bring the ousted executive back stalled and the board appointed an interim chief executive."},
+        {"date": "2023-11-20", "text": "A major backer said it would hire the ousted executive and colleagues to lead a new group."},
+        {"date": "2023-11-20", "text": "Around 700 of roughly 770 employees signed a letter threatening to resign unless the board reinstated the executive and stepped down."}
+      ],
+      "candidate_actions": ["hold_position", "concede", "reject", "hire", "accept"],
+      "actual_action": "concede",
+      "source_note": "On 2023-11-22 the organization announced the chief executive would return under a new board, and the directors who removed him stepped down."
+    },
+    {
+      "case_id": "intel_2024_gelsinger_ouster",
+      "actor_id": "Intel_Board", "role": "corporate_board",
+      "as_of": "2024-11-27", "actual_action_date": "2024-12-02",
+      "domain": "executive", "posture": "no_clear_posture",
+      "situation": "The chip maker's turnaround under its current chief executive has stalled: deep losses, a suspended dividend, mass layoffs, a collapsing share price, and removal from a marquee stock index. The board has been reviewing strategic options and is reportedly frustrated with the slow pace of recovery. Directors must decide whether to stay the course with the current leader or force a change at the top.",
+      "goals": ["restore investor confidence", "revive the manufacturing and foundry strategy", "stem financial losses"],
+      "commitments": [],
+      "evidence": [
+        {"date": "2024-08-01", "text": "The company reported a large quarterly loss, suspended its dividend, and announced roughly 15% workforce cuts."},
+        {"date": "2024-09-16", "text": "The board reviewed strategic options amid a collapsing share price and doubts about the turnaround."},
+        {"date": "2024-11-01", "text": "The company was removed from a marquee stock index and replaced by a chip rival."},
+        {"date": "2024-11-20", "text": "Reports described board frustration with the slow pace of the turnaround."}
+      ],
+      "candidate_actions": ["hold_position", "fire", "hire", "delay", "amend"],
+      "actual_action": "fire",
+      "source_note": "On 2024-12-02 the company announced the chief executive had departed and named two interim co-leaders, following board pressure over the turnaround."
+    },
+    {
+      "case_id": "starbucks_2024_ceo_ouster",
+      "actor_id": "Starbucks_Board", "role": "corporate_board",
+      "as_of": "2024-08-11", "actual_action_date": "2024-08-13",
+      "domain": "executive", "posture": "no_clear_posture",
+      "situation": "The coffee chain's sales have slipped and its outlook has been cut, and activist investors have built stakes and are pressing for change. The chief executive has been in the role only about a year. The board must decide whether to back its leader through the turnaround, wait, or move quickly to replace him.",
+      "goals": ["reverse declining sales", "satisfy pressuring investors", "stabilize strategy and leadership"],
+      "commitments": [],
+      "evidence": [
+        {"date": "2024-04-30", "text": "The company reported a surprise decline in sales and cut its outlook; shares fell."},
+        {"date": "2024-07-15", "text": "An activist investor built a sizable stake and pushed for changes."},
+        {"date": "2024-08-01", "text": "Pressure mounted over the summer as a second activist reportedly took a stake."},
+        {"date": "2024-08-05", "text": "The chief executive, about a year into the role, faced growing doubts about the turnaround."}
+      ],
+      "candidate_actions": ["hold_position", "hire", "fire", "delay"],
+      "actual_action": "fire",
+      "source_note": "On 2024-08-13 the company replaced its chief executive with the head of a rival restaurant chain, effective the following month."
+    },
+    {
+      "case_id": "unity_2023_runtime_fee_walkback",
+      "actor_id": "Unity_Leadership", "role": "software_company_leadership",
+      "as_of": "2023-09-19", "actual_action_date": "2023-09-22",
+      "domain": "pricing", "posture": "contradicted_public_posture",
+      "situation": "A newly announced per-install runtime fee for the company's game engine has ignited a fierce developer revolt: threats to abandon the engine, public condemnation, and even office closures after threats. Leadership initially defended the pricing but has now apologized and promised changes. It must decide whether to hold the policy, scrap it, or substantially revise it.",
+      "goals": ["grow monetization from the engine", "retain developer trust and the ecosystem", "quell the backlash"],
+      "commitments": [{"statement": "Publicly defended the new runtime-fee pricing as fair when first announced", "binding": false}],
+      "evidence": [
+        {"date": "2023-09-12", "text": "The company announced a new per-install runtime fee starting in 2024, triggering developer backlash."},
+        {"date": "2023-09-13", "text": "Widespread developer condemnation followed; some studios threatened to remove games or boycott the engine."},
+        {"date": "2023-09-14", "text": "Offices briefly closed after threats amid the uproar."},
+        {"date": "2023-09-17", "text": "The company publicly apologized and said it would make changes to the policy."}
+      ],
+      "candidate_actions": ["hold_position", "concede", "amend", "reveal", "delay"],
+      "actual_action": "amend",
+      "source_note": "On 2023-09-22 the company published a revised policy that capped the runtime fee, exempted existing games, and let developers self-report installs."
+    },
+    {
+      "case_id": "southwest_2025_bag_fees",
+      "actor_id": "Southwest_Airlines_Leadership", "role": "airline_leadership",
+      "as_of": "2025-03-06", "actual_action_date": "2025-03-11",
+      "domain": "pricing", "posture": "contradicted_public_posture",
+      "situation": "For decades the airline has marketed free checked bags as central to its brand and repeatedly defended the policy, even as an activist investor won board seats and pushed for new revenue. Under mounting margin pressure, leadership is weighing changes it long ruled out. It must decide whether to keep bags free, introduce fees, or make some lesser change.",
+      "goals": ["boost revenue and margins", "satisfy activist investors", "preserve brand loyalty where possible"],
+      "commitments": [{"statement": "Repeatedly and publicly promised that checked bags would fly free", "binding": false}],
+      "evidence": [
+        {"date": "2024-06-01", "text": "For years the airline marketed 'bags fly free' as a core brand differentiator."},
+        {"date": "2024-09-26", "text": "At an investor day the airline defended its free-checked-bags policy while announcing other changes."},
+        {"date": "2024-10-24", "text": "An activist investor secured multiple board seats after building a large stake, intensifying pressure for new revenue."},
+        {"date": "2025-01-30", "text": "The airline reported continued margin pressure and signaled a search for new revenue sources."}
+      ],
+      "candidate_actions": ["hold_position", "launch", "amend", "reveal", "delay"],
+      "actual_action": "amend",
+      "source_note": "On 2025-03-11 the airline announced it would begin charging most passengers for checked bags, ending its signature free-bags policy."
+    },
+    {
+      "case_id": "meta_2022_layoffs",
+      "actor_id": "Mark_Zuckerberg", "role": "meta_ceo",
+      "as_of": "2022-11-04", "actual_action_date": "2022-11-09",
+      "domain": "layoffs", "posture": "no_clear_posture",
+      "situation": "Revenue is shrinking for the first time, the metaverse unit is losing billions, and the share price has collapsed, drawing open investor demands to cut costs and headcount. The company has already frozen hiring and warned of tighter budgets. Leadership must decide whether to keep the workforce intact, trim at the margins, or carry out large layoffs the company has never done before.",
+      "goals": ["restore profitability and investor confidence", "protect long-term metaverse investment", "control costs"],
+      "commitments": [],
+      "evidence": [
+        {"date": "2022-09-21", "text": "The company slowed hiring and told teams to plan for tighter budgets."},
+        {"date": "2022-10-24", "text": "A prominent investor published an open letter urging the company to cut staff and rein in metaverse spending."},
+        {"date": "2022-10-26", "text": "Quarterly results showed shrinking revenue and soaring losses in the metaverse unit; the stock fell sharply."},
+        {"date": "2022-11-01", "text": "Reports described intensifying cost pressure and investor demands for spending discipline."}
+      ],
+      "candidate_actions": ["hire", "fire", "hold_position", "delay", "allocate_budget"],
+      "actual_action": "fire",
+      "source_note": "On 2022-11-09 the company announced its first mass layoffs, cutting about 11,000 jobs, roughly 13% of staff."
+    },
+    {
+      "case_id": "stripe_2022_layoffs",
+      "actor_id": "Stripe_Leadership", "role": "fintech_company_leadership",
+      "as_of": "2022-10-30", "actual_action_date": "2022-11-03",
+      "domain": "layoffs", "posture": "no_clear_posture",
+      "situation": "The payments company expanded headcount rapidly during the pandemic e-commerce boom, then saw the environment turn: its internal valuation was cut, funding dried up, and the IPO window closed. Peers across tech are freezing hiring and cutting costs. Leadership must decide whether to hold headcount, trim modestly, or make a substantial workforce reduction.",
+      "goals": ["align costs with a tougher environment", "preserve the path to profitability", "retain core capabilities"],
+      "commitments": [],
+      "evidence": [
+        {"date": "2022-07-15", "text": "The company cut its internal valuation sharply amid the fintech downturn."},
+        {"date": "2022-09-15", "text": "Tech hiring freezes and cost cuts spread across the sector."},
+        {"date": "2022-10-01", "text": "Post-pandemic normalization pressured payment volumes and growth."},
+        {"date": "2022-10-20", "text": "The IPO market stayed frozen and late-stage startups faced pressure to reach profitability."}
+      ],
+      "candidate_actions": ["hire", "hold_position", "fire", "allocate_budget", "delay"],
+      "actual_action": "fire",
+      "source_note": "On 2022-11-03 the company cut about 14% of its workforce, roughly 1,100 jobs, citing over-hiring and a tougher economy."
+    },
+    {
+      "case_id": "cma_2023_activision_block",
+      "actor_id": "CMA_Panel", "role": "competition_regulator",
+      "as_of": "2023-04-21", "actual_action_date": "2023-04-26",
+      "domain": "regulatory", "posture": "followed_public_posture",
+      "situation": "The regulator is nearing a final decision on a very large gaming acquisition. Its provisional findings warned of competition harm, though it later dropped its console theory while keeping concerns about the nascent cloud-gaming market. The acquirer has offered licensing deals to rivals as remedies. With a statutory deadline near, the regulator must clear the deal, clear it with remedies, or block it.",
+      "goals": ["preserve competition in gaming markets", "protect the emerging cloud-gaming sector", "apply the statutory test credibly"],
+      "commitments": [],
+      "evidence": [
+        {"date": "2023-02-08", "text": "The regulator's provisional findings warned the deal could harm competition in consoles and cloud gaming."},
+        {"date": "2023-02-21", "text": "The acquirer signed multi-year deals to bring a flagship title to rival platforms to address concerns."},
+        {"date": "2023-03-24", "text": "The regulator narrowed its case, dropping the console theory but keeping cloud-gaming concerns."},
+        {"date": "2023-04-01", "text": "The statutory deadline for a final decision approached in late April."}
+      ],
+      "candidate_actions": ["approve", "amend", "reject", "refer", "delay"],
+      "actual_action": "reject",
+      "source_note": "On 2023-04-26 the regulator blocked the acquisition over concerns about competition in cloud gaming."
+    },
+    {
+      "case_id": "cfius_2025_nippon_ussteel_block",
+      "actor_id": "US_President", "role": "head_of_state",
+      "as_of": "2024-12-29", "actual_action_date": "2025-01-03",
+      "domain": "regulatory", "posture": "followed_public_posture",
+      "situation": "A foreign steelmaker's roughly $14.9 billion bid for a storied domestic producer has drawn heavy political opposition, including from the president, the main steel union, and both major presidential candidates. The national-security review panel has referred the matter without a consensus recommendation, leaving the decision to the president. He must approve the deal, seek more review, or block it.",
+      "goals": ["protect a domestically owned steel industry", "honor a stated national-security stance", "address union and political concerns"],
+      "commitments": [],
+      "evidence": [
+        {"date": "2023-12-18", "text": "A foreign steelmaker agreed to acquire a storied domestic producer for about $14.9 billion, prompting political opposition."},
+        {"date": "2024-03-14", "text": "The president publicly stated the domestic producer should remain domestically owned and operated."},
+        {"date": "2024-09-04", "text": "The main steel union and both major presidential candidates voiced opposition to the deal."},
+        {"date": "2024-12-23", "text": "The national-security review panel referred the deal to the president without a consensus recommendation."}
+      ],
+      "candidate_actions": ["approve", "reject", "refer", "delay", "veto"],
+      "actual_action": "reject",
+      "source_note": "On 2025-01-03 the president formally blocked the acquisition, citing national-security and supply-chain concerns."
+    },
+    {
+      "case_id": "fox_dominion_2023_settlement",
+      "actor_id": "Fox_Corporation", "role": "media_company",
+      "as_of": "2023-04-14", "actual_action_date": "2023-04-18",
+      "domain": "legal", "posture": "contradicted_public_posture",
+      "situation": "A defamation suit over election-fraud broadcasts is about to go to trial. Pretrial rulings have gone badly: the judge found the underlying claims false as a matter of law, private messages showing internal doubt are public, and the court has sanctioned the company over discovery. Having publicly vowed to fight, the company must decide whether to go to trial or settle.",
+      "goals": ["limit financial and reputational damage", "avoid a damaging jury verdict", "protect executives and hosts from testimony"],
+      "commitments": [{"statement": "Publicly vowed to fight the lawsuit and defended its coverage on First Amendment grounds", "binding": false}],
+      "evidence": [
+        {"date": "2023-02-16", "text": "Court filings revealed private messages showing hosts and executives privately doubted the fraud claims."},
+        {"date": "2023-03-31", "text": "The judge ruled the vote-rigging claims about the plaintiff were false as a matter of law, gutting the truth defense."},
+        {"date": "2023-04-12", "text": "The judge sanctioned the company over withheld evidence and appointed a special master."},
+        {"date": "2023-04-13", "text": "Jury selection began ahead of opening statements."}
+      ],
+      "candidate_actions": ["hold_position", "concede", "appeal", "delay", "escalate"],
+      "actual_action": "concede",
+      "source_note": "On 2023-04-18 the company agreed to settle the defamation case for $787.5 million just as the trial was to begin."
+    },
+    {
+      "case_id": "sec_musk_2018_settlement",
+      "actor_id": "Elon_Musk", "role": "company_ceo",
+      "as_of": "2018-09-28", "actual_action_date": "2018-09-29",
+      "domain": "legal", "posture": "contradicted_public_posture",
+      "situation": "Days after a securities regulator sued him for fraud over a tweet about taking the company private, the executive faces a threat to bar him from leading any public company. He had reportedly rejected a settlement, prompting the suit, and the stock has since dropped sharply. Advisers are urging him to settle. He must decide whether to fight the case or accept a deal.",
+      "goals": ["remain in control of the company", "avoid an officer-and-director bar", "limit damage to the company and shareholders"],
+      "commitments": [{"statement": "Publicly maintained the 'funding secured' claim was truthful and initially refused to settle", "binding": false}],
+      "evidence": [
+        {"date": "2018-08-07", "text": "The executive tweeted he was considering taking the company private at $420 with 'funding secured.'"},
+        {"date": "2018-09-27", "text": "The securities regulator sued the executive for fraud, seeking to bar him from serving as an officer or director."},
+        {"date": "2018-09-28", "text": "The company's shares fell about 14%; reports said the executive had rejected a settlement two days earlier."},
+        {"date": "2018-09-28", "text": "Advisers and directors reportedly urged the executive to settle to remove the officer-bar threat."}
+      ],
+      "candidate_actions": ["hold_position", "appeal", "delay", "accept", "escalate"],
+      "actual_action": "accept",
+      "source_note": "On 2018-09-29 the executive agreed to a revised settlement, stepping down as chairman and paying a fine, days after rejecting one."
+    },
+    {
+      "case_id": "uaw_2023_standup_strike",
+      "actor_id": "UAW", "role": "labor_union",
+      "as_of": "2023-09-11", "actual_action_date": "2023-09-15",
+      "domain": "labor", "posture": "followed_public_posture",
+      "situation": "Contracts with all three Detroit automakers expire at midnight on September 14 with the sides still far apart. Members have authorized a strike by a wide margin, and leadership has publicly demanded large raises and restored benefits and threatened to strike any company without a fair deal. The union must decide whether to keep talking past the deadline, extend, or strike.",
+      "goals": ["win large wage and benefit gains", "maximize leverage over the automakers", "honor the pledge made to members"],
+      "commitments": [{"statement": "Publicly vowed to strike any automaker without a fair deal by the contract deadline", "binding": false}],
+      "evidence": [
+        {"date": "2023-08-25", "text": "Union members voted overwhelmingly to authorize a strike if no deal was reached."},
+        {"date": "2023-09-05", "text": "The union publicly demanded large raises and restored benefits and threatened to strike all three automakers."},
+        {"date": "2023-09-08", "text": "Talks remained far apart with the contract deadline days away."},
+        {"date": "2023-09-10", "text": "The union said it had not received a serious offer and was preparing for a possible strike."}
+      ],
+      "candidate_actions": ["strike", "accept", "delay", "hold_position", "escalate"],
+      "actual_action": "strike",
+      "source_note": "On 2023-09-15 the union launched simultaneous targeted strikes at plants of all three Detroit automakers."
+    },
+    {
+      "case_id": "boeing_iam_2024_strike",
+      "actor_id": "IAM_District_751", "role": "labor_union",
+      "as_of": "2024-09-11", "actual_action_date": "2024-09-13",
+      "domain": "labor", "posture": "followed_public_posture",
+      "situation": "Negotiators reached a tentative contract with the aircraft maker that leaders recommended, but many of the roughly 33,000 members are publicly rejecting it as inadequate after sixteen years without a new deal. A ratification-and-strike vote is imminent. The membership must decide whether to accept the tentative deal or reject it and walk out.",
+      "goals": ["win larger raises and restored pension", "make up for years without a new contract", "maximize bargaining leverage"],
+      "commitments": [],
+      "evidence": [
+        {"date": "2024-09-08", "text": "Company and union negotiators reached a tentative deal with about 25% raises; union leaders recommended acceptance."},
+        {"date": "2024-09-09", "text": "Many rank-and-file members publicly called the offer inadequate, citing a lost pension and demands for larger raises."},
+        {"date": "2024-09-10", "text": "Workers had gone about sixteen years without a new contract and many signaled they wanted to strike."},
+        {"date": "2024-09-10", "text": "The financially strained aircraft maker warned that a strike would be damaging."}
+      ],
+      "candidate_actions": ["accept", "reject", "strike", "delay", "hold_position"],
+      "actual_action": "strike",
+      "source_note": "On 2024-09-13 union members overwhelmingly rejected the tentative deal and walked out, beginning a strike."
+    }
+  ]
+}
