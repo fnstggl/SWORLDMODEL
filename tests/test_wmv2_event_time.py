@@ -435,6 +435,26 @@ def test_binary_conversion_removes_every_resolver_and_rewires():
     assert lin["event_time"] is rep and rep["posterior_calibrated"] is True
 
 
+def test_binary_residual_chain_consumes_declared_pathway_processes():
+    """The endogenous channel is universal: a binary question whose plan declared pathway processes
+    (from the stances' own named pathways) gets them on the residual chain — actions move the binary
+    answer through the same state the timing questions consume; survival polarity inverts them."""
+    p = _binary_plan(question="Will X remain CEO through the deadline?",
+                     consumed=[{"var": "actor_intentions", "weight": 0.2}])
+    p.quantities = [{"name": "pathway_progress:unilateral_action", "qtype": "pathway_progress",
+                     "value": 0.5, "sd": 0.15}]
+    p._declared_pathways = ["unilateral_action"]
+    rep = convert_binary_to_event_time(p, {"resolves_yes_iff": "X remains CEO",
+                                           "event_polarity": "occurrence_resolves_no"})
+    assert rep["endogenous_channels"] == ["pathway_progress:unilateral_action"]
+    rounds = [e for e in p.scheduled_events if e["etype"] == "hazard_round"]
+    chan = [c for e in rounds for c in e["payload"]["consume"]
+            if c["var"] == "pathway_progress:unilateral_action"]
+    assert chan and all(c["weight"] == 0.6 for c in chan)
+    # survival polarity: the process advancing the state-BREAKING event must be inverted
+    assert all(c.get("invert") for c in chan)
+
+
 def test_binary_answer_is_first_passage_readout_matching_posterior_target():
     p = _binary_plan(posterior=[(0.3, 1.0)])
     convert_binary_to_event_time(p, {})
