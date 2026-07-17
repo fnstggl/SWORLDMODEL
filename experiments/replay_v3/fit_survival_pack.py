@@ -76,9 +76,12 @@ def main():
     print(f"calibration rows: {len(rows)} (skipped {skipped})")
 
     offset, n_corpus = 0, 0                                   # source 2: wide corpus, deterministic order
-    while n_corpus < CORPUS_TARGET and offset < 6000:
+    # volume-descending over the recent era: high-volume closed markets are overwhelmingly the
+    # binary political/macro/geopolitical questions this pack needs (id-descending is an esports flood)
+    while n_corpus < CORPUS_TARGET and offset < 4000:
         page = V2B._get(f"{V2B.GAMMA}/markets?closed=true&limit=100&offset={offset}"
-                        f"&order=id&ascending=false&volume_num_min={int(MIN_VOLUME)}") or []
+                        f"&order=volumeNum&ascending=false"
+                        f"&end_date_min=2025-01-01&end_date_max=2026-06-30") or []
         if not page:
             break
         offset += 100
