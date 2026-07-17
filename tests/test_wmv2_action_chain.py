@@ -140,7 +140,11 @@ def test_executed_action_moves_declared_pathway_progress_only():
                         feasibility=[fes], posterior=post, selected_action_id=act.action_id, seed=3)
     delta, _ = runtime.execute(w, act, post, trace, seed=3)
     v = w.quantities[progress_var("cooperative_agreement")].value
-    assert v == pytest.approx(0.5 + 0.04 * -0.7)              # reject: effect −0.7 × step 0.04
+    # the step size is the per-branch SAMPLED coupling constant (structural uncertainty), not a
+    # point 0.04: the write must equal sampled_step × effect(−0.7), with the draw inside its clamp
+    step = w.quantities["sampled_coupling:pathway_step"].value
+    assert 0.005 <= step <= 0.15
+    assert v == pytest.approx(0.5 + step * -0.7, abs=1e-4)
     assert any(progress_var("cooperative_agreement") in c.get("path", "") for c in delta.changes)
     # undeclared pathway (unilateral) untouched even though reject has no unilateral effect anyway
     assert progress_var("unilateral_action") not in w.quantities

@@ -215,6 +215,9 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
             lineage["actor_intentions"] = ground_actor_intentions(
                 plan, question, criterion=crit, evidence_text=ev_text, llm=llm,
                 modes=getattr(plan, "_canonical_modes", None))
+            # capability becomes a live, depletable capacity resource (world-dynamics layer)
+            from swm.world_model_v2.world_dynamics import declare_actor_capacity
+            lineage["actor_capacity"] = declare_actor_capacity(plan)
             # binary/other questions: the resolution's causal pathways are named by the grounded
             # stances themselves — declare their processes so actions move the residual chain too
             if not getattr(plan, "_declared_pathways", None):
@@ -272,8 +275,15 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
             from swm.world_model_v2.event_time import (convert_binary_to_event_time,
                                                        convert_to_event_time, is_when_question)
             crit = lineage.get("resolution_criterion") or {}
+            _opts = [str(o) for o in (getattr(plan.outcome_contract, "options", None) or [])]
             if is_when_question(question):
                 convert_to_event_time(plan, crit, lineage=lineage, llm=llm)
+            elif len(_opts) > 2:
+                # CATEGORICAL unification: "how/which/who" questions run the SAME first-passage
+                # machinery — modes are the question's own options; the distribution is the
+                # absorbed_by marginal with honest none-by-horizon mass (no forced pick)
+                convert_to_event_time(plan, crit, lineage=lineage, llm=llm,
+                                      categorical_options=_opts)
             else:
                 fex = lineage.get("fidelity_expansion")
                 cad = fex.get("decision_cadence_days") if isinstance(fex, dict) else None

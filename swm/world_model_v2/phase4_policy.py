@@ -395,6 +395,17 @@ class ActorViewBuilder:
         roles = own("roles", []) or []
         role = str(roles[0] if isinstance(roles, list) and roles else roles or actor.entity_type)
         beliefs = self._mapping(fields.get("beliefs"))
+        # PERCEPTION: actors observe the PUBLIC state of the processes they act in — how far the
+        # talks have advanced, whether the campaign is moving, where adoption stands. Projected as
+        # beliefs (process:<var> → value) so the belief-driven policy families consume them. The
+        # outcome/readout machinery (absorption stamps, sampled coefficients, provisional flags)
+        # is simulator-only state and NEVER enters an actor's view.
+        for qname, q in (world.quantities or {}).items():
+            if qname.startswith(("pathway_progress:", "mode_progress:", "population_aggregate:")) \
+                    or qname == "nonlinear_state":
+                v = getattr(q, "value", None)
+                if isinstance(v, (int, float)):
+                    beliefs[f"process:{qname}"] = float(v)
         resources = self._mapping(fields.get("resources"))
         prefs = self._mapping(fields.get("preferences"))
         uncertainty = {

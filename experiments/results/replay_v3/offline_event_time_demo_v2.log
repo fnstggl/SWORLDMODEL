@@ -1,0 +1,169 @@
+====================================================================================================
+UKRAINE DEMO — When will the Russia-Ukraine conflict end?  (as-of 2026-07-16, horizon 2028-12-31)
+====================================================================================================
+
+-- MODE GRAPH (canonical, 3 sources, agreement 1.0) --
+  russian_victory        pathway=unilateral_action        rule=unilateral prior=0.31 support=3/3+  HR med=1.4081 [1.0943, 1.8058] binder=Vladimir_Putin (split=0.6)
+  ceasefire              pathway=cooperative_agreement    rule=unanimity  prior=0.29 support=3/3+  HR med=0.6986 [0.4856, 0.9387] binder=Vladimir_Putin (split=0.6)
+  ukrainian_victory      pathway=unilateral_action        rule=unilateral prior=0.23 support=3/3+  HR med=1.236 [1.0087, 1.5032] binder=Volodymyr_Zelenskyy (split=0.6)
+  peace_treaty           pathway=cooperative_agreement    rule=unanimity  prior=0.14 support=3/3+  HR med=0.6986 [0.4856, 0.9387] binder=Vladimir_Putin (split=0.6)
+  rejected (not absorbing): []
+  dropped by consensus vote: ['frozen_conflict_stalemate', 'nato_direct_escalation']
+
+-- PATHWAY PROCESSES (grounded) --
+  pathway_progress:cooperative_agreement       init=0.3  state=exploratory  basis=Trump holds separate calls with Putin and Zelenskyy (CBS)
+  pathway_progress:unilateral_action           init=0.5  state=active  basis=Putin likely to escalate Ukraine war, despite Trump peace push (Reuters)
+
+-- GROUNDED STANCES (8 stances, 5 mode-scoped) --
+  Vladimir_Putin             committed_to_prevent   pathway=cooperative_agreement    target=None               control=veto                   rel=high cap=high
+      “Putin likely to escalate Ukraine war, despite Trump peace push (Reuters)”
+  Vladimir_Putin             actively_pursuing      pathway=unilateral_action        target=russian_victory    control=sole_authority         rel=high cap=high
+      “objectives of the special military operation will be achieved”
+  Vladimir_Putin             committed_to_prevent   pathway=unilateral_action        target=ukrainian_victory  control=operational_capability rel=medium cap=high
+      “Russia will never accept defeat on the battlefield”
+  Volodymyr_Zelenskyy        conditionally_opposed  pathway=cooperative_agreement    target=ceasefire          control=veto                   rel=high cap=high
+      “we will not accept a frozen conflict without real security guarantees”
+  Volodymyr_Zelenskyy        actively_pursuing      pathway=unilateral_action        target=ukrainian_victory  control=sole_authority         rel=high cap=medium
+      “we will liberate our land”
+  Donald_Trump               actively_pursuing      pathway=cooperative_agreement    target=None               control=informal_influence     rel=high cap=medium
+      “Trump holds separate calls with Putin and Zelenskyy (CBS)”
+  Verkhovna_Rada             committed_to_prevent   pathway=cooperative_agreement    target=None               control=agenda_setting         rel=high cap=high
+      “the 2022 NSDC decision bans negotiations with Putin (law in force)”
+  Russian_General_Staff      actively_pursuing      pathway=unilateral_action        target=russian_victory    control=operational_capability rel=medium cap=high
+      “summer offensive continues along the eastern front”
+
+-- SCHEDULE --  horizon 899.0d, cadence 7.0d, 6 strategic actors × 14 decision points = 84 decision events; 160 hazard rounds (40/mode × 4 modes); n_particles=200
+  candidate actions per review: ['accept', 'counteroffer', 'hold_position', 'delay', 'reject', 'escalate', 'seek_mediator', 'exit', 'mobilize', 'withdraw', 'wait']
+
+-- RUNNING the production rollout (build_world → phase-4 policies → pathway writes → hazard rounds → absorption monitor) --
+
+-- PARTICLE 1 — ABSORBED 2027-03-22 via ukrainian_victory --
+  2026-08-06  ATTRITION    Russian_General_Staff        capacity 0.85 → 0.8411  (contested pursuit drains)
+  2026-08-06  ATTRITION    Vladimir_Putin               capacity 0.85 → 0.8411  (contested pursuit drains)
+  2026-08-06  ATTRITION    Volodymyr_Zelenskyy          capacity 0.85 → 0.8411  (contested pursuit drains)
+  2026-08-06  HAZARD       mode=russian_victory    h=0.0006 state×0.863 hr=1.4082
+  2026-08-06  HAZARD       mode=ceasefire          h=0.0002 state×0.651 hr=0.6543
+  2026-08-06  HAZARD       mode=ukrainian_victory  h=0.0003 state×0.863 hr=1.0135
+  2026-08-06  HAZARD       mode=peace_treaty       h=0.0001 state×0.651 hr=0.8187
+  2026-08-28  ATTRITION    Russian_General_Staff        capacity 0.8411 → 0.8322  (contested pursuit drains)
+  2026-08-28  ATTRITION    Vladimir_Putin               capacity 0.8411 → 0.8322  (contested pursuit drains)
+  2026-08-28  ATTRITION    Volodymyr_Zelenskyy          capacity 0.8411 → 0.8322  (contested pursuit drains)
+    … 62 more events …
+  2027-01-11  ACTION       Ukrainian_Ministry_of_Defense chose defer         
+  2027-01-11  ACTION       Verkhovna_Rada               chose schedule      
+  2027-01-29  ATTRITION    Russian_General_Staff        capacity 0.7788 → 0.7699  (contested pursuit drains)
+  2027-01-29  ATTRITION    Vladimir_Putin               capacity 0.7788 → 0.7699  (contested pursuit drains)
+  2027-01-29  ATTRITION    Volodymyr_Zelenskyy          capacity 0.7788 → 0.7699  (contested pursuit drains)
+  2027-01-29  HAZARD       mode=russian_victory    h=0.0004 state×0.840 hr=1.4082
+  2027-01-29  HAZARD       mode=ceasefire          h=0.0001 state×0.517 hr=0.6543
+  2027-01-29  HAZARD       mode=ukrainian_victory  h=0.0002 state×0.820 hr=1.0135
+  2027-01-29  HAZARD       mode=peace_treaty       h=0.0001 state×0.517 hr=0.8187
+  2027-02-20  ATTRITION    Russian_General_Staff        capacity 0.7699 → 0.761  (contested pursuit drains)
+  2027-02-20  ATTRITION    Vladimir_Putin               capacity 0.7699 → 0.761  (contested pursuit drains)
+  2027-02-20  ATTRITION    Volodymyr_Zelenskyy          capacity 0.7699 → 0.761  (contested pursuit drains)
+  2027-02-20  HAZARD       mode=russian_victory    h=0.0004 state×0.840 hr=1.4082
+  2027-02-20  HAZARD       mode=ceasefire          h=0.0001 state×0.517 hr=0.6543
+  2027-02-20  HAZARD       mode=ukrainian_victory  h=0.0002 state×0.820 hr=1.0135  → PROVISIONAL (must hold 30d)
+  2027-03-12  ACTION       Vladimir_Putin               chose hold_position  | process cooperative_agreement 0.1598→0.1415
+  2027-03-12  ACTION       Volodymyr_Zelenskyy          chose accept         | process cooperative_agreement 0.1415→0.2024
+  2027-03-12  ACTION       Donald_Trump                 chose counteroffer   | process cooperative_agreement 0.2024→0.2074
+    … 68 more events …
+
+-- PARTICLE 9 — ABSORBED 2028-03-07 via russian_victory --
+  2026-08-06  ATTRITION    Russian_General_Staff        capacity 0.85 → 0.8364  (contested pursuit drains)
+  2026-08-06  ATTRITION    Vladimir_Putin               capacity 0.85 → 0.8364  (contested pursuit drains)
+  2026-08-06  ATTRITION    Volodymyr_Zelenskyy          capacity 0.85 → 0.8364  (contested pursuit drains)
+  2026-08-06  HAZARD       mode=russian_victory    h=0.0005 state×0.878 hr=1.0576
+  2026-08-06  HAZARD       mode=ceasefire          h=0.0002 state×0.617 hr=0.6897
+  2026-08-06  HAZARD       mode=ukrainian_victory  h=0.0004 state×0.878 hr=1.2413
+  2026-08-06  HAZARD       mode=peace_treaty       h=0.0001 state×0.617 hr=0.6107
+  2026-08-28  ATTRITION    Russian_General_Staff        capacity 0.8364 → 0.8228  (contested pursuit drains)
+  2026-08-28  ATTRITION    Vladimir_Putin               capacity 0.8364 → 0.8228  (contested pursuit drains)
+  2026-08-28  ATTRITION    Volodymyr_Zelenskyy          capacity 0.8364 → 0.8228  (contested pursuit drains)
+    … 208 more events …
+  2028-01-06  ACTION       Donald_Trump                 chose escalate       | process unilateral_action 0.6111→0.626
+  2028-01-06  ACTION       Russian_General_Staff        chose defer         
+  2028-01-06  ACTION       Ukrainian_Ministry_of_Defense chose approve       
+  2028-01-06  ACTION       Verkhovna_Rada               chose schedule      
+  2028-01-15  ATTRITION    Russian_General_Staff        capacity 0.5236 → 0.51  (contested pursuit drains)
+  2028-01-15  ATTRITION    Vladimir_Putin               capacity 0.4636 → 0.45  (contested pursuit drains)
+  2028-01-15  ATTRITION    Volodymyr_Zelenskyy          capacity 0.5036 → 0.49  (contested pursuit drains)
+  2028-01-15  HAZARD       mode=russian_victory    h=0.0018 state×0.956 hr=1.0576
+  2028-01-15  HAZARD       mode=ceasefire          h=0.0005 state×0.391 hr=0.6897
+  2028-01-15  HAZARD       mode=ukrainian_victory  h=0.0014 state×0.845 hr=1.2413
+  2028-01-15  HAZARD       mode=peace_treaty       h=0.0002 state×0.391 hr=0.6107
+  2028-02-06  ATTRITION    Russian_General_Staff        capacity 0.51 → 0.4964  (contested pursuit drains)
+  2028-02-06  ATTRITION    Vladimir_Putin               capacity 0.45 → 0.4364  (contested pursuit drains)
+  2028-02-06  ATTRITION    Volodymyr_Zelenskyy          capacity 0.49 → 0.4764  (contested pursuit drains)
+  2028-02-06  HAZARD       mode=russian_victory    h=0.0018 state×0.956 hr=1.0576  → PROVISIONAL (must hold 30d)
+  2028-02-28  ATTRITION    Russian_General_Staff        capacity 0.4964 → 0.4828  (contested pursuit drains)
+  2028-02-28  ATTRITION    Vladimir_Putin               capacity 0.4364 → 0.4228  (contested pursuit drains)
+  2028-02-28  ATTRITION    Volodymyr_Zelenskyy          capacity 0.4764 → 0.4628  (contested pursuit drains)
+    … 32 more events …
+
+-- PARTICLE 0 — CENSORED beyond horizon --
+  2026-08-06  ATTRITION    Russian_General_Staff        capacity 0.85 → 0.8365  (contested pursuit drains)
+  2026-08-06  ATTRITION    Vladimir_Putin               capacity 0.85 → 0.8365  (contested pursuit drains)
+  2026-08-06  ATTRITION    Volodymyr_Zelenskyy          capacity 0.85 → 0.8365  (contested pursuit drains)
+  2026-08-06  HAZARD       mode=russian_victory    h=0.0005 state×0.856 hr=1.2943
+  2026-08-06  HAZARD       mode=ceasefire          h=0.0003 state×0.641 hr=0.9067
+  2026-08-06  HAZARD       mode=ukrainian_victory  h=0.0005 state×0.856 hr=1.462
+  2026-08-06  HAZARD       mode=peace_treaty       h=0.0001 state×0.641 hr=0.6572
+  2026-08-28  ATTRITION    Russian_General_Staff        capacity 0.8365 → 0.823  (contested pursuit drains)
+  2026-08-28  ATTRITION    Vladimir_Putin               capacity 0.8365 → 0.823  (contested pursuit drains)
+  2026-08-28  ATTRITION    Volodymyr_Zelenskyy          capacity 0.8365 → 0.823  (contested pursuit drains)
+  2026-08-28  HAZARD       mode=russian_victory    h=0.0005 state×0.856 hr=1.2943
+  2026-08-28  HAZARD       mode=ceasefire          h=0.0003 state×0.641 hr=0.9067
+  2026-08-28  HAZARD       mode=ukrainian_victory  h=0.0005 state×0.856 hr=1.462
+  2026-08-28  HAZARD       mode=peace_treaty       h=0.0001 state×0.641 hr=0.6572
+  2026-09-13  ACTION       Vladimir_Putin               chose hold_position  | process cooperative_agreement 0.3→0.2963
+  2026-09-13  ACTION       Volodymyr_Zelenskyy          chose mobilize       | process unilateral_action 0.5→0.5061; mode:unilateral_action:russian_victory 0.5→0.4964; mode:unilateral_action:ukrainian_victory 0.5→0.5061
+  2026-09-13  ACTION       Donald_Trump                 chose counteroffer   | process cooperative_agreement 0.2963→0.2972
+  2026-09-13  ACTION       Russian_General_Staff        chose schedule      
+  2026-09-13  ACTION       Ukrainian_Ministry_of_Defense chose defer         
+  2026-09-13  ACTION       Verkhovna_Rada               chose place_on_agenda
+    … 340 more events …
+  2028-12-09  ATTRITION    Vladimir_Putin               capacity 0.2835 → 0.27  (contested pursuit drains)
+  2028-12-09  ATTRITION    Volodymyr_Zelenskyy          capacity 0.2835 → 0.27  (contested pursuit drains)
+  2028-12-09  STANCE       Vladimir_Putin               inclined_toward → neutral  (exhaustion:capacity_0.27)
+  2028-12-09  STANCE       Volodymyr_Zelenskyy          inclined_toward → neutral  (exhaustion:capacity_0.27)
+  2028-12-09  HAZARD       mode=russian_victory    h=0.0025 state×0.851 hr=1.2159  [hr recomputed from live stances]
+  2028-12-09  HAZARD       mode=ceasefire          h=0.0008 state×0.593 hr=0.5529  [hr recomputed from live stances]
+  2028-12-09  HAZARD       mode=ukrainian_victory  h=0.0017 state×0.867 hr=1.0841  [hr recomputed from live stances]
+  2028-12-09  HAZARD       mode=peace_treaty       h=0.0005 state×0.593 hr=0.7173  [hr recomputed from live stances]
+
+-- WHO DID WHAT (chosen actions across all particles) --
+  Donald_Trump                 accept×429, counteroffer×353, seek_mediator×308, wait×284, mobilize×266, hold_position×263
+  Russian_General_Staff        place_on_agenda×417, schedule×414, reject×405, wait×404, defer×402, seek_mediator×381
+  Ukrainian_Ministry_of_Defense schedule×451, approve×409, seek_mediator×401, defer×387, place_on_agenda×386, wait×386
+  Verkhovna_Rada               reject×458, defer×444, place_on_agenda×437, wait×433, approve×408, schedule×406
+  Vladimir_Putin               exit×456, escalate×364, reject×361, hold_position×302, mobilize×290, delay×264
+  Volodymyr_Zelenskyy          exit×366, escalate×331, reject×273, delay×272, mobilize×264, hold_position×260
+
+-- PATHWAY PROCESSES AT HORIZON (mean over particles; started at init above) --
+  pathway_progress:cooperative_agreement       mean_end=0.139 min=0.050 max=0.352
+  pathway_progress:unilateral_action           mean_end=0.600 min=0.504 max=0.950
+
+-- TERMINAL READOUT (pure first-passage readout; nothing drew an outcome) --
+  P(conflict ends by 2028-12-31) = 0.085   censored beyond horizon = 0.915
+  CDF: 2027-01-11:0.000  2027-07-10:0.015  2028-01-06:0.020  2028-07-04:0.045  2028-12-31:0.085
+  first-passage quantiles: {'0.1': 'beyond_horizon', '0.25': 'beyond_horizon', '0.5': 'beyond_horizon', '0.75': 'beyond_horizon', '0.9': 'beyond_horizon'}
+  mode × absorption: {'ukrainian_victory': 0.01, 'russian_victory': 0.06, 'ceasefire': 0.01, 'peace_treaty': 0.005}
+
+====================================================================================================
+CROSS-DOMAIN FIXTURES — same engine, different decision structures / pathways
+====================================================================================================
+
+[BILL] rule=majority HR med=1.0774 binder=majority:4 actors (largest: Senator_Blocker)
+       3 pursuing vs 1 blocking under MAJORITY → combined HR 1.0774 > 1 (most-opposed does NOT bind); absorbing institutional votes: 1
+       P(passes by horizon) = 0.113; modes: {'bill_passes_senate': 0.1125}
+
+[LAUNCH] rule=hierarchy HR med=1.5477 binder=CEO
+         committed CEO under HIERARCHY beats one resister → HR > 1; advanced process (0.7) amplifies hazards endogenously
+         P(ships by horizon) = 0.237
+
+[INFLATION] rule=aggregation HR med=0.9735 binder=committed_to_prevent
+            world-driven pathway: a Fed stance shrinks to ~no-effect under AGGREGATION; hazards consume ['nonlinear_state', 'pathway_progress:threshold_crossing']
+            P(below 2% by horizon) = 0.263
+
+artifact → experiments/results/replay_v3/offline_event_time_demo.json

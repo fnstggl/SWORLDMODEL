@@ -189,14 +189,22 @@ def stance_control_weight(stance: dict) -> float:
     return CONTROL_WEIGHTS["informal_influence"]
 
 
-def _stance_hr(stance: dict, hr_table: dict, *, control_scaled: bool = True):
+def _stance_hr(stance: dict, hr_table: dict, *, control_scaled: bool = True,
+               live_capacity: dict = None):
     """One stance → shrunk (median, lo80, hi80) hazard-ratio interval, or None when the stance's
-    level is unknown. Log-effect × reliability × capability × (graded control weight)."""
+    level is unknown. Log-effect × reliability × capability × (graded control weight). When a LIVE
+    capacity map is supplied (the depletable capacity resource the simulated actions burn), it
+    replaces the static capability label: shrink = 0.4 + 0.6 × capacity — an exhausted actor's
+    stance moves hazards less than a fresh one's."""
     tup = hr_table.get(canon_level(stance.get("commitment_level")))
     if not tup:
         return None
     s = RELIABILITY_SHRINK.get(str(stance.get("reliability", "medium")).lower(), 0.6)
-    s *= CAPABILITY_SHRINK.get(str(stance.get("capability", "high")).lower(), 1.0)
+    cap_live = (live_capacity or {}).get(str(stance.get("actor")))
+    if isinstance(cap_live, (int, float)):
+        s *= 0.4 + 0.6 * max(0.0, min(1.0, float(cap_live)))
+    else:
+        s *= CAPABILITY_SHRINK.get(str(stance.get("capability", "high")).lower(), 1.0)
     if control_scaled:
         s *= stance_control_weight(stance)
     med, lo, hi = tup
@@ -242,7 +250,8 @@ def _mode_decision_structure(mode: dict, pathway: str) -> dict:
             "stages": [str(s) for s in (ds.get("stages") or [])]}
 
 
-def combine_stances(stances: list, pathway: str, *, mode: dict = None, hr_table: dict) -> dict:
+def combine_stances(stances: list, pathway: str, *, mode: dict = None, hr_table: dict,
+                    live_capacity: dict = None) -> dict:
     """Combine grounded stances into ONE hazard-ratio distribution for a mode, under the mode's
     DECISION STRUCTURE — the combination law is derived from the structure, never hard-coded:
 
@@ -284,7 +293,7 @@ def combine_stances(stances: list, pathway: str, *, mode: dict = None, hr_table:
                 "combination_rule": rule, "n_stances_combined": len(relevant)}
 
     if rule in ("unanimity", "weakest_link"):
-        pool = [(st, _stance_hr(st, hr_table, control_scaled=False)) for st in relevant]
+        pool = [(st, _stance_hr(st, hr_table, control_scaled=False, live_capacity=live_capacity)) for st in relevant]
         pool = [(st, t) for st, t in pool if t]
         if not pool:
             return neutral
@@ -292,7 +301,7 @@ def combine_stances(stances: list, pathway: str, *, mode: dict = None, hr_table:
         return _entry(st, t)
 
     if rule in ("hierarchy", "unilateral"):
-        pool = [(st, _stance_hr(st, hr_table)) for st in relevant]
+        pool = [(st, _stance_hr(st, hr_table, live_capacity=live_capacity)) for st in relevant]
         pool = [(st, t) for st, t in pool if t]
         if not pool:
             return neutral
@@ -307,7 +316,7 @@ def combine_stances(stances: list, pathway: str, *, mode: dict = None, hr_table:
         return _entry(ctrl_st, (math.exp(logm), math.exp(loglo), math.exp(loghi)))
 
     if rule in ("majority", "weighted_coalition"):
-        pool = [(st, _stance_hr(st, hr_table)) for st in relevant]
+        pool = [(st, _stance_hr(st, hr_table, live_capacity=live_capacity)) for st in relevant]
         pool = [(st, t) for st, t in pool if t]
         if not pool:
             return neutral
@@ -322,7 +331,7 @@ def combine_stances(stances: list, pathway: str, *, mode: dict = None, hr_table:
         return out
 
     if rule == "strongest_actor":
-        pool = [(st, _stance_hr(st, hr_table)) for st in relevant]
+        pool = [(st, _stance_hr(st, hr_table, live_capacity=live_capacity)) for st in relevant]
         pool = [(st, t) for st, t in pool if t]
         if not pool:
             return neutral
@@ -330,7 +339,7 @@ def combine_stances(stances: list, pathway: str, *, mode: dict = None, hr_table:
         return _entry(st, t)
 
     if rule == "aggregation":
-        pool = [(st, _stance_hr(st, hr_table)) for st in relevant]
+        pool = [(st, _stance_hr(st, hr_table, live_capacity=live_capacity)) for st in relevant]
         pool = [(st, t) for st, t in pool if t]
         if not pool:
             return dict(neutral, binding_level="aggregation_no_stance_channel")
@@ -345,7 +354,7 @@ def combine_stances(stances: list, pathway: str, *, mode: dict = None, hr_table:
         return out
 
     # cumulative_pressure (and the conservative unknown default): stances add
-    pool = [(st, _stance_hr(st, hr_table)) for st in relevant]
+    pool = [(st, _stance_hr(st, hr_table, live_capacity=live_capacity)) for st in relevant]
     pool = [(st, t) for st, t in pool if t]
     if not pool:
         return neutral

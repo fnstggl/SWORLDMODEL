@@ -264,6 +264,9 @@ def assemble(plan: Plan, llm) -> dict:
     lineage["actor_intentions"] = ground_actor_intentions(plan, plan.question, criterion=CRITERION,
                                                           evidence_text="(pinned)", llm=llm,
                                                           modes=modes)
+    # 3b. capability becomes a live, depletable capacity resource
+    from swm.world_model_v2.world_dynamics import declare_actor_capacity
+    lineage["actor_capacity"] = declare_actor_capacity(plan)
     # 4. situation-dependent trajectory depth (real decision events, real candidates)
     lineage["trajectory_depth"] = deepen_trajectory(plan, {"phase4_actor_policy": {"required": True}},
                                                     cadence_days=7.0)
@@ -283,8 +286,11 @@ def _extract_story(branch, plan, sample_len=28):
                 if c["path"].endswith(".current_action"):
                     actor = c["path"].split(".")[0]
                     act = (c["after"] or {}).get("action_name")
-            moves = [f"{c['path'].split(':')[-1].rstrip(']')} {c['before']}→{c['after']}"
-                     for c in d.changes if "pathway_progress" in c["path"]]
+            def _chan(path):
+                return (path.split("[")[-1].rstrip("]")
+                        .replace("pathway_progress:", "").replace("mode_progress:", "mode:"))
+            moves = [f"{_chan(c['path'])} {c['before']}→{c['after']}" for c in d.changes
+                     if "pathway_progress" in c["path"] or "mode_progress" in c["path"]]
             if act:
                 rows.append(f"{when}  ACTION       {actor:<28} chose {act:<14}"
                             + (f" | process {'; '.join(moves)}" if moves else ""))
@@ -294,11 +300,31 @@ def _extract_story(branch, plan, sample_len=28):
                         f" ({(d.reason_codes + ['?'])[1]})")
         elif d.event_type == "hazard_round":
             u = d.uncertainty
+            tail = ""
+            if any("absorbing_state_reached" in c["path"] for c in d.changes):
+                tail = "  → ABSORBED"
+            elif "provisional_pending_persistence" in d.reason_codes:
+                tail = "  → PROVISIONAL (must hold 30d)"
+            live = "  [hr recomputed from live stances]" if u.get("hr_source") == "live_recomputed" else ""
             rows.append(f"{when}  HAZARD       mode={d.reason_codes[0].split('=')[1]:<18}"
                         f" h={u.get('hazard'):.4f} state×{u.get('state_hazard_factor'):.3f}"
-                        f" hr={u.get('sampled_hazard_ratio')}"
-                        + ("  → ABSORBED" if any("absorbing_state_reached" in c["path"]
-                                                 for c in d.changes) else ""))
+                        f" hr={u.get('sampled_hazard_ratio')}" + tail + live)
+        elif d.event_type == "stance_review":
+            for c in d.changes:
+                actor = c["path"].split(".")[0]
+                if "resources[capacity]" in c["path"]:
+                    rows.append(f"{when}  ATTRITION    {actor:<28} capacity "
+                                f"{c['before']} → {c['after']}  (contested pursuit drains)")
+                else:
+                    rule = next((r.split(":", 1)[1] for r in d.reason_codes
+                                 if r.startswith(actor)), "?")
+                    rows.append(f"{when}  STANCE       {actor:<28} "
+                                f"{c['before']} → {c['after']}  ({rule})")
+        elif d.event_type == "persistence_check":
+            held = any("persisted" in r for r in d.reason_codes)
+            rows.append(f"{when}  PERSISTENCE  "
+                        + ("HELD ≥30d — criterion satisfied, absorption confirmed" if held
+                           else "COLLAPSED — near-miss realized (temporary end-state failed)"))
         elif d.event_type == "absorption":
             rows.append(f"{when}  ABSORPTION   first passage observed (absorbed_at stamped)")
         elif d.event_type == "institutional_decision":
@@ -308,9 +334,21 @@ def _extract_story(branch, plan, sample_len=28):
                         + ("PASSED" if any("absorbing" in c["path"] or c.get("after") == "passed"
                                            for c in d.changes) else "failed"))
     if len(rows) > sample_len:
-        head = rows[:sample_len - 8]
-        tail = rows[-8:]
-        rows = head + [f"  … {len(rows) - sample_len} more events …"] + tail
+        # center the excerpt on FIRST PASSAGE (the story's climax: provisional entry, persistence
+        # outcome, absorption, and the stance dynamics around them), not the calendar's start
+        anchor = next((i for i, r in enumerate(rows)
+                       if "ABSORPTION" in r or "PERSISTENCE" in r or "PROVISIONAL" in r), None)
+        head_n = 10
+        if anchor is None or anchor < sample_len - 4:
+            head, tail = rows[:sample_len - 8], rows[-8:]
+            rows = head + [f"  … {len(rows) - sample_len} more events …"] + tail
+        else:
+            lo = max(head_n, anchor - (sample_len - head_n - 4))
+            head = rows[:head_n]
+            mid = rows[lo:anchor + 4]
+            rows = (head + [f"  … {lo - head_n} more events …"] + mid
+                    + ([f"  … {len(rows) - anchor - 4} more events …"]
+                       if anchor + 4 < len(rows) else []))
     return rows
 
 

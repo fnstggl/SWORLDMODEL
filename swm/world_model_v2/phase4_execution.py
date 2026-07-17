@@ -202,38 +202,78 @@ class ActorPolicyRuntime:
                                         updated_at=world.clock.now), key=key)
                 delta.change(f"{target.identity}.beliefs[{key}]", before, after)
 
-    #: bounded per-action step on a pathway-process quantity (× the ontology effect in [-1,1]).
-    #: Documented structural magnitude — the sensitivity harness varies it; the quantities are
-    #: clamped so no single actor can saturate a process in one move.
+    #: legacy point step, kept for direct callers/tests; production draws the per-branch SAMPLED
+    #: coupling `pathway_step` (world_dynamics) so the structural magnitude is a distribution.
     PATHWAY_STEP = 0.04
 
     @classmethod
     def _apply_pathway_effects(cls, world, action: TypedAction, delta: StateDelta):
         """The action→world half of the endogenous causal chain: an EXECUTED action moves the
-        `pathway_progress:*` quantities its ontology entry names (accept/counteroffer advance the
-        cooperative process; reject/exit stall it; mobilize advances a unilateral campaign; approve/
-        schedule advance an institutional procedure) — and the hazard rounds CONSUME those
+        process quantities its ontology entry names — and the hazard rounds CONSUME those
         quantities, so the timing/probability of resolution emerges from what the simulated actors
-        actually do. Applies ONLY to quantities the plan declared (mode_graph.declare_pathway_
-        processes) — worlds without an event-time mode graph are untouched."""
+        actually do. Three refinements over a flat write:
+          * the step size is the per-branch SAMPLED coupling constant (structural uncertainty
+            propagates), scaled by the actor's live CAPACITY (an exhausted actor moves less);
+          * on a SHARED process, PRINCIPALS (the declared approvers) move it at full step,
+            bystanders at the sampled non-principal share — Trump's shuttle diplomacy moves talks
+            less than a principal's own acceptance;
+          * on a CONTESTED (non-shared) pathway the write goes to the ACTOR'S OWN pursued mode
+            channels (+) while rival mode channels on the same pathway are suppressed (sampled
+            contested_suppression) — two campaigns evolve separately, in tension; the pathway
+            aggregate still moves as the spillover signal.
+        Applies ONLY to quantities the plan declared — worlds without a mode graph are untouched."""
         from swm.world_model_v2.phase4_policy import action_pathway_effects
         from swm.world_model_v2.quantities import Quantity, register_quantity_type
         effects = action_pathway_effects(action.action_family, action.action_name)
         if not effects:
             return
-        for pw, eff in effects.items():
-            var = f"pathway_progress:{pw}"
+        from swm.world_model_v2.world_dynamics import live_capacity, sampled_coupling
+
+        def _write(var, qtype, step_eff):
             q = world.quantities.get(var)
             if q is None:
-                continue                                     # not declared for this world — no-op
+                return                                       # not declared for this world — no-op
             before = float(q.value) if isinstance(q.value, (int, float)) else 0.5
-            after = max(0.05, min(0.95, before + cls.PATHWAY_STEP * float(eff)))
+            after = max(0.05, min(0.95, before + step_eff))
             if after == before:
-                continue
-            register_quantity_type("pathway_progress", units="process_state")
-            world.quantities[var] = Quantity(name=var, qtype="pathway_progress", value=round(after, 4),
+                return
+            register_quantity_type(qtype, units="process_state")
+            world.quantities[var] = Quantity(name=var, qtype=qtype, value=round(after, 4),
                                              timestamp=world.clock.now)
             delta.change(f"quantities[{var}]", round(before, 4), round(after, 4))
+
+        step = sampled_coupling(world, "pathway_step")
+        cap = live_capacity(world).get(action.actor_id)
+        if isinstance(cap, (int, float)):
+            step *= 0.4 + 0.6 * max(0.0, min(1.0, float(cap)))
+        actor_ent = world.entities.get(action.actor_id)
+        my_stances = actor_ent.value("stances", default=None) if actor_ent is not None else None
+        my_stances = my_stances if isinstance(my_stances, list) else []
+        for pw, eff in effects.items():
+            share = 1.0
+            pq = world.quantities.get(f"pathway_principals:{pw}")
+            principals = str(getattr(pq, "value", "") or "").split("|") if pq is not None else []
+            if principals and action.actor_id not in principals:
+                share = sampled_coupling(world, "nonprincipal_step_share")
+            _write(f"pathway_progress:{pw}", "pathway_progress", step * share * float(eff))
+            # contested pathways: route the push into the actor's OWN pursued mode channel(s) and
+            # suppress rivals' channels on the same pathway
+            own_modes = {str(s.get("target_mode")) for s in my_stances
+                         if s.get("target_mode") and str(s.get("pathway")) == pw
+                         and str(s.get("commitment_level", "")) in
+                         ("inclined_toward", "actively_pursuing", "formally_committed")}
+            if not own_modes:
+                continue
+            supp = sampled_coupling(world, "contested_suppression")
+            prefix = f"mode_progress:{pw}:"
+            for var in list(world.quantities):
+                if not var.startswith(prefix):
+                    continue
+                mode_id = var[len(prefix):]
+                if mode_id in own_modes:
+                    _write(var, "mode_progress", step * float(eff))
+                else:
+                    _write(var, "mode_progress", -step * supp * float(eff))
 
     @staticmethod
     def _follow_up_events(world, action: TypedAction, posterior: ActionPosterior,

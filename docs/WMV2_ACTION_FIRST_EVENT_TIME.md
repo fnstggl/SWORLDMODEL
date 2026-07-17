@@ -103,22 +103,86 @@ substrate), declared-quantity measurement requirements (the order-of-battle clas
 scheduled-calendar requirement, all from the plan's own structure; orchestrator caps raised
 (3→8 retrieved requirements, 8→16 claim docs).
 
+## The world-dynamics layer (`world_dynamics.py`) — the five ranked gaps, closed
+
+The five limitations the first build reported as-is are now engineering, not architecture:
+
+1. **Effect sizes** — the statement→hazard-change measurement is PLACEBO-CONTROLLED (the same
+   post/pre implied-hazard ratio at non-statement dates normalizes out the secular drift the naive
+   ratio credits to the statement) and PATHWAY-STRATIFIED (a refusal moves a deal differently than
+   a bill; strata pool toward the level estimate). Pack staleness is stamped into every conversion
+   report (`hr_pack`: source / fitted_at / n_rows / stratified). The fit still needs one networked
+   run — that is data acquisition, not design.
+2. **Stances are DYNAMIC within a run** (`StanceReviewOperator`): grounded stances are initial
+   conditions. At the trajectory cadence each actor's stances are reviewed against the causal state
+   their own and their rivals' actions produced — RIPENESS (a rival mode nearing completion softens
+   the loser's shared-pathway refusal: the collapsing battlefield opens talks), WINNING (hardens
+   against concessions), EXHAUSTION (drained capacity softens pursue-stances), BANDWAGON (a
+   succeeding shared process erodes weak opposition). One level per review, cooldown hysteresis,
+   every change a StateDelta naming its rule. The policy reads stances live (behavior changes next
+   decision); hazard rounds RE-DERIVE their stance hazard ratio from current records
+   (stance-hash-keyed re-sampling) — h(t) genuinely shifts mid-trajectory.
+3. **Process state is richer than one scalar per pathway**: contested (non-shared) pathways carry
+   PER-MODE channels (`mode_progress:<pathway>:<mode>`) — an actor's actions advance THEIR pursued
+   modes and suppress rivals' (sampled contested_suppression); shared processes weight PRINCIPALS
+   (the decision structure's approvers) above bystanders; and **capability is a depletable capacity
+   resource** — initialized from grounding, burned by effortful actions AND by CONTESTED ATTRITION
+   (while ≥2 rivals pursue the same contested pathway, every cadence round drains both sides by a
+   sampled coupling — wars of attrition exhaust by DURATION, not decision count), read live by the
+   stance combiner and the exhaustion rule. Attrition → stance → behavior → hazard is one loop.
+4. **Coupling magnitudes are PRIOR DISTRIBUTIONS, sampled per branch** (pathway_step, endogenous
+   split, own/cross/world consume weights, contested suppression, persistence survival) — the
+   structural-constant uncertainty reaches the terminal CDF; `fit_coupling_pack` replaces them from
+   scored vault trajectories; `experiments/replay_v3/sensitivity_harness.py` sweeps them in-repo.
+5. **The vault protocol is PROVEN offline** (`test_wmv2_vault_protocol.py`): build+seal, opens-only-
+   after-window, never-rebuilt-in-place, time gate, tamper gate, single-open gate — all exercised
+   end-to-end against a stubbed market API. The freeze itself needs one networked run.
+
+Plus the deeper simulation gaps found in this pass:
+
+* **PERSISTENCE SEMANTICS**: a criterion requiring the end-state to HOLD ("no active hostilities
+  for ≥30 consecutive days") makes near-misses REAL — hazard success writes a PROVISIONAL
+  absorption; the world pauses in the candidate end-state; a persistence check confirms (the
+  criterion completes) or COLLAPSES it (the temporary ceasefire that fails now actually happens in
+  trajectories, knocking the process back). Named near-miss states stopped being annotations.
+* **CATEGORICAL UNIFICATION**: >2-option questions run the same first-passage machinery — the
+  distribution over the question's own options is the absorbed_by marginal with honest
+  none-of-the-options-by-horizon mass. When / deadline / categorical are now three readouts of one
+  simulated object.
+* **ACTOR PERCEPTION**: actors observe the PUBLIC process state (pathway/mode progress, population
+  aggregates, nonlinear state) as beliefs — they were deciding blind to the world they acted in.
+  Outcome/readout machinery (absorption stamps, sampled coefficients) never enters a view.
+* **Timing resolution** scales with the horizon (up to 40 rounds per mode).
+
 ## Validation status (honest)
 
-* 1142 tests pass (2 pre-existing environment failures outside world-model-v2). New: 19
-  action-chain tests (including the end-to-end two-world proof that simulated behavior changes
-  absorbed mass), 10 fitting/scoring tests, reworked decision-structure/mode-scoping tests.
+* Full suite green (2 pre-existing environment failures outside world-model-v2). New:
+  world-dynamics (16), vault-protocol/fitter-rigor (6), action-chain (19), fitting/scoring (10).
 * `experiments/replay_v3/offline_event_time_demo.py` runs the FULL post-evidence production path
-  (canonical modes → process grounding → stance grounding → trajectory depth → event-time
-  conversion → materialize → rollout → readout) with elicitations PINNED to the previous live
-  compile of "When will the Russia-Ukraine conflict end?" — this environment's network policy
-  blocks the LLM API and all evidence hosts, so the pinned-elicitation run is the strongest
-  validation possible here; the rollout itself is LLM-free and production-exact. Cross-domain
-  fixtures (Senate bill / product launch / inflation threshold) exercise majority, hierarchy, and
-  world-driven aggregation structures on the same engine.
-* Remaining known distance from maximal fidelity, ranked: (1) effect sizes still priors until
-  `fit_intention_hr.py` runs on real data; (2) stances are static within a run — Phase 11 regime
-  shifts do not yet rewrite stance records mid-trajectory; (3) capability is a 3-level
-  classification, not a resource-conditioned quantity; (4) the pathway-process state is
-  one scalar per pathway — no per-dyad negotiation state, no spatial battlefield state; (5) the
-  frozen event-time vault has not yet been built/scored (needs network + its window).
+  with elicitations PINNED to the previous live compile (this environment's network policy blocks
+  the LLM API and all evidence hosts; the rollout itself is LLM-free and production-exact).
+  Cross-domain fixtures (Senate bill / product launch / inflation threshold) exercise majority,
+  hierarchy, and world-driven aggregation structures on the same engine.
+
+## Is this the core vision? Assessment
+
+The core vision: answers EMERGE from simulated causal worlds — real named actors with grounded,
+evolving intentions and finite capacity; institutions with real rules executing inside the
+trajectory; non-actor mechanisms alongside them; timing, deadline probability and mode of
+resolution read out of one simulated object; every number either fitted, sampled from a documented
+prior, or measured — never minted by an LLM mid-run.
+
+**Architecturally the system now matches that vision.** What still separates it from the vision's
+full realization is DATA and SCALE, not design:
+
+1. the effect-size and coupling packs are unfitted until the networked fitting runs execute
+   (interfaces, placebo controls, stratification all ready);
+2. the frozen event-time vault is unbuilt until one networked freeze (protocol proven);
+3. evidence per question is still thin relative to a world war (breadth now scales with plan
+   structure, but archived-source depth is bounded by the connectors);
+4. state granularity remains abstracted (no spatial battlefield, no per-dyad ledger beyond
+   principals/contested channels, populations only when declared) — the honest next increments,
+   each of which now has a natural slot in the mode-graph/process-channel design;
+5. stance updates are rule-based (four documented universal rules); a fitted stance-transition
+   model (from longitudinal statement corpora) is the data-driven replacement, and the
+   StanceReviewOperator is exactly where it plugs in.
