@@ -42,6 +42,9 @@ PRED_DIR = VAULT / "predictions"
 LOG_DIR = Path("experiments/results/replay_v3/prereg_logs")
 MODEL = "deepseek-chat"
 DECIDED_LO, DECIDED_HI = 0.02, 0.98
+#: an extreme price only means "the world already knows" when resolution is IMMINENT — a 1.5%
+#: far-dated longshot is a genuinely open question, not a decided one
+DECIDED_WINDOW_S = 72 * 3600.0
 
 
 def predictions_path(tranche: str) -> Path:
@@ -98,13 +101,19 @@ def live_market_state(condition_id: str) -> dict:
 
 
 def openness_gate(w: dict, live: dict, now_ts: float) -> str:
-    """'' when forecastable; otherwise the reason this question cannot be pre-registered."""
+    """'' when forecastable; otherwise the reason this question cannot be pre-registered.
+
+    The pinned-price refusal is TIME-AWARE: within DECIDED_WINDOW_S of the scheduled end an
+    extreme price means the outcome is effectively known (a 0.99 hours before resolution IS the
+    answer); on a far-dated market the same price is just a longshot forecast — the question is
+    open and refusing to pre-register it would silently bias the tranche toward mid-price rows."""
     if now_ts >= float(w["end_ts"]):
         return "market end passed before prediction started"
     if live.get("closed"):
         return "market reports closed at prediction time"
     p = live.get("p_yes")
-    if p is not None and not (DECIDED_LO < p < DECIDED_HI):
+    if p is not None and not (DECIDED_LO < p < DECIDED_HI) \
+            and (float(w["end_ts"]) - now_ts) <= DECIDED_WINDOW_S:
         return f"market effectively decided at prediction time (p_yes={p:.3f})"
     return ""
 

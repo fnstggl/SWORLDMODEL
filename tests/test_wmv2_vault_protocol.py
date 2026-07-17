@@ -179,11 +179,17 @@ def test_prereg_openness_gate_never_forecasts_after_the_fact():
     assert "end passed" in PV.openness_gate({"end_ts": now - 60.0}, {"closed": False, "p_yes": 0.4}, now)
     # market reports closed → refuse
     assert "closed" in PV.openness_gate(w, {"closed": True, "p_yes": 0.4}, now)
-    # world already knows (pinned price) → refuse, both directions
+    # world already knows (pinned price near resolution) → refuse, both directions
     assert "decided" in PV.openness_gate(w, {"closed": False, "p_yes": 0.985}, now)
     assert "decided" in PV.openness_gate(w, {"closed": False, "p_yes": 0.01}, now)
     # unknown price is not proof of decision → allowed (recorded on the row either way)
     assert PV.openness_gate(w, {"closed": False, "p_yes": None}, now) == ""
+    # TIME-AWARE: the same extreme price on a FAR-dated market is a longshot forecast, not a
+    # decided outcome — refusing it would bias the tranche toward mid-price rows
+    far = {"end_ts": now + 30 * 86400.0}
+    assert PV.openness_gate(far, {"closed": False, "p_yes": 0.01}, now) == ""
+    assert PV.openness_gate(far, {"closed": False, "p_yes": 0.985}, now) == ""
+    assert "closed" in PV.openness_gate(far, {"closed": True, "p_yes": 0.5}, now)
 
 
 def test_prereg_refuses_tampered_vault(tmp_path, monkeypatch):
