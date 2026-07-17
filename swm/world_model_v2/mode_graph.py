@@ -500,8 +500,9 @@ def canonical_modes(*, question: str, criterion: dict, hypotheses: list, options
         for m in cands:
             key = _cluster_key(m["id"], clusters)
             c = clusters.setdefault(key, {"sources": set(), "priors": [], "pathways": [],
-                                          "structures": [], "describe": None,
+                                          "structures": [], "describe": None, "names": set(),
                                           "requires_agreement": None})
+            c["names"].add(_canon_mode_id(m["id"]))
             if key in seen_in_src:
                 c["priors"][-1] += m["prior"]      # time-indexed duplicates within one source: sum
                 continue
@@ -524,7 +525,10 @@ def canonical_modes(*, question: str, criterion: dict, hypotheses: list, options
         if support < need:
             dropped.append({"id": key, "support": f"{support}/{n_sources}"})
             continue
-        ent = {"id": key, "prior": sum(c["priors"]) / len(c["priors"]), "support": support}
+        # the cluster's CANONICAL name is its shortest member id (the consensus name, reproducible
+        # across compiles): 'peace_treaty' beats 'comprehensive_peace_treaty'
+        cid = min(c["names"], key=lambda s: (len(s), s)) if c["names"] else key
+        ent = {"id": cid, "prior": sum(c["priors"]) / len(c["priors"]), "support": support}
         if c["pathways"]:
             ent["pathway"] = max(set(c["pathways"]), key=c["pathways"].count)   # majority pathway
         elif c["requires_agreement"] is not None:
