@@ -3,15 +3,24 @@
 Two data sources, both outcome-legal:
  1. The 40 CALIBRATION-split worlds of the frozen v3 vault (never validation/locked).
  2. A WIDE CORPUS of additional closed Polymarket binary markets fetched deterministically
-    (gamma /markets, id-ascending), EXCLUDING every validation/locked benchmark world by
+    (gamma /markets, volume-descending), EXCLUDING every validation/locked benchmark world by
     condition_id AND by exact question string — those splits stay sealed.
 
-For each market the archived CLOB price path gives the lifetime fraction at which the YES price
-first crossed 0.9 — the labeled effective-resolution proxy. `fit_survival_pack` turns the fractions
-into discrete per-bucket hazards with partial pooling toward the global curve. Residual-risk note:
-corpus markets can be topically correlated with sealed worlds; the pack carries only FAMILY-level
-timing shapes (5 pooled hazard numbers per family), no outcome or per-question information.
+RESOLUTION-TIME PROXY (v2 — the naive first-0.9-crossing overstates early resolution):
+ * STICKY crossing: the first time the YES price crosses 0.9 and never falls back below 0.5 —
+   a transient spike that later collapses was not the event happening;
+ * TRUE resolution timestamp preferred: a market that CLOSED well before its scheduled end with a
+   decisive terminal price resolved early — its closure time is the event time, sharper than any
+   price crossing;
+ * the lifetime DENOMINATOR is the scheduled window (start → endDate), not the last trade — an
+   early-resolving market's fraction must not be biased toward 1 by its own early closure.
+
+`fit_survival_pack` turns the fractions into discrete per-bucket hazards with partial pooling
+toward the global curve. Residual-risk note: corpus markets can be topically correlated with sealed
+worlds; the pack carries only FAMILY-level timing shapes (5 pooled hazard numbers per family), no
+outcome or per-question information.
 """
+import datetime as _dt
 import json
 import sys
 import time
@@ -24,9 +33,12 @@ from swm.world_model_v2.event_time import SURV_PACK, fit_survival_pack
 
 VAULT = Path("experiments/replay_vault_v3")
 THRESHOLD = 0.9
+STICKY_FLOOR = 0.5                                                   # a crossing that later falls below
+                                                                     # this was a spike, not resolution
 CORPUS_TARGET = 400                                                  # additional markets beyond calibration
 MIN_VOLUME = 5000.0
 MIN_HIST_POINTS = 8
+EARLY_CLOSE_MARGIN_S = 86400.0                                       # closed >1d before scheduled end
 
 
 def _yes_token(m):
@@ -38,15 +50,53 @@ def _yes_token(m):
     return None
 
 
-def _frac_first_cross(tok):
+def _iso_ts(s):
+    if not s:
+        return None
+    try:
+        return _dt.datetime.fromisoformat(str(s).replace("Z", "+00:00")).timestamp()
+    except (ValueError, TypeError):
+        return None
+
+
+def effective_resolution_fraction(hist, *, end_ts=None, closed_ts=None,
+                                  threshold=THRESHOLD, floor=STICKY_FLOOR,
+                                  min_points=MIN_HIST_POINTS):
+    """(lifetime_fraction | None, usable, proxy_kind) — PURE function (unit-tested offline).
+
+    fraction None with usable=True means CENSORED (the event never effectively happened inside the
+    window). Denominator = the scheduled window (start → end_ts) so early resolution reads as an
+    early fraction instead of being renormalized away."""
+    hist = list(hist or [])
+    if len(hist) < min_points:
+        return None, False, "insufficient_history"
+    t0, t_last = hist[0]["t"], hist[-1]["t"]
+    t_end = max(float(end_ts) if end_ts else t_last, t_last)
+    if t_end <= t0:
+        return None, False, "degenerate_window"
+    # sticky crossing: first threshold crossing never followed by a fall below the floor
+    cross = None
+    for i, p in enumerate(hist):
+        if p["p"] >= threshold and all(q["p"] >= floor for q in hist[i:]):
+            cross = p["t"]
+            break
+    proxy = "sticky_price_crossing"
+    # true resolution: closed clearly before the scheduled end with a decisive terminal price —
+    # the closure timestamp is the event time (sharper than the crossing)
+    if closed_ts and closed_ts < t_end - EARLY_CLOSE_MARGIN_S and hist[-1]["p"] >= threshold:
+        cross = min(cross, float(closed_ts)) if cross is not None else float(closed_ts)
+        proxy = "early_close_resolution_time"
+    if cross is None:
+        return None, True, "censored"
+    return max(0.0, min(1.0, (cross - t0) / (t_end - t0))), True, proxy
+
+
+def _frac_first_cross(tok, market=None):
     hist = V2B._history(tok) if tok else []
-    if len(hist) < MIN_HIST_POINTS:
-        return None, False
-    t0, t1 = hist[0]["t"], hist[-1]["t"]
-    if t1 <= t0:
-        return None, False
-    cross = next((p["t"] for p in hist if p["p"] >= THRESHOLD), None)
-    return ((cross - t0) / (t1 - t0) if cross is not None else None), True
+    m = market or {}
+    frac, ok, _proxy = effective_resolution_fraction(
+        hist, end_ts=_iso_ts(m.get("endDate")), closed_ts=_iso_ts(m.get("closedTime")))
+    return frac, ok
 
 
 def _market_by_condition(cid):
@@ -66,7 +116,7 @@ def main():
     for w in cal:                                            # source 1: calibration split
         cid = (w.get("source") or {}).get("condition_id")
         m = _market_by_condition(cid) if cid else None
-        frac, ok = _frac_first_cross(_yes_token(m) if m else None)
+        frac, ok = _frac_first_cross(_yes_token(m) if m else None, m)
         if not ok:
             skipped += 1
             continue
@@ -96,7 +146,7 @@ def main():
             outs = sorted(o.lower() for o in json.loads(m.get("outcomes") or "[]"))
             if outs != ["no", "yes"]:
                 continue
-            frac, ok = _frac_first_cross(_yes_token(m))
+            frac, ok = _frac_first_cross(_yes_token(m), m)
             if not ok:
                 continue
             seen_cids.add(cid)
@@ -108,7 +158,9 @@ def main():
     print(f"corpus rows: {n_corpus}; total rows: {len(rows)}")
 
     pack = fit_survival_pack(rows)
-    pack["proxy"] = f"first CLOB YES price >= {THRESHOLD} crossing, as lifetime fraction; None = censored"
+    pack["proxy"] = (f"early-close resolution time when decisive, else STICKY YES>={THRESHOLD} "
+                     f"crossing (never re-descending below {STICKY_FLOOR}), over the SCHEDULED "
+                     f"window; None = censored")
     pack["n_worlds_used"] = len(rows)
     pack["sources"] = {"calibration_split": len(rows) - n_corpus, "wide_corpus_excl_sealed": n_corpus}
     pack["governance"] = ("validation/locked benchmark worlds excluded by condition_id and question; "

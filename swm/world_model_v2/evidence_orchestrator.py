@@ -37,11 +37,15 @@ from swm.world_model_v2.leakage_audit import RETROSPECTIVE_PATTERNS
 class OrchestratorConfig:
     lookback_days: int = 120
     max_items_per_query: int = 12
+    # breadth caps raised with the requirement expansion (per-actor statements, quantities,
+    # calendar): ~13 archived items for a world war was the measured thinness — retrieval now
+    # scales with the plan's declared structure, still hard-bounded for cost
+
     verify_online: bool = False                 # Wayback verification (network); off by default for speed
     use_wikipedia: bool = True
     extract_claims: bool = True
-    max_requirements_retrieved: int = 3         # cap RSS queries to the top-VoI requirements
-    max_claim_docs: int = 8                     # cap LLM claim-extraction calls per question
+    max_requirements_retrieved: int = 8         # cap RSS queries to the top-VoI requirements
+    max_claim_docs: int = 16                    # cap LLM claim-extraction calls per question
 
 
 def _window(as_of_ts: float, lookback_days: int) -> tuple:

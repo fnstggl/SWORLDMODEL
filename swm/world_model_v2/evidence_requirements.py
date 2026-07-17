@@ -50,10 +50,15 @@ def _rid(*parts) -> str:
     return "req_" + hashlib.sha1("|".join(str(p) for p in parts).encode()).hexdigest()[:10]
 
 
-def requirements_from_plan(plan, *, as_of_iso: str, question: str, max_reqs: int = 8) -> list:
+def requirements_from_plan(plan, *, as_of_iso: str, question: str, max_reqs: int = 14) -> list:
     """Deterministically derive typed evidence requirements from a compiled WorldExecutionPlan. One
-    requirement for the terminal outcome, plus the highest-sensitivity latents, key institutions/rules, and
-    each structural hypothesis's discriminating fact. Prioritized by expected VoI (sensitivity-weighted)."""
+    requirement for the terminal outcome, plus: the highest-sensitivity latents; key institutions/rules;
+    each structural hypothesis's discriminating fact; RECENT STATEMENTS by each principal actor (the
+    stance-grounding substrate); MEASURED VALUES for the plan's declared quantities (order-of-battle-
+    class facts); and the SCHEDULED CALENDAR (aid packages, votes, deadlines, meetings) inside the
+    window. Prioritized by expected VoI (sensitivity-weighted). Evidence was measured THIN relative to
+    the questions (~13 items for a world war): breadth scales with the plan's own declared structure —
+    never with scenario keywords."""
     reqs = []
     oc = plan.outcome_contract
     # 1) the terminal outcome itself — what is the current standing / base rate as of the question date
@@ -64,7 +69,21 @@ def requirements_from_plan(plan, *, as_of_iso: str, question: str, max_reqs: int
         as_of_constraint=as_of_iso, publication_time_scope="paired_after_before",
         absence_informative=True, entity_scope=[str(e.get("id")) for e in plan.entities[:4]
                                                 if isinstance(e, dict)]))
-    # 2) high-sensitivity latents → the hidden variable each needs a contemporaneous fact for
+    # 2) per-ACTOR recent statements — the substrate the stance grounding classifies; without them
+    #    intentions fall back to model knowledge (weaker reliability, lower fidelity)
+    actors = sorted([e for e in (plan.entities or []) if isinstance(e, dict) and e.get("id")],
+                    key=lambda e: -float(e.get("sensitivity", 0.5) or 0.5))
+    for e in actors[:4]:
+        aid = str(e.get("id"))
+        reqs.append(EvidenceRequirement(
+            requirement_id=_rid("actor_statements", aid),
+            claim_or_quantity=f"recent public statements positions of {aid.replace('_', ' ')}",
+            why_relevant="a principal's dated public statements ground their stances (commitment "
+                         "level, pathway, target mode) — behavior conditioning needs them",
+            affected_component=aid, expected_sensitivity=0.85, expected_voi=0.85,
+            as_of_constraint=as_of_iso, publication_time_scope="paired_after_before",
+            entity_scope=[aid]))
+    # 3) high-sensitivity latents → the hidden variable each needs a contemporaneous fact for
     for l in sorted(plan.latents, key=lambda x: -getattr(x, "sensitivity", 0.5))[:3]:
         s = getattr(l, "sensitivity", 0.5)
         reqs.append(EvidenceRequirement(
@@ -72,7 +91,7 @@ def requirements_from_plan(plan, *, as_of_iso: str, question: str, max_reqs: int
             why_relevant=f"high-sensitivity latent ({s:.2f}) driving the outcome distribution",
             affected_component=l.path, expected_sensitivity=float(s), expected_voi=round(float(s), 3),
             as_of_constraint=as_of_iso, publication_time_scope="paired_after_before"))
-    # 3) institutions / rules — the decision procedure that governs the outcome
+    # 4) institutions / rules — the decision procedure that governs the outcome
     for inst in (plan.institutions or [])[:2]:
         iid = inst.get("id") if isinstance(inst, dict) else str(inst)
         reqs.append(EvidenceRequirement(
@@ -81,7 +100,7 @@ def requirements_from_plan(plan, *, as_of_iso: str, question: str, max_reqs: int
             affected_component=str(iid), expected_sensitivity=0.7, expected_voi=0.7,
             preferred_source_types=["official_filing", "regulatory", "news"],
             as_of_constraint=as_of_iso, absence_informative=True))
-    # 4) structural hypotheses — the discriminating fact between competing world structures
+    # 5) structural hypotheses — the discriminating fact between competing world structures
     for h in (plan.structural_hypotheses or [])[:2]:
         hid = h.get("id") if isinstance(h, dict) else str(h)
         reqs.append(EvidenceRequirement(
@@ -90,5 +109,31 @@ def requirements_from_plan(plan, *, as_of_iso: str, question: str, max_reqs: int
             why_relevant="a fact that reweights competing structural hypotheses materially changes the outcome",
             affected_component=f"structural_hypothesis:{hid}", expected_sensitivity=0.8, expected_voi=0.8,
             as_of_constraint=as_of_iso, publication_time_scope="paired_after_before"))
+    # 6) declared QUANTITIES — measured values for the state variables the mechanisms consume
+    #    (force levels, counts, rates — the order-of-battle class, derived from the plan itself)
+    for q in [x for x in (plan.quantities or []) if isinstance(x, dict) and x.get("name")][:2]:
+        qn = str(q["name"])
+        if qn.startswith(("pathway_progress:", "absorbed_", "absorbing_", "actor_intentions")):
+            continue                                       # internal machinery, not world measurements
+        reqs.append(EvidenceRequirement(
+            requirement_id=_rid("quantity", qn),
+            claim_or_quantity=f"current measured value of {qn.replace('_', ' ')}",
+            why_relevant="mechanisms consume this declared quantity; an as-of measurement replaces "
+                         "a broad prior", affected_component=qn,
+            expected_sensitivity=0.6, expected_voi=0.6, as_of_constraint=as_of_iso,
+            preferred_source_types=["news", "dataset", "official_filing"],
+            publication_time_scope="paired_after_before"))
+    # 7) the SCHEDULED CALENDAR — dated commitments inside the window (votes, packages, summits,
+    #    deadlines) become scheduled-reality events; absence is itself informative
+    reqs.append(EvidenceRequirement(
+        requirement_id=_rid("calendar", question),
+        claim_or_quantity="scheduled dated events, votes, deadlines, packages, meetings relevant "
+                          "to the question window",
+        why_relevant="dated public commitments become deterministic scheduled events in the "
+                     "trajectory (the scheduled-reality layer)",
+        affected_component="scheduled_reality", expected_sensitivity=0.65, expected_voi=0.65,
+        as_of_constraint=as_of_iso, publication_time_scope="paired_after_before",
+        absence_informative=True,
+        entity_scope=[str(e.get("id")) for e in plan.entities[:3] if isinstance(e, dict)]))
     reqs.sort(key=lambda r: -r.expected_voi)
     return reqs[:max_reqs]
