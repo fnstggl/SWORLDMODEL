@@ -31,7 +31,14 @@ The components, on the existing event/StateDelta plane:
     rewires binary deadline questions through the SAME machinery: the terminal resolver events
     (resolve_outcome / aggregate_outcome_resolution) are removed, outcome-entailing facts and
     institutional decisions become absorbing writers at their real dates, and the answer is read out
-    of the trajectories. Universal: routing is linguistic + structural, never scenario-specific.
+    of the trajectories. `convert_categorical_to_event_time` makes a categorical answer the marginal
+    of WHICH mode produced absorption (one chain per declared option; first passage enforces
+    exclusivity; "none by horizon" is reported as unresolved mass instead of force-picking an option).
+    `convert_continuous_to_state_readout` replaces the terminal Normal draw with a `value_process_step`
+    chain that EVOLVES the readout variable through the window (bounded pull toward consumed causal
+    state, per-step noise) — the answer is the state at the readout date, and the value at ANY earlier
+    cutoff is on the same trajectory. Universal: routing is linguistic + structural, never
+    scenario-specific.
 """
 from __future__ import annotations
 
@@ -57,16 +64,21 @@ class EventTimeContract:
     def __init__(self, *, as_of: float, horizon_ts: float, resolves_iff: str = "",
                  modes: list = None, readout_var: str = "absorbed_at",
                  binary_options: list = None, occurrence_resolves: str = "yes",
-                 deadline_ts: float = None):
+                 deadline_ts: float = None, categorical_options: list = None):
         self.as_of, self.horizon_ts = float(as_of), float(horizon_ts)
         self.resolution_rule = resolves_iff[:300]
         self.modes = list(modes or [])
         self.readout_var = readout_var
         self.binary_options = [str(o) for o in (binary_options or [])][:2]
+        self.categorical_options = [str(o) for o in (categorical_options or [])]
         self.occurrence_resolves = "no" if str(occurrence_resolves) == "no" else "yes"
         self.deadline_ts = float(deadline_ts) if deadline_ts else float(horizon_ts)
-        self.options = (list(self.binary_options) if len(self.binary_options) == 2
-                        else ["absorbed_by_horizon", "censored_beyond_horizon"])
+        if len(self.binary_options) == 2:
+            self.options = list(self.binary_options)
+        elif len(self.categorical_options) >= 2:
+            self.options = list(self.categorical_options)
+        else:
+            self.options = ["absorbed_by_horizon", "censored_beyond_horizon"]
 
     def validate(self):
         if self.horizon_ts <= self.as_of:
@@ -122,6 +134,8 @@ class EventTimeContract:
               "survival": [round(1 - c, 4) for c in cdf],
               "first_passage_quantiles_ts": qtl,
               "mode_distribution": {k: round(v / n, 4) for k, v in modes.items()}}
+        out = {"family": "event_time", "n_deltas": sum(len(b.log) for b in branches),
+               "readout": "terminal_states", "event_time": et}
         if len(self.binary_options) == 2:
             # the question's own answer is a READOUT of the same trajectories: F(deadline), polarity-mapped
             p_occ = sum(w for t, w in times if t <= self.deadline_ts) / n
@@ -131,12 +145,21 @@ class EventTimeContract:
             et["p_event_by_deadline"] = round(p_occ, 4)
             et["deadline_ts"] = round(self.deadline_ts, 0)
             et["occurrence_resolves"] = self.occurrence_resolves
+        elif len(self.categorical_options) >= 2:
+            # a categorical answer is the marginal of WHICH mode produced absorption in the same worlds.
+            # Mass that absorbed in no declared option (or never absorbed) is UNRESOLVED — reported, never
+            # force-assigned to an option the world did not reach.
+            dist = {o: round(modes.get(o, 0.0) / n, 4) for o in self.categorical_options}
+            unresolved = max(0.0, 1.0 - sum(dist.values()))
+            out["unresolved_share"] = round(unresolved, 4)
+            if unresolved > 0.5:
+                out["warning"] = (f"{unresolved:.0%} of terminal worlds reached none of the declared "
+                                  f"options by the horizon — treat this answer as unsupported")
         else:
             dist = {"absorbed_by_horizon": round(p_absorbed, 4),
                     "censored_beyond_horizon": round(1 - p_absorbed, 4)}
-        return {"distribution": dist, "family": "event_time",
-                "n_deltas": sum(len(b.log) for b in branches),
-                "readout": "terminal_states", "event_time": et}
+        out["distribution"] = dist
+        return out
 
     def cdf_at(self, deadline_ts: float, branches) -> float:
         n = sum(max(0.0, float(getattr(b, "weight", 1.0))) for b in branches) or 1.0
@@ -513,6 +536,22 @@ def _mass_weights_from_curve(curve) -> list:
     return [m / z for m in mass]
 
 
+def _chain_geometry(as_of: float, span: float, cadence_days, curve) -> tuple:
+    """Round timestamps at the trajectory cadence + per-round exponents shaped by the fitted family curve
+    (Σ exponents = 1, so a chain with per-round hazard 1-(1-target)^exponent reproduces the target mass
+    exactly). Returns (round_ts, exponents)."""
+    horizon_days = max(1.0, span / 86400.0)
+    cad = max(0.5, float(cadence_days)) if cadence_days else max(1.0, horizon_days / 10.0)
+    n_rounds = max(4, min(20, int(round(horizon_days / cad))))
+    weights = _mass_weights_from_curve(curve)
+    round_ts = [as_of + (k / (n_rounds + 1)) * span for k in range(1, n_rounds + 1)]
+    buckets = [min(int(((t - as_of) / max(1.0, span)) * _BUCKETS), _BUCKETS - 1) for t in round_ts]
+    per_bucket = {b: buckets.count(b) for b in set(buckets)}
+    exponents = [weights[b] / per_bucket[b] for b in buckets]
+    z = sum(exponents) or 1.0
+    return round_ts, [x / z for x in exponents]
+
+
 def convert_binary_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=None,
                                  cadence_days: float = None) -> dict:
     """Rewire a binary deadline question so the answer is DERIVED from the simulation instead of declared
@@ -600,16 +639,7 @@ def convert_binary_to_event_time(plan, criterion: dict, *, lineage: dict = None,
     curve, fam, curve_src = family_hazard_curve(question)
     from swm.world_model_v2.family_hazards import family_base_rate
     fbr, _fam2, fbr_src = family_base_rate(question)
-    horizon_days = max(1.0, span / 86400.0)
-    cad = max(0.5, float(cadence_days)) if cadence_days else max(1.0, horizon_days / 10.0)
-    n_rounds = max(4, min(20, int(round(horizon_days / cad))))
-    weights = _mass_weights_from_curve(curve)
-    round_ts = [plan.as_of + (k / (n_rounds + 1)) * span for k in range(1, n_rounds + 1)]
-    buckets = [min(int(((t - plan.as_of) / max(1.0, span)) * _BUCKETS), _BUCKETS - 1) for t in round_ts]
-    per_bucket = {b: buckets.count(b) for b in set(buckets)}
-    exponents = [weights[b] / per_bucket[b] for b in buckets]
-    z = sum(exponents) or 1.0
-    exponents = [x / z for x in exponents]                     # Σ = 1 ⇒ chain mass = target exactly
+    round_ts, exponents = _chain_geometry(plan.as_of, span, cadence_days, curve)
 
     calibration_base = {"absorb_from": ("rate" if absorb_dir == "yes" else "one_minus_rate"),
                         "fact_floor": fact_floor, "lean": lean,
@@ -676,6 +706,225 @@ def convert_binary_to_event_time(plan, criterion: dict, *, lineage: dict = None,
            "fallback_rate_provenance": fbr_src,
            "posterior_calibrated": bool(calibration_base["posterior_rate_particles"]),
            "n_resolver_events_removed": len(removed)}
+    if lineage is not None:
+        lineage["event_time"] = rep
+    return rep
+
+
+# ---------------------------------------------------------------- 7. categorical unification
+def convert_categorical_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=None,
+                                      cadence_days: float = None) -> dict:
+    """Rewire a categorical question so the answer is the marginal of WHICH mode produced absorption —
+    never a separate categorical draw. One hazard chain per DECLARED OPTION (first passage enforces
+    exclusivity: exactly one mode can absorb a particle); the per-particle total resolved-mass comes from
+    the posterior → fitted family rate → broad lean-Beta chain (the old roulette resolver silently forced
+    an option on every particle — here "none of these by the horizon" is honest, reported unresolved
+    mass); grounded intentions crush agreement-shaped options only. The resolver events are removed."""
+    contract = getattr(plan, "outcome_contract", None)
+    family = str(getattr(contract, "family", ""))
+    options = [str(o) for o in (getattr(contract, "options", None) or []) if str(o).strip()]
+    if family not in ("categorical", "response_type") or len(options) < 2:
+        rep = {"skipped": f"family={family or '?'} n_options={len(options)} — categorical conversion "
+                          f"applies to ≥2-option categorical/response_type contracts only"}
+        if lineage is not None and "event_time" not in (lineage or {}):
+            lineage["event_time"] = rep
+        return rep
+    question = str(getattr(plan, "question", ""))
+    span = float(plan.horizon_ts) - float(plan.as_of)
+
+    # ---- option shares: the structural posterior/priors when the hypothesis ids ARE the options ----
+    shares, share_src = {o: 1.0 / len(options) for o in options}, "uniform_broad_prior"
+    struct_post = getattr(plan, "structural_posterior", None) or {}
+    hyps = {str(h.get("id")): float(h.get("prior", 1.0) or 1.0)
+            for h in (getattr(plan, "structural_hypotheses", None) or []) if isinstance(h, dict)}
+    for cand, src in ((struct_post, "structural_posterior"), (hyps, "structural_hypothesis_priors")):
+        if cand and set(cand) == set(options):
+            z = sum(max(0.0, float(v)) for v in cand.values()) or 1.0
+            shares = {o: max(0.0, float(cand[o])) / z for o in options}
+            share_src = src
+            break
+
+    # ---- grounded-intention factor: agreement-shaped options only (same rule as the when-path) ----
+    ishare = None
+    for q in (getattr(plan, "quantities", None) or []):
+        if isinstance(q, dict) and q.get("name") == "actor_intentions":
+            ishare = q.get("value")
+    ifac = 1.0 if ishare is None else max(0.1, min(1.6, 0.2 + 1.4 * float(ishare)))
+
+    rev = next((e for e in plan.scheduled_events if e.get("etype") == "resolve_outcome"), None)
+    lean = str(((rev or {}).get("payload") or {}).get("lean")
+               or (getattr(plan, "provenance", None) or {}).get("outcome_lean", "neutral"))
+    curve, fam, curve_src = family_hazard_curve(question)
+    from swm.world_model_v2.family_hazards import family_base_rate
+    fbr, _f2, fbr_src = family_base_rate(question)
+    round_ts, exponents = _chain_geometry(plan.as_of, span, cadence_days, curve)
+    calibration_base = {"absorb_from": "rate", "fact_floor": 0.0, "lean": lean,
+                        "posterior_rate_particles": ([[float(r), float(w)] for r, w in
+                                                      (getattr(plan, "posterior_rate_particles", None)
+                                                       or [])] or None),
+                        "fallback_rate": (float(fbr) if isinstance(fbr, (int, float)) else None),
+                        "fallback_provenance": fbr_src}
+
+    # ---------------- mutations (all inputs computed above) ----------------
+    mode_ifac, n_ev = {}, 0
+    for o in options[:8]:
+        ifac_m = ifac if _mode_requires_agreement(o) else 1.0
+        mode_ifac[o] = round(ifac_m, 3)
+        for ts, exp in zip(round_ts, exponents):
+            plan.scheduled_events.append({
+                "etype": "hazard_round", "ts": ts, "participants": [],
+                "payload": {"mode": o, "intention_factor": ifac_m,
+                            "as_of": plan.as_of, "span_s": span,
+                            "calibration": {**calibration_base, "exponent": shares[o] * exp}}})
+            n_ev += 1
+    removed = sum(1 for e in plan.scheduled_events
+                  if e.get("etype") in ("resolve_outcome", "aggregate_outcome_resolution"))
+    plan.scheduled_events = [e for e in plan.scheduled_events
+                             if e.get("etype") not in ("resolve_outcome", "aggregate_outcome_resolution")]
+    _ensure_event_time_mechanisms(plan, curve_src)
+    _declare_readout_quantities(plan)
+    plan.outcome_contract = EventTimeContract(
+        as_of=plan.as_of, horizon_ts=plan.horizon_ts,
+        resolves_iff=str((criterion or {}).get("resolves_yes_iff", "")
+                         or getattr(contract, "resolution_rule", ""))[:300],
+        modes=list(options), categorical_options=options).validate()
+    rep = {"contract": "categorical_first_passage", "options": options,
+           "option_shares": {o: round(s, 4) for o, s in shares.items()}, "share_source": share_src,
+           "n_hazard_rounds": n_ev, "intention_factor_by_mode": mode_ifac,
+           "family": fam, "hazard_curve_source": curve_src, "fallback_rate_provenance": fbr_src,
+           "posterior_calibrated": bool(calibration_base["posterior_rate_particles"]),
+           "n_resolver_events_removed": removed}
+    if lineage is not None:
+        lineage["event_time"] = rep
+    return rep
+
+
+# ---------------------------------------------------------------- 8. continuous unification
+class ValueProcessOperator(TransitionOperator):
+    """Evolve a numeric readout variable THROUGH the window instead of drawing it once at the horizon.
+    payload = {out_var, lo, hi, step, n_steps, sd_terminal, consume:[{var,weight}], as_of, span_s}.
+    Per step: bounded geometric pull toward consumed causal state (population aggregates, diffusion reach,
+    actor polarity — mapped from [0,1] onto [lo,hi]; total pull ≈ 1-e^(-Σw), Σw capped 0.45) plus
+    N(0, sd_terminal/√n) noise, clipped to [lo,hi]. The terminal value distribution matches the old broad
+    prior when nothing is consumed — but as a PATH: the value at any earlier cutoff is on the same
+    trajectory, and the answer is read from the state at the readout date."""
+    name = "value_process_step"
+
+    def applicable(self, world, event):
+        return event.etype == "value_process_step" and bool(event.payload.get("out_var"))
+
+    def validate(self, world, proposal):
+        return ValidationResult(ok=True)
+
+    def propose(self, world, event, rng):
+        return TransitionProposal(operator=self.name, action=dict(event.payload),
+                                  reason_codes=[f"step={event.payload.get('step', '?')}"
+                                                f"/{event.payload.get('n_steps', '?')}"])
+
+    def apply(self, world, proposal):
+        from swm.world_model_v2.quantities import Quantity, register_quantity_type
+        from swm.world_model_v2.phase_consumers import _branch_rng
+        a = proposal.action
+        var = str(a["out_var"])
+        lo = float(a.get("lo") if a.get("lo") is not None else 0.0)
+        hi = float(a.get("hi") if a.get("hi") is not None else 1.0)
+        if hi <= lo:
+            hi = lo + 1.0
+        n = max(1, int(a.get("n_steps", 1) or 1))
+        k = int(a.get("step", 1) or 1)
+        q = world.quantities.get(var)
+        v = getattr(q, "value", None)
+        v = float(v) if isinstance(v, (int, float)) else (lo + hi) / 2.0
+        # bounded pull toward consumed causal state (inside the mechanism — the readout never blends)
+        used, tgt_num, tgt_w = [], 0.0, 0.0
+        for m in (a.get("consume") or []):
+            cv = getattr(world.quantities.get(str(m.get("var", ""))), "value", None)
+            w = float(m.get("weight", 0.0) or 0.0)
+            if w <= 0.0 or not isinstance(cv, (int, float)):
+                continue
+            tgt_num += w * (lo + max(0.0, min(1.0, float(cv))) * (hi - lo))
+            tgt_w += w
+            used.append(str(m.get("var")))
+        if tgt_w > 0.0:
+            wt = min(0.45, tgt_w)
+            v += (wt / n) * (tgt_num / tgt_w - v)
+        rng = _branch_rng(world, f"vp:{var}:{k}")
+        sd = float(a.get("sd_terminal", (hi - lo) / 3.0) or (hi - lo) / 3.0)
+        v = min(hi, max(lo, v + rng.gauss(0.0, sd / (n ** 0.5))))
+        register_quantity_type(var, units="outcome")
+        before = getattr(q, "value", None)
+        world.quantities[var] = Quantity(name=var, qtype=var, value=round(v, 6),
+                                         timestamp=world.clock.now)
+        d = StateDelta(at=world.clock.now, event_type="value_process_step", operator=self.name,
+                       reason_codes=proposal.reason_codes,
+                       uncertainty={"step": k, "n_steps": n, "consumed": used,
+                                    "sd_terminal": round(sd, 4),
+                                    "note": "state evolved through time; terminal value is READ, "
+                                            "never drawn at the horizon"})
+        return d.change(f"quantities[{var}]", before, round(v, 6))
+
+
+register_operator("value_process_step", ValueProcessOperator(), requires=("quantities",),
+                  modifies=("quantities",), temporal_scale="scheduled",
+                  parameter_source="broad-prior value process (terminal sd = span/3, labeled) with "
+                                   "bounded pull toward consumed causal state", validated=True)
+if not event_type_registered("value_process_step"):
+    register_event_type("value_process_step", scheduling="scheduled", reads=("quantities",),
+                        deltas=("quantities",), parameter_source="event-time architecture",
+                        validated=True)
+
+
+def convert_continuous_to_state_readout(plan, criterion: dict, *, lineage: dict = None,
+                                        cadence_days: float = None) -> dict:
+    """Rewire a continuous question so the answer is the simulated state at the readout date — never a
+    separate numeric draw. The resolve_outcome event is replaced by a `value_process_step` chain that
+    evolves the SAME readout variable across the window (consumed causal state pulls the path; broad-prior
+    noise carries the labeled ignorance). The contract is untouched: `OutcomeContract.project` for
+    continuous families is already a pure readout (weighted quantiles of terminal values)."""
+    contract = getattr(plan, "outcome_contract", None)
+    family = str(getattr(contract, "family", ""))
+    if family != "continuous":
+        rep = {"skipped": f"family={family or '?'} — continuous conversion applies to the continuous "
+                          f"family only"}
+        if lineage is not None and "event_time" not in (lineage or {}):
+            lineage["event_time"] = rep
+        return rep
+    rev = next((e for e in plan.scheduled_events if e.get("etype") == "resolve_outcome"), None)
+    payload = (rev or {}).get("payload") or {}
+    out_var = str(payload.get("outcome_var")
+                  or getattr(contract, "readout_var", "") or "outcome")
+    lo = payload.get("lo")
+    hi = payload.get("hi")
+    lo = float(lo) if isinstance(lo, (int, float)) else 0.0
+    hi = float(hi) if isinstance(hi, (int, float)) else max(lo + 1.0, 1.0)
+    span = float(plan.horizon_ts) - float(plan.as_of)
+    consumed = [dict(m) for m in (getattr(plan, "_consumed_state", None) or []) if isinstance(m, dict)]
+    round_ts, _exps = _chain_geometry(plan.as_of, span, cadence_days, None)
+    n_steps = len(round_ts)
+
+    # ---------------- mutations ----------------
+    for k, ts in enumerate(round_ts, start=1):
+        plan.scheduled_events.append({
+            "etype": "value_process_step", "ts": ts, "participants": [],
+            "payload": {"out_var": out_var, "lo": lo, "hi": hi, "step": k, "n_steps": n_steps,
+                        "sd_terminal": (hi - lo) / 3.0, "consume": consumed,
+                        "as_of": plan.as_of, "span_s": span}})
+    removed = sum(1 for e in plan.scheduled_events
+                  if e.get("etype") in ("resolve_outcome", "aggregate_outcome_resolution"))
+    plan.scheduled_events = [e for e in plan.scheduled_events
+                             if e.get("etype") not in ("resolve_outcome", "aggregate_outcome_resolution")]
+    if out_var not in {str(q.get("name")) for q in plan.quantities if isinstance(q, dict)}:
+        plan.quantities.append({"name": out_var, "qtype": out_var, "value": None, "sd": None})
+    if not any(x.get("operator") == "value_process_step"
+               for x in plan.accepted_mechanisms if isinstance(x, dict)):
+        plan.accepted_mechanisms.append({
+            "mech_id": "value_process", "ontology_type": "event_time", "operator": "value_process_step",
+            "causal_role": "evolve the numeric readout variable through the window (state, not a draw)",
+            "parameter_source": "broad-prior process (labeled) + bounded consumed-state pull",
+            "temporal_scale": "scheduled", "calibration_status": "broad_prior_process",
+            "sensitivity": 1.0})
+    rep = {"contract": "continuous_state_readout", "out_var": out_var, "lo": lo, "hi": hi,
+           "n_steps": n_steps, "consumed_state": consumed, "n_resolver_events_removed": removed}
     if lineage is not None:
         lineage["event_time"] = rep
     return rep

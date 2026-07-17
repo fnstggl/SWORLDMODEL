@@ -7,8 +7,11 @@ import types
 import pytest
 
 from swm.world_model_v2.event_time import (AbsorptionMonitorOperator, EventTimeContract,
-                                           HazardRoundOperator, _lexical_event_polarity,
-                                           _mass_weights_from_curve, convert_binary_to_event_time,
+                                           HazardRoundOperator, ValueProcessOperator,
+                                           _lexical_event_polarity, _mass_weights_from_curve,
+                                           convert_binary_to_event_time,
+                                           convert_categorical_to_event_time,
+                                           convert_continuous_to_state_readout,
                                            convert_to_event_time, fit_survival_pack, is_when_question)
 from swm.world_model_v2.quantities import Quantity, register_quantity_type
 from swm.world_model_v2.state import SimulationClock, WorldBranch, WorldState
@@ -374,8 +377,157 @@ def test_mass_weights_from_curve_shape():
     assert sum(w2) == pytest.approx(1.0) and w2[0] > w2[-1]    # early buckets carry more surviving mass
 
 
-def test_unified_runtime_routes_binary_through_event_time():
+def test_unified_runtime_routes_every_family_through_readout_conversion():
     import inspect
     from swm.world_model_v2 import unified_runtime as U
     src = inspect.getsource(U.simulate_world)
-    assert "convert_binary_to_event_time" in src and "convert_to_event_time" in src
+    for name in ("convert_to_event_time", "convert_binary_to_event_time",
+                 "convert_categorical_to_event_time", "convert_continuous_to_state_readout"):
+        assert name in src
+    # conversion must be the LAST plan transformation: after Phase 11 recompilation, before projection
+    assert src.index("_run_recompilation") < src.index("convert_binary_to_event_time") \
+        < src.index("_project_terminal")
+
+
+# ================================================================ categorical unification
+def _categorical_plan(options=("negotiated_settlement", "military_victory", "frozen_conflict"),
+                      posterior=None, intentions=None, hypotheses=None):
+    contract = types.SimpleNamespace(family="categorical", options=list(options), resolution_rule="")
+    quants = []
+    if intentions is not None:
+        quants.append({"name": "actor_intentions", "qtype": "actor_intentions",
+                       "value": intentions, "sd": None})
+    return types.SimpleNamespace(
+        question="How will the conflict end?", as_of=T0, horizon_ts=T1, outcome_contract=contract,
+        scheduled_events=[{"etype": "resolve_outcome", "ts": T1 - 1.0, "participants": [],
+                           "payload": {"outcome_var": "outcome", "family": "categorical",
+                                       "options": list(options), "lean": "neutral"}}],
+        accepted_mechanisms=[], quantities=quants, provenance={"outcome_lean": "neutral"},
+        structural_hypotheses=list(hypotheses or []), structural_posterior=None,
+        posterior_rate_particles=list(posterior or []) or None, _consumed_state=[])
+
+
+def test_categorical_answer_is_absorbed_mode_marginal_not_a_roulette():
+    p = _categorical_plan(posterior=[(0.9, 1.0)])
+    lin = {}
+    rep = convert_categorical_to_event_time(p, {}, lineage=lin)
+    assert rep["contract"] == "categorical_first_passage" and rep["n_resolver_events_removed"] == 1
+    assert not any(e["etype"] == "resolve_outcome" for e in p.scheduled_events)
+    assert isinstance(p.outcome_contract, EventTimeContract)
+    assert p.outcome_contract.options == list(rep["options"])
+    out, branches = _rollout(p, n_particles=400)
+    d = out["distribution"]
+    assert set(d) == set(rep["options"])                        # the question's own options project
+    # total resolved mass ≈ the target (0.9), split by uniform shares; the rest is HONEST unresolved mass
+    assert sum(d.values()) == pytest.approx(0.9, abs=0.06)
+    assert out["unresolved_share"] == pytest.approx(0.1, abs=0.06)
+    for o in rep["options"]:
+        assert d[o] == pytest.approx(0.3, abs=0.07)
+    # first passage enforces exclusivity: a particle absorbs in AT MOST one mode
+    c = p.outcome_contract
+    for b in branches:
+        assert (c.readout(b.world) is None) or c._mode_of(b.world) in rep["options"]
+
+
+def test_categorical_intentions_crush_agreement_modes_only():
+    p = _categorical_plan(posterior=[(0.9, 1.0)], intentions=0.0)   # stated refusal to negotiate
+    rep = convert_categorical_to_event_time(p, {})
+    assert rep["intention_factor_by_mode"]["negotiated_settlement"] == pytest.approx(0.2)
+    assert rep["intention_factor_by_mode"]["military_victory"] == 1.0
+    out, _ = _rollout(p, n_particles=400)
+    d = out["distribution"]
+    # the refusal crushes ONLY the agreement-shaped ending — unilateral endings keep their mass
+    assert d["negotiated_settlement"] < d["military_victory"] - 0.1
+
+
+def test_categorical_shares_from_matching_structural_hypotheses():
+    hyps = [{"id": "negotiated_settlement", "prior": 0.6}, {"id": "military_victory", "prior": 0.3},
+            {"id": "frozen_conflict", "prior": 0.1}]
+    p = _categorical_plan(posterior=[(0.9, 1.0)], hypotheses=hyps)
+    rep = convert_categorical_to_event_time(p, {})
+    assert rep["share_source"] == "structural_hypothesis_priors"
+    assert rep["option_shares"]["negotiated_settlement"] == pytest.approx(0.6)
+    out, _ = _rollout(p, n_particles=400)
+    d = out["distribution"]
+    assert d["negotiated_settlement"] > d["military_victory"] > d["frozen_conflict"]
+
+
+def test_categorical_skips_binary_contracts():
+    p = _binary_plan()
+    rep = convert_categorical_to_event_time(p, {})
+    assert "skipped" in rep
+
+
+# ================================================================ continuous unification
+def _continuous_plan(lo=0.0, hi=100.0, consumed=None, extra_events=None):
+    contract = types.SimpleNamespace(family="continuous", options=[], resolution_rule="",
+                                     readout_var="approval")
+    return types.SimpleNamespace(
+        question="What will the approval rating be at the horizon?", as_of=T0, horizon_ts=T1,
+        outcome_contract=contract,
+        scheduled_events=[{"etype": "resolve_outcome", "ts": T1 - 1.0, "participants": [],
+                           "payload": {"outcome_var": "approval", "family": "continuous",
+                                       "options": [], "lean": "neutral", "lo": lo, "hi": hi}}]
+        + list(extra_events or []),
+        accepted_mechanisms=[], quantities=[], provenance={"outcome_lean": "neutral"},
+        posterior_rate_particles=None, _consumed_state=list(consumed or []))
+
+
+def _rollout_continuous(p, n_particles=300, seed=5, write_consumed=None):
+    from swm.world_model_v2.events import Event, EventQueue
+    from swm.world_model_v2.rollout import RolloutEngine
+    ops = [ValueProcessOperator()]
+    branches = []
+    for i in range(n_particles):
+        quants = dict(write_consumed or {})
+        w = _world(**quants)
+        w.branch_id = f"b{i:03d}"
+        q = EventQueue(horizon_ts=p.horizon_ts)
+        for ev in p.scheduled_events:
+            q.schedule(Event(ts=ev["ts"], etype=ev["etype"],
+                             participants=list(ev.get("participants") or []),
+                             payload=dict(ev["payload"]), source="scheduled"))
+        branches.append(RolloutEngine(operators=ops).run_branch(w, q, seed=seed * 7919 + i))
+    return branches
+
+
+def test_continuous_answer_is_state_at_readout_date_not_a_draw():
+    p = _continuous_plan()
+    lin = {}
+    rep = convert_continuous_to_state_readout(p, {}, lineage=lin)
+    assert rep["contract"] == "continuous_state_readout" and rep["n_resolver_events_removed"] == 1
+    assert not any(e["etype"] == "resolve_outcome" for e in p.scheduled_events)
+    steps = [e for e in p.scheduled_events if e["etype"] == "value_process_step"]
+    assert len(steps) == rep["n_steps"] >= 4
+    assert all(T0 < e["ts"] < T1 for e in steps)
+    branches = _rollout_continuous(p)
+    finals = [b.world.quantities["approval"].value for b in branches]
+    assert all(0.0 <= v <= 100.0 for v in finals)
+    finals.sort()
+    med = finals[len(finals) // 2]
+    assert med == pytest.approx(50.0, abs=8.0)                  # broad prior centered at mid, as before
+    assert finals[-1] - finals[0] > 20.0                        # genuine spread — a process, not a constant
+    # the value is a PATH: intermediate states exist at earlier cutoffs on the same trajectory
+    b0 = branches[0]
+    writes = [d for d in b0.log if d.event_type == "value_process_step"]
+    assert len(writes) == rep["n_steps"]
+    assert writes[0].at < writes[-1].at < T1
+
+
+def test_continuous_consumed_state_pulls_the_path():
+    def median_with(consumed, quants):
+        p = _continuous_plan(consumed=consumed)
+        convert_continuous_to_state_readout(p, {})
+        branches = _rollout_continuous(p, write_consumed=quants)
+        finals = sorted(b.world.quantities["approval"].value for b in branches)
+        return finals[len(finals) // 2]
+    base = median_with([], {})
+    pulled = median_with([{"var": "population_support", "weight": 0.4}],
+                         {"population_support": 0.95})
+    assert pulled > base + 5.0                                  # upstream causal state moves the PATH
+
+
+def test_continuous_skips_other_families():
+    p = _binary_plan()
+    rep = convert_continuous_to_state_readout(p, {})
+    assert "skipped" in rep

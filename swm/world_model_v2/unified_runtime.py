@@ -225,30 +225,6 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
         except Exception as e:  # noqa: BLE001 — synthesis must never block the forecast
             lineage["activation_synthesis"] = {"error": f"{type(e).__name__}: {e}"[:160]}
 
-    # ---------- Event-time conversion: the outcome of the simulation IS the answer ----------
-    # READOUT, NOT RESOLVER. The answer mechanism needs a readout (translate the simulated world into the
-    # question's format); it must not have a resolver (an extra decision/draw that declares the answer).
-    # Here — after synthesis/depth/intentions so `_consumed_state` and the grounded intentions exist —
-    # BOTH question shapes are rewired onto first-passage semantics: "when/how-long" questions become
-    # timing contracts; binary deadline questions have their terminal resolver events REMOVED and the
-    # answer becomes F(deadline) read from the same trajectories (entailing dated facts and institutional
-    # decisions absorb at their real dates; the evidence-updated posterior parameterizes the residual
-    # hazard chain instead of biasing a terminal coin). Universal: routing is purely linguistic +
-    # structural, never scenario-specific. On conversion failure the resolver path remains (recorded).
-    if "event_time" not in drop:
-        try:
-            from swm.world_model_v2.event_time import (convert_binary_to_event_time,
-                                                       convert_to_event_time, is_when_question)
-            crit = lineage.get("resolution_criterion") or {}
-            if is_when_question(question):
-                convert_to_event_time(plan, crit, lineage=lineage, llm=llm)
-            else:
-                fex = lineage.get("fidelity_expansion")
-                cad = fex.get("decision_cadence_days") if isinstance(fex, dict) else None
-                convert_binary_to_event_time(plan, crit, lineage=lineage, llm=llm, cadence_days=cad)
-        except Exception as e:  # noqa: BLE001 — conversion must never block the forecast
-            lineage["event_time"] = {"error": f"{type(e).__name__}: {e}"[:160]}
-
     # ---------- Phase 11: dynamic-recompilation loop over the as-of observations (same plan lineage) --------
     if "phase11_recompilation" not in drop and bundle is not None:
         _run_recompilation(plan, bundle, as_of, horizon, seed, llm, manifest, lineage, costs)
@@ -256,6 +232,47 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
         manifest["phase11_recompilation"].update(
             omitted=True, reason=("dropped_by_policy" if "phase11_recompilation" in drop
                                   else "no observations"))
+
+    # ---------- Readout conversion: the outcome of the simulation IS the answer ----------
+    # READOUT, NOT RESOLVER. The answer mechanism needs a readout (translate the simulated world into the
+    # question's format); it must not have a resolver (an extra decision/draw that declares the answer).
+    # This is the LAST plan transformation before terminal projection — deliberately after Phase 11, so no
+    # later recompilation can re-introduce a resolver event. Every question family is rewired:
+    #   when/how-long → first-passage timing contract;
+    #   binary        → resolver events REMOVED; P(yes) = F(deadline) read from the same trajectories
+    #                   (entailing dated facts and institutional decisions absorb at their real dates; the
+    #                   evidence-updated posterior parameterizes the residual chain, not a terminal coin);
+    #   categorical   → the marginal of WHICH mode produced absorption (censored mass reported, never
+    #                   force-assigned);
+    #   continuous    → a value process evolves the readout variable through the window; the answer is the
+    #                   state at the readout date.
+    # Specialized families (response_delay/reach/cascade/utility/best_action/ranked) keep the legacy
+    # fallback and the skip is RECORDED. Universal: routing is purely linguistic + structural, never
+    # scenario-specific. On conversion failure the resolver path remains (recorded, fail-open).
+    if "event_time" not in drop:
+        try:
+            from swm.world_model_v2.event_time import (convert_binary_to_event_time,
+                                                       convert_categorical_to_event_time,
+                                                       convert_continuous_to_state_readout,
+                                                       convert_to_event_time, is_when_question)
+            crit = lineage.get("resolution_criterion") or {}
+            fex = lineage.get("fidelity_expansion")
+            cad = fex.get("decision_cadence_days") if isinstance(fex, dict) else None
+            fam = str(getattr(plan.outcome_contract, "family", ""))
+            if is_when_question(question):
+                convert_to_event_time(plan, crit, lineage=lineage, llm=llm)
+            elif fam in ("binary", "response_occurrence"):
+                convert_binary_to_event_time(plan, crit, lineage=lineage, llm=llm, cadence_days=cad)
+            elif fam in ("categorical", "response_type"):
+                convert_categorical_to_event_time(plan, crit, lineage=lineage, llm=llm,
+                                                  cadence_days=cad)
+            elif fam == "continuous":
+                convert_continuous_to_state_readout(plan, crit, lineage=lineage, cadence_days=cad)
+            else:
+                lineage["event_time"] = {"skipped": f"family={fam} keeps the legacy fallback resolver "
+                                                    f"(specialized family; conversion not yet designed)"}
+        except Exception as e:  # noqa: BLE001 — conversion must never block the forecast
+            lineage["event_time"] = {"error": f"{type(e).__name__}: {e}"[:160]}
 
     # ---------- Terminal projection through the ONE funnel (Phase 8 persistence + P4/P6/P7/P10 operators) ----
     res = _project_terminal(question, plan, as_of, horizon, intervention, seed, llm, user_context,
