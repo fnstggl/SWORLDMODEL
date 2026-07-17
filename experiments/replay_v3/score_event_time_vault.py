@@ -158,6 +158,15 @@ def main(tranche: str = None):
                 row["error"] = f"{type(e).__name__}: {e}"[:200]
         try:
             grid, cdf = evt.get("cdf_grid_ts") or [], evt.get("cdf") or []
+            # a categorical-framed run (compiler chose score/option modes for a binary market)
+            # yields an ALL-MODES absorption CDF — not the market's specific yes/no object; scoring
+            # it as if it were would be wrong, so the row is flagged unscoreable instead
+            binary_framed = (evt.get("occurrence_resolves") is not None
+                             or isinstance(evt.get("p_event_by_deadline"), (int, float))
+                             or p_yes is not None)
+            if grid and cdf and not binary_framed:
+                row["flag"] = (row.get("flag", "") + ";non_binary_framing_unscoreable").strip(";")
+                grid, cdf = [], []
             if grid and cdf:
                 grid = [float(g) for g in grid]
                 cdf = [float(c) for c in cdf]
