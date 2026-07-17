@@ -24,6 +24,11 @@ Return ONLY JSON:
 {{"subject": "<who/what>", "predicate": "<the exact state that must hold>",
  "deadline": "<YYYY-MM-DD or null>",
  "resolves_yes_iff": "<one precise sentence>",
+ "absorbing_event": "<the concrete EVENT whose first occurrence settles the question>",
+ "event_polarity": "occurrence_resolves_yes|occurrence_resolves_no — occurrence_resolves_yes when the \
+event happening by the deadline makes the answer YES (a does-X-happen question); occurrence_resolves_no \
+when YES means the current state PERSISTS to the deadline and the event breaking it makes the answer NO \
+(a remains/still-in-state question)",
  "near_miss_states": [{{"state": "<a state that LOOKS like yes/no but is NOT>", "resolves": "yes|no"}}],
  "notes": "<ambiguities>"}}"""
 
@@ -49,8 +54,17 @@ def parse_resolution_criterion(question, *, horizon, llm=None) -> dict:
         return {}
     from swm.engine.grounding import parse_json
     raw = parse_json(llm(_CRITERION_PROMPT.format(q=question, horizon=horizon))) or {}
-    return {k: raw.get(k) for k in ("subject", "predicate", "deadline", "resolves_yes_iff",
-                                    "near_miss_states", "notes")} if raw.get("resolves_yes_iff") else {}
+    if not raw.get("resolves_yes_iff"):
+        return {}
+    out = {k: raw.get(k) for k in ("subject", "predicate", "deadline", "resolves_yes_iff",
+                                   "absorbing_event", "near_miss_states", "notes")}
+    pol = str(raw.get("event_polarity") or "").strip().lower()
+    # tolerate the parser echoing the guidance text — keep only a clean polarity token
+    for tok in ("occurrence_resolves_yes", "occurrence_resolves_no"):
+        if pol.startswith(tok):
+            out["event_polarity"] = tok
+            break
+    return out
 
 
 def ground_actor_intentions(plan, question, *, criterion=None, evidence_text="", llm=None) -> dict:

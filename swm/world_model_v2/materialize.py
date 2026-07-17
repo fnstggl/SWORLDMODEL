@@ -211,6 +211,12 @@ def _inject_posterior_rate(plan) -> bool:
                                "aggregate_outcome_resolution"):
             ev.setdefault("payload", {})["posterior_rate_particles"] = parts
             injected = True
+        # event-time residual chains consume the same posterior as their per-particle TARGET MASS — the
+        # calibrated information parameterizes the causal process; the answer stays a first-passage readout.
+        elif ev.get("etype") == "hazard_round" and \
+                isinstance((ev.get("payload") or {}).get("calibration"), dict):
+            ev["payload"]["calibration"]["posterior_rate_particles"] = parts
+            injected = True
     return injected
 
 
