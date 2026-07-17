@@ -158,6 +158,63 @@ none are fabricated.
   rather than fabricating a scalar. Prohibited-harm markers abstain
   (`test_abstains_on_prohibited_harm_marker`).
 
+## 9a. The outreach failure and the v3 rebuild (regression + live traces)
+
+The exp090 output — "Peter, treating data center power as a static budget ignores that dynamic
+scheduling against grid forecasts cut GPU-hours by 84% … **Which assumption in that claim is
+wrong?**" — passed every register gate and was still a bad cold email: no identity, an unanchored
+extraordinary claim, an ask demanding unpaid diligence, debate-bait framing, no next step. The root
+failures were architectural: a circular numeric-trait loop (an LLM invented Peter-traits, wrote to
+them, scored against them), an additive objective where maxed levers buy back failed gates, a
+caricature lever (`intellectual_combat_invitation=1.0`), an "any reply counts" outcome, and a
+wording-only action space. All five are now regression-locked (`tests/test_outreach_funnel.py`,
+`tests/test_persona_response.py`, 20 tests): the contract rejects that output, the funnel ranks the
+plain human draft above it and pinpoints WHERE it loses (understand + easy gates), combat levers
+clamp to ≤0, dismissive replies cost, and the persona engine counts choices instead of asking for
+numbers.
+
+Live v3 run (`artifacts/phase13/thiel_v3/result.json`, 656s):
+
+**Stage A — actions, not sentences** (EU = P(prerequisite) × discount × persona-ensemble EU over
+LLM-specialized inbox hypotheses):
+
+```
+full_memo_email        +0.548   FRAGILE — wins only under 'thiel_fellowship_redirect'
+cold_email_direct      +0.482   permission_ask_email  +0.482   (tied)
+cold_text_personal_#   +0.408   operator_forwards_memo +0.374  (per-arrival EU 0.534, ×0.70 prereq)
+operator_intro_email   +0.293   (per-arrival EU 0.533, ×0.55 prereq)
+wait_for_pilot         +0.273   ff_partner_route +0.142   do_nothing 0.0
+```
+
+The nominal winner is **flagged fragile by the system's own rule** (it leads under one hypothesis
+only), so the honest Stage-A read is: full-memo, plain cold email, and permission-ask are the
+best-supported family and statistically close; the operator-forward path matches them per-arrival
+and loses only through the explicit P(operator agrees) prior — worth an operator conversation
+before sending anything cold. Under `zero_response_policy` every direct send is worth 0 — reported,
+not averaged away.
+
+**Stage B — wording inside the chosen action.** Winner `draft_3` (persona verdict: curious-reply
+0.75 / refers 0.13 / no-response 0.12 / dismissive 0.0, EU 0.48), with `plain_baseline` and
+`draft_5` **within counting noise** — the system reports best-supported-among-tested, not a unique
+optimum:
+
+> I'm Beckett, 17, building Aurelius (runaurelius.com) — constraint-aware orchestration for AI
+> infrastructure. The thesis: AI infrastructure has a planning problem disguised as a power
+> problem, where schedulers optimize the next placement but nothing chooses the fleet's best
+> trajectory over time. In simulated replay of ~1.5M requests from public production traces, a
+> predictive world model that forecasts power constraints and ranks candidate decisions by economic
+> outcome achieved -84% GPU-hours versus the production scheduler. May I send you the one-page
+> technical memo? — Beckett
+
+Identity first; believable evidence with provenance in the same sentence; one tiny permission ask;
+zero adversarial framing; every number verbatim from the sender facts.
+
+**Known limitation (reported, not hidden):** the persona role-play differentiates weakly across
+several email-shaped hypotheses (many identical per-hypothesis EUs of 0.50 — the simulated Peter is
+generous even under screening hypotheses); the `zero_response_policy` hypothesis supplies the honest
+floor. This is exactly why the output is labeled model_based_judgment (uncalibrated) with
+per-hypothesis breakdowns, and why real ledger outcomes — not more draws — are the path to trust.
+
 ## 9. Failures (honest)
 
 - 3 jtrain quasi slices excluded — DiD cells empty on the slice (`gates.json:excluded_reasons`), a
