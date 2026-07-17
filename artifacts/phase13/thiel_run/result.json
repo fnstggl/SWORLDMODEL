@@ -21,7 +21,7 @@
   ]
  },
  "mode": "live_llm",
- "n_llm_calls": 124,
+ "n_llm_calls": 208,
  "optimizer": {
   "report_type": "prediction",
   "recipient": "Peter Thiel",
@@ -35,28 +35,29 @@
     "responder_incentive": 1.0,
     "ask_directness": 0.0,
     "low_effort_ask": 1.0,
+    "convenience_selling": 0.0,
     "pushiness": 0.0,
     "warmth": 1.0,
     "length_fit": 1.0,
     "credential_signaling": 0.0,
-    "contrarian_specificity": 1.0,
-    "intellectual_risk": 1.0,
-    "asymmetric_insight": 1.0,
-    "anti_status_signal": 1.0
+    "contrarian_claim_strength": 1.0,
+    "asymmetric_insight_ratio": 1.0,
+    "anti_status_signal": 1.0,
+    "specific_negative_prediction": 1.0
    },
-   "predicted_reply_mean": 0.9979,
-   "predicted_reply_lower_bound_q20": 0.9966,
+   "predicted_reply_mean": 0.9983,
+   "predicted_reply_lower_bound_q20": 0.997,
    "top_drivers": [
     {
-     "term": "contrarian_specificity",
+     "term": "contrarian_claim_strength",
      "contribution": 1.25
     },
     {
-     "term": "asymmetric_insight",
+     "term": "specific_negative_prediction",
      "contribution": 1.1
     },
     {
-     "term": "intellectual_risk",
+     "term": "asymmetric_insight_ratio",
      "contribution": 1.0
     },
     {
@@ -69,49 +70,50 @@
     },
     {
      "term": "warmth",
-     "contribution": 0.3823
+     "contribution": 0.3865
     },
     {
      "term": "clarity",
-     "contribution": 0.3422
-    },
-    {
-     "term": "pushiness",
-     "contribution": 0.3343
+     "contribution": 0.3411
     },
     {
      "term": "low_effort_ask",
-     "contribution": 0.3307
+     "contribution": 0.3372
+    },
+    {
+     "term": "pushiness",
+     "contribution": 0.3264
     },
     {
      "term": "responder_incentive",
-     "contribution": 0.2961
+     "contribution": 0.3013
     }
    ]
   },
   "constructed_email": {
-   "text": "Peter, the assumption that AI compute demand requires new energy supply is backwards, because the cheapest capacity is already available by scheduling around predictable grid constraints. In simulated replay of ~1.5M public production requests, per-grid mean improvements hit +698% on PJM, +718% on ERCOT, and +755% on CAISO. I am offering read-only access to the replay engine so you can run your own trace against the model and see whether the 7x improvement holds on your specific workload mix. Does the 7x improvement on public traces change your view on where the next marginal compute dollar should go? Beckett",
+   "text": "Peter, the claim is that schedulers treat power as a fixed constraint rather than a forecastable variable. In replay of ~1.5M public production requests, constraint-aware scheduling improved SLA-safe goodput per dollar by 724% and cut GPU-hours by 84%. Is that thesis wrong? The 724% gain is from simulated replay of public traces, not a production deployment. Is the real risk that public traces are too clean, or that model predictions break when grids actively manage load in response to them? Beckett",
    "encoded_strategy": {
-    "personalization": 0.3,
-    "relevance_fit": 0.9,
-    "clarity": 0.9,
+    "personalization": 0.9,
+    "relevance_fit": 0.95,
+    "clarity": 0.85,
     "credibility_proof": 0.8,
-    "responder_incentive": 0.7,
-    "ask_directness": 0.9,
-    "low_effort_ask": 0.6,
+    "responder_incentive": 0.6,
+    "ask_directness": 0.7,
+    "low_effort_ask": 0.3,
+    "convenience_selling": 0.1,
     "pushiness": 0.2,
     "warmth": 0.3,
-    "length_fit": 0.8,
-    "credential_signaling": 0.0,
-    "contrarian_specificity": 0.9,
-    "intellectual_risk": 0.9,
-    "asymmetric_insight": 0.9,
-    "anti_status_signal": 0.7
+    "length_fit": 0.7,
+    "credential_signaling": 0.1,
+    "contrarian_claim_strength": 0.9,
+    "asymmetric_insight_ratio": 0.95,
+    "anti_status_signal": 0.8,
+    "specific_negative_prediction": 0.7
    },
-   "reply_mean": 0.9762,
-   "reply_lower_bound": 0.9645,
+   "reply_mean": 0.9759,
+   "reply_lower_bound": 0.9605,
    "critique": {
-    "coherence": 1.0,
+    "coherence": 0.435,
     "naturalness": 0.0,
     "humanness": 0.0,
     "factuality": 1.0,
@@ -119,17 +121,25 @@
     "source": "llm",
     "flags": [
      {
-      "sentence": "Peter, the assumption that AI compute demand requires new energy supply is backwards, because the cheapest capacity is already available by scheduling around predictable grid constraints.",
+      "sentence": "In replay of ~1.5M public production requests, constraint-aware scheduling improved SLA-safe goodput per dollar by 724% and cut GPU-hours by 84%.",
       "issue": "annoying + AI-sounding",
       "reasons": [
-       "Presumptuous framing ('backwards') is annoying; 'cheapest capacity is already available' is a convenience-selling benefit assurance. The symmetrical setup-and-payoff structure sounds AI-generated."
+       "Benefit-framed number drop with templated 'improved X by Y%' structure; reads like AI-generated outreach, not a peer stating a fact once."
       ]
      },
      {
-      "sentence": "I am offering read-only access to the replay engine so you can run your own trace against the model and see whether the 7x improvement holds on your specific workload mix.",
+      "sentence": "The 724% gain is from simulated replay of public traces, not a production deployment.",
+      "issue": "incoherent/embellished + annoying + AI-sounding",
+      "reasons": [
+       "Unprompted disclaimer that performs honesty and preempts skepticism; reads like AI-generated risk mitigation rather than a human peer.",
+       "redundant: repeats an earlier sentence"
+      ]
+     },
+     {
+      "sentence": "Is the real risk that public traces are too clean, or that model predictions break when grids actively manage load in response to them?",
       "issue": "annoying + AI-sounding",
       "reasons": [
-       "Unprompted 'so you can... see whether the 7x improvement holds' is convenience-selling and presumptuous helpfulness. The structured offer ('read-only access... run your own trace') is templated AI-register phrasing."
+       "Presumptuous helpfulness\u2014offering two structured hypotheses for the recipient to consider; symmetrical setup-and-payoff phrasing is a tell of AI generation."
       ]
      }
     ]
@@ -137,11 +147,11 @@
   },
   "evaluation": {
    "report_type": "simulation",
-   "p_reply_fraction": 0.932,
-   "p_reply_mean": 0.9392,
+   "p_reply_fraction": 0.9325,
+   "p_reply_mean": 0.9385,
    "interval80": [
-    0.8622,
-    0.9918
+    0.8615,
+    0.9917
    ],
    "n_samples": 2000,
    "calibration_grade": "A",
@@ -150,28 +160,28 @@
   "baselines_for_contrast": {
    "credential_cover_letter": {
     "text": "Dear Mr. Thiel, I hope this email finds you well. My name is Beckett and I am reaching out because I have 17 years old, starting Princeton in the fall; building Aurelius (runaurelius.com): constraint-aware orchestration for AI infrastructure; a predictive world model forecasts power constraints, simulates candidate scheduling decisions, and ranks them by economic outcome before execution. I am building something I truly believe is revolutionary: AI scheduling treats electricity as a fixed cost; forecasting power constraints and scheduling against them is the cheapest capacity there is. I would love to set up a 30-minute call at your earliest convenience to tell you more. Looking forward to hearing back from you soon.",
-    "reply_mean": 0.523,
+    "reply_mean": 0.4028,
     "interval80": [
-     0.1913,
-     0.8227
+     0.1146,
+     0.7144
     ]
    },
    "pushy_followup": {
     "text": "Hi Peter, just following up and circling back per my last email. Please respond ASAP about AI scheduling treats electricity as a fixed cost; forecasting power constraints and scheduling against them is the cheapest capacity there is \u2014 I'd really love to get on your calendar this week.",
-    "reply_mean": 0.271,
+    "reply_mean": 0.226,
     "interval80": [
-     0.059,
-     0.5407
+     0.0445,
+     0.468
     ]
    }
   },
-  "honesty": "CALIBRATED (grade A, ECE 0.0204). The elasticities were fit to reply outcomes and graded on a held-out split; the P(reply) carries that grade."
+  "honesty": "CALIBRATED (grade A, ECE 0.0211). The elasticities were fit to reply outcomes and graded on a held-out split; the P(reply) carries that grade."
  },
  "phase13_decision": {
   "decision_id": "thiel_cold_email_2026",
   "contract_hash": "28a540fe1571a323",
   "runtime_fingerprint": {
-   "fingerprint_hash": "cbb4d7c208b97ad2",
+   "fingerprint_hash": "25809ac81964972d",
    "phase13": "phase13-1.0"
   },
   "reference_action": "do_nothing",
@@ -247,43 +257,43 @@
      }
     },
     "n_state_deltas": 0,
-    "expected_regret": 0.904525,
+    "expected_regret": 0.860875,
     "max_regret": 0.97,
     "fragile": false
    },
    {
     "action_id": "send_optimized",
     "operation": "communicate",
-    "expected_utility": 0.9025,
+    "expected_utility": 0.8575,
     "median_utility": 0.97,
-    "q10": 0.97,
+    "q10": -0.03,
     "q90": 0.97,
-    "cvar": 0.6325,
+    "cvar": 0.4075,
     "utility_distribution": {
-     "[0.845,0.97)": 373,
-     "[-0.03,0.095)": 27
+     "[0.845,0.97)": 355,
+     "[-0.03,0.095)": 45
     },
-    "p_improvement": 0.9325,
-    "p_material_improvement": 0.9325,
-    "p_harm": 0.0675,
+    "p_improvement": 0.8875,
+    "p_material_improvement": 0.8875,
+    "p_harm": 0.1125,
     "paired_vs_reference": {
      "n": 400,
-     "paired_mean": 0.9025,
+     "paired_mean": 0.8575,
      "paired_median": 0.97,
-     "p_improvement": 0.9325,
+     "p_improvement": 0.8875,
      "p_tie": 0.0,
-     "paired_q10": 0.97,
+     "paired_q10": -0.03,
      "paired_q90": 0.97,
      "ci": [
-      0.886403,
-      0.918597
+      0.837227,
+      0.877773
      ],
      "conf": 0.8,
-     "paired_se": 0.01256
+     "paired_se": 0.015819
     },
     "variance_reduction": {
-     "var_paired": 0.0631015,
-     "var_unpaired_sum": 0.0631015,
+     "var_paired": 0.10009398,
+     "var_unpaired_sum": 0.10009398,
      "variance_reduction_factor": 1.0,
      "effective_particles": 400.0,
      "n": 400
@@ -292,12 +302,12 @@
      "action_id": "send_optimized",
      "per_stakeholder": {
       "beckett": {
-       "mean": 0.9325,
-       "q10": 1.0,
+       "mean": 0.8875,
+       "q10": 0.0,
        "q90": 1.0
       }
      },
-     "aggregate_mean": 0.9325,
+     "aggregate_mean": 0.8875,
      "aggregate_median": 1.0,
      "rights_violations": 0,
      "floor_violations": {},
@@ -310,56 +320,56 @@
     "reversible": true,
     "by_hypothesis": {
      "H_gatekeeper": {
-      "mean": 0.834286,
+      "mean": 0.812857,
       "n": 140
      },
      "H_base": {
-      "mean": 0.935,
+      "mean": 0.89,
       "n": 200
      },
      "H_engaged": {
-      "mean": 0.953333,
+      "mean": 0.853333,
       "n": 60
      }
     },
     "n_state_deltas": 800,
-    "expected_regret": 0.002025,
+    "expected_regret": 0.003375,
     "max_regret": 0.03,
     "fragile": false
    },
    {
     "action_id": "send_credential_cover_letter",
     "operation": "communicate",
-    "expected_utility": 0.4325,
+    "expected_utility": 0.465,
     "median_utility": -0.03,
     "q10": -0.03,
     "q90": 0.97,
     "cvar": -0.03,
     "utility_distribution": {
-     "[0.845,0.97)": 185,
-     "[-0.03,0.095)": 215
+     "[0.845,0.97)": 198,
+     "[-0.03,0.095)": 202
     },
-    "p_improvement": 0.4625,
-    "p_material_improvement": 0.4625,
-    "p_harm": 0.5375,
+    "p_improvement": 0.495,
+    "p_material_improvement": 0.495,
+    "p_harm": 0.505,
     "paired_vs_reference": {
      "n": 400,
-     "paired_mean": 0.4325,
+     "paired_mean": 0.465,
      "paired_median": -0.03,
-     "p_improvement": 0.4625,
+     "p_improvement": 0.495,
      "p_tie": 0.0,
      "paired_q10": -0.03,
      "paired_q90": 0.97,
      "ci": [
-      0.40051,
-      0.46449
+      0.432921,
+      0.497079
      ],
      "conf": 0.8,
-     "paired_se": 0.024961
+     "paired_se": 0.02503
     },
     "variance_reduction": {
-     "var_paired": 0.24921679,
-     "var_unpaired_sum": 0.24921679,
+     "var_paired": 0.2506015,
+     "var_unpaired_sum": 0.2506015,
      "variance_reduction_factor": 1.0,
      "effective_particles": 400.0,
      "n": 400
@@ -368,12 +378,12 @@
      "action_id": "send_credential_cover_letter",
      "per_stakeholder": {
       "beckett": {
-       "mean": 0.4625,
+       "mean": 0.495,
        "q10": 0.0,
        "q90": 1.0
       }
      },
-     "aggregate_mean": 0.4625,
+     "aggregate_mean": 0.495,
      "aggregate_median": 0.0,
      "rights_violations": 0,
      "floor_violations": {},
@@ -386,11 +396,11 @@
     "reversible": true,
     "by_hypothesis": {
      "H_gatekeeper": {
-      "mean": 0.255714,
+      "mean": 0.298571,
       "n": 140
      },
      "H_base": {
-      "mean": 0.49,
+      "mean": 0.525,
       "n": 200
      },
      "H_engaged": {
@@ -399,43 +409,43 @@
      }
     },
     "n_state_deltas": 800,
-    "expected_regret": 0.472025,
+    "expected_regret": 0.395875,
     "max_regret": 1.0,
     "fragile": false
    },
    {
     "action_id": "send_pushy_followup",
     "operation": "communicate",
-    "expected_utility": 0.1275,
+    "expected_utility": 0.095,
     "median_utility": -0.03,
     "q10": -0.03,
     "q90": 0.97,
     "cvar": -0.03,
     "utility_distribution": {
-     "[0.845,0.97)": 63,
-     "[-0.03,0.095)": 337
+     "[0.845,0.97)": 50,
+     "[-0.03,0.095)": 350
     },
-    "p_improvement": 0.1575,
-    "p_material_improvement": 0.1575,
-    "p_harm": 0.8425,
+    "p_improvement": 0.125,
+    "p_material_improvement": 0.125,
+    "p_harm": 0.875,
     "paired_vs_reference": {
      "n": 400,
-     "paired_mean": 0.1275,
+     "paired_mean": 0.095,
      "paired_median": -0.03,
-     "p_improvement": 0.1575,
+     "p_improvement": 0.125,
      "p_tie": 0.0,
      "paired_q10": -0.03,
      "paired_q90": 0.97,
      "ci": [
-      0.104128,
-      0.150872
+      0.073781,
+      0.116219
      ],
      "conf": 0.8,
-     "paired_se": 0.018236
+     "paired_se": 0.016557
     },
     "variance_reduction": {
-     "var_paired": 0.13302632,
-     "var_unpaired_sum": 0.13302632,
+     "var_paired": 0.10964912,
+     "var_unpaired_sum": 0.10964912,
      "variance_reduction_factor": 1.0,
      "effective_particles": 400.0,
      "n": 400
@@ -444,12 +454,12 @@
      "action_id": "send_pushy_followup",
      "per_stakeholder": {
       "beckett": {
-       "mean": 0.1575,
+       "mean": 0.125,
        "q10": 0.0,
        "q90": 1.0
       }
      },
-     "aggregate_mean": 0.1575,
+     "aggregate_mean": 0.125,
      "aggregate_median": 0.0,
      "rights_violations": 0,
      "floor_violations": {},
@@ -462,20 +472,20 @@
     "reversible": true,
     "by_hypothesis": {
      "H_gatekeeper": {
-      "mean": 0.048571,
+      "mean": 0.027143,
       "n": 140
      },
      "H_base": {
-      "mean": 0.15,
+      "mean": 0.125,
       "n": 200
      },
      "H_engaged": {
-      "mean": 0.236667,
+      "mean": 0.153333,
       "n": 60
      }
     },
     "n_state_deltas": 800,
-    "expected_regret": 0.777025,
+    "expected_regret": 0.765875,
     "max_regret": 1.0,
     "fragile": false
    }
@@ -526,48 +536,48 @@
     },
     "send_optimized": {
      "n": 400,
-     "paired_mean": 0.9025,
+     "paired_mean": 0.8575,
      "paired_median": 0.97,
-     "p_improvement": 0.9325,
+     "p_improvement": 0.8875,
      "p_tie": 0.0,
-     "paired_q10": 0.97,
+     "paired_q10": -0.03,
      "paired_q90": 0.97,
      "ci": [
-      0.886403,
-      0.918597
+      0.837227,
+      0.877773
      ],
      "conf": 0.8,
-     "paired_se": 0.01256
+     "paired_se": 0.015819
     },
     "send_credential_cover_letter": {
      "n": 400,
-     "paired_mean": 0.4325,
+     "paired_mean": 0.465,
      "paired_median": -0.03,
-     "p_improvement": 0.4625,
+     "p_improvement": 0.495,
      "p_tie": 0.0,
      "paired_q10": -0.03,
      "paired_q90": 0.97,
      "ci": [
-      0.40051,
-      0.46449
+      0.432921,
+      0.497079
      ],
      "conf": 0.8,
-     "paired_se": 0.024961
+     "paired_se": 0.02503
     },
     "send_pushy_followup": {
      "n": 400,
-     "paired_mean": 0.1275,
+     "paired_mean": 0.095,
      "paired_median": -0.03,
-     "p_improvement": 0.1575,
+     "p_improvement": 0.125,
      "p_tie": 0.0,
      "paired_q10": -0.03,
      "paired_q90": 0.97,
      "ci": [
-      0.104128,
-      0.150872
+      0.073781,
+      0.116219
      ],
      "conf": 0.8,
-     "paired_se": 0.018236
+     "paired_se": 0.016557
     }
    }
   },
@@ -630,17 +640,17 @@
     "order": [
      {
       "action_id": "send_optimized",
-      "score": 0.9025,
+      "score": 0.8575,
       "note": "expected"
      },
      {
       "action_id": "send_credential_cover_letter",
-      "score": 0.4325,
+      "score": 0.465,
       "note": "expected"
      },
      {
       "action_id": "send_pushy_followup",
-      "score": 0.1275,
+      "score": 0.095,
       "note": "expected"
      },
      {
@@ -656,13 +666,13 @@
    "arm_evaluations": 4,
    "rollouts": 1600
   },
-  "latency_s": 3.231,
+  "latency_s": 3.687,
   "seed": 90
  },
  "arm_texts": {
-  "send_optimized": "Peter, the assumption that AI compute demand requires new energy supply is backwards, because the cheapest capacity is already available by scheduling around predictable grid constraints. In simulated replay of ~1.5M public production requests, per-grid mean improvements hit +698% on PJM, +718% on ERCOT, and +755% on CAISO. I am offering read-only access to the replay engine so you can run your own trace against the model and see whether the 7x improvement holds on your specific workload mix. Does the 7x improvement on public traces change your view on where the next marginal compute dollar should go? Beckett",
+  "send_optimized": "Peter, the claim is that schedulers treat power as a fixed constraint rather than a forecastable variable. In replay of ~1.5M public production requests, constraint-aware scheduling improved SLA-safe goodput per dollar by 724% and cut GPU-hours by 84%. Is that thesis wrong? The 724% gain is from simulated replay of public traces, not a production deployment. Is the real risk that public traces are too clean, or that model predictions break when grids actively manage load in response to them? Beckett",
   "send_credential_cover_letter": "Dear Mr. Thiel, I hope this email finds you well. My name is Beckett and I am reaching out because I have 17 years old, starting Princeton in the fall; building Aurelius (runaurelius.com): constraint-aware orchestration for AI infrastructure; a predictive world model forecasts power constraints, simulates candidate scheduling decisions, and ranks them by economic outcome before execution. I am building something I truly believe is revolutionary: AI scheduling treats electricity as a fixed cost; forecasting power constraints and scheduling against them is the cheapest capacity there is. I would love to set up a 30-minute call at your earliest convenience to tell you more. Looking forward to hearing back from you soon.",
   "send_pushy_followup": "Hi Peter, just following up and circling back per my last email. Please respond ASAP about AI scheduling treats electricity as a fixed cost; forecasting power constraints and scheduling against them is the cheapest capacity there is \u2014 I'd really love to get on your calendar this week."
  },
- "wall_s": 304.0
+ "wall_s": 537.9
 }

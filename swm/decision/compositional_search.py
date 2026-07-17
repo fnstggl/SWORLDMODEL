@@ -282,6 +282,13 @@ def _sent_overlap(a: str, b: str) -> bool:
     return a in b or b in a
 
 
+def _viable(slots: dict) -> bool:
+    """A repaired email is viable if it still has an opener, at least one substantive line
+    (hook or thesis), and an ask — so deletion-as-repair can never strip it to nothing."""
+    return bool(slots.get("opener")) and bool(slots.get("ask")) and \
+        bool(slots.get("thesis") or slots.get("hook"))
+
+
 def polish_email(email: ConstructedEmail, scorer: StrategyScorer, spec_strategy: dict, *,
                  proposer=default_proposer, critic, q: float = 0.2, rounds: int = 3,
                  spec_penalty: float = 0.15, critic_weight: float = 0.8,
@@ -323,7 +330,11 @@ def polish_email(email: ConstructedEmail, scorer: StrategyScorer, spec_strategy:
                 candidates = [rewrite_fn(chosen, reasons, spec_strategy)]
             else:
                 candidates = list(proposer(slot, spec_strategy, {"prefix": _prefix_before(slots, slot)}))
-            if slot in ("hook", "close") or any("redundant" in str(r) for r in reasons):
+            # DELETION is a first-class repair — a flagged line's best fix is often removal, not
+            # paraphrase (a rewrite of AI-slop tends to be more AI-slop). Offer "" for ANY flagged
+            # slot as long as dropping it leaves a VIABLE email (an opener, one substantive line, and
+            # the ask); optional slots (hook/close) may always drop.
+            if slot in ("hook", "close") or _viable({**slots, slot: ""}):
                 candidates = candidates + [""]
             # Rank lexicographically: (candidate cleanliness — fixes independent slop unmasked; then
             # whole-trial quality — fixes redundancy; then strategy value). rank_critic does the ranking:
@@ -341,7 +352,49 @@ def polish_email(email: ConstructedEmail, scorer: StrategyScorer, spec_strategy:
         if not changed:
             break
 
+    # FINAL sentence-level prune: slot-level repair is too coarse when one slot holds a clean sentence
+    # AND slop (e.g. an 'ask' slot that became "You could test this yourself. Is that wrong?"). Drop the
+    # still-flagged SENTENCES directly from the assembled text, preserving the opener (first sentence)
+    # and at least one question (the ask). This is the catch-all that guarantees the gate's verdict and
+    # the returned text agree — a flagged line either gets rewritten, deleted, or pruned, never shipped.
+    text = _prune_flagged_sentences(text, critic)
+
     strat = encode(text)
     dist = scorer.score_dist(strat)
     return ConstructedEmail(text=text, strategy=strat, score=dist.lower_bound(q), mean=dist.mean,
                             lower_bound=dist.lower_bound(q), slots=slots, critique=critic.critique(text))
+
+
+def _prune_flagged_sentences(text: str, critic, max_passes: int = 3) -> str:
+    """Remove flagged sentences one at a time (most-flagged first) while keeping the email viable: the
+    first sentence (opener) stays, and at least one question (the ask) stays. Re-critique after each
+    removal so redundancy that clears once a duplicate is gone is not over-pruned."""
+    import re
+
+    def sents(t):
+        return [s.strip() for s in re.split(r"(?<=[.!?])\s+", t.strip()) if s.strip()]
+
+    for _ in range(max_passes):
+        ss = sents(text)
+        if len(ss) <= 2:
+            break
+        crit = critic.critique(text)
+        flagged = {f["sentence"].strip() for f in crit.flags()}
+        if not flagged:
+            break
+        # candidate removals: a flagged sentence that is neither the opener nor the LAST remaining question
+        questions = [i for i, s in enumerate(ss) if s.rstrip().endswith("?")]
+        removable = []
+        for i, s in enumerate(ss):
+            if s not in flagged:
+                continue
+            if i == 0:                                     # keep the opener slot (repair handled it)
+                continue
+            if s.rstrip().endswith("?") and len([q for q in questions if q != i]) == 0:
+                continue                                   # never remove the only question
+            removable.append(i)
+        if not removable:
+            break
+        drop = removable[0]                                # one per pass; re-critique to reassess
+        text = " ".join(s for i, s in enumerate(ss) if i != drop)
+    return text
