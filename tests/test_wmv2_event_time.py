@@ -600,3 +600,92 @@ def test_unified_runtime_routes_binary_through_event_time():
     from swm.world_model_v2 import unified_runtime as U
     src = inspect.getsource(U.simulate_world)
     assert "convert_binary_to_event_time" in src and "convert_to_event_time" in src
+
+
+# ------------------------------------------------- universal 2-option gate (vault near-tranche bugs)
+def test_binary_conversion_accepts_two_option_categorical_threshold():
+    """A threshold question the compiler labeled 'categorical' with 2 options ('above_64000' /
+    'at_or_below_64000') is the SAME first-passage object as a yes/no deadline question — it was
+    silently skipped and died on the resolver path (real failure: the frozen BTC near question)."""
+    p = _binary_plan(question="Will the price of Bitcoin be above $64,000 on July 17?",
+                     options=("at_or_below_64000", "above_64000"), posterior=[(0.3, 1.0)])
+    p.outcome_contract.family = "categorical"
+    rep = convert_binary_to_event_time(p, {"resolves_yes_iff": "BTC trades above $64,000"},
+                                       lineage={})
+    assert rep["contract"] == "binary_first_passage"
+    assert rep["options"][0] == "above_64000"          # affirmative-first by token overlap
+    assert rep["option_space_repaired"] is False
+    from swm.world_model_v2.event_time import EventTimeContract as ETC
+    assert isinstance(p.outcome_contract, ETC)
+    assert p.outcome_contract.options == ["above_64000", "at_or_below_64000"]
+
+
+def test_binary_conversion_repairs_degenerate_option_spaces():
+    """Empty option lists and numeric range endpoints (['0','1000']) on binary-phrased questions are
+    compile defects in the OPTION LIST — repaired to yes/no so the readout binds (real failures:
+    the frozen ETH and Musk-count near questions)."""
+    from swm.world_model_v2.event_time import EventTimeContract as ETC
+    for opts, fam in ((("0", "1000"), "quantity"), ((), "binary")):
+        p = _binary_plan(question="Will Elon Musk post 160-179 tweets from July 10 to July 17?",
+                         options=opts, posterior=[(0.3, 1.0)])
+        p.outcome_contract.family = fam
+        rep = convert_binary_to_event_time(p, {}, lineage={})
+        assert rep["contract"] == "binary_first_passage", (opts, fam)
+        assert rep["option_space_repaired"] is True
+        assert p.outcome_contract.options == ["yes", "no"]
+        proj = p.outcome_contract.project([])              # even zero particles must bind
+        assert set(proj["distribution"]) == {"yes", "no"}
+
+
+def test_binary_conversion_still_skips_genuine_non_binary():
+    p = _binary_plan(question="How many units ship in Q3?", options=("a", "b", "c"))
+    p.outcome_contract.family = "categorical"
+    rep = convert_binary_to_event_time(p, {}, lineage={})
+    assert "skipped" in rep
+
+
+def test_affirmative_order_and_binary_phrase_helpers():
+    from swm.world_model_v2.event_time import _affirmative_order, _binary_phrased
+    assert _affirmative_order(["no", "yes"], "Will it rain?", {}) == ["yes", "no"]
+    assert _affirmative_order(["at_or_below_64000", "above_64000"],
+                              "Will the price of Bitcoin be above $64,000 on July 17?",
+                              {})[0] == "above_64000"
+    assert _binary_phrased("Will France win on 2026-07-18?", {}) is True
+    assert _binary_phrased("When will the war end?", {}) is False
+    assert _binary_phrased("Number of tweets this week", {"resolves_yes_iff": "count in range"}) is True
+
+
+def test_rollout_rejects_dangling_entity_reference_instead_of_aborting():
+    """An operator dereferencing an entity the compiled world lacks (LLM named 'politicians' on a
+    sports question — real England-question failure) must reject THAT event in the delta log and
+    keep simulating; any other KeyError still raises (loud engineering failures stay loud)."""
+    from swm.world_model_v2.events import Event, EventQueue, register_event_type
+    from swm.world_model_v2.rollout import RolloutEngine
+    register_event_type("probe", participants="test probe")
+
+    class _Deref:
+        name = "deref_probe"
+        def applicable(self, world, ev):
+            return ev.etype == "probe"
+        def run(self, world, ev, rng):
+            world.entity("politicians")                       # not materialized → KeyError
+
+    w = _world()
+    w.branch_id = "b000"
+    q = EventQueue(horizon_ts=T1)
+    q.schedule(Event(ts=T0 + 3600.0, etype="probe", participants=[], payload={}))
+    b = RolloutEngine(operators=[_Deref()]).run_branch(w, q, seed=1)
+    assert b.terminal is True                                  # the world survived
+    rej = [d for d in b.log if any("dangling entity reference" in r for r in d.reason_codes)]
+    assert len(rej) == 1
+
+    class _Broken(_Deref):
+        def run(self, world, ev, rng):
+            raise KeyError("some real engineering bug")
+
+    q2 = EventQueue(horizon_ts=T1)
+    q2.schedule(Event(ts=T0 + 3600.0, etype="probe", participants=[], payload={}))
+    w2 = _world()
+    w2.branch_id = "b001"
+    with pytest.raises(KeyError, match="engineering bug"):
+        RolloutEngine(operators=[_Broken()]).run_branch(w2, q2, seed=1)

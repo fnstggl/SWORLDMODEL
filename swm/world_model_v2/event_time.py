@@ -1053,6 +1053,51 @@ def _lexical_event_polarity(question: str) -> str:
         else "occurrence_resolves_yes"
 
 
+_BINARY_LEAD = re.compile(r"^\s*(will|would|does|do|did|is|are|was|were|can|could|shall|should|has|"
+                          r"have|had)\b", re.I)
+
+
+def _binary_phrased(question: str, criterion: dict) -> bool:
+    """A deadline-binary question SHAPE, independent of whatever option space the compiler emitted —
+    the linguistic lead ('Will/Is/Does …?') or a criterion that states a yes-condition."""
+    if _BINARY_LEAD.match(question or ""):
+        return True
+    c = criterion or {}
+    return str(c.get("answer_format", "")).lower() in ("binary", "yes_no") \
+        or bool(str(c.get("resolves_yes_iff", "")).strip())
+
+
+def _degenerate_numeric_pair(options: list) -> bool:
+    """['0','1000'] is a quantity contract's range ENDPOINTS leaking into the option slot, not two
+    answerable options — a binary-phrased question with such a pair needs the yes/no repair."""
+    if len(options) != 2:
+        return False
+    try:
+        [float(str(o)) for o in options]
+        return True
+    except (TypeError, ValueError):
+        return False
+
+
+def _affirmative_order(options: list, question: str, criterion: dict) -> list:
+    """Return the 2 options with the AFFIRMATIVE side first — binary_options[0] receives F(deadline).
+    yes/true-like labels win outright; otherwise the option sharing more of the question's own tokens
+    (plus the criterion's yes-condition) is the side the question names, e.g. 'above_64000' for
+    'Will the price of Bitcoin be above $64,000…'. Universal — token overlap, no domain lists."""
+    lo = [str(o).strip().lower() for o in options]
+    for i, o in enumerate(lo):
+        if o in ("yes", "true"):
+            return [options[i], options[1 - i]]
+    text = f"{question} {(criterion or {}).get('resolves_yes_iff', '')}".lower().replace(",", "")
+    toks = set(re.findall(r"[a-z0-9]+", text))
+
+    def _score(o: str) -> float:
+        ot = set(re.findall(r"[a-z0-9]+", str(o).lower()))
+        return len(ot & toks) / max(1, len(ot))
+
+    return [options[1], options[0]] if _score(options[1]) > _score(options[0]) else list(options)
+
+
 def _event_polarity(question: str, criterion: dict) -> tuple:
     """Does the FIRST OCCURRENCE of the decisive event resolve the question YES (event-by-deadline) or NO
     (remains/still-in-state)? Criterion parser's judgment wins; lexical fallback keeps this universal
@@ -1100,14 +1145,28 @@ def convert_binary_to_event_time(plan, criterion: dict, *, lineage: dict = None,
     contract = getattr(plan, "outcome_contract", None)
     family = str(getattr(contract, "family", ""))
     options = [str(o) for o in (getattr(contract, "options", None) or [])]
-    if family not in ("binary", "response_occurrence") or len(options) != 2:
-        rep = {"skipped": f"family={family or '?'} n_options={len(options)} — binary conversion "
-                          f"applies to 2-option binary/response_occurrence contracts only"}
+    question = str(getattr(plan, "question", ""))
+    # UNIVERSAL GATE: any 2-option deadline contract is the same first-passage object regardless of the
+    # family label the compiler happened to pick — threshold questions frequently compile as 2-option
+    # "categorical" ('above_64000' / 'at_or_below_64000') and were silently left on the resolver path,
+    # where the readout never bound. A DEGENERATE option space (empty / one option / numeric range
+    # endpoints like ['0','1000']) on a binary-phrased question is a compile defect in the OPTION LIST,
+    # not in the question shape — repaired to yes/no here, recorded as option_space_repaired.
+    option_space_repaired = False
+    if len(options) == 2 and not _degenerate_numeric_pair(options):
+        options = _affirmative_order(options, question, criterion)
+    elif (len(options) < 2 or _degenerate_numeric_pair(options)) \
+            and _binary_phrased(question, criterion):
+        # 0/1 options or numeric range endpoints = a defective option LIST on a binary-shaped
+        # question. ≥3 real options are NOT repaired — that is a genuine categorical object and
+        # routes through the categorical conversion upstream.
+        options, option_space_repaired = ["yes", "no"], True
+    else:
+        rep = {"skipped": f"family={family or '?'} n_options={len(options)} — not a 2-option deadline "
+                          f"contract and not binary-phrased; left on the resolver path"}
         if lineage is not None and "event_time" not in (lineage or {}):
             lineage["event_time"] = rep
         return rep
-
-    question = str(getattr(plan, "question", ""))
     polarity, polarity_src = _event_polarity(question, criterion)
     absorb_dir = "yes" if polarity == "occurrence_resolves_yes" else "no"
 
@@ -1238,6 +1297,7 @@ def convert_binary_to_event_time(plan, criterion: dict, *, lineage: dict = None,
         occurrence_resolves=("yes" if absorb_dir == "yes" else "no"),
         deadline_ts=deadline_ts).validate()
     rep = {"contract": "binary_first_passage", "options": options,
+           "option_space_repaired": option_space_repaired,
            "event_polarity": polarity, "polarity_source": polarity_src,
            "deadline_ts": round(deadline_ts, 0),
            "n_absorbing_fact_events": n_fact_ev, "fact_floor": fact_floor,

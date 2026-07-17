@@ -1,22 +1,31 @@
 """Score the FROZEN EVENT-TIME VAULT — once per tranche, after THAT tranche's window closes.
 
+Scoring consumes ONLY the SEALED PRE-REGISTERED PREDICTIONS (predict_event_time_vault.py), generated
+while every market was still open. NO LLM RUNS AT SCORING TIME — a forecast generated after outcomes
+exist could leak them through retrieval, so a tranche without a sealed predictions file refuses to
+score at all.
+
 Gates, in order (per --tranche near|far|all):
  1. TIME GATE: refuses to run before the tranche's `opens_after` (its latest frozen end date + 1d).
- 2. SEAL GATE: recomputes the vault SHA-256; a mismatch aborts (the vault was touched).
- 3. SINGLE-OPEN GATE: the seal records `opened` per tranche; a second scoring run for the same
+ 2. SINGLE-OPEN GATE: the seal records `opened` per tranche; a second scoring run for the same
     tranche refuses (that tranche is consumed — build a fresh vault for the next claim).
+ 3. SEAL GATE: recomputes the vault SHA-256; a mismatch aborts (the vault was touched).
+ 4. PREREGISTRATION GATE: the tranche's sealed predictions file must exist, verify against ITS seal,
+    and reference THIS vault's sha256. Per row, only status=="predicted" forecasts whose
+    completed_at precedes the market's scheduled end — and precedes the realized event time when one
+    exists — are scored; everything else is excluded with the reason on the row.
 
 Per frozen question:
- * the V2 system runs at the FROZEN as_of (archived evidence only — the evidence layer's paired-date
-   invariant enforces temporal hygiene; the run is TIER-labeled honestly since model weights may
-   post-date the freeze) producing the first-passage CDF + quantiles;
+ * the forecast is the stored first-passage CDF + quantiles + P(yes at market end) from the sealed
+   pre-registration (stamped with the live market state at prediction time as openness proof);
  * the realized event time / censoring comes from the resolution-time proxy
    (effective_resolution_fraction) on the archived price path;
  * scores: censoring-aware CRPS (system vs the market-implied constant-hazard baseline CDF from the
-   freeze price), interval coverage on [0.1, 0.9], Brier at the deadline (F(deadline) vs outcome) —
-   "when"-type and deadline-type questions scored as the SAME object.
+   freeze price), interval coverage on [0.1, 0.9], Brier at the deadline — "when"-type and
+   deadline-type questions scored as the SAME object; cluster-aware headline (correlated same-event
+   contracts are ONE realization).
 
-Requires network + DEEPSEEK_API_KEY at scoring time.
+Requires network (outcome retrieval only).
 """
 import hashlib
 import json
@@ -68,6 +77,29 @@ def main(tranche: str = None):
     digest = hashlib.sha256(canonical_bytes(vault)).hexdigest()
     if digest != seal["sha256"]:                             # 2. seal gate
         raise SystemExit(f"SEAL MISMATCH: vault sha256 {digest[:16]}… != sealed {seal['sha256'][:16]}…")
+    # ---- 4. PREREGISTRATION GATE (before consuming the tranche): sealed forecasts must exist ----
+    from experiments.replay_v3.predict_event_time_vault import (predictions_path,
+                                                                predictions_seal_path)
+    tranches_to_score = ["near", "far"] if tranche == "all" else [tranche]
+    predictions = {}
+    for t in tranches_to_score:
+        pp, sp = predictions_path(t), predictions_seal_path(t)
+        if not (pp.exists() and sp.exists()):
+            raise SystemExit(f"PREREGISTERED PREDICTIONS REQUIRED: {pp} (and its seal) must exist — "
+                             f"forecasts are generated while markets are open "
+                             f"(predict_event_time_vault.py), never at scoring time")
+        pdoc = json.loads(pp.read_text())
+        pseal = json.loads(sp.read_text())
+        pdigest = hashlib.sha256(canonical_bytes(pdoc)).hexdigest()
+        if pdigest != pseal["sha256"]:
+            raise SystemExit(f"PREDICTIONS SEAL MISMATCH ({t}): {pdigest[:16]}… != sealed "
+                             f"{pseal['sha256'][:16]}… — the predictions file was touched")
+        if str(pdoc.get("vault_sha256")) != str(seal["sha256"]):
+            raise SystemExit(f"PREDICTIONS/VAULT MISMATCH ({t}): predictions were registered "
+                             f"against a different vault")
+        for r in pdoc.get("rows") or []:
+            predictions[str(r.get("condition_id"))] = r
+
     gate["opened"] = True
     gate["opened_at"] = dt.datetime.now(dt.timezone.utc).isoformat()
     if tranche == "all":
@@ -76,10 +108,6 @@ def main(tranche: str = None):
             t.setdefault("opened_at", gate["opened_at"])
     SEAL.write_text(json.dumps(seal, indent=1))
 
-    from swm.api.deepseek_backend import deepseek_chat_fn
-    from swm.world_model_v2.unified_runtime import simulate_world
-    llm = deepseek_chat_fn(MODEL, system="Reply ONLY JSON.", max_tokens=2400, temperature=0.2)
-    as_of_iso = vault["frozen_at"][:10]
     rows = []
     targets = [w for w in vault["questions"]
                if tranche == "all" or str(w.get("tranche", "far")) == tranche]
@@ -95,44 +123,57 @@ def main(tranche: str = None):
         # only the post-freeze part of the window is forecastable — clamp the realized time
         if event_ts is not None and event_ts < vault["as_of_ts"]:
             event_ts = vault["as_of_ts"] + 1.0
-        # ---- the V2 forecast at the frozen as_of ----
+        # ---- the PRE-REGISTERED forecast (no model runs at scoring time) ----
         row = {"question": w["question"], "condition_id": w["condition_id"],
                "event_ts": event_ts, "censored": event_ts is None, "resolution_proxy": proxy,
                "usable_outcome": usable}
+        pred = predictions.get(str(w["condition_id"]))
+        if pred is None:
+            row["excluded"] = "no pre-registered forecast for this question"
+            rows.append(row)
+            continue
+        row["prediction_status"] = pred.get("status")
+        row["predicted_at"] = pred.get("completed_at")
+        row["live_market_at_prediction"] = pred.get("live_market_at_prediction")
+        if pred.get("status") != "predicted":
+            row["excluded"] = (f"pre-registration status={pred.get('status')}: "
+                               f"{pred.get('reason') or pred.get('error') or ''}")[:220]
+            rows.append(row)
+            continue
         try:
-            res = simulate_world(w["question"], as_of=as_of_iso, horizon=str(w["end_date"])[:10],
-                                 llm=llm, seed=0)
-            proj = getattr(res, "raw_distribution", None) or {}
-            # the full first-passage readout travels on result.provenance["event_time"]
-            # (pipeline.result_from_run carries contract.project()'s event_time block verbatim)
-            evt = (getattr(res, "provenance", None) or {}).get("event_time") or {}
-            grid, cdf = evt.get("cdf_grid_ts") or [], evt.get("cdf") or []
-            if grid and cdf:
-                row["crps_v2"] = crps_first_passage(grid, cdf, event_ts=event_ts,
+            done_ts = dt.datetime.fromisoformat(str(pred.get("completed_at"))).timestamp()
+        except (TypeError, ValueError):
+            done_ts = None
+        if done_ts is None or done_ts >= float(w["end_ts"]):
+            row["excluded"] = "forecast did not complete before the market's scheduled end"
+            rows.append(row)
+            continue
+        if event_ts is not None and done_ts >= event_ts:
+            row["excluded"] = "forecast completed after the realized event time — not a prediction"
+            rows.append(row)
+            continue
+        evt = pred.get("event_time") or {}
+        grid, cdf = evt.get("cdf_grid_ts") or [], evt.get("cdf") or []
+        if grid and cdf:
+            row["crps_v2"] = crps_first_passage(grid, cdf, event_ts=event_ts,
+                                                as_of=vault["as_of_ts"], horizon_ts=w["end_ts"])
+            base = market_baseline_cdf(w["market_p_yes_at_freeze"], vault["as_of_ts"],
+                                       w["end_ts"], grid)
+            row["crps_market"] = crps_first_passage(grid, base, event_ts=event_ts,
                                                     as_of=vault["as_of_ts"], horizon_ts=w["end_ts"])
-                base = market_baseline_cdf(w["market_p_yes_at_freeze"], vault["as_of_ts"],
-                                           w["end_ts"], grid)
-                row["crps_market"] = crps_first_passage(grid, base, event_ts=event_ts,
-                                                        as_of=vault["as_of_ts"], horizon_ts=w["end_ts"])
-                row["covered_80"] = interval_coverage(evt.get("first_passage_quantiles_ts") or {},
-                                                      event_ts)
-                p_yes = None
-                for k, v in (proj or {}).items():
-                    if str(k).lower() in ("yes", "true"):
-                        p_yes = float(v)
-                if p_yes is None and isinstance(evt.get("p_event_by_deadline"), (int, float)):
-                    p_yes = float(evt["p_event_by_deadline"])
-                if p_yes is not None:
-                    y = 0.0 if event_ts is None else 1.0
-                    row["brier_v2"] = (p_yes - y) ** 2
-                    row["brier_market"] = (float(w["market_p_yes_at_freeze"]) - y) ** 2
-            else:
-                row["error"] = "no event_time CDF in result projection"
-            row["status"] = getattr(res, "simulation_status", "?")
-        except Exception as e:  # noqa: BLE001 — a failed row is a recorded failure, never dropped
-            row["error"] = f"{type(e).__name__}: {e}"[:200]
+            row["covered_80"] = interval_coverage(evt.get("first_passage_quantiles_ts") or {},
+                                                  event_ts)
+        else:
+            row["error"] = "pre-registered row carries no event_time CDF"
+        p_yes = pred.get("p_at_market_end")
+        if p_yes is None:
+            p_yes = pred.get("p_yes")
+        if p_yes is not None:
+            y = 0.0 if event_ts is None else 1.0
+            row["brier_v2"] = (float(p_yes) - y) ** 2
+            row["brier_market"] = (float(w["market_p_yes_at_freeze"]) - y) ** 2
         rows.append(row)
-        time.sleep(0.5)
+        time.sleep(0.25)
 
     scored = [r for r in rows if "crps_v2" in r]
     # cluster-aware headline: correlated same-event contracts (winner/draw/exact-score of one
@@ -145,6 +186,7 @@ def main(tranche: str = None):
     cl_means_mkt = [sum(x["crps_market"] for x in g) / len(g) for g in by_cluster.values()]
     out = {"tranche": tranche, "opened_at": gate["opened_at"],
            "n_questions": len(rows), "n_scored": len(scored),
+           "n_excluded": sum(1 for r in rows if "excluded" in r),
            "n_clusters": len(by_cluster),
            "cluster_mean_crps_v2": (sum(cl_means_v2) / len(cl_means_v2)) if cl_means_v2 else None,
            "cluster_mean_crps_market": (sum(cl_means_mkt) / len(cl_means_mkt)) if cl_means_mkt else None,

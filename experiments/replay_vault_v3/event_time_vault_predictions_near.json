@@ -1,0 +1,1715 @@
+{
+ "version": "event-time-predictions-1.0",
+ "tranche": "near",
+ "vault_sha256": "a4412a31802b94d8978f2216dc1e75ad71c6b49804503b411ca91ce6e1ecfb96",
+ "finalized_at": "2026-07-17T14:55:43.905433+00:00",
+ "model": "deepseek-chat",
+ "code_git_sha": "687d29621f54",
+ "governance": "pre-registered forecasts: generated while every included market was open and undecided; scoring uses ONLY this sealed file, no LLM at scoring time; rows whose completed_at is not before the market end are excluded at scoring",
+ "n_rows": 20,
+ "n_predicted": 20,
+ "n_not_preregisterable": 0,
+ "n_failed": 0,
+ "rows": [
+  {
+   "condition_id": "0x0fda0800bc4e6b9e17ef98cd2ae6eb7e50940b725195ab8552a74aeb88f9dd73",
+   "question": "France vs. England: Both Teams to Score",
+   "tranche": "near",
+   "end_date": "2026-07-18T21:00:00Z",
+   "end_ts": 1784408400.0,
+   "event_cluster": "fifwc-fra-eng-2026-07-18-more-markets",
+   "market_p_yes_at_freeze": 0.685,
+   "as_of": "2026-07-17",
+   "model": "deepseek-chat",
+   "seed": 2355752573,
+   "code_git_sha": "687d29621f54",
+   "started_at": "2026-07-17T14:49:36.156035+00:00",
+   "live_market_at_prediction": {
+    "fetched_at": "2026-07-17T14:49:36.586988+00:00",
+    "closed": false,
+    "p_yes": 0.685
+   },
+   "horizon": "2026-07-19",
+   "status": "predicted",
+   "simulation_status": "completed_with_degradation",
+   "p_yes": 0.7324,
+   "p_at_market_end": 0.7324,
+   "raw_distribution": {
+    "yes": 0.7324,
+    "no": 0.2676
+   },
+   "event_time": {
+    "n_particles": 71,
+    "n_absorbed": 52,
+    "p_censored": 0.2676,
+    "cdf_grid_ts": [
+     1784263680.0,
+     1784280960.0,
+     1784298240.0,
+     1784315520.0,
+     1784332800.0,
+     1784350080.0,
+     1784367360.0,
+     1784384640.0,
+     1784401920.0,
+     1784419200.0
+    ],
+    "cdf": [
+     0.0,
+     0.0845,
+     0.0845,
+     0.1408,
+     0.1408,
+     0.3803,
+     0.3803,
+     0.7324,
+     0.7324,
+     0.7324
+    ],
+    "survival": [
+     1.0,
+     0.9155,
+     0.9155,
+     0.8592,
+     0.8592,
+     0.6197,
+     0.6197,
+     0.2676,
+     0.2676,
+     0.2676
+    ],
+    "first_passage_quantiles_ts": {
+     "0.1": 1784315520.0,
+     "0.25": 1784350080.0,
+     "0.5": 1784384640.0,
+     "0.75": null,
+     "0.9": null
+    },
+    "mode_distribution": {
+     "resolution": 0.7324
+    },
+    "p_event_by_deadline": 0.7324,
+    "deadline_ts": 1784419200.0,
+    "occurrence_resolves": "yes"
+   },
+   "wall_seconds": 69.9,
+   "completed_at": "2026-07-17T14:50:46.505267+00:00",
+   "trace_log": "experiments/results/replay_v3/prereg_logs/near_0x0fda0800bc4e6b9e.log"
+  },
+  {
+   "condition_id": "0x1f131595784e1ebf6c9d67b56002417ff7a3813e7dadc9083a7ef77a4f41ebcb",
+   "question": "Exact Score: France 2 - 2 England?",
+   "tranche": "near",
+   "end_date": "2026-07-18T21:00:00Z",
+   "end_ts": 1784408400.0,
+   "event_cluster": "fifwc-fra-eng-2026-07-18-exact-score",
+   "market_p_yes_at_freeze": 0.075,
+   "as_of": "2026-07-17",
+   "model": "deepseek-chat",
+   "seed": 2952594926,
+   "code_git_sha": "687d29621f54",
+   "started_at": "2026-07-17T14:49:12.312092+00:00",
+   "live_market_at_prediction": {
+    "fetched_at": "2026-07-17T14:49:12.648170+00:00",
+    "closed": false,
+    "p_yes": 0.075
+   },
+   "horizon": "2026-07-19",
+   "status": "predicted",
+   "simulation_status": "completed_with_degradation",
+   "p_yes": 0.5152,
+   "p_at_market_end": 0.5152,
+   "raw_distribution": {
+    "France 2-2 England": 0.5152,
+    "other": 0.4848
+   },
+   "event_time": {
+    "n_particles": 66,
+    "n_absorbed": 34,
+    "p_censored": 0.4848,
+    "cdf_grid_ts": [
+     1784263680.0,
+     1784280960.0,
+     1784298240.0,
+     1784315520.0,
+     1784332800.0,
+     1784350080.0,
+     1784367360.0,
+     1784384640.0,
+     1784401920.0,
+     1784419200.0
+    ],
+    "cdf": [
+     0.0,
+     0.0758,
+     0.0758,
+     0.1061,
+     0.1061,
+     0.3182,
+     0.3182,
+     0.5152,
+     0.5152,
+     0.5152
+    ],
+    "survival": [
+     1.0,
+     0.9242,
+     0.9242,
+     0.8939,
+     0.8939,
+     0.6818,
+     0.6818,
+     0.4848,
+     0.4848,
+     0.4848
+    ],
+    "first_passage_quantiles_ts": {
+     "0.1": 1784315520.0,
+     "0.25": 1784350080.0,
+     "0.5": 1784384640.0,
+     "0.75": null,
+     "0.9": null
+    },
+    "mode_distribution": {
+     "resolution": 0.5152
+    },
+    "p_event_by_deadline": 0.5152,
+    "deadline_ts": 1784419200.0,
+    "occurrence_resolves": "yes"
+   },
+   "wall_seconds": 80.8,
+   "completed_at": "2026-07-17T14:50:33.488023+00:00",
+   "trace_log": "experiments/results/replay_v3/prereg_logs/near_0x1f131595784e1ebf.log"
+  },
+  {
+   "condition_id": "0x21b759b8e04fc560f260ad2e51af46caaa802e6bd1f37f10dd70c535ecdc3d01",
+   "question": "Will Scottie Scheffler win the 2026 The Open Championship?",
+   "tranche": "near",
+   "end_date": "2026-07-19T00:00:00Z",
+   "end_ts": 1784419200.0,
+   "event_cluster": "2026-the-open-championship-winner",
+   "market_p_yes_at_freeze": 0.15,
+   "as_of": "2026-07-17",
+   "model": "deepseek-chat",
+   "seed": 545000953,
+   "code_git_sha": "687d29621f54",
+   "started_at": "2026-07-17T14:49:42.777904+00:00",
+   "live_market_at_prediction": {
+    "fetched_at": "2026-07-17T14:49:42.963266+00:00",
+    "closed": false,
+    "p_yes": 0.145
+   },
+   "horizon": "2026-07-20",
+   "status": "predicted",
+   "simulation_status": "completed_with_degradation",
+   "p_yes": 0.3803,
+   "p_at_market_end": 0.0,
+   "raw_distribution": {
+    "yes": 0.3803,
+    "no": 0.6197
+   },
+   "event_time": {
+    "n_particles": 71,
+    "n_absorbed": 27,
+    "p_censored": 0.6197,
+    "cdf_grid_ts": [
+     1784272320.0,
+     1784298240.0,
+     1784324160.0,
+     1784350080.0,
+     1784376000.0,
+     1784401920.0,
+     1784427840.0,
+     1784453760.0,
+     1784479680.0,
+     1784505600.0
+    ],
+    "cdf": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.3803
+    ],
+    "survival": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     0.6197
+    ],
+    "first_passage_quantiles_ts": {
+     "0.1": 1784505598.0,
+     "0.25": 1784505598.0,
+     "0.5": null,
+     "0.75": null,
+     "0.9": null
+    },
+    "mode_distribution": {
+     "institutional:the_open_championship": 0.3803
+    },
+    "p_event_by_deadline": 0.3803,
+    "deadline_ts": 1784505600.0,
+    "occurrence_resolves": "yes"
+   },
+   "wall_seconds": 99.6,
+   "completed_at": "2026-07-17T14:51:22.520678+00:00",
+   "trace_log": "experiments/results/replay_v3/prereg_logs/near_0x21b759b8e04fc560.log"
+  },
+  {
+   "condition_id": "0x220d507c2e1838bd2f89bcb3d8e81208dd9a28cfc4ca40a2eaab9d45611957d4",
+   "question": "Will the Houthis successfully target shipping by July 17, 2026?",
+   "tranche": "near",
+   "end_date": "2026-07-17T23:59:00Z",
+   "end_ts": 1784332740.0,
+   "event_cluster": "houthis-successfully-target-shipping-byptptpt-20260708165455691",
+   "market_p_yes_at_freeze": 0.0585,
+   "as_of": "2026-07-17",
+   "model": "deepseek-chat",
+   "seed": 1877339161,
+   "code_git_sha": "687d29621f54",
+   "started_at": "2026-07-17T14:46:36.801169+00:00",
+   "live_market_at_prediction": {
+    "fetched_at": "2026-07-17T14:46:37.319047+00:00",
+    "closed": false,
+    "p_yes": 0.053
+   },
+   "horizon": "2026-07-18",
+   "status": "predicted",
+   "simulation_status": "completed_with_degradation",
+   "p_yes": 0.8028,
+   "p_at_market_end": 0.7972,
+   "raw_distribution": {
+    "yes": 0.8028,
+    "no": 0.1972
+   },
+   "event_time": {
+    "n_particles": 71,
+    "n_absorbed": 57,
+    "p_censored": 0.1972,
+    "cdf_grid_ts": [
+     1784255040.0,
+     1784263680.0,
+     1784272320.0,
+     1784280960.0,
+     1784289600.0,
+     1784298240.0,
+     1784306880.0,
+     1784315520.0,
+     1784324160.0,
+     1784332800.0
+    ],
+    "cdf": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.8028
+    ],
+    "survival": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     0.1972
+    ],
+    "first_passage_quantiles_ts": {
+     "0.1": 1784332798.0,
+     "0.25": 1784332798.0,
+     "0.5": 1784332798.0,
+     "0.75": 1784332798.0,
+     "0.9": null
+    },
+    "mode_distribution": {
+     "institutional:houthi_naval_forces": 0.8028
+    },
+    "p_event_by_deadline": 0.8028,
+    "deadline_ts": 1784332800.0,
+    "occurrence_resolves": "yes"
+   },
+   "wall_seconds": 91.9,
+   "completed_at": "2026-07-17T14:48:09.241599+00:00",
+   "trace_log": "experiments/results/replay_v3/prereg_logs/near_0x220d507c2e1838bd.log"
+  },
+  {
+   "condition_id": "0x3b14033845f1d515871df9c03b071e5445a7f1542d8305c8aa8f93920126c033",
+   "question": "Will Sabrina Carpenter perform at the 2026 FIFA World Cup Final halftime show?",
+   "tranche": "near",
+   "end_date": "2026-07-19T00:00:00Z",
+   "end_ts": 1784419200.0,
+   "event_cluster": "who-will-perform-at-world-cup-halftime-show",
+   "market_p_yes_at_freeze": 0.191,
+   "as_of": "2026-07-17",
+   "model": "deepseek-chat",
+   "seed": 110858789,
+   "code_git_sha": "687d29621f54",
+   "started_at": "2026-07-17T14:51:01.728105+00:00",
+   "live_market_at_prediction": {
+    "fetched_at": "2026-07-17T14:51:02.011694+00:00",
+    "closed": false,
+    "p_yes": 0.1915
+   },
+   "horizon": "2026-07-20",
+   "status": "predicted",
+   "simulation_status": "completed_with_degradation",
+   "p_yes": 0.2278,
+   "p_at_market_end": 0.0,
+   "raw_distribution": {
+    "yes": 0.2278,
+    "no": 0.7722
+   },
+   "event_time": {
+    "n_particles": 79,
+    "n_absorbed": 18,
+    "p_censored": 0.7722,
+    "cdf_grid_ts": [
+     1784272320.0,
+     1784298240.0,
+     1784324160.0,
+     1784350080.0,
+     1784376000.0,
+     1784401920.0,
+     1784427840.0,
+     1784453760.0,
+     1784479680.0,
+     1784505600.0
+    ],
+    "cdf": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.2278
+    ],
+    "survival": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     0.7722
+    ],
+    "first_passage_quantiles_ts": {
+     "0.1": 1784505598.0,
+     "0.25": null,
+     "0.5": null,
+     "0.75": null,
+     "0.9": null
+    },
+    "mode_distribution": {
+     "institutional:fifa_event_production_team": 0.2278
+    },
+    "p_event_by_deadline": 0.2278,
+    "deadline_ts": 1784505600.0,
+    "occurrence_resolves": "yes"
+   },
+   "wall_seconds": 89.4,
+   "completed_at": "2026-07-17T14:52:31.387626+00:00",
+   "trace_log": "experiments/results/replay_v3/prereg_logs/near_0x3b14033845f1d515.log"
+  },
+  {
+   "condition_id": "0x436d9d06828e37aeb8056bae347f879a506c898c8dd893aa049c65942a3664bb",
+   "question": "Iran military action against a Gulf State on July 17?",
+   "tranche": "near",
+   "end_date": "2026-07-17T23:59:00Z",
+   "end_ts": 1784332740.0,
+   "event_cluster": "iran-military-action-against-a-gulf-state-onptptpt-20260708212328295",
+   "market_p_yes_at_freeze": 0.9215,
+   "as_of": "2026-07-17",
+   "model": "deepseek-chat",
+   "seed": 3462503579,
+   "code_git_sha": "687d29621f54",
+   "started_at": "2026-07-17T14:46:36.803641+00:00",
+   "live_market_at_prediction": {
+    "fetched_at": "2026-07-17T14:46:37.478493+00:00",
+    "closed": false,
+    "p_yes": 0.9325
+   },
+   "horizon": "2026-07-18",
+   "status": "predicted",
+   "simulation_status": "completed_with_degradation",
+   "p_yes": 0.431,
+   "p_at_market_end": 0.428,
+   "raw_distribution": {
+    "yes": 0.431,
+    "no": 0.569
+   },
+   "event_time": {
+    "n_particles": 58,
+    "n_absorbed": 25,
+    "p_censored": 0.569,
+    "cdf_grid_ts": [
+     1784255040.0,
+     1784263680.0,
+     1784272320.0,
+     1784280960.0,
+     1784289600.0,
+     1784298240.0,
+     1784306880.0,
+     1784315520.0,
+     1784324160.0,
+     1784332800.0
+    ],
+    "cdf": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.431
+    ],
+    "survival": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     0.569
+    ],
+    "first_passage_quantiles_ts": {
+     "0.1": 1784332798.0,
+     "0.25": 1784332798.0,
+     "0.5": null,
+     "0.75": null,
+     "0.9": null
+    },
+    "mode_distribution": {
+     "institutional:iran_supreme_national_securi": 0.431
+    },
+    "p_event_by_deadline": 0.431,
+    "deadline_ts": 1784332800.0,
+    "occurrence_resolves": "yes"
+   },
+   "wall_seconds": 88.0,
+   "completed_at": "2026-07-17T14:48:05.486534+00:00",
+   "trace_log": "experiments/results/replay_v3/prereg_logs/near_0x436d9d06828e37ae.log"
+  },
+  {
+   "condition_id": "0x4822d1452ba17d280b2c271db0e58df7866c9b494040649ab6c6ae8bb7363b18",
+   "question": "Will France vs. England end in a draw?",
+   "tranche": "near",
+   "end_date": "2026-07-18T21:00:00Z",
+   "end_ts": 1784408400.0,
+   "event_cluster": "fifwc-fra-eng-2026-07-18",
+   "market_p_yes_at_freeze": 0.255,
+   "as_of": "2026-07-17",
+   "model": "deepseek-chat",
+   "seed": 424904213,
+   "code_git_sha": "687d29621f54",
+   "started_at": "2026-07-17T14:48:09.244319+00:00",
+   "live_market_at_prediction": {
+    "fetched_at": "2026-07-17T14:48:10.352742+00:00",
+    "closed": false,
+    "p_yes": 0.255
+   },
+   "horizon": "2026-07-19",
+   "status": "predicted",
+   "simulation_status": "completed_with_degradation",
+   "p_yes": 0.4875,
+   "p_at_market_end": 0.4875,
+   "raw_distribution": {
+    "draw": 0.4875,
+    "not_draw": 0.5125
+   },
+   "event_time": {
+    "n_particles": 80,
+    "n_absorbed": 39,
+    "p_censored": 0.5125,
+    "cdf_grid_ts": [
+     1784263680.0,
+     1784280960.0,
+     1784298240.0,
+     1784315520.0,
+     1784332800.0,
+     1784350080.0,
+     1784367360.0,
+     1784384640.0,
+     1784401920.0,
+     1784419200.0
+    ],
+    "cdf": [
+     0.0,
+     0.0625,
+     0.0625,
+     0.075,
+     0.075,
+     0.25,
+     0.25,
+     0.4875,
+     0.4875,
+     0.4875
+    ],
+    "survival": [
+     1.0,
+     0.9375,
+     0.9375,
+     0.925,
+     0.925,
+     0.75,
+     0.75,
+     0.5125,
+     0.5125,
+     0.5125
+    ],
+    "first_passage_quantiles_ts": {
+     "0.1": 1784350080.0,
+     "0.25": 1784350080.0,
+     "0.5": null,
+     "0.75": null,
+     "0.9": null
+    },
+    "mode_distribution": {
+     "resolution": 0.4875
+    },
+    "p_event_by_deadline": 0.4875,
+    "deadline_ts": 1784419200.0,
+    "occurrence_resolves": "yes"
+   },
+   "wall_seconds": 85.8,
+   "completed_at": "2026-07-17T14:49:36.150573+00:00",
+   "trace_log": "experiments/results/replay_v3/prereg_logs/near_0x4822d1452ba17d28.log"
+  },
+  {
+   "condition_id": "0x838789d17fcb261998bf52fd27ed0c9d24ab94e63d24e8971cf371ac763b51cd",
+   "question": "Exact Score: France 3 - 2 England?",
+   "tranche": "near",
+   "end_date": "2026-07-18T21:00:00Z",
+   "end_ts": 1784408400.0,
+   "event_cluster": "fifwc-fra-eng-2026-07-18-exact-score",
+   "market_p_yes_at_freeze": 0.055,
+   "as_of": "2026-07-17",
+   "model": "deepseek-chat",
+   "seed": 2673271268,
+   "code_git_sha": "687d29621f54",
+   "started_at": "2026-07-17T14:49:19.456726+00:00",
+   "live_market_at_prediction": {
+    "fetched_at": "2026-07-17T14:49:20.356878+00:00",
+    "closed": false,
+    "p_yes": 0.055
+   },
+   "horizon": "2026-07-19",
+   "status": "predicted",
+   "simulation_status": "completed_with_degradation",
+   "p_yes": 0.55,
+   "p_at_market_end": 0.55,
+   "raw_distribution": {
+    "France 3-2 England": 0.55,
+    "any other score": 0.45
+   },
+   "event_time": {
+    "n_particles": 80,
+    "n_absorbed": 44,
+    "p_censored": 0.45,
+    "cdf_grid_ts": [
+     1784263680.0,
+     1784280960.0,
+     1784298240.0,
+     1784315520.0,
+     1784332800.0,
+     1784350080.0,
+     1784367360.0,
+     1784384640.0,
+     1784401920.0,
+     1784419200.0
+    ],
+    "cdf": [
+     0.0,
+     0.1125,
+     0.1125,
+     0.1375,
+     0.1375,
+     0.375,
+     0.375,
+     0.55,
+     0.55,
+     0.55
+    ],
+    "survival": [
+     1.0,
+     0.8875,
+     0.8875,
+     0.8625,
+     0.8625,
+     0.625,
+     0.625,
+     0.45,
+     0.45,
+     0.45
+    ],
+    "first_passage_quantiles_ts": {
+     "0.1": 1784280960.0,
+     "0.25": 1784350080.0,
+     "0.5": 1784384640.0,
+     "0.75": null,
+     "0.9": null
+    },
+    "mode_distribution": {
+     "resolution": 0.55
+    },
+    "p_event_by_deadline": 0.55,
+    "deadline_ts": 1784419200.0,
+    "occurrence_resolves": "yes"
+   },
+   "wall_seconds": 101.4,
+   "completed_at": "2026-07-17T14:51:01.719438+00:00",
+   "trace_log": "experiments/results/replay_v3/prereg_logs/near_0x838789d17fcb2619.log"
+  },
+  {
+   "condition_id": "0x93713a0be2f81f11323d61ead2f681283f7a761524ecf2e46c87048b85397a68",
+   "question": "Will Sam Burns win the 2026 The Open Championship?",
+   "tranche": "near",
+   "end_date": "2026-07-19T00:00:00Z",
+   "end_ts": 1784419200.0,
+   "event_cluster": "2026-the-open-championship-winner",
+   "market_p_yes_at_freeze": 0.057,
+   "as_of": "2026-07-17",
+   "model": "deepseek-chat",
+   "seed": 3847904834,
+   "code_git_sha": "687d29621f54",
+   "started_at": "2026-07-17T14:50:46.508338+00:00",
+   "live_market_at_prediction": {
+    "fetched_at": "2026-07-17T14:50:46.954405+00:00",
+    "closed": false,
+    "p_yes": 0.057
+   },
+   "horizon": "2026-07-20",
+   "status": "predicted",
+   "simulation_status": "completed_with_degradation",
+   "p_yes": 0.5778,
+   "p_at_market_end": 0.0,
+   "raw_distribution": {
+    "yes": 0.5778,
+    "no": 0.4222
+   },
+   "event_time": {
+    "n_particles": 45,
+    "n_absorbed": 26,
+    "p_censored": 0.4222,
+    "cdf_grid_ts": [
+     1784272320.0,
+     1784298240.0,
+     1784324160.0,
+     1784350080.0,
+     1784376000.0,
+     1784401920.0,
+     1784427840.0,
+     1784453760.0,
+     1784479680.0,
+     1784505600.0
+    ],
+    "cdf": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.5778
+    ],
+    "survival": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     0.4222
+    ],
+    "first_passage_quantiles_ts": {
+     "0.1": 1784505598.0,
+     "0.25": 1784505598.0,
+     "0.5": 1784505598.0,
+     "0.75": null,
+     "0.9": null
+    },
+    "mode_distribution": {
+     "institutional:open_championship_scoring": 0.5778
+    },
+    "p_event_by_deadline": 0.5778,
+    "deadline_ts": 1784505600.0,
+    "occurrence_resolves": "yes"
+   },
+   "wall_seconds": 93.4,
+   "completed_at": "2026-07-17T14:52:20.401566+00:00",
+   "trace_log": "experiments/results/replay_v3/prereg_logs/near_0x93713a0be2f81f11.log"
+  },
+  {
+   "condition_id": "0x972af4b48c0edbe5ae5c237a02831dea83d980bff35d8ac111c2befedd637c44",
+   "question": "Will Drake perform at the 2026 FIFA World Cup Final halftime show?",
+   "tranche": "near",
+   "end_date": "2026-07-19T00:00:00Z",
+   "end_ts": 1784419200.0,
+   "event_cluster": "who-will-perform-at-world-cup-halftime-show",
+   "market_p_yes_at_freeze": 0.0505,
+   "as_of": "2026-07-17",
+   "model": "deepseek-chat",
+   "seed": 1917475099,
+   "code_git_sha": "687d29621f54",
+   "started_at": "2026-07-17T14:51:22.523924+00:00",
+   "live_market_at_prediction": {
+    "fetched_at": "2026-07-17T14:51:23.195106+00:00",
+    "closed": false,
+    "p_yes": 0.051
+   },
+   "horizon": "2026-07-20",
+   "status": "predicted",
+   "simulation_status": "completed_with_degradation",
+   "p_yes": 0.3944,
+   "p_at_market_end": 0.0,
+   "raw_distribution": {
+    "yes": 0.3944,
+    "no": 0.6056
+   },
+   "event_time": {
+    "n_particles": 71,
+    "n_absorbed": 28,
+    "p_censored": 0.6056,
+    "cdf_grid_ts": [
+     1784272320.0,
+     1784298240.0,
+     1784324160.0,
+     1784350080.0,
+     1784376000.0,
+     1784401920.0,
+     1784427840.0,
+     1784453760.0,
+     1784479680.0,
+     1784505600.0
+    ],
+    "cdf": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.3944
+    ],
+    "survival": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     0.6056
+    ],
+    "first_passage_quantiles_ts": {
+     "0.1": 1784505598.0,
+     "0.25": 1784505598.0,
+     "0.5": null,
+     "0.75": null,
+     "0.9": null
+    },
+    "mode_distribution": {
+     "institutional:fifa_events_department": 0.3944
+    },
+    "p_event_by_deadline": 0.3944,
+    "deadline_ts": 1784505600.0,
+    "occurrence_resolves": "yes"
+   },
+   "wall_seconds": 103.2,
+   "completed_at": "2026-07-17T14:53:06.369566+00:00",
+   "trace_log": "experiments/results/replay_v3/prereg_logs/near_0x972af4b48c0edbe5.log"
+  },
+  {
+   "condition_id": "0x9852b69a3a641b38e72d3c1f667fdece249c9c12a5d1909ef5012f61910da404",
+   "question": "Will the price of Bitcoin be above $64,000 on July 17?",
+   "tranche": "near",
+   "end_date": "2026-07-17T16:00:00Z",
+   "end_ts": 1784304000.0,
+   "event_cluster": "bitcoin-above-on-july-17-2026",
+   "market_p_yes_at_freeze": 0.0625,
+   "as_of": "2026-07-17",
+   "model": "deepseek-chat",
+   "seed": 1180309304,
+   "code_git_sha": "687d29621f54",
+   "started_at": "2026-07-17T14:44:49.590336+00:00",
+   "live_market_at_prediction": {
+    "fetched_at": "2026-07-17T14:44:50.980611+00:00",
+    "closed": false,
+    "p_yes": 0.049
+   },
+   "horizon": "2026-07-18",
+   "status": "predicted",
+   "simulation_status": "completed_with_degradation",
+   "p_yes": 0.2911,
+   "p_at_market_end": 0.0,
+   "raw_distribution": {
+    "above_64000": 0.2911,
+    "at_or_below_64000": 0.7089
+   },
+   "event_time": {
+    "n_particles": 79,
+    "n_absorbed": 23,
+    "p_censored": 0.7089,
+    "cdf_grid_ts": [
+     1784255040.0,
+     1784263680.0,
+     1784272320.0,
+     1784280960.0,
+     1784289600.0,
+     1784298240.0,
+     1784306880.0,
+     1784315520.0,
+     1784324160.0,
+     1784332800.0
+    ],
+    "cdf": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.2911
+    ],
+    "survival": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     0.7089
+    ],
+    "first_passage_quantiles_ts": {
+     "0.1": 1784332798.0,
+     "0.25": 1784332798.0,
+     "0.5": null,
+     "0.75": null,
+     "0.9": null
+    },
+    "mode_distribution": {
+     "institutional:federal_reserve": 0.2911
+    },
+    "p_event_by_deadline": 0.2911,
+    "deadline_ts": 1784332800.0,
+    "occurrence_resolves": "yes"
+   },
+   "wall_seconds": 97.6,
+   "completed_at": "2026-07-17T14:46:28.641498+00:00",
+   "trace_log": "experiments/results/replay_v3/prereg_logs/near_0x9852b69a3a641b38.log"
+  },
+  {
+   "condition_id": "0xa8a9f70412968d63c6feb8f2304ac62f5f1bac2866792d2281241e3217b1d0df",
+   "question": "Will Bad Bunny perform at the 2026 FIFA World Cup Final halftime show?",
+   "tranche": "near",
+   "end_date": "2026-07-19T00:00:00Z",
+   "end_ts": 1784419200.0,
+   "event_cluster": "who-will-perform-at-world-cup-halftime-show",
+   "market_p_yes_at_freeze": 0.0565,
+   "as_of": "2026-07-17",
+   "model": "deepseek-chat",
+   "seed": 3758315558,
+   "code_git_sha": "687d29621f54",
+   "started_at": "2026-07-17T14:52:13.815018+00:00",
+   "live_market_at_prediction": {
+    "fetched_at": "2026-07-17T14:52:14.203324+00:00",
+    "closed": false,
+    "p_yes": 0.0555
+   },
+   "horizon": "2026-07-20",
+   "status": "predicted",
+   "simulation_status": "completed_with_degradation",
+   "p_yes": 0.4,
+   "p_at_market_end": 0.0,
+   "raw_distribution": {
+    "yes": 0.4,
+    "no": 0.6
+   },
+   "event_time": {
+    "n_particles": 60,
+    "n_absorbed": 24,
+    "p_censored": 0.6,
+    "cdf_grid_ts": [
+     1784272320.0,
+     1784298240.0,
+     1784324160.0,
+     1784350080.0,
+     1784376000.0,
+     1784401920.0,
+     1784427840.0,
+     1784453760.0,
+     1784479680.0,
+     1784505600.0
+    ],
+    "cdf": [
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.0,
+     0.4
+    ],
+    "survival": [
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     1.0,
+     0.6
+    ],
+    "first_passage_quantiles_ts": {
+     "0.1": 1784505598.0,
+     "0.25": 1784505598.0,
+     "0.5": null,
+     "0.75": null,
+     "0.9": null
+    },
+    "mode_distribution": {
+     "institutional:fifa_administration": 0.4
+    },
+    "p_event_by_deadline": 0.4,
+    "deadline_ts": 1784505600.0,
+    "occurrence_resolves": "yes"
+   },
+   "wall_seconds": 88.0,
+   "completed_at": "2026-07-17T14:53:42.167874+00:00",
+   "trace_log": "experiments/results/replay_v3/prereg_logs/near_0xa8a9f70412968d63.log"
+  },
+  {
+   "condition_id": "0xaecb30ff67498d3d3017f3588b7756d22d4f493bdac52c46e097a7a77c10c084",
+   "question": "Will Bryson DeChambeau win the 2026 The Open Championship?",
+   "tranche": "near",
+   "end_date": "2026-07-19T00:00:00Z",
+   "end_ts": 1784419200.0,
+   "event_cluster": "2026-the-open-championship-winner",
+   "market_p_yes_at_freeze": 0.058,
+   "as_of": "2026-07-17",
+   "model": "deepseek-chat",
+   "seed": 1133731268,
+   "code_git_sha": "687d29621f54",
+   "started_at": "2026-07-17T14:50:33.491281+00:00",
+   "live_market_at_prediction": {
+    "fetched_at": "2026-07-17T14:50:33.695150+00:00",
+    "closed": false,
+    "p_yes": 0.055
+   },
+   "horizon": "2026-07-20",
+   "status": "predicted",
+   "simulation_status": "completed_with_degradation",
+   "p_yes": 0.3667,
+   "p_at_market_end": 0.2667,
+   "raw_distribution": {
+    "yes": 0.3667,
+    "no": 0.6333
+   },
+   "event_time": {
+    "n_particles": 30,
+    "n_absorbed": 11,
+    "p_censored": 0.6333,
+    "cdf_grid_ts": [
+     1784272320.0,
+     1784298240.0,
+     1784324160.0,
+     1784350080.0,
+     1784376000.0,
+     1784401920.0,
+     1784427840.0,
+     1784453760.0,
+     1784479680.0,
+     1784505600.0
+    ],
+    "cdf": [
+     0.0,
+     0.0667,
+     0.0667,
+     0.0667,
+     0.0667,
+     0.2667,
+     0.2667,
+     0.3667,
+     0.3667,
+     0.3667
+    ],
+    "survival": [
+     1.0,
+     0.9333,
+     0.9333,
+     0.9333,
+     0.9333,
+     0.7333,
+     0.7333,
+     0.6333,
+     0.6333,
+     0.6333
+    ],
+    "first_passage_quantiles_ts": {
+     "0.1": 1784401920.0,
+     "0.25": 1784401920.0,
+     "0.5": null,
+     "0.75": null,
+     "0.9": null
+    },
+    "mode_distribution": {
+     "resolution": 0.3667
+    },
+    "p_event_by_deadline": 0.3667,
+    "deadline_ts": 1784505600.0,
+    "occurrence_resolves": "yes"
+   },
+   "wall_seconds": 100.1,
+   "completed_at": "2026-07-17T14:52:13.810082+00:00",
+   "trace_log": "experiments/results/replay_v3/prereg_logs/near_0xaecb30ff67498d3d.log"
+  },
+  {
+   "condition_id": "0xaf767784230a131d5c4dc31e6b3cc4b4e898e03af20a75d5935a75100a76a46f",
+   "question": "Will England win on 2026-07-18?",
+   "tranche": "near",
+   "end_date": "2026-07-18T21:00:00Z",
+   "end_ts": 1784408400.0,
+   "event_cluster": "fifwc-fra-eng-2026-07-18",
+   "market_p_yes_at_freeze": 0.245,
+   "as_of": "2026-07-17",
+   "model": "deepseek-chat",
+   "seed": 3972519175,
+   "code_git_sha": "687d29621f54",
+   "started_at": "2026-07-17T14:54:08.555002+00:00",
+   "live_market_at_prediction": {
+    "fetched_at": "2026-07-17T14:54:09.078419+00:00",
+    "closed": false,
+    "p_yes": 0.245
+   },
+   "horizon": "2026-07-19",
+   "status": "predicted",
+   "simulation_status": "completed_with_degradation",
+   "p_yes": 0.5238,
+   "p_at_market_end": 0.5238,
+   "raw_distribution": {
+    "England_win": 0.5238,
+    "not_England_win": 0.4762
+   },
+   "event_time": {
+    "n_particles": 63,
+    "n_absorbed": 33,
+    "p_censored": 0.4762,
+    "cdf_grid_ts": [
+     1784263680.0,
+     1784280960.0,
+     1784298240.0,
+     1784315520.0,
+     1784332800.0,
+     1784350080.0,
+     1784367360.0,
+     1784384640.0,
+     1784401920.0,
+     1784419200.0
+    ],
+    "cdf": [
+     0.0,
+     0.0635,
+     0.0635,
+     0.0952,
+     0.0952,
+     0.2698,
+     0.2698,
+     0.5238,
+     0.5238,
+     0.5238
+    ],
+    "survival": [
+     1.0,
+     0.9365,
+     0.9365,
+     0.9048,
+     0.9048,
+     0.7302,
+     0.7302,
+     0.4762,
+     0.4762,
+     0.4762
+    ],
+    "first_passage_quantiles_ts": {
+     "0.1": 1784350080.0,
+     "0.25": 1784350080.0,
+     "0.5": 1784384640.0,
+     "0.75": null,
+     "0.9": null
+    },
+    "mode_distribution": {
+     "resolution": 0.5238
+    },
+    "p_event_by_deadline": 0.5238,
+    "deadline_ts": 1784419200.0,
+    "occurrence_resolves": "yes"
+   },
+   "wall_seconds": 80.6,
+   "completed_at": "2026-07-17T14:55:29.760667+00:00",
+   "trace_log": "experiments/results/replay_v3/prereg_logs/near_0xaf767784230a131d.log"
+  },
+  {
+   "condition_id": "0xc3545f139bf6636ead8359e6fa04591e5e1c1e4ded06e553d7b1d862e1d81a78",
+   "question": "Will Elon Musk post <40 tweets from July 16 to July 18, 2026?",
+   "tranche": "near",
+   "end_date": "2026-07-18T16:00:00Z",
+   "end_ts": 1784390400.0,
+   "event_cluster": "elon-musk-of-tweets-july-16-july-18",
+   "market_p_yes_at_freeze": 0.085,
+   "as_of": "2026-07-17",
+   "model": "deepseek-chat",
+   "seed": 2613685072,
+   "code_git_sha": "687d29621f54",
+   "started_at": "2026-07-17T14:46:36.805121+00:00",
+   "live_market_at_prediction": {
+    "fetched_at": "2026-07-17T14:46:37.428002+00:00",
+    "closed": false,
+    "p_yes": 0.085
+   },
+   "horizon": "2026-07-19",
+   "status": "predicted",
+   "simulation_status": "completed_with_degradation",
+   "p_yes": 0.6721,
+   "p_at_market_end": 0.6721,
+   "raw_distribution": {
+    "less_than_40": 0.6721,
+    "at_least_40": 0.3279
+   },
+   "event_time": {
+    "n_particles": 61,
+    "n_absorbed": 41,
+    "p_censored": 0.3279,
+    "cdf_grid_ts": [
+     1784263680.0,
+     1784280960.0,
+     1784298240.0,
+     1784315520.0,
+     1784332800.0,
+     1784350080.0,
+     1784367360.0,
+     1784384640.0,
+     1784401920.0,
+     1784419200.0
+    ],
+    "cdf": [
+     0.0,
+     0.1311,
+     0.1311,
+     0.1967,
+     0.1967,
+     0.4098,
+     0.4098,
+     0.6721,
+     0.6721,
+     0.6721
+    ],
+    "survival": [
+     1.0,
+     0.8689,
+     0.8689,
+     0.8033,
+     0.8033,
+     0.5902,
+     0.5902,
+     0.3279,
+     0.3279,
+     0.3279
+    ],
+    "first_passage_quantiles_ts": {
+     "0.1": 1784280960.0,
+     "0.25": 1784350080.0,
+     "0.5": 1784384640.0,
+     "0.75": null,
+     "0.9": null
+    },
+    "mode_distribution": {
+     "resolution": 0.6721
+    },
+    "p_event_by_deadline": 0.6721,
+    "deadline_ts": 1784419200.0,
+    "occurrence_resolves": "yes"
+   },
+   "wall_seconds": 73.4,
+   "completed_at": "2026-07-17T14:47:50.854452+00:00",
+   "trace_log": "experiments/results/replay_v3/prereg_logs/near_0xc3545f139bf6636e.log"
+  },
+  {
+   "condition_id": "0xc41f543ccb7a1a35a200c28096cc2e5c2351c54546087f4f6cf5c4ef3e0c1aa5",
+   "question": "Will France win on 2026-07-18?",
+   "tranche": "near",
+   "end_date": "2026-07-18T21:00:00Z",
+   "end_ts": 1784408400.0,
+   "event_cluster": "fifwc-fra-eng-2026-07-18",
+   "market_p_yes_at_freeze": 0.495,
+   "as_of": "2026-07-17",
+   "model": "deepseek-chat",
+   "seed": 2223985630,
+   "code_git_sha": "687d29621f54",
+   "started_at": "2026-07-17T14:47:49.580062+00:00",
+   "live_market_at_prediction": {
+    "fetched_at": "2026-07-17T14:47:49.766960+00:00",
+    "closed": false,
+    "p_yes": 0.495
+   },
+   "horizon": "2026-07-19",
+   "status": "predicted",
+   "simulation_status": "completed_with_degradation",
+   "p_yes": 0.4125,
+   "p_at_market_end": 0.4125,
+   "raw_distribution": {
+    "France_win": 0.4125,
+    "France_not_win": 0.5875
+   },
+   "event_time": {
+    "n_particles": 80,
+    "n_absorbed": 33,
+    "p_censored": 0.5875,
+    "cdf_grid_ts": [
+     1784263680.0,
+     1784280960.0,
+     1784298240.0,
+     1784315520.0,
+     1784332800.0,
+     1784350080.0,
+     1784367360.0,
+     1784384640.0,
+     1784401920.0,
+     1784419200.0
+    ],
+    "cdf": [
+     0.0,
+     0.025,
+     0.025,
+     0.05,
+     0.05,
+     0.175,
+     0.175,
+     0.4125,
+     0.4125,
+     0.4125
+    ],
+    "survival": [
+     1.0,
+     0.975,
+     0.975,
+     0.95,
+     0.95,
+     0.825,
+     0.825,
+     0.5875,
+     0.5875,
+     0.5875
+    ],
+    "first_passage_quantiles_ts": {
+     "0.1": 1784350080.0,
+     "0.25": 1784384640.0,
+     "0.5": null,
+     "0.75": null,
+     "0.9": null
+    },
+    "mode_distribution": {
+     "resolution": 0.4125
+    },
+    "p_event_by_deadline": 0.4125,
+    "deadline_ts": 1784419200.0,
+    "occurrence_resolves": "yes"
+   },
+   "wall_seconds": 89.7,
+   "completed_at": "2026-07-17T14:49:19.453423+00:00",
+   "trace_log": "experiments/results/replay_v3/prereg_logs/near_0xc41f543ccb7a1a35.log"
+  },
+  {
+   "condition_id": "0xd1bb7552943d2403bb56fc3eaf03a1c28d8b48db16aa48eebc76e9c429cf05d8",
+   "question": "Will Elon Musk post 140-159 tweets from July 10 to July 17, 2026?",
+   "tranche": "near",
+   "end_date": "2026-07-17T16:00:00Z",
+   "end_ts": 1784304000.0,
+   "event_cluster": "elon-musk-of-tweets-july-10-july-17",
+   "market_p_yes_at_freeze": 0.305,
+   "as_of": "2026-07-17",
+   "model": "deepseek-chat",
+   "seed": 564564982,
+   "code_git_sha": "687d29621f54",
+   "started_at": "2026-07-17T14:43:03.886426+00:00",
+   "live_market_at_prediction": {
+    "fetched_at": "2026-07-17T14:43:04.539775+00:00",
+    "closed": false,
+    "p_yes": 0.505
+   },
+   "horizon": "2026-07-18",
+   "status": "predicted",
+   "simulation_status": "completed_with_degradation",
+   "p_yes": 0.3636,
+   "p_at_market_end": 0.1818,
+   "raw_distribution": {
+    "yes": 0.3636,
+    "no": 0.6364
+   },
+   "event_time": {
+    "n_particles": 66,
+    "n_absorbed": 24,
+    "p_censored": 0.6364,
+    "cdf_grid_ts": [
+     1784255040.0,
+     1784263680.0,
+     1784272320.0,
+     1784280960.0,
+     1784289600.0,
+     1784298240.0,
+     1784306880.0,
+     1784315520.0,
+     1784324160.0,
+     1784332800.0
+    ],
+    "cdf": [
+     0.0,
+     0.0303,
+     0.0303,
+     0.0455,
+     0.0455,
+     0.1818,
+     0.1818,
+     0.3636,
+     0.3636,
+     0.3636
+    ],
+    "survival": [
+     1.0,
+     0.9697,
+     0.9697,
+     0.9545,
+     0.9545,
+     0.8182,
+     0.8182,
+     0.6364,
+     0.6364,
+     0.6364
+    ],
+    "first_passage_quantiles_ts": {
+     "0.1": 1784298240.0,
+     "0.25": 1784315520.0,
+     "0.5": null,
+     "0.75": null,
+     "0.9": null
+    },
+    "mode_distribution": {
+     "resolution": 0.3636
+    },
+    "p_event_by_deadline": 0.3636,
+    "deadline_ts": 1784332800.0,
+    "occurrence_resolves": "yes"
+   },
+   "wall_seconds": 77.4,
+   "completed_at": "2026-07-17T14:44:22.039202+00:00",
+   "trace_log": "experiments/results/replay_v3/prereg_logs/near_0xd1bb7552943d2403.log"
+  },
+  {
+   "condition_id": "0xde8647b1a7127ef841a180a34f2853678a072a95e04e98698e8e7ccb004b915e",
+   "question": "Will Elon Musk post 160-179 tweets from July 10 to July 17, 2026?",
+   "tranche": "near",
+   "end_date": "2026-07-17T16:00:00Z",
+   "end_ts": 1784304000.0,
+   "event_cluster": "elon-musk-of-tweets-july-10-july-17",
+   "market_p_yes_at_freeze": 0.655,
+   "as_of": "2026-07-17",
+   "model": "deepseek-chat",
+   "seed": 2857342227,
+   "code_git_sha": "687d29621f54",
+   "started_at": "2026-07-17T14:46:36.801518+00:00",
+   "live_market_at_prediction": {
+    "fetched_at": "2026-07-17T14:46:38.482369+00:00",
+    "closed": false,
+    "p_yes": 0.465
+   },
+   "horizon": "2026-07-18",
+   "status": "predicted",
+   "simulation_status": "completed_with_degradation",
+   "p_yes": 0.5455,
+   "p_at_market_end": 0.3788,
+   "raw_distribution": {
+    "yes": 0.5455,
+    "no": 0.4545
+   },
+   "event_time": {
+    "n_particles": 66,
+    "n_absorbed": 36,
+    "p_censored": 0.4545,
+    "cdf_grid_ts": [
+     1784255040.0,
+     1784263680.0,
+     1784272320.0,
+     1784280960.0,
+     1784289600.0,
+     1784298240.0,
+     1784306880.0,
+     1784315520.0,
+     1784324160.0,
+     1784332800.0
+    ],
+    "cdf": [
+     0.0,
+     0.1364,
+     0.1364,
+     0.1818,
+     0.1818,
+     0.3788,
+     0.3788,
+     0.5455,
+     0.5455,
+     0.5455
+    ],
+    "survival": [
+     1.0,
+     0.8636,
+     0.8636,
+     0.8182,
+     0.8182,
+     0.6212,
+     0.6212,
+     0.4545,
+     0.4545,
+     0.4545
+    ],
+    "first_passage_quantiles_ts": {
+     "0.1": 1784263680.0,
+     "0.25": 1784298240.0,
+     "0.5": 1784315520.0,
+     "0.75": null,
+     "0.9": null
+    },
+    "mode_distribution": {
+     "resolution": 0.5455
+    },
+    "p_event_by_deadline": 0.5455,
+    "deadline_ts": 1784332800.0,
+    "occurrence_resolves": "yes"
+   },
+   "wall_seconds": 71.0,
+   "completed_at": "2026-07-17T14:47:49.577167+00:00",
+   "trace_log": "experiments/results/replay_v3/prereg_logs/near_0xde8647b1a7127ef8.log"
+  },
+  {
+   "condition_id": "0xe72fb83e40f95cd6aeda77d2a5822873a8fe877714515ed6076ab9fc21834810",
+   "question": "Will the price of Ethereum be above $1,800 on July 17?",
+   "tranche": "near",
+   "end_date": "2026-07-17T16:00:00Z",
+   "end_ts": 1784304000.0,
+   "event_cluster": "ethereum-above-on-july-17-2026",
+   "market_p_yes_at_freeze": 0.8785,
+   "as_of": "2026-07-17",
+   "model": "deepseek-chat",
+   "seed": 320007966,
+   "code_git_sha": "687d29621f54",
+   "started_at": "2026-07-17T14:44:49.590378+00:00",
+   "live_market_at_prediction": {
+    "fetched_at": "2026-07-17T14:44:50.068230+00:00",
+    "closed": false,
+    "p_yes": 0.9385
+   },
+   "horizon": "2026-07-18",
+   "status": "predicted",
+   "simulation_status": "completed_with_degradation",
+   "p_yes": 0.4667,
+   "p_at_market_end": 0.2667,
+   "raw_distribution": {
+    "above_1800": 0.4667,
+    "at_or_below_1800": 0.5333
+   },
+   "event_time": {
+    "n_particles": 30,
+    "n_absorbed": 14,
+    "p_censored": 0.5333,
+    "cdf_grid_ts": [
+     1784255040.0,
+     1784263680.0,
+     1784272320.0,
+     1784280960.0,
+     1784289600.0,
+     1784298240.0,
+     1784306880.0,
+     1784315520.0,
+     1784324160.0,
+     1784332800.0
+    ],
+    "cdf": [
+     0.0,
+     0.0,
+     0.0,
+     0.0333,
+     0.0333,
+     0.2667,
+     0.2667,
+     0.4667,
+     0.4667,
+     0.4667
+    ],
+    "survival": [
+     1.0,
+     1.0,
+     1.0,
+     0.9667,
+     0.9667,
+     0.7333,
+     0.7333,
+     0.5333,
+     0.5333,
+     0.5333
+    ],
+    "first_passage_quantiles_ts": {
+     "0.1": 1784298240.0,
+     "0.25": 1784298240.0,
+     "0.5": null,
+     "0.75": null,
+     "0.9": null
+    },
+    "mode_distribution": {
+     "resolution": 0.4667
+    },
+    "p_event_by_deadline": 0.4667,
+    "deadline_ts": 1784332800.0,
+    "occurrence_resolves": "yes"
+   },
+   "wall_seconds": 82.9,
+   "completed_at": "2026-07-17T14:46:12.973552+00:00",
+   "trace_log": "experiments/results/replay_v3/prereg_logs/near_0xe72fb83e40f95cd6.log"
+  },
+  {
+   "condition_id": "0xf86980b09331c8a8e11a99e493d126c1011f403851745f574c874fc40b0bddca",
+   "question": "Exact Score: France 3 - 1 England?",
+   "tranche": "near",
+   "end_date": "2026-07-18T21:00:00Z",
+   "end_ts": 1784408400.0,
+   "event_cluster": "fifwc-fra-eng-2026-07-18-exact-score",
+   "market_p_yes_at_freeze": 0.065,
+   "as_of": "2026-07-17",
+   "model": "deepseek-chat",
+   "seed": 3843056045,
+   "code_git_sha": "687d29621f54",
+   "started_at": "2026-07-17T14:47:50.857445+00:00",
+   "live_market_at_prediction": {
+    "fetched_at": "2026-07-17T14:47:51.050107+00:00",
+    "closed": false,
+    "p_yes": 0.065
+   },
+   "horizon": "2026-07-19",
+   "status": "predicted",
+   "simulation_status": "completed_with_degradation",
+   "p_yes": 0.5455,
+   "p_at_market_end": 0.5455,
+   "raw_distribution": {
+    "France 3-1 England": 0.5455,
+    "other": 0.4545
+   },
+   "event_time": {
+    "n_particles": 55,
+    "n_absorbed": 30,
+    "p_censored": 0.4545,
+    "cdf_grid_ts": [
+     1784263680.0,
+     1784280960.0,
+     1784298240.0,
+     1784315520.0,
+     1784332800.0,
+     1784350080.0,
+     1784367360.0,
+     1784384640.0,
+     1784401920.0,
+     1784419200.0
+    ],
+    "cdf": [
+     0.0,
+     0.0727,
+     0.0727,
+     0.0909,
+     0.0909,
+     0.3636,
+     0.3636,
+     0.5455,
+     0.5455,
+     0.5455
+    ],
+    "survival": [
+     1.0,
+     0.9273,
+     0.9273,
+     0.9091,
+     0.9091,
+     0.6364,
+     0.6364,
+     0.4545,
+     0.4545,
+     0.4545
+    ],
+    "first_passage_quantiles_ts": {
+     "0.1": 1784350080.0,
+     "0.25": 1784350080.0,
+     "0.5": 1784384640.0,
+     "0.75": null,
+     "0.9": null
+    },
+    "mode_distribution": {
+     "resolution": 0.5455
+    },
+    "p_event_by_deadline": 0.5455,
+    "deadline_ts": 1784419200.0,
+    "occurrence_resolves": "yes"
+   },
+   "wall_seconds": 81.3,
+   "completed_at": "2026-07-17T14:49:12.307064+00:00",
+   "trace_log": "experiments/results/replay_v3/prereg_logs/near_0xf86980b09331c8a8.log"
+  }
+ ]
+}
