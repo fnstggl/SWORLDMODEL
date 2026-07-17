@@ -1,52 +1,85 @@
-# WMV2 Post-Snapshot Benchmark — architecture
+# World Model V2 Post-Snapshot Benchmark Architecture
 
-## Model-snapshot logic (temporal-safety tiers)
+## Scope and status
 
-Verified live: the DeepSeek API serves `deepseek-v4-flash`; open weights exist at
-`hf:deepseek-ai/DeepSeek-V4-Flash@60d8d707…` (created 2026-04-22; official release 2026-04-24). Full audit:
-`experiments/replay_v3/model_temporal_safety_audit.json`.
+This benchmark is a stacked, separate PR built from `claude/world-model-v2-full-activation-replay-v2`. It does not modify PR #100, does not start Phase 13, and does not merge either PR. The representative run is bound to runtime fingerprint `79537cdec279fd8f`. The intermediate forward repair at `b1da180` had fingerprint `66c735b4201edc17`; after integrating the latest PR #100 head, the final repaired runtime has fingerprint `1a77f7a553aba15d`. Neither repaired fingerprint has a product-performance claim.
 
-- **Tier A (immutable checkpoint)**: blocked — 284B params, no GPU inference here; the hosted alias is not
-  proven byte-identical to the checkpoint. Recorded with the exact unblock path; did NOT stop the benchmark.
-- **Tier B (provider-attested post-cutoff) — SELECTED**: exact live alias + officially documented release
-  date, and **every benchmark question opened after 2026-04-24** (archive server timestamps), so the
-  ordering `S < Q ≤ T < R` holds per row. Even silently-updated serving weights cannot contain outcomes of
-  events that had not happened at release unless retrained on them post-release — which the probes measure.
-- **Belt-and-braces**: the primary arm is ADDITIONALLY causally blinded and runs all six leakage probes per
-  row (`provider_attested_post_cutoff_blinded`). The HF repo shows post-release activity
-  (lastModified 2026-06-22), so serving mutation is treated as a live, measured risk — never assumed away.
+The execution produced all required forecasts and a single-open locked score, but it fails the strict completion standard. Phase 2's capsule adapter degraded on every primary row, Phase 4 had one blocked controlled-ablation row, Phases 8 and 11 had no meaningful controlled ablation effect, the market-informed comparison was not run, and the final merged-tree repository suite has 3 failures. The authoritative status is `experiments/results/post_snapshot_benchmark/exact_completion_gate_report.json`.
+
+## Temporal-safety decision
+
+The model arm is DeepSeek V4 Flash through the hosted `deepseek-v4-flash` alias.
+
+- Tier A was rejected because the hosted model had no immutable serving revision, documented knowledge cutoff, or auditable server-side weight identity. A downloadable checkpoint exists, but the required local inference infrastructure and an official cutoff were unavailable.
+- Tier B was rejected because the provider did not attest a stable hosted version plus knowledge cutoff.
+- Tier C, `causally_blinded_historical`, was selected. It uses stable pseudonyms, transformed dates, stripped identifying text, blinded evidence, and six probes per row.
+
+Tier C reduces and measures model-memory risk; it does not prove the model lacked outcome knowledge. The run must not be described as an immutable-snapshot benchmark.
+
+## Representative benchmark
+
+The pool builder examined 3,000 source events, retained 1,430 binary-eligible contracts, clustered them into 1,174 independent worlds, and selected exactly 100 without outcome access. The selected domain counts are 30 sports, 25 other, 20 crypto, 15 geopolitics, 5 politics, 3 culture, 1 technology, and 1 weather/science.
+
+Worlds were ordered chronologically by question-open time and frozen into:
+
+- 40 calibration worlds × 4 cutoffs = 160 rows;
+- 20 validation worlds × 4 cutoffs = 80 rows;
+- 40 locked worlds × 4 cutoffs = 160 rows.
+
+The 100-world selection, clustering map, split map, and 400 forecast cutoffs were immutable before model execution. A failed selected row could be repaired and retried but never replaced.
+
+## Evidence and isolation
+
+Each of the 400 cutoffs has one immutable, blinded capsule. The manifest records each source byte hash and its first-proven availability timestamp; all 400 pass the cutoff rule. Original records and pseudonym mappings remain outside the forecast mount.
+
+Forecast and baseline workers ran under macOS Sandbox. The child could read code, its blinded input shard, and its capsule. It could not read any resolution store, pseudonym map, unblinded vault, or canonical source archive. Network access was denied except through a loopback CONNECT relay restricted to `api.deepseek.com:443`. The API credential moved from parent memory through an inherited anonymous pipe and was not placed in argv, environment variables, logs, or artifacts.
 
 ## Full-system row contract
 
-Every V2 row: frozen capsule → blinding → six probes → `simulate_world(blinded_q, prebuilt_bundle=…)` with
-`deepseek-v4-flash` (thinking disabled, recorded) → 11 PhaseExecutionRecords (derived from branch logs) →
-qualification: record coverage = 11, **zero blocked relevant phases**, `terminal_source =
-terminal_world_states`, p_yes from the terminal distribution (no LLM writes it) → fair baselines on the
-byte-identical capsule text + blinded question with the same model (direct single call, call-matched
-ensemble of 3, observer panel of 3, analogical retrieval) → frozen audit row (hash stamped). A row failing
-qualification carries `failure_reason` and never silently disappears.
+Every primary row contains exactly 11 `PhaseExecutionRecord` objects for:
 
-## Representative vs causal-coverage separation
+1. compiler;
+2. evidence;
+3. posterior;
+4. actor policy;
+5. mechanism registry;
+6. nonlinear mechanisms;
+7. persistence;
+8. populations;
+9. multilayer networks;
+10. institutions;
+11. dynamic recompilation.
 
-- **Representative vault** (`experiments/replay_vault_v3/events.json`): frozen server-side eligibility
-  (opened ≥ 2026-04-25, resolved ≤ 2026-07-12, ≥12d lifetime, ≥$1k volume, definitive binary resolution),
-  chronological fill with a domain cap — **no phase quotas, no hand-selection**; correlated contracts
-  grouped into one world at the archive's own event level. Chronological splits: earliest 40 calibration /
-  next 20 validation / latest 40 locked. 4 cutoffs per world at 15/40/65/88% of archived lifetime with
-  exact at-or-before market ticks.
-- **Causal-coverage vault** (`coverage_events.json`): frozen category rules over the REMAINING pool;
-  proves phase behavior (2+ cutoffs, trajectory targets, matched ablations); never merged into the
-  accuracy headline.
-- The eligible pool in the 2.5-month post-snapshot window is recorded honestly in
-  `candidate_pool.json`; Kalshi/Metaculus are proxy-blocked (see `blocker_decision_records.json`). If the
-  pool cannot fill 100 worlds, the exact shortfall is reported — no ineligible event is substituted.
+The only ordinary no-op is `no_op_causally_irrelevant`. A relevant phase must be `causally_active`; `blocked_*` and `execution_failed` fail qualification. Terminal probabilities are empirical readouts from terminal `WorldState` distributions, and direct terminal rate modulation is prohibited.
 
-## Evidence & isolation
+The frozen qualification implementation had a defect: its capsule adapter lacked fields required after evidence recompilation, and the core supervisor trusted an earlier `executed=True` marker after an `AttributeError`. Consequently, all 400 Phase 2 records were formally `causally_active` while preserving `evidence_error: AttributeError` internally. The final audit treats all 400 as degraded and fails the strict full-runtime gate. A forward-only code repair completes the adapter contract and maps core exceptions to `execution_failed`; it does not change the scored corpus.
 
-Capsules (Wikipedia revision-pinned + Wayback bytes; sha256; `first_proven_available_at ≤ cutoff` enforced
-at access) are frozen to disk BEFORE forecasting; the replay path consumes `prebuilt_bundle` only (no
-retrieval call sites). Resolutions + trajectory targets live in the sealed store (`REPLAY_SCORER=1`,
-single-open locked log, freeze-hash verification). The LLM API is the forecaster's only network
-dependency; OS-level egress lock is unavailable here — recorded per row, isolation reported PARTIAL.
-Design review: `benchmark_scientific_design_review.json`; adversarial review:
-`benchmark_red_team_report.json`; blocker records: `blocker_decision_records.json`.
+## Baseline parity
+
+Every representative row has these baselines:
+
+- constant 0.50;
+- domain base rate fit at the independent-world level;
+- direct single-call DeepSeek;
+- direct ensemble with exactly the same call budget as V2;
+- observer panel;
+- analogical retrieval;
+- contemporaneous market midpoint where available.
+
+All model baselines receive the identical blinded question and capsule hash. Required model arms complete on 400/400 rows, and the ensemble is exactly call-matched on 400/400. The representative V2 arm was prospectively market-blind; a market-informed V2 arm was not generated, and no post-outcome blend was permitted.
+
+## Calibration and locked scoring
+
+Phase 12 candidates were fit only on the pre-open-clean subset of calibration rows: 140 rows from 35 worlds. Selection used only the pre-open-clean validation subset: 76 rows from 19 worlds. `task_family_conditioned` strictly beat identity on validation Brier and log loss and was frozen before locked execution.
+
+The final scorer was frozen after a pre-open static repair added the missing constant-0.50 arm. It verified all forecast, baseline, calibrator, support, market, and leakage-probe hashes before creating an exclusive ledger. The locked resolution store was read once. The ledger records one read, its resolution-store hash, and the frozen score hashes.
+
+## Separate causal-coverage benchmark
+
+The causal diagnostic is not representative accuracy. It uses 60 controlled simulated worlds, two cutoffs per world, and matched common-randomness ablations. Every ablation measures three targets: terminal-distribution total variation, StateDelta count, and StateDelta sequence hash.
+
+It covers at least 10 independent worlds for actor policy, mechanism registry, nonlinear dynamics, persistence, heterogeneous populations, multilayer networks, institutions, and natural structural change. The source corpus lacks independently archived real-world intermediate trajectory labels, so the diagnostic has 0 real-world worlds and must not be used as a causal-accuracy claim.
+
+## Resumability and immutability
+
+Forecasts and baselines use keyed immutable attempt files plus atomically rebuilt canonical JSONL views. Successful attempts are never overwritten; retries remain available for forensics. Calibration, validation, locked forecasts, locked baselines, scorer inputs, scoring code, and the single-open ledger were committed at separate checkpoints.

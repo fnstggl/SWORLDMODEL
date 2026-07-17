@@ -10,18 +10,31 @@ from __future__ import annotations
 import hashlib
 import json
 import subprocess
+from pathlib import Path
 
 
-def _commit():
+def _commit(source_files):
+    """Last commit that changed runtime source, stable across artifact-only commits."""
     try:
-        return subprocess.check_output(["git", "rev-parse", "--short", "HEAD"], text=True).strip()
+        root = Path(__file__).resolve().parents[2]
+        return subprocess.check_output(
+            ["git", "log", "-1", "--format=%h", "--", *source_files],
+            text=True, cwd=root).strip()
     except Exception:  # noqa: BLE001
         return "unknown"
 
 
 def runtime_fingerprint():
+    source_files = (
+        "swm/world_model_v2/unified_runtime.py", "swm/world_model_v2/phase_supervision.py",
+        "swm/world_model_v2/activation_synthesis.py", "swm/world_model_v2/causal_relevance.py",
+        "swm/world_model_v2/phase_consumers.py", "swm/world_model_v2/fallback.py",
+        "swm/world_model_v2/materialize.py", "swm/api/deepseek_backend.py",
+        "swm/world_model_v2/runtime_fingerprint.py",
+    )
     fp = {
-        "unified_runtime": _safe_version("swm.world_model_v2.unified_runtime", "RUNTIME_VERSION", "unified-1.0"),
+        "unified_runtime": _safe_version("swm.world_model_v2.unified_runtime", "RUNTIME_VERSION",
+                                         "unified-2.0-post-snapshot"),
         "compiler": "compiler",
         "evidence": "phase2-1.0",
         "posterior": "phase3",
@@ -33,12 +46,22 @@ def runtime_fingerprint():
         "persistence": "phase8-1.0",
         "recompilation": "phase11",
         "integration_completion": "integration-completion-1.0",
-        "activation_synthesis": "activation-synthesis-1.0 (relevance gate + consumers)",
-        "phase_consumers": "phase-consumers-1.0 (institutional_decision/population/network/actor-polarity)",
-        "commit": _commit(),
+        "activation_synthesis": "activation-synthesis-2.0 (question adjudication + state-path consumers)",
+        "phase_consumers": "phase-consumers-2.0 (causal-state transition; no terminal modulation)",
+        "runtime_source_commit": _commit(source_files),
+        "source_sha256": _source_hashes(source_files),
     }
     fp["fingerprint_hash"] = hashlib.sha256(json.dumps(fp, sort_keys=True).encode()).hexdigest()[:16]
     return fp
+
+
+def _source_hashes(paths):
+    root = Path(__file__).resolve().parents[2]
+    out = {}
+    for rel in paths:
+        path = root / rel
+        out[rel] = hashlib.sha256(path.read_bytes()).hexdigest() if path.exists() else "missing"
+    return out
 
 
 def _safe_version(mod, attr, default):

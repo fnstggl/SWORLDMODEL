@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "frozen_at": "2026-07-15T17:42:21Z",
+  "scorer_source_commit": "a79f895c87904bfd0901faa341a52de66d4e8ea7",
+  "locked_input_freeze_commit": "1f28d8c5b0ee84e9a815867cc0dc157a17c42b17",
+  "locked_outcome_state": {
+    "opened": false,
+    "read_count": 0,
+    "sha256": null,
+    "reason_sha256_is_null": "The resolution store has deliberately not been read; its hash will be recorded by the single-open scorer."
+  },
+  "preopen_contracts": {
+    "forecast_rows_verified": 160,
+    "forecast_worlds_verified": 40,
+    "forecast_rows_full_system_qualified": 160,
+    "forecast_rows_blocked": 0,
+    "baseline_rows_verified": 160,
+    "baseline_worlds_verified": 40,
+    "baseline_rows_complete": 160,
+    "baseline_rows_exactly_call_matched": 160,
+    "ledger_absent": true,
+    "prior_score_artifact_absent": true
+  },
+  "sha256": {
+    "experiments/post_snapshot_benchmark/scoring.py": "31b8596cee962dd2dd526a99203606871791ec19896fab68f3c67d7a75746ce8",
+    "experiments/results/post_snapshot_benchmark/locked_test_forecasts.jsonl": "5005c8fe098f59feb157dabd34db37f3716c43d6b0cb26764735c12f9e0e1e6c",
+    "experiments/results/post_snapshot_benchmark/locked_test_baselines.jsonl": "8acf4924d07db7b1f133060aaf0c823904dae970f1416f0a9d2e05e4169eacf8",
+    "experiments/results/post_snapshot_benchmark/phase12_calibration_fit.json": "7db768b365c4b0fd668bc25962cde7571b9cbaf70611b210a4dfb32614303184",
+    "experiments/results/post_snapshot_benchmark/phase12_validation_selection.json": "c9d84858367f87e1da3c12a96894fa012ac99c34f7ed8f8c511e1698dbe6ef8f",
+    "experiments/results/post_snapshot_benchmark/phase12_support_model.json": "15c1e3461d4fb9edec8a0afc831a16f624032286ba0bbdf550e3e7272bc0c0ad",
+    "experiments/results/post_snapshot_benchmark/market_snapshots.json": "3a0a8e65e0f77ef5af787552b18d182f146ea9d041356da57191b19a5247b5c5",
+    "/private/tmp/wmv2-post-snapshot-scorer-0c5a869/leakage_probes.jsonl": "68b1493b0429a964e9f99cece66da929fe419b36f25e52827302afb8813bf634"
+  },
+  "scoring_change_after_initial_code_freeze": {
+    "outcomes_accessed_before_change": false,
+    "change": "Add the prospectively specified constant_0_50 probability arm so its two comparisons cannot be empty.",
+    "forecast_code_changed": false,
+    "baseline_code_changed": false,
+    "calibrator_changed": false
+  },
+  "single_open_command": "PYTHONPATH=. python3 experiments/post_snapshot_benchmark/scoring.py score-locked --forecasts experiments/results/post_snapshot_benchmark/locked_test_forecasts.jsonl --baselines experiments/results/post_snapshot_benchmark/locked_test_baselines.jsonl --fit experiments/results/post_snapshot_benchmark/phase12_calibration_fit.json --selection experiments/results/post_snapshot_benchmark/phase12_validation_selection.json --support-model experiments/results/post_snapshot_benchmark/phase12_support_model.json --market experiments/results/post_snapshot_benchmark/market_snapshots.json --leakage-probes /private/tmp/wmv2-post-snapshot-scorer-0c5a869/leakage_probes.jsonl --outcomes /private/tmp/wmv2-post-snapshot-scorer-0c5a869/locked_test_resolutions.json --ledger experiments/results/post_snapshot_benchmark/locked_outcome_access_ledger.json --output experiments/results/post_snapshot_benchmark/locked_test_score.json --row-output experiments/results/post_snapshot_benchmark/locked_test_scored_rows.jsonl"
+}

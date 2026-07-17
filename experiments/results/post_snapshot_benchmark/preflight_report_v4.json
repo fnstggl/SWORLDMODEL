@@ -1,0 +1,127 @@
+{
+  "activation_gate": {
+    "all_pass": true,
+    "artifact": "activation200_execution_v4.json",
+    "gates_passed": 28,
+    "gates_total": 28,
+    "n_errors": 0,
+    "rows": 200
+  },
+  "all_gates_pass": true,
+  "audited_at": "2026-07-15T16:58:33.309036Z",
+  "baseline_evidence_parity": {
+    "all_arms_declared_identical_evidence": true,
+    "all_model_arms_complete": true,
+    "byte_hashes_match_v2": 4,
+    "capsule_hash_matches_v2": 4,
+    "ensemble_exactly_matches_v2_call_budget": true,
+    "ensemble_within_v2_call_budget": true,
+    "rows_checked": 4
+  },
+  "configuration": "10 calibration worlds x 4 cutoffs; DeepSeek V4 Flash; n_budget=80",
+  "current_runtime_fingerprint": {
+    "activation_synthesis": "activation-synthesis-2.0 (question adjudication + state-path consumers)",
+    "actor_policy": "phase4",
+    "compiler": "compiler",
+    "evidence": "phase2-1.0",
+    "fingerprint_hash": "79537cdec279fd8f",
+    "institutions": "phase10 + integration-completion rule-normalization",
+    "integration_completion": "integration-completion-1.0",
+    "mechanism_registry": "phase6",
+    "nonlinear": "phase7",
+    "persistence": "phase8-1.0",
+    "phase_consumers": "phase-consumers-2.0 (causal-state transition; no terminal modulation)",
+    "populations_networks": "phase9",
+    "posterior": "phase3",
+    "recompilation": "phase11",
+    "runtime_source_commit": "b6d3f8d",
+    "source_sha256": {
+      "swm/api/deepseek_backend.py": "d3fb8d345a5a3e3e5699ae3a922966787c7757e05e067a498d9815f92605898f",
+      "swm/world_model_v2/activation_synthesis.py": "d794de3be8181f7913e18db38d82598da3053d488b6e716d12db74fa67086706",
+      "swm/world_model_v2/causal_relevance.py": "c60e81b0aadc89c107fac9e2a60bfb73daa90c3b4ad2941ab347609098ebba3c",
+      "swm/world_model_v2/fallback.py": "bae79d018b5fe5c0530ba5e02f0a0e989d89ed68812c24bb959da246d161da41",
+      "swm/world_model_v2/materialize.py": "6b9244d1409f3c9f8c4f9d0340d999613cf7babe16e8a610e7f61fe11df8d93a",
+      "swm/world_model_v2/phase_consumers.py": "ce3680a07e1a0a93911c2b61cd63d109c96b4a2c8976d1f2b998854436959a2d",
+      "swm/world_model_v2/phase_supervision.py": "47b9c75932cb799dcca75ce1b86ae0359df5b0563ba806e9882366665b440544",
+      "swm/world_model_v2/runtime_fingerprint.py": "484d53c216255a92babae1b130568a8fd95b2dbd70f703edc4fdda2436aae258",
+      "swm/world_model_v2/unified_runtime.py": "cf7270a9795bf5a0c1a81cc438d80cfc4c47cf0bf51d73d34a9fdf4e6e6a9784"
+    },
+    "unified_runtime": "unified-2.0-post-snapshot"
+  },
+  "deterministic_replay": {
+    "capsule_hashes_exact": 4,
+    "p_yes_exact": 4,
+    "phase_statuses_exact": 4,
+    "rows_compared": 4,
+    "terminal_distribution_exact": 4
+  },
+  "passing_run": {
+    "artifact": "preflight_forecasts_v3.jsonl",
+    "blocked_relevant_phases": 0,
+    "full_system_qualified": 40,
+    "phase_record_coverage_min": 11,
+    "rows": 40,
+    "runtime_fingerprints": [
+      "79537cdec279fd8f"
+    ],
+    "tampered_rows": 0,
+    "terminal_sources": [
+      "terminal_world_states"
+    ]
+  },
+  "preserved_negative_run": {
+    "artifact": "preflight_forecasts.jsonl",
+    "failed": 3,
+    "failure_keys": [
+      {
+        "event_id": "pm_413232",
+        "forecast_cutoff": "2026-04-25T20:01:29.924150Z",
+        "qualification_failures": [
+          "simulation_status:execution_failed",
+          "phase_record_coverage:0/11",
+          "phase1_compiler:invalid_status:None",
+          "phase1_compiler:irrelevant_not_explicit_noop:None",
+          "phase2_evidence:invalid_status:None",
+          "phase2_evidence:irrelevant_not_explicit_noop:None",
+          "phase3_posterior:invalid_status:None",
+          "phase3_posterior:irrelevant_not_explicit_noop:None",
+          "phase4_actor_policy:invalid_status:None",
+          "phase4_actor_policy:irrelevant_not_explicit_noop:None",
+          "phase6_registry:invalid_status:None",
+          "phase6_registry:irrelevant_not_explicit_noop:None",
+          "phase7_nonlinear:invalid_status:None",
+          "phase7_nonlinear:irrelevant_not_explicit_noop:None",
+          "phase8_persistence:invalid_status:None",
+          "phase8_persistence:irrelevant_not_explicit_noop:None",
+          "phase9_populations:invalid_status:None",
+          "phase9_populations:irrelevant_not_explicit_noop:None",
+          "phase9_networks:invalid_status:None",
+          "phase9_networks:irrelevant_not_explicit_noop:None",
+          "phase10_institutions:invalid_status:None",
+          "phase10_institutions:irrelevant_not_explicit_noop:None",
+          "phase11_recompilation:invalid_status:None",
+          "phase11_recompilation:irrelevant_not_explicit_noop:None",
+          "fully_integrated:false",
+          "terminal_probability_missing"
+        ]
+      },
+      {
+        "event_id": "pm_417097",
+        "forecast_cutoff": "2026-04-26T11:53:09.540393Z",
+        "qualification_failures": [
+          "terminal_probability_missing"
+        ]
+      },
+      {
+        "event_id": "pm_417097",
+        "forecast_cutoff": "2026-04-27T12:44:34.684020Z",
+        "qualification_failures": [
+          "terminal_probability_missing"
+        ]
+      }
+    ],
+    "qualified": 37,
+    "rows": 40
+  },
+  "schema_version": 1
+}

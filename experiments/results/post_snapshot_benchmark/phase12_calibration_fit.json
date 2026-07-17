@@ -1,0 +1,567 @@
+{
+  "artifact_sha256": "38c86797c8c53e45eaf62a1998e1fb174bacb533b6c5c9984db81c977afdf324",
+  "base_rates": {
+    "domains": {
+      "crypto": {
+        "n_worlds": 7,
+        "partial_pooled_rate": 0.25,
+        "raw_rate": 0.14285714285714285
+      },
+      "culture": {
+        "n_worlds": 2,
+        "partial_pooled_rate": 0.42857142857142855,
+        "raw_rate": 0.5
+      },
+      "geopolitics": {
+        "n_worlds": 7,
+        "partial_pooled_rate": 0.3333333333333333,
+        "raw_rate": 0.2857142857142857
+      },
+      "other": {
+        "n_worlds": 14,
+        "partial_pooled_rate": 0.47368421052631576,
+        "raw_rate": 0.5
+      },
+      "politics": {
+        "n_worlds": 1,
+        "partial_pooled_rate": 0.3333333333333333,
+        "raw_rate": 0.0
+      },
+      "sports": {
+        "n_worlds": 9,
+        "partial_pooled_rate": 0.5,
+        "raw_rate": 0.5555555555555556
+      }
+    },
+    "fit_unit": "independent_event_world",
+    "global": 0.4
+  },
+  "candidates": {
+    "beta": {
+      "a": 1.15496,
+      "b": 0.95094,
+      "c": -0.16141,
+      "fitted_on": "calibration",
+      "method": "beta",
+      "n_fit": 140,
+      "version": "1.0"
+    },
+    "hierarchical_conditioned": {
+      "cell_counts": {
+        "crypto|early|exploratory": 6,
+        "crypto|late|exploratory": 6,
+        "crypto|middle|exploratory": 12,
+        "culture|early|exploratory": 2,
+        "culture|late|exploratory": 2,
+        "culture|middle|exploratory": 4,
+        "geopolitics|early|exploratory": 7,
+        "geopolitics|late|exploratory": 7,
+        "geopolitics|middle|exploratory": 14,
+        "other|early|exploratory": 14,
+        "other|late|exploratory": 14,
+        "other|middle|exploratory": 28,
+        "politics|early|exploratory": 1,
+        "politics|late|exploratory": 1,
+        "politics|middle|exploratory": 2,
+        "sports|early|exploratory": 5,
+        "sports|late|exploratory": 5,
+        "sports|middle|exploratory": 10
+      },
+      "cells": {
+        "crypto|early|exploratory": {
+          "a": 1.14851,
+          "b": -1.48384,
+          "fitted_on": "calibration:hierarchical_conditioned:crypto|early|exploratory",
+          "method": "platt",
+          "n_fit": 6,
+          "version": "1.0"
+        },
+        "crypto|late|exploratory": {
+          "a": 1.14851,
+          "b": -1.48384,
+          "fitted_on": "calibration:hierarchical_conditioned:crypto|late|exploratory",
+          "method": "platt",
+          "n_fit": 6,
+          "version": "1.0"
+        },
+        "crypto|middle|exploratory": {
+          "a": 1.14851,
+          "b": -1.48384,
+          "fitted_on": "calibration:hierarchical_conditioned:crypto|middle|exploratory",
+          "method": "platt",
+          "n_fit": 12,
+          "version": "1.0"
+        },
+        "culture|early|exploratory": {
+          "a": 0.99012,
+          "b": 0.0987,
+          "fitted_on": "calibration:hierarchical_conditioned:culture|early|exploratory",
+          "method": "platt",
+          "n_fit": 2,
+          "version": "1.0"
+        },
+        "culture|late|exploratory": {
+          "a": -2.41678,
+          "b": -0.40168,
+          "fitted_on": "calibration:hierarchical_conditioned:culture|late|exploratory",
+          "method": "platt",
+          "n_fit": 2,
+          "version": "1.0"
+        },
+        "culture|middle|exploratory": {
+          "a": 0.38997,
+          "b": 0.04628,
+          "fitted_on": "calibration:hierarchical_conditioned:culture|middle|exploratory",
+          "method": "platt",
+          "n_fit": 4,
+          "version": "1.0"
+        },
+        "geopolitics|early|exploratory": {
+          "a": 1.44621,
+          "b": -0.74952,
+          "fitted_on": "calibration:hierarchical_conditioned:geopolitics|early|exploratory",
+          "method": "platt",
+          "n_fit": 7,
+          "version": "1.0"
+        },
+        "geopolitics|late|exploratory": {
+          "a": 1.08049,
+          "b": -0.80421,
+          "fitted_on": "calibration:hierarchical_conditioned:geopolitics|late|exploratory",
+          "method": "platt",
+          "n_fit": 7,
+          "version": "1.0"
+        },
+        "geopolitics|middle|exploratory": {
+          "a": 1.35894,
+          "b": -0.76361,
+          "fitted_on": "calibration:hierarchical_conditioned:geopolitics|middle|exploratory",
+          "method": "platt",
+          "n_fit": 14,
+          "version": "1.0"
+        },
+        "other|early|exploratory": {
+          "a": 0.99012,
+          "b": 0.0987,
+          "fitted_on": "calibration:hierarchical_conditioned:other|early|exploratory",
+          "method": "platt",
+          "n_fit": 14,
+          "version": "1.0"
+        },
+        "other|late|exploratory": {
+          "a": 0.99012,
+          "b": 0.0987,
+          "fitted_on": "calibration:hierarchical_conditioned:other|late|exploratory",
+          "method": "platt",
+          "n_fit": 14,
+          "version": "1.0"
+        },
+        "other|middle|exploratory": {
+          "a": 0.99012,
+          "b": 0.0987,
+          "fitted_on": "calibration:hierarchical_conditioned:other|middle|exploratory",
+          "method": "platt",
+          "n_fit": 28,
+          "version": "1.0"
+        },
+        "politics|early|exploratory": {
+          "a": 1.42588,
+          "b": -4.25525,
+          "fitted_on": "calibration:hierarchical_conditioned:politics|early|exploratory",
+          "method": "platt",
+          "n_fit": 1,
+          "version": "1.0"
+        },
+        "politics|late|exploratory": {
+          "a": 1.42588,
+          "b": -4.25525,
+          "fitted_on": "calibration:hierarchical_conditioned:politics|late|exploratory",
+          "method": "platt",
+          "n_fit": 1,
+          "version": "1.0"
+        },
+        "politics|middle|exploratory": {
+          "a": 1.42588,
+          "b": -4.25525,
+          "fitted_on": "calibration:hierarchical_conditioned:politics|middle|exploratory",
+          "method": "platt",
+          "n_fit": 2,
+          "version": "1.0"
+        },
+        "sports|early|exploratory": {
+          "a": 0.95011,
+          "b": 0.49848,
+          "fitted_on": "calibration:hierarchical_conditioned:sports|early|exploratory",
+          "method": "platt",
+          "n_fit": 5,
+          "version": "1.0"
+        },
+        "sports|late|exploratory": {
+          "a": 0.95011,
+          "b": 0.49848,
+          "fitted_on": "calibration:hierarchical_conditioned:sports|late|exploratory",
+          "method": "platt",
+          "n_fit": 5,
+          "version": "1.0"
+        },
+        "sports|middle|exploratory": {
+          "a": 2.17338,
+          "b": 0.4724,
+          "fitted_on": "calibration:hierarchical_conditioned:sports|middle|exploratory",
+          "method": "platt",
+          "n_fit": 10,
+          "version": "1.0"
+        }
+      },
+      "global": {
+        "a": 1.22742,
+        "b": -0.28705,
+        "fitted_on": "calibration:global",
+        "method": "platt",
+        "n_fit": 140,
+        "version": "1.0"
+      },
+      "keying": "hierarchical",
+      "method": "conditioned_platt",
+      "min_cell": 40,
+      "n_fit": 140,
+      "name": "hierarchical_conditioned",
+      "partial_pooling": "linear cell/global blend below min_cell"
+    },
+    "horizon_conditioned": {
+      "cell_counts": {
+        "early": 35,
+        "late": 35,
+        "middle": 70
+      },
+      "cells": {
+        "early": {
+          "a": 1.13219,
+          "b": -0.28815,
+          "fitted_on": "calibration:horizon_conditioned:early",
+          "method": "platt",
+          "n_fit": 35,
+          "version": "1.0"
+        },
+        "late": {
+          "a": 0.77405,
+          "b": -0.3223,
+          "fitted_on": "calibration:horizon_conditioned:late",
+          "method": "platt",
+          "n_fit": 35,
+          "version": "1.0"
+        },
+        "middle": {
+          "a": 1.46835,
+          "b": -0.27523,
+          "fitted_on": "calibration:horizon_conditioned:middle",
+          "method": "platt",
+          "n_fit": 70,
+          "version": "1.0"
+        }
+      },
+      "global": {
+        "a": 1.22742,
+        "b": -0.28705,
+        "fitted_on": "calibration:global",
+        "method": "platt",
+        "n_fit": 140,
+        "version": "1.0"
+      },
+      "keying": "horizon",
+      "method": "conditioned_platt",
+      "min_cell": 40,
+      "n_fit": 140,
+      "name": "horizon_conditioned",
+      "partial_pooling": "linear cell/global blend below min_cell"
+    },
+    "identity": {
+      "fitted_on": "calibration",
+      "method": "identity",
+      "n_fit": 140
+    },
+    "isotonic": {
+      "fitted_on": "calibration",
+      "method": "isotonic",
+      "n_fit": 140,
+      "version": "1.0",
+      "xs": [
+        0.4375,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.475,
+        0.7125
+      ],
+      "ys": [
+        0.023255813953488365,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "platt": {
+      "a": 1.22742,
+      "b": -0.28705,
+      "fitted_on": "calibration",
+      "method": "platt",
+      "n_fit": 140,
+      "version": "1.0"
+    },
+    "support_conditioned": {
+      "cell_counts": {
+        "exploratory": 140
+      },
+      "cells": {
+        "exploratory": {
+          "a": 1.22742,
+          "b": -0.28705,
+          "fitted_on": "calibration:support_conditioned:exploratory",
+          "method": "platt",
+          "n_fit": 140,
+          "version": "1.0"
+        }
+      },
+      "global": {
+        "a": 1.22742,
+        "b": -0.28705,
+        "fitted_on": "calibration:global",
+        "method": "platt",
+        "n_fit": 140,
+        "version": "1.0"
+      },
+      "keying": "support",
+      "method": "conditioned_platt",
+      "min_cell": 40,
+      "n_fit": 140,
+      "name": "support_conditioned",
+      "partial_pooling": "linear cell/global blend below min_cell"
+    },
+    "task_family_conditioned": {
+      "cell_counts": {
+        "crypto": 24,
+        "culture": 8,
+        "geopolitics": 28,
+        "other": 56,
+        "politics": 4,
+        "sports": 20
+      },
+      "cells": {
+        "crypto": {
+          "a": 1.14851,
+          "b": -1.48384,
+          "fitted_on": "calibration:task_family_conditioned:crypto",
+          "method": "platt",
+          "n_fit": 24,
+          "version": "1.0"
+        },
+        "culture": {
+          "a": -0.21712,
+          "b": -0.02156,
+          "fitted_on": "calibration:task_family_conditioned:culture",
+          "method": "platt",
+          "n_fit": 8,
+          "version": "1.0"
+        },
+        "geopolitics": {
+          "a": 1.31128,
+          "b": -0.77091,
+          "fitted_on": "calibration:task_family_conditioned:geopolitics",
+          "method": "platt",
+          "n_fit": 28,
+          "version": "1.0"
+        },
+        "other": {
+          "a": 0.99012,
+          "b": 0.0987,
+          "fitted_on": "calibration:task_family_conditioned:other",
+          "method": "platt",
+          "n_fit": 56,
+          "version": "1.0"
+        },
+        "politics": {
+          "a": 1.42588,
+          "b": -4.25525,
+          "fitted_on": "calibration:task_family_conditioned:politics",
+          "method": "platt",
+          "n_fit": 4,
+          "version": "1.0"
+        },
+        "sports": {
+          "a": 1.68991,
+          "b": 0.5085,
+          "fitted_on": "calibration:task_family_conditioned:sports",
+          "method": "platt",
+          "n_fit": 20,
+          "version": "1.0"
+        }
+      },
+      "global": {
+        "a": 1.22742,
+        "b": -0.28705,
+        "fitted_on": "calibration:global",
+        "method": "platt",
+        "n_fit": 140,
+        "version": "1.0"
+      },
+      "keying": "task_family",
+      "method": "conditioned_platt",
+      "min_cell": 40,
+      "n_fit": 140,
+      "name": "task_family_conditioned",
+      "partial_pooling": "linear cell/global blend below min_cell"
+    }
+  },
+  "counts": {
+    "fit_independent_worlds": 35,
+    "fit_rows": 140,
+    "forecast_rows": 160,
+    "independent_worlds": 40,
+    "preopen_memory_risk_rows_excluded_from_fit": 20
+  },
+  "created_at": "2026-07-15T17:13:56.573289Z",
+  "fit_cohort_policy": "preopen clean_blinded or clean_pre_cutoff_model only",
+  "governance": {
+    "fit_split": "calibration",
+    "locked_outcomes_accessed": false,
+    "validation_outcomes_accessed": false
+  },
+  "inputs": {
+    "forecast_path": "experiments/results/post_snapshot_benchmark/calibration_forecasts.jsonl",
+    "forecast_sha256": "aea6567bd464361f9018f47f9d05ec74b26e74f664ed77ce35ddad6c321de3b1",
+    "leakage_probe_sha256": "68b1493b0429a964e9f99cece66da929fe419b36f25e52827302afb8813bf634",
+    "resolution_store_sha256": "8760e5623fe29c59f3f7adf70a76f0e8fd7839e565ab84416c3e5264b5b9fabb"
+  },
+  "schema_version": 1,
+  "stage": "phase12_calibration_fit",
+  "support_model_fit": {
+    "coefficients": [
+      -2.91690039,
+      -0.15878001,
+      -0.19398892,
+      -0.50809605,
+      -0.35241067,
+      -0.47437304,
+      -1.26631449
+    ],
+    "feature_names": [
+      "intercept",
+      "evidence_density",
+      "horizon_days_30",
+      "model_calls_10",
+      "limitation_density",
+      "active_phase_fraction",
+      "raw_binary_entropy"
+    ],
+    "fit_split": "calibration",
+    "grade_thresholds": {
+      "empirically_supported": 0.75,
+      "exploratory": 0.35,
+      "highly_speculative": 0.0,
+      "transfer_supported": 0.55
+    },
+    "method": "logistic_probability_of_absolute_error_at_most_0.25",
+    "n_rows": 140,
+    "n_worlds": 35
+  }
+}

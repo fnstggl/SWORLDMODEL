@@ -115,7 +115,9 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
             plan = attach_evidence_observations(revised, bundle)
             lineage["plan_hashes"].append(plan.plan_hash())
         except Exception as e:  # noqa: BLE001 — evidence failure never blocks the forecast
-            manifest["phase2_evidence"].update(omitted=True, reason=f"evidence_error: {type(e).__name__}")
+            manifest["phase2_evidence"].update(
+                selected=True, executed=False, omitted=True,
+                reason=f"evidence_error: {type(e).__name__}")
     else:
         manifest["phase2_evidence"].update(omitted=True,
                                            reason=("dropped_by_policy" if "phase2_evidence" in drop
@@ -313,10 +315,15 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
             recs = PS.assess(plan, has_as_of=bool(as_of), has_bundle=bundle is not None,
                              versions={p: manifest[p].get("version", "") for p in manifest},
                              req=pre_req)
-            core_meta = {p: {"executed": bool(manifest[p].get("executed")),
-                             "reason": manifest[p].get("reason", "")}
-                         for p in ("phase1_compiler", "phase2_evidence", "phase3_posterior",
-                                   "phase8_persistence", "phase11_recompilation")}
+            core_meta = {}
+            for p in ("phase1_compiler", "phase2_evidence", "phase3_posterior",
+                      "phase8_persistence", "phase11_recompilation"):
+                reason = str(manifest[p].get("reason", ""))
+                core_meta[p] = {
+                    "executed": bool(manifest[p].get("executed")),
+                    "reason": reason,
+                    "error": reason if "_error:" in reason else "",
+                }
             sup = PS.finalize(recs, plan, res, phase_meta=core_meta)
             for ph, m in sup["manifest"].items():
                 manifest[ph].update(m)

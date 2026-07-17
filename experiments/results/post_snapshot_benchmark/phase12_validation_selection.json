@@ -1,0 +1,274 @@
+{
+  "artifact_sha256": "691367fc05b0395608928c8fd0b15e5b0799239b5d409edff7416d5a3186412a",
+  "comparison": [
+    {
+      "auroc": 0.50816761,
+      "brier": 0.24334628,
+      "calibration_slope": 1.02677136,
+      "directional_accuracy": 0.57894737,
+      "ece": 0.0226,
+      "log_loss": 0.67973955,
+      "n_rows": 76,
+      "name": "beta",
+      "reliability": [
+        {
+          "bucket": "0%-50%",
+          "mean_pred": 0.398,
+          "n": 76,
+          "observed_freq": 0.421
+        }
+      ],
+      "sharpness_mean_abs_from_half": 0.1015317
+    },
+    {
+      "auroc": 0.64169034,
+      "brier": 0.23602869,
+      "calibration_slope": 1.38663861,
+      "directional_accuracy": 0.57894737,
+      "ece": 0.0143,
+      "log_loss": 0.66490803,
+      "n_rows": 76,
+      "name": "hierarchical_conditioned",
+      "reliability": [
+        {
+          "bucket": "0%-50%",
+          "mean_pred": 0.407,
+          "n": 76,
+          "observed_freq": 0.421
+        }
+      ],
+      "sharpness_mean_abs_from_half": 0.09323887
+    },
+    {
+      "auroc": 0.50071023,
+      "brier": 0.24299476,
+      "calibration_slope": 1.04895326,
+      "directional_accuracy": 0.57894737,
+      "ece": 0.0232,
+      "log_loss": 0.67899761,
+      "n_rows": 76,
+      "name": "horizon_conditioned",
+      "reliability": [
+        {
+          "bucket": "0%-50%",
+          "mean_pred": 0.398,
+          "n": 76,
+          "observed_freq": 0.421
+        }
+      ],
+      "sharpness_mean_abs_from_half": 0.10210941
+    },
+    {
+      "auroc": 0.50816761,
+      "brier": 0.24567229,
+      "calibration_slope": 1.08644565,
+      "directional_accuracy": 0.57894737,
+      "ece": 0.0531,
+      "log_loss": 0.68447041,
+      "n_rows": 76,
+      "name": "identity",
+      "reliability": [
+        {
+          "bucket": "0%-50%",
+          "mean_pred": 0.473,
+          "n": 74,
+          "observed_freq": 0.419
+        },
+        {
+          "bucket": "50%-60%",
+          "mean_pred": 0.512,
+          "n": 2,
+          "observed_freq": 0.5
+        }
+      ],
+      "sharpness_mean_abs_from_half": 0.02648026
+    },
+    {
+      "auroc": 0.50390625,
+      "brier": 0.55244656,
+      "calibration_slope": 0.0711347,
+      "directional_accuracy": 0.43421053,
+      "ece": 0.552,
+      "log_loss": 7.48752922,
+      "n_rows": 76,
+      "name": "isotonic",
+      "reliability": [
+        {
+          "bucket": "0%-50%",
+          "mean_pred": 0.132,
+          "n": 3,
+          "observed_freq": 0.333
+        },
+        {
+          "bucket": "60%-70%",
+          "mean_pred": 0.674,
+          "n": 2,
+          "observed_freq": 0.5
+        },
+        {
+          "bucket": "90%-100%",
+          "mean_pred": 1.0,
+          "n": 71,
+          "observed_freq": 0.423
+        }
+      ],
+      "sharpness_mean_abs_from_half": 0.48623011
+    },
+    {
+      "auroc": 0.50816761,
+      "brier": 0.24323959,
+      "calibration_slope": 1.03248518,
+      "directional_accuracy": 0.57894737,
+      "ece": 0.023,
+      "log_loss": 0.67951358,
+      "n_rows": 76,
+      "name": "platt",
+      "reliability": [
+        {
+          "bucket": "0%-50%",
+          "mean_pred": 0.398,
+          "n": 76,
+          "observed_freq": 0.421
+        }
+      ],
+      "sharpness_mean_abs_from_half": 0.10198363
+    },
+    {
+      "auroc": 0.50816761,
+      "brier": 0.24323959,
+      "calibration_slope": 1.03248518,
+      "directional_accuracy": 0.57894737,
+      "ece": 0.023,
+      "log_loss": 0.67951358,
+      "n_rows": 76,
+      "name": "support_conditioned",
+      "reliability": [
+        {
+          "bucket": "0%-50%",
+          "mean_pred": 0.398,
+          "n": 76,
+          "observed_freq": 0.421
+        }
+      ],
+      "sharpness_mean_abs_from_half": 0.10198363
+    },
+    {
+      "auroc": 0.63884943,
+      "brier": 0.23357125,
+      "calibration_slope": 1.09605424,
+      "directional_accuracy": 0.57894737,
+      "ece": 0.0119,
+      "log_loss": 0.66164544,
+      "n_rows": 76,
+      "name": "task_family_conditioned",
+      "reliability": [
+        {
+          "bucket": "0%-50%",
+          "mean_pred": 0.409,
+          "n": 76,
+          "observed_freq": 0.421
+        }
+      ],
+      "sharpness_mean_abs_from_half": 0.09088855
+    }
+  ],
+  "counts": {
+    "forecast_rows": 80,
+    "independent_worlds": 19,
+    "preopen_memory_risk_rows_excluded_from_selection": 4,
+    "selection_rows": 76
+  },
+  "created_at": "2026-07-15T17:14:10.126205Z",
+  "governance": {
+    "candidate_fit_split": "calibration",
+    "locked_outcomes_accessed": false,
+    "promotion_rule": "strictly beat identity on validation Brier and log loss",
+    "selection_split": "validation"
+  },
+  "identity_fallback_selected": false,
+  "inputs": {
+    "calibration_fit_sha256": "38c86797c8c53e45eaf62a1998e1fb174bacb533b6c5c9984db81c977afdf324",
+    "forecast_sha256": "ba46424ba5ff729720446e667b2f90f6096d1d75e9bf3d4af39eff46729bae01",
+    "leakage_probe_sha256": "68b1493b0429a964e9f99cece66da929fe419b36f25e52827302afb8813bf634",
+    "resolution_store_sha256": "4d125a1542c1a94551ffe67f2f3f89c3a52b74e63b88ff3ac292417dd4eafb2a"
+  },
+  "schema_version": 1,
+  "selected": "task_family_conditioned",
+  "selected_candidate": {
+    "cell_counts": {
+      "crypto": 24,
+      "culture": 8,
+      "geopolitics": 28,
+      "other": 56,
+      "politics": 4,
+      "sports": 20
+    },
+    "cells": {
+      "crypto": {
+        "a": 1.14851,
+        "b": -1.48384,
+        "fitted_on": "calibration:task_family_conditioned:crypto",
+        "method": "platt",
+        "n_fit": 24,
+        "version": "1.0"
+      },
+      "culture": {
+        "a": -0.21712,
+        "b": -0.02156,
+        "fitted_on": "calibration:task_family_conditioned:culture",
+        "method": "platt",
+        "n_fit": 8,
+        "version": "1.0"
+      },
+      "geopolitics": {
+        "a": 1.31128,
+        "b": -0.77091,
+        "fitted_on": "calibration:task_family_conditioned:geopolitics",
+        "method": "platt",
+        "n_fit": 28,
+        "version": "1.0"
+      },
+      "other": {
+        "a": 0.99012,
+        "b": 0.0987,
+        "fitted_on": "calibration:task_family_conditioned:other",
+        "method": "platt",
+        "n_fit": 56,
+        "version": "1.0"
+      },
+      "politics": {
+        "a": 1.42588,
+        "b": -4.25525,
+        "fitted_on": "calibration:task_family_conditioned:politics",
+        "method": "platt",
+        "n_fit": 4,
+        "version": "1.0"
+      },
+      "sports": {
+        "a": 1.68991,
+        "b": 0.5085,
+        "fitted_on": "calibration:task_family_conditioned:sports",
+        "method": "platt",
+        "n_fit": 20,
+        "version": "1.0"
+      }
+    },
+    "global": {
+      "a": 1.22742,
+      "b": -0.28705,
+      "fitted_on": "calibration:global",
+      "method": "platt",
+      "n_fit": 140,
+      "version": "1.0"
+    },
+    "keying": "task_family",
+    "method": "conditioned_platt",
+    "min_cell": 40,
+    "n_fit": 140,
+    "name": "task_family_conditioned",
+    "partial_pooling": "linear cell/global blend below min_cell"
+  },
+  "selection_cohort_policy": "preopen clean_blinded or clean_pre_cutoff_model only",
+  "stage": "phase12_validation_selection",
+  "support_model_sha256": "0dbba26f4a4694bbc4c017913a3a44804f4679b7a4b03b004e19f324b02e0abd"
+}

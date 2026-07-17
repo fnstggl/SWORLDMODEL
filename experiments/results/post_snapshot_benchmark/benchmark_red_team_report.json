@@ -1,0 +1,105 @@
+{
+  "schema_version": "1.0",
+  "reviewed_at": "2026-07-15",
+  "outcomes_accessed": false,
+  "locked_execution_allowed": false,
+  "summary": {"fixed": 10, "open_critical": 0, "open_high": 1, "informational": 2},
+  "findings": [
+    {
+      "id": "RT-001", "severity": "critical", "status": "fixed",
+      "attack": "Phase StateDeltas were attached directly to resolve_outcome.rate_modulation, so arbitrary floating-point movement masqueraded as simulation.",
+      "invariant": "terminal forecast comes from simulated terminal WorldStates; no direct probability nudge",
+      "remediation": "Removed terminal modulation input. Phase outputs now feed causal_state_transition, then causal_outcome_transition writes terminal WorldState; formal institutions consume causal state before their threshold event.",
+      "validation": ["tests/test_wmv2_activation_synthesis.py::test_direct_terminal_modulation_is_prohibited", "matched-ablation harness now measures terminal total-variation"]
+    },
+    {
+      "id": "RT-002", "severity": "critical", "status": "fixed",
+      "attack": "Unchecked LLM causal_dependencies declarations activated Phases 4/6/7/9/10 on irrelevant questions.",
+      "invariant": "irrelevant phases explicitly no-op; false causal activation <= 0.10",
+      "remediation": "Runtime relevance now uses question-only adjudication; compiler dependency output is corroborating provenance only.",
+      "validation": ["phase_relevance_audit.json", "tests/test_wmv2_causal_relevance.py"]
+    },
+    {
+      "id": "RT-003", "severity": "high", "status": "fixed",
+      "attack": "The code identified the current hosted model as DeepSeek V3/deepseek-chat.",
+      "invariant": "exact model identity and temporal tier are audited",
+      "remediation": "Backend defaults to explicit deepseek-v4-flash; official release/model repository and hashes are recorded. Tier C is selected because no official knowledge cutoff/server revision exists.",
+      "validation": ["model_temporal_safety_audit.json", "model_hash_manifest.json"]
+    },
+    {
+      "id": "RT-004", "severity": "high", "status": "fixed",
+      "attack": "A user credential could only be read from an environment variable, making it easy to leak through child-process environments.",
+      "invariant": "credentials must not enter artifacts or logs",
+      "remediation": "DeepSeek backend accepts an in-memory credential; the sealed launcher transfers it from parent memory through an inherited anonymous pipe. It never enters child argv, environment, or repository artifacts.",
+      "validation": ["tests/test_deepseek_backend.py::test_deepseek_fn_accepts_process_memory_credential"]
+    },
+    {
+      "id": "RT-005", "severity": "critical", "status": "fixed",
+      "attack": "The inherited sealed-resolution JSON is present in the repository tree and protected only by an environment-variable guard.",
+      "invariant": "resolution store inaccessible to forecaster",
+      "remediation": "The macOS Sandbox profile denies the new split resolution roots and every inherited PR #100 resolution/mapping file. Negative reads are executable probes.",
+      "validation": ["isolation_manifest.json: locked_resolution_read_denied", "isolation_manifest.json: inherited_resolution_store_read_denied"]
+    },
+    {
+      "id": "RT-006", "severity": "critical", "status": "fixed",
+      "attack": "The forecaster currently has ordinary internet access while also calling the model API.",
+      "invariant": "no live Google/current Wikipedia/open internet in forecasting environment",
+      "remediation": "The forecast child can connect only to a loopback CONNECT relay; the parent relay accepts exactly api.deepseek.com:443 and rejects other destinations.",
+      "validation": ["isolation_manifest.json: open_internet_request_denied", "isolation_manifest.json: deepseek_allowlist_endpoint_reachable"]
+    },
+    {
+      "id": "RT-007", "severity": "critical", "status": "fixed",
+      "attack": "The current forecaster reads the pseudonym mapping and the public vault, so identities can be reconstructed.",
+      "invariant": "no hidden pseudonym map revealing identities in forecaster",
+      "remediation": "Blinded questions/capsules are built before forecasting; mappings and original bytes remain in denied external roots. The unblinded pool/vault artifacts are explicitly denied.",
+      "validation": ["blinded_forecast_input.json", "evidence_capsule_manifest.json", "isolation_manifest.json: pseudonym_mapping_read_denied"]
+    },
+    {
+      "id": "RT-008", "severity": "critical", "status": "fixed",
+      "attack": "The inherited vault contains 100 worlds rather than a frozen surplus pool of at least 300; selection and outcome retrieval occur in one builder process.",
+      "invariant": "event selection frozen before performance; candidate pool >=300; outcomes cannot influence forecasting",
+      "remediation": "A deterministic outcome-identity-independent pass produced 1,174 independent eligible worlds, then froze exactly 100 before any forecast. Split outcomes live only in the scorer root.",
+      "validation": ["eligible_candidate_pool.json", "frozen_selection_manifest.json", "pool_build_report.json"]
+    },
+    {
+      "id": "RT-009", "severity": "high", "status": "fixed",
+      "attack": "Inherited 40/20/40 splits are hash-based rather than chronological.",
+      "invariant": "calibration/validation/locked-test split chronology",
+      "remediation": "Selected worlds are sorted by question-open time and frozen as earliest 40 calibration, next 20 validation, latest 40 locked test.",
+      "validation": ["temporal_split_manifest.json", "tests/test_post_snapshot_benchmark.py::test_exact_selection_and_chronological_40_20_40_split"]
+    },
+    {
+      "id": "RT-010", "severity": "high", "status": "fixed",
+      "attack": "Capsule writes and row appends are not fully atomic and a crash can leave partial JSON or duplicate rows.",
+      "invariant": "resumable immutable manifests and exact row counts",
+      "remediation": "Capsules use temporary-file replacement. Forecast attempts use immutable keyed shards and atomically rebuilt aggregates; retries remain separate attempts and hashes are reverified.",
+      "validation": ["tests/test_post_snapshot_benchmark.py::test_attempt_shards_and_aggregate_are_atomic_and_preserve_retries", "preflight_report.json"]
+    },
+    {
+      "id": "RT-011", "severity": "high", "status": "open",
+      "attack": "Baseline coverage is incomplete and current baselines do not prove identical capsule hashes.",
+      "invariant": "all baselines receive identical admissible evidence",
+      "required_fix": "Implement all required baselines behind one blinded-row contract and assert per-row question/capsule hashes before scoring.",
+      "blocks": "headline comparison"
+    },
+    {
+      "id": "RT-012", "severity": "informational", "status": "accepted_limitation",
+      "attack": "Tier C blinding can reduce but cannot prove absence of model-memory recognition.",
+      "invariant": "remaining model-memory risk actively measured and labeled",
+      "mitigation": "Six probes on every row, visible exclusions, no immutable-snapshot claim, and source/recognition sensitivity reporting."
+    },
+    {
+      "id": "RT-013", "severity": "informational", "status": "accepted_limitation",
+      "attack": "The frozen representative pool is drawn from one prediction-market provider, so provider-specific listing and participant-selection effects can be mistaken for broad product validity.",
+      "invariant": "source representativeness and external validity are not overstated",
+      "mitigation": "Label the benchmark single-source; report domain and market-availability strata; preserve the 1,174-world surplus-pool census; do not claim cross-provider generalization."
+    }
+  ],
+  "completion_gate": {
+    "all_critical_fixed": true,
+    "forecast_environment_isolated": true,
+    "candidate_selection_frozen": true,
+    "preflight_may_start": true,
+    "locked_test_may_open": false
+  }
+}

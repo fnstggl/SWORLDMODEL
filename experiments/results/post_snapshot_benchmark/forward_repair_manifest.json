@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "created_at": "2026-07-15T18:08:00Z",
+  "repair_commit": "40237a9876732efe1fa5a4a875db07f4e5229419",
+  "runtime_fingerprint": "1a77f7a553aba15d",
+  "benchmark_runtime_fingerprint": "79537cdec279fd8f",
+  "performance_evidence_status": "not_evaluated; prospective rerun required",
+  "changes": [
+    "complete the sealed capsule adapter's actor_visibility and requirement_coverage contract",
+    "transport DeepSeek credentials in process memory while preserving environment compatibility",
+    "map caught core-phase _error states to execution_failed instead of causally_active",
+    "preserve the latest PR #100 relevance and phase-execution runtime as the parent implementation"
+  ],
+  "source_sha256": {
+    "swm/world_model_v2/unified_runtime.py": "afaa05dc8a5246c7cf38b3ecfc97b6caa54e1fa2b65e6f1c030f07d570deb817",
+    "swm/world_model_v2/phase_supervision.py": "aea58db939f85c94a42cc18f8f520d64b49dfaadfa1460f76eb2aae44d527664",
+    "swm/world_model_v2/activation_synthesis.py": "13d7e45f5d5e2d665ee9d85323096a0192a38bf0762bf5cb15b016c157140672",
+    "swm/world_model_v2/phase_consumers.py": "5386b100fb23a097d1fe4550995c0b3a23ff4f914d9d61e9026823f0900400d4",
+    "swm/world_model_v2/fallback.py": "48f6d955adb04ca6f77454a8bf496731c77a1e0e21a4b1e9aecb4f11a9d0687b",
+    "swm/world_model_v2/materialize.py": "8dfd0a737cb4f3d45a6c49290164ce7007b16221bee5b709c4a7ab0c9ff93230",
+    "swm/api/deepseek_backend.py": "1473609cd3b0880b1473735d0edd667395221a8b3ac0b537bc8fdc021b7270ea"
+  },
+  "validation": {
+    "capsule_adapter_contract_smoke": true,
+    "phase2_exception_becomes_execution_failed": true,
+    "phase2_exception_fails_fully_integrated": true,
+    "process_memory_credential_callable": true,
+    "full_suite": {
+      "passed": 1077,
+      "failed": 3,
+      "skipped": 2,
+      "warnings": 11,
+      "duration_s": 178.68
+    },
+    "stacked_test_file_diff_count": 0
+  }
+}

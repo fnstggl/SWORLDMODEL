@@ -1,0 +1,1411 @@
+{
+  "artifact_sha256": "ceabf2c54145ccea868ab27c57919badf16725853a0877f0c02384f97ca5322c",
+  "benchmark_status": "executed_and_scored_but_strict_completion_failed",
+  "causal_coverage": {
+    "all_completion_gates_pass": true,
+    "benchmark_role": "controlled causal-behavior diagnostic; never representative accuracy",
+    "category_world_counts": {
+      "p10": 52,
+      "p11": 15,
+      "p4": 43,
+      "p6": 35,
+      "p7": 10,
+      "p8": 60,
+      "p9net": 12,
+      "p9pop": 25
+    },
+    "completion_gates": {
+      "at_least_10_worlds_each_category": true,
+      "common_randomness_all_ablations": true,
+      "exactly_60_worlds": true,
+      "exactly_two_cutoffs_each": true,
+      "outcomes_never_accessed": true,
+      "reported_separately_from_accuracy": true,
+      "three_targets_per_ablation": true,
+      "zero_execution_errors": true
+    },
+    "controlled_simulated_worlds": 60,
+    "cutoff_rows": 120,
+    "errors": 0,
+    "per_category": {
+      "p10": {
+        "ablated_explicit_noop_rate": 1.0,
+        "any_meaningful_effect_rate": 1.0,
+        "category_name": "institutions",
+        "cutoff_rows": 104,
+        "full_causally_active_rate": 1.0,
+        "independent_worlds": 52,
+        "phase": "phase10_institutions",
+        "target_effect_rates": {
+          "state_delta_count": 1.0,
+          "state_delta_sequence": 1.0,
+          "terminal_distribution": 0.7403846153846154
+        }
+      },
+      "p11": {
+        "ablated_explicit_noop_rate": 1.0,
+        "any_meaningful_effect_rate": 0.0,
+        "category_name": "natural_structural_change",
+        "cutoff_rows": 30,
+        "full_causally_active_rate": 1.0,
+        "independent_worlds": 15,
+        "phase": "phase11_recompilation",
+        "target_effect_rates": {
+          "state_delta_count": 0.0,
+          "state_delta_sequence": 0.0,
+          "terminal_distribution": 0.0
+        }
+      },
+      "p4": {
+        "ablated_explicit_noop_rate": 1.0,
+        "any_meaningful_effect_rate": 0.9883720930232558,
+        "category_name": "strategic_actor_policy",
+        "cutoff_rows": 86,
+        "full_causally_active_rate": 0.9883720930232558,
+        "independent_worlds": 43,
+        "phase": "phase4_actor_policy",
+        "target_effect_rates": {
+          "state_delta_count": 0.9883720930232558,
+          "state_delta_sequence": 0.9883720930232558,
+          "terminal_distribution": 0.5348837209302325
+        }
+      },
+      "p6": {
+        "ablated_explicit_noop_rate": 1.0,
+        "any_meaningful_effect_rate": 1.0,
+        "category_name": "nontrivial_mechanisms",
+        "cutoff_rows": 70,
+        "full_causally_active_rate": 1.0,
+        "independent_worlds": 35,
+        "phase": "phase6_registry",
+        "target_effect_rates": {
+          "state_delta_count": 1.0,
+          "state_delta_sequence": 1.0,
+          "terminal_distribution": 0.5857142857142857
+        }
+      },
+      "p7": {
+        "ablated_explicit_noop_rate": 1.0,
+        "any_meaningful_effect_rate": 1.0,
+        "category_name": "nonlinear_dynamics",
+        "cutoff_rows": 20,
+        "full_causally_active_rate": 1.0,
+        "independent_worlds": 10,
+        "phase": "phase7_nonlinear",
+        "target_effect_rates": {
+          "state_delta_count": 1.0,
+          "state_delta_sequence": 1.0,
+          "terminal_distribution": 0.75
+        }
+      },
+      "p8": {
+        "ablated_explicit_noop_rate": 1.0,
+        "any_meaningful_effect_rate": 0.0,
+        "category_name": "persistence",
+        "cutoff_rows": 120,
+        "full_causally_active_rate": 1.0,
+        "independent_worlds": 60,
+        "phase": "phase8_persistence",
+        "target_effect_rates": {
+          "state_delta_count": 0.0,
+          "state_delta_sequence": 0.0,
+          "terminal_distribution": 0.0
+        }
+      },
+      "p9net": {
+        "ablated_explicit_noop_rate": 1.0,
+        "any_meaningful_effect_rate": 1.0,
+        "category_name": "multilayer_networks",
+        "cutoff_rows": 24,
+        "full_causally_active_rate": 1.0,
+        "independent_worlds": 12,
+        "phase": "phase9_networks",
+        "target_effect_rates": {
+          "state_delta_count": 1.0,
+          "state_delta_sequence": 1.0,
+          "terminal_distribution": 0.5416666666666666
+        }
+      },
+      "p9pop": {
+        "ablated_explicit_noop_rate": 1.0,
+        "any_meaningful_effect_rate": 1.0,
+        "category_name": "heterogeneous_populations",
+        "cutoff_rows": 50,
+        "full_causally_active_rate": 1.0,
+        "independent_worlds": 25,
+        "phase": "phase9_populations",
+        "target_effect_rates": {
+          "state_delta_count": 1.0,
+          "state_delta_sequence": 1.0,
+          "terminal_distribution": 0.36
+        }
+      }
+    },
+    "real_world_limitation": "source corpus lacks independently archived intermediate trajectory labels",
+    "real_world_worlds": 0,
+    "schema_version": 1,
+    "scored_rows": 120,
+    "worlds": 60
+  },
+  "exact_counts": {
+    "baseline_rows": 400,
+    "causal_cutoff_rows": 120,
+    "causal_worlds": 60,
+    "evidence_capsules": 400,
+    "forecast_rows_by_split": {
+      "calibration": 160,
+      "locked_test": 160,
+      "validation": 80
+    },
+    "independent_worlds": 100,
+    "locked_scored_rows": 160,
+    "phase_execution_records": 4400,
+    "primary_v2_forecasts": 400
+  },
+  "generated_at": "2026-07-15T18:08:05.010748Z",
+  "governance": {
+    "benchmark_code_freeze_sha256": "6be624c631c6ffc215db5a4edde7ff7d5d797930a9b2e046fc509b02c39b0bf7",
+    "benchmark_code_source_commit": "f0760b7d6c3d648e6a2584107fcde821608efe47",
+    "locked_outcome_ledger": {
+      "all_baseline_hashes_verified_before_open": true,
+      "all_forecast_hashes_verified_before_open": true,
+      "baseline_file_sha256": "8acf4924d07db7b1f133060aaf0c823904dae970f1416f0a9d2e05e4169eacf8",
+      "baseline_rows": 160,
+      "calibration_fit_sha256": "38c86797c8c53e45eaf62a1998e1fb174bacb533b6c5c9984db81c977afdf324",
+      "completed_at": "2026-07-15T17:43:24.674757Z",
+      "forecast_file_sha256": "5005c8fe098f59feb157dabd34db37f3716c43d6b0cb26764735c12f9e0e1e6c",
+      "forecast_rows": 160,
+      "leakage_probe_file_sha256": "68b1493b0429a964e9f99cece66da929fe419b36f25e52827302afb8813bf634",
+      "leakage_probes_verified_before_open": true,
+      "opened_at": "2026-07-15T17:43:23.772046Z",
+      "outcome_path": "/private/tmp/wmv2-post-snapshot-scorer-0c5a869/locked_test_resolutions.json",
+      "purpose": "single final locked-test scoring",
+      "read_count": 1,
+      "resolution_store_sha256": "d0566aa66bbaa0d682d8f8871f68e2bbfa820c20b6a48c326ddcbc96fbce74c7",
+      "schema_version": 1,
+      "score_artifact_sha256": "5a2edd4f721e4b77985939be3a924f25d03978fe0f0f01f92fa20385686ea239",
+      "scored_row_file_sha256": "b07ec369d295ae504234bd4cc85632e2b18fb22e728a760bf3957d7b4d4c62ee",
+      "state": "open_completed",
+      "support_model_sha256": "0dbba26f4a4694bbc4c017913a3a44804f4679b7a4b03b004e19f324b02e0abd",
+      "validation_selection_sha256": "691367fc05b0395608928c8fd0b15e5b0799239b5d409edff7416d5a3186412a"
+    },
+    "negative_results_preserved": true,
+    "selection_sha256": "4d4acab326144a794f7e531e0232bf87ede662aaa40f5644cf3d0886d4dea822"
+  },
+  "locked_comparisons": {
+    "v2_calibrated_vs_constant_0_50": {
+      "brier_difference": {
+        "bootstrap_draws": 2000,
+        "ci95": [
+          -0.03559551,
+          0.04758859
+        ],
+        "cluster_unit": "event_world_cluster",
+        "n_rows": 160,
+        "n_worlds": 40,
+        "paired_mean": 0.00622953
+      },
+      "difference_sign": "negative_favors_left",
+      "left": "v2_calibrated",
+      "log_loss_difference": {
+        "bootstrap_draws": 2000,
+        "ci95": [
+          -0.07726844,
+          0.11350837
+        ],
+        "cluster_unit": "event_world_cluster",
+        "n_rows": 160,
+        "n_worlds": 40,
+        "paired_mean": 0.01519539
+      },
+      "right": "constant_0_50"
+    },
+    "v2_raw_vs_analogical_retrieval": {
+      "brier_difference": {
+        "bootstrap_draws": 2000,
+        "ci95": [
+          -0.02549168,
+          0.05317395
+        ],
+        "cluster_unit": "event_world_cluster",
+        "n_rows": 160,
+        "n_worlds": 40,
+        "paired_mean": 0.01384457
+      },
+      "difference_sign": "negative_favors_left",
+      "left": "v2_raw",
+      "log_loss_difference": {
+        "bootstrap_draws": 2000,
+        "ci95": [
+          -0.04916714,
+          0.13062798
+        ],
+        "cluster_unit": "event_world_cluster",
+        "n_rows": 160,
+        "n_worlds": 40,
+        "paired_mean": 0.04156467
+      },
+      "right": "analogical_retrieval"
+    },
+    "v2_raw_vs_call_matched_direct_ensemble": {
+      "brier_difference": {
+        "bootstrap_draws": 2000,
+        "ci95": [
+          -0.06547879,
+          0.04435465
+        ],
+        "cluster_unit": "event_world_cluster",
+        "n_rows": 160,
+        "n_worlds": 40,
+        "paired_mean": -0.00818227
+      },
+      "difference_sign": "negative_favors_left",
+      "left": "v2_raw",
+      "log_loss_difference": {
+        "bootstrap_draws": 2000,
+        "ci95": [
+          -0.17997215,
+          0.10414936
+        ],
+        "cluster_unit": "event_world_cluster",
+        "n_rows": 160,
+        "n_worlds": 40,
+        "paired_mean": -0.02599487
+      },
+      "right": "call_matched_direct_ensemble"
+    },
+    "v2_raw_vs_constant_0_50": {
+      "brier_difference": {
+        "bootstrap_draws": 2000,
+        "ci95": [
+          -0.01053418,
+          0.00455664
+        ],
+        "cluster_unit": "event_world_cluster",
+        "n_rows": 160,
+        "n_worlds": 40,
+        "paired_mean": -0.00303418
+      },
+      "difference_sign": "negative_favors_left",
+      "left": "v2_raw",
+      "log_loss_difference": {
+        "bootstrap_draws": 2000,
+        "ci95": [
+          -0.02126721,
+          0.00930987
+        ],
+        "cluster_unit": "event_world_cluster",
+        "n_rows": 160,
+        "n_worlds": 40,
+        "paired_mean": -0.00607068
+      },
+      "right": "constant_0_50"
+    },
+    "v2_raw_vs_direct_single": {
+      "brier_difference": {
+        "bootstrap_draws": 2000,
+        "ci95": [
+          -0.04712148,
+          0.04726937
+        ],
+        "cluster_unit": "event_world_cluster",
+        "n_rows": 160,
+        "n_worlds": 40,
+        "paired_mean": 0.0031002
+      },
+      "difference_sign": "negative_favors_left",
+      "left": "v2_raw",
+      "log_loss_difference": {
+        "bootstrap_draws": 2000,
+        "ci95": [
+          -0.11553163,
+          0.1205868
+        ],
+        "cluster_unit": "event_world_cluster",
+        "n_rows": 160,
+        "n_worlds": 40,
+        "paired_mean": 0.00824821
+      },
+      "right": "direct_single"
+    },
+    "v2_raw_vs_domain_base_rate": {
+      "brier_difference": {
+        "bootstrap_draws": 2000,
+        "ci95": [
+          -0.05197299,
+          0.02684261
+        ],
+        "cluster_unit": "event_world_cluster",
+        "n_rows": 160,
+        "n_worlds": 40,
+        "paired_mean": -0.01280642
+      },
+      "difference_sign": "negative_favors_left",
+      "left": "v2_raw",
+      "log_loss_difference": {
+        "bootstrap_draws": 2000,
+        "ci95": [
+          -0.12282337,
+          0.05820351
+        ],
+        "cluster_unit": "event_world_cluster",
+        "n_rows": 160,
+        "n_worlds": 40,
+        "paired_mean": -0.02913721
+      },
+      "right": "domain_base_rate"
+    },
+    "v2_raw_vs_market_midpoint": {
+      "brier_difference": {
+        "bootstrap_draws": 2000,
+        "ci95": [
+          -0.00763274,
+          0.17298505
+        ],
+        "cluster_unit": "event_world_cluster",
+        "n_rows": 71,
+        "n_worlds": 24,
+        "paired_mean": 0.09176724
+      },
+      "difference_sign": "negative_favors_left",
+      "left": "v2_raw",
+      "log_loss_difference": {
+        "bootstrap_draws": 2000,
+        "ci95": [
+          -0.13613709,
+          0.43972276
+        ],
+        "cluster_unit": "event_world_cluster",
+        "n_rows": 71,
+        "n_worlds": 24,
+        "paired_mean": 0.19448226
+      },
+      "right": "market_midpoint"
+    },
+    "v2_raw_vs_observer_panel": {
+      "brier_difference": {
+        "bootstrap_draws": 2000,
+        "ci95": [
+          -0.0603826,
+          0.04312424
+        ],
+        "cluster_unit": "event_world_cluster",
+        "n_rows": 160,
+        "n_worlds": 40,
+        "paired_mean": -0.00636661
+      },
+      "difference_sign": "negative_favors_left",
+      "left": "v2_raw",
+      "log_loss_difference": {
+        "bootstrap_draws": 2000,
+        "ci95": [
+          -0.14978188,
+          0.10472011
+        ],
+        "cluster_unit": "event_world_cluster",
+        "n_rows": 160,
+        "n_worlds": 40,
+        "paired_mean": -0.01450223
+      },
+      "right": "observer_panel"
+    }
+  },
+  "locked_metrics": {
+    "analogical_retrieval": {
+      "auroc": 0.59263107,
+      "brier": 0.23312125,
+      "calibration_slope": 0.7350071,
+      "directional_accuracy": 0.5375,
+      "ece": 0.1064,
+      "log_loss": 0.64551183,
+      "n_rows": 160,
+      "n_worlds": 40,
+      "reliability": [
+        {
+          "bucket": "0%-50%",
+          "mean_pred": 0.329,
+          "n": 86,
+          "observed_freq": 0.395
+        },
+        {
+          "bucket": "50%-60%",
+          "mean_pred": 0.541,
+          "n": 39,
+          "observed_freq": 0.41
+        },
+        {
+          "bucket": "60%-70%",
+          "mean_pred": 0.649,
+          "n": 32,
+          "observed_freq": 0.469
+        },
+        {
+          "bucket": "80%-90%",
+          "mean_pred": 0.85,
+          "n": 3,
+          "observed_freq": 1.0
+        }
+      ],
+      "sharpness_mean_abs_from_half": 0.13825
+    },
+    "call_matched_direct_ensemble": {
+      "auroc": 0.55067136,
+      "brier": 0.25514809,
+      "calibration_slope": 0.32058025,
+      "directional_accuracy": 0.55625,
+      "ece": 0.1012,
+      "log_loss": 0.71307137,
+      "n_rows": 160,
+      "n_worlds": 40,
+      "reliability": [
+        {
+          "bucket": "0%-50%",
+          "mean_pred": 0.298,
+          "n": 93,
+          "observed_freq": 0.387
+        },
+        {
+          "bucket": "50%-60%",
+          "mean_pred": 0.529,
+          "n": 40,
+          "observed_freq": 0.55
+        },
+        {
+          "bucket": "60%-70%",
+          "mean_pred": 0.631,
+          "n": 27,
+          "observed_freq": 0.37
+        }
+      ],
+      "sharpness_mean_abs_from_half": 0.14673438
+    },
+    "constant_0_50": {
+      "auroc": 0.5,
+      "brier": 0.25,
+      "calibration_slope": 1.0,
+      "directional_accuracy": 0.425,
+      "ece": 0.075,
+      "log_loss": 0.69314718,
+      "n_rows": 160,
+      "n_worlds": 40,
+      "reliability": [
+        {
+          "bucket": "50%-60%",
+          "mean_pred": 0.5,
+          "n": 160,
+          "observed_freq": 0.425
+        }
+      ],
+      "sharpness_mean_abs_from_half": 0.0
+    },
+    "direct_single": {
+      "auroc": 0.58160166,
+      "brier": 0.24386562,
+      "calibration_slope": 0.46633293,
+      "directional_accuracy": 0.50625,
+      "ece": 0.1159,
+      "log_loss": 0.67882829,
+      "n_rows": 160,
+      "n_worlds": 40,
+      "reliability": [
+        {
+          "bucket": "0%-50%",
+          "mean_pred": 0.185,
+          "n": 49,
+          "observed_freq": 0.367
+        },
+        {
+          "bucket": "50%-60%",
+          "mean_pred": 0.516,
+          "n": 94,
+          "observed_freq": 0.447
+        },
+        {
+          "bucket": "60%-70%",
+          "mean_pred": 0.65,
+          "n": 17,
+          "observed_freq": 0.471
+        }
+      ],
+      "sharpness_mean_abs_from_half": 0.1221875
+    },
+    "domain_base_rate": {
+      "auroc": 0.46675192,
+      "brier": 0.25977224,
+      "calibration_slope": 0.06167625,
+      "directional_accuracy": 0.45,
+      "ece": 0.145,
+      "log_loss": 0.71621371,
+      "n_rows": 160,
+      "n_worlds": 40,
+      "reliability": [
+        {
+          "bucket": "0%-50%",
+          "mean_pred": 0.319,
+          "n": 84,
+          "observed_freq": 0.476
+        },
+        {
+          "bucket": "50%-60%",
+          "mean_pred": 0.5,
+          "n": 76,
+          "observed_freq": 0.368
+        }
+      ],
+      "sharpness_mean_abs_from_half": 0.09495614
+    },
+    "market_midpoint": {
+      "auroc": 0.82246377,
+      "brier": 0.15062053,
+      "calibration_slope": 0.63324437,
+      "directional_accuracy": 0.77464789,
+      "ece": 0.0872,
+      "log_loss": 0.48343327,
+      "n_rows": 71,
+      "n_worlds": 24,
+      "reliability": [
+        {
+          "bucket": "0%-50%",
+          "mean_pred": 0.183,
+          "n": 46,
+          "observed_freq": 0.152
+        },
+        {
+          "bucket": "50%-60%",
+          "mean_pred": 0.523,
+          "n": 6,
+          "observed_freq": 0.333
+        },
+        {
+          "bucket": "60%-70%",
+          "mean_pred": 0.615,
+          "n": 1,
+          "observed_freq": 0.0
+        },
+        {
+          "bucket": "70%-80%",
+          "mean_pred": 0.73,
+          "n": 5,
+          "observed_freq": 0.2
+        },
+        {
+          "bucket": "90%-100%",
+          "mean_pred": 0.971,
+          "n": 13,
+          "observed_freq": 1.0
+        }
+      ],
+      "sharpness_mean_abs_from_half": 0.31130986
+    },
+    "observer_panel": {
+      "auroc": 0.56553708,
+      "brier": 0.25333243,
+      "calibration_slope": 0.36354089,
+      "directional_accuracy": 0.55,
+      "ece": 0.0981,
+      "log_loss": 0.70157873,
+      "n_rows": 160,
+      "n_worlds": 40,
+      "reliability": [
+        {
+          "bucket": "0%-50%",
+          "mean_pred": 0.298,
+          "n": 92,
+          "observed_freq": 0.391
+        },
+        {
+          "bucket": "50%-60%",
+          "mean_pred": 0.543,
+          "n": 42,
+          "observed_freq": 0.476
+        },
+        {
+          "bucket": "60%-70%",
+          "mean_pred": 0.628,
+          "n": 26,
+          "observed_freq": 0.462
+        }
+      ],
+      "sharpness_mean_abs_from_half": 0.14810417
+    },
+    "v2_calibrated": {
+      "auroc": 0.52557545,
+      "brier": 0.25622953,
+      "calibration_slope": 0.16075907,
+      "directional_accuracy": 0.575,
+      "ece": 0.0179,
+      "log_loss": 0.70834258,
+      "n_rows": 160,
+      "n_worlds": 40,
+      "reliability": [
+        {
+          "bucket": "0%-50%",
+          "mean_pred": 0.407,
+          "n": 160,
+          "observed_freq": 0.425
+        }
+      ],
+      "sharpness_mean_abs_from_half": 0.09286128
+    },
+    "v2_market_informed": {
+      "n_rows": 0,
+      "n_worlds": 0
+    },
+    "v2_raw": {
+      "auroc": 0.49264706,
+      "brier": 0.24696582,
+      "calibration_slope": 1.01145213,
+      "directional_accuracy": 0.58125,
+      "ece": 0.0562,
+      "log_loss": 0.6870765,
+      "n_rows": 160,
+      "n_worlds": 40,
+      "reliability": [
+        {
+          "bucket": "0%-50%",
+          "mean_pred": 0.475,
+          "n": 159,
+          "observed_freq": 0.421
+        },
+        {
+          "bucket": "50%-60%",
+          "mean_pred": 0.5,
+          "n": 1,
+          "observed_freq": 1.0
+        }
+      ],
+      "sharpness_mean_abs_from_half": 0.02507812
+    }
+  },
+  "model_memory_sensitivity": {
+    "clean_only_v2_calibrated": {
+      "auroc": 0.43521595,
+      "brier": 0.29514681,
+      "calibration_slope": -0.46814325,
+      "directional_accuracy": 0.4673913,
+      "ece": 0.1328,
+      "log_loss": 0.79282287,
+      "n_rows": 92,
+      "reliability": [
+        {
+          "bucket": "0%-50%",
+          "mean_pred": 0.4,
+          "n": 92,
+          "observed_freq": 0.533
+        }
+      ],
+      "sharpness_mean_abs_from_half": 0.10023592
+    },
+    "clean_only_v2_raw": {
+      "auroc": 0.48979592,
+      "brier": 0.25241338,
+      "calibration_slope": 0.96438914,
+      "directional_accuracy": 0.47826087,
+      "ece": 0.0577,
+      "log_loss": 0.69798236,
+      "n_rows": 92,
+      "reliability": [
+        {
+          "bucket": "0%-50%",
+          "mean_pred": 0.475,
+          "n": 91,
+          "observed_freq": 0.527
+        },
+        {
+          "bucket": "50%-60%",
+          "mean_pred": 0.5,
+          "n": 1,
+          "observed_freq": 1.0
+        }
+      ],
+      "sharpness_mean_abs_from_half": 0.02513587
+    },
+    "selection_policy": "all 100 frozen worlds retained; report clean rows separately",
+    "strata": {
+      "clean_blinded": {
+        "n_rows": 92,
+        "n_worlds": 25,
+        "v2_calibrated": {
+          "auroc": 0.43521595,
+          "brier": 0.29514681,
+          "calibration_slope": -0.46814325,
+          "directional_accuracy": 0.4673913,
+          "ece": 0.1328,
+          "log_loss": 0.79282287,
+          "n_rows": 92,
+          "reliability": [
+            {
+              "bucket": "0%-50%",
+              "mean_pred": 0.4,
+              "n": 92,
+              "observed_freq": 0.533
+            }
+          ],
+          "sharpness_mean_abs_from_half": 0.10023592
+        },
+        "v2_raw": {
+          "auroc": 0.48979592,
+          "brier": 0.25241338,
+          "calibration_slope": 0.96438914,
+          "directional_accuracy": 0.47826087,
+          "ece": 0.0577,
+          "log_loss": 0.69798236,
+          "n_rows": 92,
+          "reliability": [
+            {
+              "bucket": "0%-50%",
+              "mean_pred": 0.475,
+              "n": 91,
+              "observed_freq": 0.527
+            },
+            {
+              "bucket": "50%-60%",
+              "mean_pred": 0.5,
+              "n": 1,
+              "observed_freq": 1.0
+            }
+          ],
+          "sharpness_mean_abs_from_half": 0.02513587
+        }
+      },
+      "contamination_susceptible": {
+        "n_rows": 28,
+        "n_worlds": 10,
+        "v2_calibrated": {
+          "auroc": 0.46666667,
+          "brier": 0.27096695,
+          "calibration_slope": -0.45425794,
+          "directional_accuracy": 0.46428571,
+          "ece": 0.0598,
+          "log_loss": 0.73924639,
+          "n_rows": 28,
+          "reliability": [
+            {
+              "bucket": "0%-50%",
+              "mean_pred": 0.476,
+              "n": 28,
+              "observed_freq": 0.536
+            }
+          ],
+          "sharpness_mean_abs_from_half": 0.02411281
+        },
+        "v2_raw": {
+          "auroc": 0.5,
+          "brier": 0.25241071,
+          "calibration_slope": 0.97590362,
+          "directional_accuracy": 0.46428571,
+          "ece": 0.0607,
+          "log_loss": 0.69797315,
+          "n_rows": 28,
+          "reliability": [
+            {
+              "bucket": "0%-50%",
+              "mean_pred": 0.475,
+              "n": 28,
+              "observed_freq": 0.536
+            }
+          ],
+          "sharpness_mean_abs_from_half": 0.025
+        }
+      },
+      "known_contaminated": {
+        "n_rows": 40,
+        "n_worlds": 10,
+        "v2_calibrated": {
+          "auroc": 0.77777778,
+          "brier": 0.15640359,
+          "calibration_slope": 2.12363799,
+          "directional_accuracy": 0.9,
+          "ece": 0.276,
+          "log_loss": 0.49240522,
+          "n_rows": 40,
+          "reliability": [
+            {
+              "bucket": "0%-50%",
+              "mean_pred": 0.376,
+              "n": 40,
+              "observed_freq": 0.1
+            }
+          ],
+          "sharpness_mean_abs_from_half": 0.12402354
+        },
+        "v2_raw": {
+          "auroc": 0.5,
+          "brier": 0.230625,
+          "calibration_slope": 1.204982,
+          "directional_accuracy": 0.9,
+          "ece": 0.375,
+          "log_loss": 0.65436536,
+          "n_rows": 40,
+          "reliability": [
+            {
+              "bucket": "0%-50%",
+              "mean_pred": 0.475,
+              "n": 40,
+              "observed_freq": 0.1
+            }
+          ],
+          "sharpness_mean_abs_from_half": 0.025
+        }
+      }
+    }
+  },
+  "phase_internal_degradation": [
+    {
+      "affected_rows": 400,
+      "phase": "phase2_evidence"
+    }
+  ],
+  "phase_table": {
+    "phase10_institutions": {
+      "blocked_rate": 0.0,
+      "causal_coverage_independent_worlds": 52,
+      "development_false_causal_activation": 0.010309,
+      "development_relevance_recall": 1.0,
+      "internal_degradation_rows": 0,
+      "invoked_on_every_row": true,
+      "invoked_rows": 400,
+      "irrelevant_explicit_noop_rate": 1.0,
+      "meaningful_ablation_effect_rate": 1.0,
+      "relevant_causally_active_rate": 1.0,
+      "representative_relevant_rows": 16,
+      "status": "pass"
+    },
+    "phase11_recompilation": {
+      "blocked_rate": 0.0,
+      "causal_coverage_independent_worlds": 15,
+      "development_false_causal_activation": 0.0,
+      "development_relevance_recall": 0.978261,
+      "internal_degradation_rows": 0,
+      "invoked_on_every_row": true,
+      "invoked_rows": 400,
+      "irrelevant_explicit_noop_rate": 1.0,
+      "meaningful_ablation_effect_rate": 0.0,
+      "relevant_causally_active_rate": null,
+      "representative_relevant_rows": 0,
+      "status": "fail_no_meaningful_ablation_effect"
+    },
+    "phase1_compiler": {
+      "blocked_rate": 0.0,
+      "causal_coverage_independent_worlds": null,
+      "development_false_causal_activation": null,
+      "development_relevance_recall": null,
+      "internal_degradation_rows": 0,
+      "invoked_on_every_row": true,
+      "invoked_rows": 400,
+      "irrelevant_explicit_noop_rate": null,
+      "meaningful_ablation_effect_rate": null,
+      "relevant_causally_active_rate": 1.0,
+      "representative_relevant_rows": 400,
+      "status": "pass"
+    },
+    "phase2_evidence": {
+      "blocked_rate": 0.0,
+      "causal_coverage_independent_worlds": null,
+      "development_false_causal_activation": null,
+      "development_relevance_recall": null,
+      "internal_degradation_rows": 400,
+      "invoked_on_every_row": true,
+      "invoked_rows": 400,
+      "irrelevant_explicit_noop_rate": null,
+      "meaningful_ablation_effect_rate": null,
+      "relevant_causally_active_rate": 1.0,
+      "representative_relevant_rows": 400,
+      "status": "fail_internal_degradation"
+    },
+    "phase3_posterior": {
+      "blocked_rate": 0.0,
+      "causal_coverage_independent_worlds": null,
+      "development_false_causal_activation": null,
+      "development_relevance_recall": null,
+      "internal_degradation_rows": 0,
+      "invoked_on_every_row": true,
+      "invoked_rows": 400,
+      "irrelevant_explicit_noop_rate": null,
+      "meaningful_ablation_effect_rate": null,
+      "relevant_causally_active_rate": 1.0,
+      "representative_relevant_rows": 400,
+      "status": "pass"
+    },
+    "phase4_actor_policy": {
+      "blocked_rate": 0.0,
+      "causal_coverage_independent_worlds": 43,
+      "development_false_causal_activation": 0.044944,
+      "development_relevance_recall": 0.981982,
+      "internal_degradation_rows": 0,
+      "invoked_on_every_row": true,
+      "invoked_rows": 400,
+      "irrelevant_explicit_noop_rate": 1.0,
+      "meaningful_ablation_effect_rate": 0.9883720930232558,
+      "relevant_causally_active_rate": 1.0,
+      "representative_relevant_rows": 8,
+      "status": "fail_partial_causal_activation"
+    },
+    "phase6_registry": {
+      "blocked_rate": 0.0,
+      "causal_coverage_independent_worlds": 35,
+      "development_false_causal_activation": 0.064516,
+      "development_relevance_recall": 1.0,
+      "internal_degradation_rows": 0,
+      "invoked_on_every_row": true,
+      "invoked_rows": 400,
+      "irrelevant_explicit_noop_rate": 1.0,
+      "meaningful_ablation_effect_rate": 1.0,
+      "relevant_causally_active_rate": 1.0,
+      "representative_relevant_rows": 24,
+      "status": "pass"
+    },
+    "phase7_nonlinear": {
+      "blocked_rate": 0.0,
+      "causal_coverage_independent_worlds": 10,
+      "development_false_causal_activation": 0.012658,
+      "development_relevance_recall": 0.97619,
+      "internal_degradation_rows": 0,
+      "invoked_on_every_row": true,
+      "invoked_rows": 400,
+      "irrelevant_explicit_noop_rate": 1.0,
+      "meaningful_ablation_effect_rate": 1.0,
+      "relevant_causally_active_rate": null,
+      "representative_relevant_rows": 0,
+      "status": "pass"
+    },
+    "phase8_persistence": {
+      "blocked_rate": 0.0,
+      "causal_coverage_independent_worlds": 60,
+      "development_false_causal_activation": null,
+      "development_relevance_recall": null,
+      "internal_degradation_rows": 0,
+      "invoked_on_every_row": true,
+      "invoked_rows": 400,
+      "irrelevant_explicit_noop_rate": null,
+      "meaningful_ablation_effect_rate": 0.0,
+      "relevant_causally_active_rate": 1.0,
+      "representative_relevant_rows": 400,
+      "status": "fail_no_meaningful_ablation_effect"
+    },
+    "phase9_networks": {
+      "blocked_rate": 0.0,
+      "causal_coverage_independent_worlds": 12,
+      "development_false_causal_activation": 0.019737,
+      "development_relevance_recall": 1.0,
+      "internal_degradation_rows": 0,
+      "invoked_on_every_row": true,
+      "invoked_rows": 400,
+      "irrelevant_explicit_noop_rate": 1.0,
+      "meaningful_ablation_effect_rate": 1.0,
+      "relevant_causally_active_rate": null,
+      "representative_relevant_rows": 0,
+      "status": "pass"
+    },
+    "phase9_populations": {
+      "blocked_rate": 0.0,
+      "causal_coverage_independent_worlds": 25,
+      "development_false_causal_activation": 0.0,
+      "development_relevance_recall": 1.0,
+      "internal_degradation_rows": 0,
+      "invoked_on_every_row": true,
+      "invoked_rows": 400,
+      "irrelevant_explicit_noop_rate": 1.0,
+      "meaningful_ablation_effect_rate": 1.0,
+      "relevant_causally_active_rate": 1.0,
+      "representative_relevant_rows": 24,
+      "status": "pass"
+    }
+  },
+  "production_eligible": false,
+  "production_judgment": "ineligible: Phase 2 degraded on every primary row; Tier C is mutable; one Phase 4 causal row was blocked; Phase 8 and Phase 11 had zero meaningful controlled ablation effect; the market-informed comparison was not run; full suite has failures",
+  "required_completion_gates": {
+    "all_covered_phases_show_meaningful_ablation": {
+      "achieved": false,
+      "evidence": [
+        "causal_coverage_results.json"
+      ],
+      "pass": false,
+      "required": true
+    },
+    "baseline_evidence_and_call_parity": {
+      "achieved": true,
+      "evidence": [
+        "*_baselines.jsonl"
+      ],
+      "pass": true,
+      "required": true
+    },
+    "blocked_relevant_phases": {
+      "achieved": 0,
+      "evidence": [
+        "*_forecasts.jsonl"
+      ],
+      "pass": true,
+      "required": 0
+    },
+    "causal_coverage_protocol": {
+      "achieved": true,
+      "evidence": [
+        "causal_coverage_results.json"
+      ],
+      "pass": true,
+      "required": true
+    },
+    "causal_full_phase_activation": {
+      "achieved": false,
+      "evidence": [
+        "causal_coverage_results.json"
+      ],
+      "pass": false,
+      "required": true
+    },
+    "cutoffs_per_world": {
+      "achieved": 4,
+      "evidence": [
+        "calibration_forecasts.jsonl",
+        "validation_forecasts.jsonl",
+        "locked_test_forecasts.jsonl"
+      ],
+      "pass": true,
+      "required": 4
+    },
+    "evidence_cutoff_safety": {
+      "achieved": true,
+      "evidence": [
+        "evidence_capsule_manifest.json"
+      ],
+      "pass": true,
+      "required": true
+    },
+    "forecaster_network_isolation": {
+      "achieved": true,
+      "evidence": [
+        "isolation_manifest*.json"
+      ],
+      "pass": true,
+      "required": true
+    },
+    "forecaster_outcome_isolation": {
+      "achieved": true,
+      "evidence": [
+        "*_forecasts.jsonl",
+        "isolation_manifest*.json"
+      ],
+      "pass": true,
+      "required": true
+    },
+    "formal_relevant_phase_execution": {
+      "achieved": true,
+      "evidence": [
+        "*_forecasts.jsonl"
+      ],
+      "pass": true,
+      "required": true
+    },
+    "full_repository_test_suite": {
+      "achieved": 3,
+      "evidence": [
+        "full_test_suite_report.json"
+      ],
+      "pass": false,
+      "required": 0
+    },
+    "internal_phase_degradations_zero": {
+      "achieved": 400,
+      "evidence": [
+        "*_forecasts.jsonl"
+      ],
+      "pass": false,
+      "required": 0
+    },
+    "irrelevant_phases_explicit_noop": {
+      "achieved": true,
+      "evidence": [
+        "*_forecasts.jsonl"
+      ],
+      "pass": true,
+      "required": true
+    },
+    "locked_score_rows": {
+      "achieved": 160,
+      "evidence": [
+        "locked_test_score.json",
+        "locked_test_scored_rows.jsonl"
+      ],
+      "pass": true,
+      "required": 160
+    },
+    "locked_test_single_open": {
+      "achieved": 1,
+      "evidence": [
+        "locked_outcome_access_ledger.json"
+      ],
+      "pass": true,
+      "required": 1
+    },
+    "market_informed_v2_comparison": {
+      "achieved": false,
+      "evidence": [
+        "locked_test_score.json"
+      ],
+      "pass": false,
+      "required": true
+    },
+    "phase12_fit_governance": {
+      "achieved": "calibration",
+      "evidence": [
+        "phase12_calibration_fit.json"
+      ],
+      "pass": true,
+      "required": "calibration"
+    },
+    "phase12_selection_governance": {
+      "achieved": "validation",
+      "evidence": [
+        "phase12_validation_selection.json"
+      ],
+      "pass": true,
+      "required": "validation"
+    },
+    "phase_record_coverage": {
+      "achieved": true,
+      "evidence": [
+        "*_forecasts.jsonl"
+      ],
+      "pass": true,
+      "required": true
+    },
+    "primary_v2_forecasts": {
+      "achieved": 400,
+      "evidence": [
+        "*_forecasts.jsonl"
+      ],
+      "pass": true,
+      "required": 400
+    },
+    "representative_worlds": {
+      "achieved": 100,
+      "evidence": [
+        "frozen_selection_manifest.json"
+      ],
+      "pass": true,
+      "required": 100
+    },
+    "required_baseline_rows": {
+      "achieved": 400,
+      "evidence": [
+        "*_baselines.jsonl"
+      ],
+      "pass": true,
+      "required": 400
+    },
+    "stacked_pr_test_file_diff": {
+      "achieved": 0,
+      "evidence": [
+        "full_test_suite_report.json"
+      ],
+      "pass": true,
+      "required": 0
+    },
+    "temporal_safety_tier": {
+      "achieved": "causally_blinded_historical",
+      "evidence": [
+        "model_temporal_safety_audit.json",
+        "leakage_probe_summary.json"
+      ],
+      "pass": true,
+      "required": "causally_blinded_historical"
+    },
+    "terminal_world_state_source": {
+      "achieved": true,
+      "evidence": [
+        "*_forecasts.jsonl"
+      ],
+      "pass": true,
+      "required": true
+    },
+    "world_split_integrity": {
+      "achieved": true,
+      "evidence": [
+        "temporal_split_manifest.json"
+      ],
+      "pass": true,
+      "required": true
+    }
+  },
+  "schema_version": 1,
+  "strict_completion_passed": false,
+  "temporal_safety": {
+    "immutable_hosted_version": null,
+    "leakage_probe_summary": {
+      "all_rows_complete": true,
+      "attempt_manifest_sha256": "a8881f21dedbbd3fc3f4f904ab4b7ce0e46eb2e9fd254935c94d202ce06dac6c",
+      "attempts_preserved": 400,
+      "completed_rows": 400,
+      "expected_rows": 400,
+      "full_prompts_outside_forecast_mount": true,
+      "full_prompts_outside_repository": true,
+      "name_only_outcome_validation_pending": true,
+      "outcomes_accessed": false,
+      "preopen_classification_counts": {
+        "clean_blinded": 344,
+        "contamination_susceptible": 56
+      },
+      "schema_version": 1,
+      "scorer_artifact_path": "/private/tmp/wmv2-post-snapshot-scorer-0c5a869/leakage_probes.jsonl"
+    },
+    "tier": "causally_blinded_historical",
+    "tier_code": "C"
+  },
+  "test_suite": {
+    "current": {
+      "command": "PYTHONPATH=. .venv/bin/pytest -q",
+      "completed_at": "2026-07-15T18:07:16Z",
+      "failures": [
+        {
+          "classification": "preexisting_missing_repository_asset",
+          "detail": "data/dataset_registry.json is absent",
+          "node": "tests/test_agent_engine.py::test_dataset_registry_is_valid_and_honest"
+        },
+        {
+          "classification": "preexisting_backtest_toggle_mismatch",
+          "detail": "max_vars does not zero the two lower-leverage weights",
+          "node": "tests/test_backtest_harness.py::test_apply_toggles_ungrounds_and_limits_vars"
+        },
+        {
+          "classification": "optional_dependency_missing",
+          "detail": "fastapi is not installed in the active test environment",
+          "node": "tests/test_state_world_model.py::test_predict_and_rollout_are_distinct"
+        }
+      ],
+      "negative_results_preserved": true,
+      "stacked_pr_test_file_diff_count": 0,
+      "summary": {
+        "duration_s": 178.68,
+        "failed": 3,
+        "passed": 1077,
+        "skipped": 2,
+        "warnings": 11
+      }
+    },
+    "preserved_history": {
+      "command": "PYTHONPATH=. UV_CACHE_DIR=/private/tmp/codex-uv-cache uv run --frozen --extra dev pytest -q",
+      "completed_at": "2026-07-15T17:08:05Z",
+      "decision": "Do not re-add changed test files to the stacked PR; preserve failures and validate benchmark gates through committed machine-readable artifacts.",
+      "failures": [
+        {
+          "classification": "preexisting_missing_repository_asset",
+          "detail": "data/dataset_registry.json is absent",
+          "node": "tests/test_agent_engine.py::test_dataset_registry_is_valid_and_honest"
+        },
+        {
+          "classification": "preexisting_backtest_toggle_mismatch",
+          "detail": "max_vars does not zero the two lower-leverage weights",
+          "node": "tests/test_backtest_harness.py::test_apply_toggles_ungrounds_and_limits_vars"
+        },
+        {
+          "classification": "stale_base_test_conflicts_with_ephemeral_credential_contract",
+          "detail": "base test expects construction without a credential",
+          "node": "tests/test_deepseek_backend.py::test_deepseek_fn_is_callable_and_reads_env_only"
+        },
+        {
+          "classification": "optional_dependency_missing",
+          "detail": "fastapi is not installed by the declared dev extra",
+          "node": "tests/test_state_world_model.py::test_predict_and_rollout_are_distinct"
+        },
+        {
+          "classification": "stale_base_test_conflicts_with_causal_state_transition_contract",
+          "detail": "base test expects prohibited terminal rate_modulation",
+          "node": "tests/test_wmv2_activation_synthesis.py::test_p9_population_aggregation_executes_and_modulates"
+        },
+        {
+          "classification": "stale_base_test_conflicts_with_no_terminal_modulation_rule",
+          "detail": "direct terminal probability nudges now raise visibly",
+          "node": "tests/test_wmv2_activation_synthesis.py::test_modulation_total_weight_capped"
+        },
+        {
+          "classification": "stale_base_test_conflicts_with_current_activation_audit_shape",
+          "detail": "base test expects the superseded audit action label",
+          "node": "tests/test_wmv2_activation_synthesis.py::test_p4_gated_off_removes_ornamental_decisions"
+        },
+        {
+          "classification": "stale_base_test_conflicts_with_independent_relevance_contract",
+          "detail": "semantic signal alone no longer declares relevance without a causal mechanism",
+          "node": "tests/test_wmv2_phase_supervision.py::test_relevant_phase_without_declared_state_is_blocked_missing_state"
+        },
+        {
+          "classification": "stale_base_test_conflicts_with_independent_relevance_contract",
+          "detail": "base fixture does not satisfy current semantic relevance inputs",
+          "node": "tests/test_wmv2_phase_supervision.py::test_relevant_executed_phase_is_causally_active_with_delta_evidence"
+        },
+        {
+          "classification": "stale_base_test_conflicts_with_independent_relevance_contract",
+          "detail": "base fixture does not satisfy current semantic relevance inputs",
+          "node": "tests/test_wmv2_phase_supervision.py::test_relevant_phase_with_no_deltas_is_blocked_and_fails_integration"
+        },
+        {
+          "classification": "stale_base_test_conflicts_with_current_fallback_trigger_contract",
+          "detail": "base fixture uses the superseded fallback trigger shape",
+          "node": "tests/test_wmv2_phase_supervision.py::test_p6_fallback_makes_required_process_executable"
+        },
+        {
+          "classification": "stale_base_test_conflicts_with_independent_relevance_contract",
+          "detail": "base fixture omits the current causal mechanism evidence",
+          "node": "tests/test_wmv2_phase_supervision.py::test_semantic_dependency_signal_drives_relevance_without_keywords"
+        }
+      ],
+      "final_merged_tree": {
+        "command": "PYTHONPATH=. .venv/bin/pytest -q",
+        "completed_at": "2026-07-15T18:07:16Z",
+        "failures": [
+          {
+            "classification": "preexisting_missing_repository_asset",
+            "detail": "data/dataset_registry.json is absent",
+            "node": "tests/test_agent_engine.py::test_dataset_registry_is_valid_and_honest"
+          },
+          {
+            "classification": "preexisting_backtest_toggle_mismatch",
+            "detail": "max_vars does not zero the two lower-leverage weights",
+            "node": "tests/test_backtest_harness.py::test_apply_toggles_ungrounds_and_limits_vars"
+          },
+          {
+            "classification": "optional_dependency_missing",
+            "detail": "fastapi is not installed in the active test environment",
+            "node": "tests/test_state_world_model.py::test_predict_and_rollout_are_distinct"
+          }
+        ],
+        "negative_results_preserved": true,
+        "stacked_pr_test_file_diff_count": 0,
+        "summary": {
+          "duration_s": 178.68,
+          "failed": 3,
+          "passed": 1077,
+          "skipped": 2,
+          "warnings": 11
+        }
+      },
+      "negative_results_preserved": true,
+      "pre_merge_forward_repair_validation": {
+        "adapter_contract_smoke": {
+          "capsule_claims": 1,
+          "fully_integrated": false,
+          "pass": true,
+          "phase2_exception_status": "execution_failed",
+          "scheduled_evidence_events": 1
+        },
+        "command": "PYTHONPATH=. .venv/bin/pytest -q tests/test_wmv2_unified_runtime.py tests/test_wmv2_phase_supervision.py",
+        "failed": 5,
+        "failed_nodes_are_already_in_full_suite_report": true,
+        "full_suite_rerun_after_forward_repair": false,
+        "passed": 12,
+        "reason": "The targeted failures reproduce five already-preserved stale base-test contracts; the strict full-suite gate remains failed."
+      },
+      "schema_version": 1,
+      "scope": "pre_merge_child_tree; preserved historical run",
+      "stacked_pr_test_file_diff_count": 0,
+      "summary": {
+        "duration_s": 172.95,
+        "failed": 12,
+        "passed": 1067,
+        "skipped": 2,
+        "warnings": 11
+      }
+    }
+  }
+}
