@@ -1,0 +1,645 @@
+{
+ "experiment": "exp090_thiel_phase13",
+ "facts_source": {
+  "url": "https://www.runaurelius.com",
+  "fetched": "2026-07-17",
+  "note": "every number below appears on the page; the fact guard rejects any other number the proposer tries to write"
+ },
+ "sender_brief": {
+  "sender": "Beckett",
+  "thesis": "AI scheduling treats electricity as a fixed cost; forecasting power constraints and scheduling against them is the cheapest capacity there is",
+  "ask": "a one-line reaction on whether the thesis is wrong",
+  "facts": [
+   "17 years old, starting Princeton in the fall",
+   "building Aurelius (runaurelius.com): constraint-aware orchestration for AI infrastructure",
+   "a predictive world model forecasts power constraints, simulates candidate scheduling decisions, and ranks them by economic outcome before execution",
+   "+724% average SLA-safe goodput per dollar vs the production scheduler, in simulated replay of ~1.5M requests of public production traces",
+   "per-grid mean improvements: +698% on PJM, +718% on ERCOT, +755% on CAISO",
+   "-84% GPU-hours in the same replay",
+   "results are simulated replay of public traces, not a production deployment",
+   "offering read-only shadow mode to a small batch of infrastructure operators"
+  ]
+ },
+ "mode": "offline",
+ "n_llm_calls": 0,
+ "optimizer": {
+  "report_type": "prediction",
+  "recipient": "Peter Thiel",
+  "calibration_grade": "A",
+  "optimal_strategy_spec": {
+   "strategy": {
+    "personalization": 1.0,
+    "relevance_fit": 1.0,
+    "clarity": 1.0,
+    "credibility_proof": 1.0,
+    "responder_incentive": 1.0,
+    "ask_directness": 0.0,
+    "low_effort_ask": 1.0,
+    "pushiness": 0.0,
+    "warmth": 1.0,
+    "length_fit": 1.0,
+    "credential_signaling": 0.0
+   },
+   "predicted_reply_mean": 0.8712,
+   "predicted_reply_lower_bound_q20": 0.8426,
+   "top_drivers": [
+    {
+     "term": "relevance_fit",
+     "contribution": 0.42
+    },
+    {
+     "term": "warmth",
+     "contribution": 0.3823
+    },
+    {
+     "term": "clarity",
+     "contribution": 0.3422
+    },
+    {
+     "term": "pushiness",
+     "contribution": 0.3343
+    },
+    {
+     "term": "low_effort_ask",
+     "contribution": 0.3307
+    },
+    {
+     "term": "responder_incentive",
+     "contribution": 0.2961
+    },
+    {
+     "term": "credibility_proof",
+     "contribution": 0.2506
+    },
+    {
+     "term": "length_fit",
+     "contribution": 0.2264
+    },
+    {
+     "term": "personalization",
+     "contribution": 0.2054
+    },
+    {
+     "term": "proof\u00d7skeptic",
+     "contribution": 0.1712
+    }
+   ]
+  },
+  "constructed_email": {
+   "text": "Peter, AI scheduling treats electricity as a fixed cost; forecasting power constraints and scheduling against them is the cheapest capacity there is. 17 years old, starting Princeton in the fall. building Aurelius (runaurelius.com): constraint-aware orchestration for AI infrastructure. Do you think that's wrong? Thanks, Beckett.",
+   "encoded_strategy": {
+    "personalization": 0.095,
+    "relevance_fit": 0.4,
+    "clarity": 1.0,
+    "credibility_proof": 0.0,
+    "responder_incentive": 0.0,
+    "ask_directness": 0.632,
+    "low_effort_ask": 0.0,
+    "pushiness": 0.0,
+    "warmth": 0.565,
+    "length_fit": 0.995,
+    "credential_signaling": 0.487
+   },
+   "reply_mean": 0.2447,
+   "reply_lower_bound": 0.231,
+   "critique": {
+    "coherence": 1.0,
+    "naturalness": 1.0,
+    "humanness": 1.0,
+    "factuality": 1.0,
+    "quality": 1.0,
+    "source": "lexical",
+    "flags": []
+   }
+  },
+  "evaluation": {
+   "report_type": "simulation",
+   "p_reply_fraction": 0.241,
+   "p_reply_mean": 0.238,
+   "interval80": [
+    0.0477,
+    0.4936
+   ],
+   "n_samples": 2000,
+   "calibration_grade": "A",
+   "note": "fraction of simulated recipient-trajectories that reply, integrated over the recipient's hidden state (base-rate posterior, trait uncertainty, mood, attention, timing). UNVALIDATED: elasticities are world-knowledge priors, not backtested \u2014 treat the level as a claim to check; trust the ranking first."
+  },
+  "baselines_for_contrast": {
+   "credential_cover_letter": {
+    "text": "Dear Mr. Thiel, I hope this email finds you well. My name is Beckett and I am reaching out because I have 17 years old, starting Princeton in the fall; building Aurelius (runaurelius.com): constraint-aware orchestration for AI infrastructure; a predictive world model forecasts power constraints, simulates candidate scheduling decisions, and ranks them by economic outcome before execution. I am building something I truly believe is revolutionary: AI scheduling treats electricity as a fixed cost; forecasting power constraints and scheduling against them is the cheapest capacity there is. I would love to set up a 30-minute call at your earliest convenience to tell you more. Looking forward to hearing back from you soon.",
+    "reply_mean": 0.1285,
+    "interval80": [
+     0.0204,
+     0.289
+    ]
+   },
+   "pushy_followup": {
+    "text": "Hi Peter, just following up and circling back per my last email. Please respond ASAP about AI scheduling treats electricity as a fixed cost; forecasting power constraints and scheduling against them is the cheapest capacity there is \u2014 I'd really love to get on your calendar this week.",
+    "reply_mean": 0.082,
+    "interval80": [
+     0.0118,
+     0.1869
+    ]
+   }
+  },
+  "honesty": "CALIBRATED (grade A, ECE 0.0204). The elasticities were fit to reply outcomes and graded on a held-out split; the P(reply) carries that grade."
+ },
+ "phase13_decision": {
+  "decision_id": "thiel_cold_email_2026",
+  "contract_hash": "28a540fe1571a323",
+  "runtime_fingerprint": {
+   "fingerprint_hash": "784c6ddc727e269b",
+   "phase13": "phase13-1.0"
+  },
+  "reference_action": "do_nothing",
+  "evaluated": [
+   {
+    "action_id": "do_nothing",
+    "operation": "do_nothing",
+    "expected_utility": 0.0,
+    "median_utility": 0.0,
+    "q10": 0.0,
+    "q90": 0.0,
+    "cvar": 0.0,
+    "utility_distribution": {
+     "0.0": 400
+    },
+    "p_improvement": 0.0,
+    "p_material_improvement": 0.0,
+    "p_harm": 0.0,
+    "paired_vs_reference": {
+     "n": 400,
+     "paired_mean": 0.0,
+     "paired_median": 0.0,
+     "p_improvement": 0.0,
+     "p_tie": 1.0,
+     "paired_q10": 0.0,
+     "paired_q90": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "conf": 0.8,
+     "paired_se": 0.0
+    },
+    "variance_reduction": {
+     "var_paired": 0.0,
+     "var_unpaired_sum": 0.0,
+     "variance_reduction_factor": "inf",
+     "effective_particles": "inf",
+     "n": 400
+    },
+    "stakeholder_breakdown": {
+     "action_id": "do_nothing",
+     "per_stakeholder": {
+      "beckett": {
+       "mean": 0.0,
+       "q10": 0.0,
+       "q90": 0.0
+      }
+     },
+     "aggregate_mean": 0.0,
+     "aggregate_median": 0.0,
+     "rights_violations": 0,
+     "floor_violations": {},
+     "notes": []
+    },
+    "constraint_violations": [],
+    "rights_violations": 0,
+    "floor_violations": {},
+    "implementation_cost": 0.0,
+    "reversible": true,
+    "by_hypothesis": {
+     "H_gatekeeper": {
+      "mean": 0.0,
+      "n": 140
+     },
+     "H_base": {
+      "mean": 0.0,
+      "n": 200
+     },
+     "H_engaged": {
+      "mean": 0.0,
+      "n": 60
+     }
+    },
+    "n_state_deltas": 0,
+    "expected_regret": 0.177025,
+    "max_regret": 0.97,
+    "fragile": false
+   },
+   {
+    "action_id": "send_optimized",
+    "operation": "communicate",
+    "expected_utility": 0.1525,
+    "median_utility": -0.03,
+    "q10": -0.03,
+    "q90": 0.97,
+    "cvar": -0.03,
+    "utility_distribution": {
+     "[0.845,0.97)": 73,
+     "[-0.03,0.095)": 327
+    },
+    "p_improvement": 0.1825,
+    "p_material_improvement": 0.1825,
+    "p_harm": 0.8175,
+    "paired_vs_reference": {
+     "n": 400,
+     "paired_mean": 0.1525,
+     "paired_median": -0.03,
+     "p_improvement": 0.1825,
+     "p_tie": 0.0,
+     "paired_q10": -0.03,
+     "paired_q90": 0.97,
+     "ci": [
+      0.127718,
+      0.177282
+     ],
+     "conf": 0.8,
+     "paired_se": 0.019337
+    },
+    "variance_reduction": {
+     "var_paired": 0.14956767,
+     "var_unpaired_sum": 0.14956767,
+     "variance_reduction_factor": 1.0,
+     "effective_particles": 400.0,
+     "n": 400
+    },
+    "stakeholder_breakdown": {
+     "action_id": "send_optimized",
+     "per_stakeholder": {
+      "beckett": {
+       "mean": 0.1825,
+       "q10": 0.0,
+       "q90": 1.0
+      }
+     },
+     "aggregate_mean": 0.1825,
+     "aggregate_median": 0.0,
+     "rights_violations": 0,
+     "floor_violations": {},
+     "notes": []
+    },
+    "constraint_violations": [],
+    "rights_violations": 0,
+    "floor_violations": {},
+    "implementation_cost": 0.03,
+    "reversible": true,
+    "by_hypothesis": {
+     "H_gatekeeper": {
+      "mean": 0.062857,
+      "n": 140
+     },
+     "H_base": {
+      "mean": 0.175,
+      "n": 200
+     },
+     "H_engaged": {
+      "mean": 0.286667,
+      "n": 60
+     }
+    },
+    "n_state_deltas": 800,
+    "expected_regret": 0.024525,
+    "max_regret": 0.03,
+    "fragile": false
+   },
+   {
+    "action_id": "send_credential_cover_letter",
+    "operation": "communicate",
+    "expected_utility": 0.0425,
+    "median_utility": -0.03,
+    "q10": -0.03,
+    "q90": -0.03,
+    "cvar": -0.03,
+    "utility_distribution": {
+     "[-0.03,0.095)": 371,
+     "[0.845,0.97)": 29
+    },
+    "p_improvement": 0.0725,
+    "p_material_improvement": 0.0725,
+    "p_harm": 0.9275,
+    "paired_vs_reference": {
+     "n": 400,
+     "paired_mean": 0.0425,
+     "paired_median": -0.03,
+     "p_improvement": 0.0725,
+     "p_tie": 0.0,
+     "paired_q10": -0.03,
+     "paired_q90": -0.03,
+     "ci": [
+      0.025862,
+      0.059138
+     ],
+     "conf": 0.8,
+     "paired_se": 0.012982
+    },
+    "variance_reduction": {
+     "var_paired": 0.06741228,
+     "var_unpaired_sum": 0.06741228,
+     "variance_reduction_factor": 1.0,
+     "effective_particles": 400.0,
+     "n": 400
+    },
+    "stakeholder_breakdown": {
+     "action_id": "send_credential_cover_letter",
+     "per_stakeholder": {
+      "beckett": {
+       "mean": 0.0725,
+       "q10": 0.0,
+       "q90": 0.0
+      }
+     },
+     "aggregate_mean": 0.0725,
+     "aggregate_median": 0.0,
+     "rights_violations": 0,
+     "floor_violations": {},
+     "notes": []
+    },
+    "constraint_violations": [],
+    "rights_violations": 0,
+    "floor_violations": {},
+    "implementation_cost": 0.03,
+    "reversible": true,
+    "by_hypothesis": {
+     "H_gatekeeper": {
+      "mean": -0.008571,
+      "n": 140
+     },
+     "H_base": {
+      "mean": 0.07,
+      "n": 200
+     },
+     "H_engaged": {
+      "mean": 0.07,
+      "n": 60
+     }
+    },
+    "n_state_deltas": 800,
+    "expected_regret": 0.134525,
+    "max_regret": 1.0,
+    "fragile": false
+   },
+   {
+    "action_id": "send_pushy_followup",
+    "operation": "communicate",
+    "expected_utility": 0.0175,
+    "median_utility": -0.03,
+    "q10": -0.03,
+    "q90": -0.03,
+    "cvar": -0.03,
+    "utility_distribution": {
+     "[-0.03,0.095)": 381,
+     "[0.845,0.97)": 19
+    },
+    "p_improvement": 0.0475,
+    "p_material_improvement": 0.0475,
+    "p_harm": 0.9525,
+    "paired_vs_reference": {
+     "n": 400,
+     "paired_mean": 0.0175,
+     "paired_median": -0.03,
+     "p_improvement": 0.0475,
+     "p_tie": 0.0,
+     "paired_q10": -0.03,
+     "paired_q90": -0.03,
+     "ci": [
+      0.003853,
+      0.031147
+     ],
+     "conf": 0.8,
+     "paired_se": 0.010649
+    },
+    "variance_reduction": {
+     "var_paired": 0.04535714,
+     "var_unpaired_sum": 0.04535714,
+     "variance_reduction_factor": 1.0,
+     "effective_particles": 400.0,
+     "n": 400
+    },
+    "stakeholder_breakdown": {
+     "action_id": "send_pushy_followup",
+     "per_stakeholder": {
+      "beckett": {
+       "mean": 0.0475,
+       "q10": 0.0,
+       "q90": 0.0
+      }
+     },
+     "aggregate_mean": 0.0475,
+     "aggregate_median": 0.0,
+     "rights_violations": 0,
+     "floor_violations": {},
+     "notes": []
+    },
+    "constraint_violations": [],
+    "rights_violations": 0,
+    "floor_violations": {},
+    "implementation_cost": 0.03,
+    "reversible": true,
+    "by_hypothesis": {
+     "H_gatekeeper": {
+      "mean": -0.015714,
+      "n": 140
+     },
+     "H_base": {
+      "mean": 0.035,
+      "n": 200
+     },
+     "H_engaged": {
+      "mean": 0.036667,
+      "n": 60
+     }
+    },
+    "n_state_deltas": 800,
+    "expected_regret": 0.159525,
+    "max_regret": 1.0,
+    "fragile": false
+   }
+  ],
+  "policies": [],
+  "recommended": "send_optimized",
+  "recommendation_kind": "action",
+  "pareto_frontier": [],
+  "feasibility": [
+   {
+    "action_id": "do_nothing",
+    "feasible": true,
+    "reasons": []
+   },
+   {
+    "action_id": "send_optimized",
+    "feasible": true,
+    "reasons": []
+   },
+   {
+    "action_id": "send_credential_cover_letter",
+    "feasible": true,
+    "reasons": []
+   },
+   {
+    "action_id": "send_pushy_followup",
+    "feasible": true,
+    "reasons": []
+   }
+  ],
+  "counterfactual": {
+   "reference": "do_nothing",
+   "paired": {
+    "do_nothing": {
+     "n": 400,
+     "paired_mean": 0.0,
+     "paired_median": 0.0,
+     "p_improvement": 0.0,
+     "p_tie": 1.0,
+     "paired_q10": 0.0,
+     "paired_q90": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "conf": 0.8,
+     "paired_se": 0.0
+    },
+    "send_optimized": {
+     "n": 400,
+     "paired_mean": 0.1525,
+     "paired_median": -0.03,
+     "p_improvement": 0.1825,
+     "p_tie": 0.0,
+     "paired_q10": -0.03,
+     "paired_q90": 0.97,
+     "ci": [
+      0.127718,
+      0.177282
+     ],
+     "conf": 0.8,
+     "paired_se": 0.019337
+    },
+    "send_credential_cover_letter": {
+     "n": 400,
+     "paired_mean": 0.0425,
+     "paired_median": -0.03,
+     "p_improvement": 0.0725,
+     "p_tie": 0.0,
+     "paired_q10": -0.03,
+     "paired_q90": -0.03,
+     "ci": [
+      0.025862,
+      0.059138
+     ],
+     "conf": 0.8,
+     "paired_se": 0.012982
+    },
+    "send_pushy_followup": {
+     "n": 400,
+     "paired_mean": 0.0175,
+     "paired_median": -0.03,
+     "p_improvement": 0.0475,
+     "p_tie": 0.0,
+     "paired_q10": -0.03,
+     "paired_q90": -0.03,
+     "ci": [
+      0.003853,
+      0.031147
+     ],
+     "conf": 0.8,
+     "paired_se": 0.010649
+    }
+   }
+  },
+  "value_of_information": {},
+  "search": {
+   "method": "exhaustive",
+   "n_candidates": 4,
+   "n_evaluated": 4,
+   "budget": 256,
+   "tier": "production",
+   "n_eliminated_early": 0,
+   "notes": [],
+   "checkpoint": {}
+  },
+  "causal_claim": "simulated_mechanism_counterfactual",
+  "empirical_validation": "not_validated_on_this_decision",
+  "support_grade": "exploratory",
+  "abstention": null,
+  "active_phases": {
+   "operator_delta_census": {
+    "decision_action": 1200,
+    "reply_mechanism": 1200
+   }
+  },
+  "provenance": {
+   "action_generation": {
+    "n_candidates": 4,
+    "sources": {
+     "baseline": 1,
+     "user": 3
+    },
+    "rejected": [],
+    "n_deduped": 0
+   },
+   "crn_manifest": {
+    "root_seed": 90,
+    "per_particle_seed": "seed*7919 + particle_index",
+    "stream_partitioning": "sha256(seed|stream): hazard|<etype>, op|<operator>|<etype>, impl|<action_id>",
+    "particles_sampled_once": true,
+    "hypothesis_stratification": [
+     "H_base",
+     "H_engaged",
+     "H_gatekeeper"
+    ],
+    "n_particles": 400,
+    "exogenous_trace_match_vs_reference": {
+     "do_nothing": 1.0,
+     "send_optimized": 1.0,
+     "send_credential_cover_letter": 1.0,
+     "send_pushy_followup": 1.0
+    }
+   },
+   "hypothesis_assignment": [
+    "H_base",
+    "H_engaged",
+    "H_gatekeeper"
+   ],
+   "ranking": {
+    "objective": "expected",
+    "order": [
+     {
+      "action_id": "send_optimized",
+      "score": 0.1525,
+      "note": "expected"
+     },
+     {
+      "action_id": "send_credential_cover_letter",
+      "score": 0.0425,
+      "note": "expected"
+     },
+     {
+      "action_id": "send_pushy_followup",
+      "score": 0.0175,
+      "note": "expected"
+     },
+     {
+      "action_id": "do_nothing",
+      "score": 0.0,
+      "note": "expected"
+     }
+    ]
+   },
+   "minimax_regret_action": "send_optimized"
+  },
+  "cost": {
+   "arm_evaluations": 4,
+   "rollouts": 1600
+  },
+  "latency_s": 2.885,
+  "seed": 90
+ },
+ "arm_texts": {
+  "send_optimized": "Peter, AI scheduling treats electricity as a fixed cost; forecasting power constraints and scheduling against them is the cheapest capacity there is. 17 years old, starting Princeton in the fall. building Aurelius (runaurelius.com): constraint-aware orchestration for AI infrastructure. Do you think that's wrong? Thanks, Beckett.",
+  "send_credential_cover_letter": "Dear Mr. Thiel, I hope this email finds you well. My name is Beckett and I am reaching out because I have 17 years old, starting Princeton in the fall; building Aurelius (runaurelius.com): constraint-aware orchestration for AI infrastructure; a predictive world model forecasts power constraints, simulates candidate scheduling decisions, and ranks them by economic outcome before execution. I am building something I truly believe is revolutionary: AI scheduling treats electricity as a fixed cost; forecasting power constraints and scheduling against them is the cheapest capacity there is. I would love to set up a 30-minute call at your earliest convenience to tell you more. Looking forward to hearing back from you soon.",
+  "send_pushy_followup": "Hi Peter, just following up and circling back per my last email. Please respond ASAP about AI scheduling treats electricity as a fixed cost; forecasting power constraints and scheduling against them is the cheapest capacity there is \u2014 I'd really love to get on your calendar this week."
+ },
+ "wall_s": 8.8
+}
