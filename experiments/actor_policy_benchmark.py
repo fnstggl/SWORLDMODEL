@@ -241,7 +241,7 @@ def main():
     if args.backend == "deepseek":
         from swm.api.deepseek_backend import deepseek_chat_fn
         decide_llm = deepseek_chat_fn(temperature=0.9, max_tokens=2000)
-        hypo_llm = deepseek_chat_fn(temperature=0.8, max_tokens=2000)
+        hypo_llm = deepseek_chat_fn(temperature=0.8, max_tokens=3600)
         persona_llm = deepseek_chat_fn(temperature=0.3, max_tokens=700)
     else:
         decide_llm = hypo_llm = persona_llm = _scripted_backend(None)

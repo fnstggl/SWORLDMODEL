@@ -372,12 +372,47 @@ class QualitativeParticleHypothesizer:
                 try:
                     r = json.loads(m.group(0))
                 except ValueError:
-                    return None
+                    r = None
+        if not isinstance(r, list):
+            # token-cap truncation mid-array: salvage the COMPLETE hypothesis objects and drop
+            # the clipped tail — two rich hypotheses beat three template fallbacks
+            r = _balanced_objects(text or "")
         # a valid hypothesis row must actually carry hidden-state sections — anything else
         # (e.g. a stray decision object) is rejected so the labeled fallback set serves instead
         rows = [x for x in (r or []) if isinstance(x, dict)
                 and ("hypothesis_label" in x or sum(1 for s in STATE_SECTIONS if s in x) >= 3)]
         return rows or None
+
+
+def _balanced_objects(text: str) -> list:
+    """Every COMPLETE top-level {...} object in a (possibly truncated) JSON array — a brace
+    scanner that respects strings/escapes, so a response clipped by the token cap still yields
+    its finished hypothesis objects."""
+    out, depth, start, in_str, esc = [], 0, None, False, False
+    for i, ch in enumerate(text):
+        if in_str:
+            if esc:
+                esc = False
+            elif ch == "\\":
+                esc = True
+            elif ch == '"':
+                in_str = False
+            continue
+        if ch == '"':
+            in_str = True
+        elif ch == "{":
+            if depth == 0:
+                start = i
+            depth += 1
+        elif ch == "}":
+            depth = max(0, depth - 1)
+            if depth == 0 and start is not None:
+                try:
+                    out.append(json.loads(text[start:i + 1]))
+                except ValueError:
+                    pass
+                start = None
+    return out
 
 
 def _branch_index(world) -> int:

@@ -154,7 +154,7 @@ def run_numeric_arm():
 def main():
     from swm.api.deepseek_backend import deepseek_chat_fn
     llm = deepseek_chat_fn(temperature=0.9, max_tokens=2000)
-    hypo = deepseek_chat_fn(temperature=0.8, max_tokens=2000)
+    hypo = deepseek_chat_fn(temperature=0.8, max_tokens=3600)
     t0 = _time.time()
     d = run_mode_d(llm, hypo)
     d["numeric_arm_same_scenario"] = run_numeric_arm()

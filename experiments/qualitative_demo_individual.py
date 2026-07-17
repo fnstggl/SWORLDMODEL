@@ -24,7 +24,7 @@ RESULTS = Path("experiments/results")
 def main():
     from swm.api.deepseek_backend import deepseek_chat_fn
     llm = deepseek_chat_fn(temperature=0.9, max_tokens=2000)
-    hypo = deepseek_chat_fn(temperature=0.8, max_tokens=2000)
+    hypo = deepseek_chat_fn(temperature=0.8, max_tokens=3600)
     t0 = _time.time()
     result = simulate_individual_reaction(
         person_id="Dana",
