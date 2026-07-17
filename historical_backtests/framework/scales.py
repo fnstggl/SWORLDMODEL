@@ -16,7 +16,8 @@ _ELITE = ("president", "prime minister", "ceo", "chancellor", "governor", "judge
           "step down", "sign the", "sign into law", "announce", "candidate")
 _SMALL_GROUP = ("supreme court", "court rule", "board", "cabinet", "committee", "federal reserve",
                 "fomc", "ftc", " sec ", "doj", "opec", "security council", "confirm", "ruling",
-                "rate cut", "rate hike", "cut rates", "raise rates", "central bank")
+                "rate cut", "rate hike", "cut rates", "raise rates", "central bank", " fed ",
+                "interest rate", " bps ", "basis points", "rate decision", "monetary policy")
 _INSTITUTIONAL = ("congress", "senate", "house of representatives", "parliament", "legislation",
                   " bill ", " act ", " law ", "approve", "approval", "ratif", "regulator", "fda",
                   "european union", " eu ", "impeach", "government shutdown", "budget", "treaty",

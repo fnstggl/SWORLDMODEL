@@ -45,6 +45,7 @@ MIN_VOLUME = 20000.0
 MIN_UNRESOLVED_DAYS = 14.0
 UNDECIDED = (0.05, 0.95)
 CLUSTER_CAP = 3
+DOMAIN_CAP = 25                                                      # composition diversity guard
 N_TOTAL, N_CAL, N_VAL, N_LOCK = 100, 40, 20, 40
 SELECTION_SEED = 20260717                                            # frozen before forecasting
 
@@ -188,14 +189,15 @@ def select(cands: list) -> list:
     for x in cands:
         pri, sec = scales.classify_scale(x["case"]["raw_question"])
         x["case"]["causal_scale"], x["case"]["secondary_scales"] = pri, sec
-    chosen, cluster_n, scale_n = [], {}, {s: 0 for s in scales.SCALES}
+    chosen, cluster_n, domain_n, scale_n = [], {}, {}, {s: 0 for s in scales.SCALES}
 
     def _take(x):
-        cl = x["case"]["cluster_id"]
-        if cluster_n.get(cl, 0) >= CLUSTER_CAP:
+        cl, dom = x["case"]["cluster_id"], x["case"]["domain"]
+        if cluster_n.get(cl, 0) >= CLUSTER_CAP or domain_n.get(dom, 0) >= DOMAIN_CAP:
             return False
         chosen.append(x)
         cluster_n[cl] = cluster_n.get(cl, 0) + 1
+        domain_n[dom] = domain_n.get(dom, 0) + 1
         scale_n[x["case"]["causal_scale"]] += 1
         return True
     for scale, quota in scales.QUOTAS.items():               # pass 1: fill quotas
