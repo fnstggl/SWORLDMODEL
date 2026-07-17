@@ -225,19 +225,27 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
         except Exception as e:  # noqa: BLE001 — synthesis must never block the forecast
             lineage["activation_synthesis"] = {"error": f"{type(e).__name__}: {e}"[:160]}
 
-    # ---------- Event-time conversion: "when/how-long" questions are FIRST-PASSAGE problems ----------
-    # The compiler flattens a "when" question into a categorical mode contract and loses time entirely
-    # (the Ukraine failure class). Here — after synthesis/depth/intentions so `_consumed_state` and the
-    # grounded intention factor exist — the point contract is replaced by an EventTimeContract: per-mode
-    # hazard_round chains at the trajectory cadence, a universal absorption monitor observing first
-    # passage, and a censoring-aware CDF/survival/mode×time terminal readout. Universal: routing is
-    # purely linguistic + structural, never scenario-specific.
+    # ---------- Event-time conversion: the outcome of the simulation IS the answer ----------
+    # READOUT, NOT RESOLVER. The answer mechanism needs a readout (translate the simulated world into the
+    # question's format); it must not have a resolver (an extra decision/draw that declares the answer).
+    # Here — after synthesis/depth/intentions so `_consumed_state` and the grounded intentions exist —
+    # BOTH question shapes are rewired onto first-passage semantics: "when/how-long" questions become
+    # timing contracts; binary deadline questions have their terminal resolver events REMOVED and the
+    # answer becomes F(deadline) read from the same trajectories (entailing dated facts and institutional
+    # decisions absorb at their real dates; the evidence-updated posterior parameterizes the residual
+    # hazard chain instead of biasing a terminal coin). Universal: routing is purely linguistic +
+    # structural, never scenario-specific. On conversion failure the resolver path remains (recorded).
     if "event_time" not in drop:
         try:
-            from swm.world_model_v2.event_time import is_when_question, convert_to_event_time
+            from swm.world_model_v2.event_time import (convert_binary_to_event_time,
+                                                       convert_to_event_time, is_when_question)
+            crit = lineage.get("resolution_criterion") or {}
             if is_when_question(question):
-                convert_to_event_time(plan, lineage.get("resolution_criterion") or {},
-                                      lineage=lineage, llm=llm)
+                convert_to_event_time(plan, crit, lineage=lineage, llm=llm)
+            else:
+                fex = lineage.get("fidelity_expansion")
+                cad = fex.get("decision_cadence_days") if isinstance(fex, dict) else None
+                convert_binary_to_event_time(plan, crit, lineage=lineage, llm=llm, cadence_days=cad)
         except Exception as e:  # noqa: BLE001 — conversion must never block the forecast
             lineage["event_time"] = {"error": f"{type(e).__name__}: {e}"[:160]}
 

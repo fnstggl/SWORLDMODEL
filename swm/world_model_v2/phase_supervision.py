@@ -232,10 +232,11 @@ def _terminal_influence(phase, plan, written) -> str:
     outcome_var = (rev or {}).get("payload", {}).get("outcome_var", "outcome")
     consumed = set()
     for e in plan.scheduled_events:
-        if e.get("etype") in ("institutional_decision", "aggregate_outcome_resolution"):
+        if e.get("etype") in ("institutional_decision", "aggregate_outcome_resolution", "hazard_round"):
             consumed |= {m.get("var") for m in (e.get("payload", {}).get("consume") or [])}
     for w in written:
-        if outcome_var in w:
+        # event-time plans have no resolver: writing the absorbing state IS resolving the terminal
+        if outcome_var in w or "absorbing_state_reached" in w or "absorbed_at" in w:
             return "direct_resolution"
         if any(cv and cv in w for cv in consumed):
             return "consumed_by_mechanism"
