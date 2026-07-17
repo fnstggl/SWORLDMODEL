@@ -148,7 +148,7 @@ def run_voi_check(t: dict, seed: int) -> dict:
     ev = _evaluator(t["ctx"], seed=seed)
     sides = []
     for w in ev.particles():
-        f = w.entities["decider"].get("latent_state", key="context")
+        f = w.entities["environment"].get("latent_state", key="context")
         v = float(f.value) if f is not None and f.value is not None else 0.5
         sides.append("high" if v >= 0.5 else "low")
     p2 = t["problem"]

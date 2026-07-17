@@ -107,8 +107,13 @@ def _base_world(rng, *, entities=(), noise_sd=0.15):
     for e in entities:
         base.entities[e.identity] = e
     base.quantities["payoff"] = Quantity(name="payoff", qtype="payoff", value=0.0, timestamp=T0)
-    maker.set("latent_state", F(None, dist={"mean": 0.5, "sd": noise_sd, "lo": 0.0, "hi": 1.0}),
-              key="context")
+    # the hidden context lives on a dedicated ENVIRONMENT entity, NOT on the decider: the canonical
+    # observable-view shows an actor its OWN fields, so a decider-held latent would be structurally
+    # visible to policies — the belief-state boundary test enforces this placement.
+    env = Entity(identity="environment")
+    env.set("latent_state", F(None, dist={"mean": 0.5, "sd": noise_sd, "lo": 0.0, "hi": 1.0}),
+            key="context")
+    base.entities["environment"] = env
     return base
 
 
@@ -119,7 +124,7 @@ def _ctx(base, rule, *, horizon_days=8.0, hazard_rate=0.3, n_particles=40, extra
     # posterior-sampling path (sequential / partially-observable / VOI tasks depend on real
     # hidden-state variation across particles, not a constant fallback)
     init = InitialStateModel(base_world=base, latents=[
-        LatentVariableRecord(path="decider.latent_state[context]",
+        LatentVariableRecord(path="environment.latent_state[context]",
                              candidates={"mean": 0.5, "sd": 0.25, "lo": 0.0, "hi": 1.0},
                              method="prior", confidence=0.5)])
 
@@ -256,7 +261,7 @@ class _SeqRevealOperator(TransitionOperator):
         return None
 
     def run(self, world, event, rng):
-        ent = world.entities["decider"]
+        ent = world.entities["environment"]
         ctxv = ent.get("latent_state", key="context")
         val = float(ctxv.value if ctxv is not None and ctxv.value is not None else 0.5)
         info = world.information
@@ -281,7 +286,7 @@ def _sequential(rng, task_id):
         if event.etype == "decision_action":
             a = event.payload.get("action")
             side = str(a.content.get("variant", ""))
-            ent = world.entities["decider"]
+            ent = world.entities["environment"]
             ctxv = ent.get("latent_state", key="context")
             val = float(ctxv.value if ctxv is not None and ctxv.value is not None else 0.5)
             truth = "high" if val >= 0.5 else "low"
