@@ -146,6 +146,40 @@ def default_proposer(slot: str, spec_strategy: dict, context: dict, k: int = 8) 
     return list(SLOT_BANK.get(slot, [""]))[:k]
 
 
+def bank_proposer(sender_brief, recipient_label: str = ""):
+    """Offline proposer built from the ACTUAL SenderBrief instead of the fixture SLOT_BANK (which is a
+    deliberate Thiel/Beckett test scenario). Keeps the bank's good/bad contrast structure — the winner
+    must still be EARNED by the scorer — but every line derives from the caller's real facts, so
+    offline mode is not a hardcoded scenario."""
+    first = (recipient_label or "there").split()[0]
+    sender = getattr(sender_brief, "sender", "") or "I"
+    thesis = (getattr(sender_brief, "thesis", "") or "what I'm building").rstrip(".")
+    ask = (getattr(sender_brief, "ask", "") or "a one-line reaction").rstrip(".")
+    facts = [f.rstrip(".") for f in (getattr(sender_brief, "facts", []) or [])]
+    fact1 = facts[0] if facts else thesis
+    bank = {
+        "opener": [
+            f"{first}, {thesis}.",
+            f"{first},",
+            f"Dear {first}, I hope this email finds you well.",              # annoying (contrast)
+        ],
+        "hook": [f"{fact1}." if fact1 else "", ""],
+        "thesis": ([f"{f}." for f in facts[1:3]] or [f"{thesis}."]) + [
+            f"My startup is an exciting next-generation platform with huge potential.",  # slop (contrast)
+        ],
+        "ask": [
+            "Do you think that's wrong?",
+            "Is this a bad idea?",
+            f"Could we set up a 30-minute call at your earliest convenience?",  # pushy (contrast)
+        ],
+        "close": [sender, f"Thanks, {sender}.", ""],
+    }
+
+    def propose(slot: str, spec_strategy: dict, context: dict, k: int = 8) -> list[str]:
+        return list(bank.get(slot, [""]))[:k]
+    return propose
+
+
 def _spec_distance(strat: dict, spec_strategy: dict) -> float:
     return sum(abs(strat.get(v, 0.0) - spec_strategy.get(v, spec(v).default)) for v in MESSAGE_VARS) / len(MESSAGE_VARS)
 
@@ -250,7 +284,7 @@ def polish_email(email: ConstructedEmail, scorer: StrategyScorer, spec_strategy:
     encode = encode_fn or encode_text_to_strategy
     if rank_critic is None:
         from swm.decision.semantic_critic import SemanticCritic
-        rank_critic = SemanticCritic()          # cheap lexical — ranks replacements without LLM calls
+        rank_critic = SemanticCritic()          # fallback ranker; live callers pass the LLM critic here
     slots = dict(email.slots)
     text = _assemble(slots)
 
@@ -270,14 +304,19 @@ def polish_email(email: ConstructedEmail, scorer: StrategyScorer, spec_strategy:
                 continue
             # Candidate replacements. With a rewrite_fn (live LLM), the focused fix is a TARGETED REWRITE
             # of the flagged line fed the critic's reason — resampling fresh proposer options just returns
-            # the same slop register. Without it, fall back to fresh proposer candidates.
+            # the same slop register. Without it, fall back to fresh proposer candidates. DELETION is a
+            # first-class repair: optional slots may always drop; any slot flagged as redundant may drop
+            # (a restated statistic's best fix is usually removal, not paraphrase).
+            reasons = next((r for fs, r in reason_by_sent.items() if _sent_overlap(fs, chosen)), [])
             if rewrite_fn is not None:
-                reasons = next((r for fs, r in reason_by_sent.items() if _sent_overlap(fs, chosen)), [])
                 candidates = [rewrite_fn(chosen, reasons, spec_strategy)]
             else:
                 candidates = list(proposer(slot, spec_strategy, {"prefix": _prefix_before(slots, slot)}))
+            if slot in ("hook", "close") or any("redundant" in str(r) for r in reasons):
+                candidates = candidates + [""]
             # Rank lexicographically: (candidate cleanliness — fixes independent slop unmasked; then
-            # whole-trial quality — fixes redundancy; then strategy value). Cheap lexical critic ranks.
+            # whole-trial quality — fixes redundancy; then strategy value). rank_critic does the ranking:
+            # the LLM critic when live (message_pipeline passes it), else the lexical fallback.
             def rank(c):
                 trial = _assemble({**slots, slot: c})
                 cand_clean = rank_critic.critique(c).quality if c else 1.0

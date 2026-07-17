@@ -27,6 +27,63 @@ from dataclasses import dataclass, field
 from swm.decision.strategy_scorer import MESSAGE_VARS
 from swm.variables.schema import spec
 
+
+def _call(chat_fn, prompt: str, *, max_tokens: int = None, temperature: float = None) -> str:
+    """Budget-aware invocation: backends that accept per-call overrides (deepseek_chat_fn) get them;
+    plain fn(prompt) callables still work. This exists because a judge/proposer sharing one small
+    default completion budget TRUNCATES its JSON, and a truncated judge reply used to fail OPEN —
+    the single worst failure mode this stack has had."""
+    kw = {}
+    if max_tokens is not None:
+        kw["max_tokens"] = max_tokens
+    if temperature is not None:
+        kw["temperature"] = temperature
+    if kw:
+        try:
+            return chat_fn(prompt, **kw)
+        except TypeError:
+            pass                                       # fixed-budget callable — use as given
+    return chat_fn(prompt)
+
+
+# ---------------------------------------------------------------- deterministic numeric fact guard
+_NUM_TOKEN = re.compile(r"\d[\d,]*(?:\.\d+)?")
+_SMALL_WHITELIST = {str(i) for i in range(0, 13)}      # "one line", "3 sentences" — natural language
+
+
+def _canon_number(tok: str) -> str:
+    t = tok.replace(",", "")
+    if "." in t:
+        t = t.rstrip("0").rstrip(".")
+    return t
+
+
+def allowed_numbers(*texts: str) -> set:
+    """The set of canonical numeric tokens the writer may use: everything appearing in the sender's
+    real facts (and recipient notes). Anything else with >=2 significant digits is treated as a
+    fabricated specific — rejected BEFORE scoring, not just flagged after."""
+    out = set()
+    for t in texts:
+        for m in _NUM_TOKEN.findall(t or ""):
+            out.add(_canon_number(m))
+    return out
+
+
+def number_violations(line: str, allowed: set) -> list:
+    """Numeric tokens in `line` that are neither whitelisted small integers nor in the allowed set."""
+    bad = []
+    for m in _NUM_TOKEN.findall(line or ""):
+        c = _canon_number(m)
+        if c in _SMALL_WHITELIST or c in allowed:
+            continue
+        bad.append(m)
+    return bad
+
+
+def numbers_in(line: str) -> set:
+    """Distinctive numbers in a line (for no-reuse checks): canonical, small integers excluded."""
+    return {_canon_number(m) for m in _NUM_TOKEN.findall(line or "")} - _SMALL_WHITELIST
+
 # slot -> what that communicative move is. Roles are DISJOINT so the moves compose into one coherent
 # email instead of four paraphrases of the same point.
 _SLOT_ROLE = {
@@ -137,8 +194,15 @@ def _extract_list(text: str) -> list:
 
 
 def llm_proposer(chat_fn, *, recipient_notes: str = "", sender: SenderBrief | None = None, levers=None):
-    """Build propose_fn(slot, spec_strategy, context, k) that asks the LLM for k candidate sentences."""
+    """Build propose_fn(slot, spec_strategy, context, k) that asks the LLM for k candidate sentences.
+
+    Every candidate passes the DETERMINISTIC numeric fact guard before it may be scored: a line
+    asserting a number that is in neither the sender facts nor the recipient notes is rejected at
+    the door (the LLM judge is the semantic layer; this closes the '31% on a 256-GPU run' class
+    mechanically). Candidates that REUSE a distinctive number already present in the email so far
+    are also rejected — a statistic lands once."""
     sender = sender or SenderBrief()
+    allowed = allowed_numbers(sender.to_prompt(), recipient_notes)
 
     def propose(slot: str, spec_strategy: dict, context: dict, k: int = 6) -> list:
         role = _SLOT_ROLE.get(slot, "one line of the email")
@@ -155,26 +219,45 @@ def llm_proposer(chat_fn, *, recipient_notes: str = "", sender: SenderBrief | No
             sender.to_prompt(),
             "",
             "The email so far reads: " + (f'"{prefix}"' if prefix else "(nothing yet — this is the start)"),
-            "Continue it. Do NOT repeat any point already made above; only add new information.",
+            "Continue it. Do NOT repeat any point already made above; only add new information. "
+            "If a number or statistic already appears in the email so far, you may NOT use it again.",
             "",
             f"Return ONLY a JSON array of {k} strings, each a single option for the {slot}. No prose.",
         ])
         try:
-            options = _extract_list(chat_fn(prompt))
+            options = _extract_list(_call(chat_fn, prompt, max_tokens=700))
         except Exception:
             options = []
+        used = numbers_in(prefix)
+        kept, rejected = [], []
+        for o in options:
+            bad = number_violations(o, allowed)
+            if bad:
+                rejected.append({"line": o[:90], "reason": f"fabricated number(s): {bad}"})
+                continue
+            reuse = numbers_in(o) & used
+            if reuse:
+                rejected.append({"line": o[:90], "reason": f"repeats number(s) already used: {sorted(reuse)}"})
+                continue
+            kept.append(o)
+        propose.last_rejected = rejected                # observability: what the guard refused and why
         # allow an empty option for optional slots (brevity), as the offline bank does
         if slot in ("hook", "close"):
-            options = options + [""]
-        return options[:k + 1] if options else ([""] if slot in ("hook", "close") else [])
+            kept = kept + [""]
+        return kept[:k + 1] if kept else ([""] if slot in ("hook", "close") else [])
+    propose.last_rejected = []
     return propose
 
 
 def llm_rewriter(chat_fn, *, recipient_notes: str = "", sender: SenderBrief | None = None):
     """Build rewrite_fn(sentence, reasons, spec_strategy) -> a plainer rewrite of a flagged line. This is
     the generator-level repair: instead of resampling more (equally tryhard) candidates, we tell the LLM
-    exactly what a critic flagged and ask it to fix THAT line — the feedback loop from critic to writer."""
+    exactly what a critic flagged and ask it to fix THAT line — the feedback loop from critic to writer.
+    A rewrite may DELETE the line (return "") when the flagged content shouldn't exist at all (redundant
+    restatement, convenience-selling with nothing underneath). A rewrite that INTRODUCES a number outside
+    the sender facts is discarded (repair must never inject fabrication)."""
     sender = sender or SenderBrief()
+    allowed = allowed_numbers(sender.to_prompt(), recipient_notes)
 
     def rewrite(sentence: str, reasons: list, spec_strategy: dict) -> str:
         rules = spec_to_instructions(spec_strategy)
@@ -183,17 +266,24 @@ def llm_rewriter(chat_fn, *, recipient_notes: str = "", sender: SenderBrief | No
             "the meaning that a busy human peer would actually say. If the line sells convenience "
             "(promises what the reader gets, how easy replying is, or how they could verify something), "
             "DELETE that framing entirely rather than rephrasing it. If it asserts any factual detail "
-            "not in the sender facts, replace it with a listed fact or drop the claim.",
+            "not in the sender facts, replace it with a listed fact or drop the claim. If the line only "
+            "repeats a point or statistic the email already made, return an empty string to delete it.",
             f"Line: \"{sentence}\"",
             "A critic flagged it for: " + ("; ".join(reasons) if reasons else "sounding like AI slop"),
             _ANTI_SLOP,
             "Writing rules:", *[f"  - {r}" for r in rules],
             sender.to_prompt(),
-            "Return ONLY the rewritten line as a plain string, no quotes, no prose.",
+            "Return ONLY the rewritten line as a plain string (or an empty string to delete the line), "
+            "no quotes, no prose.",
         ])
         try:
-            out = chat_fn(prompt).strip().strip('"').strip()
-            return out.split("\n")[0].strip() if out else sentence
+            out = _call(chat_fn, prompt, max_tokens=300).strip().strip('"').strip()
+            out = out.split("\n")[0].strip()
+            if out.lower() in ("(empty)", "(deleted)", "empty string", "delete"):
+                out = ""
+            if number_violations(out, allowed):
+                return sentence                        # repair injected a fabricated number — refuse it
+            return out
         except Exception:
             return sentence
     return rewrite
@@ -229,7 +319,7 @@ def llm_message_encoder(chat_fn, *, levers: list | None = None):
                   "Return ONLY a JSON object mapping each quality name to its 0..1 score. "
                   "Names must be exactly: " + ", ".join(names) + ".")
         try:
-            raw = chat_fn(prompt)
+            raw = _call(chat_fn, prompt, max_tokens=500, temperature=0.0)
             m = re.search(r"\{.*\}", raw, re.S)
             obj = json.loads(m.group(0)) if m else {}
             out = {}
@@ -286,14 +376,21 @@ def llm_sentence_judge(chat_fn, *, facts_text: str = ""):
         prompt = (SYSTEM + facts + "\n\nSentences:\n" + numbered +
                   '\n\nReturn ONLY a JSON array; element i = {"coherent": bool, "annoying": bool, '
                   '"ai_sounding": bool, "fabricated": bool, "reason": "short"} for sentence i, in order.')
-        try:
-            arr = _extract_list_json(chat_fn(prompt))
-        except Exception:
-            arr = []
-        # pad/truncate to len(sentences) so the critic can zip safely
+        # STRICT, FAIL-CLOSED: the completion budget scales with the sentence count (a truncated JSON
+        # array used to parse as [] and default every sentence to clean — the judge silently failing
+        # OPEN). Now: one retry, then a parse/length failure RAISES, and SemanticCritic falls back to
+        # the lexical critic — which flags slop — rather than to "everything passes".
+        budget = 260 + 150 * len(sentences)
+        arr = _extract_list_json(_call(chat_fn, prompt, max_tokens=budget, temperature=0.0))
+        if len(arr) < len(sentences):
+            arr = _extract_list_json(_call(chat_fn, prompt + "\nReturn the COMPLETE array — one element "
+                                           "per sentence.", max_tokens=budget * 2, temperature=0.0))
+        if len(arr) < len(sentences) or not all(isinstance(x, dict) for x in arr[:len(sentences)]):
+            raise RuntimeError(f"sentence judge returned {len(arr)}/{len(sentences)} verdicts — "
+                               "refusing to default-pass")
         out = []
         for i in range(len(sentences)):
-            r = arr[i] if i < len(arr) and isinstance(arr[i], dict) else {}
+            r = arr[i]
             out.append({"coherent": bool(r.get("coherent", True)),
                         "annoying": bool(r.get("annoying", False)),
                         "ai_sounding": bool(r.get("ai_sounding", False)),

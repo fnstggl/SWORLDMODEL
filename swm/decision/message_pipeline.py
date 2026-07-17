@@ -52,17 +52,28 @@ def recipient_from_world(world, contact_id: str, *, name: str | None = None, dom
                           label=name or contact_id)
 
 
-# baseline drafts (the kind of thing the old pipeline / a human would send) — evaluated for contrast only
-_BASELINES = {
-    "credential_cover_letter":
-        "Dear Mr. Thiel, I am a 17-year-old Princeton admit, recently featured in the New York Times for "
-        "my affordable-housing startup. I have a 4.0 and several prestigious awards. I would love to set "
-        "up a 30-minute call at your earliest convenience to discuss my AI infrastructure company. "
-        "Looking forward to hearing back from you soon.",
-    "pushy_followup":
-        "Hi Peter, just following up and circling back per my last email. Please respond ASAP about my AI "
-        "infrastructure startup — I'd really love to get on your calendar this week.",
-}
+def build_contrast_baselines(sender_brief=None, recipient_label: str = "") -> dict:
+    """Naive contrast drafts BUILT FROM THE ACTUAL BRIEF — the instinctive credential-parade cover
+    letter and the pushy follow-up a person would actually send about THIS idea to THIS recipient.
+    (These replace an old module-level constant that hardcoded one sender's stale facts — NYT feature,
+    housing startup — into every run regardless of the brief.) Evaluated for contrast only; they never
+    feed construction."""
+    first = (recipient_label or "there").split()[0]
+    last = (recipient_label or "").split()[-1] if recipient_label else "there"
+    facts = list(getattr(sender_brief, "facts", []) or [])
+    thesis = getattr(sender_brief, "thesis", "") or "my startup"
+    sender = getattr(sender_brief, "sender", "") or "a founder"
+    fact_clause = ("; ".join(f.rstrip(".") for f in facts[:3])) if facts else "an impressive background"
+    return {
+        "credential_cover_letter":
+            f"Dear Mr. {last}, I hope this email finds you well. My name is {sender} and I am reaching "
+            f"out because I have {fact_clause}. I am building something I truly believe is "
+            f"revolutionary: {thesis.rstrip('.')}. I would love to set up a 30-minute call at your "
+            "earliest convenience to tell you more. Looking forward to hearing back from you soon.",
+        "pushy_followup":
+            f"Hi {first}, just following up and circling back per my last email. Please respond ASAP "
+            f"about {thesis.rstrip('.')} — I'd really love to get on your calendar this week.",
+    }
 
 
 @dataclass
@@ -120,6 +131,10 @@ def optimize_message(recipient: RecipientState, *, proposer=default_proposer, q:
     levers = []
     encode_fn = encode_text_to_strategy               # lexical fallback
     rewrite_fn = None
+    if chat_fn is None and sender_brief is not None and proposer is default_proposer:
+        # offline with a real brief: the bank derives from the brief, not the fixture scenario
+        from swm.decision.compositional_search import bank_proposer
+        proposer = bank_proposer(sender_brief, recipient.label)
     if chat_fn is not None:
         from swm.decision.llm_moves import (llm_message_encoder, llm_proposer, llm_rewriter,
                                             llm_sentence_judge)
@@ -139,8 +154,15 @@ def optimize_message(recipient: RecipientState, *, proposer=default_proposer, q:
 
     scorer = scorer_from_recipient(recipient.vars, recipient.base_mean, seed=seed,
                                    weights=fit_weights, grade=fit_grade, levers=levers)
-    fast_critic = SemanticCritic()                     # cheap lexical — safe inside the beam search
-    final_critic = SemanticCritic(judge_fn=judge_fn)   # LLM if provided, else lexical — the final gate
+    # the deterministic numeric-factuality floor: distinctive numbers must come from the sender's
+    # real facts (or the recipient notes) — enforced in BOTH critics, LLM or lexical
+    fact_numbers = None
+    if sender_brief is not None:
+        from swm.decision.llm_moves import allowed_numbers
+        fact_numbers = allowed_numbers(sender_brief.to_prompt(), recipient_notes)
+    fast_critic = SemanticCritic(allowed_numbers=fact_numbers)   # cheap lexical — safe inside the beam
+    final_critic = SemanticCritic(judge_fn=judge_fn,             # LLM if provided — the final gate
+                                  allowed_numbers=fact_numbers)
 
     # L1 — optimal strategy in variable space (no text), over the general + situational levers
     spec = optimize_strategy(scorer, q=q, restarts=restarts, seed=seed)
@@ -163,9 +185,9 @@ def optimize_message(recipient: RecipientState, *, proposer=default_proposer, q:
                              confidences=recipient.confidences, n_samples=n_mc, seed=seed,
                              weights=fit_weights, grade=grade_letter, levers=levers)
 
-    # contrast: run naive drafts through the SAME evaluator
+    # contrast: run naive drafts through the SAME evaluator (built from the ACTUAL brief + recipient)
     result_baselines = {}
-    for label, text in (baselines or _BASELINES).items():
+    for label, text in (baselines or build_contrast_baselines(sender_brief, recipient.label)).items():
         mc = mc_evaluate(recipient.vars, recipient.base_mean, encode_fn(text),
                          base_n_effective=recipient.base_n_effective, confidences=recipient.confidences,
                          n_samples=n_mc, seed=seed, weights=fit_weights, grade=grade_letter, levers=levers)

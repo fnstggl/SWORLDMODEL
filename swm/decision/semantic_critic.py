@@ -122,19 +122,38 @@ def _content_words(s: str) -> set:
     return {w for w in re.findall(r"[a-z']+", s.lower()) if w not in _STOP and len(w) > 2}
 
 
+_DISTINCT_NUM = re.compile(r"\d[\d,]*(?:\.\d+)?")
+
+
+def _distinct_numbers(s: str) -> set:
+    """Distinctive numeric tokens (canonical; small counting numbers excluded) — a statistic like
+    '724%' or '1.5M' is allowed to land ONCE in an email."""
+    out = set()
+    for m in _DISTINCT_NUM.findall(s or ""):
+        c = m.replace(",", "")
+        if "." in c:
+            c = c.rstrip("0").rstrip(".")
+        if c and c not in {str(i) for i in range(0, 13)}:
+            out.add(c)
+    return out
+
+
 def _redundant_pairs(sents: list, thresh: float = 0.5) -> set:
-    """Indices of sentences that substantially repeat an earlier one (content-word Jaccard) — the
-    cross-slot repetition an independent per-sentence check misses."""
+    """Indices of sentences that substantially repeat an earlier one — by content-word Jaccard OR by
+    REUSING a distinctive number an earlier sentence already delivered. The numeric check catches the
+    paraphrased-statistic repeat ('a 724% gain…' / 'the 724% result…') that word overlap misses."""
     red = set()
     words = [_content_words(s) for s in sents]
+    nums = [_distinct_numbers(s) for s in sents]
     for i in range(len(sents)):
         for j in range(i):
             a, b = words[i], words[j]
-            if not a or not b:
-                continue
-            jac = len(a & b) / len(a | b)
-            if jac >= thresh:
+            if a and b and len(a & b) / len(a | b) >= thresh:
                 red.add(i)
+                break
+            if nums[i] & nums[j]:
+                red.add(i)
+                break
     return red
 
 
@@ -189,8 +208,11 @@ class Critique:
 class SemanticCritic:
     """Adversarial text-quality critic. `judge_fn(sentences) -> [{coherent, annoying, reason}]` uses an
     LLM; without it, the transparent lexical fallback runs. `critique(text)` returns per-sentence verdicts
-    and the two aggregate axes."""
+    and the aggregate axes. `allowed_numbers` (optional, canonical numeric tokens from the sender's real
+    facts) arms a DETERMINISTIC factuality overlay: a sentence asserting a distinctive number outside the
+    facts is marked fabricated even if the LLM judge was lenient about it."""
     judge_fn: object = None
+    allowed_numbers: object = None                      # set[str] | None
 
     def critique(self, text: str) -> Critique:
         sents = _sentences(text)
@@ -199,11 +221,31 @@ class SemanticCritic:
         if self.judge_fn is not None:
             try:
                 crit = self._llm_critique(text, sents)
-            except Exception:
+            except Exception:  # noqa: BLE001 — judge outage falls back to the LEXICAL critic (which
+                # flags slop), never to all-pass, and the source label says so honestly
                 crit = self._lexical_critique(sents)
+                crit.source = "lexical_fallback(llm_judge_failed)"
         else:
             crit = self._lexical_critique(sents)
+        crit = self._apply_number_facts(crit, sents)
         return self._apply_redundancy(crit, sents)
+
+    def _apply_number_facts(self, crit: Critique, sents: list) -> Critique:
+        """Deterministic numeric-factuality overlay (both judge paths): distinctive numbers not present
+        in the sender facts mark the sentence fabricated. Belt to the propose-time guard's suspenders."""
+        if self.allowed_numbers is None:
+            return crit
+        allowed = set(self.allowed_numbers)
+        any_bad = False
+        for i, s in enumerate(sents):
+            bad = sorted(_distinct_numbers(s) - allowed)
+            if bad and i < len(crit.verdicts):
+                crit.verdicts[i].fabricated = True
+                crit.verdicts[i].reasons.append(f"number(s) not in sender facts: {bad}")
+                any_bad = True
+        if any_bad:
+            crit.factuality = 0.0
+        return crit
 
     def _apply_redundancy(self, crit: Critique, sents: list) -> Critique:
         """Structural cross-slot check (applies to BOTH the LLM and lexical paths): a sentence that
@@ -299,20 +341,7 @@ class SemanticCritic:
                         verdicts=verdicts, source="llm")
 
 
-def llm_sentence_judge(client_fn, model: str = "claude-opus-4-8"):
-    """Build a judge_fn(sentences)->[{coherent,annoying,reason}] from an LLM client. `client_fn(system,
-    user, schema)->dict` is the caller's structured-output shim (kept pluggable like the rest of swm)."""
-    SYSTEM = ("You are a ruthless editor of cold outreach. For each sentence, decide: is it COHERENT "
-              "(makes a concrete, literally-parseable claim a smart skeptic could act on — not vague "
-              "metaphor or buzzwords), and is it ANNOYING (tryhard, embellishing, fake-humble, or a "
-              "manipulative tic like 'I'll leave you alone'). Be harsh; default to flagging slop.")
-
-    def judge(sentences):
-        user = "Rate each sentence:\n" + "\n".join(f"{i+1}. {s}" for i, s in enumerate(sentences))
-        schema = {"type": "object", "properties": {"sentences": {"type": "array", "items": {
-            "type": "object", "properties": {"coherent": {"type": "boolean"},
-                                             "annoying": {"type": "boolean"}, "reason": {"type": "string"}},
-            "required": ["coherent", "annoying"]}}}, "required": ["sentences"]}
-        out = client_fn(SYSTEM, user, schema)
-        return out.get("sentences", [])
-    return judge
+# The production sentence judge lives in swm/decision/llm_moves.llm_sentence_judge (four axes:
+# coherent / annoying / ai_sounding / fabricated-vs-facts, strict fail-closed parsing). An older
+# two-axis judge that lived here was removed: it silently defaulted the register and factuality
+# axes to "pass", which is exactly the failure mode this critic exists to prevent.

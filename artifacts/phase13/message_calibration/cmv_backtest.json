@@ -1,0 +1,47 @@
+{
+ "dataset": "ConvoKit winning-args (ChangeMyView), Tan et al. 2016",
+ "unit": "one challenger argument to an OP",
+ "outcome": "OP awarded a delta (real recorded persuasion outcome)",
+ "assignment": "observational, matched-pair construction (pair_ids)",
+ "n_labeled": 19714,
+ "n_positive": 12420,
+ "corpus_sha16": "a3be073601ea7305",
+ "by_pair_backtest": {
+  "n_train": 13815,
+  "n_test": 5899,
+  "test_base_rate": 0.623,
+  "grade": "A",
+  "ece": 0.0217,
+  "brier": 0.2317,
+  "log_loss": 0.6553,
+  "auc": 0.5692,
+  "pair_accuracy": 0.5603,
+  "n_pairs_tested": 6728,
+  "weights": {
+   "cred\u00d7statusorient": -1.243,
+   "warmth": 0.77,
+   "pushiness": -0.712,
+   "relevance_fit": 0.7,
+   "clarity": 0.687,
+   "proof\u00d7skeptic": 0.605,
+   "low_effort_ask": 0.56,
+   "push\u00d7status": -0.519,
+   "length_fit": 0.507,
+   "responder_incentive": 0.449
+  },
+  "note": "graded on a held-out (by-pair) split of REAL outcomes. AUC 0.5 / pair_accuracy 0.5 = chance."
+ },
+ "production_fit_grade": {
+  "grade": "A",
+  "ece": 0.0204,
+  "brier": 0.2286,
+  "log_loss": 0.6485,
+  "uplift@20": 0.1258,
+  "n_test": 5915,
+  "test_base_rate": 0.6291,
+  "note": "graded on a held-out split of the supplied reply outcomes"
+ },
+ "transport_assumption": "persuasion (CMV delta) -> cold-email reply transport is an assumption; the grade applies to the fitted domain",
+ "encoder": "lexical (deterministic over the full corpus)",
+ "wall_s": 54.0
+}
