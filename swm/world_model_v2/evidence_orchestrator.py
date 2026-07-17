@@ -46,6 +46,8 @@ class OrchestratorConfig:
     extract_claims: bool = True
     max_requirements_retrieved: int = 8         # cap RSS queries to the top-VoI requirements
     max_claim_docs: int = 16                    # cap LLM claim-extraction calls per question
+    use_free_sources: bool = True               # GDELT/Wikidata/WorldBank/ReliefWeb/UCDP/curated RSS
+    max_free_routes_per_req: int = 4            # routed free-connector calls per requirement (cost bound)
 
 
 def _window(as_of_ts: float, lookback_days: int) -> tuple:
@@ -92,6 +94,64 @@ def _query_terms(req, question: str) -> str:
     return f"{base} {ents}".strip()[:160]
 
 
+_FREE_SOURCE_TYPES = {"gdelt": "news", "wikipedia_search": "wikipedia_revision",
+                      "wikidata": "structured_fact", "worldbank": "dataset_observation",
+                      "reliefweb": "official_report", "ucdp": "dataset_observation",
+                      "curated_rss": "institutional_feed"}
+
+
+def _run_free_routes(req, question: str, *, store, after: str, before: str, as_of_iso: str,
+                     max_routes: int = 3):
+    """Execute the FreeSourceRouter's plan for one requirement. Yields (connector_name, items,
+    trace) per call. Every connector degrades to a failure trace — nothing here raises."""
+    from swm.world_model_v2.evidence_connectors_free import (CuratedRssConnector,
+                                                             FreeSourceRouter, GdeltDocConnector,
+                                                             ReliefWebConnector, UcdpGedConnector,
+                                                             WikidataFactsConnector,
+                                                             WikipediaSearchConnector,
+                                                             WorldBankConnector)
+    routes = FreeSourceRouter().route(req, question)[:max_routes]
+    for cname, query, kw in routes:
+        try:
+            if cname == "gdelt":
+                items, tr = GdeltDocConnector(store=store).search_historical(
+                    query, after_date=after, before_date=before,
+                    requirement_id=req.requirement_id, k=kw.get("k", 6))
+            elif cname == "wikipedia_search":
+                items, tr = WikipediaSearchConnector(store=store).search(
+                    query, requirement_id=req.requirement_id, k=kw.get("k", 4))
+            elif cname == "wikidata":
+                items, tr = WikidataFactsConnector(store=store).facts(
+                    query, requirement_id=req.requirement_id, as_of_iso=as_of_iso)
+            elif cname == "worldbank":
+                items, tr = WorldBankConnector(store=store).series(
+                    query, kw.get("indicator_terms", ""), requirement_id=req.requirement_id,
+                    as_of_iso=as_of_iso)
+            elif cname == "reliefweb":
+                items, tr = ReliefWebConnector(store=store).search_historical(
+                    query, after_date=after, before_date=before,
+                    requirement_id=req.requirement_id, k=kw.get("k", 4))
+            elif cname == "ucdp":
+                items, tr = UcdpGedConnector(store=store).events(
+                    query, after_date=after, before_date=before,
+                    requirement_id=req.requirement_id)
+            elif cname == "curated_rss":
+                items, tr = CuratedRssConnector(store=store).search_historical(
+                    query, after_date=after, before_date=before,
+                    requirement_id=req.requirement_id, domains=kw.get("domains", ()),
+                    k=kw.get("k", 6))
+            else:
+                continue
+        except Exception as e:  # noqa: BLE001 — a connector bug must not abort evidence gathering
+            from swm.world_model_v2.evidence_connectors import RetrievalTrace
+            tr = RetrievalTrace(connector_id=cname, connector_version="1.0",
+                                requirement_id=req.requirement_id, logical_query=query,
+                                wire_url="", connector_status="network_error",
+                                error=f"{type(e).__name__}: {e}"[:200])
+            items = []
+        yield cname, items, tr
+
+
 def gather_evidence(question: str, *, as_of: str, requirements: list, llm=None,
                     user_documents: list | None = None, dataset_path: str = "",
                     prior_bundle_path: str = "", config: OrchestratorConfig | None = None,
@@ -133,6 +193,21 @@ def gather_evidence(question: str, *, as_of: str, requirements: list, llm=None,
             traces.append(wtr.as_dict())
             for it in witems:
                 documents.append(_doc_from_item(it, "wikipedia_revision"))
+        # routed FREE sources: the categories news prose cannot answer (structured facts, macro
+        # series, battle events, institutional primaries) — each call its own audit trace; a
+        # blocked host degrades to a recorded failure, never an abort
+        if cfg.use_free_sources:
+            for cname, fitems, ftr in _run_free_routes(req, question, store=store,
+                                                       after=after, before=before,
+                                                       as_of_iso=as_of_iso,
+                                                       max_routes=cfg.max_free_routes_per_req):
+                traces.append(ftr.as_dict())
+                if ftr.connector_status not in ("ok", "zero_results", "auth_required"):
+                    connector_failures.append({"connector": ftr.connector_id,
+                                               "status": ftr.connector_status, "error": ftr.error,
+                                               "requirement_id": req.requirement_id})
+                for it in fitems:
+                    documents.append(_doc_from_item(it, _FREE_SOURCE_TYPES.get(cname, "news")))
 
     # user documents (private by default via visibility hint)
     if user_documents:
