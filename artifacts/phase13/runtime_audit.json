@@ -1,0 +1,101 @@
+{
+  "audit": "phase13_runtime_integration_audit",
+  "as_of_commit_base": "origin/claude/world-model-v2 @ 38ec308",
+  "canonical_entry_points": {
+    "production": "swm/facade.py::forecast(architecture='world_model_v2') -> swm/world_model_v2/unified_runtime.py::simulate_world (unified_runtime.py:51)",
+    "offline_plan_runner": "swm/world_model_v2/materialize.py::run_from_plan (materialize.py:223)",
+    "rollout_core": "swm/world_model_v2/rollout.py::WorldModelV2Run.run (rollout.py:96)",
+    "matched_counterfactual_primitive": "swm/world_model_v2/rollout.py::WorldModelV2Run.evaluate_interventions (rollout.py:110)"
+  },
+  "legacy_entry_points": {
+    "pipeline_simulate": "swm/world_model_v2/pipeline.py::simulate — demoted internal compatibility helper",
+    "v1_decision_layer": "swm/decision/* — operates on v1 StructuralModel specs; zero imports of world_model_v2 (verified by grep)"
+  },
+  "world_execution_plan_contract": {
+    "class": "swm/world_model_v2/compiler.py::WorldExecutionPlan (compiler.py:109)",
+    "fields": ["question", "outcome_contract", "as_of", "horizon_ts", "entities", "populations", "institutions", "relations", "quantities", "latents", "scheduled_events", "stochastic_hazards", "accepted_mechanisms", "candidate_experimental_mechanisms", "rejected_mechanisms", "structural_hypotheses", "actor_decisions", "mechanism_choices", "fallbacks_used", "support_grade", "interpretations", "omissions", "degraded", "fidelity_plan", "uncertainty_plan", "compute_plan", "provenance", "version", "parent_version"],
+    "runtime_attached": ["posterior_rate_particles", "structural_posterior", "_intention_stances", "_canonical_modes", "_declared_pathways", "population_latent_specs"],
+    "hash": "plan_hash() at compiler.py:141"
+  },
+  "worldstate_lineage": {
+    "state": "swm/world_model_v2/state.py::WorldState (state.py:194) — entities/populations/network/institutions/quantities/information + clock + branch_id + parent_version + evidence_hash",
+    "clone": "WorldState.clone(branch_id=) at state.py:216 records parent_version — counterfactual branch lineage",
+    "branch": "WorldBranch (state.py:229) carries weight + [StateDelta] log + terminal flag"
+  },
+  "phase_supervisor_behavior": {
+    "module": "swm/world_model_v2/phase_supervision.py",
+    "record": "PhaseExecutionRecord (phase_supervision.py:53) — relevant/relevance_reasons/input_state_present/selected_mechanism/execution_status/n_state_deltas/state_fields_written/downstream_events_produced/terminal_influence/support_implication/errors",
+    "execution_status_enum": ["causally_active", "no_op_causally_irrelevant", "blocked_missing_state", "blocked_no_mechanism", "blocked_invalid_contract", "execution_failed"],
+    "invocation": "unified_runtime.py:309-334 — assess() + finalize() every run; manifest DERIVED from records; blocked relevant phase lowers support_grade",
+    "phases": {
+      "phase1_compiler": "compiler.py", "phase2_evidence": "evidence_orchestrator.py + evidence_*",
+      "phase3_posterior": "phase3_posterior.py + posterior.py", "phase4_actor_policy": "phase4_policy.py/phase4_execution.py/transitions.py",
+      "phase5_rollout_exec": "rollout.py", "phase6_registry": "registry/", "phase7_nonlinear": "nonlinear/",
+      "phase8_persistence": "phase8_pipeline.py + phase8_*", "phase9_populations": "phase9_population.py",
+      "phase9_networks": "phase9_network.py + phase_consumers.py", "phase10_institutions": "institutions.py + phase_consumers.py",
+      "phase11_recompilation": "phase11/controller.py", "phase12_serving": "phase12_serve.py + calibration.py"
+    }
+  },
+  "state_delta_protocol": {
+    "class": "swm/world_model_v2/transitions.py::StateDelta (transitions.py:41)",
+    "fields": ["at", "event_type", "operator", "changes[{path,before,after}]", "reason_codes", "uncertainty", "evidence_deps", "follow_up_events"],
+    "endogenous_chains": "delta.follow_up_events validated against event registry + horizon-capped queue at rollout.py:60-73"
+  },
+  "event_queue": {
+    "class": "swm/world_model_v2/events.py::EventQueue (events.py:88)",
+    "event": "Event(ts, seq, etype, participants, payload, visibility, source, preconditions) — etype must be registered (events.py:60)",
+    "hazards": "StochasticHazard exponential inter-arrival, re-armed inside next_event (events.py:109)",
+    "builder": "materialize.queue_builder_from_plan (materialize.py:140) — fresh queue per branch from plan.scheduled_events + stochastic_hazards"
+  },
+  "posterior_particles": {
+    "initial_state": "init_state.py::InitialStateModel.sample_particles(n, seed) — random.Random(seed), latents in declaration order, observed fields never perturbed",
+    "filter": "posterior.py::Particle(world, weight, ancestry) + ParticlePosterior (assimilate/resample/rejuvenate)",
+    "outcome_rate": "phase3_posterior.infer_posterior -> plan.posterior_rate_particles [(rate, weight)]; injected at materialize._inject_posterior_rate (materialize.py:195)",
+    "structural": "plan.structural_posterior; stratified into particles at materialize._run_with_hypotheses (materialize.py:261)"
+  },
+  "rng_flow": {
+    "per_branch": "RolloutEngine.run_branch: rng = random.Random(seed) at rollout.py:30; branch seed = seed*7919 + particle_index (rollout.py:103,124)",
+    "sub_streams_existing": "phase_consumers._branch_rng(world, salt)=sha256(branch_id|salt); registry hazard families hash((branch_id, var))",
+    "limitation_for_decisions": "ONE sequential Random per branch: an intervention that inserts/removes an event shifts every subsequent draw — unrelated exogenous shocks desynchronize across counterfactual arms (violates Part 8 stream-partitioning). Initial hazard arrivals ARE matched (queue_builder keys rng on the particle part of branch_id)."
+  },
+  "phase11_recompilation": {
+    "controller": "phase11/controller.py::RecompilationController.run (controller.py:114)",
+    "triggers": "external RecompileObservations only (surprise/ESS/trigger families); simulation-internal representable events execute normally and never recompile",
+    "interface": "unified_runtime._run_recompilation (unified_runtime.py:387); adopted revisions mutate the plan in-place; max_recompiles=2, oscillation guard"
+  },
+  "terminal_readout": {
+    "projection": "contracts.OutcomeContract.project (contracts.py:65) — frequencies over weighted terminal branches; unresolved_share for out-of-option worlds; never an LLM number",
+    "event_time": "event_time.py converts when/categorical/binary-deadline questions to first-passage readouts",
+    "result": "result.py::SimulationResult — raw + calibrated distributions, uncertainty_decomposition, support_grade, provenance"
+  },
+  "calibration_contract": {
+    "serving": "phase12_serve.calibrated_result — never overwrites raw; calibrator registry identity/platt/beta/isotonic (calibration.py:214)",
+    "fingerprint": "runtime_fingerprint.py::runtime_fingerprint() — calibrators fit under a different fingerprint are diagnostic_only"
+  },
+  "intervention_seams": {
+    "typed_primitive": "contracts.Intervention(intervention_id, description, apply(world,queue), kind) + contracts.ActionSpace (auto 'none' baseline) + contracts.UtilityFunction",
+    "matched_evaluator": "rollout.evaluate_interventions — clones sampled worlds per arm, matched per-particle seeds, paired p_best/expected_regret",
+    "simulate_world_intervention_param": "TEXT ONLY — rendered into the compiler prompt (compiler.py:61,355) and gates recommendation_status (pipeline.py:29-36); it is NOT mechanically injected into any rollout",
+    "users": ["experiments/wmv2_best_action.py", "tests/test_world_model_v2.py", "reference/enron.py", "reference/behavior_games.py"]
+  },
+  "actor_action_seams": {
+    "operator_contract": "transitions.TransitionOperator propose->validate->apply; institutional validation inside validate",
+    "decision_operators": ["AgentDecisionOperator (LLM proposes among typed institution-validated actions; probability-minting disabled on production path)", "FittedDecisionOperator (fitted policy pack)", "phase4_execution.production_actor_policy (posterior -> ActorView -> ActionSpace -> feasibility -> calibrated action posterior)"],
+    "observable_view": "transitions.observable_view — actors read only what they can know"
+  },
+  "current_limitations_for_decision_optimization": [
+    "simulate_world's intervention parameter is prompt text, not a mechanical do() — no production path runs matched counterfactuals",
+    "single sequential RNG per branch desynchronizes unrelated shocks when an arm inserts events (no stream partitioning)",
+    "no DecisionProblem contract: no authority/resources/constraints/stakeholder utility/risk tolerance representation",
+    "no feasibility/authorization engine for interventions — evaluate_interventions simulates whatever apply() does",
+    "no action ontology or affordance-based generation; action spaces are hand-built per experiment",
+    "reporting is p_best/expected_regret/downside_p10 only — no CVaR, P(harm), constraint violations, structural-hypothesis sensitivity, VOI",
+    "no sequential/contingent policies through the v2 funnel (decision/policy.py is v1-only)",
+    "no off-policy evaluation (IPS/DR) and no real-intervention benchmark beyond the single Upworthy surface-model round (negligible lift, honestly recorded in docs/WMV2_BEST_ACTION_EVALUATION.md)",
+    "structural-hypothesis stratification exists for forecasts (materialize._run_with_hypotheses) but evaluate_interventions ignores structural_hypotheses"
+  ],
+  "phase13_integration_decision": {
+    "package": "swm/world_model_v2/phase13/ — extends canonical contracts; all interventions enter via contracts.Intervention -> canonical EventQueue events handled by a registered TransitionOperator; rollouts run through RolloutEngine subclass with stream-partitioned CRN; no fork of the simulator; no direct terminal mutation",
+    "do_not_modify": "branch agent-engine-on-main untouched; existing evaluate_interventions kept working"
+  }
+}
