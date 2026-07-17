@@ -161,14 +161,15 @@ def seal_ledger(ledger: Path):
 
 def run_benchmark(benchmark_id: str, *, splits=("calibration", "validation", "rotating_locked"),
                   limit: int | None = None, with_baselines: bool = True,
-                  only_cases: list | None = None):
+                  only_cases: list | None = None, shard: str | None = None):
     vault = load_question_vault(benchmark_id)
     model = get_model(vault["registry_model_id"])
     run_id = f"runtime_{_git_head()}"
     results_dir = ROOT / "results" / benchmark_id / run_id
     results_dir.mkdir(parents=True, exist_ok=True)
     capsule_dir = ROOT / "evidence_archives" / benchmark_id
-    ledger = results_dir / "forecast_ledger.jsonl"
+    ledger = results_dir / (f"forecast_ledger_shard{shard.replace('/', 'of')}.jsonl"
+                            if shard else "forecast_ledger.jsonl")
     done = set()
     if ledger.exists():
         for line in ledger.read_text().splitlines():
@@ -178,6 +179,9 @@ def run_benchmark(benchmark_id: str, *, splits=("calibration", "validation", "ro
     todo = [(c, cut) for c in vault["cases"] if c["split"] in splits
             and (only_cases is None or c["case_id"] in only_cases)
             for cut in c["forecast_cutoffs"] if (c["case_id"], cut) not in done]
+    if shard:
+        i, n = (int(x) for x in shard.split("/"))
+        todo = [t for k, t in enumerate(todo) if k % n == i]
     if limit:
         todo = todo[:limit]
     print(f"[{time.strftime('%H:%M:%S')}] benchmark={benchmark_id} run={run_id} "
@@ -193,4 +197,26 @@ def run_benchmark(benchmark_id: str, *, splits=("calibration", "validation", "ro
               f"status={row.get('status')} ({row['latency_s']}s "
               f"${(row.get('llm_usage') or {}).get('cost_usd', 0)}) "
               f"{case['raw_question'][:56]}", flush=True)
+    return ledger
+
+
+def merge_shards(benchmark_id: str) -> Path:
+    """Concatenate shard ledgers into the canonical forecast_ledger.jsonl (+seal). Idempotent;
+    refuses duplicate (case, cutoff) rows across shards."""
+    run_id = f"runtime_{_git_head()}"
+    rdir = ROOT / "results" / benchmark_id / run_id
+    rows, seen = [], set()
+    for shard in sorted(rdir.glob("forecast_ledger_shard*.jsonl")):
+        for line in shard.read_text().splitlines():
+            if not line.strip():
+                continue
+            r = json.loads(line)
+            key = (r["case_id"], r["cutoff"])
+            if key in seen:
+                raise RuntimeError(f"duplicate row across shards: {key}")
+            seen.add(key)
+            rows.append(line)
+    ledger = rdir / "forecast_ledger.jsonl"
+    ledger.write_text("\n".join(rows) + ("\n" if rows else ""))
+    seal_ledger(ledger)
     return ledger

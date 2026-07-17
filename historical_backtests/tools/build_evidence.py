@@ -20,11 +20,15 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--benchmark", required=True)
     ap.add_argument("--limit", type=int, default=None)
+    ap.add_argument("--shard", default=None, help="i/N — process-parallel sharding")
     a = ap.parse_args()
     vault = load_question_vault(a.benchmark)
     out_dir = ROOT / "evidence_archives" / a.benchmark
     todo = [(c, cut) for c in vault["cases"] for cut in c["forecast_cutoffs"]
             if not (out_dir / f"{c['case_id']}__{cut[:10]}.json").exists()]
+    if a.shard:
+        i, n = (int(x) for x in a.shard.split("/"))
+        todo = [t for k, t in enumerate(todo) if k % n == i]
     if a.limit:
         todo = todo[:a.limit]
     print(f"[{time.strftime('%H:%M:%S')}] capsules to build: {len(todo)}", flush=True)

@@ -21,6 +21,7 @@ def main():
                     choices=["reusable_regression", "rotating_holdout", "all"])
     ap.add_argument("--limit", type=int, default=None)
     ap.add_argument("--no-baselines", action="store_true")
+    ap.add_argument("--shard", default=None)
     a = ap.parse_args()
     if a.runtime != "current":
         raise SystemExit("only --runtime current is supported (check out the commit first; "
@@ -30,7 +31,7 @@ def main():
               "rotating_holdout": ("rotating_locked",),
               "all": ("calibration", "validation", "rotating_locked")}[a.split]
     run_benchmark(a.benchmark, splits=splits, limit=a.limit,
-                  with_baselines=not a.no_baselines)
+                  with_baselines=not a.no_baselines, shard=a.shard)
 
 
 if __name__ == "__main__":
