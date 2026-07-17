@@ -25,17 +25,30 @@ class MCResult:
     interval80: tuple                    # 10th–90th percentile of per-draw P(reply)
     n_samples: int
     grade: str = "unvalidated"
+    extrapolation: dict = field(default_factory=dict)   # message-feature support diagnostic
 
     def summary(self) -> dict:
+        note = ("fraction of simulated recipient-trajectories that reply, integrated over the "
+                "recipient's hidden state (base-rate posterior, trait uncertainty, mood, attention, "
+                "timing). Trust the RANKING first.")
+        if self.grade in (None, "unvalidated", "F"):
+            note += (" UNVALIDATED: elasticities are world-knowledge priors, not backtested — treat "
+                     "the level as a claim to check.")
+        else:
+            note += (f" Elasticities are graded {self.grade} on held-out REAL persuasion outcomes; "
+                     "transporting that calibration to cold email is an assumption.")
+        if self.extrapolation.get("out_of_support"):
+            note += (" WARNING: this message maxes %d/%d levers — it sits in a low-density corner of "
+                     "message-space the fitted data barely covers, so the linear-logit model "
+                     "EXTRAPOLATES and the absolute level is over-confident (the ranking is robust; "
+                     "the number is not)." % (self.extrapolation.get("n_extreme", 0),
+                                              self.extrapolation.get("n_levers", 0)))
         return {"report_type": "simulation",
                 "p_reply_fraction": round(self.p_reply, 4),
                 "p_reply_mean": round(self.p_mean, 4),
                 "interval80": [round(self.interval80[0], 4), round(self.interval80[1], 4)],
                 "n_samples": self.n_samples, "calibration_grade": self.grade,
-                "note": "fraction of simulated recipient-trajectories that reply, integrated over the "
-                        "recipient's hidden state (base-rate posterior, trait uncertainty, mood, "
-                        "attention, timing). UNVALIDATED: elasticities are world-knowledge priors, not "
-                        "backtested — treat the level as a claim to check; trust the ranking first."}
+                "extrapolation": self.extrapolation, "note": note}
 
 
 def mc_evaluate(recipient_vars: dict, base_mean: float, strategy: dict, *,
@@ -79,5 +92,14 @@ def mc_evaluate(recipient_vars: dict, base_mean: float, strategy: dict, *,
     s = sorted(per_draw)
     lo = s[int(0.1 * len(s))]
     hi = s[min(len(s) - 1, int(0.9 * len(s)))]
+    # message-feature support diagnostic: a fully-optimized message maxes many levers at once — a
+    # low-density corner of message-space the fitted data barely covers, where a linear-logit model
+    # extrapolates to over-confident certainty. Flag it (the OPE analog is positivity/overlap).
+    from swm.decision.strategy_scorer import MESSAGE_VARS
+    lever_vals = [strategy.get(v) for v in MESSAGE_VARS if isinstance(strategy.get(v), (int, float))]
+    n_extreme = sum(1 for v in lever_vals if v >= 0.9)
+    extrap = {"n_levers": len(lever_vals), "n_extreme": n_extreme,
+              "extreme_fraction": round(n_extreme / max(1, len(lever_vals)), 3),
+              "out_of_support": (len(lever_vals) >= 6 and n_extreme / max(1, len(lever_vals)) >= 0.6)}
     return MCResult(p_reply=replied / n_samples, p_mean=sum(per_draw) / len(per_draw),
-                    interval80=(lo, hi), n_samples=n_samples, grade=grade)
+                    interval80=(lo, hi), n_samples=n_samples, grade=grade, extrapolation=extrap)
