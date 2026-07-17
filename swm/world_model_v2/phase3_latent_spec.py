@@ -121,7 +121,9 @@ def tag_claims(question: str, bundle, plan, *, llm) -> list:
         raw = parse_json(llm(prompt)) or {}
     except Exception:  # noqa: BLE001
         raw = {}
-    by_id = {t.get("claim_id"): t for t in (raw.get("tags") or []) if isinstance(t, dict)}
+    # model-shape tolerance: some models return the bare JSON array instead of {"tags": [...]}
+    tags = raw if isinstance(raw, list) else (raw.get("tags") or []) if isinstance(raw, dict) else []
+    by_id = {t.get("claim_id"): t for t in tags if isinstance(t, dict)}
     out = []
     for cid, c in included.items():
         t = by_id.get(cid, {})
