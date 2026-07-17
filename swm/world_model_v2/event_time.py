@@ -976,11 +976,20 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=No
         if (op != "persistence_check" or persistence_s > 0) and (op != "stance_review" or stances):
             if not any(x.get("operator") == op for x in plan.accepted_mechanisms
                        if isinstance(x, dict)):
-                plan.accepted_mechanisms.append({
-                    "mech_id": mech_id, "ontology_type": "world_dynamics", "operator": op,
-                    "causal_role": role, "parameter_source": "documented world-dynamics rules / "
-                    "sampled coupling priors (fittable)", "temporal_scale": "scheduled",
-                    "calibration_status": "documented_priors", "sensitivity": 0.8})
+                mech = {"mech_id": mech_id, "ontology_type": "world_dynamics", "operator": op,
+                        "causal_role": role, "parameter_source": "documented world-dynamics rules / "
+                        "sampled coupling priors (fittable)", "temporal_scale": "scheduled",
+                        "calibration_status": "documented_priors", "sensitivity": 0.8}
+                # ORDER: the persistence check WRITES the absorbing state — like every absorbing
+                # writer it must precede the monitor so first passage stamps at the confirmation's
+                # own clock time, not one event late
+                mon = next((i for i, x in enumerate(plan.accepted_mechanisms)
+                            if isinstance(x, dict) and x.get("operator") == "absorption_monitor"),
+                           None)
+                if mon is not None:
+                    plan.accepted_mechanisms.insert(mon, mech)
+                else:
+                    plan.accepted_mechanisms.append(mech)
     plan.scheduled_events = [e for e in plan.scheduled_events if e.get("etype") != "resolve_outcome"]
     _declare_readout_quantities(plan)
     # categorical unification: the question's own options project as the absorbed_by marginal
