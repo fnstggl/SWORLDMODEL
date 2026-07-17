@@ -114,6 +114,26 @@ absolute cold-email P(reply) is additionally flagged out-of-support when a fully
 maxes ≥60% of its levers (a low-density corner of message-space where the linear-logit model
 extrapolates — the ranking is robust, the absolute level is not).
 
+## Outreach layer v3 — validation status
+
+The corrected outreach architecture (persona ensemble + funnel + contract; ARCHITECTURE §13) is
+validated at three honesty levels, each labeled on every output:
+
+- **Regression-tested (deterministic)**: the failed Thiel output is an executable regression —
+  `tests/test_outreach_funnel.py` asserts the contract rejects it (no identity, diligence-bait ask),
+  the funnel ranks the plain human draft above it with the stage trace diagnosing WHERE it loses
+  (understand + easy), adversarial framing raises P(negative reply), the caricature guard clamps
+  combat levers, and L1 under the funnel demands identity/next-step/believability while zeroing
+  adversarial framing. `tests/test_persona_response.py` asserts outcomes are counted (never asked),
+  failed draws count as no_response (fail-closed), fragility flags one-hypothesis winners, and the
+  dossier carries qualitative text only.
+- **Graded on real outcomes**: the additive persuasion elasticities only (CMV, 19,714 real
+  outcomes, held-out grade A, ECE ≈ 0.02, refit on the 17-lever feature set).
+- **Uncalibrated (labeled)**: funnel magnitudes (structural priors) and the persona ensemble
+  (model-based judgment). No labeled cold-email corpus exists in-repo; the prospective ledger is
+  the accumulation path. The system reports "best-supported among tested" with hypothesis
+  fragility, and never claims a calibrated response probability for an individual.
+
 ## Negative results (reported, not hidden)
 
 - On **low-heterogeneity RCTs**, V2 CATE-targeting does **not** beat the oracle treat-all policy

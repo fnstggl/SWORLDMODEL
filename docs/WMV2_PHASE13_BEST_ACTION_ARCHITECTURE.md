@@ -138,18 +138,46 @@ simulates and recommends; `human_approval_required` is stamped on every result. 
 matches, or no substantive feasible action survives. Prohibited/coercive/deceptive actions targeting
 protected or vulnerable groups are rejected.
 
-## 13. Message action layer (cold-email optimizer)
+## 13. Outreach action layer (v3 — action-first, persona-grounded)
 
-The message optimizer (`swm/decision/`) is the concrete communication instance of the action layer:
-L1 optimizes a strategy vector against a graded reply objective; L2 constructs the message move-by-move
-by beam search (the world model selects, the LLM proposes single moves); L4 is a four-axis LLM critic
-(coherent / annoying / AI-sounding / fabricated-vs-facts) with a deterministic numeric fact guard, a
-redundancy detector, and a rewrite-or-prune repair loop that guarantees the gate's verdict and the
-shipped text agree. `convenience_selling` is a first-class **negative objective lever** — performing
-easiness / benefit-assurance backfires with a status-conscious skeptic (strong negative interaction
-with `status_orientation` and `skepticism`), so the optimizer never builds convenience-selling in the
-first place. The constructed message and its naive contrasts become typed Phase-13 actions evaluated
-through the canonical matched-counterfactual funnel (see `experiments/exp090_thiel_phase13.py`).
+The communication instance of the decision layer was rebuilt after a diagnosed failure (see
+FORENSICS §10): the original path optimized messages against numeric recipient traits an LLM had
+invented — a closed loop that produced debate-bait with no sender identity. The corrected
+architecture (`swm/decision/`):
 
-Reply elasticities are fit and graded on 19,714 real ChangeMyView persuasion outcomes (held-out grade
-A, ECE ~0.02); transporting that calibration to cold email is an explicit, stamped assumption.
+**Action level first** (`experiments/exp092_thiel_action_first.py`): before any wording, the
+decision compares real routes — cold email, cold text, permission-ask, full memo, warm introduction
+via an operator, operator-forwarded memo, routing through an adjacent partner, waiting for pilot
+evidence, not contacting yet. Each action is an **arrival context** for the same behavioral engine;
+Beckett-side path assumptions (P(operator agrees), delay discounts) are explicit, uncertain, and
+reported. The best action is often not a better sentence.
+
+**Behavioral engine = qualitative persona ensemble** (`persona_response.py`, built on the
+qualitative-actor discipline of `swm/world_model_v2/qualitative_actor.py`): the recipient is
+rendered as a **qualitative dossier** — evidence quotes, incentives, dispositions as text, never
+invented numeric traits (universal: resolver evidence for public figures, user-supplied context for
+private individuals). There is no single recipient model: **competing inbox-reality hypotheses**
+(assistant-screens 0.35 / intros-only 0.25 / reads-own-bursts 0.15 / evidence-first 0.15 /
+ignores-all-cold 0.10) each run their own first-person simulations — "You are X … this arrives …
+what do you actually do?" — choosing ONE categorical outcome per draw from a **valenced vector**
+(no_response / dismissive[cost] / curious / requests_material / refers / meeting). Probabilities are
+**counted choices**, never asked-for numbers. A winner that leads under only one hypothesis is
+flagged fragile; indistinguishable arms are reported as within-noise; the output is
+"best-supported among tested", never "best possible".
+
+**Structural prior + gates**: the conjunctive response **funnel** (`response_funnel.py`:
+open × understand × believe × relevant × worth × easy, valenced objective P(positive) −
+0.25·P(negative)) is the offline objective and stage diagnosis — one failed gate multiplies
+through; clarity cannot buy back missing identity. The deterministic **content contract**
+(`outreach_contract.py`) requires identity / thesis / evidence-with-provenance / relevance / tiny
+next step, flags diligence-bait asks and unanchored extraordinary claims, and supplies the
+plain-human baseline every optimized candidate must beat under the system's own evaluator.
+Register gates (four-axis critic, numeric fact guard, redundancy, cold-read critic) filter; they
+are never the objective. A **caricature guard** clamps combat-flavored situational levers to ≤0 and
+shrinks persona-derived elasticities by evidence confidence.
+
+**Calibration honesty**: additive persuasion elasticities are fit and graded on 19,714 real
+ChangeMyView outcomes (held-out grade A, ECE ≈ 0.02) — that grade applies to the additive
+persuasion model only. The funnel magnitudes are structural priors; the persona ensemble is a
+model-based judgment (uncalibrated LLM role-play). All three labels are stamped on outputs; real
+outreach outcomes accumulate through the prospective ledger.
