@@ -407,29 +407,41 @@ def test_build_persona_runtime_gating(monkeypatch):
     assert isinstance(explicit, PersonaActorPolicyRuntime)
 
 
-def test_materialize_binds_persona_only_when_backend_exists(monkeypatch):
-    from swm.world_model_v2.materialize import _persona_runtime
-    assert _persona_runtime(None) is None
-    monkeypatch.setenv("SWM_LLM_ACTORS", "relevant")
-    rt = _persona_runtime(ScriptedLLM(good_payload()))
+def test_materialize_binds_persona_baseline_only_when_its_mode_is_selected(monkeypatch):
+    from swm.world_model_v2.materialize import _actor_policy_runtime
+    assert _actor_policy_runtime(None, None) is None
+    monkeypatch.setenv("SWM_ACTOR_POLICY", "persona_blended_numeric_policy")
+    rt = _actor_policy_runtime(None, ScriptedLLM(good_payload()))
     assert isinstance(rt, PersonaActorPolicyRuntime)
+    monkeypatch.setenv("SWM_ACTOR_POLICY", "numeric_policy")
+    assert _actor_policy_runtime(None, ScriptedLLM(good_payload())) is None
 
 
-def test_operators_from_plan_wires_the_persona_runtime(monkeypatch):
+def test_operators_from_plan_mode_router(monkeypatch):
     from types import SimpleNamespace
     from swm.world_model_v2.materialize import operators_from_plan
-    plan = SimpleNamespace(accepted_mechanisms=[
-        {"mech_id": "production_actor_policy", "operator": "production_actor_policy"}])
-    monkeypatch.setenv("SWM_LLM_ACTORS", "relevant")
+    from swm.world_model_v2.qualitative_actor import QualitativeActorPolicyRuntime
+    plan = SimpleNamespace(
+        accepted_mechanisms=[{"mech_id": "production_actor_policy",
+                              "operator": "production_actor_policy"}],
+        entities=[], institutions=[], scheduled_events=[], actor_decisions=[], relations=[],
+        quantities=[], _intention_stances=[], question="q")
+    monkeypatch.delenv("SWM_ACTOR_POLICY", raising=False)
+    monkeypatch.delenv("SWM_LLM_ACTORS", raising=False)
+    # DEFAULT-ON: an LLM backend routes the core funnel to hybrid qualitative cognition
     with_llm, _ = operators_from_plan(plan, llm=ScriptedLLM(good_payload()))
     assert isinstance(with_llm[0], ProductionActorPolicyOperator)
-    assert isinstance(with_llm[0].runtime, PersonaActorPolicyRuntime)
+    assert isinstance(with_llm[0].runtime, QualitativeActorPolicyRuntime)
+    assert with_llm[0].runtime.mode == "hybrid_relevant_actor_policy"
+    monkeypatch.setenv("SWM_ACTOR_POLICY", "persona_blended_numeric_policy")
+    persona, _ = operators_from_plan(plan, llm=ScriptedLLM(good_payload()))
+    assert isinstance(persona[0].runtime, PersonaActorPolicyRuntime)
+    monkeypatch.delenv("SWM_ACTOR_POLICY", raising=False)
     without, _ = operators_from_plan(plan, llm=None)
-    assert isinstance(without[0].runtime, ActorPolicyRuntime)
-    assert not isinstance(without[0].runtime, PersonaActorPolicyRuntime)
+    assert type(without[0].runtime) is ActorPolicyRuntime
     monkeypatch.setenv("SWM_LLM_ACTORS", "off")
     disabled, _ = operators_from_plan(plan, llm=ScriptedLLM(good_payload()))
-    assert not isinstance(disabled[0].runtime, PersonaActorPolicyRuntime)
+    assert type(disabled[0].runtime) is ActorPolicyRuntime
 
 
 def test_numeric_fallback_records_why_the_persona_was_skipped():

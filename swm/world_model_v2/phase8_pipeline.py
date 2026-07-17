@@ -211,8 +211,14 @@ def run_with_persistence(question, plan, *, llm=None, context=None, actor_histor
                           operators=ops, contract=plan.outcome_contract, n_particles=npart)
     result, branches = run.run(seed=seed)
     result["omissions"] = list(getattr(base, "omissions", []))
+    from swm.world_model_v2.materialize import attach_actor_decision_distributions
+    attach_actor_decision_distributions(ops, result)
     res = result_from_run(question, plan, result, branches, intervention=intervention, t0=t0,
                           calibrator=calibrator, cal_key=cal_key)
+    if result.get("actor_decision_distributions"):
+        res.provenance = {**(res.provenance or {}),
+                          "actor_decision_distributions": result["actor_decision_distributions"],
+                          "actor_policy_mode": result.get("actor_policy_mode", "")}
 
     # 8) persist feedback + commit a new versioned checkpoint (advance lineage) + attach support effect
     if context is not None and actor_history:

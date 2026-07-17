@@ -1,0 +1,164 @@
+{
+  "schema_version": "frozen.decision.cases.v1",
+  "description": "Hand-curated PILOT benchmark of real historical decision points. Each case freezes the world at as_of: every evidence line is public knowledge BEFORE the decision; the actual next action (with its date) is the label and never enters any prompt. Curated from the well-documented public record for pilot-scale arm comparison; not a substitute for a large systematically-sampled corpus.",
+  "leakage_rule": "evidence[].date <= as_of < actual_action_date for every case; the harness asserts this and never renders actual_action into any actor input.",
+  "cases": [
+    {
+      "case_id": "khrushchev_1962_cuba",
+      "actor_id": "Nikita_Khrushchev", "role": "soviet_premier",
+      "as_of": "1962-10-27", "actual_action_date": "1962-10-28",
+      "situation": "The Cuban missile crisis is at its most dangerous hour. The US naval quarantine holds, a U-2 was shot down over Cuba today, US invasion preparations are visible, and private letters have been exchanged with Kennedy in which he offers a non-invasion pledge if the missiles are withdrawn; your own second letter demanded Turkey missile withdrawal too, and back-channel word suggests Jupiter missiles in Turkey would quietly go later. Your generals urge standing firm; the risk of uncontrollable escalation is immediate.",
+      "goals": ["preserve Soviet security and prestige", "avoid nuclear war", "protect Cuba"],
+      "commitments": [{"statement": "Publicly committed to defending Cuba against invasion", "binding": false}],
+      "evidence": [
+        {"date": "1962-10-22", "text": "Kennedy announced a naval quarantine of Cuba and demanded removal of Soviet missiles."},
+        {"date": "1962-10-26", "text": "Khrushchev's private first letter offered withdrawal in exchange for a US non-invasion pledge."},
+        {"date": "1962-10-27", "text": "A U-2 reconnaissance plane was shot down over Cuba; the pilot was killed."},
+        {"date": "1962-10-27", "text": "Robert Kennedy privately conveyed that Jupiter missiles in Turkey would be removed later, but never as a public trade, and that time was nearly out."},
+        {"date": "1962-10-27", "text": "US invasion preparations in Florida were unmistakable; Castro cabled urging resolve."}
+      ],
+      "candidate_actions": ["accept", "escalate", "hold_position", "delay"],
+      "actual_action": "accept",
+      "source_note": "Withdrawal announced on Radio Moscow, 1962-10-28 (public record)."
+    },
+    {
+      "case_id": "nixon_1974_resignation",
+      "actor_id": "Richard_Nixon", "role": "us_president",
+      "as_of": "1974-08-07", "actual_action_date": "1974-08-08",
+      "situation": "The 'smoking gun' tape released on August 5 shows you directing the cover-up six days after the break-in. Your remaining congressional defenders have collapsed; senior Republican senators told you today that fewer than fifteen senators would vote to acquit. Impeachment in the House is certain. Your family urges fighting on; your counsel and chief of staff see no path.",
+      "goals": ["preserve legacy", "avoid criminal conviction", "protect the presidency as an institution"],
+      "commitments": [{"statement": "Repeatedly declared publicly he would not resign", "binding": false}],
+      "evidence": [
+        {"date": "1974-07-24", "text": "The Supreme Court ordered release of the White House tapes, 8-0."},
+        {"date": "1974-07-30", "text": "The House Judiciary Committee approved three articles of impeachment."},
+        {"date": "1974-08-05", "text": "The June 23, 1972 'smoking gun' transcript was released, showing obstruction from the start."},
+        {"date": "1974-08-06", "text": "Nearly all remaining Republican support in Congress publicly evaporated."},
+        {"date": "1974-08-07", "text": "Senators Goldwater and Scott and Rep. Rhodes told the president perhaps 15 Senate votes remained."}
+      ],
+      "candidate_actions": ["exit", "hold_position", "delay", "escalate"],
+      "actual_action": "exit",
+      "source_note": "Resignation announced in a national address, 1974-08-08, effective 08-09."
+    },
+    {
+      "case_id": "yeltsin_1991_coup",
+      "actor_id": "Boris_Yeltsin", "role": "president_of_rsfsr",
+      "as_of": "1991-08-19", "actual_action_date": "1991-08-19",
+      "situation": "This morning a self-declared State Committee on the State of Emergency announced it has taken power, claiming Gorbachev is ill and isolated in Crimea. Tanks are moving into Moscow. You are the freshly and directly elected president of the Russian republic. The plotters have not arrested you yet; troops' loyalty is uncertain; crowds are beginning to gather at the White House.",
+      "goals": ["defeat the coup", "preserve Russia's elected government", "assert Russian sovereignty"],
+      "commitments": [{"statement": "Elected on a democratic-sovereignty platform two months earlier", "binding": false}],
+      "evidence": [
+        {"date": "1991-08-19", "text": "State television announced the emergency committee and claimed Gorbachev was incapacitated."},
+        {"date": "1991-08-19", "text": "Armored columns entered central Moscow; key ministries were occupied."},
+        {"date": "1991-08-19", "text": "The plotters had not moved to arrest the Russian republic's leadership at the White House."},
+        {"date": "1991-08-19", "text": "Elements of the Taman division near the White House appeared hesitant; some crews fraternized with civilians."},
+        {"date": "1991-06-12", "text": "Yeltsin won Russia's first direct presidential election with 57 percent."}
+      ],
+      "candidate_actions": ["mobilize", "accept", "wait", "exit"],
+      "actual_action": "mobilize",
+      "source_note": "Climbed a tank outside the White House and called for general resistance and strikes, 1991-08-19 midday."
+    },
+    {
+      "case_id": "thatcher_1990_ballot",
+      "actor_id": "Margaret_Thatcher", "role": "uk_prime_minister",
+      "as_of": "1990-11-21", "actual_action_date": "1990-11-22",
+      "situation": "You won the first leadership ballot 204-152 but fell four votes short of the required margin, forcing a second ballot. You declared last night you would fight on. Today, one by one, your own cabinet ministers told you privately that while they support you, you cannot win and staying risks letting Heseltine take the party. Your husband and closest advisers counsel withdrawal.",
+      "goals": ["preserve her political legacy", "stop Heseltine", "keep the party governable"],
+      "commitments": [{"statement": "Publicly announced 'I fight on, I fight to win' after the first ballot", "binding": false}],
+      "evidence": [
+        {"date": "1990-11-20", "text": "First ballot: 204 votes to Heseltine's 152 — four short of outright victory; a second ballot was triggered."},
+        {"date": "1990-11-20", "text": "Thatcher, in Paris, declared she would contest the second ballot."},
+        {"date": "1990-11-21", "text": "In sequential private meetings, most cabinet ministers advised she would lose the second ballot and should withdraw in favor of a stop-Heseltine candidate."},
+        {"date": "1990-11-01", "text": "Geoffrey Howe resigned; his November 13 resignation speech devastated her position on Europe."}
+      ],
+      "candidate_actions": ["exit", "hold_position", "delay", "seek_mediator"],
+      "actual_action": "exit",
+      "source_note": "Announced withdrawal from the second ballot to the cabinet on the morning of 1990-11-22."
+    },
+    {
+      "case_id": "musk_2022_twitter_close",
+      "actor_id": "Elon_Musk", "role": "acquirer_ceo",
+      "as_of": "2022-10-03", "actual_action_date": "2022-10-04",
+      "situation": "You signed a $44 billion merger agreement for Twitter in April, then tried to terminate over bot counts. Twitter sued for specific performance in Delaware; trial begins October 17. Discovery has gone badly — your own texts are public, the judge has signaled skepticism of the bot defense, and your deposition is imminent. Financing remains committed at $54.20. Losing at trial would compel the same purchase with added litigation damage.",
+      "goals": ["avoid a humiliating trial loss", "limit overpayment", "control the asset if forced to buy"],
+      "commitments": [{"statement": "Signed merger agreement at $54.20 per share with specific-performance clause", "binding": true, "prohibits": []}],
+      "evidence": [
+        {"date": "2022-07-08", "text": "Musk filed to terminate the merger over spam accounts; Twitter sued for specific performance."},
+        {"date": "2022-09-27", "text": "Chancellor McCormick largely sided with Twitter in discovery rulings; trial set for October 17."},
+        {"date": "2022-09-29", "text": "Embarrassing private texts about the deal were released in court filings."},
+        {"date": "2022-10-03", "text": "Musk's deposition was imminent and the bot-count defense was widely reported as weak."}
+      ],
+      "candidate_actions": ["acquire", "hold_position", "counteroffer", "delay"],
+      "actual_action": "acquire",
+      "source_note": "On 2022-10-04 Musk's lawyers proposed closing at the original $54.20 terms; the deal closed October 27."
+    },
+    {
+      "case_id": "johnson_2022_resignation",
+      "actor_id": "Boris_Johnson", "role": "uk_prime_minister",
+      "as_of": "2022-07-06", "actual_action_date": "2022-07-07",
+      "situation": "Following the Pincher affair and your changing accounts of what you knew, Sunak and Javid resigned within minutes of each other yesterday evening, triggering a cascade — around fifty ministers and aides have now quit. A delegation of cabinet ministers waited in Downing Street tonight to tell you the position is unrecoverable. You dismissed Gove and vowed to fight on. The 1922 Committee is moving to change no-confidence rules.",
+      "goals": ["survive as prime minister", "control the succession timing", "protect his record"],
+      "commitments": [{"statement": "Told colleagues repeatedly he would not resign and had a fresh mandate of 14 million votes", "binding": false}],
+      "evidence": [
+        {"date": "2022-07-05", "text": "Chancellor Sunak and Health Secretary Javid resigned over the Pincher affair and trust in the PM's account."},
+        {"date": "2022-07-06", "text": "Dozens of ministerial resignations followed through the day; replacements were increasingly hard to find."},
+        {"date": "2022-07-06", "text": "A cabinet delegation told the PM in person that he had lost the party and should go."},
+        {"date": "2022-07-06", "text": "Johnson sacked Michael Gove and publicly insisted he would carry on."},
+        {"date": "2022-06-06", "text": "He had survived a confidence vote 211-148, with rules barring another for a year — rules the 1922 Committee could change."}
+      ],
+      "candidate_actions": ["exit", "hold_position", "escalate", "delay"],
+      "actual_action": "exit",
+      "source_note": "Announced resignation as party leader outside No. 10 on 2022-07-07, staying as caretaker PM."
+    },
+    {
+      "case_id": "zelenskyy_2022_kyiv",
+      "actor_id": "Volodymyr_Zelenskyy", "role": "president_of_ukraine",
+      "as_of": "2022-02-25", "actual_action_date": "2022-02-25",
+      "situation": "Russia's full-scale invasion began yesterday. Russian armored columns are converging on Kyiv; airborne assaults hit Hostomel airport; saboteur teams are reported hunting the government leadership. Western partners assess the capital may fall within days and the United States has offered to evacuate you to continue government from safety. Your security services say your life is the top target.",
+      "goals": ["national survival", "keep the state functioning", "rally domestic and international support"],
+      "commitments": [{"statement": "Sworn to defend Ukraine's constitution and independence", "binding": false}],
+      "evidence": [
+        {"date": "2022-02-24", "text": "Russia launched a full-scale invasion on multiple axes; airborne forces contested Hostomel near Kyiv."},
+        {"date": "2022-02-25", "text": "Fighting reached Kyiv's outskirts; Western assessments gave the capital days at most."},
+        {"date": "2022-02-25", "text": "The United States offered to evacuate the president; allied capitals prepared for a government-in-exile."},
+        {"date": "2022-02-25", "text": "Reports circulated of assassination teams tasked against the leadership."}
+      ],
+      "candidate_actions": ["hold_position", "exit", "seek_mediator", "delay"],
+      "actual_action": "hold_position",
+      "source_note": "Refused evacuation ('I need ammunition, not a ride' as widely reported) and filmed himself with ministers in central Kyiv on 2022-02-25 evening."
+    },
+    {
+      "case_id": "deklerk_1990_unbanning",
+      "actor_id": "FW_de_Klerk", "role": "president_of_south_africa",
+      "as_of": "1990-02-01", "actual_action_date": "1990-02-02",
+      "situation": "Tomorrow you open Parliament. Apartheid's costs are unsustainable: sanctions bite, the townships are ungovernable, the Berlin Wall's fall has removed the communist-threat rationale, and secret talks with the imprisoned Mandela and the exiled ANC have matured. Your security establishment warns against legalizing the ANC and SACP; business and much of your caucus quietly favor a decisive break. The world expects reform signals; the scale is your choice.",
+      "goals": ["a negotiated settlement from a position of relative strength", "avoid civil war", "end South Africa's isolation"],
+      "commitments": [{"statement": "Promised a 'new South Africa' on taking office in 1989", "binding": false}],
+      "evidence": [
+        {"date": "1989-12-13", "text": "De Klerk met Mandela in prison; separate exploratory channels with the exiled ANC continued."},
+        {"date": "1989-11-09", "text": "The Berlin Wall fell, collapsing the anti-communist rationale for repression."},
+        {"date": "1989-10-15", "text": "Senior ANC prisoners including Sisulu were released without banning orders."},
+        {"date": "1990-01-31", "text": "Speculation mounted that the February 2 address would announce significant reform; its scope was unknown."}
+      ],
+      "candidate_actions": ["reveal", "delay", "hold_position", "amend"],
+      "actual_action": "reveal",
+      "source_note": "The 1990-02-02 address unbanned the ANC, PAC and SACP and announced Mandela's release."
+    },
+    {
+      "case_id": "disney_2022_iger",
+      "actor_id": "Disney_Board", "role": "corporate_board",
+      "as_of": "2022-11-19", "actual_action_date": "2022-11-20",
+      "situation": "Disney's November 8 earnings shocked the market: streaming losses of $1.5 billion, the stock at multi-year lows. CEO Chapek's credibility with creative leadership, investors and the press has collapsed; CFO McCarthy has privately signaled lost confidence to directors. Bob Iger, retired eleven months, is understood to be willing to return. Chapek's contract was renewed only in June; replacing him now is an admission of error, but the drift is compounding.",
+      "goals": ["restore investor confidence", "stabilize creative leadership", "fix streaming economics"],
+      "commitments": [{"statement": "Renewed Chapek's contract for three years in June 2022", "binding": false}],
+      "evidence": [
+        {"date": "2022-11-08", "text": "Q4 earnings revealed $1.5B streaming losses; shares fell to multi-year lows."},
+        {"date": "2022-11-11", "text": "A cost-cutting memo failed to reassure; senior creative executives' discontent with Chapek was widely reported."},
+        {"date": "2022-11-18", "text": "CFO Christine McCarthy privately expressed lost confidence in Chapek to board members (as later reported)."},
+        {"date": "2022-06-28", "text": "The board had unanimously extended Chapek's contract through 2024."}
+      ],
+      "candidate_actions": ["fire", "hold_position", "amend", "delay"],
+      "actual_action": "fire",
+      "source_note": "The board replaced Chapek with Iger on the evening of 2022-11-20."
+    }
+  ]
+}

@@ -1,7 +1,17 @@
-# LLM Persona Actors (Phase 4L) — first-person cognition for consequential actors
+# LLM Persona Actors (Phase 4L) — the `persona_blended_numeric_policy` BASELINE
 
-**Status:** implemented (`swm/world_model_v2/llm_actor.py`), default-on when an LLM backend is
-supplied, relevance-gated, budgeted, fail-closed to the numeric Phase-4 policy.
+> **Reclassified.** This layer is an experimental baseline (evaluation arm B), not the
+> qualitative actor architecture: the LLM rates every option numerically and the distribution
+> is a blend with the numeric utility posterior — the LLM never chooses, one representative
+> particle's cognition serves every branch, and the numbers are self-reported scores. The
+> hypothesis architecture (persistent qualitative hidden-state particles, one LLM-chosen action
+> per branch, probabilities counted from observed choices) is
+> `docs/ARCHITECTURE_QUALITATIVE_ACTORS.md` / `swm/world_model_v2/qualitative_actor.py`, and it
+> is the core default (`hybrid_relevant_actor_policy`) when an LLM backend is present. This
+> mode remains runnable via `SWM_ACTOR_POLICY=persona_blended_numeric_policy`.
+
+**Status:** implemented (`swm/world_model_v2/llm_actor.py`), selectable as evaluation arm B,
+relevance-gated, budgeted, fail-closed to the numeric Phase-4 policy.
 **Principle:** the LLM becomes the actor's *mind*; the typed world remains the actor's *body*;
 a calibration layer with an explicit numeric anchor remains the *bridge* between them.
 

@@ -234,6 +234,15 @@ class ActorPolicyRuntime:
         from swm.world_model_v2.quantities import Quantity, register_quantity_type
         effects = action_pathway_effects(action.action_family, action.action_name)
         if not effects:
+            # a compiled NOVEL action executes through its validated ontology anchor's effects
+            # (NovelActionCompiler attaches parameters.ontology_anchor only when the anchor's
+            # causal reading matched) — an unanchored novel action moves nothing, and its branch
+            # carries the explicit novel_action_unmodeled mark instead of a silent no-op.
+            anchor = (action.parameters or {}).get("ontology_anchor") or {}
+            if isinstance(anchor, dict) and anchor.get("name"):
+                effects = action_pathway_effects(str(anchor.get("family", "")),
+                                                 str(anchor["name"]))
+        if not effects:
             return
         from swm.world_model_v2.world_dynamics import live_capacity, sampled_coupling
 

@@ -1,4 +1,16 @@
-"""LLM persona actors (Phase 4L) — first-person cognition for consequential actors.
+"""PERSONA-BLENDED NUMERIC policy (mode ``persona_blended_numeric_policy``) — an experimental
+BASELINE, not the qualitative actor architecture.
+
+Honest classification (docs/ARCHITECTURE_QUALITATIVE_ACTORS.md §1): this layer asks the LLM to
+RATE every option numerically and log-pools those ratings with the numeric utility posterior —
+the LLM never chooses, cognition is numeric, one representative particle's reading serves every
+branch, and the distribution comes from self-reported scores. It is preserved and runnable as
+evaluation arm B. The hypothesis architecture — persistent qualitative hidden-state particles,
+one LLM-chosen action per branch, distributions counted from observed choices — lives in
+:mod:`qualitative_actor` (modes ``stateless_llm_policy`` / ``persistent_qualitative_llm_policy``
+/ ``hybrid_relevant_actor_policy``) and never routes through this blend.
+
+Original description (Phase 4L) — first-person cognition for consequential actors.
 
 Every actor decision already runs the universal Phase-4 pipeline (ActorView → typed action
 space → feasibility → policy posterior → sampled action → validated execution). This module
@@ -52,6 +64,8 @@ from swm.world_model_v2.state import F
 
 PERSONA_SCHEMA = "persona.cognition.v1"
 PERSONA_MODEL_VERSION = SCHEMA_VERSION + "+persona-1.0"
+#: this module's honest mode name in the actor-policy mode registry
+POLICY_MODE = "persona_blended_numeric_policy"
 #: latent_state key for the persona's private notes — the ``phase4_policy_`` prefix is what the
 #: existing ActorViewBuilder projects into ActorView.policy_state, so persistence needs no new
 #: projection code and the notes remain actor-private (latent_state never leaves the actor).

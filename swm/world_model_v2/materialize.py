@@ -180,13 +180,14 @@ def operators_from_plan(plan, *, llm=None, allow_experimental=False) -> tuple:
                 ops.append(factory(llm=(llm if allow_experimental else None),
                                    allow_llm_probabilities=allow_experimental))
             elif opname == "production_actor_policy":
-                # Phase 4L: bind first-person LLM persona cognition for consequential actors when a
-                # backend exists (relevance-gated, budgeted, anchored to the numeric posterior, and
-                # stamped llm_probability_minting in provenance — unlike the quarantined raw-minting
-                # agent_decision path above). SWM_LLM_ACTORS=off (or llm=None) leaves the numeric
-                # production runtime exactly as it was.
-                persona_runtime = _persona_runtime(llm)
-                ops.append(factory(runtime=persona_runtime) if persona_runtime is not None
+                # The actor-policy MODE router (docs/ARCHITECTURE_QUALITATIVE_ACTORS.md §2).
+                # Default-on: with an LLM backend the core V2 funnel runs
+                # hybrid_relevant_actor_policy — persistent qualitative LLM cognition for
+                # causally consequential actors (question-specific tiers from the compiled
+                # plan), the numeric policy for routine actors; with no backend, the numeric
+                # production runtime exactly as it was. SWM_ACTOR_POLICY selects any mode.
+                bound_runtime = _actor_policy_runtime(plan, llm)
+                ops.append(factory(runtime=bound_runtime) if bound_runtime is not None
                            else factory())
             elif hasattr(factory, "run") and hasattr(factory, "applicable") and not isinstance(factory, type):
                 # Phase 7/10 registry entries are configured operator instances.  Treat
@@ -201,17 +202,58 @@ def operators_from_plan(plan, *, llm=None, allow_experimental=False) -> tuple:
     return ops, rejections
 
 
-def _persona_runtime(llm):
-    """Phase 4L binding: the persona actor runtime, or None (numeric production path unchanged).
-    A failure to construct the persona layer must never block materialization — it is recorded
-    by the absence of persona provenance on the run's decision traces."""
-    if llm is None:
+ACTOR_POLICY_MODES = ("numeric_policy", "persona_blended_numeric_policy", "stateless_llm_policy",
+                      "persistent_qualitative_llm_policy", "hybrid_relevant_actor_policy")
+
+
+def resolve_actor_policy_mode(llm) -> str:
+    """The run's actor-policy mode: SWM_ACTOR_POLICY when set (validated), else DEFAULT-ON
+    hybrid qualitative cognition with a backend, numeric without. The legacy SWM_LLM_ACTORS=off
+    switch still forces numeric."""
+    import os
+    if os.environ.get("SWM_LLM_ACTORS", "").strip().lower() == "off":
+        return "numeric_policy"
+    mode = os.environ.get("SWM_ACTOR_POLICY", "").strip().lower()
+    if mode in ACTOR_POLICY_MODES:
+        return mode
+    return "hybrid_relevant_actor_policy" if llm is not None else "numeric_policy"
+
+
+def _actor_policy_runtime(plan, llm):
+    """Bind the runtime for the resolved mode, or None (plain numeric operator). A failure to
+    construct an LLM runtime must never block materialization — the numeric path serves and the
+    absence of qualitative/persona provenance on the traces records it."""
+    mode = resolve_actor_policy_mode(llm)
+    if mode == "numeric_policy" or llm is None:
         return None
     try:
-        from swm.world_model_v2.llm_actor import build_persona_runtime
-        return build_persona_runtime(llm=llm)
+        if mode == "persona_blended_numeric_policy":
+            from swm.world_model_v2.llm_actor import build_persona_runtime
+            return build_persona_runtime(llm=llm)
+        from swm.world_model_v2.qualitative_actor import build_qualitative_runtime
+        return build_qualitative_runtime(plan, llm=llm, mode=mode)
     except Exception:  # noqa: BLE001
         return None
+
+
+def attach_actor_decision_distributions(ops, container: dict) -> None:
+    """After a rollout, read every qualitative runtime's (posterior, trace) records off the
+    shared operators and attach the counted raw/calibrated action distributions — the
+    statistical layer's output — to the run container. No-op for numeric/persona runs."""
+    try:
+        from swm.world_model_v2.qualitative_actor import aggregate_actor_decisions
+        records = []
+        mode = ""
+        for op in ops:
+            runtime = getattr(op, "runtime", None)
+            if runtime is not None and hasattr(runtime, "decision_records"):
+                records.extend(runtime.decision_records)
+                mode = getattr(runtime, "mode", mode)
+        if records:
+            container["actor_decision_distributions"] = aggregate_actor_decisions(records)
+            container["actor_policy_mode"] = mode
+    except Exception:  # noqa: BLE001 — aggregation is reporting, never a run blocker
+        pass
 
 
 def _inject_posterior_rate(plan) -> bool:
@@ -277,6 +319,7 @@ def run_from_plan(plan, *, llm=None, n_particles=None, seed=0):
         result, branches = run.run(seed=seed)
     result["omissions"] = list(getattr(base, "omissions", []))
     result["operator_rejections"] = rejections
+    attach_actor_decision_distributions(ops, result)
     return result, branches
 
 
