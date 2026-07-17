@@ -129,8 +129,10 @@ class CollectiveThresholdDecisionOperator(TransitionOperator):
         # actor-action polarity, diffusion reach and nonlinear momentum written into this world (bounded,
         # inside the mechanism — never at the terminal resolver)
         prop, consumed = consume_state_rate(world, prop, a.get("consume") or [])
-        if len(a["options"]) != 2:
-            return None                                      # institutional YES/NO write only fits binary
+        if len(a["options"]) != 2 and not a.get("absorbing"):
+            return None                                      # institutional YES/NO write only fits binary;
+                                                             # an ABSORBING vote needs no option space (pass
+                                                             # ⇒ absorb at this date, fail ⇒ unabsorbed)
         yes = sum(1 for _ in range(a["n_members"]) if rng.random() < prop)
         passed = yes >= a["needed"]
         unc = {"member_propensity": round(prop, 4), "propensity_source": src,

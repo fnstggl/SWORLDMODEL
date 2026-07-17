@@ -722,6 +722,19 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=No
                             "as_of": plan.as_of, "span_s": span,
                             "consume": consume_m}})
             n_ev += 1
+    # a scheduled institutional decision becomes an ABSORBING WRITER for the institutional-pathway
+    # mode (pass ⇒ absorbed at the vote's real date; fail ⇒ the world stays unabsorbed): the declared
+    # procedure executes INSIDE the trajectory instead of writing a dead outcome variable no
+    # event-time readout consumes
+    inst_modes = [m for m in modes if _mode_pathway(m) == "institutional_procedure"]
+    n_inst_absorbing = 0
+    if inst_modes:
+        for e in plan.scheduled_events:
+            if e.get("etype") == "institutional_decision":
+                pl = e.setdefault("payload", {})
+                pl["absorbing"] = True
+                pl.setdefault("absorbing_mode", inst_modes[0]["id"])
+                n_inst_absorbing += 1
     _ensure_event_time_mechanisms(plan, curve_src)
     plan.scheduled_events = [e for e in plan.scheduled_events if e.get("etype") != "resolve_outcome"]
     _declare_readout_quantities(plan)
@@ -744,6 +757,7 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=No
            "hazard_ratio_source": ("fitted_pack" if INTENTION_HR_PACK.exists()
                                    else "documented_priors_unfitted"),
            "n_grounded_stances": len(stances),
+           "n_absorbing_institutional_decisions": n_inst_absorbing,
            "declared_pathways": sorted(getattr(plan, "_declared_pathways", None) or []),
            "family": fam, "hazard_curve_source": curve_src}
     if lineage is not None:

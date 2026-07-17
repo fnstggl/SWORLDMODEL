@@ -51,6 +51,117 @@ ACTION_ONTOLOGY = {
 
 KNOWN_ACTIONS = {name: family for family, names in ACTION_ONTOLOGY.items() for name in names}
 
+# ---------------------------------------------------------------------------------------------
+# ACTION → PATHWAY-PROCESS EFFECTS (universal, ontology-level — never scenario keywords).
+# Each entry maps an ontology action to the signed effect its EXECUTION has on the causal pathway
+# PROCESSES of the question's mode graph (mode_graph.PATHWAYS): accepting advances the shared
+# cooperative process whoever does it; rejecting/exiting stalls it; mobilizing/striking advances a
+# unilateral campaign; approving/scheduling advances an institutional procedure; launching advances
+# operational execution. Effects are in [-1, 1] and are DIRECTIONS with documented magnitudes, not
+# fitted parameters — they parameterize (a) how executed actions move the `pathway_progress:*`
+# quantities the hazard rounds consume (phase4_execution._apply_pathway_effects, the endogenous
+# clock) and (b) the stance-consistency utility component (an actor committed against a pathway is
+# penalized for actions that advance it). Keyed (family, name) with a name-level fallback because a
+# few names (escalate, exit, reject) live in several families with the same causal reading.
+ACTION_PATHWAY_EFFECTS = {
+    # --- negotiation: one SHARED cooperative process; escalation bleeds into the unilateral track
+    ("negotiation", "accept"): {"cooperative_agreement": 1.0},
+    ("negotiation", "concede"): {"cooperative_agreement": 0.6},
+    ("negotiation", "counteroffer"): {"cooperative_agreement": 0.35},
+    ("negotiation", "seek_mediator"): {"cooperative_agreement": 0.4},
+    ("negotiation", "reveal"): {"cooperative_agreement": 0.15},
+    ("negotiation", "delay"): {"cooperative_agreement": -0.2},
+    ("negotiation", "hold_position"): {"cooperative_agreement": -0.3},
+    ("negotiation", "conceal"): {"cooperative_agreement": -0.1},
+    ("negotiation", "reject"): {"cooperative_agreement": -0.7},
+    ("negotiation", "exit"): {"cooperative_agreement": -1.0},
+    ("negotiation", "escalate"): {"cooperative_agreement": -0.5, "unilateral_action": 0.4,
+                                  "competitive_interaction": 0.3},
+    # --- participation: mobilization is unilateral-campaign fuel; support/oppose act on procedures
+    ("participation", "mobilize"): {"unilateral_action": 0.5, "competitive_interaction": 0.3},
+    ("participation", "strike"): {"unilateral_action": 0.35},
+    ("participation", "protest"): {"institutional_procedure": -0.2, "unilateral_action": 0.2},
+    ("participation", "support"): {"institutional_procedure": 0.35},
+    ("participation", "oppose"): {"institutional_procedure": -0.35},
+    ("participation", "coordinate"): {"cooperative_agreement": 0.3},
+    ("participation", "defect"): {"cooperative_agreement": -0.4},
+    ("participation", "persuade"): {"cooperative_agreement": 0.2},
+    ("participation", "withdraw"): {"cooperative_agreement": -0.3, "unilateral_action": -0.2},
+    # --- institutional: the procedure's own steps
+    ("institutional", "approve"): {"institutional_procedure": 0.8},
+    ("institutional", "reject"): {"institutional_procedure": -0.8},
+    ("institutional", "veto"): {"institutional_procedure": -1.0},
+    ("institutional", "amend"): {"institutional_procedure": 0.15},
+    ("institutional", "defer"): {"institutional_procedure": -0.3},
+    ("institutional", "refer"): {"institutional_procedure": 0.1},
+    ("institutional", "schedule"): {"institutional_procedure": 0.3},
+    ("institutional", "place_on_agenda"): {"institutional_procedure": 0.3},
+    ("institutional", "enforce"): {"institutional_procedure": 0.3, "operational_execution": 0.3},
+    ("institutional", "appeal"): {"institutional_procedure": -0.2},
+    ("institutional", "escalate"): {"institutional_procedure": 0.2},
+    # --- organizational/market: operational execution + market/cooperative edges
+    ("organizational_market", "launch"): {"operational_execution": 0.9},
+    ("organizational_market", "delay_launch"): {"operational_execution": -0.6},
+    ("organizational_market", "authorize"): {"operational_execution": 0.5},
+    ("organizational_market", "allocate_budget"): {"operational_execution": 0.3,
+                                                   "resource_depletion": 0.2},
+    ("organizational_market", "request_approval"): {"institutional_procedure": 0.3},
+    ("organizational_market", "acquire"): {"operational_execution": 0.4,
+                                           "market_aggregation": 0.2},
+    ("organizational_market", "hire"): {"operational_execution": 0.2},
+    ("organizational_market", "fire"): {"operational_execution": -0.2},
+    ("organizational_market", "purchase"): {"market_aggregation": 0.15},
+    ("organizational_market", "sell"): {"market_aggregation": -0.15},
+    ("organizational_market", "withdraw_offer"): {"cooperative_agreement": -0.7},
+    # --- messaging: weak signals into the shared cooperative track
+    ("messaging", "escalate_message"): {"cooperative_agreement": -0.15},
+    ("messaging", "reveal_information"): {"cooperative_agreement": 0.1},
+    ("messaging", "withhold_information"): {"cooperative_agreement": -0.1},
+}
+_NAME_LEVEL_EFFECTS = {}
+for (_f, _n), _eff in ACTION_PATHWAY_EFFECTS.items():
+    _NAME_LEVEL_EFFECTS.setdefault(_n, _eff)
+
+
+def action_pathway_effects(action_family: str, action_name: str) -> dict:
+    """The signed pathway-process effects of one ontology action ({} for effect-free actions like
+    wait/acknowledge — they move nothing and alignment is 0)."""
+    return dict(ACTION_PATHWAY_EFFECTS.get((str(action_family), str(action_name)))
+                or _NAME_LEVEL_EFFECTS.get(str(action_name)) or {})
+
+
+def actions_advancing_pathway(pathway: str, *, min_effect: float = 0.5) -> list:
+    """Ontology actions whose execution advances the given pathway by at least `min_effect` — the
+    prohibition set a binding prevent-commitment implies (resolution_criteria._binding_prohibitions)."""
+    pw = str(pathway).strip().lower()
+    out = set()
+    for (fam, name), eff in ACTION_PATHWAY_EFFECTS.items():
+        if pw == "any":
+            if any(v >= min_effect for v in eff.values()):
+                out.add(name)
+        elif eff.get(pw, 0.0) >= min_effect:
+            out.add(name)
+    return sorted(out)
+
+
+def stance_action_alignment(stances: list, action) -> float:
+    """How consistent this action is with the actor's OWN grounded public stances, in [-1, 1] —
+    the behavior channel: stance → policy → action. Per pathway the actor's net orientation
+    (mode_graph.pathway_orientation: pursue-stances positive; prevent-stances negative when the
+    pathway is one shared process or the stance is untargeted) multiplies the action's signed
+    effect on that pathway. Putin (committed against the cooperative process) is penalized for
+    `accept` and rewarded for `hold_position`; simultaneously (pursuing his own unilateral
+    campaign) rewarded for `mobilize` — one actor, several stances, coherent behavior."""
+    effects = action_pathway_effects(getattr(action, "action_family", ""),
+                                     getattr(action, "action_name", ""))
+    if not effects or not stances:
+        return 0.0
+    from swm.world_model_v2.mode_graph import pathway_orientation
+    total = 0.0
+    for pw, eff in effects.items():
+        total += pathway_orientation(stances, pw) * float(eff)
+    return max(-1.0, min(1.0, total))
+
 FEASIBILITY_STATUSES = (
     "feasible", "feasible_with_uncertainty", "temporarily_unavailable",
     "institutionally_prohibited", "outside_authority", "physically_impossible", "unaffordable",
@@ -77,6 +188,11 @@ register_entity_extension("phase4_actor_policy", fields={
     "obligations": "actor-visible obligations distinct from stable preferences",
     "expected_reactions": "actor-subjective beliefs about likely reactions",
     "workload_pressure": "actor-observed normalized workload",
+}, entity_types=("person", "institution"))
+# grounded stance records are actor-visible state the policy consumes (an actor knows their own
+# public commitments); registered here — the consumer contract — as well as at the grounding site
+register_entity_extension("grounded_stances", fields={
+    "stances": "evidence-grounded stance records (mode-scoped, graded control, classification only)",
 }, entity_types=("person", "institution"))
 
 
@@ -241,6 +357,7 @@ class ActorView:
     preferences: dict = field(default_factory=dict)
     incentives: dict = field(default_factory=dict)
     commitments: list = field(default_factory=list)
+    stances: list = field(default_factory=list)
     obligations: list = field(default_factory=list)
     resources: dict = field(default_factory=dict)
     workload: float | None = None
@@ -362,7 +479,8 @@ class ActorViewBuilder:
             institution_rules=rules, authority=authority,
             goals=list(own("goals", []) or []), preferences=prefs,
             incentives=self._mapping(fields.get("incentives")),
-            commitments=list(own("commitments", []) or []),
+            commitments=self._records(own("commitments", [])),
+            stances=self._records(own("stances", [])),
             obligations=list(own("obligations", []) or []), resources=resources,
             workload=self._number(own("workload_pressure")), attention=self._number(own("attention")),
             risk_beliefs={k: v for k, v in beliefs.items() if "risk" in str(k).lower()},
@@ -381,6 +499,16 @@ class ActorViewBuilder:
             return {str(k): _value(v) for k, v in value.items()}
         raw = _value(value, {})
         return dict(raw) if isinstance(raw, dict) else {}
+
+    @staticmethod
+    def _records(value) -> list:
+        """Typed record lists (commitments/stances): a list of dicts passes through; a legacy free-
+        text value is wrapped as one record instead of exploding into a per-character list."""
+        if isinstance(value, list):
+            return [v for v in value if isinstance(v, dict)]
+        if isinstance(value, str) and value:
+            return [{"statement": value}]
+        return []
 
     @staticmethod
     def _number(value):
@@ -652,7 +780,7 @@ class UtilityInference:
     """Hierarchical utility inference with explicit shrinkage and provenance."""
 
     COMPONENTS = ("success", "resources", "relationship", "belief", "effort", "delay", "risk",
-                  "norm", "obligation", "reputation", "commitment")
+                  "norm", "obligation", "reputation", "commitment", "stance")
 
     def infer(self, action: TypedAction, view: ActorView, consequence: ConsequenceDistribution,
               parameters: dict) -> UtilityPosterior:
@@ -674,6 +802,11 @@ class UtilityInference:
             "obligation": float(action.parameters.get("obligation_alignment", 0.0) or 0.0),
             "reputation": float(action.parameters.get("reputation_effect", 0.0) or 0.0),
             "commitment": float(len(action.commitments_created)) * 0.1,
+            # the BEHAVIOR channel of grounded intentions: consistency of this action with the
+            # actor's OWN evidence-grounded public stances (mode_graph orientation × ontology
+            # pathway effects). This is how a stated refusal conditions which actions get chosen —
+            # not just which hazards get multiplied.
+            "stance": stance_action_alignment(view.stances, action),
         }
         for name in self.COMPONENTS:
             g = group_params.get(name, {"mean": 0.0, "sd": 1.0})
@@ -1125,7 +1258,12 @@ class ActorPolicyModel:
         return {
             "pack_id": "phase4:tier7-reference:4.0.0", "source": "reference_class_prior",
             "support_grade": "highly_speculative", "precision": 0.7, "partial_pool_strength": 10.0,
-            "global": {name: {"mean": 0.0 if name != "success" else 1.0, "sd": 1.0}
+            # nonzero broad-prior coefficients: success (an actor prefers actions it believes work)
+            # and stance (acting against one's own stated public commitment carries consistency/
+            # credibility cost; acting with it is cheap) — the stance coefficient is a documented
+            # behavioral prior, not a fitted value, and the posterior still mixes policy families.
+            "global": {name: {"mean": {"success": 1.0, "stance": 1.5}.get(name, 0.0),
+                              "sd": 1.0 if name != "stance" else 0.75}
                        for name in UtilityInference.COMPONENTS},
             "policy_family_weights": {"random_utility": 0.3, "quantal_response": 0.2,
                                       "satisficing": 0.2, "risk_sensitive": 0.15,
