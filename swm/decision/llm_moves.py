@@ -141,6 +141,11 @@ def spec_to_instructions(strategy: dict, levers: list | None = None) -> list[str
         rules.append("No urgency and no pressure. Never say 'ASAP', 'circling back', 'following up', or 'quick call'.")
     if g("ask_directness") > 0.6 or g("low_effort_ask") > 0.6:
         rules.append("End with ONE clear, specific, low-effort ask they can answer in a line.")
+    if g("convenience_selling") < 0.25:
+        rules.append("Do NOT perform easiness or sell convenience: never say what they'll get, that "
+                     "there's 'no follow-up', how fast they could verify something, or 'you could test "
+                     "this yourself'. State the thing once and ask one plain question — nothing about "
+                     "how easy or low-cost replying is.")
     if g("length_fit") > 0.6:
         rules.append("Keep every sentence short and plain. Cut every unnecessary word.")
     if g("clarity") > 0.6:

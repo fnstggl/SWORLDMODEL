@@ -35,7 +35,8 @@ from swm.variables.schema import BY_CATEGORY, spec
 # are added per recipient as situational levers (swm/decision/situational_levers.py), never hardcoded here.
 MESSAGE_VARS = [
     "personalization", "relevance_fit", "clarity", "credibility_proof", "responder_incentive",
-    "ask_directness", "low_effort_ask", "pushiness", "warmth", "length_fit", "credential_signaling",
+    "ask_directness", "low_effort_ask", "convenience_selling", "pushiness", "warmth", "length_fit",
+    "credential_signaling",
 ]
 
 
@@ -74,7 +75,11 @@ _MAIN: list[WeightPrior] = [
     WeightPrior("credibility_proof", 1.1, 0.6, "llm"),        # evidence/traction backing the claim
     WeightPrior("responder_incentive", 1.2, 0.6, "llm"),      # what's in it for THEM
     WeightPrior("ask_directness", 0.7, 0.5, "llm"),
-    WeightPrior("low_effort_ask", 0.9, 0.5, "llm"),           # easy to reply -> more replies
+    WeightPrior("low_effort_ask", 0.9, 0.5, "llm"),           # the ask genuinely being brief -> more replies
+    # PERFORMING easiness/benefit is off-putting on its own (mild main cost); the real damage is the
+    # interaction with a status-conscious skeptic below. This is the user-identified mechanism: a message
+    # that sells convenience reads as pushy AI outreach, not as helpful.
+    WeightPrior("convenience_selling", -0.6, 0.5, "llm"),
     WeightPrior("length_fit", 1.1, 0.5, "llm"),               # length_fit is already a [0,1] fit-quality
     WeightPrior("warmth", 0.5, 0.5, "llm"),
     WeightPrior("pushiness", -1.8, 0.6, "llm"),
@@ -92,6 +97,11 @@ _INTERACTIONS: list[tuple[str, str, WeightPrior]] = [
     ("credibility_proof", "skepticism", WeightPrior("proof×skeptic", 1.3, 0.7, "llm")),
     # a real payoff for the responder matters more the higher their status (their time is scarce).
     ("responder_incentive", "status", WeightPrior("incent×status", 0.7, 0.6, "llm")),
+    # ...but PERFORMING that payoff (benefit-assurance) backfires with a status-conscious recipient:
+    # a person put off by status games is equally put off by salesy convenience-selling. The two
+    # negative interactions below are the mechanical form of "too frictionless -> pushy turn-off".
+    ("convenience_selling", "status_orientation", WeightPrior("conv×statusorient", -2.2, 0.8, "llm")),
+    ("convenience_selling", "skepticism", WeightPrior("conv×skeptic", -1.3, 0.7, "llm")),
     # a busy / low-attention recipient only engages when the ask is relevant, and rewards low-effort asks.
     ("relevance_fit", "attention_availability", WeightPrior("rel×attn", 0.6, 0.6, "llm")),
     ("low_effort_ask", "attention_availability", WeightPrior("effort×attn", 0.6, 0.6, "llm")),

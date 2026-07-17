@@ -103,6 +103,15 @@ _SPECS: list[VariableSpec] = [
                  default=0.3),
     VariableSpec("low_effort_ask", MESSAGE_FIT, "how easy/low-friction it is for them to respond",
                  default=0.4),
+    # the register axis the user's feedback isolated: PERFORMING easiness/benefit is DISTINCT from the
+    # ask genuinely being brief. A message that announces 'no follow-up required', pre-chews a
+    # 'you could test this yourself' step, or assures the reader what they'll get is convenience-
+    # selling — it reads as pushy/AI to a high-status skeptic even though it looks helpful.
+    VariableSpec("convenience_selling", MESSAGE_FIT,
+                 "how much the message PERFORMS easiness / assures the reader a payoff / pre-chews "
+                 "their next step ('no follow-up required', 'you could just test this yourself') — "
+                 "salesmanship dressed as politeness, distinct from the ask genuinely being short",
+                 default=0.2),
     VariableSpec("warmth", MESSAGE_FIT, "warm, respectful, human tone (vs cold/transactional)", default=0.5),
     VariableSpec("credential_signaling", MESSAGE_FIT, "how much the message parades status/credentials",
                  default=0.3),

@@ -53,6 +53,16 @@ _ASK = re.compile(r"\b(reply|respond|let me know|lmk|book (a )?time|grab (a )?ti
                   r"can (i|we)|would you|happy to send)\b", re.I)
 _LOW_EFFORT = re.compile(r"\b(reply ['\"]?yes|one word|yes/no|thumbs up|just say|no deck needed|"
                          r"two minutes|30 seconds|quick yes)\b", re.I)
+# convenience-SELLING: PERFORMING easiness / assuring a payoff / pre-chewing the reader's next step.
+# Distinct from _LOW_EFFORT (the ask genuinely being short). Lexical proxy for the register the LLM
+# encoder scores directly; kept in sync with semantic_critic._CONVENIENCE.
+_CONVENIENCE_SELL = re.compile(
+    r"\byou('| wi|'l)?ll (get|receive|have|walk away with)\b|\byou get (a|an|the)\b|"
+    r"\bno (follow[- ]?up|obligation|commitment|strings|pressure|need to (respond|reply))\b|"
+    r"\b(all|only) (it|this) takes is\b|\bzero (effort|commitment|risk)\b|"
+    r"\byou could (test|verify|check|try|confirm|run) (this|it|that|your)\b|"
+    r"\b(see|judge|test|try) (it |this )?for yourself\b|\bno (deck|call) (needed|required)\b|"
+    r"\brequired?: (none|nothing)\b|\bif (i'?m|i am) wrong,? (just )?(delete|ignore|archive)\b", re.I)
 _NUMBER = re.compile(r"\b\d+(\.\d+)?\s?(x|%|k|m|bn|billion|million|percent|cents?|ms| x faster)?\b", re.I)
 _QMARK = re.compile(r"\?")
 
@@ -87,6 +97,7 @@ def encode_text_to_strategy(text: str, levers: list | None = None) -> dict:
         "responder_incentive": _sat(len(_INCENTIVE.findall(t)), k=1.0),
         "ask_directness": ask_directness,
         "low_effort_ask": _sat(len(_LOW_EFFORT.findall(t)) + 0.3 * len(_ASK.findall(t)), k=1.0),
+        "convenience_selling": _sat(len(_CONVENIENCE_SELL.findall(t)), k=1.0),
         "pushiness": pushy,
         "warmth": _sat(len(_WARMTH.findall(t)), k=1.2),
         "length_fit": length_fit,
