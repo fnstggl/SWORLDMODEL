@@ -29,7 +29,7 @@ Return ONLY JSON:
 
 _INTENTIONS_PROMPT = """For each STRATEGIC ACTOR below, state their PUBLICLY STATED or strongly evidenced
 intention relevant to this question, using the evidence and your knowledge of the real people/institutions.
-Only include intentions you can ground; give the quote/basis and how binding the stated intention is.
+Only include intentions you can ground. CLASSIFY qualitatively — do NOT invent numeric strengths.
 
 QUESTION: {q}
 RESOLUTION CRITERION: {crit}
@@ -39,9 +39,18 @@ EVIDENCE: {ev}
 Return ONLY JSON:
 {{"intentions": [{{"actor": "<entity id>", "stated_intention": "<one sentence>",
   "basis_quote": "<short quote or knowledge basis>", "source": "evidence|model_knowledge",
-  "commitment_strength": <0..1>,
+  "commitment_level": "categorical_refusal|conditional_refusal|weak_opposition|neutral|openness_to_agreement|formal_commitment_toward_agreement — the actor's stance toward the AGREEMENT/cooperative path to resolution",
+  "reliability": "high|medium|low — how reliable/binding the basis is (law/treaty=high, direct public statement=high, reported leaning=medium, inference=low)",
   "entails_direction": "yes|no|neutral — under the resolution criterion",
   "date": "<YYYY-MM-DD or null>"}}]}}"""
+
+# Stance-weight map used ONLY to aggregate the direction-share quantity (`actor_intentions`, consumed
+# through the bounded state channel). These are documented aggregation weights, not effect sizes —
+# the EFFECT of stances on timing hazards lives in event_time.INTENTION_HR_PRIORS (distributions,
+# sampled per particle, replaceable by a fitted pack).
+_STANCE_WEIGHT = {"categorical_refusal": 0.95, "conditional_refusal": 0.75, "weak_opposition": 0.4,
+                  "neutral": 0.0, "openness_to_agreement": 0.6,
+                  "formal_commitment_toward_agreement": 0.9}
 
 
 def parse_resolution_criterion(question, *, horizon, llm=None) -> dict:
@@ -68,24 +77,35 @@ def ground_actor_intentions(plan, question, *, criterion=None, evidence_text="",
         actors=actors, ev=evidence_text[:1600] or "(none)"))) or {}
     ents = {str(e.get("id")): e for e in plan.entities if isinstance(e, dict)}
     n_grounded, num, den = 0, 0.0, 0.0
-    kept = []
+    kept, stances = [], []
     for it in (raw.get("intentions") or []):
         if not isinstance(it, dict) or str(it.get("actor")) not in ents:
             continue
         e = ents[str(it["actor"])]
-        strength = max(0.0, min(1.0, float(it.get("commitment_strength", 0.5) or 0.5)))
+        level = str(it.get("commitment_level", "neutral")).strip().lower()
+        if level not in _STANCE_WEIGHT:
+            level = "neutral"
+        reliability = str(it.get("reliability", "medium")).strip().lower()
+        if reliability not in ("high", "medium", "low"):
+            reliability = "medium"
+        strength = _STANCE_WEIGHT[level]
         e.setdefault("fields", {})["commitments"] = str(it.get("stated_intention", ""))[:160]
         e["_intention"] = {"quote": str(it.get("basis_quote", ""))[:160],
                            "source": str(it.get("source", "model_knowledge")),
-                           "strength": strength,
+                           "commitment_level": level, "reliability": reliability,
                            "entails": str(it.get("entails_direction", "neutral"))}
         n_grounded += 1
         d = str(it.get("entails_direction", "neutral")).lower()
         if d in ("yes", "no"):
             num += strength * (1.0 if d == "yes" else 0.0)
             den += strength
+        stances.append({"actor": str(it["actor"]), "commitment_level": level,
+                        "reliability": reliability, "entails": d})
         kept.append({k: it.get(k) for k in ("actor", "stated_intention", "basis_quote", "source",
-                                            "commitment_strength", "entails_direction")})
+                                            "commitment_level", "reliability", "entails_direction")})
+    # the full qualitative record — consumed by event_time to build per-mode hazard-ratio
+    # DISTRIBUTIONS (never a point coefficient invented here)
+    plan._intention_stances = stances
     if den > 0:
         share = num / den
         plan.quantities.append({"name": "actor_intentions", "qtype": "actor_intentions",

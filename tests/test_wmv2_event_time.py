@@ -103,7 +103,12 @@ def _plan():
         scheduled_events=[{"etype": "resolve_outcome", "ts": T1 - 1, "participants": [], "payload": {}}],
         accepted_mechanisms=[], quantities=[{"name": "actor_intentions", "qtype": "actor_intentions",
                                              "value": 0.2, "sd": None}],
-        _consumed_state=[{"var": "actor_intentions", "weight": 0.2}])
+        _intention_stances=[{"actor": "leader_a", "commitment_level": "categorical_refusal",
+                             "reliability": "high", "entails": "no"},
+                            {"actor": "leader_b", "commitment_level": "openness_to_agreement",
+                             "reliability": "medium", "entails": "yes"}],
+        _consumed_state=[{"var": "actor_intentions", "weight": 0.2}],
+        compute_plan={"n_particles": 30})
     return p
 
 
@@ -122,18 +127,20 @@ def test_convert_to_event_time_full_rewire():
     assert all(T0 < e["ts"] < T1 for e in rounds)
     # total scheduled hazard mass equals the base envelope (0.5) — no len(modes) inflation
     assert sum(e["payload"]["base_hazard"] for e in rounds) == pytest.approx(0.5)
-    # grounded intentions modulate ONLY agreement modes: refusal crushes deal hazards, never a
-    # unilateral end-state's hazard
-    by_mode = {e["payload"]["mode"]: e["payload"]["intention_factor"] for e in rounds}
-    assert by_mode["negotiated_settlement"] == pytest.approx(0.2 + 1.4 * 0.2)
-    assert by_mode["military_collapse"] == 1.0
-    assert by_mode["frozen_conflict"] == 1.0
+    # grounded stances modulate ONLY agreement modes, as a DISTRIBUTION (binding = most-opposed
+    # veto actor: high-reliability categorical refusal → median 0.55), never a unilateral end-state
+    by_mode = {e["payload"]["mode"]: e["payload"]["hr"] for e in rounds}
+    assert by_mode["negotiated_settlement"]["median"] == pytest.approx(0.55)
+    assert by_mode["negotiated_settlement"]["lo80"] < by_mode["negotiated_settlement"]["hi80"]
+    assert by_mode["military_collapse"]["median"] == 1.0
+    assert by_mode["frozen_conflict"]["median"] == 1.0
+    assert rep["agreement_hazard_ratio"]["binding_actor"] == "leader_a"
+    assert rep["hazard_ratio_source"] in ("documented_priors_unfitted", "fitted_pack")
     ops = {m["operator"] for m in p.accepted_mechanisms}
     assert {"absorption_monitor", "hazard_round"} <= ops
     declared = {q["name"] for q in p.quantities}
     assert {"absorbed_at", "absorbing_state_reached"} <= declared   # readout binds at materialization
-    assert 0.1 <= rep["intention_factor"] <= 1.6
-    assert rep["intention_factor"] == pytest.approx(0.2 + 1.4 * 0.2)  # grounded intentions shape hazards
+    assert p.compute_plan["n_particles"] == 200               # CDF particle floor
     assert lin["event_time"] is rep
 
 
@@ -158,6 +165,65 @@ def test_mode_entailment_filter_fails_open():
         raise RuntimeError("llm down")
     rep = convert_to_event_time(p, {"resolves_yes_iff": "hostilities formally end"}, llm=broken_llm)
     assert len(rep["modes"]) == 3                              # filter must never block the forecast
+
+
+def test_sampled_hazard_ratio_is_per_branch_persistent_and_bounded():
+    op = HazardRoundOperator()
+    w = _world(now=T0 + 30 * 86400)
+    hr = {"median": 0.55, "lo80": 0.30, "hi80": 0.90}
+    v1 = op._sampled_hr(w, "deal", hr)
+    v2 = op._sampled_hr(w, "deal", hr)                        # same branch → same draw
+    assert v1 == v2 and 0.05 <= v1 <= 3.0
+    w2 = _world(now=T0 + 30 * 86400)
+    w2.branch_id = "b7:y"
+    draws = {op._sampled_hr(_w, "deal", hr) for _w in
+             [w2] + [_world(now=T0) for _ in range(0)]}
+    vals = []
+    for i in range(50):
+        wi = _world(now=T0 + 30 * 86400)
+        wi.branch_id = f"b{i}:z"
+        vals.append(op._sampled_hr(wi, "deal", hr))
+    assert len(set(vals)) > 10                                # cross-particle spread survives
+    assert all(0.05 <= v <= 3.0 for v in vals)
+
+
+def test_agreement_hazard_ratio_binding_actor_and_reliability_shrink():
+    from swm.world_model_v2.event_time import agreement_hazard_ratio
+    # most-opposed veto actor binds
+    hr = agreement_hazard_ratio([
+        {"actor": "a", "commitment_level": "openness_to_agreement", "reliability": "high"},
+        {"actor": "b", "commitment_level": "categorical_refusal", "reliability": "high"}])
+    assert hr["binding_actor"] == "b" and hr["median"] == pytest.approx(0.55)
+    # low reliability shrinks the effect toward 1.0
+    hr_low = agreement_hazard_ratio([
+        {"actor": "b", "commitment_level": "categorical_refusal", "reliability": "low"}])
+    assert 0.55 < hr_low["median"] < 1.0
+    # no grounded stances → no effect, honest default
+    assert agreement_hazard_ratio([])["binding_level"] == "no_grounded_stance"
+
+
+def test_sensitivity_overrides_force_point_ratios():
+    import swm.world_model_v2.event_time as ET
+    p = _plan()
+    ET.AGREEMENT_HR_OVERRIDE, ET.VICTORY_HR_OVERRIDE = 0.5, 0.8
+    try:
+        rep = convert_to_event_time(p, {"resolves_yes_iff": "x"})
+        assert rep["agreement_hazard_ratio"]["median"] == 0.5
+        assert rep["hazard_ratio_by_mode"]["military_collapse"]["median"] == 0.8
+        assert rep["agreement_hazard_ratio"]["binding_level"] == "sensitivity_override"
+    finally:
+        ET.AGREEMENT_HR_OVERRIDE = ET.VICTORY_HR_OVERRIDE = None
+
+
+def test_fit_intention_hazard_ratios_pools_toward_no_effect():
+    from swm.world_model_v2.event_time import fit_intention_hazard_ratios
+    rows = [{"commitment_level": "categorical_refusal", "hazard_ratio": r}
+            for r in (0.4, 0.5, 0.6, 0.5, 0.45)]
+    pack = fit_intention_hazard_ratios(rows)
+    med = pack["hazard_ratios"]["categorical_refusal"][0]
+    assert 0.5 < med < 1.0                                    # pooled toward 1.0 with n=5
+    lo, hi = pack["hazard_ratios"]["categorical_refusal"][1:3]
+    assert lo < med < hi
 
 
 def test_fit_survival_pack_calibration_only_shape():

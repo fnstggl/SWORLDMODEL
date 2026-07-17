@@ -28,7 +28,89 @@ from swm.world_model_v2.transitions import (StateDelta, TransitionOperator, Tran
                                             ValidationResult, register_operator)
 
 SURV_PACK = Path("experiments/replay_vault_v3/family_survival_pack.json")
+INTENTION_HR_PACK = Path("experiments/replay_vault_v3/intention_hr_pack.json")
 _BUCKETS = 5                                                  # lifetime-fraction hazard buckets
+_Z80 = 1.2816                                                 # 80% two-sided normal quantile
+
+# DOCUMENTED PRIORS — NOT FITTED. Hazard ratio a stated stance implies for AGREEMENT-mode hazards,
+# as (median, lo80, hi80). Deliberately conservative (centered nearer 1.0 than any crushed point
+# value); each PARTICLE samples its own ratio from the lognormal these bounds define, so the
+# uncertainty over the effect size survives into the terminal CDF instead of being collapsed to a
+# point coefficient. Replaced wholesale when intention_hr_pack.json exists (fit from resolved cases
+# via fit_intention_hazard_ratios — statement-class → observed subsequent hazard change).
+INTENTION_HR_PRIORS = {
+    "categorical_refusal": (0.55, 0.30, 0.90),
+    "conditional_refusal": (0.78, 0.50, 1.10),
+    "weak_opposition": (0.90, 0.65, 1.15),
+    "neutral": (1.00, 0.80, 1.25),
+    "openness_to_agreement": (1.35, 1.00, 1.90),
+    "formal_commitment_toward_agreement": (2.10, 1.30, 3.20),
+}
+# reliability shrinks the LOG-effect toward 1.0 (an inferred leaning moves hazards less than a law)
+_RELIABILITY_SHRINK = {"high": 1.0, "medium": 0.6, "low": 0.3}
+
+# SENSITIVITY-HARNESS OVERRIDES (experiments only, never production defaults): force the agreement /
+# non-agreement mode hazard ratio to a point value so assumption-dependence is measurable.
+AGREEMENT_HR_OVERRIDE = None
+VICTORY_HR_OVERRIDE = None
+
+
+def _hr_table() -> dict:
+    if INTENTION_HR_PACK.exists():
+        try:
+            pack = json.loads(INTENTION_HR_PACK.read_text())
+            return {k: tuple(v) for k, v in (pack.get("hazard_ratios") or {}).items()} or dict(INTENTION_HR_PRIORS)
+        except Exception:  # noqa: BLE001
+            return dict(INTENTION_HR_PRIORS)
+    return dict(INTENTION_HR_PRIORS)
+
+
+def _shrink_hr(med, lo, hi, reliability):
+    s = _RELIABILITY_SHRINK.get(reliability, 0.6)
+    return (math.exp(s * math.log(med)), math.exp(s * math.log(lo)), math.exp(s * math.log(hi)))
+
+
+def agreement_hazard_ratio(stances: list) -> dict:
+    """Combine per-actor qualitative stances into ONE agreement-mode hazard-ratio distribution.
+    Agreement requires the consent of every veto player, so the BINDING actor is the most opposed
+    one (minimum shrunk median) — documented structural choice, not a fitted parameter."""
+    table = _hr_table()
+    best = None
+    for st in stances or []:
+        tup = table.get(str(st.get("commitment_level", "")).lower())
+        if not tup:
+            continue
+        med, lo, hi = _shrink_hr(*tup, str(st.get("reliability", "medium")).lower())
+        if best is None or med < best["median"]:
+            best = {"median": round(med, 4), "lo80": round(lo, 4), "hi80": round(hi, 4),
+                    "binding_actor": st.get("actor"), "binding_level": st.get("commitment_level"),
+                    "binding_reliability": st.get("reliability")}
+    return best or {"median": 1.0, "lo80": 0.8, "hi80": 1.25, "binding_actor": None,
+                    "binding_level": "no_grounded_stance", "binding_reliability": None}
+
+
+def fit_intention_hazard_ratios(rows: list, *, pool_strength: float = 8.0) -> dict:
+    """Fit statement-class hazard ratios from RESOLVED historical cases. Each row:
+    {commitment_level, hazard_ratio} where hazard_ratio = (agreement hazard after the statement) /
+    (agreement hazard before), measured on archived paths of resolved cases. Partial pooling toward
+    1.0 (no effect). Writes nothing — caller persists to INTENTION_HR_PACK. Until such labeled data
+    exists the documented INTENTION_HR_PRIORS above serve, and are reported as priors."""
+    import statistics
+    out = {}
+    by = {}
+    for r in rows:
+        lvl = str(r.get("commitment_level", "")).lower()
+        hr = r.get("hazard_ratio")
+        if lvl and isinstance(hr, (int, float)) and hr > 0:
+            by.setdefault(lvl, []).append(math.log(float(hr)))
+    for lvl, logs in by.items():
+        k = pool_strength / (len(logs) + pool_strength)
+        med = math.exp((1 - k) * statistics.median(logs))            # pooled toward log(1.0)=0
+        sd = statistics.pstdev(logs) if len(logs) > 1 else 0.35
+        out[lvl] = (round(med, 4), round(med * math.exp(-_Z80 * sd), 4),
+                    round(med * math.exp(_Z80 * sd), 4))
+    return {"version": "intention-hr-1.0", "fit_on": "resolved historical statement/outcome pairs",
+            "n_rows": len(rows), "hazard_ratios": {k: list(v) for k, v in out.items()}}
 
 
 # ---------------------------------------------------------------- 1. the contract
@@ -129,8 +211,9 @@ class AbsorptionMonitorOperator(TransitionOperator):
 # ---------------------------------------------------------------- 3. hazard-mode rounds
 class HazardRoundOperator(TransitionOperator):
     """One causal round of a process that may enter the absorbing state. payload = {mode, base_hazard,
-    intention_factor, hazard_bucket_curve (per lifetime-fraction), consume:[{var,weight}]}. The realized
-    per-round hazard = curve(t) × intention_factor, shifted by consumed causal state (bounded, inside this
+    hr {median,lo80,hi80} (or legacy intention_factor), hazard_bucket_curve (per lifetime-fraction),
+    consume:[{var,weight}]}. The realized per-round hazard = curve(t) × per-branch SAMPLED hazard
+    ratio, shifted by consumed causal state (bounded, inside this
     mechanism). On success: writes absorbing_state_reached + absorbing_mode at THIS round's date."""
     name = "hazard_round"
 
@@ -145,6 +228,27 @@ class HazardRoundOperator(TransitionOperator):
         return TransitionProposal(operator=self.name, action=dict(event.payload),
                                   reason_codes=[f"mode={event.payload.get('mode', '?')}"])
 
+    def _sampled_hr(self, world, mode, hr):
+        """One hazard-ratio draw PER BRANCH per mode (lognormal from the prior's 80% interval),
+        persisted on the world so every round in this branch sees the same sampled effect size —
+        the uncertainty over the coefficient becomes cross-particle spread in the terminal CDF."""
+        from swm.world_model_v2.quantities import Quantity, register_quantity_type
+        from swm.world_model_v2.phase_consumers import _branch_rng
+        qname = f"sampled_intention_hr:{mode}"
+        q = world.quantities.get(qname)
+        if q is not None and isinstance(getattr(q, "value", None), (int, float)):
+            return float(q.value)
+        med = max(1e-6, float(hr.get("median", 1.0)))
+        lo, hi = float(hr.get("lo80", med)), float(hr.get("hi80", med))
+        sigma = (math.log(max(hi, 1e-6)) - math.log(max(lo, 1e-6))) / (2 * _Z80) if hi > lo else 0.0
+        rng = _branch_rng(world, f"hr:{mode}")
+        val = med * math.exp(sigma * rng.gauss(0.0, 1.0)) if sigma > 0 else med
+        val = max(0.05, min(3.0, val))
+        register_quantity_type("sampled_intention_hr", units="hazard_ratio")
+        world.quantities[qname] = Quantity(name=qname, qtype="sampled_intention_hr", value=val,
+                                           timestamp=world.clock.now)
+        return val
+
     def apply(self, world, proposal):
         from swm.world_model_v2.quantities import Quantity, register_quantity_type
         from swm.world_model_v2.phase_consumers import consume_state_rate, _branch_rng
@@ -154,14 +258,22 @@ class HazardRoundOperator(TransitionOperator):
         curve = a.get("hazard_bucket_curve") or []
         h = float(curve[min(int(frac * _BUCKETS), _BUCKETS - 1)]) if curve \
             else float(a.get("base_hazard", 0.05))
-        h *= max(0.0, min(2.0, float(a.get("intention_factor", 1.0))))
+        hr_used = None
+        if isinstance(a.get("hr"), dict):                     # distributional hazard ratio (sampled)
+            hr_used = self._sampled_hr(world, str(a.get("mode")), a["hr"])
+            h *= hr_used
+        else:                                                 # legacy point factor
+            h *= max(0.0, min(2.0, float(a.get("intention_factor", 1.0))))
         h, used = consume_state_rate(world, h, a.get("consume") or [])
         h = max(0.0, min(0.95, h))
         rng2 = _branch_rng(world, f"hz:{a.get('mode')}:{world.clock.now}")
         d = StateDelta(at=world.clock.now, event_type="hazard_round", operator=self.name,
                        reason_codes=proposal.reason_codes + [f"h={round(h, 4)}"],
                        uncertainty={"hazard": round(h, 4), "lifetime_fraction": round(frac, 3),
-                                    "consumed": used, "intention_factor": a.get("intention_factor")})
+                                    "consumed": used,
+                                    "sampled_hazard_ratio": (round(hr_used, 4) if hr_used is not None
+                                                             else None),
+                                    "intention_factor": a.get("intention_factor")})
         if rng2.random() < h:
             register_quantity_type("absorbing_state_reached", units="bool")
             register_quantity_type("absorbing_mode", units="mode")
@@ -291,24 +403,31 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=No
     modes, rejected_modes = _filter_absorbing_modes(modes, criterion, llm)
     z = sum(m["prior"] for m in modes) or 1.0
     curve, fam, curve_src = family_hazard_curve(getattr(plan, "question", ""))
-    # grounded-intention factor: intention_yes_share 0 → crush hazards; 1 → boost (bounded 0.1..1.6)
-    share = None
-    for q in (getattr(plan, "quantities", []) or []):
-        if isinstance(q, dict) and q.get("name") == "actor_intentions":
-            share = q.get("value")
-    ifac = 1.0 if share is None else max(0.1, min(1.6, 0.2 + 1.4 * float(share)))
+    # grounded-intention effect on AGREEMENT modes: a hazard-ratio DISTRIBUTION built from the
+    # qualitative stance record (binding = most-opposed veto actor), sampled per particle — never a
+    # point coefficient. Non-agreement (unilateral) modes are unaffected by stances toward agreement.
+    stances = list(getattr(plan, "_intention_stances", []) or [])
+    agr_hr = agreement_hazard_ratio(stances)
+    if AGREEMENT_HR_OVERRIDE is not None:                     # sensitivity harness only
+        v = float(AGREEMENT_HR_OVERRIDE)
+        agr_hr = {"median": v, "lo80": v, "hi80": v, "binding_actor": "OVERRIDE",
+                  "binding_level": "sensitivity_override", "binding_reliability": None}
+    vic_hr = {"median": 1.0, "lo80": 1.0, "hi80": 1.0}
+    if VICTORY_HR_OVERRIDE is not None:                       # sensitivity harness only
+        v = float(VICTORY_HR_OVERRIDE)
+        vic_hr = {"median": v, "lo80": v, "hi80": v}
     span = plan.horizon_ts - plan.as_of
     horizon_days = max(1.0, span / 86400.0)
     n_rounds = max(4, min(20, int(horizon_days / max(1.0, horizon_days / 10.0))))
     consumed = list(getattr(plan, "_consumed_state", []) or [])
     n_ev = 0
-    mode_ifac = {}
+    mode_hr = {}
     for m in modes[:6]:
         share = m["prior"] / z
-        # grounded intentions modulate only AGREEMENT modes: refusal to negotiate crushes deal hazards,
-        # never a unilateral end-state's hazard
-        ifac_m = ifac if _mode_requires_agreement(m["id"]) else 1.0
-        mode_ifac[m["id"]] = round(ifac_m, 3)
+        # grounded stances modulate only AGREEMENT modes: a refusal to negotiate suppresses deal
+        # hazards (by a sampled, uncertain ratio), never a unilateral end-state's hazard
+        hr_m = agr_hr if _mode_requires_agreement(m["id"]) else vic_hr
+        mode_hr[m["id"]] = {k: hr_m.get(k) for k in ("median", "lo80", "hi80")}
         for k in range(1, n_rounds + 1):
             ts = plan.as_of + (k / (n_rounds + 1)) * span
             # per-round per-mode hazard: bucket hazard spread over the bucket's rounds (n_rounds/_BUCKETS)
@@ -319,7 +438,8 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=No
                 "payload": {"mode": m["id"], "base_hazard": 0.5 * share / n_rounds,
                             "hazard_bucket_curve": ([h * share * _BUCKETS / n_rounds for h in curve]
                                                     if curve else None),
-                            "intention_factor": ifac_m, "as_of": plan.as_of, "span_s": span,
+                            "hr": {k: hr_m.get(k) for k in ("median", "lo80", "hi80")},
+                            "as_of": plan.as_of, "span_s": span,
                             "consume": consumed}})
             n_ev += 1
     for mech_id, op in (("absorption_monitor", "absorption_monitor"), ("hazard_rounds", "hazard_round")):
@@ -340,9 +460,20 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=No
                                               resolves_iff=str((criterion or {}).get("resolves_yes_iff",
                                                                                      ""))[:300],
                                               modes=[m["id"] for m in modes]).validate()
+    # a first-passage CDF needs particle resolution a point forecast does not: floor the particle
+    # count for EVERY event-time contract (rollout is LLM-free per particle, so this is cheap)
+    cp = getattr(plan, "compute_plan", None)
+    n_particles = None
+    if isinstance(cp, dict):
+        cp["n_particles"] = max(int(cp.get("n_particles", 30) or 30), 200)
+        n_particles = cp["n_particles"]
     rep = {"modes": [m["id"] for m in modes], "rejected_non_absorbing_modes": rejected_modes,
+           "n_particles": n_particles,
            "n_hazard_rounds": n_ev, "rounds_per_mode": n_rounds,
-           "intention_factor": round(ifac, 3), "intention_factor_by_mode": mode_ifac,
+           "agreement_hazard_ratio": agr_hr, "hazard_ratio_by_mode": mode_hr,
+           "hazard_ratio_source": ("fitted_pack" if INTENTION_HR_PACK.exists()
+                                   else "documented_priors_unfitted"),
+           "n_grounded_stances": len(stances),
            "family": fam, "hazard_curve_source": curve_src}
     if lineage is not None:
         lineage["event_time"] = rep
