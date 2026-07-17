@@ -47,13 +47,14 @@ from __future__ import annotations
 
 import json
 import math
+import re
 from pathlib import Path
 
 from swm.world_model_v2.transitions import (StateDelta, TransitionOperator, TransitionProposal,
                                             ValidationResult, register_operator)
-from swm.world_model_v2.mode_graph import (ENDOGENOUS_STANCE_SPLIT, LEGACY_LEVELS, canon_level,
-                                           canonical_modes, combine_stances, mode_pathway,
-                                           pathway_of, progress_var)
+from swm.world_model_v2.mode_graph import (ENDOGENOUS_STANCE_SPLIT, LEGACY_LEVELS, PROGRESS_PREFIX,
+                                           canon_level, canonical_modes, combine_stances,
+                                           mode_pathway, pathway_of, progress_var)
 
 SURV_PACK = Path("experiments/replay_vault_v3/family_survival_pack.json")
 INTENTION_HR_PACK = Path("experiments/replay_vault_v3/intention_hr_pack.json")
@@ -147,16 +148,27 @@ class EventTimeContract:
     def __init__(self, *, as_of: float, horizon_ts: float, resolves_iff: str = "",
                  modes: list = None, readout_var: str = "absorbed_at",
                  binary_options: list = None, occurrence_resolves: str = "yes",
-                 deadline_ts: float = None):
+                 deadline_ts: float = None, categorical_options: list = None,
+                 mode_option_map: dict = None):
         self.as_of, self.horizon_ts = float(as_of), float(horizon_ts)
         self.resolution_rule = resolves_iff[:300]
         self.modes = list(modes or [])
         self.readout_var = readout_var
         self.binary_options = [str(o) for o in (binary_options or [])][:2]
+        # categorical unification: the question's own >2 options project as the absorbed_by
+        # marginal (mode_option_map: canonical mode id → original option label), with the honest
+        # residual "none_of_the_options_by_horizon" mass — no option is ever force-picked in a
+        # world that reached none of them
+        self.categorical_options = [str(o) for o in (categorical_options or [])]
+        self.mode_option_map = dict(mode_option_map or {})
         self.occurrence_resolves = "no" if str(occurrence_resolves) == "no" else "yes"
         self.deadline_ts = float(deadline_ts) if deadline_ts else float(horizon_ts)
-        self.options = (list(self.binary_options) if len(self.binary_options) == 2
-                        else ["absorbed_by_horizon", "censored_beyond_horizon"])
+        if len(self.binary_options) == 2:
+            self.options = list(self.binary_options)
+        elif self.categorical_options:
+            self.options = self.categorical_options + ["none_of_the_options_by_horizon"]
+        else:
+            self.options = ["absorbed_by_horizon", "censored_beyond_horizon"]
 
     def validate(self):
         if self.horizon_ts <= self.as_of:
@@ -221,6 +233,21 @@ class EventTimeContract:
             et["p_event_by_deadline"] = round(p_occ, 4)
             et["deadline_ts"] = round(self.deadline_ts, 0)
             et["occurrence_resolves"] = self.occurrence_resolves
+        elif self.categorical_options:
+            # categorical readout: WHICH mode produced absorption, mapped back to the question's own
+            # option labels; worlds that reached none of them are honest residual mass, never a draw
+            dist = {o: 0.0 for o in self.categorical_options}
+            unmapped = 0.0
+            for mid, wsum in modes.items():
+                label = self.mode_option_map.get(mid)
+                if label is None and mid in dist:
+                    label = mid
+                if label in dist:
+                    dist[label] = round(dist[label] + wsum / n, 4)
+                else:
+                    unmapped += wsum / n
+            dist["none_of_the_options_by_horizon"] = round(1 - p_absorbed + unmapped, 4)
+            et["unmapped_absorbed_share"] = round(unmapped, 4)
         else:
             dist = {"absorbed_by_horizon": round(p_absorbed, 4),
                     "censored_beyond_horizon": round(1 - p_absorbed, 4)}
@@ -349,8 +376,13 @@ class HazardRoundOperator(TransitionOperator):
     def applicable(self, world, event):
         q = world.quantities.get("absorbed_at")
         flag = world.quantities.get("absorbing_state_reached")
+        prov = world.quantities.get("provisional_absorbing_mode")
         return event.etype == "hazard_round" and getattr(q, "value", None) in (None, 0) \
-            and not getattr(flag, "value", None)               # first passage: never re-fire past absorption
+            and not getattr(flag, "value", None) \
+            and not getattr(prov, "value", None)               # first passage; and while a provisional
+                                                               # end-state holds, the world IS in that
+                                                               # candidate state — hazards pause until
+                                                               # it confirms or collapses
 
     def validate(self, world, proposal):
         return ValidationResult(ok=True)
@@ -359,20 +391,22 @@ class HazardRoundOperator(TransitionOperator):
         return TransitionProposal(operator=self.name, action=dict(event.payload),
                                   reason_codes=[f"mode={event.payload.get('mode', '?')}"])
 
-    def _sampled_hr(self, world, mode, hr):
+    def _sampled_hr(self, world, mode, hr, *, salt=""):
         """One hazard-ratio draw PER BRANCH per mode (lognormal from the prior's 80% interval),
         persisted on the world so every round in this branch sees the same sampled effect size —
-        the uncertainty over the coefficient becomes cross-particle spread in the terminal CDF."""
+        the uncertainty over the coefficient becomes cross-particle spread in the terminal CDF.
+        `salt` carries the stance-state hash: when stance dynamics rewrite the records, the draw
+        refreshes (a NEW effect size for the NEW stance state)."""
         from swm.world_model_v2.quantities import Quantity, register_quantity_type
         from swm.world_model_v2.phase_consumers import _branch_rng
-        qname = f"sampled_intention_hr:{mode}"
+        qname = f"sampled_intention_hr:{mode}" + (f":{salt}" if salt else "")
         q = world.quantities.get(qname)
         if q is not None and isinstance(getattr(q, "value", None), (int, float)):
             return float(q.value)
         med = max(1e-6, float(hr.get("median", 1.0)))
         lo, hi = float(hr.get("lo80", med)), float(hr.get("hi80", med))
         sigma = (math.log(max(hi, 1e-6)) - math.log(max(lo, 1e-6))) / (2 * _Z80) if hi > lo else 0.0
-        rng = _branch_rng(world, f"hr:{mode}")
+        rng = _branch_rng(world, f"hr:{mode}:{salt}")
         val = med * math.exp(sigma * rng.gauss(0.0, 1.0)) if sigma > 0 else med
         val = max(0.05, min(3.0, val))
         register_quantity_type("sampled_intention_hr", units="hazard_ratio")
@@ -380,16 +414,53 @@ class HazardRoundOperator(TransitionOperator):
                                            timestamp=world.clock.now)
         return val
 
+    def _resolve_hr(self, world, a) -> tuple:
+        """The mode's stance hazard ratio for THIS round: re-derived from the CURRENT entity stance
+        records when they carry a mode_def and the stance state has changed since conversion (the
+        stance-review operator rewrites records mid-trajectory), else the baked distribution. The
+        endogenous split is applied at RUNTIME as a per-branch sampled exponent. Returns
+        (sampled_ratio | None, provenance dict)."""
+        if not isinstance(a.get("hr"), dict):
+            return None, {}
+        hr, prov = dict(a["hr"]), {"hr_source": "baked"}
+        salt = ""
+        if isinstance(a.get("mode_def"), dict):
+            from swm.world_model_v2.world_dynamics import live_capacity, live_stances, stance_state_hash
+            stances = live_stances(world)
+            h_now = stance_state_hash(stances)
+            if stances and h_now != str(a.get("stances_hash", "")):
+                live = combine_stances(stances, str(a.get("pathway", "")),
+                                       mode=a["mode_def"], hr_table=_hr_table(),
+                                       live_capacity=live_capacity(world))
+                if live.get("median") is not None:
+                    hr = {k: live[k] for k in ("median", "lo80", "hi80")}
+                    prov = {"hr_source": "live_recomputed", "binding_actor": live.get("binding_actor")}
+                    salt = h_now
+        if a.get("endogenous_live"):
+            from swm.world_model_v2.world_dynamics import sampled_coupling
+            s = sampled_coupling(world, "endogenous_stance_split")
+            hr = {k: math.exp(s * math.log(max(1e-6, float(hr.get(k, 1.0)))))
+                  for k in ("median", "lo80", "hi80")}
+            prov["endogenous_split"] = round(s, 4)
+        val = self._sampled_hr(world, str(a.get("mode")), hr, salt=salt)
+        return val, prov
+
     @staticmethod
     def _consume_state_hazard(world, h, consume):
         """RELATIVE consumption for hazards: consumed causal state acts as a bounded MULTIPLICATIVE
         modifier centered at no-effect (state 0.5 → ×1). An entry may set `invert: true`
         (survival-polarity chains: pro-YES state must SUPPRESS the state-breaking hazard, v ↦ 1−v).
+        An entry may name a `coupling` (own_pathway_weight / cross_pathway_weight /
+        world_state_weight): its weight is then the PER-BRANCH SAMPLED coupling constant —
+        structural-coefficient uncertainty propagates into the CDF instead of being a point choice.
         Weight 0.45 at an extreme state moves the hazard ×2^0.45 ≈ 1.37 (or ÷); a weight-1.0
         pathway-process channel reaches ×2 — deliberately bounded; total factor clamped to [0.25, 4]."""
         used, logf = [], 0.0
         for m in (consume or []):
             var, w = str(m.get("var", "")), float(m.get("weight", 0.0) or 0.0)
+            if m.get("coupling"):
+                from swm.world_model_v2.world_dynamics import sampled_coupling
+                w = sampled_coupling(world, str(m["coupling"]))
             q = world.quantities.get(var)
             v = getattr(q, "value", None)
             if w <= 0.0 or not isinstance(v, (int, float)):
@@ -437,6 +508,7 @@ class HazardRoundOperator(TransitionOperator):
                               / max(1.0, float(a.get("span_s", 1.0)))))
         unc = {"lifetime_fraction": round(frac, 3)}
         used, sfac, hr_used = [], 1.0, None
+        hr_prov = {}
         if a.get("success_prob") is not None:                 # dated entailing fact — fires at ITS date
             h = max(0.0, min(0.999, float(a["success_prob"])))
             unc["rate_source"] = "entailed_fact_confidence"
@@ -445,7 +517,7 @@ class HazardRoundOperator(TransitionOperator):
             exp = max(0.0, float(a["calibration"].get("exponent", 0.0) or 0.0))
             h = 1.0 - (1.0 - t) ** exp
             if isinstance(a.get("hr"), dict):                 # distributional stance ratio (sampled)
-                hr_used = self._sampled_hr(world, str(a.get("mode")), a["hr"])
+                hr_used, hr_prov = self._resolve_hr(world, a)
                 h *= hr_used
             else:
                 h *= max(0.0, min(2.0, float(a.get("intention_factor", 1.0))))
@@ -457,7 +529,7 @@ class HazardRoundOperator(TransitionOperator):
             h = float(curve[min(int(frac * _BUCKETS), _BUCKETS - 1)]) if curve \
                 else float(a.get("base_hazard", 0.05))
             if isinstance(a.get("hr"), dict):                 # distributional stance ratio (sampled)
-                hr_used = self._sampled_hr(world, str(a.get("mode")), a["hr"])
+                hr_used, hr_prov = self._resolve_hr(world, a)
                 h *= hr_used
             else:                                             # legacy point factor
                 h *= max(0.0, min(2.0, float(a.get("intention_factor", 1.0))))
@@ -466,21 +538,37 @@ class HazardRoundOperator(TransitionOperator):
         unc.update({"hazard": round(h, 4), "consumed": used,
                     "state_hazard_factor": round(sfac, 4),
                     "sampled_hazard_ratio": (round(hr_used, 4) if hr_used is not None else None),
-                    "intention_factor": a.get("intention_factor")})
+                    "intention_factor": a.get("intention_factor"), **hr_prov})
         rng2 = _branch_rng(world, f"hz:{a.get('mode')}:{world.clock.now}")
         d = StateDelta(at=world.clock.now, event_type="hazard_round", operator=self.name,
                        reason_codes=proposal.reason_codes + [f"h={round(h, 4)}"],
                        uncertainty=unc)
         if rng2.random() < h:
-            register_quantity_type("absorbing_state_reached", units="bool")
-            register_quantity_type("absorbing_mode", units="mode")
-            world.quantities["absorbing_state_reached"] = Quantity(
-                name="absorbing_state_reached", qtype="absorbing_state_reached", value=True,
-                timestamp=world.clock.now)
-            world.quantities["absorbing_mode"] = Quantity(
-                name="absorbing_mode", qtype="absorbing_mode", value=str(a.get("mode", "unspecified")),
-                timestamp=world.clock.now)
-            d.change("quantities[absorbing_state_reached]", None, True)
+            persistence_s = float(a.get("persistence_s", 0.0) or 0.0)
+            if persistence_s > 0.0:
+                # the criterion requires the end-state to HOLD: write a PROVISIONAL absorption and
+                # schedule the persistence check — the near-miss ("temporary ceasefire that
+                # collapses") is a real possible event, not a parser annotation
+                register_quantity_type("provisional_absorbing_mode", units="mode")
+                world.quantities["provisional_absorbing_mode"] = Quantity(
+                    name="provisional_absorbing_mode", qtype="provisional_absorbing_mode",
+                    value=str(a.get("mode", "unspecified")), timestamp=world.clock.now)
+                d.change("quantities[provisional_absorbing_mode]", None, str(a.get("mode")))
+                d.reason_codes.append("provisional_pending_persistence")
+                d.follow_up_events.append({
+                    "etype": "persistence_check", "ts": world.clock.now + persistence_s,
+                    "participants": [],
+                    "payload": {"mode": str(a.get("mode")), "pathway": str(a.get("pathway", ""))}})
+            else:
+                register_quantity_type("absorbing_state_reached", units="bool")
+                register_quantity_type("absorbing_mode", units="mode")
+                world.quantities["absorbing_state_reached"] = Quantity(
+                    name="absorbing_state_reached", qtype="absorbing_state_reached", value=True,
+                    timestamp=world.clock.now)
+                world.quantities["absorbing_mode"] = Quantity(
+                    name="absorbing_mode", qtype="absorbing_mode",
+                    value=str(a.get("mode", "unspecified")), timestamp=world.clock.now)
+                d.change("quantities[absorbing_state_reached]", None, True)
         return d
 
 
@@ -607,46 +695,115 @@ def _declare_readout_quantities(plan):
             plan.quantities.append({"name": name, "qtype": name, "value": None, "sd": None})
 
 
+_PERSISTENCE_RX = re.compile(r"(?:>=|at least|for(?: a minimum of)?)\s*(\d{1,3})\s*(?:consecutive\s*)?"
+                             r"(day|week|month)s?", re.IGNORECASE)
+_PERSIST_UNIT_S = {"day": 86400.0, "week": 7 * 86400.0, "month": 30 * 86400.0}
+
+
+def criterion_persistence_s(criterion: dict) -> float:
+    """A resolution criterion that requires the end-state to HOLD ("no active hostilities for >=30
+    consecutive days") makes near-misses real: parse the persistence window. Explicit
+    `persistence_days` from the parser wins; else the phrase pattern in resolves_yes_iff. 0 = none."""
+    pd = (criterion or {}).get("persistence_days")
+    if isinstance(pd, (int, float)) and pd > 0:
+        return float(pd) * 86400.0
+    m = _PERSISTENCE_RX.search(str((criterion or {}).get("resolves_yes_iff", "")))
+    if m:
+        return float(m.group(1)) * _PERSIST_UNIT_S[m.group(2).lower()]
+    return 0.0
+
+
 def _endogenous_consume(plan, mode, base_consumed: list) -> tuple:
     """The mode's state-consumption channels — the ENDOGENOUS half of the hazard clock:
-      * its OWN pathway-process quantity (weight 1.0): the quantity the simulated actors' actions,
-        institutional stage reviews and world-driven consumers write each round — declared by
-        mode_graph.declare_pathway_processes; a dormant process suppresses the hazard, an advanced
-        one raises it;
-      * every OTHER declared pathway process at a smaller cross weight (0.25): resolution pressure
+      * its OWN process quantity (sampled own_pathway_weight): the per-mode channel on CONTESTED
+        (non-shared) pathways — russian_victory and ukrainian_victory evolve separately — else the
+        shared pathway process; written by the simulated actors' actions, institutional stage
+        reviews and world-driven consumers;
+      * every OTHER declared pathway process at the sampled cross weight: resolution pressure
         spills over — a collapsing battlefield forces parties to the table ("negotiations begin
         because battlefield state changed"), advancing institutional stages raise unilateral urgency;
       * for WORLD-DRIVEN pathways (threshold/diffusion/market/physical/…): the plan's declared
         nonlinear state and population aggregates, when present — non-actor mechanisms drive those
         hazards; stances barely touch them (mode_graph handles that on the HR side).
+    Channel weights carry a `coupling` name — the operator resolves them to PER-BRANCH SAMPLED
+    coupling constants, so the structural coefficients are distributions, not point choices.
     Returns (consume list, endogenous_channel_live)."""
     consume = [dict(m) for m in (base_consumed or []) if isinstance(m, dict)]
     declared = {str(q.get("name")) for q in plan.quantities if isinstance(q, dict)}
     pw = _mode_pathway(mode)
     live = False
-    own = progress_var(pw)
-    if own in declared:
-        consume.append({"var": own, "weight": 1.0})
+    own_mode_var = f"mode_progress:{pw}:{mode.get('id')}" if isinstance(mode, dict) else ""
+    if own_mode_var in declared:                              # contested pathway: the mode's OWN channel
+        consume.append({"var": own_mode_var, "weight": 1.0, "coupling": "own_pathway_weight"})
+        live = True
+        if progress_var(pw) in declared:                      # the pathway aggregate stays as spillover
+            consume.append({"var": progress_var(pw), "weight": 0.25,
+                            "coupling": "cross_pathway_weight"})
+    elif progress_var(pw) in declared:
+        consume.append({"var": progress_var(pw), "weight": 1.0, "coupling": "own_pathway_weight"})
         live = True
     for other_pw in sorted({p for p in (getattr(plan, "_declared_pathways", None) or [])
                             if p != pw}):
         v = progress_var(other_pw)
         if v in declared:
-            consume.append({"var": v, "weight": 0.25})
+            consume.append({"var": v, "weight": 0.25, "coupling": "cross_pathway_weight"})
     if not pathway_of(pw).actor_driven:
         for q in (getattr(plan, "quantities", []) or []):
             name = str(q.get("name", "")) if isinstance(q, dict) else ""
             if name.startswith("population_aggregate:") or name == "nonlinear_state":
                 if not any(c.get("var") == name for c in consume):
-                    consume.append({"var": name, "weight": 0.35})
+                    consume.append({"var": name, "weight": 0.35, "coupling": "world_state_weight"})
     return consume, live
 
 
-def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=None) -> dict:
+def declare_contested_mode_channels(plan, modes: list) -> dict:
+    """On CONTESTED (non-shared) pathways each mode gets its own process channel
+    `mode_progress:<pathway>:<mode_id>` — the two sides' campaigns evolve separately (universal:
+    rival victories, rival candidates, competing products). Initialized from the pathway grounding.
+    Shared pathways keep the one shared process (talks ARE one process). Also records the shared
+    pathways' PRINCIPALS (decision-structure approvers) as a world quantity so execution can weight
+    principals' moves above bystanders'. Active only when the plan's endogenous process layer is
+    (declared pathways exist) — a bare plan without stance/process grounding stays minimal.
+    Idempotent."""
+    if not getattr(plan, "_declared_pathways", None):
+        return {"mode_channels": {}, "principals": {}, "skipped": "no declared pathway processes"}
+    declared = {str(q.get("name")) for q in plan.quantities if isinstance(q, dict)}
+    init_by_pw = {}
+    for q in plan.quantities:
+        if isinstance(q, dict) and str(q.get("name", "")).startswith(PROGRESS_PREFIX):
+            init_by_pw[str(q["name"])[len(PROGRESS_PREFIX):]] = q.get("value", 0.5)
+    added, principals = {}, {}
+    for m in (modes or []):
+        pw = _mode_pathway(m)
+        if not pathway_of(pw).shared_process and pathway_of(pw).actor_driven:
+            var = f"mode_progress:{pw}:{m.get('id')}"
+            if var not in declared:
+                plan.quantities.append({"name": var, "qtype": "mode_progress",
+                                        "value": round(float(init_by_pw.get(pw, 0.5)), 3),
+                                        "sd": 0.15})
+                declared.add(var)
+                added[str(m.get('id'))] = var
+        ds = (m or {}).get("decision_structure") or {}
+        for a in (ds.get("approvers") or []):
+            principals.setdefault(pw, set()).add(str(a))
+    for pw, names in principals.items():
+        var = f"pathway_principals:{pw}"
+        if var not in declared:
+            plan.quantities.append({"name": var, "qtype": "pathway_principals",
+                                    "value": "|".join(sorted(names)), "sd": None})
+    return {"mode_channels": added,
+            "principals": {k: sorted(v) for k, v in principals.items()}}
+
+
+def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=None,
+                          categorical_options: list = None) -> dict:
     """Replace the compiled point contract with an EventTimeContract and schedule the timing machinery:
-    per-mode hazard_round chains at the trajectory cadence, the absorption monitor, and per-mode stance
-    hazard-ratio DISTRIBUTIONS combined by each mode's decision structure. Universal: built only from
-    the plan's own structure + the canonical mode graph."""
+    per-mode hazard_round chains at the trajectory cadence, stance-review rounds (stance DYNAMICS),
+    the absorption monitor, the persistence checker (near-miss semantics), and per-mode stance
+    hazard-ratio DISTRIBUTIONS combined by each mode's decision structure. With
+    `categorical_options` the SAME machinery answers a categorical question: the distribution over
+    the question's own options is the absorbed_by marginal (plus honest none-by-horizon mass).
+    Universal: built only from the plan's own structure + the canonical mode graph."""
     # canonical mode set: compiler hypotheses + K-pass elicitation reconciled by mode_graph (compile-
     # variance fix). If unified_runtime already computed it (before intention grounding, so stances
     # could be mode-scoped), reuse it — no second elicitation.
@@ -656,15 +813,23 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=No
         modes, consensus = canonical_modes(
             question=getattr(plan, "question", ""), criterion=criterion,
             hypotheses=list(getattr(plan, "structural_hypotheses", []) or []),
-            options=list(getattr(plan.outcome_contract, "options", []) or []), llm=llm)
+            options=list(categorical_options
+                         or getattr(plan.outcome_contract, "options", []) or []), llm=llm)
     modes, rejected_modes = _filter_absorbing_modes(modes, criterion, llm)
     z = sum(m["prior"] for m in modes) or 1.0
     curve, fam, curve_src = family_hazard_curve(getattr(plan, "question", ""))
+    # contested pathways get PER-MODE process channels (rival campaigns evolve separately) and the
+    # shared pathways record their PRINCIPALS for execution-time weighting
+    contested_rep = declare_contested_mode_channels(plan, modes)
+    # a criterion that requires the end-state to HOLD makes near-misses real trajectory events
+    persistence_s = criterion_persistence_s(criterion)
     # grounded-stance effect, MODE-SCOPED and structure-combined: each mode's hazard-ratio
     # DISTRIBUTION is combined from the stances concerning THAT mode (or its pathway) under the
     # mode's decision structure — never a point coefficient invented by the LLM, and never a
     # universal "most-opposed binds" shortcut.
     stances = list(getattr(plan, "_intention_stances", []) or [])
+    from swm.world_model_v2.world_dynamics import coupling_pack_info, stance_state_hash
+    baked_hash = stance_state_hash(stances)
 
     def _pathway_hr(pathway, mode=None):
         if pathway == "cooperative_agreement" and AGREEMENT_HR_OVERRIDE is not None:
@@ -681,7 +846,9 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=No
     agr_hr = _pathway_hr("cooperative_agreement")             # reported for auditability
     span = plan.horizon_ts - plan.as_of
     horizon_days = max(1.0, span / 86400.0)
-    n_rounds = max(4, min(20, int(horizon_days / max(1.0, horizon_days / 10.0))))
+    # timing resolution scales with the horizon (a 2.5-year question deserves finer absorption
+    # dates than 10 per mode); mass conservation is bucket-based so any n_rounds preserves it
+    n_rounds = max(6, min(40, int(horizon_days / 21.0)))
     base_consumed = list(getattr(plan, "_consumed_state", []) or [])
     n_ev = 0
     mode_hr = {}
@@ -692,21 +859,29 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=No
         pathway = _mode_pathway(m)
         hr_m = _pathway_hr(pathway, mode=m)
         consume_m, endo_live = _endogenous_consume(plan, m, base_consumed)
-        if endo_live and hr_m.get("combination_rule") != "override":
-            # ANTI-DOUBLE-COUNT: when the behavioral channel is live (stances condition the Phase-4
-            # policies whose actions move the consumed pathway process), part of the stance's total
-            # effect flows through behavior — the DIRECT multiplier keeps only the residual share
-            # (log-split, documented; sensitivity-harness variable).
+        # ANTI-DOUBLE-COUNT: when the behavioral channel is live (stances condition the Phase-4
+        # policies whose actions move the consumed process), the DIRECT multiplier keeps only the
+        # residual share. The split exponent is SAMPLED PER BRANCH at runtime
+        # (coupling `endogenous_stance_split`) — the payload carries the UNSPLIT distribution +
+        # the endogenous_live flag; the report shows the prior-median-split for auditability.
+        endo_split_applied = endo_live and hr_m.get("combination_rule") != "override"
+        rep_hr = dict(hr_m)
+        if endo_split_applied:
             s = ENDOGENOUS_STANCE_SPLIT
-            hr_m = dict(hr_m, median=round(math.exp(s * math.log(max(1e-6, hr_m["median"]))), 4),
-                        lo80=round(math.exp(s * math.log(max(1e-6, hr_m["lo80"]))), 4),
-                        hi80=round(math.exp(s * math.log(max(1e-6, hr_m["hi80"]))), 4),
-                        endogenous_split=s)
-        mode_hr[m["id"]] = {k: hr_m.get(k) for k in ("median", "lo80", "hi80", "binding_actor",
-                                                     "binding_level", "combination_rule",
-                                                     "endogenous_split")}
+            rep_hr = dict(hr_m,
+                          median=round(math.exp(s * math.log(max(1e-6, hr_m["median"]))), 4),
+                          lo80=round(math.exp(s * math.log(max(1e-6, hr_m["lo80"]))), 4),
+                          hi80=round(math.exp(s * math.log(max(1e-6, hr_m["hi80"]))), 4),
+                          endogenous_split=s)
+        mode_hr[m["id"]] = {k: rep_hr.get(k) for k in ("median", "lo80", "hi80", "binding_actor",
+                                                       "binding_level", "combination_rule",
+                                                       "endogenous_split")}
         mode_hr[m["id"]]["pathway"] = pathway
+        mode_hr[m["id"]]["split_applied_at"] = ("runtime_sampled" if endo_split_applied else None)
         agreement = pathway == "cooperative_agreement"
+        mode_def = {"id": m["id"], "pathway": pathway}
+        if isinstance(m.get("decision_structure"), dict):
+            mode_def["decision_structure"] = m["decision_structure"]
         for k in range(1, n_rounds + 1):
             ts = plan.as_of + (k / (n_rounds + 1)) * span
             # per-round per-mode hazard: bucket hazard spread over the bucket's rounds (n_rounds/_BUCKETS)
@@ -718,10 +893,24 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=No
                             "hazard_bucket_curve": ([h * share * _BUCKETS / n_rounds for h in curve]
                                                     if curve else None),
                             "hr": {k2: hr_m.get(k2) for k2 in ("median", "lo80", "hi80")},
+                            "endogenous_live": endo_split_applied,
+                            "mode_def": mode_def, "stances_hash": baked_hash,
+                            "persistence_s": persistence_s,
                             "requires_agreement": agreement, "pathway": pathway,
                             "as_of": plan.as_of, "span_s": span,
                             "consume": consume_m}})
             n_ev += 1
+    # STANCE DYNAMICS: review rounds at the same cadence — the world-dynamics operator may move
+    # each actor's stances one level per review (ripeness/winning/exhaustion/bandwagon), so the
+    # behavior AND the hazard ratios evolve mid-trajectory
+    n_reviews = 0
+    if stances:
+        for k in range(1, n_rounds + 1):
+            plan.scheduled_events.append({
+                "etype": "stance_review",
+                "ts": plan.as_of + (k / (n_rounds + 1)) * span - 1.0,   # just before the hazard round
+                "participants": [], "payload": {"round": k}})
+            n_reviews += 1
     # a scheduled institutional decision becomes an ABSORBING WRITER for the institutional-pathway
     # mode (pass ⇒ absorbed at the vote's real date; fail ⇒ the world stays unabsorbed): the declared
     # procedure executes INSIDE the trajectory instead of writing a dead outcome variable no
@@ -736,12 +925,36 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=No
                 pl.setdefault("absorbing_mode", inst_modes[0]["id"])
                 n_inst_absorbing += 1
     _ensure_event_time_mechanisms(plan, curve_src)
+    for mech_id, op, role in (
+            ("stance_dynamics", "stance_review",
+             "in-run stance updates (ripeness/winning/exhaustion/bandwagon) conditioning policies "
+             "and hazard ratios"),
+            ("persistence_semantics", "persistence_check",
+             "near-miss realization: provisional end-states confirm or collapse")):
+        if (op != "persistence_check" or persistence_s > 0) and (op != "stance_review" or stances):
+            if not any(x.get("operator") == op for x in plan.accepted_mechanisms
+                       if isinstance(x, dict)):
+                plan.accepted_mechanisms.append({
+                    "mech_id": mech_id, "ontology_type": "world_dynamics", "operator": op,
+                    "causal_role": role, "parameter_source": "documented world-dynamics rules / "
+                    "sampled coupling priors (fittable)", "temporal_scale": "scheduled",
+                    "calibration_status": "documented_priors", "sensitivity": 0.8})
     plan.scheduled_events = [e for e in plan.scheduled_events if e.get("etype") != "resolve_outcome"]
     _declare_readout_quantities(plan)
+    # categorical unification: the question's own options project as the absorbed_by marginal
+    opt_map = None
+    if categorical_options:
+        from swm.world_model_v2.mode_graph import _canon_mode_id
+        opt_map = {}
+        for o in categorical_options:
+            opt_map[_canon_mode_id(str(o))] = str(o)
     plan.outcome_contract = EventTimeContract(as_of=plan.as_of, horizon_ts=plan.horizon_ts,
                                               resolves_iff=str((criterion or {}).get("resolves_yes_iff",
                                                                                      ""))[:300],
-                                              modes=[m["id"] for m in modes]).validate()
+                                              modes=[m["id"] for m in modes],
+                                              categorical_options=(list(categorical_options)
+                                                                   if categorical_options else None),
+                                              mode_option_map=opt_map).validate()
     # a first-passage CDF needs particle resolution a point forecast does not: floor the particle
     # count for EVERY event-time contract (rollout is LLM-free per particle, so this is cheap)
     cp = getattr(plan, "compute_plan", None)
@@ -753,9 +966,14 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=No
            "mode_consensus": consensus or None,
            "n_particles": n_particles,
            "n_hazard_rounds": n_ev, "rounds_per_mode": n_rounds,
+           "n_stance_reviews": n_reviews,
+           "persistence_window_days": round(persistence_s / 86400.0, 1) if persistence_s else 0,
+           "contested_mode_channels": contested_rep,
            "agreement_hazard_ratio": agr_hr, "hazard_ratio_by_mode": mode_hr,
            "hazard_ratio_source": ("fitted_pack" if INTENTION_HR_PACK.exists()
                                    else "documented_priors_unfitted"),
+           "coupling_source": coupling_pack_info(),
+           "categorical_options": list(categorical_options) if categorical_options else None,
            "n_grounded_stances": len(stances),
            "n_absorbing_institutional_decisions": n_inst_absorbing,
            "declared_pathways": sorted(getattr(plan, "_declared_pathways", None) or []),
