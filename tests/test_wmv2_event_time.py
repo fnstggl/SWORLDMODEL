@@ -234,6 +234,34 @@ def test_mode_elicitation_when_compiler_declares_none():
     assert rep["hazard_ratio_by_mode"]["unilateral_collapse"]["median"] == 1.0
 
 
+def test_hazard_state_consumption_is_relative_not_absolute():
+    op = HazardRoundOperator()
+    # a mid-level consumed state (0.5) must be NO-EFFECT on the hazard — under the old absolute
+    # blend it would swamp a 0.005 hazard to ~0.23 every round and absorb everything
+    w = _world(now=T0 + 30 * 86400, nonlinear_state=0.5)
+    h, used, f = op._consume_state_hazard(w, 0.005, [{"var": "nonlinear_state", "weight": 0.45}])
+    assert used == ["nonlinear_state"] and f == pytest.approx(1.0) and h == pytest.approx(0.005)
+    # extreme state at full weight: bounded multiplicative push (×2^0.45), never an absolute jump
+    w2 = _world(now=T0, nonlinear_state=1.0)
+    h2, _, f2 = op._consume_state_hazard(w2, 0.005, [{"var": "nonlinear_state", "weight": 0.45}])
+    assert f2 == pytest.approx(2 ** 0.45, rel=1e-3) and h2 < 0.01
+    w3 = _world(now=T0, nonlinear_state=0.0)
+    h3, _, f3 = op._consume_state_hazard(w3, 0.005, [{"var": "nonlinear_state", "weight": 0.45}])
+    assert f3 == pytest.approx(2 ** -0.45, rel=1e-3)
+
+
+def test_time_indexed_duplicate_modes_merge():
+    p = _plan()
+    p.structural_hypotheses = [{"id": "ceasefire_2026", "prior": 0.2},
+                               {"id": "ceasefire_2027", "prior": 0.3},
+                               {"id": "military_collapse", "prior": 0.5}]
+    rep = convert_to_event_time(p, {"resolves_yes_iff": "x"})
+    assert set(rep["modes"]) == {"ceasefire", "military_collapse"}
+    rounds = [e for e in p.scheduled_events if e["etype"] == "hazard_round"
+              and e["payload"]["mode"] == "ceasefire"]
+    assert sum(e["payload"]["base_hazard"] for e in rounds) == pytest.approx(0.5 * 0.5)  # priors summed
+
+
 def test_fit_intention_hazard_ratios_pools_toward_no_effect():
     from swm.world_model_v2.event_time import fit_intention_hazard_ratios
     rows = [{"commitment_level": "categorical_refusal", "hazard_ratio": r}

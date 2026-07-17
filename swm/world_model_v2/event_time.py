@@ -249,9 +249,31 @@ class HazardRoundOperator(TransitionOperator):
                                            timestamp=world.clock.now)
         return val
 
+    @staticmethod
+    def _consume_state_hazard(world, h, consume):
+        """RELATIVE consumption for hazards: consumed causal state acts as a bounded MULTIPLICATIVE
+        modifier centered at no-effect (state 0.5 → ×1). The absolute blend in consume_state_rate
+        (p' = (1-Σw)p + Σw·v) is correct for a one-shot probability decision but destroys timing
+        structure when applied to a small per-round hazard — a mid-level state would swamp the
+        hazard base every round. Full weight (0.45) at an extreme state moves the hazard by at most
+        ×2^0.45 ≈ 1.37 (or ÷) — deliberately conservative; the total factor is clamped to [0.25, 4]."""
+        used, logf = [], 0.0
+        for m in (consume or []):
+            var, w = str(m.get("var", "")), float(m.get("weight", 0.0) or 0.0)
+            q = world.quantities.get(var)
+            v = getattr(q, "value", None)
+            if w <= 0.0 or not isinstance(v, (int, float)):
+                continue
+            logf += w * (max(0.0, min(1.0, float(v))) - 0.5) * 2.0 * math.log(2.0)
+            used.append(var)
+        if not used:
+            return h, [], 1.0
+        f = max(0.25, min(4.0, math.exp(logf)))
+        return h * f, used, f
+
     def apply(self, world, proposal):
         from swm.world_model_v2.quantities import Quantity, register_quantity_type
-        from swm.world_model_v2.phase_consumers import consume_state_rate, _branch_rng
+        from swm.world_model_v2.phase_consumers import _branch_rng
         a = proposal.action
         frac = min(0.999, max(0.0, (world.clock.now - float(a.get("as_of", world.clock.now)))
                               / max(1.0, float(a.get("span_s", 1.0)))))
@@ -264,13 +286,13 @@ class HazardRoundOperator(TransitionOperator):
             h *= hr_used
         else:                                                 # legacy point factor
             h *= max(0.0, min(2.0, float(a.get("intention_factor", 1.0))))
-        h, used = consume_state_rate(world, h, a.get("consume") or [])
+        h, used, sfac = self._consume_state_hazard(world, h, a.get("consume") or [])
         h = max(0.0, min(0.95, h))
         rng2 = _branch_rng(world, f"hz:{a.get('mode')}:{world.clock.now}")
         d = StateDelta(at=world.clock.now, event_type="hazard_round", operator=self.name,
                        reason_codes=proposal.reason_codes + [f"h={round(h, 4)}"],
                        uncertainty={"hazard": round(h, 4), "lifetime_fraction": round(frac, 3),
-                                    "consumed": used,
+                                    "consumed": used, "state_hazard_factor": round(sfac, 4),
                                     "sampled_hazard_ratio": (round(hr_used, 4) if hr_used is not None
                                                              else None),
                                     "intention_factor": a.get("intention_factor")})
@@ -437,6 +459,20 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=No
     if not modes:
         modes = _elicit_modes(getattr(plan, "question", ""), criterion, llm)
     modes = modes or [{"id": "resolution", "prior": 1.0}]
+    # collapse TIME-INDEXED duplicates ('ceasefire_2026/2027/2028' → 'ceasefire', priors summed):
+    # when the compiler baked timing into hypothesis ids, that timing belongs to the first-passage
+    # simulation, not the mode identity
+    import re
+    merged = {}
+    for m in modes:
+        base = re.sub(r"_?(?:19|20)\d{2}$", "", m["id"]).strip("_") or m["id"]
+        if base in merged:
+            merged[base]["prior"] += m["prior"]
+            if "requires_agreement" in m:
+                merged[base].setdefault("requires_agreement", m["requires_agreement"])
+        else:
+            merged[base] = dict(m, id=base)
+    modes = list(merged.values())
     modes, rejected_modes = _filter_absorbing_modes(modes, criterion, llm)
     z = sum(m["prior"] for m in modes) or 1.0
     curve, fam, curve_src = family_hazard_curve(getattr(plan, "question", ""))
