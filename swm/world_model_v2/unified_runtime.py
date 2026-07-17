@@ -192,9 +192,41 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
                                             evidence_text=ev_text, llm=llm)
             lineage["scheduled_reality"] = attach_scheduled_facts(plan, facts)
             lineage["scheduled_reality"]["facts"] = facts[:8]
-            # per-actor evidence-grounded intentions (state, not policy guesses)
-            lineage["actor_intentions"] = ground_actor_intentions(plan, question, criterion=crit,
-                                                                  evidence_text=ev_text, llm=llm)
+            # canonical mode decomposition BEFORE intention grounding, so stances can be
+            # MODE-SCOPED (stance(actor, mode)) and the pathway processes exist for the trajectory
+            # layer + hazard consumption. K-pass self-consistency makes the mode set reproducible.
+            from swm.world_model_v2.event_time import is_when_question as _is_when
+            from swm.world_model_v2.mode_graph import (canonical_modes, declare_pathway_processes,
+                                                       ground_process_states, mode_pathway)
+            if _is_when(question):
+                _modes, _cons = canonical_modes(
+                    question=question, criterion=crit,
+                    hypotheses=list(getattr(plan, "structural_hypotheses", []) or []),
+                    options=list(getattr(plan.outcome_contract, "options", []) or []), llm=llm)
+                plan._canonical_modes, plan._mode_consensus = _modes, _cons
+                lineage["mode_graph"] = _cons
+                _pws = sorted({mode_pathway(m) for m in _modes})
+                _states = ground_process_states(question, crit, _pws, as_of=as_of,
+                                                evidence_text=ev_text, llm=llm)
+                lineage["pathway_processes"] = declare_pathway_processes(plan, _modes,
+                                                                         grounding=_states)
+            # per-actor evidence-grounded intentions (state, not policy guesses) — mode-scoped
+            # against the canonical modes when they exist
+            lineage["actor_intentions"] = ground_actor_intentions(
+                plan, question, criterion=crit, evidence_text=ev_text, llm=llm,
+                modes=getattr(plan, "_canonical_modes", None))
+            # binary/other questions: the resolution's causal pathways are named by the grounded
+            # stances themselves — declare their processes so actions move the residual chain too
+            if not getattr(plan, "_declared_pathways", None):
+                _st_pws = sorted({str(s.get("pathway")) for s in
+                                  (getattr(plan, "_intention_stances", None) or [])
+                                  if s.get("pathway") and s.get("pathway") != "any"})
+                if _st_pws:
+                    _pseudo = [{"id": pw, "pathway": pw} for pw in _st_pws]
+                    _states = ground_process_states(question, crit, _st_pws, as_of=as_of,
+                                                    evidence_text=ev_text, llm=llm)
+                    lineage["pathway_processes"] = declare_pathway_processes(plan, _pseudo,
+                                                                             grounding=_states)
         except Exception as e:  # noqa: BLE001 — fidelity must never block the forecast
             lineage["fidelity_expansion"] = {"error": f"{type(e).__name__}: {e}"[:140]}
 

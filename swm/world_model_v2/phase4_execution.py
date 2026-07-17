@@ -119,6 +119,7 @@ class ActorPolicyRuntime:
             self._consume_resources(world, action, delta)
             self._create_commitments(world, action, delta)
             self._apply_immediate_consequences(world, action, delta)
+            self._apply_pathway_effects(world, action, delta)
             events = self._follow_up_events(world, action, posterior, trace, seed)
             delta.follow_up_events = [self._event_record(event) for event in events]
             event = Event(ts=world.clock.now, etype="actor_action",
@@ -200,6 +201,39 @@ class ActorPolicyRuntime:
                 target.set("beliefs", F(after, status="derived", method="production_actor_policy",
                                         updated_at=world.clock.now), key=key)
                 delta.change(f"{target.identity}.beliefs[{key}]", before, after)
+
+    #: bounded per-action step on a pathway-process quantity (× the ontology effect in [-1,1]).
+    #: Documented structural magnitude — the sensitivity harness varies it; the quantities are
+    #: clamped so no single actor can saturate a process in one move.
+    PATHWAY_STEP = 0.04
+
+    @classmethod
+    def _apply_pathway_effects(cls, world, action: TypedAction, delta: StateDelta):
+        """The action→world half of the endogenous causal chain: an EXECUTED action moves the
+        `pathway_progress:*` quantities its ontology entry names (accept/counteroffer advance the
+        cooperative process; reject/exit stall it; mobilize advances a unilateral campaign; approve/
+        schedule advance an institutional procedure) — and the hazard rounds CONSUME those
+        quantities, so the timing/probability of resolution emerges from what the simulated actors
+        actually do. Applies ONLY to quantities the plan declared (mode_graph.declare_pathway_
+        processes) — worlds without an event-time mode graph are untouched."""
+        from swm.world_model_v2.phase4_policy import action_pathway_effects
+        from swm.world_model_v2.quantities import Quantity, register_quantity_type
+        effects = action_pathway_effects(action.action_family, action.action_name)
+        if not effects:
+            return
+        for pw, eff in effects.items():
+            var = f"pathway_progress:{pw}"
+            q = world.quantities.get(var)
+            if q is None:
+                continue                                     # not declared for this world — no-op
+            before = float(q.value) if isinstance(q.value, (int, float)) else 0.5
+            after = max(0.05, min(0.95, before + cls.PATHWAY_STEP * float(eff)))
+            if after == before:
+                continue
+            register_quantity_type("pathway_progress", units="process_state")
+            world.quantities[var] = Quantity(name=var, qtype="pathway_progress", value=round(after, 4),
+                                             timestamp=world.clock.now)
+            delta.change(f"quantities[{var}]", round(before, 4), round(after, 4))
 
     @staticmethod
     def _follow_up_events(world, action: TypedAction, posterior: ActionPosterior,

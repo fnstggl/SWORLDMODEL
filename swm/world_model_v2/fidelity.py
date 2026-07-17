@@ -106,10 +106,47 @@ def fidelity_expand(plan, question, *, as_of, evidence_text="", llm=None) -> dic
     return rep
 
 
+def _candidate_actions(entity: dict, pathways: list) -> list:
+    """The REAL ontology candidate set for one strategic actor's recurring decision — universal:
+    derived from the actor's entity type and the causal pathways present in the plan's mode graph,
+    never from scenario keywords. A contentless [act, wait] decision can neither express a stance
+    nor move a pathway process; these candidates can do both (phase4 scores them against the actor's
+    own grounded stances; execution writes their pathway effects into `pathway_progress:*`)."""
+    pws = set(pathways or [])
+    etype = str(entity.get("type", "person"))
+    acts = []
+    if etype == "institution":
+        acts += [{"type": n, "family": "institutional"}
+                 for n in ("approve", "reject", "defer", "schedule", "place_on_agenda")]
+        if "cooperative_agreement" in pws:
+            acts += [{"type": "seek_mediator", "family": "negotiation"}]
+    else:
+        if "cooperative_agreement" in pws or not pws:
+            acts += [{"type": n, "family": "negotiation"}
+                     for n in ("accept", "counteroffer", "hold_position", "delay", "reject",
+                               "escalate", "seek_mediator", "exit")]
+        if {"unilateral_action", "competitive_interaction"} & pws:
+            acts += [{"type": "mobilize", "family": "participation"},
+                     {"type": "withdraw", "family": "participation"}]
+            if not any(a["type"] == "escalate" for a in acts):
+                acts += [{"type": "escalate", "family": "negotiation"}]
+        if "institutional_procedure" in pws:
+            acts += [{"type": "support", "family": "participation"},
+                     {"type": "oppose", "family": "participation"}]
+        if "operational_execution" in pws:
+            acts += [{"type": n, "family": "organizational_market"}
+                     for n in ("launch", "delay_launch", "authorize")]
+    acts.append({"type": "wait"})
+    return acts[:12]
+
+
 def deepen_trajectory(plan, req, *, cadence_days=None) -> dict:
     """Situation-dependent event depth: recurring decision opportunities for EVERY strategic actor at the
-    process's real cadence (critic-estimated, default horizon/6), plus institutional stage reviews — so
-    trajectories unfold over the whole window instead of one decision at horizon-3d."""
+    process's real cadence (critic-estimated, default horizon/6) — so trajectories unfold over the whole
+    window instead of one decision at horizon-3d. Decision events carry REAL ontology candidate actions
+    (pathway-relevant, actor-type-relevant): the phase4 policy chooses among them under the actor's own
+    grounded stances, and executed choices move the pathway-process quantities the hazard rounds consume
+    — the intention→policy→action→state→hazard chain, not two parallel channels."""
     horizon_days = max(1.0, (plan.horizon_ts - plan.as_of) / 86400.0)
     cad = cadence_days or max(1.0, horizon_days / 6.0)
     cad = max(0.5, min(cad, horizon_days / 2.0))
@@ -118,6 +155,7 @@ def deepen_trajectory(plan, req, *, cadence_days=None) -> dict:
     actors.sort(key=lambda e: -float(e.get("sensitivity", 0.5) or 0.5))
     strategic = actors[:6] if req.get("phase4_actor_policy", {}).get("required") else []
     declared = {str(e.get("id")) for e in plan.entities if isinstance(e, dict)}
+    pathways = list(getattr(plan, "_declared_pathways", None) or [])
     n_added = 0
     for k in range(1, n_points + 1):
         ts = plan.as_of + (k / (n_points + 1)) * (plan.horizon_ts - plan.as_of)
@@ -128,8 +166,9 @@ def deepen_trajectory(plan, req, *, cadence_days=None) -> dict:
             plan.scheduled_events.append({
                 "etype": "decision_opportunity", "ts": ts, "participants": [aid],
                 "payload": {"situation": f"periodic strategic review ({k}/{n_points})",
-                            "actions": [{"type": "act"}, {"type": "wait"}]}})
+                            "actions": _candidate_actions(a, pathways)}})
             n_added += 1
     return {"horizon_days": round(horizon_days, 1), "cadence_days": round(cad, 1),
             "decision_points": n_points, "strategic_actors": len(strategic),
+            "pathway_informed_candidates": bool(pathways),
             "decision_events_added": n_added}
