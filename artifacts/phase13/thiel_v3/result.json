@@ -1,0 +1,176 @@
+{
+ "experiment": "exp092_thiel_action_first",
+ "mode": "offline",
+ "stage_a": {
+  "ranked_actions": [
+   [
+    "cold_email_direct",
+    0.0
+   ],
+   [
+    "cold_text_personal_number",
+    0.0
+   ],
+   [
+    "permission_ask_email",
+    0.0
+   ],
+   [
+    "full_memo_email",
+    0.0
+   ],
+   [
+    "operator_intro_email",
+    0.0
+   ],
+   [
+    "operator_forwards_memo",
+    0.0
+   ],
+   [
+    "ff_partner_route",
+    0.0
+   ],
+   [
+    "wait_for_pilot_then_email",
+    0.0
+   ],
+   [
+    "do_nothing",
+    0.0
+   ]
+  ],
+  "fragility": {
+   "overall_utility": {
+    "cold_email_direct": 0.0,
+    "cold_text_personal_number": 0.0,
+    "permission_ask_email": 0.0,
+    "full_memo_email": 0.0,
+    "operator_intro_email": 0.0,
+    "operator_forwards_memo": 0.0,
+    "ff_partner_route": 0.0,
+    "wait_for_pilot_then_email": 0.0
+   },
+   "winner": "cold_email_direct",
+   "winner_wins_under_hypotheses": [
+    "assistant_screens",
+    "evidence_first",
+    "ignores_all_cold",
+    "intros_only",
+    "reads_own_bursts"
+   ],
+   "per_hypothesis_winner": {
+    "assistant_screens": "cold_email_direct",
+    "evidence_first": "cold_email_direct",
+    "ignores_all_cold": "cold_email_direct",
+    "intros_only": "cold_email_direct",
+    "reads_own_bursts": "cold_email_direct"
+   },
+   "fragile": false,
+   "within_noise_of_winner": [
+    "cold_text_personal_number",
+    "permission_ask_email",
+    "full_memo_email",
+    "operator_intro_email",
+    "operator_forwards_memo",
+    "ff_partner_route",
+    "wait_for_pilot_then_email"
+   ],
+   "note": "a winner that leads under only one inbox-reality hypothesis is FRAGILE; within_noise arms are indistinguishable at this draw count \u2014 the system reports 'best-supported among tested', never 'best possible'."
+  }
+ },
+ "stage_b_winner": "plain_baseline",
+ "stage_b": {
+  "report_type": "cold_outreach_slate",
+  "recipient": "Peter Thiel",
+  "winner_best_supported_among_tested": "plain_baseline",
+  "within_noise_of_winner": [],
+  "hypothesis_fragility": {},
+  "ranked": [
+   {
+    "arm": "plain_baseline",
+    "text": "Peter, I'm Beckett \u2014 17 years old, starting Princeton in the fall; building Aurelius (runaurelius.com): constraint-aware orchestration for AI infrastructure. Ai infrastructure has a planning problem disguised as a power problem: schedulers optimize the next placement, but nothing chooses the fleet's best trajectory over time. So far: +724% average SLA-safe goodput per dollar vs the production scheduler, in simulated replay of ~1.5M requests of public production traces. May I send you the one-page memo? Beckett",
+    "persona": null,
+    "funnel_objective": 0.0364,
+    "funnel_interval80": [
+     0.0037,
+     0.0791
+    ],
+    "stage_trace": {
+     "understand": 0.9286,
+     "believe": 0.9377,
+     "relevant": 0.6813,
+     "worth": 0.414,
+     "easy": 0.9025,
+     "open": 0.2165
+    },
+    "contract": {
+     "ok": true,
+     "missing": [],
+     "flags": []
+    },
+    "cold_read": null,
+    "critic": {
+     "coherence": 0.607,
+     "naturalness": 0.558,
+     "humanness": 1.0,
+     "factuality": 1.0,
+     "quality": 0.558,
+     "source": "lexical",
+     "flags": []
+    }
+   }
+  ],
+  "optimal_strategy_spec": {
+   "strategy": {
+    "personalization": 1.0,
+    "relevance_fit": 1.0,
+    "clarity": 1.0,
+    "credibility_proof": 0.2,
+    "responder_incentive": 1.0,
+    "ask_directness": 0.5,
+    "low_effort_ask": 1.0,
+    "convenience_selling": 0.0,
+    "pushiness": 0.0,
+    "warmth": 1.0,
+    "length_fit": 0.5,
+    "credential_signaling": 0.0,
+    "identity_legibility": 1.0,
+    "claim_believability": 1.0,
+    "cognitive_effort": 0.0,
+    "adversarial_framing": 0.0,
+    "next_step_clarity": 1.0
+   },
+   "predicted_reply_mean": 0.1279,
+   "predicted_reply_lower_bound_q20": 0.1043,
+   "top_drivers": [
+    {
+     "term": "stage:open",
+     "contribution": 0.2025
+    },
+    {
+     "term": "stage:worth",
+     "contribution": 0.8548
+    },
+    {
+     "term": "stage:relevant",
+     "contribution": 0.9068
+    },
+    {
+     "term": "stage:understand",
+     "contribution": 0.9171
+    },
+    {
+     "term": "stage:believe",
+     "contribution": 0.937
+    },
+    {
+     "term": "stage:easy",
+     "contribution": 0.9484
+    }
+   ]
+  },
+  "honesty": "Winner = BEST-SUPPORTED AMONG TESTED, not 'best possible'. Live ranking is the qualitative persona ensemble (LLM role-play under competing inbox-reality hypotheses; outcomes are counted choices) \u2014 a model-based judgment, UNCALIBRATED against real outreach outcomes. The funnel is a structural prior; its absolute levels are claims. Arms in within_noise_of_winner are indistinguishable at this draw count, and a hypothesis-fragile winner is flagged, not trusted. 0 generated drafts were rejected by the contract/fact guard."
+ },
+ "wall_s": 11.8
+}

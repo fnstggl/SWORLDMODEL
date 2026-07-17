@@ -40,6 +40,13 @@ def generate_levers(chat_fn, recipient_name: str, recipient_vars: dict | None = 
         _UNIVERSAL_NOTE,
         f"Inferred disposition: {traits}" if traits else "",
         f"Evidence:\n{evidence}" if evidence else "",
+        "CARICATURE GUARD: model what makes this person actually REPLY to an unknown stranger, not "
+        "what imitates their public persona. Sounding like them is not receiving a reply. Do NOT "
+        "propose challenge/provocation/'prove-me-wrong'/'intellectual combat' style levers — "
+        "adversarial framing from a stranger reads as debate bait, whoever the recipient is. A lever "
+        "must be grounded in evidence about how they treat INBOUND from strangers (do they reply to "
+        "cold email at all? does an assistant screen? what have they actually responded to?), and "
+        "its confidence must reflect that the evidence is public-persona material, not inbox data.",
         f"Give up to {k} levers. For each: a short snake_case name, a one-line description, and "
         "'elasticity' = the signed per-unit effect on the log-odds of a reply (roughly -3..+3; positive "
         "if more of this quality makes a reply MORE likely for this person, negative if it backfires), "
@@ -60,10 +67,21 @@ def generate_levers(chat_fn, recipient_name: str, recipient_vars: dict | None = 
                 continue
             elas = max(-3.0, min(3.0, float(d.get("elasticity", 0.0))))
             conf = max(0.05, min(1.0, float(d.get("confidence", 0.5))))
-            # confidence -> prior sd: a confident lever has a tighter elasticity CI
+            desc = str(d.get("description", ""))[:160]
+            # CARICATURE GUARD (deterministic, belt to the prompt's suspenders):
+            # 1. combat/challenge-flavored levers cannot carry a POSITIVE elasticity — "he likes
+            #    being challenged" is persona imitation, and from a stranger it is debate bait.
+            #    Clamp to <= 0 so such a lever can only ever penalize.
+            if re.search(r"combat|challeng|confront|provok|debate|prove.*wrong|adversar|attack|"
+                         r"contrarian_bait", f"{name} {desc}", re.I):
+                elas = min(elas, 0.0)
+            # 2. shrink the MEAN toward zero by evidence confidence: persona-derived levers are
+            #    weak evidence about inbox behavior, and an unshrunk mean lets one confident-sounding
+            #    caricature dominate the optimum (sd already widens with low confidence).
+            elas *= (0.4 + 0.6 * conf)
             sd = 0.4 + 1.2 * (1.0 - conf)
             levers.append(Lever(name=name, elasticity_mean=elas, elasticity_sd=sd,
-                                description=str(d.get("description", ""))[:160], evidence="llm situational lever"))
+                                description=desc, evidence="llm situational lever"))
         except Exception:
             continue
     return levers

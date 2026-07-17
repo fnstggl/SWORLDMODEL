@@ -197,6 +197,196 @@ def optimize_message(recipient: RecipientState, *, proposer=default_proposer, q:
                               baselines=result_baselines, grade=fit_grade)
 
 
+@dataclass
+class ColdOutreachResult:
+    """The corrected cold-outreach optimizer's output: a RANKED slate with uncertainty, never one
+    'best possible' declaration. `candidates` carries every evaluated arm (persona-ensemble verdict,
+    funnel MC + stage trace, contract verdict, critic verdicts, cold-read verdict); `winner` is
+    'best-supported among tested' — the top arm among gate-passers under the persona ensemble when
+    live (funnel lower bound offline) — with hypothesis-fragility and within-noise arms reported."""
+    recipient: str
+    spec: StrategySpec
+    candidates: dict
+    winner: str
+    within_noise: list
+    honesty: str
+    fragility: dict = field(default_factory=dict)
+
+    def summary(self) -> dict:
+        def key(kv):
+            e = kv[1]
+            if "persona" in e:
+                return -e["persona"]["expected_utility"]
+            return -e["funnel"]["objective_mean"]
+        ranked = sorted(self.candidates.items(), key=key)
+        return {"report_type": "cold_outreach_slate", "recipient": self.recipient,
+                "winner_best_supported_among_tested": self.winner,
+                "within_noise_of_winner": self.within_noise,
+                "hypothesis_fragility": self.fragility,
+                "ranked": [{"arm": k, "text": v["text"],
+                            "persona": v.get("persona"),
+                            "funnel_objective": v["funnel"]["objective_mean"],
+                            "funnel_interval80": v["funnel"]["interval80"],
+                            "stage_trace": v["funnel"]["stage_trace"],
+                            "contract": v["contract"], "cold_read": v.get("cold_read"),
+                            "critic": v.get("critic")} for k, v in ranked],
+                "optimal_strategy_spec": self.spec.summary(),
+                "honesty": self.honesty}
+
+
+def optimize_cold_outreach(recipient: RecipientState, *, sender_brief, chat_fn=None,
+                           recipient_notes: str = "", k_drafts: int = 8, n_mc: int = 400,
+                           seed: int = 0, include_legacy_beam: bool = False,
+                           dossier=None, hypotheses=None, persona_draws: int = 3,
+                           persona_top_k: int = 5, arrival_context: str = "",
+                           outcome_utilities=None) -> ColdOutreachResult:
+    """The corrected cold-outreach path (the failed Thiel output is this function's regression case).
+
+    What changed vs optimize_message and why:
+      OBJECTIVE  — the conjunctive response FUNNEL with valenced outcomes (P(positive) − λ·P(negative)),
+                   not an additive logit where one maxed lever buys back a failed gate, and not
+                   'any reply counts'.
+      CONTENT    — a deterministic cold-outreach CONTRACT (identity / thesis / evidence-with-
+                   provenance / relevance / tiny next step): drafts missing an element are rejected
+                   before scoring. Style gates cannot supply missing content.
+      GENERATION — contract-constrained WHOLE drafts (global coherence; the slot-beam is myopic and
+                   produced mid-conversation openers), still selected by the world model, never by
+                   the LLM. The deterministic plain-human baseline is always in the slate: if the
+                   machinery cannot beat the plain draft under its own evaluator, the plain draft
+                   wins and that is reported.
+      GATES      — numeric fact guard + four-axis register critic + the COLD-READ critic (a busy
+                   stranger's five-second read: who/why/believable/bait/effort/next-step). Critics
+                   gate and diagnose; the funnel ranks. An uncalibrated judge is never the objective.
+      BEHAVIOR   — when live, the primary evaluator is the QUALITATIVE PERSONA ENSEMBLE
+                   (persona_response.py): the recipient — rendered as a qualitative dossier, never
+                   invented numeric traits — reads each finalist under COMPETING inbox-reality
+                   hypotheses and chooses a categorical outcome; probabilities come from counting
+                   those choices. This replaces the circular loop of scoring messages against
+                   trait numbers an LLM invented. The funnel remains the structural prior/offline
+                   ranking and the stage diagnosis.
+      OUTPUT     — a ranked slate with intervals, per-hypothesis fragility, and 'within noise'
+                   honesty: 'best-supported among tested', never 'best possible'."""
+    from swm.decision.llm_moves import (allowed_numbers, llm_cold_read_critic, llm_draft_proposer,
+                                        llm_message_encoder, llm_rewriter, llm_sentence_judge)
+    from swm.decision.mc_evaluation import mc_evaluate_funnel
+    from swm.decision.outreach_contract import plain_baseline_draft, validate
+    from swm.decision.response_funnel import funnel_scorer_from_recipient
+    from swm.decision.situational_levers import generate_levers
+
+    levers = []
+    encode_fn = encode_text_to_strategy
+    judge_fn = rewrite_fn = cold_read = None
+    if chat_fn is not None:
+        levers = generate_levers(chat_fn, recipient.label, recipient.vars, evidence=recipient_notes)
+        encode_fn = llm_message_encoder(chat_fn, levers=levers)
+        judge_fn = llm_sentence_judge(chat_fn, facts_text=sender_brief.to_prompt())
+        rewrite_fn = llm_rewriter(chat_fn, recipient_notes=recipient_notes, sender=sender_brief)
+        cold_read = llm_cold_read_critic(chat_fn, recipient_notes=recipient_notes,
+                                         facts_text=sender_brief.to_prompt())
+
+    fact_numbers = allowed_numbers(sender_brief.to_prompt(), recipient_notes)
+    final_critic = SemanticCritic(judge_fn=judge_fn, allowed_numbers=fact_numbers)
+    scorer = funnel_scorer_from_recipient(recipient.vars, recipient.base_mean, seed=seed,
+                                          levers=levers)
+
+    # L1 — optimal strategy under the FUNNEL objective (drives instruction translation)
+    spec = optimize_strategy(scorer, q=0.2, restarts=10, seed=seed)
+
+    # candidate slate: plain baseline (always) + contract-constrained LLM drafts + optional legacy beam
+    texts = {"plain_baseline": plain_baseline_draft(sender_brief, recipient.label)}
+    if chat_fn is not None:
+        proposer = llm_draft_proposer(chat_fn, recipient_notes=recipient_notes, sender=sender_brief,
+                                      levers=levers)
+        for i, d in enumerate(proposer(spec.strategy, k=k_drafts)):
+            texts[f"draft_{i}"] = d
+        texts["_draft_rejects"] = proposer.last_rejected
+    if include_legacy_beam:
+        from swm.decision.compositional_search import bank_proposer, construct_email
+        legacy = construct_email(scorer, spec.strategy,
+                                 proposer=bank_proposer(sender_brief, recipient.label),
+                                 beam=4, critic=SemanticCritic(allowed_numbers=fact_numbers),
+                                 encode_fn=encode_text_to_strategy)
+        texts["legacy_slot_beam"] = legacy.text
+
+    rejects = texts.pop("_draft_rejects", [])
+    candidates = {}
+    from swm.decision.compositional_search import _prune_flagged_sentences
+    for name, text in texts.items():
+        # repair: targeted rewrite of flagged sentences, then sentence-level prune (never ship a flag)
+        crit = final_critic.critique(text)
+        if rewrite_fn is not None and crit.flags():
+            for fl in crit.flags():
+                fixed = rewrite_fn(fl["sentence"], fl["reasons"], spec.strategy)
+                if fixed != fl["sentence"]:
+                    text = text.replace(fl["sentence"], fixed).strip()
+            text = " ".join(text.split())
+        text = _prune_flagged_sentences(text, final_critic)
+        cv = validate(text, sender_brief)
+        if not cv.ok and name != "plain_baseline":
+            continue                                     # repair broke the contract -> drop the arm
+        strat = encode_fn(text)
+        fmc = mc_evaluate_funnel(recipient.vars, recipient.base_mean, strat,
+                                 base_n_effective=recipient.base_n_effective,
+                                 confidences=recipient.confidences, n_samples=n_mc,
+                                 seed=seed, levers=levers)
+        entry = {"text": text, "strategy": {k: round(v, 3) for k, v in strat.items()},
+                 "funnel": fmc.summary(), "contract": cv.as_dict(),
+                 "critic": final_critic.critique(text).summary()}
+        if cold_read is not None:
+            entry["cold_read"] = cold_read(text)
+        candidates[name] = entry
+
+    # rank pass 1 (cheap): cold-read gate failures demoted below every gate-passer; ties by funnel q20
+    def sort_key(kv):
+        e = kv[1]
+        gate_ok = e.get("cold_read", {}).get("gates_ok", True)
+        return (0 if gate_ok else 1, -e["funnel"]["interval80"][0], -e["funnel"]["objective_mean"])
+
+    ranked = sorted(candidates.items(), key=sort_key)
+    fragility = {}
+
+    # rank pass 2 (behavioral, live only): the persona ensemble reads the top gate-passing finalists
+    # under COMPETING inbox-reality hypotheses and CHOOSES an outcome per draw — the primary ranking
+    # signal, with per-hypothesis fragility surfaced (a one-hypothesis winner is never confident)
+    if chat_fn is not None and dossier is not None and ranked:
+        from swm.decision.persona_response import ensemble_evaluate, fragility_report
+        hyps = hypotheses or []
+        if not hyps:
+            from swm.decision.persona_response import specialize_hypotheses
+            hyps = specialize_hypotheses(chat_fn, dossier)
+        finalists = [k for k, _ in ranked[:persona_top_k]]
+        persona_results = {}
+        for name in finalists:
+            pr = ensemble_evaluate(chat_fn, dossier, hyps, candidates[name]["text"],
+                                   arrival_context=arrival_context,
+                                   draws_per_hypothesis=persona_draws)
+            persona_results[name] = pr
+            candidates[name]["persona"] = pr.summary(outcome_utilities)
+        fragility = fragility_report(persona_results, outcome_utilities)
+        gate_ok = {k for k, e in candidates.items()
+                   if e.get("cold_read", {}).get("gates_ok", True)}
+        order = [a for a in fragility.get("overall_utility", {}) if a in gate_ok] or finalists
+        winner = order[0] if order else (ranked[0][0] if ranked else None)
+        within = list(fragility.get("within_noise_of_winner", []))
+    else:
+        winner = ranked[0][0] if ranked else None
+        win_lo = candidates[winner]["funnel"]["interval80"][0] if winner else 0
+        within = [k for k, e in ranked[1:]
+                  if e["funnel"]["interval80"][1] >= win_lo
+                  and e.get("cold_read", {}).get("gates_ok", True)]
+
+    honesty = ("Winner = BEST-SUPPORTED AMONG TESTED, not 'best possible'. Live ranking is the "
+               "qualitative persona ensemble (LLM role-play under competing inbox-reality "
+               "hypotheses; outcomes are counted choices) — a model-based judgment, UNCALIBRATED "
+               "against real outreach outcomes. The funnel is a structural prior; its absolute "
+               "levels are claims. Arms in within_noise_of_winner are indistinguishable at this "
+               "draw count, and a hypothesis-fragile winner is flagged, not trusted. "
+               f"{len(rejects)} generated drafts were rejected by the contract/fact guard.")
+    return ColdOutreachResult(recipient=recipient.label, spec=spec, candidates=candidates,
+                              winner=winner, within_noise=within, honesty=honesty,
+                              fragility=fragility)
+
+
 def _recipient_notes(world, contact_id: str, name: str | None) -> str:
     """Compact notes for the LLM proposer: who the recipient is + the web evidence + inferred traits."""
     prof = world.profile(contact_id)

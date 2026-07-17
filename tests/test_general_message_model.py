@@ -44,7 +44,9 @@ def test_generate_levers_parses_and_dedupes_universal():
     names = [lv.name for lv in levers]
     assert "contrarian_thesis" in names               # snake_cased
     assert "personalization" not in names             # dropped: duplicates a universal lever
-    assert levers[0].elasticity_mean == 1.8
+    # caricature guard shrinks the mean toward zero by evidence confidence:
+    # 1.8 × (0.4 + 0.6·0.7) = 1.476 — persona-derived levers are weak evidence about inbox behavior
+    assert abs(levers[0].elasticity_mean - 1.8 * (0.4 + 0.6 * 0.7)) < 1e-9
 
 
 def test_generate_levers_offline_returns_none():

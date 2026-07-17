@@ -103,3 +103,67 @@ def mc_evaluate(recipient_vars: dict, base_mean: float, strategy: dict, *,
               "out_of_support": (len(lever_vals) >= 6 and n_extreme / max(1, len(lever_vals)) >= 0.6)}
     return MCResult(p_reply=replied / n_samples, p_mean=sum(per_draw) / len(per_draw),
                     interval80=(lo, hi), n_samples=n_samples, grade=grade, extrapolation=extrap)
+
+
+@dataclass
+class FunnelMCResult:
+    """Valenced funnel evaluation: positive / negative reply probabilities as distributions over the
+    recipient's hidden state AND the funnel weight priors, plus the mean stage trace (the WHY —
+    which gate is limiting). The OBJECTIVE is p_positive − λ·p_negative; 'any reply' is not success."""
+    p_positive: float
+    p_negative: float
+    objective: float                     # mean of (p_pos − λ·p_neg)
+    interval80: tuple                    # 10th–90th pct of per-draw objective
+    stage_trace: dict
+    n_samples: int
+    grade: str = "structural_prior_unvalidated"
+
+    def summary(self) -> dict:
+        return {"report_type": "funnel_simulation",
+                "p_positive_mean": round(self.p_positive, 4),
+                "p_negative_mean": round(self.p_negative, 4),
+                "objective_mean": round(self.objective, 4),
+                "interval80": [round(self.interval80[0], 4), round(self.interval80[1], 4)],
+                "stage_trace": self.stage_trace, "n_samples": self.n_samples,
+                "calibration_grade": self.grade,
+                "note": "conjunctive response-funnel model (open × understand × believe × relevant "
+                        "× worth × easy), VALENCED: objective = P(positive) − 0.25·P(negative). "
+                        "STRUCTURAL PRIOR — no labeled cold-email corpus backs these magnitudes; "
+                        "trust the ranking and the stage diagnosis, treat absolute levels as claims."}
+
+
+def mc_evaluate_funnel(recipient_vars: dict, base_mean: float, strategy: dict, *,
+                       base_n_effective: float = 6.0, confidences: dict | None = None,
+                       n_samples: int = 400, seed: int = 0, levers: list | None = None):
+    """Integrate the funnel objective over the recipient's hidden state: per draw, sample base
+    responsiveness (Beta posterior) + trait jitter, then one funnel weight draw. Same hidden-state
+    discipline as mc_evaluate; the response model is the conjunctive funnel."""
+    import random
+    from swm.decision.response_funnel import NEGATIVE_REPLY_WEIGHT, FunnelScorer
+    rng = random.Random(seed)
+    confidences = confidences or {}
+    a0 = max(0.05, base_mean * base_n_effective)
+    b0 = max(0.05, (1.0 - base_mean) * base_n_effective)
+    pp, pn, obj = [], [], []
+    stage_acc: dict = {}
+    for i in range(n_samples):
+        base = rng.betavariate(a0, b0)
+        rvars = {}
+        for k, v in recipient_vars.items():
+            c = confidences.get(k, 0.5)
+            rvars[k] = min(1.0, max(-1.0, v + rng.gauss(0.0, 0.18 * (1.0 - c))))
+        sc = FunnelScorer(recipient=rvars, base_responsiveness=base, n_weight_samples=1,
+                          seed=rng.randint(0, 1_000_000), levers=levers or [])
+        d = sc.score_dist(strategy)
+        pp.append(d.mean)
+        pn.append(d.mean_neg)
+        obj.append(d.mean - NEGATIVE_REPLY_WEIGHT * d.mean_neg)
+        for k, v in d.stage_trace.items():
+            stage_acc[k] = stage_acc.get(k, 0.0) + v
+    s = sorted(obj)
+    lo = s[int(0.1 * len(s))]
+    hi = s[min(len(s) - 1, int(0.9 * len(s)))]
+    return FunnelMCResult(p_positive=sum(pp) / len(pp), p_negative=sum(pn) / len(pn),
+                          objective=sum(obj) / len(obj), interval80=(lo, hi),
+                          stage_trace={k: round(v / n_samples, 4) for k, v in stage_acc.items()},
+                          n_samples=n_samples)
