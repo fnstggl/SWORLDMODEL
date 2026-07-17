@@ -113,6 +113,8 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
                     "readout_var": plan.outcome_contract.readout_var,
                     "readout_repaired": plan.provenance.get("readout_repaired"),
                     "n_deltas": result.get("n_deltas"), "n_particles": plan.compute_plan.get("n_particles"),
+                    # event-time contracts: the full first-passage readout (CDF/survival/quantiles/mode×time)
+                    "event_time": result.get("event_time"),
                     # phase-supervision inputs: exactly which operators produced StateDeltas, and which
                     # state paths they wrote — the PhaseExecutionRecord is derived from THIS census, so
                     # activation accounting cannot drift from what actually executed.

@@ -109,6 +109,8 @@ class CollectiveThresholdDecisionOperator(TransitionOperator):
             "outcome_var": str(p["outcome_var"]), "options": list(p.get("options") or ["True", "False"]),
             "posterior_rate_particles": p.get("posterior_rate_particles"),
             "consume": list(p.get("consume") or []),
+            "absorbing": bool(p.get("absorbing")),
+            "absorbing_mode": str(p.get("absorbing_mode", "")),
             "lean": str(p.get("lean", "neutral"))},
             reason_codes=[f"institution={p.get('institution_id', '?')}", f"rule={needed}/{n}"])
 
@@ -127,21 +129,47 @@ class CollectiveThresholdDecisionOperator(TransitionOperator):
         # actor-action polarity, diffusion reach and nonlinear momentum written into this world (bounded,
         # inside the mechanism — never at the terminal resolver)
         prop, consumed = consume_state_rate(world, prop, a.get("consume") or [])
+        if len(a["options"]) != 2:
+            return None                                      # institutional YES/NO write only fits binary
         yes = sum(1 for _ in range(a["n_members"]) if rng.random() < prop)
         passed = yes >= a["needed"]
-        opts = a["options"] if len(a["options"]) == 2 else ["True", "False"]
-        val = opts[0] if passed else opts[1]
+        unc = {"member_propensity": round(prop, 4), "propensity_source": src,
+               "consumed_state": consumed,
+               "yes": yes, "needed": a["needed"], "n_members": a["n_members"],
+               "note": "declared threshold rule over posterior-informed member votes "
+                       "(structural; member correlation not modeled — broad prior)"}
+        if a.get("absorbing"):
+            # EVENT-TIME semantics: the institution's vote is a real event in the trajectory. Passing
+            # WRITES the absorbing state at this vote's date (the monitor observes first passage); failing
+            # leaves the world unabsorbed (censored ⇒ the negative option at readout). The institution
+            # never declares the answer variable — the answer is read out of the trajectory.
+            stamped = world.quantities.get("absorbed_at")
+            flag = world.quantities.get("absorbing_state_reached")
+            if getattr(stamped, "value", None) not in (None, 0) or getattr(flag, "value", None):
+                return None                                   # first passage already happened
+            d = StateDelta(at=world.clock.now, event_type="institutional_decision", operator=self.name,
+                           reason_codes=proposal.reason_codes + ["absorbing_writer"], uncertainty=unc)
+            d.change(f"institution[{a['institution_id']}].decision", None,
+                     "passed" if passed else "failed")
+            if passed:
+                mode = a.get("absorbing_mode") or f"institutional:{a['institution_id']}"
+                register_quantity_type("absorbing_state_reached", units="bool")
+                register_quantity_type("absorbing_mode", units="mode")
+                world.quantities["absorbing_state_reached"] = Quantity(
+                    name="absorbing_state_reached", qtype="absorbing_state_reached", value=True,
+                    timestamp=world.clock.now)
+                world.quantities["absorbing_mode"] = Quantity(
+                    name="absorbing_mode", qtype="absorbing_mode", value=str(mode),
+                    timestamp=world.clock.now)
+                d.change("quantities[absorbing_state_reached]", None, True)
+            return d
+        val = a["options"][0] if passed else a["options"][1]
         var = a["outcome_var"]
         register_quantity_type(var, units="outcome")
         before = world.quantities[var].value if var in world.quantities else None
         world.quantities[var] = Quantity(name=var, qtype=var, value=val, timestamp=world.clock.now)
         d = StateDelta(at=world.clock.now, event_type="institutional_decision", operator=self.name,
-                       reason_codes=proposal.reason_codes,
-                       uncertainty={"member_propensity": round(prop, 4), "propensity_source": src,
-                                    "consumed_state": consumed,
-                                    "yes": yes, "needed": a["needed"], "n_members": a["n_members"],
-                                    "note": "declared threshold rule over posterior-informed member votes "
-                                            "(structural; member correlation not modeled — broad prior)"})
+                       reason_codes=proposal.reason_codes, uncertainty=unc)
         d.change(f"institution[{a['institution_id']}].decision", None, "passed" if passed else "failed")
         return d.change(f"quantities[{var}]", before, val)
 
@@ -206,8 +234,10 @@ MAX_CONSUMED_STATE_WEIGHT = 0.45
 def consume_state_rate(world, base_p: float, consume: list) -> tuple:
     """A MECHANISM's bounded consumption of upstream causal state: p' = (1-Σw)·p + Σ wᵢ·vᵢ over quantities
     that upstream operators (population aggregation, network diffusion, actor polarity, nonlinear state)
-    actually wrote into THIS world's state. Unwritten variables contribute nothing. This runs inside a
-    consuming operator's apply() — the terminal resolver never calls it."""
+    actually wrote into THIS world's state. Unwritten variables contribute nothing. An entry may set
+    `invert: true` (survival-polarity event-time chains: pro-YES state must SUPPRESS the state-breaking
+    hazard, so v ↦ 1−v). This runs inside a consuming operator's apply() — the terminal resolver never
+    calls it."""
     used, blended, total = [], 0.0, 0.0
     for m in (consume or []):
         var, w = str(m.get("var", "")), float(m.get("weight", 0.0) or 0.0)
@@ -215,7 +245,10 @@ def consume_state_rate(world, base_p: float, consume: list) -> tuple:
         v = getattr(q, "value", None)
         if w <= 0.0 or not isinstance(v, (int, float)):
             continue
-        blended += w * max(0.0, min(1.0, float(v)))
+        v = max(0.0, min(1.0, float(v)))
+        if m.get("invert"):
+            v = 1.0 - v
+        blended += w * v
         total += w
         used.append(var)
     if not used:
@@ -248,6 +281,8 @@ class AggregateOutcomeOperator(TransitionOperator):
         return TransitionProposal(operator=self.name, action={
             "outcome_var": str(p["outcome_var"]), "options": list(p.get("options") or ["True", "False"]),
             "lean": str(p.get("lean", "neutral")), "consume": list(p.get("consume") or []),
+            "fitted_base_rate": p.get("fitted_base_rate"),
+            "base_rate_provenance": p.get("base_rate_provenance"),
             "posterior_rate_particles": p.get("posterior_rate_particles")},
             reason_codes=["aggregate_realization"])
 
@@ -262,13 +297,19 @@ class AggregateOutcomeOperator(TransitionOperator):
         post = a.get("posterior_rate_particles")
         if post:
             base, src = _draw_rate(post, rng), "posterior"
+        elif isinstance(a.get("fitted_base_rate"), (int, float)):
+            # learned family hazard (fit on calibration-split outcomes only; partial pooling)
+            base, src = float(a["fitted_base_rate"]), str(a.get("base_rate_provenance", "fitted_family_prior"))
         else:
             av, bv = LEAN_BETA.get(a["lean"], (1.0, 1.0))
             base, src = _beta_sample(rng, av, bv), "prior_beta"
         p, used = consume_state_rate(world, base, a["consume"])
         if not used:
             return None                                      # no upstream state written → nothing to realize
-        opts = a["options"] if len(a["options"]) == 2 else ["True", "False"]
+        if len(a["options"]) != 2:
+            return None                                      # non-binary contract: never poison the option
+                                                             # space with binary values (readout must bin)
+        opts = a["options"]
         val = opts[0] if rng.random() < p else opts[1]
         register_quantity_type(var, units="outcome")
         before = world.quantities[var].value if var in world.quantities else None
