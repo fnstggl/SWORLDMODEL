@@ -176,6 +176,20 @@ Register gates (four-axis critic, numeric fact guard, redundancy, cold-read crit
 are never the objective. A **caricature guard** clamps combat-flavored situational levers to ≤0 and
 shrinks persona-derived elasticities by evidence confidence.
 
+**Second search method — the iterative editor** (`iterative_editor.py`,
+`experiments/exp094_thiel_iterative_editor.py`; experimental, competing with — not replacing — the
+full-draft generator): an exacting human editor's loop, mechanized. Strategy-diverse seeds → whole-
+message diagnosis → per-location materially-different alternatives (keep / rewrite / shorten /
+reframe / merge / **delete** / insert) → an independent judge comparing **complete email variants**
+in context (never isolated sentences) → an 8-axis whole-email rescore that **rejects locally-better
+lines that worsen the message** → endgame sweeps (per-line deletion, reorder, add-beat, shorten,
+replace-ask, new opening, reframe) → a small beam with informed rewrite + crossover to escape local
+optima. Every step lands in a machine-readable edit trace (alternatives, selection, judge reason,
+before/after scores, rejections). The internal 8-axis score is the editor's compass only; final
+candidates are ranked by the same persona-ensemble evaluator as every other approach, with the same
+register bias (em dashes discouraged as overused, allowed when genuinely best; sign-off dashes
+fine — a soft critic penalty, no deterministic stripping).
+
 **Calibration honesty**: additive persuasion elasticities are fit and graded on 19,714 real
 ChangeMyView outcomes (held-out grade A, ECE ≈ 0.02) — that grade applies to the additive
 persuasion model only. The funnel magnitudes are structural priors; the persona ensemble is a

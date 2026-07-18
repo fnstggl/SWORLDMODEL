@@ -124,7 +124,7 @@ def plain_baseline_draft(sender, recipient_label: str = "") -> str:
     ident = "; ".join(ident_bits) if ident_bits else f"I'm {name}"
     evidence = next((f for f in facts if _BIG_NUMBER.search(f) and _PROVENANCE.search(f)),
                     next((f for f in facts if _PROVENANCE.search(f)), ""))
-    lines = [f"{first}, I'm {name} — {ident}."]
+    lines = [f"{first}, I'm {name}: {ident}."]   # template prose spends no dash budget
     if thesis:
         lines.append(f"{thesis[0].upper()}{thesis[1:]}.")
     if evidence:

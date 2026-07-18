@@ -1,0 +1,64 @@
+{
+ "experiment": "exp094_thiel_iterative_editor",
+ "mode": "offline",
+ "hypotheses_source": "thiel_v3 saved",
+ "editor": {
+  "beam": [
+   {
+    "label": "plain_baseline",
+    "internal_score": 0.7259,
+    "text": "Peter, I'm Beckett: 17 years old, starting Princeton in the fall; building Aurelius (runaurelius.com): constraint-aware orchestration for AI infrastructure. So far: +724% average SLA-safe goodput per dollar vs the production scheduler, in simulated replay of ~1.5M requests of public production traces. May I send you the one-page memo? Beckett"
+   }
+  ],
+  "llm_calls": 0,
+  "n_trace_steps": 8,
+  "n_rejected_local_improvements": 0
+ },
+ "fulldraft": {
+  "winner": "plain_baseline",
+  "text": "Peter, I'm Beckett: 17 years old, starting Princeton in the fall; building Aurelius (runaurelius.com): constraint-aware orchestration for AI infrastructure. AI infrastructure has a planning problem disguised as a power problem: schedulers optimize the next placement, but nothing chooses the fleet's best trajectory over time. So far: +724% average SLA-safe goodput per dollar vs the production scheduler, in simulated replay of ~1.5M requests of public production traces. May I send you the one-page memo? Beckett",
+  "within_noise": [],
+  "fragility": {}
+ },
+ "final_comparison": {
+  "persona": {},
+  "fragility": {},
+  "contracts": {
+   "iter_editor_best": {
+    "ok": true,
+    "missing": [],
+    "flags": []
+   },
+   "fulldraft_winner": {
+    "ok": true,
+    "missing": [],
+    "flags": []
+   },
+   "v3_winner_recorded": {
+    "ok": true,
+    "missing": [],
+    "flags": []
+   },
+   "plain_baseline": {
+    "ok": true,
+    "missing": [],
+    "flags": []
+   },
+   "debate_bait_rejected": {
+    "ok": false,
+    "missing": [
+     "identity: a stranger cannot tell who is writing from the first two sentences ('I'm <name>, building <thing>')",
+     "thesis: no declarative claim beyond the introduction",
+     "next_step: no explicit, trivially answerable ask \u2014 the recipient cannot tell what replying accomplishes"
+    ],
+    "flags": [
+     "diligence_bait: the ask requests unpaid technical diligence / debate ('which assumption is wrong?') \u2014 high effort, adversarial from a stranger",
+     "relevance: no explicit bridge to the recipient (why THEM)"
+    ]
+   }
+  },
+  "editor_vs_fulldraft": null
+ },
+ "label": "model_based_judgment \u2014 same UNCALIBRATED persona evaluator for every candidate; 'best-supported among tested', never a theoretical optimum",
+ "wall_s": 13.1
+}
