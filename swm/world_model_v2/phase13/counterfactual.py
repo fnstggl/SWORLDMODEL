@@ -76,6 +76,8 @@ class MatchedEvaluator:
         _inject_posterior_rate(plan)
         ops, rejections = operators_from_plan(plan, llm=llm)
         init = InitialStateModel(base_world=base, latents=list(plan.latents))
+        from swm.world_model_v2.materialize import attach_world_hypotheses_from_plan
+        attach_world_hypotheses_from_plan(init, plan, llm=llm)
         ev = cls(initial=init, queue_builder=queue_builder_from_plan(plan), operators=ops,
                  contract=plan.outcome_contract,
                  n_particles=n_particles or plan.compute_plan.get("n_particles", 60), seed=seed,

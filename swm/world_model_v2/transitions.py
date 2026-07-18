@@ -392,7 +392,14 @@ class InstitutionalVoteOperator(TransitionOperator):
             act = world.entity(pid).value("current_action", default="abstain")
             if isinstance(act, dict):
                 act = act.get("action_name") or act.get("type") or "abstain"
-            votes[pid] = act if act in ("yes", "no", "abstain") else "abstain"
+            if act not in ("yes", "no", "abstain"):
+                # EXECUTED ontology actions are votes: support/approve/accept → yes,
+                # oppose/reject/veto/defect → no (the compiler's own lexical polarity —
+                # universal, never scenario keywords). Nonpolar actions stay abstentions.
+                from swm.world_model_v2.phase_consumers import action_polarity
+                pol = action_polarity(act)
+                act = "yes" if pol > 0 else ("no" if pol < 0 else "abstain")
+            votes[pid] = act
         return TransitionProposal(operator=self.name,
                                   action={"votes": votes, **{k: event.payload.get(k)
                                                              for k in ("threshold", "needed", "total",

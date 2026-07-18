@@ -118,8 +118,21 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
                     # phase-supervision inputs: exactly which operators produced StateDeltas, and which
                     # state paths they wrote — the PhaseExecutionRecord is derived from THIS census, so
                     # activation accounting cannot drift from what actually executed.
-                    "operator_delta_census": _operator_delta_census(branches)},
+                    "operator_delta_census": _operator_delta_census(branches),
+                    # actor-mediated execution manifests: event cascade, approximation stamps,
+                    # demoted scalar writes, semantic events, tier promotions (run_classification)
+                    "actor_mediated": _actor_mediated_manifests(branches),
+                    "joint_world": plan.provenance.get("joint_world"),
+                    "actor_runtime_fallback": plan.provenance.get("actor_runtime_fallback")},
         latency_s=round(_time.time() - t0, 3) if t0 is not None else 0.0)
+
+
+def _actor_mediated_manifests(branches) -> dict:
+    from swm.world_model_v2.run_classification import collect_actor_mediated_manifests
+    try:
+        return collect_actor_mediated_manifests(branches)
+    except Exception as e:  # noqa: BLE001 — manifest collection must never kill the result
+        return {"error": f"{type(e).__name__}: {e}"[:120]}
 
 
 def simulate(question: str, *, llm, evidence="", as_of: str, horizon: str, intervention: str = "",

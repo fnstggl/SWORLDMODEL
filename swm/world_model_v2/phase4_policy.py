@@ -130,6 +130,48 @@ def action_pathway_effects(action_family: str, action_name: str) -> dict:
                 or _NAME_LEVEL_EFFECTS.get(str(action_name)) or {})
 
 
+# ---------------------------------------------------------------------------------------------
+# EFFECT CLASSIFICATION (actor-mediated execution phase). Every ontology pathway effect is one of
+#   structural      — the actor's OWN executed act itself changes reality (their vote cast, their
+#                     resources spent, their side of a shared process advanced, their launch);
+#                     stays a deterministic write.
+#   actor_mediated  — the effect's causal substance is ANOTHER actor perceiving and reacting
+#                     (persuasion changing someone's position, an endorsement moving another
+#                     member, a message generating a reply). May NOT be written as a scalar when
+#                     the affected decision-makers are representable — it must route through
+#                     their own decisions (actor_propagation).
+#   population      — many low-impact actors; a fitted/aggregate mechanism serves, stamped.
+#   residual        — stochastic even after actor decisions; hazards carry it, labeled.
+# Default for unlisted effect-bearing actions is `structural` (the actor's own act); the
+# runtime additionally treats non-principal `support`/`oppose` on a process the actor holds no
+# decision right over as actor_mediated (context-dependent — see phase4_execution).
+ACTION_EFFECT_CLASS = {
+    ("participation", "persuade"): "actor_mediated",
+    ("participation", "coordinate"): "actor_mediated",
+    ("participation", "support"): "actor_mediated_unless_principal",
+    ("participation", "oppose"): "actor_mediated_unless_principal",
+    ("negotiation", "seek_mediator"): "actor_mediated",
+    ("messaging", "escalate_message"): "actor_mediated",
+    ("messaging", "reveal_information"): "actor_mediated",
+    ("messaging", "withhold_information"): "actor_mediated",
+    ("participation", "mobilize"): "population",
+    ("participation", "strike"): "population",
+    ("participation", "protest"): "population",
+}
+
+
+def action_effect_class(action_family: str, action_name: str, *,
+                        actor_is_principal: bool = False) -> str:
+    """The effect class of one ontology action's pathway write (see table above)."""
+    cls = ACTION_EFFECT_CLASS.get((str(action_family), str(action_name)))
+    if cls is None:
+        cls = next((v for (f, n), v in ACTION_EFFECT_CLASS.items() if n == str(action_name)),
+                   "structural")
+    if cls == "actor_mediated_unless_principal":
+        return "structural" if actor_is_principal else "actor_mediated"
+    return cls
+
+
 def actions_advancing_pathway(pathway: str, *, min_effect: float = 0.5) -> list:
     """Ontology actions whose execution advances the given pathway by at least `min_effect` — the
     prohibition set a binding prevent-commitment implies (resolution_criteria._binding_prohibitions)."""
@@ -474,7 +516,7 @@ class ActorViewBuilder:
                 rules.append({"institution_id": inst_id, "rule_id": rule.rule_id,
                               "kind": rule.kind, "params": params})
 
-        history = list(own("past_actions", []) or [])
+        history = self._history_rows(fields.get("past_actions"))
         memory = list(own("memory", []) or [])
         latent = fields.get("latent_state") or {}
         policy_state = ({k: _value(v) for k, v in latent.items() if str(k).startswith("phase4_policy_")}
@@ -510,6 +552,22 @@ class ActorViewBuilder:
             return {str(k): _value(v) for k, v in value.items()}
         raw = _value(value, {})
         return dict(raw) if isinstance(raw, dict) else {}
+
+    @staticmethod
+    def _history_rows(value) -> list:
+        """Normalize `past_actions` into a list of dict rows. Two layouts exist in production:
+        the Phase-4 list of {at, action, status, ...} rows and Phase 13's keyed
+        {action_id: StateField(operation)} records — both must project into one history."""
+        if isinstance(value, dict):                      # keyed layout (phase13 decision maker)
+            rows = []
+            for aid, sf in value.items():
+                v = sf.value if isinstance(sf, StateField) else sf
+                rows.append(v if isinstance(v, dict) else
+                            {"action": str(v), "action_id": str(aid), "public": True})
+            return rows
+        raw = _value(value, []) or []
+        return [h if isinstance(h, dict) else {"action": str(h), "public": True}
+                for h in (raw if isinstance(raw, list) else [raw])]
 
     @staticmethod
     def _records(value) -> list:

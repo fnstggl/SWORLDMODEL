@@ -286,6 +286,7 @@ def test_contested_writes_advance_own_mode_and_suppress_rival():
     class _D:
         def __init__(self):
             self.changes = []
+            self.reason_codes = []
 
         def change(self, path, before, after):
             self.changes.append(path)
@@ -314,6 +315,7 @@ def test_principal_weighting_and_capacity_scaling():
 
         class _D:
             changes = []
+            reason_codes = []
 
             def change(self, *a):
                 pass

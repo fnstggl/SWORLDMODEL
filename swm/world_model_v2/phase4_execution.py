@@ -41,12 +41,20 @@ class ActorPolicyRuntime:
     """Orchestrates one universal actor-policy decision across posterior worlds."""
 
     def __init__(self, model: ActorPolicyModel | None = None, *, view_builder=None,
-                 action_builder=None, feasibility=None):
+                 action_builder=None, feasibility=None, propagation=None):
+        from swm.world_model_v2.actor_propagation import SemanticPropagationEngine
         self.model = model or ActorPolicyModel()
         self.views = view_builder or ActorViewBuilder()
         self.actions = action_builder or ActionSpaceBuilder()
         self.feasibility = feasibility or FeasibilityEngine()
+        # DEFAULT-ON actor-mediated propagation (SWM_ACTOR_PROPAGATION=off / world ablation
+        # flag disable it at propagate time, stamped — never silently).
+        self.propagation = propagation if propagation is not None else SemanticPropagationEngine()
         self._lock = threading.RLock()
+
+    def _pending_decision(self, trace):
+        """The qualitative decision behind this trace, when one exists (subclass hook)."""
+        return None
 
     def decide(self, plan, posterior_worlds: list, actor_id: str, *, decision: dict,
                seed: int, question_id: str = "", observed_events=None,
@@ -78,8 +86,10 @@ class ActorPolicyRuntime:
         return selected, posterior, trace
 
     def execute(self, world, action: TypedAction, posterior: ActionPosterior, trace: DecisionTrace,
-                *, seed: int = 0) -> tuple[StateDelta, list[Event]]:
-        """Recheck actual feasibility, mutate shared state, and return follow-up events."""
+                *, seed: int = 0, depth: int = 0) -> tuple[StateDelta, list[Event]]:
+        """Recheck actual feasibility, mutate shared state, and return follow-up events.
+        `depth` is the cascade depth of the decision event that produced this action (0 for a
+        scheduled decision opportunity; >0 for reconsiderations inside a reaction cascade)."""
         with self._lock:
             view = self.views.build(world, action.actor_id)
             fd = self.feasibility.classify(action, view, world)
@@ -123,6 +133,15 @@ class ActorPolicyRuntime:
             self._post_execute(world, action, posterior, trace, delta)
             events = self._follow_up_events(world, action, posterior, trace, seed)
             delta.follow_up_events = [self._event_record(event) for event in events]
+            # ACTOR-MEDIATED PROPAGATION: the executed action compiles into semantic events,
+            # the router delivers actor-specific observations, frontier discovery finds the
+            # causally engaged actors, and their reconsideration events ride the SAME
+            # follow-up channel the rollout engine validates and queues (the canonical A4
+            # path — no second event system, identical in Phase-13 matched arms).
+            if self.propagation is not None:
+                delta.follow_up_events += self.propagation.propagate(
+                    world, action, decision=self._pending_decision(trace), trace=trace,
+                    delta=delta, depth=depth)
             event = Event(ts=world.clock.now, etype="actor_action",
                           participants=[x for x in (action.actor_id, action.target.target_id) if x],
                           payload={"action": action.as_dict(), "trace_id": trace.trace_id},
@@ -201,6 +220,20 @@ class ActorPolicyRuntime:
             elif kind == "belief_delta" and action.target.target_id in world.entities:
                 target = world.entity(action.target.target_id)
                 key = str(consequence.get("belief", "action_effect"))
+                # DEMOTED SCALAR BYPASS: another actor's belief may not be written directly by
+                # a generic coupling when that actor can be represented and simulated — the
+                # semantic event reaches them through observation delivery and THEIR decision
+                # (actor_reconsideration) owns any belief/stance change. The direct write
+                # survives only with propagation explicitly disabled, stamped as a fallback.
+                from swm.world_model_v2.actor_propagation import propagation_enabled
+                if propagation_enabled(world) and target.entity_type in ("person", "institution"):
+                    delta.reason_codes.append(
+                        f"belief_delta_demoted_recipient_decision:{target.identity}.{key}")
+                    world.uncertainty_meta.setdefault("demoted_scalar_writes", []).append({
+                        "at": world.clock.now, "kind": "belief_delta",
+                        "target": target.identity, "belief": key,
+                        "routed_via": "actor_reconsideration"})
+                    continue
                 beliefs = target.get("beliefs") or {}
                 sf = beliefs.get(key) if isinstance(beliefs, dict) else None
                 before = float(sf.value) if isinstance(sf, StateField) and isinstance(sf.value, (int, float)) else 0.5
@@ -209,6 +242,7 @@ class ActorPolicyRuntime:
                 target.set("beliefs", F(after, status="derived", method="production_actor_policy",
                                         updated_at=world.clock.now), key=key)
                 delta.change(f"{target.identity}.beliefs[{key}]", before, after)
+                delta.reason_codes.append("belief_delta_scalar_fallback_propagation_disabled")
 
     #: legacy point step, kept for direct callers/tests; production draws the per-branch SAMPLED
     #: coupling `pathway_step` (world_dynamics) so the structural magnitude is a distribution.
@@ -259,6 +293,8 @@ class ActorPolicyRuntime:
                                              timestamp=world.clock.now)
             delta.change(f"quantities[{var}]", round(before, 4), round(after, 4))
 
+        from swm.world_model_v2.actor_propagation import propagation_enabled
+        from swm.world_model_v2.phase4_policy import action_effect_class
         step = sampled_coupling(world, "pathway_step")
         cap = live_capacity(world).get(action.actor_id)
         if isinstance(cap, (int, float)):
@@ -266,12 +302,38 @@ class ActorPolicyRuntime:
         actor_ent = world.entities.get(action.actor_id)
         my_stances = actor_ent.value("stances", default=None) if actor_ent is not None else None
         my_stances = my_stances if isinstance(my_stances, list) else []
+        recipients_exist = cls._has_representable_recipients(world, action)
         for pw, eff in effects.items():
             share = 1.0
             pq = world.quantities.get(f"pathway_principals:{pw}")
             principals = str(getattr(pq, "value", "") or "").split("|") if pq is not None else []
             if principals and action.actor_id not in principals:
                 share = sampled_coupling(world, "nonprincipal_step_share")
+            # EFFECT CLASSIFICATION: an actor-mediated effect (its causal substance is other
+            # actors' reactions — persuade, coordinate, a non-principal endorsement, a message
+            # reveal) may NOT be manufactured by this scalar write when the affected
+            # decision-makers are representable and propagation is live: the process moves when
+            # the recipients' own executed reactions move it. Population effects write with an
+            # aggregate stamp; structural effects (the actor's own act) write as before.
+            eff_class = action_effect_class(
+                action.action_family, action.action_name,
+                actor_is_principal=bool(principals) and action.actor_id in principals)
+            if eff_class == "actor_mediated" and propagation_enabled(world) and recipients_exist:
+                delta.reason_codes.append(
+                    f"pathway_effect_demoted_actor_mediated:{action.action_name}:{pw}")
+                world.uncertainty_meta.setdefault("demoted_scalar_writes", []).append({
+                    "at": world.clock.now, "kind": "pathway_effect",
+                    "action": action.action_name, "pathway": pw,
+                    "routed_via": "actor_reconsideration"})
+                continue
+            if eff_class == "actor_mediated":
+                delta.reason_codes.append(
+                    f"actor_mediated_scalar_fallback:{action.action_name}:{pw}:"
+                    + ("propagation_disabled" if not propagation_enabled(world)
+                       else "no_representable_recipients"))
+            elif eff_class == "population":
+                delta.reason_codes.append(
+                    f"population_aggregate_pathway_write:{action.action_name}:{pw}")
             _write(f"pathway_progress:{pw}", "pathway_progress", step * share * float(eff))
             # contested pathways: route the push into the actor's OWN pursued mode channel(s) and
             # suppress rivals' channels on the same pathway
@@ -293,8 +355,20 @@ class ActorPolicyRuntime:
                     _write(var, "mode_progress", -step * supp * float(eff))
 
     @staticmethod
+    def _has_representable_recipients(world, action: TypedAction) -> bool:
+        """True when at least one OTHER consequential actor exists to route reactions through:
+        a person/institution entity beyond the acting actor. In a bare world (no other minds)
+        the scalar path remains as the explicit, stamped fallback."""
+        for eid, ent in (world.entities or {}).items():
+            if eid != action.actor_id and getattr(ent, "entity_type", "") in ("person",
+                                                                              "institution"):
+                return True
+        return bool(world.institutions)
+
+    @staticmethod
     def _follow_up_events(world, action: TypedAction, posterior: ActionPosterior,
                           trace: DecisionTrace, seed: int) -> list[Event]:
+        from swm.world_model_v2.actor_propagation import propagation_enabled
         events = []
         participants = [x for x in (action.actor_id, action.target.target_id) if x]
         for mechanism in action.mechanisms_triggered:
@@ -315,14 +389,19 @@ class ActorPolicyRuntime:
                                     visibility="institutional",
                                     source="endogenous:production_actor_policy"))
             elif (mechanism == "reaction_scheduling" and action.target.target_id
-                  and action.target.target_id in world.entities):
+                  and action.target.target_id in world.entities
+                  and not propagation_enabled(world)):
+                # LEGACY narrow path (single named target, tiny fixed menu) — serves ONLY when
+                # actor-mediated propagation is explicitly disabled, and says so on the event.
+                # With propagation live, frontier discovery owns reaction scheduling.
                 delay = max(1.0, float(action.parameters.get("reaction_delay_s", 60.0) or 60.0))
                 events.append(Event(ts=world.clock.now + delay, etype="actor_reaction",
                                     participants=[action.target.target_id, action.actor_id],
                                     payload={"trigger_action_id": action.action_id,
                                              "candidate_actions": action.parameters.get(
                                                  "reaction_actions", ["acknowledge", "ignore"]),
-                                             "trace_id": trace.trace_id},
+                                             "trace_id": trace.trace_id,
+                                             "legacy_reaction_scheduling": True},
                                     visibility="participants",
                                     source="endogenous:production_actor_policy"))
         for delayed in action.possible_delayed_consequences:
@@ -360,7 +439,8 @@ class ProductionActorPolicyOperator:
         self.traces = []
 
     def applicable(self, world, event):
-        return event.etype in ("decision_opportunity", "actor_reaction") and bool(event.participants)
+        return event.etype in ("decision_opportunity", "actor_reaction",
+                               "actor_reconsideration") and bool(event.participants)
 
     def run(self, world, event, rng):
         actor_id = event.participants[0]
@@ -368,12 +448,14 @@ class ProductionActorPolicyOperator:
         decision = dict(event.payload or {})
         if "candidate_actions" not in decision and "actions" in decision:
             decision["candidate_actions"] = decision["actions"]
+        depth = int(decision.get("depth", 0) or 0)
         selected, posterior, trace = self.runtime.decide(
             None, [world], actor_id, decision=decision, seed=seed,
             question_id=str(decision.get("question_id", "")),
             observed_events=[event],
         )
-        delta, _events = self.runtime.execute(world, selected, posterior, trace, seed=seed)
+        delta, _events = self.runtime.execute(world, selected, posterior, trace, seed=seed,
+                                              depth=depth)
         self.traces.append(trace)
         return delta, ValidationResult(ok=True)
 

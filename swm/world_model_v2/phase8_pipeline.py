@@ -206,6 +206,8 @@ def run_with_persistence(question, plan, *, llm=None, context=None, actor_histor
     import swm.world_model_v2.phase8_transitions as _p8t
     ops = ops + [_p8t.PersistenceUpdateOperator(), _p8t.MemoryConsolidationOperator()]
     init = InitialStateModel(base_world=base, latents=list(plan.latents))
+    from swm.world_model_v2.materialize import attach_world_hypotheses_from_plan
+    attach_world_hypotheses_from_plan(init, plan, llm=llm)
     npart = n_particles or plan.compute_plan.get("n_particles", 30)
     run = WorldModelV2Run(initial=init, queue_builder=queue_builder_from_plan(plan),
                           operators=ops, contract=plan.outcome_contract, n_particles=npart)

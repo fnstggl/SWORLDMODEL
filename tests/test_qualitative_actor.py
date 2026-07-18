@@ -195,7 +195,13 @@ def test_raw_distribution_equals_observed_branch_frequencies():
     assert agg["n_qualitative_branches"] == 6
     # counting, not scoring: every mass is a whole number of branches (4-decimal storage)
     assert all(abs(v * 6 - round(v * 6)) < 2e-3 for v in raw.values())
-    assert agg["cluster_version"] == ActionClusterer.version
+    # v2 clustering is the default and must be key-compatible with v1 on exact rows; the
+    # frozen v1 remains selectable explicitly
+    assert agg["cluster_version"] == "cluster-2.0"
+    agg_v1 = aggregate_actor_decisions(runtime.decision_records,
+                                       clusterer=ActionClusterer())["ceo"]
+    assert agg_v1["cluster_version"] == ActionClusterer.version
+    assert agg_v1["raw_qualitative_simulation_distribution"] == raw
     for row in agg["rows"]:
         assert row["decision_source"] == "persistent_qualitative_llm"
         assert row["hypothesis_id"] and row["branch_id"]

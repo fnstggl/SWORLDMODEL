@@ -1,0 +1,121 @@
+{
+ "generated_at": "2026-07-18T15:26:00Z",
+ "mode": "scripted_mock",
+ "scenario": "The leader must publicly state whether the bloc holds its negotiating position or concedes; three members then decide their own public stances; the bloc's council votes five days later.",
+ "claim_scope": "architectural difference under identical inputs \u2014 NOT a predictive-accuracy claim (no resolved outcome exists for a synthetic scenario)",
+ "arms": {
+  "scalar": {
+   "arm": "scalar",
+   "n_particles": 12,
+   "p_bloc_holds": 0.0,
+   "n_reconsiderations": 0,
+   "max_depth": 0,
+   "n_demoted_scalar_writes": 0,
+   "llm_calls": 12,
+   "wall_s": 0.2,
+   "actor_distributions": {
+    "leader_a": {
+     "raw": {
+      "hold_position": 1.0
+     },
+     "n": 12,
+     "calibration": "unvalidated"
+    }
+   },
+   "quiescence_reasons": []
+  },
+  "one_hop": {
+   "arm": "one_hop",
+   "n_particles": 12,
+   "p_bloc_holds": 1.0,
+   "n_reconsiderations": 36,
+   "max_depth": 1,
+   "n_demoted_scalar_writes": 36,
+   "llm_calls": 48,
+   "wall_s": 0.4,
+   "actor_distributions": {
+    "leader_a": {
+     "raw": {
+      "hold_position": 1.0
+     },
+     "n": 12,
+     "calibration": "unvalidated"
+    },
+    "member_b": {
+     "raw": {
+      "oppose@bloc_council": 0.6667,
+      "support@bloc_council": 0.3333
+     },
+     "n": 12,
+     "calibration": "unvalidated"
+    },
+    "member_c": {
+     "raw": {
+      "support@bloc_council": 1.0
+     },
+     "n": 12,
+     "calibration": "unvalidated"
+    },
+    "member_d": {
+     "raw": {
+      "support@bloc_council": 1.0
+     },
+     "n": 12,
+     "calibration": "unvalidated"
+    }
+   },
+   "quiescence_reasons": [
+    "depth_budget"
+   ]
+  },
+  "recursive": {
+   "arm": "recursive",
+   "n_particles": 12,
+   "p_bloc_holds": 0.3333,
+   "n_reconsiderations": 276,
+   "max_depth": 3,
+   "n_demoted_scalar_writes": 224,
+   "llm_calls": 288,
+   "wall_s": 2.7,
+   "actor_distributions": {
+    "leader_a": {
+     "raw": {
+      "hold_position": 0.1875,
+      "hold_position@member_b": 0.1875,
+      "hold_position@member_c": 0.3125,
+      "hold_position@member_d": 0.3125
+     },
+     "n": 64,
+     "calibration": "unvalidated"
+    },
+    "member_b": {
+     "raw": {
+      "oppose@bloc_council": 0.7,
+      "support@bloc_council": 0.3
+     },
+     "n": 80,
+     "calibration": "unvalidated"
+    },
+    "member_c": {
+     "raw": {
+      "oppose@bloc_council": 0.5556,
+      "support@bloc_council": 0.4444
+     },
+     "n": 72,
+     "calibration": "unvalidated"
+    },
+    "member_d": {
+     "raw": {
+      "oppose@bloc_council": 0.5556,
+      "support@bloc_council": 0.4444
+     },
+     "n": 72,
+     "calibration": "unvalidated"
+    }
+   },
+   "quiescence_reasons": [
+    "duplicate_semantic_event"
+   ]
+  }
+ }
+}

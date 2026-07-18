@@ -371,15 +371,21 @@ class StructuralProcessPriorOperator(TransitionOperator):
 _AFFIRMATIVE_TOKENS = frozenset((
     "approve", "accept", "sign", "support", "agree", "confirm", "endorse", "yes", "vote_yes", "ratify",
     "advance", "pass", "adopt", "settle", "concede", "cooperate", "join", "commit", "proceed", "deal"))
+#: ontology action tokens that read as NEGATIVE toward the outcome — the shared action ontology's
+#: own opposition/blocking verbs, supplementing the compiler's free-text negation lexicon
+_NEGATIVE_TOKENS = frozenset((
+    "oppose", "veto", "defect", "block", "withdraw", "exit", "resign", "refuse",
+    "deny", "no", "vote_no", "boycott"))
 
 
 def action_polarity(action_name: str):
-    """+1 affirmative, -1 negative, 0 no polarity. Lexical only — reuses the compiler's negation lexicon."""
+    """+1 affirmative, -1 negative, 0 no polarity. Lexical only — the compiler's negation
+    lexicon plus the shared ontology's own opposition verbs."""
     from swm.world_model_v2.compiler import _negativity
     s = str(action_name or "").lower().replace("-", "_")
-    if _negativity(s) > 0:
-        return -1
     toks = set(s.split("_"))
+    if _negativity(s) > 0 or toks & _NEGATIVE_TOKENS:
+        return -1
     if toks & _AFFIRMATIVE_TOKENS:
         return 1
     return 0

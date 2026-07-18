@@ -221,8 +221,9 @@ def resolve_actor_policy_mode(llm) -> str:
 
 def _actor_policy_runtime(plan, llm):
     """Bind the runtime for the resolved mode, or None (plain numeric operator). A failure to
-    construct an LLM runtime must never block materialization — the numeric path serves and the
-    absence of qualitative/persona provenance on the traces records it."""
+    construct an LLM runtime never blocks materialization — the numeric path serves — but it is
+    RECORDED on the plan provenance (`actor_runtime_fallback`), never silent: the run
+    classification and product epistemic contract surface it."""
     mode = resolve_actor_policy_mode(llm)
     if mode == "numeric_policy" or llm is None:
         return None
@@ -232,8 +233,56 @@ def _actor_policy_runtime(plan, llm):
             return build_persona_runtime(llm=llm)
         from swm.world_model_v2.qualitative_actor import build_qualitative_runtime
         return build_qualitative_runtime(plan, llm=llm, mode=mode)
-    except Exception:  # noqa: BLE001
+    except Exception as e:  # noqa: BLE001
+        try:
+            (plan.provenance or {}).setdefault("actor_runtime_fallback", []).append({
+                "requested_mode": mode, "fallback": "numeric_policy",
+                "reason": f"llm_runtime_construction_failed: {type(e).__name__}: {e}"[:160]})
+        except Exception:  # noqa: BLE001 — provenance recording must not mask the fallback
+            pass
         return None
+
+
+def attach_world_hypotheses_from_plan(init, plan, *, llm=None) -> int:
+    """Generate the run's COHERENT JOINT WORLD HYPOTHESES (joint_world) from the compiled plan
+    and bind them onto the InitialStateModel, so every sampled particle carries one shared
+    hidden reality that all actor-private states condition on. Default-on; `SWM_JOINT_WORLD=off`
+    disables (recorded on the plan provenance, never silent). Returns the number attached."""
+    import os
+    if os.environ.get("SWM_JOINT_WORLD", "").strip().lower() == "off":
+        (plan.provenance or {}).setdefault("joint_world", {})["status"] = "disabled_by_env"
+        return 0
+    try:
+        import time as _t
+        from swm.world_model_v2.joint_world import JointWorldHypothesizer, attach_joint_hypotheses
+        actors = [str(e.get("id")) for e in (plan.entities or [])
+                  if isinstance(e, dict) and str(e.get("type", "person")) == "person"]
+        insts = [str(i.get("id")) for i in (plan.institutions or []) if isinstance(i, dict)]
+        ev_rows = []
+        for s in (getattr(plan, "_intention_stances", None) or [])[:10]:
+            if isinstance(s, dict):
+                ev_rows.append(f"- {s.get('actor')}: [{s.get('commitment_level')}] on "
+                               f"{s.get('pathway')}"
+                               + (f" — \"{str(s.get('quote', ''))[:160]}\"" if s.get("quote") else ""))
+        evidence = "\n".join(ev_rows)
+        date = _t.strftime("%Y-%m-%d", _t.gmtime(float(plan.as_of))) if plan.as_of else "?"
+        structural = {"hypotheses": [str(h.get("id", "H"))
+                                     for h in (getattr(plan, "structural_hypotheses", None) or [])
+                                     if isinstance(h, dict)]}
+        hyp = JointWorldHypothesizer(llm, k=3)
+        rows = hyp.generate(question=str(getattr(plan, "question", ""))[:300], actors=actors,
+                            institutions=insts, evidence=evidence, date=date,
+                            structural_model=structural)
+        n = attach_joint_hypotheses(init, rows)
+        (plan.provenance or {}).setdefault("joint_world", {}).update(
+            {"status": "attached", "k": n, "llm_calls": hyp.llm_calls,
+             "source": rows[0].provenance.get("source", "") if rows else "",
+             "labels": [r.label for r in rows]})
+        return n
+    except Exception as e:  # noqa: BLE001 — never blocks the forecast, never silent
+        (plan.provenance or {}).setdefault("joint_world", {}).update(
+            {"status": "generation_failed", "error": f"{type(e).__name__}: {e}"[:160]})
+        return 0
 
 
 def attach_actor_decision_distributions(ops, container: dict) -> None:
@@ -305,6 +354,7 @@ def run_from_plan(plan, *, llm=None, n_particles=None, seed=0):
             f"(rejections: {[r['reason'][:60] for r in rejections]})",
             taxonomy="missing_required_operator")
     init = InitialStateModel(base_world=base, latents=list(plan.latents))
+    attach_world_hypotheses_from_plan(init, plan, llm=llm)
     npart = n_particles or plan.compute_plan.get("n_particles", 30)
     run = WorldModelV2Run(initial=init, queue_builder=queue_builder_from_plan(plan),
                           operators=ops, contract=plan.outcome_contract, n_particles=npart)
@@ -357,6 +407,9 @@ def _run_with_hypotheses(run, plan, hyps, seed):
             w = worlds[wi]; wi += 1
             w.uncertainty_meta.setdefault("model", {})["hypothesis"] = h.get("id", "H")
             w.uncertainty_meta["hypothesis_lean"] = lean       # picked up by the resolve_outcome event
+            jw = w.uncertainty_meta.get("joint_world_hypothesis")
+            if isinstance(jw, dict):                           # joint-world ↔ structural coherence
+                jw.setdefault("structural_model", {})["assigned_hypothesis"] = h.get("id", "H")
             q = run.queue_builder(w)
             # override the resolve_outcome payload lean for this hypothesis
             for ev in q.events:

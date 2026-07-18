@@ -1,0 +1,361 @@
+{
+  "version": "fixture-v1",
+  "locked": true,
+  "authored": "hand-authored this phase, human-reviewable",
+  "notes": "Locked grading artifact for semantic action clustering (cluster-2.0). Each case asks: do actions a and b denote the same real-world act by the same actor toward the same target? 'same' = objectively the same act; 'different' = objectively materially different acts or targets; 'unresolved' = genuinely undecidable from the given information (e.g. an irreducibly ambiguous target). Do not edit: tests pin this file by SHA-256.",
+  "cases": [
+    {
+      "id": "exact_accept_same",
+      "a": {"action_name": "accept", "target": "board"},
+      "b": {"action_name": "accept", "target": "board"},
+      "known_entities": ["board"],
+      "expected": "same",
+      "why": "Identical ontology action and identical canonical target."
+    },
+    {
+      "id": "exact_no_target",
+      "a": {"action_name": "wait", "target": ""},
+      "b": {"action_name": "wait", "target": ""},
+      "known_entities": [],
+      "expected": "same",
+      "why": "Identical target-less ontology action."
+    },
+    {
+      "id": "exact_anchor_override",
+      "a": {"action_name": "escalate_the_campaign", "target": "bob", "ontology_anchor": {"family": "negotiation", "name": "escalate", "matched_by": "token_overlap"}},
+      "b": {"action_name": "escalate", "target": "bob"},
+      "known_entities": ["bob"],
+      "expected": "same",
+      "why": "The compiled novel action carries a validated ontology anchor 'escalate'; anchoring means the same causal act as the plain ontology action."
+    },
+    {
+      "id": "exact_reject_same",
+      "a": {"action_name": "reject", "target": "union_local_7"},
+      "b": {"action_name": "reject", "target": "union_local_7"},
+      "known_entities": ["union_local_7"],
+      "expected": "same",
+      "why": "Identical ontology action and identical canonical target."
+    },
+    {
+      "id": "alias_honorific_lastname",
+      "a": {"action_name": "accept", "target": "robert_smith"},
+      "b": {"action_name": "accept", "target": "Mr. Smith"},
+      "known_entities": ["robert_smith"],
+      "expected": "same",
+      "why": "With robert_smith the only known Smith, 'Mr. Smith' can only denote robert_smith; same act, same person."
+    },
+    {
+      "id": "alias_nickname_lastname",
+      "a": {"action_name": "accept", "target": "robert_smith"},
+      "b": {"action_name": "accept", "target": "Bob Smith"},
+      "known_entities": ["robert_smith"],
+      "expected": "same",
+      "why": "With robert_smith the only known Smith, 'Bob Smith' (shared surname, unique candidate) denotes the same person."
+    },
+    {
+      "id": "alias_case_spacing",
+      "a": {"action_name": "accept", "target": "Bob Smith"},
+      "b": {"action_name": "accept", "target": "bob_smith"},
+      "known_entities": [],
+      "expected": "same",
+      "why": "Pure casing/spacing variation of the same name string is the same target."
+    },
+    {
+      "id": "alias_honorific_only",
+      "a": {"action_name": "reject", "target": "Mr. Smith"},
+      "b": {"action_name": "reject", "target": "smith"},
+      "known_entities": [],
+      "expected": "same",
+      "why": "An honorific is a form of address, not identity; 'Mr. Smith' and 'smith' name the same person here."
+    },
+    {
+      "id": "alias_dr_fullname",
+      "a": {"action_name": "follow_up", "target": "Dr. Elena Vasquez"},
+      "b": {"action_name": "follow_up", "target": "elena_vasquez"},
+      "known_entities": ["elena_vasquez"],
+      "expected": "same",
+      "why": "Title plus full name resolves to the identical known entity id."
+    },
+    {
+      "id": "alias_senator_fullname",
+      "a": {"action_name": "support", "target": "Senator Jane Doe"},
+      "b": {"action_name": "support", "target": "jane_doe"},
+      "known_entities": ["jane_doe", "robert_smith"],
+      "expected": "same",
+      "why": "Title plus full name resolves to the identical known entity id; the other known entity shares no name tokens."
+    },
+    {
+      "id": "alias_explicit_map",
+      "a": {"action_name": "accept", "target": "the Kremlin"},
+      "b": {"action_name": "accept", "target": "russian_government"},
+      "known_entities": ["russian_government"],
+      "aliases": {"the Kremlin": "russian_government"},
+      "expected": "same",
+      "why": "The explicit alias map declares 'the Kremlin' to be russian_government."
+    },
+    {
+      "id": "alias_ms_lastname",
+      "a": {"action_name": "acknowledge", "target": "Ms. Chen"},
+      "b": {"action_name": "acknowledge", "target": "wei_chen"},
+      "known_entities": ["wei_chen"],
+      "expected": "same",
+      "why": "With wei_chen the only known Chen, 'Ms. Chen' denotes the same person."
+    },
+    {
+      "id": "para_decline_offer",
+      "a": {"action_name": "decline_the_offer", "target": "robert_smith"},
+      "b": {"action_name": "reject", "target": "robert_smith"},
+      "known_entities": ["robert_smith"],
+      "expected": "same",
+      "why": "Declining an offer is rejecting it; same act toward the same counterpart."
+    },
+    {
+      "id": "para_refuse",
+      "a": {"action_name": "refuse", "target": "union_local_7"},
+      "b": {"action_name": "reject", "target": "union_local_7"},
+      "known_entities": ["union_local_7"],
+      "expected": "same",
+      "why": "Refuse and reject denote the same act of turning something down."
+    },
+    {
+      "id": "para_postpone",
+      "a": {"action_name": "postpone", "target": ""},
+      "b": {"action_name": "delay", "target": ""},
+      "known_entities": [],
+      "expected": "same",
+      "why": "Postponing is delaying."
+    },
+    {
+      "id": "para_put_off_vote",
+      "a": {"action_name": "put_off_the_vote", "target": ""},
+      "b": {"action_name": "delay", "target": ""},
+      "known_entities": [],
+      "expected": "same",
+      "why": "Putting off is delaying; the phrase nests the same act."
+    },
+    {
+      "id": "para_turn_down",
+      "a": {"action_name": "turn_down", "target": "robert_smith"},
+      "b": {"action_name": "reject", "target": "robert_smith"},
+      "known_entities": ["robert_smith"],
+      "expected": "same",
+      "why": "Turning down is rejecting."
+    },
+    {
+      "id": "para_agree",
+      "a": {"action_name": "agree", "target": "board"},
+      "b": {"action_name": "accept", "target": "board"},
+      "known_entities": ["board"],
+      "expected": "same",
+      "why": "Agreeing to the proposal is accepting it."
+    },
+    {
+      "id": "para_quit",
+      "a": {"action_name": "quit", "target": ""},
+      "b": {"action_name": "exit", "target": ""},
+      "known_entities": [],
+      "expected": "same",
+      "why": "Quitting is exiting the process."
+    },
+    {
+      "id": "para_respond",
+      "a": {"action_name": "respond", "target": "you"},
+      "b": {"action_name": "reply_now", "target": "you"},
+      "known_entities": [],
+      "expected": "same",
+      "why": "Responding to the message is replying to it."
+    },
+    {
+      "id": "para_pull_out",
+      "a": {"action_name": "pull_out", "target": ""},
+      "b": {"action_name": "withdraw", "target": ""},
+      "known_entities": [],
+      "expected": "same",
+      "why": "Pulling out is withdrawing."
+    },
+    {
+      "id": "para_do_nothing",
+      "a": {"action_name": "do_nothing", "target": ""},
+      "b": {"action_name": "wait", "target": ""},
+      "known_entities": [],
+      "expected": "same",
+      "why": "Deliberately doing nothing is the ontology's wait action."
+    },
+    {
+      "id": "nested_endorse_deal",
+      "a": {"action_name": "publicly_endorse_the_deal", "target": ""},
+      "b": {"action_name": "support", "target": ""},
+      "known_entities": [],
+      "expected": "same",
+      "why": "Publicly endorsing is supporting; observability is a separate axis, not a different act."
+    },
+    {
+      "id": "nested_rally_members",
+      "a": {"action_name": "rally_the_members", "target": ""},
+      "b": {"action_name": "mobilize", "target": ""},
+      "known_entities": [],
+      "expected": "same",
+      "why": "Rallying members to act is mobilizing them."
+    },
+    {
+      "id": "nested_lobby_senators",
+      "a": {"action_name": "lobby_wavering_senators", "target": ""},
+      "b": {"action_name": "persuade", "target": ""},
+      "known_entities": [],
+      "expected": "same",
+      "why": "Lobbying wavering members is persuading them."
+    },
+    {
+      "id": "nested_sign_off_merger",
+      "a": {"action_name": "sign_off_on_the_merger", "target": "board"},
+      "b": {"action_name": "approve", "target": "board"},
+      "known_entities": ["board"],
+      "expected": "same",
+      "why": "Signing off is approving."
+    },
+    {
+      "id": "nested_make_counteroffer",
+      "a": {"action_name": "make_a_counteroffer", "target": "robert_smith"},
+      "b": {"action_name": "counteroffer", "target": "robert_smith"},
+      "known_entities": ["robert_smith"],
+      "expected": "same",
+      "why": "Making a counteroffer is the counteroffer action."
+    },
+    {
+      "id": "diff_reveal_vs_leak",
+      "a": {"action_name": "reveal_information", "target": "press"},
+      "b": {"action_name": "leak_documents", "target": "press"},
+      "known_entities": ["press"],
+      "expected": "different",
+      "why": "Officially revealing information and leaking documents are materially different acts: authorized versus unauthorized disclosure."
+    },
+    {
+      "id": "diff_delay_vs_exit",
+      "a": {"action_name": "delay", "target": ""},
+      "b": {"action_name": "exit", "target": ""},
+      "known_entities": [],
+      "expected": "different",
+      "why": "Delaying keeps the process alive; exiting ends participation. Materially different."
+    },
+    {
+      "id": "diff_threaten_to_exit",
+      "a": {"action_name": "threaten_to_exit", "target": ""},
+      "b": {"action_name": "exit", "target": ""},
+      "known_entities": [],
+      "expected": "different",
+      "why": "Threatening to exit is a coercive signal while staying in; actually exiting ends participation."
+    },
+    {
+      "id": "diff_threaten_vs_escalate_message",
+      "a": {"action_name": "threaten", "target": "robert_smith"},
+      "b": {"action_name": "escalate_message", "target": "robert_smith"},
+      "known_entities": ["robert_smith"],
+      "expected": "different",
+      "why": "A threat is a distinct coercive act, not merely escalating a message."
+    },
+    {
+      "id": "diff_accept_vs_reject",
+      "a": {"action_name": "accept", "target": "board"},
+      "b": {"action_name": "reject", "target": "board"},
+      "known_entities": ["board"],
+      "expected": "different",
+      "why": "Opposite acts."
+    },
+    {
+      "id": "diff_hold_vs_concede",
+      "a": {"action_name": "hold_position", "target": ""},
+      "b": {"action_name": "concede", "target": ""},
+      "known_entities": [],
+      "expected": "different",
+      "why": "Holding position and conceding are opposite negotiation moves."
+    },
+    {
+      "id": "diff_walk_out_vs_walk_away",
+      "a": {"action_name": "walk_out", "target": ""},
+      "b": {"action_name": "walk_away", "target": ""},
+      "known_entities": [],
+      "expected": "different",
+      "why": "A walkout is a strike action; walking away is exiting the process. Superficially similar phrases, materially different acts."
+    },
+    {
+      "id": "diff_distinct_targets",
+      "a": {"action_name": "support", "target": "motion_alpha"},
+      "b": {"action_name": "support", "target": "motion_beta"},
+      "known_entities": ["motion_alpha", "motion_beta"],
+      "expected": "different",
+      "why": "Same action toward objectively different targets is a different decision."
+    },
+    {
+      "id": "diff_leak_vs_disclose",
+      "a": {"action_name": "leak", "target": "press"},
+      "b": {"action_name": "disclose", "target": "press"},
+      "known_entities": ["press"],
+      "expected": "different",
+      "why": "Leaking is unauthorized; disclosing is voluntary official revelation. Materially different acts."
+    },
+    {
+      "id": "diff_fire_vs_hire",
+      "a": {"action_name": "fire", "target": "wei_chen"},
+      "b": {"action_name": "hire", "target": "wei_chen"},
+      "known_entities": ["wei_chen"],
+      "expected": "different",
+      "why": "Opposite acts toward the same person."
+    },
+    {
+      "id": "novel_self_cluster",
+      "a": {"action_name": "propose_joint_task_force", "target": ""},
+      "b": {"action_name": "propose_joint_task_force", "target": ""},
+      "known_entities": [],
+      "expected": "same",
+      "why": "A genuinely novel action still clusters with itself, preserving its own phrasing."
+    },
+    {
+      "id": "novel_vs_ontology",
+      "a": {"action_name": "propose_joint_task_force", "target": ""},
+      "b": {"action_name": "coordinate", "target": ""},
+      "known_entities": [],
+      "expected": "different",
+      "why": "Proposing a new joint task force is a specific novel institutional proposal, not the generic coordinate action; novel actions are not force-merged into the nearest ontology entry."
+    },
+    {
+      "id": "family_arbitration_pair",
+      "a": {"action_name": "seek_arbitration", "target": ""},
+      "b": {"action_name": "seek_binding_arbitration", "target": ""},
+      "known_entities": [],
+      "expected": "same",
+      "why": "Both seek third-party arbitration - the same negotiation strategy class."
+    },
+    {
+      "id": "family_headroom_hold_the_line",
+      "a": {"action_name": "hold_the_line", "target": ""},
+      "b": {"action_name": "hold_position", "target": ""},
+      "known_entities": [],
+      "expected": "same",
+      "why": "Holding the line is holding position. Known deterministic headroom: without the LLM tier this pair splits; kept in the fixture to measure that gap honestly."
+    },
+    {
+      "id": "family_arbitration_vs_mediator",
+      "a": {"action_name": "seek_arbitration", "target": ""},
+      "b": {"action_name": "seek_mediator", "target": ""},
+      "known_entities": [],
+      "expected": "different",
+      "why": "Arbitration is binding third-party decision; mediation is non-binding facilitation. Related strategies, materially different acts."
+    },
+    {
+      "id": "unresolved_two_smiths",
+      "a": {"action_name": "make_peace_overture", "target": "smith"},
+      "b": {"action_name": "make_peace_overture", "target": "robert_smith"},
+      "known_entities": ["robert_smith", "jane_smith"],
+      "expected": "unresolved",
+      "why": "With two known Smiths, target 'smith' is irreducibly ambiguous and the action is outside the ontology; whether a and b are the same decision cannot be determined."
+    },
+    {
+      "id": "unresolved_briefing_smith",
+      "a": {"action_name": "brief_stakeholders", "target": "smith"},
+      "b": {"action_name": "brief_stakeholders", "target": "jane_smith"},
+      "known_entities": ["robert_smith", "jane_smith"],
+      "expected": "unresolved",
+      "why": "Ambiguous surname target with an unknown action: refusing to merge or split is the only honest call."
+    }
+  ]
+}

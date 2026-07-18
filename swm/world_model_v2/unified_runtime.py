@@ -339,6 +339,17 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
     res.provenance["plan_lineage"] = lineage
     res.provenance["evidence_bundle_hash"] = bundle.bundle_hash() if bundle is not None else ""
     res.provenance["posterior_consumed"] = bool(posterior and posterior.n_effective_observations > 0)
+    # ---------- run self-classification + product epistemic contract ----------
+    # Every run declares its output class (full_numeric_forecast / rank_only /
+    # scenario_distribution / structurally_underidentified / execution_failed) and the
+    # product-facing statement of what actually ran — no silent downgrade channel.
+    try:
+        from swm.world_model_v2.run_classification import classify_run, epistemic_contract
+        res.provenance["run_classification"] = classify_run(res, manifest=manifest)
+        res.provenance["epistemic_contract"] = epistemic_contract(res)
+    except Exception as e:  # noqa: BLE001 — classification failure is itself recorded
+        res.provenance["run_classification"] = {"run_class": "", "error":
+                                                f"{type(e).__name__}: {e}"[:120]}
     res.provenance["calibration_compatibility"] = {
         "old_phase12_calibrator": "INCOMPATIBLE",
         "reason": "unified runtime changes the forecast distribution; the pre-unification Phase-12 calibrator "
