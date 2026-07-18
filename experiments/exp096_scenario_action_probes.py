@@ -324,9 +324,12 @@ def main():
         try:
             fn(llm, args.offline)
         except Exception as e:  # noqa: BLE001 — a failed probe is recorded, not hidden
+            import traceback
+            tb = traceback.format_exc()
             pd = os.path.join(ART, f"probe{n}_FAILED")
-            save(pd, "failure.json", {"probe": n, "error": f"{type(e).__name__}: {e}"})
-            print(f"  !! probe {n} failed: {type(e).__name__}: {e}")
+            save(pd, "failure.json", {"probe": n, "error": f"{type(e).__name__}: {e}",
+                                      "traceback": tb})
+            print(f"  !! probe {n} failed: {type(e).__name__}: {e}\n{tb[-1200:]}")
 
 
 if __name__ == "__main__":

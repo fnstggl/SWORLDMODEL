@@ -95,7 +95,11 @@ def condition_holds(cond, projection: dict) -> bool:
         if op == "contains":
             return isinstance(got, (str, list)) and value is not None and value in got
         if op in ("gte", "lte") and isinstance(got, (int, float)):
-            return got >= float(value or 0) if op == "gte" else got <= float(value or 0)
+            try:
+                bound = float(value or 0)
+            except (TypeError, ValueError):
+                return False                     # non-numeric bound: fail closed, never crash
+            return got >= bound if op == "gte" else got <= bound
         return False
 
     if kind == "record":

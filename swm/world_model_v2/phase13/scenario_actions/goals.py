@@ -20,6 +20,24 @@ GOAL_KIND = "scenario.goal.contract.v1"
 _PRED_OPS = ("exists", "eq", "ne", "in", "gte", "lte")
 
 
+def _coerce_pred_value(op: str, value):
+    """gte/lte need numbers; LLMs love RFC3339 strings — parse them to unix floats. A value
+    that stays non-numeric under a numeric op is returned as None so validation DROPS the
+    predicate loudly (never a silent float() crash at readout time)."""
+    if op not in ("gte", "lte") or isinstance(value, (int, float)):
+        return value
+    if isinstance(value, str) and value.strip():
+        try:
+            from swm.world_model_v2.state import parse_time
+            return float(parse_time(value.strip()))
+        except (ValueError, TypeError):
+            try:
+                return float(value.strip())
+            except ValueError:
+                return None
+    return None
+
+
 def _hash(v) -> str:
     return hashlib.sha256(json.dumps(v, sort_keys=True, default=str).encode()).hexdigest()[:16]
 
@@ -108,6 +126,9 @@ def validate_goal_contract(goal: GoalContract, schema: ScenarioSemanticModel) ->
                           f"the scenario schema")
         if p.op not in _PRED_OPS:
             issues.append(f"predicate {p.predicate_id}: op {p.op!r} not executable")
+        p.value = _coerce_pred_value(p.op, p.value)
+        if p.op in ("gte", "lte") and not isinstance(p.value, (int, float)):
+            issues.append(f"predicate {p.predicate_id}: op {p.op!r} needs a numeric value")
     if not goal.by_role("desired_terminal"):
         issues.append("no desired_terminal predicate — success is undefined")
     for q in goal.quantities:
@@ -178,10 +199,13 @@ class GoalContractGenerator:
         if not ok:
             # invalid predicates are DROPPED loudly, never silently executed
             known = set(schema.record_types())
-            dropped = [p.predicate_id for p in goal.predicates
-                       if p.record_type not in known or p.op not in _PRED_OPS]
-            goal.predicates = [p for p in goal.predicates
-                               if p.record_type in known and p.op in _PRED_OPS]
+
+            def _bad(p):
+                return (p.record_type not in known or p.op not in _PRED_OPS
+                        or (p.op in ("gte", "lte")
+                            and not isinstance(p.value, (int, float))))
+            dropped = [p.predicate_id for p in goal.predicates if _bad(p)]
+            goal.predicates = [p for p in goal.predicates if not _bad(p)]
             goal.provenance["dropped_invalid_predicates"] = dropped
             if not goal.by_role("desired_terminal"):
                 fb = self._schema_projection(problem, schema, goal_text)
