@@ -104,6 +104,24 @@ def compile_schema(llm, *, question, entities, institutions, evidence, horizon_d
                                               institutions=institutions, evidence=evidence)
 
 
+def seed_resources(schema, maker: str, amount_by_hint: dict):
+    """Seed the maker's holdings under the SCHEMA'S OWN resource names (the compiler names
+    resources scenario-natively; a probe seeding invented names starves every plan — run-4
+    forensic). Every declared resource gets the probe's stated amount for its best hint
+    match (or the single stated amount when the schema declares one resource)."""
+    declared = sorted((schema.resource_definitions or {}))
+    amounts = list(amount_by_hint.values())
+    out = {}
+    for rn in declared:
+        hit = next((v for k, v in amount_by_hint.items()
+                    if any(w in rn for w in str(k).lower().split("_") if len(w) > 3)), None)
+        if hit is None and len(amounts) == 1:
+            hit = amounts[0]
+        if hit is not None:
+            out[rn] = float(hit)
+    return {maker: out}
+
+
 def save(probe_dir, name, obj):
     os.makedirs(probe_dir, exist_ok=True)
     with open(os.path.join(probe_dir, name), "w") as f:
@@ -156,7 +174,7 @@ def probe_1_founder_launch(llm, offline):
                                      "budget without board approval. The pilot reports "
                                      "results in ~3 weeks.")
     ctxt, rep = live_context(schema, ["mara_voss", "devon_reyes", "priya_shah"], llm=llm,
-                             resources={"mara_voss": {"launch_budget_usd": 40000.0}})
+                             resources=seed_resources(schema, "mara_voss", {"launch_budget": 40000.0}))
     contract = DecisionProblem(
         decision_id="probe1", decision_maker="mara_voss", role="founder_ceo",
         authority=["founder_ceo"], controllable_resources={"launch_budget_usd": 40000.0},
@@ -215,7 +233,7 @@ def probe_3_nonmessage(llm, offline):
                                      "grant temporary exemptions with 72h notice.")
     ctxt, rep = live_context(schema, ["ines_okonkwo", "grid_operator_liaison",
                                       "municipal_inspector"], llm=llm,
-                             resources={"ines_okonkwo": {"battery_mwh": 4.0}})
+                             resources=seed_resources(schema, "ines_okonkwo", {"battery": 4.0}))
     contract = DecisionProblem(
         decision_id="probe3", decision_maker="ines_okonkwo", role="site_director",
         authority=["site_director"], controllable_resources={"battery_mwh": 4.0},
@@ -246,7 +264,7 @@ def probe_4_info_then_act(llm, offline):
                                      "partner program costs 5k to stand up.")
     ctxt, rep = live_context(schema, ["sam_whitfield", "referring_gp_alvarez",
                                       "practice_manager_kim"], llm=llm,
-                             resources={"sam_whitfield": {"budget_usd": 20000.0}})
+                             resources=seed_resources(schema, "sam_whitfield", {"budget": 20000.0}))
     contract = DecisionProblem(
         decision_id="probe4", decision_maker="sam_whitfield", role="clinic_owner",
         authority=["clinic_owner"], controllable_resources={"budget_usd": 20000.0},
@@ -278,7 +296,7 @@ def probe_5_novel_user_action(llm, offline):
                                      "county neutral-holder program accepts escrowed "
                                      "deposits; the tenant filed a complaint in June.")
     ctxt, rep = live_context(schema, ["landlord_petrov", "tenant_okada"], llm=llm,
-                             resources={"landlord_petrov": {"deposit_usd": 18000.0}})
+                             resources=seed_resources(schema, "landlord_petrov", {"deposit": 18000.0}))
     contract = DecisionProblem(
         decision_id="probe5", decision_maker="landlord_petrov", role="landlord",
         authority=["landlord"], controllable_resources={"deposit_usd": 18000.0},

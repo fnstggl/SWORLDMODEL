@@ -63,6 +63,15 @@ def observable_projection(world, actor_id: str) -> dict:
                                      "observed_at": getattr(exp, "at", None)})
         except Exception:  # noqa: BLE001 — no ledger => no observations, never omniscience
             pass
+    # an actor knows what they THEMSELVES did: their own emitted semantic events are
+    # observations (delivery routes to recipients only, so without this a step conditioned
+    # on the maker's own prior announcement could never fire)
+    for sev in (getattr(world, "semantic_log", []) or []):
+        if str(sev.get("source_actor_id", "")) == actor_id:
+            observations.append({"item_id": str(sev.get("event_id", "")),
+                                 "content": str(sev.get("exact_content", "")),
+                                 "source": actor_id,
+                                 "observed_at": sev.get("occurred_at")})
     resources = {}
     ent = (getattr(world, "entities", {}) or {}).get(actor_id)
     if ent is not None:

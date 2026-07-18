@@ -225,7 +225,9 @@ class GoalBackwardPlanner:
                 conditions=[ConditionSpec(
                     kind=str(c.get("kind", "record")), record_type=str(c.get("record_type", "")),
                     field=str(c.get("field", "")), op=str(c.get("op", "exists")),
-                    value=c.get("value"), description=str(c.get("description", ""))[:160])
+                    value=(_parse_ts(c.get("value")) if str(c.get("kind")) == "time"
+                           else c.get("value")),
+                    description=str(c.get("description", ""))[:160])
                     for c in (s.get("conditions") or []) if isinstance(c, dict)][:4],
                 visibility=str(s.get("visibility", "participants")),
                 resource_commitments={str(k): float(v) for k, v in
