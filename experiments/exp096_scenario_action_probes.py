@@ -300,9 +300,14 @@ def probe_5_novel_user_action(llm, offline):
                             entities=["landlord_petrov", "tenant_okada"],
                             institutions=["tenancy_dispute_board",
                                           "county_neutral_holder_program"],
-                            evidence="The tenancy dispute board resolves complaints; the "
-                                     "county neutral-holder program accepts escrowed "
-                                     "deposits; the tenant filed a complaint in June.")
+                            evidence="The tenancy dispute board resolves complaints; its final "
+                                     "order records whether a penalty was imposed. Disputes "
+                                     "also commonly resolve WITHOUT a hearing: by settlement "
+                                     "between the parties or by the tenant withdrawing the "
+                                     "complaint, either of which closes the case with no "
+                                     "penalty. The county neutral-holder program accepts "
+                                     "escrowed deposits and issues a holding receipt. The "
+                                     "tenant filed a complaint in June.")
     ctxt, rep = live_context(schema, ["landlord_petrov", "tenant_okada"], llm=llm,
                              resources=seed_resources(schema, "landlord_petrov", {"deposit": 18000.0}))
     contract = DecisionProblem(

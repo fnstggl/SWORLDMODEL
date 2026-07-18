@@ -324,6 +324,34 @@ def auto_repair_schema(model: ScenarioSemanticModel) -> list:
     for iid, inst in list((model.institutional_definitions or {}).items()):
         if not isinstance(inst, dict):
             continue
+        drt_raw = inst.get("decision_record_type")
+        if isinstance(drt_raw, dict):
+            # LLMs love the inline-object form {"name": ..., "fields": [...]} — coerce it:
+            # declare the record type it describes, keep the string id on the institution
+            name = str(drt_raw.get("name") or drt_raw.get("id")
+                       or f"{iid}_decision_record")[:60]
+            if _ID_RE.match(name) and not _FORBIDDEN_FIELD.search(name) \
+                    and not _REACTION_COEFF.search(name):
+                fields = drt_raw.get("fields")
+                if isinstance(fields, list):
+                    fields = {str(f)[:40]: "str" for f in fields
+                              if not _FORBIDDEN_FIELD.search(str(f))}
+                elif not isinstance(fields, dict):
+                    fields = {}
+                fields.setdefault("status", "str")
+                fields.setdefault("position", "str")
+                fields.setdefault("matter", "str")
+                if name not in model.record_types():
+                    model.fact_types[name] = {
+                        "description": f"coerced from {iid!r}'s inline decision_record_type "
+                                       f"object", "fields": fields}
+                inst["decision_record_type"] = name
+                repairs.append(f"institution {iid!r} inline decision_record_type object "
+                               f"coerced to declared type {name!r}")
+            else:
+                inst["decision_record_type"] = ""
+                repairs.append(f"institution {iid!r} decision_record_type object had no "
+                               f"usable id — cleared")
         if str(inst.get("decision_record_type")) in ("None", "null", "none"):
             inst["decision_record_type"] = ""
         if not inst.get("decision_holders"):
