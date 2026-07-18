@@ -125,7 +125,10 @@ qualitative decision (exact content, target, timing, observability, intent)
   novel actions compile or are loudly unmodeled; no primitive can touch terminal state).
 - **Concrete world state changed**: demonstrated end-to-end (launch, negotiation,
   institutional decision, individual communication demos) and the matched-mode evaluation
-  reruns the causal-audit scenario under all four modes.
+  runs the causal-audit settlement scenario (typed readout: signed agreement or negotiation
+  reaching provisional acceptance) under legacy scalar / semantic×{numeric, stateless,
+  persistent} on identical worlds and seeds. Results:
+  `experiments/results/SEMANTIC_CONSEQUENCES_REPORT.md`.
 - **Not yet demonstrated**: predictive improvement. Consequence-accuracy scoring against
   frozen historical intermediate facts is measured only at pilot scale in this phase's
   evaluation artifact; fitted adoption/market mechanisms and large-scale trajectory
