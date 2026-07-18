@@ -198,8 +198,8 @@ def test_raw_distribution_equals_observed_branch_frequencies():
     # v2 clustering is the default and must be key-compatible with v1 on exact rows; the
     # frozen v1 remains selectable explicitly
     assert agg["cluster_version"] == "cluster-2.0"
-    agg_v1 = aggregate_actor_decisions(runtime.decision_records,
-                                       clusterer=ActionClusterer())["ceo"]
+    agg_v1 = aggregate_actor_decisions(rt.decision_records,
+                                       clusterer=ActionClusterer())["alice"]
     assert agg_v1["cluster_version"] == ActionClusterer.version
     assert agg_v1["raw_qualitative_simulation_distribution"] == raw
     for row in agg["rows"]:
