@@ -200,3 +200,53 @@ accuracy, top-k, log loss, Brier, calibration error, novel-action coverage, cost
 plus the two required demonstrations (multi-actor geopolitical; single-individual reaction).
 Honest-claims ladder used in the report: implemented / mechanically verified / plausible /
 backtested / calibrated / statistically better than baseline / still speculative.
+
+## 10. Actor-mediated causal execution (universal propagation phase)
+
+The actor layer above is extended into the DEFAULT consequence path for social actions
+(full architecture map, demotion inventory, and forensic evidence:
+`docs/WMV2_ACTOR_MEDIATED_ARCHITECTURE.md`):
+
+* **Semantic events** (`semantic_events.py`, `semantic.event.v1`) — every executed TypedAction
+  compiles into one or more events preserving exact content, commitments, channel, audience,
+  observability, provenance and the branch's world-hypothesis id. Multi-target novel
+  communications fan out into one private event per target with no ontology coefficient.
+* **Observation delivery** (`observation_delivery.py`) — the router owns information reach:
+  who receives which representation (original / summary / relayed account), when, through
+  which channel, with what perceived source and credibility, honoring institutional
+  boundaries; deliveries land in the branch `InformationLedger`, so ActorViews pick them up
+  through the existing leakage-safe projection.
+* **Causal-frontier discovery** (`causal_frontier.py`) — per-event recipient discovery
+  (targets → recipients → decision/veto holders → informed threshold voters → informed
+  network neighbors → dynamic promotion) behind an INFORMATION GATE: nobody reconsiders an
+  event they never observed. Tier-3 substitutions and budget drops are stamped into the
+  world's approximation manifest.
+* **Recursive propagation** (`actor_propagation.py`) — reconsideration events ride
+  `StateDelta.follow_up_events` through the canonical queue (identically under Phase 13's
+  `MatchedRolloutEngine`), recursing until semantic-duplicate quiescence, depth/event
+  budgets, or the LLM-call budget; every stop reason is recorded in the per-branch
+  event-cascade manifest.
+* **Scalar-write demotion** — recipient `belief_delta` writes and actor-mediated pathway
+  coefficients (`persuade`, `coordinate`, non-principal `support`/`oppose`, messaging
+  signals) no longer fire when representable recipients exist and propagation is live; the
+  process moves when the recipients' own executed reactions move it. Population effects
+  (mobilize/strike/protest) write with an aggregate stamp; structural effects (own vote,
+  launch, resource spend) stay deterministic. Legacy behavior survives only as an explicit,
+  stamped fallback (`SWM_ACTOR_PROPAGATION=off`, bare worlds).
+* **Joint world hypotheses** (`joint_world.py`, `joint.world.v1`) — world-level hidden
+  realities are generated FIRST (evidence-cited, assumptions labeled, an adverse /
+  private-collapse regime required where evidence permits) and stamped one-per-particle with
+  ancestry and weight; every actor's private hypothesis set is then generated CONDITIONAL on
+  the branch's shared world, so two actors in one particle never inhabit contradictory world
+  facts while still disagreeing through information, incentives and relationships.
+* **Clustering v2** (`semantic_clustering.py`, `cluster-2.0`, default in
+  `aggregate_actor_decisions`) — exact → canonical target → ontology-equivalent →
+  (optional LLM-assisted, merge-refusing) → strategy-class → novel → unresolved, with a
+  locked human-graded fixture (`tests/fixtures/semantic_clustering_fixture_v1.json`) and
+  measured false-merge/false-split rates.
+* **Run classification + epistemic contract** (`run_classification.py`) — every
+  `simulate_world` result declares `full_numeric_forecast` / `rank_only` /
+  `scenario_distribution` / `structurally_underidentified` / `execution_failed` and carries a
+  product-facing contract stating whether full recursive actor simulation ran, whether
+  numeric actor fallback occurred, whether evidence degraded, which aggregates substituted
+  for explicit actors, and whether calibration was available.

@@ -83,13 +83,15 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
         plan = compile_world(question, llm=llm, evidence="", as_of=as_of, horizon=horizon,
                              intervention=intervention, seed=seed)
     except ClarificationRequired as e:
-        return SimulationResult(question=question, simulation_status="clarification_required",
-                                clarification_reason=str(e), latency_s=round(_time.time() - t0, 3),
-                                provenance={"runtime": RUNTIME_VERSION, "active_component_manifest": manifest})
+        return _classified_early(SimulationResult(
+            question=question, simulation_status="clarification_required",
+            clarification_reason=str(e), latency_s=round(_time.time() - t0, 3),
+            provenance={"runtime": RUNTIME_VERSION, "active_component_manifest": manifest}))
     except CompilerExecutionError as e:
-        return SimulationResult(question=question, simulation_status="execution_failed",
-                                failure_taxonomy=e.taxonomy, latency_s=round(_time.time() - t0, 3),
-                                provenance={"runtime": RUNTIME_VERSION, "active_component_manifest": manifest})
+        return _classified_early(SimulationResult(
+            question=question, simulation_status="execution_failed",
+            failure_taxonomy=e.taxonomy, latency_s=round(_time.time() - t0, 3),
+            provenance={"runtime": RUNTIME_VERSION, "active_component_manifest": manifest}))
     manifest["phase1_compiler"].update(selected=True, executed=True, version="compiler",
                                        reason="always required")
     lineage["plan_hashes"].append(plan.plan_hash())
@@ -356,6 +358,17 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
                   "must be refit on the post-unification corpus before it may serve this runtime.",
         "refit_command": "PYTHONPATH=. python experiments/phase12_refit.py --regen"}
     res.latency_s = round(_time.time() - t0, 3)
+    return res
+
+
+def _classified_early(res):
+    """Attach the run classification to results that return before the terminal path (compile
+    failures / clarification) — every run declares its class, including failed ones."""
+    try:
+        from swm.world_model_v2.run_classification import classify_run
+        res.provenance["run_classification"] = classify_run(res)
+    except Exception:  # noqa: BLE001
+        pass
     return res
 
 
