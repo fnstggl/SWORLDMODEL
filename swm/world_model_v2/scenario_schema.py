@@ -322,9 +322,21 @@ def auto_repair_schema(model: ScenarioSemanticModel) -> list:
                 model.unresolved_mechanisms.append(c)
             repairs.append(f"constraint {c!r} labeled unresolved (no executable rule)")
     for iid, inst in list((model.institutional_definitions or {}).items()):
-        if isinstance(inst, dict) and not inst.get("evidence") and not inst.get("assumed"):
+        if not isinstance(inst, dict):
+            continue
+        if not inst.get("evidence") and not inst.get("assumed"):
             inst["assumed"] = True
             repairs.append(f"institution {iid!r} labeled assumed (no evidence cited)")
+        agg = inst.get("aggregation")
+        kind = str((agg or {}).get("kind", "")) if isinstance(agg, dict) else str(agg or "")
+        if kind not in ("majority", "quorum_majority", "unanimous", "single_authority",
+                        "threshold"):
+            holders = inst.get("decision_holders") or []
+            inst["aggregation"] = {"kind": "single_authority" if len(holders) == 1
+                                   else "majority"}
+            inst["assumed"] = True
+            repairs.append(f"institution {iid!r} aggregation defaulted to "
+                           f"{inst['aggregation']['kind']} (none declared; labeled assumed)")
     known = set(model.record_types())
     for iid, inst in (model.institutional_definitions or {}).items():
         drt = str(inst.get("decision_record_type", "")) if isinstance(inst, dict) else ""

@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "/home/user/SWORLDMODEL/experiments/generated_world_demo.py", line 463, in <module>
+    main()
+  File "/home/user/SWORLDMODEL/experiments/generated_world_demo.py", line 448, in main
+    out = run_arm(what, llm)
+          ^^^^^^^^^^^^^^^^^^
+  File "/home/user/SWORLDMODEL/experiments/generated_world_demo.py", line 364, in run_arm
+    plan.scenario_schema = eval_schema(llm)
+                           ^^^^^^^^^^^^^^^^
+  File "/home/user/SWORLDMODEL/experiments/generated_world_demo.py", line 346, in eval_schema
+    schema = SchemaCompiler(llm).compile(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/user/SWORLDMODEL/swm/world_model_v2/scenario_schema.py", line 421, in compile
+    raise ValueError(f"generated schema failed validation: {issues[:6]}")
+ValueError: generated schema failed validation: ["institution 'bilateral_settlement_authority' aggregation kind None is not executable arithmetic", "institution 'mediation_framework_administrator' aggregation kind None is not executable arithmetic"]

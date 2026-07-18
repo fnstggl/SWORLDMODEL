@@ -441,6 +441,18 @@ def _bind_scenario_schema(plan, base, llm) -> None:
         if schema.outcome_predicates and getattr(plan.outcome_contract, "readout", None):
             from swm.world_model_v2.generated_world import make_generated_predicate_readout
             plan.outcome_contract.readout = make_generated_predicate_readout(schema)
+            # the contract's options must be the FROZEN predicates' own labels, or the
+            # projection counts frequencies of strings the readout can never produce
+            opts = []
+            for p in schema.outcome_predicates:
+                t = str(p.get("option_true", "True"))
+                if t not in opts:
+                    opts.append(t)
+            f = str(schema.outcome_predicates[0].get("option_false", "False"))
+            if f not in opts:
+                opts.append(f)
+            if len(opts) >= 2:
+                plan.outcome_contract.options = opts
 
 
 def run_from_plan(plan, *, llm=None, n_particles=None, seed=0):
