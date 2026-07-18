@@ -330,34 +330,52 @@ class ReplyFirstPlanner:
         return strict if strict else near
 
     def repair_language(self, cand: dict) -> dict:
-        """One targeted revision that resolves the language judge's flags and nothing else, then
-        re-gates. Returns the repaired candidate if it comes back strictly clean (truth ok,
-        language ok, no flags); otherwise the original unchanged. Flags become edits instead of
-        shipping inside the winner."""
-        flags = cand.get("_lang_flags") or []
-        if self.chat is None or not flags:
+        """Targeted revision that resolves the language judge's flags and nothing else, then
+        re-gates. Up to two attempts; each attempt must MUST-fix every flagged item. A repair is
+        kept if it comes back strictly clean, or if it strictly reduces the flag count without a
+        truth failure or a language-score drop (monotone improvement — run-3 forensic: all-or-
+        nothing acceptance rejected every partial fix, so the winner shipped with flags the judge
+        had raised a dozen times). Never returns anything worse than the input."""
+        if self.chat is None or not (cand.get("_lang_flags") or []):
             return cand
-        raw = self._llm("step6_language_repair", (
-            f"Sender facts (ground truth; nothing beyond these):\n{self.brief.to_prompt()}\n"
-            f"--- EMAIL ---\n{cand['text']}\n--- END ---\n"
-            "A language judge flagged these problems:\n" +
-            "\n".join(f"- {f.get('problem', '')} (in: \"{str(f.get('sentence', ''))[:90]}\")"
-                      for f in flags) +
-            f"\nRewrite the email changing ONLY what resolves the flags. Keep every fact, the "
-            f"same beats in the same order, and the same ask. {self._WRITING_RULES}\n"
-            "Return ONLY the email text."), max_tokens=260, temperature=0.3)
         from swm.decision.iterative_editor import _strip_subject
-        fixed = _strip_subject((raw or "").strip().strip('"'))
-        if not fixed or fixed == cand["text"]:
-            return cand
-        tr = self.truth(fixed)
-        lv = self.language(fixed)
-        if tr["ok"] and lv.ok:
-            return {**cand, "text": fixed, "label": cand["label"] + "+lang_repair",
-                    "gates": {"truth": True, "language": True, "language_score": lv.score,
-                              "problems": []},
-                    "_lang_flags": []}
-        return cand
+        best = cand
+        for _ in range(2):
+            flags = best.get("_lang_flags") or []
+            if not flags:
+                break
+            raw = self._llm("step6_language_repair", (
+                f"Sender facts (ground truth; nothing beyond these):\n{self.brief.to_prompt()}\n"
+                f"--- EMAIL ---\n{best['text']}\n--- END ---\n"
+                "A language judge flagged these problems. You MUST eliminate every one — replace "
+                "each jargon compound with plain words for what the thing does, keep only the "
+                "single strongest number and cut the others, and rewrite any pitch-deck or "
+                "ceremonious phrasing the way a busy person would type it:\n" +
+                "\n".join(f"- MUST FIX: {f.get('problem', '')} (in: "
+                          f"\"{str(f.get('sentence', ''))[:90]}\")" for f in flags) +
+                f"\nChange ONLY what resolves the flags. Keep every fact, the same beats in the "
+                f"same order, and the same ask. {self._WRITING_RULES}\n"
+                "Return ONLY the email text."), max_tokens=260, temperature=0.3)
+            fixed = _strip_subject((raw or "").strip().strip('"'))
+            if not fixed or fixed == best["text"]:
+                break
+            tr = self.truth(fixed)
+            if not tr["ok"]:
+                continue
+            lv = self.language(fixed)
+            if lv.ok:
+                return {**best, "text": fixed, "label": cand["label"] + "+lang_repair",
+                        "gates": {"truth": True, "language": True,
+                                  "language_score": lv.score, "problems": []},
+                        "_lang_flags": []}
+            if (len(lv.flags) < len(flags)
+                    and lv.score >= best["gates"]["language_score"] - 0.05
+                    and lv.score >= 0.55):
+                best = {**best, "text": fixed, "label": cand["label"] + "+lang_repair",
+                        "gates": {"truth": True, "language": False,
+                                  "language_score": lv.score, "problems": lv.flags},
+                        "_lang_flags": lv.flags}
+        return best
 
     # ---------------------------------------------------------------- STEP 5: wording pass
     def wording_pass(self, text: str) -> str:

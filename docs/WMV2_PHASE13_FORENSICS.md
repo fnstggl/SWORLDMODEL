@@ -300,9 +300,28 @@ exposed a fourth, subtler defect:
    question, which is the entire point of searching structures)
    (`test_identity_window_frees_structure_search_but_keeps_debate_bait_dead`).
 
-The corrected planner then ran live end to end (run 3 — `artifacts/phase13/thiel_v5/` top level:
-final traces, result, ledger freeze). The run-1/run-2 artifacts are retained deliberately: the
+**Run 3** (`run3_weak_repair/`, 180 raw calls) confirmed the freed structure search — rank 1
+compared four structures and a surprise-first structure (surprising_idea → evidence → relevance →
+identity → request) beat identity-first for the first time — and exposed a fifth defect:
+
+5. **All-or-nothing repair acceptance shipped known flags.** The judge flagged "SLA-safe goodput"
+   (an unglossed jargon compound imported verbatim from the sender facts), the two competing
+   numbers, and pitch-deck phrasing ("definite, contrarian theses") on EVERY candidate — over a
+   dozen times across 17 judge calls — but the single-shot repair never cleared every flag at
+   once, was therefore always rejected, and the winner shipped containing exactly the phrases
+   the judge kept flagging. Fix: the repair enumerates each flag as a MUST-FIX with concrete
+   instructions (gloss the compound, keep only the strongest number), gets two attempts, and a
+   partial repair that strictly reduces the flag count without a truth failure or score drop is
+   kept as the new base (`test_repair_language_accepts_monotone_improvement`). Acceptance is
+   still fail-safe: never worse than the input, and the truth gate re-checks every attempt.
+
+The corrected planner then ran live end to end (run 4 — `artifacts/phase13/thiel_v5/` top level:
+final traces, result, ledger freeze). The run-1/2/3 artifacts are retained deliberately: the
 point of tracing every call is that this class of defect is findable by reading, not by trusting.
+An honest residual: the language judge's strictness varies call to call on borderline register
+(the same "goodput" phrasing drew scores from 0.3 to 0.85 across runs) — the stored-preference
+hook (`record_preference`) exists precisely so real human A/B choices pin that taste down over
+time instead of LLM opinion re-rolling it.
 
 ## 9. Failures (honest)
 

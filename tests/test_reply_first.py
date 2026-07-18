@@ -338,11 +338,10 @@ def test_gate_pool_prefers_strictly_clean_over_flagged_high_score(monkeypatch):
 
 
 def test_repair_language_turns_flags_into_edits(monkeypatch):
-    """A flagged finalist gets ONE targeted revision; the repair is accepted only if it comes
-    back strictly clean under both gates."""
+    """A flagged finalist gets targeted revisions; a strictly-clean repair is adopted outright."""
     def chat(q, **k):
         assert "A language judge flagged these problems" in q
-        assert "two big numbers" in q
+        assert "MUST FIX: two big numbers" in q
         return "Peter, one clean sentence with one number: +724% in replay. Want the one-pager?"
     p = planner(chat=chat)
     monkeypatch.setattr(p, "truth", lambda t: {"ok": True, "violations": []})
@@ -357,12 +356,37 @@ def test_repair_language_turns_flags_into_edits(monkeypatch):
     assert fixed["label"] == "polished+lang_repair"
     assert "clean sentence" in fixed["text"]
     assert fixed["gates"]["language"] and not fixed["_lang_flags"]
-    # a repair that fails the gates is rejected: original returned untouched
+    # a repair that helps nothing is rejected: original returned untouched
     p2 = planner(chat=lambda q, **k: "still bad text")
     monkeypatch.setattr(p2, "truth", lambda t: {"ok": True, "violations": []})
     p2.language = lambda t: LanguageVerdict(ok=False, score=0.4,
                                             flags=[{"sentence": "s", "problem": "still bad"}])
     assert p2.repair_language(dict(cand)) == cand
+
+
+def test_repair_language_accepts_monotone_improvement(monkeypatch):
+    """Run-3 forensic: all-or-nothing repair acceptance rejected every partial fix, so winners
+    shipped with flags the judge had raised repeatedly. A repair that strictly reduces the flag
+    count (without truth failure or score drop) is now kept, and the second attempt continues
+    from the improved text."""
+    def chat(q, **k):
+        return ("half fixed text" if "two problems here" in q else "fully clean text")
+    p = planner(chat=chat)
+    monkeypatch.setattr(p, "truth", lambda t: {"ok": True, "violations": []})
+    verdicts = {
+        "half fixed text": LanguageVerdict(ok=False, score=0.8,
+                                           flags=[{"sentence": "s", "problem": "one left"}]),
+        "fully clean text": LanguageVerdict(ok=True, score=0.95),
+    }
+    p.language = lambda t: verdicts[t]
+    cand = {"label": "polished", "text": "two problems here",
+            "gates": {"truth": True, "language": False, "language_score": 0.6},
+            "_lang_flags": [{"sentence": "a", "problem": "jargon"},
+                            {"sentence": "b", "problem": "two numbers"}]}
+    out = p.repair_language(cand)
+    assert out["text"] == "fully clean text"           # attempt 1 kept (2->1 flags), attempt 2 cleans
+    assert out["label"] == "polished+lang_repair"
+    assert out["gates"]["language"] and not out["_lang_flags"]
 
 
 def test_identity_window_frees_structure_search_but_keeps_debate_bait_dead():
