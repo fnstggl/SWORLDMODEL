@@ -204,6 +204,19 @@ def operators_from_plan(plan, *, llm=None, allow_experimental=False) -> tuple:
             rejections.append({"mech_id": m.get("mech_id"),
                                "reason": f"operator {opname!r} needs bound parameters "
                                          f"(e.g. a fitted policy pack): {e}"[:200]})
+    # Semantic consequence INFRASTRUCTURE (not mechanism hypotheses): actions that deliver real
+    # communications or enter institutional procedures schedule message_delivered /
+    # collective_vote follow-ups — the consumers must exist in every semantic-mode run, or the
+    # downstream half of the causal chain silently dies in the queue.
+    from swm.world_model_v2 import semantic_consequences as _semcons
+    if _semcons.resolve_consequence_mode() != "legacy_scalar_pathway_consequences":
+        if "communication_delivery" not in seen:
+            seen.add("communication_delivery")
+            ops.append(_semcons.CommunicationDeliveryOperator())
+        if "institutional_vote" not in seen:
+            from swm.world_model_v2.transitions import InstitutionalVoteOperator
+            seen.add("institutional_vote")
+            ops.append(InstitutionalVoteOperator())
     return ops, rejections
 
 

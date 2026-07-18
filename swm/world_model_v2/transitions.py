@@ -380,8 +380,15 @@ class ResourceUpdateOperator(TransitionOperator):
 # ---------------------------------------------------------------- F. institutional execution
 class InstitutionalVoteOperator(TransitionOperator):
     """Deterministic collective-decision execution: gathers each participant's current_action as a vote,
-    runs the institution's voting rule, writes the typed outcome quantity."""
+    runs the institution's voting rule, writes the typed outcome quantity — and, when the vote resolves a
+    semantic submission (payload names the submission/procedure objects), writes the TYPED institutional
+    outcome onto those objects so the answer is readable from the evolved structured world."""
     name = "institutional_vote"
+
+    #: members vote through their REAL decisions — institutional verbs normalize onto yes/no
+    _YES = ("yes", "approve", "support", "ratify", "adopt", "accept", "endorse",
+            "request_approval")                       # a submitter's standing position is FOR
+    _NO = ("no", "reject", "veto", "oppose", "block", "deny")
 
     def applicable(self, world, event):
         return event.etype == "collective_vote"
@@ -389,14 +396,19 @@ class InstitutionalVoteOperator(TransitionOperator):
     def propose(self, world, event, rng):
         votes = {}
         for pid in event.participants:
+            if pid not in world.entities:
+                continue                                  # institution ids are not voters
             act = world.entity(pid).value("current_action", default="abstain")
             if isinstance(act, dict):
                 act = act.get("action_name") or act.get("type") or "abstain"
-            votes[pid] = act if act in ("yes", "no", "abstain") else "abstain"
+            act = str(act).lower()
+            votes[pid] = "yes" if act in self._YES else "no" if act in self._NO else "abstain"
         return TransitionProposal(operator=self.name,
-                                  action={"votes": votes, **{k: event.payload.get(k)
-                                                             for k in ("threshold", "needed", "total",
-                                                                       "institution", "outcome_var")}})
+                                  action={"votes": votes,
+                                          **{k: event.payload.get(k)
+                                             for k in ("threshold", "needed", "total", "institution",
+                                                       "outcome_var", "submission", "process_object",
+                                                       "requested_outcome")}})
 
     def apply(self, world, proposal):
         a = proposal.action
@@ -405,7 +417,7 @@ class InstitutionalVoteOperator(TransitionOperator):
         rs = inst if inst is not None else RuleSystem(institution_id="adhoc")
         res = rs.run_vote(a["votes"], threshold=a.get("threshold"), needed=a.get("needed"),
                           total=a.get("total"))
-        var = a.get("outcome_var", "vote_outcome")
+        var = str(a.get("outcome_var") or "vote_outcome")
         from swm.world_model_v2.quantities import Quantity, register_quantity_type
         register_quantity_type(var, units="bool")
         before = world.quantities.get(var).value if var in world.quantities else None
@@ -414,6 +426,33 @@ class InstitutionalVoteOperator(TransitionOperator):
         d = StateDelta(at=world.clock.now, event_type="collective_vote", operator=self.name,
                        uncertainty={"tally": res})
         d.change(f"quantities[{var}]", before, res["passed"])
+        # typed outcome onto the semantic submission + procedure this vote resolves (if any) —
+        # but a tally NOBODY voted in decides nothing (an empty room cannot reject a motion)
+        objects = getattr(world, "objects", {}) or {}
+        if not a["votes"]:
+            d.reason_codes.append("no_eligible_voters_present_submission_stays_pending")
+            return d
+        sub = objects.get(str(a.get("submission", "")))
+        if sub is not None and sub.status not in ("decided", "rejected"):
+            outcome = (str(a.get("requested_outcome") or "approve")
+                       if res["passed"] else "rejected")
+            sub.status = "decided" if res["passed"] else "rejected"
+            sub.updated_at = world.clock.now
+            sub.attributes["outcome"] = outcome
+            sub.attributes["decided_by"] = getattr(rs, "institution_id", "institution")
+            sub.attributes["tally"] = {k: v for k, v in res.items()
+                                       if isinstance(v, (int, float, bool, str))}
+            d.change(f"objects[{sub.object_id}].outcome", None, outcome)
+        proc = objects.get(str(a.get("process_object", "")))
+        if proc is not None and proc.object_type == "process":
+            stage = "decided" if res["passed"] else "rejected"
+            before_stage = proc.status
+            if before_stage not in (stage,):
+                proc.status = stage
+                proc.updated_at = world.clock.now
+                proc.stage_history.append({"at": world.clock.now, "from": before_stage,
+                                           "to": stage, "why": "collective_vote tally"})
+                d.change(f"objects[{proc.object_id}].stage", before_stage, stage)
         return d
 
 

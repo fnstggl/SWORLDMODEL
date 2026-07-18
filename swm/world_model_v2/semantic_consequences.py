@@ -499,6 +499,12 @@ def _x_submit_to_institution(world, op, ctx, delta):
             acts = [str(a) for a in (rule.params.get("actions") or [])]
             if not requested or not acts or requested in acts:
                 holders.update(str(h) for h in (rule.params.get("holders") or []))
+    if not holders:
+        # no rule names the requested label — the institution still processes the matter
+        # through its general decision holders rather than silently deciding nothing
+        for rule in getattr(inst, "rules", []):
+            if rule.kind == "decision_right":
+                holders.update(str(h) for h in (rule.params.get("holders") or []))
     if requested and holders == {ctx["actor_id"]}:
         # the submitter holds the SOLE decision right for the requested outcome: submitting IS
         # deciding (real institutional semantics — an authority's approval needs no further vote).
@@ -515,10 +521,12 @@ def _x_submit_to_institution(world, op, ctx, delta):
         ctx["report"]["facts_changed"] += 1
         return
     delay = max(3600.0, float(op.get("procedure_delay_s", 86400.0) or 86400.0))
+    voters = sorted(h for h in holders if h in world.entities) or [inst_id]
     ctx["events"].append(Event(
-        ts=ctx["now"] + delay, etype="collective_vote", participants=[inst_id],
-        payload={"institution_id": inst_id, "submission": sub_id, "matter":
-                 str(op.get("matter", ""))[:300], "process_object": f"proc_{sub_id}",
+        ts=ctx["now"] + delay, etype="collective_vote", participants=voters,
+        payload={"institution": inst_id, "institution_id": inst_id, "submission": sub_id,
+                 "matter": str(op.get("matter", ""))[:300],
+                 "requested_outcome": requested, "process_object": f"proc_{sub_id}",
                  "source_action_id": ctx["action_id"]},
         visibility="institutional", source="endogenous:semantic_consequences"))
     for holder in sorted(holders):
@@ -865,8 +873,11 @@ class SemanticConsequenceCompiler:
             inst = target if target in (world.institutions or {}) else \
                 next(iter(world.institutions or {}), "")
             if inst:
+                # the requested outcome is the institutional ACTION being sought, not the verb
+                # of the request (request_approval seeks an approval)
+                requested = {"request_approval": "approve", "appeal": "approve"}.get(name, name)
                 ops.append({"op": "submit_to_institution", "institution": inst,
-                            "matter": content[:200], "requested_outcome": name})
+                            "matter": content[:200], "requested_outcome": requested})
             else:
                 ops.append({"op": "publish_artifact", "content": content})
         elif name in ("escalate", "mobilize", "strike", "protest", "oppose", "support",
