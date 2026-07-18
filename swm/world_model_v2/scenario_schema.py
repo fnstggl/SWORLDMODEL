@@ -121,6 +121,12 @@ class ScenarioSemanticModel:
                 v = coerced
             if want is dict and not isinstance(v, dict):
                 v = {}
+            if want is dict and k != "provenance":
+                # inner definitions must be objects too — wrap stray strings/lists so the
+                # deterministic validators see a uniform shape instead of crashing
+                v = {str(ik): (iv if isinstance(iv, dict)
+                               else {"description": json.dumps(iv, default=str)[:200]})
+                     for ik, iv in v.items()}
             if want is list and not isinstance(v, list):
                 v = [v] if v else []
             out[k] = v
