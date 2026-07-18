@@ -127,6 +127,19 @@ class ScenarioSemanticModel:
                 v = {str(ik): (iv if isinstance(iv, dict)
                                else {"description": json.dumps(iv, default=str)[:200]})
                      for ik, iv in v.items()}
+                for td in v.values():
+                    fields = td.get("fields")
+                    if isinstance(fields, dict):
+                        # field kinds arrive as "str" OR {"kind"/"type": "str", …} — coerce
+                        td["fields"] = {str(fn): (fk.get("kind") or fk.get("type") or "str")
+                                        if isinstance(fk, dict) else fk
+                                        for fn, fk in fields.items()}
+                    elif isinstance(fields, list):
+                        td["fields"] = {str(fn.get("name", f"f{i}") if isinstance(fn, dict)
+                                            else fn): (fn.get("kind") or fn.get("type")
+                                                       or "str") if isinstance(fn, dict)
+                                        else "str"
+                                        for i, fn in enumerate(fields)}
             if want is list and not isinstance(v, list):
                 v = [v] if v else []
             out[k] = v
