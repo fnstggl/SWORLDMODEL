@@ -1,0 +1,241 @@
+{
+ "group": "wmv2_trails_direct",
+ "question": "Will Kamala Harris win all 6 swing states?",
+ "cutoff": "2024-08-23T23:24:00Z",
+ "actual_outcome": 0,
+ "wmv2_p": 0.995,
+ "direct_p": 0.001,
+ "market_p": 0.28,
+ "brier_wmv2": 0.99,
+ "brier_direct": 0.0,
+ "modes": null,
+ "hazard_ratio_by_mode": null,
+ "decision_structures": null,
+ "stances": null,
+ "mode_distribution": {
+  "entailed_fact:election": 0.995,
+  "institutional:US Electoral College": 0.005
+ },
+ "cdf": [
+  0.0,
+  0.0,
+  0.0,
+  0.0,
+  0.0,
+  0.0,
+  0.0,
+  0.0,
+  0.0,
+  1.0
+ ],
+ "support_grade": "exploratory",
+ "limitations": [
+  "omitted (negligible-sensitivity): social media",
+  "degraded: support grade exploratory; 3 fallback mechanism(s) used"
+ ],
+ "full_run_proof": {
+  "entrypoint": "swm.world_model_v2.unified_runtime.simulate_world",
+  "runtime_fingerprint": "unified-1.0",
+  "implementation_commit": "6b2288f",
+  "simulation_status": "completed_with_degradation",
+  "phase_execution_records": {
+   "phase1_compiler": {
+    "relevant": true,
+    "execution_status": "causally_active",
+    "n_state_deltas": 0,
+    "no_op_reason": "",
+    "terminal_influence": "",
+    "implementation_version": "compiler"
+   },
+   "phase2_evidence": {
+    "relevant": true,
+    "execution_status": "causally_active",
+    "n_state_deltas": 0,
+    "no_op_reason": "",
+    "terminal_influence": "",
+    "implementation_version": "phase2-1.0"
+   },
+   "phase3_posterior": {
+    "relevant": true,
+    "execution_status": "causally_active",
+    "n_state_deltas": 0,
+    "no_op_reason": "",
+    "terminal_influence": "",
+    "implementation_version": "phase3"
+   },
+   "phase4_actor_policy": {
+    "relevant": true,
+    "execution_status": "causally_active",
+    "n_state_deltas": 7574,
+    "no_op_reason": "",
+    "terminal_influence": "state_only",
+    "implementation_version": "phase4"
+   },
+   "phase6_registry": {
+    "relevant": true,
+    "execution_status": "causally_active",
+    "n_state_deltas": 400,
+    "no_op_reason": "",
+    "terminal_influence": "direct_resolution",
+    "implementation_version": ""
+   },
+   "phase7_nonlinear": {
+    "relevant": true,
+    "execution_status": "causally_active",
+    "n_state_deltas": 3800,
+    "no_op_reason": "",
+    "terminal_influence": "state_only",
+    "implementation_version": "phase7"
+   },
+   "phase8_persistence": {
+    "relevant": true,
+    "execution_status": "causally_active",
+    "n_state_deltas": 0,
+    "no_op_reason": "",
+    "terminal_influence": "",
+    "implementation_version": "phase8-1.0"
+   },
+   "phase9_populations": {
+    "relevant": true,
+    "execution_status": "causally_active",
+    "n_state_deltas": 200,
+    "no_op_reason": "",
+    "terminal_influence": "consumed_by_mechanism",
+    "implementation_version": "phase9-pop"
+   },
+   "phase9_networks": {
+    "relevant": true,
+    "execution_status": "causally_active",
+    "n_state_deltas": 200,
+    "no_op_reason": "",
+    "terminal_influence": "state_only",
+    "implementation_version": ""
+   },
+   "phase10_institutions": {
+    "relevant": true,
+    "execution_status": "causally_active",
+    "n_state_deltas": 1,
+    "no_op_reason": "",
+    "terminal_influence": "direct_resolution",
+    "implementation_version": "phase10"
+   },
+   "phase11_recompilation": {
+    "relevant": true,
+    "execution_status": "causally_active",
+    "n_state_deltas": 0,
+    "no_op_reason": "",
+    "terminal_influence": "",
+    "implementation_version": "phase11"
+   }
+  },
+  "n_phases_recorded": 11,
+  "operator_delta_census": {
+   "production_actor_policy": {
+    "n_deltas": 7400,
+    "event_types": [
+     "actor_action"
+    ]
+   },
+   "nonlinear_state_step": {
+    "n_deltas": 3800,
+    "event_types": [
+     "state_step"
+    ]
+   },
+   "hazard_round": {
+    "n_deltas": 2200,
+    "event_types": [
+     "hazard_round"
+    ]
+   },
+   "scheduled_fact": {
+    "n_deltas": 200,
+    "event_types": [
+     "scheduled_fact"
+    ]
+   },
+   "absorption_monitor": {
+    "n_deltas": 200,
+    "event_types": [
+     "absorption"
+    ]
+   },
+   "population_aggregation": {
+    "n_deltas": 200,
+    "event_types": [
+     "population_aggregation"
+    ]
+   },
+   "network_diffusion": {
+    "n_deltas": 200,
+    "event_types": [
+     "network_diffusion"
+    ]
+   },
+   "structural_process_prior": {
+    "n_deltas": 400,
+    "event_types": [
+     "structural_process_prior"
+    ]
+   },
+   "actor_action_aggregation": {
+    "n_deltas": 174,
+    "event_types": [
+     "actor_action_aggregation"
+    ]
+   },
+   "institutional_decision": {
+    "n_deltas": 1,
+    "event_types": [
+     "institutional_decision"
+    ]
+   }
+  },
+  "n_actor_action_deltas": 7400,
+  "actors_with_views": 4,
+  "n_particles": 200,
+  "event_time_readout": {
+   "p_event_by_deadline": 0.995,
+   "p_censored": 0.0,
+   "occurrence_resolves": "yes",
+   "n_particles": 200
+  },
+  "terminal_source": "simulated_world_states/first_passage_readout",
+  "fully_integrated": true,
+  "integration_failures": [],
+  "fallbacks_used": [
+   {
+    "process": "outcome_resolution",
+    "tier": 7,
+    "family": "generic_outcome_prior",
+    "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+   },
+   {
+    "process": "campaigning",
+    "tier": 6,
+    "family": "structural_process_prior",
+    "why": "no validated registry family answers this required causal process \u2014 transparent broad-prior fallback (registry gap)"
+   },
+   {
+    "process": "voting",
+    "tier": 6,
+    "family": "structural_process_prior",
+    "why": "no validated registry family answers this required causal process \u2014 transparent broad-prior fallback (registry gap)"
+   }
+  ],
+  "manifest_executed": {
+   "phase1_compiler": true,
+   "phase2_evidence": true,
+   "phase3_posterior": true,
+   "phase4_actor_policy": true,
+   "phase6_registry": true,
+   "phase7_nonlinear": true,
+   "phase8_persistence": true,
+   "phase9_populations": true,
+   "phase9_networks": true,
+   "phase10_institutions": true,
+   "phase11_recompilation": true
+  },
+  "proof_at": 1784339342.0085173
+ }
+}
