@@ -101,8 +101,30 @@ class ScenarioSemanticModel:
 
     @classmethod
     def from_dict(cls, d: dict) -> "ScenarioSemanticModel":
-        known = {f for f in cls.__dataclass_fields__}
-        return cls(**{k: v for k, v in (d or {}).items() if k in known})
+        """Shape-normalizing constructor for UNTRUSTED proposals: dict-typed fields accept the
+        list-of-objects form LLMs love ([{id/type_id/actor_id/name: …, …}, …]) and coerce to
+        {id: definition}; wrong-typed values become empty rather than crashing validation."""
+        known = cls.__dataclass_fields__
+        out = {}
+        for k, v in (d or {}).items():
+            if k not in known:
+                continue
+            want = known[k].default_factory if known[k].default_factory is not None else None
+            if want is dict and isinstance(v, list):
+                coerced = {}
+                for row in v:
+                    if isinstance(row, dict):
+                        rid = str(row.get("type_id") or row.get("id") or row.get("actor_id")
+                                  or row.get("name") or f"item_{len(coerced)}")
+                        coerced[rid] = {kk: vv for kk, vv in row.items()
+                                        if kk not in ("type_id", "id", "actor_id")}
+                v = coerced
+            if want is dict and not isinstance(v, dict):
+                v = {}
+            if want is list and not isinstance(v, list):
+                v = [v] if v else []
+            out[k] = v
+        return cls(**out)
 
     def freeze(self):
         if not self.schema_id:
@@ -269,6 +291,43 @@ process_definitions, institutional_definitions, physical_constraints, resource_d
 information_rules, actor_roles, outcome_predicates, unresolved_mechanisms, assumptions."""
 
 
+def auto_repair_schema(model: ScenarioSemanticModel) -> list:
+    """Mechanical, honesty-PRESERVING repairs of common compiler omissions — each one makes a
+    gap explicit rather than hiding it, and every repair is provenance-stamped. Semantic
+    violations (numeric minting, reaction coefficients, hidden answers) are NEVER repaired."""
+    repairs = []
+    for c, cd in list((model.physical_constraints or {}).items()):
+        if isinstance(cd, dict) and not cd.get("executable") and not cd.get("unresolved"):
+            cd["unresolved"] = True
+            if c not in model.unresolved_mechanisms:
+                model.unresolved_mechanisms.append(c)
+            repairs.append(f"constraint {c!r} labeled unresolved (no executable rule)")
+    for iid, inst in list((model.institutional_definitions or {}).items()):
+        if isinstance(inst, dict) and not inst.get("evidence") and not inst.get("assumed"):
+            inst["assumed"] = True
+            repairs.append(f"institution {iid!r} labeled assumed (no evidence cited)")
+    known = set(model.record_types())
+    for p in model.outcome_predicates or []:
+        rt = str(p.get("record_type", ""))
+        if rt and rt not in known and _ID_RE.match(rt) \
+                and not _FORBIDDEN_FIELD.search(rt) and not _REACTION_COEFF.search(rt):
+            model.fact_types[rt] = {
+                "description": "auto-declared: the outcome predicate references this record "
+                               "type; minimal shape (status + declared field)",
+                "fields": {"status": "str", **({str(p.get("field")): "str"}
+                                               if p.get("field") not in (None, "", "status")
+                                               else {})}}
+            known.add(rt)
+            repairs.append(f"record type {rt!r} auto-declared for its outcome predicate")
+    for a in (model.actor_roles or {}).values():
+        if isinstance(a, dict) and a.pop("required_menu", None) is not None:
+            repairs.append("stripped a required_menu from actor_roles (affordances are "
+                           "examples only)")
+    if repairs:
+        model.provenance.setdefault("auto_repairs", []).extend(repairs)
+    return repairs
+
+
 class SchemaCompiler:
     """question + evidence → validated, criticized, FROZEN ScenarioSemanticModel."""
 
@@ -307,9 +366,10 @@ class SchemaCompiler:
             "horizon": float(horizon or 0.0),
             "provenance": {"kind": SCHEMA_KIND, "compiler": "llm",
                            "compiled_at": float(as_of or 0.0)}})
+        auto_repair_schema(model)
         ok, issues = validate_scenario_schema(model)
         if not ok:
-            # one repair round: feed the issues back
+            # one LLM repair round: feed the issues back
             repair = parse_json(self._call(
                 self.llm, prompt + "\n\nYOUR PREVIOUS ATTEMPT FAILED VALIDATION:\n- "
                 + "\n- ".join(issues[:12]) + "\nReturn corrected FULL JSON."))
@@ -320,6 +380,7 @@ class SchemaCompiler:
                     "horizon": float(horizon or 0.0),
                     "provenance": {"kind": SCHEMA_KIND, "compiler": "llm_repaired",
                                    "issues_first_pass": issues[:12]}})
+                auto_repair_schema(model)
                 ok, issues = validate_scenario_schema(model)
         if not ok:
             raise ValueError(f"generated schema failed validation: {issues[:6]}")

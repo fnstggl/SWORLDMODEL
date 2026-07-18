@@ -1,0 +1,143 @@
+# Generated actor-mediated world — the production consequence architecture
+
+**The principle.** Hardcode reality integrity, not social causality. The engine's fixed
+machinery covers time ordering, identity, provenance, branch isolation, visibility and
+information access, physical/legal feasibility, authority, resource conservation, queue
+execution, recursion budgets, schema validation, institutional arithmetic, aggregation, and
+calibration. It contains **no fixed semantic model** of messages, proposals, launches,
+negotiations, approvals, adoptions, or reactions. Each scenario **generates** its own
+semantic types, facts, relations, events, processes, institutional procedures, and outcome
+predicates; when a world change affects a consequential human, the engine delivers the
+actor-specific observation and **invokes that actor's persistent LLM** — the actor decides
+whether anything should be done, and what, including nothing, or an action no menu
+anticipated. Probabilities come afterward, by counting independently realized trajectories.
+
+## Two planes
+
+**Control plane** (`generated_world.py`, invisible machinery): three queue task types —
+`ctrl_semantic_event` (route observations + discover the causal frontier),
+`ctrl_deliver_observation` (apply information-access rules to ONE actor's local state),
+`ctrl_invoke_actor` (the actor's perceived world materially changed: rebuild their
+`ActorView`, invoke their persistent qualitative LLM) — plus per-actor invocation budgets,
+(actor, event) dedup, cascade-depth caps, and deterministic institutional arithmetic
+(`run_institutional_aggregation` counts actual member decision records; it never chooses a
+vote). Control tasks never appear in the world's semantic history.
+
+**World semantic plane**: `WorldState.semantic_log` (scenario-typed `SemanticWorldEvent`s —
+what actually happened, with the exact content) and `WorldState.objects` as **records** whose
+types come from the branch's `ScenarioSemanticModel`. The world's meaning lives entirely in
+scenario-generated definitions.
+
+## The pieces
+
+- **`scenario_schema.ScenarioSemanticModel`** — per-question generated semantics: entity/
+  fact/relation/event types, process definitions, institutional definitions (holders +
+  decision record type + executable aggregation arithmetic; evidence or `assumed`), physical
+  constraints (executable or `unresolved`), conserved resources, information rules, actor
+  roles (affordance **examples**, never required menus), frozen outcome predicates,
+  unresolved mechanisms, evidence basis, assumptions, provenance. Compiled by an LLM
+  (`SchemaCompiler`) as an **untrusted proposal**: deterministic validation (stable ids, no
+  numeric-minting fields, no action→human-reaction coefficients, executable arithmetic,
+  predicates over declared records, no outcome smuggled into initial records), mechanical
+  honesty-preserving auto-repairs (label unexecutable constraints unresolved, declare
+  missing predicate record types, mark unevidenced institutions assumed — all stamped),
+  one LLM repair round, an adversarial critic pass, then **frozen**. Runtime extension is
+  versioned, ancestry-preserving, additive-only, and **branch-local** (the schema lives on
+  the branch's world; `clone()` isolates it).
+- **The kernel** (semantically empty storage + integrity): `declare_schema_definition`,
+  `create_or_update_record`, `remove_record`, `create_or_remove_relation`,
+  `emit_semantic_event`, `schedule_semantic_event`, `transfer_conserved_quantity`. It
+  validates instances against the **branch schema** — there is no `create_product` or
+  `on_message_delivered` anywhere. Untrusted-op failures quarantine loudly; ops that try to
+  write another human's mind/choice are rejected and counted.
+- **`GeneratedActionCompiler`** — the actor's exact chosen action (their words, target,
+  timing, secrecy) → **direct effects only** as kernel ops against the branch schema. It may
+  never assert another person's reaction. Total fallback preserves the exact action as the
+  schema-scoped `unmodeled_actor_action` scaffolding event, counted as a fallback.
+- **Observation routing** — deterministic: recipients from targets/visibility/information
+  rules; per-recipient channel, delay, and representation (`complete` vs rule-declared
+  `summary`); the router never interprets. Delivery updates the recipient's information
+  ledger with the exact (or rule-degraded) content and schedules THEIR reconsideration.
+- **Causal frontier** — per-event discovery of actors who may now matter (targets,
+  institutional decision holders touched by the matter, network neighbors of public
+  sources, optional LLM extension) with deterministic validation, dedup, and budgets.
+- **Actor invocation** — rebuilds the view, presents the new observation as the situation,
+  passes schema affordances only as examples, and lets the persistent qualitative actor
+  decide: wait (first-class, counted), a listed affordance, or any novel feasible action.
+  Feasibility/authority validation is unchanged (`execute()`); consequences compile through
+  the generated compiler; new events recurse through the same canonical queue.
+- **Modes** — `generated_actor_mediated_world` (default),
+  `fixed_semantic_consequence_policy_v1` (the previous fixed-catalog baseline;
+  `semantic_world_consequences` is its alias), `legacy_scalar_pathway_consequences`
+  (benchmark-only), `dual_run_consequence_audit`. A schema-less world under the generated
+  default degrades to fixed-v1 **stamped** (actual mode, degraded flag, counted
+  `fixed_ontology_uses`, reason) — silent fallback is structurally impossible, and pure
+  generated evaluations exclude degraded runs. Both scalar writers raise under every
+  non-legacy mode.
+- **Reporting** — every result carries the full contract: requested/actual mode, schema id +
+  version, types generated, events emitted, schema extensions, observations delivered,
+  actors reconsidered/invoked/declined, actions executed, cascade depth,
+  `human_reactions_written_directly` (structurally 0; attempts are quarantined and counted
+  separately), `fixed_ontology_uses` (0 in pure runs), unsupported semantics, fallbacks with
+  reasons.
+
+## Final audit (the required fifteen questions, answered honestly)
+
+1. **Which fixed ontology lists remain?** `semantic_consequences.py` keeps `OBJECT_TYPES`,
+   `PROCESS_STAGES`, `PRIMITIVES`, and the fixed action ontology
+   (`phase4_policy.ACTION_ONTOLOGY`/`ACTION_PATHWAY_EFFECTS`) — all baseline-only. The
+   kernel has `KERNEL_OPS` (storage mechanics) and three `ctrl_*` task types (scheduler
+   instructions), which are integrity machinery, not scenario semantics. The event-type
+   registry still exists for control/mechanistic events; scenario events bypass it by
+   design (they ride the `ctrl_semantic_event` envelope).
+2. **Are any load-bearing in production mode?** No. Tests 1–3/28–29 prove records/events are
+   accepted solely by the branch schema, and the fixed catalog/scalar writers cannot run in
+   generated mode. The one deliberate seam: a schema-less world degrades to fixed-v1
+   **stamped and counted** — visible on every report.
+3. **Can a novel scenario create a new type without code changes?** Yes — demoD's supplier-
+   qualification and demoC's reaction types exist nowhere in the repository; test 5 proves
+   it offline.
+4. **Novel semantic event without global registration?** Yes (test 6 asserts the type is
+   absent from the global registry while the event flows).
+5. **Does receiving an event invoke the actor rather than a reaction handler?** Yes:
+   delivery → `ctrl_invoke_actor` → the actor's own policy. The fixed
+   `message_delivered → acknowledge/ignore` path is baseline-only; in generated mode the
+   legacy mechanism emissions are disabled so a reaction has exactly one route.
+6. **Can an actor choose an action outside every supplied menu?** Yes (test 13; the
+   qualitative schema always invited novel actions; affordances are examples).
+7. **Deliberate inaction?** Yes — `wait` is first-class and counted
+   (`actors_declined_to_act`).
+8. **Does any code directly modify another consequential actor's belief/support/compliance/
+   choice?** No: the kernel exposes no mind-write operation, attempts are quarantined and
+   counted, and the legacy `belief_delta` writer raises outside the legacy mode.
+9. **Are internal scheduler tasks separated from world events?** Yes — `ctrl_*` tasks never
+   enter `semantic_log` (tests 9–10).
+10. **Are institutional outcomes aggregated from actual actor decisions?** Yes —
+    `run_institutional_aggregation` counts member decision records; an empty tally decides
+    nothing (tests 24–25).
+11. **Can the schema evolve during rollout?** Yes — `declare_schema_definition`: versioned,
+    additive-only, ancestry-preserving, branch-isolated (tests 7–8).
+12. **Does the public default path use the generated architecture?** Yes —
+    `resolve_consequence_mode()` defaults to it across `run_from_plan`, `simulate_world`,
+    phase-8 persistence, and individual reactions (with the stamped schema-less seam above).
+13. **Do Phase-13 rollouts use it?** Yes — matched counterfactuals clone worlds carrying the
+    schema and run the same operators/engine with paired seeds (test 30–31).
+14. **Can fixed-v1 still run as a baseline?** Yes — explicit mode, full artifact set kept
+    (test 34).
+15. **What remains mechanically verified vs unvalidated?** Mechanically verified: everything
+    above (1336 tests, incl. the 34 invariants). Demonstrated end-to-end with a real
+    backend: the five demos + the matched evaluation
+    (`experiments/results/GENERATED_WORLD_REPORT.md`). **Not demonstrated**: predictive
+    improvement over the baselines — consequence/trajectory accuracy against frozen
+    historical intermediate facts remains the declared next measurement; population
+    mechanisms remain opened-not-resolved without fitted models; non-human mechanisms
+    without validated implementations stay labeled `unresolved` rather than simulated.
+
+**Definitive acceptance statement.** The engine contains fixed machinery only for integrity,
+scheduling, access, feasibility, and aggregation. Each scenario generates its own semantic
+types, facts, events, processes, and outcome predicates. A world change that affects a
+consequential human delivers an actor-specific observation and invokes that actor's
+persistent LLM; the actor decides whether and how to respond; its action creates new
+scenario-defined semantic changes that may affect other actors recursively. No predefined
+social reaction handler, fixed action menu, hardcoded social coefficient, or global scenario
+ontology substitutes for those decisions.
