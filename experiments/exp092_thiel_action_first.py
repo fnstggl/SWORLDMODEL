@@ -195,7 +195,7 @@ def main():
 
     # --- probe messages for STAGE A (action comparison uses the same fixed, contract-valid probes)
     probe_email = plain_baseline_draft(AURELIUS_SENDER, "Peter Thiel")
-    permission_ask = ("Peter, I'm Beckett, 17, building Aurelius — constraint-aware orchestration "
+    permission_ask = ("Peter, I'm Beckett, 17, building Aurelius, a constraint-aware orchestration "
                       "for AI infrastructure. In replays of ~1.5M requests of public production "
                       "traces it beat the production scheduler on SLA-safe goodput per dollar. "
                       "May I send you the one-page memo? Beckett")
