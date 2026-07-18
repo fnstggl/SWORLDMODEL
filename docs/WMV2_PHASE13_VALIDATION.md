@@ -138,7 +138,7 @@ validated at three honesty levels, each labeled on every output:
 
 The reply-first beat planner (ARCHITECTURE §13; `swm/decision/reply_first.py`,
 `swm/decision/language_judge.py`) is the default `optimize_cold_outreach` path. Its architectural
-promises are executable tests in `tests/test_reply_first.py` (19 offline tests):
+promises are executable tests in `tests/test_reply_first.py` (23 offline tests):
 
 - **Judge separation**: a candidate failing the truth gate (fabricated number) or the language
   gate (bot register) provably never reaches the outcome judge — persona appeal cannot resurrect

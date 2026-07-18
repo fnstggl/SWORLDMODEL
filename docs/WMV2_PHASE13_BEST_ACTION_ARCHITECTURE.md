@@ -214,7 +214,9 @@ role on the same prompt:
 * **Outcome judge** (rank only, never a gate-opener): the qualitative persona ensemble runs
   **blind** — shuffled anonymous labels, no authorship information — and ranks ONLY candidates
   that already passed both gates, so persona appeal can never resurrect a fabrication or
-  bot-register text. Its counted distributions stay in machine-readable traces; **no simulated
+  bot-register text. Gate pooling prefers strictly-clean candidates (zero flags) over
+  flagged-but-high-score ones, and a flagged finalist gets one targeted repair pass — judge
+  flags become edits, accepted only if the repair re-passes BOTH gates. Its counted distributions stay in machine-readable traces; **no simulated
   reply percentage is ever reported to a human**. When the count gap is within noise the label is
   "best-supported candidate under the current assumptions; no reliable distinction between
   finalists" — and the stated cure is real outreach outcomes, not more simulation.

@@ -291,6 +291,80 @@ def test_beat_vocabulary_is_complete():
         assert set(st) <= set(BEATS)
 
 
+# --------------------------------------------------------------------------- run-1 forensic fixes
+def test_request_beat_role_is_sender_directed():
+    """Run-1 forensic: 'the reply being asked for' made the LLM paste the recipient's desired
+    reply ('Send me the one-pager.') as the sender's closing line. The role text must direct the
+    ask from the sender."""
+    role = BEAT_ROLE["request"]
+    assert "sender's own words" in role.lower() or "SENDER" in role
+    assert "NEVER paste" in role
+    prompts = []
+    def capture(q, **k):
+        prompts.append(q)
+        return "email"
+    p = planner(chat=capture)
+    p.instantiate(STRUCTURES[0], {})
+    assert "never the recipient's hoped-for reply" in prompts[-1]
+
+
+def test_request_swaps_precede_drops_in_variant_pool():
+    """Run-1 forensic: a [:4] ranking slice silently excluded both request swaps because they
+    were appended after the necessity drops."""
+    def chat(q, **k):
+        return '{"a": "Want the one-pager?", "b": "Does your team track fleet-level cost curves?"}'
+    p = planner(chat=chat)
+    text = ("I build planning software. The bottleneck is planning, not power. "
+            "It cut GPU hours in replay. Want details?")
+    variants = p.beat_variants(STRUCTURES[0], text)
+    labels = [v["label"] for v in variants]
+    assert labels[1:3] == ["request_a", "request_b"]
+    assert all(l.startswith("drop_") for l in labels[3:])
+    assert variants[1]["text"].endswith("Want the one-pager?")
+
+
+def test_gate_pool_prefers_strictly_clean_over_flagged_high_score(monkeypatch):
+    """Run-1 forensic: near-miss admission let a flagged 0.95 candidate beat an unflagged one."""
+    p = planner()
+    monkeypatch.setattr(p, "truth", lambda t: {"ok": True, "violations": []})
+    verdicts = {"clean": LanguageVerdict(ok=True, score=0.7),
+                "flagged": LanguageVerdict(ok=False, score=0.95,
+                                           flags=[{"sentence": "x", "problem": "two numbers"}])}
+    p.language = lambda t: verdicts[t]
+    pool = p._gate_pool([{"label": "a", "text": "flagged"}, {"label": "b", "text": "clean"}])
+    assert [c["text"] for c in pool] == ["clean"]          # strict beats flagged despite 0.95
+    pool2 = p._gate_pool([{"label": "a", "text": "flagged"}])
+    assert [c["text"] for c in pool2] == ["flagged"]       # near-miss only when nothing strict
+
+
+def test_repair_language_turns_flags_into_edits(monkeypatch):
+    """A flagged finalist gets ONE targeted revision; the repair is accepted only if it comes
+    back strictly clean under both gates."""
+    def chat(q, **k):
+        assert "A language judge flagged these problems" in q
+        assert "two big numbers" in q
+        return "Peter, one clean sentence with one number: +724% in replay. Want the one-pager?"
+    p = planner(chat=chat)
+    monkeypatch.setattr(p, "truth", lambda t: {"ok": True, "violations": []})
+    p.language = lambda t: (LanguageVerdict(ok=True, score=0.95)
+                            if "clean sentence" in t else
+                            LanguageVerdict(ok=False, score=0.6,
+                                            flags=[{"sentence": "s", "problem": "two big numbers"}]))
+    cand = {"label": "polished", "text": "old text with ~1.5M and 724% competing.",
+            "gates": {"truth": True, "language": False, "language_score": 0.6},
+            "_lang_flags": [{"sentence": "s", "problem": "two big numbers"}]}
+    fixed = p.repair_language(cand)
+    assert fixed["label"] == "polished+lang_repair"
+    assert "clean sentence" in fixed["text"]
+    assert fixed["gates"]["language"] and not fixed["_lang_flags"]
+    # a repair that fails the gates is rejected: original returned untouched
+    p2 = planner(chat=lambda q, **k: "still bad text")
+    monkeypatch.setattr(p2, "truth", lambda t: {"ok": True, "violations": []})
+    p2.language = lambda t: LanguageVerdict(ok=False, score=0.4,
+                                            flags=[{"sentence": "s", "problem": "still bad"}])
+    assert p2.repair_language(dict(cand)) == cand
+
+
 # --------------------------------------------------------------------------- pipeline default
 def test_pipeline_defaults_to_reply_first_and_wraps_single_output():
     import inspect

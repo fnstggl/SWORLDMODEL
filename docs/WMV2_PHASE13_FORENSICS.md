@@ -250,6 +250,45 @@ a useful second search method (different failure modes, real structural discover
 but shows **no material lift over the full-draft path under the current evaluator**; distinguishing
 them requires real outreach outcomes (the ledger), not more draws.
 
+## 9c. exp095 — reply-first default: what the first live run caught (and the fixes)
+
+The reply-first planner's first live run (`artifacts/phase13/thiel_v5/run1_prompt_bug/`, 167 raw
+LLM calls, fully traced) validated the architecture's separation of concerns AND exposed three
+implementation defects — all found by reading the trace, all now regression-locked in
+`tests/test_reply_first.py`.
+
+**What worked on the first live run:**
+- Backward planning produced target replies in the recipient's own typed voice ("Send me the
+  one-pager." / "Talk to my partner at FF who covers that space." / "Come by the office Thursday
+  at 3pm.") and derived concrete requirements from them (the contrarian reframe as the worthwhile
+  core; ONE believable number with provenance; effortless five-word reply).
+- The separated language judge — with zero hardcoded phrases — flagged **exactly the failure
+  modes a human editor had previously flagged by hand**: "age and university name reads like a
+  bio, not a quick note to a busy peer" and "Two large numbers (~1.5M and 724%) compete for
+  attention in one sentence". Independent confirmation that judging language as WRITING (not as
+  a pitch) reproduces human taste.
+
+**What the trace caught (defect → fix, each with a test):**
+1. **Direction-inverted ask.** `BEAT_ROLE["request"]` read "the reply being asked for" — every
+   seed draft pasted the recipient's desired reply verbatim as the sender's closing line ("Send
+   me the one-pager." FROM the sender TO the recipient — backwards English). Fix: the role text
+   and writing rules now state the closing line is the SENDER's own ask, never the hoped-for
+   reply pasted (`test_request_beat_role_is_sender_directed`).
+2. **Capped pool silently excluded the repair.** The request-swap variants (correct-direction
+   closings, generated in the same run) were appended after the necessity drops, and the `[:4]`
+   ranking slice cut them — the outcome judge never saw them. Fix: swaps ride directly after the
+   base variant and the pool widened (`test_request_swaps_precede_drops_in_variant_pool`).
+3. **Near-miss admission wasted the judge's verdicts.** A candidate with flags but score 0.95
+   outranked cleaner texts, so the winner shipped with known flags. Fix: strictly-clean
+   candidates (no flags) always outrank flagged ones regardless of score
+   (`test_gate_pool_prefers_strictly_clean_over_flagged_high_score`), and any flagged finalist
+   gets ONE targeted repair pass — the flags become edits, accepted only if the repair comes back
+   strictly clean under BOTH gates (`test_repair_language_turns_flags_into_edits`).
+
+The corrected planner was then re-run live end to end (`artifacts/phase13/thiel_v5/` — final
+traces, result, ledger freeze). The run-1 artifacts are retained deliberately: the point of
+tracing every call is that this class of defect is findable by reading, not by trusting.
+
 ## 9. Failures (honest)
 
 - 3 jtrain quasi slices excluded — DiD cells empty on the slice (`gates.json:excluded_reasons`), a

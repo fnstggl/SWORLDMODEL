@@ -60,7 +60,9 @@ BEAT_ROLE = {
     "evidence": "the SINGLE strongest number, translated into what it means for the reader, with "
                 "its provenance in the same sentence",
     "relevance": "why this recipient specifically — their stated interests, not flattery",
-    "request": "the reply being asked for, typed the way a busy person actually types it",
+    "request": "the SENDER'S closing ask, in the sender's own words, that makes the desired reply "
+               "the recipient's cheapest keystroke — offer, don't command; NEVER paste the "
+               "recipient's desired reply itself as the closing line",
 }
 
 #: canonical structure library (the search also tests drops/merges/reorders of these)
@@ -191,9 +193,11 @@ class ReplyFirstPlanner:
         "NO jargon compounds — never name a product category ('constraint-aware orchestration'); "
         "say what the thing DOES in plain words. AT MOST ONE number in the whole email — pick the "
         "single strongest, translate it into what it means for the reader, and keep its provenance "
-        "in the same sentence. Numbers only from the sender facts. The request must read like a "
-        "human typed it to a peer (their own words, no ceremonious permission constructions). "
-        "No em dashes unless truly necessary. 45-85 words total.")
+        "in the same sentence. Numbers only from the sender facts. The email is written BY the "
+        "sender TO the recipient: the closing line is the sender's own ask (e.g. offering the "
+        "one-pager), never the recipient's hoped-for reply pasted verbatim. The request must read "
+        "like a human typed it to a peer (their own words, no ceremonious permission "
+        "constructions). No em dashes unless truly necessary. 45-85 words total.")
 
     def instantiate(self, structure: tuple, reqs: dict) -> str:
         beats_desc = "\n".join(f"{i + 1}. {b}: {BEAT_ROLE[b]}" for i, b in enumerate(structure))
@@ -268,35 +272,89 @@ class ReplyFirstPlanner:
 
     # ---------------------------------------------------------------- STEP 4: beat-level search
     def beat_variants(self, structure: tuple, text: str) -> list:
-        """Necessity (drop each beat), merge (adjacent pair), request-swap — as complete drafts."""
-        out = [{"label": f"S{'-'.join(b[:2] for b in structure)}", "text": text,
-                "origin": "structure"}]
+        """Necessity (drop each beat), request-swap — as complete drafts. Request swaps come
+        FIRST after the base so a capped ranking pool can never silently exclude them (run-1
+        forensic: a [:4] slice dropped both request swaps while the seed carried an inverted ask)."""
+        base = [{"label": f"S{'-'.join(b[:2] for b in structure)}", "text": text,
+                 "origin": "structure"}]
         sents = [s.strip() for s in re.split(r"(?<=[.!?])\s+", text.strip()) if s.strip()]
-        if len(sents) == len(structure) + 1:              # greeting fused or sign-off separate — skip
-            pass
+        # request swap: two alternative reply-shapes, written by the LLM under the same rules
+        raw = self._llm("step4_request_swap", (
+            f"Sender facts:\n{self.brief.to_prompt()}\n--- EMAIL ---\n{text}\n--- END ---\n"
+            "Write TWO alternative CLOSING lines for this email, each a materially different "
+            "reply-shape (e.g. asking one pointed question he can answer from expertise vs. "
+            "offering the one-pager in the sender's own words). Each is the SENDER's own typed "
+            "words to the recipient — never the reply the sender hopes to receive. Each must read "
+            "like a busy human typed it. Return ONLY JSON: {\"a\": \"...\", \"b\": \"...\"}"),
+            max_tokens=160, temperature=0.6)
+        obj = self._jobj(raw) or {}
+        swaps = []
+        for key in ("a", "b"):
+            alt = str(obj.get(key, "")).strip()
+            if alt and sents:
+                t = " ".join(sents[:-1] + [alt])
+                swaps.append({"label": f"request_{key}", "text": t, "origin": "request_swap"})
         # drop each non-request beat (necessity test) — deterministic surgery on sentences when the
         # count lines up; otherwise skipped (the wording pass handles ragged cases)
+        drops = []
         if len(sents) >= len(structure):
             for i, b in enumerate(structure):
                 if b == "request":
                     continue
                 t = " ".join(sents[:i] + sents[i + 1:])
-                out.append({"label": f"drop_{b}", "text": t, "origin": "necessity"})
-        # request swap: two alternative reply-shapes, written by the LLM under the same rules
-        raw = self._llm("step4_request_swap", (
-            f"Sender facts:\n{self.brief.to_prompt()}\n--- EMAIL ---\n{text}\n--- END ---\n"
-            "Write TWO alternative CLOSING requests for this email, each a materially different "
-            "reply-shape (e.g. asking one pointed question he can answer from expertise vs. "
-            "offering the one-pager in the sender's own words). Each must read like a busy human "
-            "typed it. Return ONLY JSON: {\"a\": \"...\", \"b\": \"...\"}"),
-            max_tokens=160, temperature=0.6)
-        obj = self._jobj(raw) or {}
-        for key in ("a", "b"):
-            alt = str(obj.get(key, "")).strip()
-            if alt and sents:
-                t = " ".join(sents[:-1] + [alt])
-                out.append({"label": f"request_{key}", "text": t, "origin": "request_swap"})
-        return out
+                drops.append({"label": f"drop_{b}", "text": t, "origin": "necessity"})
+        return base + swaps + drops
+
+    # ---------------------------------------------------------------- gate pool + flag repair
+    def _gate_pool(self, cands: list) -> list:
+        """Run truth + language on each candidate; return the pool the outcome judge may rank.
+        STRICTLY clean candidates (truth ok AND language ok with zero flags) always outrank
+        flagged-but-high-score ones: near-misses (score >= 0.55) are used ONLY when nothing is
+        strictly clean. Run-1 forensic: the near-miss rule admitted a flagged winner while the
+        judge's flags went unused."""
+        strict, near = [], []
+        for c in cands:
+            tr = self.truth(c["text"])
+            lv = self.language(c["text"])
+            c["gates"] = {"truth": tr["ok"], "language": lv.ok,
+                          "language_score": lv.score,
+                          "problems": tr.get("violations", []) + lv.flags}
+            c["_lang_flags"] = lv.flags
+            if tr["ok"] and lv.ok:
+                strict.append(c)
+            elif tr["ok"] and lv.score >= 0.55:
+                near.append(c)
+        return strict if strict else near
+
+    def repair_language(self, cand: dict) -> dict:
+        """One targeted revision that resolves the language judge's flags and nothing else, then
+        re-gates. Returns the repaired candidate if it comes back strictly clean (truth ok,
+        language ok, no flags); otherwise the original unchanged. Flags become edits instead of
+        shipping inside the winner."""
+        flags = cand.get("_lang_flags") or []
+        if self.chat is None or not flags:
+            return cand
+        raw = self._llm("step6_language_repair", (
+            f"Sender facts (ground truth; nothing beyond these):\n{self.brief.to_prompt()}\n"
+            f"--- EMAIL ---\n{cand['text']}\n--- END ---\n"
+            "A language judge flagged these problems:\n" +
+            "\n".join(f"- {f.get('problem', '')} (in: \"{str(f.get('sentence', ''))[:90]}\")"
+                      for f in flags) +
+            f"\nRewrite the email changing ONLY what resolves the flags. Keep every fact, the "
+            f"same beats in the same order, and the same ask. {self._WRITING_RULES}\n"
+            "Return ONLY the email text."), max_tokens=260, temperature=0.3)
+        from swm.decision.iterative_editor import _strip_subject
+        fixed = _strip_subject((raw or "").strip().strip('"'))
+        if not fixed or fixed == cand["text"]:
+            return cand
+        tr = self.truth(fixed)
+        lv = self.language(fixed)
+        if tr["ok"] and lv.ok:
+            return {**cand, "text": fixed, "label": cand["label"] + "+lang_repair",
+                    "gates": {"truth": True, "language": True, "language_score": lv.score,
+                              "problems": []},
+                    "_lang_flags": []}
+        return cand
 
     # ---------------------------------------------------------------- STEP 5: wording pass
     def wording_pass(self, text: str) -> str:
@@ -331,57 +389,43 @@ class ReplyFirstPlanner:
                            "text": plain_baseline_draft(self.brief,
                                                         getattr(self.dossier, "name", ""))})
 
-        gated = []
-        for c in candidates:
-            tr = self.truth(c["text"])
-            lv = self.language.__call__(c["text"])
-            c["gates"] = {"truth": tr["ok"], "language": lv.ok,
-                          "language_score": lv.score,
-                          "problems": tr.get("violations", []) + lv.flags}
-            if tr["ok"] and (lv.ok or lv.score >= 0.55):   # near-miss language goes to beat search
-                gated.append(c)
+        gated = self._gate_pool(candidates)
         if not gated:
             gated = [candidates[-1]]                       # plain baseline always survives truth
 
         # blind outcome ranking of structure candidates -> beat search on the top structure
-        rank1 = self.outcome_rank([{"label": c["label"], "text": c["text"]} for c in gated[:4]])
+        rank1 = self.outcome_rank([{"label": c["label"], "text": c["text"]} for c in gated[:6]])
         top_label = rank1["order"][0]
         top = next(c for c in gated if c["label"] == top_label)
         variants = self.beat_variants(top.get("structure", STRUCTURES[0]), top["text"])
-        gated_variants = []
-        for v in variants:
-            tr = self.truth(v["text"])
-            lv = self.language(v["text"])
-            v["gates"] = {"truth": tr["ok"], "language": lv.ok, "language_score": lv.score}
-            if tr["ok"] and lv.score >= 0.55:
-                gated_variants.append(v)
+        gated_variants = self._gate_pool(variants)
         if not gated_variants:
             gated_variants = [variants[0]]
         rank2 = self.outcome_rank([{"label": v["label"], "text": v["text"]}
-                                   for v in gated_variants[:4]])
+                                   for v in gated_variants[:6]])
         best_v = next(v for v in gated_variants if v["label"] == rank2["order"][0])
 
-        # wording pass inside the winning structure, then the final gauntlet
+        # wording pass inside the winning structure, then the final gauntlet: gate, repair any
+        # flagged finalist once (flags become edits), and only then rank blind
         polished = self.wording_pass(best_v["text"])
         finalists = [{"label": "polished", "text": polished},
                      {"label": "pre_polish", "text": best_v["text"]}]
-        final_gated = []
-        for f in finalists:
-            tr = self.truth(f["text"])
-            lv = self.language(f["text"])
-            f["gates"] = {"truth": tr["ok"], "language": lv.ok, "language_score": lv.score}
-            if tr["ok"] and lv.score >= 0.55:
-                final_gated.append(f)
+        final_gated = self._gate_pool(finalists)
         if not final_gated:
             final_gated = [finalists[1]]
+        final_gated = [self.repair_language(f) for f in final_gated]
+        finalists = final_gated + [f for f in finalists
+                                   if not any(g["label"].startswith(f["label"])
+                                              for g in final_gated)]
         rank3 = self.outcome_rank(final_gated)
 
-        # STEP 7: ONE output. Tie-break: language score, then brevity, then deterministic order.
+        # STEP 7: ONE output. Tie-break: strictly-clean first, then language score, then brevity.
         if rank3.get("separable"):
             win_label = rank3["order"][0]
             note = "outcome judge separated the finalists"
         else:
-            final_gated.sort(key=lambda f: (-f["gates"]["language_score"],
+            final_gated.sort(key=lambda f: (0 if f["gates"]["language"] else 1,
+                                            -f["gates"]["language_score"],
                                             len(f["text"].split())))
             win_label = final_gated[0]["label"]
             note = _NO_PERCENT_LABEL
