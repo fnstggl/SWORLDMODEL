@@ -126,25 +126,20 @@ def run_history_ablation(build_and_execute, *, ablations=("full", "no_history", 
 
 
 # ------------------------------------------------------------------ THE canonical persistence-aware run
-def run_with_persistence(question, plan, *, llm=None, context=None, actor_history=None, family_ids=None,
-                         intervention="", t0=None, n_particles=None, seed=0, calibrator=None, cal_key=""):
-    """The single canonical persistence-aware run, shared by ``pipeline.simulate(persistence=…)`` and the
-    compatibility wrapper ``simulate_with_persistence``. Given a compiled ``plan``, it:
-
-      resolve identity → load prior checkpoint + watermark → ingest leakage-safe new history → replay
-      sequential filters → SELECT causally-relevant families (block only quarantined/incompatible) →
-      materialize into WorldState → expose actor-visible memory → rollout (persistence operators enabled) →
-      persist feedback → commit a new versioned checkpoint → attach lineage/versions/support/limitations.
-
-    No-abstention preserved. When no history/checkpoint exists it runs the ordinary path with broad priors."""
+def prepare_persistence_run(question, plan, *, llm=None, context=None, actor_history=None,
+                            family_ids=None, n_particles=None) -> dict:
+    """Stage 1 of the canonical persistence-aware run: identity/checkpoint/history ingestion (ONCE),
+    world materialization, operator instantiation and run construction. Returns a handle consumed by
+    `run_persistence_slice` + `finalize_persistence_run`. Splitting the funnel here is what makes
+    structural-ensemble pilots PROGRESSIVE: the same handle rolls a pilot slice, promotion is decided,
+    and the extension slice continues on the identical prepared world/operators — history is never
+    re-ingested and the checkpoint commits once, at finalize."""
     from swm.world_model_v2.materialize import (build_world, check_readout_binding, operators_from_plan,
                                                 queue_builder_from_plan)
     from swm.world_model_v2.init_state import InitialStateModel
     from swm.world_model_v2.rollout import WorldModelV2Run
-    from swm.world_model_v2.pipeline import result_from_run
     from swm.world_model_v2.phase8_runtime import (family_runtime_manifest, select_families,
                                                    support_grade_effect)
-    t0 = t0 if t0 is not None else _time.time()
     base = build_world(plan, evidence_hash=(plan.provenance or {}).get("evidence_bundle_hash", ""))
     family_ids = list(family_ids or ["engagement_propensity"])
     meta = {"materialized": 0, "history_events": 0, "checkpoint_loaded": False,
@@ -209,10 +204,34 @@ def run_with_persistence(question, plan, *, llm=None, context=None, actor_histor
     npart = n_particles or plan.compute_plan.get("n_particles", 30)
     run = WorldModelV2Run(initial=init, queue_builder=queue_builder_from_plan(plan),
                           operators=ops, contract=plan.outcome_contract, n_particles=npart)
-    result, branches = run.run(seed=seed)
-    result["omissions"] = list(getattr(base, "omissions", []))
+    return {"question": question, "plan": plan, "base": base, "ops": ops, "run": run,
+            "n_particles": npart, "meta": meta, "family_manifests": family_manifests,
+            "materialized": materialized, "prior_watermark": prior_watermark,
+            "context": context, "actor_history": actor_history}
+
+
+def run_persistence_slice(handle: dict, *, seed: int = 0, n_total: int = None, start: int = 0,
+                          stop: int = None, particle_scope=None) -> list:
+    """Stage 2: roll a deterministic index-keyed particle slice on the prepared run. Appendable — pilot
+    [0,p) then [p,n) equals a direct [0,n) roll (same per-index worlds and exogenous seeds)."""
+    return handle["run"].run_particle_range(seed=seed, n_total=n_total, start=start, stop=stop,
+                                            particle_scope=particle_scope)
+
+
+def finalize_persistence_run(handle: dict, branches: list, *, intervention="", t0=None, seed=0,
+                             calibrator=None, cal_key=""):
+    """Stage 3: terminal projection over ALL accumulated branches (pilot prefix + extension), result
+    contract assembly, degradation surfacing, single checkpoint commit, provenance stamps."""
+    from swm.world_model_v2.pipeline import result_from_run
     from swm.world_model_v2.materialize import attach_actor_decision_distributions
-    attach_actor_decision_distributions(ops, result)
+    t0 = t0 if t0 is not None else _time.time()
+    question, plan, base = handle["question"], handle["plan"], handle["base"]
+    context, actor_history = handle["context"], handle["actor_history"]
+    meta, family_manifests = handle["meta"], handle["family_manifests"]
+    materialized, prior_watermark = handle["materialized"], handle["prior_watermark"]
+    result = handle["run"].project(branches)
+    result["omissions"] = list(getattr(base, "omissions", []))
+    attach_actor_decision_distributions(handle["ops"], result)
     res = result_from_run(question, plan, result, branches, intervention=intervention, t0=t0,
                           calibrator=calibrator, cal_key=cal_key)
     res.provenance = {**(res.provenance or {}),
@@ -249,6 +268,28 @@ def run_with_persistence(question, plan, *, llm=None, context=None, actor_histor
                       "persistent_deltas": [d.as_dict() for d in materialized][:10]}
     return res, {"plan_hash": plan.plan_hash(), "materialized": materialized, "persistence_meta": meta,
                  "family_manifests": family_manifests}
+
+
+def run_with_persistence(question, plan, *, llm=None, context=None, actor_history=None, family_ids=None,
+                         intervention="", t0=None, n_particles=None, seed=0, calibrator=None, cal_key=""):
+    """The single canonical persistence-aware run, shared by ``pipeline.simulate(persistence=…)`` and the
+    compatibility wrapper ``simulate_with_persistence``. Given a compiled ``plan``, it:
+
+      resolve identity → load prior checkpoint + watermark → ingest leakage-safe new history → replay
+      sequential filters → SELECT causally-relevant families (block only quarantined/incompatible) →
+      materialize into WorldState → expose actor-visible memory → rollout (persistence operators enabled) →
+      persist feedback → commit a new versioned checkpoint → attach lineage/versions/support/limitations.
+
+    No-abstention preserved. When no history/checkpoint exists it runs the ordinary path with broad priors.
+    Implemented as prepare → slice → finalize (see the stage functions above) so the structural-ensemble
+    runtime can run PROGRESSIVE pilot/full particle stages through this same canonical funnel."""
+    t0 = t0 if t0 is not None else _time.time()
+    handle = prepare_persistence_run(question, plan, llm=llm, context=context,
+                                     actor_history=actor_history, family_ids=family_ids,
+                                     n_particles=n_particles)
+    branches = run_persistence_slice(handle, seed=seed)
+    return finalize_persistence_run(handle, branches, intervention=intervention, t0=t0, seed=seed,
+                                    calibrator=calibrator, cal_key=cal_key)
 
 
 def _surface_actor_policy_degradation(res, report: dict) -> None:

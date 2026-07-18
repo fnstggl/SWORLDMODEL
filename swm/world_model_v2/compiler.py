@@ -336,10 +336,17 @@ def _coerce_outcome(o: dict) -> dict:
 
 def compile_world(question: str, *, llm, evidence="", as_of: str, horizon: str,
                   intervention: str = "", n_budget: int = 30, seed: int = 0,
-                  persist: bool = True) -> WorldExecutionPlan:
+                  persist: bool = True, structural_directive: str = None) -> WorldExecutionPlan:
     """Compile a causally-sufficient, executable plan for ANY coherent question. Never abstains for
     epistemic reasons. Raises CompilerExecutionError (technical) or ClarificationRequired (incoherent, rare).
-    `evidence` may be a typed EvidenceBundle or a legacy string."""
+    `evidence` may be a typed EvidenceBundle or a legacy string.
+
+    `structural_directive` (structural-ensemble Stage B): the candidate model's OWN causal identity —
+    thesis, decisive actors/institutions/constraints/mechanisms, boundary — appended to the proposal
+    prompt so each ensemble candidate compiles into ITS structure. It never contains another candidate's
+    content. The canonical production runtime compiles through the ensemble compiler
+    (swm.world_model_v2.ensemble_compiler); calling this function directly for a production forecast is
+    the explicit `single_structural_model` ablation path."""
     from swm.engine.grounding import parse_json
     from swm.world_model_v2.init_state import LatentVariableRecord
     from swm.world_model_v2.transitions import _OPERATORS
@@ -356,6 +363,8 @@ def compile_world(question: str, *, llm, evidence="", as_of: str, horizon: str,
         evidence=evidence_text or "(none)",
         mechanisms=json.dumps({k: v.causal_role for k, v in registry.items()}),
         families=json.dumps(list(FAMILIES)))
+    if structural_directive:
+        prompt += "\n\n" + str(structural_directive)
 
     # ---- LLM decomposition with a bounded parse retry (parse failure is TECHNICAL, not epistemic) ----
     raw = None
@@ -535,6 +544,8 @@ def compile_world(question: str, *, llm, evidence="", as_of: str, horizon: str,
                           "structural_hypotheses": len(raw.get("structural_hypotheses") or [])},
         compute_plan={"n_particles": _fidelity_plan(raw, n_budget)["n_particles"]},
         provenance={"prompt_hash": hashlib.sha1(prompt.encode()).hexdigest()[:12],
+                    "structural_directive_hash": (hashlib.sha1(str(structural_directive).encode())
+                                                  .hexdigest()[:12] if structural_directive else ""),
                     "compiler_version": COMPILER_VERSION, "seed": seed,
                     "rationale": str(raw.get("rationale", ""))[:400], "scenario": scenario,
                     "evidence_basis": evidence_basis, "evidence_bundle_hash": bundle_hash,
