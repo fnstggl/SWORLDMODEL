@@ -1,8 +1,19 @@
-# Semantic world consequences — demos + matched 4-mode evaluation (honest report)
+# Fixed-v1 semantic consequences — baseline demos + matched 4-mode evaluation
 
-**Phase claim under test.** After this phase, an action executed by a simulated human changes
-its own world branch by creating and modifying typed facts, objects, communications (with the
-exact content), relationships, commitments, institutional states, and processes; other actors
+> **STATUS REFRAME.** Everything in this file evaluates
+> `fixed_semantic_consequence_policy_v1` — the structured-consequence BASELINE with a
+> developer-fixed ontology (closed OBJECT_TYPES, PROCESS_STAGES, primitive catalog, event
+> names, institutional candidate menus). It decisively beats the legacy scalar coupling on
+> the measured defect (§1), and it is NOT the production architecture: production is
+> `generated_actor_mediated_world`, where each scenario GENERATES its own semantic types,
+> events, processes, and outcome predicates, and every human response comes from that
+> actor's own persistent LLM invocation (see `docs/GENERATED_WORLD.md` and
+> `experiments/results/GENERATED_WORLD_REPORT.md`). These artifacts must not be read as
+> validation of the generated architecture.
+
+**Baseline claim under test.** An action executed by a simulated human changes its own world
+branch by creating and modifying typed facts, objects, communications (with the exact
+content), relationships, commitments, institutional states, and processes; other actors
 generate downstream reactions from what actually reached them; numbers change only where the
 world is genuinely numerical; the final answer is read from the evolved structured world.
 `ACTION_PATHWAY_EFFECTS × pathway_step` survives only as the explicit
@@ -49,7 +60,11 @@ same bar it always did). The arms differ ONLY in consequence mode × actor polic
 
 ## 2. Four end-to-end demos (DeepSeek, semantic default)
 
-**demo1 — product launch**: DEMO1_PLACEHOLDER
+**demo1 — product launch** (6 particles): the founder's decision genuinely SPLITS the worlds —
+`launched_publicly 0.5 / not_launched 0.5` — and each launched branch contains the product
+launch process, the public statement with the actual announcement text, and the rival's own
+subsequent decision taken with that text in their view (262 typed objects, 164 quarantined
+untrusted ops recorded).
 
 **demo2 — negotiation with real messages** (6 particles): every branch is a full exchange of
 proposals and private communications with substantive content (551 deliveries across the
@@ -58,7 +73,15 @@ negative sample of the same process the arms measured (arm C/D each found deal b
 n=8). The typed record shows exactly why each branch stalled (ultimatum/counter-rejection
 statuses on the proposal objects).
 
-**demo3 — institutional decision**: DEMO3_PLACEHOLDER
+**demo3 — institutional decision** (4 particles): the CEO's requests enter real board
+procedures (54 submissions across reaction chains, 483 quarantined ops — the noisiest run)
+but NO branch produced a decided/approve outcome (`not_approved 1.0`): members' reaction
+chains kept re-submitting and re-deliberating rather than holding approve as their standing
+action at tally time. An honest negative: the fixed-v1 institutional loop closes structurally
+(the offline smoke approves cleanly) but under long LLM reaction chains the vote-time
+`current_action` convention is brittle — one of the reasons this mode is now the BASELINE
+(see the generated actor-mediated architecture below), where institutional aggregation counts
+explicit member decisions instead.
 
 **demo4 — individual communication** (Priya, 3 hypotheses × 2 samples): the exact Sunday-
 evening message reaches every sample; all six samples decide qualitatively (zero fallbacks,
