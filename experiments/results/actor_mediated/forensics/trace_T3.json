@@ -1,66 +1,697 @@
 {
  "route": "swm.world_model_v2.unified_runtime.simulate_world (institutional)",
  "question": "Will a nine-member university faculty senate, which requires a simple majority of members present with a quorum of six, approve the proposed switch to semester-long course scheduling at its August 2026 meeting, given that the provost publicly endorsed the switch and two department chairs on the senate have publicly opposed it?",
- "simulation_status": "execution_failed",
+ "simulation_status": "completed_with_degradation",
  "support_grade": "exploratory",
- "raw_probability": null,
- "raw_distribution": {},
+ "raw_probability": 0.5,
+ "raw_distribution": {
+  "approve": 0.5,
+  "reject": 0.5
+ },
  "run_classification": {
-  "run_class": "execution_failed",
+  "run_class": "full_numeric_forecast",
   "version": "run-class-1.0",
   "reasons": [
-   "simulation_status=execution_failed",
-   "failure_taxonomy=runtime_exception"
+   "evidence executed and the posterior was consumed by the terminal path",
+   "support_grade=exploratory: numeric class retained but support is weak \u2014 see epistemic contract"
   ]
  },
  "epistemic_contract": {
-  "run_class": "execution_failed",
-  "actor_simulation": "no_actor_decisions_in_this_question",
-  "n_actor_reconsiderations": 0,
-  "max_cascade_depth": 0,
-  "n_numeric_actor_fallbacks": 0,
-  "numeric_actor_fallback_occurred": false,
+  "run_class": "full_numeric_forecast",
+  "actor_simulation": "full_recursive_actor_simulation",
+  "n_actor_reconsiderations": 96,
+  "max_cascade_depth": 4,
+  "n_numeric_actor_fallbacks": 300,
+  "numeric_actor_fallback_occurred": true,
   "llm_actor_runtime_fallback": [],
   "evidence_retrieval_degraded": false,
-  "aggregate_processes_used": [],
-  "n_approximations_stamped": 0,
-  "unmodeled_novel_actions": 0,
+  "aggregate_processes_used": [
+   "pathway_effect",
+   "no_reconsideration_scheduled",
+   "no_reconsideration_scheduled",
+   "no_reconsideration_scheduled",
+   "no_reconsideration_scheduled",
+   "no_reconsideration_scheduled"
+  ],
+  "n_approximations_stamped": 181,
+  "unmodeled_novel_actions": 84,
   "convergence": {
-   "n_particles": null,
+   "n_particles": 45,
    "note": "particle count and terminal spread; see uncertainty_decomposition"
   },
   "calibration_available": false,
   "scenario_only": false,
   "support_grade": "exploratory"
  },
- "joint_world": null,
- "actor_policy_mode": null,
- "event_cascade": null,
- "n_semantic_events": null,
- "demoted_scalar_writes": null,
- "n_approximations": null,
- "actor_decisions": {},
- "operator_delta_census": null,
+ "joint_world": {
+  "status": "attached",
+  "k": 3,
+  "llm_calls": 1,
+  "source": "joint_hypothesizer:llm",
+  "labels": [
+   "Smooth Endorsement",
+   "Hidden Faculty Revolt",
+   "Quorum Collapse"
+  ]
+ },
+ "actor_policy_mode": "hybrid_relevant_actor_policy",
+ "event_cascade": {
+  "version": "actor-propagation-1.0",
+  "branches": [
+   {
+    "branch": "b000",
+    "scheduled": 0,
+    "max_depth_reached": 0,
+    "suppressed_duplicate": 2,
+    "suppressed_budget": 0,
+    "suppressed_depth": 0,
+    "quiescence": "duplicate_semantic_event"
+   },
+   {
+    "branch": "b001",
+    "scheduled": 24,
+    "max_depth_reached": 3,
+    "suppressed_duplicate": 1,
+    "suppressed_budget": 98,
+    "suppressed_depth": 0,
+    "quiescence": "event_budget"
+   },
+   {
+    "branch": "b002",
+    "scheduled": 24,
+    "max_depth_reached": 4,
+    "suppressed_duplicate": 0,
+    "suppressed_budget": 3,
+    "suppressed_depth": 6,
+    "quiescence": "event_budget"
+   },
+   {
+    "branch": "b003",
+    "scheduled": 24,
+    "max_depth_reached": 4,
+    "suppressed_duplicate": 0,
+    "suppressed_budget": 11,
+    "suppressed_depth": 4,
+    "quiescence": "event_budget"
+   },
+   {
+    "branch": "b004",
+    "scheduled": 24,
+    "max_depth_reached": 2,
+    "suppressed_duplicate": 9,
+    "suppressed_budget": 36,
+    "suppressed_depth": 0,
+    "quiescence": "duplicate_semantic_event"
+   },
+   {
+    "branch": "b005",
+    "scheduled": 0,
+    "max_depth_reached": 0,
+    "suppressed_duplicate": 11,
+    "suppressed_budget": 0,
+    "suppressed_depth": 0,
+    "quiescence": "duplicate_semantic_event"
+   },
+   {
+    "branch": "b006",
+    "scheduled": 0,
+    "max_depth_reached": 0,
+    "suppressed_duplicate": 11,
+    "suppressed_budget": 0,
+    "suppressed_depth": 0,
+    "quiescence": "duplicate_semantic_event"
+   },
+   {
+    "branch": "b007",
+    "scheduled": 0,
+    "max_depth_reached": 0,
+    "suppressed_duplicate": 10,
+    "suppressed_budget": 0,
+    "suppressed_depth": 0,
+    "quiescence": "duplicate_semantic_event"
+   },
+   {
+    "branch": "b008",
+    "scheduled": 0,
+    "max_depth_reached": 0,
+    "suppressed_duplicate": 7,
+    "suppressed_budget": 0,
+    "suppressed_depth": 0,
+    "quiescence": "duplicate_semantic_event"
+   },
+   {
+    "branch": "b009",
+    "scheduled": 0,
+    "max_depth_reached": 0,
+    "suppressed_duplicate": 11,
+    "suppressed_budget": 0,
+    "suppressed_depth": 0,
+    "quiescence": "duplicate_semantic_event"
+   },
+   {
+    "branch": "b010",
+    "scheduled": 0,
+    "max_depth_reached": 0,
+    "suppressed_duplicate": 7,
+    "suppressed_budget": 0,
+    "suppressed_depth": 0,
+    "quiescence": "duplicate_semantic_event"
+   },
+   {
+    "branch": "b011",
+    "scheduled": 0,
+    "max_depth_reached": 0,
+    "suppressed_duplicate": 11,
+    "suppressed_budget": 0,
+    "suppressed_depth": 0,
+    "quiescence": "duplicate_semantic_event"
+   }
+  ],
+  "total_reconsiderations": 96
+ },
+ "n_semantic_events": 539,
+ "demoted_scalar_writes": {
+  "n": 37,
+  "kinds": [
+   "pathway_effect"
+  ]
+ },
+ "n_approximations": 181,
+ "actor_decisions": {
+  "university_faculty_senate": {
+   "raw": {
+    "accept": 0.0256,
+    "acknowledge@aaup_chapter": 0.0513,
+    "coordinate": 0.0513,
+    "defer": 0.0256,
+    "follow_up": 0.0256,
+    "hold_position@provost": 0.0256,
+    "novel:private_check_with_chairs": 0.1795,
+    "novel:private_consultation_with_chairs": 0.0256,
+    "novel:private_engagement_with_aaup": 0.0513,
+    "novel:private_reassurance_to_chairs": 0.0513,
+    "reply_now@aaup_chapter": 0.0513,
+    "reply_now@department_1": 0.0256,
+    "reply_now@department_2": 0.0769,
+    "reply_now@other_senate_members": 0.0513,
+    "reply_now@provost": 0.0513,
+    "schedule": 0.0513,
+    "schedule@provost_endorsement_vote": 0.0256,
+    "wait": 0.1538
+   },
+   "n_branches": 39,
+   "n_numeric_fallbacks": 49,
+   "calibration_status": "unvalidated",
+   "cluster_version": "cluster-2.0",
+   "sample_rows": [
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_confident_orchestrator",
+     "cluster": "schedule",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": false
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_confident_orchestrator",
+     "cluster": "novel:private_check_with_chairs",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_confident_orchestrator",
+     "cluster": "novel:private_check_with_chairs",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_confident_orchestrator",
+     "cluster": "novel:private_check_with_chairs",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_confident_orchestrator",
+     "cluster": "novel:private_check_with_chairs",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_confident_orchestrator",
+     "cluster": "novel:private_check_with_chairs",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    }
+   ]
+  },
+  "provost": {
+   "raw": {
+    "accept@aaup_chapter": 0.0192,
+    "acknowledge@aaup_chapter": 0.0769,
+    "coordinate@university_faculty_senate": 0.0192,
+    "escalate@department_1": 0.1154,
+    "escalate@department_2": 0.0192,
+    "escalate@other_senate_members": 0.0192,
+    "escalate@university_faculty_senate": 0.0192,
+    "follow_up": 0.1154,
+    "hold_position@aaup_chapter": 0.0962,
+    "hold_position@faculty_senate": 0.0385,
+    "hold_position@university_faculty_senate": 0.0385,
+    "ignore@aaup_chapter": 0.0192,
+    "novel:periodic_strategic_review": 0.0192,
+    "novel:reaffirm_quiet_track@aaup_chapter": 0.0192,
+    "novel:review_strategic_documents": 0.0577,
+    "novel:summon_department_chair_1_for_final_ultimatum": 0.0192,
+    "reply_now@aaup_chapter": 0.1923,
+    "reply_now@department_1": 0.0192,
+    "reply_now@department_2": 0.0192,
+    "reply_now@university_faculty_senate": 0.0192,
+    "support@university_faculty_senate": 0.0192,
+    "wait": 0.0192
+   },
+   "n_branches": 52,
+   "n_numeric_fallbacks": 55,
+   "calibration_status": "unvalidated",
+   "cluster_version": "cluster-2.0",
+   "sample_rows": [
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_confident_consensus_builder",
+     "cluster": "novel:periodic_strategic_review",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_confident_consensus_builder",
+     "cluster": "follow_up",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_confident_consensus_builder",
+     "cluster": "follow_up",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_confident_consensus_builder",
+     "cluster": "follow_up",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_confident_consensus_builder",
+     "cluster": "follow_up",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_confident_consensus_builder",
+     "cluster": "follow_up",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    }
+   ]
+  },
+  "department_chair_1": {
+   "raw": {
+    "acknowledge@aaup_chapter": 0.0606,
+    "acknowledge@provost": 0.0909,
+    "coordinate@department_2": 0.0303,
+    "coordinate@other_department_on_senate": 0.0303,
+    "delay@provost": 0.0909,
+    "family:organizational_market": 0.1515,
+    "follow_up": 0.2424,
+    "hold_position@provost": 0.0606,
+    "novel:private_soundings": 0.0606,
+    "novel:review_strategic_document": 0.0606,
+    "reply_now@aaup_chapter": 0.0303,
+    "schedule": 0.0303,
+    "wait": 0.0606
+   },
+   "n_branches": 33,
+   "n_numeric_fallbacks": 49,
+   "calibration_status": "unvalidated",
+   "cluster_version": "cluster-2.0",
+   "sample_rows": [
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_confident_builder",
+     "cluster": "wait",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": false
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_confident_builder",
+     "cluster": "family:organizational_market",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_confident_builder",
+     "cluster": "family:organizational_market",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_confident_builder",
+     "cluster": "family:organizational_market",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_confident_builder",
+     "cluster": "family:organizational_market",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_confident_builder",
+     "cluster": "family:organizational_market",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    }
+   ]
+  },
+  "department_chair_2": {
+   "raw": {
+    "acknowledge@aaup_chapter": 0.0588,
+    "coordinate@department_1": 0.0294,
+    "coordinate@university_faculty_senate": 0.0294,
+    "family:messaging": 0.0294,
+    "follow_up": 0.2353,
+    "hold_position": 0.1471,
+    "hold_position@faculty_senators": 0.0294,
+    "hold_position@provost": 0.1471,
+    "novel:periodic_strategic_review": 0.0588,
+    "novel:private_consultation": 0.1471,
+    "reply_now@aaup_chapter": 0.0294,
+    "reply_now@university_faculty_senate": 0.0294,
+    "support": 0.0294
+   },
+   "n_branches": 34,
+   "n_numeric_fallbacks": 48,
+   "calibration_status": "unvalidated",
+   "cluster_version": "cluster-2.0",
+   "sample_rows": [
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_steadfast_builder",
+     "cluster": "novel:periodic_strategic_review",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_steadfast_builder",
+     "cluster": "follow_up",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_steadfast_builder",
+     "cluster": "follow_up",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_steadfast_builder",
+     "cluster": "follow_up",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_steadfast_builder",
+     "cluster": "follow_up",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_steadfast_builder",
+     "cluster": "support",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": false
+    }
+   ]
+  },
+  "other_senate_members": {
+   "raw": {
+    "acknowledge@aaup_chapter": 0.0571,
+    "counteroffer": 0.0286,
+    "delay": 0.0286,
+    "hold_position": 0.0286,
+    "hold_position@provost": 0.0286,
+    "ignore@provost": 0.0286,
+    "novel:call_individual_senators": 0.0571,
+    "novel:private_coordination_call": 0.0286,
+    "novel:private_outreach_to_undecided": 0.1429,
+    "novel:private_reassurance_check": 0.0286,
+    "novel:private_reassurance_check_final": 0.1143,
+    "novel:private_reassurance_check_followup": 0.0286,
+    "novel:private_soundings": 0.0571,
+    "reply_now@aaup_chapter": 0.0286,
+    "reply_now@department_1": 0.0286,
+    "reply_now@department_2": 0.0286,
+    "reply_now@university_faculty_senate": 0.0571,
+    "strike": 0.0857,
+    "wait": 0.1143
+   },
+   "n_branches": 35,
+   "n_numeric_fallbacks": 49,
+   "calibration_status": "unvalidated",
+   "cluster_version": "cluster-2.0",
+   "sample_rows": [
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_reluctant_institutionalist",
+     "cluster": "novel:private_reassurance_check",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_reluctant_institutionalist",
+     "cluster": "novel:private_reassurance_check_followup",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_reluctant_institutionalist",
+     "cluster": "novel:private_reassurance_check_final",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_reluctant_institutionalist",
+     "cluster": "novel:private_reassurance_check_final",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_reluctant_institutionalist",
+     "cluster": "novel:private_reassurance_check_final",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_reluctant_institutionalist",
+     "cluster": "novel:private_reassurance_check_final",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    }
+   ]
+  },
+  "aaup_chapter": {
+   "raw": {
+    "acknowledge@department_1": 0.0213,
+    "acknowledge@department_2": 0.0213,
+    "follow_up": 0.1702,
+    "hold_position@provost": 0.0638,
+    "novel:private_meeting_with_provost@provost": 0.0426,
+    "reply_now@department_1": 0.0213,
+    "reply_now@department_2": 0.0213,
+    "reply_now@other_senate_members": 0.0213,
+    "reply_now@provost": 0.2553,
+    "reply_now@university_faculty_senate": 0.0426,
+    "schedule": 0.0213,
+    "schedule@aaup_chapter_leadership": 0.0213,
+    "support": 0.0426,
+    "wait": 0.234
+   },
+   "n_branches": 47,
+   "n_numeric_fallbacks": 50,
+   "calibration_status": "unvalidated",
+   "cluster_version": "cluster-2.0",
+   "sample_rows": [
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_reluctant_institutionalist",
+     "cluster": "support",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": false
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_reluctant_institutionalist",
+     "cluster": "support",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": false
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_reluctant_institutionalist",
+     "cluster": "follow_up",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_reluctant_institutionalist",
+     "cluster": "follow_up",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_reluctant_institutionalist",
+     "cluster": "follow_up",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    },
+    {
+     "branch_id": "b000",
+     "hypothesis_id": "w0:smooth_endorsement/h0:the_reluctant_institutionalist",
+     "cluster": "follow_up",
+     "decision_source": "persistent_qualitative_llm",
+     "novel_action_unmodeled": true
+    }
+   ]
+  }
+ },
+ "operator_delta_census": {
+  "evidence_observation": {
+   "n_deltas": 96,
+   "fields_written": [
+    "quantities[evidence::1a511ffd29c6a54f:c0]",
+    "information.exposures[1a511ffd29c6a54f:c0]",
+    "quantities[evidence::1a511ffd29c6a54f:c1]",
+    "information.exposures[1a511ffd29c6a54f:c1]",
+    "quantities[evidence::33b9922f9189e902:c0]",
+    "information.exposures[33b9922f9189e902:c0]",
+    "quantities[evidence::33b9922f9189e902:c1]",
+    "information.exposures[33b9922f9189e902:c1]"
+   ],
+   "event_types": [
+    "observe_evidence"
+   ]
+  },
+  "production_actor_policy": {
+   "n_deltas": 540,
+   "fields_written": [
+    "university_faculty_senate.current_action",
+    "university_faculty_senate.past_actions",
+    "provost.current_action",
+    "provost.past_actions",
+    "department_chair_1.current_action",
+    "department_chair_1.past_actions",
+    "department_chair_2.current_action",
+    "department_chair_2.past_actions"
+   ],
+   "event_types": [
+    "actor_action",
+    "action_blocked"
+   ]
+  },
+  "persistence_update": {
+   "n_deltas": 12,
+   "fields_written": [
+    "auburn_trustees.beliefs[reputation]"
+   ],
+   "event_types": [
+    "persistence_update"
+   ]
+  },
+  "structural_process_prior": {
+   "n_deltas": 12,
+   "fields_written": [
+    "quantities[mechanism_outcome:fallback:institutional_decision_process]"
+   ],
+   "event_types": [
+    "structural_process_prior"
+   ]
+  },
+  "institutional_decision": {
+   "n_deltas": 12,
+   "fields_written": [
+    "institution[university_faculty_senate].decision",
+    "quantities[absorbing_state_reached]"
+   ],
+   "event_types": [
+    "institutional_decision"
+   ]
+  },
+  "absorption_monitor": {
+   "n_deltas": 6,
+   "fields_written": [
+    "quantities[absorbed_at]"
+   ],
+   "event_types": [
+    "absorption"
+   ]
+  },
+  "actor_action_aggregation": {
+   "n_deltas": 7,
+   "fields_written": [
+    "quantities[actor_action_share]"
+   ],
+   "event_types": [
+    "actor_action_aggregation"
+   ]
+  }
+ },
  "manifest_phase2_evidence": {
   "available": true,
   "selected": true,
   "executed": true,
   "omitted": false,
-  "reason": "22 as-of claims",
+  "reason": "as_of supplied",
   "version": "phase2-1.0",
   "n_events": 0,
   "n_state_deltas": 0,
   "causally_irrelevant": false,
-  "removal_changes_terminal": null
+  "removal_changes_terminal": null,
+  "status": "causally_active"
  },
  "limitations": [
-  "\"'expected_reactions' is not in the universal schema or a registered extension (register_entity_extension first \u2014 no arbitrary untyped keys)\""
+  "degraded: support grade exploratory; 2 fallback mechanism(s) used"
  ],
- "latency_s": 192.56,
+ "latency_s": 2687.188,
  "_meta": {
-  "generated_at": "2026-07-18T16:09:51Z",
+  "generated_at": "2026-07-18T16:16:03Z",
   "llm_backend": "deepseek (env key)",
   "as_of": "2026-07-18",
-  "trace_wall_s": 192.6
+  "trace_wall_s": 2687.3
  }
 }

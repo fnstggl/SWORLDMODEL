@@ -310,3 +310,15 @@ and safety-gated (typed feasibility, principled abstention, human_approval_requi
 decision quality has no prospective validation; the T4 utility landscape did not even
 differentiate arms on the synthetic decision. The existing `recommendation_status=withheld`
 behavior at current support grades is the correct production posture.
+
+### C.3b Completed institutional trace (T3, after the generality fix)
+
+The first T3 attempt EXPOSED a generality bug (an entity typed outside person/institution
+crashed the qualitative anticipation write on the schema gate) — fixed by broadening the
+actor-policy extension registration and making anticipation bookkeeping non-fatal.
+The rerun completed through the full route: `completed_with_degradation`, p=0.50,
+`actor_simulation=full_recursive_actor_simulation`, 96 reconsiderations at depth 4, ~45 min
+(`forensics/trace_T3.json`). T1 completed with joint worlds attached but its compiled plan
+scheduled no actor decisions — labeled `no_actor_decisions_in_this_question` in its epistemic
+contract (`forensics/trace_T1.json`): compiler decision-scheduling coverage is a recorded
+limitation, not a silent gap.
