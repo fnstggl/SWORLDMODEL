@@ -1,0 +1,403 @@
+{
+ "schema_id": "schema_d86b2159fc9de851",
+ "version": "1",
+ "question": "Will the clinic's monthly referrals recover to their December level by mid-October 2025?",
+ "prediction_timestamp": 1752800000.0,
+ "horizon": 1757984000.0,
+ "entity_types": {
+  "clinic": {
+   "fields": {
+    "clinic_id": "id",
+    "name": "str",
+    "monthly_referral_target": "int"
+   }
+  },
+  "referring_gp": {
+   "fields": {
+    "gp_id": "id",
+    "name": "str",
+    "practice_name": "str"
+   }
+  },
+  "practice_manager": {
+   "fields": {
+    "manager_id": "id",
+    "name": "str"
+   }
+  },
+  "clinic_director": {
+   "fields": {
+    "director_id": "id",
+    "name": "str"
+   }
+  },
+  "referral_source_stat_report": {
+   "fields": {
+    "report_id": "id",
+    "generated_at": "time",
+    "month": "str",
+    "total_referrals": "int"
+   }
+  },
+  "partner_program_proposal": {
+   "fields": {
+    "proposal_id": "id",
+    "proposed_by": "id",
+    "proposed_at": "time",
+    "status": "str"
+   }
+  },
+  "fee_reversal_proposal": {
+   "fields": {
+    "proposal_id": "id",
+    "proposed_by": "id",
+    "proposed_at": "time",
+    "status": "str"
+   }
+  }
+ },
+ "fact_types": {
+  "monthly_referral_count": {
+   "fields": {
+    "clinic_id": "id",
+    "month": "str",
+    "count": "int"
+   }
+  },
+  "gp_referral_stopped": {
+   "fields": {
+    "gp_id": "id",
+    "stopped_month": "str",
+    "reason_unknown": "bool"
+   }
+  },
+  "gp_referral_resumed": {
+   "fields": {
+    "gp_id": "id",
+    "resumed_month": "str"
+   }
+  },
+  "fee_reversal_cost": {
+   "fields": {
+    "quarterly_cost": "int"
+   }
+  },
+  "partner_program_cost": {
+   "fields": {
+    "setup_cost": "int"
+   }
+  },
+  "decision_record": {
+   "fields": {
+    "decision_id": "id",
+    "decision_type": "str",
+    "decided_by": "id",
+    "decision": "str",
+    "timestamp": "time"
+   }
+  }
+ },
+ "relation_types": {
+  "employs": {
+   "from": "clinic",
+   "to": "practice_manager",
+   "fields": {}
+  },
+  "employs_director": {
+   "from": "clinic",
+   "to": "clinic_director",
+   "fields": {}
+  },
+  "refers_to": {
+   "from": "referring_gp",
+   "to": "clinic",
+   "fields": {
+    "monthly_rate": "int",
+    "active": "bool"
+   }
+  },
+  "proposes_to": {
+   "from": "practice_manager",
+   "to": "clinic_director",
+   "fields": {}
+  },
+  "authorizes": {
+   "from": "clinic_director",
+   "to": "fee_reversal_proposal",
+   "fields": {}
+  },
+  "authorizes_partner": {
+   "from": "clinic_director",
+   "to": "partner_program_proposal",
+   "fields": {}
+  }
+ },
+ "semantic_event_types": {
+  "gp_stops_referring": {
+   "fields": {
+    "gp_id": "id",
+    "clinic_id": "id",
+    "month": "str",
+    "reason": "str"
+   }
+  },
+  "gp_resumes_referring": {
+   "fields": {
+    "gp_id": "id",
+    "clinic_id": "id",
+    "month": "str"
+   }
+  },
+  "practice_manager_proposes_fee_reversal": {
+   "fields": {
+    "proposal_id": "id",
+    "manager_id": "id",
+    "director_id": "id",
+    "proposed_at": "time"
+   }
+  },
+  "practice_manager_proposes_partner_program": {
+   "fields": {
+    "proposal_id": "id",
+    "manager_id": "id",
+    "director_id": "id",
+    "proposed_at": "time"
+   }
+  },
+  "director_decides_on_proposal": {
+   "fields": {
+    "proposal_id": "id",
+    "director_id": "id",
+    "decision": "str",
+    "timestamp": "time"
+   }
+  },
+  "referral_source_stats_pulled": {
+   "fields": {
+    "report_id": "id",
+    "manager_id": "id",
+    "month": "str",
+    "total": "int"
+   }
+  },
+  "unmodeled_actor_action": {
+   "description": "schema-scoped scaffolding: an actor action whose semantics could not be compiled; exact content preserved; counted as a fallback",
+   "fields": {
+    "action_name": "str",
+    "content": "str",
+    "target": "str"
+   },
+   "typical_visibility": "participants",
+   "scaffolding": true
+  }
+ },
+ "process_definitions": {
+  "referral_recovery_assessment": {
+   "states": [
+    "initial",
+    "stats_pulled",
+    "gap_identified",
+    "proposals_made",
+    "decision_pending",
+    "decision_made",
+    "recovery_achieved",
+    "recovery_failed"
+   ],
+   "transitions": [
+    {
+     "from": "initial",
+     "to": "stats_pulled",
+     "trigger": "referral_source_stats_pulled"
+    },
+    {
+     "from": "stats_pulled",
+     "to": "gap_identified",
+     "trigger": "monthly_referral_count < 60"
+    },
+    {
+     "from": "gap_identified",
+     "to": "proposals_made",
+     "trigger": "practice_manager_proposes_fee_reversal OR practice_manager_proposes_partner_program"
+    },
+    {
+     "from": "proposals_made",
+     "to": "decision_pending",
+     "trigger": "proposal_exists"
+    },
+    {
+     "from": "decision_pending",
+     "to": "decision_made",
+     "trigger": "director_decides_on_proposal"
+    },
+    {
+     "from": "decision_made",
+     "to": "recovery_achieved",
+     "trigger": "gp_resumes_referring AND monthly_referral_count >= 60"
+    },
+    {
+     "from": "decision_made",
+     "to": "recovery_failed",
+     "trigger": "NOT gp_resumes_referring OR monthly_referral_count < 60"
+    }
+   ]
+  }
+ },
+ "institutional_definitions": {
+  "clinic_decision_authority": {
+   "decision_holders": [
+    "sam_whitfield"
+   ],
+   "decision_record_type": "decision_record",
+   "aggregation_arithmetic": {
+    "kind": "single_authority"
+   },
+   "evidence": "Sam Whitfield holds sole authority over fees and programs; Kim proposes only.",
+   "assumed": true,
+   "aggregation": {
+    "kind": "single_authority"
+   }
+  }
+ },
+ "physical_constraints": {
+  "fee_reversal_implementation_time": {
+   "rule": "Fee reversal takes effect at start of next quarter after decision",
+   "unresolved": true
+  },
+  "partner_program_setup_time": {
+   "rule": "Partner program requires 2-4 weeks to stand up after decision",
+   "unresolved": true
+  },
+  "referral_source_stats_availability": {
+   "rule": "Kim can pull referral-source stats within one week of request",
+   "unresolved": true
+  }
+ },
+ "resource_definitions": {
+  "quarterly_budget": {
+   "resource_id": "budget_2025_q3_q4",
+   "type": "financial",
+   "current_allocation": {
+    "kind": "int",
+    "value": 0
+   },
+   "constraints": "Fee reversal costs 8k/quarter; partner program costs 5k setup"
+  }
+ },
+ "information_rules": {
+  "referral_source_visibility": {
+   "rule": "Practice manager can see monthly referral counts per source via practice management system",
+   "access": "practice_manager_kim"
+  },
+  "gp_reason_unknown": {
+   "rule": "GP Alvarez's reason for stopping referrals is unknown until explicitly asked",
+   "access": "sam_whitfield"
+  }
+ },
+ "actor_roles": {
+  "sam_whitfield": {
+   "role": "clinic_director",
+   "why_consequential": "Holds sole authority over fees and programs; decides whether to reverse fee or approve partner program",
+   "affordances": [
+    "approve fee reversal proposal",
+    "reject fee reversal proposal",
+    "approve partner program proposal",
+    "reject partner program proposal",
+    "ask GP Alvarez for reason for stopping referrals"
+   ]
+  },
+  "referring_gp_alvarez": {
+   "role": "referring_gp",
+   "why_consequential": "Was top referrer (25/month); stopped in February; resumption directly impacts recovery to December baseline",
+   "affordances": [
+    "resume referring to clinic",
+    "continue not referring",
+    "provide reason for stopping when asked"
+   ]
+  },
+  "practice_manager_kim": {
+   "role": "practice_manager",
+   "why_consequential": "Can pull referral stats and propose interventions; cannot decide",
+   "affordances": [
+    "pull referral source stats",
+    "propose fee reversal to director",
+    "propose partner program to director"
+   ]
+  }
+ },
+ "outcome_predicates": [
+  {
+   "predicate_id": "recovery_to_december_level",
+   "record_type": "monthly_referral_count",
+   "field": "count",
+   "op": "gte",
+   "value": 60,
+   "option_true": "clinic_monthly_referrals_recovered",
+   "option_false": "clinic_monthly_referrals_not_recovered"
+  }
+ ],
+ "unresolved_mechanisms": [
+  "GP Alvarez's reason for stopping referrals (unknown until asked)",
+  "Partner program setup duration (2-4 weeks uncertain)",
+  "Whether fee reversal would actually cause GP Alvarez to resume referring",
+  "Whether any other GPs would increase referrals to compensate",
+  "fee_reversal_implementation_time",
+  "referral_source_stats_availability"
+ ],
+ "evidence_basis": [],
+ "assumptions": [
+  "December baseline of 60/month is the target for recovery",
+  "No other GPs started or stopped referring between February and prediction time",
+  "Fee reversal and partner program are the only interventions available",
+  "Mid-October 2025 means October 15, 2025",
+  "Prediction horizon 2025-09-16 means we assess whether recovery is on track by that date"
+ ],
+ "provenance": {
+  "kind": "scenario.semantic.model.v1",
+  "compiler": "llm",
+  "compiled_at": 1752800000.0,
+  "auto_repairs": [
+   "constraint 'fee_reversal_implementation_time' labeled unresolved (no executable rule)",
+   "constraint 'referral_source_stats_availability' labeled unresolved (no executable rule)",
+   "institution 'clinic_decision_authority' aggregation defaulted to single_authority (none declared; labeled assumed)"
+  ],
+  "critic": {
+   "missing_decisive_elements": [
+    "No entity for the clinic's actual December 2024 referral count; the target is 60 but the question asks about recovery to 'December level', which may differ from the target.",
+    "No entity or fact for the clinic's current monthly referral count trajectory (e.g., counts for March\u2013September 2025) to assess whether recovery is plausible by mid-October.",
+    "No entity for the specific GP Alvarez's referral history (e.g., was he the only top referrer? Did others also stop?).",
+    "No entity for the clinic's capacity to handle increased referrals (e.g., staffing, appointment slots) which could constrain recovery even if GPs resume.",
+    "No entity for external factors (e.g., competing clinics, policy changes, seasonal effects) that could affect referral volumes."
+   ],
+   "relabeled_progress_bars": [
+    "The process 'referral_recovery_assessment' uses a binary threshold of 60 referrals, but the question asks about recovery to 'December level' \u2014 if December was higher than 60, the bar is mislabeled.",
+    "The transition from 'decision_made' to 'recovery_achieved' requires both gp_resumes_referring AND monthly_referral_count >= 60, but the model does not track which GPs resume or how many referrals they generate individually."
+   ],
+   "hidden_answer_risks": [
+    "The model assumes that only GP Alvarez matters for recovery, but other GPs may have stopped or started referring, and their aggregate effect is not modeled.",
+    "The model assumes that a director decision (approve fee reversal or partner program) will lead to GP resumption, but there is no evidence that Alvarez will resume even if the director acts.",
+    "The model does not account for the time lag between a decision and actual referral resumption \u2014 mid-October may be too soon even if a decision is made in September.",
+    "The model does not include any mechanism for the clinic to actively recruit new referring GPs to compensate for lost referrals."
+   ],
+   "direct_human_reaction_encodings": [
+    "Sam Whitfield's affordance 'ask GP Alvarez for reason for stopping referrals' is listed but no corresponding event or process transition uses that affordance \u2014 it is a dead end.",
+    "Practice manager Kim's affordances are limited to proposing and pulling stats, but there is no encoding of Kim's ability to negotiate or persuade the director or GPs.",
+    "GP Alvarez's affordance 'provide reason for stopping when asked' is not linked to any decision or recovery outcome \u2014 the reason is never used in the model."
+   ],
+   "public_posture_vs_private_reality_conflations": [
+    "The model treats 'monthly_referral_count' as an objective fact, but the clinic might publicly report a different number (e.g., to stakeholders) than the internal count.",
+    "The model assumes that a 'decision_record' reflects the true decision, but the director might privately decide differently than what is recorded (e.g., approve but delay implementation)."
+   ],
+   "outcome_predicate_matches_question": false,
+   "missing_nonhuman_mechanisms": [
+    "No mechanism for automated referral tracking systems (e.g., EHR software) that might generate referral counts with delays or errors.",
+    "No mechanism for insurance or billing changes that could affect referral patterns independently of GP behavior.",
+    "No mechanism for seasonal or calendar effects (e.g., holidays, flu season) that influence referral volumes in October versus December."
+   ],
+   "verdict": "needs_extension"
+  },
+  "frozen_at": 1752800000.0,
+  "content_hash": "e38717f2fc58f0a8"
+ },
+ "frozen": true,
+ "ancestry": []
+}

@@ -1,0 +1,380 @@
+{
+ "result": {
+  "decision_id": "probe1",
+  "contract_hash": "a82a11089af5f7eb",
+  "runtime_fingerprint": {},
+  "reference_action": "do_nothing",
+  "evaluated": [
+   {
+    "action_id": "do_nothing",
+    "n_particles": 3,
+    "success_count": 0,
+    "forbidden_count": 0,
+    "near_miss_count": 0,
+    "predicate_counts": {
+     "public_launch_committed_by_horizon": 0,
+     "design_partners_signed_by_horizon": 0
+    },
+    "by_hypothesis": {
+     "H0": {
+      "n": 3,
+      "success": 0,
+      "forbidden": 0
+     }
+    },
+    "quantities": {}
+   }
+  ],
+  "policies": [],
+  "recommended": "do_nothing",
+  "recommendation_kind": "action",
+  "pareto_frontier": [
+   "do_nothing"
+  ],
+  "feasibility": [
+   {
+    "feasible_everywhere": true,
+    "note": "no-step reference"
+   }
+  ],
+  "counterfactual": {},
+  "value_of_information": {},
+  "search": {
+   "stages": [
+    {
+     "stage": "full",
+     "candidates": [
+      "do_nothing"
+     ],
+     "n_particles": 3
+    }
+   ],
+   "stop_reason": "converged after round 0: no diagnosis-supported revision remained",
+   "n_simulated": 1
+  },
+  "causal_claim": "simulated_mechanism_counterfactual",
+  "empirical_validation": "not_validated_on_this_decision",
+  "support_grade": "exploratory",
+  "abstention": null,
+  "active_phases": {},
+  "provenance": {
+   "scenario_report": {
+    "decision_id": "probe1",
+    "decision_maker": "mara_voss",
+    "stated_goal": "Founder Mara Voss must decide how to take her scheduling copilot to market this quarter: immediate public launch, private design-partner recruitment, or delay for the enterprise pilot to conclude. What should she do?",
+    "horizon": "2025-09-16T00:00:00Z",
+    "constraints": [],
+    "risk_posture": {
+     "tolerance": "neutral",
+     "robustness": "expected"
+    },
+    "world_support": "generated_scenario_world",
+    "action_language_summary": {
+     "decision_maker": "mara_voss",
+     "n_controllable_objects": 0,
+     "authority_sources": [
+      "founder_ceo"
+     ],
+     "channels": [
+      "direct"
+     ],
+     "institutions": [
+      "seed_investor_board"
+     ],
+     "resources": [
+      "design_partner_pipeline",
+      "discretionary_launch_budget",
+      "pilot_infrastructure"
+     ],
+     "dimensions": [
+      {
+       "id": "declared_affordance_examples",
+       "description": "schema affordance EXAMPLES for the decision maker (never a menu)",
+       "example_values": [
+        "propose launch spend to board",
+        "commit to public launch date",
+        "negotiate and sign design partner agreements",
+        "spend up to $40k on launch activities without board approval"
+       ],
+       "open_ended": true
+      }
+     ],
+     "timing_opportunities": [],
+     "unresolved_affordances": [
+      {
+       "claim": "full scenario dimensions",
+       "reason": "no LLM backend \u2014 language degraded to the deterministic schema projection"
+      }
+     ],
+     "generator": "deterministic_schema_projection",
+     "language_hash": "77d5db052d9a3442"
+    },
+    "goal_contract": {
+     "goal_id": "goal_be48151939d11e3a",
+     "decision_id": "probe1",
+     "schema_id": "schema_9284aa1239281160",
+     "goal_text": "Founder Mara Voss must decide how to take her scheduling copilot to market this quarter: immediate public launch, private design-partner recruitment, or delay for the enterprise pilot to conclude. What should she do?",
+     "predicates": [
+      {
+       "predicate_id": "public_launch_committed_by_horizon",
+       "role": "desired_terminal",
+       "record_type": "scheduling_copilot",
+       "field": "public_launch_date",
+       "op": "exists",
+       "value": null,
+       "description": "",
+       "by_ts": null,
+       "hold_for_s": 0.0
+      },
+      {
+       "predicate_id": "design_partners_signed_by_horizon",
+       "role": "desired_terminal",
+       "record_type": "design_partner_count",
+       "field": "count",
+       "op": "gte",
+       "value": 3,
+       "description": "",
+       "by_ts": null,
+       "hold_for_s": 0.0
+      }
+     ],
+     "quantities": [],
+     "priority_order": [],
+     "acceptable_tradeoffs": [],
+     "unresolved_tradeoffs": [],
+     "missing_preferences": [
+      "goal derived from the schema's frozen outcome predicates only \u2014 stated-goal nuances (near misses, forbidden states, tradeoffs) are not represented"
+     ],
+     "generator": "schema_outcome_projection",
+     "provenance": {
+      "kind": "scenario.goal.contract.v1",
+      "validation_issues": []
+     }
+    },
+    "user_supplied_actions": [],
+    "generated_strategy_classes": [
+     "status_quo"
+    ],
+    "candidates": [
+     {
+      "candidate_id": "do_nothing",
+      "actor_id": "mara_voss",
+      "title": "do nothing (status quo)",
+      "strategy_class": "status_quo",
+      "causal_theory": "the world evolves without intervention",
+      "steps": [],
+      "stop_conditions": [],
+      "fallback": "",
+      "assumptions": [],
+      "evidence": [],
+      "source": "baseline",
+      "parent_ids": [],
+      "revision_reason": "",
+      "original_text": "",
+      "schema_id": "",
+      "language_hash": "",
+      "unresolved": [],
+      "implementation_support": "unstated",
+      "provenance": {
+       "feasibility": {
+        "feasible_everywhere": true,
+        "note": "no-step reference"
+       }
+      }
+     }
+    ],
+    "candidate_ancestry": {
+     "do_nothing": {
+      "source": "baseline",
+      "parents": [],
+      "revision_reason": ""
+     }
+    },
+    "feasibility": {
+     "do_nothing": {
+      "feasible_everywhere": true,
+      "note": "no-step reference"
+     }
+    },
+    "unresolved_semantics": [],
+    "rejected": [],
+    "compiled_effects": {},
+    "simulation_coverage": {
+     "n_candidates_screened": 1,
+     "n_structurally_gated": 0,
+     "n_simulated_arms": 1,
+     "n_particles_per_arm": 3,
+     "n_revision_rounds_run": 0
+    },
+    "matched_world_proof": {},
+    "trajectory_summaries": {},
+    "evaluations": {
+     "do_nothing": {
+      "n_particles": 3,
+      "success_count": 0,
+      "forbidden_count": 0,
+      "near_miss_count": 0,
+      "predicate_counts": {
+       "public_launch_committed_by_horizon": 0,
+       "design_partners_signed_by_horizon": 0
+      },
+      "by_hypothesis": {
+       "H0": {
+        "n": 3,
+        "success": 0,
+        "forbidden": 0
+       }
+      },
+      "quantities": {}
+     }
+    },
+    "revisions": [],
+    "finalist_reasons": {
+     "do_nothing": "success in 0/3 matched worlds, forbidden states in 0"
+    },
+    "pareto": [
+     "do_nothing"
+    ],
+    "recommended": "do_nothing",
+    "recommendation_kind": "action",
+    "recommended_implementation": {
+     "candidate_id": "do_nothing",
+     "actor_id": "mara_voss",
+     "title": "do nothing (status quo)",
+     "strategy_class": "status_quo",
+     "causal_theory": "the world evolves without intervention",
+     "steps": [],
+     "stop_conditions": [],
+     "fallback": "",
+     "assumptions": [],
+     "evidence": [],
+     "source": "baseline",
+     "parent_ids": [],
+     "revision_reason": "",
+     "original_text": "",
+     "schema_id": "",
+     "language_hash": "",
+     "unresolved": [],
+     "implementation_support": "unstated",
+     "provenance": {
+      "feasibility": {
+       "feasible_everywhere": true,
+       "note": "no-step reference"
+      }
+     }
+    },
+    "assumptions": [],
+    "reversal_conditions": [
+     "if the world is H0 (success 0/3 there), this recommendation loses its support"
+    ],
+    "highest_value_information": "A single real-world observation of whether any alternative intervention (not tested in this simulation) could achieve at least one success without causing a forbidden outcome would most change the picture, as it would provide a basis for comparison against the status quo's zero-success but zero-forb",
+    "finalists_distinguishable": true,
+    "human_approval_required": true,
+    "causal_claim": "simulated_mechanism_counterfactual",
+    "real_world_validation": "not_validated_on_this_decision",
+    "diversity": {
+     "n_candidates": 1,
+     "n_concrete": 0,
+     "n_strategy_classes": 0,
+     "strategy_classes": [],
+     "n_distinct_targets": 0,
+     "n_distinct_timings": 0,
+     "n_distinct_channels": 0,
+     "n_distinct_sequence_lengths": 0,
+     "has_status_quo": true,
+     "has_information_gathering": false
+    },
+    "critic_findings": [
+     {
+      "role": "adversarial_omission_critic",
+      "candidate_id": "ALL",
+      "code": "missing_strategy",
+      "detail": "No candidate set is provided; the set is empty. Missing all strategy classes: target, timing, sequence, and information-gathering moves.",
+      "severity": "gate"
+     },
+     {
+      "role": "feasibility_authority_critic",
+      "candidate_id": "ALL",
+      "code": "missing_mechanism",
+      "detail": "No candidates were provided in the input (empty object). Cannot evaluate any candidate's steps.",
+      "severity": "flag"
+     },
+     {
+      "role": "mechanism_critic",
+      "candidate_id": "ALL",
+      "code": "missing_mechanism",
+      "detail": "The scenario action language lists 'design_partner_pipeline' as a resource and 'negotiate and sign design partner agreements' as an example affordance, but no candidate paths are provided to evaluate whether the claimed path from steps to goal travels through real channels. Without candidate steps, ",
+      "severity": "flag"
+     }
+    ],
+    "missing_preferences": [
+     "goal derived from the schema's frozen outcome predicates only \u2014 stated-goal nuances (near misses, forbidden states, tradeoffs) are not represented"
+    ],
+    "stop_reason": "converged after round 0: no diagnosis-supported revision remained",
+    "trace_summary": {
+     "n_llm_calls": 22,
+     "by_role": {
+      "action_language_generator": 1,
+      "goal_generator": 1,
+      "goal_backward_strategist": 3,
+      "forward_affordance_discoverer": 5,
+      "orthogonal_strategy_generator": 5,
+      "adversarial_omission_critic": 1,
+      "feasibility_authority_critic": 1,
+      "mechanism_critic": 1,
+      "domain_reality_critic": 1,
+      "goal_gaming_critic": 1,
+      "implementation_critic": 1,
+      "final_adjudicator": 1
+     }
+    },
+    "provenance": {
+     "language_hash": "77d5db052d9a3442",
+     "goal_hash": "dc5a76f035a5a7d6",
+     "schema_id": "schema_9284aa1239281160",
+     "schema_version": "1"
+    }
+   },
+   "human_summary": {
+    "decision": "probe1",
+    "recommendation_kind": "action",
+    "recommended": "do_nothing",
+    "recommended_plan": {
+     "title": "do nothing (status quo)",
+     "steps": []
+    },
+    "why": "success in 0/3 matched worlds, forbidden states in 0",
+    "support": "best-supported among the considered feasible actions under the stated goal, constraints, world hypotheses, and simulation support \u2014 not 'objectively best'",
+    "finalists_distinguishable": true,
+    "pareto_set": [],
+    "missing_preferences": [
+     "goal derived from the schema's frozen outcome predicates only \u2014 stated-goal nuances (near misses, forbidden states, tradeoffs) are not represented"
+    ],
+    "reversal_conditions": [
+     "if the world is H0 (success 0/3 there), this recommendation loses its support"
+    ],
+    "highest_value_information": "A single real-world observation of whether any alternative intervention (not tested in this simulation) could achieve at least one success without causing a forbidden outcome would most change the picture, as it would provide a basis for comparison against the status quo's zero-success but zero-forb",
+    "unresolved": [],
+    "human_approval_required": true,
+    "causal_claim": "simulated_mechanism_counterfactual",
+    "real_world_validation": "not_validated_on_this_decision"
+   },
+   "crn_manifest": {
+    "root_seed": 11,
+    "n_particles": 3,
+    "hypothesis_stratification": [
+     "H0"
+    ],
+    "per_particle_seed": "seed*7919 + particle_index"
+   }
+  },
+  "cost": {
+   "llm_calls": 22,
+   "simulated_arms": 1,
+   "rollouts": 3
+  },
+  "latency_s": 156.168,
+  "seed": 11
+ },
+ "wall_s": 196.5
+}

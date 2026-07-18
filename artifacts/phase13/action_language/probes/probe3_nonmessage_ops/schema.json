@@ -1,0 +1,466 @@
+{
+ "schema_id": "schema_d5a0230c563cdd1f",
+ "version": "1",
+ "question": "Will the Brackenford data hall stay inside its grid power cap through the August heat event without breaching the municipal noise variance?",
+ "prediction_timestamp": 1752800000.0,
+ "horizon": 1757984000.0,
+ "entity_types": {
+  "brackenford_data_hall": {
+   "description": "The data hall facility whose power and noise compliance is in question.",
+   "fields": {
+    "grid_power_cap_mw": "float",
+    "heat_event_power_cap_mw": "float",
+    "current_power_draw_mw": "float",
+    "battery_buffer_mwh": "float",
+    "battery_current_charge_mwh": "float",
+    "generator_noise_level_dba": "float",
+    "noise_variance_limit_dba": "float"
+   }
+  },
+  "heat_event": {
+   "description": "A declared extreme heat event that triggers grid capacity reductions.",
+   "fields": {
+    "start_time": "time",
+    "end_time": "time",
+    "grid_cap_reduction_pct": "float"
+   }
+  },
+  "workload_schedule_window": {
+   "description": "A time window during which Ines can schedule compute workloads to manage power draw.",
+   "fields": {
+    "start_time": "time",
+    "end_time": "time",
+    "max_power_draw_mw": "float"
+   }
+  },
+  "generator_test_event": {
+   "description": "A scheduled test of the backup generator, subject to noise variance limits.",
+   "fields": {
+    "scheduled_time": "time",
+    "duration_minutes": "int",
+    "noise_level_dba": "float"
+   }
+  },
+  "municipal_noise_exemption": {
+   "description": "A temporary exemption from the noise variance granted by the noise board.",
+   "fields": {
+    "granted_time": "time",
+    "expiry_time": "time",
+    "exempted_noise_level_dba": "float",
+    "notice_hours": "int"
+   }
+  }
+ },
+ "fact_types": {
+  "grid_power_cap_status": {
+   "description": "Whether the data hall is currently within its grid power cap.",
+   "fields": {
+    "data_hall_id": "id",
+    "within_cap": "bool",
+    "timestamp": "time"
+   }
+  },
+  "noise_variance_compliance": {
+   "description": "Whether the data hall is currently compliant with the municipal noise variance.",
+   "fields": {
+    "data_hall_id": "id",
+    "compliant": "bool",
+    "timestamp": "time"
+   }
+  },
+  "battery_dispatch_record": {
+   "description": "Record of a battery buffer dispatch event.",
+   "fields": {
+    "data_hall_id": "id",
+    "dispatch_time": "time",
+    "energy_discharged_mwh": "float",
+    "reason": "str"
+   }
+  },
+  "generator_test_noise_record": {
+   "description": "Record of noise level during a generator test.",
+   "fields": {
+    "test_event_id": "id",
+    "measured_noise_dba": "float",
+    "variance_limit_dba": "float",
+    "exemption_applied": "bool"
+   }
+  },
+  "heat_event_declaration": {
+   "description": "Declaration of a heat event by the grid operator.",
+   "fields": {
+    "heat_event_id": "id",
+    "declared_by": "id",
+    "declaration_time": "time"
+   }
+  },
+  "noise_exemption_granted": {
+   "description": "auto-declared: institution 'municipal_noise_board' members write this decision record; minimal shape the aggregation reads",
+   "fields": {
+    "status": "str",
+    "position": "str",
+    "matter": "str"
+   }
+  }
+ },
+ "relation_types": {
+  "managed_by": {
+   "description": "Links a workload schedule window to the person managing it.",
+   "fields": {
+    "window_id": "id",
+    "manager_id": "id"
+   }
+  },
+  "subject_to_noise_variance": {
+   "description": "Links the data hall to its applicable noise variance.",
+   "fields": {
+    "data_hall_id": "id",
+    "variance_id": "id"
+   }
+  },
+  "granted_exemption_for": {
+   "description": "Links a noise exemption to the data hall.",
+   "fields": {
+    "exemption_id": "id",
+    "data_hall_id": "id",
+    "granted_by_board": "bool"
+   }
+  }
+ },
+ "semantic_event_types": {
+  "heat_event_declared": {
+   "description": "A heat event is declared, reducing grid power cap by 12%.",
+   "fields": {
+    "heat_event_id": "id",
+    "data_hall_id": "id",
+    "new_power_cap_mw": "float"
+   }
+  },
+  "workload_scheduled": {
+   "description": "Ines schedules a workload within a window to manage power draw.",
+   "fields": {
+    "window_id": "id",
+    "power_draw_mw": "float",
+    "scheduled_by": "id"
+   }
+  },
+  "battery_dispatch_issued": {
+   "description": "Battery buffer is dispatched to supplement grid power.",
+   "fields": {
+    "data_hall_id": "id",
+    "energy_mwh": "float",
+    "issued_by": "id"
+   }
+  },
+  "generator_test_conducted": {
+   "description": "A generator test is conducted, producing noise.",
+   "fields": {
+    "test_event_id": "id",
+    "noise_level_dba": "float",
+    "variance_limit_dba": "float",
+    "exemption_id": "id"
+   }
+  },
+  "noise_exemption_granted": {
+   "description": "Municipal noise board grants a temporary noise exemption.",
+   "fields": {
+    "exemption_id": "id",
+    "data_hall_id": "id",
+    "notice_hours": "int",
+    "granted_by": "id"
+   }
+  },
+  "grid_power_cap_breach": {
+   "description": "The data hall exceeds its grid power cap.",
+   "fields": {
+    "data_hall_id": "id",
+    "excess_mw": "float",
+    "timestamp": "time"
+   }
+  },
+  "noise_variance_breach": {
+   "description": "The data hall exceeds the noise variance limit.",
+   "fields": {
+    "data_hall_id": "id",
+    "excess_dba": "float",
+    "timestamp": "time"
+   }
+  },
+  "unmodeled_actor_action": {
+   "description": "schema-scoped scaffolding: an actor action whose semantics could not be compiled; exact content preserved; counted as a fallback",
+   "fields": {
+    "action_name": "str",
+    "content": "str",
+    "target": "str"
+   },
+   "typical_visibility": "participants",
+   "scaffolding": true
+  }
+ },
+ "process_definitions": {
+  "heat_event_power_management": {
+   "description": "Process by which Ines manages power draw during a heat event using workload scheduling and battery dispatch.",
+   "states": [
+    "normal_operation",
+    "heat_event_active",
+    "battery_dispatch_active",
+    "generator_test_scheduled",
+    "post_event_recovery"
+   ],
+   "transitions": [
+    {
+     "from": "normal_operation",
+     "to": "heat_event_active",
+     "trigger": "heat_event_declared"
+    },
+    {
+     "from": "heat_event_active",
+     "to": "battery_dispatch_active",
+     "trigger": "battery_dispatch_issued"
+    },
+    {
+     "from": "heat_event_active",
+     "to": "generator_test_scheduled",
+     "trigger": "generator_test_conducted"
+    },
+    {
+     "from": "battery_dispatch_active",
+     "to": "heat_event_active",
+     "trigger": "battery_dispatch_issued"
+    },
+    {
+     "from": "generator_test_scheduled",
+     "to": "heat_event_active",
+     "trigger": "generator_test_conducted"
+    },
+    {
+     "from": "heat_event_active",
+     "to": "post_event_recovery",
+     "trigger": "heat_event_declared"
+    }
+   ]
+  },
+  "noise_exemption_request_process": {
+   "description": "Process for requesting and granting a noise exemption from the municipal noise board.",
+   "states": [
+    "no_exemption",
+    "exemption_requested",
+    "exemption_granted",
+    "exemption_expired"
+   ],
+   "transitions": [
+    {
+     "from": "no_exemption",
+     "to": "exemption_requested",
+     "trigger": "noise_exemption_granted"
+    },
+    {
+     "from": "exemption_requested",
+     "to": "exemption_granted",
+     "trigger": "noise_exemption_granted"
+    },
+    {
+     "from": "exemption_granted",
+     "to": "exemption_expired",
+     "trigger": "noise_exemption_granted"
+    }
+   ]
+  }
+ },
+ "institutional_definitions": {
+  "municipal_noise_board": {
+   "description": "The board that grants temporary noise exemptions with 72h notice.",
+   "decision_holders": [
+    "municipal_inspector"
+   ],
+   "decision_record_type": "noise_exemption_granted",
+   "aggregation_arithmetic": {
+    "kind": "single_authority",
+    "assumed": true
+   },
+   "evidence": "The noise board can grant temporary exemptions with 72h notice.",
+   "aggregation": {
+    "kind": "single_authority"
+   },
+   "assumed": true
+  }
+ },
+ "physical_constraints": {
+  "grid_cap_reduction_rule": {
+   "description": "During a declared heat event, the grid power cap drops by 12%.",
+   "rule": "if heat_event_declared then brackenford_data_hall.grid_power_cap_mw = brackenford_data_hall.grid_power_cap_mw * 0.88",
+   "evidence": "The grid cap drops 12% during declared heat events.",
+   "unresolved": true
+  },
+  "battery_buffer_limit": {
+   "description": "Battery buffer dispatch cannot exceed 4 MWh total.",
+   "rule": "sum(battery_dispatch_record.energy_discharged_mwh) <= 4.0",
+   "evidence": "Ines controls the battery-buffer dispatch (4 MWh).",
+   "unresolved": true
+  },
+  "noise_variance_limit": {
+   "description": "Generator tests must not exceed the noise variance limit unless an exemption is granted.",
+   "rule": "if not exemption_applied then generator_test_noise_record.measured_noise_dba <= generator_test_noise_record.variance_limit_dba",
+   "evidence": "Generator tests are noise-capped by the variance.",
+   "unresolved": true
+  },
+  "exemption_notice_requirement": {
+   "description": "Noise exemptions require at least 72 hours notice.",
+   "rule": "municipal_noise_exemption.notice_hours >= 72",
+   "evidence": "The noise board can grant temporary exemptions with 72h notice.",
+   "unresolved": true
+  }
+ },
+ "resource_definitions": {
+  "battery_buffer": {
+   "description": "The 4 MWh battery buffer used to supplement grid power during peak demand.",
+   "type": "energy_storage",
+   "capacity_mwh": 4.0,
+   "current_charge_mwh": {
+    "kind": "float"
+   }
+  },
+  "grid_power_allocation": {
+   "description": "The grid power capacity allocated to the data hall, subject to reduction during heat events.",
+   "type": "power_allocation",
+   "normal_cap_mw": {
+    "kind": "float"
+   },
+   "heat_event_cap_mw": {
+    "kind": "float"
+   }
+  }
+ },
+ "information_rules": {
+  "heat_event_declaration_notification": {
+   "description": "Ines must be notified of a heat event declaration to adjust scheduling.",
+   "rule": "heat_event_declared event must be recorded and accessible to ines_okonkwo"
+  },
+  "noise_exemption_public_record": {
+   "description": "Noise exemptions granted by the board are public record.",
+   "rule": "municipal_noise_exemption records are accessible to municipal_inspector"
+  }
+ },
+ "actor_roles": {
+  "ines_okonkwo": {
+   "role": "Facility Power Manager",
+   "why_consequential": "Controls workload scheduling windows, battery dispatch, and generator test timing, directly affecting grid cap compliance and noise variance compliance.",
+   "affordances": [
+    "Schedule compute workloads to reduce peak power draw",
+    "Dispatch battery buffer to supplement grid power",
+    "Schedule generator tests within noise variance limits",
+    "Request noise exemption from municipal noise board"
+   ]
+  },
+  "grid_operator_liaison": {
+   "role": "Grid Operator Representative",
+   "why_consequential": "Declares heat events that trigger the 12% grid cap reduction, directly impacting the data hall's ability to stay within cap.",
+   "affordances": [
+    "Declare a heat event",
+    "Communicate grid cap reduction details to Ines"
+   ]
+  },
+  "municipal_inspector": {
+   "role": "Noise Compliance Inspector / Board Member",
+   "why_consequential": "Grants or denies noise exemptions, and can enforce noise variance limits through inspections.",
+   "affordances": [
+    "Grant temporary noise exemption (with >=72h notice)",
+    "Inspect generator test noise levels",
+    "Issue violation for noise variance breach"
+   ]
+  }
+ },
+ "outcome_predicates": [
+  {
+   "predicate_id": "stays_within_grid_cap",
+   "record_type": "grid_power_cap_status",
+   "field": "within_cap",
+   "op": "eq",
+   "value": true,
+   "option_true": "The Brackenford data hall stays within its grid power cap through the August heat event.",
+   "option_false": "The Brackenford data hall breaches its grid power cap during the August heat event."
+  },
+  {
+   "predicate_id": "no_noise_variance_breach",
+   "record_type": "noise_variance_compliance",
+   "field": "compliant",
+   "op": "eq",
+   "value": true,
+   "option_true": "The Brackenford data hall does not breach the municipal noise variance.",
+   "option_false": "The Brackenford data hall breaches the municipal noise variance."
+  }
+ ],
+ "unresolved_mechanisms": [
+  "The exact timing and duration of the August heat event is not specified; it may span multiple days with varying intensity.",
+  "The specific workload scheduling windows available to Ines are not defined; their capacity to shift load may be limited by compute demand.",
+  "The battery buffer recharge rate is unspecified; if discharged, it may not be available for subsequent peaks.",
+  "The noise board's decision criteria beyond the 72h notice requirement are unknown; exemptions may be denied for other reasons.",
+  "grid_cap_reduction_rule",
+  "battery_buffer_limit",
+  "noise_variance_limit",
+  "exemption_notice_requirement"
+ ],
+ "evidence_basis": [],
+ "assumptions": [
+  "The grid power cap reduction of 12% applies uniformly throughout the heat event.",
+  "Ines has sufficient workload flexibility to shift non-critical compute loads to off-peak times.",
+  "The battery buffer is fully charged at the start of the heat event.",
+  "Generator tests are scheduled only when necessary and within the noise variance limit unless an exemption is obtained.",
+  "The municipal noise board operates with single-authority decision-making by the municipal inspector."
+ ],
+ "provenance": {
+  "kind": "scenario.semantic.model.v1",
+  "compiler": "llm",
+  "compiled_at": 1752800000.0,
+  "auto_repairs": [
+   "constraint 'grid_cap_reduction_rule' labeled unresolved (no executable rule)",
+   "constraint 'battery_buffer_limit' labeled unresolved (no executable rule)",
+   "constraint 'noise_variance_limit' labeled unresolved (no executable rule)",
+   "constraint 'exemption_notice_requirement' labeled unresolved (no executable rule)",
+   "institution 'municipal_noise_board' aggregation defaulted to single_authority (none declared; labeled assumed)",
+   "decision record type 'noise_exemption_granted' auto-declared for 'municipal_noise_board'"
+  ],
+  "critic": {
+   "missing_decisive_elements": [
+    "No entity or fact type for the municipal noise board's decision-making process (e.g., meeting schedule, quorum, voting rules, or approval criteria). The model only has a 'noise_exemption_granted' event but no way to simulate whether the board will actually grant it in time.",
+    "No entity or fact type for the grid operator's actual enforcement mechanism (e.g., automatic cut-off, penalty, or warning system). The model assumes a cap exists but doesn't model what happens if breached beyond a fact record.",
+    "No entity for the 'workload' itself (e.g., compute jobs with priority, duration, or power profile). Ines can schedule a workload, but the model lacks the actual workload queue or its power draw variability.",
+    "No entity for ambient temperature or cooling system power draw, which is critical during a heat event (cooling load often dominates data hall power).",
+    "No entity for the generator's fuel supply or runtime limits, which could constrain battery recharging or extended generator use."
+   ],
+   "relabeled_progress_bars": [
+    "The 'heat_event_power_management' process has a transition from 'heat_event_active' to 'post_event_recovery' triggered by 'heat_event_declared' \u2014 this is nonsensical. A heat event declaration should start the heat event, not end it. The trigger should be 'heat_event_ended' or similar.",
+    "The 'battery_dispatch_issued' trigger appears in transitions from both 'heat_event_active' and 'battery_dispatch_active' to 'battery_dispatch_active', creating a self-loop that doesn't model battery depletion or recharge.",
+    "The 'generator_test_scheduled' state transitions back to 'heat_event_active' on 'generator_test_conducted', but the test itself is a discrete event, not a state that persists after completion."
+   ],
+   "hidden_answer_risks": [
+    "The model assumes battery buffer capacity is static (battery_current_charge_mwh) but doesn't model recharge rate or whether the battery can be recharged during the heat event (grid cap reduction may prevent recharging).",
+    "The noise variance limit is modeled as a static field on the data hall, but municipal noise variances often depend on time of day, proximity to residences, or cumulative noise from multiple tests \u2014 none of which are captured.",
+    "The model has no concept of 'notice hours' for noise exemption being insufficient (e.g., if the board requires 48 hours notice but the generator test is scheduled in 24 hours). The field exists but no process checks it.",
+    "The heat event grid cap reduction is a fixed 12% per the semantic event, but the entity field 'heat_event_power_cap_mw' is separate from 'grid_power_cap_mw' \u2014 it's unclear how these interact or if the reduction is applied correctly."
+   ],
+   "direct_human_reaction_encodings": [
+    "Ines is the only named actor, but her decision-making logic (how she chooses to schedule workloads vs. dispatch battery) is entirely absent. The model has no predicates for her preferences, constraints, or reaction to grid operator warnings.",
+    "The municipal noise board's granting of an exemption is modeled as a simple event, but real boards deliberate, may reject requests, or impose conditions. No human judgment or delay is encoded.",
+    "No encoding of a 'panic' or 'escalation' reaction if the data hall approaches the cap \u2014 e.g., an operator might manually shed load, but that's not modeled."
+   ],
+   "public_posture_vs_private_reality_conflations": [
+    "The model conflates 'grid_power_cap_status' (a fact type) with actual compliance \u2014 it records whether the hall is within cap, but doesn't distinguish between 'reported within cap' and 'actually within cap' (e.g., if metering is delayed or tampered).",
+    "The 'noise_exemption_granted' fact type has fields 'status', 'position', 'matter' that are vague and seem to conflate a board member's internal stance with the official decision. This mixes public posture (the granted exemption) with private reality (individual positions).",
+    "The generator test noise record includes 'exemption_applied' as a boolean, but doesn't capture whether the exemption was actually valid at the time of the test \u2014 a temporal gap risk."
+   ],
+   "outcome_predicate_matches_question": false,
+   "missing_nonhuman_mechanisms": [
+    "No model of the electrical grid's physical behavior (e.g., voltage drop, frequency deviation, or cascading failure if cap is exceeded). The cap is treated as a soft limit, not a physical constraint.",
+    "No model of sound propagation or attenuation (e.g., distance to nearest residence, wind direction, or building insulation) that would affect whether a generator test actually breaches the noise variance.",
+    "No model of battery degradation or temperature-dependent discharge efficiency, which could reduce available buffer during a heat event.",
+    "No model of the workload's thermal output \u2014 compute jobs generate heat, which increases cooling demand, which increases power draw, creating a feedback loop not captured."
+   ],
+   "verdict": "needs_extension"
+  },
+  "frozen_at": 1752800000.0,
+  "content_hash": "428d941815a74194"
+ },
+ "frozen": true,
+ "ancestry": []
+}

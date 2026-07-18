@@ -1,0 +1,612 @@
+{
+  "audit_version": "1",
+  "generated_by": "static trace",
+  "branch": "claude/wmv2-scenario-action-language",
+  "trace_entry_points": [
+    "swm/world_model_v2/phase13/api.py:recommend_action",
+    "swm/world_model_v2/phase13/api.py:evaluate_actions",
+    "swm/world_model_v2/phase13/api.py:optimize_policy",
+    "swm/world_model_v2/phase13/api.py:value_of_information"
+  ],
+  "findings": [
+    {
+      "id": "F1",
+      "category": "catalog_requirement",
+      "file": "swm/world_model_v2/phase13/ontology.py",
+      "line": 22,
+      "evidence": "_OPERATIONS: dict = {}",
+      "why_it_blocks_generality": "A single process-global dict is the sole namespace of expressible operations; every action, feasibility check, search family, and intervention semantic resolves against it, so the action language is fixed at import time and shared across all scenarios.",
+      "replacement_required": "Replace the global _OPERATIONS singleton with a per-scenario action language carried on the compiled world (scenario_schema.semantic_event_types + actor_roles.affordances), resolved per DecisionProblem, not a module-level registry."
+    },
+    {
+      "id": "F2",
+      "category": "catalog_requirement",
+      "file": "swm/world_model_v2/phase13/ontology.py",
+      "line": 57,
+      "evidence": "for _fam, _ops in ( (\"resources\", (\"allocate\", \"transfer\", ...)), ... ): for _op in _ops: register_operation(_op, family=_fam, ...)",
+      "why_it_blocks_generality": "The nine families and ~90 verbs are hardcoded and seeded at import; a scenario cannot mean 'launch', 'onboard hosts', or 'cancel dinner' except by coercion into one of these generic verbs. Domain adapters can only extend, never replace, so the generic vocabulary is always present.",
+      "replacement_required": "Generate the operation vocabulary from the frozen ScenarioSemanticModel per question (its semantic_event_types and actor affordance examples), scoped to the world instance rather than seeded globally."
+    },
+    {
+      "id": "F3",
+      "category": "catalog_requirement",
+      "file": "swm/world_model_v2/phase13/ontology.py",
+      "line": 46,
+      "evidence": "def operation_spec(name): if name not in _OPERATIONS: raise KeyError(f\"unregistered operation {name!r} ...\")",
+      "why_it_blocks_generality": "Any action whose operation is not a pre-registered global name cannot even be introspected; spec() is called for family, event_type, and reversibility, so an un-catalogued verb raises rather than being simulated with preserved content.",
+      "replacement_required": "Look up action semantics in the scenario's generated event-type table with a scaffolding fallback (UNMODELED_EVENT_TYPE) that preserves exact content instead of raising KeyError."
+    },
+    {
+      "id": "F4",
+      "category": "catalog_requirement",
+      "file": "swm/world_model_v2/phase13/ontology.py",
+      "line": 117,
+      "evidence": "def spec(self) -> dict: return operation_spec(self.operation)",
+      "why_it_blocks_generality": "ActionSchema.spec() forces every action's family, event_type, and reversibility to be read from the global catalog; the free-form content field is explicitly non-load-bearing (semantics 'still flow through operation + params').",
+      "replacement_required": "Derive an action's causal shape from the scenario schema's event-type definition matched to the action, not from a global spec keyed on a fixed verb."
+    },
+    {
+      "id": "F5",
+      "category": "catalog_requirement",
+      "file": "swm/world_model_v2/phase13/feasibility.py",
+      "line": 51,
+      "evidence": "if not operation_registered(action.operation): fail(\"unregistered_operation\", ...); return v",
+      "why_it_blocks_generality": "The feasibility gate hard-rejects any action whose operation is not in the global registry, so a scenario-specific or user natural-language verb is declared infeasible and never simulated.",
+      "replacement_required": "Feasibility should validate against scenario-declared event types / affordances (and admit scaffolded unmodeled actions), not reject on absence from a global verb set."
+    },
+    {
+      "id": "F6",
+      "category": "catalog_requirement",
+      "file": "swm/world_model_v2/phase13/affordances.py",
+      "line": 75,
+      "evidence": "op, _, obj = str(cap).partition(\":\"); if operation_registered(op): ... base = ActionSchema(operation=op, ...)",
+      "why_it_blocks_generality": "Authority strings only become candidate actions if their verb is a registered global operation; a capability like 'onboard_hosts' that is not in the catalog silently produces no affordance.",
+      "replacement_required": "Map authority/capability tokens onto scenario-generated affordances rather than gating on membership in the fixed catalog."
+    },
+    {
+      "id": "F7",
+      "category": "catalog_requirement",
+      "file": "swm/world_model_v2/phase13/affordances.py",
+      "line": 129,
+      "evidence": "for op in (rule.params or {}).get(\"actions\", []): if maker in holders and operation_registered(op): add(ActionSchema(operation=op, ...))",
+      "why_it_blocks_generality": "Institutional procedures can only surface actions whose names coincide with the global catalog; a procedure naming a scenario-specific action is dropped.",
+      "replacement_required": "Institutional affordances should be expressed in the scenario's institutional_definitions vocabulary, not filtered through operation_registered."
+    },
+    {
+      "id": "F8",
+      "category": "catalog_requirement",
+      "file": "swm/world_model_v2/phase13/affordances.py",
+      "line": 195,
+      "evidence": "if not operation_registered(op): rejected.append({\"proposal\": op, \"reason\": \"unregistered operation\"}); continue",
+      "why_it_blocks_generality": "The LLM proposer's outputs are discarded unless they name a catalog verb, so even the 'creative' source is clamped to the fixed vocabulary.",
+      "replacement_required": "Accept LLM-proposed scenario-typed actions, validating structure and content against the scenario schema, not against the global registry."
+    },
+    {
+      "id": "F9",
+      "category": "catalog_requirement",
+      "file": "swm/world_model_v2/phase13/affordances.py",
+      "line": 176,
+      "evidence": "f\"OPERATIONS (choose only from these): {json.dumps(ops)}\" where ops = {f: operations_in_family(f)[:8] for f in OPERATION_FAMILIES}",
+      "why_it_blocks_generality": "The proposer prompt literally instructs the LLM to 'choose only from these' the global catalog verbs (communicate/propose/set_threshold/...), so proposals are steered into generic operations before any validation.",
+      "replacement_required": "Prompt the proposer with the scenario's own event types and actor affordance examples (examples, not a required menu), letting it name actions in the scenario's language."
+    },
+    {
+      "id": "F10",
+      "category": "family_search",
+      "file": "swm/world_model_v2/phase13/ontology.py",
+      "line": 19,
+      "evidence": "OPERATION_FAMILIES = (\"resources\", \"time\", \"information\", \"relationships\", \"negotiation\", \"institutional\", \"operations\", \"policy_control\", \"meta\")",
+      "why_it_blocks_generality": "The nine coarse families are the fixed axis along which hierarchical search partitions and prunes the action space; scenario-natural groupings (e.g. 'pricing moves' vs 'trust repair') cannot drive search.",
+      "replacement_required": "Derive search groupings from scenario structure (event types, targets, mechanisms) rather than a global nine-family taxonomy."
+    },
+    {
+      "id": "F11",
+      "category": "family_search",
+      "file": "swm/world_model_v2/phase13/search.py",
+      "line": 51,
+      "evidence": "fams = {a.spec()[\"family\"] for a in actions}",
+      "why_it_blocks_generality": "classify() derives the decision-structure signature from catalog families; the optimizer choice is a function of the fixed taxonomy, not the scenario's real structure.",
+      "replacement_required": "Classify problem structure from scenario-native features, not from a.spec()['family']."
+    },
+    {
+      "id": "F12",
+      "category": "family_search",
+      "file": "swm/world_model_v2/phase13/search.py",
+      "line": 121,
+      "evidence": "for a in actions: by_family.setdefault(a.spec()[\"family\"], []).append(a)",
+      "why_it_blocks_generality": "Hierarchical search buckets candidates strictly by catalog family and then races only the winning family; the partition (and thus what gets pruned) is dictated by the fixed taxonomy.",
+      "replacement_required": "Bucket by scenario-generated action groups (or evaluate flat) instead of catalog family."
+    },
+    {
+      "id": "F13",
+      "category": "family_search",
+      "file": "swm/world_model_v2/phase13/search.py",
+      "line": 134,
+      "evidence": "fam = a.spec()[\"family\"]; fam_score[fam] = max(fam_score.get(fam, -inf), _mean_readout(arm)); best_fam = max(fam_score, key=fam_score.get)",
+      "why_it_blocks_generality": "The single winning family is chosen by catalog-family aggregation of a generic readout; all actions in every other family are dropped from refinement purely by their global family label.",
+      "replacement_required": "Score and refine using scenario-utility on scenario-native groupings; do not collapse to a global family winner."
+    },
+    {
+      "id": "F14",
+      "category": "verb_feasibility",
+      "file": "swm/world_model_v2/phase13/feasibility.py",
+      "line": 136,
+      "evidence": "if action.operation in (\"gather_information\", \"investigate\", \"observe\", \"run_experiment\") and not problem.information_gathering_allowed: fail(\"info_gathering_disallowed\", ...)",
+      "why_it_blocks_generality": "Whether an action counts as 'information gathering' (and is gated) is decided by a hardcoded four-verb tuple; a scenario-specific investigative action outside this set escapes the gate, and a legitimately different verb in it is wrongly gated.",
+      "replacement_required": "Gate on a scenario-declared semantic property of the event type (e.g. is_information_gathering) rather than a fixed verb list."
+    },
+    {
+      "id": "F15",
+      "category": "verb_feasibility",
+      "file": "swm/world_model_v2/phase13/feasibility.py",
+      "line": 152,
+      "evidence": "action.spec()[\"family\"] in (\"relationships\", \"information\") and action.recipients: ... fail(\"no_network_access\", ...)",
+      "why_it_blocks_generality": "Network-reachability feasibility only fires for two catalog families; a scenario action that reaches another actor under a different family is not checked, and a same-family action that needs no channel is over-checked.",
+      "replacement_required": "Apply reachability checks based on whether the scenario event type is directed at a recipient, per the scenario's information_rules, not on catalog family."
+    },
+    {
+      "id": "F16",
+      "category": "verb_feasibility",
+      "file": "swm/world_model_v2/phase13/feasibility.py",
+      "line": 58,
+      "evidence": "if world is not None and actor is None and action.operation not in (\"do_nothing\", \"defer\"): fail(\"actor_missing\", ...)",
+      "why_it_blocks_generality": "The two baseline verbs are special-cased by literal name to bypass actor-existence; any renamed status-quo/defer action in a scenario language loses the exemption.",
+      "replacement_required": "Mark baseline/reference actions by a structural flag, not by matching the literal strings 'do_nothing'/'defer'."
+    },
+    {
+      "id": "F17",
+      "category": "verb_feasibility",
+      "file": "swm/world_model_v2/phase13/feasibility.py",
+      "line": 63,
+      "evidence": "if problem is not None and action.operation not in (\"do_nothing\", \"defer\"): auth = set(problem.authority or []); ... fail(\"unauthorized\", ...)",
+      "why_it_blocks_generality": "Authority checking is skipped only for the two literally-named baseline verbs; the authorization semantics are keyed to catalog names rather than the action's declared authority basis.",
+      "replacement_required": "Base the authorization exemption on a reference/no-op marker and check authority against scenario-declared capability semantics."
+    },
+    {
+      "id": "F18",
+      "category": "verb_execution",
+      "file": "swm/world_model_v2/phase13/interventions.py",
+      "line": 50,
+      "evidence": "if action.operation in (\"delay\", \"accelerate\", \"cancel\", \"pause\"): _retime_queue(queue, action, now)",
+      "why_it_blocks_generality": "Only these four literal time-family verbs get queue-retiming semantics; a scenario's own timing action (e.g. 'postpone_launch') has no effect on scheduled events.",
+      "replacement_required": "Attach retiming semantics via the scenario event type's declared effect on scheduled events, not a hardcoded verb tuple."
+    },
+    {
+      "id": "F19",
+      "category": "verb_execution",
+      "file": "swm/world_model_v2/phase13/interventions.py",
+      "line": 151,
+      "evidence": "if a.operation in (\"transfer\", \"allocate\", \"invest\") and a.recipients: ... rec.set(\"resources\", F(before + amt, ...))",
+      "why_it_blocks_generality": "Recipient-crediting resource semantics fire only for three literal verbs; any other scenario resource move that should credit a counterparty produces no transfer, only a history record.",
+      "replacement_required": "Resource-move semantics should come from the scenario resource_definitions (conserved moves) keyed on the action's declared resource effect, not three fixed verbs."
+    },
+    {
+      "id": "F20",
+      "category": "verb_execution",
+      "file": "swm/world_model_v2/phase13/interventions.py",
+      "line": 165,
+      "evidence": "if a.operation in (\"set_parameter\", \"set_threshold\", \"price\") and a.object: q = world.quantities.get(a.object); q.value = float(a.params.get(\"value\", ...))",
+      "why_it_blocks_generality": "Setting a controlled quantity is limited to three literal verbs; a scenario action that changes a scenario quantity under a different name has no state effect.",
+      "replacement_required": "Bind quantity-setting to the scenario's declared controllable quantities and the action's declared parameter effect, not the fixed verb list."
+    },
+    {
+      "id": "F21",
+      "category": "verb_execution",
+      "file": "swm/world_model_v2/phase13/interventions.py",
+      "line": 174,
+      "evidence": "if fam == \"information\" or a.operation in (\"contact\", \"propose\", \"counteroffer\", \"endorse\"): ... info.publish(item); info.expose(r, iid, ...)",
+      "why_it_blocks_generality": "Ledger/communication semantics are triggered by the information family plus four literal relationship/negotiation verbs; a scenario message action outside this set never enters the information ledger or exposes recipients.",
+      "replacement_required": "Emit information-ledger effects from the scenario event type's declared visibility/communication semantics (information_rules), not a family + fixed-verb OR-clause."
+    },
+    {
+      "id": "F22",
+      "category": "verb_execution",
+      "file": "swm/world_model_v2/phase13/interventions.py",
+      "line": 191,
+      "evidence": "if a.operation in (\"connect\", \"ally\", \"coordinate\") and a.recipients ...: world.network.add(a.actor, \"communicates_with\", r)",
+      "why_it_blocks_generality": "Only three literal verbs edit the typed network, and they all hardcode the edge relation 'communicates_with'; scenario-specific relationship changes and their real edge types are unreachable.",
+      "replacement_required": "Drive network edits from the scenario relation_types the action declares it creates/changes, not three verbs and one fixed relation."
+    },
+    {
+      "id": "F23",
+      "category": "verb_execution",
+      "file": "swm/world_model_v2/phase13/interventions.py",
+      "line": 201,
+      "evidence": "if a.operation in (\"gather_information\", \"observe\", \"investigate\", \"choose_observation\"): d.change(\"meta.information_request\", ...)",
+      "why_it_blocks_generality": "The observation-intent marker that VOI consumes is set only for four literal verbs; scenario-specific information-gathering actions won't register as observations for value-of-information.",
+      "replacement_required": "Mark observation intent from a scenario-declared property of the event type, keeping VOI coupled to actual information actions."
+    },
+    {
+      "id": "F24",
+      "category": "verb_execution",
+      "file": "swm/world_model_v2/phase13/interventions.py",
+      "line": 63,
+      "evidence": "kind=(\"policy\" if action.operation.startswith(\"choose_\") else \"discrete\")",
+      "why_it_blocks_generality": "An intervention is classified as a policy purely by a 'choose_' name prefix; scenario policy-like actions without that prefix are mislabeled discrete.",
+      "replacement_required": "Classify policy vs discrete from the action's declared structure (does it set a contingent rule), not a string prefix."
+    },
+    {
+      "id": "F25",
+      "category": "verb_execution",
+      "file": "swm/world_model_v2/phase13/interventions.py",
+      "line": 74,
+      "evidence": "if ev.etype == target and ev.ts >= now: if action.operation == \"cancel\": continue; ev.ts = max(now, ev.ts + (shift ...))",
+      "why_it_blocks_generality": "Cancel vs shift behavior inside retiming is decided by the literal verb 'cancel' and by 'accelerate' at line 76; scenario timing verbs cannot express these semantics.",
+      "replacement_required": "Express cancel/shift/accelerate as declared timing effects on the target event, resolved from the scenario schema."
+    },
+    {
+      "id": "F26",
+      "category": "verb_followup",
+      "file": "swm/world_model_v2/phase13/interventions.py",
+      "line": 30,
+      "evidence": "_FOLLOW_UP_ETYPE = {\"communicate\": \"message_delivered\", \"contact\": \"message_delivered\", ... \"call_vote\": \"collective_vote\", ...}",
+      "why_it_blocks_generality": "The mapping from action to the follow-up event other operators react to is a fixed ~20-verb dict; only these verbs trigger other-actor response. Every other action is causally inert toward downstream operators.",
+      "replacement_required": "Derive the follow-up event type (the actor-response bridge) from the scenario event type's declared consequence class, so any scenario action can provoke real downstream reaction."
+    },
+    {
+      "id": "F27",
+      "category": "verb_followup",
+      "file": "swm/world_model_v2/phase13/interventions.py",
+      "line": 206,
+      "evidence": "fu_type = _FOLLOW_UP_ETYPE.get(a.operation); if fu_type and event_type_registered(fu_type): d.follow_up_events.append({\"etype\": fu_type, ...})",
+      "why_it_blocks_generality": "Follow-up emission is gated on the fixed dict lookup; an action not in the table emits no follow-up, so its effect on other actors is a static null regardless of scenario meaning.",
+      "replacement_required": "Emit follow-up events whenever the scenario event type declares a downstream consequence, not only for the ~20 catalog verbs in the dict."
+    },
+    {
+      "id": "F28",
+      "category": "verb_followup",
+      "file": "swm/world_model_v2/phase13/interventions.py",
+      "line": 24,
+      "evidence": "register_event_type(\"decision_action\", scheduling=\"scheduled\", validated=True, deltas=(\"resources\",\"quantities\",\"information\",\"network\",\"queue\"))",
+      "why_it_blocks_generality": "All Phase-13 actions enter the world through one hardcoded event type whose delta channels are a fixed five-tuple; scenario-specific state channels (process states, institutional records) are not enumerated as writable by decision actions.",
+      "replacement_required": "Let actions enter as their scenario semantic_event_type (or UNMODELED_EVENT_TYPE) so the writable delta channels match the scenario's own state."
+    },
+    {
+      "id": "F29",
+      "category": "history_only_execution",
+      "file": "swm/world_model_v2/phase13/interventions.py",
+      "line": 215,
+      "evidence": "if actor_ent is not None: actor_ent.set(\"past_actions\", F(a.operation, ...), key=a.action_id); d.change(f\"{a.actor}.past_actions[{a.action_id}]\", None, a.operation)",
+      "why_it_blocks_generality": "Every action ends by writing a past_actions record; for the majority of catalog verbs that is the ONLY effect (no resource/quantity/ledger/network/follow-up branch matches), so most operations are indistinguishable from do_nothing in the readout — the catalog is broad but semantically hollow.",
+      "replacement_required": "Give each scenario action real, scenario-declared consequences (typed facts/process transitions/records) instead of collapsing unmatched verbs to an inert history stamp."
+    },
+    {
+      "id": "F30",
+      "category": "history_only_execution",
+      "file": "swm/world_model_v2/phase13/interventions.py",
+      "line": 130,
+      "evidence": "def apply(self, world, proposal) -> StateDelta: ... (branches at 144/151/165/174/191/201 are the ONLY state semantics; no else path for other verbs)",
+      "why_it_blocks_generality": "The apply() operator implements real semantics for only six verb-conditioned branches; roughly 50+ registered operations fall through to just the past_actions stamp, so institutional votes, coalitions, commitments, procurement, hiring, etc. have no modeled effect.",
+      "replacement_required": "Route each action to a scenario-compiled causal program (cf. semantic_consequences CausalActionProgram / generated_world execution) so every action has typed effects, not a six-branch switch."
+    },
+    {
+      "id": "F31",
+      "category": "parameter_grid",
+      "file": "swm/world_model_v2/phase13/affordances.py",
+      "line": 97,
+      "evidence": "for i in range(parameter_grid): lvl = lo + (hi - lo) * i / max(1, parameter_grid - 1); add(ActionSchema(action_id=f\"set_{qname}_{round(lvl,3)}\", operation=\"set_parameter\", ...))",
+      "why_it_blocks_generality": "A generic 5-point linear grid from 0 to the available amount invents the alternative levels for any controllable quantity, ignoring scenario-meaningful breakpoints (price tiers, quorum sizes, capacity thresholds).",
+      "replacement_required": "Generate parameter alternatives from scenario-meaningful values/breakpoints declared by the schema, not a uniform 0..amount grid."
+    },
+    {
+      "id": "F32",
+      "category": "parameter_grid",
+      "file": "swm/world_model_v2/phase13/affordances.py",
+      "line": 37,
+      "evidence": "def generate_actions(world, problem, *, llm=None, max_llm_proposals: int = 8, parameter_grid: int = 5)",
+      "why_it_blocks_generality": "The grid resolution is a fixed default constant (5), so the density of invented alternatives is arbitrary and scenario-independent.",
+      "replacement_required": "Let the number/placement of parameter alternatives be scenario-derived rather than a hardcoded default."
+    },
+    {
+      "id": "F33",
+      "category": "parameter_grid",
+      "file": "swm/world_model_v2/phase13/affordances.py",
+      "line": 118,
+      "evidence": "add(ActionSchema(action_id=f\"transfer_{rname}_to_{e.dst}\", operation=\"transfer\", params={\"resource\": rname, \"amount\": float(amount) / 2}, ...))",
+      "why_it_blocks_generality": "Transfer alternatives are invented at exactly half the available amount along every funds/controls edge — an arbitrary magnitude with no scenario grounding.",
+      "replacement_required": "Choose transfer magnitudes from scenario semantics (obligations, offers, budgets) instead of a fixed amount/2 heuristic."
+    },
+    {
+      "id": "F34",
+      "category": "timing_grid",
+      "file": "swm/world_model_v2/phase13/affordances.py",
+      "line": 84,
+      "evidence": "mid = now + 0.5 * (hz - now); if mid > now: add(ActionSchema(action_id=f\"{op}..._later\", timing_ts=mid, params={\"timing\": \"mid_horizon\"}), \"authority\")",
+      "why_it_blocks_generality": "The only alternative timing generated is a single arbitrary midpoint between now and the horizon, applied uniformly to information/negotiation/time actions; scenario-relevant deadlines/windows are ignored.",
+      "replacement_required": "Generate timing alternatives from scenario deadlines, decision points, and event windows rather than a fixed 0.5*horizon midpoint."
+    },
+    {
+      "id": "F35",
+      "category": "timing_grid",
+      "file": "swm/world_model_v2/phase13/affordances.py",
+      "line": 141,
+      "evidence": "for op, shift in ((\"delay\", +3 * 86400.0), (\"accelerate\", -3 * 86400.0)): add(ActionSchema(operation=op, params={\"shift_s\": shift, ...}))",
+      "why_it_blocks_generality": "Reschedule alternatives are hardcoded to exactly +/-3 days for every scheduled event, independent of the scenario's actual timing structure.",
+      "replacement_required": "Derive delay/accelerate magnitudes from the scenario's schedule and deadlines, not a fixed 3-day shift."
+    },
+    {
+      "id": "F36",
+      "category": "timing_grid",
+      "file": "swm/world_model_v2/phase13/api.py",
+      "line": 177,
+      "evidence": "if not points: points = [float(ev.particles()[0].clock.now) + 1.0]",
+      "why_it_blocks_generality": "When no decision points are given, policy evaluation invents a single decision opportunity at now+1 second, read from a single particle's clock — an arbitrary timing rule.",
+      "replacement_required": "Default decision points from scenario-declared decision cadence/horizon, not a fixed +1s from particle[0]."
+    },
+    {
+      "id": "F37",
+      "category": "single_world_generation",
+      "file": "swm/world_model_v2/phase13/api.py",
+      "line": 67,
+      "evidence": "base_world = ev.particles()[0] if ev.n_particles else None",
+      "why_it_blocks_generality": "The action space is generated from ONE posterior particle (index 0). Affordances that exist only under other hypotheses/particles (different network edges, resources, institutions, private info) are never proposed, so the candidate set is conditioned on a single sampled world.",
+      "replacement_required": "Generate affordances over the posterior ensemble (union across particles/hypotheses) so hypothesis-dependent actions are represented."
+    },
+    {
+      "id": "F38",
+      "category": "single_world_generation",
+      "file": "swm/world_model_v2/phase13/api.py",
+      "line": 70,
+      "evidence": "gen = generate_actions(base_world, problem, llm=llm)",
+      "why_it_blocks_generality": "generate_actions reads network edges, quantities, institutions, and the information ledger from the single base_world only; any affordance present in other particles is invisible to candidate generation.",
+      "replacement_required": "Pass the particle ensemble (or a merged affordance view) into generation rather than one world."
+    },
+    {
+      "id": "F39",
+      "category": "single_world_generation",
+      "file": "swm/world_model_v2/phase13/affordances.py",
+      "line": 69,
+      "evidence": "actor = (world.entities or {}).get(maker)  ... net = getattr(world, \"network\", None); edges = list(getattr(net, \"edges\", []) or [])",
+      "why_it_blocks_generality": "All affordance discovery (actor authority, network contacts, controllable quantities, disclosable info) is read from the single supplied world, so the candidate space is a function of particle 0's structural draw.",
+      "replacement_required": "Discover affordances from the posterior ensemble, unioning entity/network/institution/info state across sampled worlds."
+    },
+    {
+      "id": "F40",
+      "category": "single_world_feasibility",
+      "file": "swm/world_model_v2/phase13/api.py",
+      "line": 75,
+      "evidence": "verdicts = fe.check_bundle(base_world, gen.candidates, problem)",
+      "why_it_blocks_generality": "Feasibility is decided against a single world hypothesis (particle 0). An action feasible only in world 0 is admitted (and vice versa), even though feasibility can differ across hypotheses; only the fire-time re-check inside the rollout partially compensates.",
+      "replacement_required": "Evaluate feasibility across the hypothesis ensemble (feasible-somewhere / feasible-everywhere policy) rather than against one particle."
+    },
+    {
+      "id": "F41",
+      "category": "false_dedup_risk",
+      "file": "swm/world_model_v2/phase13/ontology.py",
+      "line": 133,
+      "evidence": "payload = {\"op\": self.operation, \"obj\": self.object, \"params\": {k: _bucket(v) ...}, \"rcpt\": sorted(self.recipients), \"variant\": self.content.get(\"variant\", \"\")}",
+      "why_it_blocks_generality": "The dedup key is (operation, object, bucketed params, recipients, content.variant) ONLY. It omits timing_ts, duration_days, direct_cost, indirect_cost, failure_prob, authority_basis, observability, institutional_permission, and all content text except 'variant' — so materially different actions collapse. Two actions differing only in timing (an act-now vs act-later with identical params) or in message content merge into one.",
+      "replacement_required": "Include every field that changes the causal meaning (timing, magnitude, authority basis, observability, content) in the dedup key, or dedup on the compiled causal program, not a coarse tuple."
+    },
+    {
+      "id": "F42",
+      "category": "false_dedup_risk",
+      "file": "swm/world_model_v2/phase13/ontology.py",
+      "line": 129,
+      "evidence": "def _bucket(v): if isinstance(v, (int, float)): return round(float(v), 3) ; return str(v)[:60]",
+      "why_it_blocks_generality": "Numeric params are bucketed to 3 decimals and strings truncated to 60 chars before hashing, so two parameter levels within 1e-3, or two long payloads sharing a 60-char prefix, are treated as identical and one is dropped.",
+      "replacement_required": "Bucket at scenario-meaningful resolution (or not at all for decision-relevant magnitudes); do not truncate content that distinguishes actions."
+    },
+    {
+      "id": "F43",
+      "category": "false_dedup_risk",
+      "file": "swm/world_model_v2/phase13/affordances.py",
+      "line": 162,
+      "evidence": "rep.candidates, rep.deduped = dedupe(rep.candidates)  (dedupe() keeps first occurrence by semantic_key)",
+      "why_it_blocks_generality": "Deduplication silently drops later candidates sharing a semantic_key, keeping the first-seen; because the key ignores timing/cost/content, a genuinely distinct action can be discarded before it ever reaches feasibility or evaluation.",
+      "replacement_required": "Dedup only exact-equivalent actions (full causal signature); record and preserve near-duplicates that differ on any decision-relevant dimension."
+    },
+    {
+      "id": "F44",
+      "category": "minted_numbers",
+      "file": "swm/world_model_v2/phase13/ontology.py",
+      "line": 109,
+      "evidence": "direct_cost: float = 0.0  # in utility units (implementation cost)\\n indirect_cost: float = 0.0\\n failure_prob: float = 0.0  # implementation-failure probability (CRN-sampled)",
+      "why_it_blocks_generality": "ActionSchema carries free utility-unit costs and an implementation-failure probability as first-class fields with no grounding; whoever constructs the action (user or LLM proposer) can mint these numbers, and they flow straight into ranking and stochastic failure.",
+      "replacement_required": "Costs and failure probabilities must be derived from scenario mechanisms/resources or explicitly marked assumed, not accepted as ungrounded scalars on the action."
+    },
+    {
+      "id": "F45",
+      "category": "minted_numbers",
+      "file": "swm/world_model_v2/phase13/robust.py",
+      "line": 26,
+      "evidence": "cost = (a.direct_cost + a.indirect_cost) if a is not None else 0.0; cost += float(problem.implementation_costs.get(aid, 0.0)); agg[aid] = [u - cost for u in bd.aggregate]",
+      "why_it_blocks_generality": "Ranking subtracts the minted per-action costs (plus a caller-supplied implementation_costs map) directly from utility in the same units, so an invented cost number can reorder the recommendation with no simulated basis.",
+      "replacement_required": "Enter implementation cost as a simulated resource/mechanism effect with provenance, or surface it as an explicit assumption, rather than a silent utility subtraction."
+    },
+    {
+      "id": "F46",
+      "category": "minted_numbers",
+      "file": "swm/world_model_v2/phase13/interventions.py",
+      "line": 107,
+      "evidence": "if getattr(a, \"failure_prob\", 0.0) > 0.0: u = rng.use(f\"impl|{a.action_id}\").random(); if u < float(a.failure_prob): return TransitionProposal(... reason_codes=[\"implementation_failed\"])",
+      "why_it_blocks_generality": "The action's ungrounded failure_prob is drawn against per-rollout to decide implementation failure; an invented probability becomes a real stochastic outcome affecting every arm's distribution.",
+      "replacement_required": "Model implementation failure through scenario mechanisms (capacity, contested procedures) or declared assumptions, not a free scalar on the action schema."
+    },
+    {
+      "id": "F47",
+      "category": "minted_numbers",
+      "file": "swm/world_model_v2/phase13/api.py",
+      "line": 229,
+      "evidence": "cost = (a.direct_cost + a.indirect_cost) if a is not None else 0.0; out[aid] = [u - cost for u in bd.aggregate]",
+      "why_it_blocks_generality": "The VOI utility matrix also subtracts the minted costs, so value-of-information is computed on cost-adjusted utilities that inherit the ungrounded numbers.",
+      "replacement_required": "Same as F45 — cost must be grounded/labeled before it enters the utility matrix used by VOI."
+    },
+    {
+      "id": "F48",
+      "category": "generic_readout",
+      "file": "swm/world_model_v2/phase13/search.py",
+      "line": 81,
+      "evidence": "def _mean_readout(arm): vals = [o.get(\"readout\") for o in arm.outcomes]; xs = [float(v) for v in vals if isinstance(v,(int,float,bool))]; return sum(xs)/len(xs) if xs else 0.0",
+      "why_it_blocks_generality": "Search ranks and prunes arms by the mean of a single generic contract 'readout' scalar, NOT by the multi-stakeholder utility/robustness objective. An arm best under the real utility can be eliminated because its generic readout mean is low.",
+      "replacement_required": "Score search arms with the same scenario utility/robustness objective used in final ranking (evaluate_utility + RiskSpec), not a raw readout mean."
+    },
+    {
+      "id": "F49",
+      "category": "generic_readout",
+      "file": "swm/world_model_v2/phase13/counterfactual.py",
+      "line": 138,
+      "evidence": "out = {\"readout\": None, ...}; out[\"readout\"] = self.contract.readout(world) if self.contract is not None else None",
+      "why_it_blocks_generality": "The per-particle outcome exposes a single scalar 'readout' from the outcome contract as the generic score surface that search consumes before goal-specific evaluation; it presumes one universal scalar exists for every scenario.",
+      "replacement_required": "Expose scenario-native outcome structure and let utility evaluation (not a lone scalar) drive both search and ranking."
+    },
+    {
+      "id": "F50",
+      "category": "generic_readout",
+      "file": "swm/world_model_v2/phase13/search.py",
+      "line": 101,
+      "evidence": "scored = sorted(((aid, _mean_readout(arm)) for aid, arm in bundle.arms.items() if aid != \"do_nothing\"), key=lambda kv: -kv[1]); keep = {aid for aid,_ in scored[:max(2,len(scored)//2)]}",
+      "why_it_blocks_generality": "Successive-halving elimination keeps the top half by generic readout mean; actions are permanently dropped from the race on a score that is not the decision objective.",
+      "replacement_required": "Use interim scores computed from the scenario utility objective for elimination, not _mean_readout."
+    },
+    {
+      "id": "F51",
+      "category": "family_search_loss",
+      "file": "swm/world_model_v2/phase13/search.py",
+      "line": 138,
+      "evidence": "best_fam = max(fam_score, ...); fine_actions = by_family.get(best_fam, [])[:budget.max_arm_evaluations // 2]",
+      "why_it_blocks_generality": "Hierarchical search discards ALL actions outside the single winning family before refinement; the globally best action loses if its family's representative scored low, so the optimizer can never recover it.",
+      "replacement_required": "Refine across all promising groups (or use budget-aware racing over the full set); never hard-drop entire groups on one representative's score."
+    },
+    {
+      "id": "F52",
+      "category": "family_search_loss",
+      "file": "swm/world_model_v2/phase13/search.py",
+      "line": 123,
+      "evidence": "reps = []; for fam, acts in by_family.items(): reps.extend(acts[:max(1, min(3, budget.max_arm_evaluations // (2 * len(by_family))))])",
+      "why_it_blocks_generality": "The family representative is just the first 1-3 actions in insertion order — a weak, arbitrary proxy. A family whose best member is not among its first few candidates can be judged and eliminated on non-representative arms.",
+      "replacement_required": "Choose representatives by a principled sample (diverse/high-potential) or evaluate more per group; do not proxy a group by its first few actions."
+    },
+    {
+      "id": "F53",
+      "category": "family_search_loss",
+      "file": "swm/world_model_v2/phase13/search.py",
+      "line": 97,
+      "evidence": "while len(survivors) > max(4, len(actions)//16) and spent + len(survivors) <= budget...: ... survivors = [a for a in survivors if a.action_id in keep or a.action_id == \"do_nothing\"]",
+      "why_it_blocks_generality": "Racing halves survivors by interim generic-readout score each round; a globally optimal action with noisy early rollouts (or low generic readout but high utility) is eliminated before robust evaluation ever runs.",
+      "replacement_required": "Use utility-objective interim scores and statistically sound elimination (confidence-aware) so the true optimum is not dropped on early noise."
+    },
+    {
+      "id": "F54",
+      "category": "user_action_coercion",
+      "file": "swm/world_model_v2/phase13/ontology.py",
+      "line": 92,
+      "evidence": "content carries free-form realization ... 'semantics still flow through operation + params; content alone never bypasses feasibility'",
+      "why_it_blocks_generality": "A user's natural-language action is only representable as an ActionSchema whose operation must be a registered catalog verb; the free-text content is explicitly non-semantic, so the user's actual action is reduced to the nearest catalog verb + params.",
+      "replacement_required": "Admit user actions as scenario-typed (or scaffolded UNMODELED) actions whose content IS load-bearing, compiled to a causal program, not coerced into a catalog verb."
+    },
+    {
+      "id": "F55",
+      "category": "user_action_coercion",
+      "file": "swm/world_model_v2/phase13/affordances.py",
+      "line": 62,
+      "evidence": "for a in problem.candidate_actions or []: add(a, \"user\")",
+      "why_it_blocks_generality": "User candidates are admitted, but each is an ActionSchema that will call spec()/operation_spec at feasibility, classification, and execution; if its operation is not registered it is failed as unregistered_operation (feasibility.py:51) and never simulated.",
+      "replacement_required": "Route user candidates through scenario-schema validation with a content-preserving fallback so a non-catalog verb is simulated, not rejected."
+    },
+    {
+      "id": "F56",
+      "category": "user_action_coercion",
+      "file": "swm/world_model_v2/phase13/affordances.py",
+      "line": 44,
+      "evidence": "def add(a, source): a.provenance = source; rep.candidates.append(a); ...  (called as add(a, \"user\"))",
+      "why_it_blocks_generality": "Admission overwrites the action's provenance to 'user' and otherwise passes it unchanged into the catalog-bound funnel; there is no path that preserves a user's action semantics outside the registered-operation representation.",
+      "replacement_required": "Preserve user-supplied provenance and compile the user's described action into scenario semantics rather than treating it as a bare catalog operation."
+    },
+    {
+      "id": "F57",
+      "category": "input_mutation",
+      "file": "swm/world_model_v2/phase13/api.py",
+      "line": 150,
+      "evidence": "p2 = problem; p2.candidate_actions = list(actions); p2.generated_action_permission = False; return recommend_action(p2, ...)",
+      "why_it_blocks_generality": "evaluate_actions aliases (does not copy) the caller's DecisionProblem and mutates candidate_actions and generated_action_permission on it, so the caller's problem object is silently changed as a side effect of evaluation.",
+      "replacement_required": "Copy the DecisionProblem (dataclasses.replace / deep copy) before setting candidate_actions and disabling generation; never mutate the caller's contract."
+    },
+    {
+      "id": "F58",
+      "category": "policy_defect",
+      "file": "swm/world_model_v2/phase13/api.py",
+      "line": 198,
+      "evidence": "evals = evaluate_bundle(bundle, [do_nothing(problem.decision_maker)], problem)",
+      "why_it_blocks_generality": "Policy robust-evaluation is passed a placeholder action list containing only do_nothing, so evaluate_bundle's by_id lookup misses every policy: each policy's implementation_cost=0, operation='', reversible=True are placeholders, not the policy's real metadata. Outcomes are real but the per-arm action attributes are wrong.",
+      "replacement_required": "Pass policy descriptors (id, cost, reversibility, operation semantics) into evaluate_bundle so cost/reversibility/operation reflect the actual policies, not a do_nothing stand-in."
+    },
+    {
+      "id": "F59",
+      "category": "policy_defect",
+      "file": "swm/world_model_v2/phase13/policies.py",
+      "line": 119,
+      "evidence": "branch_taken.append(action.operation); ... follow_up_events=[{\"etype\": \"decision_action\", ... \"payload\": {\"action\": action, ...}}]",
+      "why_it_blocks_generality": "A policy's chosen action is an ActionSchema emitted as a decision_action, so it flows through DecisionActionOperator and requires a registered catalog operation; policy search is therefore restricted to the fixed ontology exactly like one-step actions.",
+      "replacement_required": "Let policies emit scenario-typed actions compiled to causal programs, so sequential/contingent policy spaces are not confined to catalog verbs."
+    },
+    {
+      "id": "F60",
+      "category": "policy_defect",
+      "file": "swm/world_model_v2/phase13/api.py",
+      "line": 180,
+      "evidence": "all_policies.append(Policy(policy_id=\"do_nothing\", decide=lambda belief: None, description=\"never act — the status-quo policy\"))",
+      "why_it_blocks_generality": "The reference policy is a lambda returning None; it is evaluated with intervention=None while its PolicyExecutionOperator is still added to the operator set, so the status-quo baseline's semantics depend on the operator emitting no action — correct only as long as decide() returns None, and it carries none of the do_nothing action's cost/record semantics used elsewhere.",
+      "replacement_required": "Define the reference policy explicitly (no scheduled decision effect) and evaluate it symmetrically with the same descriptor plumbing as other policies."
+    },
+    {
+      "id": "F61",
+      "category": "policy_defect",
+      "file": "swm/world_model_v2/phase13/api.py",
+      "line": 176,
+      "evidence": "points = []; for dp in problem.decision_points or []: ...; if not points: points = [float(ev.particles()[0].clock.now) + 1.0]",
+      "why_it_blocks_generality": "Decision points for policy rollout are parsed only from problem.decision_points and otherwise defaulted to a single arbitrary time from particle 0; the policy's action cadence is not scenario-derived and is read from one world.",
+      "replacement_required": "Schedule decision opportunities from scenario cadence/horizon across the ensemble, not a single-particle now+1s fallback."
+    }
+  ],
+  "operations_registry": {
+    "source": "swm/world_model_v2/phase13/ontology.py:57-86 (seeded once at import via register_operation)",
+    "count": 100,
+    "by_family": {
+      "resources": ["allocate", "transfer", "reserve", "release", "invest", "consume", "withhold", "acquire", "exchange"],
+      "time": ["begin", "delay", "accelerate", "sequence", "schedule", "cancel", "pause", "resume", "wait", "stop"],
+      "information": ["observe", "investigate", "query", "request", "disclose", "publish", "signal", "communicate", "clarify", "verify", "commit_disclosure"],
+      "relationships": ["contact", "connect", "endorse", "coordinate", "ally", "form_coalition", "dissolve_coalition", "delegate", "mediate", "sanction", "block", "change_access", "change_structure"],
+      "negotiation": ["propose", "counteroffer", "accept", "reject", "condition", "bundle", "unbundle", "concede", "guarantee", "insure", "escrow", "renegotiate", "withdraw"],
+      "institutional": ["submit", "nominate", "call_vote", "amend", "veto", "approve", "appeal", "authorize", "prohibit", "enforce", "set_procedure", "change_agenda", "establish_rule", "invoke_authority"],
+      "operations": ["create", "modify", "deploy", "procure", "hire", "assign", "route", "price", "prioritize", "scale", "shut_down", "maintain"],
+      "policy_control": ["set_parameter", "choose_policy", "set_threshold", "set_contingent_rule", "establish_trigger", "establish_stop_rule", "set_monitoring_policy", "choose_escalation_policy"],
+      "meta": ["gather_information", "defer", "commit", "preserve_option", "delegate_decision", "request_approval", "run_experiment", "choose_observation", "choose_decision_point", "do_nothing"]
+    },
+    "notes": "reversible defaults True except consume/shut_down/commit/transfer/dissolve_coalition/withdraw (ontology.py:85-86); requires_resources True only for the resources family. Extensible via register_operation(), but it is a single global namespace shared across all scenarios."
+  },
+  "operation_families": {
+    "source": "swm/world_model_v2/phase13/ontology.py:19-20 (OPERATION_FAMILIES); search.py reads families dynamically via a.spec()['family'] at search.py:51,121,134",
+    "families": ["resources", "time", "information", "relationships", "negotiation", "institutional", "operations", "policy_control", "meta"],
+    "note": "search.py does not define its own family list; it partitions/scores by the catalog family returned from ActionSchema.spec(), so the hierarchical search axis is exactly these nine fixed families."
+  },
+  "interventions_with_real_semantics": {
+    "description": "Operations that produce a StateDelta beyond the past_actions stamp (or a real queue/ledger/network/meta/follow-up effect) in interventions.py.",
+    "resource_credit_to_recipient (interventions.py:151)": ["transfer", "allocate", "invest"],
+    "resource_consumption (interventions.py:144, data-dependent on required_resources being populated)": ["any operation whose required_resources is set — in practice the set_parameter grid and transfer affordances"],
+    "quantity_set (interventions.py:165)": ["set_parameter", "set_threshold", "price"],
+    "information_ledger_publish_and_expose (interventions.py:174)": ["observe", "investigate", "query", "request", "disclose", "publish", "signal", "communicate", "clarify", "verify", "commit_disclosure", "contact", "propose", "counteroffer", "endorse"],
+    "network_edge_edit (interventions.py:191, always relation 'communicates_with')": ["connect", "ally", "coordinate"],
+    "observation_intent_marker_for_VOI (interventions.py:201)": ["gather_information", "observe", "investigate", "choose_observation"],
+    "queue_retiming (to_intervention interventions.py:50 / _retime_queue:66)": ["delay", "accelerate", "cancel"],
+    "queue_retiming_noop (listed but effectively inert: no shift_s and not cancel)": ["pause"],
+    "follow_up_event_only_no_direct_delta (_FOLLOW_UP_ETYPE interventions.py:30-39,206)": ["submit", "nominate", "call_vote", "run_experiment"],
+    "note": "The follow-up bridge (message_delivered / information_published / decision_opportunity / collective_vote / measurement) also fires for the information/communication verbs above; it is the ONLY channel by which an action provokes other-actor response, and it is a fixed ~20-verb dict."
+  },
+  "interventions_history_only": {
+    "description": "Registered operations that, when executed by DecisionActionOperator.apply, match NO semantic branch and therefore produce ONLY a past_actions record (interventions.py:215-219) — no resource/quantity/ledger/network/meta effect and no follow-up event. In the readout these are indistinguishable from do_nothing (aside from any minted implementation cost).",
+    "resources": ["reserve", "release", "consume", "withhold", "acquire", "exchange"],
+    "time": ["begin", "sequence", "schedule", "resume", "wait", "stop"],
+    "relationships": ["form_coalition", "dissolve_coalition", "delegate", "mediate", "sanction", "block", "change_access", "change_structure"],
+    "negotiation": ["accept", "reject", "condition", "bundle", "unbundle", "concede", "guarantee", "insure", "escrow", "renegotiate", "withdraw"],
+    "institutional": ["amend", "veto", "approve", "appeal", "authorize", "prohibit", "enforce", "set_procedure", "change_agenda", "establish_rule", "invoke_authority"],
+    "operations": ["create", "modify", "deploy", "procure", "hire", "assign", "route", "prioritize", "scale", "shut_down", "maintain"],
+    "policy_control": ["choose_policy", "set_contingent_rule", "establish_trigger", "establish_stop_rule", "set_monitoring_policy", "choose_escalation_policy"],
+    "meta": ["defer", "commit", "preserve_option", "delegate_decision", "request_approval", "choose_decision_point"],
+    "count_approx": 65,
+    "note": "65 of the 100 registered operations are history-only (plus the inert 'pause' listed under interventions_with_real_semantics.queue_retiming_noop, which is routed through _retime_queue but shifts nothing). do_nothing is intentionally inert (to_intervention returns before scheduling, interventions.py:52). The point: roughly two-thirds of the 100-verb catalog is semantically hollow on the production path — institutional votes, coalitions, commitments, procurement, hiring, sanctions, vetoes, escalation policies etc. change nothing but the actor's own past_actions log, so they cannot move the utility readout and are silently equivalent to inaction."
+  },
+  "user_action_path_summary": "A user action reaches the runtime only as an ontology.ActionSchema on problem.candidate_actions. affordances.generate_actions admits it verbatim (add(a, 'user'), affordances.py:62), overwriting its provenance to 'user'. It is NOT re-expressed — but every downstream stage binds to the global catalog: FeasibilityEngine.check calls operation_registered/operation_spec and hard-fails an un-catalogued verb as 'unregistered_operation' (feasibility.py:51), so it is dropped before simulation and replaced by nothing; search.classify and _hierarchical call a.spec()['family']; DecisionActionOperator.apply switches on a.operation/family for all real semantics. The ActionSchema.content field is free-form but explicitly non-semantic ('semantics still flow through operation + params; content alone never bypasses feasibility', ontology.py:92-94), so a natural-language action's meaning is discarded unless it is coerced into (registered operation + object + params). Net: user NL actions cannot enter the full runtime unchanged; they must be mapped to one of the 90 catalog verbs or they are rejected. There is no content-preserving/scaffolded path (contrast scenario_schema.UNMODELED_EVENT_TYPE, which the generated-world path uses to run un-compilable actions with exact content preserved).",
+  "policy_path_summary": "optimize_policy (api.py:157-210) shares particle identity across policies (arm_eval._particles = ev.particles(), api.py:193) and schedules decision_opportunity events (policies.schedule_decision_points). Each Policy.decide(belief) returns an ActionSchema emitted as a decision_action follow-up (policies.py:119-126), so policy actions flow through the SAME catalog-bound DecisionActionOperator — policy search is restricted to the fixed ontology (F59). Robust evaluation is called as evaluate_bundle(bundle, [do_nothing(...)], problem) (api.py:198): the OUTCOMES are the real per-policy matched rollouts, but the action-metadata list is a placeholder containing only do_nothing, so in robust.evaluate_bundle by_id.get(policy_id) is None and every policy is reported with implementation_cost=0, operation='', reversible=True (placeholder metadata, not the policy's own) — a real defect (F58). The reference policy is a bare lambda returning None (api.py:180) evaluated with intervention=None; correct only because its operator emits no action, and it is not plumbed symmetrically with real do_nothing action semantics (F60). Decision points default to a single particle-0 now+1s when unspecified (api.py:176-177, F61). belief_state is correctly built from the canonical observable_view boundary (policies.py:28-56) with per-branch action history keyed by branch_id (no cross-particle leakage) — that part is sound.",
+  "replacement_model_reference": "The intended replacement already exists elsewhere in the repo: scenario_schema.ScenarioSemanticModel generates per-question semantic_event_types, institutional_definitions, resource_definitions, information_rules, and actor_roles whose affordances are EXAMPLES ONLY (a 'required_menu' is rejected, scenario_schema.py:230-233), with UNMODELED_EVENT_TYPE preserving exact content for un-compilable actions; generated_world.py executes open-ended actor-named actions (action_name free text) and semantic_consequences.py compiles a chosen action into a CausalActionProgram over scenario-declared primitives. Phase 13's global _OPERATIONS catalog, verb-switch execution, fixed follow-up dict, and family-based search are exactly the fixed-catalog constraints those modules were built to avoid, and semantic_consequences.py:34-41 already labels the fixed-ontology mode a comparison BASELINE, 'never the default'."
+}
