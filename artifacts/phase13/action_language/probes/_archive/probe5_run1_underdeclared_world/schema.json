@@ -1,0 +1,475 @@
+{
+ "schema_id": "schema_0c76f68fbbc7c087",
+ "version": "1",
+ "question": "Will the deposit dispute between landlord Petrov and tenant Okada be resolved without a board-imposed penalty by October 2025?",
+ "prediction_timestamp": 1752800000.0,
+ "horizon": 1757984000.0,
+ "entity_types": {
+  "landlord": {
+   "fields": {
+    "id": "id",
+    "name": "str",
+    "contact_email": "str"
+   }
+  },
+  "tenant": {
+   "fields": {
+    "id": "id",
+    "name": "str",
+    "contact_email": "str"
+   }
+  },
+  "deposit": {
+   "fields": {
+    "id": "id",
+    "amount": "float",
+    "currency": "str",
+    "status": "str"
+   }
+  },
+  "deposit_dispute": {
+   "fields": {
+    "id": "id",
+    "filing_date": "time",
+    "dispute_amount": "float",
+    "status": "str"
+   }
+  },
+  "tenancy_dispute_board": {
+   "fields": {
+    "id": "id",
+    "name": "str",
+    "jurisdiction": "str"
+   }
+  },
+  "county_neutral_holder_program": {
+   "fields": {
+    "id": "id",
+    "name": "str",
+    "county": "str"
+   }
+  },
+  "board_decision_record": {
+   "fields": {
+    "id": "id",
+    "decision_date": "time",
+    "decision_outcome": "str",
+    "penalty_imposed": "bool",
+    "penalty_type": "str"
+   }
+  },
+  "board_member": {
+   "fields": {
+    "id": "id",
+    "name": "str",
+    "role": "str"
+   }
+  }
+ },
+ "fact_types": {
+  "deposit_escrowed_with_holder": {
+   "fields": {
+    "deposit_id": "id",
+    "holder_program_id": "id",
+    "escrow_date": "time",
+    "status": "str"
+   }
+  },
+  "complaint_filed": {
+   "fields": {
+    "dispute_id": "id",
+    "filing_party": "str",
+    "filing_date": "time",
+    "board_id": "id"
+   }
+  },
+  "board_hearing_scheduled": {
+   "fields": {
+    "dispute_id": "id",
+    "hearing_date": "time",
+    "board_id": "id"
+   }
+  },
+  "board_decision_issued": {
+   "fields": {
+    "dispute_id": "id",
+    "decision_record_id": "id",
+    "decision_date": "time"
+   }
+  },
+  "deposit_released_to_party": {
+   "fields": {
+    "deposit_id": "id",
+    "recipient": "str",
+    "release_date": "time",
+    "amount": "float"
+   }
+  }
+ },
+ "relation_types": {
+  "landlord_owns_deposit": {
+   "fields": {
+    "landlord_id": "id",
+    "deposit_id": "id"
+   }
+  },
+  "tenant_owns_deposit": {
+   "fields": {
+    "tenant_id": "id",
+    "deposit_id": "id"
+   }
+  },
+  "dispute_involves_deposit": {
+   "fields": {
+    "dispute_id": "id",
+    "deposit_id": "id"
+   }
+  },
+  "dispute_involves_landlord": {
+   "fields": {
+    "dispute_id": "id",
+    "landlord_id": "id"
+   }
+  },
+  "dispute_involves_tenant": {
+   "fields": {
+    "dispute_id": "id",
+    "tenant_id": "id"
+   }
+  },
+  "board_hears_dispute": {
+   "fields": {
+    "board_id": "id",
+    "dispute_id": "id"
+   }
+  },
+  "board_member_assigned_to_hearing": {
+   "fields": {
+    "board_member_id": "id",
+    "hearing_id": "id"
+   }
+  }
+ },
+ "semantic_event_types": {
+  "deposit_escrowed": {
+   "fields": {
+    "deposit_id": "id",
+    "holder_program_id": "id",
+    "timestamp": "time"
+   }
+  },
+  "complaint_filed_event": {
+   "fields": {
+    "dispute_id": "id",
+    "filing_party": "str",
+    "timestamp": "time"
+   }
+  },
+  "hearing_scheduled_event": {
+   "fields": {
+    "dispute_id": "id",
+    "hearing_date": "time",
+    "timestamp": "time"
+   }
+  },
+  "board_decision_event": {
+   "fields": {
+    "dispute_id": "id",
+    "decision_outcome": "str",
+    "penalty_imposed": "bool",
+    "timestamp": "time"
+   }
+  },
+  "deposit_released_event": {
+   "fields": {
+    "deposit_id": "id",
+    "recipient": "str",
+    "amount": "float",
+    "timestamp": "time"
+   }
+  },
+  "settlement_agreement_signed": {
+   "fields": {
+    "dispute_id": "id",
+    "settlement_terms": "str",
+    "timestamp": "time"
+   }
+  },
+  "unmodeled_actor_action": {
+   "description": "schema-scoped scaffolding: an actor action whose semantics could not be compiled; exact content preserved; counted as a fallback",
+   "fields": {
+    "action_name": "str",
+    "content": "str",
+    "target": "str"
+   },
+   "typical_visibility": "participants",
+   "scaffolding": true
+  }
+ },
+ "process_definitions": {
+  "deposit_dispute_resolution_process": {
+   "states": [
+    "dispute_filed",
+    "deposit_escrowed",
+    "hearing_scheduled",
+    "hearing_conducted",
+    "decision_rendered",
+    "deposit_released_or_penalty_applied",
+    "resolved_no_penalty",
+    "resolved_with_penalty"
+   ],
+   "transitions": [
+    {
+     "from": "dispute_filed",
+     "to": "deposit_escrowed",
+     "trigger": "deposit_escrowed_event"
+    },
+    {
+     "from": "dispute_filed",
+     "to": "hearing_scheduled",
+     "trigger": "hearing_scheduled_event"
+    },
+    {
+     "from": "deposit_escrowed",
+     "to": "hearing_scheduled",
+     "trigger": "hearing_scheduled_event"
+    },
+    {
+     "from": "hearing_scheduled",
+     "to": "hearing_conducted",
+     "trigger": "hearing_conducted_event"
+    },
+    {
+     "from": "hearing_conducted",
+     "to": "decision_rendered",
+     "trigger": "board_decision_event"
+    },
+    {
+     "from": "decision_rendered",
+     "to": "deposit_released_or_penalty_applied",
+     "trigger": "deposit_released_event"
+    },
+    {
+     "from": "deposit_released_or_penalty_applied",
+     "to": "resolved_no_penalty",
+     "trigger": "no_penalty_condition"
+    },
+    {
+     "from": "deposit_released_or_penalty_applied",
+     "to": "resolved_with_penalty",
+     "trigger": "penalty_imposed_condition"
+    },
+    {
+     "from": "dispute_filed",
+     "to": "resolved_no_penalty",
+     "trigger": "settlement_agreement_signed_event"
+    }
+   ]
+  }
+ },
+ "institutional_definitions": {
+  "tenancy_dispute_board": {
+   "decision_holders": [
+    {
+     "role": "board_chair",
+     "count": 1
+    },
+    {
+     "role": "board_member",
+     "count": 2
+    }
+   ],
+   "decision_record_type": "board_decision_record",
+   "aggregation_arithmetic": {
+    "kind": "majority",
+    "threshold": 2,
+    "assumed": true
+   },
+   "evidence": "Standard tenancy board procedure; assumed majority rule.",
+   "aggregation": {
+    "kind": "majority"
+   },
+   "assumed": true
+  }
+ },
+ "physical_constraints": {
+  "deposit_escrow_requires_physical_transfer": {
+   "rule": "deposit must be physically transferred to neutral holder before escrow fact is true",
+   "unresolved": true
+  },
+  "hearing_requires_physical_or_virtual_attendance": {
+   "rule": "board members and parties must attend hearing (physical or virtual) for hearing_conducted state",
+   "unresolved": true
+  },
+  "decision_deadline": {
+   "rule": "board must issue decision within 90 days of complaint filing per local regulation",
+   "unresolved": true
+  }
+ },
+ "resource_definitions": {
+  "deposit_funds": {
+   "type": "financial",
+   "owner": "tenant_okada",
+   "held_by": "county_neutral_holder_program",
+   "status": "escrowed"
+  },
+  "board_hearing_room": {
+   "type": "physical_space",
+   "availability": "scheduled"
+  }
+ },
+ "information_rules": {
+  "complaint_filing_public_record": {
+   "rule": "complaint filing date is public record",
+   "access": "public"
+  },
+  "board_decision_public_record": {
+   "rule": "board decision and penalty are public record after issuance",
+   "access": "public"
+  },
+  "deposit_escrow_status_private": {
+   "rule": "escrow status known only to holder and parties",
+   "access": "restricted"
+  }
+ },
+ "actor_roles": {
+  "landlord_petrov": {
+   "role": "disputant_landlord",
+   "why_consequential": "claims right to deposit; can propose settlement or contest tenant's complaint",
+   "affordances": [
+    "file_response_to_complaint",
+    "propose_settlement_to_tenant",
+    "attend_hearing",
+    "appeal_board_decision"
+   ]
+  },
+  "tenant_okada": {
+   "role": "disputant_tenant",
+   "why_consequential": "filed complaint; seeks return of deposit; can accept settlement or pursue board decision",
+   "affordances": [
+    "file_complaint",
+    "accept_settlement",
+    "attend_hearing",
+    "appeal_board_decision"
+   ]
+  },
+  "board_chair": {
+   "role": "decision_holder_chair",
+   "why_consequential": "presides over hearing; casts deciding vote in tie",
+   "affordances": [
+    "schedule_hearing",
+    "rule_on_evidence",
+    "issue_decision_record"
+   ]
+  },
+  "board_member_1": {
+   "role": "decision_holder_member",
+   "why_consequential": "votes on dispute outcome and penalty",
+   "affordances": [
+    "review_evidence",
+    "vote_on_decision"
+   ]
+  },
+  "board_member_2": {
+   "role": "decision_holder_member",
+   "why_consequential": "votes on dispute outcome and penalty",
+   "affordances": [
+    "review_evidence",
+    "vote_on_decision"
+   ]
+  }
+ },
+ "outcome_predicates": [
+  {
+   "predicate_id": "dispute_resolved_no_penalty_by_oct2025",
+   "record_type": "board_decision_record",
+   "field": "penalty_imposed",
+   "op": "eq",
+   "value": false,
+   "option_true": "dispute resolved without board-imposed penalty by October 2025",
+   "option_false": "dispute not resolved without board-imposed penalty by October 2025"
+  },
+  {
+   "predicate_id": "dispute_resolved_by_oct2025",
+   "record_type": "board_decision_record",
+   "field": "decision_date",
+   "op": "exists",
+   "value": true,
+   "option_true": "decision exists by October 2025",
+   "option_false": "no decision by October 2025"
+  }
+ ],
+ "unresolved_mechanisms": [
+  "decision_deadline: exact number of days from complaint filing to required decision is not specified in evidence; assumed 90 days but unresolved",
+  "settlement_agreement: process for settlement before hearing is not formalized in evidence; assumed possible but mechanism for recording is unresolved",
+  "deposit_escrow_requires_physical_transfer",
+  "hearing_requires_physical_or_virtual_attendance",
+  "institution county_neutral_holder_program dropped: no decision holders declared"
+ ],
+ "evidence_basis": [],
+ "assumptions": [
+  "board uses simple majority voting (2 of 3 members) to decide outcome and penalty",
+  "deposit is currently held in county neutral-holder program escrow",
+  "complaint was filed in June 2025; hearing and decision timeline is within board's standard 90-day window",
+  "no external appeals or delays beyond board control occur before October 2025"
+ ],
+ "provenance": {
+  "kind": "scenario.semantic.model.v1",
+  "compiler": "llm",
+  "compiled_at": 1752800000.0,
+  "auto_repairs": [
+   "constraint 'deposit_escrow_requires_physical_transfer' labeled unresolved (no executable rule)",
+   "constraint 'hearing_requires_physical_or_virtual_attendance' labeled unresolved (no executable rule)",
+   "institution 'tenancy_dispute_board' aggregation defaulted to majority (none declared; labeled assumed)",
+   "institution 'county_neutral_holder_program' dropped (no decision holders)"
+  ],
+  "critic": {
+   "missing_decisive_elements": [
+    "No representation of informal negotiation or mediation before formal filing",
+    "No representation of landlord's financial incentive to delay vs. tenant's urgency",
+    "No representation of external legal counsel or tenant advocacy groups",
+    "No representation of Okada's visa or residency status (may affect willingness to pursue)",
+    "No representation of Petrov's prior dispute history or reputation with the board",
+    "No representation of the deposit amount relative to local rent control or housing court thresholds"
+   ],
+   "relabeled_progress_bars": [
+    "\"deposit_escrowed\" is a state, not a progress bar \u2014 it conflates a single event with ongoing status",
+    "\"hearing_conducted\" is missing as a distinct state between \"hearing_scheduled\" and \"decision_rendered\"",
+    "\"deposit_released_or_penalty_applied\" is a misleading binary \u2014 release and penalty can co-occur",
+    "\"resolved_no_penalty\" and \"resolved_with_penalty\" are terminal but the model allows infinite loops via appeal affordances not modeled in process"
+   ],
+   "hidden_answer_risks": [
+    "The model assumes board decisions are final \u2014 but both actors have appeal affordances, which could push resolution past October 2025",
+    "The model has no time constraints on transitions \u2014 a dispute could remain in \"dispute_filed\" indefinitely",
+    "The settlement trigger bypasses all board processes, but the model gives no probability or condition for settlement likelihood",
+    "The predicate checks only board_decision_record.penalty_imposed = false \u2014 but a settlement could also result in no penalty without a board record",
+    "The model assumes majority voting but does not model board member biases, recusals, or scheduling conflicts"
+   ],
+   "direct_human_reaction_encodings": [
+    "Landlord's affordance \"file_response_to_complaint\" is vague \u2014 does not capture emotional escalation or retaliatory behavior",
+    "Tenant's affordance \"accept_settlement\" is binary \u2014 no encoding of partial settlement or conditional acceptance",
+    "No encoding of shame, reputation damage, or relationship breakdown as factors in settlement willingness",
+    "Board members are modeled as rational voters \u2014 no encoding of political pressure, workload fatigue, or pro-landlord bias in certain jurisdictions"
+   ],
+   "public_posture_vs_private_reality_conflations": [
+    "\"deposit_escrowed_with_holder\" fact type assumes escrow is always reported truthfully \u2014 but landlord may claim escrow without actual transfer",
+    "\"complaint_filed\" does not distinguish between a formal filing and a threat to file \u2014 public posture vs. private bluff",
+    "\"settlement_agreement_signed\" event assumes both parties sign \u2014 but one party may sign under duress or with undisclosed side deals",
+    "Board decisions are recorded as public records, but informal \"no penalty\" outcomes may be off-the-record agreements"
+   ],
+   "outcome_predicate_matches_question": true,
+   "missing_nonhuman_mechanisms": [
+    "No representation of email/notification delays or lost paperwork (common in tenancy boards)",
+    "No representation of bank processing times for deposit release",
+    "No representation of statutory waiting periods or cooling-off periods mandated by local law",
+    "No representation of automated case management system failures or backlog at the board",
+    "No representation of currency exchange rate fluctuations if deposit is held in different currency"
+   ],
+   "verdict": "needs_extension"
+  },
+  "frozen_at": 1752800000.0,
+  "content_hash": "090d6b18a2bebc3c"
+ },
+ "frozen": true,
+ "ancestry": []
+}

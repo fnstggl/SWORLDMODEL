@@ -258,10 +258,17 @@ def probe_4_info_then_act(llm, offline):
                             entities=["sam_whitfield", "referring_gp_alvarez",
                                       "practice_manager_kim"],
                             institutions=[],
-                            evidence="Kim can pull referral-source stats within a week. "
-                                     "GP Alvarez was the top referrer and stopped in "
-                                     "February. Reversing the fee costs 8k/quarter; the "
-                                     "partner program costs 5k to stand up.")
+                            evidence="Kim can pull referral-source stats within a week; the "
+                                     "practice management system logs every referral with "
+                                     "source and month, so monthly referral counts are "
+                                     "directly measurable against the December baseline of "
+                                     "60/month. GP Alvarez was the top referrer (25/month) "
+                                     "and stopped in February; his stated reason is unknown "
+                                     "until asked (could be the fee, the rival clinic, or "
+                                     "something else). Sam Whitfield holds sole authority "
+                                     "over fees and programs; Kim proposes only. Reversing "
+                                     "the fee costs 8k/quarter; the partner program costs "
+                                     "5k to stand up.")
     ctxt, rep = live_context(schema, ["sam_whitfield", "referring_gp_alvarez",
                                       "practice_manager_kim"], llm=llm,
                              resources=seed_resources(schema, "sam_whitfield", {"budget": 20000.0}))
@@ -291,7 +298,8 @@ def probe_5_novel_user_action(llm, offline):
                       "resolved without a board-imposed penalty by October 2025?")
     schema = compile_schema(llm, question=world_question,
                             entities=["landlord_petrov", "tenant_okada"],
-                            institutions=["tenancy_dispute_board"],
+                            institutions=["tenancy_dispute_board",
+                                          "county_neutral_holder_program"],
                             evidence="The tenancy dispute board resolves complaints; the "
                                      "county neutral-holder program accepts escrowed "
                                      "deposits; the tenant filed a complaint in June.")
