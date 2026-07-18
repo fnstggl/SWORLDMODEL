@@ -143,10 +143,18 @@ def _need(op: dict, *keys):
             raise OpError(f"missing required field {k!r}")
 
 
+#: fields whose STRING VALUE names a state target — a forbidden name there is the same
+#: minting attempt as a forbidden key (`set_typed_fact fact="success_probability"`). Display
+#: fields ("name", "content", …) stay unchecked: "Terminal 5 expansion" is a fine product name.
+_NAMING_FIELDS = ("fact", "quantity", "resource", "etype")
+
+
 def _no_forbidden(op: dict):
     for k, v in op.items():
         if _FORBIDDEN_KEYS.search(str(k)):
             raise OpError(f"forbidden numeric-minting field {k!r}")
+        if str(k) in _NAMING_FIELDS and _FORBIDDEN_KEYS.search(str(v)):
+            raise OpError(f"forbidden numeric-minting target {k}={v!r}")
         if isinstance(v, dict):
             _no_forbidden(v)
 
@@ -223,6 +231,8 @@ def _x_set_fact(world, op, ctx, delta):
     if obj.object_id not in ctx["created_ids"]:
         _authority_over(world, ctx["actor_id"], obj)
     key = str(op["fact"])[:60]
+    if _FORBIDDEN_KEYS.search(key):
+        raise OpError(f"forbidden numeric-minting fact name {key!r}")
     val = op.get("value")
     if not isinstance(val, (str, int, float, bool, list)):
         raise OpError("fact value must be a simple typed value")
