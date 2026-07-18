@@ -300,7 +300,7 @@ def main():
     args = ap.parse_args()
     llm = None
     if not args.offline:
-        llm = default_chat_fn(max_tokens=900, temperature=0.3)
+        llm = default_chat_fn(max_tokens=1800, temperature=0.3)
         if llm is None:
             raise SystemExit("no LLM backend — live probes need DEEPSEEK_API_KEY "
                              "(use --offline for the structural smoke)")

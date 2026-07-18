@@ -35,6 +35,20 @@ from swm.world_model_v2.phase13.scenario_actions.roles import (RoleRunner, blind
 MAX_STRATEGIES_PER_GENERATOR = 4
 
 
+def _parse_ts(v):
+    """Timing arrives as unix float OR RFC3339 string (LLMs prefer dates) — accept both;
+    anything else is None (fires at decision time), never a silent guess."""
+    if isinstance(v, (int, float)):
+        return float(v)
+    if isinstance(v, str) and v.strip():
+        try:
+            from swm.world_model_v2.state import parse_time
+            return float(parse_time(v.strip()))
+        except (ValueError, TypeError):
+            return None
+    return None
+
+
 @dataclass
 class PlannerOutput:
     backward_requirements: dict = field(default_factory=dict)
@@ -192,8 +206,7 @@ class GoalBackwardPlanner:
                 exact_content=str(s.get("exact_content", ""))[:2000],
                 terms={str(k): v for k, v in (s.get("terms") or {}).items()
                        if isinstance(v, (str, int, float, bool, list))},
-                timing_ts=(float(s["timing_ts"])
-                           if isinstance(s.get("timing_ts"), (int, float)) else None),
+                timing_ts=_parse_ts(s.get("timing_ts")),
                 after_steps=[f"{cid}_s{int(a)}" if str(a).isdigit() else str(a)
                              for a in (s.get("after_steps") or [])][:4],
                 conditions=[ConditionSpec(

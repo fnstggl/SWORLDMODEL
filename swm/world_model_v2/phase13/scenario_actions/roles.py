@@ -91,10 +91,24 @@ class RoleRunner:
             return str(raw), True
         from swm.engine.grounding import parse_json
         parsed = parse_json(raw)
-        ok = isinstance(parsed, (dict, list))
+        salvage_note = ""
+        if not isinstance(parsed, (dict, list)):
+            # a token cap can cut the JSON mid-object — salvage the balanced prefix rather
+            # than discarding an otherwise-usable proposal (recorded as salvaged, never silent)
+            try:
+                from swm.world_model_v2.compiler import _salvage_json
+                parsed = _salvage_json(str(raw))
+                if isinstance(parsed, (dict, list)) and parsed:
+                    salvage_note = "salvaged truncated json (balanced prefix)"
+                else:
+                    parsed = None
+            except Exception:  # noqa: BLE001
+                parsed = None
+        ok = isinstance(parsed, (dict, list)) and bool(parsed)
         self.trace.record(stage=stage, role=role, prompt=prompt, response=str(raw)[:4000],
                           parsed=parsed if ok else None, accepted=ok,
-                          reasons="" if ok else "unparseable json", ancestry=ancestry)
+                          reasons=salvage_note if ok else "unparseable json",
+                          ancestry=ancestry)
         return (parsed if ok else None), ok
 
 
