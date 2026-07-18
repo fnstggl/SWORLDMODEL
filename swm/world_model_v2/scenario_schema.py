@@ -472,6 +472,73 @@ class SchemaCompiler:
             return {"verdict": "uncriticized", "reason": f"{type(e).__name__}: {e}"[:120]}
 
 
+def minimal_scenario_schema(*, question: str, as_of: float, horizon: float,
+                            entities=(), institutions=None, resources=(),
+                            options=("True", "False")) -> ScenarioSemanticModel:
+    """RECOVERY STEP 2: the smallest scenario-generated schema strictly necessary to run the
+    actor-mediated runtime for THIS question — built deterministically from the plan itself
+    (its actors, institutions, resources, and outcome options), never from a global social
+    catalog. Used only when LLM schema compilation failed after repair; every result carries
+    the `minimal_deterministic` provenance so the classification layer reports it. If even
+    this cannot answer, the run ends structurally_underidentified — NEVER in fixed-v1 or
+    scalar consequences."""
+    slug = re.sub(r"[^a-z0-9]+", "_", str(question).lower()).strip("_")[:40] or "question"
+    insts = {}
+    for iid, holders in (institutions or {}).items():
+        hs = [str(h) for h in holders if h]
+        if hs:
+            insts[_sanitize_min(iid)] = {
+                "procedure": f"decision holders of {iid} decide the matter",
+                "decision_holders": hs,
+                "decision_record_type": f"{slug}_decision_record",
+                "aggregation": {"kind": "single_authority" if len(hs) == 1 else "majority"},
+                "assumed": True}
+    model = ScenarioSemanticModel(
+        question=question, prediction_timestamp=float(as_of or 0.0),
+        horizon=float(horizon or 0.0),
+        fact_types={
+            f"{slug}_outcome_fact": {
+                "description": "the concrete state of the matter this question asks about; "
+                               "written by the actors whose actions settle it",
+                "fields": {"answer": "str", "settled_by": "str", "basis": "str"}},
+            f"{slug}_decision_record": {
+                "description": "one decision-holder's actual recorded position",
+                "fields": {"position": "str", "matter": "str", "basis": "str",
+                           "status": "str"}},
+            f"{slug}_commitment": {
+                "description": "a concrete commitment an actor made about the matter",
+                "fields": {"statement": "str", "to_whom": "str", "binding": "bool"}}},
+        semantic_event_types={
+            f"{slug}_statement": {
+                "description": "an actor's statement or communication about the matter, "
+                               "with its exact content",
+                "fields": {"about": "str"}, "typical_visibility": "participants"}},
+        institutional_definitions=insts,
+        resource_definitions={str(r): {"unit": "unit", "conserved": True}
+                              for r in resources},
+        actor_roles={str(a): {"role": "party to the matter",
+                              "why_consequential": "named in the scenario"}
+                     for a in entities},
+        outcome_predicates=[{
+            "predicate_id": f"{slug}_resolved",
+            "record_type": f"{slug}_outcome_fact", "field": "answer", "op": "eq",
+            "value": str(options[0]),
+            "option_true": str(options[0]),
+            "option_false": str(options[1] if len(options) > 1 else "False")}],
+        assumptions=["MINIMAL DETERMINISTIC SCHEMA: LLM schema compilation failed; this "
+                     "run models only actor statements, decision records, commitments, and "
+                     "an explicit outcome fact — treat the result as structurally thin"],
+        provenance={"kind": SCHEMA_KIND, "compiler": "minimal_deterministic"})
+    ok, issues = validate_scenario_schema(model)
+    if not ok:
+        raise ValueError(f"minimal schema failed validation (defect): {issues[:4]}")
+    return model.freeze()
+
+
+def _sanitize_min(raw) -> str:
+    return re.sub(r"[^a-z0-9_]+", "_", str(raw).lower()).strip("_")[:60] or "institution"
+
+
 # ---------------------------------------------------------------- versioned, branch-aware
 # extension (the schema lives ON the branch world; clone() isolates it)
 def extend_schema(model: ScenarioSemanticModel, proposal: dict, *, reason: str,

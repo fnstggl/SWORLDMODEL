@@ -214,20 +214,24 @@ class ActorPolicyRuntime:
                     delta.uncertainty["kernel_quarantined"] = ctx["quarantined"][:6]
                 delta.uncertainty["consequence_compiler"] = meta.get("compiler", "")
                 return events
-            # NO scenario schema on this world: the generated architecture cannot run.
-            # Degrade LOUDLY into the fixed-v1 baseline — stamped, surfaced, counted, and
-            # excluded from any pure generated-world evaluation. Never silent.
-            report["actual_mode"] = "fixed_semantic_consequence_policy_v1"
+            # NO scenario schema on this world: the generated architecture cannot model this
+            # action's consequences. PRODUCTION RULE: fixed-v1 and scalar consequences are
+            # NEVER served here — the action keeps only its core effects (history, declared
+            # resources, commitments, already written above) and the run is classified
+            # structurally_underidentified. Explicit incompleteness beats a prediction from
+            # a demoted ontology.
             report["degraded"] = True
-            report["fixed_ontology_uses"] += 1
+            report["structurally_underidentified"] = True
             if not any(fr.get("kind") == "no_scenario_schema"
                        for fr in report["fallback_reasons"] if isinstance(fr, dict)):
                 report["fallback_reasons"].append(
                     {"kind": "no_scenario_schema",
                      "reason": "generated_actor_mediated_world requested but the world "
-                               "carries no ScenarioSemanticModel (schema compilation needs "
-                               "an LLM backend); fixed-v1 baseline served, stamped"})
-            delta.reason_codes.append("generated_mode_degraded_to_fixed_v1")
+                               "carries no ScenarioSemanticModel (LLM compilation and the "
+                               "minimal-schema recovery both unavailable); semantic "
+                               "consequences NOT modeled — fixed-v1/scalar never served"})
+            delta.reason_codes.append("generated_schema_unavailable_consequences_unmodeled")
+            return []
         program = self._consequence_program(world, action, posterior, trace)
         events = semcons.execute_program(world, program, delta, report)
         semcons.project_decided_outcome_quantities(world, action, delta, report)

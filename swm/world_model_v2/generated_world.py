@@ -770,9 +770,17 @@ class GeneratedActorInvocationOperator:
             # action outside this list, and choosing nothing at all
             decision["candidate_actions"] = affordances
         seed = rng.randrange(0, 2**31 - 1)
-        selected, posterior, trace = self.runtime.decide(
-            None, [world], actor_id, decision=decision, seed=seed,
-            observed_events=[event])
+        try:
+            selected, posterior, trace = self.runtime.decide(
+                None, [world], actor_id, decision=decision, seed=seed,
+                observed_events=[event])
+        except (ValueError, IndexError, StopIteration) as e:
+            # an actor with no buildable action space (e.g. a minimal-schema world under a
+            # numeric policy with no affordances) DECLINES rather than crashing the branch
+            self.report["actors_declined_to_act"] += 1
+            delta.reason_codes.append("no_feasible_action_space_actor_declined")
+            delta.uncertainty["decide_error"] = f"{type(e).__name__}: {e}"[:120]
+            return delta, ValidationResult(ok=True)
         self.report["actors_invoked"] += 1
         qual = (posterior.provenance or {}).get("qualitative") or {}
         if qual.get("act_or_wait") == "wait" or selected.action_name in ("wait", "abstain"):

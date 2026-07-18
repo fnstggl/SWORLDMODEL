@@ -114,10 +114,10 @@ def test_fixed_v1_execution_writes_no_pathway_scalars():
     assert runtime.consequence_report["legacy_scalar_writes"] == 0
 
 
-def test_generated_default_without_schema_degrades_loudly_never_silently():
-    """The production default is generated_actor_mediated_world; a world with NO scenario
-    schema serves the fixed baseline STAMPED (actual mode, degraded flag, counted fixed-
-    ontology use, reason) — a silent swap is impossible."""
+def test_generated_default_without_schema_is_underidentified_never_fixed_v1():
+    """PRODUCTION RULE: a schema-less world under the generated default NEVER executes
+    fixed-v1 or scalar consequences — the action keeps its core effects only and the run is
+    stamped structurally underidentified with the invariants intact."""
     w = world(declared_bar=True)
     runtime = ActorPolicyRuntime()                  # resolved default: generated
     decision = {"candidate_actions": [{"name": "reject", "family": "negotiation",
@@ -127,12 +127,15 @@ def test_generated_default_without_schema_degrades_loudly_never_silently():
     delta = result["executions"][0]["delta"]
     rep = runtime.consequence_report
     assert rep["requested_mode"] == "generated_actor_mediated_world"
-    assert rep["actual_mode"] == "fixed_semantic_consequence_policy_v1"
-    assert rep["degraded"] is True and rep["fixed_ontology_uses"] >= 1
+    assert rep["actual_mode"] == "generated_actor_mediated_world"   # never rewritten
+    assert rep["degraded"] is True and rep["structurally_underidentified"] is True
+    assert rep["fixed_ontology_uses"] == 0 and rep["legacy_scalar_writes"] == 0
     assert any(fr.get("kind") == "no_scenario_schema" for fr in rep["fallback_reasons"])
-    assert "generated_mode_degraded_to_fixed_v1" in delta.reason_codes
-    assert not any("pathway_progress" in c["path"] and "(derived)" not in c["path"]
-                   for c in delta.changes)
+    assert "generated_schema_unavailable_consequences_unmodeled" in delta.reason_codes
+    assert w.objects == {}                           # no fixed-catalog objects appeared
+    assert not any("pathway_progress" in c["path"] for c in delta.changes)
+    # core effects still applied: the executed action is in history
+    assert w.entity("alice").value("past_actions")[-1]["status"] == "executed"
 
 
 def test_legacy_mode_is_the_only_scalar_path_and_is_counted():
@@ -279,7 +282,8 @@ def test_publish_artifact_exposes_exact_text_to_audience():
         assert any(item.content == text for item, _e in vis)
 
 
-def test_sender_expectation_never_becomes_recipient_reaction():
+def test_sender_expectation_never_becomes_recipient_reaction(monkeypatch):
+    monkeypatch.setenv("SWM_CONSEQUENCES", "fixed_semantic_consequence_policy_v1")
     """alice sends a demand EXPECTING compliance; bob's own policy chooses to refuse. The world
     must record bob's refusal, alice's expectation stays a subjective actor-local record."""
     from swm.world_model_v2.qualitative_actor import (
@@ -558,7 +562,8 @@ def test_empty_llm_program_is_loudly_unmodeled():
     assert not any("pathway" in c["path"] for c in delta.changes)
 
 
-def test_novel_action_never_reduces_to_nearest_label_scalar_effects():
+def test_novel_action_never_reduces_to_nearest_label_scalar_effects(monkeypatch):
+    monkeypatch.setenv("SWM_CONSEQUENCES", "fixed_semantic_consequence_policy_v1")
     """A compiled novel action carrying an ontology anchor must NOT inherit the anchor's
     ACTION_PATHWAY_EFFECTS in semantic mode — its world change is its compiled program."""
     w = world(declared_bar=True)
@@ -619,19 +624,19 @@ def test_run_from_plan_carries_consequence_report_and_semantic_default():
                          as_of="2025-01-01", horizon="2025-01-10", persist=False)
     result, branches = run_from_plan(plan, n_particles=4, seed=3)
     rep = result["consequence_report"]
-    # no LLM backend → the generated default degrades to the fixed baseline, STAMPED
+    # PRODUCTION RULE: no LLM backend → the deterministic MINIMAL generated schema serves the
+    # SAME actor-mediated runtime — never fixed-v1, never scalar
     assert rep["requested_mode"] == "generated_actor_mediated_world"
-    assert rep["actual_mode"] == "fixed_semantic_consequence_policy_v1"
-    assert rep["degraded"] is True
-    assert rep["institutional_submissions"] >= 1
-    assert rep["legacy_scalar_writes"] == 0
-    for b in branches:                                # the typed decision exists in every branch
-        subs = [o for o in b.world.objects.values() if o.object_type == "submission"]
-        assert subs and subs[0].status == "decided"
-        assert subs[0].attributes["outcome"] == "approve"
-        # and the contract's readout quantity is the DERIVED projection of that typed fact
-        q = b.world.quantities["approval_progress"]
-        assert q.value == 1 and q.prov.status == "derived"
+    assert rep["actual_mode"] == "generated_actor_mediated_world"
+    assert rep["fixed_ontology_uses"] == 0 and rep["legacy_scalar_writes"] == 0
+    assert (plan.provenance or {}).get("scenario_schema_recovery") == "minimal_deterministic"
+    for b in branches:
+        schema = b.world.scenario_schema
+        assert schema is not None
+        assert schema.provenance.get("compiler") == "minimal_deterministic"
+        # no fixed-catalog objects: every record type is scenario-scoped
+        assert all(o.object_type in schema.record_types()
+                   for o in b.world.objects.values())
 
 
 def test_individual_reaction_artifact_carries_consequence_report():
@@ -663,11 +668,11 @@ def test_individual_reaction_artifact_carries_consequence_report():
         n_hypotheses=2, samples_per_hypothesis=1, seed=0, as_of=T0,
         config=QualitativeConfig(llm=backend, llm_hypotheses=False, n_hypotheses=2))
     rep = result["consequence_report"]
-    # without a scenario schema the generated default is served by fixed-v1, STAMPED
+    # PRODUCTION RULE: the individual route without a compiled schema runs on the MINIMAL
+    # deterministic generated schema — the same actor-mediated runtime, never fixed-v1
     assert rep["requested_mode"] == "generated_actor_mediated_world"
-    assert rep["actual_mode"] == "fixed_semantic_consequence_policy_v1"
-    assert rep["degraded"] is True
-    assert rep["direct_operations_applied"] >= 1
+    assert rep["actual_mode"] == "generated_actor_mediated_world"
+    assert rep["fixed_ontology_uses"] == 0
     assert rep["legacy_scalar_writes"] == 0
 
 
@@ -684,7 +689,8 @@ def test_counterfactual_branches_keep_objects_isolated():
     assert readout(branch_a) == "True" and readout(branch_b) == "False"
 
 
-def test_qualitative_decision_wording_reaches_the_compiler_prompt():
+def test_qualitative_decision_wording_reaches_the_compiler_prompt(monkeypatch):
+    monkeypatch.setenv("SWM_CONSEQUENCES", "fixed_semantic_consequence_policy_v1")
     from swm.world_model_v2.qualitative_actor import (
         QualitativeActorPolicyRuntime, QualitativeConfig, QualitativeDecisionEngine,
     )
@@ -723,7 +729,8 @@ def test_qualitative_decision_wording_reaches_the_compiler_prompt():
     assert rt.consequence_report["actions_compiled"] == 1
 
 
-def test_execute_returns_semantic_events_on_the_delta_for_the_engine():
+def test_execute_returns_semantic_events_on_the_delta_for_the_engine(monkeypatch):
+    monkeypatch.setenv("SWM_CONSEQUENCES", "fixed_semantic_consequence_policy_v1")
     w = world()
     runtime = ActorPolicyRuntime()
     decision = {"candidate_actions": [{"name": "reply_now", "family": "messaging",

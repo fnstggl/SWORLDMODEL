@@ -226,7 +226,8 @@ def test_deterministic_replay_and_trace_corruption_detection():
     assert not t1.verify()
 
 
-def test_execution_consumes_resources_creates_commitment_events_and_delta():
+def test_execution_consumes_resources_creates_commitment_events_and_delta(monkeypatch):
+    monkeypatch.setenv("SWM_CONSEQUENCES", "fixed_semantic_consequence_policy_v1")
     w = world(); runtime = ActorPolicyRuntime()
     decision = {"candidate_actions": [{
         "name": "approve", "family": "institutional",

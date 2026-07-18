@@ -326,7 +326,8 @@ def test_individual_reaction_end_to_end():
 
 
 # ---------------------------------------------------------------- novel actions
-def test_novel_action_with_causal_reading_is_compiled_and_moves_the_world():
+def test_novel_action_with_causal_reading_is_compiled_and_moves_the_world(monkeypatch):
+    monkeypatch.setenv("SWM_CONSEQUENCES", "fixed_semantic_consequence_policy_v1")
     from swm.world_model_v2.quantities import Quantity, register_quantity_type
     payload = qpayload(chosen="escalate_the_campaign", target="bob",
                        novel_action_proposal={"present": True,

@@ -74,6 +74,16 @@ def simulate_individual_reaction(*, person_id: str, stimulus: str, context: dict
     the calibrated-or-unvalidated distribution."""
     context = context or {}
     now = float(as_of if as_of is not None else _time.time())
+    if scenario_schema is None:
+        # PRODUCTION RULE: the individual route never falls back to fixed-v1 — without a
+        # compiled schema it runs on the deterministic MINIMAL generated schema (statements,
+        # commitments, an explicit outcome fact), provenance `minimal_deterministic`
+        from swm.world_model_v2.scenario_schema import minimal_scenario_schema
+        scenario_schema = minimal_scenario_schema(
+            question=f"How does {person_id} respond to the message?",
+            as_of=now, horizon=now + 7 * 86400.0,
+            entities=(person_id, counterpart_id),
+            options=("responded", "not_responded"))
     cfg = config or QualitativeConfig(llm=llm, n_hypotheses=n_hypotheses,
                                       max_llm_calls=4 * n_hypotheses * samples_per_hypothesis)
     cfg.persistent = True

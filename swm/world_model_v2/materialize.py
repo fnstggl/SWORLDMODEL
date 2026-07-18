@@ -405,23 +405,58 @@ def _bind_scenario_schema(plan, base, llm) -> None:
     if schema is None and isinstance((plan.provenance or {}).get("scenario_schema"), dict):
         schema = ScenarioSemanticModel.from_dict(plan.provenance["scenario_schema"])
     if schema is None:
-        if llm is None:
+        from swm.world_model_v2.scenario_schema import minimal_scenario_schema
+        # RECOVERY SEQUENCE (production rule): 1) LLM compile with an error-fed repair round
+        # (inside SchemaCompiler); 2) the deterministic MINIMAL generated schema built from
+        # the plan itself; 3) if even that fails, the run proceeds schema-less and the
+        # classification layer returns structurally_underidentified. Fixed-v1 and scalar
+        # consequences are NEVER a production destination.
+        if llm is not None:
+            try:
+                schema = SchemaCompiler(llm).compile(
+                    question=str(getattr(plan, "question", ""))[:400],
+                    as_of=float(getattr(plan, "as_of", 0.0) or 0.0),
+                    horizon=float(getattr(plan, "horizon_ts", 0.0) or 0.0),
+                    entities=[str(e.get("id")) for e in (plan.entities or [])],
+                    institutions=list(getattr(plan, "institutions", None) and
+                                      [str(i.get("id")) for i in plan.institutions] or []),
+                    evidence=str((plan.provenance or {}).get("evidence_summary", ""))[:1500])
+            except Exception as e:  # noqa: BLE001 — recorded, then the minimal step runs
+                plan.provenance = {**(plan.provenance or {}),
+                                   "scenario_schema_error": f"{type(e).__name__}: {e}"[:300]}
+        else:
             plan.provenance = {**(plan.provenance or {}),
                                "scenario_schema_error": "no_llm_backend_for_schema_compilation"}
-            return
-        try:
-            schema = SchemaCompiler(llm).compile(
-                question=str(getattr(plan, "question", ""))[:400],
-                as_of=float(getattr(plan, "as_of", 0.0) or 0.0),
-                horizon=float(getattr(plan, "horizon_ts", 0.0) or 0.0),
-                entities=[str(e.get("id")) for e in (plan.entities or [])],
-                institutions=list(getattr(plan, "institutions", None) and
-                                  [str(i.get("id")) for i in plan.institutions] or []),
-                evidence=str((plan.provenance or {}).get("evidence_summary", ""))[:1500])
-        except Exception as e:  # noqa: BLE001 — LOUD degradation, never silent
-            plan.provenance = {**(plan.provenance or {}),
-                               "scenario_schema_error": f"{type(e).__name__}: {e}"[:300]}
-            return
+        if schema is None:
+            try:
+                inst_holders = {}
+                for inst in getattr(plan, "institutions", None) or []:
+                    holders = []
+                    for rule in inst.get("rules") or []:
+                        if rule.get("kind") == "decision_right":
+                            holders += list((rule.get("params") or {}).get("holders") or [])
+                    inst_holders[str(inst.get("id"))] = holders
+                persons = [str(e.get("id")) for e in (plan.entities or [])
+                           if str(e.get("type", "person")) == "person"]
+                schema = minimal_scenario_schema(
+                    question=str(getattr(plan, "question", ""))[:400],
+                    as_of=float(getattr(plan, "as_of", 0.0) or 0.0),
+                    horizon=float(getattr(plan, "horizon_ts", 0.0) or 0.0),
+                    entities=persons, institutions=inst_holders,
+                    resources=sorted({rname for e in (plan.entities or [])
+                                      for rname in ((e.get("fields") or {}).get("resources")
+                                                    or {})}),
+                    options=tuple(getattr(plan.outcome_contract, "options", None)
+                                  or ("True", "False")))
+                plan.provenance = {**(plan.provenance or {}),
+                                   "scenario_schema_recovery": "minimal_deterministic"}
+            except Exception as e:  # noqa: BLE001 — step 3: structurally underidentified
+                plan.provenance = {**(plan.provenance or {}),
+                                   "scenario_schema_error":
+                                       ((plan.provenance or {}).get("scenario_schema_error", "")
+                                        + f" | minimal_schema_failed: "
+                                          f"{type(e).__name__}: {e}"[:200])}
+                return
     if isinstance(schema, ScenarioSemanticModel):
         if not schema.frozen:
             ok, issues = validate_scenario_schema(schema)
@@ -438,7 +473,12 @@ def _bind_scenario_schema(plan, base, llm) -> None:
             return
         base.scenario_schema = schema
         plan.scenario_schema = schema
-        if schema.outcome_predicates and getattr(plan.outcome_contract, "readout", None):
+        if schema.provenance.get("compiler") == "minimal_deterministic":
+            # RECOVERY schemas model consequences only — the plan's own contract readout
+            # (resolve_outcome machinery, declared quantities) stays authoritative; the
+            # minimal predicates ride along as auxiliary typed state, never a hijack
+            pass
+        elif schema.outcome_predicates and getattr(plan.outcome_contract, "readout", None):
             from swm.world_model_v2.generated_world import make_generated_predicate_readout
             plan.outcome_contract.readout = make_generated_predicate_readout(schema)
             # the contract's options must be the FROZEN predicates' own labels, or the
