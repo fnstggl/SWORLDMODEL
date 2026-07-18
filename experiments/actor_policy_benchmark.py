@@ -245,6 +245,10 @@ def main():
     ap.add_argument("--samples", type=int, default=2)
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--parallel", type=int, default=4)
+    ap.add_argument("--batch-size", type=int, default=5,
+                    help="cases per saved checkpoint; a killed run resumes from completed batches")
+    ap.add_argument("--run-id", default="",
+                    help="checkpoint namespace; reuse the same id to resume a killed run")
     ap.add_argument("--backend", default="deepseek", choices=("deepseek", "scripted"))
     args = ap.parse_args()
     cases = load_cases(Path(args.cases))
@@ -283,13 +287,34 @@ def main():
               + (f" ERROR={row['error']}" if row.get("error") else ""), flush=True)
         return row
 
+    # RESUMABLE BATCHES: never one long process that loses everything. Each batch of
+    # --batch-size cases saves a checkpoint the moment it completes; relaunching with the
+    # same --run-id skips completed batches and combines everything at the end.
     from concurrent.futures import ThreadPoolExecutor
+    run_id = args.run_id or f"run{args.seed}_{Path(args.cases).stem}"
+    ckpt_dir = RESULTS_DIR / "checkpoints"
+    ckpt_dir.mkdir(parents=True, exist_ok=True)
     for arm in [a.strip().upper() for a in args.arms.split(",") if a.strip()]:
         mode = ARMS[arm]
-        with ThreadPoolExecutor(max_workers=max(1, args.parallel)) as pool:
-            rows = list(pool.map(lambda c: one(arm, c), cases))
+        rows = []
+        for b0 in range(0, len(cases), max(1, args.batch_size)):
+            batch = cases[b0:b0 + args.batch_size]
+            ckpt = ckpt_dir / f"{run_id}_{arm}_batch{b0:03d}.json"
+            if ckpt.exists():
+                saved = json.loads(ckpt.read_text())
+                if [r["case_id"] for r in saved] == [c["case_id"] for c in batch]:
+                    rows.extend(saved)
+                    print(f"[{arm}] batch {b0}-{b0 + len(batch) - 1}: resumed from checkpoint",
+                          flush=True)
+                    continue
+            with ThreadPoolExecutor(max_workers=max(1, args.parallel)) as pool:
+                batch_rows = list(pool.map(lambda c: one(arm, c), batch))
+            ckpt.write_text(json.dumps(batch_rows, indent=1, default=str))
+            rows.extend(batch_rows)
+            print(f"[{arm}] batch {b0}-{b0 + len(batch) - 1}: saved {ckpt.name}", flush=True)
         out["arms"][mode] = {"summary": summarize(rows), "cases": rows}
         print(f"== {mode}: {json.dumps(out['arms'][mode]['summary'])}", flush=True)
+    out["run_id"] = run_id
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
     path = RESULTS_DIR / f"actor_policy_benchmark_{int(_time.time())}.json"
     path.write_text(json.dumps(out, indent=1))

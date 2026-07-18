@@ -208,6 +208,9 @@ class WorldState:
     provenance_note: str = ""
     uncertainty_meta: dict = field(default_factory=dict)  # particle weight, sampled-latent record refs
     omissions: list = field(default_factory=list)         # recorded drops/unsupported elements (loud, not silent)
+    objects: dict = field(default_factory=dict)           # id -> semantic_consequences.WorldObject —
+    #                                                       typed world facts beyond people/institutions
+    #                                                       (products, agreements, campaigns, processes…)
 
     def version_hash(self) -> str:
         payload = f"{self.world_id}|{self.branch_id}|{self.clock.now}|{len(self.entities)}|{self.evidence_hash}"

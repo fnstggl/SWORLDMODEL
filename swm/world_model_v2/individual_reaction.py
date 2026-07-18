@@ -126,6 +126,7 @@ def simulate_individual_reaction(*, person_id: str, stimulus: str, context: dict
         "calibrated_distribution": result["calibrated_distribution"],
         "calibration_status": result["calibration_status"],
         "n_excluded_numeric_fallbacks": result.get("n_excluded_numeric_fallbacks", 0),
+        "consequence_report": runtime.consequence_report,
         "llm_calls": engine.calls_used(),
         "provenance": {"as_of": now, "tier_rule": "reaction_is_the_question → Tier 1",
                        "runtime": "QualitativeActorPolicyRuntime",

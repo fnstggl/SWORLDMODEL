@@ -62,14 +62,26 @@ def qpayload(chosen="approve", target="board", **over):
 
 
 class QLLM:
-    """Scripted qualitative backend. `decide` is a dict, a JSON string, or fn(prompt)->payload."""
+    """Scripted qualitative backend. `decide` is a dict, a JSON string, or fn(prompt)->payload.
+    The default-on semantic consequence compiler reuses the same backend, so compile prompts
+    get a small valid primitive program; `decision_prompts` counts only decision calls."""
 
-    def __init__(self, decide=None):
+    def __init__(self, decide=None, compile_ops=None):
         self.decide = decide
+        self.compile_ops = compile_ops
         self.prompts = []
+        self.compile_prompts = []
+
+    @property
+    def decision_prompts(self):
+        return [p for p in self.prompts if p not in self.compile_prompts]
 
     def __call__(self, prompt):
         self.prompts.append(prompt)
+        if "CONSEQUENCE COMPILER" in prompt:
+            self.compile_prompts.append(prompt)
+            ops = self.compile_ops or [{"op": "record_observation", "note": "scripted"}]
+            return json.dumps(ops)
         out = self.decide(prompt) if callable(self.decide) else (self.decide or qpayload())
         return out if isinstance(out, str) else json.dumps(out)
 
@@ -171,7 +183,7 @@ def test_particles_decide_independently_and_can_choose_differently():
         sel, post, tr = rt.decide(Plan(), [w], "alice", decision=dict(DECISION), seed=i)
         rt.execute(w, sel, post, tr, seed=i)
         chosen.append(sel.action_name)
-    assert len(llm.prompts) == 4                            # one independent call per particle
+    assert len(llm.decision_prompts) == 4                   # one independent call per particle
     assert set(chosen) == {"approve", "delay"}              # hidden state changed the decision
     # each branch executed ITS OWN action — no globally shared selection
     for w, name in zip(worlds, chosen):
@@ -286,13 +298,22 @@ def test_individual_reaction_end_to_end():
         return qpayload(chosen=chosen, target="you", actor_state_update={
             "personal_condition": "disappointed but understanding",
             "important_memories": ["They cancelled dinner tonight"]})
+    # without any fitted pack the distribution is loudly unvalidated; with the committed
+    # reference pack (fit provenance inside) it is externally calibrated — both asserted
     result = simulate_individual_reaction(
         person_id="Dana", stimulus="So sorry — I can't make dinner tonight, work blew up.",
         context={"relationship": "close friend", "role": "friend",
                  "history": ["We rescheduled twice last month", "Dana cooked last time"]},
         llm=QLLM(decide), n_hypotheses=3, samples_per_hypothesis=2, seed=0, as_of=T0,
-        config=QualitativeConfig(llm=QLLM(decide), llm_hypotheses=False, n_hypotheses=3))
+        config=QualitativeConfig(llm=QLLM(decide), llm_hypotheses=False, n_hypotheses=3),
+        calibrator=ActorPolicyCalibrator({}))
     assert result["calibration_status"] == "unvalidated"
+    packed = simulate_individual_reaction(
+        person_id="Dana", stimulus="So sorry — I can't make dinner tonight, work blew up.",
+        context={"relationship": "close friend", "role": "friend"},
+        llm=QLLM(decide), n_hypotheses=3, samples_per_hypothesis=2, seed=0, as_of=T0,
+        config=QualitativeConfig(llm=QLLM(decide), llm_hypotheses=False, n_hypotheses=3))
+    assert packed["calibration_status"] == "calibrated"     # committed reference pack applies
     raw = result["raw_qualitative_simulation_distribution"]
     assert set(raw) == {"reply_now@you", "reply_later@you"}
     assert raw["reply_later@you"] == pytest.approx(2 / 6, abs=1e-4)
@@ -561,7 +582,10 @@ def test_individual_route_through_the_public_api():
     report = res.provenance["actor_policy_report"]
     assert report["route"] == "individual_reaction"
     assert report["actors_routed_qualitatively"] == ["Dana"]
-    assert res.raw_distribution and "unvalidated" in res.limitations[0]
+    # the committed reference calibration pack applies → calibrated distribution, no
+    # unvalidated-limitation line (the pre-pack behavior is covered in the reaction test above)
+    assert res.raw_distribution and res.calibrated_distribution
+    assert res.limitations == []
     # no supplied context → ordinary compiled route (returns None); no backend → loud failure
     assert _route_individual_reaction("How will Dana react?", None, QLLM(), "", 0, 0.0) is None
     failed = _route_individual_reaction("How will Dana react if I skip dinner?", ctx,
@@ -689,7 +713,7 @@ def test_qualitative_operator_in_the_event_loop_aggregates_per_branch():
         q.schedule(Event(ts=T0 + 60, etype="decision_opportunity", participants=["alice"],
                          payload=dict(DECISION)))
         RolloutEngine(operators=[op]).run_branch(w, q, seed=i)
-    assert len(llm.prompts) == 3
+    assert len(llm.decision_prompts) == 3
     container = {}
     attach_actor_decision_distributions([op], container)
     dist = container["actor_decision_distributions"]["alice"]

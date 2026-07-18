@@ -286,14 +286,25 @@ def attach_actor_decision_distributions(ops, container: dict) -> None:
     so a bypassed qualitative layer is always visible on the result."""
     try:
         from swm.world_model_v2.qualitative_actor import aggregate_actor_decisions
-        records, mode, runtime_report = [], "", None
+        records, mode, runtime_report, consequence_report = [], "", None, None
         for op in ops:
             runtime = getattr(op, "runtime", None)
             if runtime is not None and hasattr(runtime, "decision_records"):
                 records.extend(runtime.decision_records)
                 mode = getattr(runtime, "mode", mode)
+            if runtime is not None and getattr(runtime, "consequence_report", None):
+                consequence_report = runtime.consequence_report
             if getattr(op, "actor_policy_report", None):
                 runtime_report = op.actor_policy_report
+        # the consequence report rides on EVERY result that executed actor actions — the
+        # requested/actual consequence mode and every fallback are visible, never inferred
+        if consequence_report is None:
+            from swm.world_model_v2 import semantic_consequences as _semcons
+            _mode = _semcons.resolve_consequence_mode()
+            consequence_report = {"requested_mode": _mode, "actual_mode": _mode,
+                                  **_semcons.empty_report(),
+                                  "note": "no production_actor_policy runtime executed"}
+        container["consequence_report"] = consequence_report
         report = dict(runtime_report or {"requested_actor_policy_mode": "numeric_policy",
                                          "actual_actor_policy_mode": "numeric_policy",
                                          "reason": "no production_actor_policy operator bound"})

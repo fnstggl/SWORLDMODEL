@@ -835,6 +835,10 @@ class QualitativeActorPolicyRuntime(ActorPolicyRuntime):
         super().__init__(model, **kw)
         if mode not in POLICY_MODES:
             raise ValueError(f"unknown policy mode {mode!r}")
+        if self.consequence_llm is None:
+            # the deciding backend also proposes consequence decompositions (untrusted,
+            # validated op-by-op) — no separate key/config needed for the semantic default
+            self.consequence_llm = engine.config.llm
         self.engine = engine
         self.mode = mode
         # the mode is the contract: stateless_llm_policy NEVER persists private state
@@ -1055,6 +1059,21 @@ class QualitativeActorPolicyRuntime(ActorPolicyRuntime):
             },
             model_version=QUALITATIVE_MODEL_VERSION,
             parameter_pack_versions=["qualitative:none"])
+
+    def _qualitative_for_trace(self, trace, posterior):
+        """The FULL qualitative decision backing this trace (not just the provenance summary):
+        the consequence compiler sees the actor's own decision wording, intent, timing,
+        observability, and linked parts — the semantic detail the scalar path used to discard."""
+        pending = self._pending.get(trace.trace_id)
+        if pending is not None and pending[0] is not None:
+            qd = pending[0]
+            return {"decision_summary": qd.decision_summary,
+                    "chosen_action": qd.chosen_action, "target": qd.target,
+                    "timing": qd.timing, "observability": qd.observability,
+                    "intended_effect": qd.intended_effect,
+                    "linked_actions": qd.linked_actions,
+                    "novel_action_proposal": qd.novel_action_proposal}
+        return super()._qualitative_for_trace(trace, posterior)
 
     # ---- persistence ----------------------------------------------------------------
     def _post_execute(self, world, action, posterior, trace, delta):
