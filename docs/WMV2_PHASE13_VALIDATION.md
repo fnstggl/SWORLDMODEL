@@ -134,6 +134,36 @@ validated at three honesty levels, each labeled on every output:
   the accumulation path. The system reports "best-supported among tested" with hypothesis
   fragility, and never claims a calibrated response probability for an individual.
 
+## Outreach layer v4 — reply-first default, validation status
+
+The reply-first beat planner (ARCHITECTURE §13; `swm/decision/reply_first.py`,
+`swm/decision/language_judge.py`) is the default `optimize_cold_outreach` path. Its architectural
+promises are executable tests in `tests/test_reply_first.py` (19 offline tests):
+
+- **Judge separation**: a candidate failing the truth gate (fabricated number) or the language
+  gate (bot register) provably never reaches the outcome judge — persona appeal cannot resurrect
+  it (`test_outcome_judge_never_sees_gate_failures`).
+- **Blindness**: the outcome judge evaluates shuffled anonymous candidates; the evaluation order
+  is asserted to differ from the input order (`test_outcome_judge_is_blind_shuffled`).
+- **No simulated percentages**: persona counts land only in the machine-readable trace
+  (`step6_outcome_internal`); the human-facing summary carries ordinal notes and the
+  no-reliable-distinction label, asserted free of `%`/probability strings (message bodies may
+  still cite the sender's own factual stats).
+- **Single output**: `PlannerResult.summary()` is `reply_first_single_output` — one recommended
+  message; non-selected finalists appear as labeled notes only.
+- **Fail-closed truth**: an unavailable truth judge blocks the candidate rather than passing it.
+- **Preference hook**: `record_preference`/`load_preferences` round-trip, and stored human A-vs-B
+  choices are asserted present in the language-judge prompt (the calibration path from LLM
+  opinion toward the user's demonstrated taste).
+- **Rules ride on prompts**: every instantiation prompt carries the hard writing rules (at most
+  one number, no jargon compounds, human-typed request, 45–85 words); the backward-requirements
+  prompt is asserted to work backward from the verbatim target replies.
+
+Live evidence: `artifacts/phase13/thiel_v5/` (exp095) — full raw LLM trace (`llm_trace.jsonl`),
+stage-labeled planner trace (`plan_trace.jsonl`), result, and ledger freeze. The outcome ranking
+remains a model-based judgment (uncalibrated, labeled); the planner's stated cure for finalist
+ties is real outreach outcomes through the ledger, not more simulation.
+
 ## Negative results (reported, not hidden)
 
 - On **low-heterogeneity RCTs**, V2 CATE-targeting does **not** beat the oracle treat-all policy

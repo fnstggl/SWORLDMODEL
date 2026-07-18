@@ -139,7 +139,7 @@ def main():
     slate = optimize_cold_outreach(
         recipient, sender_brief=AURELIUS_SENDER, chat_fn=chat, recipient_notes=notes,
         k_drafts=6, n_mc=200, dossier=dossier, hypotheses=hyps, persona_draws=args.draws,
-        persona_top_k=3)
+        persona_top_k=3, method="slate")   # this experiment compares the SLATE path vs the editor
     fulldraft_winner = slate.candidates.get(slate.winner, {}).get("text", "")
 
     # ---------------- ARM B: the iterative editor ------------------------------------------------

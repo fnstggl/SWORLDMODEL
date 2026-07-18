@@ -217,7 +217,7 @@ class ColdOutreachResult:
             e = kv[1]
             if "persona" in e:
                 return -e["persona"]["expected_utility"]
-            return -e["funnel"]["objective_mean"]
+            return -(e.get("funnel") or {}).get("objective_mean", 0.0)
         ranked = sorted(self.candidates.items(), key=key)
         return {"report_type": "cold_outreach_slate", "recipient": self.recipient,
                 "winner_best_supported_among_tested": self.winner,
@@ -225,12 +225,13 @@ class ColdOutreachResult:
                 "hypothesis_fragility": self.fragility,
                 "ranked": [{"arm": k, "text": v["text"],
                             "persona": v.get("persona"),
-                            "funnel_objective": v["funnel"]["objective_mean"],
-                            "funnel_interval80": v["funnel"]["interval80"],
-                            "stage_trace": v["funnel"]["stage_trace"],
-                            "contract": v["contract"], "cold_read": v.get("cold_read"),
-                            "critic": v.get("critic")} for k, v in ranked],
-                "optimal_strategy_spec": self.spec.summary(),
+                            "funnel_objective": (v.get("funnel") or {}).get("objective_mean"),
+                            "funnel_interval80": (v.get("funnel") or {}).get("interval80"),
+                            "stage_trace": (v.get("funnel") or {}).get("stage_trace"),
+                            "contract": v.get("contract"), "cold_read": v.get("cold_read"),
+                            "critic": v.get("critic"), "gates": v.get("gates"),
+                            "origin": v.get("origin")} for k, v in ranked],
+                "optimal_strategy_spec": (self.spec.summary() if self.spec is not None else None),
                 "honesty": self.honesty}
 
 
@@ -239,7 +240,8 @@ def optimize_cold_outreach(recipient: RecipientState, *, sender_brief, chat_fn=N
                            seed: int = 0, include_legacy_beam: bool = False,
                            dossier=None, hypotheses=None, persona_draws: int = 3,
                            persona_top_k: int = 5, arrival_context: str = "",
-                           outcome_utilities=None) -> ColdOutreachResult:
+                           outcome_utilities=None, method: str = "reply_first",
+                           trace_path: str = None) -> ColdOutreachResult:
     """The corrected cold-outreach path (the failed Thiel output is this function's regression case).
 
     What changed vs optimize_message and why:
@@ -272,6 +274,31 @@ def optimize_cold_outreach(recipient: RecipientState, *, sender_brief, chat_fn=N
     from swm.decision.outreach_contract import plain_baseline_draft, validate
     from swm.decision.response_funnel import funnel_scorer_from_recipient
     from swm.decision.situational_levers import generate_levers
+
+    # DEFAULT PATH — the reply-first beat planner (method="reply_first"): design the message around
+    # the exact reply wanted, search beats before sentences, certify with three SEPARATED judges
+    # (truth / human-language / blind outcome), return ONE message with no simulated percentages.
+    # method="slate" keeps the previous generate-and-rank path for comparisons.
+    if method == "reply_first" and dossier is not None:
+        from swm.decision.reply_first import ReplyFirstPlanner
+        planner = ReplyFirstPlanner(chat_fn, sender_brief=sender_brief, dossier=dossier,
+                                    hypotheses=hypotheses, recipient_notes=recipient_notes,
+                                    seed=seed, trace_path=trace_path,
+                                    persona_draws=persona_draws)
+        pr = planner.run()
+        cands = {"reply_first_winner": {"text": pr.winner_text,
+                                        "origin": pr.winner_origin,
+                                        "gates": next((f.get("gates") for f in pr.finalists
+                                                       if f.get("ordinal_note") == "selected"), {}),
+                                        "funnel": {}}}
+        for f in pr.finalists:
+            if f.get("ordinal_note") != "selected":
+                cands[f"finalist_{f['label']}"] = {"text": f["text"], "gates": f.get("gates"),
+                                                   "funnel": {}}
+        return ColdOutreachResult(recipient=recipient.label, spec=None, candidates=cands,
+                                  winner="reply_first_winner",
+                                  within_noise=[k for k in cands if k != "reply_first_winner"],
+                                  honesty=pr.label, fragility={"n_llm_calls": pr.n_llm_calls})
 
     levers = []
     encode_fn = encode_text_to_strategy
