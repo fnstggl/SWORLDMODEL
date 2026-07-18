@@ -189,10 +189,23 @@ def evaluate_actions(problem: DecisionProblem, actions: list, world_context, *,
 
 
 def optimize_policy(problem: DecisionProblem, policies: list, world_context, *,
-                    seed: int = 0, n_particles: int = None, llm=None) -> DecisionResult:
+                    seed: int = 0, n_particles: int = None, llm=None, mode: str = "auto",
+                    goal_text: str = "", trace_path: str = "") -> DecisionResult:
     """Sequential policies (Part 12): each Policy rolls through the SAME matched particles with
     decision points scheduled; a do-nothing policy is the reference. Policies act on belief state only
     (policies.belief_state — the canonical observable-view boundary)."""
+    from swm.world_model_v2.phase13.scenario_actions.api import (is_generated_context,
+                                                                 optimize_policy_generated)
+    if mode not in ("auto", "legacy_fixed_v1"):
+        raise ValueError(f"unknown mode {mode!r} (valid: auto | legacy_fixed_v1)")
+    if mode == "auto" and is_generated_context(world_context):
+        # contingent/sequential plans on a generated world route through the scenario layer:
+        # ConcreteActions with observation-gated conditional steps, executed on the maker's
+        # observable projection through the same canonical funnel
+        return optimize_policy_generated(problem, policies, world_context,
+                                         goal_text=goal_text or problem.context, seed=seed,
+                                         n_particles=n_particles, llm=llm,
+                                         trace_path=trace_path)
     from swm.world_model_v2.phase13.policies import (Policy, PolicyExecutionOperator,
                                                      schedule_decision_points)
     from swm.world_model_v2.phase13.counterfactual import MatchedBundle, paired_report
@@ -253,12 +266,29 @@ def optimize_policy(problem: DecisionProblem, policies: list, world_context, *,
 
 
 def value_of_information(problem: DecisionProblem, candidate_observations: list, world_context, *,
-                         seed: int = 0, n_particles: int = None, llm=None) -> dict:
-    """Standalone VOI (Part 14): evaluates the feasible space once, then the information report."""
+                         seed: int = 0, n_particles: int = None, llm=None,
+                         mode: str = "auto", goal_text: str = "",
+                         trace_path: str = "") -> dict:
+    """Standalone VOI (Part 14). On a generated world (mode='auto') this routes through the
+    scenario layer: information-gathering is a first-class strategy class competing in the
+    same matched simulation, and the report carries the adjudicated
+    highest-value-information finding — no legacy detour."""
     r = recommend_action(problem, world_context, budget="standard", seed=seed,
                          n_particles=n_particles, llm=llm,
-                         candidate_observations=candidate_observations)
-    return {"decision_id": problem.decision_id, "value_of_information": r.value_of_information,
+                         candidate_observations=candidate_observations, mode=mode,
+                         goal_text=goal_text, trace_path=trace_path)
+    voi = r.value_of_information
+    sr = (r.provenance or {}).get("scenario_report")
+    if sr is not None:
+        gather = [c for c in sr.get("candidates", [])
+                  if "information" in str(c.get("strategy_class", "")).lower()
+                  or "gather" in str(c.get("title", "")).lower()]
+        voi = {"route": "scenario_generated",
+               "highest_value_information": sr.get("highest_value_information", ""),
+               "information_gathering_candidates": [c.get("candidate_id") for c in gather],
+               "gathering_recommended": r.recommended in {c.get("candidate_id")
+                                                          for c in gather}}
+    return {"decision_id": problem.decision_id, "value_of_information": voi,
             "recommended": r.recommended, "recommendation_kind": r.recommendation_kind}
 
 

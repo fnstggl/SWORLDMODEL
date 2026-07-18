@@ -45,6 +45,13 @@ class RoleTrace:
     def n_calls(self) -> int:
         return len(self.rows)
 
+    def n_backend_calls(self) -> int:
+        """Actual LLM invocations — refusal rows (no backend / budget exhausted) are trace
+        records, not calls, and must never inflate reported cost."""
+        return sum(1 for r in self.rows
+                   if r["prompt"] != "<budget exhausted>"
+                   and not str(r["response"]).startswith("<error"))
+
     def by_role(self) -> dict:
         out: dict = {}
         for r in self.rows:

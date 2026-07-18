@@ -155,7 +155,8 @@ def build_report(*, problem, goal, language, planner_out, search_report, goal_te
         missing_preferences=list(goal.missing_preferences)
         + list(goal.unresolved_tradeoffs),
         stop_reason=search_report.stop_reason,
-        trace_summary={"n_llm_calls": trace.n_calls(), "by_role": trace.by_role()},
+        trace_summary={"n_llm_calls": trace.n_backend_calls(),
+                       "n_trace_rows": trace.n_calls(), "by_role": trace.by_role()},
         provenance={"language_hash": language.language_hash(), "goal_hash": goal.goal_hash(),
                     "schema_id": language.schema_id,
                     "schema_version": language.schema_version})

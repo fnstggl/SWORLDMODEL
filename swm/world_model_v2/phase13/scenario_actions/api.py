@@ -228,7 +228,7 @@ def _run_generated(problem: DecisionProblem, world_context, *, user_candidates=N
             ["real-world information: " + (report.highest_value_information or "unknown")],
             partial={"pareto": sr.pareto}).as_dict()
     res.latency_s = round(_time.time() - t0, 3)
-    res.cost = {"llm_calls": trace.n_calls(), "simulated_arms": sr.n_simulated,
+    res.cost = {"llm_calls": trace.n_backend_calls(), "simulated_arms": sr.n_simulated,
                 "rollouts": sr.n_simulated * ev.n_particles}
     return res
 
