@@ -1,9 +1,10 @@
 {
- "error": "ValueError: could not convert string to float: 'additional_stake_or_bonus'",
+ "error": "ValueError: unknown budget tier 'small' (valid: ['diagnostic', 'maximum_capacity', 'production', 'standard'])",
+ "traceback": "Traceback (most recent call last):\n  File \"/home/user/SWORLDMODEL/experiments/actor_mediated_forensics.py\", line 174, in main\n    row = fn(llm)\n          ^^^^^^^\n  File \"/home/user/SWORLDMODEL/experiments/actor_mediated_forensics.py\", line 149, in t4_phase13_matched_counterfactual\n    dr = recommend_action(problem, plan, budget=\"small\", seed=5, n_particles=8, llm=llm)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/user/SWORLDMODEL/swm/world_model_v2/phase13/api.py\", line 90, in recommend_action\n    bundle, diag = select_and_run(ev, feasible, problem, budget=SearchBudget.tiered(budget))\n                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/user/SWORLDMODEL/swm/world_model_v2/phase13/search.py\", line 26, in tiered\n    raise ValueError(f\"unknown budget tier {tier!r} (valid: {sorted(caps)})\")\nValueError: unknown budget tier 'small' (valid: ['diagnostic', 'maximum_capacity', 'production', 'standard'])\n",
  "_meta": {
-  "generated_at": "2026-07-18T15:53:27Z",
+  "generated_at": "2026-07-18T15:57:27Z",
   "llm_backend": "deepseek (env key)",
   "as_of": "2026-07-18",
-  "trace_wall_s": 34.1
+  "trace_wall_s": 33.0
  }
 }

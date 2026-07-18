@@ -123,6 +123,9 @@ def t4_phase13_matched_counterfactual(llm) -> dict:
     q = ("Will the wavering co-founder agree to stay through the product launch in "
          "September 2026?")
     plan = compile_world(q, llm=llm, evidence="", as_of=AS_OF, horizon="2026-09-30", seed=5)
+    entity_ids = [str(e.get("id")) for e in (plan.entities or []) if isinstance(e, dict)]
+    maker = next((e for e in entity_ids if "ceo" in e.lower() or "founder" in e.lower()
+                  and "co" not in e.lower()), entity_ids[0] if entity_ids else "user")
 
     def stays_utility(outcome: dict) -> float:
         r = str(outcome.get("readout", "")).lower()
@@ -136,14 +139,14 @@ def t4_phase13_matched_counterfactual(llm) -> dict:
 
     problem = DecisionProblem(
         decision_id="forensic_t4_cofounder",
-        decision_maker="user",
+        decision_maker=maker,
         context="What should the CEO do to keep the wavering co-founder through launch?",
         as_of=AS_OF + "T00:00:00Z", horizon="2026-09-30T00:00:00Z",
         utility=UtilitySpec(stakeholders=[Stakeholder("ceo", utility_fn=stays_utility)],
                             provenance="user_supplied"),
         candidate_actions=[], generated_action_permission=True, human_approval_required=True)
     t0 = time.time()
-    dr = recommend_action(problem, plan, budget="small", seed=5, n_particles=8, llm=llm)
+    dr = recommend_action(problem, plan, budget="diagnostic", seed=5, n_particles=8, llm=llm)
     d = dr.as_dict() if hasattr(dr, "as_dict") else {
         k: getattr(dr, k, None) for k in ("recommendation", "abstention", "ranking",
                                           "runtime_fingerprint", "diagnostics")}
