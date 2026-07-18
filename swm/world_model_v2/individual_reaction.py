@@ -63,7 +63,8 @@ def simulate_individual_reaction(*, person_id: str, stimulus: str, context: dict
                                  n_hypotheses: int = 3, samples_per_hypothesis: int = 2,
                                  response_actions=DEFAULT_RESPONSE_ACTIONS, seed: int = 0,
                                  as_of: float | None = None, config: QualitativeConfig | None = None,
-                                 calibrator: ActorPolicyCalibrator | None = None) -> dict:
+                                 calibrator: ActorPolicyCalibrator | None = None,
+                                 scenario_schema=None) -> dict:
     """Simulate one person's reaction to one exact stimulus.
 
     ``context`` may supply: role, your_role, relationship (how the person labels the
@@ -90,6 +91,13 @@ def simulate_individual_reaction(*, person_id: str, stimulus: str, context: dict
     for i in range(total):
         world = _mini_world(person_id, counterpart_id, context, stimulus, channel, now,
                             branch_id=f"b{i:03d}")
+        if scenario_schema is not None:
+            # generated actor-mediated mode for the individual route: the reply becomes a
+            # scenario-typed semantic event instead of a fixed-catalog communication; without
+            # a schema, the runtime STAMPS its fixed-v1 degradation on the report (never
+            # silent)
+            import copy as _copy
+            world.scenario_schema = _copy.deepcopy(scenario_schema)
         selected, posterior, trace = runtime.decide(
             None, [world], person_id, decision=dict(decision), seed=seed * 7919 + i)
         runtime.execute(world, selected, posterior, trace, seed=seed * 7919 + i)

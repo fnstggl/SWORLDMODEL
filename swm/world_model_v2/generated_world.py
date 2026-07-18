@@ -140,7 +140,7 @@ def k_create_or_update_record(world, op, ctx, delta):
                           f"to extend)")
     fields = _validate_fields(rtypes[rtype].get("fields") or {}, op.get("fields"),
                               type_id=rtype)
-    rid = _sanitize(op.get("record_id") or f"{rtype}_{_hash(op)[:10]}")
+    rid = _sanitize(op.get("record_id") or f"{rtype}_{_hash([ctx['actor_id'], op])[:10]}")
     existing = world.objects.get(rid)
     if existing is not None:
         if existing.created_by not in ("", ctx["actor_id"]) \

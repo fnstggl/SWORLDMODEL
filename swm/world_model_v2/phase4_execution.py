@@ -319,10 +319,10 @@ class ActorPolicyRuntime:
         LEGACY-ONLY: compiler-proposed `quantity_delta`/`belief_delta` scalars are exactly the
         unmechanized numeric writes the semantic mode replaces — invoking this writer under
         `semantic_world_consequences` is a structural violation, not a fallback."""
-        if consequence_mode == "semantic_world_consequences":
+        if consequence_mode != "legacy_scalar_pathway_consequences":
             raise RuntimeError(
-                "scalar consequence writer invoked in semantic_world_consequences mode — "
-                "actions change the world through semantic_consequences.execute_program")
+                f"scalar consequence writer invoked in {consequence_mode!r} — it runs ONLY "
+                f"under the explicit legacy benchmark mode")
         from swm.world_model_v2.quantities import Quantity, register_quantity_type
         for consequence in action.possible_consequences:
             if not isinstance(consequence, dict):
@@ -372,10 +372,10 @@ class ActorPolicyRuntime:
             contested_suppression) — two campaigns evolve separately, in tension; the pathway
             aggregate still moves as the spillover signal.
         Applies ONLY to quantities the plan declared — worlds without a mode graph are untouched."""
-        if consequence_mode == "semantic_world_consequences":
+        if consequence_mode != "legacy_scalar_pathway_consequences":
             raise RuntimeError(
-                "scalar pathway writer invoked in semantic_world_consequences mode — "
-                "pathway bars are read-only projections (derive_pathway_summaries) there")
+                f"scalar pathway writer invoked in {consequence_mode!r} — it runs ONLY under "
+                f"the explicit legacy benchmark mode")
         from swm.world_model_v2.phase4_policy import action_pathway_effects
         from swm.world_model_v2.quantities import Quantity, register_quantity_type
         effects = action_pathway_effects(action.action_family, action.action_name)
