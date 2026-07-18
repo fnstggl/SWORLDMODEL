@@ -162,4 +162,42 @@ Demotions in existing code:
   reconsideration scheduling (the old single-target path survives only when propagation is
   explicitly disabled, stamped).
 
-(Sections C and D are filled in after implementation and evaluation.)
+## C. Post-implementation forensic map
+
+### C.1 Where every former bypass now routes (file:behavior)
+
+| Former bypass (§A.3) | Now |
+|---|---|
+| direct recipient `belief_delta` | demoted in `phase4_execution._apply_immediate_consequences`: skipped for representable person/institution targets with propagation live, recorded in `demoted_scalar_writes`; direct write survives only propagation-off, stamped `belief_delta_scalar_fallback_propagation_disabled` |
+| pathway coefficients as reactions | classified per (family, action) in `phase4_policy.ACTION_EFFECT_CLASS`; actor-mediated effects skip the write (stamped `pathway_effect_demoted_actor_mediated`), population effects stamped `population_aggregate_pathway_write`, structural effects unchanged |
+| single-target fixed reaction menu | `_follow_up_events` legacy branch gated on `propagation_enabled() == False` and marked `legacy_reaction_scheduling`; live path = frontier discovery + broad affordances + free actor choice |
+| filtering-only visibility | `ObservationRouter` performs actual delivery into the branch ledger (channel, credibility, representation, distortion, timing, boundaries) |
+| per-actor independent hypotheses | `JointWorldHypothesizer` world-first generation; `QualitativeParticleHypothesizer` conditions per-actor sets on the branch hypothesis; hypothesis ids are `<world>/<actor>` scoped |
+| silent LLM-runtime construction fallback | `materialize._actor_policy_runtime` records `actor_runtime_fallback` on plan provenance → surfaces in the epistemic contract |
+| institutional votes from posterior rates | `InstitutionalVoteOperator` coerces EXECUTED ontology actions to votes via lexical polarity (support→yes, defect→no); `CollectiveThresholdDecisionOperator` remains for population-scale bodies (stamped aggregate) |
+| pooled multi-particle decisions | unchanged and still recorded (`multi_particle_bridge_is_numeric`); the production rollout passes exactly one branch world per decision |
+
+### C.2 Deterministic architecture evidence (all offline, scripted mock actors)
+
+* `tests/test_actor_mediated_architecture.py` — 15 tests, all passing: public-statement
+  cascade with an executed-action vote; private-concession boundary + conditional relay
+  (C reacts only when B actually relays, and to B's account); joint-world coherence +
+  incoherence rejection; particle-isolated private state; novel two-target coordination with
+  zero coefficients; event-time tier promotion; unauthorized-action structural block with no
+  downstream semantic success; scalar-bypass regression; mutual-acknowledgement quiescence;
+  Phase-13 matched-arm parity (exogenous traces identical, reactions diverge); private-state /
+  simulator-truth prompt leakage; summary-vs-original representations; terminal-probability
+  write refusal; same-seed replay.
+* `tests/test_semantic_clustering.py` — 13 tests; locked fixture (44 cases, SHA-256-pinned):
+  deterministic v2 exact_accuracy 0.386→semantic_accuracy 0.977, false-merge 0.0,
+  false-split 0.033, unresolved 0.045.
+* Three-arm benchmark (`experiments/actor_mediated_three_arm.py`, 12 particles, scripted
+  actors, identical inputs/seeds): scalar arm — 0 reconsiderations, members never decide
+  (the legacy target-only narrowness made visible), vote fails for lack of executed votes;
+  one-hop — 36 reconsiderations, depth 1, all-support (nobody observes later defections),
+  P(bloc holds)=1.0; recursive — 276 reconsiderations, depth 3, observed defections cascade,
+  P(bloc holds)=0.33. Same operators, same particles, same seeds — the propagation regime is
+  causally load-bearing. This is an ARCHITECTURE result, not an accuracy claim.
+
+(Sections C.3 — live-LLM forensic traces — and D — honest verdict — are appended after the
+live runs complete.)

@@ -886,6 +886,17 @@ class QualitativeActorPolicyRuntime(ActorPolicyRuntime):
     def _routes_qualitative(self, world, actor_id: str, decision: dict) -> tuple[bool, dict]:
         if self.mode in ("stateless_llm_policy", "persistent_qualitative_llm_policy"):
             return True, {"tier": 1, "reasons": [f"mode={self.mode}: all decision actors routed"]}
+        # an actor_reconsideration event carries the causal frontier's OWN event-time tier —
+        # a frontier-promoted recipient receives qualitative cognition even when the
+        # plan-time tier map never listed them (a Tier-1 promotion is a promotion, not a hint)
+        frontier_tier = decision.get("tier_assignment")
+        if isinstance(frontier_tier, dict) and frontier_tier.get("actor_id") == actor_id \
+                and int(frontier_tier.get("tier", 3)) <= 2:
+            assignment = {"tier": int(frontier_tier["tier"]),
+                          "reasons": list(frontier_tier.get("reasons") or [])
+                          + ["causal_frontier_event_tier"]}
+            self.tiers[actor_id] = assignment
+            return True, assignment
         assignment = self.tiers.get(actor_id)
         if assignment is None and self.selector is not None:
             assignment = self.selector.promote_if_consequential(world, actor_id, decision)

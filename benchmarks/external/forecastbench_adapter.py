@@ -442,10 +442,12 @@ def preregister_forecasts(frozen_path: str, *, llm=None, runner=None, limit: int
                 "runtime_fingerprint_hash": fp_hash,
                 "llm": llm_name, "latency_s": round(float(res.latency_s or 0.0), 3),
                 "cost_usd": float(res.cost_usd or 0.0),
+                "limitations": [str(x)[:200] for x in (res.limitations or [])[:3]],
             }
             if fallback:
                 failures.append({"question_id": q["id"], "simulation_status": res.simulation_status,
-                                 "failure_taxonomy": res.failure_taxonomy})
+                                 "failure_taxonomy": res.failure_taxonomy,
+                                 "limitations": row["limitations"]})
         else:
             taxonomy = "timeout" if "wall clock" in (err or "") else "runtime_exception"
             row = {
