@@ -854,6 +854,18 @@ class QualitativeActorPolicyRuntime(ActorPolicyRuntime):
     def _routes_qualitative(self, world, actor_id: str, decision: dict) -> tuple[bool, dict]:
         if self.mode in ("stateless_llm_policy", "persistent_qualitative_llm_policy"):
             return True, {"tier": 1, "reasons": [f"mode={self.mode}: all decision actors routed"]}
+        event_tier = decision.get("tier_assignment")
+        if isinstance(event_tier, dict) and str(event_tier.get("actor_id")) == actor_id \
+                and int(event_tier.get("tier", 3)) <= 2:
+            # causal-frontier promotion (audited port): a reconsideration the routing layer
+            # judged consequential gets qualitative cognition even when the plan-time tier
+            # map never listed this actor — numeric substitution here is forbidden
+            assignment = {"tier": int(event_tier["tier"]),
+                          "reasons": list(event_tier.get("reasons") or []),
+                          "selector": str(event_tier.get("selector",
+                                                         "causal_frontier_event_tier"))}
+            self.tiers[actor_id] = assignment
+            return True, assignment
         assignment = self.tiers.get(actor_id)
         if assignment is None and self.selector is not None:
             assignment = self.selector.promote_if_consequential(world, actor_id, decision)
@@ -1113,10 +1125,16 @@ class QualitativeActorPolicyRuntime(ActorPolicyRuntime):
                 after[str(r.get("actor_or_group"))[:60]] = {
                     "expects": str(r.get("expected_reaction", ""))[:200],
                     "subjective": True, "at": world.clock.now}
-            ent.set("expected_reactions", F(after, status="derived",
-                                            method="qualitative_llm_anticipation",
-                                            updated_at=world.clock.now))
-            delta.change(f"{action.actor_id}.expected_reactions", sorted(before), sorted(after))
+            try:
+                ent.set("expected_reactions", F(after, status="derived",
+                                                method="qualitative_llm_anticipation",
+                                                updated_at=world.clock.now))
+                delta.change(f"{action.actor_id}.expected_reactions",
+                             sorted(before), sorted(after))
+            except KeyError:
+                # an exotic compiler-typed entity outside every registered extension keeps
+                # deciding; only the anticipation write is skipped, loudly (audited port)
+                delta.reason_codes.append("expected_reactions_skipped_unregistered_type")
         delta.reason_codes.append("qualitative_state_update")
         delta.uncertainty["qualitative_sections_changed"] = changed
 

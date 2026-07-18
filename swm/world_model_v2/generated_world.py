@@ -51,7 +51,21 @@ KERNEL_OPS = ("declare_schema_definition", "create_or_update_record", "remove_re
               "transfer_conserved_quantity")
 
 DEFAULT_BUDGETS = {"max_invocations_per_actor": 5, "max_semantic_events": 150,
-                   "max_cascade_depth": 8}
+                   "max_cascade_depth": 8, "reaction_latency_s": 1800.0}
+
+
+def resolve_budgets() -> dict:
+    """Env-tunable recursion budgets (audited port of the donor PropagationBudget):
+    SWM_PROPAGATION_DEPTH pins the cascade depth (1 = one-hop benchmark arm),
+    SWM_PROPAGATION_EVENTS caps total semantic events. Defaults unchanged."""
+    import os
+    b = dict(DEFAULT_BUDGETS)
+    for env, key in (("SWM_PROPAGATION_DEPTH", "max_cascade_depth"),
+                     ("SWM_PROPAGATION_EVENTS", "max_semantic_events")):
+        raw = os.environ.get(env, "").strip()
+        if raw.isdigit() and int(raw) > 0:
+            b[key] = int(raw)
+    return b
 
 
 def _hash(v) -> str:
@@ -98,6 +112,36 @@ class SemanticWorldEvent:
 
     def as_dict(self) -> dict:
         return asdict(self)
+
+    def semantic_signature(self) -> str:
+        """Content-hash for structural quiescence: a re-emitted materially-identical act
+        (same source, type, targets, gist) must not restart the cascade even though its
+        event_id is fresh."""
+        gist = (self.exact_content or json.dumps(self.structured_fields,
+                                                 sort_keys=True, default=str))[:80]
+        return _hash([self.source_actor_id, self.semantic_type_id,
+                      sorted(self.direct_targets), gist])
+
+
+def _cascade(world) -> dict:
+    """Per-branch cascade manifest (audited port): every suppression and stop reason named,
+    quiescence visible — control-plane bookkeeping in uncertainty_meta, never world truth."""
+    return world.uncertainty_meta.setdefault(
+        "event_cascade", {"version": "cascade-1.0", "scheduled": 0, "max_depth_reached": 0,
+                          "suppressed_duplicate": 0, "suppressed_budget": 0,
+                          "suppressed_depth": 0, "suppressed_unobserved": 0,
+                          "seen_signatures": [], "quiescence": ""})
+
+
+def stamp_approximation(world, *, affected, approximation_type: str, why: str = "",
+                        expected_sensitivity: str = "unknown") -> None:
+    """Every substitution of explicit actor simulation is STAMPED (audited port): the
+    approximation manifest makes 'who was not simulated, and why' first-class provenance."""
+    world.uncertainty_meta.setdefault("approximation_manifest", []).append(
+        {"at": world.clock.now, "affected": affected,
+         "approximation_type": str(approximation_type)[:60], "why": str(why)[:160],
+         "expected_sensitivity": expected_sensitivity})
+    del world.uncertainty_meta["approximation_manifest"][:-200]
 
 
 def _schema(world) -> ScenarioSemanticModel:
@@ -233,6 +277,8 @@ def k_emit_semantic_event(world, op, ctx, delta):
     budgets = ctx.get("budgets") or DEFAULT_BUDGETS
     n = sum(1 for _ in world.semantic_log)
     if n >= budgets["max_semantic_events"]:
+        _cascade(world)["quiescence"] = "event_budget"
+        _cascade(world)["suppressed_budget"] += 1
         raise KernelError(f"semantic event budget exhausted ({n}) — cascade truncated LOUDLY")
     sev = SemanticWorldEvent(
         event_id=f"sev_{_hash(op)[:12]}_{n:04d}", semantic_type_id=tid,
@@ -255,6 +301,19 @@ def k_emit_semantic_event(world, op, ctx, delta):
     if tdef.get("scaffolding"):
         ctx["report"]["fallback_reasons"].append(
             {"kind": "unmodeled_action_scaffolding", "action": ctx.get("action_id", "")})
+    cascade = _cascade(world)
+    cascade["max_depth_reached"] = max(cascade["max_depth_reached"], sev.cascade_depth)
+    sig = sev.semantic_signature()
+    if sig in cascade["seen_signatures"]:
+        # structural quiescence: the identical act happened again — it stays world history
+        # but does not restart the cascade (no routing, no new reconsiderations)
+        cascade["suppressed_duplicate"] += 1
+        cascade["quiescence"] = "duplicate_semantic_event"
+        delta.reason_codes.append("duplicate_semantic_event_not_rerouted")
+        return sev.event_id
+    cascade["seen_signatures"].append(sig)
+    del cascade["seen_signatures"][:-256]
+    cascade["scheduled"] += 1
     delay = max(0.0, float(op.get("delay_s", 0.0) or 0.0))
     ctx["events"].append(Event(
         ts=ctx["now"] + delay, etype="ctrl_semantic_event",
@@ -533,8 +592,9 @@ class GeneratedActionCompiler:
 
 # ---------------------------------------------------------------- control-plane operators
 def _budgets(world) -> dict:
-    b = world.uncertainty_meta.setdefault("generated_budgets", dict(DEFAULT_BUDGETS))
+    b = world.uncertainty_meta.setdefault("generated_budgets", resolve_budgets())
     b.setdefault("invocations", {})
+    b.setdefault("reaction_latency_s", DEFAULT_BUDGETS["reaction_latency_s"])
     return b
 
 
@@ -598,10 +658,20 @@ class GeneratedSemanticEventOperator:
         self.report["recursive_cascade_depth"] = max(
             self.report.get("recursive_cascade_depth", 0), depth)
         recipients = {e.payload["recipient"] for e in follow}
+        public = str(sev.get("intended_visibility")) == "public"
         for actor_id, reason in frontier:
             if actor_id in recipients:
                 continue                    # their delivery already triggers reconsideration
-            inv = _invocation_event(world, actor_id, sev, reason=reason)
+            if not public:
+                # THE INFORMATION GATE (audited port): nobody reconsiders an event they
+                # never observed — standing without delivery is stamped, not invoked
+                stamp_approximation(world, affected=actor_id,
+                                    approximation_type="no_reconsideration_unobserved",
+                                    why=f"frontier standing ({str(reason)[:80]}) but the "
+                                        f"event was never delivered to them")
+                _cascade(world)["suppressed_unobserved"] += 1
+                continue
+            inv = _invocation_event(world, actor_id, sev, reason=reason, tier=2)
             if inv is not None:
                 follow.append(inv)
         delta.follow_up_events = [{"etype": e.etype, "ts": e.ts,
@@ -611,28 +681,53 @@ class GeneratedSemanticEventOperator:
 
 
 def _invocation_event(world, actor_id: str, sev: dict, *, reason: str,
-                      observation_ids=(), delay_s: float = 1800.0):
+                      observation_ids=(), delay_s: float | None = None,
+                      delivered: dict | None = None, tier: int = 0):
     """Internal ActorReconsiderationTask (scheduler metadata, not a world event): dedup per
-    (actor, semantic event), respect per-actor budgets."""
+    (actor, semantic event), per-actor budgets, depth caps — every suppression STAMPED."""
     budgets = _budgets(world)
+    cascade = _cascade(world)
     key = f"{actor_id}|{sev.get('event_id', '')}"
     pending = world.uncertainty_meta.setdefault("pending_reconsiderations", [])
     if key in pending:
+        cascade["suppressed_duplicate"] += 1
         return None
     used = budgets["invocations"].get(actor_id, 0)
     if used >= budgets["max_invocations_per_actor"]:
-        return None                          # budget exhaustion is stamped at invocation time
+        cascade["suppressed_budget"] += 1
+        cascade["quiescence"] = cascade["quiescence"] or "invocation_budget"
+        stamp_approximation(world, affected=actor_id,
+                            approximation_type="no_reconsideration_scheduled",
+                            why="per-actor invocation budget exhausted",
+                            expected_sensitivity="moderate")
+        return None
     if int(sev.get("cascade_depth", 0)) >= budgets["max_cascade_depth"]:
+        cascade["suppressed_depth"] += 1
+        cascade["quiescence"] = cascade["quiescence"] or "depth_budget"
+        stamp_approximation(world, affected=actor_id,
+                            approximation_type="no_reconsideration_scheduled",
+                            why="cascade depth budget reached")
         return None
     pending.append(key)
     del pending[:-256]
-    return Event(ts=world.clock.now + max(1.0, delay_s), etype="ctrl_invoke_actor",
-                 participants=[actor_id],
-                 payload={"actor_id": actor_id,
-                          "triggering_observation_ids": list(observation_ids),
-                          "triggering_semantic_event": sev,
-                          "reason_actor_may_be_causally_relevant": str(reason)[:200],
-                          "cascade_depth": int(sev.get("cascade_depth", 0)) + 1},
+    payload = {"actor_id": actor_id,
+               "triggering_observation_ids": list(observation_ids),
+               "triggering_semantic_event": sev,
+               "reason_actor_may_be_causally_relevant": str(reason)[:200],
+               "cascade_depth": int(sev.get("cascade_depth", 0)) + 1}
+    if delivered:
+        # the actor reconsiders on what was DELIVERED to them (post-degradation
+        # representation, perceived source) — never the simulator's omniscient record
+        payload["delivered"] = {k: str(v)[:400] for k, v in delivered.items()}
+    if tier:
+        # frontier-discovered standing: the routing layer promotes this recipient into
+        # qualitative cognition even when the plan-time tier map never listed them
+        payload["tier_assignment"] = {"actor_id": actor_id, "tier": int(tier),
+                                      "reasons": [f"causal_frontier: {str(reason)[:120]}"],
+                                      "selector": "causal_frontier_event_tier"}
+    return Event(ts=world.clock.now + max(1.0, float(delay_s if delay_s is not None
+                                                     else budgets["reaction_latency_s"])),
+                 etype="ctrl_invoke_actor", participants=[actor_id], payload=payload,
                  visibility="participants", source="endogenous:generated_world")
 
 
@@ -653,11 +748,21 @@ def discover_causal_frontier(world, sev: dict, *, llm=None, report=None) -> list
 
     for t in sev.get("direct_targets") or []:
         add(t, "direct target of the event")
+    delivered_to = set((sev.get("actual_observability") or {})) \
+        | set(sev.get("direct_targets") or [])
     for iid, inst in (schema.institutional_definitions or {}).items():
         text = json.dumps(sev, default=str)[:1500]
-        if iid in text or any(str(h) in text for h in inst.get("decision_holders") or []):
-            for h in inst.get("decision_holders") or []:
+        holders = [str(h) for h in inst.get("decision_holders") or []]
+        if iid in text or any(h in text for h in holders):
+            for h in holders:
                 add(h, f"decision holder in {iid}")
+        else:
+            # informed-decision-holder rule (audited port): formal standing makes NEW
+            # information decision-relevant — a holder who actually received this event is
+            # frontier-relevant even when the event itself is not institutional
+            for h in holders:
+                if h in delivered_to:
+                    add(h, f"informed_decision_holder:{iid}")
     if str(sev.get("intended_visibility")) == "public" and world.network is not None:
         src = str(sev.get("source_actor_id", ""))
         for e in list(world.network.out_edges(src)) + list(world.network.in_edges(src)):
@@ -704,21 +809,42 @@ class GeneratedObservationDeliveryOperator:
         if recipient not in world.entities:
             return delta, ValidationResult(ok=False, reasons=["unknown recipient"])
         content = str(sev.get("exact_content", ""))
-        if str(p.get("representation")) == "summary" and len(content) > 200:
+        representation = str(p.get("representation", "complete"))
+        distortion = None
+        if representation == "summary" and len(content) > 200:
+            distortion = {"summarized": True, "original_len": len(content),
+                          "summary_len": 200}
             content = content[:200] + " …[summarized in transit]"
+        # perceived-source honesty: a non-target hearing a public act through the broadcast
+        # channel receives a REPORTED account, distinguishable from first-hand delivery
+        source = str(sev.get("source_actor_id", ""))
+        first_hand = recipient in (sev.get("direct_targets") or []) \
+            or str(sev.get("intended_visibility")) != "public"
+        perceived_source = source if first_hand else f"reported:{source}"
         iid = f"obs_{_hash([recipient, sev.get('event_id')])[:12]}"
         if world.information is not None:
             world.information.publish(InformationItem(
                 iid, content or f"[{sev.get('semantic_type_id', 'event')}]",
                 kind="private" if sev.get("intended_visibility") != "public" else "public",
-                source=str(sev.get("source_actor_id", "")), created_at=world.clock.now,
+                source=perceived_source, created_at=world.clock.now,
                 about=str(sev.get("semantic_type_id", ""))[:60]))
             world.information.expose(recipient, iid, world.clock.now,
                                      channel=str(p.get("channel", ""))[:24])
         delta.change(f"information_exposure[{recipient}]", None, iid)
+        if distortion:
+            delta.uncertainty["distortion"] = distortion
+        # backfill the world-plane event's actual observability: who really received it, how
+        for row in reversed(world.semantic_log):
+            if row.get("event_id") == sev.get("event_id"):
+                row.setdefault("actual_observability", {})[recipient] = representation
+                break
         self.report["observations_delivered"] += 1
-        inv = _invocation_event(world, recipient, sev, reason="received the observation",
-                                observation_ids=[iid], delay_s=1800.0)
+        inv = _invocation_event(
+            world, recipient, sev, reason="received the observation",
+            observation_ids=[iid],
+            delivered={"content": content, "channel": str(p.get("channel", "")),
+                       "perceived_source": perceived_source,
+                       "representation": representation})
         if inv is not None:
             delta.follow_up_events = [{"etype": inv.etype, "ts": inv.ts,
                                        "participants": list(inv.participants),
@@ -759,11 +885,22 @@ class GeneratedActorInvocationOperator:
         sev = p.get("triggering_semantic_event") or {}
         schema = _schema(world)
         role = (schema.actor_roles or {}).get(actor_id) or {}
-        situation = (f"{str(sev.get('semantic_type_id', 'a development')).replace('_', ' ')}: "
-                     f"\"{str(sev.get('exact_content', ''))[:400]}\""
-                     if sev else str(p.get("reason_actor_may_be_causally_relevant", "")))
+        delivered = p.get("delivered") or {}
+        if delivered.get("content"):
+            # the actor reconsiders on the DELIVERED representation (post-degradation
+            # content, perceived source) — never the simulator's omniscient record
+            situation = (f"Received via {delivered.get('channel', 'a channel')} from "
+                         f"{delivered.get('perceived_source', 'someone')}: "
+                         f"\"{delivered['content'][:360]}\"")
+        elif sev:
+            situation = (f"{str(sev.get('semantic_type_id', 'a development')).replace('_', ' ')}"
+                         f" (public): \"{str(sev.get('exact_content', ''))[:360]}\"")
+        else:
+            situation = str(p.get("reason_actor_may_be_causally_relevant", ""))
         decision = {"situation": situation[:450],
                     "question_id": f"reconsider_{sev.get('event_id', '')[:20]}"}
+        if isinstance(p.get("tier_assignment"), dict):
+            decision["tier_assignment"] = p["tier_assignment"]
         affordances = [a for a in (role.get("affordances") or []) if isinstance(a, str)][:8]
         if affordances:
             # EXAMPLES of feasible capabilities — the qualitative schema explicitly allows an

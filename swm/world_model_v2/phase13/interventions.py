@@ -39,6 +39,16 @@ _FOLLOW_UP_ETYPE = {
 }
 
 
+def _num(v, default=0.0) -> float:
+    """Numeric coercion for LLM-proposed action params: non-numeric values (a named quantity
+    such as 'additional_stake_or_bonus') fall back to the default instead of crashing the arm —
+    feasibility separately reports the unparseable amount as a typed reason."""
+    try:
+        return float(v)
+    except (TypeError, ValueError):
+        return float(default)
+
+
 def to_intervention(action, problem=None) -> Intervention:
     """Wrap an ActionSchema as a canonical Intervention. apply(world, queue) NEVER mutates entity/
     quantity state directly — it schedules the decision_action Event (and, for time-family operations,
@@ -67,7 +77,7 @@ def _retime_queue(queue, action, now: float):
     """Time-family semantics: shift/cancel already-scheduled events matching the target etype."""
     import heapq
     target = str(action.params.get("etype", action.object))
-    shift = float(action.params.get("shift_s", 0.0))
+    shift = _num(action.params.get("shift_s", 0.0))
     kept = []
     for ev in queue.events:
         if ev.etype == target and ev.ts >= now:
@@ -111,7 +121,7 @@ class DecisionActionOperator(TransitionOperator):
                                           action={"actor": a.actor, "type": a.operation,
                                                   "target": a.object, "_failed": True},
                                           reason_codes=["implementation_failed"])
-        amount = float(a.params.get("amount",
+        amount = _num(a.params.get("amount",
                                     next(iter((a.required_resources or {}).values()), 0.0) or 0.0))
         return TransitionProposal(operator=self.name,
                                   action={"actor": a.actor, "type": a.operation, "target": a.object,
@@ -144,18 +154,19 @@ class DecisionActionOperator(TransitionOperator):
         for rname, amt in (a.required_resources or {}).items():
             if actor_ent is not None:
                 rf = actor_ent.get("resources", key=rname)
-                if rf is not None and getattr(rf, "value", None) is not None:
+                if rf is not None and isinstance(getattr(rf, "value", None), (int, float)):
                     before = float(rf.value)
-                    rf.value = before - float(amt)
+                    rf.value = before - _num(amt)
                     d.change(f"{a.actor}.resources[{rname}]", before, rf.value)
         if a.operation in ("transfer", "allocate", "invest") and a.recipients:
             rname = str(a.params.get("resource", ""))
-            amt = float(a.params.get("amount", 0.0))
+            amt = _num(a.params.get("amount", 0.0))
             for r in a.recipients:
                 rec = (world.entities or {}).get(r)
                 if rec is not None and rname:
                     rf = rec.get("resources", key=rname)
-                    before = float(rf.value) if rf is not None and rf.value is not None else 0.0
+                    before = float(rf.value) if rf is not None and \
+                        isinstance(rf.value, (int, float)) else 0.0
                     from swm.world_model_v2.state import F
                     rec.set("resources", F(before + amt, status="derived",
                                            method="phase13:transfer"), key=rname)

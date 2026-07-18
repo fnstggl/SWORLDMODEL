@@ -213,7 +213,12 @@ def operators_from_plan(plan, *, llm=None, allow_experimental=False) -> tuple:
         if "communication_delivery" not in seen:
             seen.add("communication_delivery")
             ops.append(_semcons.CommunicationDeliveryOperator())
-        if "institutional_vote" not in seen:
+        if "institutional_vote" not in seen \
+                and mode != "generated_actor_mediated_world":
+            # the vote operator's action-name→vote normalization is a BASELINE-ONLY
+            # convention (fixed-v1 collective_vote events); generated institutions aggregate
+            # explicit member decision RECORDS via run_institutional_aggregation instead —
+            # no lexical interpretation of action names decides a production vote
             from swm.world_model_v2.transitions import InstitutionalVoteOperator
             seen.add("institutional_vote")
             ops.append(InstitutionalVoteOperator())
@@ -336,6 +341,7 @@ def attach_actor_decision_distributions(ops, container: dict) -> None:
                                          "actual_actor_policy_mode": "numeric_policy",
                                          "reason": "no production_actor_policy operator bound"})
         qual_actors, num_actors, fallback_reasons = set(), set(), {}
+        tier_fallbacks = {1: 0, 2: 0}
         for posterior, trace in records:
             q = (posterior.provenance or {}).get("qualitative") or {}
             source = q.get("decision_source", "numeric_policy")
@@ -345,12 +351,23 @@ def attach_actor_decision_distributions(ops, container: dict) -> None:
                 num_actors.add(trace.actor_id)
                 key = f"{trace.actor_id}:{q.get('reason', source)}"
                 fallback_reasons[key] = fallback_reasons.get(key, 0) + 1
+                # PRODUCTION INVARIANT: consequential (Tier 1/2) humans may never be served
+                # numeric cognition — any such decision is counted per tier, visibly
+                tier_info = q.get("tier")
+                tier = int(tier_info.get("tier", 3)) if isinstance(tier_info, dict) else 3
+                if q.get("routed") and source == "numeric_fallback" and tier in tier_fallbacks:
+                    tier_fallbacks[tier] += 1
         report.update(
             actors_routed_qualitatively=sorted(qual_actors),
             actors_routed_numerically=sorted(num_actors - qual_actors),
             fallbacks=int(sum(fallback_reasons.values())),
             fallback_reasons=[{"actor_and_reason": k, "n": n}
-                              for k, n in sorted(fallback_reasons.items())])
+                              for k, n in sorted(fallback_reasons.items())],
+            tier1_numeric_fallbacks=tier_fallbacks[1],
+            tier2_numeric_fallbacks=tier_fallbacks[2])
+        if consequence_report is not None:
+            consequence_report["tier1_numeric_fallbacks"] = tier_fallbacks[1]
+            consequence_report["tier2_numeric_fallbacks"] = tier_fallbacks[2]
         container["actor_policy_report"] = report
         if records:
             container["actor_decision_distributions"] = aggregate_actor_decisions(records)
@@ -537,6 +554,11 @@ def run_from_plan(plan, *, llm=None, n_particles=None, seed=0):
         rep = result.setdefault("consequence_report", {})
         rep["degraded"] = True
         rep["scenario_schema_error"] = err
+    recovery = (plan.provenance or {}).get("scenario_schema_recovery")
+    if recovery:
+        result["scenario_schema_recovery"] = recovery
+    from swm.world_model_v2.run_classification import collect_generated_manifests
+    result["generated_manifests"] = collect_generated_manifests(branches)
     return result, branches
 
 

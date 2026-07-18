@@ -504,11 +504,17 @@ def _project_terminal(question, plan, as_of, horizon, intervention, seed, llm, u
             res = result_from_run(question, plan, result, branches, intervention=intervention, t0=t0)
             res.provenance = {**(res.provenance or {}),
                               "actor_policy_report": result.get("actor_policy_report", {}),
-                              "consequence_report": result.get("consequence_report", {})}
+                              "consequence_report": result.get("consequence_report", {}),
+                              "generated_manifests": result.get("generated_manifests", {}),
+                              "scenario_schema_recovery":
+                                  result.get("scenario_schema_recovery", "")}
             if result.get("actor_decision_distributions"):
                 res.provenance["actor_decision_distributions"] = \
                     result["actor_decision_distributions"]
             _surface_actor_policy_degradation(res, result.get("actor_policy_report", {}))
+            from swm.world_model_v2.run_classification import classify_run, epistemic_contract
+            res.provenance["run_classification"] = classify_run(res)
+            res.provenance["epistemic_contract"] = epistemic_contract(res)
             manifest["phase8_persistence"].update(omitted=True, reason="dropped_by_policy")
         else:
             res, _p8meta = run_with_persistence(question, plan, llm=llm, context=user_context,

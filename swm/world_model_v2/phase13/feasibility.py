@@ -79,17 +79,25 @@ class FeasibilityEngine:
             if held_vals and req not in held_vals:
                 fail("unauthorized", f"actor holds {sorted(held_vals)[:6]}, operation needs {req!r}")
 
-        # 3. resources: required amounts must be available (actor resources, then problem-controlled)
+        # 3. resources: required amounts must be available (actor resources, then problem-controlled).
+        # LLM-proposed actions may carry NON-NUMERIC amounts (a named quantity like
+        # "additional_stake_or_bonus"): that is a typed infeasibility, never a crash.
         for rname, amount in (action.required_resources or {}).items():
             avail = None
             if actor is not None:
                 rf = actor.get("resources", key=rname)
-                if rf is not None and getattr(rf, "value", None) is not None:
+                if rf is not None and isinstance(getattr(rf, "value", None), (int, float)):
                     avail = float(rf.value)
             if avail is None and problem is not None:
                 avail = problem.controllable_resources.get(rname)
-            if avail is None:
+            if not isinstance(amount, (int, float)):
+                fail("unparseable_resource_amount",
+                     f"required amount for {rname!r} is non-numeric ({str(amount)[:40]!r})")
+            elif avail is None:
                 fail("insufficient_resources", f"resource {rname!r} unknown to actor and contract")
+            elif not isinstance(avail, (int, float)):
+                fail("insufficient_resources",
+                     f"available amount for {rname!r} is non-numeric ({str(avail)[:40]!r})")
             elif float(amount) > float(avail) + 1e-12:
                 fail("insufficient_resources", f"needs {amount} {rname}, available {avail}")
 
@@ -110,9 +118,10 @@ class FeasibilityEngine:
         if world is not None:
             targets = ([action.institutional_permission] if action.institutional_permission
                        else list((world.institutions or {}).keys()))
+            raw_amt = action.params.get("amount", action.required_resources.get(
+                next(iter(action.required_resources), ""), 0.0) or 0.0)
             adict = {"actor": action.actor, "type": action.operation, "target": action.object,
-                     "amount": float(action.params.get("amount", action.required_resources.get(
-                         next(iter(action.required_resources), ""), 0.0) or 0.0))}
+                     "amount": float(raw_amt) if isinstance(raw_amt, (int, float)) else 0.0}
             for iid in targets:
                 inst = (world.institutions or {}).get(iid)
                 if inst is None:

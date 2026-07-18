@@ -217,12 +217,17 @@ def run_with_persistence(question, plan, *, llm=None, context=None, actor_histor
                           calibrator=calibrator, cal_key=cal_key)
     res.provenance = {**(res.provenance or {}),
                       "actor_policy_report": result.get("actor_policy_report", {}),
-                      "consequence_report": result.get("consequence_report", {})}
+                      "consequence_report": result.get("consequence_report", {}),
+                      "generated_manifests": result.get("generated_manifests", {}),
+                      "scenario_schema_recovery": result.get("scenario_schema_recovery", "")}
     if result.get("actor_decision_distributions"):
         res.provenance = {**(res.provenance or {}),
                           "actor_decision_distributions": result["actor_decision_distributions"],
                           "actor_policy_mode": result.get("actor_policy_mode", "")}
     _surface_actor_policy_degradation(res, result.get("actor_policy_report", {}))
+    from swm.world_model_v2.run_classification import classify_run, epistemic_contract
+    res.provenance["run_classification"] = classify_run(res)
+    res.provenance["epistemic_contract"] = epistemic_contract(res)
 
     # 8) persist feedback + commit a new versioned checkpoint (advance lineage) + attach support effect
     if context is not None and actor_history:

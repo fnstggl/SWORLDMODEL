@@ -188,12 +188,15 @@ register_entity_extension("phase4_actor_policy", fields={
     "obligations": "actor-visible obligations distinct from stable preferences",
     "expected_reactions": "actor-subjective beliefs about likely reactions",
     "workload_pressure": "actor-observed normalized workload",
-}, entity_types=("person", "institution"))
+    # compiler-proposed entity types beyond person/institution (organizations, committees,
+    # groups) carry the same actor-policy state — a senate member typed "group" still decides
+}, entity_types=("person", "institution", "organization", "group", "committee", "collective",
+                 "company", "government", "party"))
 # grounded stance records are actor-visible state the policy consumes (an actor knows their own
 # public commitments); registered here — the consumer contract — as well as at the grounding site
 register_entity_extension("grounded_stances", fields={
     "stances": "evidence-grounded stance records (mode-scoped, graded control, classification only)",
-}, entity_types=("person", "institution"))
+}, entity_types=("person", "institution", "organization", "group", "committee", "collective", "company", "government", "party"))
 
 
 def _hash(value) -> str:
@@ -474,7 +477,7 @@ class ActorViewBuilder:
                 rules.append({"institution_id": inst_id, "rule_id": rule.rule_id,
                               "kind": rule.kind, "params": params})
 
-        history = list(own("past_actions", []) or [])
+        history = self._history_rows(fields.get("past_actions"))
         memory = list(own("memory", []) or [])
         latent = fields.get("latent_state") or {}
         policy_state = ({k: _value(v) for k, v in latent.items() if str(k).startswith("phase4_policy_")}
@@ -510,6 +513,22 @@ class ActorViewBuilder:
             return {str(k): _value(v) for k, v in value.items()}
         raw = _value(value, {})
         return dict(raw) if isinstance(raw, dict) else {}
+
+    @staticmethod
+    def _history_rows(value) -> list:
+        """Normalize `past_actions` into a list of dict rows. Two layouts exist in production:
+        the Phase-4 list of {at, action, status, ...} rows and Phase 13's keyed
+        {action_id: StateField(operation)} records — both must project into one history."""
+        if isinstance(value, dict):                      # keyed layout (phase13 decision maker)
+            rows = []
+            for aid, sf in value.items():
+                v = sf.value if isinstance(sf, StateField) else sf
+                rows.append(v if isinstance(v, dict) else
+                            {"action": str(v), "action_id": str(aid), "public": True})
+            return rows
+        raw = _value(value, []) or []
+        return [h if isinstance(h, dict) else {"action": str(h), "public": True}
+                for h in (raw if isinstance(raw, list) else [raw])]
 
     @staticmethod
     def _records(value) -> list:
