@@ -262,19 +262,25 @@ def main():
            "seed": args.seed, "cluster_version": "cluster-2.0", "arms": {}}
 
     def one(arm, case):
-        if arm == "A":
-            res = run_numeric(case, seed=args.seed)
-        elif arm == "B":
-            res = run_persona(case, llm=persona_llm, seed=args.seed)
-        else:
-            res = run_qualitative(case, llm=decide_llm, hypothesis_llm=hypo_llm,
-                                  mapper_llm=mapper_llm, mode=ARMS[arm],
-                                  hypotheses=args.hypotheses, samples=args.samples,
-                                  seed=args.seed)
-        row = score_case(res, case)
+        try:
+            if arm == "A":
+                res = run_numeric(case, seed=args.seed)
+            elif arm == "B":
+                res = run_persona(case, llm=persona_llm, seed=args.seed)
+            else:
+                res = run_qualitative(case, llm=decide_llm, hypothesis_llm=hypo_llm,
+                                      mapper_llm=mapper_llm, mode=ARMS[arm],
+                                      hypotheses=args.hypotheses, samples=args.samples,
+                                      seed=args.seed)
+            row = score_case(res, case)
+        except Exception as e:  # noqa: BLE001 — one case must never kill the arm; scored as empty
+            row = score_case({"distribution": {}, "llm_calls": 0, "latency_s": 0.0,
+                              "n_samples": 0, "floor_kind": "counted_frequency"}, case)
+            row["error"] = f"{type(e).__name__}: {e}"[:200]
         print(f"[{arm}:{ARMS[arm]}] {case['case_id']}: top1={row['top1']} "
               f"actual={case['actual_action']} p={row['p_actual']} "
-              f"calls={row['llm_calls']} {row['latency_s']}s", flush=True)
+              f"calls={row['llm_calls']} {row['latency_s']}s"
+              + (f" ERROR={row['error']}" if row.get("error") else ""), flush=True)
         return row
 
     from concurrent.futures import ThreadPoolExecutor
