@@ -396,6 +396,21 @@ class GeneratedActionCompiler:
         self._calls = 0
         self._lock = threading.RLock()
 
+    @staticmethod
+    def _invalid_type_refs(schema, ops) -> set:
+        known_r, known_e = set(schema.record_types()), set(schema.semantic_event_types)
+        bad = set()
+        for op in ops:
+            if not isinstance(op, dict):
+                continue
+            rt = str(op.get("record_type", "") or "")
+            et = str(op.get("semantic_type_id", op.get("etype", "")) or "")
+            if rt and rt not in known_r:
+                bad.add(rt)
+            if et and et not in known_e:
+                bad.add(et)
+        return bad
+
     def compile(self, world, action, *, qualitative=None, report=None) -> tuple:
         """Returns (ops, meta). meta records compiler path + quarantine seeds."""
         schema = _schema(world)
@@ -436,6 +451,30 @@ class GeneratedActionCompiler:
                         r = r.get("operations") if isinstance(r.get("operations"), list) else [r]
                     if isinstance(r, list):
                         raw, path = r, "llm"
+                        bad = self._invalid_type_refs(schema, raw)
+                        if bad and len(bad) * 2 >= len(raw):
+                            # the proposal missed the scenario vocabulary — one repair round
+                            # with the full valid id lists (never silent, never invented)
+                            with self._lock:
+                                retry_ok = self._calls < self.max_llm_calls
+                                if retry_ok:
+                                    self._calls += 1
+                            if retry_ok:
+                                r2 = parse_json(self.llm(
+                                    prompt + "\n\nYOUR OPS REFERENCED UNDECLARED TYPES: "
+                                    + ", ".join(sorted(bad)[:8])
+                                    + "\nVALID record_type ids: "
+                                    + ", ".join(sorted(schema.record_types()))
+                                    + "\nVALID semantic_type_id ids: "
+                                    + ", ".join(sorted(schema.semantic_event_types))
+                                    + "\nReturn the corrected FULL JSON array using ONLY "
+                                      "these ids."))
+                                if isinstance(r2, dict):
+                                    r2 = r2.get("operations") \
+                                        if isinstance(r2.get("operations"), list) else [r2]
+                                if isinstance(r2, list) and \
+                                        len(self._invalid_type_refs(schema, r2)) < len(bad):
+                                    raw, path = r2, "llm_vocab_repaired"
                 except Exception as e:  # noqa: BLE001 — loud fallback below
                     if report is not None:
                         report["fallback_reasons"].append(

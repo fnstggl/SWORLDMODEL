@@ -324,6 +324,16 @@ def auto_repair_schema(model: ScenarioSemanticModel) -> list:
     for iid, inst in list((model.institutional_definitions or {}).items()):
         if not isinstance(inst, dict):
             continue
+        if str(inst.get("decision_record_type")) in ("None", "null", "none"):
+            inst["decision_record_type"] = ""
+        if not inst.get("decision_holders"):
+            # an institution nobody controls cannot decide anything — drop it LOUDLY rather
+            # than keep an unexecutable rule in the frozen model
+            del model.institutional_definitions[iid]
+            model.unresolved_mechanisms.append(
+                f"institution {iid} dropped: no decision holders declared")
+            repairs.append(f"institution {iid!r} dropped (no decision holders)")
+            continue
         if not inst.get("evidence") and not inst.get("assumed"):
             inst["assumed"] = True
             repairs.append(f"institution {iid!r} labeled assumed (no evidence cited)")
