@@ -13,7 +13,60 @@ proposal path, validated op-by-op). Seeds fixed (SEED=11). All artifacts in
 `experiments/results/semantic_*.json`. Claims ladder as before: implemented / mechanically
 verified / demonstrated end-to-end / **not** yet a measured predictive improvement.
 
-## RESULTS_PLACEHOLDER
+## 1. The matched 4-mode evaluation (the phase's headline)
+
+One settlement scenario (two leaders, 2 mediated rounds each, 8 particles), identical worlds
+and seeds in every arm; the contract reads the TYPED world (deal = an agreement signed OR the
+negotiation process reaching provisional acceptance; the legacy arm's readout consumes the
+same bar it always did). The arms differ ONLY in consequence mode × actor policy.
+
+| Arm | Consequences × actors | P(deal) | bar mean | typed objects | real comms | scalar writes | ops applied | quarantined | wall |
+|---|---|---|---|---|---|---|---|---|---|
+| A | legacy scalar × persistent qualitative (pre-phase production) | **0.000** | 0.337 | 0 | 0 | 34 | 0 | 0 | 13m |
+| B | semantic × numeric policy (actors off) | 0.125 | 0.465 | 20 | 0 | 0 | 44 | 1 | 0.3s |
+| C | semantic × stateless qualitative | 0.250 | 0.528 | 310 | 243 | 0 | 731 | 232 | 43m |
+| D | semantic × persistent qualitative (**new production default**) | 0.125 | 0.446 | 305 | 235 | 0 | 910 | 214 | 51m |
+
+- **The defect is closed where it was measured.** The previous causal audit proved decisions
+  shifted trajectories (max CDF gap 0.50) while the BINARY answer stayed frozen in both arms
+  — the scalar coupling was the binding constraint. On the same scenario class, every
+  semantic arm moved the binary answer (0.125–0.25) while the matched legacy arm reproduced
+  the frozen 0.0. In arm D the deal branch is one whose negotiation process actually reached
+  `provisional_acceptance` through staged typed transitions; its bar value (0.571) is the
+  DERIVED projection of that stage, not an accumulated 0.04-step.
+- **The causal chain is inspectable end-to-end** in the artifacts: the actor's decision text
+  → the compiled program → proposal/communication objects carrying the actual words ("I will
+  reject the current framework as too vague and propose a specific, binding guarantee
+  mechanism before any substantive negotiation begins") → the recipient's own next decision
+  on that text → process stage movements → the readout.
+- **Do not over-read B vs C vs D.** At n=8 particles the spread 0.125–0.25 is one branch;
+  this evaluation demonstrates the consequence ARCHITECTURE, not an actor-policy ranking
+  (the 50-case benchmark remains the actor-policy evidence).
+- **Cost is real**: qualitative arms spend ~2 LLM calls per decision (decide + compile) and
+  reaction chains extend runs (43–51 min vs 13 min legacy). Budgets bound it loudly: 126 (D)
+  / 81 (C) late decisions fell back numeric after the 240-call budget, all excluded from
+  qualitative aggregation and counted in the reports.
+
+## 2. Four end-to-end demos (DeepSeek, semantic default)
+
+**demo1 — product launch**: DEMO1_PLACEHOLDER
+
+**demo2 — negotiation with real messages** (6 particles): every branch is a full exchange of
+proposals and private communications with substantive content (551 deliveries across the
+run); in this draw NO branch reached provisional acceptance → `no_deal 1.0` — an honest
+negative sample of the same process the arms measured (arm C/D each found deal branches at
+n=8). The typed record shows exactly why each branch stalled (ultimatum/counter-rejection
+statuses on the proposal objects).
+
+**demo3 — institutional decision**: DEMO3_PLACEHOLDER
+
+**demo4 — individual communication** (Priya, 3 hypotheses × 2 samples): the exact Sunday-
+evening message reaches every sample; all six samples decide qualitatively (zero fallbacks,
+zero legacy writes); replies are REAL communications (9 deliveries, 11 ops) whose content
+preserves the hypothesis-specific stance ("I can do an hour but need this to be the last
+Sunday fix unless we change the installer", "I'll explicitly frame this as a coaching
+session"). Response distribution: reply_now 100% with modifier/target split; calibrated at
+reference level by the committed pack.
 
 ## Mechanically guaranteed (1318 tests green, 36 new invariants)
 
