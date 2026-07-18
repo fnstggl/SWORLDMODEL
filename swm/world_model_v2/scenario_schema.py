@@ -326,6 +326,16 @@ def auto_repair_schema(model: ScenarioSemanticModel) -> list:
             inst["assumed"] = True
             repairs.append(f"institution {iid!r} labeled assumed (no evidence cited)")
     known = set(model.record_types())
+    for iid, inst in (model.institutional_definitions or {}).items():
+        drt = str(inst.get("decision_record_type", "")) if isinstance(inst, dict) else ""
+        if drt and drt not in known and _ID_RE.match(drt) \
+                and not _FORBIDDEN_FIELD.search(drt) and not _REACTION_COEFF.search(drt):
+            model.fact_types[drt] = {
+                "description": f"auto-declared: institution {iid!r} members write this "
+                               f"decision record; minimal shape the aggregation reads",
+                "fields": {"status": "str", "position": "str", "matter": "str"}}
+            known.add(drt)
+            repairs.append(f"decision record type {drt!r} auto-declared for {iid!r}")
     for p in model.outcome_predicates or []:
         rt = str(p.get("record_type", ""))
         if rt and rt not in known and _ID_RE.match(rt) \
