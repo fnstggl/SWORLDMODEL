@@ -45,13 +45,13 @@ class RolloutEngine:
                            payload={"elapsed_days": (ev.ts - last_bg) / 86400.0})
                 for op in self.operators:
                     if op.applicable(world, bg):
-                        delta, _ = op.run(world, bg, rng)
+                        delta, _ = _run_guarded(op, world, bg, rng, branch)
                         if delta is not None:
                             branch.log.append(delta)
                 last_bg = ev.ts
             for op in self.operators:
                 if op.applicable(world, ev):
-                    delta, vr = op.run(world, ev, rng)
+                    delta, vr = _run_guarded(op, world, ev, rng, branch)
                     if delta is not None:
                         branch.log.append(delta)
                         # A4: endogenous action→event chains. Follow-ups are validated against the
@@ -82,6 +82,27 @@ def _rejection_delta(world, ev, op, vr):
     d = StateDelta(at=world.clock.now, event_type=ev.etype, operator=op.name,
                    reason_codes=["action_rejected"] + vr.reasons[:3])
     return d
+
+
+class _VR:
+    def __init__(self, ok, reasons):
+        self.ok, self.reasons = ok, reasons
+
+
+def _run_guarded(op, world, ev, rng, branch):
+    """An event whose operator dereferences an entity the compiled world does not contain is an
+    ELICITATION defect (the LLM named someone the compiler never materialized — e.g. participants
+    ['politicians'] on a sports question). The same policy as invalid follow-up events applies: the
+    event is REJECTED loudly in the delta log and the world continues; it must never abort the
+    entire particle. Any other KeyError is a real engineering failure and still raises."""
+    try:
+        return op.run(world, ev, rng)
+    except KeyError as e:
+        if "unknown entity" not in str(e):
+            raise
+        branch.log.append(_rejection_delta(
+            world, ev, op, _VR(False, [f"dangling entity reference: {e}"[:160]])))
+        return None, _VR(True, [])
 
 
 @dataclass
