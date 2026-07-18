@@ -546,10 +546,16 @@ def test_33_unsupported_semantics_are_surfaced():
     w = world()
     ctx, d, _ = run_ops(w, [
         {"op": "create_or_update_record", "record_type": "replication_attempt",
-         "fields": {"undeclared_field": "x"}},
+         "fields": {"undeclared_field": "x", "finding": "effect X"}},
         {"op": "run_physics_simulation", "model": "invented"}])
-    assert len(ctx["quarantined"]) == 2
-    assert ctx["report"]["unsupported_semantics"] == 2
+    # unknown kernel op → quarantined; undeclared field on a DECLARED type → dropped LOUDLY
+    # while the op's declared semantics still apply
+    assert len(ctx["quarantined"]) == 1
+    assert ctx["report"]["unsupported_semantics"] == 1
+    assert ctx["report"]["undeclared_fields_dropped"] == 1
+    assert any(r.startswith("fields_dropped:") for r in d.reason_codes)
+    rec = next(o for o in w.objects.values() if o.object_type == "replication_attempt")
+    assert rec.attributes == {"finding": "effect X"}
     assert any("kernel_ops" in r for r in d.reason_codes)
     # the compiler's total-fallback path preserves the exact action as a SCAFFOLDING event,
     # stamped as a fallback, never as modeled semantics

@@ -112,20 +112,22 @@ class KernelError(Exception):
 
 
 # ---------------------------------------------------------------- the semantically-empty kernel
-def _validate_fields(schema_fields: dict, fields: dict, *, type_id: str) -> dict:
-    """Only declared fields, simple values, no forbidden names. Storage mechanics — the kernel
-    does not know what any field MEANS."""
+def _validate_fields(schema_fields: dict, fields: dict, *, type_id: str,
+                     dropped: list | None = None) -> dict:
+    """Simple values only, no forbidden names (fatal). Undeclared fields on a DECLARED type
+    are DROPPED and surfaced (never silently kept, never op-fatal) — the type is the semantic
+    unit; new field semantics enter through declare_schema_definition."""
     out = {}
     for k, v in (fields or {}).items():
         k = str(k)[:60]
         if _FORBIDDEN_KEYS.search(k):
             raise KernelError(f"forbidden numeric-minting field {k!r}")
-        if schema_fields and k not in schema_fields and k != "status":
-            raise KernelError(f"field {k!r} not declared on {type_id!r} "
-                              f"(declared: {sorted(schema_fields)[:8]}; extend the schema "
-                              f"to add semantics)")
         if not isinstance(v, (str, int, float, bool, list)):
             raise KernelError(f"field {k!r} must be a simple typed value")
+        if schema_fields and k not in schema_fields and k != "status":
+            if dropped is not None:
+                dropped.append(f"{type_id}.{k}")
+            continue
         out[k] = v
     return out
 
@@ -138,8 +140,13 @@ def k_create_or_update_record(world, op, ctx, delta):
         raise KernelError(f"record type {rtype!r} not in this scenario's schema "
                           f"(known: {sorted(rtypes)[:10]}; use declare_schema_definition "
                           f"to extend)")
+    dropped = []
     fields = _validate_fields(rtypes[rtype].get("fields") or {}, op.get("fields"),
-                              type_id=rtype)
+                              type_id=rtype, dropped=dropped)
+    if dropped:
+        ctx["report"]["undeclared_fields_dropped"] = \
+            ctx["report"].get("undeclared_fields_dropped", 0) + len(dropped)
+        delta.reason_codes.append(f"fields_dropped:{','.join(dropped[:4])[:80]}")
     rid = _sanitize(op.get("record_id") or f"{rtype}_{_hash([ctx['actor_id'], op])[:10]}")
     existing = world.objects.get(rid)
     if existing is not None:
@@ -217,8 +224,12 @@ def k_emit_semantic_event(world, op, ctx, delta):
         raise KernelError(f"semantic event type {tid!r} not in this scenario's schema "
                           f"(known: {sorted(schema.semantic_event_types)[:10]})")
     tdef = schema.semantic_event_types[tid]
+    dropped = []
     fields = _validate_fields(tdef.get("fields") or {}, op.get("structured_fields")
-                              or op.get("fields"), type_id=tid)
+                              or op.get("fields"), type_id=tid, dropped=dropped)
+    if dropped:
+        ctx["report"]["undeclared_fields_dropped"] = \
+            ctx["report"].get("undeclared_fields_dropped", 0) + len(dropped)
     budgets = ctx.get("budgets") or DEFAULT_BUDGETS
     n = sum(1 for _ in world.semantic_log)
     if n >= budgets["max_semantic_events"]:
@@ -397,6 +408,29 @@ class GeneratedActionCompiler:
         self._lock = threading.RLock()
 
     @staticmethod
+    def _normalize_ops(raw) -> list:
+        """Accept the op shapes LLMs actually emit: flat {"op": name, …} (canonical),
+        wrapper {name: {…}}, and {"operation": name, …} — all normalized to canonical."""
+        out = []
+        for op in raw or []:
+            if not isinstance(op, dict):
+                out.append(op)
+                continue
+            if op.get("op"):
+                out.append(op)
+            elif op.get("operation"):
+                out.append({"op": str(op.pop("operation")), **op})
+            elif len(op) == 1:
+                k, v = next(iter(op.items()))
+                if str(k) in KERNEL and isinstance(v, dict):
+                    out.append({"op": str(k), **v})
+                else:
+                    out.append(op)
+            else:
+                out.append(op)
+        return out
+
+    @staticmethod
     def _invalid_type_refs(schema, ops) -> set:
         known_r, known_e = set(schema.record_types()), set(schema.semantic_event_types)
         bad = set()
@@ -450,7 +484,7 @@ class GeneratedActionCompiler:
                     if isinstance(r, dict):
                         r = r.get("operations") if isinstance(r.get("operations"), list) else [r]
                     if isinstance(r, list):
-                        raw, path = r, "llm"
+                        raw, path = self._normalize_ops(r), "llm"
                         bad = self._invalid_type_refs(schema, raw)
                         if bad and len(bad) * 2 >= len(raw):
                             # the proposal missed the scenario vocabulary — one repair round
@@ -472,9 +506,10 @@ class GeneratedActionCompiler:
                                 if isinstance(r2, dict):
                                     r2 = r2.get("operations") \
                                         if isinstance(r2.get("operations"), list) else [r2]
-                                if isinstance(r2, list) and \
-                                        len(self._invalid_type_refs(schema, r2)) < len(bad):
-                                    raw, path = r2, "llm_vocab_repaired"
+                                if isinstance(r2, list):
+                                    r2 = self._normalize_ops(r2)
+                                    if len(self._invalid_type_refs(schema, r2)) < len(bad):
+                                        raw, path = r2, "llm_vocab_repaired"
                 except Exception as e:  # noqa: BLE001 — loud fallback below
                     if report is not None:
                         report["fallback_reasons"].append(
