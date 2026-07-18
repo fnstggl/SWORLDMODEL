@@ -78,6 +78,16 @@ def _json_obj(raw: str):
         return None
 
 
+def _strip_subject(text: str) -> str:
+    """Drop a 'Subject: …' header an LLM writes into the BODY (exp094's full-draft winner shipped
+    'Subject: A data point on AI infra economics Peter, I'm Beckett…' glued to the first line).
+    Handles both a newline-terminated header and one glued to the greeting."""
+    t = (text or "").strip()
+    t = re.sub(r"^\s*Subject:\s*[^\n]{0,90}\n+", "", t)
+    t = re.sub(r"^\s*Subject:\s*.{0,90}?(?=\b[A-Z][a-z]+,\s)", "", t)
+    return t.strip()
+
+
 @dataclass
 class EditState:
     label: str
@@ -137,6 +147,31 @@ class IterativeEditor:
             return False
         from swm.decision.outreach_contract import validate
         return validate(text, self.brief).ok
+
+    def _fabrication(self, new_text: str, old_text: str) -> list:
+        """SEMANTIC factuality on the sentences a mutation ADDED (live only): the numeric guard
+        cannot see a digit-free false claim, and the exp094 run proved the editor will reward-hack
+        the persona with one ('I'm skipping Princeton' — the facts say STARTING Princeton — inserted
+        because it pleases the simulated recipient's known biases). Every accepted mutation's new
+        sentences pass the fabricated-vs-facts judge; if the check itself fails, the mutation is
+        REJECTED (fail-closed — KEEP is always available)."""
+        if self.chat is None:
+            return []                                    # offline mode: numeric guard only (tests)
+        old = set(_sentences(old_text))
+        new = [s for s in _sentences(new_text) if s not in old]
+        if not new:
+            return []
+        try:
+            from swm.decision.llm_moves import llm_sentence_judge
+            judge = llm_sentence_judge(self.chat,
+                                       facts_text=self.brief.to_prompt() if self.brief else "")
+            self.calls += 1
+            verdicts = judge(new)
+            return [{"sentence": s, "reason": v.get("reason", "")}
+                    for s, v in zip(new, verdicts) if v.get("fabricated")]
+        except Exception:  # noqa: BLE001 — an unverifiable mutation is rejected, never shipped
+            return [{"sentence": "(all new sentences)",
+                     "reason": "factuality check unavailable; failing closed"}]
 
     # ---------------------------------------------------------------- scoring (the compass)
     def score(self, text: str) -> dict:
@@ -302,6 +337,13 @@ class IterativeEditor:
                    "selected": choice, "judge_reason": why,
                    "scores_before": state.scores}
             if choice != "KEEP" and picked["text"] != state.text:
+                fab = self._fabrication(picked["text"], state.text)
+                if fab:
+                    row["accepted"] = False
+                    row["reject_reason"] = f"semantic fabrication vs sender facts: {fab}"
+                    self._record(row)
+                    idx += 1
+                    continue
                 after = self.score(picked["text"])
                 row["scores_after"] = after
                 # the whole-email guard: a locally-better line must not worsen the message
@@ -364,6 +406,12 @@ class IterativeEditor:
                "alternatives": [{"label": v["label"], "kind": v["kind"]} for v in variants],
                "selected": choice, "judge_reason": why, "scores_before": state.scores}
         if choice != "KEEP" and picked["text"] != state.text:
+            fab = self._fabrication(picked["text"], state.text)
+            if fab:
+                row["accepted"] = False
+                row["reject_reason"] = f"semantic fabrication vs sender facts: {fab}"
+                self._record(row)
+                return
             after = self.score(picked["text"])
             row["scores_after"] = after
             if composite(after) >= composite(state.scores) - 1e-9:
@@ -390,7 +438,8 @@ class IterativeEditor:
             "Write a COMPLETE new email that fixes every recurring critique. Materially different "
             "structure allowed. Return ONLY the email text.",
             max_tokens=340, temperature=0.7)
-        if raw and self._guard(raw.strip()):
+        raw = _strip_subject(raw)
+        if raw and self._guard(raw.strip()) and not self._fabrication(raw.strip(), beam[0].text):
             cands.append(EditState(label="informed_rewrite", text=raw.strip()))
         if len(beam) >= 2:
             raw2 = self._llm(
@@ -400,7 +449,9 @@ class IterativeEditor:
                 "Write ONE email combining the strongest parts of A and B (crossover, not a blend "
                 "of everything). Return ONLY the email text.",
                 max_tokens=340, temperature=0.6)
-            if raw2 and self._guard(raw2.strip()):
+            raw2 = _strip_subject(raw2)
+            if raw2 and self._guard(raw2.strip()) and \
+                    not self._fabrication(raw2.strip(), beam[0].text + " " + beam[1].text):
                 cands.append(EditState(label="crossover", text=raw2.strip()))
         for c in cands:
             c.scores = self.score(c.text)

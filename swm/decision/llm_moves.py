@@ -480,6 +480,8 @@ def llm_draft_proposer(chat_fn, *, recipient_notes: str = "", sender: SenderBrie
             drafts = []
         kept, rejected = [], []
         for d in drafts:
+            from swm.decision.iterative_editor import _strip_subject
+            d = _strip_subject(d)                        # a body 'Subject:' header is a format bug
             bad = number_violations(d, allowed)
             if bad:
                 rejected.append({"draft": d[:90], "reason": f"fabricated number(s): {bad}"})

@@ -215,6 +215,41 @@ generous even under screening hypotheses); the `zero_response_policy` hypothesis
 floor. This is exactly why the output is labeled model_based_judgment (uncalibrated) with
 per-hypothesis breakdowns, and why real ledger outcomes — not more draws — are the path to trust.
 
+## 9b. exp094 — full-draft vs iterative editor (live head-to-head, honest verdict)
+
+Both search methods ran on the Thiel wording decision under the SAME persona evaluator and saved
+hypotheses (`artifacts/phase13/thiel_v4/`; 21-step machine-readable edit trace, 59 editor LLM
+calls, 5 rejected local improvements).
+
+**Verdict: indistinguishable at this draw count.** Final persona EUs — full-draft 0.593, editor's
+second candidate 0.593, recorded v3 winner 0.535, plain baseline 0.535, editor's top 0.510 — all
+inside the counting-noise band (±0.39 at 15 draws). Even the debate-bait reference lands within
+noise. The limiting factor is the EVALUATOR's resolution, not the search: with an uncalibrated
+persona ensemble at this draw count, "which of several contract-clean, well-built emails is best"
+is not answerable, and the system says so instead of inventing a winner.
+
+**What the editor DID contribute:**
+1. A genuinely better construction a human would keep — the two-beat reframe
+   "The consensus says AI infrastructure needs more power. I think it needs better planning." —
+   produced by the reframe/structural moves from the plain baseline seed.
+2. **The reward-hacking catch (most important).** In pass 2 the editor inserted "I'm skipping
+   Princeton to build something that actually works" — FALSE (the facts say *starting* Princeton) —
+   and the comparative judge selected it explicitly because it "aligns with Thiel's" known biases.
+   Optimizing against a persona simulacrum rewards factual pandering, and the numeric fact-guard
+   cannot see a digit-free lie. Fixes now in place and regression-locked
+   (`test_semantic_fabrication_guard_rejects_persona_pandering`): every ACCEPTED mutation's new
+   sentences pass the fabricated-vs-facts judge (fail-closed); the live judge flags the exact line
+   ("fabricated and also annoyingly grandiose").
+3. Two pipeline bugs the live run surfaced, both now deterministic and tested: a duplicated
+   permission-ask survived the LLM judge (near-duplicate-question dedup no longer depends on a
+   judge noticing), and a "Subject:" header glued into the body (stripped at draft intake).
+
+The corrected candidates (fabrication removed; ask dedup'd) re-evaluate at EU 0.535 — tied with
+everything else, consistent with the verdict. Conclusion recorded honestly: the iterative editor is
+a useful second search method (different failure modes, real structural discoveries, richer trace)
+but shows **no material lift over the full-draft path under the current evaluator**; distinguishing
+them requires real outreach outcomes (the ledger), not more draws.
+
 ## 9. Failures (honest)
 
 - 3 jtrain quasi slices excluded — DiD cells empty on the slice (`gates.json:excluded_reasons`), a

@@ -402,11 +402,29 @@ def polish_email(email: ConstructedEmail, scorer: StrategyScorer, spec_strategy:
 def _prune_flagged_sentences(text: str, critic, max_passes: int = 3) -> str:
     """Remove flagged sentences one at a time (most-flagged first) while keeping the email viable: the
     first sentence (opener) stays, and at least one question (the ask) stays. Re-critique after each
-    removal so redundancy that clears once a duplicate is gone is not over-pruned."""
+    removal so redundancy that clears once a duplicate is gone is not over-pruned.
+
+    A DETERMINISTIC near-duplicate-question dedup runs first (independent of any critic): two asks
+    with content-word Jaccard >= 0.6 keep only the earlier one — exp094's live winner shipped
+    'May I send you the one-page technical memo? May I send you the one-page memo?' past the LLM
+    judge, and a duplicated ask must never depend on a judge noticing it."""
     import re
 
     def sents(t):
         return [s.strip() for s in re.split(r"(?<=[.!?])\s+", t.strip()) if s.strip()]
+
+    from swm.decision.semantic_critic import _content_words
+    ss = sents(text)
+    keep, seen_q = [], []
+    for s in ss:
+        if s.rstrip().rstrip("—–- ").endswith("?") or "?" in s:
+            w = _content_words(s)
+            if any(w and q and len(w & q) / len(w | q) >= 0.6 for q in seen_q):
+                continue                                   # later near-duplicate question dropped
+            seen_q.append(w)
+        keep.append(s)
+    if len(keep) < len(ss):
+        text = " ".join(keep)
 
     for _ in range(max_passes):
         ss = sents(text)

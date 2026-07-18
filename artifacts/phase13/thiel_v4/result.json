@@ -1,28 +1,323 @@
 {
  "experiment": "exp094_thiel_iterative_editor",
- "mode": "offline",
+ "mode": "live",
  "hypotheses_source": "thiel_v3 saved",
  "editor": {
   "beam": [
    {
     "label": "plain_baseline",
-    "internal_score": 0.7259,
-    "text": "Peter, I'm Beckett: 17 years old, starting Princeton in the fall; building Aurelius (runaurelius.com): constraint-aware orchestration for AI infrastructure. So far: +724% average SLA-safe goodput per dollar vs the production scheduler, in simulated replay of ~1.5M requests of public production traces. May I send you the one-page memo? Beckett"
+    "internal_score": 0.61,
+    "text": "Peter, I'm Beckett: 17 years old, starting Princeton in the fall; building Aurelius (runaurelius.com): constraint-aware orchestration for AI infrastructure. The consensus says AI infrastructure needs more power. I think it needs better planning. Replaying ~1.5M public production requests, my scheduler beat the production one by 724% on SLA-safe goodput per dollar. May I send you the one-page memo? I'm skipping Princeton to build something that actually works."
+   },
+   {
+    "label": "crossover",
+    "internal_score": 0.41,
+    "text": "Peter,\n\nI'm Beckett, 17, starting Princeton in the fall. I'm building Aurelius (runaurelius.com) on a contrarian thesis: AI infrastructure has a planning problem disguised as a power problem. Schedulers optimize the next placement, but nothing chooses the fleet's best trajectory over time. In simulated replay of ~1.5M public production requests, my scheduler beat the production one by 724% on SLA-safe goodput per dollar and cut GPU-hours by 84%. You think about systems that compound over time rather than optimize the local step. I'm skipping Princeton. May I send you the one-page memo?\n\n\u2014 Beckett"
+   },
+   {
+    "label": "seed_0",
+    "internal_score": 0.4017,
+    "text": "Mr. Thiel, I'm Beckett, 17, building Aurelius (runaurelius.com): constraint-aware orchestration for AI infrastructure. The thesis is that AI infrastructure has a planning problem disguised as a power problem \u2014 schedulers optimize the next placement, but nothing chooses the fleet's best trajectory over time. In simulated replay of ~1.5M requests from public production traces, Aurelius achieved +724% average SLA-safe goodput per dollar vs the production scheduler. You specifically think about systems that compound over time rather than optimize for the local step. May I send you the one-page technical memo? \u2014 Beckett"
    }
   ],
-  "llm_calls": 0,
-  "n_trace_steps": 8,
-  "n_rejected_local_improvements": 0
+  "llm_calls": 59,
+  "n_trace_steps": 21,
+  "n_rejected_local_improvements": 5
  },
  "fulldraft": {
-  "winner": "plain_baseline",
-  "text": "Peter, I'm Beckett: 17 years old, starting Princeton in the fall; building Aurelius (runaurelius.com): constraint-aware orchestration for AI infrastructure. AI infrastructure has a planning problem disguised as a power problem: schedulers optimize the next placement, but nothing chooses the fleet's best trajectory over time. So far: +724% average SLA-safe goodput per dollar vs the production scheduler, in simulated replay of ~1.5M requests of public production traces. May I send you the one-page memo? Beckett",
-  "within_noise": [],
-  "fragility": {}
+  "winner": "draft_3",
+  "text": "Subject: A data point on AI infra economics Peter, I'm Beckett, 17, building Aurelius (runaurelius.com): constraint-aware orchestration for AI infrastructure. The evidence: in simulated replay of ~1.5M requests from public production traces, our system reduced GPU-hours by 84% vs the production scheduler. May I send you the one-page technical memo? May I send you the one-page memo? \u2014 Beckett",
+  "within_noise": [
+   "draft_3",
+   "draft_0"
+  ],
+  "fragility": {
+   "overall_utility": {
+    "draft_4": 0.535,
+    "draft_0": 0.495,
+    "draft_3": 0.4767
+   },
+   "winner": "draft_4",
+   "winner_wins_under_hypotheses": [
+    "delegated_screening"
+   ],
+   "per_hypothesis_winner": {
+    "contrarian_signal_trigger": "draft_3",
+    "delegated_screening": "draft_4",
+    "sporadic_personal_curiosity": "draft_3",
+    "thiel_fellowship_redirect": "draft_3",
+    "zero_response_policy": "draft_3"
+   },
+   "fragile": true,
+   "within_noise_of_winner": [
+    "draft_3",
+    "draft_0"
+   ],
+   "note": "a winner that leads under only one inbox-reality hypothesis is FRAGILE; within_noise arms are indistinguishable at this draw count \u2014 the system reports 'best-supported among tested', never 'best possible'."
+  }
  },
  "final_comparison": {
-  "persona": {},
-  "fragility": {},
+  "persona": {
+   "iter_editor_best": {
+    "label": "model_based_judgment (LLM persona role-play; UNCALIBRATED \u2014 not a measured response probability)",
+    "outcome_dist": {
+     "no_response": 0.1,
+     "dismissive_reply": 0.0,
+     "curious_reply": 0.7,
+     "requests_material": 0.0,
+     "refers_to_other": 0.2,
+     "meeting_offer": 0.0
+    },
+    "expected_utility": 0.51,
+    "by_hypothesis_utility": {
+     "delegated_screening": 0.5,
+     "contrarian_signal_trigger": 0.5,
+     "thiel_fellowship_redirect": 0.8,
+     "sporadic_personal_curiosity": 0.3333,
+     "zero_response_policy": 0.0
+    },
+    "n_draws": 15,
+    "n_failed_draws": 0,
+    "sample_replies": [
+     {
+      "hypothesis": "delegated_screening",
+      "outcome": "curious_reply",
+      "reply": "Beckett \u2014 724% is a number that demands a second look. Skip the one-pager. Send me the raw data from your replay and the scheduler code. If the architecture is as contrarian as the claim, I\u2019ll make time. \u2014 PT"
+     },
+     {
+      "hypothesis": "delegated_screening",
+      "outcome": "curious_reply",
+      "reply": "Beckett \u2014 the numbers are interesting. Send the memo. Also explain why you picked Princeton to skip, not Stanford or MIT. \u2014 PT"
+     },
+     {
+      "hypothesis": "delegated_screening",
+      "outcome": "curious_reply",
+      "reply": "Beckett \u2014 the 724% number is specific enough to be interesting, and skipping Princeton is the right signal. Send the memo to my assistant (cc'd). If the constraint-aware thesis holds up against the scaling orthodoxy, I'll read it this week. \u2014P"
+     }
+    ]
+   },
+   "fulldraft_winner": {
+    "label": "model_based_judgment (LLM persona role-play; UNCALIBRATED \u2014 not a measured response probability)",
+    "outcome_dist": {
+     "no_response": 0.05,
+     "dismissive_reply": 0.0,
+     "curious_reply": 0.6333,
+     "requests_material": 0.1167,
+     "refers_to_other": 0.2,
+     "meeting_offer": 0.0
+    },
+    "expected_utility": 0.5933,
+    "by_hypothesis_utility": {
+     "delegated_screening": 0.6667,
+     "contrarian_signal_trigger": 0.5,
+     "thiel_fellowship_redirect": 0.8,
+     "sporadic_personal_curiosity": 0.5,
+     "zero_response_policy": 0.0
+    },
+    "n_draws": 15,
+    "n_failed_draws": 0,
+    "sample_replies": [
+     {
+      "hypothesis": "delegated_screening",
+      "outcome": "curious_reply",
+      "reply": "Beckett \u2014 84% vs production scheduler is a strong claim. Send the memo, but include the exact benchmark names, the hardware config, and any baseline you're comparing against (e.g., Kubernetes default, Slurm, or your own heuristic). If the numbers hold, I'll read it this week."
+     },
+     {
+      "hypothesis": "delegated_screening",
+      "outcome": "requests_material",
+      "reply": "Send the memo. And tell me why you chose this problem instead of the obvious AI wrapper or model finetuning routes."
+     },
+     {
+      "hypothesis": "delegated_screening",
+      "outcome": "curious_reply",
+      "reply": "Beckett \u2014 84% vs production is a strong claim. Send the memo. If it holds, I\u2019ll introduce you to a partner who funds infra at seed. \u2014 PT"
+     }
+    ]
+   },
+   "v3_winner_recorded": {
+    "label": "model_based_judgment (LLM persona role-play; UNCALIBRATED \u2014 not a measured response probability)",
+    "outcome_dist": {
+     "no_response": 0.05,
+     "dismissive_reply": 0.0,
+     "curious_reply": 0.75,
+     "requests_material": 0.0,
+     "refers_to_other": 0.2,
+     "meeting_offer": 0.0
+    },
+    "expected_utility": 0.535,
+    "by_hypothesis_utility": {
+     "delegated_screening": 0.5,
+     "contrarian_signal_trigger": 0.5,
+     "thiel_fellowship_redirect": 0.8,
+     "sporadic_personal_curiosity": 0.5,
+     "zero_response_policy": 0.0
+    },
+    "n_draws": 15,
+    "n_failed_draws": 0,
+    "sample_replies": [
+     {
+      "hypothesis": "delegated_screening",
+      "outcome": "curious_reply",
+      "reply": "Send the memo. Make it under 3 pages. If your model actually beats production schedulers on both cost and latency, tell me why no one else has built this yet."
+     },
+     {
+      "hypothesis": "delegated_screening",
+      "outcome": "curious_reply",
+      "reply": "Beckett \u2014 interesting. Most people pitch me AI wrappers or crypto. You're actually thinking about the optimization layer as a control problem, not a scaling problem. Send the memo to my assistant (cc'd) with your raw simulation methodology and the specific traces you used. If the world model is truly predictive rather than reactive, I'll want to understand the constraints you're modeling that the "
+     },
+     {
+      "hypothesis": "delegated_screening",
+      "outcome": "curious_reply",
+      "reply": "Beckett \u2014 your thesis is genuinely contrarian: you're reframing a capacity problem as a planning problem, which most people in AI infra miss. The -84% GPU-hours result is specific and impressive. Send the one-page memo. \u2014 PT"
+     }
+    ]
+   },
+   "plain_baseline": {
+    "label": "model_based_judgment (LLM persona role-play; UNCALIBRATED \u2014 not a measured response probability)",
+    "outcome_dist": {
+     "no_response": 0.05,
+     "dismissive_reply": 0.0,
+     "curious_reply": 0.75,
+     "requests_material": 0.0,
+     "refers_to_other": 0.2,
+     "meeting_offer": 0.0
+    },
+    "expected_utility": 0.535,
+    "by_hypothesis_utility": {
+     "delegated_screening": 0.5,
+     "contrarian_signal_trigger": 0.5,
+     "thiel_fellowship_redirect": 0.8,
+     "sporadic_personal_curiosity": 0.5,
+     "zero_response_policy": 0.0
+    },
+    "n_draws": 15,
+    "n_failed_draws": 0,
+    "sample_replies": [
+     {
+      "hypothesis": "delegated_screening",
+      "outcome": "curious_reply",
+      "reply": "Beckett \u2014 skip Princeton. The constraint-aware trajectory angle is genuinely contrarian; most people chase more compute, not better orchestration over time. Send the memo and your plan for building this without the degree signal. \u2014 PT"
+     },
+     {
+      "hypothesis": "delegated_screening",
+      "outcome": "curious_reply",
+      "reply": "Beckett \u2014 I read your note. The distinction between a planning problem and a power problem is exactly the kind of contrarian framing I look for. Send the one-pager. Also: why Princeton if you're building this now?"
+     },
+     {
+      "hypothesis": "delegated_screening",
+      "outcome": "curious_reply",
+      "reply": "Beckett \u2014 the constraint-aware trajectory angle is genuinely contrarian. Most people pitch me more GPUs, not better orchestration. Send the memo. If the replay was on real traces and you can articulate a secret about why schedulers fail at fleet-level optimization, I'll make time. \u2014PT"
+     }
+    ]
+   },
+   "debate_bait_rejected": {
+    "label": "model_based_judgment (LLM persona role-play; UNCALIBRATED \u2014 not a measured response probability)",
+    "outcome_dist": {
+     "no_response": 0.25,
+     "dismissive_reply": 0.0,
+     "curious_reply": 0.75,
+     "requests_material": 0.0,
+     "refers_to_other": 0.0,
+     "meeting_offer": 0.0
+    },
+    "expected_utility": 0.375,
+    "by_hypothesis_utility": {
+     "delegated_screening": 0.5,
+     "contrarian_signal_trigger": 0.5,
+     "thiel_fellowship_redirect": 0.0,
+     "sporadic_personal_curiosity": 0.5,
+     "zero_response_policy": 0.0
+    },
+    "n_draws": 15,
+    "n_failed_draws": 0,
+    "sample_replies": [
+     {
+      "hypothesis": "delegated_screening",
+      "outcome": "curious_reply",
+      "reply": "That's a strong claim. What's the specific mechanism\u2014are you shifting load based on real-time marginal carbon intensity, or something else like curtailment arbitrage? Send me the replay methodology and the traces you used."
+     },
+     {
+      "hypothesis": "delegated_screening",
+      "outcome": "curious_reply",
+      "reply": "Eighty-four percent is a strong number. Send me your replay methodology and the trace dataset you used. I want to see the tail behavior on spot-market price spikes."
+     },
+     {
+      "hypothesis": "delegated_screening",
+      "outcome": "curious_reply",
+      "reply": "Eighty-four percent is a strong number. Send me the replay methodology and the trace dataset you used. If the assumption is that grid forecasts are reliable enough for real-time bidding, I want to see the error bars."
+     }
+    ]
+   },
+   "iter_editor_second": {
+    "label": "model_based_judgment (LLM persona role-play; UNCALIBRATED \u2014 not a measured response probability)",
+    "outcome_dist": {
+     "no_response": 0.05,
+     "dismissive_reply": 0.0,
+     "curious_reply": 0.6333,
+     "requests_material": 0.1167,
+     "refers_to_other": 0.2,
+     "meeting_offer": 0.0
+    },
+    "expected_utility": 0.5933,
+    "by_hypothesis_utility": {
+     "delegated_screening": 0.6667,
+     "contrarian_signal_trigger": 0.5,
+     "thiel_fellowship_redirect": 0.8,
+     "sporadic_personal_curiosity": 0.5,
+     "zero_response_policy": 0.0
+    },
+    "n_draws": 15,
+    "n_failed_draws": 0,
+    "sample_replies": [
+     {
+      "hypothesis": "delegated_screening",
+      "outcome": "curious_reply",
+      "reply": "Interesting. Send the memo. Include the replay methodology and a brief note on why you chose Princeton's physics department over CS if you were planning to go at all. \u2014PT"
+     },
+     {
+      "hypothesis": "delegated_screening",
+      "outcome": "requests_material",
+      "reply": "Send the memo. Use the email address on my Founders Fund site. If it's as tight as the subject line suggests, I'll read it within 48 hours."
+     },
+     {
+      "hypothesis": "delegated_screening",
+      "outcome": "curious_reply",
+      "reply": "Send the memo. Also explain why you chose Princeton if you already knew you'd skip it. \u2014PT"
+     }
+    ]
+   }
+  },
+  "fragility": {
+   "overall_utility": {
+    "fulldraft_winner": 0.5933,
+    "iter_editor_second": 0.5933,
+    "v3_winner_recorded": 0.535,
+    "plain_baseline": 0.535,
+    "iter_editor_best": 0.51,
+    "debate_bait_rejected": 0.375
+   },
+   "winner": "fulldraft_winner",
+   "winner_wins_under_hypotheses": [
+    "delegated_screening",
+    "sporadic_personal_curiosity"
+   ],
+   "per_hypothesis_winner": {
+    "contrarian_signal_trigger": "iter_editor_best",
+    "delegated_screening": "fulldraft_winner",
+    "sporadic_personal_curiosity": "fulldraft_winner",
+    "thiel_fellowship_redirect": "iter_editor_best",
+    "zero_response_policy": "iter_editor_best"
+   },
+   "fragile": false,
+   "within_noise_of_winner": [
+    "iter_editor_best",
+    "v3_winner_recorded",
+    "plain_baseline",
+    "debate_bait_rejected",
+    "iter_editor_second"
+   ],
+   "note": "a winner that leads under only one inbox-reality hypothesis is FRAGILE; within_noise arms are indistinguishable at this draw count \u2014 the system reports 'best-supported among tested', never 'best possible'."
+  },
   "contracts": {
    "iter_editor_best": {
     "ok": true,
@@ -55,10 +350,22 @@
      "diligence_bait: the ask requests unpaid technical diligence / debate ('which assumption is wrong?') \u2014 high effort, adversarial from a stranger",
      "relevance: no explicit bridge to the recipient (why THEM)"
     ]
+   },
+   "iter_editor_second": {
+    "ok": true,
+    "missing": [],
+    "flags": []
    }
   },
-  "editor_vs_fulldraft": null
+  "editor_vs_fulldraft": {
+   "editor_eu": 0.51,
+   "fulldraft_eu": 0.5933,
+   "delta": -0.0833,
+   "noise_scale": 0.3873,
+   "material": false,
+   "verdict": "indistinguishable at this draw count"
+  }
  },
  "label": "model_based_judgment \u2014 same UNCALIBRATED persona evaluator for every candidate; 'best-supported among tested', never a theoretical optimum",
- "wall_s": 13.1
+ "wall_s": 668.7
 }

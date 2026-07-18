@@ -142,3 +142,56 @@ def test_trace_serializes_to_jsonl(tmp_path):
     ed.run([{"label": "plain", "text": GOOD}])
     rows = [json.loads(l) for l in open(p)]
     assert rows and rows[0]["phase"] == "seed" and rows[-1]["phase"] == "final"
+
+
+def test_semantic_fabrication_guard_rejects_persona_pandering():
+    """The exp094 live catch, locked as a regression: an INSERT the judge loves ('I'm skipping
+    Princeton…' — false; the facts say STARTING Princeton) must be rejected by the fabricated-vs-
+    facts check on accepted mutations, even though it contains no digits."""
+    def chat(prompt, **kw):
+        if '"rewrite"' in prompt:
+            return json.dumps({"rewrite": "", "shorten": "", "reframe": "", "merge": "",
+                               "insert_after": "I'm skipping Princeton to build this full-time."})
+        if '"choice"' in prompt:
+            for lab in ("INSERT_AFTER",):
+                if f"[{lab}]" in prompt:
+                    return json.dumps({"choice": lab, "why": "aligns with the recipient's biases"})
+            return json.dumps({"choice": "KEEP", "why": "scripted"})
+        if "FABRICATED" in prompt or "fabricated" in prompt:
+            # the sentence judge: flag the inserted sentence as fabricated
+            return json.dumps([{"coherent": True, "annoying": False, "ai_sounding": False,
+                                "fabricated": True, "reason": "facts say STARTING Princeton"}])
+        return "not json"
+
+    from swm.decision.iterative_editor import EditState
+    ed = _editor(chat, max_passes=1)
+    st = EditState(label="seed", text=GOOD, scores=ed.score(GOOD))
+    ed.improve_pass(st, phase="pass1")
+    assert "skipping Princeton" not in st.text
+    rej = [r for r in ed.trace if "semantic fabrication" in str(r.get("reject_reason", ""))]
+    assert rej, "the fabricated insert must be traced as rejected with the judge's reason"
+
+
+def test_prune_dedups_near_duplicate_questions_deterministically():
+    """exp094's live full-draft winner shipped a duplicated ask past the LLM judge; the dedup must
+    be deterministic, not judge-dependent."""
+    from swm.decision.compositional_search import _prune_flagged_sentences
+    from swm.decision.semantic_critic import SemanticCritic
+    t = ("Peter, I'm Beckett, building Aurelius. "
+         "In replay of public traces it beat the production scheduler. "
+         "May I send you the one-page technical memo? May I send you the one-page memo? Beckett")
+
+    class NoFlagCritic:                                 # a judge that notices nothing
+        def critique(self, text):
+            return SemanticCritic().critique("All fine.")
+    out = _prune_flagged_sentences(t, NoFlagCritic())
+    assert out.count("May I send") == 1, out
+
+
+def test_strip_subject_header_variants():
+    from swm.decision.iterative_editor import _strip_subject
+    assert _strip_subject("Subject: A data point on AI infra economics\nPeter, I'm Beckett.") == \
+        "Peter, I'm Beckett."
+    assert _strip_subject("Subject: A data point on AI infra economics Peter, I'm Beckett.") == \
+        "Peter, I'm Beckett."
+    assert _strip_subject("Peter, I'm Beckett.") == "Peter, I'm Beckett."
