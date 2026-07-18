@@ -1162,10 +1162,17 @@ class QualitativeActorPolicyRuntime(ActorPolicyRuntime):
                 after[str(r.get("actor_or_group"))[:60]] = {
                     "expects": str(r.get("expected_reaction", ""))[:200],
                     "subjective": True, "at": world.clock.now}
-            ent.set("expected_reactions", F(after, status="derived",
-                                            method="qualitative_llm_anticipation",
-                                            updated_at=world.clock.now))
-            delta.change(f"{action.actor_id}.expected_reactions", sorted(before), sorted(after))
+            try:
+                ent.set("expected_reactions", F(after, status="derived",
+                                                method="qualitative_llm_anticipation",
+                                                updated_at=world.clock.now))
+                delta.change(f"{action.actor_id}.expected_reactions", sorted(before),
+                             sorted(after))
+            except KeyError:
+                # an entity type outside the extension registration: anticipation bookkeeping
+                # is never worth killing a run — record the skip instead
+                delta.reason_codes.append(
+                    f"expected_reactions_skipped_unregistered_type:{ent.entity_type}")
         delta.reason_codes.append("qualitative_state_update")
         delta.uncertainty["qualitative_sections_changed"] = changed
 

@@ -230,7 +230,10 @@ register_entity_extension("phase4_actor_policy", fields={
     "obligations": "actor-visible obligations distinct from stable preferences",
     "expected_reactions": "actor-subjective beliefs about likely reactions",
     "workload_pressure": "actor-observed normalized workload",
-}, entity_types=("person", "institution"))
+    # compiler-proposed entity types beyond person/institution (organizations, committees,
+    # groups) carry the same actor-policy state — a senate member typed "group" still decides
+}, entity_types=("person", "institution", "organization", "group", "committee", "collective",
+                 "company", "government", "party"))
 # grounded stance records are actor-visible state the policy consumes (an actor knows their own
 # public commitments); registered here — the consumer contract — as well as at the grounding site
 register_entity_extension("grounded_stances", fields={

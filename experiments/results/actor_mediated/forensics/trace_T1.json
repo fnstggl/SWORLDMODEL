@@ -1,0 +1,153 @@
+{
+ "route": "swm.world_model_v2.unified_runtime.simulate_world",
+ "question": "Will the three-party governing coalition in a parliamentary system publicly hold together through September 1, 2026, after the senior partner's leader publicly ruled out the junior partners' demanded budget concessions on July 17, 2026?",
+ "simulation_status": "completed_with_degradation",
+ "support_grade": "exploratory",
+ "raw_probability": 0.3333,
+ "raw_distribution": {
+  "hold_together": 0.3333,
+  "collapse": 0.6667
+ },
+ "run_classification": {
+  "run_class": "full_numeric_forecast",
+  "version": "run-class-1.0",
+  "reasons": [
+   "evidence executed and the posterior was consumed by the terminal path",
+   "support_grade=exploratory: numeric class retained but support is weak \u2014 see epistemic contract",
+   "1 phase integration failure(s) recorded"
+  ]
+ },
+ "epistemic_contract": {
+  "run_class": "full_numeric_forecast",
+  "actor_simulation": "no_actor_decisions_in_this_question",
+  "n_actor_reconsiderations": 0,
+  "max_cascade_depth": 0,
+  "n_numeric_actor_fallbacks": 0,
+  "numeric_actor_fallback_occurred": false,
+  "llm_actor_runtime_fallback": [],
+  "evidence_retrieval_degraded": false,
+  "aggregate_processes_used": [],
+  "n_approximations_stamped": 0,
+  "unmodeled_novel_actions": 0,
+  "convergence": {
+   "n_particles": 30,
+   "note": "particle count and terminal spread; see uncertainty_decomposition"
+  },
+  "calibration_available": false,
+  "scenario_only": false,
+  "support_grade": "exploratory"
+ },
+ "joint_world": {
+  "status": "attached",
+  "k": 3,
+  "llm_calls": 1,
+  "source": "joint_hypothesizer:llm",
+  "labels": [
+   "Public Bluff, Private Deal",
+   "Hidden Fissures, Filtered Reporting",
+   "Exogenous Shock, Forced Unity"
+  ]
+ },
+ "actor_policy_mode": null,
+ "event_cascade": {
+  "version": "actor-propagation-1.0",
+  "branches": [],
+  "total_reconsiderations": 0
+ },
+ "n_semantic_events": 0,
+ "demoted_scalar_writes": {
+  "n": 0,
+  "kinds": []
+ },
+ "n_approximations": 0,
+ "actor_decisions": {},
+ "operator_delta_census": {
+  "evidence_observation": {
+   "n_deltas": 96,
+   "fields_written": [
+    "quantities[evidence::1547410cb6a39d23:c0]",
+    "information.exposures[1547410cb6a39d23:c0]",
+    "quantities[evidence::e8417d4f7f45bcf3:c0]",
+    "information.exposures[e8417d4f7f45bcf3:c0]",
+    "quantities[evidence::8c9036275c9d1416:c0]",
+    "information.exposures[8c9036275c9d1416:c0]",
+    "quantities[evidence::8c9036275c9d1416:c1]",
+    "information.exposures[8c9036275c9d1416:c1]"
+   ],
+   "event_types": [
+    "observe_evidence"
+   ]
+  },
+  "population_aggregation": {
+   "n_deltas": 12,
+   "fields_written": [
+    "quantities[population_aggregate:german_public]"
+   ],
+   "event_types": [
+    "population_aggregation"
+   ]
+  },
+  "network_diffusion": {
+   "n_deltas": 12,
+   "fields_written": [
+    "quantities[network_diffusion_reach]"
+   ],
+   "event_types": [
+    "network_diffusion"
+   ]
+  },
+  "structural_process_prior": {
+   "n_deltas": 24,
+   "fields_written": [
+    "quantities[mechanism_outcome:fallback:strategic_actor_decisions]",
+    "quantities[mechanism_outcome:fallback:networked_transmission]"
+   ],
+   "event_types": [
+    "structural_process_prior"
+   ]
+  },
+  "institutional_decision": {
+   "n_deltas": 12,
+   "fields_written": [
+    "institution[spd_party_leadership].decision",
+    "quantities[absorbing_state_reached]"
+   ],
+   "event_types": [
+    "institutional_decision"
+   ]
+  },
+  "absorption_monitor": {
+   "n_deltas": 4,
+   "fields_written": [
+    "quantities[absorbed_at]"
+   ],
+   "event_types": [
+    "absorption"
+   ]
+  }
+ },
+ "manifest_phase2_evidence": {
+  "available": true,
+  "selected": true,
+  "executed": true,
+  "omitted": false,
+  "reason": "as_of supplied",
+  "version": "phase2-1.0",
+  "n_events": 0,
+  "n_state_deltas": 0,
+  "causally_irrelevant": false,
+  "removal_changes_terminal": null,
+  "status": "causally_active"
+ },
+ "limitations": [
+  "degraded: support grade exploratory; 3 fallback mechanism(s) used",
+  "integration failure: phase4_actor_policy blocked_no_mechanism (mechanism selected but produced no StateDelta (event never c)"
+ ],
+ "latency_s": 107.6,
+ "_meta": {
+  "generated_at": "2026-07-18T16:09:51Z",
+  "llm_backend": "deepseek (env key)",
+  "as_of": "2026-07-18",
+  "trace_wall_s": 107.7
+ }
+}
