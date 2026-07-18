@@ -23,35 +23,63 @@ PKG = os.path.join(ROOT, "swm", "world_model_v2", "phase13", "scenario_actions")
 
 #: §18 invariant -> the pytest expression that proves it (run live below)
 INVARIANT_TESTS = {
-    "1_no_catalog_in_prompts": "test_scenario_action_invariants.py::test_inv1",
-    "2_no_operation_registered": "test_scenario_action_invariants.py::test_inv2",
-    "3_novel_phrase_executes": "test_scenario_action_invariants.py::test_inv3",
-    "4_no_belief_writes": "test_scenario_action_invariants.py::test_inv4",
-    "5_no_choice_writes": "test_scenario_action_invariants.py::test_inv5",
-    "6_no_terminal_writes": "test_scenario_action_invariants.py::test_inv6",
-    "7_effects_via_observation_actors": "test_scenario_action_invariants.py::test_inv7",
-    "8_exact_content_survives": "test_scenario_action_invariants.py::test_inv8",
-    "9_no_history_only_execution": "test_scenario_action_invariants.py::test_inv9",
-    "10_real_partial_or_rejected": "test_scenario_action_invariants.py::test_inv10",
-    "11_no_progress_scalar": "test_scenario_action_invariants.py::test_inv11",
-    "12_no_minted_numbers_in_ranking": "test_scenario_action_invariants.py::test_inv12",
-    "13_user_actions_not_coerced": "test_scenario_action_invariants.py::test_inv13",
-    "14_no_false_dedup": "test_scenario_action_invariants.py::test_inv14",
-    "15_merges_carry_evidence": "test_scenario_action_invariants.py::test_inv15",
-    "16_feasibility_hypotheses_and_execution": "test_scenario_action_invariants.py::test_inv16",
-    "17_matched_exogenous_streams": "test_scenario_action_invariants.py::test_inv17",
-    "18_blind_comparison": "test_scenario_action_invariants.py::test_inv18",
-    "19_critics_cannot_select": "test_scenario_action_invariants.py::test_inv19",
-    "20_revisions_rerun_simulated": "test_scenario_action_invariants.py::test_inv20",
+    "1_no_catalog_in_prompts":
+        "test_scenario_action_invariants.py::test_generated_mode_never_lists_the_global_operation_catalog_in_a_prompt",
+    "2_no_operation_registered":
+        "test_scenario_action_invariants.py::test_generated_mode_never_calls_operation_registered",
+    "3_novel_phrase_executes":
+        "test_scenario_action_invariants.py::test_novel_action_phrase_absent_from_source_compiles_and_executes",
+    "4_no_belief_writes":
+        "test_scenario_action_invariants.py::test_cannot_directly_write_another_actors_beliefs",
+    "5_no_choice_writes":
+        "test_scenario_action_invariants.py::test_cannot_directly_write_another_actors_choice",
+    "6_no_terminal_writes":
+        "test_scenario_action_invariants.py::test_cannot_directly_write_a_terminal_outcome",
+    "7_effects_via_observation_actors":
+        "test_scenario_action_invariants.py::test_downstream_social_effects_travel_through_observation_and_actors",
+    "8_exact_content_survives":
+        "test_scenario_action_invariants.py::test_exact_content_terms_targets_timing_observability_survive_compilation",
+    "9_no_history_only_execution":
+        "test_scenario_action_invariants.py::test_unsupported_actions_are_real_world_events_not_history_only_records",
+    "10_real_partial_or_rejected":
+        "test_scenario_action_invariants.py::test_every_action_yields_effects_visible_partial_or_hard_rejection",
+    "11_no_progress_scalar":
+        "test_scenario_action_invariants.py::test_no_arbitrary_scalar_progress_and_evaluations_are_counts_not_utilities",
+    "12_no_minted_numbers_in_ranking":
+        "test_scenario_action_invariants.py::test_no_llm_minted_utility_weight_or_failure_probability_in_ranking",
+    "13_user_actions_not_coerced":
+        "test_scenario_action_invariants.py::test_user_actions_not_coerced_into_registered_verbs",
+    "14_no_false_dedup":
+        "test_scenario_action_invariants.py::test_materially_different_actions_are_not_falsely_deduplicated",
+    "15_merges_carry_evidence":
+        "test_scenario_action_invariants.py::test_paraphrase_merges_only_with_recorded_evidence",
+    "16_feasibility_hypotheses_and_execution":
+        "test_scenario_action_invariants.py::test_feasibility_across_hypotheses_and_at_execution",
+    "17_matched_exogenous_streams":
+        "test_scenario_action_invariants.py::test_matched_rollouts_preserve_exogenous_streams_and_are_deterministic",
+    "18_blind_comparison":
+        "test_scenario_action_invariants.py::test_blind_comparison_hides_candidate_provenance_and_source"
+        " or test_adjudicator_prompt_never_reveals_candidate_id",
+    "19_critics_cannot_select":
+        "test_scenario_action_invariants.py::test_critics_cannot_select_the_final_action",
+    "20_revisions_rerun_simulated":
+        "test_scenario_action_invariants.py::test_revisions_rerun_through_the_simulator",
     "21_local_improvement_whole_worse_rejected":
-        "test_scenario_action_invariants.py::test_inv21",
-    "22_underspecified_pareto_or_abstain": "test_scenario_action_invariants.py::test_inv22",
-    "23_no_input_mutation": "test_scenario_action_invariants.py::test_inv23",
-    "24_policy_observable_boundary": "test_scenario_action_invariants.py::test_inv24",
-    "25_legacy_unreachable_in_generated": "test_scenario_action_invariants.py::test_inv25",
-    "26_missing_semantics_fail_loudly": "test_scenario_action_invariants.py::test_inv26",
-    "29_canonical_runtime_every_candidate": "test_scenario_action_invariants.py::test_inv29",
-    "30_no_silent_numeric_fallback": "test_scenario_action_invariants.py::test_inv30",
+        "test_scenario_action_invariants.py::test_locally_improved_step_that_worsens_the_whole_is_rejected",
+    "22_underspecified_pareto_or_abstain":
+        "test_scenario_action_invariants.py::test_underspecified_goal_yields_pareto_or_abstention",
+    "23_no_input_mutation":
+        "test_scenario_action_invariants.py::test_phase13_evaluate_actions_does_not_mutate_input_on_the_generated_route",
+    "24_policy_observable_boundary":
+        "test_scenario_action_invariants.py::test_policy_conditions_observe_only_the_canonical_boundary",
+    "25_legacy_unreachable_in_generated":
+        "test_scenario_action_invariants.py::test_legacy_fixed_v1_unreachable_in_generated_mode",
+    "26_missing_semantics_fail_loudly":
+        "test_scenario_action_invariants.py::test_missing_generated_action_semantics_fail_loudly",
+    "29_canonical_runtime_every_candidate":
+        "test_scenario_action_invariants.py::test_canonical_runtime_used_for_every_step_candidate",
+    "30_no_silent_numeric_fallback":
+        "test_scenario_action_invariants.py::test_no_silent_numeric_actor_fallback_in_the_plan_path",
 }
 
 SUITES = {
@@ -138,8 +166,8 @@ def main():
     for name, rows in _suite_runs().items():
         report["suites"][name] = rows
     for inv, expr in INVARIANT_TESTS.items():
-        r = _pytest([os.path.join("tests", expr.split("::")[0]), "-k",
-                     expr.split("::")[1]])
+        file, sel = expr.split("::", 1)
+        r = _pytest([os.path.join("tests", file), "-k", sel.replace('" "', " ")])
         # pytest exits 5 when no test matched — record as NOT COVERED, never as a pass
         r["covered"] = r["exit_code"] != 5
         r["passed"] = r["passed"] and r["covered"]
