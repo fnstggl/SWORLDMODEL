@@ -28,8 +28,15 @@ from swm.world_model_v2.information import InformationItem
 from swm.world_model_v2.state import F
 
 SEMANTIC_SCHEMA = "semantic.consequences.v1"
-CONSEQUENCE_MODES = ("semantic_world_consequences", "legacy_scalar_pathway_consequences",
+#: PRODUCTION default is the generated actor-mediated architecture (generated_world.py):
+#: scenario-generated semantics, actor-mediated recursion, no fixed catalog. THIS module is
+#: the `fixed_semantic_consequence_policy_v1` BASELINE — a developer-fixed ontology kept
+#: runnable for comparison, never the default. `semantic_world_consequences` survives as a
+#: legacy alias for the fixed baseline.
+CONSEQUENCE_MODES = ("generated_actor_mediated_world", "fixed_semantic_consequence_policy_v1",
+                     "semantic_world_consequences", "legacy_scalar_pathway_consequences",
                      "dual_run_consequence_audit")
+_MODE_ALIASES = {"semantic_world_consequences": "fixed_semantic_consequence_policy_v1"}
 
 OBJECT_TYPES = (
     "organization", "product", "service", "feature", "brand_identity", "campaign",
@@ -73,7 +80,8 @@ def _hash(v) -> str:
 
 def resolve_consequence_mode() -> str:
     mode = os.environ.get("SWM_CONSEQUENCES", "").strip().lower()
-    return mode if mode in CONSEQUENCE_MODES else "semantic_world_consequences"
+    mode = _MODE_ALIASES.get(mode, mode)
+    return mode if mode in CONSEQUENCE_MODES else "generated_actor_mediated_world"
 
 
 # ------------------------------------------------------------------- world objects

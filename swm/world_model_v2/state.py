@@ -209,8 +209,16 @@ class WorldState:
     uncertainty_meta: dict = field(default_factory=dict)  # particle weight, sampled-latent record refs
     omissions: list = field(default_factory=list)         # recorded drops/unsupported elements (loud, not silent)
     objects: dict = field(default_factory=dict)           # id -> semantic_consequences.WorldObject —
-    #                                                       typed world facts beyond people/institutions
-    #                                                       (products, agreements, campaigns, processes…)
+    #                                                       typed world facts beyond people/institutions;
+    #                                                       in generated mode these are RECORDS whose
+    #                                                       types come from the branch's scenario schema
+    scenario_schema: object = None                        # scenario_schema.ScenarioSemanticModel —
+    #                                                       THIS branch's generated world semantics
+    #                                                       (deep-copied per branch: extensions are
+    #                                                       branch-local and versioned)
+    semantic_log: list = field(default_factory=list)      # world-plane history: SemanticWorldEvent
+    #                                                       dicts (what actually happened, in scenario
+    #                                                       terms) — control-plane tasks never appear here
 
     def version_hash(self) -> str:
         payload = f"{self.world_id}|{self.branch_id}|{self.clock.now}|{len(self.entities)}|{self.evidence_hash}"

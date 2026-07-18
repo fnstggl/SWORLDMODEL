@@ -53,14 +53,17 @@ class ActorPolicyRuntime:
         # scalar `ACTION_PATHWAY_EFFECTS × pathway_step` writer runs only under the explicit
         # legacy benchmark mode. Every execution counts into consequence_report (fail-loud).
         requested = consequence_mode or semcons.resolve_consequence_mode()
+        requested = semcons._MODE_ALIASES.get(requested, requested)
         if requested not in semcons.CONSEQUENCE_MODES:
             raise ValueError(f"unknown consequence mode {requested!r} "
                              f"(known: {semcons.CONSEQUENCE_MODES})")
         self.consequence_mode = requested
         self.consequence_llm = consequence_llm
-        self.consequence_compiler = None              # built lazily (needs the bound LLM)
+        self.consequence_compiler = None              # fixed-v1 compiler, built lazily
+        self.generated_compiler = None                # generated-world compiler, built lazily
+        from swm.world_model_v2.generated_world import generated_report
         self.consequence_report = {"requested_mode": requested, "actual_mode": requested,
-                                   **semcons.empty_report()}
+                                   **semcons.empty_report(), **generated_report()}
 
     def decide(self, plan, posterior_worlds: list, actor_id: str, *, decision: dict,
                seed: int, question_id: str = "", observed_events=None,
@@ -134,10 +137,19 @@ class ActorPolicyRuntime:
             self._create_commitments(world, action, delta)
             semantic_events = self._apply_consequences(world, action, posterior, trace, delta)
             self._post_execute(world, action, posterior, trace, delta)
-            events = self._follow_up_events(
-                world, action, posterior, trace, seed,
-                suppress={e.etype for e in semantic_events})
-            events = list(semantic_events) + events
+            if self.consequence_mode == "generated_actor_mediated_world" \
+                    and getattr(world, "scenario_schema", None) is not None:
+                # the generated control plane owns ALL downstream routing: observation
+                # delivery and actor invocation replace the legacy mechanism emissions
+                # (message pings, institution markers, actor_reaction with fixed candidate
+                # menus) — a reaction must have exactly ONE route: the affected actor's own
+                # invocation.
+                events = list(semantic_events)
+            else:
+                events = self._follow_up_events(
+                    world, action, posterior, trace, seed,
+                    suppress={e.etype for e in semantic_events})
+                events = list(semantic_events) + events
             delta.follow_up_events = [self._event_record(event) for event in events]
             event = Event(ts=world.clock.now, etype="actor_action",
                           participants=[x for x in (action.actor_id, action.target.target_id) if x],
@@ -177,6 +189,45 @@ class ActorPolicyRuntime:
             report["legacy_scalar_writes"] += len(delta.changes) - n0
             delta.reason_codes.append("legacy_scalar_pathway_consequences")
             return []
+        if mode == "generated_actor_mediated_world":
+            from swm.world_model_v2 import generated_world as genw
+            schema = getattr(world, "scenario_schema", None)
+            if schema is not None:
+                if self.generated_compiler is None:
+                    self.generated_compiler = genw.GeneratedActionCompiler(self.consequence_llm)
+                qualitative = self._qualitative_for_trace(trace, posterior)
+                ops, meta = self.generated_compiler.compile(world, action,
+                                                            qualitative=qualitative,
+                                                            report=report)
+                ctx = {"actor_id": action.actor_id, "action_id": action.action_id,
+                       "now": world.clock.now, "report": report,
+                       "compiler": meta.get("compiler", ""),
+                       "budgets": genw._budgets(world), "events": [], "quarantined": []}
+                events = genw.execute_kernel_ops(world, ops, ctx, delta)
+                report["actions_compiled"] += 1
+                report["direct_operations_applied"] += max(
+                    0, len(ops) - len(ctx["quarantined"]))
+                s = world.scenario_schema
+                report["scenario_schema_id"] = getattr(s, "schema_id", "")
+                report["scenario_schema_version"] = getattr(s, "version", "")
+                if ctx["quarantined"]:
+                    delta.uncertainty["kernel_quarantined"] = ctx["quarantined"][:6]
+                delta.uncertainty["consequence_compiler"] = meta.get("compiler", "")
+                return events
+            # NO scenario schema on this world: the generated architecture cannot run.
+            # Degrade LOUDLY into the fixed-v1 baseline — stamped, surfaced, counted, and
+            # excluded from any pure generated-world evaluation. Never silent.
+            report["actual_mode"] = "fixed_semantic_consequence_policy_v1"
+            report["degraded"] = True
+            report["fixed_ontology_uses"] += 1
+            if not any(fr.get("kind") == "no_scenario_schema"
+                       for fr in report["fallback_reasons"] if isinstance(fr, dict)):
+                report["fallback_reasons"].append(
+                    {"kind": "no_scenario_schema",
+                     "reason": "generated_actor_mediated_world requested but the world "
+                               "carries no ScenarioSemanticModel (schema compilation needs "
+                               "an LLM backend); fixed-v1 baseline served, stamped"})
+            delta.reason_codes.append("generated_mode_degraded_to_fixed_v1")
         program = self._consequence_program(world, action, posterior, trace)
         events = semcons.execute_program(world, program, delta, report)
         semcons.project_decided_outcome_quantities(world, action, delta, report)
