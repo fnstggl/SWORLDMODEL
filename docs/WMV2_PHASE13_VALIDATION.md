@@ -174,6 +174,33 @@ ties is real outreach outcomes through the ledger, not more simulation.
 - The LLM sentence judge is maximally adversarial, so a fully-optimized message often retains ≥1
   residual flag on the opener; the flag is surfaced rather than suppressed.
 
+## Scenario-generated action layer (v2) — validation status
+
+The generated-mode production path (`scenario_actions/`; see
+`docs/WMV2_SCENARIO_ACTION_LAYER.md`) is validated at these levels:
+
+- **Executable invariants**: `tests/test_scenario_action_invariants.py` (the §18 hard
+  invariants: no catalog in prompts, no `operation_registered`, novel phrases execute,
+  no belief/choice/terminal writes, effects via observation+actors, exact content survives,
+  no history-only executions, no minted numbers in ranking, conservative dedup with
+  recorded merge evidence, cross-hypothesis + execution-time feasibility, matched streams,
+  blind comparison, critics cannot select, revisions rerun, worsening revisions rejected,
+  Pareto/abstention on underspecified goals, no input mutation, observable-boundary
+  policies, legacy unreachable, loud failures, canonical runtime for every candidate).
+- **Source enforcement**: `tests/test_scenario_action_enforcement.py` — AST gates against
+  legacy-registry imports, resurrected verb whitelists, and kernel semantic creep.
+- **Cross-domain generality**: `tests/test_scenario_cross_domain.py` — 15+ materially
+  different scenario fixtures (test-only), fixture-optimal recovery, correct typed
+  rejections, exact-content trajectory sensitivity, diagnosis-driven revision recovery,
+  randomized type names generated at test time.
+- **Executable acceptance**: `benchmarks/phase13/scenario_action_acceptance.py`
+  regenerates `artifacts/phase13/action_language/acceptance_report.json` from real runs.
+- **Live architecture probes** (not accuracy claims):
+  `experiments/exp096_scenario_action_probes.py` →
+  `artifacts/phase13/action_language/probes/`.
+- **Not validated**: no backtest, no calibration, no prospective validation of this
+  layer's recommendations; actor reactions remain unvalidated LLM role-play, labeled.
+
 ## Production-gate judgment
 
 Functional, safety, search, and CRN gates: **pass** (both locked tests included). Locked-test

@@ -229,7 +229,15 @@ def optimize_policy(problem: DecisionProblem, policies: list, world_context, *,
         bundle.arms[pol.policy_id] = arm_eval.evaluate_arm(pol.policy_id, None)
     bundle.hypothesis_assignment = list(ev._assignment)
     bundle.crn_manifest = ev.crn_manifest(bundle)
-    evals = evaluate_bundle(bundle, [do_nothing(problem.decision_maker)], problem)
+    # evaluate POLICY arms as themselves: a zero-cost stand-in ActionSchema per policy id, so
+    # robust evaluation ranks the actual policy outcomes (audit finding: a placeholder
+    # [do_nothing] list made every policy report cost=0/operation=''/reversible=True under
+    # do_nothing's identity instead of its own)
+    from swm.world_model_v2.phase13.ontology import ActionSchema
+    stand_ins = [ActionSchema(action_id=pol.policy_id, actor=problem.decision_maker,
+                              operation="choose_policy", provenance="policy")
+                 for pol in all_policies]
+    evals = evaluate_bundle(bundle, stand_ins, problem)
     pols = {k: v for k, v in evals.items() if not k.startswith("_")}
     res.policies = list(pols.values())
     ranking = evals["_ranking"]["order"]
