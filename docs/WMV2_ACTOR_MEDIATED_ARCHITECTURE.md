@@ -251,3 +251,62 @@ question on this backend (sequential LLM latency dominated); the declared `compu
 particle cap and the per-question wall-clock guard in the external-benchmark adapter are the
 production cost controls, and budget-exhaustion behavior (numeric fallback, stamped) is the
 honest degradation mode.
+
+## D. Honest final verdict
+
+Each classification is claimed or refused independently, with the evidence for THIS run.
+
+**mechanically implemented — YES.** All twenty required deliverable groups exist and execute:
+semantic events, observation delivery, causal-frontier discovery, recursive propagation via the
+canonical queue, joint world hypotheses conditioning actor states, scalar-write demotion,
+novel-action semantic execution, clustering v2 with a locked fixture, run classification +
+manifests, 15 deterministic architecture tests (all passing), the three-arm benchmark, the
+benchmark-access audit, and the sealed preregistered external track. Full suite: 1297 passed,
+2 pre-existing environmental failures unchanged.
+
+**production-integrated — YES.** The public `simulate_world` route demonstrably reaches the
+architecture (live stack capture mid-run + a completed 30-particle live run with
+`actor_simulation=full_recursive_actor_simulation`, cascades to depth 4, 1206 semantic events,
+120 demoted scalar writes); the public best-action route (`phase13.recommend_action`) runs the
+same operators over matched CRN particles (T4 trace + deterministic parity test). No parallel
+simulator anywhere; ablation arms reuse the same funnel with flags.
+
+**backtested — NO.** No resolved-outcome evaluation of THIS runtime has been scored in this
+run. Prior repository backtests (e.g. Brier 0.2465/AUROC 0.555 on the older locked test; the
+PR #111 Llama lab) predate this architecture and cannot certify it. The BTF-2 resolved set is
+contamination-blocked for the current production LLM (cutoff postdates resolutions) and is
+recorded as diagnostic-only in the audit.
+
+**calibrated — NO.** Actor-decision distributions are labeled `unvalidated` (no fitted
+external calibrator); the pre-unification Phase-12 calibrator remains stamped INCOMPATIBLE.
+`calibration_available: false` appears in every live epistemic contract from this run.
+
+**statistically superior — NO CLAIM.** The three-arm benchmark demonstrates the propagation
+regime is causally load-bearing under identical inputs; it is an architecture result on a
+synthetic scenario with no resolved outcome. No superiority over markets, direct LLMs, or
+base rates is claimed from this run.
+
+**prospectively validated — NOT YET; the mechanism is OPERATIONAL.** Real preregistered
+forecasts on the frozen public ForecastBench question set ran through the exact production
+runtime and are sealed in an append-only hash chain (predictions + seals committed);
+the scorer refuses to run before `scoring_valid_from` (2026-07-21) and never calls an LLM.
+Failures (timeouts under the 480s guard, early harness errors) are preserved as visible rows.
+Validation happens when resolutions publish — not before.
+
+**launch-ready for experimental beta — QUALIFIED YES, under three conditions already
+enforced in code:** (1) every response surfaces the epistemic contract (run class, actor
+simulation level, fallbacks, calibration availability) — a beta that displays these labels
+is honest; (2) cost is bounded (`compute_budget` particle cap, LLM-call budget, cascade
+budgets, wall-clock guards) — full recursive simulation at default settings costs ~45 min per
+question on the current backend, so a beta must either cap particles or run asynchronously;
+(3) `recommendation_status` continues to withhold action recommendations at exploratory
+support. Known limitations a beta inherits: the 240-call budget makes most reconsiderations
+numeric fallbacks at 30 particles (visible, not silent); some compiled plans schedule no actor
+decisions (T1 — labeled `no_actor_decisions_in_this_question`); joint-hypothesis diversity
+depends on the backend.
+
+**launch-ready for consequential recommendations — NO.** Phase 13 is mechanically integrated
+and safety-gated (typed feasibility, principled abstention, human_approval_required), but
+decision quality has no prospective validation; the T4 utility landscape did not even
+differentiate arms on the synthetic decision. The existing `recommendation_status=withheld`
+behavior at current support grades is the correct production posture.
