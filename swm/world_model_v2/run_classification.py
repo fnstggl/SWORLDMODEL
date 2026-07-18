@@ -136,8 +136,7 @@ def epistemic_contract(res) -> dict:
                                      for a in (am.get("approximation_manifest") or [])[:5]],
         "n_approximations_stamped": int(am.get("n_approximations", 0) or 0),
         "unmodeled_novel_actions": len(novel_unmodeled),
-        "convergence": {"n_particles": (prov.get("n_particles")
-                                        or (prov.get("operator_delta_census") and None)),
+        "convergence": {"n_particles": prov.get("n_particles"),
                         "note": "particle count and terminal spread; see uncertainty_decomposition"},
         "calibration_available": res.calibrated_probability is not None,
         "scenario_only": (prov.get("run_classification") or {}).get("run_class")

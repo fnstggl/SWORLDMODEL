@@ -442,7 +442,7 @@ def preregister_forecasts(frozen_path: str, *, llm=None, runner=None, limit: int
                 "runtime_fingerprint_hash": fp_hash,
                 "llm": llm_name, "latency_s": round(float(res.latency_s or 0.0), 3),
                 "cost_usd": float(res.cost_usd or 0.0),
-                "limitations": [str(x)[:200] for x in (res.limitations or [])[:3]],
+                "limitations": [str(x)[:200] for x in (getattr(res, "limitations", None) or [])[:3]],
             }
             if fallback:
                 failures.append({"question_id": q["id"], "simulation_status": res.simulation_status,
@@ -520,25 +520,35 @@ def score_frozen(frozen_path: str, predictions_path: str, *, resolutions_url: st
                 row = json.loads(line)
                 preds[row["question_id"]] = row
 
+    # group official resolution rows by question id (resolution files carry one row PER HORIZON;
+    # a single preregistered probability must be scored against at most ONE outcome row, otherwise
+    # correlated horizons of the same question would be double-counted)
     frozen_ids = {q["id"] for q in frozen["questions"]}
-    scored, skipped_pre_prediction = [], 0
+    by_id, skipped_pre_prediction = {}, 0
     for r in res_doc.get("resolutions", []):
         if not r.get("resolved") or r.get("direction") is not None:
             continue
         qid = r.get("id")
         if qid not in frozen_ids or qid not in preds:
             continue
-        p_row = preds[qid]
-        pred_date = _dt.date.fromisoformat(p_row["predicted_at"][:10])
+        pred_date = _dt.date.fromisoformat(preds[qid]["predicted_at"][:10])
         res_date = _parse_date(r.get("resolution_date"))
         if res_date is None or res_date <= pred_date:
             skipped_pre_prediction += 1        # outcome was (potentially) knowable at prediction time
             continue
-        outcome = float(r["resolved_to"])
+        by_id.setdefault(qid, []).append(r)
+
+    scored = []
+    for qid, rows in sorted(by_id.items()):
+        p_row = preds[qid]
+        exact = [r for r in rows if r.get("resolution_date") == p_row.get("horizon_used")]
+        pick = exact[0] if exact else min(rows, key=lambda r: r["resolution_date"])
+        outcome = float(pick["resolved_to"])
         p = min(max(float(p_row["probability"]), 0.0), 1.0)
         pc = min(max(p, 1e-6), 1 - 1e-6)
-        scored.append({"question_id": qid, "source": r.get("source"),
-                       "resolution_date": r.get("resolution_date"), "outcome": outcome,
+        scored.append({"question_id": qid, "source": pick.get("source"),
+                       "resolution_date": pick.get("resolution_date"), "outcome": outcome,
+                       "horizon_match": bool(exact),
                        "probability": p, "prob_fallback": bool(p_row.get("prob_fallback")),
                        "brier": (p - outcome) ** 2,
                        "log_loss": -(outcome * _ln(pc) + (1 - outcome) * _ln(1 - pc))})
@@ -565,6 +575,10 @@ def score_frozen(frozen_path: str, predictions_path: str, *, resolutions_url: st
         "mean_log_loss": (sum(s["log_loss"] for s in scored) / n) if n else None,
         "n_fallback_scored": sum(1 for s in scored if s["prob_fallback"]),
         "calibration_bins": bins, "rows": scored,
+        "join_rule": ("one scored outcome per question: the resolution row matching the preregistered "
+                      "horizon_used if present, else the earliest resolved row strictly after "
+                      "predicted_at (resolution files carry one row per horizon; a single "
+                      "preregistered probability is never scored against multiple horizons)"),
         "notes": ["scorer never calls an LLM and reads ONLY the official resolution rows",
                   "official ForecastBench leaderboard uses difficulty-adjusted Brier; this self-scored "
                   "track reports unadjusted Brier and is therefore not directly comparable to the "

@@ -161,8 +161,14 @@ def _mini_resolutions():
                 # scoreable: after predicted_at
                 {"id": "mkt0", "source": "manifold", "direction": None,
                  "resolution_date": "2026-08-20", "resolved_to": 1.0, "resolved": True},
+                # SAME question at a later horizon — must NOT be double-counted
+                {"id": "mkt0", "source": "manifold", "direction": None,
+                 "resolution_date": "2026-09-20", "resolved_to": 1.0, "resolved": True},
                 {"id": "ds0", "source": "fred", "direction": None,
                  "resolution_date": "2026-08-04", "resolved_to": 0.0, "resolved": True},
+                # ds0 at a later horizon with a DIFFERENT outcome — horizon_used (2026-08-04) must win
+                {"id": "ds0", "source": "fred", "direction": None,
+                 "resolution_date": "2026-10-03", "resolved_to": 1.0, "resolved": True},
                 # must be EXCLUDED: resolved on/before prediction date (pre-prediction evidence)
                 {"id": "ds1", "source": "fred", "direction": None,
                  "resolution_date": "2026-07-12", "resolved_to": 1.0, "resolved": True},
@@ -192,14 +198,18 @@ def test_scorer_joins_and_computes_brier(tmp_path):
     rep = fba.score_frozen(out["frozen_path"], pre["predictions_path"],
                            resolutions_url=str(res_path), now="2026-09-01",
                            report_path=str(tmp_path / "report.json"))
-    # stub: mkt0 → p=0.9 outcome 1 → brier 0.01 ; ds0 → p=0.2 outcome 0 → brier 0.04
+    # stub: mkt0 → p=0.9 outcome 1 → brier 0.01 ; ds0 → p=0.2 outcome 0 at its preregistered
+    # horizon (2026-08-04) → brier 0.04. One row per question despite multiple horizon rows.
     assert rep["n_scored"] == 2
     assert rep["mean_brier"] == pytest.approx((0.01 + 0.04) / 2)
     assert rep["n_resolutions_skipped_pre_prediction"] == 1, "pre-prediction outcome must be excluded"
     assert os.path.exists(tmp_path / "report.json")
     by_id = {r["question_id"]: r for r in rep["rows"]}
     assert by_id["mkt0"]["brier"] == pytest.approx(0.01)
+    assert by_id["mkt0"]["resolution_date"] == "2026-08-20", "earliest post-prediction row wins"
     assert by_id["ds0"]["brier"] == pytest.approx(0.04)
+    assert by_id["ds0"]["horizon_match"] is True
+    assert by_id["ds0"]["resolution_date"] == "2026-08-04", "preregistered horizon_used must win"
     assert rep["mean_log_loss"] > 0
     assert sum(b["n"] for b in rep["calibration_bins"]) == 2
 
