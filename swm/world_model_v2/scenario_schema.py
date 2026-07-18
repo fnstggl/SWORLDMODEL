@@ -128,6 +128,12 @@ class ScenarioSemanticModel:
                                else {"description": json.dumps(iv, default=str)[:200]})
                      for ik, iv in v.items()}
                 for td in v.values():
+                    for skey in ("states", "terminal"):
+                        if isinstance(td.get(skey), list):
+                            td[skey] = [str(s.get("name") or s.get("id") or s.get("state")
+                                            or json.dumps(s, default=str)[:40])
+                                        if isinstance(s, dict) else str(s)
+                                        for s in td[skey]]
                     fields = td.get("fields")
                     if isinstance(fields, dict):
                         # field kinds arrive as "str" OR {"kind"/"type": "str", …} — coerce
