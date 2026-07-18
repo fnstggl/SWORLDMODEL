@@ -215,3 +215,39 @@ live runs complete.)
 All actor distributions labeled `unvalidated` (no fitted calibrator — correct). Cost scales
 with cascade regime and is hard-bounded by the declared budgets. Architectural evidence only —
 the synthetic scenario has no real-world resolution and supports no accuracy claim.
+
+### C.3 Live production-route evidence (DeepSeek backend)
+
+**Full public route** (`experiments/results/actor_mediated/production_route_probe.json`) — one
+council-approval question through `simulate_world` end-to-end, default 30 particles:
+45 min wall (bounded), `completed_with_degradation`, p=0.467,
+`run_class=full_numeric_forecast`, `actor_simulation=full_recursive_actor_simulation`,
+96 qualitative reconsiderations at cascade depth ≤4, 1206 semantic events, 120 demoted scalar
+writes, 579 stamped approximations, 48 recorded unmodeled novel actions, and — the honesty
+core — **966 numeric actor fallbacks recorded after the declared 240-LLM-call budget
+exhausted**, all visible in the epistemic contract (`numeric_actor_fallback_occurred: true`,
+`calibration_available: false`). Joint world hypotheses were LLM-generated with adverse
+regimes ("Silent Coalition Collapse" / "Filtered Optimism Collapse" / "Adverse Private
+Collapse"); per-branch quiescence reasons: `event_budget` and `duplicate_semantic_event`.
+Live stack capture during the run confirmed the exact chain:
+`simulate_world → run_with_persistence → RolloutEngine.run_branch →
+ProductionActorPolicyOperator.run → QualitativeActorPolicyRuntime.decide → LLM`.
+
+**Individual private-communication route** (`forensics/trace_T2.json`) — 67 s, 6 LLM calls,
+two genuinely different hidden realities ("overloaded_and_delegating" vs
+"strategic_withdrawal_for_visibility"), per-particle interpretation + internal reaction +
+observable response, aggregate labeled `unvalidated` (no fitted calibrator — correct).
+
+**Best-action route** (`forensics/trace_T4.json`) — `phase13.recommend_action` through the
+compiled plan: 16 candidates (authority-derived + LLM-proposed), typed feasibility (an earlier
+run with an unauthorized decision maker was fully gated: every action `actor_missing` →
+principled abstention), matched CRN evaluation over shared particles, recommendation returned
+with `human_approval_required`. Utility landscape in this synthetic decision was flat (ties →
+reference arm) — the trace evidences ROUTE integration and safety behavior, not decision
+quality.
+
+**Operational finding**: full recursive actor simulation at default settings costs ~45 min per
+question on this backend (sequential LLM latency dominated); the declared `compute_budget`
+particle cap and the per-question wall-clock guard in the external-benchmark adapter are the
+production cost controls, and budget-exhaustion behavior (numeric fallback, stamped) is the
+honest degradation mode.
