@@ -422,9 +422,16 @@ def preregister_forecasts(frozen_path: str, *, llm=None, runner=None, limit: int
     for q in todo:
         as_of = _rfc3339(_utc_now())
         horizon = (q.get("eligible_horizons") or [""])[0]
+        # ForecastBench dataset questions parameterize their text with {resolution_date} /
+        # {forecast_due_date} placeholders (the forecaster substitutes per horizon — their own
+        # protocol). Substitute BEFORE the runtime: unresolved literal braces would also break
+        # any downstream .format-based prompt template.
+        qtext = (q["question"]
+                 .replace("{resolution_date}", horizon or "the resolution date")
+                 .replace("{forecast_due_date}", str(frozen.get("forecast_due_date", as_of[:10]))))
         res, err = _run_with_timeout(
-            lambda q=q, as_of=as_of, horizon=horizon: runner(q["question"], as_of=as_of,
-                                                             horizon=horizon, llm=llm, seed=0),
+            lambda q=q, qtext=qtext, as_of=as_of, horizon=horizon: runner(
+                qtext, as_of=as_of, horizon=horizon, llm=llm, seed=0),
             per_question_timeout_s)
         if res is not None:
             prob = res.calibrated_probability if res.calibrated_probability is not None else res.raw_probability
