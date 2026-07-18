@@ -437,7 +437,7 @@ def main():
                           "schema_error": rep.get("scenario_schema_error")}, indent=1))
         return
     from swm.api.deepseek_backend import deepseek_chat_fn
-    llm = deepseek_chat_fn(temperature=0.9, max_tokens=2400)
+    llm = deepseek_chat_fn(temperature=0.9, max_tokens=4000)   # schema JSONs are large
     if what in ("demoA", "demoB", "demoD", "demoE"):
         plan = {"demoA": plan_demoA, "demoB": plan_demoB,
                 "demoD": plan_demoD, "demoE": plan_demoE}[what]()

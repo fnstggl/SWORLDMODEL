@@ -358,8 +358,14 @@ class SchemaCompiler:
             entities=", ".join(map(str, list(entities)[:16])) or "none listed",
             institutions=", ".join(map(str, list(institutions)[:8])) or "none listed",
             evidence=str(evidence)[:1500] or "none provided", field_kinds=FIELD_KINDS)
-        raw = parse_json(self._call(self.llm, prompt))
+        text = self._call(self.llm, prompt)
+        raw = parse_json(text)
         if not isinstance(raw, dict):
+            # a token cap can cut the JSON mid-object — salvage the balanced prefix rather
+            # than failing an otherwise-usable model
+            from swm.world_model_v2.compiler import _salvage_json
+            raw = _salvage_json(text)
+        if not isinstance(raw, dict) or not raw:
             raise ValueError("schema compiler returned unparseable output")
         model = ScenarioSemanticModel.from_dict({
             **raw, "question": question, "prediction_timestamp": float(as_of or 0.0),

@@ -648,9 +648,10 @@ def execute_program(world, program: CausalActionProgram, delta, report: dict) ->
                 op = {**op, "object_type": "policy", "status": "enacted"}
             fn(world, op, ctx, delta)
             applied += 1
-        except (OpError, KeyError, ValueError, TypeError) as e:
+        except (OpError, KeyError, ValueError, TypeError, AttributeError) as e:
             # untrusted ops fail INTO quarantine, never out of the run — a malformed field the
-            # static pass could not see (missing key, wrong type) is the same class of failure
+            # static pass could not see (missing key, wrong type/shape) is the same class of
+            # failure
             program.quarantined.append({"op": op, "reason": f"{type(e).__name__}: {e}"[:200],
                                         "phase": "execute"})
             report["unsupported_semantics"] += 1

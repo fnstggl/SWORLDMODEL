@@ -342,7 +342,7 @@ def execute_kernel_ops(world, ops: list, ctx: dict, delta: StateDelta) -> list:
                                   "reactions come only from that actor's own simulation")
             fn(world, op, ctx, delta)
             applied += 1
-        except (KernelError, KeyError, ValueError, TypeError) as e:
+        except (KernelError, KeyError, ValueError, TypeError, AttributeError) as e:
             ctx["quarantined"].append({"op": op, "reason": f"{type(e).__name__}: {e}"[:200]})
             ctx["report"]["unsupported_semantics"] += 1
     delta.reason_codes.append(f"kernel_ops:{applied}"
