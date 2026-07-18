@@ -77,7 +77,8 @@ def t1_public_statement_cascade(llm) -> dict:
     q = ("Will the three-party governing coalition in a parliamentary system publicly hold "
          "together through September 1, 2026, after the senior partner's leader publicly "
          "ruled out the junior partners' demanded budget concessions on July 17, 2026?")
-    res = simulate_world(q, as_of=AS_OF, horizon="2026-09-01", llm=llm, seed=7)
+    res = simulate_world(q, as_of=AS_OF, horizon="2026-09-01", llm=llm, seed=7,
+                     compute_budget={"n_particles": 12})
     return {"route": "swm.world_model_v2.unified_runtime.simulate_world",
             "question": q, **_res_trace(res)}
 
@@ -111,7 +112,8 @@ def t3_institutional_decision(llm) -> dict:
          "semester-long course scheduling at its August 2026 meeting, given that the "
          "provost publicly endorsed the switch and two department chairs on the senate "
          "have publicly opposed it?")
-    res = simulate_world(q, as_of=AS_OF, horizon="2026-09-15", llm=llm, seed=13)
+    res = simulate_world(q, as_of=AS_OF, horizon="2026-09-15", llm=llm, seed=13,
+                     compute_budget={"n_particles": 12})
     return {"route": "swm.world_model_v2.unified_runtime.simulate_world (institutional)",
             "question": q, **_res_trace(res)}
 

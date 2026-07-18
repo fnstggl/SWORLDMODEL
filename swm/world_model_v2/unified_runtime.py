@@ -303,7 +303,7 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
 
     # ---------- Terminal projection through the ONE funnel (Phase 8 persistence + P4/P6/P7/P10 operators) ----
     res = _project_terminal(question, plan, as_of, horizon, intervention, seed, llm, user_context,
-                            prior_checkpoint, manifest, drop, t0)
+                            prior_checkpoint, manifest, drop, t0, compute_budget=compute_budget)
 
     # ---------- MANDATORY PHASE SUPERVISION: one PhaseExecutionRecord per phase, every run ----------
     # The manifest is DERIVED from these records; a relevant phase that did not execute is a recorded
@@ -439,23 +439,31 @@ def _run_recompilation(plan, bundle, as_of, horizon, seed, llm, manifest, lineag
 
 
 def _project_terminal(question, plan, as_of, horizon, intervention, seed, llm, user_context,
-                      prior_checkpoint, manifest, drop, t0):
+                      prior_checkpoint, manifest, drop, t0, compute_budget=None):
     """Terminal projection through the single funnel: Phase-8 persistence-aware rollout (which fires the
     Phase-4 actor-policy, Phase-6/7 registry, and Phase-10 institution operators the plan names). Phase 8 is
-    default-on; when no history/checkpoint exists it runs the ordinary rollout with broad priors."""
+    default-on; when no history/checkpoint exists it runs the ordinary rollout with broad priors.
+
+    `compute_budget` is the DECLARED cost bound (§ production requirements): {"n_particles": N}
+    caps the particle count for this run through the SAME funnel — a smaller run, never a
+    different path — and the cap is recorded on the result provenance."""
     from swm.world_model_v2.phase8_pipeline import run_with_persistence
     persistence_dropped = "phase8_persistence" in drop
+    n_particles = None
+    if isinstance(compute_budget, dict) and compute_budget.get("n_particles"):
+        n_particles = max(2, int(compute_budget["n_particles"]))
     try:
         if persistence_dropped:
             from swm.world_model_v2.materialize import run_from_plan
             from swm.world_model_v2.pipeline import result_from_run
-            result, branches = run_from_plan(plan, llm=llm, seed=seed)
+            result, branches = run_from_plan(plan, llm=llm, seed=seed, n_particles=n_particles)
             res = result_from_run(question, plan, result, branches, intervention=intervention, t0=t0)
             manifest["phase8_persistence"].update(omitted=True, reason="dropped_by_policy")
         else:
             res, _p8meta = run_with_persistence(question, plan, llm=llm, context=user_context,
                                                 actor_history=(prior_checkpoint or {}).get("actor_history") if prior_checkpoint else None,
-                                                intervention=intervention, t0=t0, seed=seed)
+                                                intervention=intervention, t0=t0, seed=seed,
+                                                n_particles=n_particles)
             manifest["phase8_persistence"].update(
                 selected=True, executed=True, version="phase8-1.0",
                 reason=("checkpoint-conditioned" if prior_checkpoint else "no prior history — broad-prior rollout"))
@@ -469,6 +477,9 @@ def _project_terminal(question, plan, as_of, horizon, intervention, seed, llm, u
                                 latency_s=round(_time.time() - t0, 3))
     # record P4/P6/P7/P10 activation from the executed plan (they fire iff the plan named their operators)
     _record_operator_phases(plan, res, manifest)
+    if n_particles is not None:
+        res.provenance["compute_budget"] = {"n_particles": n_particles,
+                                            "note": "declared cost cap — same funnel, fewer particles"}
     return res
 
 
