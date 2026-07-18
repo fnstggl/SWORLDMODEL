@@ -1,0 +1,573 @@
+{
+ "arm": "armB",
+ "label": "semantic + numeric policy (actors off)",
+ "consequences": "semantic_world_consequences",
+ "actors": "numeric_policy",
+ "needs_llm": false,
+ "final_distribution": {
+  "no_deal": 0.875,
+  "deal_reached": 0.125
+ },
+ "terminal_bar_values": [
+  0.45,
+  0.45,
+  0.45,
+  0.45,
+  0.45,
+  0.45,
+  0.45,
+  0.5714
+ ],
+ "mean_terminal_bar": 0.4652,
+ "process_terminal_stages": {
+  "negotiation:terms_exchanged": 5,
+  "negotiation:contact_opened": 2,
+  "negotiation:provisional_acceptance": 1
+ },
+ "n_objects_total": 20,
+ "n_communications": 0,
+ "consequence_report": {
+  "requested_mode": "semantic_world_consequences",
+  "actual_mode": "semantic_world_consequences",
+  "actions_compiled": 32,
+  "direct_operations_applied": 44,
+  "events_scheduled": 0,
+  "processes_started": 8,
+  "objects_created": 20,
+  "facts_changed": 9,
+  "institutional_submissions": 0,
+  "actor_decisions_opened": 0,
+  "population_responses_opened": 0,
+  "information_deliveries": 0,
+  "unsupported_semantics": 1,
+  "fallbacks": 15,
+  "fallback_reasons": [
+   {
+    "action": "hold_position",
+    "reason": "unmodeled",
+    "quarantined": []
+   },
+   {
+    "action": "hold_position",
+    "reason": "unmodeled",
+    "quarantined": []
+   },
+   {
+    "action": "hold_position",
+    "reason": "unmodeled",
+    "quarantined": []
+   },
+   {
+    "action": "hold_position",
+    "reason": "unmodeled",
+    "quarantined": []
+   },
+   {
+    "action": "delay",
+    "reason": "unmodeled",
+    "quarantined": []
+   },
+   {
+    "action": "delay",
+    "reason": "unmodeled",
+    "quarantined": []
+   },
+   {
+    "action": "delay",
+    "reason": "unmodeled",
+    "quarantined": []
+   },
+   {
+    "action": "delay",
+    "reason": "unmodeled",
+    "quarantined": []
+   },
+   {
+    "action": "hold_position",
+    "reason": "unmodeled",
+    "quarantined": []
+   },
+   {
+    "action": "delay",
+    "reason": "unmodeled",
+    "quarantined": []
+   },
+   {
+    "action": "delay",
+    "reason": "unmodeled",
+    "quarantined": []
+   },
+   {
+    "action": "delay",
+    "reason": "unmodeled",
+    "quarantined": []
+   },
+   {
+    "action": "delay",
+    "reason": "unmodeled",
+    "quarantined": []
+   },
+   {
+    "action": "delay",
+    "reason": "unmodeled",
+    "quarantined": []
+   },
+   {
+    "action": "delay",
+    "reason": "unmodeled",
+    "quarantined": []
+   }
+  ],
+  "legacy_scalar_writes": 0
+ },
+ "actor_policy_report": {
+  "requested_actor_policy_mode": "numeric_policy",
+  "actual_actor_policy_mode": "numeric_policy",
+  "actors_routed_qualitatively": [],
+  "fallbacks": 0
+ },
+ "branches": [
+  {
+   "branch": "b000",
+   "actions": [
+    {
+     "actor": "leader_a",
+     "action": "hold_position"
+    },
+    {
+     "actor": "leader_b",
+     "action": "hold_position"
+    },
+    {
+     "actor": "leader_a",
+     "action": "escalate"
+    },
+    {
+     "actor": "leader_b",
+     "action": "seek_mediator"
+    }
+   ],
+   "objects": [
+    {
+     "id": "neg_leader_b",
+     "type": "process",
+     "status": "terms_exchanged",
+     "by": "leader_b",
+     "attributes": {
+      "process_type": "negotiation",
+      "subject": "leader_b performs seek_mediator"
+     },
+     "stages": [
+      "terms_exchanged"
+     ]
+    },
+    {
+     "id": "proposal_128d606064",
+     "type": "proposal",
+     "status": "open",
+     "by": "leader_b",
+     "attributes": {
+      "terms": "leader_b performs seek_mediator"
+     }
+    }
+   ],
+   "communications": [],
+   "derived_bar": {
+    "pathway_progress:cooperative_agreement": 0.45,
+    "method": ""
+   }
+  },
+  {
+   "branch": "b001",
+   "actions": [
+    {
+     "actor": "leader_a",
+     "action": "escalate"
+    },
+    {
+     "actor": "leader_b",
+     "action": "hold_position"
+    },
+    {
+     "actor": "leader_a",
+     "action": "seek_mediator"
+    },
+    {
+     "actor": "leader_b",
+     "action": "hold_position"
+    }
+   ],
+   "objects": [
+    {
+     "id": "neg_leader_a",
+     "type": "process",
+     "status": "terms_exchanged",
+     "by": "leader_a",
+     "attributes": {
+      "process_type": "negotiation",
+      "subject": "leader_a performs seek_mediator"
+     },
+     "stages": [
+      "terms_exchanged"
+     ]
+    },
+    {
+     "id": "proposal_5014f6612d",
+     "type": "proposal",
+     "status": "open",
+     "by": "leader_a",
+     "attributes": {
+      "terms": "leader_a performs seek_mediator"
+     }
+    }
+   ],
+   "communications": [],
+   "derived_bar": {
+    "pathway_progress:cooperative_agreement": 0.45,
+    "method": ""
+   }
+  },
+  {
+   "branch": "b002",
+   "actions": [
+    {
+     "actor": "leader_a",
+     "action": "delay"
+    },
+    {
+     "actor": "leader_b",
+     "action": "seek_mediator"
+    },
+    {
+     "actor": "leader_a",
+     "action": "delay"
+    },
+    {
+     "actor": "leader_b",
+     "action": "delay"
+    }
+   ],
+   "objects": [
+    {
+     "id": "neg_leader_b",
+     "type": "process",
+     "status": "terms_exchanged",
+     "by": "leader_b",
+     "attributes": {
+      "process_type": "negotiation",
+      "subject": "leader_b performs seek_mediator"
+     },
+     "stages": [
+      "terms_exchanged"
+     ]
+    },
+    {
+     "id": "proposal_128d606064",
+     "type": "proposal",
+     "status": "open",
+     "by": "leader_b",
+     "attributes": {
+      "terms": "leader_b performs seek_mediator"
+     }
+    }
+   ],
+   "communications": [],
+   "derived_bar": {
+    "pathway_progress:cooperative_agreement": 0.45,
+    "method": ""
+   }
+  },
+  {
+   "branch": "b003",
+   "actions": [
+    {
+     "actor": "leader_a",
+     "action": "delay"
+    },
+    {
+     "actor": "leader_b",
+     "action": "seek_mediator"
+    },
+    {
+     "actor": "leader_a",
+     "action": "counteroffer"
+    },
+    {
+     "actor": "leader_b",
+     "action": "seek_mediator"
+    }
+   ],
+   "objects": [
+    {
+     "id": "neg_leader_b",
+     "type": "process",
+     "status": "contact_opened",
+     "by": "leader_b",
+     "attributes": {
+      "process_type": "negotiation",
+      "subject": "leader_b performs seek_mediator"
+     },
+     "stages": [
+      "terms_exchanged",
+      "counterproposal_sent",
+      "contact_opened"
+     ]
+    },
+    {
+     "id": "proposal_128d606064",
+     "type": "proposal",
+     "status": "open",
+     "by": "leader_b",
+     "attributes": {
+      "terms": "leader_b performs seek_mediator"
+     }
+    },
+    {
+     "id": "proposal_e815de5110",
+     "type": "proposal",
+     "status": "counter",
+     "by": "leader_a",
+     "attributes": {
+      "terms": "leader_a performs counteroffer"
+     }
+    }
+   ],
+   "communications": [],
+   "derived_bar": {
+    "pathway_progress:cooperative_agreement": 0.45,
+    "method": ""
+   }
+  },
+  {
+   "branch": "b004",
+   "actions": [
+    {
+     "actor": "leader_a",
+     "action": "hold_position"
+    },
+    {
+     "actor": "leader_b",
+     "action": "delay"
+    },
+    {
+     "actor": "leader_a",
+     "action": "delay"
+    },
+    {
+     "actor": "leader_b",
+     "action": "counteroffer"
+    }
+   ],
+   "objects": [
+    {
+     "id": "neg_leader_b",
+     "type": "process",
+     "status": "terms_exchanged",
+     "by": "leader_b",
+     "attributes": {
+      "process_type": "negotiation",
+      "subject": "leader_b performs counteroffer"
+     },
+     "stages": [
+      "terms_exchanged"
+     ]
+    },
+    {
+     "id": "proposal_d33210f331",
+     "type": "proposal",
+     "status": "counter",
+     "by": "leader_b",
+     "attributes": {
+      "terms": "leader_b performs counteroffer"
+     }
+    }
+   ],
+   "communications": [],
+   "derived_bar": {
+    "pathway_progress:cooperative_agreement": 0.45,
+    "method": ""
+   }
+  },
+  {
+   "branch": "b005",
+   "actions": [
+    {
+     "actor": "leader_a",
+     "action": "escalate"
+    },
+    {
+     "actor": "leader_b",
+     "action": "accept"
+    },
+    {
+     "actor": "leader_a",
+     "action": "escalate"
+    },
+    {
+     "actor": "leader_b",
+     "action": "delay"
+    }
+   ],
+   "objects": [
+    {
+     "id": "neg_leader_b",
+     "type": "process",
+     "status": "terms_exchanged",
+     "by": "leader_b",
+     "attributes": {
+      "process_type": "negotiation",
+      "subject": "leader_b performs accept"
+     },
+     "stages": [
+      "terms_exchanged"
+     ]
+    },
+    {
+     "id": "proposal_d6476d2279",
+     "type": "proposal",
+     "status": "open",
+     "by": "leader_b",
+     "attributes": {
+      "terms": "leader_b performs accept"
+     }
+    }
+   ],
+   "communications": [],
+   "derived_bar": {
+    "pathway_progress:cooperative_agreement": 0.45,
+    "method": ""
+   }
+  },
+  {
+   "branch": "b006",
+   "actions": [
+    {
+     "actor": "leader_a",
+     "action": "counteroffer"
+    },
+    {
+     "actor": "leader_b",
+     "action": "delay"
+    },
+    {
+     "actor": "leader_a",
+     "action": "seek_mediator"
+    },
+    {
+     "actor": "leader_b",
+     "action": "delay"
+    }
+   ],
+   "objects": [
+    {
+     "id": "neg_leader_a",
+     "type": "process",
+     "status": "contact_opened",
+     "by": "leader_a",
+     "attributes": {
+      "process_type": "negotiation",
+      "subject": "leader_a performs counteroffer"
+     },
+     "stages": [
+      "terms_exchanged",
+      "contact_opened"
+     ]
+    },
+    {
+     "id": "proposal_ec85c87e2a",
+     "type": "proposal",
+     "status": "counter",
+     "by": "leader_a",
+     "attributes": {
+      "terms": "leader_a performs counteroffer"
+     }
+    },
+    {
+     "id": "proposal_5014f6612d",
+     "type": "proposal",
+     "status": "open",
+     "by": "leader_a",
+     "attributes": {
+      "terms": "leader_a performs seek_mediator"
+     }
+    }
+   ],
+   "communications": [],
+   "derived_bar": {
+    "pathway_progress:cooperative_agreement": 0.45,
+    "method": ""
+   }
+  },
+  {
+   "branch": "b007",
+   "actions": [
+    {
+     "actor": "leader_a",
+     "action": "counteroffer"
+    },
+    {
+     "actor": "leader_b",
+     "action": "seek_mediator"
+    },
+    {
+     "actor": "leader_a",
+     "action": "delay"
+    },
+    {
+     "actor": "leader_b",
+     "action": "accept"
+    }
+   ],
+   "objects": [
+    {
+     "id": "neg_leader_a",
+     "type": "process",
+     "status": "provisional_acceptance",
+     "by": "leader_a",
+     "attributes": {
+      "process_type": "negotiation",
+      "subject": "leader_a performs counteroffer"
+     },
+     "stages": [
+      "terms_exchanged",
+      "contact_opened",
+      "provisional_acceptance"
+     ]
+    },
+    {
+     "id": "proposal_ec85c87e2a",
+     "type": "proposal",
+     "status": "counter",
+     "by": "leader_a",
+     "attributes": {
+      "terms": "leader_a performs counteroffer"
+     }
+    },
+    {
+     "id": "proposal_8e3bc54196",
+     "type": "proposal",
+     "status": "open",
+     "by": "leader_b",
+     "attributes": {
+      "terms": "leader_b performs seek_mediator"
+     }
+    },
+    {
+     "id": "proposal_72b245f310",
+     "type": "proposal",
+     "status": "open",
+     "by": "leader_b",
+     "attributes": {
+      "terms": "leader_b performs accept"
+     }
+    }
+   ],
+   "communications": [],
+   "derived_bar": {
+    "pathway_progress:cooperative_agreement": 0.5714,
+    "method": ""
+   }
+  }
+ ],
+ "wall_s": 0.3
+}

@@ -178,6 +178,7 @@ def _sanitize_id(raw: str) -> str:
 
 # ---- executors (each: (world, op, ctx, delta) -> None; ctx has actor_id/action_id/now/report)
 def _x_create_object(world, op, ctx, delta):
+    _need(op, "object_type")
     otype = str(op["object_type"])
     if otype not in OBJECT_TYPES:
         raise OpError(f"unknown object_type {otype!r} (closed registry)")
@@ -639,8 +640,11 @@ def execute_program(world, program: CausalActionProgram, delta, report: dict) ->
                 op = {**op, "object_type": "policy", "status": "enacted"}
             fn(world, op, ctx, delta)
             applied += 1
-        except OpError as e:
-            program.quarantined.append({"op": op, "reason": str(e)[:200], "phase": "execute"})
+        except (OpError, KeyError, ValueError, TypeError) as e:
+            # untrusted ops fail INTO quarantine, never out of the run — a malformed field the
+            # static pass could not see (missing key, wrong type) is the same class of failure
+            program.quarantined.append({"op": op, "reason": f"{type(e).__name__}: {e}"[:200],
+                                        "phase": "execute"})
             report["unsupported_semantics"] += 1
     report["direct_operations_applied"] += applied
     report["actions_compiled"] += 1
