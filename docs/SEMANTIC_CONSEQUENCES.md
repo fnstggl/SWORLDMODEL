@@ -1,5 +1,13 @@
 # Semantic World Consequences — audit, design, and status
 
+> **STATUS: baseline, not production.** Everything below describes
+> `fixed_semantic_consequence_policy_v1` — the developer-fixed ontology that replaced the
+> scalar pathway coupling. The PRODUCTION default is `generated_actor_mediated_world`
+> (`docs/GENERATED_WORLD.md`): scenario-GENERATED semantics, actor-mediated recursion, no
+> fixed catalogs. This mode remains runnable as an explicit comparison baseline
+> (`SWM_CONSEQUENCES=fixed_semantic_consequence_policy_v1`; the historical name
+> `semantic_world_consequences` is its alias).
+
 **The defect this phase removes.** A qualitative actor now chooses realistic actions, but the
 executor compressed every action into `nearest ontology label × ACTION_PATHWAY_EFFECTS ×
 sampled pathway_step(~0.04)` on abstract `pathway_progress:*` bars. The production causal

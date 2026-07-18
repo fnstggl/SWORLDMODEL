@@ -1,0 +1,357 @@
+{
+ "schema_id": "schema_c0b84805def99b74",
+ "version": "1",
+ "question": "Will the two leaders reach a settlement within 60 days?",
+ "prediction_timestamp": 1700000000.0,
+ "horizon": 1705184000.0,
+ "entity_types": {
+  "mediator": {
+   "description": "The neutral party facilitating the mediated settlement process",
+   "fields": {
+    "mediator_id": "id",
+    "name": "str"
+   }
+  },
+  "campaign_resource": {
+   "description": "Resources consumed by the contested campaign (financial, material, personnel)",
+   "fields": {
+    "resource_id": "id",
+    "resource_type": "str",
+    "current_cost_rate": "float"
+   }
+  }
+ },
+ "fact_types": {
+  "settlement_document": {
+   "description": "A written settlement framework or proposal",
+   "fields": {
+    "document_id": "id",
+    "content_hash": "str",
+    "current_version": "int",
+    "document_type": "str"
+   }
+  },
+  "settlement_approval_record": {
+   "description": "Record of a leader's decision on a settlement proposal",
+   "fields": {
+    "record_id": "id",
+    "leader_id": "id",
+    "document_id": "id",
+    "approval_decision": "str",
+    "timestamp": "time",
+    "notes": "str"
+   }
+  },
+  "campaign_cost_projection": {
+   "description": "Projected costs of continuing the contested campaign",
+   "fields": {
+    "projection_id": "id",
+    "leader_id": "id",
+    "projected_total_cost": "float",
+    "projection_date": "time"
+   }
+  }
+ },
+ "relation_types": {
+  "leads_sides_in_mediation": {
+   "description": "Which leader represents which side in mediated talks",
+   "fields": {
+    "leader_id": "id",
+    "side_label": "str",
+    "mediator_id": "id",
+    "joined_at": "time"
+   }
+  },
+  "controls_resource": {
+   "description": "Which leader controls which campaign resource",
+   "fields": {
+    "leader_id": "id",
+    "resource_id": "id"
+   }
+  }
+ },
+ "semantic_event_types": {
+  "mediation_session_held": {
+   "description": "A formal mediation session occurs",
+   "fields": {
+    "session_id": "id",
+    "mediator_id": "id",
+    "participant_ids": "list",
+    "start_time": "time",
+    "end_time": "time",
+    "outcome_summary": "str"
+   }
+  },
+  "settlement_proposal_submitted": {
+   "description": "A formal settlement proposal is submitted for approval",
+   "fields": {
+    "proposal_id": "id",
+    "document_id": "id",
+    "submitted_by": "id",
+    "submission_time": "time"
+   }
+  },
+  "approval_record_created": {
+   "description": "A leader records their approval decision on a settlement document",
+   "fields": {
+    "record_id": "id",
+    "leader_id": "id",
+    "document_id": "id",
+    "approval_decision": "str",
+    "timestamp": "time"
+   }
+  },
+  "campaign_cost_increased": {
+   "description": "Costs of the contested campaign rise significantly",
+   "fields": {
+    "resource_id": "id",
+    "new_cost_rate": "float",
+    "leader_id": "id",
+    "event_time": "time"
+   }
+  },
+  "unmodeled_actor_action": {
+   "description": "schema-scoped scaffolding: an actor action whose semantics could not be compiled; exact content preserved; counted as a fallback",
+   "fields": {
+    "action_name": "str",
+    "content": "str",
+    "target": "str"
+   },
+   "typical_visibility": "participants",
+   "scaffolding": true
+  }
+ },
+ "process_definitions": {
+  "mediated_settlement_process": {
+   "description": "The multi-step process from framework to final settlement",
+   "states": [
+    "framework_exists",
+    "mediation_active",
+    "proposal_drafted",
+    "proposal_submitted_for_approval",
+    "approval_pending",
+    "settlement_reached",
+    "settlement_failed"
+   ],
+   "transitions": [
+    {
+     "from": "framework_exists",
+     "to": "mediation_active",
+     "trigger": "mediation_session_held"
+    },
+    {
+     "from": "mediation_active",
+     "to": "proposal_drafted",
+     "trigger": "settlement_proposal_submitted"
+    },
+    {
+     "from": "proposal_drafted",
+     "to": "proposal_submitted_for_approval",
+     "trigger": "settlement_proposal_submitted"
+    },
+    {
+     "from": "proposal_submitted_for_approval",
+     "to": "approval_pending",
+     "trigger": "settlement_approval_record"
+    },
+    {
+     "from": "approval_pending",
+     "to": "settlement_reached",
+     "trigger": "both_approvals_received"
+    },
+    {
+     "from": "approval_pending",
+     "to": "settlement_failed",
+     "trigger": "any_rejection_received"
+    }
+   ],
+   "initial_state": "framework_exists"
+  },
+  "cost_pressure_process": {
+   "description": "Rising costs create pressure to settle",
+   "states": [
+    "costs_stable",
+    "costs_rising",
+    "costs_critical"
+   ],
+   "transitions": [
+    {
+     "from": "costs_stable",
+     "to": "costs_rising",
+     "trigger": "campaign_cost_increased"
+    },
+    {
+     "from": "costs_rising",
+     "to": "costs_critical",
+     "trigger": "campaign_cost_increased"
+    }
+   ],
+   "initial_state": "costs_rising"
+  }
+ },
+ "institutional_definitions": {
+  "settlement_approval_board": {
+   "description": "The decision-making body composed of both leaders to approve/reject a settlement",
+   "decision_holders": [
+    "leader_a",
+    "leader_b"
+   ],
+   "decision_record_type": "settlement_approval_record",
+   "aggregation": {
+    "kind": "unanimous",
+    "description": "Both leaders must approve for settlement to be reached",
+    "assumed": true
+   },
+   "procedures": {
+    "voting_window_days": 30,
+    "amendments_allowed": true
+   },
+   "assumed": true
+  }
+ },
+ "physical_constraints": {
+  "settlement_requires_physical_document": {
+   "description": "Settlement documents must be physically signed or digitally authenticated",
+   "rule": "Both leaders must submit approval_record with approval_decision='approve' for same document_id",
+   "unresolved": true
+  },
+  "costs_are_rising": {
+   "description": "Both sides face rising costs from the contested campaign",
+   "rule": "campaign_cost_projection.projected_total_cost increases with each campaign_cost_increased event",
+   "unresolved": true
+  }
+ },
+ "resource_definitions": {
+  "financial_reserve": {
+   "description": "Each leader's financial reserves for continuing the campaign",
+   "fields": {
+    "leader_id": "id",
+    "current_reserve": "float",
+    "reserve_label": "str"
+   }
+  }
+ },
+ "information_rules": {
+  "cost_projections_are_private": {
+   "description": "Each leader has private knowledge of their own campaign cost projections",
+   "rule": "campaign_cost_projection records are only visible to the owning leader unless shared in mediation",
+   "unresolved": false
+  },
+  "approval_records_are_public": {
+   "description": "Once a leader submits an approval record, it is visible to all parties",
+   "rule": "settlement_approval_record becomes visible to both leaders and mediator upon creation",
+   "unresolved": false
+  }
+ },
+ "actor_roles": {
+  "leader_a": {
+   "role": "Negotiating party (Side A)",
+   "why_consequential": "Must approve any settlement for it to be reached; controls campaign resources",
+   "affordances": [
+    "Submit settlement approval record with 'approve', 'reject', or 'amend_request'",
+    "Attend mediation sessions",
+    "Propose amendments to settlement documents",
+    "Continue or escalate the contested campaign"
+   ]
+  },
+  "leader_b": {
+   "role": "Negotiating party (Side B)",
+   "why_consequential": "Must approve any settlement for it to be reached; controls campaign resources",
+   "affordances": [
+    "Submit settlement approval record with 'approve', 'reject', or 'amend_request'",
+    "Attend mediation sessions",
+    "Propose amendments to settlement documents",
+    "Continue or escalate the contested campaign"
+   ]
+  },
+  "mediator": {
+   "role": "Neutral facilitator",
+   "why_consequential": "Controls the mediation process; can submit settlement proposals",
+   "affordances": [
+    "Convene mediation sessions",
+    "Draft and submit settlement proposals",
+    "Share cost projections between sides with permission"
+   ]
+  }
+ },
+ "outcome_predicates": [
+  {
+   "predicate_id": "settlement_reached_within_60_days",
+   "record_type": "settlement_approval_record",
+   "field": "approval_decision",
+   "op": "eq",
+   "value": "approve",
+   "option_true": "Both leaders submitted 'approve' for the same document_id before 2024-01-13",
+   "option_false": "At least one leader submitted 'reject' or no approval by deadline"
+  }
+ ],
+ "unresolved_mechanisms": [
+  "Whether the existing 'framework' is substantive enough to produce a final document within the horizon",
+  "How rising costs translate into specific pressure on each leader's decision timeline",
+  "settlement_requires_physical_document",
+  "costs_are_rising"
+ ],
+ "evidence_basis": [],
+ "assumptions": [
+  {
+   "assumption_id": "unanimous_approval_required",
+   "description": "Both leaders must approve the same settlement document for settlement to be reached",
+   "evidence": "Implied by 'two-party mediated settlement' and no mention of alternative decision rules"
+  },
+  {
+   "assumption_id": "costs_continue_rising",
+   "description": "Costs of the contested campaign continue to increase during the prediction horizon",
+   "evidence": "Evidence states 'both sides face rising costs'"
+  }
+ ],
+ "provenance": {
+  "kind": "scenario.semantic.model.v1",
+  "compiler": "llm_repaired",
+  "issues_first_pass": [
+   "institution 'settlement_approval_board' decision_record_type \"{'name': 'settlement_approval_record', 'fields': {'leader_id': {'kind': 'id'}, 'document_id': {'kind': 'id'}, 'approval_decision': {'kind': 'str'}, 'timestamp': {'kind': 'time'}}}\" undeclared"
+  ],
+  "auto_repairs": [
+   "constraint 'settlement_requires_physical_document' labeled unresolved (no executable rule)",
+   "constraint 'costs_are_rising' labeled unresolved (no executable rule)",
+   "institution 'settlement_approval_board' labeled assumed (no evidence cited)"
+  ],
+  "critic": {
+   "missing_decisive_elements": [
+    "No representation of deadlines, ultimatums, or time pressure mechanisms (e.g., '60-day clock' or 'drop-dead date') that would drive urgency",
+    "No model of exogenous shocks or spoiler events (e.g., military incident, economic crisis, third-party intervention) that could collapse or accelerate the process",
+    "No representation of leader's domestic political constraints (e.g., approval ratings, election cycles, coalition pressures) that often determine settlement timing",
+    "No capacity to model sequential offers/counteroffers with concession dynamics (the process only has 'proposal_drafted' then 'submitted' with no iteration)"
+   ],
+   "relabeled_progress_bars": [
+    "The 'mediated_settlement_process' state machine is a linear progress bar (framework -> mediation -> proposal -> approval -> settled/failed) that assumes deterministic forward movement, not realistic back-and-forth",
+    "The 'cost_pressure_process' is a monotonic escalation bar (stable -> rising -> critical) that ignores cost reduction, negotiation leverage shifts, or external funding changes"
+   ],
+   "hidden_answer_risks": [
+    "The model assumes settlement failure only from explicit rejection records, but a leader could simply stall indefinitely (no 'timeout' or 'no decision' state) \u2014 this would make the 60-day question unanswerable",
+    "The 'both_approvals_received' trigger is never defined as an event type; it's a composite condition with no explicit detection logic, risking ghost transitions",
+    "The 60-day question horizon is not wired into any process; there is no time-bound trigger or timeout transition for the mediated_settlement_process"
+   ],
+   "direct_human_reaction_encodings": [
+    "Emotional states like 'trust breakdown', 'anger', 'face-saving' are entirely absent, yet these often determine whether leaders approve or reject",
+    "No representation of private backchannel communications or informal deals that precede formal approval records",
+    "The 'campaign_cost_increased' event has no link to leader psychology; rising costs might harden resolve (sunk cost fallacy) rather than create settlement pressure"
+   ],
+   "public_posture_vs_private_reality_conflations": [
+    "The model only captures official 'settlement_approval_record' decisions (approve/reject/amend_request), but leaders often signal approval publicly while privately blocking, or vice versa \u2014 no distinction is made",
+    "Mediation sessions have an 'outcome_summary' field but no mechanism to separate public spin from actual progress",
+    "No way to model leaked information or disinformation that alters perceptions of the other side's intentions"
+   ],
+   "outcome_predicate_matches_question": true,
+   "missing_nonhuman_mechanisms": [
+    "No representation of algorithmic trading or financial market reactions that could force settlement (e.g., currency crash, bond yield spikes)",
+    "No model of environmental factors (weather, natural disasters) that might disrupt logistics or create humanitarian imperatives",
+    "No cyber operations, electronic warfare, or infrastructure sabotage that could independently escalate or de-escalate the campaign"
+   ],
+   "verdict": "needs_extension"
+  },
+  "frozen_at": 1700000000.0,
+  "content_hash": "7e1b412d78cb8d99"
+ },
+ "frozen": true,
+ "ancestry": []
+}
