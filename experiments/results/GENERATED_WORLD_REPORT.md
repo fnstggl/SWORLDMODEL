@@ -10,7 +10,80 @@ direct-effect compilation (all untrusted, all validated). Artifacts:
 `experiments/results/generated_*.json`. Architecture + the 15-question audit:
 `docs/GENERATED_WORLD.md`.
 
-RESULTS_PLACEHOLDER
+## 1. The matched 4-mode evaluation
+
+One settlement scenario (two leaders, two mediated rounds, 8 particles, seed 23), identical
+worlds and kickoffs; C and D share ONE pre-compiled generated schema so the actor-policy axis
+is isolated. The generated arms read their answers from frozen predicates over generated
+records; the baselines read their historical bar contract.
+
+| Arm | Architecture × actors | Distribution | ops applied | events | delivered | invoked | declined | wall |
+|---|---|---|---|---|---|---|---|---|
+| A | legacy scalar × persistent | no_deal 1.000 | 0 | 0 | 0 | 0 | 0 | 30m |
+| B | fixed-v1 catalog × persistent | no_deal 1.000 | 864 | 0 | 0 | 0 | 0 | 50m |
+| C | generated × stateless | **settlement_reached 0.375** / no_settlement 0.625 | 72 | 54 | 54 | 50 | 6 | 17m |
+| D | generated × persistent (**production default**) | no approval by deadline 1.000 | 91 | 70 | 63 | 59 | 13 | 21m |
+
+- **The generated arms are the only ones whose distributions come from actor-mediated
+  recursion over scenario-generated state**: 50–59 control-plane invocations per run, each
+  a persistent-LLM decision on a delivered observation, with 6–13 deliberate declines
+  (waiting is real behavior, not a missing handler). Invariants held in both:
+  `human_reactions_written_directly = 0`, `fixed_ontology_uses = 0`.
+- **Branch divergence is genuine** in arm C: three of eight particles reached a settlement
+  record satisfying the frozen predicate; the others stalled with signed-by-one or lapsed
+  deadlines — inspectable event-by-event in the world planes.
+- **Do not read C > D as an actor-policy ranking**: one scenario, one seed, n=8; D's
+  persistent hypotheses declined to act twice as often (13 vs 6), which at this scale can
+  swing the binary either way. The arms demonstrate the CONSEQUENCE architecture; the
+  50-case corpus remains the actor-policy evidence.
+- **Cost**: generated runs are 17–21 min (vs 50 min fixed-v1) — the cascade is
+  budget-bounded (5 invocations/actor) instead of chain-till-the-call-budget.
+
+## 2. The five demos (all through the real funnel, DeepSeek end to end)
+
+**A — corporate product + rebrand.** The schema compiler generated
+`anchor_partner_signing`, `experiences_marketplace`, `marketplace_public_launch`,
+`rebrand_completion`… (no Meridian/Airbnb-like type exists in repository code) and the
+answer is read from those records against the frozen predicate. (One draw compiled a
+degraded schema and served fixed-v1, STAMPED — kept in the logs as an honest example of the
+loud degradation path; the committed artifact is a pure generated run.)
+
+**B — board cascade** (5 actors, no menus anywhere): the CEO privately approaches the CFO
+("meet privately with Arman to understand and neutralize his concerns"); the chair
+pre-coordinates with the CEO; the fund director deliberately WAITS and monitors; the
+formerly peripheral independent director proactively calls the chair; members then write
+real `director_vote_record`s and the outcome is deterministic arithmetic over them — the
+final answer is literally "fewer than 3 'approve' votes recorded by 2023-12-05". 120 ops,
+95 events, 100 invocations, 7 declines.
+
+**C — individual communication.** The reply schema (`trip_cancellation_by_friend`,
+`jordan_expresses_reaction`) was generated for the question; all six samples decided in
+pure generated mode with hypothesis-specific stances ("without offering an easy out",
+"quietly lower expectations"); `reply_now` 1.0 with the reply text as scenario events.
+
+**D — novel cross-domain (semiconductor supplier qualification).** Generated types
+(`corrective_action_report`, requalification records…) nowhere in the repo; the
+distribution SPLIT — "does not requalify" 0.75 / "Q3 order placed on or before
+2024-01-13" 0.25 — from 59 invocations across supplier/customer/quality-owner cascades.
+
+**E — non-human boundary (launch anomaly).** The schema declared the physics UNRESOLVED in
+engineering language ("whether the turbopump hardware … is actually flightworthy cannot be
+resolved by assertion") and the simulation never let anyone assert it: humans decided
+(root-cause investigation, window management, range-safety consultation — 56 events, 93
+deliveries), the flightworthiness stayed unestablished, and the frozen predicate resolved
+"does NOT fly inside the window" 1.0.
+
+## 3. What the fallback counters show (and why they matter)
+
+A large share of demo-B/D events used the schema-scoped `unmodeled_actor_action`
+scaffolding: the direct-effect compiler could not map every subtle political action onto
+declared types, so the EXACT decision text was preserved, delivered, and recursed on — with
+every such use counted as a fallback. This is the honest boundary of current compile
+quality: the causal loop never breaks, and the artifacts show precisely how much of each
+run's semantics were modeled vs carried as content. The development history in this branch's
+commits is itself the measurement: wrapper-shaped ops, invented vocabulary, and undeclared
+fields were each surfaced BY the loud-validation design and fixed without ever silently
+corrupting a world.
 
 ## What is mechanically guaranteed (1336 tests, incl. the 34 required invariants)
 
