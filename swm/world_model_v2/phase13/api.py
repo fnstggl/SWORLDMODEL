@@ -55,7 +55,8 @@ def _fingerprint() -> dict:
 def recommend_action(problem: DecisionProblem, world_context, *, budget: str = "standard",
                      seed: int = 0, n_particles: int = None, llm=None,
                      candidate_observations: list = None, mode: str = "auto",
-                     goal_text: str = "", trace_path: str = "") -> DecisionResult:
+                     goal_text: str = "", trace_path: str = "",
+                     forensic_dir: str = "") -> DecisionResult:
     """The full Phase-13 pipeline. Abstains (with what is needed) instead of fabricating certainty.
 
     mode="auto" (default): a generated scenario world routes through the scenario-generated
@@ -72,7 +73,7 @@ def recommend_action(problem: DecisionProblem, world_context, *, budget: str = "
         return discover_best_action(goal_text or problem.context, world_context,
                                     problem=problem, budget=budget, seed=seed,
                                     n_particles=n_particles, llm=llm,
-                                    trace_path=trace_path)
+                                    trace_path=trace_path, forensic_dir=forensic_dir)
     if mode == "legacy_fixed_v1" and is_generated_context(world_context):
         # reachable ONLY by explicit request — stamped as a baseline, never a default
         pass
@@ -166,7 +167,7 @@ def recommend_action(problem: DecisionProblem, world_context, *, budget: str = "
 def evaluate_actions(problem: DecisionProblem, actions: list, world_context, *,
                      budget: str = "standard", seed: int = 0, n_particles: int = None,
                      llm=None, mode: str = "auto", goal_text: str = "",
-                     trace_path: str = "") -> DecisionResult:
+                     trace_path: str = "", forensic_dir: str = "") -> DecisionResult:
     """Evaluate ONLY the supplied actions (plus the mandatory do-nothing reference).
     Differs from recommend_action ONLY in where candidates come from. The caller's
     DecisionProblem is never mutated."""
@@ -179,7 +180,8 @@ def evaluate_actions(problem: DecisionProblem, actions: list, world_context, *,
                                           goal_text=goal_text or problem.context,
                                           budget=budget, seed=seed,
                                           n_particles=n_particles, llm=llm,
-                                          trace_path=trace_path)
+                                          trace_path=trace_path,
+                                          forensic_dir=forensic_dir)
     import copy as _copy
     p2 = _copy.copy(problem)                            # NEVER mutate the caller's contract
     p2.candidate_actions = list(actions)
@@ -190,7 +192,8 @@ def evaluate_actions(problem: DecisionProblem, actions: list, world_context, *,
 
 def optimize_policy(problem: DecisionProblem, policies: list, world_context, *,
                     seed: int = 0, n_particles: int = None, llm=None, mode: str = "auto",
-                    goal_text: str = "", trace_path: str = "") -> DecisionResult:
+                    goal_text: str = "", trace_path: str = "",
+                    forensic_dir: str = "") -> DecisionResult:
     """Sequential policies (Part 12): each Policy rolls through the SAME matched particles with
     decision points scheduled; a do-nothing policy is the reference. Policies act on belief state only
     (policies.belief_state — the canonical observable-view boundary)."""
@@ -205,7 +208,8 @@ def optimize_policy(problem: DecisionProblem, policies: list, world_context, *,
         return optimize_policy_generated(problem, policies, world_context,
                                          goal_text=goal_text or problem.context, seed=seed,
                                          n_particles=n_particles, llm=llm,
-                                         trace_path=trace_path)
+                                         trace_path=trace_path,
+                                         forensic_dir=forensic_dir)
     from swm.world_model_v2.phase13.policies import (Policy, PolicyExecutionOperator,
                                                      schedule_decision_points)
     from swm.world_model_v2.phase13.counterfactual import MatchedBundle, paired_report
@@ -268,7 +272,7 @@ def optimize_policy(problem: DecisionProblem, policies: list, world_context, *,
 def value_of_information(problem: DecisionProblem, candidate_observations: list, world_context, *,
                          seed: int = 0, n_particles: int = None, llm=None,
                          mode: str = "auto", goal_text: str = "",
-                         trace_path: str = "") -> dict:
+                         trace_path: str = "", forensic_dir: str = "") -> dict:
     """Standalone VOI (Part 14). On a generated world (mode='auto') this routes through the
     scenario layer: information-gathering is a first-class strategy class competing in the
     same matched simulation, and the report carries the adjudicated
@@ -276,7 +280,8 @@ def value_of_information(problem: DecisionProblem, candidate_observations: list,
     r = recommend_action(problem, world_context, budget="standard", seed=seed,
                          n_particles=n_particles, llm=llm,
                          candidate_observations=candidate_observations, mode=mode,
-                         goal_text=goal_text, trace_path=trace_path)
+                         goal_text=goal_text, trace_path=trace_path,
+                         forensic_dir=forensic_dir)
     voi = r.value_of_information
     sr = (r.provenance or {}).get("scenario_report")
     if sr is not None:

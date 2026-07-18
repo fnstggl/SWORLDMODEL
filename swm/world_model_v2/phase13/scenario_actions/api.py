@@ -140,7 +140,8 @@ def _run_generated(problem: DecisionProblem, world_context, *, user_candidates=N
                    goal_text: str = "", budget: str = "standard", seed: int = 0,
                    n_particles=None, llm=None, trace_path: str = "",
                    generate: bool = True, message_realizer=None,
-                   max_llm_calls: int = 220, _language=None) -> DecisionResult:
+                   max_llm_calls: int = 220, _language=None,
+                   forensic_dir: str = "") -> DecisionResult:
     t0 = _time.time()
     problem = copy.copy(problem)                      # NEVER mutate the caller's contract
     problem.candidate_actions = list(problem.candidate_actions or [])
@@ -184,6 +185,10 @@ def _run_generated(problem: DecisionProblem, world_context, *, user_candidates=N
         if c.candidate_id not in seen:
             planner_out.candidates.append(c)
             seen.add(c.candidate_id)
+    if forensic_dir:
+        from swm.world_model_v2.phase13.scenario_actions.forensics import \
+            dump_search_forensics
+        dump_search_forensics(search, goal, forensic_dir)
     recommended, kind, distinguishable = _decide_recommendation(problem, goal, sr)
     reasons = _finalist_reasons(goal, sr)
     reversal = []
@@ -237,7 +242,7 @@ def _run_generated(problem: DecisionProblem, world_context, *, user_candidates=N
 def evaluate_actions_generated(problem: DecisionProblem, actions: list, world_context, *,
                                goal_text: str = "", budget: str = "standard", seed: int = 0,
                                n_particles=None, llm=None, trace_path: str = "",
-                               message_realizer=None) -> DecisionResult:
+                               message_realizer=None, forensic_dir: str = "") -> DecisionResult:
     """Evaluate ONLY the supplied candidates (ConcreteAction or NL strings) + do-nothing."""
     trace = RoleTrace(path="")
     runner = RoleRunner(llm, trace=trace, max_calls=24)
@@ -255,13 +260,13 @@ def evaluate_actions_generated(problem: DecisionProblem, actions: list, world_co
                           goal_text=goal_text, budget=budget, seed=seed,
                           n_particles=n_particles, llm=llm, trace_path=trace_path,
                           generate=False, message_realizer=message_realizer,
-                          _language=language)
+                          _language=language, forensic_dir=forensic_dir)
 
 
 def discover_best_action(question_or_goal: str, context, *, problem: DecisionProblem = None,
                          budget: str = "standard", seed: int = 0, n_particles=None,
                          llm=None, trace_path: str = "",
-                         message_realizer=None) -> DecisionResult:
+                         message_realizer=None, forensic_dir: str = "") -> DecisionResult:
     """Goal-backward discovery: the user supplies a goal; the system generates, screens,
     simulates, diagnoses, revises, and adjudicates candidates."""
     if problem is None:
@@ -270,7 +275,7 @@ def discover_best_action(question_or_goal: str, context, *, problem: DecisionPro
     return _run_generated(problem, context, goal_text=str(question_or_goal), budget=budget,
                           seed=seed, n_particles=n_particles, llm=llm,
                           trace_path=trace_path, generate=True,
-                          message_realizer=message_realizer)
+                          message_realizer=message_realizer, forensic_dir=forensic_dir)
 
 
 def evaluate_proposed_actions(question_or_goal: str, proposed_actions: list, context, *,
@@ -291,7 +296,8 @@ def evaluate_proposed_actions(question_or_goal: str, proposed_actions: list, con
 
 def optimize_policy_generated(problem: DecisionProblem, policies_or_permission, world_context,
                               *, goal_text: str = "", seed: int = 0, n_particles=None,
-                              llm=None, trace_path: str = "") -> DecisionResult:
+                              llm=None, trace_path: str = "",
+                              forensic_dir: str = "") -> DecisionResult:
     """Contingent plans through the same funnel: policies here ARE ConcreteActions with
     conditional steps (observation-gated), executed on the decision-maker's observable
     projection only. `policies_or_permission=True` lets the planner generate contingent
@@ -299,8 +305,8 @@ def optimize_policy_generated(problem: DecisionProblem, policies_or_permission, 
     if policies_or_permission is True:
         return _run_generated(problem, world_context, goal_text=goal_text, seed=seed,
                               n_particles=n_particles, llm=llm, trace_path=trace_path,
-                              generate=True)
+                              generate=True, forensic_dir=forensic_dir)
     users = [p for p in (policies_or_permission or []) if isinstance(p, ConcreteAction)]
     return _run_generated(problem, world_context, user_candidates=users,
                           goal_text=goal_text, seed=seed, n_particles=n_particles, llm=llm,
-                          trace_path=trace_path, generate=False)
+                          trace_path=trace_path, generate=False, forensic_dir=forensic_dir)
