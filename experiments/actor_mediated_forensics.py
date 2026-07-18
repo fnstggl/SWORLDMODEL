@@ -119,14 +119,28 @@ def t3_institutional_decision(llm) -> dict:
 def t4_phase13_matched_counterfactual(llm) -> dict:
     from swm.world_model_v2.compiler import compile_world
     from swm.world_model_v2.phase13 import recommend_action
-    from swm.world_model_v2.phase13.contracts import DecisionProblem, UtilitySpec
+    from swm.world_model_v2.phase13.contracts import DecisionProblem, Stakeholder, UtilitySpec
     q = ("Will the wavering co-founder agree to stay through the product launch in "
          "September 2026?")
     plan = compile_world(q, llm=llm, evidence="", as_of=AS_OF, horizon="2026-09-30", seed=5)
+
+    def stays_utility(outcome: dict) -> float:
+        r = str(outcome.get("readout", "")).lower()
+        if r in ("true", "yes", "1", "stays"):
+            return 1.0
+        qs = outcome.get("quantities") or {}
+        for name, v in qs.items():
+            if name.startswith(("pathway_progress:", "outcome")) and isinstance(v, (int, float)):
+                return float(v)
+        return 0.0
+
     problem = DecisionProblem(
-        decision_maker="user", question="What should the CEO do to keep the co-founder?",
-        utility=UtilitySpec(objective="co-founder stays through launch",
-                            outcome_paths=["readout"]),
+        decision_id="forensic_t4_cofounder",
+        decision_maker="user",
+        context="What should the CEO do to keep the wavering co-founder through launch?",
+        as_of=AS_OF + "T00:00:00Z", horizon="2026-09-30T00:00:00Z",
+        utility=UtilitySpec(stakeholders=[Stakeholder("ceo", utility_fn=stays_utility)],
+                            provenance="user_supplied"),
         candidate_actions=[], generated_action_permission=True, human_approval_required=True)
     t0 = time.time()
     dr = recommend_action(problem, plan, budget="small", seed=5, n_particles=8, llm=llm)
@@ -156,7 +170,9 @@ def main():
         try:
             row = fn(llm)
         except Exception as e:  # noqa: BLE001 — a failed trace is a recorded failure
-            row = {"error": f"{type(e).__name__}: {e}"[:400]}
+            import traceback
+            row = {"error": f"{type(e).__name__}: {e}"[:400],
+                   "traceback": traceback.format_exc()[-2000:]}
         row["_meta"] = {**header, "trace_wall_s": round(time.time() - t0, 1)}
         path = OUT / f"trace_{tid}.json"
         path.write_text(json.dumps(row, indent=1, default=str))
