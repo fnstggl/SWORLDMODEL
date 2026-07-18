@@ -246,7 +246,8 @@ def main():
         recipient, sender_brief=AURELIUS_SENDER, chat_fn=chat,
         recipient_notes="Peter Thiel — screens heavily; treat all cold inbound as barely read",
         k_drafts=8, n_mc=300, dossier=dossier, hypotheses=hyps, persona_draws=args.draws,
-        persona_top_k=4, arrival_context=arrival)
+        persona_top_k=4, arrival_context=arrival,
+        method="slate")   # this experiment demonstrates the v3 slate path; exp095 is reply-first
 
     payload = {"experiment": "exp092_thiel_action_first",
                "mode": "live" if chat else "offline",

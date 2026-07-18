@@ -250,6 +250,90 @@ a useful second search method (different failure modes, real structural discover
 but shows **no material lift over the full-draft path under the current evaluator**; distinguishing
 them requires real outreach outcomes (the ledger), not more draws.
 
+## 9c. exp095 — reply-first default: what the first live run caught (and the fixes)
+
+The reply-first planner's first live run (`artifacts/phase13/thiel_v5/run1_prompt_bug/`, 167 raw
+LLM calls, fully traced) validated the architecture's separation of concerns AND exposed three
+implementation defects — all found by reading the trace, all now regression-locked in
+`tests/test_reply_first.py`.
+
+**What worked on the first live run:**
+- Backward planning produced target replies in the recipient's own typed voice ("Send me the
+  one-pager." / "Talk to my partner at FF who covers that space." / "Come by the office Thursday
+  at 3pm.") and derived concrete requirements from them (the contrarian reframe as the worthwhile
+  core; ONE believable number with provenance; effortless five-word reply).
+- The separated language judge — with zero hardcoded phrases — flagged **exactly the failure
+  modes a human editor had previously flagged by hand**: "age and university name reads like a
+  bio, not a quick note to a busy peer" and "Two large numbers (~1.5M and 724%) compete for
+  attention in one sentence". Independent confirmation that judging language as WRITING (not as
+  a pitch) reproduces human taste.
+
+**What the trace caught (defect → fix, each with a test):**
+1. **Direction-inverted ask.** `BEAT_ROLE["request"]` read "the reply being asked for" — every
+   seed draft pasted the recipient's desired reply verbatim as the sender's closing line ("Send
+   me the one-pager." FROM the sender TO the recipient — backwards English). Fix: the role text
+   and writing rules now state the closing line is the SENDER's own ask, never the hoped-for
+   reply pasted (`test_request_beat_role_is_sender_directed`).
+2. **Capped pool silently excluded the repair.** The request-swap variants (correct-direction
+   closings, generated in the same run) were appended after the necessity drops, and the `[:4]`
+   ranking slice cut them — the outcome judge never saw them. Fix: swaps ride directly after the
+   base variant and the pool widened (`test_request_swaps_precede_drops_in_variant_pool`).
+3. **Near-miss admission wasted the judge's verdicts.** A candidate with flags but score 0.95
+   outranked cleaner texts, so the winner shipped with known flags. Fix: strictly-clean
+   candidates (no flags) always outrank flagged ones regardless of score
+   (`test_gate_pool_prefers_strictly_clean_over_flagged_high_score`), and any flagged finalist
+   gets ONE targeted repair pass — the flags become edits, accepted only if the repair comes back
+   strictly clean under BOTH gates (`test_repair_language_turns_flags_into_edits`).
+
+**Run 2** (`run2_contract_collision/`, 109 raw calls) verified all three fixes live — every seed
+closed sender-directed, the winner came out of a successful `+lang_repair` — and its rank counts
+exposed a fourth, subtler defect:
+
+4. **A v3 contract rule was silently strangling the v4 structure search.** Rank-1 counts showed
+   exactly ONE arm: the plain baseline. Replaying the deterministic gates on the traced seeds
+   showed why — `validate()`'s "identity in the first two sentences" rule (written for the v3
+   slate path after the identity-less debate-bait failure) hard-failed 4 of the 5 beat
+   structures, the ones that place the identity beat after the surprise or the evidence. The
+   structure search — the core of the v4 design — was comparing one candidate. Fix:
+   `validate(identity_window=...)`; the planner passes `None` (identity must exist SOMEWHERE —
+   the debate-bait regression still fails — but its position is now the blind outcome judge's
+   question, which is the entire point of searching structures)
+   (`test_identity_window_frees_structure_search_but_keeps_debate_bait_dead`).
+
+**Run 3** (`run3_weak_repair/`, 180 raw calls) confirmed the freed structure search — rank 1
+compared four structures and a surprise-first structure (surprising_idea → evidence → relevance →
+identity → request) beat identity-first for the first time — and exposed a fifth defect:
+
+5. **All-or-nothing repair acceptance shipped known flags.** The judge flagged "SLA-safe goodput"
+   (an unglossed jargon compound imported verbatim from the sender facts), the two competing
+   numbers, and pitch-deck phrasing ("definite, contrarian theses") on EVERY candidate — over a
+   dozen times across 17 judge calls — but the single-shot repair never cleared every flag at
+   once, was therefore always rejected, and the winner shipped containing exactly the phrases
+   the judge kept flagging. Fix: the repair enumerates each flag as a MUST-FIX with concrete
+   instructions (gloss the compound, keep only the strongest number), gets two attempts, and a
+   partial repair that strictly reduces the flag count without a truth failure or score drop is
+   kept as the new base (`test_repair_language_accepts_monotone_improvement`). Acceptance is
+   still fail-safe: never worse than the input, and the truth gate re-checks every attempt.
+
+**Run 4** (`run4_signoff_surgery/`, 169 raw calls) showed the whole pipeline clicking — the
+request-swap variant won the beat search outright (a pointed expertise question replacing the
+generic ask), and the strict-preference gauntlet picked the strictly-clean finalist (0.95, zero
+flags) over a flagged one — and caught one last mechanical defect:
+
+6. **Beat surgery ate the signature.** `sents[:-1]` treated the bare trailing "Beckett" as the
+   request sentence, so the request swap replaced the NAME and the winner shipped unsigned. Fix:
+   a bare trailing signature is held out of all beat surgery and re-appended
+   (`test_beat_surgery_preserves_signoff`).
+
+The corrected planner then ran live end to end (run 5 — `artifacts/phase13/thiel_v5/` top level:
+final traces, result, ledger freeze; committed as-is, whatever the judges preferred that run).
+The run-1/2/3/4 artifacts are retained deliberately: the point of tracing every call is that this
+class of defect is findable by reading, not by trusting.
+An honest residual: the language judge's strictness varies call to call on borderline register
+(the same "goodput" phrasing drew scores from 0.3 to 0.85 across runs) — the stored-preference
+hook (`record_preference`) exists precisely so real human A/B choices pin that taste down over
+time instead of LLM opinion re-rolling it.
+
 ## 9. Failures (honest)
 
 - 3 jtrain quasi slices excluded — DiD cells empty on the slice (`gates.json:excluded_reasons`), a

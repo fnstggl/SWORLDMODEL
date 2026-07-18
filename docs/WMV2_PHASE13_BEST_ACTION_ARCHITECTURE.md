@@ -138,7 +138,7 @@ simulates and recommends; `human_approval_required` is stamped on every result. 
 matches, or no substantive feasible action survives. Prohibited/coercive/deceptive actions targeting
 protected or vulnerable groups are rejected.
 
-## 13. Outreach action layer (v3 — action-first, persona-grounded)
+## 13. Outreach action layer (v4 — reply-first, three separated judges)
 
 The communication instance of the decision layer was rebuilt after a diagnosed failure (see
 FORENSICS §10): the original path optimized messages against numeric recipient traits an LLM had
@@ -176,19 +176,68 @@ Register gates (four-axis critic, numeric fact guard, redundancy, cold-read crit
 are never the objective. A **caricature guard** clamps combat-flavored situational levers to ≤0 and
 shrinks persona-derived elasticities by evidence confidence.
 
+**DEFAULT search method — the reply-first beat planner** (`reply_first.py`; wired as
+`optimize_cold_outreach(method="reply_first")`, the default; `experiments/exp095_thiel_reply_first.py`).
+Both earlier methods (whole-draft generate-and-rank, line-level iterative editing) still searched
+for "the text an imagined recipient scores highest", and more search just exploited the imaginary
+judge: jargon compounds, competing benchmark numbers, a fabricated biography line the judge liked.
+The planner inverts the direction of design:
+
+1. **Desired replies** — start from the exact positive replies wanted, in the recipient's own
+   typed voice ("Interesting. Send it." / "What's the main technical insight?"), each mapped to an
+   outcome category.
+2. **Backward requirements** — for each target reply: what must the recipient have JUST READ for
+   that reply to be their natural next keystroke? Decomposed into worthwhile / surprising /
+   believable / noticed / effortless, grounded in the dossier and ONLY the sender facts.
+3. **Beat structures** — a message is functional beats (recognition, identity, surprising_idea,
+   evidence, relevance, request), not sentences. Several orderings are instantiated as complete
+   drafts under hard writing rules: no jargon compounds (say what the thing DOES), **at most one
+   number** translated into reader consequence with provenance in the same sentence, a request
+   typed the way a real person types, 45–85 words.
+4. **Beat search before wording search** — necessity tests (drop each beat), merges, and
+   request-shape swaps, compared as complete drafts.
+5. **Wording last** — one capped iterative-editor pass inside the winning structure (fabrication
+   guard on).
+
+**Three separated judges** certify every candidate; invention and certification are never the same
+role on the same prompt:
+
+* **Truth judge** (hard gate, unchanged — the judge that caught the fabricated "skipping
+  Princeton" line): numeric fact guard (`allowed_numbers`) + deterministic content contract +
+  fabricated-vs-facts sentence judge, failing **closed** when unverifiable.
+* **Human-language judge** (hard gate; `language_judge.py`): would a sharp busy person actually
+  TYPE each sentence? Harsh on formal-bot register (ceremonious permission constructions),
+  unglossed jargon compounds, more than one big number, performed politeness. Carries the
+  **preference-learning hook**: real human A-vs-B choices (`record_preference`) are folded into
+  the judge prompt as calibration examples, so the automated critic gradually inherits the human
+  editor's demonstrated taste instead of its own opinion.
+* **Outcome judge** (rank only, never a gate-opener): the qualitative persona ensemble runs
+  **blind** — shuffled anonymous labels, no authorship information — and ranks ONLY candidates
+  that already passed both gates, so persona appeal can never resurrect a fabrication or
+  bot-register text. Gate pooling prefers strictly-clean candidates (zero flags) over
+  flagged-but-high-score ones, and a flagged finalist gets one targeted repair pass — judge
+  flags become edits, accepted only if the repair re-passes BOTH gates. Its counted distributions stay in machine-readable traces; **no simulated
+  reply percentage is ever reported to a human**. When the count gap is within noise the label is
+  "best-supported candidate under the current assumptions; no reliable distinction between
+  finalists" — and the stated cure is real outreach outcomes, not more simulation.
+
+The planner emits exactly **ONE recommended message** (ties broken by language score, then
+brevity, then deterministic order) — a slate of near-equals is decision fatigue, not honesty; the
+non-selected finalists appear only as labeled ordinal notes. Every LLM call is traced
+(stage, full prompt, full response) so a run is auditable end to end.
+
 **Second search method — the iterative editor** (`iterative_editor.py`,
-`experiments/exp094_thiel_iterative_editor.py`; experimental, competing with — not replacing — the
-full-draft generator): an exacting human editor's loop, mechanized. Strategy-diverse seeds → whole-
-message diagnosis → per-location materially-different alternatives (keep / rewrite / shorten /
-reframe / merge / **delete** / insert) → an independent judge comparing **complete email variants**
-in context (never isolated sentences) → an 8-axis whole-email rescore that **rejects locally-better
-lines that worsen the message** → endgame sweeps (per-line deletion, reorder, add-beat, shorten,
-replace-ask, new opening, reframe) → a small beam with informed rewrite + crossover to escape local
-optima. Every step lands in a machine-readable edit trace (alternatives, selection, judge reason,
-before/after scores, rejections). The internal 8-axis score is the editor's compass only; final
-candidates are ranked by the same persona-ensemble evaluator as every other approach, with the same
-register bias (em dashes discouraged as overused, allowed when genuinely best; sign-off dashes
-fine — a soft critic penalty, no deterministic stripping).
+`experiments/exp094_thiel_iterative_editor.py`; retained as the planner's wording subroutine and as
+a standalone comparison path via `method="slate"`): an exacting human editor's loop, mechanized.
+Strategy-diverse seeds → whole-message diagnosis → per-location materially-different alternatives
+(keep / rewrite / shorten / reframe / merge / **delete** / insert) → an independent judge comparing
+**complete email variants** in context (never isolated sentences) → an 8-axis whole-email rescore
+that **rejects locally-better lines that worsen the message** → endgame sweeps (per-line deletion,
+reorder, add-beat, shorten, replace-ask, new opening, reframe) → a small beam with informed rewrite
++ crossover to escape local optima. Every step lands in a machine-readable edit trace. The internal
+8-axis score is the editor's compass only; the same register bias applies everywhere (em dashes
+discouraged as overused, allowed when genuinely best; sign-off dashes fine — a soft critic penalty,
+no deterministic stripping).
 
 **Calibration honesty**: additive persuasion elasticities are fit and graded on 19,714 real
 ChangeMyView outcomes (held-out grade A, ECE ≈ 0.02) — that grade applies to the additive
