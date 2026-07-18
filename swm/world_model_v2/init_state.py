@@ -96,6 +96,9 @@ class InitialStateModel:
     latents: list = field(default_factory=list)          # [LatentVariableRecord]
     correlations: list = field(default_factory=list)     # [CorrelationRule]
     coherence: list = field(default_factory=list)        # [CoherenceRule]
+    #: joint world hypotheses (joint_world.attach_joint_hypotheses): every sampled particle is
+    #: stamped with ONE shared hidden reality (index mod K) that all actor states condition on
+    world_hypotheses: list = field(default_factory=list)
 
     def _set_path(self, world, path: str, value, rec: LatentVariableRecord):
         eid, _, fpath = path.partition(".")
@@ -161,6 +164,13 @@ class InitialStateModel:
                                                   for k, v in sample.items()},
                                       "model": {"note": "mechanism/parameter uncertainty recorded per-record"},
                                       "aleatory": {"seed_branch": branch_id}}
+            if self.world_hypotheses:
+                import re as _re
+                m = _re.search(r"(\d+)", branch_id)
+                idx = int(m.group(1)) if m else 0
+                wh = dict(self.world_hypotheses[idx % len(self.world_hypotheses)])
+                wh["ancestry"] = list(wh.get("ancestry") or [wh.get("hypothesis_id", "")])
+                world.uncertainty_meta["joint_world_hypothesis"] = wh
             return world
         raise RuntimeError("could not sample a coherent world in 5 attempts — coherence rules too strict "
                            "or latents contradictory (this is a modeling error to surface, not paper over)")

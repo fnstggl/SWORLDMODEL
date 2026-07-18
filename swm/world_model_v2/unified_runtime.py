@@ -48,6 +48,19 @@ def _mani(available=True, selected=False, executed=False, omitted=False, reason=
             "causally_irrelevant": causally_irrelevant, "removal_changes_terminal": None}
 
 
+def _with_classification(res):
+    """Every public exit carries the run classification + epistemic contract — including
+    early failures (execution_failed / clarification_required are classes, not silences)."""
+    try:
+        from swm.world_model_v2.run_classification import classify_run, epistemic_contract
+        res.provenance = dict(res.provenance or {})
+        res.provenance.setdefault("run_classification", classify_run(res))
+        res.provenance.setdefault("epistemic_contract", epistemic_contract(res))
+    except Exception:  # noqa: BLE001 — classification must never mask the result itself
+        pass
+    return res
+
+
 def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention: str = "",
                    user_context=None, prior_checkpoint=None, compute_budget=None, seed: int = 0,
                    llm=None, execution_policy: dict = None, trace_level: str = "standard",
@@ -93,13 +106,13 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
         plan = compile_world(question, llm=llm, evidence="", as_of=as_of, horizon=horizon,
                              intervention=intervention, seed=seed)
     except ClarificationRequired as e:
-        return SimulationResult(question=question, simulation_status="clarification_required",
+        return _with_classification(SimulationResult(question=question, simulation_status="clarification_required",
                                 clarification_reason=str(e), latency_s=round(_time.time() - t0, 3),
-                                provenance={"runtime": RUNTIME_VERSION, "active_component_manifest": manifest})
+                                provenance={"runtime": RUNTIME_VERSION, "active_component_manifest": manifest}))
     except CompilerExecutionError as e:
-        return SimulationResult(question=question, simulation_status="execution_failed",
+        return _with_classification(SimulationResult(question=question, simulation_status="execution_failed",
                                 failure_taxonomy=e.taxonomy, latency_s=round(_time.time() - t0, 3),
-                                provenance={"runtime": RUNTIME_VERSION, "active_component_manifest": manifest})
+                                provenance={"runtime": RUNTIME_VERSION, "active_component_manifest": manifest}))
     manifest["phase1_compiler"].update(selected=True, executed=True, version="compiler",
                                        reason="always required")
     lineage["plan_hashes"].append(plan.plan_hash())
@@ -524,13 +537,13 @@ def _project_terminal(question, plan, as_of, horizon, intervention, seed, llm, u
                 selected=True, executed=True, version="phase8-1.0",
                 reason=("checkpoint-conditioned" if prior_checkpoint else "no prior history — broad-prior rollout"))
     except CompilerExecutionError as e:
-        return SimulationResult(question=question, simulation_status="execution_failed",
+        return _with_classification(SimulationResult(question=question, simulation_status="execution_failed",
                                 failure_taxonomy=e.taxonomy, plan_hash=plan.plan_hash(),
-                                latency_s=round(_time.time() - t0, 3))
+                                latency_s=round(_time.time() - t0, 3)))
     except Exception as e:  # noqa: BLE001
-        return SimulationResult(question=question, simulation_status="execution_failed",
+        return _with_classification(SimulationResult(question=question, simulation_status="execution_failed",
                                 failure_taxonomy="runtime_exception", limitations=[str(e)[:160]],
-                                latency_s=round(_time.time() - t0, 3))
+                                latency_s=round(_time.time() - t0, 3)))
     # record P4/P6/P7/P10 activation from the executed plan (they fire iff the plan named their operators)
     _record_operator_phases(plan, res, manifest)
     return res
