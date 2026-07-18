@@ -503,7 +503,8 @@ def _project_terminal(question, plan, as_of, horizon, intervention, seed, llm, u
             result, branches = run_from_plan(plan, llm=llm, seed=seed)
             res = result_from_run(question, plan, result, branches, intervention=intervention, t0=t0)
             res.provenance = {**(res.provenance or {}),
-                              "actor_policy_report": result.get("actor_policy_report", {})}
+                              "actor_policy_report": result.get("actor_policy_report", {}),
+                              "consequence_report": result.get("consequence_report", {})}
             if result.get("actor_decision_distributions"):
                 res.provenance["actor_decision_distributions"] = \
                     result["actor_decision_distributions"]

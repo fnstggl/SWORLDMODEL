@@ -204,6 +204,32 @@ def operators_from_plan(plan, *, llm=None, allow_experimental=False) -> tuple:
             rejections.append({"mech_id": m.get("mech_id"),
                                "reason": f"operator {opname!r} needs bound parameters "
                                          f"(e.g. a fitted policy pack): {e}"[:200]})
+    # Consequence INFRASTRUCTURE (not mechanism hypotheses): the consumers of the consequence
+    # architecture's control/follow-up events must exist in every run of that mode, or the
+    # downstream half of the causal chain silently dies in the queue.
+    from swm.world_model_v2 import semantic_consequences as _semcons
+    mode = _semcons.resolve_consequence_mode()
+    if mode != "legacy_scalar_pathway_consequences":
+        if "communication_delivery" not in seen:
+            seen.add("communication_delivery")
+            ops.append(_semcons.CommunicationDeliveryOperator())
+        if "institutional_vote" not in seen:
+            from swm.world_model_v2.transitions import InstitutionalVoteOperator
+            seen.add("institutional_vote")
+            ops.append(InstitutionalVoteOperator())
+    if mode == "generated_actor_mediated_world":
+        # the generated actor-mediated control plane: semantic-event routing, observation
+        # delivery, and persistent-actor invocation share the bound runtime + its report
+        from swm.world_model_v2 import generated_world as _genw
+        runtime = next((getattr(op, "runtime", None) for op in ops
+                        if getattr(op, "name", "") == "production_actor_policy"
+                        and getattr(op, "runtime", None) is not None), None)
+        if runtime is not None:
+            report = runtime.consequence_report
+            ops.append(_genw.GeneratedSemanticEventOperator(
+                report=report, frontier_llm=getattr(runtime, "consequence_llm", None) or llm))
+            ops.append(_genw.GeneratedObservationDeliveryOperator(report=report))
+            ops.append(_genw.GeneratedActorInvocationOperator(runtime, report=report))
     return ops, rejections
 
 
@@ -286,14 +312,26 @@ def attach_actor_decision_distributions(ops, container: dict) -> None:
     so a bypassed qualitative layer is always visible on the result."""
     try:
         from swm.world_model_v2.qualitative_actor import aggregate_actor_decisions
-        records, mode, runtime_report = [], "", None
+        records, mode, runtime_report, consequence_report = [], "", None, None
         for op in ops:
             runtime = getattr(op, "runtime", None)
             if runtime is not None and hasattr(runtime, "decision_records"):
                 records.extend(runtime.decision_records)
                 mode = getattr(runtime, "mode", mode)
+            if runtime is not None and getattr(runtime, "consequence_report", None):
+                consequence_report = runtime.consequence_report
             if getattr(op, "actor_policy_report", None):
                 runtime_report = op.actor_policy_report
+        # the consequence report rides on EVERY result that executed actor actions — the
+        # requested/actual consequence mode and every fallback are visible, never inferred
+        if consequence_report is None:
+            from swm.world_model_v2 import semantic_consequences as _semcons
+            from swm.world_model_v2.generated_world import generated_report as _genrep
+            _mode = _semcons.resolve_consequence_mode()
+            consequence_report = {"requested_mode": _mode, "actual_mode": _mode,
+                                  **_semcons.empty_report(), **_genrep(),
+                                  "note": "no production_actor_policy runtime executed"}
+        container["consequence_report"] = consequence_report
         report = dict(runtime_report or {"requested_actor_policy_mode": "numeric_policy",
                                          "actual_actor_policy_mode": "numeric_policy",
                                          "reason": "no production_actor_policy operator bound"})
@@ -350,6 +388,73 @@ def _inject_posterior_rate(plan) -> bool:
     return injected
 
 
+def _bind_scenario_schema(plan, base, llm) -> None:
+    """generated_actor_mediated_world: bind THIS plan's generated ScenarioSemanticModel onto
+    the base world (particles deep-copy it → branch-local, extensible). A hand-built plan may
+    supply `plan.scenario_schema` directly; otherwise the schema compiler generates one from
+    the plan. No backend / compilation failure = LOUD stamped degradation (recorded on the
+    plan and re-stamped per action by the runtime) — never a silent fixed-v1 swap."""
+    from swm.world_model_v2 import semantic_consequences as _semcons
+    if _semcons.resolve_consequence_mode() != "generated_actor_mediated_world":
+        return
+    from swm.world_model_v2.scenario_schema import (
+        ScenarioSemanticModel, SchemaCompiler, validate_initial_records,
+        validate_scenario_schema,
+    )
+    schema = getattr(plan, "scenario_schema", None)
+    if schema is None and isinstance((plan.provenance or {}).get("scenario_schema"), dict):
+        schema = ScenarioSemanticModel.from_dict(plan.provenance["scenario_schema"])
+    if schema is None:
+        if llm is None:
+            plan.provenance = {**(plan.provenance or {}),
+                               "scenario_schema_error": "no_llm_backend_for_schema_compilation"}
+            return
+        try:
+            schema = SchemaCompiler(llm).compile(
+                question=str(getattr(plan, "question", ""))[:400],
+                as_of=float(getattr(plan, "as_of", 0.0) or 0.0),
+                horizon=float(getattr(plan, "horizon_ts", 0.0) or 0.0),
+                entities=[str(e.get("id")) for e in (plan.entities or [])],
+                institutions=list(getattr(plan, "institutions", None) and
+                                  [str(i.get("id")) for i in plan.institutions] or []),
+                evidence=str((plan.provenance or {}).get("evidence_summary", ""))[:1500])
+        except Exception as e:  # noqa: BLE001 — LOUD degradation, never silent
+            plan.provenance = {**(plan.provenance or {}),
+                               "scenario_schema_error": f"{type(e).__name__}: {e}"[:300]}
+            return
+    if isinstance(schema, ScenarioSemanticModel):
+        if not schema.frozen:
+            ok, issues = validate_scenario_schema(schema)
+            if not ok:
+                plan.provenance = {**(plan.provenance or {}),
+                                   "scenario_schema_error": f"validation: {issues[:4]}"}
+                return
+            schema.freeze()
+        ok0, smuggled = validate_initial_records(schema, list(base.objects.values()))
+        if not ok0:
+            plan.provenance = {**(plan.provenance or {}),
+                               "scenario_schema_error":
+                                   f"outcome smuggled into initial records: {smuggled}"}
+            return
+        base.scenario_schema = schema
+        plan.scenario_schema = schema
+        if schema.outcome_predicates and getattr(plan.outcome_contract, "readout", None):
+            from swm.world_model_v2.generated_world import make_generated_predicate_readout
+            plan.outcome_contract.readout = make_generated_predicate_readout(schema)
+            # the contract's options must be the FROZEN predicates' own labels, or the
+            # projection counts frequencies of strings the readout can never produce
+            opts = []
+            for p in schema.outcome_predicates:
+                t = str(p.get("option_true", "True"))
+                if t not in opts:
+                    opts.append(t)
+            f = str(schema.outcome_predicates[0].get("option_false", "False"))
+            if f not in opts:
+                opts.append(f)
+            if len(opts) >= 2:
+                plan.outcome_contract.options = opts
+
+
 def run_from_plan(plan, *, llm=None, n_particles=None, seed=0):
     """The end-to-end: plan → world → InitialStateModel → rollout → native terminal distribution.
     The compiler's fallback hierarchy guarantees ≥1 executable mechanism + a binding readout, so a
@@ -358,6 +463,7 @@ def run_from_plan(plan, *, llm=None, n_particles=None, seed=0):
     from swm.world_model_v2.result import CompilerExecutionError
     base = build_world(plan, evidence_hash=(plan.provenance or {}).get("evidence_bundle_hash", ""))
     check_readout_binding(plan, base)
+    _bind_scenario_schema(plan, base, llm)
     # Phase 3: if the pipeline attached an evidence-updated outcome-rate posterior, hand its particles to the
     # canonical resolve_outcome event so the terminal resolver draws each particle's Bernoulli rate from the
     # POSTERIOR (not the broad lean-Beta prior). This is the single injection point shared by BOTH the
@@ -386,6 +492,11 @@ def run_from_plan(plan, *, llm=None, n_particles=None, seed=0):
     result["omissions"] = list(getattr(base, "omissions", []))
     result["operator_rejections"] = rejections
     attach_actor_decision_distributions(ops, result)
+    err = (plan.provenance or {}).get("scenario_schema_error")
+    if err:
+        rep = result.setdefault("consequence_report", {})
+        rep["degraded"] = True
+        rep["scenario_schema_error"] = err
     return result, branches
 
 

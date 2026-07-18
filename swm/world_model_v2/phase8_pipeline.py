@@ -216,7 +216,8 @@ def run_with_persistence(question, plan, *, llm=None, context=None, actor_histor
     res = result_from_run(question, plan, result, branches, intervention=intervention, t0=t0,
                           calibrator=calibrator, cal_key=cal_key)
     res.provenance = {**(res.provenance or {}),
-                      "actor_policy_report": result.get("actor_policy_report", {})}
+                      "actor_policy_report": result.get("actor_policy_report", {}),
+                      "consequence_report": result.get("consequence_report", {})}
     if result.get("actor_decision_distributions"):
         res.provenance = {**(res.provenance or {}),
                           "actor_decision_distributions": result["actor_decision_distributions"],
