@@ -1,10 +1,799 @@
 {
- "error": "ValueError: unknown budget tier 'small' (valid: ['diagnostic', 'maximum_capacity', 'production', 'standard'])",
- "traceback": "Traceback (most recent call last):\n  File \"/home/user/SWORLDMODEL/experiments/actor_mediated_forensics.py\", line 174, in main\n    row = fn(llm)\n          ^^^^^^^\n  File \"/home/user/SWORLDMODEL/experiments/actor_mediated_forensics.py\", line 149, in t4_phase13_matched_counterfactual\n    dr = recommend_action(problem, plan, budget=\"small\", seed=5, n_particles=8, llm=llm)\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/user/SWORLDMODEL/swm/world_model_v2/phase13/api.py\", line 90, in recommend_action\n    bundle, diag = select_and_run(ev, feasible, problem, budget=SearchBudget.tiered(budget))\n                                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/user/SWORLDMODEL/swm/world_model_v2/phase13/search.py\", line 26, in tiered\n    raise ValueError(f\"unknown budget tier {tier!r} (valid: {sorted(caps)})\")\nValueError: unknown budget tier 'small' (valid: ['diagnostic', 'maximum_capacity', 'production', 'standard'])\n",
+ "route": "swm.world_model_v2.phase13.recommend_action",
+ "question": "Will the wavering co-founder agree to stay through the product launch in September 2026?",
+ "wall_s": 20.4,
+ "n_evaluated": 7,
+ "result": {
+  "decision_id": "forensic_t4_cofounder",
+  "contract_hash": "eead5b0b96f67739",
+  "runtime_fingerprint": {
+   "fingerprint_hash": "2060a308581d1d9e",
+   "phase13": "phase13-1.0"
+  },
+  "reference_action": "do_nothing",
+  "evaluated": [
+   {
+    "action_id": "do_nothing",
+    "operation": "do_nothing",
+    "expected_utility": 0.0,
+    "median_utility": 0.0,
+    "q10": 0.0,
+    "q90": 0.0,
+    "cvar": 0.0,
+    "utility_distribution": {
+     "0.0": 8
+    },
+    "p_improvement": 0.0,
+    "p_material_improvement": 0.0,
+    "p_harm": 0.0,
+    "paired_vs_reference": {
+     "n": 8,
+     "paired_mean": 0.0,
+     "paired_median": 0.0,
+     "p_improvement": 0.0,
+     "p_tie": 1.0,
+     "paired_q10": 0.0,
+     "paired_q90": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "conf": 0.8,
+     "paired_se": 0.0
+    },
+    "variance_reduction": {
+     "var_paired": 0.0,
+     "var_unpaired_sum": 0.0,
+     "variance_reduction_factor": "inf",
+     "effective_particles": "inf",
+     "n": 8
+    },
+    "stakeholder_breakdown": {
+     "action_id": "do_nothing",
+     "per_stakeholder": {
+      "ceo": {
+       "mean": 0.0,
+       "q10": 0.0,
+       "q90": 0.0
+      }
+     },
+     "aggregate_mean": 0.0,
+     "aggregate_median": 0.0,
+     "rights_violations": 0,
+     "floor_violations": {},
+     "notes": []
+    },
+    "constraint_violations": [],
+    "rights_violations": 0,
+    "floor_violations": {},
+    "implementation_cost": 0.0,
+    "reversible": true,
+    "by_hypothesis": {
+     "H0": {
+      "mean": 0.0,
+      "n": 8
+     }
+    },
+    "n_state_deltas": 8,
+    "expected_regret": 0.0,
+    "max_regret": 0.0,
+    "fragile": false
+   },
+   {
+    "action_id": "gather_information",
+    "operation": "gather_information",
+    "expected_utility": 0.0,
+    "median_utility": 0.0,
+    "q10": 0.0,
+    "q90": 0.0,
+    "cvar": 0.0,
+    "utility_distribution": {
+     "0.0": 8
+    },
+    "p_improvement": 0.0,
+    "p_material_improvement": 0.0,
+    "p_harm": 0.0,
+    "paired_vs_reference": {
+     "n": 8,
+     "paired_mean": 0.0,
+     "paired_median": 0.0,
+     "p_improvement": 0.0,
+     "p_tie": 1.0,
+     "paired_q10": 0.0,
+     "paired_q90": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "conf": 0.8,
+     "paired_se": 0.0
+    },
+    "variance_reduction": {
+     "var_paired": 0.0,
+     "var_unpaired_sum": 0.0,
+     "variance_reduction_factor": "inf",
+     "effective_particles": "inf",
+     "n": 8
+    },
+    "stakeholder_breakdown": {
+     "action_id": "gather_information",
+     "per_stakeholder": {
+      "ceo": {
+       "mean": 0.0,
+       "q10": 0.0,
+       "q90": 0.0
+      }
+     },
+     "aggregate_mean": 0.0,
+     "aggregate_median": 0.0,
+     "rights_violations": 0,
+     "floor_violations": {},
+     "notes": []
+    },
+    "constraint_violations": [],
+    "rights_violations": 0,
+    "floor_violations": {},
+    "implementation_cost": 0.0,
+    "reversible": true,
+    "by_hypothesis": {
+     "H0": {
+      "mean": 0.0,
+      "n": 8
+     }
+    },
+    "n_state_deltas": 16,
+    "expected_regret": 0.0,
+    "max_regret": 0.0,
+    "fragile": false
+   },
+   {
+    "action_id": "llm_allocate_1",
+    "operation": "allocate",
+    "expected_utility": 0.0,
+    "median_utility": 0.0,
+    "q10": 0.0,
+    "q90": 0.0,
+    "cvar": 0.0,
+    "utility_distribution": {
+     "0.0": 8
+    },
+    "p_improvement": 0.0,
+    "p_material_improvement": 0.0,
+    "p_harm": 0.0,
+    "paired_vs_reference": {
+     "n": 8,
+     "paired_mean": 0.0,
+     "paired_median": 0.0,
+     "p_improvement": 0.0,
+     "p_tie": 1.0,
+     "paired_q10": 0.0,
+     "paired_q90": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "conf": 0.8,
+     "paired_se": 0.0
+    },
+    "variance_reduction": {
+     "var_paired": 0.0,
+     "var_unpaired_sum": 0.0,
+     "variance_reduction_factor": "inf",
+     "effective_particles": "inf",
+     "n": 8
+    },
+    "stakeholder_breakdown": {
+     "action_id": "llm_allocate_1",
+     "per_stakeholder": {
+      "ceo": {
+       "mean": 0.0,
+       "q10": 0.0,
+       "q90": 0.0
+      }
+     },
+     "aggregate_mean": 0.0,
+     "aggregate_median": 0.0,
+     "rights_violations": 0,
+     "floor_violations": {},
+     "notes": []
+    },
+    "constraint_violations": [],
+    "rights_violations": 0,
+    "floor_violations": {},
+    "implementation_cost": 0.0,
+    "reversible": true,
+    "by_hypothesis": {
+     "H0": {
+      "mean": 0.0,
+      "n": 8
+     }
+    },
+    "n_state_deltas": 16,
+    "expected_regret": 0.0,
+    "max_regret": 0.0,
+    "fragile": false
+   },
+   {
+    "action_id": "llm_coordinate_2",
+    "operation": "coordinate",
+    "expected_utility": 0.0,
+    "median_utility": 0.0,
+    "q10": 0.0,
+    "q90": 0.0,
+    "cvar": 0.0,
+    "utility_distribution": {
+     "0.0": 8
+    },
+    "p_improvement": 0.0,
+    "p_material_improvement": 0.0,
+    "p_harm": 0.0,
+    "paired_vs_reference": {
+     "n": 8,
+     "paired_mean": 0.0,
+     "paired_median": 0.0,
+     "p_improvement": 0.0,
+     "p_tie": 1.0,
+     "paired_q10": 0.0,
+     "paired_q90": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "conf": 0.8,
+     "paired_se": 0.0
+    },
+    "variance_reduction": {
+     "var_paired": 0.0,
+     "var_unpaired_sum": 0.0,
+     "variance_reduction_factor": "inf",
+     "effective_particles": "inf",
+     "n": 8
+    },
+    "stakeholder_breakdown": {
+     "action_id": "llm_coordinate_2",
+     "per_stakeholder": {
+      "ceo": {
+       "mean": 0.0,
+       "q10": 0.0,
+       "q90": 0.0
+      }
+     },
+     "aggregate_mean": 0.0,
+     "aggregate_median": 0.0,
+     "rights_violations": 0,
+     "floor_violations": {},
+     "notes": []
+    },
+    "constraint_violations": [],
+    "rights_violations": 0,
+    "floor_violations": {},
+    "implementation_cost": 0.0,
+    "reversible": true,
+    "by_hypothesis": {
+     "H0": {
+      "mean": 0.0,
+      "n": 8
+     }
+    },
+    "n_state_deltas": 16,
+    "expected_regret": 0.0,
+    "max_regret": 0.0,
+    "fragile": false
+   },
+   {
+    "action_id": "llm_schedule_4",
+    "operation": "schedule",
+    "expected_utility": 0.0,
+    "median_utility": 0.0,
+    "q10": 0.0,
+    "q90": 0.0,
+    "cvar": 0.0,
+    "utility_distribution": {
+     "0.0": 8
+    },
+    "p_improvement": 0.0,
+    "p_material_improvement": 0.0,
+    "p_harm": 0.0,
+    "paired_vs_reference": {
+     "n": 8,
+     "paired_mean": 0.0,
+     "paired_median": 0.0,
+     "p_improvement": 0.0,
+     "p_tie": 1.0,
+     "paired_q10": 0.0,
+     "paired_q90": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "conf": 0.8,
+     "paired_se": 0.0
+    },
+    "variance_reduction": {
+     "var_paired": 0.0,
+     "var_unpaired_sum": 0.0,
+     "variance_reduction_factor": "inf",
+     "effective_particles": "inf",
+     "n": 8
+    },
+    "stakeholder_breakdown": {
+     "action_id": "llm_schedule_4",
+     "per_stakeholder": {
+      "ceo": {
+       "mean": 0.0,
+       "q10": 0.0,
+       "q90": 0.0
+      }
+     },
+     "aggregate_mean": 0.0,
+     "aggregate_median": 0.0,
+     "rights_violations": 0,
+     "floor_violations": {},
+     "notes": []
+    },
+    "constraint_violations": [],
+    "rights_violations": 0,
+    "floor_violations": {},
+    "implementation_cost": 0.0,
+    "reversible": true,
+    "by_hypothesis": {
+     "H0": {
+      "mean": 0.0,
+      "n": 8
+     }
+    },
+    "n_state_deltas": 16,
+    "expected_regret": 0.0,
+    "max_regret": 0.0,
+    "fragile": false
+   },
+   {
+    "action_id": "llm_guarantee_6",
+    "operation": "guarantee",
+    "expected_utility": 0.0,
+    "median_utility": 0.0,
+    "q10": 0.0,
+    "q90": 0.0,
+    "cvar": 0.0,
+    "utility_distribution": {
+     "0.0": 8
+    },
+    "p_improvement": 0.0,
+    "p_material_improvement": 0.0,
+    "p_harm": 0.0,
+    "paired_vs_reference": {
+     "n": 8,
+     "paired_mean": 0.0,
+     "paired_median": 0.0,
+     "p_improvement": 0.0,
+     "p_tie": 1.0,
+     "paired_q10": 0.0,
+     "paired_q90": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "conf": 0.8,
+     "paired_se": 0.0
+    },
+    "variance_reduction": {
+     "var_paired": 0.0,
+     "var_unpaired_sum": 0.0,
+     "variance_reduction_factor": "inf",
+     "effective_particles": "inf",
+     "n": 8
+    },
+    "stakeholder_breakdown": {
+     "action_id": "llm_guarantee_6",
+     "per_stakeholder": {
+      "ceo": {
+       "mean": 0.0,
+       "q10": 0.0,
+       "q90": 0.0
+      }
+     },
+     "aggregate_mean": 0.0,
+     "aggregate_median": 0.0,
+     "rights_violations": 0,
+     "floor_violations": {},
+     "notes": []
+    },
+    "constraint_violations": [],
+    "rights_violations": 0,
+    "floor_violations": {},
+    "implementation_cost": 0.0,
+    "reversible": true,
+    "by_hypothesis": {
+     "H0": {
+      "mean": 0.0,
+      "n": 8
+     }
+    },
+    "n_state_deltas": 16,
+    "expected_regret": 0.0,
+    "max_regret": 0.0,
+    "fragile": false
+   },
+   {
+    "action_id": "llm_preserve_option_7",
+    "operation": "preserve_option",
+    "expected_utility": 0.0,
+    "median_utility": 0.0,
+    "q10": 0.0,
+    "q90": 0.0,
+    "cvar": 0.0,
+    "utility_distribution": {
+     "0.0": 8
+    },
+    "p_improvement": 0.0,
+    "p_material_improvement": 0.0,
+    "p_harm": 0.0,
+    "paired_vs_reference": {
+     "n": 8,
+     "paired_mean": 0.0,
+     "paired_median": 0.0,
+     "p_improvement": 0.0,
+     "p_tie": 1.0,
+     "paired_q10": 0.0,
+     "paired_q90": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "conf": 0.8,
+     "paired_se": 0.0
+    },
+    "variance_reduction": {
+     "var_paired": 0.0,
+     "var_unpaired_sum": 0.0,
+     "variance_reduction_factor": "inf",
+     "effective_particles": "inf",
+     "n": 8
+    },
+    "stakeholder_breakdown": {
+     "action_id": "llm_preserve_option_7",
+     "per_stakeholder": {
+      "ceo": {
+       "mean": 0.0,
+       "q10": 0.0,
+       "q90": 0.0
+      }
+     },
+     "aggregate_mean": 0.0,
+     "aggregate_median": 0.0,
+     "rights_violations": 0,
+     "floor_violations": {},
+     "notes": []
+    },
+    "constraint_violations": [],
+    "rights_violations": 0,
+    "floor_violations": {},
+    "implementation_cost": 0.0,
+    "reversible": true,
+    "by_hypothesis": {
+     "H0": {
+      "mean": 0.0,
+      "n": 8
+     }
+    },
+    "n_state_deltas": 16,
+    "expected_regret": 0.0,
+    "max_regret": 0.0,
+    "fragile": false
+   }
+  ],
+  "policies": [],
+  "recommended": null,
+  "recommendation_kind": "pareto",
+  "pareto_frontier": [],
+  "feasibility": [
+   {
+    "action_id": "do_nothing",
+    "feasible": true,
+    "reasons": []
+   },
+   {
+    "action_id": "gather_information",
+    "feasible": true,
+    "reasons": []
+   },
+   {
+    "action_id": "llm_communicate_0",
+    "feasible": false,
+    "reasons": [
+     {
+      "code": "no_network_access",
+      "detail": "no edge ceo\u2192cofounder and no channel given"
+     }
+    ]
+   },
+   {
+    "action_id": "llm_allocate_1",
+    "feasible": true,
+    "reasons": []
+   },
+   {
+    "action_id": "llm_coordinate_2",
+    "feasible": true,
+    "reasons": []
+   },
+   {
+    "action_id": "llm_delegate_3",
+    "feasible": false,
+    "reasons": [
+     {
+      "code": "no_network_access",
+      "detail": "no edge ceo\u2192cofounder and no channel given"
+     }
+    ]
+   },
+   {
+    "action_id": "llm_schedule_4",
+    "feasible": true,
+    "reasons": []
+   },
+   {
+    "action_id": "llm_investigate_5",
+    "feasible": false,
+    "reasons": [
+     {
+      "code": "no_network_access",
+      "detail": "no edge ceo\u2192cofounder and no channel given"
+     }
+    ]
+   },
+   {
+    "action_id": "llm_guarantee_6",
+    "feasible": true,
+    "reasons": []
+   },
+   {
+    "action_id": "llm_preserve_option_7",
+    "feasible": true,
+    "reasons": []
+   }
+  ],
+  "counterfactual": {
+   "reference": "do_nothing",
+   "paired": {
+    "do_nothing": {
+     "n": 8,
+     "paired_mean": 0.0,
+     "paired_median": 0.0,
+     "p_improvement": 0.0,
+     "p_tie": 1.0,
+     "paired_q10": 0.0,
+     "paired_q90": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "conf": 0.8,
+     "paired_se": 0.0
+    },
+    "gather_information": {
+     "n": 8,
+     "paired_mean": 0.0,
+     "paired_median": 0.0,
+     "p_improvement": 0.0,
+     "p_tie": 1.0,
+     "paired_q10": 0.0,
+     "paired_q90": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "conf": 0.8,
+     "paired_se": 0.0
+    },
+    "llm_allocate_1": {
+     "n": 8,
+     "paired_mean": 0.0,
+     "paired_median": 0.0,
+     "p_improvement": 0.0,
+     "p_tie": 1.0,
+     "paired_q10": 0.0,
+     "paired_q90": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "conf": 0.8,
+     "paired_se": 0.0
+    },
+    "llm_coordinate_2": {
+     "n": 8,
+     "paired_mean": 0.0,
+     "paired_median": 0.0,
+     "p_improvement": 0.0,
+     "p_tie": 1.0,
+     "paired_q10": 0.0,
+     "paired_q90": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "conf": 0.8,
+     "paired_se": 0.0
+    },
+    "llm_schedule_4": {
+     "n": 8,
+     "paired_mean": 0.0,
+     "paired_median": 0.0,
+     "p_improvement": 0.0,
+     "p_tie": 1.0,
+     "paired_q10": 0.0,
+     "paired_q90": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "conf": 0.8,
+     "paired_se": 0.0
+    },
+    "llm_guarantee_6": {
+     "n": 8,
+     "paired_mean": 0.0,
+     "paired_median": 0.0,
+     "p_improvement": 0.0,
+     "p_tie": 1.0,
+     "paired_q10": 0.0,
+     "paired_q90": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "conf": 0.8,
+     "paired_se": 0.0
+    },
+    "llm_preserve_option_7": {
+     "n": 8,
+     "paired_mean": 0.0,
+     "paired_median": 0.0,
+     "p_improvement": 0.0,
+     "p_tie": 1.0,
+     "paired_q10": 0.0,
+     "paired_q90": 0.0,
+     "ci": [
+      0.0,
+      0.0
+     ],
+     "conf": 0.8,
+     "paired_se": 0.0
+    }
+   }
+  },
+  "value_of_information": {
+   "evpi": {
+    "evpi": 0.0,
+    "best_ex_ante": 0.0,
+    "e_max_posterior": 0.0
+   },
+   "candidates": [],
+   "delay_risk": 0.0,
+   "recommend_gathering": false,
+   "best_observation": null,
+   "reduces_uncertainty_about": null
+  },
+  "search": {
+   "method": "exhaustive",
+   "n_candidates": 7,
+   "n_evaluated": 7,
+   "budget": 12,
+   "tier": "diagnostic",
+   "n_eliminated_early": 0,
+   "notes": [],
+   "checkpoint": {}
+  },
+  "causal_claim": "simulated_mechanism_counterfactual",
+  "empirical_validation": "not_validated_on_this_decision",
+  "support_grade": "exploratory",
+  "abstention": {
+   "abstained": true,
+   "reasons": [
+    {
+     "code": "utility_underspecified",
+     "detail": "authority: decision-maker has no declared authority and no candidate actions"
+    }
+   ],
+   "needed": [
+    "supply stakeholder utilities / an aggregation rule"
+   ],
+   "partial": {
+    "continue_for_pareto": true
+   }
+  },
+  "active_phases": {
+   "operator_delta_census": {
+    "generic_outcome_prior": 56,
+    "decision_action": 48
+   }
+  },
+  "provenance": {
+   "action_generation": {
+    "n_candidates": 10,
+    "sources": {
+     "baseline": 2,
+     "llm_proposer": 8
+    },
+    "rejected": [],
+    "n_deduped": 0
+   },
+   "crn_manifest": {
+    "root_seed": 5,
+    "per_particle_seed": "seed*7919 + particle_index",
+    "stream_partitioning": "sha256(seed|stream): hazard|<etype>, op|<operator>|<etype>, impl|<action_id>",
+    "particles_sampled_once": true,
+    "hypothesis_stratification": [
+     "H0"
+    ],
+    "n_particles": 8,
+    "exogenous_trace_match_vs_reference": {
+     "do_nothing": 1.0,
+     "gather_information": 1.0,
+     "llm_allocate_1": 1.0,
+     "llm_coordinate_2": 1.0,
+     "llm_schedule_4": 1.0,
+     "llm_guarantee_6": 1.0,
+     "llm_preserve_option_7": 1.0
+    }
+   },
+   "hypothesis_assignment": [
+    "H0"
+   ],
+   "ranking": {
+    "objective": "expected",
+    "order": [
+     {
+      "action_id": "do_nothing",
+      "score": 0.0,
+      "note": "expected"
+     },
+     {
+      "action_id": "gather_information",
+      "score": 0.0,
+      "note": "expected"
+     },
+     {
+      "action_id": "llm_allocate_1",
+      "score": 0.0,
+      "note": "expected"
+     },
+     {
+      "action_id": "llm_coordinate_2",
+      "score": 0.0,
+      "note": "expected"
+     },
+     {
+      "action_id": "llm_schedule_4",
+      "score": 0.0,
+      "note": "expected"
+     },
+     {
+      "action_id": "llm_guarantee_6",
+      "score": 0.0,
+      "note": "expected"
+     },
+     {
+      "action_id": "llm_preserve_option_7",
+      "score": 0.0,
+      "note": "expected"
+     }
+    ]
+   },
+   "minimax_regret_action": "do_nothing"
+  },
+  "cost": {
+   "arm_evaluations": 7,
+   "rollouts": 56
+  },
+  "latency_s": 20.437,
+  "seed": 5
+ },
  "_meta": {
-  "generated_at": "2026-07-18T15:57:27Z",
+  "generated_at": "2026-07-18T15:58:14Z",
   "llm_backend": "deepseek (env key)",
   "as_of": "2026-07-18",
-  "trace_wall_s": 33.0
+  "trace_wall_s": 31.5
  }
 }
