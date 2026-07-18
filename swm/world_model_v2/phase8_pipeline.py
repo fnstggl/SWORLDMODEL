@@ -215,10 +215,13 @@ def run_with_persistence(question, plan, *, llm=None, context=None, actor_histor
     attach_actor_decision_distributions(ops, result)
     res = result_from_run(question, plan, result, branches, intervention=intervention, t0=t0,
                           calibrator=calibrator, cal_key=cal_key)
+    res.provenance = {**(res.provenance or {}),
+                      "actor_policy_report": result.get("actor_policy_report", {})}
     if result.get("actor_decision_distributions"):
         res.provenance = {**(res.provenance or {}),
                           "actor_decision_distributions": result["actor_decision_distributions"],
                           "actor_policy_mode": result.get("actor_policy_mode", "")}
+    _surface_actor_policy_degradation(res, result.get("actor_policy_report", {}))
 
     # 8) persist feedback + commit a new versioned checkpoint (advance lineage) + attach support effect
     if context is not None and actor_history:
@@ -245,6 +248,21 @@ def run_with_persistence(question, plan, *, llm=None, context=None, actor_histor
                       "persistent_deltas": [d.as_dict() for d in materialized][:10]}
     return res, {"plan_hash": plan.plan_hash(), "materialized": materialized, "persistence_meta": meta,
                  "family_manifests": family_manifests}
+
+
+def _surface_actor_policy_degradation(res, report: dict) -> None:
+    """A degraded actor-policy run (requested LLM cognition, served numeric due to a defect or
+    a missing backend under an explicit LLM-mode request) must be visible on the result's face:
+    a limitation line always; a support-grade cap when the degradation was a construction
+    DEFECT rather than an honest no-backend capability statement."""
+    if not isinstance(report, dict) or not report:
+        return
+    warning = report.get("warning")
+    if warning:
+        res.limitations = list(res.limitations) + [f"actor_policy: {warning}"[:220]]
+    if report.get("degraded") and res.support_grade in ("empirically_supported",
+                                                        "transfer_supported"):
+        res.support_grade = "exploratory"
 
 
 def get_persistent_variable_scope(vid: str) -> str:

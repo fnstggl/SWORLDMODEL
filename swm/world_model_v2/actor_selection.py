@@ -27,6 +27,15 @@ _REACTION_PATTERNS = (
 )
 
 
+def is_individual_reaction_question(question: str) -> bool:
+    """Pattern-only detection (no entity list needed): does the question ask how a specific
+    person — named, or referenced as 'my manager' / 'this person' / a pronoun — will react to
+    a stimulus? The public API uses this to route personal questions through the qualitative
+    individual-reaction path when the caller supplies the person's context."""
+    q = (question or "").lower()
+    return any(re.search(pat, q) for pat in _REACTION_PATTERNS)
+
+
 def reaction_target(question: str, entity_ids) -> str | None:
     """The entity whose reaction the question itself asks about, if any."""
     q = (question or "").lower()

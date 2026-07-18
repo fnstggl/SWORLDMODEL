@@ -144,10 +144,11 @@ def run_persona(case, *, llm, seed=0, **_):
             "floor_kind": "model_posterior"}
 
 
-def run_qualitative(case, *, llm, hypothesis_llm=None, mode="persistent_qualitative_llm_policy",
-                    hypotheses=3, samples=2, seed=0):
+def run_qualitative(case, *, llm, hypothesis_llm=None, mapper_llm=None,
+                    mode="persistent_qualitative_llm_policy", hypotheses=3, samples=2, seed=0):
     from swm.world_model_v2.actor_selection import RelevantActorSelector
-    from swm.world_model_v2.qualitative_actor import (QualitativeActorPolicyRuntime,
+    from swm.world_model_v2.qualitative_actor import (ActionClusterer,
+                                                      QualitativeActorPolicyRuntime,
                                                       QualitativeConfig,
                                                       QualitativeDecisionEngine,
                                                       aggregate_actor_decisions)
@@ -174,18 +175,26 @@ def run_qualitative(case, *, llm, hypothesis_llm=None, mode="persistent_qualitat
                                       seed=seed * 7919 + i)
         if (posterior.provenance.get("qualitative") or {}).get("resolution") == "novel_compiled":
             novel += 1
-    agg = aggregate_actor_decisions(rt.decision_records).get(case["actor_id"], {})
+    # cluster-2.0 scoring: novel phrasings map onto candidates via validated ontology anchors
+    # and (when a mapper backend is supplied) conservative auditable LLM equivalence — the raw
+    # wording, method, and explanation are preserved on every row
+    clusterer = ActionClusterer(candidates=list(case["candidate_actions"]),
+                                known_entities=[case["actor_id"]], llm=mapper_llm)
+    agg = aggregate_actor_decisions(rt.decision_records, clusterer=clusterer
+                                    ).get(case["actor_id"], {})
     rows = agg.get("rows", [])
     dist: dict = {}
     for row in rows:
-        dist[row["action_name"]] = dist.get(row["action_name"], 0.0) + 1.0
+        dist[row["cluster_base"]] = dist.get(row["cluster_base"], 0.0) + 1.0
     z = sum(dist.values()) or 1.0
     return {"distribution": {k: v / z for k, v in dist.items()},
             "llm_calls": rt.engine.calls_used(), "latency_s": _time.monotonic() - t0,
             "n_samples": len(rows), "novel_rate": novel / max(1, n),
             "n_fallbacks": agg.get("n_excluded_numeric_fallbacks", 0),
             "floor_kind": "counted_frequency",
-            "raw_rows": [{k: r[k] for k in ("hypothesis_id", "action_name", "decision_source")}
+            "raw_rows": [{k: r.get(k, "") for k in ("hypothesis_id", "action_name",
+                                                    "cluster_base", "cluster_method",
+                                                    "cluster_explanation", "decision_source")}
                          for r in rows]}
 
 
@@ -235,6 +244,7 @@ def main():
     ap.add_argument("--hypotheses", type=int, default=3)
     ap.add_argument("--samples", type=int, default=2)
     ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--parallel", type=int, default=4)
     ap.add_argument("--backend", default="deepseek", choices=("deepseek", "scripted"))
     args = ap.parse_args()
     cases = load_cases(Path(args.cases))
@@ -243,27 +253,41 @@ def main():
         decide_llm = deepseek_chat_fn(temperature=0.9, max_tokens=2000)
         hypo_llm = deepseek_chat_fn(temperature=0.8, max_tokens=3600)
         persona_llm = deepseek_chat_fn(temperature=0.3, max_tokens=700)
+        mapper_llm = deepseek_chat_fn(temperature=0.1, max_tokens=300)
     else:
         decide_llm = hypo_llm = persona_llm = _scripted_backend(None)
-    out = {"schema_version": "actor.policy.benchmark.v1", "backend": args.backend,
+        mapper_llm = None
+    out = {"schema_version": "actor.policy.benchmark.v2", "backend": args.backend,
            "n_cases": len(cases), "hypotheses": args.hypotheses, "samples": args.samples,
-           "seed": args.seed, "arms": {}}
-    for arm in [a.strip().upper() for a in args.arms.split(",") if a.strip()]:
-        mode = ARMS[arm]
-        rows = []
-        for case in cases:
+           "seed": args.seed, "cluster_version": "cluster-2.0", "arms": {}}
+
+    def one(arm, case):
+        try:
             if arm == "A":
                 res = run_numeric(case, seed=args.seed)
             elif arm == "B":
                 res = run_persona(case, llm=persona_llm, seed=args.seed)
             else:
-                res = run_qualitative(case, llm=decide_llm, hypothesis_llm=hypo_llm, mode=mode,
+                res = run_qualitative(case, llm=decide_llm, hypothesis_llm=hypo_llm,
+                                      mapper_llm=mapper_llm, mode=ARMS[arm],
                                       hypotheses=args.hypotheses, samples=args.samples,
                                       seed=args.seed)
-            rows.append(score_case(res, case))
-            print(f"[{arm}:{mode}] {case['case_id']}: top1={rows[-1]['top1']} "
-                  f"actual={case['actual_action']} p={rows[-1]['p_actual']} "
-                  f"calls={rows[-1]['llm_calls']} {rows[-1]['latency_s']}s", flush=True)
+            row = score_case(res, case)
+        except Exception as e:  # noqa: BLE001 — one case must never kill the arm; scored as empty
+            row = score_case({"distribution": {}, "llm_calls": 0, "latency_s": 0.0,
+                              "n_samples": 0, "floor_kind": "counted_frequency"}, case)
+            row["error"] = f"{type(e).__name__}: {e}"[:200]
+        print(f"[{arm}:{ARMS[arm]}] {case['case_id']}: top1={row['top1']} "
+              f"actual={case['actual_action']} p={row['p_actual']} "
+              f"calls={row['llm_calls']} {row['latency_s']}s"
+              + (f" ERROR={row['error']}" if row.get("error") else ""), flush=True)
+        return row
+
+    from concurrent.futures import ThreadPoolExecutor
+    for arm in [a.strip().upper() for a in args.arms.split(",") if a.strip()]:
+        mode = ARMS[arm]
+        with ThreadPoolExecutor(max_workers=max(1, args.parallel)) as pool:
+            rows = list(pool.map(lambda c: one(arm, c), cases))
         out["arms"][mode] = {"summary": summarize(rows), "cases": rows}
         print(f"== {mode}: {json.dumps(out['arms'][mode]['summary'])}", flush=True)
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)

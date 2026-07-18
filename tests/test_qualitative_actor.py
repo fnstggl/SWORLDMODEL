@@ -476,7 +476,9 @@ def test_calibration_is_external_after_aggregation_and_labels_unvalidated():
 def test_mode_resolution_and_default_on_wiring(monkeypatch):
     monkeypatch.delenv("SWM_ACTOR_POLICY", raising=False)
     monkeypatch.delenv("SWM_LLM_ACTORS", raising=False)
-    assert resolve_actor_policy_mode(None) == "numeric_policy"
+    # DEFAULT-ON: the REQUESTED mode is hybrid regardless of backend availability; a missing
+    # backend downgrades the ACTUAL mode loudly in the report, never the request silently
+    assert resolve_actor_policy_mode(None) == "hybrid_relevant_actor_policy"
     assert resolve_actor_policy_mode(QLLM()) == "hybrid_relevant_actor_policy"
     monkeypatch.setenv("SWM_ACTOR_POLICY", "persona_blended_numeric_policy")
     assert resolve_actor_policy_mode(QLLM()) == "persona_blended_numeric_policy"
@@ -498,6 +500,108 @@ def test_mode_resolution_and_default_on_wiring(monkeypatch):
     monkeypatch.setenv("SWM_ACTOR_POLICY", "numeric_policy")
     ops_a, _ = operators_from_plan(plan, llm=QLLM())
     assert type(ops_a[0].runtime) is ActorPolicyRuntime     # arm A untouched and runnable
+
+
+def test_construction_failure_degrades_loudly_never_silently(monkeypatch):
+    import swm.world_model_v2.qualitative_actor as qa
+    from swm.world_model_v2.materialize import _actor_policy_runtime
+    monkeypatch.delenv("SWM_ACTOR_POLICY", raising=False)
+    monkeypatch.setattr(qa, "build_qualitative_runtime",
+                        lambda *a, **k: (_ for _ in ()).throw(RuntimeError("boom")))
+    rt, report = _actor_policy_runtime(None, QLLM())
+    assert rt is None
+    assert report["degraded"] is True
+    assert "RuntimeError: boom" in report["construction_error"]
+    assert report["actual_actor_policy_mode"] == "numeric_policy"
+    assert "defect" in report["warning"]
+
+
+def test_actor_policy_report_states_requested_actual_and_fallbacks():
+    from swm.world_model_v2.materialize import attach_actor_decision_distributions
+    llm = QLLM(lambda p: qpayload() if "privately doubts" not in p else "garbage")
+    rt = qruntime(llm, retries=0)
+    for i, w in enumerate(particle_worlds(3)):
+        sel, post, tr = rt.decide(Plan(), [w], "alice", decision=dict(DECISION), seed=i)
+        rt.execute(w, sel, post, tr, seed=i)
+    op = ProductionActorPolicyOperator(runtime=rt)
+    op.actor_policy_report = {"requested_actor_policy_mode": "persistent_qualitative_llm_policy",
+                              "actual_actor_policy_mode": "persistent_qualitative_llm_policy",
+                              "degraded": False, "construction_error": ""}
+    container = {}
+    attach_actor_decision_distributions([op], container)
+    report = container["actor_policy_report"]
+    assert report["requested_actor_policy_mode"] == "persistent_qualitative_llm_policy"
+    assert report["actors_routed_qualitatively"] == ["alice"]
+    assert report["fallbacks"] == 1                          # the garbage branch, counted
+    assert any("llm_failed" in fr["actor_and_reason"] for fr in report["fallback_reasons"])
+
+
+def test_fallback_model_family_serves_before_numeric_fallback():
+    primary_calls, fallback = [], QLLM()
+    def broken(prompt):
+        primary_calls.append(prompt)
+        raise ConnectionError("primary down")
+    rt = qruntime(broken, retries=0, fallback_llms=[fallback])
+    sel, post, tr = rt.decide(Plan(), [world()], "alice", decision=dict(DECISION), seed=1)
+    q = post.provenance["qualitative"]
+    assert q["decision_source"] == "persistent_qualitative_llm"   # NOT a numeric fallback
+    assert primary_calls and fallback.prompts                     # both families were tried
+
+
+def test_individual_route_through_the_public_api():
+    from swm.world_model_v2.unified_runtime import _route_individual_reaction
+    ctx = {"individual": {"person_id": "Dana", "relationship": "close friend",
+                          "history": ["monthly dinners"], "stimulus": "I can't make dinner",
+                          "samples_per_hypothesis": 1}}
+    def decide(prompt):
+        return qpayload(chosen="reply_now", target="you")
+    res = _route_individual_reaction("How will Dana react if I skip dinner?", ctx,
+                                     QLLM(decide), "2026-07-17", 0, 0.0)
+    assert res is not None and res.simulation_status == "completed"
+    report = res.provenance["actor_policy_report"]
+    assert report["route"] == "individual_reaction"
+    assert report["actors_routed_qualitatively"] == ["Dana"]
+    assert res.raw_distribution and "unvalidated" in res.limitations[0]
+    # no supplied context → ordinary compiled route (returns None); no backend → loud failure
+    assert _route_individual_reaction("How will Dana react?", None, QLLM(), "", 0, 0.0) is None
+    failed = _route_individual_reaction("How will Dana react if I skip dinner?", ctx,
+                                        None, "", 0, 0.0)
+    assert failed.simulation_status == "execution_failed"
+    assert failed.provenance["actor_policy_report"]["degraded"] is True
+
+
+def test_cluster_v2_normalizes_identities_maps_novels_and_keeps_modifiers():
+    from swm.world_model_v2.qualitative_actor import ActionClusterer
+    cl = ActionClusterer(candidates=["accept", "delay", "counteroffer"],
+                         known_entities=["Donald_Trump", "US_Congress"],
+                         aliases={"us_president": "Donald_Trump"})
+    # identity normalization merges wording variants of the same counterparty
+    for variant in ("donald trump", "Donald_Trump", "TRUMP", "us_president"):
+        assert cl.normalize_target(variant) == "Donald_Trump"
+    # exact candidate, public → clean cluster
+    row = {"action_name": "counteroffer", "target": "donald trump", "observability_intent": "public"}
+    assert cl.cluster_row(row)["cluster"] == "counteroffer@Donald_Trump"
+    # validated ontology anchor maps a novel phrasing onto its candidate
+    row2 = {"action_name": "quiet_deal_probe", "target": "us_president",
+            "ontology_anchor": {"name": "accept"}, "observability_intent": "private"}
+    c2 = cl.cluster_row(row2)
+    assert c2["cluster"] == "accept[private]@Donald_Trump"
+    assert c2["cluster_method"] == "ontology_anchor" and c2["cluster_explanation"]
+    # meaningful modifiers never merge silently: private accept != public accept
+    row3 = {"action_name": "accept", "target": "us_president", "observability_intent": "public"}
+    assert cl.cluster_row(row3)["cluster"] != c2["cluster"]
+    # conservative LLM mapping onto candidates only — an unmappable novel stays novel
+    mapper = QLLM(lambda p: json.dumps({"action": "delay", "target": "Donald_Trump",
+                                        "modifier": "", "why": "stalling framed as review"}))
+    cl_llm = ActionClusterer(candidates=["accept", "delay"], known_entities=["Donald_Trump"],
+                             llm=mapper)
+    c4 = cl_llm.cluster_row({"action_name": "commission_lengthy_review", "target": "",
+                             "intended_effect": "buy time without refusing"})
+    assert c4["cluster_base"] == "delay" and c4["cluster_method"] == "llm_map"
+    bad_mapper = QLLM(lambda p: json.dumps({"action": "made_up_thing", "why": "x"}))
+    c5 = ActionClusterer(candidates=["accept"], llm=bad_mapper).cluster_row(
+        {"action_name": "novel_thing", "target": ""})
+    assert c5["cluster_method"] == "novel"                   # invented mass is refused
 
 
 def test_truncated_hypothesis_array_salvages_complete_objects():
@@ -544,6 +648,30 @@ def test_benchmark_prevents_post_outcome_leakage():
     # candidate order is de-biased: not simply the file's label-first order
     assert any(bench.build_case_world(c)[1]["candidate_actions"][0] != c["candidate_actions"][0]
                for c in cases)
+
+
+def test_trajectory_benchmark_guards_leakage_and_debiases_positions():
+    import importlib.util
+    from pathlib import Path
+    spec = importlib.util.spec_from_file_location(
+        "trajectory_benchmark", Path("experiments/trajectory_benchmark.py"))
+    tb = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(tb)
+    cases = tb.load_cases()
+    assert len(cases) >= 3
+    tampered = copy.deepcopy(cases[0])
+    tampered["steps"][0]["evidence_additions"].append({"date": "2100-01-01", "text": "future"})
+    with pytest.raises(ValueError):
+        tb.leakage_check(tampered)
+    reordered = copy.deepcopy(cases[0])
+    reordered["steps"][1]["as_of"] = "1900-01-01"
+    with pytest.raises(ValueError):
+        tb.leakage_check(reordered)
+    # anticipation resolution: unique candidate mention scores; ambiguity is unscored
+    assert tb._resolve_anticipation("they will escalate the lawsuit", ["escalate", "accept"]) \
+        == "escalate"
+    assert tb._resolve_anticipation("they might accept or might escalate",
+                                    ["escalate", "accept"]) is None
 
 
 def test_qualitative_operator_in_the_event_loop_aggregates_per_branch():

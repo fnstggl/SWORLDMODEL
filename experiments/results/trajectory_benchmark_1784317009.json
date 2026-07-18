@@ -1,0 +1,1592 @@
+{
+ "schema_version": "trajectory.benchmark.v1",
+ "branches": 6,
+ "arms": {
+  "persistent_qualitative_llm_policy": {
+   "cases": [
+    {
+     "case_id": "cuban_crisis_sequence_1962",
+     "mode": "persistent_qualitative_llm_policy",
+     "per_step": [
+      {
+       "step": 1,
+       "actor": "Nikita_Khrushchev",
+       "actual": "hold_position",
+       "top1": "delay",
+       "correct": false,
+       "p_actual": 0.1667,
+       "distribution": {
+        "delay": 0.3333,
+        "counteroffer": 0.3333,
+        "hold_position": 0.1667,
+        "escalate": 0.1667
+       },
+       "n_branches_scored": 6
+      },
+      {
+       "step": 2,
+       "actor": "Nikita_Khrushchev",
+       "actual": "counteroffer",
+       "top1": "counteroffer",
+       "correct": true,
+       "p_actual": 0.6667,
+       "distribution": {
+        "counteroffer": 0.6667,
+        "escalate": 0.1667,
+        "open_secret_negotiation_channel": 0.1667
+       },
+       "n_branches_scored": 6
+      },
+      {
+       "step": 3,
+       "actor": "John_Kennedy",
+       "actual": "accept",
+       "top1": "counteroffer",
+       "correct": false,
+       "p_actual": 0.1667,
+       "distribution": {
+        "counteroffer": 0.5,
+        "escalate": 0.1667,
+        "accept": 0.1667,
+        "delay": 0.1667
+       },
+       "n_branches_scored": 6
+      },
+      {
+       "step": 4,
+       "actor": "Nikita_Khrushchev",
+       "actual": "accept",
+       "top1": "accept",
+       "correct": true,
+       "p_actual": 1.0,
+       "distribution": {
+        "accept": 1.0
+       },
+       "n_branches_scored": 6
+      }
+     ],
+     "step_accuracy": 0.5,
+     "accuracy_by_depth": [
+      0,
+      1,
+      0,
+      1
+     ],
+     "sequence_accuracy": 0.0,
+     "reaction_prediction": {
+      "scored": 8,
+      "correct": 6,
+      "unscored_ambiguous": 10,
+      "accuracy": 0.75
+     },
+     "anticipations": [
+      {
+       "step": 1,
+       "branch": "b000",
+       "by": "Nikita_Khrushchev",
+       "about": "John_Kennedy",
+       "text": "Will welcome the halt as a sign of my reasonableness, and will respond to my private message with a counterproposal."
+      },
+      {
+       "step": 1,
+       "branch": "b000",
+       "by": "Nikita_Khrushchev",
+       "about": "fidel_castro",
+       "text": "Will be furious, accusing me of betraying Cuba by stopping the ships."
+      },
+      {
+       "step": 1,
+       "branch": "b000",
+       "by": "Nikita_Khrushchev",
+       "about": "soviet_politburo_hardliners",
+       "text": "Will grumble but accept the halt if I frame it as a tactical move to lure Kennedy into a favorable deal."
+      },
+      {
+       "step": 1,
+       "branch": "b001",
+       "by": "Nikita_Khrushchev",
+       "about": "John_Kennedy",
+       "text": "He will be furious and may increase naval pressure, but he will also face domestic pressure over Berlin."
+      },
+      {
+       "step": 1,
+       "branch": "b001",
+       "by": "Nikita_Khrushchev",
+       "about": "fidel_castro",
+       "text": "He will cheer our defiance and may demand we fire on US planes."
+      },
+      {
+       "step": 1,
+       "branch": "b001",
+       "by": "Nikita_Khrushchev",
+       "about": "soviet_politburo",
+       "text": "They will support a hard line if I show resolve, but will turn on me if I retreat."
+      },
+      {
+       "step": 1,
+       "branch": "b002",
+       "by": "Nikita_Khrushchev",
+       "about": "John_Kennedy",
+       "text": "He will understand the signal and respond cautiously, likely through backchannel."
+      },
+      {
+       "step": 1,
+       "branch": "b002",
+       "by": "Nikita_Khrushchev",
+       "about": "soviet_politburo",
+       "text": "Mixed; some will accuse me of cowardice, but others will see the wisdom of avoiding war."
+      },
+      {
+       "step": 1,
+       "branch": "b003",
+       "by": "Nikita_Khrushchev",
+       "about": "John_Kennedy",
+       "text": "He will seize the private back-channel offer as a way to de-escalate, but will publicly insist on the missiles being removed from Cuba first.",
+       "predicted": "escalate",
+       "actual": "accept",
+       "correct": false
+      },
+      {
+       "step": 1,
+       "branch": "b003",
+       "by": "Nikita_Khrushchev",
+       "about": "fidel_castro",
+       "text": "He will be furious that I am negotiating behind his back, especially if he learns of the Turkish missile trade."
+      },
+      {
+       "step": 1,
+       "branch": "b003",
+       "by": "Nikita_Khrushchev",
+       "about": "soviet_politburo",
+       "text": "Some will call it weakness, but most will accept the trade if it is framed as removing an equal threat to the USSR."
+      },
+      {
+       "step": 1,
+       "branch": "b004",
+       "by": "Nikita_Khrushchev",
+       "about": "John_Kennedy",
+       "text": "He will reject the missile trade publicly but may hesitate on boarding ships if I threaten Berlin.",
+       "predicted": "reject",
+       "actual": "accept",
+       "correct": false
+      },
+      {
+       "step": 1,
+       "branch": "b004",
+       "by": "Nikita_Khrushchev",
+       "about": "soviet_military_commanders",
+       "text": "They will approve of the Berlin threat as a strong response but will pressure me to not actually allow a boarding."
+      },
+      {
+       "step": 1,
+       "branch": "b004",
+       "by": "Nikita_Khrushchev",
+       "about": "fidel_castro",
+       "text": "He will accuse me of betrayal if I publicly offer to remove the missiles, even conditionally."
+      },
+      {
+       "step": 1,
+       "branch": "b005",
+       "by": "Nikita_Khrushchev",
+       "about": "John_Kennedy",
+       "text": "He will understand my private signal as a desire to find a negotiated solution, and may respond with a similar secret offer."
+      },
+      {
+       "step": 1,
+       "branch": "b005",
+       "by": "Nikita_Khrushchev",
+       "about": "soviet_politburo_hardliners",
+       "text": "They will be furious at the halt, accuse me of backing down, and might attempt to countermand my orders through the Defense Ministry."
+      },
+      {
+       "step": 1,
+       "branch": "b005",
+       "by": "Nikita_Khrushchev",
+       "about": "fidel_castro",
+       "text": "He will see the halt as betrayal and may publicly denounce the USSR or independently attack US assets."
+      },
+      {
+       "step": 2,
+       "branch": "b000",
+       "by": "Nikita_Khrushchev",
+       "about": "John_Kennedy",
+       "text": "He will welcome the public offer as a way to claim success, and will respond positively to the private hint on Turkish missiles."
+      },
+      {
+       "step": 2,
+       "branch": "b000",
+       "by": "Nikita_Khrushchev",
+       "about": "fidel_castro",
+       "text": "He will be furious that I am negotiating over his head and may try to sabotage the deal."
+      },
+      {
+       "step": 2,
+       "branch": "b000",
+       "by": "Nikita_Khrushchev",
+       "about": "soviet_politburo",
+       "text": "Hardliners will grumble about retreat, but the promise of removing US missiles from Turkey will help sell the deal as a strategic gain."
+      },
+      {
+       "step": 2,
+       "branch": "b001",
+       "by": "Nikita_Khrushchev",
+       "about": "John_Kennedy",
+       "text": "He will rage privately but will not order an attack on our ships; he will seek a backchannel deal."
+      },
+      {
+       "step": 2,
+       "branch": "b001",
+       "by": "Nikita_Khrushchev",
+       "about": "fidel_castro",
+       "text": "He will demand I launch the missiles now; I must calm him with promises and a veiled threat that he cannot act without me."
+      },
+      {
+       "step": 2,
+       "branch": "b002",
+       "by": "Nikita_Khrushchev",
+       "about": "John_Kennedy",
+       "text": "He will seize this offer but demand secrecy on the Turkish part to save NATO face."
+      },
+      {
+       "step": 2,
+       "branch": "b002",
+       "by": "Nikita_Khrushchev",
+       "about": "fidel_castro",
+       "text": "Rage and accusations of betrayal; he may refuse to allow inspection."
+      }
+     ],
+     "persistence": {
+      "hypothesis_switches": 0,
+      "final_revision_counts": [
+       4,
+       2,
+       4,
+       2,
+       4,
+       2,
+       4,
+       2,
+       4,
+       2,
+       4,
+       2
+      ]
+     },
+     "llm_calls": 24,
+     "wall_s": 344.7
+    },
+    {
+     "case_id": "twitter_acquisition_sequence_2022",
+     "mode": "persistent_qualitative_llm_policy",
+     "per_step": [
+      {
+       "step": 1,
+       "actor": "Twitter_Board",
+       "actual": "accept",
+       "top1": "accept",
+       "correct": true,
+       "p_actual": 0.5,
+       "distribution": {
+        "accept": 0.5,
+        "counteroffer": 0.5
+       },
+       "n_branches_scored": 6
+      },
+      {
+       "step": 2,
+       "actor": "Elon_Musk",
+       "actual": "withdraw_offer",
+       "top1": "counteroffer",
+       "correct": false,
+       "p_actual": 0.0,
+       "distribution": {
+        "counteroffer": 0.5,
+        "hold_position": 0.3333,
+        "delay": 0.1667
+       },
+       "n_branches_scored": 6
+      },
+      {
+       "step": 3,
+       "actor": "Twitter_Board",
+       "actual": "escalate",
+       "top1": "escalate",
+       "correct": true,
+       "p_actual": 0.8333,
+       "distribution": {
+        "escalate": 0.8333,
+        "enforce_specific_performance": 0.1667
+       },
+       "n_branches_scored": 6
+      },
+      {
+       "step": 4,
+       "actor": "Elon_Musk",
+       "actual": "acquire",
+       "top1": "counteroffer",
+       "correct": false,
+       "p_actual": 0.3333,
+       "distribution": {
+        "counteroffer": 0.6667,
+        "acquire": 0.3333
+       },
+       "n_branches_scored": 6
+      }
+     ],
+     "step_accuracy": 0.5,
+     "accuracy_by_depth": [
+      1,
+      0,
+      1,
+      0
+     ],
+     "sequence_accuracy": 0.0,
+     "reaction_prediction": {
+      "scored": 3,
+      "correct": 0,
+      "unscored_ambiguous": 15,
+      "accuracy": 0.0
+     },
+     "anticipations": [
+      {
+       "step": 1,
+       "branch": "b000",
+       "by": "Twitter_Board",
+       "about": "Elon_Musk",
+       "text": "Will demand minimal due diligence and may push to drop the condition; may test the board\u2019s resolve with public taunts."
+      },
+      {
+       "step": 1,
+       "branch": "b000",
+       "by": "Twitter_Board",
+       "about": "twitter_shareholders",
+       "text": "Institutional holders will be relieved and support the deal; activist retail may still demand a higher price or reject the condition."
+      },
+      {
+       "step": 1,
+       "branch": "b001",
+       "by": "Twitter_Board",
+       "about": "Elon_Musk",
+       "text": "He will either call our bluff publicly, denounce the board, and pressure shareholders; or he will negotiate up to $58-60 with new conditions like CEO removal. He will not accept meekly."
+      },
+      {
+       "step": 1,
+       "branch": "b001",
+       "by": "Twitter_Board",
+       "about": "twitter_shareholders",
+       "text": "Institutional holders will welcome the counteroffer as value-maximizing, but some hedge funds will agitate for a quick close at $54.20 and accuse us of delaying for our own interests."
+      },
+      {
+       "step": 1,
+       "branch": "b002",
+       "by": "Twitter_Board",
+       "about": "Elon_Musk",
+       "text": "Cautious approval, but will watch for board infighting or poison pill games."
+      },
+      {
+       "step": 1,
+       "branch": "b002",
+       "by": "Twitter_Board",
+       "about": "twitter_shareholders",
+       "text": "Positive relief; likely to vote for deal if board recommends it."
+      },
+      {
+       "step": 1,
+       "branch": "b002",
+       "by": "Twitter_Board",
+       "about": "internal_board_dissenters",
+       "text": "Possible public objection or resignation."
+      },
+      {
+       "step": 1,
+       "branch": "b003",
+       "by": "Twitter_Board",
+       "about": "Elon_Musk",
+       "text": "Public irritation but likely continued negotiation, as his financing is now committed and walking away would damage his credibility."
+      },
+      {
+       "step": 1,
+       "branch": "b003",
+       "by": "Twitter_Board",
+       "about": "twitter_shareholders",
+       "text": "Mixed relief and impatience; institutional investors will pressure the board to close quickly, while activists may push for a higher bid."
+      },
+      {
+       "step": 1,
+       "branch": "b004",
+       "by": "Twitter_Board",
+       "about": "Elon_Musk",
+       "text": "Publicly dismiss our counteroffer as too high, threaten to go directly to shareholders or sue.",
+       "predicted": "counteroffer",
+       "actual": "withdraw_offer",
+       "correct": false
+      },
+      {
+       "step": 1,
+       "branch": "b004",
+       "by": "Twitter_Board",
+       "about": "twitter_shareholders",
+       "text": "Mixed; some will support the board for seeking more, others will fear losing the bird-in-hand premium."
+      },
+      {
+       "step": 1,
+       "branch": "b005",
+       "by": "Twitter_Board",
+       "about": "Elon_Musk",
+       "text": "Cautious approval; will insist on rapid lifting of the poison pill and a clear timeline."
+      },
+      {
+       "step": 1,
+       "branch": "b005",
+       "by": "Twitter_Board",
+       "about": "twitter_shareholders",
+       "text": "Broad support; some activist funds may push for a higher price but will likely fall in line."
+      },
+      {
+       "step": 1,
+       "branch": "b005",
+       "by": "Twitter_Board",
+       "about": "twitter_employees",
+       "text": "Mixed relief and anxiety; many fear cultural change under Musk."
+      },
+      {
+       "step": 2,
+       "branch": "b000",
+       "by": "Elon_Musk",
+       "about": "Twitter_Board",
+       "text": "They'll bluster and accuse me of bad faith, but privately they'll panic\u2014they know discovery will leak their worst internal debates."
+      },
+      {
+       "step": 2,
+       "branch": "b000",
+       "by": "Elon_Musk",
+       "about": "twitter_shareholders",
+       "text": "Some will sue me for trying to kill the deal, but others will pressure the board to negotiate rather than lose the premium entirely."
+      },
+      {
+       "step": 2,
+       "branch": "b000",
+       "by": "Elon_Musk",
+       "about": "delaware_chancery_court",
+       "text": "Will watch closely, but won't act until one side files a formal motion; they'll frown on my delay tactics if I drag it out."
+      },
+      {
+       "step": 2,
+       "branch": "b001",
+       "by": "Elon_Musk",
+       "about": "Twitter_Board",
+       "text": "They'll publicly accuse me of bad faith and file a lawsuit to compel completion or damages."
+      },
+      {
+       "step": 2,
+       "branch": "b001",
+       "by": "Elon_Musk",
+       "about": "tesla_shareholders",
+       "text": "Relief that I'm not rushing to close the deal, but anxiety about the distraction dragging on."
+      },
+      {
+       "step": 2,
+       "branch": "b002",
+       "by": "Elon_Musk",
+       "about": "Twitter_Board",
+       "text": "They will publicly accuse me of bad faith and threaten to enforce the deal in Delaware Chancery Court."
+      },
+      {
+       "step": 2,
+       "branch": "b002",
+       "by": "Elon_Musk",
+       "about": "public_market_and_fans",
+       "text": "Fans will cheer my stand; analysts will doubt me; short-sellers will pile on."
+      },
+      {
+       "step": 2,
+       "branch": "b003",
+       "by": "Elon_Musk",
+       "about": "Twitter_Board",
+       "text": "Publicly reject the lower offer but privately signal willingness to negotiate under pressure."
+      },
+      {
+       "step": 2,
+       "branch": "b004",
+       "by": "Elon_Musk",
+       "about": "Twitter_Board",
+       "text": "They will publicly reject a lower price as bad faith, but privately signal willingness to negotiate a small discount to avoid trial costs and uncertainty."
+      },
+      {
+       "step": 2,
+       "branch": "b004",
+       "by": "Elon_Musk",
+       "about": "tesla_shareholders",
+       "text": "Relief that I am attempting to reduce the price or exit, reducing distraction from Tesla's operations."
+      }
+     ],
+     "persistence": {
+      "hypothesis_switches": 0,
+      "final_revision_counts": [
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3,
+       3
+      ]
+     },
+     "llm_calls": 24,
+     "wall_s": 290.7
+    },
+    {
+     "case_id": "johnson_collapse_sequence_2022",
+     "mode": "persistent_qualitative_llm_policy",
+     "per_step": [
+      {
+       "step": 1,
+       "actor": "Boris_Johnson",
+       "actual": "hold_position",
+       "top1": "hold_position",
+       "correct": true,
+       "p_actual": 1.0,
+       "distribution": {
+        "hold_position": 1.0
+       },
+       "n_branches_scored": 6
+      },
+      {
+       "step": 2,
+       "actor": "Conservative_Cabinet",
+       "actual": "oppose",
+       "top1": "confront_pm_privately",
+       "correct": false,
+       "p_actual": 0.0,
+       "distribution": {
+        "confront_pm_privately": 0.3333,
+        "support": 0.1667,
+        "confront_pm_with_ultimatum": 0.1667,
+        "confront_collectively": 0.1667,
+        "confront_pm_collectively": 0.1667
+       },
+       "n_branches_scored": 6
+      },
+      {
+       "step": 3,
+       "actor": "Boris_Johnson",
+       "actual": "exit",
+       "top1": "hold_position",
+       "correct": false,
+       "p_actual": 0.3333,
+       "distribution": {
+        "hold_position": 0.5,
+        "exit": 0.3333,
+        "resign": 0.1667
+       },
+       "n_branches_scored": 6
+      }
+     ],
+     "step_accuracy": 0.3333,
+     "accuracy_by_depth": [
+      1,
+      0,
+      0
+     ],
+     "sequence_accuracy": 0.0,
+     "reaction_prediction": {
+      "scored": 0,
+      "correct": 0,
+      "unscored_ambiguous": 7,
+      "accuracy": null
+     },
+     "anticipations": [
+      {
+       "step": 1,
+       "branch": "b000",
+       "by": "Boris_Johnson",
+       "about": "rishi_sunak",
+       "text": "He will continue to rally rebels and brief against me, but he is not the only candidate. He will not trigger a vote himself yet."
+      },
+      {
+       "step": 1,
+       "branch": "b000",
+       "by": "Boris_Johnson",
+       "about": "nadhim_zahawi",
+       "text": "He will publicly support me for now, as I gave him the chancellorship."
+      },
+      {
+       "step": 1,
+       "branch": "b000",
+       "by": "Boris_Johnson",
+       "about": "1922_committee",
+       "text": "They will debate rule changes but may hesitate to trigger immediate action, fearing a leadership contest that splits the party."
+      },
+      {
+       "step": 1,
+       "branch": "b001",
+       "by": "Boris_Johnson",
+       "about": "nadhim_zahawi",
+       "text": "He will publicly back me today but privately position himself as a leadership contender, knowing the chancellor role is a poisoned chalice."
+      },
+      {
+       "step": 1,
+       "branch": "b001",
+       "by": "Boris_Johnson",
+       "about": "rishi_sunak",
+       "text": "He will remain silent publicly but coordinate privately with rebels; his resignation was a declaration of war, not a protest."
+      },
+      {
+       "step": 1,
+       "branch": "b001",
+       "by": "Boris_Johnson",
+       "about": "Conservative_Cabinet",
+       "text": "Most will remain 'unavailable' or 'considering their position'; a few loyalists will stay, but the herd has already decided I am dead meat."
+      },
+      {
+       "step": 1,
+       "branch": "b002",
+       "by": "Boris_Johnson",
+       "about": "rishi_sunak",
+       "text": "He'll posture as the responsible one, but he'll lose if I survive. He'll wait in the wings."
+      },
+      {
+       "step": 1,
+       "branch": "b002",
+       "by": "Boris_Johnson",
+       "about": "nadhim_zahawi",
+       "text": "He'll play the grateful chancellor for now, but he's an opportunist. He'll switch if the wind changes."
+      },
+      {
+       "step": 1,
+       "branch": "b002",
+       "by": "Boris_Johnson",
+       "about": "conservative_mps",
+       "text": "Many will wait to see if I can survive PMQs. Some will write letters but fear a general election if they oust me."
+      },
+      {
+       "step": 1,
+       "branch": "b003",
+       "by": "Boris_Johnson",
+       "about": "rishi_sunak",
+       "text": "He will try to rally more MPs to resign or call for my head. He thinks he can force a vote."
+      },
+      {
+       "step": 1,
+       "branch": "b003",
+       "by": "Boris_Johnson",
+       "about": "nadhim_zahawi",
+       "text": "He will publicly back me and try to steady markets, but privately he is watching for his own chance."
+      },
+      {
+       "step": 1,
+       "branch": "b003",
+       "by": "Boris_Johnson",
+       "about": "conservative_backbenchers",
+       "text": "Many will wait and see. The 1922 Committee may act if the resignations reach a tipping point."
+      },
+      {
+       "step": 1,
+       "branch": "b004",
+       "by": "Boris_Johnson",
+       "about": "rishi_sunak",
+       "text": "He will stay silent in public but brief allies to position himself as the inevitable successor, waiting for me to fall."
+      },
+      {
+       "step": 1,
+       "branch": "b004",
+       "by": "Boris_Johnson",
+       "about": "nadhim_zahawi",
+       "text": "Nervous loyalty in public, but he will already be testing the waters with potential leadership backers."
+      },
+      {
+       "step": 1,
+       "branch": "b004",
+       "by": "Boris_Johnson",
+       "about": "conservative_backbenchers",
+       "text": "Fury and panic; some will demand I go immediately, others will fear a general election if the party tears itself apart."
+      },
+      {
+       "step": 1,
+       "branch": "b005",
+       "by": "Boris_Johnson",
+       "about": "rishi_sunak",
+       "text": "He will go quiet and wait for me to collapse; he'll regret this when I survive."
+      },
+      {
+       "step": 1,
+       "branch": "b005",
+       "by": "Boris_Johnson",
+       "about": "nadhim_zahawi",
+       "text": "He will play the loyal chancellor publicly, but may waver if the pressure mounts."
+      },
+      {
+       "step": 1,
+       "branch": "b005",
+       "by": "Boris_Johnson",
+       "about": "conservative_mps",
+       "text": "Some will call for a no-confidence vote; the loyalists will hold the line."
+      },
+      {
+       "step": 2,
+       "branch": "b000",
+       "by": "Conservative_Cabinet",
+       "about": "Boris_Johnson",
+       "text": "Relief and renewed confidence to hold on a little longer"
+      },
+      {
+       "step": 2,
+       "branch": "b000",
+       "by": "Conservative_Cabinet",
+       "about": "resigners",
+       "text": "Dismissive contempt, but they are already gone and irrelevant"
+      },
+      {
+       "step": 2,
+       "branch": "b000",
+       "by": "Conservative_Cabinet",
+       "about": "backbenchers",
+       "text": "Mixed; some will see me as a steady hand, others as a stooge"
+      },
+      {
+       "step": 2,
+       "branch": "b001",
+       "by": "Conservative_Cabinet",
+       "about": "Boris_Johnson",
+       "text": "He will be defensive and angry, possibly accuse me of disloyalty, but may eventually listen if I frame it as saving his reputation."
+      },
+      {
+       "step": 2,
+       "branch": "b001",
+       "by": "Conservative_Cabinet",
+       "about": "cabinet_delegation",
+       "text": "They will be relieved I am trying the private route, but impatient if I delay too long."
+      },
+      {
+       "step": 2,
+       "branch": "b002",
+       "by": "Conservative_Cabinet",
+       "about": "Boris_Johnson",
+       "text": "He will attempt to stall, offer concessions on policy or timeline, and try to split our group by offering one of us a promotion."
+      }
+     ],
+     "persistence": {
+      "hypothesis_switches": 0,
+      "final_revision_counts": [
+       3,
+       2,
+       3,
+       2,
+       3,
+       2,
+       3,
+       2,
+       3,
+       2,
+       3,
+       2
+      ]
+     },
+     "llm_calls": 18,
+     "wall_s": 261.5
+    }
+   ],
+   "summary": {
+    "mean_step_accuracy": 0.4444,
+    "mean_sequence_accuracy": 0.0,
+    "accuracy_by_depth_pooled": [
+     0.6667,
+     0.3333,
+     0.3333,
+     0.5
+    ],
+    "reaction_scored": 11,
+    "reaction_correct": 6,
+    "reaction_unscored": 32,
+    "hypothesis_switches": 0,
+    "total_llm_calls": 66,
+    "total_wall_s": 896.9
+   }
+  },
+  "stateless_llm_policy": {
+   "cases": [
+    {
+     "case_id": "cuban_crisis_sequence_1962",
+     "mode": "stateless_llm_policy",
+     "per_step": [
+      {
+       "step": 1,
+       "actor": "Nikita_Khrushchev",
+       "actual": "hold_position",
+       "top1": "hold_position",
+       "correct": true,
+       "p_actual": 0.5,
+       "distribution": {
+        "hold_position": 0.5,
+        "counteroffer": 0.5
+       },
+       "n_branches_scored": 6
+      },
+      {
+       "step": 2,
+       "actor": "Nikita_Khrushchev",
+       "actual": "counteroffer",
+       "top1": "counteroffer",
+       "correct": true,
+       "p_actual": 0.8333,
+       "distribution": {
+        "counteroffer": 0.8333,
+        "open_diplomatic_channel": 0.1667
+       },
+       "n_branches_scored": 6
+      },
+      {
+       "step": 3,
+       "actor": "John_Kennedy",
+       "actual": "accept",
+       "top1": "delay",
+       "correct": false,
+       "p_actual": 0.1667,
+       "distribution": {
+        "delay": 0.3333,
+        "counteroffer": 0.3333,
+        "mixed_signal_reply_to_both_letters": 0.1667,
+        "accept": 0.1667
+       },
+       "n_branches_scored": 6
+      },
+      {
+       "step": 4,
+       "actor": "Nikita_Khrushchev",
+       "actual": "accept",
+       "top1": "accept",
+       "correct": true,
+       "p_actual": 1.0,
+       "distribution": {
+        "accept": 1.0
+       },
+       "n_branches_scored": 6
+      }
+     ],
+     "step_accuracy": 0.75,
+     "accuracy_by_depth": [
+      1,
+      1,
+      0,
+      1
+     ],
+     "sequence_accuracy": 0.0,
+     "reaction_prediction": {
+      "scored": 11,
+      "correct": 9,
+      "unscored_ambiguous": 6,
+      "accuracy": 0.8182
+     },
+     "anticipations": [
+      {
+       "step": 1,
+       "branch": "b000",
+       "by": "Nikita_Khrushchev",
+       "about": "John_Kennedy",
+       "text": "He will see our halt as a signal of caution and may respond with a private offer of negotiations rather than escalate further.",
+       "predicted": "escalate",
+       "actual": "accept",
+       "correct": false
+      },
+      {
+       "step": 1,
+       "branch": "b000",
+       "by": "Nikita_Khrushchev",
+       "about": "fidel_castro",
+       "text": "He will be furious that we are not defending Cuba's sovereignty and will accuse us of betrayal."
+      },
+      {
+       "step": 1,
+       "branch": "b001",
+       "by": "Nikita_Khrushchev",
+       "about": "John_Kennedy",
+       "text": "He will be relieved at the pause but will demand full removal of missiles as a precondition; may accept UN supervision as a face-saver.",
+       "predicted": "accept",
+       "actual": "accept",
+       "correct": true
+      },
+      {
+       "step": 1,
+       "branch": "b001",
+       "by": "Nikita_Khrushchev",
+       "about": "castro",
+       "text": "He will be angry that we stopped short of defending Cuba's sovereignty, but may accept if we explain the diplomatic gain."
+      },
+      {
+       "step": 1,
+       "branch": "b002",
+       "by": "Nikita_Khrushchev",
+       "about": "John_Kennedy",
+       "text": "He will hesitate, perhaps relieved for a diplomatic off-ramp, but will demand concrete proof of removal."
+      },
+      {
+       "step": 1,
+       "branch": "b002",
+       "by": "Nikita_Khrushchev",
+       "about": "castro",
+       "text": "He will feel betrayed that I am negotiating behind his back."
+      },
+      {
+       "step": 1,
+       "branch": "b003",
+       "by": "Nikita_Khrushchev",
+       "about": "John_Kennedy",
+       "text": "Will welcome private offer but may demand public withdrawal first."
+      },
+      {
+       "step": 1,
+       "branch": "b003",
+       "by": "Nikita_Khrushchev",
+       "about": "castro",
+       "text": "Will feel betrayed if we negotiate removal without his consent."
+      },
+      {
+       "step": 1,
+       "branch": "b004",
+       "by": "Nikita_Khrushchev",
+       "about": "John_Kennedy",
+       "text": "He will denounce the linkage as extortion but privately be interested; his advisors may split."
+      },
+      {
+       "step": 1,
+       "branch": "b004",
+       "by": "Nikita_Khrushchev",
+       "about": "cuban_leadership",
+       "text": "They will be uneasy if we appear to trade their security for Turkish missiles, but they have no alternative."
+      },
+      {
+       "step": 1,
+       "branch": "b005",
+       "by": "Nikita_Khrushchev",
+       "about": "John_Kennedy",
+       "text": "He will likely reject immediate full lifting of the quarantine, but may engage in back-channel talks. He is under domestic pressure to appear strong but also fears escalation.",
+       "predicted": "reject",
+       "actual": "accept",
+       "correct": false
+      },
+      {
+       "step": 1,
+       "branch": "b005",
+       "by": "Nikita_Khrushchev",
+       "about": "fidel_castro",
+       "text": "He will be furious that we stop short of the line, viewing it as a retreat. He may demand firmer action or threaten to shoot down US recon planes."
+      },
+      {
+       "step": 2,
+       "branch": "b000",
+       "by": "Nikita_Khrushchev",
+       "about": "president_kennedy",
+       "text": "He will publicly reject the Turkish missile swap but may signal private willingness to negotiate. He needs time to manage his allies."
+      },
+      {
+       "step": 2,
+       "branch": "b000",
+       "by": "Nikita_Khrushchev",
+       "about": "politburo_in_moscow",
+       "text": "Some hardliners will accuse me of capitulation. But the military knows we cannot win a nuclear war; they will back a peaceful resolution."
+      },
+      {
+       "step": 2,
+       "branch": "b000",
+       "by": "Nikita_Khrushchev",
+       "about": "fidel_castro",
+       "text": "He will feel betrayed if we remove missiles without his consent. He may refuse inspection or make wild statements."
+      },
+      {
+       "step": 2,
+       "branch": "b001",
+       "by": "Nikita_Khrushchev",
+       "about": "John_Kennedy",
+       "text": "Will likely accept a public no-invasion pledge but resist public mention of Turkey; private deal possible.",
+       "predicted": "accept",
+       "actual": "accept",
+       "correct": true
+      },
+      {
+       "step": 2,
+       "branch": "b001",
+       "by": "Nikita_Khrushchev",
+       "about": "fidel_castro",
+       "text": "Will be angry if we surrender without his consent; may refuse removal."
+      },
+      {
+       "step": 2,
+       "branch": "b002",
+       "by": "Nikita_Khrushchev",
+       "about": "John_Kennedy",
+       "text": "He may accept the public trade to avoid war, but will demand secrecy on the Turkey part. He might delay or counter with a private offer."
+      },
+      {
+       "step": 2,
+       "branch": "b002",
+       "by": "Nikita_Khrushchev",
+       "about": "presidium",
+       "text": "Some hardliners will see this as retreat. I must convince them it is a strategic victory\u2014removing US missiles from Turkey for a Caribbean outpost."
+      },
+      {
+       "step": 2,
+       "branch": "b002",
+       "by": "Nikita_Khrushchev",
+       "about": "castro",
+       "text": "He will be furious if we trade away Cuba's security without consulting him. I must promise continued support and aid."
+      },
+      {
+       "step": 2,
+       "branch": "b003",
+       "by": "Nikita_Khrushchev",
+       "about": "John_Kennedy",
+       "text": "He will be relieved and accept the deal, but may need time to manage his own military and allies.",
+       "predicted": "accept",
+       "actual": "accept",
+       "correct": true
+      },
+      {
+       "step": 2,
+       "branch": "b004",
+       "by": "Nikita_Khrushchev",
+       "about": "John_Kennedy",
+       "text": "Will likely consider the Turkish missile trade secretly while publicly demanding only Cuban withdrawal."
+      },
+      {
+       "step": 2,
+       "branch": "b004",
+       "by": "Nikita_Khrushchev",
+       "about": "castro",
+       "text": "Will feel betrayed if we remove missiles without his consent."
+      },
+      {
+       "step": 2,
+       "branch": "b005",
+       "by": "Nikita_Khrushchev",
+       "about": "John_Kennedy",
+       "text": "He will consider the offer seriously to avoid escalation."
+      }
+     ],
+     "persistence": {
+      "hypothesis_switches": 0,
+      "final_revision_counts": []
+     },
+     "llm_calls": 24,
+     "wall_s": 305.6
+    },
+    {
+     "case_id": "twitter_acquisition_sequence_2022",
+     "mode": "stateless_llm_policy",
+     "per_step": [
+      {
+       "step": 1,
+       "actor": "Twitter_Board",
+       "actual": "accept",
+       "top1": "counteroffer",
+       "correct": false,
+       "p_actual": 0.0,
+       "distribution": {
+        "counteroffer": 0.8333,
+        "negotiate_in_principle": 0.1667
+       },
+       "n_branches_scored": 6
+      },
+      {
+       "step": 2,
+       "actor": "Elon_Musk",
+       "actual": "withdraw_offer",
+       "top1": "withdraw_offer",
+       "correct": true,
+       "p_actual": 0.8333,
+       "distribution": {
+        "withdraw_offer": 0.8333,
+        "delay": 0.1667
+       },
+       "n_branches_scored": 6
+      },
+      {
+       "step": 3,
+       "actor": "Twitter_Board",
+       "actual": "escalate",
+       "top1": "escalate",
+       "correct": true,
+       "p_actual": 1.0,
+       "distribution": {
+        "escalate": 1.0
+       },
+       "n_branches_scored": 6
+      },
+      {
+       "step": 4,
+       "actor": "Elon_Musk",
+       "actual": "acquire",
+       "top1": "acquire",
+       "correct": true,
+       "p_actual": 0.5,
+       "distribution": {
+        "acquire": 0.5,
+        "counteroffer": 0.3333,
+        "hold_position": 0.1667
+       },
+       "n_branches_scored": 6
+      }
+     ],
+     "step_accuracy": 0.75,
+     "accuracy_by_depth": [
+      0,
+      1,
+      1,
+      1
+     ],
+     "sequence_accuracy": 0.0,
+     "reaction_prediction": {
+      "scored": 4,
+      "correct": 0,
+      "unscored_ambiguous": 13,
+      "accuracy": 0.0
+     },
+     "anticipations": [
+      {
+       "step": 1,
+       "branch": "b000",
+       "by": "Twitter_Board",
+       "about": "Elon_Musk",
+       "text": "Will demand a rapid timeline and minimal conditions, possibly threatening to walk."
+      },
+      {
+       "step": 1,
+       "branch": "b000",
+       "by": "Twitter_Board",
+       "about": "institutional_shareholders",
+       "text": "Relief that board is engaging, but will press for transparency and speed."
+      },
+      {
+       "step": 1,
+       "branch": "b001",
+       "by": "Twitter_Board",
+       "about": "Elon_Musk",
+       "text": "He will likely reject the counteroffer publicly, insist on $54.20, and possibly escalate with a tender offer or public pressure campaign.",
+       "predicted": "counteroffer",
+       "actual": "withdraw_offer",
+       "correct": false
+      },
+      {
+       "step": 1,
+       "branch": "b001",
+       "by": "Twitter_Board",
+       "about": "institutional_shareholders",
+       "text": "Most will support the counteroffer as prudent value maximization, but some may urge faster acceptance at $54.20."
+      },
+      {
+       "step": 1,
+       "branch": "b002",
+       "by": "Twitter_Board",
+       "about": "Elon_Musk",
+       "text": "He will likely reject a small price increase but may engage on governance terms or a modest bump."
+      },
+      {
+       "step": 1,
+       "branch": "b002",
+       "by": "Twitter_Board",
+       "about": "institutional_shareholders",
+       "text": "They will support a counteroffer as a sign of fiduciary duty but will pressure us not to let the deal collapse."
+      },
+      {
+       "step": 1,
+       "branch": "b003",
+       "by": "Twitter_Board",
+       "about": "Elon_Musk",
+       "text": "Will likely counter our counteroffer or threaten to go directly to shareholders.",
+       "predicted": "counteroffer",
+       "actual": "withdraw_offer",
+       "correct": false
+      },
+      {
+       "step": 1,
+       "branch": "b003",
+       "by": "Twitter_Board",
+       "about": "institutional_shareholders",
+       "text": "Will support our engagement but may criticize if we delay too long."
+      },
+      {
+       "step": 1,
+       "branch": "b004",
+       "by": "Twitter_Board",
+       "about": "Elon_Musk",
+       "text": "He will likely reject our counteroffer as insufficient and threaten a tender offer directly to shareholders.",
+       "predicted": "counteroffer",
+       "actual": "withdraw_offer",
+       "correct": false
+      },
+      {
+       "step": 1,
+       "branch": "b004",
+       "by": "Twitter_Board",
+       "about": "institutional_shareholders",
+       "text": "They will pressure us to accept a deal quickly if the counteroffer fails, fearing a drop in stock price."
+      },
+      {
+       "step": 1,
+       "branch": "b005",
+       "by": "Twitter_Board",
+       "about": "Elon_Musk",
+       "text": "He may reject the counteroffer publicly and attempt to go hostile or take the offer to shareholders directly.",
+       "predicted": "counteroffer",
+       "actual": "withdraw_offer",
+       "correct": false
+      },
+      {
+       "step": 1,
+       "branch": "b005",
+       "by": "Twitter_Board",
+       "about": "institutional_shareholders",
+       "text": "They will pressure for quick acceptance or clear rationale for refusal, potentially agitating for removal of board members."
+      },
+      {
+       "step": 2,
+       "branch": "b000",
+       "by": "Elon_Musk",
+       "about": "Twitter_Board",
+       "text": "They will sue immediately for specific performance and claim we are using spam as a pretext."
+      },
+      {
+       "step": 2,
+       "branch": "b000",
+       "by": "Elon_Musk",
+       "about": "twitter_shareholders",
+       "text": "Anger and likely class action suits claiming I manipulated the stock price."
+      },
+      {
+       "step": 2,
+       "branch": "b000",
+       "by": "Elon_Musk",
+       "about": "sec",
+       "text": "Investigation into whether my tweets about 'temporarily on hold' constituted securities fraud."
+      },
+      {
+       "step": 2,
+       "branch": "b001",
+       "by": "Elon_Musk",
+       "about": "Twitter_Board",
+       "text": "Will publicly defend their data and accuse me of trying to renege; may sue for specific performance quickly to force my hand."
+      },
+      {
+       "step": 2,
+       "branch": "b001",
+       "by": "Elon_Musk",
+       "about": "twitter_shareholders",
+       "text": "Growing anxiety; some will sell, others will pressure board to accept lower offer rather than risk deal collapsing entirely."
+      },
+      {
+       "step": 2,
+       "branch": "b001",
+       "by": "Elon_Musk",
+       "about": "my_financing_partners_banks_investors",
+       "text": "Nervous; they committed based on April valuation; they may demand renegotiation or threaten to pull out if I delay too long."
+      },
+      {
+       "step": 2,
+       "branch": "b002",
+       "by": "Elon_Musk",
+       "about": "Twitter_Board",
+       "text": "They will sue for specific performance or a breakup fee, arguing the bot data was sufficient."
+      },
+      {
+       "step": 2,
+       "branch": "b002",
+       "by": "Elon_Musk",
+       "about": "tesla_shareholders",
+       "text": "Relief that the stock is not diluted, but concern about legal costs and distraction."
+      },
+      {
+       "step": 2,
+       "branch": "b003",
+       "by": "Elon_Musk",
+       "about": "Twitter_Board",
+       "text": "File a lawsuit in Delaware Chancery Court for specific performance within days, claiming I cannot simply walk away based on a subjective view of spam data."
+      },
+      {
+       "step": 2,
+       "branch": "b003",
+       "by": "Elon_Musk",
+       "about": "twitter_shareholders",
+       "text": "Widespread panic selling as the deal premium evaporates; stock will crash toward market value."
+      },
+      {
+       "step": 2,
+       "branch": "b003",
+       "by": "Elon_Musk",
+       "about": "sec_and_regulators",
+       "text": "Investigate my public statements and the timing of the withdrawal for potential market manipulation or disclosure violations."
+      },
+      {
+       "step": 2,
+       "branch": "b004",
+       "by": "Elon_Musk",
+       "about": "Twitter_Board",
+       "text": "They will likely threaten litigation for specific performance, but internally they know the bot data is insufficient and may seek a lower settlement privately."
+      }
+     ],
+     "persistence": {
+      "hypothesis_switches": 0,
+      "final_revision_counts": []
+     },
+     "llm_calls": 24,
+     "wall_s": 263.0
+    },
+    {
+     "case_id": "johnson_collapse_sequence_2022",
+     "mode": "stateless_llm_policy",
+     "per_step": [
+      {
+       "step": 1,
+       "actor": "Boris_Johnson",
+       "actual": "hold_position",
+       "top1": "hold_position",
+       "correct": true,
+       "p_actual": 1.0,
+       "distribution": {
+        "hold_position": 1.0
+       },
+       "n_branches_scored": 6
+      },
+      {
+       "step": 2,
+       "actor": "Conservative_Cabinet",
+       "actual": "oppose",
+       "top1": "confront_collectively",
+       "correct": false,
+       "p_actual": 0.0,
+       "distribution": {
+        "confront_collectively": 0.8333,
+        "collective_confrontation": 0.1667
+       },
+       "n_branches_scored": 6
+      },
+      {
+       "step": 3,
+       "actor": "Boris_Johnson",
+       "actual": "exit",
+       "top1": "resign_with_dignity",
+       "correct": false,
+       "p_actual": 0.1667,
+       "distribution": {
+        "resign_with_dignity": 0.3333,
+        "exit": 0.1667,
+        "resign_as_pm": 0.1667,
+        "hold_position": 0.1667,
+        "address_cabinet_and_nation": 0.1667
+       },
+       "n_branches_scored": 6
+      }
+     ],
+     "step_accuracy": 0.3333,
+     "accuracy_by_depth": [
+      1,
+      0,
+      0
+     ],
+     "sequence_accuracy": 0.0,
+     "reaction_prediction": {
+      "scored": 0,
+      "correct": 0,
+      "unscored_ambiguous": 5,
+      "accuracy": null
+     },
+     "anticipations": [
+      {
+       "step": 1,
+       "branch": "b000",
+       "by": "Boris_Johnson",
+       "about": "rebel_mps",
+       "text": "They will intensify calls for me to go and may demand a confidence vote."
+      },
+      {
+       "step": 1,
+       "branch": "b000",
+       "by": "Boris_Johnson",
+       "about": "loyal_mps_and_ministerial_hopefuls",
+       "text": "Some will be emboldened to stay or join the government; others may fear association with a sinking ship."
+      },
+      {
+       "step": 1,
+       "branch": "b000",
+       "by": "Boris_Johnson",
+       "about": "public_and_media",
+       "text": "More hostile coverage, framing me as delusional or clinging to power."
+      },
+      {
+       "step": 1,
+       "branch": "b001",
+       "by": "Boris_Johnson",
+       "about": "conservative_mps",
+       "text": "Some will rally, others will panic and call for me to go."
+      },
+      {
+       "step": 1,
+       "branch": "b002",
+       "by": "Boris_Johnson",
+       "about": "rebel_mps",
+       "text": "They will accelerate letter-writing to the 1922 Committee chairman, hoping to force a confidence vote soon."
+      },
+      {
+       "step": 1,
+       "branch": "b002",
+       "by": "Boris_Johnson",
+       "about": "loyalist_mps",
+       "text": "Some will hold firm, but others may waver if the resignations keep coming. I need to shore up their morale with public defiance and private promises."
+      },
+      {
+       "step": 1,
+       "branch": "b003",
+       "by": "Boris_Johnson",
+       "about": "conservative_mps",
+       "text": "More will resign, especially junior ministers and PPSs. The 1922 Committee may change its rules to allow a no-confidence vote sooner."
+      },
+      {
+       "step": 1,
+       "branch": "b003",
+       "by": "Boris_Johnson",
+       "about": "labour",
+       "text": "They will demand a general election and mock my clinging to power, but they do not want one now."
+      },
+      {
+       "step": 1,
+       "branch": "b003",
+       "by": "Boris_Johnson",
+       "about": "the_public",
+       "text": "Most will think I should go; but some will appreciate a leader who doesn't buckle under pressure."
+      },
+      {
+       "step": 1,
+       "branch": "b004",
+       "by": "Boris_Johnson",
+       "about": "cabinet_ministers",
+       "text": "Some waverers may stay loyal if I show strength; others will privately urge me to go."
+      },
+      {
+       "step": 1,
+       "branch": "b004",
+       "by": "Boris_Johnson",
+       "about": "1922_committee_executive",
+       "text": "They will meet and consider changing the confidence rule; I need to buy time."
+      },
+      {
+       "step": 1,
+       "branch": "b005",
+       "by": "Boris_Johnson",
+       "about": "conservative_mps",
+       "text": "Many will wait to see if I can stabilise the ship; a few more may resign but the majority will hesitate if I show strength."
+      },
+      {
+       "step": 1,
+       "branch": "b005",
+       "by": "Boris_Johnson",
+       "about": "labour_and_media",
+       "text": "They will intensify calls for a general election and paint me as deluded; but they have no majority and no mandate."
+      },
+      {
+       "step": 2,
+       "branch": "b000",
+       "by": "Conservative_Cabinet",
+       "about": "Boris_Johnson",
+       "text": "He will refuse initially, possibly try to divide us or offer concessions."
+      },
+      {
+       "step": 2,
+       "branch": "b000",
+       "by": "Conservative_Cabinet",
+       "about": "conservative_mps",
+       "text": "Many will support our move once they see cabinet unity; some loyalists may resist."
+      },
+      {
+       "step": 2,
+       "branch": "b001",
+       "by": "Conservative_Cabinet",
+       "about": "Boris_Johnson",
+       "text": "Defiant refusal, possibly attempting to sack the delegation and appoint loyalists, or trying to buy time with promises that will not be kept."
+      },
+      {
+       "step": 2,
+       "branch": "b001",
+       "by": "Conservative_Cabinet",
+       "about": "backbench_1922_committee",
+       "text": "The 1922 Committee will likely accelerate their leadership election process if we force the PM out, seeing this as the only path to survival."
+      },
+      {
+       "step": 2,
+       "branch": "b001",
+       "by": "Conservative_Cabinet",
+       "about": "public_and_media",
+       "text": "Publicly, there will be initial shock and criticism of 'chaos in government', but privately many will view decisive action as necessary to restore basic governance."
+      },
+      {
+       "step": 2,
+       "branch": "b002",
+       "by": "Conservative_Cabinet",
+       "about": "Boris_Johnson",
+       "text": "He will likely resist and attempt to portray us as disloyal plotters."
+      },
+      {
+       "step": 2,
+       "branch": "b002",
+       "by": "Conservative_Cabinet",
+       "about": "conservative_mps",
+       "text": "Many will be relieved and support our move; a faction may remain loyal to Johnson."
+      },
+      {
+       "step": 2,
+       "branch": "b003",
+       "by": "Conservative_Cabinet",
+       "about": "Boris_Johnson",
+       "text": "Prolonged defiance or attempts to bargain, but likely to concede if faced with an overwhelming bloc of ministers."
+      },
+      {
+       "step": 2,
+       "branch": "b003",
+       "by": "Conservative_Cabinet",
+       "about": "backbench_1922_committee",
+       "text": "Swiftly schedule a confidence vote immediately after the PM's potential resignation or defiance."
+      },
+      {
+       "step": 2,
+       "branch": "b004",
+       "by": "Conservative_Cabinet",
+       "about": "Boris_Johnson",
+       "text": "Fury and refusal, but may yield under overwhelming pressure from cabinet."
+      },
+      {
+       "step": 2,
+       "branch": "b004",
+       "by": "Conservative_Cabinet",
+       "about": "backbench_1922_committee",
+       "text": "They will watch closely and may accelerate leadership rules if we fail."
+      }
+     ],
+     "persistence": {
+      "hypothesis_switches": 0,
+      "final_revision_counts": []
+     },
+     "llm_calls": 18,
+     "wall_s": 214.8
+    }
+   ],
+   "summary": {
+    "mean_step_accuracy": 0.6111,
+    "mean_sequence_accuracy": 0.0,
+    "accuracy_by_depth_pooled": [
+     0.6667,
+     0.6667,
+     0.3333,
+     1.0
+    ],
+    "reaction_scored": 15,
+    "reaction_correct": 9,
+    "reaction_unscored": 24,
+    "hypothesis_switches": 0,
+    "total_llm_calls": 66,
+    "total_wall_s": 783.4
+   }
+  }
+ }
+}

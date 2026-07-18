@@ -61,7 +61,7 @@ QUALITATIVE_MODEL_VERSION = SCHEMA_VERSION + "+qualitative-1.0"
 #: prefixed: it must never surface through ActorView.policy_state into numeric or persona
 #: prompts. The qualitative runtime reads it directly — it is the actor's own mind.
 QUAL_STATE_KEY = "qualitative_actor_state"
-CLUSTER_VERSION = "cluster-1.0"
+CLUSTER_VERSION = "cluster-2.0"
 CALIBRATION_PACK = "experiments/actor_decision_calibration.json"
 
 POLICY_MODES = ("numeric_policy", "persona_blended_numeric_policy", "stateless_llm_policy",
@@ -668,6 +668,8 @@ class NovelActionCompiler:
 class QualitativeConfig:
     llm: object = None                       # fn(prompt) -> text; decisions want temperature > 0
     hypothesis_llm: object = None            # optional distinct backend for hypothesis generation
+    fallback_llms: list = field(default_factory=list)  # alternate model families tried, in order,
+    #                                          when the primary fails a Tier-1 decision (recorded)
     llm_hypotheses: bool = True              # False ⇒ deterministic labeled fallback set (tests)
     n_hypotheses: int = 3
     persistent: bool = True                  # False = stateless_llm_policy (arm C)
@@ -709,21 +711,30 @@ class QualitativeDecisionEngine:
             return None
         prompt = self.build_prompt(view, state, situation, menu, obstacle=obstacle)
         used = 0
-        for _ in range(1 + max(0, self.config.retries)):
-            with self._lock:
-                if self._calls_used >= self.config.max_llm_calls:
-                    break
-                self._calls_used += 1
-            used += 1
-            try:
-                text = self.config.llm(prompt)
-            except Exception:  # noqa: BLE001
-                continue
-            qd = parse_qualitative_decision(text, view.actor_id)
-            if qd is not None:
-                qd.prompt_hash = _hash(prompt)[:16]
-                qd.llm_calls = used
-                return qd
+        # primary backend with retries, then each configured fallback model family once — a
+        # Tier-1 decision reaches the numeric fallback only after EVERY family failed, and the
+        # serving family is recorded on the decision (raw_source suffix).
+        backends = [("primary", self.config.llm)] + [
+            (f"fallback_family_{i}", b) for i, b in enumerate(self.config.fallback_llms or [])]
+        for family, backend in backends:
+            attempts = 1 + max(0, int(self.config.retries)) if family == "primary" else 1
+            for _ in range(attempts):
+                with self._lock:
+                    if self._calls_used >= self.config.max_llm_calls:
+                        return None
+                    self._calls_used += 1
+                used += 1
+                try:
+                    text = backend(prompt)
+                except Exception:  # noqa: BLE001
+                    continue
+                qd = parse_qualitative_decision(text, view.actor_id)
+                if qd is not None:
+                    qd.prompt_hash = _hash(prompt)[:16]
+                    qd.llm_calls = used
+                    if family != "primary":
+                        qd.raw_source = f"{qd.raw_source}:{family}"
+                    return qd
         return None
 
     def build_prompt(self, view: ActorView, state: QualitativeActorState | None,
@@ -1028,6 +1039,11 @@ class QualitativeActorPolicyRuntime(ActorPolicyRuntime):
                     "revised_after_obstacle": revised,
                     "novel_action_unmodeled": unmodeled,
                     "act_or_wait": qd.act_or_wait,
+                    "linked_actions": qd.linked_actions,
+                    "known_entities": sorted(
+                        set(view.network_position.get("reachable_actor_ids") or [])
+                        | {str(r.get("institution_id")) for r in view.institution_rules}
+                        | {view.actor_id}),
                     "decision_summary": qd.decision_summary,
                     "situation_interpretation": qd.situation_interpretation,
                     "internal_reaction": str(qd.actor_state_update.get(
@@ -1087,18 +1103,131 @@ class QualitativeActorPolicyRuntime(ActorPolicyRuntime):
 
 
 # ------------------------------------------------------------------- aggregation & calibration
+_MAP_PROMPT = """You are a conservative, auditable action-equivalence judge for a decision benchmark.
+An actor chose an action phrased in their own words. Decide whether it is SEMANTICALLY THE SAME DECISION as
+one of the known candidate actions — merge meaningless wording differences, but NEVER merge genuinely
+different decisions (accepting privately with conditions is still accept, but delaying disguised as
+acceptance is delay).
+ACTOR'S CHOSEN ACTION: {name}
+THEIR STATED INTENT: {intent}
+DESCRIPTION: {description}
+CANDIDATE ACTIONS: {candidates}
+KNOWN COUNTERPARTIES: {entities}
+Return ONLY JSON:
+{{"action": "<one candidate, or 'none' if genuinely different>",
+ "target": "<one known counterparty this is aimed at, or ''>",
+ "modifier": "<private|conditional|multi_part|''>",
+ "why": "<= 20 words>"}}"""
+
+
+def _canon(s: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "_", str(s or "").strip().lower()).strip("_")
+
+
 class ActionClusterer:
-    """Versioned, auditable semantic clustering of selected actions. v1 is deterministic:
-    exact (action_name, target) first; a compiled novel action clusters by its validated
-    ontology anchor (same causal meaning), keeping the original phrasing in the row."""
+    """cluster-2.0 — versioned, auditable semantic clustering of selected actions.
 
-    version = CLUSTER_VERSION
+    Pipeline per row: normalize the target identity against the known entity/alias registry
+    (case, spacing, containment, token overlap — `Donald_Trump`/`donald_trump`/`Trump` merge;
+    role references merge via explicit aliases); map a novel phrasing onto a candidate when
+    semantically equivalent (exact → validated ontology anchor → optional conservative
+    LLM-assisted mapping, cached and recorded); preserve MEANINGFUL modifiers (private /
+    conditional / multi-part) as cluster suffixes so `accept[private]` never merges into
+    `accept` silently; keep the original wording, the method, and a human-auditable
+    explanation on every row. Deterministic without an LLM; the LLM mapper only ever maps
+    ONTO the candidate set, never invents mass."""
 
-    def cluster_key(self, row: dict) -> str:
+    version = "cluster-2.0"
+
+    def __init__(self, *, candidates=None, known_entities=None, aliases=None, llm=None):
+        self.candidates = [str(c) for c in (candidates or [])]
+        self.known = {}
+        for e in (known_entities or []):
+            self.known[_canon(e)] = str(e)
+        self.aliases = {_canon(k): str(v) for k, v in (aliases or {}).items()}
+        self.llm = llm
+        self._map_cache: dict = {}
+
+    # ---- target identity normalization ------------------------------------------
+    def normalize_target(self, target: str) -> str:
+        c = _canon(target)
+        if not c:
+            return ""
+        if c in self.aliases:
+            return self.aliases[c]
+        if c in self.known:
+            return self.known[c]
+        for ck, original in self.known.items():
+            if len(c) >= 4 and (c in ck or ck in c):
+                return original
+            ct, kt = set(c.split("_")), set(ck.split("_"))
+            if ct and kt and len(ct & kt) / max(1, len(ct | kt)) >= 0.5:
+                return original
+        return c
+
+    # ---- semantic mapping onto candidates ----------------------------------------
+    def _map_novel(self, row: dict):
+        name = row.get("action_name", "")
         anchor = (row.get("ontology_anchor") or {}).get("name")
-        name = anchor or row.get("action_name", "")
-        target = row.get("target", "")
-        return f"{name}@{target}" if target else str(name)
+        if name in self.candidates:
+            return name, "", "exact", "chosen action is a candidate"
+        if anchor and anchor in self.candidates:
+            return anchor, "", "ontology_anchor", \
+                f"novel phrasing {name!r} carries validated anchor {anchor!r}"
+        if self.llm is not None and self.candidates:
+            key = _hash({"n": name, "i": row.get("intended_effect", ""),
+                         "c": self.candidates})[:16]
+            if key not in self._map_cache:
+                self._map_cache[key] = self._llm_map(row)
+            mapped = self._map_cache[key]
+            if mapped:
+                return (mapped["action"], mapped.get("modifier", ""), "llm_map",
+                        f"{name!r} judged equivalent to {mapped['action']!r}: {mapped['why']}")
+        return name, "", "novel", f"no candidate equivalent found for {name!r}"
+
+    def _llm_map(self, row: dict):
+        from swm.engine.grounding import parse_json
+        try:
+            r = parse_json(self.llm(_MAP_PROMPT.format(
+                name=row.get("action_name", ""), intent=str(row.get("intended_effect", ""))[:300],
+                description=str(row.get("novel_description", ""))[:300],
+                candidates=self.candidates, entities=sorted(self.known.values())[:12])))
+        except Exception:  # noqa: BLE001 — mapper failure means honest 'novel', never a guess
+            return None
+        if not isinstance(r, dict):
+            return None
+        action = str(r.get("action", "none")).strip()
+        if action not in self.candidates:
+            return None
+        modifier = str(r.get("modifier", "") or "").strip().lower()
+        return {"action": action,
+                "modifier": modifier if modifier in ("private", "conditional", "multi_part") else "",
+                "target": str(r.get("target", "") or ""), "why": str(r.get("why", ""))[:120]}
+
+    # ---- the public contract ------------------------------------------------------
+    def cluster_row(self, row: dict) -> dict:
+        base, mapped_modifier, method, why = self._map_novel(row)
+        modifier = mapped_modifier or self._modifier(row)
+        target = self.normalize_target(row.get("target", ""))
+        key = base + (f"[{modifier}]" if modifier else "") + (f"@{target}" if target else "")
+        return {"cluster": key, "cluster_base": base, "cluster_modifier": modifier,
+                "cluster_target": target, "cluster_method": method,
+                "cluster_explanation": why, "cluster_version": self.version}
+
+    @staticmethod
+    def _modifier(row: dict) -> str:
+        obs = str(row.get("observability_intent", "") or "").lower()
+        timing = str(row.get("timing", "") or "").lower()
+        if row.get("linked_actions"):
+            return "multi_part"
+        if obs in ("private", "mixed"):
+            return "private"
+        if timing == "conditional":
+            return "conditional"
+        return ""
+
+    def cluster_key(self, row: dict) -> str:                # v1-compatible entry point
+        return self.cluster_row(row)["cluster"]
 
 
 class ActorPolicyCalibrator:
@@ -1149,27 +1278,43 @@ def aggregate_actor_decisions(posteriors_and_traces, *, clusterer: ActionCluster
     decision events. Only qualitative LLM choices count toward the qualitative distribution;
     numeric fallbacks are preserved in the rows but EXCLUDED from the pure aggregate (they are
     reported separately). Calibration happens strictly after aggregation."""
-    clusterer = clusterer or ActionClusterer()
     calibrator = calibrator or ActorPolicyCalibrator()
     per_actor: dict = {}
+    pending_rows, all_entities, all_candidates = [], set(), set()
     for posterior, trace in posteriors_and_traces:
         qual = (posterior.provenance or {}).get("qualitative") or {}
         chosen = trace.sampled_action_id
         cand = next((a for a in trace.candidate_actions if a.get("action_id") == chosen), {})
+        params = cand.get("parameters") or {}
         row = {
             "trace_id": trace.trace_id, "branch_id": qual.get("branch_id", ""),
             "hypothesis_id": qual.get("hypothesis_id", ""),
             "decision_time": trace.decision_time, "seed": trace.random_seed,
             "action_id": chosen, "action_name": cand.get("action_name", ""),
             "target": (cand.get("target") or {}).get("target_id", ""),
-            "ontology_anchor": (cand.get("parameters") or {}).get("ontology_anchor"),
+            "ontology_anchor": params.get("ontology_anchor"),
+            "intended_effect": params.get("intended_effect", ""),
+            "observability_intent": params.get("observability_intent", ""),
+            "timing": params.get("timing", ""),
+            "novel_description": params.get("novel_description", ""),
+            "linked_actions": list(qual.get("linked_actions") or []),
             "decision_source": qual.get("decision_source", "numeric_policy"),
             "novel_action_unmodeled": bool(qual.get("novel_action_unmodeled")),
             "state_hash": qual.get("state_hash", ""), "prompt_hash": qual.get("prompt_hash", ""),
             "evidence_ids": list(trace.observed_evidence_ids),
         }
-        row["cluster"] = clusterer.cluster_key(row)
-        bucket = per_actor.setdefault(trace.actor_id, {"rows": [], "excluded_fallbacks": 0})
+        all_entities.update(qual.get("known_entities") or [])
+        all_entities.add(trace.actor_id)
+        for a in trace.candidate_actions:
+            if (a.get("provenance") or {}).get("source") != "qualitative_llm_choice":
+                all_candidates.add(str(a.get("action_name", "")))
+        pending_rows.append((trace.actor_id, row))
+    if clusterer is None:
+        clusterer = ActionClusterer(candidates=sorted(all_candidates - {""}),
+                                    known_entities=sorted(all_entities - {""}))
+    for actor_id, row in pending_rows:
+        row.update(clusterer.cluster_row(row))
+        bucket = per_actor.setdefault(actor_id, {"rows": [], "excluded_fallbacks": 0})
         if row["decision_source"] in ("persistent_qualitative_llm", "stateless_llm"):
             bucket["rows"].append(row)
         else:
@@ -1204,13 +1349,15 @@ def aggregate_actor_decisions(posteriors_and_traces, *, clusterer: ActionCluster
 def build_qualitative_runtime(plan=None, *, llm=None, mode: str,
                               config: QualitativeConfig | None = None,
                               selector=None, tiers: dict | None = None,
-                              model=None) -> QualitativeActorPolicyRuntime | None:
+                              model=None, fallback_llms=None) -> QualitativeActorPolicyRuntime | None:
     """Construct the routed qualitative runtime for one run. ``hybrid_relevant_actor_policy``
     computes question-specific tiers from the plan (RelevantActorSelector); pure modes route
     every decision actor. Returns None when no backend exists (numeric production unchanged)."""
     if llm is None and (config is None or config.llm is None):
         return None
     cfg = config or QualitativeConfig(llm=llm)
+    if fallback_llms and not cfg.fallback_llms:
+        cfg.fallback_llms = list(fallback_llms)
     cfg.persistent = mode != "stateless_llm_policy"
     if mode == "hybrid_relevant_actor_policy" and selector is None:
         from swm.world_model_v2.actor_selection import RelevantActorSelector
