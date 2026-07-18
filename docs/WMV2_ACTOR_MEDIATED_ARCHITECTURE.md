@@ -201,3 +201,17 @@ Demotions in existing code:
 
 (Sections C.3 — live-LLM forensic traces — and D — honest verdict — are appended after the
 live runs complete.)
+
+### C.2b Live-LLM three-arm run (DeepSeek backend, 6 particles, same seeds)
+
+`experiments/results/actor_mediated/three_arm_report_real.json`:
+
+| arm | LLM calls | wall | reconsiderations | max depth | member decisions |
+|---|---|---|---|---|---|
+| scalar | 6 | 51s | 0 | 0 | none — members never decide (legacy target-only path) |
+| one_hop | 24 | 191s | 18 | 1 | one response each (support/acknowledge/coordinate mix) |
+| recursive | 138 | 1175s | 132 | 4 | multi-actor interaction webs (reply/coordinate/support toward several counterparts), terminated by depth+event budgets |
+
+All actor distributions labeled `unvalidated` (no fitted calibrator — correct). Cost scales
+with cascade regime and is hard-bounded by the declared budgets. Architectural evidence only —
+the synthetic scenario has no real-world resolution and supports no accuracy claim.

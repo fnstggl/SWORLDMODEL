@@ -1,0 +1,155 @@
+{
+ "generated_at": "2026-07-18T15:28:21Z",
+ "mode": "real_llm",
+ "scenario": "The leader must publicly state whether the bloc holds its negotiating position or concedes; three members then decide their own public stances; the bloc's council votes five days later.",
+ "claim_scope": "architectural difference under identical inputs \u2014 NOT a predictive-accuracy claim (no resolved outcome exists for a synthetic scenario)",
+ "arms": {
+  "scalar": {
+   "arm": "scalar",
+   "n_particles": 6,
+   "p_bloc_holds": 0.0,
+   "n_reconsiderations": 0,
+   "max_depth": 0,
+   "n_demoted_scalar_writes": 0,
+   "llm_calls": 6,
+   "wall_s": 50.7,
+   "actor_distributions": {
+    "leader_a": {
+     "raw": {
+      "hold_position": 0.8333,
+      "hold_position@bloc_council": 0.1667
+     },
+     "n": 6,
+     "calibration": "unvalidated"
+    }
+   },
+   "quiescence_reasons": []
+  },
+  "one_hop": {
+   "arm": "one_hop",
+   "n_particles": 6,
+   "p_bloc_holds": 0.3333,
+   "n_reconsiderations": 18,
+   "max_depth": 1,
+   "n_demoted_scalar_writes": 11,
+   "llm_calls": 24,
+   "wall_s": 190.6,
+   "actor_distributions": {
+    "leader_a": {
+     "raw": {
+      "hold_position": 0.8333,
+      "hold_position@bloc": 0.1667
+     },
+     "n": 6,
+     "calibration": "unvalidated"
+    },
+    "member_b": {
+     "raw": {
+      "acknowledge@leader": 0.3333,
+      "coordinate@leader": 0.3333,
+      "support@leader": 0.3333
+     },
+     "n": 6,
+     "calibration": "unvalidated"
+    },
+    "member_c": {
+     "raw": {
+      "acknowledge@leader": 0.6667,
+      "support@leader": 0.3333
+     },
+     "n": 6,
+     "calibration": "unvalidated"
+    },
+    "member_d": {
+     "raw": {
+      "coordinate@leader": 0.1667,
+      "reply_now@leader": 0.1667,
+      "support@leader": 0.6667
+     },
+     "n": 6,
+     "calibration": "unvalidated"
+    }
+   },
+   "quiescence_reasons": [
+    "depth_budget"
+   ]
+  },
+  "recursive": {
+   "arm": "recursive",
+   "n_particles": 6,
+   "p_bloc_holds": 0.3333,
+   "n_reconsiderations": 132,
+   "max_depth": 4,
+   "n_demoted_scalar_writes": 50,
+   "llm_calls": 138,
+   "wall_s": 1175.1,
+   "actor_distributions": {
+    "leader_a": {
+     "raw": {
+      "acknowledge@member_c": 0.0256,
+      "acknowledge@member_d": 0.0256,
+      "coordinate@member_b": 0.0769,
+      "coordinate@member_c": 0.0513,
+      "coordinate@member_d": 0.0256,
+      "hold_position": 0.1026,
+      "hold_position@bloc_council": 0.0513,
+      "reply_now@member_b": 0.2564,
+      "reply_now@member_c": 0.1795,
+      "reply_now@member_d": 0.2051
+     },
+     "n": 39,
+     "calibration": "unvalidated"
+    },
+    "member_b": {
+     "raw": {
+      "acknowledge@leader": 0.0606,
+      "acknowledge@member_c": 0.0909,
+      "acknowledge@member_d": 0.0909,
+      "coordinate@leader": 0.0606,
+      "reply_now@leader": 0.1818,
+      "reply_now@member_c": 0.1818,
+      "reply_now@member_d": 0.0303,
+      "support@leader": 0.2424,
+      "support@member_c": 0.0303,
+      "support@member_d": 0.0303
+     },
+     "n": 33,
+     "calibration": "unvalidated"
+    },
+    "member_c": {
+     "raw": {
+      "acknowledge@leader": 0.0909,
+      "reply_now@leader": 0.1515,
+      "reply_now@member_b": 0.1515,
+      "reply_now@member_d": 0.1515,
+      "support@leader": 0.2727,
+      "support@member_b": 0.1212,
+      "support@member_d": 0.0606
+     },
+     "n": 33,
+     "calibration": "unvalidated"
+    },
+    "member_d": {
+     "raw": {
+      "acknowledge@leader": 0.0303,
+      "acknowledge@member_c": 0.0606,
+      "coordinate@leader": 0.0606,
+      "coordinate@member_c": 0.0303,
+      "reply_now@leader": 0.1515,
+      "reply_now@member_b": 0.0909,
+      "reply_now@member_c": 0.1515,
+      "support@leader": 0.2727,
+      "support@member_b": 0.1212,
+      "support@member_c": 0.0303
+     },
+     "n": 33,
+     "calibration": "unvalidated"
+    }
+   },
+   "quiescence_reasons": [
+    "depth_budget",
+    "event_budget"
+   ]
+  }
+ }
+}
