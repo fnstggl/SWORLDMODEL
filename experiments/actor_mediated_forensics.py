@@ -140,6 +140,9 @@ def t4_phase13_matched_counterfactual(llm) -> dict:
     problem = DecisionProblem(
         decision_id="forensic_t4_cofounder",
         decision_maker=maker,
+        authority=["communicate", "allocate", "coordinate", "schedule", "guarantee",
+                   "preserve_option", "publish", "final_decision"],
+        controllable_resources={"retention_budget": 1.0},
         context="What should the CEO do to keep the wavering co-founder through launch?",
         as_of=AS_OF + "T00:00:00Z", horizon="2026-09-30T00:00:00Z",
         utility=UtilitySpec(stakeholders=[Stakeholder("ceo", utility_fn=stays_utility)],
