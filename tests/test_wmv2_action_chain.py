@@ -127,7 +127,9 @@ def test_actor_view_wraps_legacy_string_commitments_without_char_splitting():
 
 # ---------------------------------------------------------------- action → world (pathway processes)
 def test_executed_action_moves_declared_pathway_progress_only():
-    runtime = ActorPolicyRuntime()
+    # the scalar action→bar coupling is the explicit LEGACY BENCHMARK mode — the production
+    # default routes consequences through semantic_consequences (typed world transitions)
+    runtime = ActorPolicyRuntime(consequence_mode="legacy_scalar_pathway_consequences")
     w = _world(**{progress_var("cooperative_agreement"): 0.5})
     _actor(w, stances=REFUSER_STANCES)
     view = ActorViewBuilder().build(w, "leader_a")
