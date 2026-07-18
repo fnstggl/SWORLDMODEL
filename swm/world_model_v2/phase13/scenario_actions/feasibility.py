@@ -72,11 +72,22 @@ def check_candidate(world, language, problem, candidate: ConcreteAction, *,
 
     horizon = getattr(world, "horizon", None) or (schema.horizon if schema else 0.0)
     now = float(getattr(getattr(world, "clock", None), "now", 0.0) or 0.0)
+    institutions = set(getattr(world, "institutions", {}) or {}) | \
+        set((schema.institutional_definitions or {}) if schema else {})
+    # a later step may legitimately target a record an EARLIER step's compiled program
+    # creates — collect plan-internal record ids in step order
+    created_by_plan: set = set()
     resources_needed: dict = {}
     for step in candidate.steps:
         for t in step.target_ids:
-            if str(t) not in entities and str(t) not in (getattr(world, "objects", {}) or {}):
+            t = str(t)
+            if t not in entities and t not in (getattr(world, "objects", {}) or {}) \
+                    and t not in institutions and t not in created_by_plan:
                 _fail(v, "target_missing", f"step {step.step_id}: target {t!r} does not exist")
+        for op in step.compiled_ops or []:
+            rid = str(op.get("record_id", "") or "")
+            if rid and str(op.get("op")) == "create_or_update_record":
+                created_by_plan.add(rid)
         if step.timing_ts is not None:
             if horizon and float(step.timing_ts) > float(horizon):
                 _fail(v, "timing_after_horizon",

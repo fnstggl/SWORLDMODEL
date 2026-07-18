@@ -125,11 +125,24 @@ class GoalBackwardPlanner:
         return {"levers": [], "source": "unavailable"}
 
     # ------------------------------------------------------------ step 5: strategy structures
+    def _valid_targets(self) -> dict:
+        return {"actors": sorted(self.language.relevant_actors or {})[:16],
+                "institutions": [str(i.get("institution_id"))
+                                 for i in (self.language.institutions or [])][:8],
+                "records": [str(o) for o in (self.language.controllable_objects or [])][:12]}
+
     def _context_block(self) -> str:
+        resources = {k: (v or {}).get("available")
+                     for k, v in (self.language.resources or {}).items()}
         return (f"DECISION MAKER: {self.problem.decision_maker}\n"
                 f"GOAL CONTRACT: {json.dumps({'desired': [p.description or p.predicate_id for p in self.goal.by_role('desired_terminal')], 'forbidden': [p.description or p.predicate_id for p in self.goal.by_role('forbidden')], 'near_miss': [p.description or p.predicate_id for p in self.goal.by_role('near_miss')]}, default=str)[:800]}\n"
                 f"THE SCENARIO ACTION LANGUAGE (verified capabilities): "
                 f"{json.dumps(self.language.summary(), default=str)[:1100]}\n"
+                f"VALID TARGET IDS (steps may target ONLY these; a step's targets are the "
+                f"actors/institutions/records it is directed at): "
+                f"{json.dumps(self._valid_targets(), default=str)[:500]}\n"
+                f"AVAILABLE RESOURCES (name: amount held; commitments beyond these are "
+                f"infeasible): {json.dumps(resources, default=str)[:300]}\n"
                 f"HORIZON: {self.problem.horizon or 'open'}\n")
 
     def generate_strategies(self, reqs: dict, levers: dict) -> list:
