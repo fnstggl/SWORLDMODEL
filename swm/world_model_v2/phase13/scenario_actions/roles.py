@@ -37,6 +37,8 @@ class RoleTrace:
                "token_estimate": (len(str(prompt)) + len(str(response))) // 4}
         self.rows.append(row)
         if self.path:
+            import os
+            os.makedirs(os.path.dirname(os.path.abspath(self.path)), exist_ok=True)
             with open(self.path, "a") as f:
                 f.write(json.dumps(row, default=str) + "\n")
 

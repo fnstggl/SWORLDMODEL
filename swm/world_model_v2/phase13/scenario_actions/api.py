@@ -139,7 +139,7 @@ def _run_generated(problem: DecisionProblem, world_context, *, user_candidates=N
                    goal_text: str = "", budget: str = "standard", seed: int = 0,
                    n_particles=None, llm=None, trace_path: str = "",
                    generate: bool = True, message_realizer=None,
-                   max_llm_calls: int = 220) -> DecisionResult:
+                   max_llm_calls: int = 220, _language=None) -> DecisionResult:
     t0 = _time.time()
     problem = copy.copy(problem)                      # NEVER mutate the caller's contract
     problem.candidate_actions = list(problem.candidate_actions or [])
@@ -150,8 +150,9 @@ def _run_generated(problem: DecisionProblem, world_context, *, user_candidates=N
     schema = _schema_of(ev)
     w0 = ev.particles()[0]
 
-    language = ActionLanguageGenerator(llm, trace=trace).generate(
-        problem, w0, schema, goal_text=goal_text)
+    language = _language if _language is not None else \
+        ActionLanguageGenerator(llm, trace=trace).generate(problem, w0, schema,
+                                                           goal_text=goal_text)
     goal = GoalContractGenerator(llm, trace=trace).generate(problem, schema,
                                                             goal_text=goal_text)
     compiler = ScenarioActionCompiler(llm, trace=trace)
@@ -252,7 +253,8 @@ def evaluate_actions_generated(problem: DecisionProblem, actions: list, world_co
     return _run_generated(problem, world_context, user_candidates=users,
                           goal_text=goal_text, budget=budget, seed=seed,
                           n_particles=n_particles, llm=llm, trace_path=trace_path,
-                          generate=False, message_realizer=message_realizer)
+                          generate=False, message_realizer=message_realizer,
+                          _language=language)
 
 
 def discover_best_action(question_or_goal: str, context, *, problem: DecisionProblem = None,
