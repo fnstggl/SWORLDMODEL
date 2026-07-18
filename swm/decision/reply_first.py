@@ -220,7 +220,10 @@ class ReplyFirstPlanner:
         if bad:
             return {"ok": False, "violations": [f"number not in facts: {bad}"]}
         from swm.decision.outreach_contract import validate
-        cv = validate(text, self.brief)
+        # identity_window=None: identity must exist somewhere (debate-bait still fails), but its
+        # POSITION is a structure choice for the blind outcome ranking, not a contract rule —
+        # run-2 forensic: the v3 first-two-sentences rule killed 4 of 5 structures at the gate.
+        cv = validate(text, self.brief, identity_window=None)
         if not cv.ok:
             return {"ok": False, "violations": [f"contract: {cv.missing}"]}
         if self.chat is None:

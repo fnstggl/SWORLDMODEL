@@ -285,9 +285,24 @@ implementation defects — all found by reading the trace, all now regression-lo
    gets ONE targeted repair pass — the flags become edits, accepted only if the repair comes back
    strictly clean under BOTH gates (`test_repair_language_turns_flags_into_edits`).
 
-The corrected planner was then re-run live end to end (`artifacts/phase13/thiel_v5/` — final
-traces, result, ledger freeze). The run-1 artifacts are retained deliberately: the point of
-tracing every call is that this class of defect is findable by reading, not by trusting.
+**Run 2** (`run2_contract_collision/`, 109 raw calls) verified all three fixes live — every seed
+closed sender-directed, the winner came out of a successful `+lang_repair` — and its rank counts
+exposed a fourth, subtler defect:
+
+4. **A v3 contract rule was silently strangling the v4 structure search.** Rank-1 counts showed
+   exactly ONE arm: the plain baseline. Replaying the deterministic gates on the traced seeds
+   showed why — `validate()`'s "identity in the first two sentences" rule (written for the v3
+   slate path after the identity-less debate-bait failure) hard-failed 4 of the 5 beat
+   structures, the ones that place the identity beat after the surprise or the evidence. The
+   structure search — the core of the v4 design — was comparing one candidate. Fix:
+   `validate(identity_window=...)`; the planner passes `None` (identity must exist SOMEWHERE —
+   the debate-bait regression still fails — but its position is now the blind outcome judge's
+   question, which is the entire point of searching structures)
+   (`test_identity_window_frees_structure_search_but_keeps_debate_bait_dead`).
+
+The corrected planner then ran live end to end (run 3 — `artifacts/phase13/thiel_v5/` top level:
+final traces, result, ledger freeze). The run-1/run-2 artifacts are retained deliberately: the
+point of tracing every call is that this class of defect is findable by reading, not by trusting.
 
 ## 9. Failures (honest)
 

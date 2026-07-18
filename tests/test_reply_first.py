@@ -365,6 +365,26 @@ def test_repair_language_turns_flags_into_edits(monkeypatch):
     assert p2.repair_language(dict(cand)) == cand
 
 
+def test_identity_window_frees_structure_search_but_keeps_debate_bait_dead():
+    """Run-2 forensic: the v3 'identity in the first two sentences' rule contract-killed every
+    structure that places the identity beat later, collapsing the structure search to the
+    baseline. The planner now validates with identity_window=None: position is the outcome
+    judge's question, PRESENCE is still a hard rule."""
+    from swm.decision.outreach_contract import validate
+    late_identity = ("Most people think AI infrastructure is power-constrained. "
+                     "It's actually planning-constrained: schedulers optimize the next placement. "
+                     "I'm Beckett, building Aurelius to fix exactly that. "
+                     "Want the one-pager?")
+    assert not validate(late_identity, BRIEF).ok                        # v3 rule: too late
+    assert validate(late_identity, BRIEF, identity_window=None).ok      # v4 rule: present -> ok
+    no_identity = ("Everyone says AI is power-bound. That is wrong and provably so. "
+                   "The bottleneck is planning. Which assumption of yours breaks first?")
+    v = validate(no_identity, BRIEF, identity_window=None)
+    assert not v.ok and any("identity" in m for m in v.missing)         # debate-bait stays dead
+    p = planner()
+    assert p.truth(late_identity)["ok"]                                 # planner uses window=None
+
+
 # --------------------------------------------------------------------------- pipeline default
 def test_pipeline_defaults_to_reply_first_and_wraps_single_output():
     import inspect

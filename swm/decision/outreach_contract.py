@@ -58,9 +58,17 @@ class ContractVerdict:
         return {"ok": self.ok, "missing": self.missing, "flags": self.flags}
 
 
-def validate(text: str, sender=None, *, max_words: int = 130) -> ContractVerdict:
+def validate(text: str, sender=None, *, max_words: int = 130,
+             identity_window: int = 2) -> ContractVerdict:
     """Deterministic contract check. Hard elements: identity, thesis, next step, length.
-    Soft flags: unanchored big numbers, diligence-bait asks, missing recipient bridge."""
+    Soft flags: unanchored big numbers, diligence-bait asks, missing recipient bridge.
+
+    identity_window: identity must appear within the first N sentences (default 2 — the v3 slate
+    rule). Pass None to require identity ANYWHERE in the message: the reply-first structure
+    search uses this, because WHERE the identity beat sits is exactly what its blind outcome
+    ranking is meant to adjudicate (surprise-first and evidence-first structures put it later).
+    A message with no identity at all still hard-fails either way — the original debate-bait
+    regression stays a regression."""
     t = (text or "").strip()
     v = ContractVerdict(ok=True)
     if not t:
@@ -68,13 +76,14 @@ def validate(text: str, sender=None, *, max_words: int = 130) -> ContractVerdict
     sentences = [s.strip() for s in re.split(r"(?<=[.!?])\s+", t) if s.strip()]
     words = len(t.split())
 
-    # 1. identity — must appear in the first two sentences (an introduction, not a footnote)
-    head = " ".join(sentences[:2])
+    # 1. identity — an introduction a stranger can find (window controls how early)
+    head = " ".join(sentences[:identity_window]) if identity_window else " ".join(sentences)
+    where = (f"the first {identity_window} sentences" if identity_window else "the message")
     sender_name = getattr(sender, "sender", "") or ""
     if not (_IDENTITY.search(head) or (sender_name and re.search(
             rf"\b(i'?m|i am) {re.escape(sender_name)}\b", head, re.I))):
-        v.missing.append("identity: a stranger cannot tell who is writing from the first two "
-                         "sentences ('I'm <name>, building <thing>')")
+        v.missing.append(f"identity: a stranger cannot tell who is writing from {where} "
+                         "('I'm <name>, building <thing>')")
 
     # 2. thesis — at least one declarative (non-question) sentence beyond the identity line
     declaratives = [s for s in sentences if not s.rstrip().endswith("?")]
