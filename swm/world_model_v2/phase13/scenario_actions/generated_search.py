@@ -24,6 +24,28 @@ from swm.world_model_v2.phase13.scenario_actions.goals import (compare_candidate
                                                                pareto_front)
 from swm.world_model_v2.phase13.scenario_actions.roles import blind_labels
 
+def _blind_diagnosis(diag, candidate) -> dict:
+    """The adjudicator sees failure STRUCTURE, never identity: candidate_id dropped,
+    step_stats re-keyed positionally (step ids embed the candidate id — §18 blindness)."""
+    if diag is None or not hasattr(diag, "as_dict"):
+        return {}
+    d = diag.as_dict()
+    d.pop("candidate_id", None)
+    order = {s.step_id: f"step_{i + 1}" for i, s in enumerate(candidate.steps)}
+    d["step_stats"] = {order.get(sid, f"step_x{i + 1}"): stats
+                       for i, (sid, stats) in enumerate(d.get("step_stats", {}).items())}
+    d["earliest_breaks"] = [
+        {**b, "detail": _scrub_ids(str(b.get("detail", "")), order)}
+        for b in d.get("earliest_breaks", [])]
+    return d
+
+
+def _scrub_ids(text: str, order: dict) -> str:
+    for sid, pos in order.items():
+        text = text.replace(sid, pos)
+    return text
+
+
 REVISION_OPS = ("keep", "remove_step", "replace_step", "add_step", "change_target",
                 "change_timing", "change_terms", "change_content", "change_channel",
                 "reorder", "split_step", "bundle_steps", "add_contingency",
@@ -238,9 +260,8 @@ class ScenarioActionSearch:
                           "simulation": {k: ev.get(k) for k in
                                          ("n_particles", "success_count", "forbidden_count",
                                           "near_miss_count", "by_hypothesis", "quantities")},
-                          "diagnosis": (self.report.diagnoses.get(c.candidate_id).as_dict()
-                                        if hasattr(self.report.diagnoses.get(c.candidate_id),
-                                                   "as_dict") else {})}
+                          "diagnosis": _blind_diagnosis(
+                              self.report.diagnoses.get(c.candidate_id), c)}
         parsed, ok = self.r.ask(
             "final_adjudicator", "adjudication",
             "You are the final independent adjudicator. You did NOT write these plans. Using "
