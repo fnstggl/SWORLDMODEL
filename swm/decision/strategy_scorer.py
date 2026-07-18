@@ -37,6 +37,9 @@ MESSAGE_VARS = [
     "personalization", "relevance_fit", "clarity", "credibility_proof", "responder_incentive",
     "ask_directness", "low_effort_ask", "convenience_selling", "pushiness", "warmth", "length_fit",
     "credential_signaling",
+    # cold-outreach funnel levers (see swm/decision/response_funnel.py for the conjunctive model)
+    "identity_legibility", "claim_believability", "cognitive_effort", "adversarial_framing",
+    "next_step_clarity",
 ]
 
 
@@ -84,6 +87,13 @@ _MAIN: list[WeightPrior] = [
     WeightPrior("warmth", 0.5, 0.5, "llm"),
     WeightPrior("pushiness", -1.8, 0.6, "llm"),
     WeightPrior("credential_signaling", -0.35, 0.6, "llm"),   # mild main cost; the action is the interaction
+    # funnel levers in the additive model too (the funnel scorer models them conjunctively; the
+    # additive form keeps the legacy path directionally aware of the same gates)
+    WeightPrior("identity_legibility", 1.0, 0.5, "llm"),      # a stranger must know who/what/why
+    WeightPrior("claim_believability", 1.0, 0.5, "llm"),      # implausible-before-interesting kills replies
+    WeightPrior("cognitive_effort", -1.2, 0.5, "llm"),        # unpaid diligence is a cost, not a hook
+    WeightPrior("adversarial_framing", -0.9, 0.5, "llm"),     # debate bait from a stranger backfires
+    WeightPrior("next_step_clarity", 0.9, 0.5, "llm"),        # the reply must accomplish something obvious
 ]
 
 # INTERACTION effects: (general message lever × recipient_var), signed. This is where the recipient's
@@ -109,6 +119,12 @@ _INTERACTIONS: list[tuple[str, str, WeightPrior]] = [
     ("personalization", "relationship_strength", WeightPrior("pers×rel", 0.6, 0.5, "llm")),
     # the higher a person's status, the more pushiness costs (they don't chase).
     ("pushiness", "status", WeightPrior("push×status", -1.0, 0.6, "llm")),
+    # debate-bait costs most from a STRANGER (relationship 0 -> centered value negative -> the
+    # negative product flips: implemented as adversarial × relationship POSITIVE interaction, so
+    # low relationship makes adversarial framing net-worse, an existing relationship excuses it)
+    ("adversarial_framing", "relationship_strength", WeightPrior("advers×rel", 0.8, 0.5, "llm")),
+    # a huge unexplained number hurts MORE with a skeptic (they discount unanchored claims hardest)
+    ("claim_believability", "skepticism", WeightPrior("believe×skeptic", 0.9, 0.5, "llm")),
     # an unsolicited-outreach-friendly recipient forgives a direct ask.
     ("ask_directness", "openness_to_outreach", WeightPrior("ask×open", 0.6, 0.5, "llm")),
     ("length_fit", "attention_availability", WeightPrior("len×attn", 0.5, 0.5, "llm")),

@@ -65,6 +65,21 @@ _CONVENIENCE_SELL = re.compile(
     r"\brequired?: (none|nothing)\b|\bif (i'?m|i am) wrong,? (just )?(delete|ignore|archive)\b", re.I)
 _NUMBER = re.compile(r"\b\d+(\.\d+)?\s?(x|%|k|m|bn|billion|million|percent|cents?|ms| x faster)?\b", re.I)
 _QMARK = re.compile(r"\?")
+# ---- funnel-lever lexical proxies (the LLM encoder scores these semantically; these are fallback) --
+_IDENTITY_LEX = re.compile(r"\b(i'?m [A-Z][a-z]+|my name is|i am [A-Z][a-z]+|i'?m (a |an )?\d{2}[ -]"
+                           r"year[ -]old|i built|i'?m building|i am building|we built|i run|i started)", re.I)
+_NEXT_STEP_LEX = re.compile(r"(may i send|could i send|can i send|want me to send|should i send|"
+                            r"happy to send|would you (want|like|read)|can i share|one[- ]pag(e|er)|"
+                            r"memo|reply ['\"]?(yes|no))", re.I)
+_ADVERSARIAL_LEX = re.compile(r"(which (assumption|part|claim)|what('| i)s wrong|prove (me|it) wrong|"
+                              r"poke holes|find the flaw|is (that|this) (thesis )?wrong|tear (it|this) "
+                              r"apart|am i wrong)", re.I)
+_BIG_CLAIM_LEX = re.compile(r"\b\d{2,}(?:[,.]\d+)?\s?(%|percent)|\b\d+(?:\.\d+)?x\b", re.I)
+_PROVENANCE_LEX = re.compile(r"\b(replay|replays|trace|traces|backtest|benchmark|baseline|vs\.?|"
+                             r"versus|against|compared|production|pilot|public|method)\b", re.I)
+_EFFORT_ASK_LEX = re.compile(r"(which assumption|reconstruct|assess|evaluate|critique|review (the|my)|"
+                             r"what do you think about (the|my) (architecture|method|approach)|"
+                             r"thoughts on (the|my) (system|design|methodology))", re.I)
 
 
 def _sat(count: float, k: float = 1.5) -> float:
@@ -89,6 +104,20 @@ def encode_text_to_strategy(text: str, levers: list | None = None) -> dict:
     length_fit = math.exp(-((math.log1p(n) - math.log(42)) ** 2) / 1.6)
     clarity = min(1.0, 0.35 + 0.4 * (1.0 if _NUMBER.search(t) else 0.0)
                   + 0.25 * (1.0 if avg_sent <= 16 else 0.0))
+    # funnel levers (lexical proxies; the LLM encoder is the semantic scorer)
+    sents_list = sentences
+    head = " ".join(sents_list[:2]) if sents_list else t
+    identity = 1.0 if _IDENTITY_LEX.search(head) else (0.4 if _IDENTITY_LEX.search(t) else 0.0)
+    next_step = _sat(len(_NEXT_STEP_LEX.findall(t)), k=0.8)
+    adversarial = _sat(len(_ADVERSARIAL_LEX.findall(t)), k=0.7)
+    # believability: big claims are believable when anchored to provenance IN THE SAME SENTENCE
+    big_sents = [s for s in sents_list if _BIG_CLAIM_LEX.search(s)]
+    if big_sents:
+        anchored = sum(1 for s in big_sents if _PROVENANCE_LEX.search(s))
+        believability = 0.25 + 0.65 * (anchored / len(big_sents))
+    else:
+        believability = 0.7                          # no extraordinary claim -> nothing to disbelieve
+    cognitive = _sat(len(_EFFORT_ASK_LEX.findall(t)) + 1.2 * len(_ADVERSARIAL_LEX.findall(t)), k=1.0)
     out = {
         "personalization": personal,
         "relevance_fit": 0.4,                        # not lexically inferable — LLM encoder does this well
@@ -102,6 +131,11 @@ def encode_text_to_strategy(text: str, levers: list | None = None) -> dict:
         "warmth": _sat(len(_WARMTH.findall(t)), k=1.2),
         "length_fit": length_fit,
         "credential_signaling": _sat(len(_CREDENTIAL.findall(t))),
+        "identity_legibility": identity,
+        "claim_believability": believability,
+        "cognitive_effort": cognitive,
+        "adversarial_framing": adversarial,
+        "next_step_clarity": next_step,
     }
     # situational levers: crude keyword overlap between the lever description and the text (fallback only)
     for lv in (levers or []):

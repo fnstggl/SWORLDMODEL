@@ -1,0 +1,736 @@
+{
+ "experiment": "exp092_thiel_action_first",
+ "mode": "live",
+ "stage_a": {
+  "ranked_actions": [
+   [
+    "full_memo_email",
+    0.5483
+   ],
+   [
+    "cold_email_direct",
+    0.4817
+   ],
+   [
+    "permission_ask_email",
+    0.4817
+   ],
+   [
+    "cold_text_personal_number",
+    0.4083
+   ],
+   [
+    "operator_forwards_memo",
+    0.3745
+   ],
+   [
+    "operator_intro_email",
+    0.2933
+   ],
+   [
+    "wait_for_pilot_then_email",
+    0.2728
+   ],
+   [
+    "ff_partner_route",
+    0.1425
+   ],
+   [
+    "do_nothing",
+    0.0
+   ]
+  ],
+  "fragility": {
+   "overall_utility": {
+    "full_memo_email": 0.5483,
+    "operator_forwards_memo": 0.535,
+    "wait_for_pilot_then_email": 0.535,
+    "operator_intro_email": 0.5333,
+    "cold_email_direct": 0.4817,
+    "permission_ask_email": 0.4817,
+    "cold_text_personal_number": 0.4083,
+    "ff_partner_route": 0.19
+   },
+   "winner": "full_memo_email",
+   "winner_wins_under_hypotheses": [
+    "thiel_fellowship_redirect"
+   ],
+   "per_hypothesis_winner": {
+    "assistant_screens": "cold_email_direct",
+    "contrarian_signal_trigger": "cold_email_direct",
+    "delegated_screening": "cold_email_direct",
+    "evidence_first": "ff_partner_route",
+    "ignores_all_cold": "cold_email_direct",
+    "intros_only": "cold_email_direct",
+    "reads_own_bursts": "ff_partner_route",
+    "sporadic_personal_curiosity": "cold_email_direct",
+    "thiel_fellowship_redirect": "full_memo_email",
+    "zero_response_policy": "operator_intro_email"
+   },
+   "fragile": true,
+   "within_noise_of_winner": [
+    "cold_email_direct",
+    "cold_text_personal_number",
+    "permission_ask_email",
+    "operator_intro_email",
+    "operator_forwards_memo",
+    "ff_partner_route",
+    "wait_for_pilot_then_email"
+   ],
+   "note": "a winner that leads under only one inbox-reality hypothesis is FRAGILE; within_noise arms are indistinguishable at this draw count \u2014 the system reports 'best-supported among tested', never 'best possible'."
+  }
+ },
+ "stage_b_winner": "draft_3",
+ "stage_b": {
+  "report_type": "cold_outreach_slate",
+  "recipient": "Peter Thiel",
+  "winner_best_supported_among_tested": "draft_3",
+  "within_noise_of_winner": [
+   "draft_3",
+   "draft_5",
+   "plain_baseline"
+  ],
+  "hypothesis_fragility": {
+   "overall_utility": {
+    "draft_6": 0.535,
+    "draft_5": 0.535,
+    "plain_baseline": 0.535,
+    "draft_3": 0.4817
+   },
+   "winner": "draft_6",
+   "winner_wins_under_hypotheses": [
+    "thiel_fellowship_redirect"
+   ],
+   "per_hypothesis_winner": {
+    "contrarian_signal_trigger": "draft_3",
+    "delegated_screening": "draft_3",
+    "sporadic_personal_curiosity": "draft_3",
+    "thiel_fellowship_redirect": "draft_6",
+    "zero_response_policy": "draft_3"
+   },
+   "fragile": true,
+   "within_noise_of_winner": [
+    "draft_3",
+    "draft_5",
+    "plain_baseline"
+   ],
+   "note": "a winner that leads under only one inbox-reality hypothesis is FRAGILE; within_noise arms are indistinguishable at this draw count \u2014 the system reports 'best-supported among tested', never 'best possible'."
+  },
+  "ranked": [
+   {
+    "arm": "plain_baseline",
+    "text": "Peter, I'm Beckett \u2014 17 years old, starting Princeton in the fall; building Aurelius (runaurelius.com): constraint-aware orchestration for AI infrastructure. So far: +724% average SLA-safe goodput per dollar vs the production scheduler, in simulated replay of ~1.5M requests of public production traces. May I send you the one-page memo? Beckett",
+    "persona": {
+     "label": "model_based_judgment (LLM persona role-play; UNCALIBRATED \u2014 not a measured response probability)",
+     "outcome_dist": {
+      "no_response": 0.05,
+      "dismissive_reply": 0.0,
+      "curious_reply": 0.75,
+      "requests_material": 0.0,
+      "refers_to_other": 0.2,
+      "meeting_offer": 0.0
+     },
+     "expected_utility": 0.535,
+     "by_hypothesis_utility": {
+      "delegated_screening": 0.5,
+      "contrarian_signal_trigger": 0.5,
+      "thiel_fellowship_redirect": 0.8,
+      "sporadic_personal_curiosity": 0.5,
+      "zero_response_policy": 0.0
+     },
+     "n_draws": 15,
+     "n_failed_draws": 0,
+     "sample_replies": [
+      {
+       "hypothesis": "delegated_screening",
+       "outcome": "curious_reply",
+       "reply": "Beckett \u2014 the constraint-aware angle is contrarian enough to read. Send the memo to my assistant at [assistant's email]. If it holds up against real tail latencies and not just average metrics, I'll have someone follow up. \u2014PT"
+      },
+      {
+       "hypothesis": "delegated_screening",
+       "outcome": "curious_reply",
+       "reply": "Beckett \u2014 the specific metric (SLA-safe goodput per dollar) and the scale of the replay (1.5M requests) are what caught my attention. Most people your age pitch me generic AI wrappers. This sounds like a genuine infrastructure constraint problem. Send the memo to my assistant (cc'd); if the architecture is as contrarian as the metric, we'll find 30 minutes. \u2014PT"
+      },
+      {
+       "hypothesis": "delegated_screening",
+       "outcome": "curious_reply",
+       "reply": "Beckett \u2014 your note passes the first screen. The constraint-aware thesis is contrarian; most people just throw more GPUs at the problem. I want to see the memo. Send it to my EA at [redacted] with \u2018Aurelius memo\u2019 in the subject line. If the numbers hold up in real hardware, we should talk. \u2014 PT"
+      }
+     ]
+    },
+    "funnel_objective": 0.0904,
+    "funnel_interval80": [
+     0.0161,
+     0.185
+    ],
+    "stage_trace": {
+     "understand": 0.9053,
+     "believe": 0.8896,
+     "relevant": 0.7741,
+     "worth": 0.8267,
+     "easy": 0.9212,
+     "open": 0.2165
+    },
+    "contract": {
+     "ok": true,
+     "missing": [],
+     "flags": []
+    },
+    "cold_read": {
+     "available": true,
+     "gates_ok": false,
+     "knows_who": false,
+     "knows_why": false,
+     "claim_believable": false,
+     "debate_bait": false,
+     "diligence_ask": false,
+     "next_step_obvious": true,
+     "would_engage": 0.0,
+     "worst_problem": "A 17-year-old with a simulated 724% improvement is a credibility black hole \u2014 I have no reason to believe the results aren't cherry-picked or the simulation is "
+    },
+    "critic": {
+     "coherence": 1.0,
+     "naturalness": 1.0,
+     "humanness": 1.0,
+     "factuality": 1.0,
+     "quality": 1.0,
+     "source": "llm",
+     "flags": []
+    }
+   },
+   {
+    "arm": "draft_5",
+    "text": "I'm Beckett, 17, building Aurelius (runaurelius.com) \u2014 constraint-aware orchestration for AI infrastructure. The thesis: AI infrastructure has a planning problem disguised as a power problem, where schedulers optimize the next placement but nothing chooses the fleet's best trajectory over time. In simulated replay of ~1.5M requests from public production traces, a predictive world model that forecasts power constraints and ranks candidate decisions by economic outcome achieved -84% GPU-hours versus the production scheduler. May I send you the one-page technical memo? May I send you the one-page technical memo? \u2014 Beckett",
+    "persona": {
+     "label": "model_based_judgment (LLM persona role-play; UNCALIBRATED \u2014 not a measured response probability)",
+     "outcome_dist": {
+      "no_response": 0.05,
+      "dismissive_reply": 0.0,
+      "curious_reply": 0.75,
+      "requests_material": 0.0,
+      "refers_to_other": 0.2,
+      "meeting_offer": 0.0
+     },
+     "expected_utility": 0.535,
+     "by_hypothesis_utility": {
+      "delegated_screening": 0.5,
+      "contrarian_signal_trigger": 0.5,
+      "thiel_fellowship_redirect": 0.8,
+      "sporadic_personal_curiosity": 0.5,
+      "zero_response_policy": 0.0
+     },
+     "n_draws": 15,
+     "n_failed_draws": 0,
+     "sample_replies": [
+      {
+       "hypothesis": "delegated_screening",
+       "outcome": "curious_reply",
+       "reply": "Send the memo. Why -84%? That number sounds too round. Give me the variance and the trace source."
+      },
+      {
+       "hypothesis": "delegated_screening",
+       "outcome": "curious_reply",
+       "reply": "Beckett \u2014 the thesis that the planning problem is upstream of the power problem is genuinely contrarian and specific. The -84% GPU-hours result is the kind of concrete signal that makes me read further. Send the memo to my assistant at [assistant@foundersfund.com] with subject line 'Aurelius \u2014 constraint-aware orchestration memo.' I'll look at it this week. \u2014 PT"
+      },
+      {
+       "hypothesis": "delegated_screening",
+       "outcome": "curious_reply",
+       "reply": "Beckett, the thesis is genuinely contrarian. Power is the consensus bottleneck; planning is the real one. The -84% GPU-hours in replay is interesting but I'd need to understand the simulation's fidelity \u2014 did you model thermal constraints, carbon-aware scheduling, and spot-market pricing? Send the memo. \u2014 PT"
+      }
+     ]
+    },
+    "funnel_objective": 0.0952,
+    "funnel_interval80": [
+     0.0166,
+     0.2049
+    ],
+    "stage_trace": {
+     "understand": 0.9242,
+     "believe": 0.8856,
+     "relevant": 0.8035,
+     "worth": 0.8204,
+     "easy": 0.9174,
+     "open": 0.2165
+    },
+    "contract": {
+     "ok": true,
+     "missing": [],
+     "flags": []
+    },
+    "cold_read": {
+     "available": true,
+     "gates_ok": false,
+     "knows_who": false,
+     "knows_why": false,
+     "claim_believable": false,
+     "debate_bait": false,
+     "diligence_ask": false,
+     "next_step_obvious": true,
+     "would_engage": 0.0,
+     "worst_problem": "A 17-year-old with no production deployment is claiming a 724% improvement over a scheduler I likely helped design or fund."
+    },
+    "critic": {
+     "coherence": 0.435,
+     "naturalness": 0.0,
+     "humanness": 1.0,
+     "factuality": 1.0,
+     "quality": 0.0,
+     "source": "llm",
+     "flags": [
+      {
+       "sentence": "May I send you the one-page technical memo?",
+       "issue": "incoherent/embellished + annoying",
+       "reasons": [
+        "Exact duplicate of sentence 4; repetition annoys a busy recipient by wasting attention.",
+        "redundant: repeats an earlier sentence"
+       ]
+      }
+     ]
+    }
+   },
+   {
+    "arm": "draft_6",
+    "text": "I'm Beckett, 17, building Aurelius (runaurelius.com) \u2014 constraint-aware orchestration for AI infrastructure. The thesis: AI infrastructure has a planning problem disguised as a power problem, where schedulers optimize the next placement but nothing chooses the fleet's best trajectory over time. In simulated replay of ~1.5M requests from public production traces, a predictive world model that forecasts power constraints and ranks candidate decisions by economic outcome achieved -84% GPU-hours versus the production scheduler. May I send you the one-page technical memo? \u2014 Beckett",
+    "persona": {
+     "label": "model_based_judgment (LLM persona role-play; UNCALIBRATED \u2014 not a measured response probability)",
+     "outcome_dist": {
+      "no_response": 0.05,
+      "dismissive_reply": 0.0,
+      "curious_reply": 0.75,
+      "requests_material": 0.0,
+      "refers_to_other": 0.2,
+      "meeting_offer": 0.0
+     },
+     "expected_utility": 0.535,
+     "by_hypothesis_utility": {
+      "delegated_screening": 0.5,
+      "contrarian_signal_trigger": 0.5,
+      "thiel_fellowship_redirect": 0.8,
+      "sporadic_personal_curiosity": 0.5,
+      "zero_response_policy": 0.0
+     },
+     "n_draws": 15,
+     "n_failed_draws": 0,
+     "sample_replies": [
+      {
+       "hypothesis": "delegated_screening",
+       "outcome": "curious_reply",
+       "reply": "Beckett \u2014 the distinction between a placement problem and a trajectory problem is real. Most people in infra conflate the two. Send the memo. I'll read it this week. \u2014PT"
+      },
+      {
+       "hypothesis": "delegated_screening",
+       "outcome": "curious_reply",
+       "reply": "Send the memo. One page only. If it's real, I'll read it tonight."
+      },
+      {
+       "hypothesis": "delegated_screening",
+       "outcome": "curious_reply",
+       "reply": "Beckett, your thesis is genuinely contrarian\u2014most people assume the power problem is physical, not informational. The idea that the fleet's trajectory is a planning failure disguised as a scarcity problem is the kind of specific, testable secret I look for. I'll read the one-pager. Send it to my assistant at [assistant email] with 'Aurelius - Thiel' in the subject line, and I'll take a look this w"
+      }
+     ]
+    },
+    "funnel_objective": 0.0979,
+    "funnel_interval80": [
+     0.0175,
+     0.211
+    ],
+    "stage_trace": {
+     "understand": 0.9242,
+     "believe": 0.8856,
+     "relevant": 0.8035,
+     "worth": 0.8518,
+     "easy": 0.9121,
+     "open": 0.2165
+    },
+    "contract": {
+     "ok": true,
+     "missing": [],
+     "flags": []
+    },
+    "cold_read": {
+     "available": true,
+     "gates_ok": false,
+     "knows_who": false,
+     "knows_why": false,
+     "claim_believable": false,
+     "debate_bait": false,
+     "diligence_ask": false,
+     "next_step_obvious": true,
+     "would_engage": 0.0,
+     "worst_problem": "A 17-year-old with a simulated result and no deployed proof is not worth my time."
+    },
+    "critic": {
+     "coherence": 1.0,
+     "naturalness": 1.0,
+     "humanness": 1.0,
+     "factuality": 1.0,
+     "quality": 1.0,
+     "source": "llm",
+     "flags": []
+    }
+   },
+   {
+    "arm": "draft_3",
+    "text": "I'm Beckett, 17, building Aurelius (runaurelius.com) \u2014 constraint-aware orchestration for AI infrastructure. The thesis: AI infrastructure has a planning problem disguised as a power problem, where schedulers optimize the next placement but nothing chooses the fleet's best trajectory over time. In simulated replay of ~1.5M requests from public production traces, a predictive world model that forecasts power constraints and ranks candidate decisions by economic outcome achieved -84% GPU-hours versus the production scheduler. May I send you the one-page technical memo? \u2014 Beckett",
+    "persona": {
+     "label": "model_based_judgment (LLM persona role-play; UNCALIBRATED \u2014 not a measured response probability)",
+     "outcome_dist": {
+      "no_response": 0.1167,
+      "dismissive_reply": 0.0,
+      "curious_reply": 0.75,
+      "requests_material": 0.0,
+      "refers_to_other": 0.1333,
+      "meeting_offer": 0.0
+     },
+     "expected_utility": 0.4817,
+     "by_hypothesis_utility": {
+      "delegated_screening": 0.5,
+      "contrarian_signal_trigger": 0.5,
+      "thiel_fellowship_redirect": 0.5333,
+      "sporadic_personal_curiosity": 0.5,
+      "zero_response_policy": 0.0
+     },
+     "n_draws": 15,
+     "n_failed_draws": 0,
+     "sample_replies": [
+      {
+       "hypothesis": "delegated_screening",
+       "outcome": "curious_reply",
+       "reply": "Send the memo. The thesis is specific and contrarian\u2014most people conflate power constraints with planning. I want to see how you model the world dynamics and whether your cost function generalizes beyond replay."
+      },
+      {
+       "hypothesis": "delegated_screening",
+       "outcome": "curious_reply",
+       "reply": "Beckett \u2014 skip the memo. Send me the raw simulation methodology and the specific production trace you replayed. If the world model is truly predictive and not just curve-fitting, I want to see the error distribution over time. \u2014 PT"
+      },
+      {
+       "hypothesis": "delegated_screening",
+       "outcome": "curious_reply",
+       "reply": "Beckett \u2014 the distinction between a placement problem and a trajectory problem is exactly the kind of thing most people miss. I'd read the memo. Send it to my assistant at the address on my site with 'Aurelius - trajectory' in the subject line."
+      }
+     ]
+    },
+    "funnel_objective": 0.0979,
+    "funnel_interval80": [
+     0.0175,
+     0.211
+    ],
+    "stage_trace": {
+     "understand": 0.9242,
+     "believe": 0.8856,
+     "relevant": 0.8035,
+     "worth": 0.8518,
+     "easy": 0.9121,
+     "open": 0.2165
+    },
+    "contract": {
+     "ok": true,
+     "missing": [],
+     "flags": []
+    },
+    "cold_read": {
+     "available": true,
+     "gates_ok": false,
+     "knows_who": false,
+     "knows_why": false,
+     "claim_believable": false,
+     "debate_bait": false,
+     "diligence_ask": false,
+     "next_step_obvious": true,
+     "would_engage": 0.0,
+     "worst_problem": "A 17-year-old with no track record is claiming a 724% improvement on a problem I know is dominated by hardware physics, not scheduling."
+    },
+    "critic": {
+     "coherence": 1.0,
+     "naturalness": 1.0,
+     "humanness": 1.0,
+     "factuality": 1.0,
+     "quality": 1.0,
+     "source": "llm",
+     "flags": []
+    }
+   },
+   {
+    "arm": "draft_1",
+    "text": "I'm Beckett, 17, building Aurelius (runaurelius.com) \u2014 constraint-aware orchestration for AI infrastructure. The thesis: AI infrastructure has a planning problem disguised as a power problem, where schedulers optimize the next placement but nothing chooses the fleet's best trajectory over time. In simulated replay of ~1.5M requests from public production traces, a predictive world model that forecasts power constraints and ranks candidate decisions by economic outcome achieved -84% GPU-hours versus the production scheduler. May I send you the one-page technical memo? \u2014 Beckett",
+    "persona": null,
+    "funnel_objective": 0.0878,
+    "funnel_interval80": [
+     0.0147,
+     0.1869
+    ],
+    "stage_trace": {
+     "understand": 0.8996,
+     "believe": 0.8856,
+     "relevant": 0.7777,
+     "worth": 0.8204,
+     "easy": 0.9063,
+     "open": 0.2165
+    },
+    "contract": {
+     "ok": true,
+     "missing": [],
+     "flags": []
+    },
+    "cold_read": {
+     "available": true,
+     "gates_ok": false,
+     "knows_who": false,
+     "knows_why": false,
+     "claim_believable": false,
+     "debate_bait": false,
+     "diligence_ask": false,
+     "next_step_obvious": true,
+     "would_engage": 0.0,
+     "worst_problem": "A 17-year-old with no production deployment is claiming a 724% improvement on a problem I don't believe exists."
+    },
+    "critic": {
+     "coherence": 1.0,
+     "naturalness": 1.0,
+     "humanness": 1.0,
+     "factuality": 1.0,
+     "quality": 1.0,
+     "source": "llm",
+     "flags": []
+    }
+   },
+   {
+    "arm": "draft_0",
+    "text": "I'm Beckett, 17, building Aurelius (runaurelius.com) \u2014 constraint-aware orchestration for AI infrastructure. The thesis: AI infrastructure has a planning problem disguised as a power problem, where schedulers optimize the next placement but nothing chooses the fleet's best trajectory over time. May I send you the one-page technical memo? May I send you the one-page technical memo? \u2014 Beckett",
+    "persona": null,
+    "funnel_objective": 0.0725,
+    "funnel_interval80": [
+     0.0122,
+     0.149
+    ],
+    "stage_trace": {
+     "understand": 0.8996,
+     "believe": 0.7314,
+     "relevant": 0.7488,
+     "worth": 0.8562,
+     "easy": 0.9121,
+     "open": 0.2165
+    },
+    "contract": {
+     "ok": true,
+     "missing": [],
+     "flags": []
+    },
+    "cold_read": {
+     "available": true,
+     "gates_ok": false,
+     "knows_who": false,
+     "knows_why": false,
+     "claim_believable": false,
+     "debate_bait": false,
+     "diligence_ask": false,
+     "next_step_obvious": true,
+     "would_engage": 0.0,
+     "worst_problem": "A 17-year-old with no track record is asking me to read a memo about a problem I likely already have teams working on."
+    },
+    "critic": {
+     "coherence": 0.435,
+     "naturalness": 0.0,
+     "humanness": 1.0,
+     "factuality": 1.0,
+     "quality": 0.0,
+     "source": "llm",
+     "flags": [
+      {
+       "sentence": "May I send you the one-page technical memo?",
+       "issue": "incoherent/embellished + annoying",
+       "reasons": [
+        "Exact duplicate of previous sentence; wastes recipient's time, feels careless or glitchy.",
+        "redundant: repeats an earlier sentence"
+       ]
+      }
+     ]
+    }
+   },
+   {
+    "arm": "draft_4",
+    "text": "I'm Beckett, 17, building Aurelius (runaurelius.com) \u2014 constraint-aware orchestration for AI infrastructure. The thesis: AI infrastructure has a planning problem disguised as a power problem, where schedulers optimize the next placement but nothing chooses the fleet's best trajectory over time. In simulated replay of ~1.5M public production requests, our model beat the production scheduler by 724% on SLA-safe goodput per dollar. Our predictive world model forecasts power constraints, simulates candidate scheduling decisions, and ranks them by economic outcome before execution. In simulated replay of ~1.5M requests of public production traces, we saw +724% average SLA-safe goodput per dollar and -84% GPU-hours versus the production scheduler. May I send you the one-page technical memo? May I send you the one-page technical memo? \u2014 Beckett",
+    "persona": null,
+    "funnel_objective": 0.0668,
+    "funnel_interval80": [
+     0.0106,
+     0.1413
+    ],
+    "stage_trace": {
+     "understand": 0.9053,
+     "believe": 0.8287,
+     "relevant": 0.8035,
+     "worth": 0.6604,
+     "easy": 0.9121,
+     "open": 0.2165
+    },
+    "contract": {
+     "ok": true,
+     "missing": [],
+     "flags": []
+    },
+    "cold_read": {
+     "available": true,
+     "gates_ok": false,
+     "knows_who": false,
+     "knows_why": false,
+     "claim_believable": false,
+     "debate_bait": false,
+     "diligence_ask": false,
+     "next_step_obvious": true,
+     "would_engage": 0.0,
+     "worst_problem": "A 17-year-old with no deployed track record is claiming a 724% improvement over production schedulers using simulated replays, which tells me nothing about real"
+    },
+    "critic": {
+     "coherence": 0.189,
+     "naturalness": 0.0,
+     "humanness": 0.0,
+     "factuality": 1.0,
+     "quality": 0.0,
+     "source": "llm",
+     "flags": [
+      {
+       "sentence": "Our predictive world model forecasts power constraints, simulates candidate scheduling decisions, and ranks them by economic outcome before execution.",
+       "issue": "AI-sounding",
+       "reasons": [
+        "Templated three-step explanation ('forecasts, simulates, ranks') reads like AI-generated feature list."
+       ]
+      },
+      {
+       "sentence": "In simulated replay of ~1.5M requests of public production traces, we saw +724% average SLA-safe goodput per dollar and -84% GPU-hours versus the production scheduler.",
+       "issue": "incoherent/embellished",
+       "reasons": [
+        "Repeats fact from sentence 3 with additional GPU-hours stat; redundant but not fabricated.",
+        "redundant: repeats an earlier sentence"
+       ]
+      },
+      {
+       "sentence": "May I send you the one-page technical memo?",
+       "issue": "incoherent/embellished + annoying",
+       "reasons": [
+        "Exact duplicate of sentence 6; repetition is annoying to a busy recipient.",
+        "redundant: repeats an earlier sentence"
+       ]
+      }
+     ]
+    }
+   },
+   {
+    "arm": "draft_2",
+    "text": "I'm Beckett, 17, building Aurelius (runaurelius.com) \u2014 constraint-aware orchestration for AI infrastructure. The thesis: AI infrastructure has a planning problem disguised as a power problem, where schedulers optimize the next placement but nothing chooses the fleet's best trajectory over time. In replays of 1.5M public production requests, we got +724% goodput per dollar and cut GPU-hours by 84% versus the production scheduler. Our predictive world model simulates scheduling decisions against power constraints and ranks them by economic outcome before execution. In replay of ~1.5M requests from public production traces, we saw +724% average SLA-safe goodput per dollar and -84% GPU-hours versus the production scheduler. May I send you the one-page technical memo? May I send you the one-page technical memo? \u2014 Beckett",
+    "persona": null,
+    "funnel_objective": 0.0637,
+    "funnel_interval80": [
+     0.0092,
+     0.1378
+    ],
+    "stage_trace": {
+     "understand": 0.9242,
+     "believe": 0.8343,
+     "relevant": 0.8035,
+     "worth": 0.637,
+     "easy": 0.9121,
+     "open": 0.2165
+    },
+    "contract": {
+     "ok": true,
+     "missing": [],
+     "flags": []
+    },
+    "cold_read": {
+     "available": true,
+     "gates_ok": false,
+     "knows_who": false,
+     "knows_why": false,
+     "claim_believable": false,
+     "debate_bait": false,
+     "diligence_ask": false,
+     "next_step_obvious": true,
+     "would_engage": 0.0,
+     "worst_problem": "A 17-year-old with simulated results claiming 724% improvement is not credible enough to warrant a reply."
+    },
+    "critic": {
+     "coherence": 0.189,
+     "naturalness": 0.0,
+     "humanness": 0.0,
+     "factuality": 1.0,
+     "quality": 0.0,
+     "source": "llm",
+     "flags": [
+      {
+       "sentence": "In replay of ~1.5M requests from public production traces, we saw +724% average SLA-safe goodput per dollar and -84% GPU-hours versus the production scheduler.",
+       "issue": "incoherent/embellished + annoying + AI-sounding",
+       "reasons": [
+        "Redundant repetition of sentence 3 with slight rewording; feels like AI-generated padding and annoys a busy recipient.",
+        "redundant: repeats an earlier sentence"
+       ]
+      },
+      {
+       "sentence": "May I send you the one-page technical memo?",
+       "issue": "incoherent/embellished + annoying + AI-sounding",
+       "reasons": [
+        "Exact duplicate of sentence 6; clearly a copy-paste error that wastes recipient's time and reads like AI slop.",
+        "redundant: repeats an earlier sentence"
+       ]
+      }
+     ]
+    }
+   }
+  ],
+  "optimal_strategy_spec": {
+   "strategy": {
+    "personalization": 1.0,
+    "relevance_fit": 1.0,
+    "clarity": 1.0,
+    "credibility_proof": 1.0,
+    "responder_incentive": 1.0,
+    "ask_directness": 0.5,
+    "low_effort_ask": 1.0,
+    "convenience_selling": 0.0,
+    "pushiness": 0.0,
+    "warmth": 0.0,
+    "length_fit": 0.5,
+    "credential_signaling": 0.0,
+    "identity_legibility": 1.0,
+    "claim_believability": 1.0,
+    "cognitive_effort": 0.0,
+    "adversarial_framing": 0.0,
+    "next_step_clarity": 1.0,
+    "extreme_brevity": 1.0,
+    "asymmetric_value_proposition": 1.0,
+    "referral_authority": 1.0,
+    "zero_ask": 1.0
+   },
+   "predicted_reply_mean": 0.1526,
+   "predicted_reply_lower_bound_q20": 0.1255,
+   "top_drivers": [
+    {
+     "term": "stage:open",
+     "contribution": 0.2025
+    },
+    {
+     "term": "stage:relevant",
+     "contribution": 0.9125
+    },
+    {
+     "term": "stage:understand",
+     "contribution": 0.9198
+    },
+    {
+     "term": "stage:easy",
+     "contribution": 0.9468
+    },
+    {
+     "term": "stage:believe",
+     "contribution": 0.9486
+    },
+    {
+     "term": "stage:worth",
+     "contribution": 0.9994
+    }
+   ]
+  },
+  "honesty": "Winner = BEST-SUPPORTED AMONG TESTED, not 'best possible'. Live ranking is the qualitative persona ensemble (LLM role-play under competing inbox-reality hypotheses; outcomes are counted choices) \u2014 a model-based judgment, UNCALIBRATED against real outreach outcomes. The funnel is a structural prior; its absolute levels are claims. Arms in within_noise_of_winner are indistinguishable at this draw count, and a hypothesis-fragile winner is flagged, not trusted. 1 generated drafts were rejected by the contract/fact guard."
+ },
+ "wall_s": 655.7
+}

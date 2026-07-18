@@ -146,6 +146,25 @@ def spec_to_instructions(strategy: dict, levers: list | None = None) -> list[str
                      "there's 'no follow-up', how fast they could verify something, or 'you could test "
                      "this yourself'. State the thing once and ask one plain question — nothing about "
                      "how easy or low-cost replying is.")
+    if g("identity_legibility") > 0.6:
+        rules.append("INTRODUCE the sender in the first two sentences: who they are and what they're "
+                     "building, in plain words ('I'm <name>, <age/role>, building <thing>'). This is "
+                     "identity, not credentials — no schools, awards, or press.")
+    if g("claim_believability") > 0.6:
+        rules.append("Any big number must sit in the SAME sentence as its provenance (what was "
+                     "measured, against what baseline). A bare '+724%' reads as fake; "
+                     "'vs a production-style scheduler in replays of public traces' reads as real. "
+                     "Understating (e.g. 'several-fold') is fine and often more credible.")
+    if g("cognitive_effort") < 0.3:
+        rules.append("The reply must require NO unpaid analysis: never ask them to find flaws, assess "
+                     "assumptions, or evaluate a system they haven't seen.")
+    if g("adversarial_framing") < 0.25:
+        rules.append("No challenge framing: never 'is that wrong?', 'which assumption is wrong?', "
+                     "'prove me wrong'. You are a stranger, not a sparring partner.")
+    if g("next_step_clarity") > 0.6:
+        rules.append("End with ONE explicit, trivially answerable next step with an obvious payoff — "
+                     "the permission-ask pattern ('May I send you the one-page memo?'). The recipient "
+                     "must instantly know what replying accomplishes.")
     if g("length_fit") > 0.6:
         rules.append("Keep every sentence short and plain. Cut every unnecessary word.")
     if g("clarity") > 0.6:
@@ -413,3 +432,110 @@ def _extract_list_json(text: str) -> list:
         return json.loads(m.group(0))
     except Exception:
         return []
+
+
+# ---------------------------------------------------------------- whole-draft generation (contracted)
+def llm_draft_proposer(chat_fn, *, recipient_notes: str = "", sender: SenderBrief | None = None,
+                       levers=None):
+    """Generate K COMPLETE draft emails, each required to satisfy the cold-outreach content contract
+    (identity → thesis → evidence-with-provenance → relevance → tiny permission ask).
+
+    Why whole drafts here: the slot-beam is myopic — each slot is scored against the partial prefix,
+    so an opener that is locally dense ('contrarian claim!') beats an opener that makes the EMAIL
+    better (an introduction), and the assembled text reads like the middle of a conversation. Global
+    coherence is a property of the whole draft. The selector is still the world model: drafts are
+    deterministically contract-validated and fact-guarded, encoded to levers, scored by the response
+    funnel, gated by the critics, and ranked — the LLM authors candidates; it never picks the winner.
+
+    Returns propose_drafts(spec_strategy, k) -> [draft strings that passed the contract + fact guard],
+    with rejects recorded on .last_rejected."""
+    sender = sender or SenderBrief()
+    allowed = allowed_numbers(sender.to_prompt(), recipient_notes)
+
+    def propose_drafts(spec_strategy: dict, k: int = 8) -> list:
+        from swm.decision.outreach_contract import validate
+        rules = spec_to_instructions(spec_strategy, levers=levers)
+        prompt = "\n".join([
+            f"Write {k} DISTINCT complete cold emails (each 55-110 words) from the sender to the "
+            "recipient. Each email must contain, in natural prose: (1) who the sender is and what "
+            "they're building, in the first two sentences — identity, not credentials; (2) one clear "
+            "thesis; (3) the strongest evidence WITH its provenance in the same sentence; (4) why "
+            "this recipient specifically; (5) ONE tiny, trivially answerable ask with an obvious "
+            "payoff (the permission-ask pattern: 'May I send you the one-page memo?'). "
+            "Never ask the recipient to critique, find flaws, or say what's wrong — no debate bait.",
+            _ANTI_SLOP,
+            "Writing rules for this message:",
+            *[f"  - {r}" for r in rules],
+            "",
+            "Recipient notes:", recipient_notes or "  (none)",
+            "",
+            sender.to_prompt(),
+            "",
+            f"Return ONLY a JSON array of {k} strings, each ONE complete email (greeting through "
+            "sign-off, single paragraph or two short ones). No prose outside the JSON.",
+        ])
+        try:
+            drafts = _extract_list(_call(chat_fn, prompt, max_tokens=380 * k, temperature=0.6))
+        except Exception:
+            drafts = []
+        kept, rejected = [], []
+        for d in drafts:
+            bad = number_violations(d, allowed)
+            if bad:
+                rejected.append({"draft": d[:90], "reason": f"fabricated number(s): {bad}"})
+                continue
+            cv = validate(d, sender)
+            if not cv.ok:
+                rejected.append({"draft": d[:90], "reason": f"contract: {cv.missing}"})
+                continue
+            kept.append(d)
+        propose_drafts.last_rejected = rejected
+        return kept
+    propose_drafts.last_rejected = []
+    return propose_drafts
+
+
+# ---------------------------------------------------------------- the cold-read critic (busy stranger)
+def llm_cold_read_critic(chat_fn, *, recipient_notes: str = "", facts_text: str = ""):
+    """Simulate a BUSY STRANGER's first read — the funnel's gates as an LLM judgment. This critic is
+    a GATE and a diagnostic, never the objective (it is an uncalibrated LLM opinion; the funnel
+    scorer ranks). It answers the questions the failed output flunked: does a stranger know who is
+    writing and why? is the claim believable on first read? does it feel like debate bait? is the
+    next step obvious and easy? Returns critic(text) -> dict with booleans + reasons."""
+    SYSTEM = (
+        "You are simulating a busy, skeptical, high-status recipient skimming a COLD email from a "
+        "stranger for five seconds. You have never heard of the sender. Answer honestly from that "
+        "cold read — not as an editor, as the RECIPIENT.\n"
+        "Judge: knows_who (within two sentences: who is writing and what they built), "
+        "knows_why (why they are contacting YOU specifically), "
+        "claim_believable (any big claim is anchored enough to not read as fake), "
+        "debate_bait (it challenges you to correct/refute a stranger), "
+        "diligence_ask (replying requires real analytical work from you), "
+        "next_step_obvious (you instantly know what replying accomplishes and it is trivial), "
+        "would_engage (0..1: probability a recipient like this replies POSITIVELY).")
+
+    def critic(text: str) -> dict:
+        facts = f"\n\nSENDER FACTS (ground truth):\n{facts_text}" if facts_text else ""
+        prompt = (SYSTEM + f"\n\nRecipient notes:\n{recipient_notes or '(busy stranger)'}" + facts +
+                  f"\n\nEMAIL:\n\"\"\"\n{text}\n\"\"\"\n\n"
+                  'Return ONLY JSON: {"knows_who": bool, "knows_why": bool, "claim_believable": bool, '
+                  '"debate_bait": bool, "diligence_ask": bool, "next_step_obvious": bool, '
+                  '"would_engage": 0..1, "worst_problem": "one short sentence"}')
+        try:
+            raw = _call(chat_fn, prompt, max_tokens=300, temperature=0.0)
+            m = re.search(r"\{.*\}", raw, re.S)
+            out = json.loads(m.group(0)) if m else {}
+        except Exception:
+            return {"available": False}
+        gates_ok = (bool(out.get("knows_who")) and bool(out.get("claim_believable"))
+                    and not bool(out.get("debate_bait")) and not bool(out.get("diligence_ask"))
+                    and bool(out.get("next_step_obvious")))
+        return {"available": True, "gates_ok": gates_ok,
+                "knows_who": bool(out.get("knows_who")), "knows_why": bool(out.get("knows_why")),
+                "claim_believable": bool(out.get("claim_believable")),
+                "debate_bait": bool(out.get("debate_bait")),
+                "diligence_ask": bool(out.get("diligence_ask")),
+                "next_step_obvious": bool(out.get("next_step_obvious")),
+                "would_engage": float(out.get("would_engage", 0.0) or 0.0),
+                "worst_problem": str(out.get("worst_problem", ""))[:160]}
+    return critic
