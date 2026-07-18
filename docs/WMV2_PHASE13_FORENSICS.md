@@ -315,9 +315,20 @@ identity → request) beat identity-first for the first time — and exposed a f
    kept as the new base (`test_repair_language_accepts_monotone_improvement`). Acceptance is
    still fail-safe: never worse than the input, and the truth gate re-checks every attempt.
 
-The corrected planner then ran live end to end (run 4 — `artifacts/phase13/thiel_v5/` top level:
-final traces, result, ledger freeze). The run-1/2/3 artifacts are retained deliberately: the
-point of tracing every call is that this class of defect is findable by reading, not by trusting.
+**Run 4** (`run4_signoff_surgery/`, 169 raw calls) showed the whole pipeline clicking — the
+request-swap variant won the beat search outright (a pointed expertise question replacing the
+generic ask), and the strict-preference gauntlet picked the strictly-clean finalist (0.95, zero
+flags) over a flagged one — and caught one last mechanical defect:
+
+6. **Beat surgery ate the signature.** `sents[:-1]` treated the bare trailing "Beckett" as the
+   request sentence, so the request swap replaced the NAME and the winner shipped unsigned. Fix:
+   a bare trailing signature is held out of all beat surgery and re-appended
+   (`test_beat_surgery_preserves_signoff`).
+
+The corrected planner then ran live end to end (run 5 — `artifacts/phase13/thiel_v5/` top level:
+final traces, result, ledger freeze; committed as-is, whatever the judges preferred that run).
+The run-1/2/3/4 artifacts are retained deliberately: the point of tracing every call is that this
+class of defect is findable by reading, not by trusting.
 An honest residual: the language judge's strictness varies call to call on borderline register
 (the same "goodput" phrasing drew scores from 0.3 to 0.85 across runs) — the stored-preference
 hook (`record_preference`) exists precisely so real human A/B choices pin that taste down over

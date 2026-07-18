@@ -323,6 +323,21 @@ def test_request_swaps_precede_drops_in_variant_pool():
     assert variants[1]["text"].endswith("Want the one-pager?")
 
 
+def test_beat_surgery_preserves_signoff():
+    """Run-4 forensic: sents[:-1] treated the bare trailing 'Beckett' as the request sentence,
+    so the request swap replaced the NAME and the winner shipped unsigned."""
+    def chat(q, **k):
+        return '{"a": "Want the one-pager?", "b": "What breaks first at fleet scale?"}'
+    p = planner(chat=chat)
+    text = ("I build planning software. The bottleneck is planning, not power. "
+            "It cut GPU hours in replay. Want details? Beckett")
+    variants = p.beat_variants(STRUCTURES[0], text)
+    by = {v["label"]: v["text"] for v in variants}
+    assert by["request_a"].endswith("Want the one-pager? Beckett")
+    assert by["request_b"].endswith("What breaks first at fleet scale? Beckett")
+    assert all(t.endswith("Beckett") for l, t in by.items() if l.startswith("drop_"))
+
+
 def test_gate_pool_prefers_strictly_clean_over_flagged_high_score(monkeypatch):
     """Run-1 forensic: near-miss admission let a flagged 0.95 candidate beat an unflagged one."""
     p = planner()

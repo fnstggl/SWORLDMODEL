@@ -281,6 +281,13 @@ class ReplyFirstPlanner:
         base = [{"label": f"S{'-'.join(b[:2] for b in structure)}", "text": text,
                  "origin": "structure"}]
         sents = [s.strip() for s in re.split(r"(?<=[.!?])\s+", text.strip()) if s.strip()]
+        # a bare trailing signature ("Beckett", "— Beckett", "Best, Beckett") is not a sentence:
+        # hold it out of the surgery and re-append, or a request swap replaces the NAME instead of
+        # the ask and the variant ships unsigned (run-4 forensic)
+        signoff = None
+        if sents and len(sents[-1].split()) <= 3 and not sents[-1].endswith((".", "!", "?")):
+            signoff = sents.pop()
+        tail = [signoff] if signoff else []
         # request swap: two alternative reply-shapes, written by the LLM under the same rules
         raw = self._llm("step4_request_swap", (
             f"Sender facts:\n{self.brief.to_prompt()}\n--- EMAIL ---\n{text}\n--- END ---\n"
@@ -295,7 +302,7 @@ class ReplyFirstPlanner:
         for key in ("a", "b"):
             alt = str(obj.get(key, "")).strip()
             if alt and sents:
-                t = " ".join(sents[:-1] + [alt])
+                t = " ".join(sents[:-1] + [alt] + tail)
                 swaps.append({"label": f"request_{key}", "text": t, "origin": "request_swap"})
         # drop each non-request beat (necessity test) — deterministic surgery on sentences when the
         # count lines up; otherwise skipped (the wording pass handles ragged cases)
@@ -304,7 +311,7 @@ class ReplyFirstPlanner:
             for i, b in enumerate(structure):
                 if b == "request":
                     continue
-                t = " ".join(sents[:i] + sents[i + 1:])
+                t = " ".join(sents[:i] + sents[i + 1:] + tail)
                 drops.append({"label": f"drop_{b}", "text": t, "origin": "necessity"})
         return base + swaps + drops
 
