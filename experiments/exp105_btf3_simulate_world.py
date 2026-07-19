@@ -48,7 +48,10 @@ def run() -> dict:
 
     rows = {r["question_id"]: r for r in fetch_btf3()}
     qids = pick_fresh_qids(list(rows.values()))
-    base_llm = default_chat_fn(system="Reply ONLY JSON.", max_tokens=6000, temperature=0.2)
+    # 3600 tokens: enough for an untruncated decomposition with the reordered schema, while staying
+    # inside the backend's 120s HTTP timeout (6000 tokens exceeds it and livelocks on retries); any
+    # residual clipping is handled by the compiler's truncation-recovery continuation call.
+    base_llm = default_chat_fn(system="Reply ONLY JSON.", max_tokens=3600, temperature=0.2)
     traces, results = [], []
 
     for qid in qids:
