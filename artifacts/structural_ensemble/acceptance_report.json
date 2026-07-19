@@ -1,8 +1,8 @@
 {
  "schema_version": "structural_ensemble.acceptance.v1",
  "generated_by": "experiments/structural_ensemble_acceptance.py (executable checks)",
- "all_gates_pass": false,
- "n_gates": 20,
+ "all_gates_pass": true,
+ "n_gates": 21,
  "gates": [
   {
    "gate": "structural_ensemble_is_the_default",
@@ -101,14 +101,14 @@
   },
   {
    "gate": "live_llm_generation_traces_exist",
-   "pass": false,
-   "detail": "no live forensic artifacts (run experiments/structural_ensemble_forensics.py)"
+   "pass": true,
+   "detail": "1/1 live cases with \u22653 independent generation calls"
   },
   {
    "gate": "full_test_suites_pass",
-   "pass": null,
-   "detail": "skipped by flag (run without --skip-suite for the full gate)"
+   "pass": true,
+   "detail": "pytest exit=0: 1556 passed, 1 deselected, 1 warning in 345.83s (0:05:45) (one pre-existing environmental deselect: dataset registry file)"
   }
  ],
- "wall_clock_s": 0.7
+ "wall_clock_s": 347.2
 }
