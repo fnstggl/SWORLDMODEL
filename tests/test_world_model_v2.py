@@ -354,10 +354,12 @@ def test_novel_scenario_compiles_and_runs_end_to_end():
     plan = compile_world("Will the nurses ratify the hospital contract?",
                          llm=lambda p: json.dumps(decomposition), evidence="(scripted)",
                          as_of="2026-07-01", horizon="2026-07-14")
-    # unknown mechanism rejected, missing one marked experimental — never fabricated
+    # unknown mechanism rejected (nothing to run), missing one recorded as a registry gap whose structural
+    # analog executes through the fallback hierarchy — run-everything principle: only mechanisms that
+    # literally cannot run are rejected, never "not yet validated" ones
     assert any(r["id"] == "made_up_mechanism_xyz" for r in plan.rejected_mechanisms)
     assert plan.candidate_experimental_mechanisms[0]["name"] == "strike_contagion"
-    assert "not executed" in plan.candidate_experimental_mechanisms[0]["status"]
+    assert "fallback hierarchy" in plan.candidate_experimental_mechanisms[0]["status"]
     # fidelity planner: high-sensitivity explicit, low marginalized-WITH-UNCERTAINTY (kept, never dropped)
     assert "agent_decision" in plan.fidelity_plan["explicit"]
     assert "background_dynamics" in plan.fidelity_plan["marginalized_with_uncertainty"]

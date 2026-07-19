@@ -51,7 +51,7 @@ def _mani(available=True, selected=False, executed=False, omitted=False, reason=
 def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention: str = "",
                    user_context=None, prior_checkpoint=None, compute_budget=None, seed: int = 0,
                    llm=None, execution_policy: dict = None, trace_level: str = "standard",
-                   config=None, prebuilt_bundle=None) -> SimulationResult:
+                   config=None, prebuilt_bundle=None, evidence: str = "") -> SimulationResult:
     """THE canonical public V2 entry. One shared plan/world/queue/StateDelta/terminal path across all phases.
 
     The ordinary caller does NOT choose which phases run — the compiler selects causally-relevant subsystems.
@@ -79,8 +79,10 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
         return s
 
     # ---------- Phase 1: universal compiler → the ONE shared plan ----------
+    # `evidence` (caller-supplied as-of text, e.g. a frozen benchmark background) conditions the
+    # decomposition directly; the Phase-2 retrieval bundle still supersedes it downstream when built.
     try:
-        plan = compile_world(question, llm=llm, evidence="", as_of=as_of, horizon=horizon,
+        plan = compile_world(question, llm=llm, evidence=evidence, as_of=as_of, horizon=horizon,
                              intervention=intervention, seed=seed)
     except ClarificationRequired as e:
         return SimulationResult(question=question, simulation_status="clarification_required",
@@ -173,7 +175,7 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
             from swm.world_model_v2.scheduled_facts import extract_scheduled_facts, attach_scheduled_facts
             from swm.world_model_v2.resolution_criteria import (parse_resolution_criterion,
                                                                 ground_actor_intentions)
-            ev_text = bundle.render(max_chars=2400) if bundle is not None else ""
+            ev_text = bundle.render(max_chars=2400) if bundle is not None else str(evidence or "")[:2400]
             # universal resolution-criterion parsing: the precise state that resolves YES anchors the
             # contract's rule, the fact-entailment judgments, and the intention grounding
             crit = parse_resolution_criterion(question, horizon=horizon, llm=llm)

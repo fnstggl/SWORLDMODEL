@@ -66,7 +66,9 @@ GROUNDED EVIDENCE:
 MECHANISM REGISTRY: {mechanisms}
 OUTCOME FAMILIES: {families}
 
-Return ONLY JSON:
+Return ONLY JSON. KEY ORDER MATTERS: emit the compact execution-critical keys FIRST, exactly in the order
+below (a truncated reply must still contain the outcome contract, mechanisms, causal processes, hypotheses
+and scheduled events — the verbose entity/decision detail comes last):
 {{"coherent": true,
  "interpretations": [{{"id": "primary", "reading": "<one sentence>", "weight": <0..1>}}],
  "outcome": {{"family": "...", "options": [...], "resolution_rule": "...", "readout_var": "<entity.field or quantity whose terminal value answers the question>"}},
@@ -77,13 +79,17 @@ Return ONLY JSON:
    "nonlinear_dynamics": <true iff thresholds, tipping points, saturation, cascades, self-excitation, feedback or regime shifts shape the dynamics>,
    "institutional_decision_process": <true iff the outcome itself is decided by a rule-governed institutional procedure (vote, confirmation, ruling, approval)>,
    "structural_change_monitoring": <true iff the world structure itself may change before the horizon (new actors, rule changes, coalition shifts)>}},
+ "mechanisms": ["<registry id>", ...],
+ "required_causal_processes": ["<short name of each process that determines the outcome>", ...],
+ "structural_hypotheses": [{{"id": "...", "describe": "<a competing causal structure>", "prior": <0..1>, "lean": "<how THIS structure leans the outcome: strong_no|weak_no|neutral|weak_yes|strong_yes>"}}],
+ "scheduled_events": [{{"etype": "...", "at": "<RFC3339 or YYYY-MM-DD>", "participants": [...], "payload": {{}}}}],
+ "hazards": [{{"etype": "...", "rate_per_day": <num>, "participants": [...]}}],
  "entities": [{{"id": "...", "type": "person|institution", "fields": {{"<universal field>": "<value or ?>"}}, "sensitivity": <0..1>}}],
- "populations": [{{"id": "...", "segments": [{{"id": "...", "weight": <0..1>, "differs_on": ["<dimension>", ...]}}], "sensitivity": <0..1>}}],
- "relations": [{{"src": "...", "rel": "<registered relation>", "dst": "..."}}],
  "institutions": [{{"id": "...", "rules": [{{"kind": "...", "params": {{}}}}], "sensitivity": <0..1>}}],
  "quantities": [{{"name": "...", "qtype": "...", "value": <num or null>, "sd": <num or null>}}],
  "latents": [{{"path": "<entity.field>", "why": "...", "lo": <num>, "hi": <num>, "sensitivity": <0..1>}}],
- "structural_hypotheses": [{{"id": "...", "describe": "<a competing causal structure>", "prior": <0..1>, "lean": "<how THIS structure leans the outcome: strong_no|weak_no|neutral|weak_yes|strong_yes>"}}],
+ "populations": [{{"id": "...", "segments": [{{"id": "...", "weight": <0..1>, "differs_on": ["<dimension>", ...]}}], "sensitivity": <0..1>}}],
+ "relations": [{{"src": "...", "rel": "<registered relation>", "dst": "..."}}],
  "actor_decisions": [{{"actor": "<entity id>", "role": "<role>", "at": "<RFC3339 or YYYY-MM-DD>",
    "candidate_actions": [{{"name": "<typed semantic action>", "family": "<action family>",
       "target": {{"target_type": "actor|institution|population|resource|none", "target_id": "..."}},
@@ -92,11 +98,7 @@ Return ONLY JSON:
       "mechanisms_triggered": ["record_action|message_delivery|institution_processing|reaction_scheduling"],
       "possible_consequences": [], "possible_delayed_consequences": [],
       "inclusion_reason": "<causal relevance>"}}]}}],
- "scheduled_events": [{{"etype": "...", "at": "<RFC3339 or YYYY-MM-DD>", "participants": [...], "payload": {{}}}}],
- "hazards": [{{"etype": "...", "rate_per_day": <num>, "participants": [...]}}],
- "mechanisms": ["<registry id>", ...],
  "missing_mechanisms": [{{"name": "...", "why": "..."}}],
- "required_causal_processes": ["<short name of each process that determines the outcome>", ...],
  "omitted": [{{"component": "...", "reason": "negligible sensitivity because ...", "sensitivity": <0..1>}}],
  "domain": "<one short tag>", "population_kind": "<...>", "time_scale": "<hours|days|weeks|months>",
  "available_data": ["<evidence kinds present>", ...],
@@ -265,6 +267,58 @@ def _salvage_json(txt: str):
     return {}
 
 
+#: keys the execution plane depends on — their loss to truncation collapses the run to the broad prior.
+_EXECUTION_CRITICAL_KEYS = ("mechanisms", "required_causal_processes", "structural_hypotheses",
+                            "scheduled_events", "hazards", "entities", "institutions", "quantities",
+                            "latents", "actor_decisions", "causal_dependencies")
+
+_CONTINUATION_PROMPT = """Your decomposition reply for the question below was TRUNCATED mid-JSON. The keys
+already captured are: {have}. Do NOT repeat them.
+
+Return ONLY a single JSON object containing EXACTLY these missing keys (use the same ids/entities as your
+captured prefix, summarized here):
+MISSING KEYS: {missing}
+CAPTURED PREFIX (context — entity/institution ids you already introduced): {context}
+
+ORIGINAL TASK (for reference):
+{prompt}
+
+Return ONLY compact JSON with the missing keys — no prose, no repetition of captured keys."""
+
+
+def _recover_truncated_tail(llm, prompt: str, raw: dict, *, truncated: bool) -> tuple:
+    """One bounded continuation call that recovers execution-critical keys a truncated reply lost.
+    Only fires when the reply was actually truncated (salvage path) or execution-critical keys are absent
+    while the decomposition claims coherence. Merges ONLY missing keys — never overwrites captured ones.
+    Failure is non-fatal: the salvaged prefix still compiles (with the fallback hierarchy)."""
+    missing = [k for k in _EXECUTION_CRITICAL_KEYS if k not in raw]
+    if not missing or not (truncated or len(missing) >= 6):
+        return raw, []
+    context = {"entities": [str(e.get("id")) for e in (raw.get("entities") or [])
+                            if isinstance(e, dict)][:16],
+               "institutions": [str(i.get("id")) for i in (raw.get("institutions") or [])
+                                if isinstance(i, dict)][:8],
+               "outcome": raw.get("outcome"),
+               "reading": (raw.get("interpretations") or [{}])[0].get("reading", "")}
+    try:
+        from swm.engine.grounding import parse_json
+        txt = llm(_CONTINUATION_PROMPT.format(
+            have=", ".join(sorted(raw.keys()))[:400], missing=", ".join(missing),
+            context=json.dumps(context, default=str)[:1200], prompt=prompt[:5000]))
+        tail = parse_json(txt) or _salvage_json(txt)
+    except Exception:  # noqa: BLE001 — recovery is best-effort; the prefix still compiles
+        return raw, []
+    recovered = []
+    for k in missing:
+        v = tail.get(k) if isinstance(tail, dict) else None
+        if v:
+            raw[k] = v
+            recovered.append(k)
+    if recovered:
+        raw.setdefault("_repairs", []).append(f"truncation_tail_recovered:{','.join(recovered)}")
+    return raw, recovered
+
+
 def _repair_readout(readout_var: str, proposal: dict) -> tuple:
     """READOUT REPAIR (B9): guarantee the terminal readout binds AND gets written. If the proposed
     readout_var references a declared QUANTITY (which the mechanism chain can populate), keep it. Otherwise
@@ -358,7 +412,7 @@ def compile_world(question: str, *, llm, evidence="", as_of: str, horizon: str,
         families=json.dumps(list(FAMILIES)))
 
     # ---- LLM decomposition with a bounded parse retry (parse failure is TECHNICAL, not epistemic) ----
-    raw = None
+    raw, was_truncated = None, False
     for attempt in range(2):
         try:
             txt = llm(prompt if attempt == 0 else prompt + "\n\nReturn STRICT JSON only, no prose.")
@@ -368,10 +422,17 @@ def compile_world(question: str, *, llm, evidence="", as_of: str, horizon: str,
         if not raw.get("outcome") and raw.get("coherent") is not False:
             salvaged = _salvage_json(txt)                     # recover a TRUNCATED decomposition's prefix
             if salvaged.get("outcome"):
-                raw = salvaged
+                raw, was_truncated = salvaged, True
         if raw.get("outcome") or raw.get("coherent") is False:
             break
     raw = raw or {}
+    # TRUNCATION RECOVERY: a max_tokens-clipped reply loses its tail keys — the EXP-102 forensic traces
+    # showed all five decompositions truncated, silently discarding mechanisms/actor_decisions/
+    # scheduled_events and collapsing the run to the broad-prior resolver. A salvaged prefix now triggers
+    # ONE bounded continuation call that recovers the missing execution-critical keys and merges them.
+    recovered_keys = []
+    if raw.get("outcome") and raw.get("coherent") is not False:
+        raw, recovered_keys = _recover_truncated_tail(llm, prompt, raw, truncated=was_truncated)
 
     # ---- coherence: only a genuinely incoherent question clarifies (rare) ----
     if raw.get("coherent") is False and not raw.get("outcome"):
@@ -415,6 +476,11 @@ def compile_world(question: str, *, llm, evidence="", as_of: str, horizon: str,
         quantities.append({"name": synth_q, "qtype": synth_q, "value": None, "sd": None})
 
     # ---- mechanisms: registry-vetted + executable; the rest handled by the FALLBACK HIERARCHY ----
+    # RUN-EVERYTHING PRINCIPLE (validation-gate removal): a coherent, causally plausible mechanism the
+    # compiler proposed EXECUTES. "Not yet held-out validated" is an UNCERTAINTY label (widened priors,
+    # lowered support grade, experimental calibration status) — never a reason to refuse execution and
+    # silently fall back to a broad prior. Rejection is reserved for mechanisms that literally cannot run
+    # (unknown id, no executable operator) — those are handled by the fallback hierarchy.
     accepted, rejected = [], []
     for mid in raw.get("mechanisms") or []:
         m = registry.get(mid)
@@ -422,15 +488,21 @@ def compile_world(question: str, *, llm, evidence="", as_of: str, horizon: str,
             rejected.append({"id": mid, "rejection_reason": "not in registry"})
         elif not m.operator or m.operator not in _OPERATORS:
             rejected.append({"id": mid, "rejection_reason": f"no executable operator ({m.operator!r})"})
-        elif _OPERATORS[m.operator]["experimental"] and mid != "generic_outcome_prior":
-            rejected.append({"id": mid, "rejection_reason": f"operator {m.operator!r} experimental"})
         else:
-            accepted.append({"mech_id": mid, "ontology_type": m.ontology_type, "causal_role": m.causal_role,
-                             "parameter_source": m.parameter_source, "temporal_scale": m.temporal_scale,
-                             "calibration_status": m.calibration_status, "operator": m.operator,
-                             "sensitivity": (raw.get("sensitivity") or {}).get(mid, 0.5)})
+            entry = {"mech_id": mid, "ontology_type": m.ontology_type, "causal_role": m.causal_role,
+                     "parameter_source": m.parameter_source, "temporal_scale": m.temporal_scale,
+                     "calibration_status": m.calibration_status, "operator": m.operator,
+                     "sensitivity": (raw.get("sensitivity") or {}).get(mid, 0.5)}
+            if _OPERATORS[m.operator]["experimental"]:
+                # EXECUTES, labeled: unvalidated mechanisms run with widened uncertainty, never blocked
+                entry["calibration_status"] = "experimental"
+                entry["uncertainty_widened"] = True
+                entry["experimental_runs_labeled"] = ("not held-out validated — runs with widened "
+                                                      "uncertainty and exploratory support grade")
+            accepted.append(entry)
     experimental = [{"name": str(m.get("name", ""))[:60], "why": str(m.get("why", ""))[:200],
-                     "status": "experimental — handled by fallback hierarchy, not executed as validated"}
+                     "status": "no executable operator exists for this named mechanism — handled by the "
+                               "fallback hierarchy (structural analog executes; gap recorded)"}
                     for m in (raw.get("missing_mechanisms") or []) if isinstance(m, dict)]
 
     # ---- Phase 4 production decision path -----------------------------------------------
@@ -488,8 +560,10 @@ def compile_world(question: str, *, llm, evidence="", as_of: str, horizon: str,
                      "sensitivity": 1.0})
     fallbacks_used.append({"process": "outcome_resolution", "tier": 7 if n_hyp > 1 else 6,
                            "family": "generic_outcome_prior",
-                           "why": ("outcome resolved from a broad prior — no held-out-validated mechanism "
-                                   "writes this readout on the general path (documented Phase-1 dependency)")
+                           "why": ("broad-prior terminal SAFETY NET ONLY (no-op when a domain mechanism has "
+                                   "already resolved the readout; activation synthesis binds the compiled "
+                                   "actors/institutions/populations to the readout so the world itself "
+                                   "decides the outcome)")
                            if not has_domain_mechanism else
                            "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"})
     if not any(c.family == "generic_outcome_prior" for c in choices):
@@ -549,6 +623,7 @@ def compile_world(question: str, *, llm, evidence="", as_of: str, horizon: str,
                                               for p, s in per_process.items()},
                     "mechanism_composition": composition,
                     "institution_selection": institution_selection,
+                    "truncated_reply": was_truncated, "truncation_recovered_keys": recovered_keys,
                     "repairs": raw.get("_repairs", [])})
     if persist:
         try:

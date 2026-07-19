@@ -34,6 +34,16 @@ institutions. Only include facts you are confident are real, with dates as YYYY-
 acceptable if the month is certain). For each, state whether its occurrence DIRECTLY entails the question's
 outcome and in which direction.
 
+RECURRING EVENTS — CHECK THIS EXPLICITLY. The world runs on calendars: central banks meet on fixed
+schedules, companies hold annual conferences and ship annual OS/product releases, elections follow fixed
+cycles, courts have terms, leagues have seasons. If any institution, company or body named in the question
+has a RECURRING pattern relevant to the outcome (e.g. "Apple announces a new visionOS at WWDC every June",
+"the BoJ policy board meets 8 times a year on published dates"), you MUST list the NEXT expected instance
+inside the window as a dated fact with kind "recurring_event" and fill "recurrence" with the cadence and
+its PAST instances (all strictly before {as_of}). A long unbroken pattern (5+ consecutive instances)
+justifies confidence 0.9+; a question asking whether the next instance of an unbroken annual pattern will
+happen is usually outcome-entailing. Base-rate structure like this must never be lost to the simulation.
+
 QUESTION: {q}
 AS-OF: {as_of}   HORIZON: {horizon}
 EVIDENCE:
@@ -41,7 +51,8 @@ EVIDENCE:
 
 Return ONLY JSON:
 {{"facts": [{{"fact": "<one sentence>", "date": "YYYY-MM-DD", "entity": "<who/what it concerns>",
-  "kind": "term_expiry|scheduled_vote|scheduled_meeting|deadline|election|expiration|other",
+  "kind": "term_expiry|scheduled_vote|scheduled_meeting|deadline|election|expiration|recurring_event|other",
+  "recurrence": "<cadence + past instances all before {as_of}, e.g. 'annual at WWDC each June: 2017..2025 unbroken', or null>",
   "source": "evidence|model_knowledge", "evidence_quote": "<short quote or null>",
   "confidence": <0..1>,
   "outcome_entailing": true|false,
@@ -66,6 +77,7 @@ def extract_scheduled_facts(question, *, as_of, horizon, evidence_text="", llm=N
             continue
         out.append({"fact": str(f.get("fact", ""))[:200], "ts": ts, "date": str(f["date"])[:10],
                     "entity": str(f.get("entity", ""))[:60], "kind": str(f.get("kind", "other"))[:24],
+                    "recurrence": (str(f.get("recurrence"))[:200] if f.get("recurrence") else None),
                     "source": str(f.get("source", "model_knowledge")),
                     "evidence_quote": (str(f.get("evidence_quote"))[:200]
                                        if f.get("evidence_quote") else None),
@@ -131,9 +143,26 @@ if not event_type_registered("scheduled_fact"):
                         deltas=("quantities",), parameter_source="scheduled-reality layer", validated=True)
 
 
+def public_facts_lines(facts: list, *, limit: int = 8) -> list:
+    """Render scheduled/recurring public facts as short lines for ACTOR COGNITION — the real Tim Cook knows
+    Apple's own calendar; the simulated one must too. Recurrence is included so the pattern (not just the
+    next date) enters the actor's knowledge."""
+    lines = []
+    for f in (facts or [])[:limit]:
+        rec = f" [{f['recurrence']}]" if f.get("recurrence") else ""
+        lines.append(f"- ({f.get('date', '?')}) {f.get('fact', '')}{rec}")
+    return lines
+
+
 def attach_scheduled_facts(plan, facts: list) -> dict:
     """Schedule in-window facts as deterministic events; wire the entailment quantity into the outcome
-    mechanism's consumption list at HIGH weight (a dated fact dominates broad priors). Returns a report."""
+    mechanism's consumption list at HIGH weight (a dated fact dominates broad priors). ALL extracted facts
+    (in-window or not) are kept on `plan._scheduled_facts` so actor cognition can know the public calendar
+    its real counterpart knows. Returns a report."""
+    try:
+        plan._scheduled_facts = list(facts or [])
+    except Exception:  # noqa: BLE001
+        pass
     n_sched, entailing = 0, 0
     for f in facts:
         if not (plan.as_of <= f["ts"] <= plan.horizon_ts):

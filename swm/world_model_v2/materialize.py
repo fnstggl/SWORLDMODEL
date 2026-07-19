@@ -292,12 +292,16 @@ def run_from_plan(plan, *, llm=None, n_particles=None, seed=0):
     from swm.world_model_v2.result import CompilerExecutionError
     base = build_world(plan, evidence_hash=(plan.provenance or {}).get("evidence_bundle_hash", ""))
     check_readout_binding(plan, base)
+    # RUN-EVERYTHING PRINCIPLE: mechanisms labeled experimental EXECUTE (with widened uncertainty and an
+    # exploratory support grade) rather than being silently rejected into the broad-prior path. Blocking is
+    # reserved for operators that cannot run at all — never for "not yet held-out validated".
+    allow_experimental = True
     # Phase 3: if the pipeline attached an evidence-updated outcome-rate posterior, hand its particles to the
     # canonical resolve_outcome event so the terminal resolver draws each particle's Bernoulli rate from the
     # POSTERIOR (not the broad lean-Beta prior). This is the single injection point shared by BOTH the
     # single-structure (run.run) and multi-hypothesis paths — both build queues from plan.scheduled_events.
     _inject_posterior_rate(plan)
-    ops, rejections = operators_from_plan(plan, llm=llm)
+    ops, rejections = operators_from_plan(plan, llm=llm, allow_experimental=allow_experimental)
     if not ops:
         # the fallback guarantees generic_outcome_prior is accepted; reaching here is a compiler defect
         raise CompilerExecutionError(
