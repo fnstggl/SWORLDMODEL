@@ -30,7 +30,10 @@ def council_schema(*, maker="rivera", officer="chen", panel="zoning_panel",
                    event="petition_filed_notice", outcome_record="variance_grant",
                    horizon_days=45):
     """A municipal zoning-variance scenario, fully parameterizable so randomized tests can
-    rename every type at test time."""
+    rename every type at test time. Carries its OWN causal mechanism (the clerk's posting
+    board) — the CAUSAL TRUTH BOUNDARY means the filing notice reaches nobody's eyes until
+    that mechanism actually posts it, and the grant record is scenario-declared as the
+    officer's own act (`controlled_by`), never the petitioner's claim."""
     return ScenarioSemanticModel(
         question=f"Will {maker} obtain the variance?",
         prediction_timestamp=T0, horizon=T0 + horizon_days * DAY,
@@ -40,11 +43,16 @@ def council_schema(*, maker="rivera", officer="chen", panel="zoning_panel",
                      {"parcel": "str", "request": "str", "status": "str", "matter": "str"}},
             decision_record: {"description": "one panel member's decision",
                               "fields": {"position": "str", "matter": "str"}},
-            outcome_record: {"description": "the granted variance",
+            outcome_record: {"description": "the granted variance — the officer's own "
+                                            "issued instrument",
+                             "controlled_by": officer,
                              "fields": {"parcel": "str", "status": "str"}}},
         semantic_event_types={
-            event: {"description": "public notice of filing",
+            event: {"description": "ATTEMPT: notice handed to the clerk",
                     "fields": {"parcel": "str"}, "typical_visibility": "public"},
+            f"{event}_posted": {"description": "the clerk's board made the notice available",
+                                "fields": {"parcel": "str"},
+                                "typical_visibility": "public"},
             "neighbor_objection_sent": {"description": "an objection",
                                         "fields": {"reason": "str"},
                                         "typical_visibility": "participants"}},
@@ -57,6 +65,24 @@ def council_schema(*, maker="rivera", officer="chen", panel="zoning_panel",
                              "affordances": ["file the petition", "withdraw"]},
                      officer: {"role": "panel officer", "why_consequential": "votes",
                                "affordances": ["approve", "reject"]}},
+        mechanism_definitions={
+            "clerk_posting_board": {
+                "description": "the municipal clerk posting filed notices for public view",
+                "triggering_event_types": [event],
+                "accepted_inputs": {"parcel": "str"},
+                "controlling_actor_or_system": "municipal_clerk_office",
+                "state_machine": {"at_clerk_window": ["posted"]},
+                "initial_state": "at_clerk_window",
+                "success_states": ["posted"], "failure_states": ["misfiled"],
+                "unresolved_states": [],
+                "possible_output_event_types": {"on_success": [f"{event}_posted"],
+                                                "on_failure": []},
+                "observation_rules": {"recipients": "direct_targets",
+                                      "availability": "public",
+                                      "representation": "complete"},
+                "timing_rules": {"delay_s": 60.0},
+                "assumptions": ["the clerk posts same-day"],
+                "uncertainty_source": "clerk workload"}},
         outcome_predicates=[{"predicate_id": "granted", "record_type": outcome_record,
                              "op": "exists", "option_true": "granted",
                              "option_false": "not_granted"}],
@@ -182,13 +208,18 @@ class FixtureInitial:
 
 def build_context(schema, actors, *, script=None, maker_resources=None, n_particles=6,
                   hypotheses=None, vary=None, report=None):
-    """A complete generated-mode world_context dict for the Phase 13 evaluator."""
+    """A complete generated-mode world_context dict for the Phase 13 evaluator — including
+    the causal-boundary mechanism runtime, exactly like production `operators_from_plan`."""
+    from swm.world_model_v2.causal_boundary import (MechanismRuntimeOperator,
+                                                    ScheduledAttemptOperator)
     rep = report if report is not None else generated_report()
     runtime = ScriptedActorRuntime(script)
     operators = [ScenarioPlanOperator(report=rep),
                  GeneratedSemanticEventOperator(report=rep),
                  GeneratedObservationDeliveryOperator(report=rep),
-                 ScriptedInvocationOperator(runtime, report=rep)]
+                 ScriptedInvocationOperator(runtime, report=rep),
+                 MechanismRuntimeOperator(report=rep),
+                 ScheduledAttemptOperator(report=rep)]
     return {"initial": FixtureInitial(schema, actors, maker_resources=maker_resources,
                                       vary=vary),
             "queue_builder": lambda w: EventQueue(horizon_ts=float(

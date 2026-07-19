@@ -218,10 +218,15 @@ class ScenarioActionSearch:
             if step is None:
                 step = PlanStep(step_id=f"{child.candidate_id}_s{len(child.steps) + 1}")
                 child.steps.append(step)
+            surgical = True                              # targets/content/timing map 1:1 onto
+            #                                              the already-compiled ops; intent/
+            #                                              channel/structure changes recompile
             for fieldname in ("intent", "channel", "exact_content"):
                 if isinstance(ch.get(fieldname), str) and ch[fieldname]:
                     setattr(step, fieldname, ch[fieldname][:2000])
                     changed = True
+                    if fieldname != "exact_content":
+                        surgical = False
             if isinstance(ch.get("targets"), list):
                 step.target_ids = [str(t) for t in ch["targets"]][:8]
                 changed = True
@@ -231,8 +236,21 @@ class ScenarioActionSearch:
             if isinstance(ch.get("after_steps"), list):
                 step.after_steps = [str(a) for a in ch["after_steps"]][:4]
                 changed = True
-            step.compiled_ops = []                       # a changed step recompiles ONCE
-            step.compile_meta = {}
+            if surgical and step.compiled_ops:
+                # patch the compiled attempt in place: same scenario semantics, revised
+                # targets/content — the causal boundary still routes it through the
+                # scenario's mechanisms at execution
+                for op in step.compiled_ops:
+                    if op.get("op") in ("emit_semantic_event", "schedule_semantic_event"):
+                        if isinstance(ch.get("targets"), list):
+                            op["direct_targets"] = list(step.target_ids)
+                        if isinstance(ch.get("exact_content"), str) and ch["exact_content"]:
+                            op["exact_content"] = step.exact_content
+                step.compile_meta = {**(step.compile_meta or {}),
+                                     "revision": "surgical_patch"}
+            else:
+                step.compiled_ops = []                   # a changed step recompiles ONCE
+                step.compile_meta = {}
         if not changed or not child.steps:
             return None
         # a revision that duplicates its parent's causal content is no revision

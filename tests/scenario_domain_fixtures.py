@@ -132,13 +132,22 @@ def _social_scenario(key, *, maker, decider, entity_type, event_type, proposal_r
     entity_types = {entity_type: {"description": f"{key} principal", "fields": {"name": "str"}}}
     fact_types = {proposal_record: {"description": f"the {key} proposal",
                                     "fields": {"summary": "str", "status": "str"}},
-                  outcome_record: {"description": f"the {key} terminal outcome",
+                  # CAUSAL BOUNDARY: the terminal outcome is the COUNTERPARTY's own act —
+                  # scenario-declared (`controlled_by`), never the maker's direct claim
+                  outcome_record: {"description": f"the {key} terminal outcome — "
+                                                  f"{decider}'s own act",
+                                   "controlled_by": decider,
                                    "fields": {"detail": "str", "status": "str"}}}
     if decision_record:
         fact_types[decision_record] = {"description": f"one {key} decision-holder's record",
                                        "fields": {"position": "str", "matter": "str"}}
-    sem_events = {event_type: {"description": f"{maker}'s concrete act", "fields": {"summary": "str"},
-                               "typical_visibility": "participants"}}
+    sem_events = {event_type: {"description": f"{maker}'s concrete act (an ATTEMPT — it "
+                                              f"reaches eyes only through the channel)",
+                               "fields": {"summary": "str"},
+                               "typical_visibility": "participants"},
+                  f"{event_type}_conveyed": {"description": f"the {key} channel's delivery",
+                                             "fields": {"summary": "str"},
+                                             "typical_visibility": "participants"}}
     institutional = {}
     if institution:
         institutional[institution] = {"procedure": f"{key} procedure", "decision_holders": [decider],
@@ -160,6 +169,24 @@ def _social_scenario(key, *, maker, decider, entity_type, event_type, proposal_r
         entity_types=entity_types, fact_types=fact_types, semantic_event_types=sem_events,
         institutional_definitions=institutional, resource_definitions=resources,
         actor_roles=roles,
+        mechanism_definitions={
+            f"{key}_conveyance_channel": {
+                "description": f"the {key} channel that actually carries {maker}'s act to "
+                               f"its audience — delivery is its outcome, not {maker}'s claim",
+                "triggering_event_types": [event_type],
+                "accepted_inputs": {"summary": "str"},
+                "controlling_actor_or_system": f"{key}_channel_operator",
+                "state_machine": {"in_channel": ["conveyed"]},
+                "initial_state": "in_channel",
+                "success_states": ["conveyed"], "failure_states": ["dropped_in_channel"],
+                "unresolved_states": [],
+                "possible_output_event_types": {"on_success": [f"{event_type}_conveyed"],
+                                                "on_failure": []},
+                "observation_rules": {"recipients": "direct_targets",
+                                      "representation": "complete"},
+                "timing_rules": {"delay_s": 60.0},
+                "assumptions": [f"the {key} channel operates normally"],
+                "uncertainty_source": "channel operation"}},
         outcome_predicates=[{"predicate_id": f"{key}_secured", "record_type": outcome_record,
                              "op": "exists", "option_true": "secured", "option_false": "not_secured"}],
         information_rules={"default_channel": "direct", "default_delay_s": 60.0},
@@ -307,9 +334,14 @@ def composite_escrow():
         prediction_timestamp=T0, horizon=HORIZON,
         entity_types={"disputed_asset": {"description": "the asset", "fields": {"name": "str"}}},
         fact_types={
+            # the principal's own lodged instruments (scenario-declared unilateral acts:
+            # lodging is theirs; the custodian's RELEASE and the clerk's DOCKETING remain
+            # those actors' separate decision records below)
             "escrow_deposit_record": {"description": "deposit lodged with the custodian",
+                                      "controlled_by": maker,
                                       "fields": {"amount": "str", "status": "str"}},
             "conditional_withdrawal_notice": {"description": "withdrawal filed with the registry",
+                                              "controlled_by": maker,
                                               "fields": {"condition": "str", "status": "str"}},
             "custodian_release_order": {"description": "custodian's own decision record",
                                         "fields": {"position": "str", "matter": "str"}},
@@ -317,7 +349,30 @@ def composite_escrow():
                                       "fields": {"position": "str", "matter": "str"}}},
         semantic_event_types={"dual_instrument_lodged": {"description": "the composite filing",
                                                          "fields": {"summary": "str"},
-                                                         "typical_visibility": "participants"}},
+                                                         "typical_visibility": "participants"},
+                              "dual_instrument_conveyed": {"description": "registry channel "
+                                                                          "delivery",
+                                                           "fields": {"summary": "str"},
+                                                           "typical_visibility":
+                                                               "participants"}},
+        mechanism_definitions={
+            "registry_conveyance": {
+                "description": "the registry channel carrying lodged instruments to the "
+                               "custodian and clerk",
+                "triggering_event_types": ["dual_instrument_lodged"],
+                "accepted_inputs": {"summary": "str"},
+                "controlling_actor_or_system": "registry_channel_operator",
+                "state_machine": {"in_channel": ["conveyed"]},
+                "initial_state": "in_channel",
+                "success_states": ["conveyed"], "failure_states": ["dropped_in_channel"],
+                "unresolved_states": [],
+                "possible_output_event_types": {"on_success": ["dual_instrument_conveyed"],
+                                                "on_failure": []},
+                "observation_rules": {"recipients": "direct_targets",
+                                      "representation": "complete"},
+                "timing_rules": {"delay_s": 60.0},
+                "assumptions": ["registry channel operates"],
+                "uncertainty_source": "registry operation"}},
         institutional_definitions={
             "escrow_house": {"procedure": "holds deposits", "decision_holders": [custodian],
                              "decision_record_type": "custodian_release_order",
