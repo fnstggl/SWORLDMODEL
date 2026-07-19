@@ -14,7 +14,10 @@ Leakage protocol (same as EXP-101/102, enforced in code):
 
 n=5 is a trace/anatomy run, not a benchmark claim.
 
-Run: DEEPSEEK_API_KEY=.. python -m experiments.exp105_btf3_simulate_world
+Run: DEEPSEEK_API_KEY=.. python -m experiments.exp105_btf3_simulate_world           # all 5 + score
+     DEEPSEEK_API_KEY=.. python -m experiments.exp105_btf3_simulate_world <i>       # worker: question i
+(Uncapped actor cognition is slow; the intended production use is 5 parallel workers, then the no-arg
+form merges every per-question trace file, runs anything still missing, and scores.)
 """
 from __future__ import annotations
 
@@ -42,7 +45,11 @@ def pick_fresh_qids(rows, n=5) -> list:
     return [qid for qid in committed if qid not in EXP102_QIDS][:n]
 
 
-def run() -> dict:
+def _worker_traces(i: int) -> Path:
+    return Path(f"experiments/results/exp105_simulate_world_traces_{i}.json")
+
+
+def run(only_index: int = None) -> dict:
     import os
     from swm.api.deepseek_backend import default_chat_fn
     from swm.world_model_v2.unified_runtime import simulate_world
@@ -55,8 +62,20 @@ def run() -> dict:
     # inside the backend's 120s HTTP timeout (6000 tokens exceeds it and livelocks on retries); any
     # residual clipping is handled by the compiler's truncation-recovery continuation call.
     base_llm = default_chat_fn(system="Reply ONLY JSON.", max_tokens=3600, temperature=0.2)
-    # RESUME: per-question checkpointing — completed questions are never re-run
+    # RESUME: per-question checkpointing — completed questions are never re-run. Worker trace files
+    # (parallel runs) and the merged file all count as done.
     traces = json.loads(TRACES.read_text()) if TRACES.exists() else []
+    for i in range(len(qids)):
+        wf = _worker_traces(i)
+        if wf.exists():
+            for t in json.loads(wf.read_text()):
+                if t["qid"] not in {x["qid"] for x in traces}:
+                    traces.append(t)
+    if only_index is not None:
+        qids = qids[only_index:only_index + 1]
+        out_path = _worker_traces(only_index)
+    else:
+        out_path = TRACES
     done_qids = {t["qid"] for t in traces}
     results = [{"qid": t["qid"], "question": t["question"][:110],
                 "status": t["simulation_result"].get("simulation_status"),
@@ -95,7 +114,24 @@ def run() -> dict:
         print(f"  {qid[:8]}  status={res.simulation_status}  p_raw={res.raw_probability}  "
               f"p_cal={res.calibrated_probability}  llm_calls={len(calls)}  {res.latency_s}s",
               flush=True)
-        TRACES.write_text(json.dumps(traces, indent=1, default=str))   # checkpoint per question
+        # checkpoint per question (worker mode writes ONLY its own qids to its own file)
+        own = [t for t in traces if t["qid"] in set(qids)] if only_index is not None else traces
+        out_path.write_text(json.dumps(own, indent=1, default=str))
+
+    if only_index is not None:
+        print(f"worker {only_index} done -> {out_path}")
+        return {"worker": only_index, "n": len(qids)}
+
+    TRACES.write_text(json.dumps(traces, indent=1, default=str))       # merged canonical trace file
+    # results reflect ALL traces (merged from workers + any run inline just now)
+    by_trace = {t["qid"]: t for t in traces}
+    results = [{"qid": t["qid"], "question": t["question"][:110],
+                "status": t["simulation_result"].get("simulation_status"),
+                "p_raw": t["simulation_result"].get("raw_probability"),
+                "p_cal": t["simulation_result"].get("calibrated_probability"),
+                "n_llm_calls": t["n_llm_calls"],
+                "latency_s": t["simulation_result"].get("latency_s")}
+               for t in (by_trace[q] for q in pick_fresh_qids(list(rows.values())) if q in by_trace)]
 
     # ---- scoring only from here on ----
     for r in results:
@@ -122,4 +158,5 @@ def run() -> dict:
 
 
 if __name__ == "__main__":
-    run()
+    import sys
+    run(only_index=int(sys.argv[1]) if len(sys.argv) > 1 else None)
