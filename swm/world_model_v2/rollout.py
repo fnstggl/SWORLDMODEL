@@ -97,10 +97,11 @@ class WorldModelV2Run:
         self.contract.validate()
         engine = RolloutEngine(operators=self.operators)
         worlds = self.initial.sample_particles(self.n_particles, seed=seed)
-        branches = []
-        for i, w in enumerate(worlds):
-            q = self.queue_builder(w)
-            branches.append(engine.run_branch(w, q, seed=seed * 7919 + i))
+        # independent particle worlds roll out serially or thread-parallel (SWM_BRANCH_THREADS);
+        # submission-order collection keeps serial/parallel results identical
+        from swm.world_model_v2.materialize import run_branches
+        jobs = [(w, self.queue_builder(w), seed * 7919 + i) for i, w in enumerate(worlds)]
+        branches = run_branches(engine, jobs)
         result = self.contract.project(branches)
         result["n_deltas"] = sum(len(b.log) for b in branches)
         result["readout"] = "terminal_states"                # provenance: numbers came from worlds, not an LLM

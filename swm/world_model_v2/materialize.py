@@ -337,6 +337,30 @@ def run_from_plan(plan, *, llm=None, n_particles=None, seed=0):
     return result, branches
 
 
+def branch_thread_count() -> int:
+    """SWM_BRANCH_THREADS: opt-in parallel rollout of INDEPENDENT particle worlds. Branches are
+    embarrassingly parallel by construction — each world is its own deep copy with its own seed and its
+    own fresh event queue, and per-branch results are collected in submission order, so serial and
+    parallel runs produce IDENTICAL branches. With LLM actor cognition the wall-clock is dominated by
+    sequential API latency; threading branches turns hours into minutes without touching fidelity,
+    budgets or determinism. Default 1 (serial, exact legacy behavior)."""
+    import os
+    v = os.environ.get("SWM_BRANCH_THREADS", "").strip()
+    return max(1, int(v)) if v.isdigit() else 1
+
+
+def run_branches(engine, jobs) -> list:
+    """Roll out [(world, queue, seed)] jobs through the engine — serial, or thread-parallel when
+    SWM_BRANCH_THREADS > 1. Result order always equals submission order (determinism contract)."""
+    n = branch_thread_count()
+    if n <= 1 or len(jobs) <= 1:
+        return [engine.run_branch(w, q, seed=s) for w, q, s in jobs]
+    from concurrent.futures import ThreadPoolExecutor
+    with ThreadPoolExecutor(max_workers=min(n, len(jobs))) as pool:
+        futs = [pool.submit(engine.run_branch, w, q, seed=s) for w, q, s in jobs]
+        return [f.result() for f in futs]
+
+
 def _run_with_hypotheses(run, plan, hyps, seed):
     """Stratify particles across structural hypotheses; each hypothesis carries a lean the generic resolver
     reads, so competing structures produce genuinely different terminal outcomes. When a Phase-3 structural
@@ -361,7 +385,7 @@ def _run_with_hypotheses(run, plan, hyps, seed):
     worlds = run.initial.sample_particles(total, seed=seed)
     from swm.world_model_v2.rollout import RolloutEngine
     engine = RolloutEngine(operators=run.operators)
-    branches, wi = [], 0
+    jobs, wi = [], 0
     default_lean = (plan.provenance or {}).get("outcome_lean", "neutral")
     for h, k in zip(hyps, alloc):
         lean = str(h.get("lean") or h.get("outcome_lean") or default_lean)
@@ -376,7 +400,8 @@ def _run_with_hypotheses(run, plan, hyps, seed):
             for ev in q.events:
                 if ev.etype == "resolve_outcome":
                     ev.payload["lean"] = lean
-            branches.append(engine.run_branch(w, q, seed=seed * 7919 + wi))
+            jobs.append((w, q, seed * 7919 + wi))
+    branches = run_branches(engine, jobs)
     result = plan.outcome_contract.project(branches)
     result["n_deltas"] = sum(len(b.log) for b in branches)
     result["readout"] = "terminal_states"
