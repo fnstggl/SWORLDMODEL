@@ -1,7 +1,7 @@
 {
  "kind": "scenario_action_acceptance.v1",
  "generated_by": "benchmarks/phase13/scenario_action_acceptance.py",
- "generated_at_unix": 1784412927.3311043,
+ "generated_at_unix": 1784432288.2671325,
  "rows": [
   {
    "check": "S1_no_legacy_catalog_imports_in_package",
@@ -44,42 +44,42 @@
   "27_pr115_message_battery": {
    "command": "pytest -q tests/test_reply_first.py tests/test_llm_moves.py tests/test_iterative_editor.py tests/test_outreach_funnel.py tests/test_persona_response.py",
    "exit_code": 0,
-   "summary": "64 passed in 33.52s",
-   "wall_s": 33.8,
+   "summary": "64 passed in 30.93s",
+   "wall_s": 31.2,
    "passed": true
   },
   "28_semantic_world_suites": {
    "command": "pytest -q tests/test_generated_world.py tests/test_semantic_consequences.py",
    "exit_code": 0,
-   "summary": "54 passed in 0.48s",
-   "wall_s": 0.8,
+   "summary": "54 passed in 0.58s",
+   "wall_s": 0.9,
    "passed": true
   },
   "core_integration": {
    "command": "pytest -q tests/test_scenario_action_layer.py",
    "exit_code": 0,
-   "summary": "10 passed in 0.18s",
-   "wall_s": 0.4,
+   "summary": "10 passed in 0.28s",
+   "wall_s": 0.7,
    "passed": true
   },
   "cross_domain_generality": {
    "command": "pytest -q tests/test_scenario_cross_domain.py",
    "exit_code": 0,
-   "summary": "35 passed in 0.46s",
-   "wall_s": 0.7,
+   "summary": "35 passed in 0.52s",
+   "wall_s": 0.8,
    "passed": true
   },
   "source_enforcement": {
    "command": "pytest -q tests/test_scenario_action_enforcement.py",
    "exit_code": 0,
-   "summary": "30 passed in 0.31s",
-   "wall_s": 0.6,
+   "summary": "32 passed in 0.36s",
+   "wall_s": 0.7,
    "passed": true
   },
   "phase13_legacy_regression": {
    "command": "pytest -q tests/test_phase13_engine.py tests/test_phase13_ope.py",
    "exit_code": 0,
-   "summary": "43 passed in 7.68s",
+   "summary": "43 passed in 7.72s",
    "wall_s": 8.0,
    "passed": true
   }
@@ -88,7 +88,7 @@
   "1_no_catalog_in_prompts": {
    "command": "pytest -q tests/test_scenario_action_invariants.py -k test_generated_mode_never_lists_the_global_operation_catalog_in_a_prompt",
    "exit_code": 0,
-   "summary": "1 passed, 28 deselected in 0.24s",
+   "summary": "1 passed, 28 deselected in 0.23s",
    "wall_s": 0.5,
    "passed": true,
    "covered": true
@@ -96,7 +96,7 @@
   "2_no_operation_registered": {
    "command": "pytest -q tests/test_scenario_action_invariants.py -k test_generated_mode_never_calls_operation_registered",
    "exit_code": 0,
-   "summary": "1 passed, 28 deselected in 0.13s",
+   "summary": "1 passed, 28 deselected in 0.12s",
    "wall_s": 0.4,
    "passed": true,
    "covered": true
@@ -104,7 +104,7 @@
   "3_novel_phrase_executes": {
    "command": "pytest -q tests/test_scenario_action_invariants.py -k test_novel_action_phrase_absent_from_source_compiles_and_executes",
    "exit_code": 0,
-   "summary": "1 passed, 28 deselected in 0.13s",
+   "summary": "1 passed, 28 deselected in 0.11s",
    "wall_s": 0.4,
    "passed": true,
    "covered": true
@@ -112,8 +112,8 @@
   "4_no_belief_writes": {
    "command": "pytest -q tests/test_scenario_action_invariants.py -k test_cannot_directly_write_another_actors_beliefs",
    "exit_code": 0,
-   "summary": "1 passed, 28 deselected in 0.13s",
-   "wall_s": 0.4,
+   "summary": "1 passed, 28 deselected in 0.16s",
+   "wall_s": 0.5,
    "passed": true,
    "covered": true
   },
@@ -128,7 +128,7 @@
   "6_no_terminal_writes": {
    "command": "pytest -q tests/test_scenario_action_invariants.py -k test_cannot_directly_write_a_terminal_outcome",
    "exit_code": 0,
-   "summary": "1 passed, 28 deselected in 0.11s",
+   "summary": "1 passed, 28 deselected in 0.10s",
    "wall_s": 0.4,
    "passed": true,
    "covered": true
@@ -152,7 +152,7 @@
   "9_no_history_only_execution": {
    "command": "pytest -q tests/test_scenario_action_invariants.py -k test_unsupported_actions_are_real_world_events_not_history_only_records",
    "exit_code": 0,
-   "summary": "1 passed, 28 deselected in 0.13s",
+   "summary": "1 passed, 28 deselected in 0.12s",
    "wall_s": 0.4,
    "passed": true,
    "covered": true
@@ -160,24 +160,24 @@
   "10_real_partial_or_rejected": {
    "command": "pytest -q tests/test_scenario_action_invariants.py -k test_every_action_yields_effects_visible_partial_or_hard_rejection",
    "exit_code": 0,
-   "summary": "1 passed, 28 deselected in 0.13s",
-   "wall_s": 0.4,
+   "summary": "1 passed, 28 deselected in 0.14s",
+   "wall_s": 0.5,
    "passed": true,
    "covered": true
   },
   "11_no_progress_scalar": {
    "command": "pytest -q tests/test_scenario_action_invariants.py -k test_no_arbitrary_scalar_progress_and_evaluations_are_counts_not_utilities",
    "exit_code": 0,
-   "summary": "1 passed, 28 deselected in 0.17s",
-   "wall_s": 0.5,
+   "summary": "1 passed, 28 deselected in 0.15s",
+   "wall_s": 0.4,
    "passed": true,
    "covered": true
   },
   "12_no_minted_numbers_in_ranking": {
    "command": "pytest -q tests/test_scenario_action_invariants.py -k test_no_llm_minted_utility_weight_or_failure_probability_in_ranking",
    "exit_code": 0,
-   "summary": "1 passed, 28 deselected in 0.14s",
-   "wall_s": 0.5,
+   "summary": "1 passed, 28 deselected in 0.11s",
+   "wall_s": 0.4,
    "passed": true,
    "covered": true
   },
@@ -193,22 +193,22 @@
    "command": "pytest -q tests/test_scenario_action_invariants.py -k test_materially_different_actions_are_not_falsely_deduplicated",
    "exit_code": 0,
    "summary": "1 passed, 28 deselected in 0.10s",
-   "wall_s": 0.3,
+   "wall_s": 0.4,
    "passed": true,
    "covered": true
   },
   "15_merges_carry_evidence": {
    "command": "pytest -q tests/test_scenario_action_invariants.py -k test_paraphrase_merges_only_with_recorded_evidence",
    "exit_code": 0,
-   "summary": "1 passed, 28 deselected in 0.15s",
-   "wall_s": 0.5,
+   "summary": "1 passed, 28 deselected in 0.11s",
+   "wall_s": 0.4,
    "passed": true,
    "covered": true
   },
   "16_feasibility_hypotheses_and_execution": {
    "command": "pytest -q tests/test_scenario_action_invariants.py -k test_feasibility_across_hypotheses_and_at_execution",
    "exit_code": 0,
-   "summary": "1 passed, 28 deselected in 0.12s",
+   "summary": "1 passed, 28 deselected in 0.11s",
    "wall_s": 0.4,
    "passed": true,
    "covered": true
@@ -224,7 +224,7 @@
   "18_blind_comparison": {
    "command": "pytest -q tests/test_scenario_action_invariants.py -k test_blind_comparison_hides_candidate_provenance_and_source or test_adjudicator_prompt_never_reveals_candidate_id",
    "exit_code": 0,
-   "summary": "2 passed, 27 deselected in 0.15s",
+   "summary": "2 passed, 27 deselected in 0.16s",
    "wall_s": 0.4,
    "passed": true,
    "covered": true
@@ -232,8 +232,8 @@
   "19_critics_cannot_select": {
    "command": "pytest -q tests/test_scenario_action_invariants.py -k test_critics_cannot_select_the_final_action",
    "exit_code": 0,
-   "summary": "1 passed, 28 deselected in 0.15s",
-   "wall_s": 0.5,
+   "summary": "1 passed, 28 deselected in 0.14s",
+   "wall_s": 0.4,
    "passed": true,
    "covered": true
   },
@@ -264,7 +264,7 @@
   "23_no_input_mutation": {
    "command": "pytest -q tests/test_scenario_action_invariants.py -k test_phase13_evaluate_actions_does_not_mutate_input_on_the_generated_route",
    "exit_code": 0,
-   "summary": "1 passed, 28 deselected in 0.12s",
+   "summary": "1 passed, 28 deselected in 0.11s",
    "wall_s": 0.4,
    "passed": true,
    "covered": true
@@ -272,15 +272,15 @@
   "24_policy_observable_boundary": {
    "command": "pytest -q tests/test_scenario_action_invariants.py -k test_policy_conditions_observe_only_the_canonical_boundary",
    "exit_code": 0,
-   "summary": "1 passed, 28 deselected in 0.13s",
-   "wall_s": 0.4,
+   "summary": "1 passed, 28 deselected in 0.19s",
+   "wall_s": 0.5,
    "passed": true,
    "covered": true
   },
   "25_legacy_unreachable_in_generated": {
    "command": "pytest -q tests/test_scenario_action_invariants.py -k test_legacy_fixed_v1_unreachable_in_generated_mode",
    "exit_code": 0,
-   "summary": "1 passed, 28 deselected in 0.16s",
+   "summary": "1 passed, 28 deselected in 0.12s",
    "wall_s": 0.4,
    "passed": true,
    "covered": true
@@ -288,15 +288,15 @@
   "26_missing_semantics_fail_loudly": {
    "command": "pytest -q tests/test_scenario_action_invariants.py -k test_missing_generated_action_semantics_fail_loudly",
    "exit_code": 0,
-   "summary": "1 passed, 28 deselected in 0.16s",
-   "wall_s": 0.5,
+   "summary": "1 passed, 28 deselected in 0.12s",
+   "wall_s": 0.4,
    "passed": true,
    "covered": true
   },
   "29_canonical_runtime_every_candidate": {
    "command": "pytest -q tests/test_scenario_action_invariants.py -k test_canonical_runtime_used_for_every_step_candidate",
    "exit_code": 0,
-   "summary": "1 passed, 28 deselected in 0.11s",
+   "summary": "1 passed, 28 deselected in 0.13s",
    "wall_s": 0.4,
    "passed": true,
    "covered": true
@@ -304,8 +304,8 @@
   "30_no_silent_numeric_fallback": {
    "command": "pytest -q tests/test_scenario_action_invariants.py -k test_no_silent_numeric_actor_fallback_in_the_plan_path",
    "exit_code": 0,
-   "summary": "1 passed, 28 deselected in 0.17s",
-   "wall_s": 0.5,
+   "summary": "1 passed, 28 deselected in 0.12s",
+   "wall_s": 0.4,
    "passed": true,
    "covered": true
   }
@@ -318,7 +318,7 @@
   "suites_total": 6,
   "structural_passed": 5,
   "structural_total": 5,
-  "wall_s": 56.5
+  "wall_s": 53.9
  },
  "all_pass": true
 }
