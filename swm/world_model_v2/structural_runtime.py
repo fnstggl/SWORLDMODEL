@@ -234,8 +234,9 @@ def simulate_structural_ensemble(question: str, *, as_of: str, horizon: str = ""
             "full_budget_required": rec["n_full"],
             "pilot_reused_as_prefix": not rec.get("pilot_discarded", False),
             "extensions": rec.get("extensions", []), "status": "completed"}
-    for cand in ens.surviving():
-        if cand.promotion_status != "promoted" and cand.model_id in runs:
+    for cand in ens.candidates:
+        if cand.promotion_status != "promoted" and cand.model_id in runs \
+                and cand.model_id not in ens.simulation_manifest:
             rec = runs[cand.model_id]
             ens.simulation_manifest[cand.model_id] = {
                 "pilot_particles": rec.get("n_pilot", 0), "final_particles": 0,
@@ -440,7 +441,13 @@ def _finalize_model(U, question, cand, rec, bundle, as_of, intervention, seed, t
 def _assemble_ensemble_result(U, question, ens, runs, model_results, promoted, bundle, ledger, t0):
     model_dists = {c.model_id: dict(model_results[c.model_id].raw_distribution or {})
                    for c in promoted}
-    incomplete = any(runs[c.model_id].get("error") for c in ens.surviving() if c.model_id in runs)
+    # HONESTY INVARIANT: any model that entered execution and died (pilot/conditioning failure) makes
+    # the ensemble INCOMPLETE — including models no longer in surviving(). And an ensemble that shrank
+    # to ONE promoted model through execution failures (rather than certified critic/merge survivorship)
+    # is never "stable": a single survivor requires the generation-time convergence certificate.
+    incomplete = any(r.get("error") for r in runs.values())
+    if len(promoted) == 1 and ens.convergence_certificate is None:
+        incomplete = True
     classification = classify_forecast_sensitivity(
         model_dists, underidentified=ens.structurally_underidentified, incomplete=incomplete)
     mixture = _equal_weight_mixture(model_dists)
@@ -467,6 +474,11 @@ def _assemble_ensemble_result(U, question, ens, runs, model_results, promoted, b
         limitations.append("structurally underidentified: the generation ceiling was reached while the "
                            "omission critic still identified plausible missing structures "
                            "(structural_ensemble.unresolved_alternatives)")
+    if incomplete:
+        limitations.append("ensemble execution incomplete: structural model(s) failed during "
+                           "conditioning/pilot execution (see structural_ensemble.rejected_and_merged "
+                           "and simulation_manifest) — the surviving set is not a certified complete "
+                           "ensemble")
     degraded = any(model_results[c.model_id].simulation_status == "completed_with_degradation"
                    for c in promoted)
 

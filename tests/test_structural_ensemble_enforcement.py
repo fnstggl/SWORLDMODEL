@@ -306,3 +306,31 @@ def test_aggregation_never_loses_model_identity():
     assert res.structural_disagreement is not None
     for mid, d in se["model_distributions"].items():
         assert d, f"model {mid} lost its distribution in aggregation"
+
+
+def test_post_pilot_collapse_to_one_model_is_marked_incomplete(monkeypatch):
+    """Live-run finding (founder_launch forensic): models that die during conditioning/pilot must make
+    the ensemble EXECUTION-INCOMPLETE — a single survivor left by execution failures (no generation-time
+    convergence certificate) may never read as 'structurally stable'."""
+    import swm.world_model_v2.phase8_pipeline as P8
+    real_prepare = P8.prepare_persistence_run
+    killed = []
+
+    def sabotaged(question, plan, **kw):
+        mid = (plan.provenance or {}).get("structural_model_id", "")
+        if mid != "m0_actor_relationship":         # every other model dies at pilot preparation
+            killed.append(mid)
+            raise RuntimeError(f"induced pilot failure for {mid}")
+        return real_prepare(question, plan, **kw)
+
+    monkeypatch.setattr(P8, "prepare_persistence_run", sabotaged)
+    res = run_default()
+    assert killed, "sabotage must have hit at least one model"
+    se = res.structural_ensemble
+    assert se["n_fully_simulated"] == 1
+    assert se["structural_sensitivity"]["classification"] == "ensemble_execution_incomplete"
+    assert res.simulation_status == "completed_with_degradation"
+    assert any("ensemble execution incomplete" in l for l in res.limitations)
+    failed_rows = [m for m in se["rejected_and_merged"] if m["status"] == "failed"]
+    assert failed_rows and all("pilot_failed" in m["reason"] for m in failed_rows)
+    assert any(v.get("status", "").startswith("failed") for v in se["simulation_manifest"].values())

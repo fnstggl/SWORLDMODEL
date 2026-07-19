@@ -174,6 +174,7 @@ def run_case(case: dict, max_tokens: int) -> dict:
             "generation_manifest": se.get("generation_manifest"),
             "critic_manifest": se.get("critic_manifest"),
             "merge_manifest": se.get("merge_manifest"),
+            "rejected_and_merged": se.get("rejected_and_merged"),
             "simulation_manifest": se.get("simulation_manifest"),
             "shared_evidence_bundle_hash": se.get("shared_evidence_bundle_hash"),
             "structural_coverage": se.get("structural_coverage"),
