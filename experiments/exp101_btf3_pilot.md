@@ -80,3 +80,36 @@ V3 arm — arrival (20) 0.121, whipcount (13) **0.743**, aggregation (5) 0.513.
 
 Artifacts: `results/exp101_btf3_pilot{,_v3or}.json`, `results/exp101_btf3_predictions{,_v3or}.json`,
 sample ids, this report. Cost: ~100 LLM calls (~$0.10 total). Keys read from env only, never stored.
+
+---
+
+## Addendum: the widened-kernel arms (provenance fix, same protocol)
+
+**Fix** (`swm/api/mechanisms.py`): provenance tiers (grounded / quoted / invented) for
+`aggregation`/`whipcount` — sd floors, count/lean estimate noise, no hard arithmetic gates on conjectured
+counts, log-odds shrinkage toward the base-rate anchor; compile prompt now invites OMITTING invented
+numbers (nulls land on the base-rate fallback, not on "zero votes"). Grounded direct calls unchanged
+(pinned by tests, 9 passing).
+
+| run (v4flash, no evidence) | brier | log-loss | acc@0.5 | AUC | extreme | vs const-base | vs SOTA |
+|---|---|---|---|---|---|---|---|
+| 50 pre-fix | 0.2634 | 1.137 | 0.66 | 0.497 | 0.48 | +0.071 worse | 0.0918 |
+| 50 widened (paired) | 0.2008 | 0.737 | 0.76 | 0.632 | 0.28 | +0.008 worse | 0.0918 |
+| **200 widened** | **0.2168** | 0.695 | 0.695 | **0.677** | 0.37 | **−0.008 better** | 0.1048 |
+
+Paired 50: net brier delta **+0.063**; 18 improved / 16 worsened / 16 same. Gains are precisely the four
+confabulated extremes (BoJ, Banxico, Slovakia, Farm Bill: 0.00/0.98 → 0.50, ~+0.7 each); losses are the
+honesty tax (confident-and-right calls de-sharpened to 0.5, ~−0.25 each). Wrong-side extremes cost ~4x
+what right-side extremes earn, so the trade is strongly net-positive exactly when the model cannot tell
+which is which — the no-evidence regime. With grounded params the kernels keep full sharpness, which is
+why this is a provenance tier and not a global clamp.
+
+At n=200 the stack **beats every constant baseline for the first time** (0.2168 vs 0.2244/0.2245/0.25)
+with real discrimination (AUC 0.677) — i.e., the no-evidence arm now contains honest signal, no longer
+self-inflicted damage. Remaining gap to FutureSearch SOTA: **0.112 brier** (0.2168 vs 0.1048 on the same
+187 questions), which decomposes as ~0.06 recovered by uncertainty discipline (this fix) and a remainder
+that is evidence + research + ensembling — to be measured next by an evidence arm (BTF-2's inlined
+research on an old-cutoff model, then RetroSearch-lite).
+
+The 200-question by-mechanism table (arrival n=107 at 0.167 is the workhorse; escalation/persistence
+small-n and weak; aggregation still worst at 0.294) is in `results/exp101_btf3_pilot_widened200.json`.
