@@ -39,7 +39,8 @@ from swm.world_model_v2.state import F
 from swm.world_model_v2.transitions import StateDelta, ValidationResult
 
 #: control-plane task types — scheduler instructions, never world semantics
-CONTROL_EVENT_TYPES = ("ctrl_semantic_event", "ctrl_deliver_observation", "ctrl_invoke_actor")
+CONTROL_EVENT_TYPES = ("ctrl_semantic_event", "ctrl_deliver_observation", "ctrl_invoke_actor",
+                       "ctrl_attention")
 for _et in CONTROL_EVENT_TYPES:
     if not event_type_registered(_et):
         register_event_type(_et, scheduling="scheduled", validated=True,
@@ -50,8 +51,12 @@ KERNEL_OPS = ("declare_schema_definition", "create_or_update_record", "remove_re
               "create_or_remove_relation", "emit_semantic_event", "schedule_semantic_event",
               "transfer_conserved_quantity")
 
-DEFAULT_BUDGETS = {"max_invocations_per_actor": 5, "max_semantic_events": 150,
-                   "max_cascade_depth": 8}
+#: SAFETY budgets — service protection, NOT models of reality (§12/§26). The real stopping
+#: conditions are causal quiescence / horizon / actor-chosen inaction; these ceilings sit far
+#: above natural cascade sizes, and REACHING one marks the branch temporally_truncated with
+#: the pending actors/events recorded — never a silent omission or a fake quiescence.
+DEFAULT_BUDGETS = {"max_invocations_per_actor": 40, "max_semantic_events": 1000,
+                   "max_cascade_depth": 64}
 
 
 def _hash(v) -> str:
@@ -70,7 +75,9 @@ def generated_report() -> dict:
             "actors_invoked": 0, "actor_actions_executed": 0, "actors_declined_to_act": 0,
             "recursive_cascade_depth": 0, "human_reactions_written_directly": 0,
             "fixed_ontology_uses": 0, "unsupported_semantics": 0, "mechanistic_fallbacks": 0,
-            "numeric_fallbacks": 0, "fallback_reasons": []}
+            "numeric_fallbacks": 0, "fallback_reasons": [],
+            "attention_events": 0, "observation_bundles_delivered": 0,
+            "temporal_truncations": []}
 
 
 # ---------------------------------------------------------------- world-plane event envelope
@@ -538,11 +545,31 @@ def _budgets(world) -> dict:
     return b
 
 
+def _channel_model_id(model, chan: str) -> str:
+    """Map a schema channel label onto the scenario temporal model's channel set: exact id,
+    else first channel of that kind, else the label itself (miss → labeled broad band)."""
+    if model is None:
+        return str(chan)
+    if chan in (model.channels or {}):
+        return str(chan)
+    for cid, c in (model.channels or {}).items():
+        if str(getattr(c, "kind", "")) == str(chan):
+            return str(cid)
+    return str(chan)
+
+
 def route_semantic_event(world, sev: dict, report: dict) -> list:
-    """Deterministic observation routing: who receives what, when, in which representation.
-    The router NEVER interprets the event for the actor."""
+    """Deterministic observation routing: who can receive what, through WHICH ACTUAL CHANNEL,
+    in which representation. Delivery timing comes from the scenario temporal model's channel
+    stages (transmission → delivery → moderation → exposure), sampled per particle — never a
+    fixed 60-second/one-hour constant (§9/§10). A public post publishes once; each recipient's
+    EXPOSURE is their own (spread over the channel's exposure process). The router NEVER
+    interprets the event for the actor, and delivery is AVAILABILITY, not attention."""
+    from swm.world_model_v2.temporal_runtime import channel_delivery_ts, get_stats, temporal_model_of
     schema = _schema(world)
     rules = schema.information_rules or {}
+    model = temporal_model_of(world)
+    stats = get_stats(world)
     vis = str(sev.get("intended_visibility", "participants"))
     persons = [eid for eid, e in world.entities.items()
                if getattr(e, "entity_type", "person") == "person"]
@@ -551,22 +578,27 @@ def route_semantic_event(world, sev: dict, report: dict) -> list:
     else:
         recipients = [t for t in (sev.get("direct_targets") or []) if t in world.entities]
     source = str(sev.get("source_actor_id", ""))
+    urgency = max(0.0, min(1.0, float(sev.get("urgency", 0.0) or 0.0)))
     deliveries = []
     for r in recipients:
         if r == source:
             continue
         chan = rules.get("default_channel", "direct")
-        delay = float(rules.get("default_delay_s", 60.0) or 60.0)
         representation = "complete"
         if vis == "public" and r not in (sev.get("direct_targets") or []):
             chan = rules.get("public_channel", "public_broadcast")
-            delay = float(rules.get("public_delay_s", 3600.0) or 3600.0)
             representation = str(rules.get("public_representation", "complete"))
+        cid = _channel_model_id(model, chan)
+        available_ts, prov = channel_delivery_ts(
+            world, model, channel_id=cid, sent_ts=world.clock.now, urgency=urgency,
+            recipient=r, salt=f"{sev.get('event_id', '')}:{r}", stats=stats)
         deliveries.append(Event(
-            ts=world.clock.now + max(1.0, delay), etype="ctrl_deliver_observation",
+            ts=max(float(available_ts), world.clock.now), etype="ctrl_deliver_observation",
             participants=[r],
-            payload={"recipient": r, "semantic_event": sev, "channel": chan,
-                     "representation": representation},
+            payload={"recipient": r, "semantic_event": sev, "channel": cid,
+                     "representation": representation, "urgency": urgency,
+                     "delivery_provenance": prov, "sent_ts": world.clock.now},
+            parent_ids=[str(sev.get("event_id", ""))],
             visibility="participants", source="endogenous:generated_world"))
     return deliveries
 
@@ -587,6 +619,8 @@ class GeneratedSemanticEventOperator:
             and getattr(world, "scenario_schema", None) is not None
 
     def run(self, world, event, rng):
+        from swm.world_model_v2.temporal_runtime import (channel_delivery_ts, get_stats,
+                                                         temporal_model_of)
         sev = event.payload["semantic_event"]
         delta = StateDelta(at=world.clock.now, event_type="ctrl_semantic_event",
                            operator=self.name,
@@ -598,41 +632,96 @@ class GeneratedSemanticEventOperator:
         self.report["recursive_cascade_depth"] = max(
             self.report.get("recursive_cascade_depth", 0), depth)
         recipients = {e.payload["recipient"] for e in follow}
+        model = temporal_model_of(world)
+        stats = get_stats(world)
         for actor_id, reason in frontier:
             if actor_id in recipients:
-                continue                    # their delivery already triggers reconsideration
-            inv = _invocation_event(world, actor_id, sev, reason=reason)
-            if inv is not None:
-                follow.append(inv)
+                continue                    # their delivery already carries the information
+            # a frontier actor learns through an ACTUAL channel too: availability + their own
+            # attention — never a fixed reconsideration timer (§9)
+            schema = _schema(world)
+            chan = (schema.information_rules or {}).get("default_channel", "direct")
+            cid = _channel_model_id(model, chan)
+            available_ts, prov = channel_delivery_ts(
+                world, model, channel_id=cid, sent_ts=world.clock.now,
+                urgency=max(0.0, min(1.0, float(sev.get("urgency", 0.0) or 0.0))),
+                recipient=actor_id, salt=f"frontier:{sev.get('event_id', '')}:{actor_id}",
+                stats=stats)
+            follow.append(Event(
+                ts=max(float(available_ts), world.clock.now),
+                etype="ctrl_deliver_observation", participants=[actor_id],
+                payload={"recipient": actor_id, "semantic_event": sev, "channel": cid,
+                         "representation": "complete",
+                         "frontier_reason": str(reason)[:160],
+                         "delivery_provenance": prov, "sent_ts": world.clock.now},
+                parent_ids=[str(sev.get("event_id", ""))],
+                visibility="participants", source="endogenous:generated_world"))
         delta.follow_up_events = [{"etype": e.etype, "ts": e.ts,
                                    "participants": list(e.participants),
-                                   "payload": dict(e.payload)} for e in follow]
+                                   "payload": dict(e.payload),
+                                   "parent_ids": list(e.parent_ids or [])} for e in follow]
         return delta, ValidationResult(ok=True)
 
 
+def _record_truncation(world, report, *, kind: str, actor: str, detail: str = ""):
+    """A SAFETY budget was hit: record a temporal truncation on the report AND the branch's
+    temporal stats — the branch is temporally truncated, never silently quiescent (§12)."""
+    from swm.world_model_v2.temporal_runtime import get_stats
+    rec = {"kind": kind, "actor": actor, "at_ts": world.clock.now, "detail": str(detail)[:160],
+           "why_actor_matters": "a pending causal chain names this actor; additional compute "
+                                "would process their reconsideration"}
+    if report is not None:
+        report.setdefault("temporal_truncations", []).append(rec)
+        report.setdefault("fallback_reasons", []).append({"kind": kind, "actor": actor})
+    stats = get_stats(world)
+    stats.temporally_truncated = True
+    if not stats.truncation:
+        stats.truncation = {"reason": kind, "at_ts": world.clock.now,
+                            "actors_not_processed": [], "note": rec["why_actor_matters"]}
+    naf = stats.truncation.setdefault("actors_not_processed", [])
+    if actor not in naf:
+        naf.append(actor)
+
+
 def _invocation_event(world, actor_id: str, sev: dict, *, reason: str,
-                      observation_ids=(), delay_s: float = 1800.0):
+                      observation_ids=(), at_ts: float = None, trigger: dict = None,
+                      bundle=None, report=None):
     """Internal ActorReconsiderationTask (scheduler metadata, not a world event): dedup per
-    (actor, semantic event), respect per-actor budgets."""
+    (actor, semantic event). The invocation happens at the REAL triggering time (`at_ts` —
+    normally the attention/notice event's own timestamp), carrying a first-class
+    DecisionTrigger (§6) — never a fixed post-observation delay. SAFETY budgets protect the
+    service; hitting one records a temporal truncation (§12), never a silent drop."""
     budgets = _budgets(world)
     key = f"{actor_id}|{sev.get('event_id', '')}"
     pending = world.uncertainty_meta.setdefault("pending_reconsiderations", [])
     if key in pending:
-        return None
+        return None                          # duplicate of an already-pending reconsideration
     used = budgets["invocations"].get(actor_id, 0)
     if used >= budgets["max_invocations_per_actor"]:
-        return None                          # budget exhaustion is stamped at invocation time
+        _record_truncation(world, report, kind="invocation_safety_budget_reached",
+                           actor=actor_id,
+                           detail=f"safety cap {budgets['max_invocations_per_actor']}")
+        return None
     if int(sev.get("cascade_depth", 0)) >= budgets["max_cascade_depth"]:
+        _record_truncation(world, report, kind="cascade_depth_safety_budget_reached",
+                           actor=actor_id,
+                           detail=f"safety cap {budgets['max_cascade_depth']}")
         return None
     pending.append(key)
     del pending[:-256]
-    return Event(ts=world.clock.now + max(1.0, delay_s), etype="ctrl_invoke_actor",
-                 participants=[actor_id],
-                 payload={"actor_id": actor_id,
-                          "triggering_observation_ids": list(observation_ids),
-                          "triggering_semantic_event": sev,
-                          "reason_actor_may_be_causally_relevant": str(reason)[:200],
-                          "cascade_depth": int(sev.get("cascade_depth", 0)) + 1},
+    ts = float(at_ts) if at_ts is not None else world.clock.now
+    payload = {"actor_id": actor_id,
+               "triggering_observation_ids": list(observation_ids),
+               "triggering_semantic_event": sev,
+               "reason_actor_may_be_causally_relevant": str(reason)[:200],
+               "cascade_depth": int(sev.get("cascade_depth", 0)) + 1}
+    if trigger:
+        payload["trigger"] = dict(trigger)
+    if bundle:
+        payload["observation_bundle"] = list(bundle)[:24]
+    return Event(ts=max(ts, world.clock.now), etype="ctrl_invoke_actor",
+                 participants=[actor_id], payload=payload,
+                 trigger=dict(trigger or {}),
                  visibility="participants", source="endogenous:generated_world")
 
 
@@ -669,7 +758,7 @@ def discover_causal_frontier(world, sev: dict, *, llm=None, report=None) -> list
             r = parse_json(llm(
                 "Given this world event, list ONLY actor ids (from the known list) whose "
                 "situation materially changed and why. Known actors: "
-                f"{sorted(world.entities)[:20]}\nEVENT: {json.dumps(sev, default=str)[:800]}\n"
+                f"{sorted(world.entities)[:40]}\nEVENT: {json.dumps(sev, default=str)[:800]}\n"
                 'Return JSON: [{"actor_id": "…", "reason": "…"}]'))
             for row in r if isinstance(r, list) else []:
                 if isinstance(row, dict):
@@ -677,13 +766,19 @@ def discover_causal_frontier(world, sev: dict, *, llm=None, report=None) -> list
         except Exception:  # noqa: BLE001 — deterministic base already stands
             if report is not None:
                 report["fallback_reasons"].append({"kind": "frontier_llm_failed"})
-    return out[:8]
+    # NO fixed frontier cap (§7): every actor whose situation materially changed participates.
+    # Compute pressure is handled by safety budgets + temporal truncation, never by silently
+    # dropping the tail of the frontier.
+    return out
 
 
 class GeneratedObservationDeliveryOperator:
-    """ctrl_deliver_observation: apply information-access rules — update ONE actor's local
-    information with the exact (or rule-degraded) content, then schedule their
-    reconsideration. Never interprets, never picks reactions."""
+    """ctrl_deliver_observation: the item becomes technically AVAILABLE to one actor — it is
+    published to the world's information plane but NOT exposed to the actor (delivered ≠ read,
+    invariants 17/18). The actor's attention is a SEPARATE event: the runtime schedules (or
+    coalesces into) their next real attention opportunity per their temporal profile — channel
+    checking habits, sleep/work windows, urgency interrupts, sampled latent state (§9). Never
+    interprets, never picks reactions."""
 
     name = "generated_observation_delivery"
 
@@ -695,12 +790,16 @@ class GeneratedObservationDeliveryOperator:
             and getattr(world, "scenario_schema", None) is not None
 
     def run(self, world, event, rng):
+        from swm.world_model_v2.temporal_runtime import (get_stats,
+                                                         record_available_observation,
+                                                         schedule_attention,
+                                                         temporal_model_of)
         p = event.payload
         recipient = str(p.get("recipient", ""))
         sev = p.get("semantic_event") or {}
         delta = StateDelta(at=world.clock.now, event_type="ctrl_deliver_observation",
                            operator=self.name,
-                           reason_codes=[f"deliver_to:{recipient}"])
+                           reason_codes=[f"available_to:{recipient}"])
         if recipient not in world.entities:
             return delta, ValidationResult(ok=False, reasons=["unknown recipient"])
         content = str(sev.get("exact_content", ""))
@@ -708,21 +807,110 @@ class GeneratedObservationDeliveryOperator:
             content = content[:200] + " …[summarized in transit]"
         iid = f"obs_{_hash([recipient, sev.get('event_id')])[:12]}"
         if world.information is not None:
+            # published (it EXISTS) — but NOT exposed to the recipient until they notice it
             world.information.publish(InformationItem(
                 iid, content or f"[{sev.get('semantic_type_id', 'event')}]",
                 kind="private" if sev.get("intended_visibility") != "public" else "public",
                 source=str(sev.get("source_actor_id", "")), created_at=world.clock.now,
                 about=str(sev.get("semantic_type_id", ""))[:60]))
-            world.information.expose(recipient, iid, world.clock.now,
-                                     channel=str(p.get("channel", ""))[:24])
-        delta.change(f"information_exposure[{recipient}]", None, iid)
+        model = temporal_model_of(world)
+        stats = get_stats(world)
+        record_available_observation(
+            world, recipient=recipient,
+            item={"iid": iid, "semantic_event": sev, "content": content,
+                  "source": str(sev.get("source_actor_id", "")),
+                  "urgency": float(p.get("urgency", 0.0) or 0.0),
+                  "sent_ts": p.get("sent_ts")},
+            available_ts=world.clock.now, channel=str(p.get("channel", ""))[:40], stats=stats)
+        delta.change(f"information_available[{recipient}]", None, iid)
         self.report["observations_delivered"] += 1
-        inv = _invocation_event(world, recipient, sev, reason="received the observation",
-                                observation_ids=[iid], delay_s=1800.0)
-        if inv is not None:
-            delta.follow_up_events = [{"etype": inv.etype, "ts": inv.ts,
-                                       "participants": list(inv.participants),
-                                       "payload": dict(inv.payload)}]
+        att = schedule_attention(world, model, actor_id=recipient,
+                                 channel_id=str(p.get("channel", ""))[:40],
+                                 available_ts=world.clock.now,
+                                 urgency=float(p.get("urgency", 0.0) or 0.0),
+                                 sender=str(sev.get("source_actor_id", "")), stats=stats)
+        if att is not None:
+            delta.follow_up_events = [{"etype": att.etype, "ts": att.ts,
+                                       "participants": list(att.participants),
+                                       "payload": dict(att.payload),
+                                       "parent_ids": [event.event_id]}]
+        return delta, ValidationResult(ok=True)
+
+
+class GeneratedAttentionOperator:
+    """ctrl_attention: the actor's REAL attention opportunity on a channel. Everything that
+    became available by now enters their information set as ONE ordered bundle (§20) — one
+    actor view, one invocation, with a first-class DecisionTrigger (§6). If nothing is pending
+    (already collected by an earlier check), this is an honest no-op."""
+
+    name = "generated_attention"
+
+    def __init__(self, *, report: dict):
+        self.report = report
+
+    def applicable(self, world, event):
+        # mode-agnostic: attention events exist in BOTH consequence modes (a fixed-v1 world's
+        # message_delivered also flows availability → attention → decision)
+        return event.etype == "ctrl_attention" and bool(event.participants)
+
+    def run(self, world, event, rng):
+        from swm.world_model_v2.temporal_runtime import (collect_attention_bundle, get_stats,
+                                                         make_trigger)
+        p = event.payload
+        actor_id = str(p.get("actor_id", event.participants[0]))
+        stats = get_stats(world)
+        bundle = collect_attention_bundle(world, actor_id=actor_id, now_ts=world.clock.now,
+                                          channel=str(p.get("channel", "")), stats=stats)
+        delta = StateDelta(at=world.clock.now, event_type="ctrl_attention",
+                           operator=self.name,
+                           reason_codes=[f"attention:{actor_id}",
+                                         f"n_noticed:{len(bundle)}"])
+        if not bundle:
+            return None, ValidationResult(ok=True, reasons=["nothing_newly_available"])
+        self.report["attention_events"] = self.report.get("attention_events", 0) + 1
+        self.report["observation_bundles_delivered"] = \
+            self.report.get("observation_bundles_delivered", 0) + 1
+        for it in bundle:
+            delta.change(f"information_exposure[{actor_id}]", None, it.get("iid"))
+        # the actor decides ONCE from the full noticed bundle — the invocation is triggered by
+        # NOTICING (a real event), not by a fixed post-delivery timer
+        newest = bundle[-1]
+        trigger = make_trigger(
+            trigger_type="newly_noticed_information", actor_id=actor_id,
+            parents=[event.event_id] + [str((it.get("semantic_event") or {}).get("event_id", ""))
+                                        for it in bundle[:6]],
+            observed=f"{len(bundle)} item(s) noticed on "
+                     f"{p.get('channel', 'their channels')}",
+            relevance="newly noticed information may change the actor's situation",
+            why_now=f"the actor's real attention opportunity "
+                    f"({p.get('notice_provenance', 'attention_model')})",
+            provenance="temporal_attention")
+        if getattr(world, "scenario_schema", None) is not None:
+            inv = _invocation_event(world, actor_id, newest.get("semantic_event") or {},
+                                    reason="noticed newly available information",
+                                    observation_ids=[it.get("iid") for it in bundle],
+                                    at_ts=world.clock.now, trigger=trigger,
+                                    bundle=[{k: it.get(k) for k in
+                                             ("iid", "content", "source", "channel",
+                                              "available_ts", "urgency")}
+                                            for it in bundle], report=self.report)
+            if inv is not None:
+                delta.follow_up_events = [{"etype": inv.etype, "ts": inv.ts,
+                                           "participants": list(inv.participants),
+                                           "payload": dict(inv.payload),
+                                           "parent_ids": [event.event_id],
+                                           "trigger": trigger}]
+        else:
+            # fixed-v1 worlds: the noticed bundle opens ONE phase4 decision_opportunity NOW
+            lines = [f"[{it.get('channel', '?')}] from {it.get('source', '?')}: "
+                     f"\"{str(it.get('content', ''))[:240]}\"" for it in bundle[:6]]
+            delta.follow_up_events = [{
+                "etype": "decision_opportunity", "ts": world.clock.now,
+                "participants": [actor_id],
+                "payload": {"situation": ("you notice " + ("; ".join(lines))[:700]),
+                            "trigger": trigger,
+                            "source_action_id": (bundle[-1].get("source_action_id") or "")},
+                "parent_ids": [event.event_id], "trigger": trigger}]
         return delta, ValidationResult(ok=True)
 
 
@@ -743,6 +931,7 @@ class GeneratedActorInvocationOperator:
             and getattr(world, "scenario_schema", None) is not None
 
     def run(self, world, event, rng):
+        from swm.world_model_v2.temporal_runtime import get_stats, record_invocation
         p = event.payload
         actor_id = str(p.get("actor_id", event.participants[0]))
         budgets = _budgets(world)
@@ -750,20 +939,46 @@ class GeneratedActorInvocationOperator:
         delta = StateDelta(at=world.clock.now, event_type="ctrl_invoke_actor",
                            operator=self.name, reason_codes=[f"reconsider:{actor_id}"])
         self.report["actors_reconsidered"] += 1
+        stats = get_stats(world)
         if used >= budgets["max_invocations_per_actor"]:
-            delta.reason_codes.append("recursion_budget_exhausted")
-            self.report["fallback_reasons"].append(
-                {"kind": "invocation_budget_exhausted", "actor": actor_id})
+            # SAFETY budget (§12): the branch is temporally truncated — recorded loudly on the
+            # report AND the branch stats; NEVER converted to a numeric policy or treated as
+            # the actor naturally going quiet.
+            delta.reason_codes.append("temporally_truncated:invocation_safety_budget")
+            _record_truncation(world, self.report,
+                               kind="invocation_safety_budget_reached", actor=actor_id,
+                               detail=f"cap {budgets['max_invocations_per_actor']} at "
+                                      f"invocation time")
             return delta, ValidationResult(ok=True)
         budgets["invocations"][actor_id] = used + 1
         sev = p.get("triggering_semantic_event") or {}
+        trigger = dict(p.get("trigger") or {})
+        if not trigger:
+            from swm.world_model_v2.temporal_runtime import make_trigger
+            trigger = make_trigger(
+                trigger_type="observable_state_change", actor_id=actor_id,
+                parents=[str(sev.get("event_id", ""))],
+                observed=str(p.get("reason_actor_may_be_causally_relevant", ""))[:200],
+                relevance="the actor's perceived situation materially changed",
+                why_now="the change became observable to the actor at this time",
+                provenance="generated_world_control_plane")
+        record_invocation(stats, actor_id=actor_id, trigger=trigger)
         schema = _schema(world)
         role = (schema.actor_roles or {}).get(actor_id) or {}
-        situation = (f"{str(sev.get('semantic_type_id', 'a development')).replace('_', ' ')}: "
-                     f"\"{str(sev.get('exact_content', ''))[:400]}\""
-                     if sev else str(p.get("reason_actor_may_be_causally_relevant", "")))
-        decision = {"situation": situation[:450],
-                    "question_id": f"reconsider_{sev.get('event_id', '')[:20]}"}
+        bundle = p.get("observation_bundle") or []
+        if bundle:
+            # §20: the actor sees the WHOLE noticed bundle at once, ordered, with sources
+            lines = [f"- [{it.get('channel', '?')}] from {it.get('source', '?')}: "
+                     f"\"{str(it.get('content', ''))[:220]}\"" for it in bundle[:8]]
+            situation = (f"you just checked your channels and found {len(bundle)} new "
+                         f"item(s):\n" + "\n".join(lines))
+        else:
+            situation = (f"{str(sev.get('semantic_type_id', 'a development')).replace('_', ' ')}: "
+                         f"\"{str(sev.get('exact_content', ''))[:400]}\""
+                         if sev else str(p.get("reason_actor_may_be_causally_relevant", "")))
+        decision = {"situation": situation[:900],
+                    "question_id": f"reconsider_{sev.get('event_id', '')[:20]}",
+                    "trigger": trigger}
         affordances = [a for a in (role.get("affordances") or []) if isinstance(a, str)][:8]
         if affordances:
             # EXAMPLES of feasible capabilities — the qualitative schema explicitly allows an
@@ -775,10 +990,21 @@ class GeneratedActorInvocationOperator:
             observed_events=[event])
         self.report["actors_invoked"] += 1
         qual = (posterior.provenance or {}).get("qualitative") or {}
+        # delivery→attention→decision accounting (§27)
+        for it in bundle[:8]:
+            if isinstance(it.get("available_ts"), (int, float)):
+                stats.attention_to_decision_s.append(
+                    max(0.0, world.clock.now - float(it["available_ts"])))
         if qual.get("act_or_wait") == "wait" or selected.action_name in ("wait", "abstain"):
             self.report["actors_declined_to_act"] += 1
             delta.reason_codes.append("actor_considered_no_action_warranted")
             delta.uncertainty["decision_summary"] = str(qual.get("decision_summary", ""))[:200]
+            # §11: a DEFERRAL with stated timing/condition compiles to a real trigger — never
+            # an automatic retry timer
+            fu = compile_actor_deferral(world, actor_id, qual, sev, trigger)
+            if fu:
+                delta.follow_up_events = [fu]
+                delta.reason_codes.append("deferral_compiled_to_real_trigger")
             return delta, ValidationResult(ok=True)
         exec_delta, _events = self.runtime.execute(world, selected, posterior, trace,
                                                    seed=seed)
@@ -787,8 +1013,73 @@ class GeneratedActorInvocationOperator:
         delta.changes.extend(exec_delta.changes)
         delta.reason_codes.extend(exec_delta.reason_codes[:6])
         delta.uncertainty["executed_action"] = selected.action_name[:80]
+        delta.uncertainty["trigger_type"] = trigger.get("trigger_type")
         delta.follow_up_events = list(exec_delta.follow_up_events)
         return delta, ValidationResult(ok=True)
+
+
+def compile_actor_deferral(world, actor_id: str, qual: dict, sev: dict, trigger: dict):
+    """§11: an actor who chose to wait may have stated WHEN or ON WHAT CONDITION they will
+    revisit. Compile that intent into a real event:
+      * calendar expression ("tomorrow_morning", "end_of_day", "next_business_day") → exact tz-
+        aware timestamp in the ACTOR's calendar;
+      * an explicit revisit time → exact timestamp;
+      * a condition ("when they reply", "after the vote") → a registered conditional trigger
+        that fires when the condition's event occurs;
+      * no stated intent, or unresolvable intent → NOTHING is scheduled (deliberate inaction is
+        a real outcome; the runtime keeps unresolved intent as an unresolved timing mechanism).
+    NEVER an automatic fixed-delay retry."""
+    from swm.world_model_v2.temporal_runtime import (get_stats, make_trigger,
+                                                     register_conditional,
+                                                     resolve_timing_spec, temporal_model_of)
+    model = temporal_model_of(world)
+    stats = get_stats(world)
+    intent = qual.get("revisit") if isinstance(qual.get("revisit"), dict) else {}
+    timing_label = str(qual.get("timing", "") or intent.get("timing", "")).strip().lower()
+    cond = intent.get("condition") or qual.get("timing_condition")
+    if isinstance(cond, str) and cond.strip():
+        # a natural-language condition without a mappable event type stays UNRESOLVED (§11) —
+        # a structured condition {etype, participant} registers a real watcher
+        stats.unresolved_timing.append({"kind": "deferral_condition_text",
+                                        "actor": actor_id, "condition": cond[:120]})
+        return None
+    if isinstance(cond, dict) and cond.get("etype"):
+        register_conditional(world, condition={"etype": str(cond["etype"]),
+                                               "participant": str(cond.get("participant", ""))},
+                             event_spec={"etype": "ctrl_invoke_actor",
+                                         "participants": [actor_id],
+                                         "payload": {"actor_id": actor_id,
+                                                     "triggering_semantic_event": sev,
+                                                     "reason_actor_may_be_causally_relevant":
+                                                         "the condition the actor was waiting "
+                                                         "for occurred",
+                                                     "cascade_depth":
+                                                         int(sev.get("cascade_depth", 0)) + 1}},
+                             actor_id=actor_id, provenance="actor_deferral_condition")
+        return None                                            # fires via the conditional watcher
+    revisit_spec = intent.get("at") if isinstance(intent.get("at"), dict) else None
+    if revisit_spec is None and timing_label in ("tomorrow_morning", "end_of_day",
+                                                 "this_evening", "next_business_day"):
+        revisit_spec = {"kind": "calendar", "calendar_expr": timing_label,
+                        "calendar_of": actor_id}
+    if revisit_spec is None:
+        return None                                            # plain inaction — nothing scheduled
+    ts = resolve_timing_spec(revisit_spec, world=world, model=model, ref_ts=world.clock.now,
+                             calendar_of=actor_id, salt=f"revisit:{actor_id}", stats=stats)
+    if ts is None or ts <= world.clock.now:
+        return None                                            # unresolved stays unresolved
+    return {"etype": "ctrl_invoke_actor", "ts": float(ts), "participants": [actor_id],
+            "payload": {"actor_id": actor_id, "triggering_semantic_event": sev,
+                        "reason_actor_may_be_causally_relevant":
+                            "the actor deferred and chose this revisit time",
+                        "cascade_depth": int(sev.get("cascade_depth", 0)) + 1,
+                        "trigger": make_trigger(
+                            trigger_type="self_scheduled_revisit", actor_id=actor_id,
+                            parents=[str(sev.get("event_id", ""))],
+                            observed="own earlier deferral",
+                            why_now="the actor's own chosen revisit time arrived",
+                            provenance="actor_deferral")},
+            "trigger": {"trigger_type": "self_scheduled_revisit"}}
 
 
 # ---------------------------------------------------------------- institutions (arithmetic

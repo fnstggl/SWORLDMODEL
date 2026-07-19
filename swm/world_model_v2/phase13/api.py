@@ -208,7 +208,13 @@ def optimize_policy(problem: DecisionProblem, policies: list, world_context, *,
         except (ValueError, TypeError):
             continue
     if not points:
-        points = [float(ev.particles()[0].clock.now) + 1.0]
+        # no decision points supplied: the policy's ONE real trigger is its own initiation —
+        # the evaluation's start instant (the intervention's initiation event), explicitly
+        # labeled; never a synthetic offset pretending to be a schedule
+        points = [float(ev.particles()[0].clock.now)]
+        res.provenance["decision_points_note"] = (
+            "no decision_points supplied — the policy decides once at its own initiation "
+            "(intervention start), not on a synthetic schedule")
     all_policies = list(policies)
     if not any(p.policy_id == "do_nothing" for p in all_policies):
         all_policies.append(Policy(policy_id="do_nothing", decide=lambda belief: None,

@@ -58,17 +58,22 @@ COUPLING_PRIORS = {
     "world_state_weight":      (0.35, 0.20, 0.60),   # world-driven couplings (nonlinear/population)
     "contested_suppression":   (0.50, 0.30, 0.80),   # rival-mode suppression on contested pathways
     "nonprincipal_step_share": (0.50, 0.30, 0.80),   # non-principals move a shared process at this share
-    "attrition_per_review":    (0.015, 0.008, 0.03), # capacity drain per cadence round while an actor
-                                                     # pursues a CONTESTED pathway (≥2 rivals) — wars
-                                                     # of attrition exhaust by DURATION, not decisions
+    "attrition_rate_per_day":  (0.0007, 0.0004, 0.0015),  # capacity drain PER REAL ELAPSED DAY
+                                                     # while an actor pursues a CONTESTED pathway
+                                                     # (≥2 rivals) — attrition accrues over exact
+                                                     # elapsed time (advance_interval), never per
+                                                     # review round (§13/§14)
     "persistence_survival_shared":   (0.75, 0.55, 0.90),  # a provisional agreement holds its window
     "persistence_survival_default":  (0.85, 0.70, 0.95),  # a provisional unilateral end-state holds
 }
 _CLAMPS = {"pathway_step": (0.005, 0.15), "endogenous_stance_split": (0.2, 1.0),
            "own_pathway_weight": (0.3, 2.0), "cross_pathway_weight": (0.0, 1.0),
            "world_state_weight": (0.0, 1.0), "contested_suppression": (0.1, 1.0),
-           "nonprincipal_step_share": (0.1, 1.0), "attrition_per_review": (0.0, 0.06),
+           "nonprincipal_step_share": (0.1, 1.0), "attrition_rate_per_day": (0.0, 0.003),
            "persistence_survival_shared": (0.2, 0.99), "persistence_survival_default": (0.3, 0.99)}
+#: fitted-pack backward compatibility: an old pack fitted on the per-review coupling converts
+#: to per-day at the legacy ~21-day review cadence (recorded conversion, not a hidden default)
+_LEGACY_COUPLING_CONVERSIONS = {"attrition_per_review": ("attrition_rate_per_day", 1.0 / 21.0)}
 
 #: capability grounding → initial capacity resource
 CAPACITY_INIT = {"high": 0.85, "medium": 0.6, "low": 0.35}
@@ -77,8 +82,10 @@ EFFORTFUL_ACTION_COST = 0.02
 EXHAUSTION_THRESHOLD = 0.30
 RIPENESS_THRESHOLD = 0.70
 BANDWAGON_THRESHOLD = 0.70
-#: an actor's stances move at most one level per review, and not in consecutive reviews
-STANCE_REVIEW_COOLDOWN = 1
+#: EVENT-DEPENDENT hysteresis (§13): after a stance change, the same actor's stances move again
+#: only when the relevant process state has moved MATERIALLY since that change (never a
+#: review-count cooldown — there are no reviews to count).
+STANCE_MATERIAL_HYSTERESIS = 0.08
 
 _LEVEL_ORDER = ("committed_to_prevent", "conditionally_opposed", "weakly_opposed", "neutral",
                 "inclined_toward", "actively_pursuing", "formally_committed")
@@ -99,7 +106,13 @@ def _coupling_table() -> dict:
     if COUPLING_PACK.exists():
         try:
             pack = json.loads(COUPLING_PACK.read_text())
-            fitted = {k: tuple(v) for k, v in (pack.get("couplings") or {}).items()}
+            fitted = {}
+            for k, v in (pack.get("couplings") or {}).items():
+                if k in _LEGACY_COUPLING_CONVERSIONS:
+                    new_key, factor = _LEGACY_COUPLING_CONVERSIONS[k]
+                    fitted[new_key] = tuple(x * factor for x in v)
+                else:
+                    fitted[k] = tuple(v)
             return {**COUPLING_PRIORS, **fitted}
         except Exception:  # noqa: BLE001
             return dict(COUPLING_PRIORS)
@@ -194,17 +207,23 @@ def _progress(world, var: str):
 
 # ---------------------------------------------------------------- 1. stance dynamics
 class StanceReviewOperator(TransitionOperator):
-    """Review every stance-carrying actor against the causal state at the trajectory cadence and
-    move at most ONE stance ONE level per actor per review (with a cooldown), each change logged
+    """EVENT-DRIVEN stance updating (§13): fires when the temporal runtime observes a MATERIAL
+    state change (a watched process var crossed a stance-rule threshold or moved materially —
+    stance_relevant_change events), never because a review interval passed. At most ONE stance
+    moves ONE level per actor per triggering change, with material-change hysteresis (the
+    relevant process must move again before the same actor changes again), each change logged
     with its rule. Universal rules over the mode graph — ripeness / winning / exhaustion /
-    bandwagon — never scenario keywords. This is how a simulated leader who is losing becomes more
-    open to talks: the stance record itself changes, the policy behaves differently at the next
-    decision, and the hazard rounds re-derive their stance ratio from the new record."""
+    bandwagon — never scenario keywords. This is how a simulated leader who is losing becomes
+    more open to talks: the stance record itself changes, the policy behaves differently at the
+    next decision, and the first-passage hazards re-derive their stance ratio from the new
+    record (accumulated hazard preserved). The legacy `stance_review` etype remains accepted
+    for explicit ablation runs only."""
     name = "stance_review"
 
     def applicable(self, world, event):
         stamped = world.quantities.get("absorbed_at")
-        return event.etype == "stance_review" and getattr(stamped, "value", None) in (None, 0)
+        return event.etype in ("stance_relevant_change", "stance_review") \
+            and getattr(stamped, "value", None) in (None, 0)
 
     def validate(self, world, proposal):
         return ValidationResult(ok=True)
@@ -225,44 +244,46 @@ class StanceReviewOperator(TransitionOperator):
                 return v
         return _progress(world, f"pathway_progress:{pathway}")
 
-    def _candidate_update(self, world, actor_id, stances, caps, round_idx):
-        """The highest-priority triggered rule for this actor, or None. One change per review."""
+    def _candidate_update(self, world, actor_id, stances, caps):
+        """The highest-priority triggered rule for this actor, or None. One change per
+        triggering event. Returns (stance, delta_level, why, driver_value) — the driver value
+        anchors material-change hysteresis."""
         my = [s for s in stances if str(s.get("actor")) == actor_id]
         if not my:
             return None
         # RIPENESS: a rival-targeted prevent-stance whose target mode is near completion → the
         # actor's prevent-stance on a SHARED pathway softens one level (imminent defeat → openness)
-        losing = None
+        losing, losing_v = None, None
         for st in my:
             lvl = canon_level(st.get("commitment_level"))
             if STANCE_ORIENTATION.get(lvl, 0.0) < 0 and st.get("target_mode") \
                     and not pathway_of(str(st.get("pathway", ""))).shared_process:
                 v = self._mode_or_pathway_progress(world, st["target_mode"], str(st.get("pathway")))
                 if v is not None and v >= RIPENESS_THRESHOLD:
-                    losing = st["target_mode"]
+                    losing, losing_v = st["target_mode"], v
                     break
         if losing:
             for st in my:
                 lvl = canon_level(st.get("commitment_level"))
                 if pathway_of(str(st.get("pathway", ""))).shared_process \
                         and STANCE_ORIENTATION.get(lvl, 0.0) < 0:
-                    return (st, +1, f"ripeness:rival_mode_{losing}_at_threshold")
+                    return (st, +1, f"ripeness:rival_mode_{losing}_at_threshold", losing_v)
         # WINNING: own pursued mode near completion → shared-pathway openness hardens one level
-        winning = None
+        winning, winning_v = None, None
         for st in my:
             lvl = canon_level(st.get("commitment_level"))
             if STANCE_ORIENTATION.get(lvl, 0.0) > 0 and st.get("target_mode") \
                     and not pathway_of(str(st.get("pathway", ""))).shared_process:
                 v = self._mode_or_pathway_progress(world, st["target_mode"], str(st.get("pathway")))
                 if v is not None and v >= RIPENESS_THRESHOLD:
-                    winning = st["target_mode"]
+                    winning, winning_v = st["target_mode"], v
                     break
         if winning:
             for st in my:
                 lvl = canon_level(st.get("commitment_level"))
                 if pathway_of(str(st.get("pathway", ""))).shared_process \
                         and STANCE_ORIENTATION.get(lvl, 0.0) > -0.9:
-                    return (st, -1, f"winning:own_mode_{winning}_at_threshold")
+                    return (st, -1, f"winning:own_mode_{winning}_at_threshold", winning_v)
         # EXHAUSTION: drained capacity → pursue-stances on per-actor pathways soften one level
         cap = caps.get(actor_id)
         if cap is not None and cap < EXHAUSTION_THRESHOLD:
@@ -270,7 +291,7 @@ class StanceReviewOperator(TransitionOperator):
                 lvl = canon_level(st.get("commitment_level"))
                 if STANCE_ORIENTATION.get(lvl, 0.0) > 0 \
                         and not pathway_of(str(st.get("pathway", ""))).shared_process:
-                    return (st, -1, f"exhaustion:capacity_{cap:.2f}")
+                    return (st, -1, f"exhaustion:capacity_{cap:.2f}", cap)
         # BANDWAGON: the shared process itself is succeeding → weak/conditional opposition drifts
         for st in my:
             lvl = canon_level(st.get("commitment_level"))
@@ -278,70 +299,36 @@ class StanceReviewOperator(TransitionOperator):
             if pathway_of(pw).shared_process and lvl in ("conditionally_opposed", "weakly_opposed"):
                 v = _progress(world, f"pathway_progress:{pw}")
                 if v is not None and v >= BANDWAGON_THRESHOLD:
-                    return (st, +1, f"bandwagon:{pw}_at_{v:.2f}")
+                    return (st, +1, f"bandwagon:{pw}_at_{v:.2f}", v)
         return None
-
-    @staticmethod
-    def _contested_attrition(world, stances, d) -> int:
-        """Time-based attrition: while an actor PURSUES a contested (non-shared, actor-driven)
-        pathway that at least one RIVAL also pursues, each cadence round drains their capacity by
-        the sampled attrition coupling — wars of attrition exhaust by DURATION, not by how many
-        discrete decisions the policy happened to take. Feeds the EXHAUSTION rule and the live
-        capacity shrink on stance effects. Only actors with a declared capacity resource drain."""
-        from swm.world_model_v2.state import F
-        pursuers = {}
-        for st in stances:
-            lvl = canon_level(st.get("commitment_level"))
-            pw = str(st.get("pathway", ""))
-            pwo = pathway_of(pw)
-            if STANCE_ORIENTATION.get(lvl, 0.0) > 0 and pwo.actor_driven and not pwo.shared_process:
-                pursuers.setdefault(pw, set()).add(str(st.get("actor")))
-        contested = {pw for pw, actors in pursuers.items() if len(actors) >= 2}
-        if not contested:
-            return 0
-        drain = sampled_coupling(world, "attrition_per_review")
-        n = 0
-        for pw in sorted(contested):
-            for aid in sorted(pursuers[pw]):
-                ent = (world.entities or {}).get(aid)
-                if ent is None:
-                    continue
-                cap = ent.value("resources", key="capacity", default=None)
-                if not isinstance(cap, (int, float)):
-                    continue
-                before = float(cap)
-                after = max(0.05, before - drain)
-                if after == before:
-                    continue
-                ent.set("resources", F(round(after, 4), status="derived",
-                                       method="contested_attrition", updated_at=world.clock.now),
-                        key="capacity")
-                d.change(f"{aid}.resources[capacity]", round(before, 4), round(after, 4))
-                n += 1
-        if n:
-            d.reason_codes.append(f"contested_attrition:{','.join(sorted(contested))}")
-        return n
 
     def apply(self, world, proposal):
         from swm.world_model_v2.state import F
-        round_idx = int(proposal.action.get("round", 0) or 0)
+        trigger_changes = proposal.action.get("changes") or []
         stances = live_stances(world)
-        d = StateDelta(at=world.clock.now, event_type="stance_review", operator=self.name,
-                       reason_codes=["stance_review"], uncertainty={"round": round_idx})
-        n_attrition = self._contested_attrition(world, stances, d)
-        caps = live_capacity(world)                            # AFTER attrition — exhaustion sees it
+        d = StateDelta(at=world.clock.now, event_type="stance_relevant_change",
+                       operator=self.name, reason_codes=["stance_update"],
+                       uncertainty={"triggering_changes": trigger_changes[:6],
+                                    "provenance": proposal.action.get(
+                                        "provenance", "material_state_change")})
+        caps = live_capacity(world)
         n_changed = 0
         for aid, ent in sorted((world.entities or {}).items()):
             recs = ent.value("stances", default=None)
             if not isinstance(recs, list) or not recs:
                 continue
-            last_round = ent.value("latent_state", key="stance_review_last_round", default=None)
-            if isinstance(last_round, (int, float)) and round_idx - last_round <= STANCE_REVIEW_COOLDOWN:
-                continue                                       # hysteresis: not in consecutive reviews
-            upd = self._candidate_update(world, aid, stances, caps, round_idx)
+            upd = self._candidate_update(world, aid, stances, caps)
             if not upd:
                 continue
-            st, delta_lvl, why = upd
+            st, delta_lvl, why, driver_v = upd
+            # MATERIAL-CHANGE HYSTERESIS (§13): the same actor changes again only when the
+            # rule's driving state moved materially since their LAST change — event-dependent,
+            # never a review-count cooldown, and immune to duplicate cadence artifacts.
+            last_driver = ent.value("latent_state", key="stance_last_change_driver",
+                                    default=None)
+            if isinstance(last_driver, (int, float)) and isinstance(driver_v, (int, float)) \
+                    and abs(float(driver_v) - float(last_driver)) < STANCE_MATERIAL_HYSTERESIS:
+                continue
             new_recs = []
             for r in recs:
                 if r is st or (r.get("actor") == st.get("actor")
@@ -365,16 +352,72 @@ class StanceReviewOperator(TransitionOperator):
                 else:
                     new_recs.append(r)
             if n_changed:
-                ent.set("stances", F(new_recs, status="derived", method="stance_review",
+                ent.set("stances", F(new_recs, status="derived", method="stance_update",
                                      updated_at=world.clock.now))
-                ent.set("latent_state", F(round_idx, status="derived", method="stance_review",
-                                          updated_at=world.clock.now),
-                        key="stance_review_last_round")
-        if not n_changed and not n_attrition:
+                if isinstance(driver_v, (int, float)):
+                    ent.set("latent_state", F(float(driver_v), status="derived",
+                                              method="stance_update",
+                                              updated_at=world.clock.now),
+                            key="stance_last_change_driver")
+        if not n_changed:
             return None                                       # honest no-op — nothing triggered
         d.uncertainty["n_stances_changed"] = n_changed
-        d.uncertainty["n_attrition"] = n_attrition
         return d
+
+
+def contested_attrition_interval(world, elapsed_days: float, *, branch_log=None,
+                                 at_ts=None) -> int:
+    """CONTINUOUS attrition over REAL ELAPSED TIME (§13/§14): while an actor PURSUES a contested
+    (non-shared, actor-driven) pathway that at least one RIVAL also pursues, their capacity
+    drains at the sampled per-day attrition rate × the exact elapsed interval — wars of
+    attrition exhaust by DURATION, not by how many review rounds a scheduler happened to run.
+    Called from temporal_runtime.advance_interval between events. Only actors with a declared
+    capacity resource drain. Returns the number of capacity writes."""
+    if elapsed_days <= 0:
+        return 0
+    from swm.world_model_v2.state import F
+    stances = live_stances(world)
+    pursuers = {}
+    for st in stances:
+        lvl = canon_level(st.get("commitment_level"))
+        pw = str(st.get("pathway", ""))
+        pwo = pathway_of(pw)
+        if STANCE_ORIENTATION.get(lvl, 0.0) > 0 and pwo.actor_driven and not pwo.shared_process:
+            pursuers.setdefault(pw, set()).add(str(st.get("actor")))
+    contested = {pw for pw, actors in pursuers.items() if len(actors) >= 2}
+    if not contested:
+        return 0
+    rate = sampled_coupling(world, "attrition_rate_per_day")
+    drain = rate * float(elapsed_days)
+    if drain <= 0:
+        return 0
+    now = at_ts if at_ts is not None else world.clock.now
+    n = 0
+    for pw in sorted(contested):
+        for aid in sorted(pursuers[pw]):
+            ent = (world.entities or {}).get(aid)
+            if ent is None:
+                continue
+            cap = ent.value("resources", key="capacity", default=None)
+            if not isinstance(cap, (int, float)):
+                continue
+            before = float(cap)
+            after = max(0.05, before - drain)
+            if abs(after - before) < 1e-9:
+                continue
+            ent.set("resources", F(round(after, 5), status="derived",
+                                   method="contested_attrition_elapsed", updated_at=now),
+                    key="capacity")
+            n += 1
+            if branch_log is not None:
+                dd = StateDelta(at=now, event_type="interval_evolution",
+                                operator="contested_attrition",
+                                reason_codes=[f"elapsed_days={round(elapsed_days, 4)}",
+                                              f"contested:{pw}"],
+                                uncertainty={"rate_per_day": rate})
+                branch_log.append(dd.change(f"{aid}.resources[capacity]",
+                                            round(before, 5), round(after, 5)))
+    return n
 
 
 # ---------------------------------------------------------------- 2. persistence semantics
@@ -437,6 +480,23 @@ class PersistenceCheckOperator(TransitionOperator):
                 world.quantities[var] = Quantity(name=var, qtype=v.qtype, value=round(after, 4),
                                                  timestamp=world.clock.now)
                 d.change(f"quantities[{var}]", round(before, 4), round(after, 4))
+        # the mode's FIRST-PASSAGE process resumes: accumulated exposure preserved, fresh
+        # threshold segment above it (memoryless continuation), crossing rescheduled as a
+        # real follow-up event
+        fp_pid = str(a.get("first_passage_process_id", ""))
+        if fp_pid:
+            from swm.world_model_v2.event_time import resume_first_passage_after_collapse
+            st_fp, next_ts = resume_first_passage_after_collapse(world, fp_pid)
+            if st_fp is not None and next_ts is not None and next_ts <= st_fp.horizon_ts:
+                d.follow_up_events.append({
+                    "etype": "first_passage", "ts": max(float(next_ts), world.clock.now),
+                    "participants": [],
+                    "payload": {**{k: v for k, v in st_fp.payload.items() if k != "spec"},
+                                "spec": st_fp.payload.get("spec"),
+                                "mode": prov_mode,
+                                "hazard_process_id": fp_pid,
+                                "hazard_generation": st_fp.generation}})
+                d.reason_codes.append("first_passage_resumed_after_collapse")
         return d.change("quantities[provisional_absorbing_mode]", prov_mode, None)
 
 

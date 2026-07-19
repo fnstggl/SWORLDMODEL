@@ -259,16 +259,30 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
             rep = synthesize_activation(plan, req)
             rep["_pre_synthesis_requirements"] = req         # the ONE relevance verdict, reused by assess
             lineage["activation_synthesis"] = rep
-            # situation-dependent trajectory depth (never one decision at horizon-3d)
-            if "fidelity" not in drop:
-                from swm.world_model_v2.fidelity import deepen_trajectory
-                cad = (lineage.get("fidelity_expansion") or {}).get("decision_cadence_days")
-                lineage["trajectory_depth"] = deepen_trajectory(plan, req, cadence_days=cad)
             for ph, r in req.items():
                 if ph in manifest:
                     manifest[ph]["relevance"] = {"required": r["required"], "why": r["why"]}
         except Exception as e:  # noqa: BLE001 — synthesis must never block the forecast
             lineage["activation_synthesis"] = {"error": f"{type(e).__name__}: {e}"[:160]}
+
+    # ---------- SCENARIO TEMPORAL MODEL: the default-on LLM temporal compilation stage ----------
+    # Replaces the quarantined periodic scheduler (legacy_ablations): the LLM generates the
+    # scenario's real temporal structure (channels, actor attention, institutional stages,
+    # continuous processes, deadlines, sourced recurrences, decision-trigger sources), two
+    # independent critics check it, and the runtime executes decisions only on real triggers.
+    if "temporal_model" not in drop:
+        try:
+            from swm.world_model_v2.temporal_compiler import (attach_temporal_model,
+                                                              compile_temporal_model)
+            ev_text = bundle.render(max_chars=2000) if bundle is not None else ""
+            tmodel = compile_temporal_model(plan, llm=llm, question=question,
+                                            evidence_text=ev_text, user_context=user_context,
+                                            intervention=intervention, seed=seed)
+            lineage["temporal_model"] = attach_temporal_model(plan, tmodel)
+            costs["llm_calls"] += len(tmodel.compilation_trace)
+        except Exception as e:  # noqa: BLE001 — compilation failure is a LOUD degradation
+            lineage["temporal_model"] = {"error": f"{type(e).__name__}: {e}"[:200],
+                                         "degraded": "temporal_compilation_failed"}
 
     # ---------- Event-time conversion: the outcome of the simulation IS the answer ----------
     # READOUT, NOT RESOLVER. The answer mechanism needs a readout (translate the simulated world into the
@@ -295,9 +309,7 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
                 convert_to_event_time(plan, crit, lineage=lineage, llm=llm,
                                       categorical_options=_opts)
             else:
-                fex = lineage.get("fidelity_expansion")
-                cad = fex.get("decision_cadence_days") if isinstance(fex, dict) else None
-                convert_binary_to_event_time(plan, crit, lineage=lineage, llm=llm, cadence_days=cad)
+                convert_binary_to_event_time(plan, crit, lineage=lineage, llm=llm)
         except Exception as e:  # noqa: BLE001 — conversion must never block the forecast
             lineage["event_time"] = {"error": f"{type(e).__name__}: {e}"[:160]}
 

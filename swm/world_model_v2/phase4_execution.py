@@ -470,13 +470,42 @@ class ActorPolicyRuntime:
                                     source="endogenous:production_actor_policy"))
             elif (mechanism == "reaction_scheduling" and action.target.target_id
                   and action.target.target_id in world.entities):
-                delay = max(1.0, float(action.parameters.get("reaction_delay_s", 60.0) or 60.0))
-                events.append(Event(ts=world.clock.now + delay, etype="actor_reaction",
+                # the target's reaction time is NOT a fixed 60s: an action-specified delay is
+                # generated content and wins; else delivery + the target's own attention are
+                # modeled through the temporal runtime (§9) — per-particle, situation-specific
+                if isinstance(action.parameters.get("reaction_delay_s"), (int, float)) \
+                        and float(action.parameters["reaction_delay_s"]) > 0:
+                    react_ts = world.clock.now + max(1.0,
+                                                     float(action.parameters["reaction_delay_s"]))
+                    prov = "action_specified"
+                else:
+                    from swm.world_model_v2.temporal_runtime import (channel_delivery_ts,
+                                                                     compute_notice_ts,
+                                                                     get_stats,
+                                                                     temporal_model_of)
+                    tmodel = temporal_model_of(world)
+                    stats = get_stats(world)
+                    chan = str(action.parameters.get("channel", "direct"))[:40]
+                    avail_ts, p1 = channel_delivery_ts(
+                        world, tmodel, channel_id=chan, sent_ts=world.clock.now,
+                        recipient=action.target.target_id,
+                        salt=f"react:{action.action_id}", stats=stats)
+                    react_ts, p2 = compute_notice_ts(
+                        world, tmodel, actor_id=action.target.target_id, channel_id=chan,
+                        available_ts=avail_ts, sender=action.actor_id, stats=stats)
+                    prov = f"{p1}+{p2}"
+                events.append(Event(ts=max(react_ts, world.clock.now), etype="actor_reaction",
                                     participants=[action.target.target_id, action.actor_id],
                                     payload={"trigger_action_id": action.action_id,
                                              "candidate_actions": action.parameters.get(
                                                  "reaction_actions", ["acknowledge", "ignore"]),
+                                             "timing_provenance": prov,
                                              "trace_id": trace.trace_id},
+                                    trigger={"trigger_type": "newly_noticed_information",
+                                             "actor_id": action.target.target_id,
+                                             "why_now": "delivery + the target's modeled "
+                                                        "attention opportunity",
+                                             "provenance": "temporal_runtime"},
                                     visibility="participants",
                                     source="endogenous:production_actor_policy"))
         for delayed in action.possible_delayed_consequences:

@@ -138,18 +138,37 @@ def check_readout_binding(plan, world) -> None:
 
 
 def queue_builder_from_plan(plan):
-    """Fresh queue per branch: scheduled events + hazards, horizon-capped."""
+    """Fresh queue per branch: scheduled events + hazards + first-passage crossings,
+    horizon-capped. The scenario temporal model rides on the world (shared read-only object);
+    per-branch temporal state (sampled latents, attention buffers, cumulative-hazard states)
+    lives on the world itself."""
     def build(world) -> EventQueue:
         q = EventQueue(horizon_ts=plan.horizon_ts)
         rng = random.Random(int(world.branch_id.strip("b").split(":")[0] or 0)
                             if world.branch_id.startswith("b") else 0)
+        tmodel = getattr(plan, "temporal_model", None)
+        if tmodel is not None and getattr(world, "temporal_model", None) is None:
+            world.temporal_model = tmodel
         for ev in plan.scheduled_events:
             q.schedule(Event(ts=ev["ts"], etype=ev["etype"], participants=list(ev["participants"]),
-                             payload=dict(ev["payload"]), source="scheduled"))
+                             payload=dict(ev["payload"]), source="scheduled",
+                             trigger=dict(ev.get("trigger") or {})))
         for hz in plan.stochastic_hazards:
             q.add_hazard(StochasticHazard(etype=hz["etype"], rate_per_day=hz["rate_per_day"],
                                           participants=list(hz["participants"])),
                          now=world.clock.now, rng=rng, world=world)
+        # continuous-time first-passage processes (§15): per-branch persistent threshold +
+        # cumulative intensity; the initial crossing is a REAL event at its projected time
+        for spec in (getattr(plan, "first_passage_processes", None) or []):
+            try:
+                from swm.world_model_v2.event_time import ensure_first_passage_state
+                from swm.world_model_v2.temporal_hazards import schedule_crossing
+                st = ensure_first_passage_state(world, spec)
+                schedule_crossing(q, world, st, etype="first_passage")
+            except Exception as e:  # noqa: BLE001 — a broken process spec is recorded, not fatal
+                world.omissions.append({"kind": "first_passage_process",
+                                        "process": str(spec.get("process_id", "?")),
+                                        "reason": f"{type(e).__name__}: {e}"[:120]})
         return q
     return build
 
@@ -213,6 +232,12 @@ def operators_from_plan(plan, *, llm=None, allow_experimental=False) -> tuple:
         if "communication_delivery" not in seen:
             seen.add("communication_delivery")
             ops.append(_semcons.CommunicationDeliveryOperator())
+        if "generated_attention" not in seen:
+            # availability → attention is mode-agnostic (§9): both consequence modes separate
+            # delivered from noticed; the attention operator collects the noticed bundle
+            from swm.world_model_v2 import generated_world as _genw_att
+            seen.add("generated_attention")
+            ops.append(_genw_att.GeneratedAttentionOperator(report=_semcons.empty_report()))
         if "institutional_vote" not in seen:
             from swm.world_model_v2.transitions import InstitutionalVoteOperator
             seen.add("institutional_vote")
@@ -229,6 +254,9 @@ def operators_from_plan(plan, *, llm=None, allow_experimental=False) -> tuple:
             ops.append(_genw.GeneratedSemanticEventOperator(
                 report=report, frontier_llm=getattr(runtime, "consequence_llm", None) or llm))
             ops.append(_genw.GeneratedObservationDeliveryOperator(report=report))
+            for op in ops:                                    # rebind the shared attention op
+                if getattr(op, "name", "") == "generated_attention":
+                    op.report = report
             ops.append(_genw.GeneratedActorInvocationOperator(runtime, report=report))
     return ops, rejections
 
@@ -384,6 +412,11 @@ def _inject_posterior_rate(plan) -> bool:
         elif ev.get("etype") == "hazard_round" and \
                 isinstance((ev.get("payload") or {}).get("calibration"), dict):
             ev["payload"]["calibration"]["posterior_rate_particles"] = parts
+            injected = True
+    # continuous-time first-passage processes (§15) draw the SAME evidence-updated target mass
+    for spec in (getattr(plan, "first_passage_processes", None) or []):
+        if isinstance(spec, dict) and isinstance(spec.get("calibration"), dict):
+            spec["calibration"]["posterior_rate_particles"] = parts
             injected = True
     return injected
 

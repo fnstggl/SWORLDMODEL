@@ -255,6 +255,7 @@ def run_cascade(w, backend, *, kickoff_actor, kickoff_situation, horizon_days=20
     ops = [ProductionActorPolicyOperator(runtime=rt),
            gw.GeneratedSemanticEventOperator(report=report),
            gw.GeneratedObservationDeliveryOperator(report=report),
+           gw.GeneratedAttentionOperator(report=report),
            gw.GeneratedActorInvocationOperator(rt, report=report)]
     q = EventQueue(horizon_ts=T0 + horizon_days * 86400)
     q.schedule(Event(ts=T0 + 60, etype="decision_opportunity", participants=[kickoff_actor],
@@ -347,10 +348,22 @@ def test_15_compiler_cannot_write_human_reactions():
 def test_17_18_19_visibility_reach_and_representations():
     schema = lab_schema()
     schema.information_rules = {"public_channel": "science_press",
-                                "public_delay_s": 7200.0,
                                 "public_representation": "summary",
-                                "default_delay_s": 60.0}
+                                "default_channel": "direct"}
     w = world(schema, actors=("dr_okafor", "dr_lin", "dr_padilla"))
+    # the SCENARIO temporal model carries the channel timing (§10): direct messages deliver in
+    # minutes; press exposure spreads over hours — generated structure, not global constants
+    from swm.world_model_v2.temporal_model import ScenarioTemporalModel, ChannelTemporalModel
+    tm = ScenarioTemporalModel(scenario_id="viz_test", as_of=T0, horizon_ts=T0 + 20 * 86400)
+    tm.channels["direct"] = ChannelTemporalModel(
+        channel_id="direct", kind="direct_message",
+        delivery={"kind": "range", "lo_s": 30.0, "hi_s": 240.0,
+                  "provenance": "scenario_generated"})
+    tm.channels["science_press"] = ChannelTemporalModel(
+        channel_id="science_press", kind="public_post",
+        exposure={"kind": "range", "lo_s": 3600.0, "hi_s": 7200.0,
+                  "provenance": "scenario_generated"})
+    w.temporal_model = tm
     long_text = "The replication used the wrong reagent lot. " * 12
     _, _, events = run_ops(w, [
         {"op": "emit_semantic_event", "semantic_type_id": "public_defense_statement",
@@ -362,17 +375,29 @@ def test_17_18_19_visibility_reach_and_representations():
     deliveries = [f for f in rd.follow_up_events if f["etype"] == "ctrl_deliver_observation"]
     # 17: public information reaches several actors (both non-sources)
     assert {d["payload"]["recipient"] for d in deliveries} == {"dr_lin", "dr_padilla"}
-    # 19: the DIRECT target gets the complete text now; the public gets the summarized
-    # press representation later
+    # 19: the DIRECT target gets the complete text through the fast channel; the public gets
+    # the summarized press representation after the exposure process — channel-generated timing
     by = {d["payload"]["recipient"]: d for d in deliveries}
     assert by["dr_lin"]["payload"]["representation"] == "complete"
     assert by["dr_padilla"]["payload"]["representation"] == "summary"
     assert by["dr_padilla"]["ts"] > by["dr_lin"]["ts"]
     deliver = gw.GeneratedObservationDeliveryOperator(report=report)
+    attention_events = []
     for f in deliveries:
-        deliver.run(w, Event(ts=f["ts"], etype=f["etype"], participants=f["participants"],
-                             payload=f["payload"]), None)
-    pad = w.information.visible_to("dr_padilla", at=T0 + 10_000)
+        dd, _ = deliver.run(w, Event(ts=f["ts"], etype=f["etype"],
+                                     participants=f["participants"], payload=f["payload"]),
+                            None)
+        w.clock.now = max(w.clock.now, f["ts"])
+        attention_events.extend(fu for fu in (dd.follow_up_events or [])
+                                if fu["etype"] == "ctrl_attention")
+    # DELIVERED ≠ READ (§9, invariants 17/18): availability alone exposes nothing
+    assert not w.information.visible_to("dr_padilla", at=w.clock.now)
+    att = gw.GeneratedAttentionOperator(report=report)
+    for f in attention_events:
+        w.clock.now = max(w.clock.now, f["ts"])
+        att.run(w, Event(ts=f["ts"], etype=f["etype"], participants=f["participants"],
+                         payload=f["payload"]), None)
+    pad = w.information.visible_to("dr_padilla", at=w.clock.now)
     assert any("[summarized in transit]" in item.content for item, _ in pad)
     # 18: PRIVATE information does not reach unrelated actors
     w2 = world(lab_schema(), actors=("dr_okafor", "dr_lin", "dr_padilla"))
@@ -419,22 +444,33 @@ def test_21_22_23_canonical_queue_quiescence_and_budgets():
             {"op": "emit_semantic_event", "semantic_type_id": "public_defense_statement",
              "exact_content": "defense", "intended_visibility": "public"}]})
     w = world()
+    # explicit STRESS-TEST budget (§12): a tiny safety cap proves truncation semantics without
+    # simulating months of the infinite scripted loop — production keeps DEFAULT_BUDGETS
+    w.uncertainty_meta["generated_budgets"] = {"max_invocations_per_actor": 4,
+                                               "max_semantic_events": 1000,
+                                               "max_cascade_depth": 64, "invocations": {}}
     rt, report, branch = run_cascade(w, backend, kickoff_actor="dr_lin",
-                                     kickoff_situation="decide")
+                                     kickoff_situation="decide", horizon_days=200)
     # 21: the cascade ran through the canonical RolloutEngine queue — control-plane deltas
     # appear in the branch log with their operator names
     ops_seen = {d.operator for d in branch.log}
     assert {"generated_semantic_event_router", "generated_observation_delivery",
             "generated_actor_invocation"} <= ops_seen
-    # 22: quiescence — the same-event/same-actor dedup means the finite log terminates well
-    # under the event cap, and repeated identical observations do not re-invoke
-    assert len(branch.log) < 100
+    # 22: dedup — repeated identical observations do not re-invoke
     keys = w.uncertainty_meta.get("pending_reconsiderations", [])
     assert len(keys) == len(set(keys))
-    # 23: per-actor invocation budgets bound recursion; exhaustion is stamped when hit
+    # 23: this scripted world is a GENUINELY infinite reaction loop (each actor always acts
+    # again) — the SAFETY budget bounds it, and exhaustion is a RECORDED temporal truncation
+    # (§12), never silent quiescence and never a numeric fallback
     budgets = gw._budgets(w)
     assert all(v <= budgets["max_invocations_per_actor"]
                for v in budgets["invocations"].values())
+    truncs = report.get("temporal_truncations") or []
+    assert truncs and any(t["kind"] == "invocation_safety_budget_reached" for t in truncs)
+    stats = getattr(w, "temporal_stats", None)
+    assert stats is not None and stats.temporally_truncated
+    assert stats.truncation.get("actors_not_processed")
+    assert report["numeric_fallbacks"] == 0                    # never a numerical actor fallback
 
 
 # ------------------------------------------------- 24-25: institutions aggregate, never choose

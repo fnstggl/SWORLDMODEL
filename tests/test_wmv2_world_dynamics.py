@@ -119,9 +119,13 @@ def test_winning_hardens_and_exhaustion_softens():
 
 
 def test_contested_attrition_drains_capacity_by_duration_until_exhaustion():
-    """Wars of attrition exhaust by DURATION: two rivals pursuing the same contested pathway drain
-    capacity every cadence round (sampled coupling), eventually tripping the EXHAUSTION rule — an
-    unopposed pursuer does not drain."""
+    """Wars of attrition exhaust by REAL ELAPSED TIME (§13/§14): two rivals pursuing the same
+    contested pathway drain capacity at the sampled PER-DAY rate over the exact elapsed
+    interval (advance_interval → contested_attrition_interval), eventually tripping the
+    EXHAUSTION rule when the material change reaches the stance operator — an unopposed pursuer
+    does not drain. A single long interval and many short ones with equal total duration drain
+    the SAME amount (elapsed-time semantics, not per-review counts)."""
+    from swm.world_model_v2.world_dynamics import contested_attrition_interval
     w = _world()
     _actor(w, "A", capacity=0.5, stances=[
         {"actor": "A", "commitment_level": "actively_pursuing", "reliability": "high",
@@ -132,23 +136,40 @@ def test_contested_attrition_drains_capacity_by_duration_until_exhaustion():
          "capability": "high", "pathway": "unilateral_action", "control": "sole_authority",
          "target_mode": "b_victory"}])
     op = StanceReviewOperator()
-    softened = None
-    for k in range(3, 60, 2):                                 # respect the cooldown spacing
-        ev = types.SimpleNamespace(etype="stance_review", payload={"round": k})
+    softened = False
+    for _interval in range(40):                               # 40 × 30-day exact intervals
+        contested_attrition_interval(w, 30.0)
+        ev = types.SimpleNamespace(etype="stance_relevant_change",
+                                   payload={"changes": [{"path": "A.resources[capacity]"}]})
         d = op.apply(w, op.propose(w, ev, None))
         if d is not None and any("exhaustion" in r for r in d.reason_codes):
-            softened = k
+            softened = True
             break
-    assert softened is not None                               # attrition → exhaustion → softening
+    assert softened                                           # attrition → exhaustion → softening
     assert live_capacity(w)["A"] < 0.31
+    # elapsed-time equivalence: one 300-day interval == ten 30-day intervals
+    wa, wb = _world(), _world()
+    for ww in (wa, wb):
+        _actor(ww, "A", capacity=0.5, stances=[
+            {"actor": "A", "commitment_level": "actively_pursuing", "reliability": "high",
+             "capability": "high", "pathway": "unilateral_action", "control": "sole_authority",
+             "target_mode": "a_victory"}])
+        _actor(ww, "B", capacity=0.5, stances=[
+            {"actor": "B", "commitment_level": "actively_pursuing", "reliability": "high",
+             "capability": "high", "pathway": "unilateral_action", "control": "sole_authority",
+             "target_mode": "b_victory"}])
+        ww.branch_id = "b_eq"
+    contested_attrition_interval(wa, 300.0)
+    for _ in range(10):
+        contested_attrition_interval(wb, 30.0)
+    assert live_capacity(wa)["A"] == pytest.approx(live_capacity(wb)["A"], abs=1e-3)
     # an UNOPPOSED pursuer does not drain (no contest, no attrition)
     w2 = _world()
     _actor(w2, "solo", capacity=0.5, stances=[
         {"actor": "solo", "commitment_level": "actively_pursuing", "reliability": "high",
          "capability": "high", "pathway": "unilateral_action", "control": "sole_authority",
          "target_mode": "solo_win"}])
-    ev = types.SimpleNamespace(etype="stance_review", payload={"round": 5})
-    assert op.apply(w2, op.propose(w2, ev, None)) is None
+    assert contested_attrition_interval(w2, 300.0) == 0
     assert live_capacity(w2)["solo"] == pytest.approx(0.5)
 
 
@@ -399,17 +420,17 @@ def test_convert_schedules_stance_reviews_persistence_and_mode_defs():
     rep = convert_to_event_time(
         p, {"resolves_yes_iff": "hostilities end with no active hostilities for >=30 consecutive days"})
     assert rep["persistence_window_days"] == 30
-    assert rep["n_stance_reviews"] == rep["rounds_per_mode"]
-    assert rep["rounds_per_mode"] == 40                        # 899d horizon → fine timing grid
-    reviews = [e for e in p.scheduled_events if e["etype"] == "stance_review"]
-    rounds = [e for e in p.scheduled_events if e["etype"] == "hazard_round"]
-    assert len(reviews) == 40 and all(e["payload"]["round"] for e in reviews)
-    for e in rounds:
-        pl = e["payload"]
-        assert pl["persistence_s"] == pytest.approx(30 * DAY)
-        assert pl["mode_def"]["id"] == pl["mode"] and pl["stances_hash"]
-        assert pl["endogenous_live"] is True
-        assert any(c.get("coupling") == "own_pathway_weight" for c in pl["consume"])
+    # stance updating is EVENT-DRIVEN: no review grid on the schedule; the runtime emits
+    # stance_relevant_change when material state changes (§13)
+    assert rep["stance_updating"] == "event_driven_material_change"
+    assert not any(e["etype"] == "stance_review" for e in p.scheduled_events)
+    assert not any(e["etype"] == "hazard_round" for e in p.scheduled_events)
+    for spec in p.first_passage_processes:
+        assert spec["persistence_s"] == pytest.approx(30 * DAY)
+        assert spec["mode_def"]["id"] == spec["mode"] and spec["stances_hash"]
+        assert spec["endogenous_live"] is True
+        assert any(c.get("coupling") == "own_pathway_weight" for c in spec["consume"])
+        assert "stances" in spec["reads"]                      # stance rewrites re-project (§16)
     # contested channel declared for the unilateral mode; unsplit hr in payload, split in report
     names = {q["name"] for q in p.quantities}
     assert "mode_progress:unilateral_action:a_victory" in names

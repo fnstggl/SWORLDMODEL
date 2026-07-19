@@ -185,9 +185,11 @@ def build_context(schema, actors, *, script=None, maker_resources=None, n_partic
     """A complete generated-mode world_context dict for the Phase 13 evaluator."""
     rep = report if report is not None else generated_report()
     runtime = ScriptedActorRuntime(script)
+    from swm.world_model_v2.generated_world import GeneratedAttentionOperator
     operators = [ScenarioPlanOperator(report=rep),
                  GeneratedSemanticEventOperator(report=rep),
                  GeneratedObservationDeliveryOperator(report=rep),
+                 GeneratedAttentionOperator(report=rep),
                  ScriptedInvocationOperator(runtime, report=rep)]
     return {"initial": FixtureInitial(schema, actors, maker_resources=maker_resources,
                                       vary=vary),

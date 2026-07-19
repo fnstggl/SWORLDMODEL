@@ -6,8 +6,9 @@
     Powell, the President, the Senate, the Fed Board — not one "Appointing_Body").
   * GROUNDED INSTITUTIONAL PARAMETERS: real composition sizes, thresholds and stages (Senate 100/51,
     FOMC 12) extracted from evidence/world knowledge with provenance — the synthesized 5-of-9 default dies.
-  * SITUATION-DEPENDENT TRAJECTORY DEPTH: decision cadence and event depth scale with the number of
-    strategic actors, the horizon, and the process's volatility — never one fixed decision at horizon-3d.
+  * EVENT-DRIVEN TRAJECTORY DEPTH: decision events come from the scenario temporal model's real
+    triggers (temporal_compiler/temporal_runtime), never from a generic review cadence — the old
+    periodic scheduler is quarantined in legacy_ablations.
 
 Everything added here carries provenance ("fidelity_critic" / "grounded_rules") and flows through the same
 events/StateDelta plane. Nothing bypasses the mechanisms.
@@ -26,8 +27,7 @@ EVIDENCE: {ev}
 
 List (a) every real decision-holder MISSING from the entity list (people AND institutions, with real
 names, their role, and what they control); (b) for each institution involved, its REAL composition size,
-decision threshold, procedural stages and authority holders; (c) relationships among all actors; (d) how
-volatile/eventful this process is (how often meaningful decisions/news occur).
+decision threshold, procedural stages and authority holders; (c) relationships among all actors.
 
 Return ONLY JSON:
 {{"missing_entities": [{{"id": "<Real_Name>", "type": "person|institution", "role": "<role>",
@@ -36,8 +36,7 @@ Return ONLY JSON:
    "threshold_share": <0..1|null>, "stages": ["<stage>", ...], "authority_holders": ["<name>", ...],
    "source": "evidence|model_knowledge", "confidence": <0..1>}}],
  "relations": [{{"src": "...", "rel": "influences|reports_to|trusts|opposes|controls|communicates_with",
-   "dst": "..."}}],
- "decision_cadence_days": <typical days between meaningful decisions/news in this process>}}"""
+   "dst": "..."}}]}}"""
 
 
 def fidelity_expand(plan, question, *, as_of, evidence_text="", llm=None) -> dict:
@@ -51,8 +50,7 @@ def fidelity_expand(plan, question, *, as_of, evidence_text="", llm=None) -> dic
         ents=[(e.get("id"), e.get("type")) for e in plan.entities][:12],
         insts=[(i.get("id"), [r.get("kind") for r in (i.get("rules") or [])]) for i in plan.institutions][:6],
         ev=evidence_text[:1800] or "(none)"))) or {}
-    rep = {"entities_added": 0, "relations_added": 0, "institutions_grounded": 0,
-           "decision_cadence_days": None}
+    rep = {"entities_added": 0, "relations_added": 0, "institutions_grounded": 0}
     known = {str(e.get("id")) for e in plan.entities if isinstance(e, dict)}
     for e in (raw.get("missing_entities") or [])[:10]:
         if not isinstance(e, dict) or not e.get("id") or str(e["id"]) in known:
@@ -99,10 +97,6 @@ def fidelity_expand(plan, question, *, as_of, evidence_text="", llm=None) -> dic
             inst.setdefault("rules", []).append(
                 {"kind": "procedure", "params": {"stage": str(stage)[:40]},
                  "_provenance": "grounded_rules"})
-    try:
-        rep["decision_cadence_days"] = max(0.5, float(raw.get("decision_cadence_days") or 0.0)) or None
-    except (TypeError, ValueError):
-        rep["decision_cadence_days"] = None
     return rep
 
 
@@ -152,35 +146,10 @@ def _candidate_actions(entity: dict, pathways: list) -> list:
     return out
 
 
-def deepen_trajectory(plan, req, *, cadence_days=None) -> dict:
-    """Situation-dependent event depth: recurring decision opportunities for EVERY strategic actor at the
-    process's real cadence (critic-estimated, default horizon/6) — so trajectories unfold over the whole
-    window instead of one decision at horizon-3d. Decision events carry REAL ontology candidate actions
-    (pathway-relevant, actor-type-relevant): the phase4 policy chooses among them under the actor's own
-    grounded stances, and executed choices move the pathway-process quantities the hazard rounds consume
-    — the intention→policy→action→state→hazard chain, not two parallel channels."""
-    horizon_days = max(1.0, (plan.horizon_ts - plan.as_of) / 86400.0)
-    cad = cadence_days or max(1.0, horizon_days / 6.0)
-    cad = max(0.5, min(cad, horizon_days / 2.0))
-    n_points = max(2, min(14, int(horizon_days / cad)))
-    actors = [e for e in plan.entities if isinstance(e, dict) and e.get("id")]
-    actors.sort(key=lambda e: -float(e.get("sensitivity", 0.5) or 0.5))
-    strategic = actors[:6] if req.get("phase4_actor_policy", {}).get("required") else []
-    declared = {str(e.get("id")) for e in plan.entities if isinstance(e, dict)}
-    pathways = list(getattr(plan, "_declared_pathways", None) or [])
-    n_added = 0
-    for k in range(1, n_points + 1):
-        ts = plan.as_of + (k / (n_points + 1)) * (plan.horizon_ts - plan.as_of)
-        for a in strategic:
-            aid = str(a.get("id"))
-            if aid not in declared:
-                continue
-            plan.scheduled_events.append({
-                "etype": "decision_opportunity", "ts": ts, "participants": [aid],
-                "payload": {"situation": f"periodic strategic review ({k}/{n_points})",
-                            "actions": _candidate_actions(a, pathways)}})
-            n_added += 1
-    return {"horizon_days": round(horizon_days, 1), "cadence_days": round(cad, 1),
-            "decision_points": n_points, "strategic_actors": len(strategic),
-            "pathway_informed_candidates": bool(pathways),
-            "decision_events_added": n_added}
+# NOTE (event-driven temporal architecture): the periodic scheduler that used to live here
+# (`deepen_trajectory` — evenly spaced "periodic strategic review" decisions for the six
+# highest-sensitivity actors) is QUARANTINED in legacy_ablations.legacy_periodic_review_ablation
+# and is not importable as a production scheduler. Production decision events are created only
+# by real DecisionTriggers from the scenario temporal model (temporal_compiler /
+# temporal_runtime); `_candidate_actions` above remains as the universal ontology candidate set
+# those triggered decisions carry.

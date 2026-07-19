@@ -1,87 +1,40 @@
-"""Shared-state event-driven rollout + terminal readout + matched counterfactuals — Phases 5(exec)/6/7.
+"""Shared-state EVENT-DRIVEN rollout + terminal readout + matched counterfactuals.
 
-One world, many mechanisms: the loop pops the next event off the REAL-TIME queue, advances the clock by the
-actual elapsed duration, applies background dynamics over that interval, then runs every applicable registered
-operator — each producing a machine-readable StateDelta appended to the branch log. At the horizon, the
-outcome contract PROJECTS the answer from terminal states (frequencies over worlds) — no LLM is asked for a
-number after simulation.
+The loop is the temporal runtime (temporal_runtime.run_branch_temporal): pop the full batch of
+events at the earliest real timestamp, advance every continuous process over the EXACT elapsed
+interval (no daily background tick — a 10-day gap is one exact 10-day update), evaluate
+same-time events in causal microsteps with insertion-order-invariant canonical ordering, run
+every applicable registered operator (each producing a machine-readable StateDelta), let
+first-passage hazards re-project when written state touches their read sets, and continue to
+causal quiescence or the real horizon. `max_events` is a SAFETY budget: exhausting it marks the
+branch temporally truncated (recorded, surfaced) — it is never treated as natural completion.
 
-Counterfactuals (Phase 7): sample the initial latent worlds ONCE; for each intervention, CLONE every sampled
-world and apply the intervention to the clone; exogenous randomness is seeded per (particle, event-stream) so
-matched clones face the same shocks; compare terminal utilities per-particle → expected utility, downside,
-P(best), expected regret. This isolates intervention effects from world luck.
-"""
+At the horizon, the outcome contract PROJECTS the answer from terminal states (frequencies over
+worlds) — no LLM is asked for a number after simulation.
+
+Counterfactuals (Phase 7): sample the initial latent worlds ONCE; for each intervention, CLONE
+every sampled world and apply the intervention to the clone; exogenous randomness, sampled
+temporal latents, and first-passage thresholds are seeded per PARTICLE (particle-root streams),
+so matched clones face the same shocks and the same temporal reality except where the action
+itself causally changes them; compare terminal utilities per-particle → expected utility,
+downside, P(best), expected regret."""
 from __future__ import annotations
 
-import copy
-import random
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
-from swm.world_model_v2.events import Event, EventQueue
-from swm.world_model_v2.state import WorldBranch
+from swm.world_model_v2.events import EventQueue
 
 
 @dataclass
 class RolloutEngine:
     operators: list                        # instantiated TransitionOperator objects (registry-vetted)
-    background_every_days: float = 1.0     # apply background dynamics at most this often (elapsed-driven)
 
-    def run_branch(self, world, queue: EventQueue, *, seed: int = 0, max_events: int = 500) -> WorldBranch:
-        """Advance one world event→event to the horizon. Returns the branch with its full delta log."""
-        rng = random.Random(seed)
-        branch = WorldBranch(branch_id=world.branch_id, world=world)
-        last_bg = world.clock.now
-        for _ in range(max_events):
-            ev = queue.next_event(rng=rng, world=world)
-            if ev is None:
-                break
-            elapsed = ev.ts - world.clock.now
-            if elapsed < 0:
-                continue                                     # stale event behind the clock — skip
-            world.clock.advance_to(ev.ts)
-            # background dynamics over the elapsed interval (attention drift, memory decay)
-            if (ev.ts - last_bg) >= self.background_every_days * 86400.0:
-                bg = Event(ts=ev.ts, etype="background_tick",
-                           payload={"elapsed_days": (ev.ts - last_bg) / 86400.0})
-                for op in self.operators:
-                    if op.applicable(world, bg):
-                        delta, _ = op.run(world, bg, rng)
-                        if delta is not None:
-                            branch.log.append(delta)
-                last_bg = ev.ts
-            for op in self.operators:
-                if op.applicable(world, ev):
-                    delta, vr = op.run(world, ev, rng)
-                    if delta is not None:
-                        branch.log.append(delta)
-                        # A4: endogenous action→event chains. Follow-ups are validated against the
-                        # event-type registry, must not travel back in time, and are horizon-capped by
-                        # the queue itself; invalid proposals are logged, never silently queued.
-                        for fu in delta.follow_up_events:
-                            try:
-                                fev = Event(ts=max(float(fu.get("ts", world.clock.now)), world.clock.now),
-                                            etype=str(fu["etype"]),
-                                            participants=list(fu.get("participants") or []),
-                                            payload=dict(fu.get("payload") or {}),
-                                            source=f"endogenous:{op.name}")
-                            except (KeyError, TypeError, ValueError) as e:
-                                branch.log.append(_rejection_delta(
-                                    world, ev, op,
-                                    type("VR", (), {"ok": False,
-                                                    "reasons": [f"invalid follow-up event: {e}"]})()))
-                                continue
-                            queue.schedule(fev)
-                    elif not vr.ok:
-                        branch.log.append(_rejection_delta(world, ev, op, vr))
-        branch.terminal = True
-        return branch
-
-
-def _rejection_delta(world, ev, op, vr):
-    from swm.world_model_v2.transitions import StateDelta
-    d = StateDelta(at=world.clock.now, event_type=ev.etype, operator=op.name,
-                   reason_codes=["action_rejected"] + vr.reasons[:3])
-    return d
+    def run_branch(self, world, queue: EventQueue, *, seed: int = 0, max_events: int = 2000):
+        """Advance one world event→event to the horizon through the temporal runtime. Returns
+        the branch with its full delta log and `branch.temporal_stats` (§27)."""
+        from swm.world_model_v2.temporal_runtime import run_branch_temporal
+        return run_branch_temporal(world, queue, self.operators, seed=seed,
+                                   safety_max_events=max_events)
 
 
 @dataclass
@@ -104,6 +57,8 @@ class WorldModelV2Run:
         result = self.contract.project(branches)
         result["n_deltas"] = sum(len(b.log) for b in branches)
         result["readout"] = "terminal_states"                # provenance: numbers came from worlds, not an LLM
+        from swm.world_model_v2.temporal_runtime import aggregate_temporal_stats
+        result["temporal_runtime"] = aggregate_temporal_stats(branches)
         return result, branches
 
     # ---------------- Phase 7: matched counterfactuals ----------------

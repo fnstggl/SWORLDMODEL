@@ -19,8 +19,7 @@ from __future__ import annotations
 import hashlib
 import random
 
-from swm.world_model_v2.events import Event
-from swm.world_model_v2.rollout import RolloutEngine, _rejection_delta
+from swm.world_model_v2.rollout import RolloutEngine
 from swm.world_model_v2.state import WorldBranch
 
 
@@ -89,59 +88,39 @@ class StreamRNG:
 
 
 class MatchedRolloutEngine(RolloutEngine):
-    """RolloutEngine with stream-partitioned randomness. Same event loop, same operators, same
-    StateDelta/follow-up semantics — only the RNG ROUTING differs, so unrelated shocks cannot
-    desynchronize across matched counterfactual arms. The base class stays untouched (validated
-    behavior preserved; this subclass is opt-in for Phase-13 evaluations)."""
+    """RolloutEngine with stream-partitioned randomness. Same TEMPORAL event loop (batching,
+    exact-interval evolution, first-passage re-projection), same operators, same StateDelta/
+    follow-up semantics — only the RNG ROUTING differs, so unrelated shocks cannot
+    desynchronize across matched counterfactual arms. Temporal latents, sampled schedules and
+    first-passage thresholds additionally seed from the PARTICLE ROOT (temporal_model.
+    particle_rng), so matched arms share one temporal reality except where the action itself
+    causally changes it (§21/§23)."""
 
-    def run_branch(self, world, queue, *, seed: int = 0, max_events: int = 500) -> WorldBranch:
+    def run_branch(self, world, queue, *, seed: int = 0, max_events: int = 2000) -> WorldBranch:
+        from swm.world_model_v2.temporal_runtime import run_branch_temporal
         rng = StreamRNG(seed)
-        branch = WorldBranch(branch_id=world.branch_id, world=world)
-        last_bg = world.clock.now
-        for _ in range(max_events):
-            ev = queue.next_event(rng=rng.use("hazard|rearm"), world=world)
-            if ev is None:
-                break
-            elapsed = ev.ts - world.clock.now
-            if elapsed < 0:
-                continue
-            world.clock.advance_to(ev.ts)
-            if (ev.ts - last_bg) >= self.background_every_days * 86400.0:
-                bg = Event(ts=ev.ts, etype="background_tick",
-                           payload={"elapsed_days": (ev.ts - last_bg) / 86400.0})
-                for op in self.operators:
-                    if op.applicable(world, bg):
-                        delta, _ = op.run(world, bg, rng.use(f"op|{op.name}|background_tick"))
-                        if delta is not None:
-                            branch.log.append(delta)
-                last_bg = ev.ts
-            for op in self.operators:
-                if op.applicable(world, ev):
-                    delta, vr = op.run(world, ev, rng.use(f"op|{op.name}|{ev.etype}"))
-                    if delta is not None:
-                        # stamp the firing event's provenance so the CRN pairing check can separate
-                        # exogenous shocks (hazard-sourced) from action-caused activity
-                        delta.uncertainty.setdefault("event_source", ev.source)
-                        branch.log.append(delta)
-                        for fu in delta.follow_up_events:
-                            try:
-                                fev = Event(ts=max(float(fu.get("ts", world.clock.now)), world.clock.now),
-                                            etype=str(fu["etype"]),
-                                            participants=list(fu.get("participants") or []),
-                                            payload=dict(fu.get("payload") or {}),
-                                            source=f"endogenous:{op.name}")
-                            except (KeyError, TypeError, ValueError) as e:
-                                branch.log.append(_rejection_delta(
-                                    world, ev, op,
-                                    type("VR", (), {"ok": False,
-                                                    "reasons": [f"invalid follow-up event: {e}"]})()))
-                                continue
-                            queue.schedule(fev)
-                    elif not vr.ok:
-                        branch.log.append(_rejection_delta(world, ev, op, vr))
-        branch.terminal = True
+        branch = run_branch_temporal(
+            world, queue, self.operators, seed=seed, safety_max_events=max_events,
+            rng_for=lambda op, ev: rng.use(f"op|{getattr(op, 'name', 'op')}|{ev.etype}"),
+            queue_rng=_PinnedStream(rng, "hazard|rearm"))
         branch.world.uncertainty_meta["crn_draw_census"] = dict(rng.draw_census)
         return branch
+
+
+class _PinnedStream:
+    """A handle that RE-SELECTS its named stream on every call — safe to hold across other
+    `use()` switches (the queue's hazard re-arm draws interleave with operator draws in the
+    temporal loop)."""
+
+    def __init__(self, sr: StreamRNG, name: str):
+        self._sr, self._name = sr, name
+
+    def __getattr__(self, attr):
+        sr, name = self._sr, self._name
+
+        def call(*a, **k):
+            return getattr(sr.use(name), attr)(*a, **k)
+        return call
 
 
 def exogenous_trace(branch) -> list:

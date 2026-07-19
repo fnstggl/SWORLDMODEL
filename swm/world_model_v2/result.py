@@ -22,7 +22,7 @@ from dataclasses import dataclass, field, asdict
 
 # ------------------------------------------------------------------ the three independent axes
 SIMULATION_STATUSES = ("completed", "completed_with_degradation", "clarification_required",
-                       "execution_failed")
+                       "execution_failed", "temporally_truncated")
 SUPPORT_GRADES = ("empirically_supported", "transfer_supported", "exploratory", "highly_speculative")
 RECOMMENDATION_STATUSES = ("eligible", "limited", "withheld", "not_requested")
 
@@ -91,14 +91,18 @@ class SimulationResult:
     def __post_init__(self):
         if self.simulation_status not in SIMULATION_STATUSES:
             raise ValueError(f"bad simulation_status {self.simulation_status!r}")
-        if self.simulation_status in ("completed", "completed_with_degradation"):
+        if self.simulation_status in ("completed", "completed_with_degradation",
+                                      "temporally_truncated"):
             if self.support_grade not in SUPPORT_GRADES:
                 raise ValueError(f"completed result needs a valid support_grade, got {self.support_grade!r}")
         if self.recommendation_status not in RECOMMENDATION_STATUSES:
             raise ValueError(f"bad recommendation_status {self.recommendation_status!r}")
 
     def has_forecast(self) -> bool:
-        return self.simulation_status in ("completed", "completed_with_degradation")
+        # temporally_truncated results carry a forecast — from an INCOMPLETE causal unfolding
+        # (§12): usable, but the truncation record and lowered support ride with it
+        return self.simulation_status in ("completed", "completed_with_degradation",
+                                          "temporally_truncated")
 
     def as_dict(self) -> dict:
         d = asdict(self)

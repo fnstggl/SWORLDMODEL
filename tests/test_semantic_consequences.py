@@ -250,13 +250,27 @@ def test_deliver_information_preserves_exact_content_end_to_end():
     assert op.applicable(w, ev)
     ddelta, vr = op.run(w, ev, random.Random(0))
     assert vr.ok
+    # DELIVERED ≠ READ (§9): delivery makes the message AVAILABLE and schedules bob's real
+    # attention opportunity; nothing is exposed yet (invariants 17/18)
     fu = ddelta.follow_up_events
-    assert fu and fu[0]["etype"] == "decision_opportunity"
-    assert fu[0]["participants"] == ["bob"]
-    assert msg in fu[0]["payload"]["situation"]      # the recipient decides on the REAL text
+    assert fu and fu[0]["etype"] == "ctrl_attention" and fu[0]["participants"] == ["bob"]
+    assert not w.information.visible_to("bob", at=w.clock.now)
+    assert comm[0].status == "delivered"
+    from swm.world_model_v2 import generated_world as gw
+    from swm.world_model_v2.events import Event
+    att = gw.GeneratedAttentionOperator(report=sc.empty_report())
+    w.clock.now = max(w.clock.now, fu[0]["ts"])
+    adelta, avr = att.run(w, Event(ts=fu[0]["ts"], etype="ctrl_attention",
+                                   participants=["bob"], payload=dict(fu[0]["payload"])),
+                          random.Random(0))
+    assert avr.ok
+    afu = adelta.follow_up_events
+    assert afu and afu[0]["etype"] == "decision_opportunity"
+    assert afu[0]["participants"] == ["bob"]
+    assert msg in afu[0]["payload"]["situation"]     # the recipient decides on the REAL text
+    assert afu[0]["payload"]["trigger"]["trigger_type"] == "newly_noticed_information"
     vis = w.information.visible_to("bob", at=w.clock.now + 1)
     assert any(msg == item.content for item, _e in vis)
-    assert comm[0].status == "delivered"
 
 
 def test_empty_content_communication_is_rejected():
