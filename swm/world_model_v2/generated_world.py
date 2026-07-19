@@ -39,16 +39,19 @@ from swm.world_model_v2.state import F
 from swm.world_model_v2.transitions import StateDelta, ValidationResult
 
 #: control-plane task types — scheduler instructions, never world semantics
-CONTROL_EVENT_TYPES = ("ctrl_semantic_event", "ctrl_deliver_observation", "ctrl_invoke_actor")
+CONTROL_EVENT_TYPES = ("ctrl_semantic_event", "ctrl_deliver_observation", "ctrl_invoke_actor",
+                       "ctrl_mechanism_step", "ctrl_scheduled_attempt")
 for _et in CONTROL_EVENT_TYPES:
     if not event_type_registered(_et):
         register_event_type(_et, scheduling="scheduled", validated=True,
                             parameter_source="generated world control plane")
 
-#: kernel operation names — storage/integrity mechanics only, semantically empty
+#: kernel operation names — storage/integrity mechanics only, semantically empty.
+#: `invoke_scenario_mechanism` is the ONLY door from a direct action to any external effect
+#: (delivery, publication, intake, settlement, physical completion) — the causal boundary.
 KERNEL_OPS = ("declare_schema_definition", "create_or_update_record", "remove_record",
               "create_or_remove_relation", "emit_semantic_event", "schedule_semantic_event",
-              "transfer_conserved_quantity")
+              "transfer_conserved_quantity", "invoke_scenario_mechanism")
 
 DEFAULT_BUDGETS = {"max_invocations_per_actor": 5, "max_semantic_events": 150,
                    "max_cascade_depth": 8}
@@ -63,33 +66,52 @@ def _sanitize(raw: str) -> str:
 
 
 def generated_report() -> dict:
-    """The §15 result contract — every generated-mode run carries these counters."""
+    """The §15 result contract — every generated-mode run carries these counters, plus the
+    causal-boundary counters (attempts vs deliveries, mechanism outcomes, rejected directness
+    claims). Pure-run invariants: human_reactions_written_directly == 0,
+    external_successes_written_directly == 0, fixed_ontology_uses == 0, numeric_fallbacks == 0."""
+    from swm.world_model_v2.causal_boundary import causal_boundary_report_fields
     return {"scenario_schema_id": "", "scenario_schema_version": "",
             "scenario_types_generated": 0, "scenario_events_emitted": 0,
             "schema_extensions": 0, "observations_delivered": 0, "actors_reconsidered": 0,
             "actors_invoked": 0, "actor_actions_executed": 0, "actors_declined_to_act": 0,
             "recursive_cascade_depth": 0, "human_reactions_written_directly": 0,
             "fixed_ontology_uses": 0, "unsupported_semantics": 0, "mechanistic_fallbacks": 0,
-            "numeric_fallbacks": 0, "fallback_reasons": []}
+            "numeric_fallbacks": 0, "fallback_reasons": [],
+            **causal_boundary_report_fields()}
 
 
 # ---------------------------------------------------------------- world-plane event envelope
 @dataclass
 class SemanticWorldEvent:
     """What actually happened, in the scenario's OWN terms. `semantic_type_id` references the
-    branch schema — never a global registry."""
+    branch schema — never a global registry.
+
+    CAUSAL TRUTH BOUNDARY: `direct_targets` and `intended_visibility` are the actor's INTENT;
+    `actual_recipients`/`availability` are set ONLY when `observability_verified` is True —
+    i.e. when a scenario mechanism actually delivered/published the content (causal_layer
+    `mechanism_output`) or the schema declares the act itself directly perceivable
+    (`unmediated`). An unverified actor-controlled attempt is observable to nobody but its
+    source."""
 
     event_id: str = ""
     semantic_type_id: str = ""
     schema_id: str = ""
     schema_version: str = ""
     source_actor_id: str = ""
-    direct_targets: list = field(default_factory=list)
+    direct_targets: list = field(default_factory=list)          # INTENDED targets
     exact_content: str = ""
     structured_fields: dict = field(default_factory=dict)
     occurred_at: float = 0.0
-    intended_visibility: str = "participants"      # public | participants | private
+    intended_visibility: str = "participants"      # public | participants | private (INTENT)
     actual_observability: dict = field(default_factory=dict)   # recipient -> representation
+    causal_layer: str = "actor_controlled"         # actor_controlled | mechanism_output
+    observability_verified: bool = False           # True only via mechanism or unmediated act
+    actual_recipients: list = field(default_factory=list)      # verified recipients ONLY
+    availability: str = ""                         # "public" ONLY after a publication/
+    #                                                availability mechanism succeeded
+    representation: str = "complete"
+    mechanism_id: str = ""                         # producing mechanism, when mechanism_output
     linked_action_id: str = ""
     parent_event_ids: list = field(default_factory=list)
     branch_id: str = ""
@@ -143,6 +165,47 @@ def k_create_or_update_record(world, op, ctx, delta):
     dropped = []
     fields = _validate_fields(rtypes[rtype].get("fields") or {}, op.get("fields"),
                               type_id=rtype, dropped=dropped)
+    if str(ctx.get("plane", "direct_action")) != "mechanism":
+        # CAUSAL BOUNDARY (ownership test): a direct action writes only records the actor
+        # owns/controls — never another party's record, an institution's intake, a platform's
+        # state, bilateral status, or a mechanism-produced result.
+        from swm.world_model_v2.scenario_schema import externally_controlled_record_types
+        external = externally_controlled_record_types(schema, ctx["actor_id"])
+        if rtype in external:
+            ctx["report"]["directness_claims_rejected"] = \
+                ctx["report"].get("directness_claims_rejected", 0) + 1
+            raise KernelError(f"record type {rtype!r} is controlled by {external[rtype]!r} — "
+                              f"a direct action cannot write it; it is produced by the "
+                              f"controlling mechanism/system when that actually succeeds")
+        td = rtypes[rtype] if isinstance(rtypes[rtype], dict) else {}
+        controller = str(td.get("controlled_by", ""))
+        if controller and controller != ctx["actor_id"]:
+            raise KernelError(f"record type {rtype!r} is {controller!r}'s own unilateral "
+                              f"act — {ctx['actor_id']} cannot perform it")
+        # an institution's DECLARED decision holders record their OWN decisions in its
+        # declared decision_record_type — a Layer-A act under scenario-generated authority
+        # (the aggregation arithmetic, not this write, decides what the institution did)
+        holder_of = any(
+            rtype == str(inst.get("decision_record_type", ""))
+            and ctx["actor_id"] in [str(h) for h in (inst.get("decision_holders") or [])]
+            for inst in (schema.institutional_definitions or {}).values()
+            if isinstance(inst, dict))
+        if not controller and not holder_of:
+            # terminal-smuggling test: a direct write may not satisfy an outcome predicate
+            # unless the schema declares the record type as this actor's own unilateral act
+            from swm.world_model_v2.scenario_schema import evaluate_predicate as _evalp
+            probe_fields = dict(fields)
+            if op.get("status"):
+                probe_fields["status"] = op["status"]
+            probe = {"record_type": rtype, "fields": probe_fields}
+            if any(_evalp(p, [probe]) for p in (schema.outcome_predicates or [])
+                   if isinstance(p, dict)):
+                ctx["report"]["directness_claims_rejected"] = \
+                    ctx["report"].get("directness_claims_rejected", 0) + 1
+                raise KernelError(
+                    f"terminal_smuggling: direct write of {rtype!r} would satisfy an "
+                    f"outcome predicate — the terminal outcome arises from mechanisms and "
+                    f"other actors, never from the acting actor's own claim")
     if dropped:
         ctx["report"]["undeclared_fields_dropped"] = \
             ctx["report"].get("undeclared_fields_dropped", 0) + len(dropped)
@@ -199,6 +262,20 @@ def k_create_or_remove_relation(world, op, ctx, delta):
     src, dst = str(op.get("src", ctx["actor_id"])), str(op.get("dst", ""))
     if not dst:
         raise KernelError("relation needs dst")
+    if str(ctx.get("plane", "direct_action")) != "mechanism":
+        # CAUSAL BOUNDARY: one actor creates only relations the schema explicitly declares
+        # UNILATERAL and only from themselves. Bilateral, institutional, legal, market,
+        # platform, or socially recognized relations require mechanisms or the other party.
+        rdef = (schema.relation_types or {}).get(rel) or {}
+        if not (isinstance(rdef, dict) and rdef.get("unilateral")):
+            ctx["report"]["directness_claims_rejected"] = \
+                ctx["report"].get("directness_claims_rejected", 0) + 1
+            raise KernelError(f"relation {rel!r} is not declared unilateral — a bilateral/"
+                              f"recognized relation needs the mechanism or the other "
+                              f"party's own action, not one side's assertion")
+        if src != ctx["actor_id"]:
+            raise KernelError("an actor may create only their OWN outgoing unilateral "
+                              "relation")
     if world.network is not None:
         from swm.world_model_v2.network import _RELATIONS, register_relation
         if rel not in _RELATIONS:
@@ -216,14 +293,31 @@ def k_create_or_remove_relation(world, op, ctx, delta):
 
 
 def k_emit_semantic_event(world, op, ctx, delta):
-    """Record that something HAPPENED in scenario terms, and hand it to the control plane for
-    routing. The kernel does not interpret it — no per-type handler exists anywhere."""
+    """Record that something HAPPENED in scenario terms, and hand it to the control plane.
+    The kernel does not interpret it — no per-type handler exists anywhere.
+
+    CAUSAL BOUNDARY: on the direct-action plane this records an actor-controlled ATTEMPT —
+    it cannot be a mechanism's output type (that would claim the external success), it is
+    observable to nobody but its source (unless the schema declares the act `unmediated`),
+    and it is automatically handed to every scenario mechanism the schema declares as
+    triggered by it. Verified observability (actual recipients, public availability) exists
+    only on the mechanism plane, stamped by the mechanism runtime."""
     schema = _schema(world)
     tid = str(op.get("semantic_type_id", op.get("etype", "")))
     if tid not in schema.semantic_event_types:
         raise KernelError(f"semantic event type {tid!r} not in this scenario's schema "
                           f"(known: {sorted(schema.semantic_event_types)[:10]})")
     tdef = schema.semantic_event_types[tid]
+    plane = str(ctx.get("plane", "direct_action"))
+    if plane != "mechanism":
+        from swm.world_model_v2.scenario_schema import mechanism_output_event_types
+        outputs = mechanism_output_event_types(schema)
+        if tid in outputs:
+            ctx["report"]["directness_claims_rejected"] = \
+                ctx["report"].get("directness_claims_rejected", 0) + 1
+            raise KernelError(f"event type {tid!r} is produced by mechanism "
+                              f"{outputs[tid]!r} — an action may only ATTEMPT; invoke the "
+                              f"mechanism instead of asserting its result")
     dropped = []
     fields = _validate_fields(tdef.get("fields") or {}, op.get("structured_fields")
                               or op.get("fields"), type_id=tid, dropped=dropped)
@@ -234,40 +328,115 @@ def k_emit_semantic_event(world, op, ctx, delta):
     n = sum(1 for _ in world.semantic_log)
     if n >= budgets["max_semantic_events"]:
         raise KernelError(f"semantic event budget exhausted ({n}) — cascade truncated LOUDLY")
+    targets = [str(t) for t in (op.get("direct_targets") or []) if t][:16]
+    unmediated = bool(tdef.get("unmediated"))
+    mobs = (ctx.get("mechanism_observability") or {}) if plane == "mechanism" else {}
+    verified = plane == "mechanism" or unmediated
+    if plane == "mechanism":
+        actual = [str(r) for r in (mobs.get("actual_recipients") or []) if r in world.entities]
+    elif unmediated:
+        actual = [t for t in targets if t in world.entities]
+    else:
+        actual = []
     sev = SemanticWorldEvent(
         event_id=f"sev_{_hash(op)[:12]}_{n:04d}", semantic_type_id=tid,
         schema_id=schema.schema_id, schema_version=schema.version,
         source_actor_id=ctx["actor_id"],
-        direct_targets=[str(t) for t in (op.get("direct_targets") or []) if t][:16],
+        direct_targets=targets,
         exact_content=str(op.get("exact_content", op.get("content", "")))[:1200],
         structured_fields=fields, occurred_at=ctx["now"],
         intended_visibility=str(op.get("intended_visibility",
                                        tdef.get("typical_visibility", "participants")))[:20],
+        causal_layer="mechanism_output" if plane == "mechanism" else "actor_controlled",
+        observability_verified=verified, actual_recipients=actual,
+        availability=str(mobs.get("availability", ""))[:20],
+        representation=str(mobs.get("representation", "complete"))[:20],
+        mechanism_id=str(mobs.get("mechanism_id", ""))[:80],
         linked_action_id=ctx.get("action_id", ""),
         parent_event_ids=list(ctx.get("parent_event_ids") or [])[:6],
         branch_id=world.branch_id, cascade_depth=int(ctx.get("cascade_depth", 0)),
-        provenance={"plane": "world", "emitted_by": ctx.get("compiler", "kernel"),
+        provenance={"plane": "mechanism" if plane == "mechanism" else "world",
+                    "emitted_by": ctx.get("compiler", "kernel"),
+                    "instance_id": str(mobs.get("instance_id", "")),
                     "scaffolding": bool(tdef.get("scaffolding"))})
     world.semantic_log.append(sev.as_dict())
     delta.change(f"semantic_log[{sev.event_id}]", None,
-                 {"type": tid, "source": sev.source_actor_id})
+                 {"type": tid, "source": sev.source_actor_id, "layer": sev.causal_layer,
+                  "verified": verified})
     ctx["report"]["scenario_events_emitted"] += 1
     if tdef.get("scaffolding"):
         ctx["report"]["fallback_reasons"].append(
             {"kind": "unmodeled_action_scaffolding", "action": ctx.get("action_id", "")})
-    delay = max(0.0, float(op.get("delay_s", 0.0) or 0.0))
-    ctx["events"].append(Event(
-        ts=ctx["now"] + delay, etype="ctrl_semantic_event",
-        participants=sev.direct_targets or [sev.source_actor_id],
-        payload={"semantic_event": sev.as_dict()}, visibility="participants",
-        source="endogenous:generated_world"))
+    if plane != "mechanism":
+        if targets:
+            ctx["report"]["intended_deliveries"] = \
+                ctx["report"].get("intended_deliveries", 0) + len(targets)
+        if sev.intended_visibility == "public":
+            ctx["report"]["intended_publications"] = \
+                ctx["report"].get("intended_publications", 0) + 1
+    elif sev.availability == "public":
+        ctx["report"]["actual_publications"] = \
+            ctx["report"].get("actual_publications", 0) + 1
+    if verified:
+        # only verified-observable events route observations and discover the frontier
+        ctx["events"].append(Event(
+            ts=ctx["now"], etype="ctrl_semantic_event",
+            participants=sev.actual_recipients or [sev.source_actor_id],
+            payload={"semantic_event": sev.as_dict()}, visibility="participants",
+            source="endogenous:generated_world"))
+    if plane != "mechanism":
+        # the boundary: hand the attempt to the scenario mechanisms the schema declares —
+        # never to the targets' eyes directly
+        from swm.world_model_v2.causal_boundary import auto_invoke_for_attempt
+        from swm.world_model_v2.scenario_schema import mechanisms_triggered_by
+        started = auto_invoke_for_attempt(world, sev.as_dict(), ctx, delta)
+        if started:
+            ctx.setdefault("mechanism_instances_started", []).extend(started)
+        if not unmediated and not mechanisms_triggered_by(schema, tid) \
+                and (targets or sev.intended_visibility == "public"):
+            ctx["report"]["deliveries_unresolved_no_mechanism"] = \
+                ctx["report"].get("deliveries_unresolved_no_mechanism", 0) + 1
+            ctx["report"]["fallback_reasons"].append(
+                {"kind": "delivery_unresolved_no_mechanism", "event_type": tid[:60],
+                 "reason": "attempt has intended targets/publicity but the scenario "
+                           "declares no mechanism that processes it — nobody observes it"})
+            delta.reason_codes.append(f"delivery_unresolved:{tid[:40]}")
     return sev.event_id
 
 
 def k_schedule_semantic_event(world, op, ctx, delta):
-    if not float(op.get("delay_s", 0.0) or 0.0) > 0:
+    """Scheduling is NOT occurrence. A scheduled future action becomes a ctrl_scheduled_attempt
+    that fires at its time and re-enters this same boundary THEN — with the actor's continued
+    existence, the schema restrictions, and the mechanism handoff all evaluated at fire time.
+    Nothing is appended to the world-plane log now."""
+    delay = float(op.get("delay_s", 0.0) or 0.0)
+    if not delay > 0:
         raise KernelError("schedule_semantic_event needs a positive delay_s")
-    return k_emit_semantic_event(world, op, ctx, delta)
+    schema = _schema(world)
+    tid = str(op.get("semantic_type_id", op.get("etype", "")))
+    if tid not in schema.semantic_event_types:
+        raise KernelError(f"semantic event type {tid!r} not in this scenario's schema")
+    if str(ctx.get("plane", "direct_action")) != "mechanism":
+        from swm.world_model_v2.scenario_schema import mechanism_output_event_types
+        outputs = mechanism_output_event_types(schema)
+        if tid in outputs:
+            ctx["report"]["directness_claims_rejected"] = \
+                ctx["report"].get("directness_claims_rejected", 0) + 1
+            raise KernelError(f"cannot schedule mechanism output {tid!r} as a future fact — "
+                              f"a future success is still a mechanism's outcome, not the "
+                              f"actor's plan")
+    attempt_op = {k: v for k, v in op.items() if k != "delay_s"}
+    attempt_op["op"] = "emit_semantic_event"
+    ctx["events"].append(Event(
+        ts=ctx["now"] + delay, etype="ctrl_scheduled_attempt",
+        participants=[ctx["actor_id"]],
+        payload={"attempt_op": attempt_op, "actor_id": ctx["actor_id"],
+                 "action_id": ctx.get("action_id", "")},
+        visibility="participants", source="endogenous:generated_world"))
+    ctx["report"]["scheduled_attempts"] = ctx["report"].get("scheduled_attempts", 0) + 1
+    delta.change(f"scheduled_attempt[{tid}]", None, ctx["now"] + delay)
+    delta.reason_codes.append(f"scheduled_future_attempt:{tid[:40]}")
+    return f"scheduled_{tid[:40]}"
 
 
 def k_transfer_conserved_quantity(world, op, ctx, delta):
@@ -275,6 +444,24 @@ def k_transfer_conserved_quantity(world, op, ctx, delta):
     name = str(op.get("resource", ""))
     if schema.resource_definitions and name not in schema.resource_definitions:
         raise KernelError(f"resource {name!r} not declared in this scenario's schema")
+    if str(ctx.get("plane", "direct_action")) != "mechanism":
+        # CAUSAL BOUNDARY: an immediate direct transfer is legitimate only when no external
+        # settlement/acceptance stands between the actor's ledger and the destination. When
+        # the scenario declares a settlement mechanism, the direct credit is forbidden — the
+        # actor creates a transfer ATTEMPT (escrow) and the mechanism settles or fails.
+        rdef = (schema.resource_definitions or {}).get(name)
+        settlement = str(rdef.get("settlement_mechanism", "")) if isinstance(rdef, dict) else ""
+        if not settlement:
+            settlement = next(
+                (mid for mid, md in (schema.mechanism_definitions or {}).items()
+                 if isinstance(md, dict)
+                 and str(md.get("executor_binding")) == "conserved_resource_settlement"), "")
+        if settlement:
+            ctx["report"]["directness_claims_rejected"] = \
+                ctx["report"].get("directness_claims_rejected", 0) + 1
+            raise KernelError(f"resource {name!r} settles through mechanism {settlement!r} — "
+                              f"initiate the transfer with invoke_scenario_mechanism; "
+                              f"settlement is not initiation")
     amount = float(op.get("amount", 0.0) or 0.0)
     if amount <= 0:
         raise KernelError("transfer amount must be positive")
@@ -302,9 +489,39 @@ def k_transfer_conserved_quantity(world, op, ctx, delta):
 
 def k_declare_schema_definition(world, op, ctx, delta):
     """Runtime schema extension: versioned, branch-local (the schema lives on THIS world),
-    ancestry-preserving. New semantics only — past definitions are immutable."""
+    ancestry-preserving. New semantics only — past definitions are immutable.
+
+    CAUSAL BOUNDARY: an action's effect execution may not silently invent new CAUSAL
+    semantics. Extensions that declare mechanisms or directly-perceivable (`unmediated`)
+    event types must pass the causal-boundary critic bound into the execution context; with
+    no critic available they are rejected loudly."""
     schema = _schema(world)
-    ok, out = extend_schema(schema, op.get("definitions") or {},
+    proposal = op.get("definitions") or {}
+    if str(ctx.get("plane", "direct_action")) != "mechanism":
+        risky = bool(proposal.get("mechanism_definitions")) or any(
+            isinstance(td, dict) and td.get("unmediated")
+            for td in (proposal.get("semantic_event_types") or {}).values())
+        if risky:
+            critic = ctx.get("boundary_critic")
+            if critic is None:
+                ctx["report"]["directness_claims_rejected"] = \
+                    ctx["report"].get("directness_claims_rejected", 0) + 1
+                raise KernelError("schema extension declares causal semantics (mechanisms/"
+                                  "unmediated observability) — requires the causal-boundary "
+                                  "critic, none bound in this execution context")
+            verdict = {}
+            try:
+                verdict = critic(proposal) or {}
+            except Exception as e:  # noqa: BLE001 — a failed critique rejects, loudly
+                raise KernelError(f"causal-boundary critic failed on the extension: "
+                                  f"{type(e).__name__}")
+            if str(verdict.get("verdict", "reject")) not in ("usable", "accept", "approved"):
+                ctx["report"]["directness_claims_rejected"] = \
+                    ctx["report"].get("directness_claims_rejected", 0) + 1
+                raise KernelError(f"causal-boundary critic rejected the extension: "
+                                  f"{str(verdict.get('reason', verdict.get('why', '')))[:120]}")
+            delta.reason_codes.append("schema_extension_boundary_criticized")
+    ok, out = extend_schema(schema, proposal,
                             reason=str(op.get("reason", "runtime extension")),
                             triggering_event_id=str(op.get("triggering_event_id", "")),
                             at=ctx["now"])
@@ -318,13 +535,25 @@ def k_declare_schema_definition(world, op, ctx, delta):
     return out
 
 
+def k_invoke_scenario_mechanism(world, op, ctx, delta):
+    """The semantically empty door from a direct action to any external effect — validated
+    and executed by the causal-boundary runtime (existence, input shape, authority, live
+    preconditions; branch-local instance; initial state; scheduled transition; no result
+    before it occurs)."""
+    from swm.world_model_v2.causal_boundary import invoke_mechanism_op
+    iid = invoke_mechanism_op(world, op, ctx, delta)
+    ctx.setdefault("mechanism_instances_started", []).append(iid)
+    return iid
+
+
 KERNEL = {"create_or_update_record": k_create_or_update_record,
           "remove_record": k_remove_record,
           "create_or_remove_relation": k_create_or_remove_relation,
           "emit_semantic_event": k_emit_semantic_event,
           "schedule_semantic_event": k_schedule_semantic_event,
           "transfer_conserved_quantity": k_transfer_conserved_quantity,
-          "declare_schema_definition": k_declare_schema_definition}
+          "declare_schema_definition": k_declare_schema_definition,
+          "invoke_scenario_mechanism": k_invoke_scenario_mechanism}
 
 #: ops that would write another human's mind/choice — the invariant the whole phase protects
 _MIND_WRITE = re.compile(r"(belief|support|compli|vote|approval|stance|trust|decision)_of|"
@@ -333,9 +562,12 @@ _MIND_WRITE = re.compile(r"(belief|support|compli|vote|approval|stance|trust|dec
 
 def execute_kernel_ops(world, ops: list, ctx: dict, delta: StateDelta) -> list:
     """Apply validated kernel ops; failures quarantine LOUDLY onto ctx['quarantined'];
-    returns the control-plane events to queue."""
+    returns the control-plane events to queue. `ctx['plane']` defaults to `direct_action` —
+    the causal-boundary restrictions apply to every caller that does not explicitly execute
+    as a mechanism (only the mechanism runtime does)."""
     ctx.setdefault("events", [])
     ctx.setdefault("quarantined", [])
+    ctx.setdefault("plane", "direct_action")
     applied = 0
     for op in list(ops or [])[:24]:
         if not isinstance(op, dict):
@@ -353,6 +585,9 @@ def execute_kernel_ops(world, ops: list, ctx: dict, delta: StateDelta) -> list:
                                   "reactions come only from that actor's own simulation")
             fn(world, op, ctx, delta)
             applied += 1
+            if ctx["plane"] != "mechanism" and name != "invoke_scenario_mechanism":
+                ctx["report"]["actor_controlled_effects"] = \
+                    ctx["report"].get("actor_controlled_effects", 0) + 1
         except (KernelError, KeyError, ValueError, TypeError, AttributeError) as e:
             ctx["quarantined"].append({"op": op, "reason": f"{type(e).__name__}: {e}"[:200]})
             ctx["report"]["unsupported_semantics"] += 1
@@ -397,9 +632,10 @@ array of kernel op objects."""
 
 
 class GeneratedActionCompiler:
-    """Chosen action → validated kernel ops against the BRANCH's scenario schema. The LLM
-    proposal is untrusted; the deterministic fallback preserves the exact action as a
-    schema-scoped unmodeled event (counted as a fallback, never as modeled semantics)."""
+    """SUPERSEDED for production by `causal_boundary.CausalActionCompiler` (attempt premise,
+    DirectActionProgram, directness validation). Kept ONLY as the deterministic scaffolding
+    fallback used in offline tests — its prompt's success premise must not compile production
+    consequences. The kernel boundary applies to its ops regardless."""
 
     def __init__(self, llm=None, *, max_llm_calls: int = 300):
         self.llm = llm
@@ -540,34 +776,57 @@ def _budgets(world) -> dict:
 
 def route_semantic_event(world, sev: dict, report: dict) -> list:
     """Deterministic observation routing: who receives what, when, in which representation.
-    The router NEVER interprets the event for the actor."""
+    The router NEVER interprets the event for the actor.
+
+    CAUSAL BOUNDARY: only VERIFIED observability routes. `direct_targets` never means
+    "recipients who observed this"; `intended_visibility='public'` never means everyone
+    became aware. A mechanism's successful output carries `actual_recipients` (and
+    `availability='public'` when a publication/availability mechanism succeeded) — those,
+    and only those, become observations."""
     schema = _schema(world)
     rules = schema.information_rules or {}
-    vis = str(sev.get("intended_visibility", "participants"))
-    persons = [eid for eid, e in world.entities.items()
-               if getattr(e, "entity_type", "person") == "person"]
-    if vis == "public":
-        recipients = persons
-    else:
-        recipients = [t for t in (sev.get("direct_targets") or []) if t in world.entities]
+
+    def _num(key, default):
+        v = rules.get(key, default)
+        try:
+            return float(v)
+        except (TypeError, ValueError):
+            return float(default)
+
+    if not sev.get("observability_verified"):
+        return []                    # an unprocessed attempt reaches nobody's eyes
     source = str(sev.get("source_actor_id", ""))
+    recipients = [r for r in (sev.get("actual_recipients") or []) if r in world.entities]
     deliveries = []
     for r in recipients:
         if r == source:
             continue
-        chan = rules.get("default_channel", "direct")
-        delay = float(rules.get("default_delay_s", 60.0) or 60.0)
-        representation = "complete"
-        if vis == "public" and r not in (sev.get("direct_targets") or []):
-            chan = rules.get("public_channel", "public_broadcast")
-            delay = float(rules.get("public_delay_s", 3600.0) or 3600.0)
-            representation = str(rules.get("public_representation", "complete"))
         deliveries.append(Event(
-            ts=world.clock.now + max(1.0, delay), etype="ctrl_deliver_observation",
-            participants=[r],
-            payload={"recipient": r, "semantic_event": sev, "channel": chan,
-                     "representation": representation},
+            ts=world.clock.now + max(1.0, _num("default_delay_s", 60.0)),
+            etype="ctrl_deliver_observation", participants=[r],
+            payload={"recipient": r, "semantic_event": sev,
+                     "channel": str(sev.get("mechanism_id")
+                                    or rules.get("default_channel", "direct")),
+                     "representation": str(sev.get("representation", "complete")),
+                     "verified_direct": True},
             visibility="participants", source="endogenous:generated_world"))
+    if str(sev.get("availability")) == "public":
+        # actual public availability (a publication mechanism succeeded) — broad routing in
+        # the public channel's representation and delay
+        persons = [eid for eid, e in world.entities.items()
+                   if getattr(e, "entity_type", "person") == "person"]
+        for r in persons:
+            if r == source or r in recipients:
+                continue
+            deliveries.append(Event(
+                ts=world.clock.now + max(1.0, _num("public_delay_s", 3600.0)),
+                etype="ctrl_deliver_observation", participants=[r],
+                payload={"recipient": r, "semantic_event": sev,
+                         "channel": str(rules.get("public_channel", "public_broadcast")),
+                         "representation": str(rules.get("public_representation",
+                                                         "complete")),
+                         "verified_direct": False},
+                visibility="participants", source="endogenous:generated_world"))
     return deliveries
 
 
@@ -592,8 +851,11 @@ class GeneratedSemanticEventOperator:
                            operator=self.name,
                            reason_codes=[f"routing:{sev.get('semantic_type_id', '?')[:40]}"])
         follow = route_semantic_event(world, sev, self.report)
+        # frontier discovery runs ONLY on verified-observable events: nobody is invoked by an
+        # attempt that never actually reached the world
         frontier = discover_causal_frontier(world, sev, llm=self.frontier_llm,
-                                            report=self.report)
+                                            report=self.report) \
+            if sev.get("observability_verified") else []
         depth = int(sev.get("cascade_depth", 0))
         self.report["recursive_cascade_depth"] = max(
             self.report.get("recursive_cascade_depth", 0), depth)
@@ -651,18 +913,20 @@ def discover_causal_frontier(world, sev: dict, *, llm=None, report=None) -> list
             seen.add(aid)
             out.append((aid, reason))
 
-    for t in sev.get("direct_targets") or []:
-        add(t, "direct target of the event")
+    for t in sev.get("actual_recipients") or []:
+        add(t, "actual recipient of the verified event")
     for iid, inst in (schema.institutional_definitions or {}).items():
         text = json.dumps(sev, default=str)[:1500]
         if iid in text or any(str(h) in text for h in inst.get("decision_holders") or []):
             for h in inst.get("decision_holders") or []:
                 add(h, f"decision holder in {iid}")
-    if str(sev.get("intended_visibility")) == "public" and world.network is not None:
+    # ACTUAL public availability (a publication mechanism succeeded) reaches the source's
+    # network — intended publicity alone reaches nobody
+    if str(sev.get("availability")) == "public" and world.network is not None:
         src = str(sev.get("source_actor_id", ""))
         for e in list(world.network.out_edges(src)) + list(world.network.in_edges(src)):
             add(e.dst if e.src == src else e.src,
-                "network neighbor of the source (public event)")
+                "network neighbor of the source (actually-published event)")
     if llm is not None and len(out) < 6:
         try:
             from swm.engine.grounding import parse_json
@@ -717,6 +981,11 @@ class GeneratedObservationDeliveryOperator:
                                      channel=str(p.get("channel", ""))[:24])
         delta.change(f"information_exposure[{recipient}]", None, iid)
         self.report["observations_delivered"] += 1
+        if p.get("verified_direct"):
+            self.report["actual_deliveries"] = self.report.get("actual_deliveries", 0) + 1
+        rep_map = dict(sev.get("actual_observability") or {})
+        rep_map[recipient] = str(p.get("representation", "complete"))
+        sev["actual_observability"] = rep_map
         inv = _invocation_event(world, recipient, sev, reason="received the observation",
                                 observation_ids=[iid], delay_s=1800.0)
         if inv is not None:

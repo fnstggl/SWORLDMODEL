@@ -4,9 +4,16 @@
 > `fixed_semantic_consequence_policy_v1` — the developer-fixed ontology that replaced the
 > scalar pathway coupling. The PRODUCTION default is `generated_actor_mediated_world`
 > (`docs/GENERATED_WORLD.md`): scenario-GENERATED semantics, actor-mediated recursion, no
-> fixed catalogs. This mode remains runnable as an explicit comparison baseline
-> (`SWM_CONSEQUENCES=fixed_semantic_consequence_policy_v1`; the historical name
-> `semantic_world_consequences` is its alias).
+> fixed catalogs, and the default-on **causal truth boundary**
+> (`swm/world_model_v2/causal_boundary.py`) — actions compile as ATTEMPTS; delivery,
+> publication, intake, confirmation, and settlement occur only through scenario-generated
+> mechanisms; intended visibility is never actual observability. This baseline runs ONLY
+> when explicitly requested (`SWM_CONSEQUENCES=fixed_semantic_consequence_policy_v1`; the
+> historical name `semantic_world_consequences` is its alias). A generated-mode world with
+> no scenario schema is `execution_incomplete` — it is NEVER served by this baseline. Note
+> that this baseline's `deliver_information` / `publish_artifact` primitives assume the
+> channel succeeds (guaranteed delayed delivery / immediate audience exposure) — exactly the
+> shortcut the production boundary removes.
 
 **The defect this phase removes.** A qualitative actor now chooses realistic actions, but the
 executor compressed every action into `nearest ontology label × ACTION_PATHWAY_EFFECTS ×

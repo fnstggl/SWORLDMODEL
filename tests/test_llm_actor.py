@@ -383,7 +383,10 @@ def test_production_operator_accepts_a_persona_runtime():
     assert vr.ok and op.traces and op.traces[-1].verify()
     assert op.traces[-1].cost["llm_calls"] == 1
     history = w.entity("alice").value("past_actions")
-    assert history and history[-1]["status"] in ("executed", "blocked")
+    # attempt semantics: selection initiates an attempt; a schemaless generated world is
+    # execution-incomplete — never 'executed' merely because the actor selected it
+    assert history and history[-1]["status"] in ("action_attempt_initiated",
+                                                 "execution_incomplete", "blocked")
     # legacy constructions still work
     assert isinstance(ProductionActorPolicyOperator().runtime, ActorPolicyRuntime)
     assert isinstance(ProductionActorPolicyOperator(ActorPolicyModel()).runtime,

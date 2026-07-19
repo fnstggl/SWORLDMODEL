@@ -93,9 +93,10 @@ def simulate_individual_reaction(*, person_id: str, stimulus: str, context: dict
                             branch_id=f"b{i:03d}")
         if scenario_schema is not None:
             # generated actor-mediated mode for the individual route: the reply becomes a
-            # scenario-typed semantic event instead of a fixed-catalog communication; without
-            # a schema, the runtime STAMPS its fixed-v1 degradation on the report (never
-            # silent)
+            # scenario-typed ATTEMPT processed by the scenario's own mechanisms; without a
+            # schema the runtime marks the branch execution_incomplete / structurally
+            # under-modeled (never fixed-v1) — the reaction DISTRIBUTION, which is this
+            # route's deliverable, still comes from the actor's own decisions either way
             import copy as _copy
             world.scenario_schema = _copy.deepcopy(scenario_schema)
         selected, posterior, trace = runtime.decide(

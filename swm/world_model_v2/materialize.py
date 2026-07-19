@@ -219,17 +219,24 @@ def operators_from_plan(plan, *, llm=None, allow_experimental=False) -> tuple:
             ops.append(InstitutionalVoteOperator())
     if mode == "generated_actor_mediated_world":
         # the generated actor-mediated control plane: semantic-event routing, observation
-        # delivery, and persistent-actor invocation share the bound runtime + its report
+        # delivery, persistent-actor invocation, the scenario-mechanism runtime, and the
+        # scheduled-attempt runtime share the bound runtime + its report. The mechanism
+        # runtime is the ONLY executor of external effects (delivery, publication, intake,
+        # settlement) — default-on for every generated-mode rollout.
+        from swm.world_model_v2 import causal_boundary as _cb
         from swm.world_model_v2 import generated_world as _genw
         runtime = next((getattr(op, "runtime", None) for op in ops
                         if getattr(op, "name", "") == "production_actor_policy"
                         and getattr(op, "runtime", None) is not None), None)
         if runtime is not None:
             report = runtime.consequence_report
+            backend = getattr(runtime, "consequence_llm", None) or llm
             ops.append(_genw.GeneratedSemanticEventOperator(
-                report=report, frontier_llm=getattr(runtime, "consequence_llm", None) or llm))
+                report=report, frontier_llm=backend))
             ops.append(_genw.GeneratedObservationDeliveryOperator(report=report))
             ops.append(_genw.GeneratedActorInvocationOperator(runtime, report=report))
+            ops.append(_cb.MechanismRuntimeOperator(report=report, llm=backend))
+            ops.append(_cb.ScheduledAttemptOperator(report=report))
     return ops, rejections
 
 
@@ -430,6 +437,20 @@ def _bind_scenario_schema(plan, base, llm) -> None:
                                    "scenario_schema_error": f"validation: {issues[:4]}"}
                 return
             schema.freeze()
+        # CAUSAL BOUNDARY: a schema without mechanisms cannot deliver, publish, accept, or
+        # settle anything. Plan-supplied / previously-frozen schemas get the mechanism model
+        # attached here (proposal + independent boundary critic + bounded repair, cached);
+        # with no backend the gap is stamped and the run is structurally under-modeled.
+        if not getattr(schema, "mechanism_definitions", None):
+            from swm.world_model_v2.causal_boundary import ensure_mechanism_model
+            ensure_mechanism_model(
+                schema, llm=llm,
+                evidence=str((plan.provenance or {}).get("evidence_summary", ""))[:1500])
+            if not schema.mechanism_definitions:
+                plan.provenance = {**(plan.provenance or {}),
+                                   "mechanism_model_error":
+                                       str(schema.provenance.get("mechanism_model_error",
+                                                                 "not generated"))[:200]}
         ok0, smuggled = validate_initial_records(schema, list(base.objects.values()))
         if not ok0:
             plan.provenance = {**(plan.provenance or {}),
@@ -496,7 +517,13 @@ def run_from_plan(plan, *, llm=None, n_particles=None, seed=0):
     if err:
         rep = result.setdefault("consequence_report", {})
         rep["degraded"] = True
+        rep["structurally_under_modeled"] = True
         rep["scenario_schema_error"] = err
+    mech_err = (plan.provenance or {}).get("mechanism_model_error")
+    if mech_err:
+        rep = result.setdefault("consequence_report", {})
+        rep["structurally_under_modeled"] = True
+        rep["mechanism_model_error"] = mech_err
     return result, branches
 
 

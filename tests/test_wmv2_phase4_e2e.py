@@ -46,7 +46,10 @@ def compiled_payload():
     }
 
 
-def test_compiler_routes_legacy_agent_proposal_to_production_policy_and_e2e_delta():
+def test_compiler_routes_legacy_agent_proposal_to_production_policy_and_e2e_delta(monkeypatch):
+    # the fixed-v1 BASELINE e2e (explicitly requested): schemaless generated mode is
+    # execution-incomplete by design and applies no fixed-catalog consequences
+    monkeypatch.setenv("SWM_CONSEQUENCES", "fixed_semantic_consequence_policy_v1")
     payload = compiled_payload()
     plan = compile_world(
         "Will the manager approve the project?", llm=lambda _: json.dumps(payload),
@@ -62,7 +65,8 @@ def test_compiler_routes_legacy_agent_proposal_to_production_policy_and_e2e_delt
     assert result["readout"] == "terminal_states"
 
 
-def test_selected_action_changes_terminal_state_without_direct_probability_assignment():
+def test_selected_action_changes_terminal_state_without_direct_probability_assignment(monkeypatch):
+    monkeypatch.setenv("SWM_CONSEQUENCES", "fixed_semantic_consequence_policy_v1")
     plan = compile_world(
         "Will the manager approve the project?", llm=lambda _: json.dumps(compiled_payload()),
         evidence="", as_of="2025-01-01", horizon="2025-01-10", persist=False,

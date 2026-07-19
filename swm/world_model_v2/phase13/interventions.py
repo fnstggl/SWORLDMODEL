@@ -83,8 +83,75 @@ class DecisionActionOperator(TransitionOperator):
     """The registered operator that executes decision_action events through the CANONICAL
     propose → validate → apply funnel. Institutional rules re-check at fire time (base validate),
     state-dependent preconditions re-check here (Part 6 state-dependent feasibility), implementation
-    failure draws from the action's own CRN stream (Part 8 partitioning)."""
+    failure draws from the action's own CRN stream (Part 8 partitioning).
+
+    CAUSAL BOUNDARY: in generated mode (the default) with a scenario schema bound to the
+    world, the action's world effects cross the SAME causal boundary as every other actor
+    action — attempt-premise compile → directness validation → Layer-A kernel ops + scenario
+    mechanism invocations. No direct recipient exposure, no `message_delivered` shortcut, no
+    immediate external credit; delivery/publication/intake/settlement happen only when the
+    scenario's mechanisms actually succeed."""
     name = "decision_action"
+
+    def __init__(self, llm=None):
+        self.llm = llm
+        self._compiler = None
+        self._validator = None
+        self.report = None
+
+    def _boundary(self):
+        from swm.world_model_v2 import causal_boundary as cb
+        from swm.world_model_v2.generated_world import generated_report
+        if self._compiler is None:
+            self._compiler = cb.CausalActionCompiler(self.llm)
+            self._validator = cb.DirectnessValidator(self.llm)
+            self.report = generated_report()
+        return self._compiler, self._validator, self.report
+
+    def _apply_causal_boundary(self, world, a, d):
+        """ActionSchema → the shared attempt/mechanism path (one canonical consequence seam
+        for ordinary actors, qualitative actors, AND Phase 13 decisions)."""
+        from swm.world_model_v2 import causal_boundary as cb
+        from swm.world_model_v2 import generated_world as genw
+        from swm.world_model_v2.phase4_policy import ActionTarget, TypedAction
+        compiler, validator, report = self._boundary()
+        target = str((a.recipients or [""])[0] if a.recipients else (a.object or ""))
+        content = ""
+        if isinstance(a.content, dict):
+            content = str(a.content.get("text", ""))
+        content = content or str(a.params.get("content", ""))
+        action = TypedAction(
+            action_id=f"p13:{a.action_id}", actor_id=a.actor,
+            actor_role="decision_maker", action_family="generic",
+            action_name=str(a.operation)[:60],
+            target=ActionTarget("actor" if target in world.entities else "none",
+                                target if target in world.entities else ""),
+            parameters={"intended_effect": f"{a.operation} {a.object}".strip()[:300],
+                        "content": content[:1200], "timing": "immediate"},
+            observability={"default": "public" if a.observability == "public"
+                           else "participants"},
+            mechanisms_triggered=["semantic_consequences"])
+        program = compiler.compile(
+            world, action,
+            qualitative={"decision_summary": f"{a.operation} {a.object}".strip()[:200],
+                         "observability": str(a.observability or "participants"),
+                         "routed": True},
+            report=report)
+        validator.validate(world, program, report=report)
+        ctx = {"actor_id": a.actor, "action_id": action.action_id, "now": world.clock.now,
+               "report": report, "plane": "direct_action",
+               "budgets": genw._budgets(world), "events": [], "quarantined": []}
+        events = genw.execute_kernel_ops(world, program.kernel_ops(), ctx, d)
+        report["action_attempts"] = report.get("action_attempts", 0) + 1
+        d.reason_codes.append("phase13_causal_boundary")
+        if ctx["quarantined"]:
+            d.uncertainty["kernel_quarantined"] = ctx["quarantined"][:4]
+        d.uncertainty["causal_action_report"] = cb.build_causal_action_report(
+            action, program, ctx, "action_attempt_initiated")
+        for e in events:
+            d.follow_up_events.append({"etype": e.etype, "ts": e.ts,
+                                       "participants": list(e.participants),
+                                       "payload": dict(e.payload)})
 
     def applicable(self, world, event) -> bool:
         return event.etype == "decision_action" and bool(event.payload.get("action"))
@@ -140,7 +207,7 @@ class DecisionActionOperator(TransitionOperator):
         fam = a.spec()["family"]
         actor_ent = (world.entities or {}).get(a.actor)
 
-        # ---- resource semantics: consume required resources; transfer credits the recipient --------
+        # ---- resource semantics: consuming the actor's OWN required resources is Layer A ----------
         for rname, amt in (a.required_resources or {}).items():
             if actor_ent is not None:
                 rf = actor_ent.get("resources", key=rname)
@@ -148,7 +215,16 @@ class DecisionActionOperator(TransitionOperator):
                     before = float(rf.value)
                     rf.value = before - float(amt)
                     d.change(f"{a.actor}.resources[{rname}]", before, rf.value)
-        if a.operation in ("transfer", "allocate", "invest") and a.recipients:
+
+        # ---- generated mode + scenario schema: ONE canonical consequence path ---------------------
+        from swm.world_model_v2 import semantic_consequences as _semcons
+        generated = getattr(world, "scenario_schema", None) is not None \
+            and _semcons.resolve_consequence_mode() == "generated_actor_mediated_world"
+        if generated:
+            self._apply_causal_boundary(world, a, d)
+
+        if not generated and a.operation in ("transfer", "allocate", "invest") and a.recipients:
+            # LEGACY/BASELINE ONLY: the immediate recipient credit assumes settlement
             rname = str(a.params.get("resource", ""))
             amt = float(a.params.get("amount", 0.0))
             for r in a.recipients:
@@ -170,8 +246,11 @@ class DecisionActionOperator(TransitionOperator):
                 q.timestamp = world.clock.now
                 d.change(f"quantities.{a.object}", before, q.value)
 
-        # ---- information semantics: publish/disclose/communicate enter the LEDGER -----------------
-        if fam == "information" or a.operation in ("contact", "propose", "counteroffer", "endorse"):
+        # ---- information semantics (LEGACY/BASELINE ONLY): direct ledger exposure assumes
+        #      delivery — in generated mode the boundary above created an ATTEMPT instead ----------
+        if not generated and (fam == "information"
+                              or a.operation in ("contact", "propose", "counteroffer",
+                                                 "endorse")):
             info = getattr(world, "information", None)
             if info is not None:
                 from swm.world_model_v2.information import InformationItem
@@ -187,9 +266,10 @@ class DecisionActionOperator(TransitionOperator):
                     info.expose(r, iid, world.clock.now, channel=str(a.params.get("channel", "")))
                     d.change(f"information.exposures[{r}]", None, iid)
 
-        # ---- relationship semantics: connect/ally/block edit the typed network --------------------
-        if a.operation in ("connect", "ally", "coordinate") and a.recipients and \
-                getattr(world, "network", None) is not None:
+        # ---- relationship semantics (LEGACY/BASELINE ONLY): a bilateral edge needs the other
+        #      party or a mechanism in generated mode ----------------------------------------------
+        if not generated and a.operation in ("connect", "ally", "coordinate") and a.recipients \
+                and getattr(world, "network", None) is not None:
             for r in a.recipients:
                 try:
                     world.network.add(a.actor, "communicates_with", r)
@@ -201,9 +281,10 @@ class DecisionActionOperator(TransitionOperator):
         if a.operation in ("gather_information", "observe", "investigate", "choose_observation"):
             d.change("meta.information_request", None, str(a.params.get("about", a.object))[:80])
 
-        # ---- the actor-response bridge: emit the registered follow-up event the plan's own
-        #      operators (Phase 4 policy, diffusion, institutions, populations) react to ------------
-        fu_type = _FOLLOW_UP_ETYPE.get(a.operation)
+        # ---- the actor-response bridge (LEGACY/BASELINE ONLY): in generated mode the affected
+        #      actor is invoked by the control plane AFTER an actual observation, never by a
+        #      hardcoded operation→message_delivered mapping ---------------------------------------
+        fu_type = None if generated else _FOLLOW_UP_ETYPE.get(a.operation)
         if fu_type and event_type_registered(fu_type):
             d.follow_up_events.append({
                 "etype": fu_type, "ts": world.clock.now + 1.0,
@@ -211,12 +292,26 @@ class DecisionActionOperator(TransitionOperator):
                 "payload": {"from_decision_action": a.action_id, "operation": a.operation,
                             "content": {k: v for k, v in (a.content or {}).items()
                                         if isinstance(v, (int, float, str, bool))}}})
-        # record the actor's own committed action on their entity (past_actions is canonical schema)
+        # record the actor's own ATTEMPT on their entity (past_actions is canonical schema) —
+        # selecting an action initiates an attempt; completion is decided later by the world
         if actor_ent is not None:
-            from swm.world_model_v2.state import F
-            actor_ent.set("past_actions", F(a.operation, status="derived",
-                                            method=f"phase13:{a.action_id}"), key=a.action_id)
-            d.change(f"{a.actor}.past_actions[{a.action_id}]", None, a.operation)
+            from swm.world_model_v2.state import F, StateField
+            sf = actor_ent.fields.get("past_actions")
+            if isinstance(sf, StateField) and isinstance(sf.value, list):
+                rows = list(sf.value) + [{"at": world.clock.now, "action": a.operation,
+                                          "action_id": f"p13:{a.action_id}",
+                                          "status": "action_attempt_initiated",
+                                          "completion_status": "action_attempt_initiated",
+                                          "target": ", ".join(a.recipients or [])
+                                          or str(a.object)}]
+                actor_ent.set("past_actions", F(rows, status="derived",
+                                                method=f"phase13:{a.action_id}"))
+                d.change(f"{a.actor}.past_actions", len(rows) - 1, len(rows))
+            else:
+                actor_ent.set("past_actions", F(a.operation, status="derived",
+                                                method=f"phase13:{a.action_id}"),
+                              key=a.action_id)
+                d.change(f"{a.actor}.past_actions[{a.action_id}]", None, a.operation)
         return d
 
 
