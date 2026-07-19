@@ -793,6 +793,18 @@ class PersonaActorPolicyRuntime(ActorPolicyRuntime):
 
 
 # ---------------------------------------------------------------------------- wiring
+# The persona state update writes expected reactions into a TYPED extension field (the module
+# docstring's contract). Registering it here — where the writer lives — closes the crash the
+# EXP-105 Colombia run exposed: deeper actor cognition reached the write path before any
+# registration existed, and Entity.set correctly refused the untyped key.
+from swm.world_model_v2.state import register_entity_extension  # noqa: E402
+
+register_entity_extension("llm_persona_state", fields={
+    "expected_reactions": "actor's bounded expectations of specific others' responses "
+                          "({other_id: {expects, at}}, persona cognition)"},
+    entity_types=("person", "institution"))
+
+
 def build_persona_runtime(*, llm=None, config: PersonaConfig | None = None,
                           model: ActorPolicyModel | None = None) -> PersonaActorPolicyRuntime | None:
     """The single production binding point (called by materialize.operators_from_plan for the
