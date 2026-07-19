@@ -48,10 +48,29 @@ ARMS = {"v4flash": lambda system: __import__("swm.api.deepseek_backend", fromlis
         .openrouter_chat_fn("deepseek/deepseek-chat-v3-0324", system=system, max_tokens=700)}
 
 
-def _paths(arm):
-    sfx = "" if arm == "v4flash" else f"_{arm}"
+def _paths(arm, tag=""):
+    sfx = ("" if arm == "v4flash" else f"_{arm}") + (f"_{tag}" if tag else "")
     return (Path(f"experiments/results/exp101_btf3_predictions{sfx}.json"),
             Path(f"experiments/results/exp101_btf3_pilot{sfx}.json"))
+
+
+def _sample_ids(by_id, n_questions):
+    """The committed 50-id sample, topped up deterministically (seed 43) for larger runs — the original 50
+    stay inside every larger sample so before/after and scale comparisons remain paired."""
+    if SAMPLE_IDS.exists():
+        base = json.loads(SAMPLE_IDS.read_text())
+    else:
+        base = sorted(random.Random(42).sample(sorted(by_id), min(50, n_questions)))
+        SAMPLE_IDS.write_text(json.dumps(base, indent=1))
+    if n_questions <= len(base):
+        return base[:n_questions]
+    big = Path(f"experiments/results/exp101_btf3_sample_ids_{n_questions}.json")
+    if big.exists():
+        return json.loads(big.read_text())
+    extra = sorted(random.Random(43).sample(sorted(set(by_id) - set(base)), n_questions - len(base)))
+    ids = base + extra
+    big.write_text(json.dumps(ids, indent=1))
+    return ids
 
 ALLOWED_FIELDS = {"question_id", "question", "resolution_criteria", "background",
                   "present_date", "date_cutoff_end", "expected_resolution_date"}
@@ -103,15 +122,11 @@ def _brier(ps, ys):
     return round(sum((p - y) ** 2 for p, y in zip(ps, ys)) / len(ps), 4)
 
 
-def run(n_questions: int = 50, arm: str = "v4flash") -> dict:
-    PRED, RESULT = _paths(arm)
+def run(n_questions: int = 50, arm: str = "v4flash", tag: str = "") -> dict:
+    PRED, RESULT = _paths(arm, tag)
     rows = fetch_btf3()
     by_id = {r["question_id"]: r for r in rows}
-    if SAMPLE_IDS.exists():
-        ids = json.loads(SAMPLE_IDS.read_text())
-    else:
-        ids = sorted(random.Random(42).sample(sorted(by_id), n_questions))
-        SAMPLE_IDS.write_text(json.dumps(ids, indent=1))
+    ids = _sample_ids(by_id, n_questions)
 
     llm = ARMS[arm]("You are a careful superforecaster. Reply with ONLY compact JSON.")
     done = {r["question_id"]: r for r in json.loads(PRED.read_text())} if PRED.exists() else {}
@@ -148,7 +163,7 @@ def run(n_questions: int = 50, arm: str = "v4flash") -> dict:
     base = sum(ys) / len(ys)
     sota_pairs = [(r["p_sota"], r["outcome"]) for r in preds if r["p_sota"] is not None]
 
-    res = {"n": len(preds), "arm": arm, "base_rate_yes": round(base, 4),
+    res = {"n": len(preds), "arm": arm, "tag": tag, "base_rate_yes": round(base, 4),
            "compile_failures": sum(r["compile_failed"] for r in preds),
            "model": {"brier": _brier(ps, ys), "log_loss": round(log_loss(ys, ps), 4),
                      "accuracy_at_0.5": round(sum((p > 0.5) == y for p, y in zip(ps, ys)) / len(ys), 4),
@@ -184,4 +199,5 @@ def run(n_questions: int = 50, arm: str = "v4flash") -> dict:
 
 if __name__ == "__main__":
     run(int(sys.argv[1]) if len(sys.argv) > 1 else 50,
-        sys.argv[2] if len(sys.argv) > 2 else "v4flash")
+        sys.argv[2] if len(sys.argv) > 2 else "v4flash",
+        sys.argv[3] if len(sys.argv) > 3 else "")
