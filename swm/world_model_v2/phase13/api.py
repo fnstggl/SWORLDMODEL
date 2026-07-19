@@ -76,20 +76,43 @@ def _fingerprint() -> dict:
 
 def recommend_action(problem: DecisionProblem, world_context, *, budget: str = "standard",
                      seed: int = 0, n_particles: int = None, llm=None,
-                     candidate_observations: list = None,
+                     candidate_observations: list = None, mode: str = "auto",
+                     goal_text: str = "", trace_path: str = "",
                      allow_single_structural_model: bool = False) -> DecisionResult:
     """The full Phase-13 pipeline. Abstains (with what is needed) instead of fabricating certainty.
 
-    DEFAULT: an ensemble-shaped `world_context` (StructuralModelEnsemble / default-runtime
-    SimulationResult / {model_id: plan}) evaluates every action across ALL surviving structural models
-    with per-model budgets and cross-model robustness (see phase13.ensemble). A bare single plan is the
-    explicit ablation and requires `allow_single_structural_model=True`."""
+    STRUCTURAL-ENSEMBLE DEFAULT: an ensemble-shaped `world_context` (StructuralModelEnsemble /
+    default-runtime SimulationResult / {model_id: plan}) evaluates every action across ALL surviving
+    structural models with per-model budgets and cross-model robustness (see phase13.ensemble); each
+    per-model evaluation re-enters this function with that model's own context, so a generated-world
+    model routes through the scenario-generated action layer INSIDE its model. A bare single plan is
+    the explicit ablation and requires `allow_single_structural_model=True`.
+
+    mode="auto" (default): a generated scenario world routes through the scenario-generated
+    action layer (scenario_actions.api) — goal-backward discovery, scenario action language,
+    kernel-compiled candidates, matched simulation, diagnosis-driven revision. The fixed-v1
+    operation catalog runs ONLY for non-generated world contexts (controlled benchmarks) or
+    an explicit mode="legacy_fixed_v1" baseline/ablation request; generated worlds can never
+    silently fall back to it."""
+    from swm.world_model_v2.phase13.scenario_actions.api import (discover_best_action,
+                                                                 is_generated_context)
+    if mode not in ("auto", "legacy_fixed_v1"):
+        raise ValueError(f"unknown mode {mode!r} (valid: auto | legacy_fixed_v1)")
     models = _ensemble_context(world_context)
     if models:
         from swm.world_model_v2.phase13.ensemble import recommend_action_across_models
         return recommend_action_across_models(problem, models, budget=budget, seed=seed,
                                               n_particles=n_particles, llm=llm,
-                                              candidate_observations=candidate_observations)
+                                              candidate_observations=candidate_observations,
+                                              mode=mode, goal_text=goal_text)
+    if mode == "auto" and is_generated_context(world_context):
+        return discover_best_action(goal_text or problem.context, world_context,
+                                    problem=problem, budget=budget, seed=seed,
+                                    n_particles=n_particles, llm=llm,
+                                    trace_path=trace_path)
+    if mode == "legacy_fixed_v1" and is_generated_context(world_context):
+        # reachable ONLY by explicit request — stamped as a baseline, never a default
+        pass
     t0 = _time.time()
     res = DecisionResult(decision_id=problem.decision_id, contract_hash=problem.contract_hash(),
                         runtime_fingerprint=_fingerprint(), seed=seed)
@@ -180,21 +203,38 @@ def recommend_action(problem: DecisionProblem, world_context, *, budget: str = "
 
 def evaluate_actions(problem: DecisionProblem, actions: list, world_context, *,
                      budget: str = "standard", seed: int = 0, n_particles: int = None,
-                     llm=None, allow_single_structural_model: bool = False) -> DecisionResult:
-    """Evaluate ONLY the supplied actions (plus the mandatory do-nothing reference). Ensemble-shaped
-    contexts evaluate the SAME actions inside every structural model (per-model budgets, cross-model
-    robustness); a bare single plan requires the explicit ablation flag."""
+                     llm=None, mode: str = "auto", goal_text: str = "",
+                     trace_path: str = "",
+                     allow_single_structural_model: bool = False) -> DecisionResult:
+    """Evaluate ONLY the supplied actions (plus the mandatory do-nothing reference).
+    Differs from recommend_action ONLY in where candidates come from. The caller's
+    DecisionProblem is never mutated.
+
+    Ensemble-shaped contexts evaluate the SAME actions inside every structural model (per-model
+    budgets, cross-model robustness); a bare single plan requires the explicit ablation flag."""
+    from swm.world_model_v2.phase13.scenario_actions.api import (evaluate_actions_generated,
+                                                                 is_generated_context)
+    if mode not in ("auto", "legacy_fixed_v1"):
+        raise ValueError(f"unknown mode {mode!r} (valid: auto | legacy_fixed_v1)")
     models = _ensemble_context(world_context)
     if models:
         from swm.world_model_v2.phase13.ensemble import recommend_action_across_models
         return recommend_action_across_models(problem, models, budget=budget, seed=seed,
                                               n_particles=n_particles, llm=llm,
-                                              actions=list(actions))
-    p2 = problem
+                                              actions=list(actions), mode=mode,
+                                              goal_text=goal_text)
+    if mode == "auto" and is_generated_context(world_context):
+        return evaluate_actions_generated(problem, actions, world_context,
+                                          goal_text=goal_text or problem.context,
+                                          budget=budget, seed=seed,
+                                          n_particles=n_particles, llm=llm,
+                                          trace_path=trace_path)
+    import copy as _copy
+    p2 = _copy.copy(problem)                            # NEVER mutate the caller's contract
     p2.candidate_actions = list(actions)
     p2.generated_action_permission = False
     return recommend_action(p2, world_context, budget=budget, seed=seed,
-                            n_particles=n_particles, llm=llm,
+                            n_particles=n_particles, llm=llm, mode=mode,
                             allow_single_structural_model=allow_single_structural_model)
 
 
@@ -246,7 +286,15 @@ def optimize_policy(problem: DecisionProblem, policies: list, world_context, *,
         bundle.arms[pol.policy_id] = arm_eval.evaluate_arm(pol.policy_id, None)
     bundle.hypothesis_assignment = list(ev._assignment)
     bundle.crn_manifest = ev.crn_manifest(bundle)
-    evals = evaluate_bundle(bundle, [do_nothing(problem.decision_maker)], problem)
+    # evaluate POLICY arms as themselves: a zero-cost stand-in ActionSchema per policy id, so
+    # robust evaluation ranks the actual policy outcomes (audit finding: a placeholder
+    # [do_nothing] list made every policy report cost=0/operation=''/reversible=True under
+    # do_nothing's identity instead of its own)
+    from swm.world_model_v2.phase13.ontology import ActionSchema
+    stand_ins = [ActionSchema(action_id=pol.policy_id, actor=problem.decision_maker,
+                              operation="choose_policy", provenance="policy")
+                 for pol in all_policies]
+    evals = evaluate_bundle(bundle, stand_ins, problem)
     pols = {k: v for k, v in evals.items() if not k.startswith("_")}
     res.policies = list(pols.values())
     ranking = evals["_ranking"]["order"]

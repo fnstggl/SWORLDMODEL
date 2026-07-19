@@ -145,11 +145,14 @@ def schedule_decision_points(queue_builder, decision_points: list, actor_id: str
 
 
 def one_step_policy(action, decision_ts: float) -> Policy:
-    """Adapter: a one-step action as a degenerate policy (fires once at its decision point)."""
-    fired = {"done": False}
+    """Adapter: a one-step action as a degenerate policy (fires once at its decision point).
+
+    Fired-state is PER BRANCH (keyed on the belief's prior_actions, which
+    PolicyExecutionOperator already tracks per branch_id) — a shared closure flag would let
+    the action fire in only the FIRST particle that reached a decision point and silently
+    no-op in every other matched world (audit finding: cross-particle state leak)."""
     def decide(belief):
-        if fired["done"]:
-            return None
-        fired["done"] = True
-        return action
+        already = any(str(a) == str(action.operation)
+                      for a in (belief.get("prior_actions") or []))
+        return None if already else action
     return Policy(policy_id=f"onestep:{action.action_id}", decide=decide)

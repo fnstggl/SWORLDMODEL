@@ -1,0 +1,518 @@
+{
+ "schema_id": "schema_0c76f68fbbc7c087",
+ "version": "1",
+ "question": "Will the deposit dispute between landlord Petrov and tenant Okada be resolved without a board-imposed penalty by October 2025?",
+ "prediction_timestamp": 1752800000.0,
+ "horizon": 1757984000.0,
+ "entity_types": {
+  "landlord": {
+   "fields": {
+    "name": "str"
+   }
+  },
+  "tenant": {
+   "fields": {
+    "name": "str"
+   }
+  },
+  "tenancy_dispute_board": {
+   "fields": {
+    "name": "str"
+   }
+  },
+  "county_neutral_holder_program": {
+   "fields": {
+    "name": "str"
+   }
+  },
+  "deposit_dispute_case": {
+   "fields": {
+    "case_id": "str",
+    "landlord_id": "id",
+    "tenant_id": "id",
+    "filing_date": "time",
+    "status": "str"
+   }
+  },
+  "board_final_order": {
+   "fields": {
+    "order_id": "str",
+    "case_id": "str",
+    "penalty_imposed": "bool",
+    "penalty_amount": "float",
+    "issue_date": "time"
+   }
+  },
+  "settlement_agreement": {
+   "fields": {
+    "agreement_id": "str",
+    "case_id": "str",
+    "date_signed": "time"
+   }
+  },
+  "complaint_withdrawal": {
+   "fields": {
+    "withdrawal_id": "str",
+    "case_id": "str",
+    "withdrawal_date": "time"
+   }
+  },
+  "escrow_receipt": {
+   "fields": {
+    "receipt_id": "str",
+    "deposit_amount": "float",
+    "holder_program_id": "id",
+    "issue_date": "time"
+   }
+  }
+ },
+ "fact_types": {
+  "deposit_dispute_filed": {
+   "fields": {
+    "case_id": "str",
+    "landlord": "id",
+    "tenant": "id",
+    "filing_date": "time"
+   }
+  },
+  "board_final_order_issued": {
+   "fields": {
+    "order_id": "str",
+    "case_id": "str",
+    "penalty_imposed": "bool",
+    "penalty_amount": "float",
+    "issue_date": "time"
+   }
+  },
+  "settlement_reached": {
+   "fields": {
+    "agreement_id": "str",
+    "case_id": "str",
+    "date_signed": "time"
+   }
+  },
+  "complaint_withdrawn": {
+   "fields": {
+    "withdrawal_id": "str",
+    "case_id": "str",
+    "withdrawal_date": "time"
+   }
+  },
+  "deposit_held_in_escrow": {
+   "fields": {
+    "receipt_id": "str",
+    "deposit_amount": "float",
+    "holder_program_id": "id",
+    "issue_date": "time"
+   }
+  }
+ },
+ "relation_types": {
+  "landlord_involved_in_case": {
+   "fields": {
+    "landlord_id": "id",
+    "case_id": "str"
+   }
+  },
+  "tenant_involved_in_case": {
+   "fields": {
+    "tenant_id": "id",
+    "case_id": "str"
+   }
+  },
+  "case_assigned_to_board": {
+   "fields": {
+    "case_id": "str",
+    "board_id": "id"
+   }
+  },
+  "deposit_submitted_to_holder": {
+   "fields": {
+    "case_id": "str",
+    "receipt_id": "str",
+    "holder_program_id": "id"
+   }
+  }
+ },
+ "semantic_event_types": {
+  "deposit_dispute_filed_event": {
+   "fields": {
+    "case_id": "str",
+    "landlord": "id",
+    "tenant": "id",
+    "filing_date": "time"
+   }
+  },
+  "board_hearing_held_event": {
+   "fields": {
+    "case_id": "str",
+    "hearing_date": "time",
+    "board_members_present": "list"
+   }
+  },
+  "board_final_order_issued_event": {
+   "fields": {
+    "order_id": "str",
+    "case_id": "str",
+    "penalty_imposed": "bool",
+    "penalty_amount": "float",
+    "issue_date": "time"
+   }
+  },
+  "settlement_signed_event": {
+   "fields": {
+    "agreement_id": "str",
+    "case_id": "str",
+    "date_signed": "time"
+   }
+  },
+  "complaint_withdrawn_event": {
+   "fields": {
+    "withdrawal_id": "str",
+    "case_id": "str",
+    "withdrawal_date": "time"
+   }
+  },
+  "deposit_escrowed_event": {
+   "fields": {
+    "receipt_id": "str",
+    "deposit_amount": "float",
+    "holder_program_id": "id",
+    "issue_date": "time"
+   }
+  },
+  "unmodeled_actor_action": {
+   "description": "schema-scoped scaffolding: an actor action whose semantics could not be compiled; exact content preserved; counted as a fallback",
+   "fields": {
+    "action_name": "str",
+    "content": "str",
+    "target": "str"
+   },
+   "typical_visibility": "participants",
+   "scaffolding": true
+  }
+ },
+ "process_definitions": {
+  "board_adjudication_process": {
+   "states": [
+    "complaint_filed",
+    "hearing_scheduled",
+    "hearing_held",
+    "deliberation",
+    "final_order_issued"
+   ],
+   "transitions": [
+    {
+     "from": "complaint_filed",
+     "to": "hearing_scheduled",
+     "trigger": "board_schedules_hearing"
+    },
+    {
+     "from": "hearing_scheduled",
+     "to": "hearing_held",
+     "trigger": "hearing_occurs"
+    },
+    {
+     "from": "hearing_held",
+     "to": "deliberation",
+     "trigger": "board_deliberates"
+    },
+    {
+     "from": "deliberation",
+     "to": "final_order_issued",
+     "trigger": "board_issues_order"
+    }
+   ],
+   "terminals": [
+    "final_order_issued"
+   ]
+  },
+  "settlement_process": {
+   "states": [
+    "negotiation",
+    "agreement_drafted",
+    "agreement_signed",
+    "case_closed"
+   ],
+   "transitions": [
+    {
+     "from": "negotiation",
+     "to": "agreement_drafted",
+     "trigger": "parties_reach_terms"
+    },
+    {
+     "from": "agreement_drafted",
+     "to": "agreement_signed",
+     "trigger": "both_parties_sign"
+    },
+    {
+     "from": "agreement_signed",
+     "to": "case_closed",
+     "trigger": "board_acknowledges_settlement"
+    }
+   ],
+   "terminals": [
+    "case_closed"
+   ]
+  },
+  "withdrawal_process": {
+   "states": [
+    "complaint_active",
+    "withdrawal_requested",
+    "withdrawal_confirmed",
+    "case_closed"
+   ],
+   "transitions": [
+    {
+     "from": "complaint_active",
+     "to": "withdrawal_requested",
+     "trigger": "tenant_files_withdrawal"
+    },
+    {
+     "from": "withdrawal_requested",
+     "to": "withdrawal_confirmed",
+     "trigger": "board_approves_withdrawal"
+    },
+    {
+     "from": "withdrawal_confirmed",
+     "to": "case_closed",
+     "trigger": "case_closed_recorded"
+    }
+   ],
+   "terminals": [
+    "case_closed"
+   ]
+  }
+ },
+ "institutional_definitions": {
+  "tenancy_dispute_board": {
+   "decision_holders": [
+    "board_panel_member_1",
+    "board_panel_member_2",
+    "board_panel_member_3"
+   ],
+   "decision_record_type": "board_final_order",
+   "aggregation_arithmetic": {
+    "kind": "majority",
+    "assumed": true
+   },
+   "evidence": "Tenancy dispute board resolves complaints; final order records penalty.",
+   "aggregation": {
+    "kind": "majority"
+   },
+   "assumed": true
+  },
+  "county_neutral_holder_program": {
+   "decision_holders": [
+    "program_administrator"
+   ],
+   "decision_record_type": "escrow_receipt",
+   "aggregation_arithmetic": {
+    "kind": "single_authority",
+    "assumed": true
+   },
+   "evidence": "County neutral-holder program accepts escrowed deposits and issues holding receipt.",
+   "aggregation": {
+    "kind": "single_authority"
+   },
+   "assumed": true
+  }
+ },
+ "physical_constraints": {
+  "board_hearing_requires_physical_presence": {
+   "rule": "A hearing cannot occur if all board members are unavailable on the scheduled date.",
+   "unresolved": true
+  },
+  "settlement_signing_requires_both_parties": {
+   "rule": "Settlement agreement requires signature from both landlord and tenant.",
+   "unresolved": true
+  }
+ },
+ "resource_definitions": {
+  "deposit_funds": {
+   "fields": {
+    "amount": "float",
+    "currency": "str"
+   }
+  },
+  "case_file": {
+   "fields": {
+    "case_id": "str",
+    "documents": "list"
+   }
+  }
+ },
+ "information_rules": {
+  "board_final_order_is_public_record": {
+   "rule": "Once issued, the board final order is accessible to both parties and the public.",
+   "scope": "post-resolution"
+  },
+  "settlement_confidentiality": {
+   "rule": "Settlement terms may be kept confidential unless both parties agree to disclosure.",
+   "scope": "optional"
+  }
+ },
+ "actor_roles": {
+  "landlord_petrov": {
+   "role": "disputant (landlord)",
+   "why_consequential": "Must agree to settlement or participate in board hearing; can influence outcome by returning deposit or negotiating.",
+   "affordances": [
+    "file_response_to_complaint",
+    "propose_settlement_terms",
+    "attend_hearing",
+    "sign_settlement_agreement",
+    "pay_penalty_if_ordered"
+   ]
+  },
+  "tenant_okada": {
+   "role": "disputant (tenant)",
+   "why_consequential": "Filed the complaint; can withdraw it at any time, or agree to settlement, which closes case without penalty.",
+   "affordances": [
+    "file_complaint",
+    "withdraw_complaint",
+    "propose_settlement_terms",
+    "attend_hearing",
+    "sign_settlement_agreement"
+   ]
+  },
+  "board_panel_member_1": {
+   "role": "decision-maker on board panel",
+   "why_consequential": "Votes on whether to impose penalty; majority decision determines final order.",
+   "affordances": [
+    "review_evidence",
+    "vote_on_penalty",
+    "draft_final_order"
+   ]
+  },
+  "board_panel_member_2": {
+   "role": "decision-maker on board panel",
+   "why_consequential": "Votes on whether to impose penalty; majority decision determines final order.",
+   "affordances": [
+    "review_evidence",
+    "vote_on_penalty",
+    "draft_final_order"
+   ]
+  },
+  "board_panel_member_3": {
+   "role": "decision-maker on board panel",
+   "why_consequential": "Votes on whether to impose penalty; majority decision determines final order.",
+   "affordances": [
+    "review_evidence",
+    "vote_on_penalty",
+    "draft_final_order"
+   ]
+  },
+  "program_administrator": {
+   "role": "administrator of county neutral-holder program",
+   "why_consequential": "Issues escrow receipt; holds deposit until dispute resolved.",
+   "affordances": [
+    "receive_deposit",
+    "issue_escrow_receipt",
+    "release_deposit_per_order_or_settlement"
+   ]
+  }
+ },
+ "outcome_predicates": [
+  {
+   "predicate_id": "resolution_without_penalty_by_october_2025",
+   "record_type": "board_final_order",
+   "field": "penalty_imposed",
+   "op": "eq",
+   "value": false,
+   "option_true": "resolved_without_penalty",
+   "option_false": "penalty_imposed_or_unresolved"
+  },
+  {
+   "predicate_id": "case_closed_by_settlement_or_withdrawal",
+   "record_type": "settlement_agreement",
+   "field": "case_id",
+   "op": "exists",
+   "value": true,
+   "option_true": "resolved_without_penalty",
+   "option_false": "check_board_order"
+  },
+  {
+   "predicate_id": "case_closed_by_withdrawal",
+   "record_type": "complaint_withdrawal",
+   "field": "case_id",
+   "op": "exists",
+   "value": true,
+   "option_true": "resolved_without_penalty",
+   "option_false": "check_board_order"
+  }
+ ],
+ "unresolved_mechanisms": [
+  "Whether landlord Petrov and tenant Okada will negotiate a settlement before October 2025.",
+  "Whether tenant Okada will withdraw the complaint before October 2025.",
+  "Whether the board will schedule and hold a hearing before October 2025 if no settlement or withdrawal occurs.",
+  "The specific voting behavior of board panel members on penalty imposition.",
+  "settlement_signing_requires_both_parties"
+ ],
+ "evidence_basis": [],
+ "assumptions": [
+  "The tenancy dispute board operates by majority vote among three panel members.",
+  "The county neutral-holder program is a single-administrator institution for escrow receipt issuance.",
+  "Settlement or withdrawal automatically closes the case with no penalty.",
+  "The board final order is the only mechanism that can impose a penalty.",
+  "All dates are in Gregorian calendar; October 2025 means on or before 2025-10-31."
+ ],
+ "provenance": {
+  "kind": "scenario.semantic.model.v1",
+  "compiler": "llm_repaired",
+  "issues_first_pass": [
+   "fact_type 'board_final_order' field 'order_id' kind {'kind': 'str'} not in ('str', 'float', 'int', 'bool', 'list', 'id', 'time')",
+   "fact_type 'board_final_order' field 'case_id' kind {'kind': 'str'} not in ('str', 'float', 'int', 'bool', 'list', 'id', 'time')",
+   "fact_type 'board_final_order' field 'penalty_imposed' kind {'kind': 'bool'} not in ('str', 'float', 'int', 'bool', 'list', 'id', 'time')",
+   "fact_type 'board_final_order' field 'penalty_amount' kind {'kind': 'float'} not in ('str', 'float', 'int', 'bool', 'list', 'id', 'time')",
+   "fact_type 'board_final_order' field 'issue_date' kind {'kind': 'time'} not in ('str', 'float', 'int', 'bool', 'list', 'id', 'time')",
+   "no outcome predicate \u2014 the question cannot resolve from the world"
+  ],
+  "auto_repairs": [
+   "constraint 'settlement_signing_requires_both_parties' labeled unresolved (no executable rule)",
+   "institution 'tenancy_dispute_board' aggregation defaulted to majority (none declared; labeled assumed)",
+   "institution 'county_neutral_holder_program' aggregation defaulted to single_authority (none declared; labeled assumed)"
+  ],
+  "critic": {
+   "missing_decisive_elements": [
+    "No representation of informal negotiation or mediation outside formal processes (e.g., landlord-tenant mediation service, lawyer letters, verbal agreements).",
+    "No representation of external economic pressures (e.g., landlord's need to sell property, tenant's financial hardship) that could force settlement or withdrawal.",
+    "No representation of the board's internal backlog or scheduling delays, which could push a final order past October 2025 even if the case is active.",
+    "No representation of the specific deposit amount or its relation to penalty thresholds, which could affect willingness to settle.",
+    "No representation of the county neutral-holder program's actual involvement timeline or capacity constraints."
+   ],
+   "relabeled_progress_bars": [
+    "The 'board_adjudication_process' states are linear and assume no loops (e.g., hearing postponed, rehearing ordered, appeal).",
+    "The 'settlement_process' assumes negotiation always leads to drafting, ignoring failed negotiations that revert to board adjudication.",
+    "The 'withdrawal_process' assumes board approval is automatic, but in reality boards may reject withdrawal if they suspect bad faith or want to issue a penalty.",
+    "All processes terminate in 'case_closed' or 'final_order_issued', but the model lacks a 'case_dormant' or 'abandoned' state that could persist past the deadline without resolution."
+   ],
+   "hidden_answer_risks": [
+    "The model assumes that if no board final order is issued and no settlement/withdrawal occurs, the case remains unresolved \u2014 but the question asks about resolution 'without a board-imposed penalty'. A settlement or withdrawal could still involve a voluntary penalty (e.g., landlord pays part of deposit), which the model does not distinguish from 'no penalty'.",
+    "The model does not encode whether a board final order can be issued with 'penalty_imposed: false' (i.e., board rules for landlord, no penalty). That would be a resolution without penalty, but the model's process only terminates with a final order that may or may not impose a penalty \u2014 the question's phrasing 'without a board-imposed penalty' could be satisfied by a board order that imposes no penalty, but the model's event type allows penalty_imposed to be false, so this is technically covered but not explicitly modeled as a distinct outcome path.",
+    "The model lacks any temporal constraints on processes \u2014 e.g., a settlement could be signed after October 2025, which would not count as resolution by the deadline, but the model has no mechanism to prune outcomes that exceed the time horizon."
+   ],
+   "direct_human_reaction_encodings": [
+    "Tenant Okada's affordances include 'withdraw complaint at any time', but no encoding of the emotional or relational factors (e.g., anger, desire for principle, fear of retaliation) that would actually drive withdrawal.",
+    "Landlord Petrov's affordances include 'pay penalty if ordered', but no encoding of the strategic calculation of whether to settle early vs. fight and risk a larger penalty.",
+    "No encoding of the board members' individual biases, workload, or political incentives that could affect whether they impose a penalty or push for settlement."
+   ],
+   "public_posture_vs_private_reality_conflations": [
+    "The model treats 'settlement_reached' and 'complaint_withdrawn' as public facts, but in reality, parties may privately agree to a settlement but not file it with the board, leaving the case technically unresolved in the board's records.",
+    "The model assumes that a board final order is the only way a penalty is imposed, but a settlement could include a 'voluntary penalty' (e.g., landlord pays extra) that is functionally identical but not recorded as a board penalty.",
+    "The 'county_neutral_holder_program' is modeled as a passive escrow holder, but in reality, such programs often have their own dispute resolution procedures that could short-circuit the board process."
+   ],
+   "outcome_predicate_matches_question": true,
+   "missing_nonhuman_mechanisms": [
+    "No representation of the board's case management software or docketing system, which could lose or delay filings.",
+    "No representation of postal or electronic service delays for notices and orders.",
+    "No representation of the county's fiscal year or budget cycles that could affect board staffing and hearing availability.",
+    "No representation of statutory or regulatory deadlines (e.g., mandatory hearing within 60 days) that could force resolution or trigger default outcomes."
+   ],
+   "verdict": "needs_extension"
+  },
+  "frozen_at": 1752800000.0,
+  "content_hash": "7daab008de9e4923"
+ },
+ "frozen": true,
+ "ancestry": []
+}

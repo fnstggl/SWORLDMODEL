@@ -69,11 +69,13 @@ def extract_ensemble_models(world_context) -> dict:
 def recommend_action_across_models(problem: DecisionProblem, models: dict, *, budget: str = "standard",
                                    seed: int = 0, n_particles: int = None, llm=None,
                                    candidate_observations: list = None,
-                                   actions: list = None) -> DecisionResult:
+                                   actions: list = None, mode: str = "auto",
+                                   goal_text: str = "") -> DecisionResult:
     """Run the FULL canonical Phase-13 pipeline inside every structural model (matched rollouts,
     feasibility, robust evaluation, per-model ranking — each model with its OWN particle budget, the
     same seed for common-random-number alignment), then synthesize cross-model robustness. Per-model
-    results are preserved verbatim in provenance."""
+    results are preserved verbatim in provenance. `mode`/`goal_text` pass through so a generated-world
+    model routes through the scenario-generated action layer inside its own model."""
     from swm.world_model_v2.phase13.api import evaluate_actions, recommend_action
     t0 = _time.time()
     per_model: dict = {}
@@ -82,12 +84,14 @@ def recommend_action_across_models(problem: DecisionProblem, models: dict, *, bu
         try:
             if actions is not None:
                 r = evaluate_actions(p_m, list(actions), entry["plan"], budget=budget, seed=seed,
-                                     n_particles=n_particles, llm=llm,
+                                     n_particles=n_particles, llm=llm, mode=mode,
+                                     goal_text=goal_text,
                                      allow_single_structural_model=True)
             else:
                 r = recommend_action(p_m, entry["plan"], budget=budget, seed=seed,
                                      n_particles=n_particles, llm=llm,
                                      candidate_observations=candidate_observations,
+                                     mode=mode, goal_text=goal_text,
                                      allow_single_structural_model=True)
             per_model[mid] = {"result": r, "meta": entry.get("meta", {}), "error": ""}
         except Exception as e:  # noqa: BLE001 — a failed model is recorded loudly, never hidden

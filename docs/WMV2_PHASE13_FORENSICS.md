@@ -334,6 +334,37 @@ An honest residual: the language judge's strictness varies call to call on borde
 hook (`record_preference`) exists precisely so real human A/B choices pin that taste down over
 time instead of LLM opinion re-rolling it.
 
+## 9d. Scenario-action layer — what the live probe canary caught (runs archived)
+
+The first live probe (founder-launch, exp096) was iterated as a canary before the full
+battery; every defect it exposed is archived under
+`artifacts/phase13/action_language/probes/_archive/` and fixed + regression-relevant:
+
+1. **Token-cap truncation killed every plan** (`probe1_run1_truncation`): all 8 instantiate
+   calls returned JSON cut mid-object → zero concrete candidates → do_nothing "won".
+   Fixes: RoleRunner salvages the balanced JSON prefix (recorded as salvaged); RFC3339
+   timing strings parse; larger probe budget.
+2. **Strategists invented target ids** (`probe1_run2_invented_targets`): 12 diverse plans,
+   ALL screened out — "board_meeting_channel", "design_partner_signing_channel" don't
+   exist. The typed gate was RIGHT to refuse fabricated referents; the generation side
+   lacked grounding. Fixes: the planner context carries VALID TARGET IDS + held resource
+   amounts; feasibility accepts institutions and plan-created records as targets.
+3. **RFC3339 predicate values crashed numeric readout** (run 3): the goal generator emitted
+   a gte predicate valued with a date string. Numeric-op values now coerce through
+   parse_time or the predicate drops loudly at validation; condition bounds fail closed.
+4. **Actors could not observe their own actions** (`probe1_run4_self_observation`): the
+   surviving plan's steps gated on the maker's own prior announcements; observation
+   delivery routes to recipients only, so every step lapsed. `observable_projection` now
+   includes the actor's own emitted semantic events. Same run also caught the probe seeding
+   holdings under invented resource names while the schema declared scenario-native ones
+   (the gate again correctly rejected) — probes now seed under the schema's own names.
+
+The run-4 loop ALSO demonstrated the architecture working as designed: plan_09 survived
+gates, simulated, was diagnosed (`missing_precondition`), revised twice (replace_step /
+add_step, ancestry recorded), re-simulated, and the system honestly stopped with "no
+revision materially changed the trajectory distribution" and returned a Pareto set rather
+than a fabricated winner.
+
 ## 9. Failures (honest)
 
 - 3 jtrain quasi slices excluded — DiD cells empty on the slice (`gates.json:excluded_reasons`), a
