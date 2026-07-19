@@ -46,6 +46,16 @@ def _clip01(p):
     return min(0.999, max(0.001, p))
 
 
+def _num(x, default):
+    """LLM-JSON tolerance: explicit nulls and non-numeric junk collapse to the default. The compile prompt
+    invites OMITTING unknown params (EXP-101) — an omitted/null count must mean 'use the honest fallback',
+    never a TypeError."""
+    try:
+        return default if x is None else float(x)
+    except (TypeError, ValueError):
+        return default
+
+
 # --------------------------------------------------------------------------- the seven mechanism simulators
 
 PROVENANCE_SD_FLOOR = {"grounded": 0.0, "quoted": 0.08, "invented": 0.15}
@@ -69,8 +79,9 @@ def sim_aggregation(share, *, threshold=0.5, share_sd=None, direction=">", base_
     provenance widens the sd (the share ESTIMATE has error on top of poll error) and anchors to the base rate."""
     if share is None:
         return base_rate
+    share, threshold = _num(share, 0.5), _num(threshold, 0.5)
     rng = random.Random(seed)
-    sd = max(share_sd if share_sd is not None else 0.06, PROVENANCE_SD_FLOOR.get(provenance, 0.0))
+    sd = max(_num(share_sd, 0.06), PROVENANCE_SD_FLOOR.get(provenance, 0.0))
     yes = 0
     for _ in range(n):
         s = rng.gauss(share, sd)
@@ -115,7 +126,7 @@ def sim_arrival(*, base_rate=None, rate_per_year=None, horizon_years=1.0, ref_ye
     return _clip01(acc / n)
 
 
-def sim_whipcount(*, committed_yes=0, committed_no=0, undecided=0, needed=None, total=None, lean=0.5,
+def sim_whipcount(*, committed_yes=None, committed_no=0, undecided=None, needed=None, total=None, lean=0.5,
                   n=4000, seed=0, base_rate=0.5, provenance="grounded"):
     """LEGISLATION / TREATY / MERGER / BOARD VOTE: YES iff committed-yes plus the undecided that break yes reach
     the needed threshold. Each undecided breaks YES with probability `lean` (grounded from party/whip signal);
@@ -123,12 +134,17 @@ def sim_whipcount(*, committed_yes=0, committed_no=0, undecided=0, needed=None, 
     With GROUNDED counts the arithmetic gates are facts (have the votes ⇒ ~done). With quoted/invented counts
     the gates are conjecture: the counts themselves get sampling noise, `lean` gets estimate error, and the
     result anchors to the base rate — an invented whip count may not produce 0.02/0.98 (EXP-101)."""
+    if committed_yes is None and undecided is None:
+        return base_rate                       # no whip information at all — "0 committed" would be invented
+    committed_yes, undecided = _num(committed_yes, 0.0), _num(undecided, 0.0)
+    total = None if total is None else _num(total, None)
     if needed is None:
         if total is None:
             return base_rate
         needed = total / 2.0 + 0.5
+    needed = _num(needed, 1.0)
     rng = random.Random(seed)
-    lean = min(1.0, max(0.0, lean))
+    lean = min(1.0, max(0.0, _num(lean, 0.5)))
     if provenance == "grounded":
         if committed_yes >= needed:
             return 0.98
@@ -228,8 +244,8 @@ def simulate_mechanism(mechanism, params, *, base_rate=0.5, horizon_years=1.0, n
                            horizon_years=horizon_years, ref_years=p.get("ref_years", 1.0),
                            n=p["n"], seed=p["seed"])
     if mechanism in ("whipcount", "legislation"):
-        return sim_whipcount(committed_yes=p.get("committed_yes", 0), committed_no=p.get("committed_no", 0),
-                             undecided=p.get("undecided", 0), needed=p.get("needed"), total=p.get("total"),
+        return sim_whipcount(committed_yes=p.get("committed_yes"), committed_no=p.get("committed_no", 0),
+                             undecided=p.get("undecided"), needed=p.get("needed"), total=p.get("total"),
                              lean=p.get("lean", 0.5), base_rate=p["base_rate"], n=p["n"], seed=p["seed"],
                              provenance=prov)
     if mechanism in ("escalation", "contagion"):
