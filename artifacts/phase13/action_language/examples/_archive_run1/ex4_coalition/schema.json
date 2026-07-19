@@ -1,0 +1,347 @@
+{
+ "schema_id": "schema_bb15879a8a011845",
+ "version": "1",
+ "question": "Will the Harborview Cooperative's board adopt the workspace-sublease bylaw amendment at or before the October meeting?",
+ "prediction_timestamp": 1752800000.0,
+ "horizon": 1759280000.0,
+ "entity_types": {
+  "board_member": {
+   "fields": {
+    "member_id": "id",
+    "name": "str",
+    "role_on_board": "str"
+   }
+  },
+  "board_meeting": {
+   "fields": {
+    "meeting_id": "id",
+    "scheduled_date": "time",
+    "meeting_type": "str"
+   }
+  },
+  "bylaw_amendment_proposal": {
+   "fields": {
+    "proposal_id": "id",
+    "title": "str",
+    "proposer_id": "id",
+    "proposal_text": "str",
+    "submission_date": "time"
+   }
+  },
+  "written_decision_record": {
+   "fields": {
+    "record_id": "id",
+    "member_id": "id",
+    "proposal_id": "id",
+    "decision": "str",
+    "decision_date": "time"
+   }
+  }
+ },
+ "fact_types": {
+  "board_membership": {
+   "fields": {
+    "member_id": "id",
+    "institution_id": "id",
+    "start_date": "time"
+   }
+  },
+  "meeting_attendance": {
+   "fields": {
+    "meeting_id": "id",
+    "member_id": "id",
+    "attended": "bool"
+   }
+  },
+  "bylaw_adoption_outcome": {
+   "fields": {
+    "proposal_id": "id",
+    "meeting_id": "id",
+    "adopted": "bool",
+    "vote_tally": "list"
+   }
+  }
+ },
+ "relation_types": {
+  "proposer_of": {
+   "from_entity": "board_member",
+   "to_entity": "bylaw_amendment_proposal",
+   "fields": {}
+  },
+  "decision_on_proposal": {
+   "from_entity": "written_decision_record",
+   "to_entity": "bylaw_amendment_proposal",
+   "fields": {}
+  },
+  "decision_by_member": {
+   "from_entity": "written_decision_record",
+   "to_entity": "board_member",
+   "fields": {}
+  }
+ },
+ "semantic_event_types": {
+  "bylaw_amendment_submission": {
+   "fields": {
+    "proposal_id": "id",
+    "proposer_id": "id",
+    "submission_date": "time"
+   }
+  },
+  "written_decision_submission": {
+   "fields": {
+    "record_id": "id",
+    "member_id": "id",
+    "proposal_id": "id",
+    "decision": "str"
+   }
+  },
+  "board_meeting_scheduled": {
+   "fields": {
+    "meeting_id": "id",
+    "meeting_type": "str",
+    "scheduled_date": "time"
+   }
+  },
+  "board_meeting_held": {
+   "fields": {
+    "meeting_id": "id",
+    "date_held": "time"
+   }
+  },
+  "bylaw_adoption_vote_taken": {
+   "fields": {
+    "proposal_id": "id",
+    "meeting_id": "id",
+    "result": "bool"
+   }
+  },
+  "special_meeting_call": {
+   "fields": {
+    "meeting_id": "id",
+    "caller_id": "id",
+    "notice_date": "time",
+    "meeting_date": "time"
+   }
+  },
+  "unmodeled_actor_action": {
+   "description": "schema-scoped scaffolding: an actor action whose semantics could not be compiled; exact content preserved; counted as a fallback",
+   "fields": {
+    "action_name": "str",
+    "content": "str",
+    "target": "str"
+   },
+   "typical_visibility": "participants",
+   "scaffolding": true
+  }
+ },
+ "process_definitions": {
+  "workspace_sublease_bylaw_adoption_process": {
+   "states": [
+    "proposal_submitted",
+    "awaiting_decisions",
+    "decisions_collected",
+    "vote_aggregated",
+    "adopted",
+    "rejected"
+   ],
+   "transitions": [
+    {
+     "from": "proposal_submitted",
+     "to": "awaiting_decisions",
+     "trigger": "bylaw_amendment_submission"
+    },
+    {
+     "from": "awaiting_decisions",
+     "to": "decisions_collected",
+     "trigger": "written_decision_submission",
+     "condition": "all_three_members_have_submitted"
+    },
+    {
+     "from": "decisions_collected",
+     "to": "vote_aggregated",
+     "trigger": "board_meeting_held"
+    },
+    {
+     "from": "vote_aggregated",
+     "to": "adopted",
+     "trigger": "bylaw_adoption_vote_taken",
+     "condition": "majority_support"
+    },
+    {
+     "from": "vote_aggregated",
+     "to": "rejected",
+     "trigger": "bylaw_adoption_vote_taken",
+     "condition": "not_majority_support"
+    }
+   ],
+   "initial_state": "proposal_submitted"
+  }
+ },
+ "institutional_definitions": {
+  "harborview_coop_board": {
+   "decision_holders": [
+    "june_okafor",
+    "raul_mendes",
+    "petra_lindqvist"
+   ],
+   "decision_record_type": "written_decision_record",
+   "aggregation_arithmetic": {
+    "kind": "majority",
+    "threshold": 2,
+    "assumed": false,
+    "evidence": "three-member board adopts by majority vote"
+   },
+   "meeting_schedule": {
+    "regular_frequency": "monthly",
+    "special_call_notice_days": 7,
+    "evidence": "meetings are monthly; special meeting can be called with 7 days notice"
+   },
+   "assumed": true,
+   "aggregation": {
+    "kind": "majority"
+   }
+  }
+ },
+ "physical_constraints": {
+  "meeting_requires_quorum": {
+   "rule": "at_least_two_members_must_attend",
+   "unresolved": true
+  },
+  "decision_deadline": {
+   "rule": "all_written_decisions_must_be_submitted_before_or_at_meeting",
+   "unresolved": true
+  },
+  "special_meeting_notice_period": {
+   "rule": "7_calendar_days_notice_required",
+   "unresolved": true
+  }
+ },
+ "resource_definitions": {
+  "workspace_sublease_bylaw_text": {
+   "type": "document",
+   "fields": {
+    "content": "str",
+    "version": "str"
+   }
+  },
+  "board_meeting_minutes": {
+   "type": "record",
+   "fields": {
+    "meeting_id": "id",
+    "decisions_made": "list"
+   }
+  }
+ },
+ "information_rules": {
+  "written_decisions_are_private_until_meeting": {
+   "rule": "each_member_submits_decision_individually_no_public_disclosure_before_meeting",
+   "unresolved": false
+  },
+  "raul_mendes_liability_opinion_influences_petra": {
+   "rule": "petra_lindqvist_waits_for_raul_mendes_decision_on_liability_questions_before_submitting_her_own",
+   "unresolved": true
+  }
+ },
+ "actor_roles": {
+  "june_okafor": {
+   "role": "proposer_and_supporter",
+   "why_consequential": "initiated the amendment and will vote support; can call special meeting",
+   "affordances": [
+    "submit_written_decision_support",
+    "call_special_meeting",
+    "lobby_other_members"
+   ]
+  },
+  "raul_mendes": {
+   "role": "liability_concerned_member",
+   "why_consequential": "holds swing vote due to Petra's trust in his judgment on liability",
+   "affordances": [
+    "submit_written_decision_support_or_oppose",
+    "request_legal_review",
+    "discuss_liability_with_petra"
+   ]
+  },
+  "petra_lindqvist": {
+   "role": "undecided_follower",
+   "why_consequential": "final vote depends on Raul's position on liability",
+   "affordances": [
+    "submit_written_decision_after_raul",
+    "abstain",
+    "request_clarification_from_raul"
+   ]
+  }
+ },
+ "outcome_predicates": [
+  {
+   "predicate_id": "bylaw_adopted_by_october_meeting",
+   "record_type": "bylaw_adoption_outcome",
+   "field": "adopted",
+   "op": "eq",
+   "value": true,
+   "option_true": "adopted",
+   "option_false": "not_adopted"
+  }
+ ],
+ "unresolved_mechanisms": [
+  "petra_lindqvist_decision_timing_relative_to_raul_mendes_decision",
+  "whether_raul_mendes_will_ultimately_support_or_oppose_based_on_liability_analysis",
+  "whether_a_special_meeting_will_be_called_before_october_regular_meeting",
+  "meeting_requires_quorum",
+  "decision_deadline",
+  "special_meeting_notice_period"
+ ],
+ "evidence_basis": [],
+ "assumptions": [
+  "regular_october_meeting_occurs_on_or_before_2025-10-01",
+  "all_three_members_are_alive_and_able_to_vote",
+  "no_external_legal_or_regulatory_intervention_prevents_vote"
+ ],
+ "provenance": {
+  "kind": "scenario.semantic.model.v1",
+  "compiler": "llm",
+  "compiled_at": 1752800000.0,
+  "auto_repairs": [
+   "constraint 'meeting_requires_quorum' labeled unresolved (no executable rule)",
+   "constraint 'decision_deadline' labeled unresolved (no executable rule)",
+   "constraint 'special_meeting_notice_period' labeled unresolved (no executable rule)",
+   "institution 'harborview_coop_board' labeled assumed (no evidence cited)",
+   "institution 'harborview_coop_board' aggregation defaulted to majority (none declared; labeled assumed)"
+  ],
+  "critic": {
+   "missing_decisive_elements": [
+    "No representation of the October meeting's actual scheduling or cancellation status \u2014 the model assumes a meeting will occur but does not model whether it is called, postponed, or quorate.",
+    "No mechanism for a member to change their written decision after submission \u2014 Petra's 'undecided' role implies possible revision, but the process has no 'decision_withdrawn' or 'decision_updated' event.",
+    "No explicit quorum rule for the board meeting \u2014 the model assumes all three members attend, but attendance is a fact type that is never checked as a condition for the 'board_meeting_held' trigger.",
+    "No time constraint on the 'awaiting_decisions' state \u2014 the process could stall indefinitely if a member never submits, yet the question has a hard deadline (October meeting)."
+   ],
+   "relabeled_progress_bars": [
+    "The 'vote_aggregated' state is misleading: it implies votes are already counted before the meeting, but the model requires 'board_meeting_held' to transition into it, suggesting aggregation happens during the meeting \u2014 this conflates pre-meeting written decisions with in-meeting voting.",
+    "The 'decisions_collected' state label suggests all three written decisions are in hand, but the model does not define what happens if only two submit \u2014 the process deadlocks without a timeout or fallback."
+   ],
+   "hidden_answer_risks": [
+    "The model assumes Petra's decision is purely derivative of Raul's, but Petra could independently decide before Raul submits, breaking the assumed causal chain.",
+    "The model does not account for external legal review outcomes \u2014 Raul's 'request_legal_review' affordance could produce a report that changes his or Petra's stance, but no such event or fact type exists.",
+    "The 'special_meeting_call' event is defined but never connected to the process \u2014 June could call a special meeting before October, but the process has no transition triggered by it."
+   ],
+   "direct_human_reaction_encodings": [
+    "Petra's role is labeled 'undecided_follower' but the model encodes no mechanism for her to express uncertainty or delay \u2014 she must submit a binary decision, which forces a false clarity.",
+    "Raul's 'liability_concerned' role is encoded only as an affordance to request review, but no event captures the outcome of that review (e.g., 'legal_opinion_received')."
+   ],
+   "public_posture_vs_private_reality_conflations": [
+    "The 'written_decision_record' is treated as a definitive public commitment, but in real boards, members may signal support privately and vote differently in a meeting \u2014 the model has no distinction between pre-meeting written intent and final vote.",
+    "June's role as 'proposer_and_supporter' assumes her written decision matches her public stance, but she could submit support publicly while privately planning to oppose at the meeting \u2014 no mechanism captures this."
+   ],
+   "outcome_predicate_matches_question": true,
+   "missing_nonhuman_mechanisms": [
+    "No calendar or deadline enforcement \u2014 the model does not track whether the October meeting date is before or after the submission deadline for written decisions.",
+    "No mechanism for a tie-breaking rule \u2014 with three members, a 1-1-1 split (one support, one oppose, one abstain) would not meet the 'majority' threshold of 2, but the model has no 'abstention' handling in the aggregation arithmetic.",
+    "No external event that could force the board's hand (e.g., a lease expiration, a legal mandate, or a member resignation) \u2014 the model is entirely endogenous."
+   ],
+   "verdict": "needs_extension"
+  },
+  "frozen_at": 1752800000.0,
+  "content_hash": "12049706b78b5fa3"
+ },
+ "frozen": true,
+ "ancestry": []
+}

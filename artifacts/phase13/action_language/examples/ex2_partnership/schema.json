@@ -1,0 +1,378 @@
+{
+ "schema_id": "schema_de210bad0d3453ab",
+ "version": "1",
+ "question": "Will Kite Robotics and Halvorsen Motors sign a component-supply partnership before the fall production freeze?",
+ "prediction_timestamp": 1752800000.0,
+ "horizon": 1759193600.0,
+ "entity_types": {
+  "company": {
+   "fields": {
+    "name": "str",
+    "industry": "str"
+   }
+  },
+  "person": {
+   "fields": {
+    "name": "str",
+    "role": "str"
+   }
+  },
+  "component_supply_partnership": {
+   "fields": {
+    "supplier_company": "id",
+    "buyer_company": "id",
+    "status": "str",
+    "volume_discount_percentage": "float",
+    "co_marketing_clause_included": "bool",
+    "signature_date": "time"
+   }
+  },
+  "production_freeze": {
+   "fields": {
+    "company": "id",
+    "freeze_date": "time",
+    "status": "str"
+   }
+  },
+  "procurement_committee": {
+   "fields": {
+    "institution_name": "str",
+    "chairperson": "id",
+    "meeting_frequency": "str"
+   }
+  }
+ },
+ "fact_types": {
+  "committee_membership": {
+   "fields": {
+    "person": "id",
+    "committee": "id",
+    "is_chair": "bool"
+   }
+  },
+  "decision_record": {
+   "fields": {
+    "committee": "id",
+    "decision_id": "str",
+    "decision_date": "time",
+    "decision_outcome": "str",
+    "recorded_by": "id"
+   }
+  },
+  "supplier_onboarding_proposal": {
+   "fields": {
+    "proposal_id": "str",
+    "supplier": "id",
+    "buyer": "id",
+    "proposed_discount": "float",
+    "proposed_co_marketing": "bool",
+    "submitted_date": "time",
+    "status": "str"
+   }
+  }
+ },
+ "relation_types": {
+  "delegates_supplier_onboarding_to": {
+   "fields": {
+    "delegator": "id",
+    "committee": "id",
+    "delegation_date": "time"
+   }
+  },
+  "chairs": {
+   "fields": {
+    "person": "id",
+    "committee": "id"
+   }
+  }
+ },
+ "semantic_event_types": {
+  "proposal_submission": {
+   "fields": {
+    "proposal_id": "str",
+    "supplier_company": "id",
+    "buyer_company": "id",
+    "volume_discount_offered": "float",
+    "co_marketing_offered": "bool",
+    "submission_time": "time"
+   }
+  },
+  "committee_meeting": {
+   "fields": {
+    "committee": "id",
+    "meeting_date": "time",
+    "agenda_items": "list"
+   }
+  },
+  "committee_vote": {
+   "fields": {
+    "committee": "id",
+    "proposal_id": "str",
+    "voter": "id",
+    "vote": "str",
+    "vote_time": "time"
+   }
+  },
+  "partnership_signing": {
+   "fields": {
+    "partnership_id": "id",
+    "supplier": "id",
+    "buyer": "id",
+    "signing_date": "time",
+    "terms": "str"
+   }
+  },
+  "production_freeze_activation": {
+   "fields": {
+    "company": "id",
+    "freeze_date": "time"
+   }
+  },
+  "unmodeled_actor_action": {
+   "description": "schema-scoped scaffolding: an actor action whose semantics could not be compiled; exact content preserved; counted as a fallback",
+   "fields": {
+    "action_name": "str",
+    "content": "str",
+    "target": "str"
+   },
+   "typical_visibility": "participants",
+   "scaffolding": true
+  }
+ },
+ "process_definitions": {
+  "supplier_onboarding_process": {
+   "states": [
+    "proposal_drafted",
+    "proposal_submitted",
+    "under_committee_review",
+    "committee_decision_made",
+    "contract_signed",
+    "rejected"
+   ],
+   "transitions": [
+    {
+     "from": "proposal_drafted",
+     "to": "proposal_submitted",
+     "trigger": "proposal_submission"
+    },
+    {
+     "from": "proposal_submitted",
+     "to": "under_committee_review",
+     "trigger": "committee_meeting"
+    },
+    {
+     "from": "under_committee_review",
+     "to": "committee_decision_made",
+     "trigger": "committee_vote"
+    },
+    {
+     "from": "committee_decision_made",
+     "to": "contract_signed",
+     "trigger": "partnership_signing",
+     "condition": "decision_outcome == 'approved'"
+    },
+    {
+     "from": "committee_decision_made",
+     "to": "rejected",
+     "trigger": "committee_vote",
+     "condition": "decision_outcome == 'rejected'"
+    }
+   ]
+  },
+  "production_freeze_process": {
+   "states": [
+    "active_production",
+    "freeze_scheduled",
+    "frozen"
+   ],
+   "transitions": [
+    {
+     "from": "active_production",
+     "to": "freeze_scheduled",
+     "trigger": "production_freeze_activation"
+    },
+    {
+     "from": "freeze_scheduled",
+     "to": "frozen",
+     "trigger": "time_elapsed"
+    }
+   ]
+  }
+ },
+ "institutional_definitions": {
+  "halvorsen_procurement_committee": {
+   "decision_holders": [
+    "sofia_brandt",
+    "erik_halvorsen"
+   ],
+   "decision_record_type": "decision_record",
+   "aggregation_arithmetic": {
+    "kind": "majority",
+    "threshold": 2,
+    "assumed": true
+   },
+   "meeting_schedule": "monthly",
+   "assumed": true,
+   "aggregation": {
+    "kind": "majority"
+   }
+  }
+ },
+ "physical_constraints": {
+  "production_freeze_timing": {
+   "description": "Production freeze occurs approximately 8 weeks from prediction date (2025-07-18), i.e., around 2025-09-12",
+   "rule": "freeze_date <= 2025-09-30",
+   "unresolved": true
+  },
+  "offer_exclusivity": {
+   "description": "Kite Robotics can offer either 12% volume discount OR co-marketing clause, not both",
+   "rule": "NOT (volume_discount_offered > 0 AND co_marketing_offered == true)",
+   "unresolved": true
+  }
+ },
+ "resource_definitions": {
+  "component_supply_contract": {
+   "type": "legal_document",
+   "required_for": "partnership_signing",
+   "fields": {
+    "supplier": "str",
+    "buyer": "str",
+    "discount_terms": "str",
+    "co_marketing_terms": "str",
+    "signature_date": "str"
+   }
+  },
+  "committee_meeting_minutes": {
+   "type": "record",
+   "required_for": "decision_record",
+   "fields": {
+    "meeting_date": "str",
+    "decisions_made": "str",
+    "votes_cast": "str"
+   }
+  }
+ },
+ "information_rules": {
+  "committee_decision_visibility": {
+   "rule": "decision_record is accessible to all committee members and CEO after recording",
+   "unresolved": false
+  },
+  "proposal_terms_known": {
+   "rule": "proposal terms (discount, co-marketing) are known to committee before vote",
+   "unresolved": false
+  }
+ },
+ "actor_roles": {
+  "amara_diallo": {
+   "role": "kite_robotics_ceo",
+   "why_consequential": "Decides which offer terms (discount or co-marketing) to propose; submits proposal to Halvorsen",
+   "affordances": [
+    "submit_proposal_with_discount",
+    "submit_proposal_with_co_marketing",
+    "negotiate_terms_with_committee"
+   ]
+  },
+  "erik_halvorsen": {
+   "role": "halvorsen_motors_ceo",
+   "why_consequential": "Delegated supplier onboarding to committee; can override committee decision or influence vote",
+   "affordances": [
+    "delegate_to_committee",
+    "override_committee_decision",
+    "vote_in_committee"
+   ]
+  },
+  "sofia_brandt": {
+   "role": "procurement_committee_chair",
+   "why_consequential": "Chairs committee meetings; records decisions; casts vote",
+   "affordances": [
+    "schedule_committee_meeting",
+    "record_decision",
+    "cast_vote",
+    "recommend_approval_or_rejection"
+   ]
+  }
+ },
+ "outcome_predicates": [
+  {
+   "predicate_id": "partnership_signed_before_freeze",
+   "record_type": "component_supply_partnership",
+   "field": "signature_date",
+   "op": "exists",
+   "value": null,
+   "option_true": "partnership_signed",
+   "option_false": "no_partnership_signed"
+  },
+  {
+   "predicate_id": "freeze_occurred",
+   "record_type": "production_freeze",
+   "field": "freeze_date",
+   "op": "exists",
+   "value": null,
+   "option_true": "freeze_occurred",
+   "option_false": "no_freeze"
+  }
+ ],
+ "unresolved_mechanisms": [
+  "Exact committee membership beyond chair (Sofia Brandt) and CEO (Erik Halvorsen) is unspecified; assumed majority requires both to approve",
+  "Whether Erik Halvorsen retains veto power after delegation is not specified",
+  "Exact date of next committee meeting relative to proposal submission is unknown",
+  "production_freeze_timing",
+  "offer_exclusivity"
+ ],
+ "evidence_basis": [],
+ "assumptions": [
+  "Committee meets at least once between 2025-07-18 and 2025-09-30",
+  "Kite Robotics submits a proposal before the production freeze",
+  "Committee decision requires majority of voting members",
+  "Production freeze date is exactly 8 weeks from prediction date (2025-09-12)"
+ ],
+ "provenance": {
+  "kind": "scenario.semantic.model.v1",
+  "compiler": "llm_repaired",
+  "issues_first_pass": [
+   "outcome predicate op 'lt' not executable"
+  ],
+  "auto_repairs": [
+   "constraint 'production_freeze_timing' labeled unresolved (no executable rule)",
+   "constraint 'offer_exclusivity' labeled unresolved (no executable rule)",
+   "institution 'halvorsen_procurement_committee' labeled assumed (no evidence cited)",
+   "institution 'halvorsen_procurement_committee' aggregation defaulted to majority (none declared; labeled assumed)"
+  ],
+  "critic": {
+   "missing_decisive_elements": [
+    "No explicit representation of the 'fall production freeze' date or season \u2014 the freeze is modeled as a generic event with no calendar anchor, so the temporal comparison 'before fall freeze' is undefined",
+    "No entity or attribute for 'Kite Robotics' as a company \u2014 the model has actors like Amara Diallo but no company entity for Kite Robotics to link to",
+    "No fallback or escalation path if committee rejects \u2014 the process ends at 'rejected' with no re-submission or override affordance modeled as a transition",
+    "No representation of external market conditions, supply chain disruptions, or regulatory approvals that could delay signing"
+   ],
+   "relabeled_progress_bars": [
+    "'under_committee_review' is a black-box state \u2014 no sub-states for 'reviewing terms', 'legal review', 'price negotiation'",
+    "'committee_decision_made' conflates vote outcome with final decision \u2014 no separate 'pending ratification' or 'executive sign-off' step"
+   ],
+   "hidden_answer_risks": [
+    "The model assumes committee majority vote is the sole decision mechanism, but Erik Halvorsen's override affordance is not wired into any transition condition",
+    "The 'time_elapsed' trigger for freeze is vague \u2014 no mechanism to know if freeze date is fixed or flexible, making 'before freeze' comparison unreliable",
+    "No representation of whether the proposal submission deadline relative to committee meeting schedule matters \u2014 monthly meetings could cause missed windows"
+   ],
+   "direct_human_reaction_encodings": [
+    "Amara Diallo's affordances list 'negotiate_terms_with_committee' but no corresponding event type or transition for negotiation \u2014 it's a dangling affordance",
+    "Sofia Brandt's 'recommend_approval_or_rejection' affordance has no corresponding fact or event \u2014 it's not linked to any vote or decision record"
+   ],
+   "public_posture_vs_private_reality_conflations": [
+    "The model treats 'committee_vote' as transparent and recorded, but does not model informal pre-meeting lobbying or private side deals that could sway votes",
+    "The 'co_marketing_clause_included' field in partnership is binary but real negotiations often involve conditional or phased co-marketing \u2014 model oversimplifies"
+   ],
+   "outcome_predicate_matches_question": false,
+   "missing_nonhuman_mechanisms": [
+    "No calendar or clock mechanism to compare signature_date to freeze_date \u2014 the predicate only checks existence, not temporal ordering",
+    "No mechanism for automated procurement systems or ERP deadlines that might force a freeze regardless of human decisions",
+    "No representation of material availability, logistics lead times, or quality audits that are prerequisite to signing"
+   ],
+   "verdict": "needs_extension"
+  },
+  "frozen_at": 1752800000.0,
+  "content_hash": "1fb115ca594c64b8"
+ },
+ "frozen": true,
+ "ancestry": []
+}

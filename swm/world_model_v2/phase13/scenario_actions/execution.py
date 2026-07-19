@@ -206,8 +206,16 @@ class ScenarioPlanOperator:
             return delta, ValidationResult(ok=True)
 
         projection = observable_projection(world, plan.actor_id)
-        # stop conditions: any holding => the plan halts, loudly
+        # stop conditions: any holding => the plan halts, loudly. A stop rule stops IN-FLIGHT
+        # activity: it is not evaluated before the first step has fired (an LLM-authored stop
+        # condition that is true at t0 is an inversion, and aborting an unstarted plan on it
+        # made whole candidates silently degenerate — ex2 forensic). The skip is recorded.
+        started = bool(state["completed"] or state["failed"])
         for sc in plan.stop_conditions:
+            if not started:
+                if condition_holds(sc, projection):
+                    delta.reason_codes.append("stop_condition_true_at_start_ignored")
+                break
             if condition_holds(sc, projection):
                 state["halted"] = True
                 self.report["plans_halted"] += 1

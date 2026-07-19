@@ -365,6 +365,32 @@ add_step, ancestry recorded), re-simulated, and the system honestly stopped with
 revision materially changed the trajectory distribution" and returned a Pareto set rather
 than a fabricated winner.
 
+## 9e. Global-default examples (exp097) — the forensic loop's deepest catches
+
+Five live end-to-end examples through the four public entry points
+(`artifacts/phase13/action_language/examples/`, each with FORENSIC.md + verbatim actor
+traces + dumped worlds). The iteration archive (`_archive*`) preserves three catches:
+
+1. **Stop-at-birth** (`_archive_ex2_run1_stop_at_birth`): LLM-authored stop conditions true
+   at t0 aborted whole plans before step 1. Stop rules now evaluate only once a step has
+   fired; t0-true conditions are recorded, never birth-aborts.
+2. **The null-field kill** (run-1 archive; replayed offline to prove it): actor reactions
+   produced typed decision records that were perfect except one `null` field — the kernel's
+   simple-value check quarantined the ENTIRE op, so hundreds of realistic reactions wrote
+   zero records and no goal predicate could ever resolve. Nulls now drop-and-surface like
+   undeclared fields. After the fix: 25-83 typed records per example, partial predicates
+   resolving (re-engagement 3/3 on the best outreach plan; forbidden trust-burn states
+   detected on a harmful one), goodwill credits authorized, committee decisions recorded.
+3. **Horizon mismatch** (`_archive_ex2_run2_horizon_mismatch`): the probe compiled a world
+   ending Sep 16 under a contract promising Sep 30 — every plan died
+   `timing_after_horizon`. The gate was right; the probe inputs were aligned.
+
+Honest residuals the examples surface: composite success frequently stays 0 because
+goal-contract authoring writes desired predicates nothing can satisfy (the conjunction is
+strict by design); actor communications still ride the unmodeled scaffold event type more
+than the schema's own event vocabulary; and bounded invocation budgets produce occasional
+politeness loops (actors re-confirming the same call). All visible in the traces.
+
 ## 9. Failures (honest)
 
 - 3 jtrain quasi slices excluded — DiD cells empty on the slice (`gates.json:excluded_reasons`), a

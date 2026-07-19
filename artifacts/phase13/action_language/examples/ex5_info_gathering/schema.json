@@ -1,0 +1,354 @@
+{
+ "schema_id": "schema_d86b2159fc9de851",
+ "version": "1",
+ "question": "Will the clinic's monthly referrals recover to their December level by mid-October 2025?",
+ "prediction_timestamp": 1752800000.0,
+ "horizon": 1760576000.0,
+ "entity_types": {
+  "clinic": {
+   "fields": {
+    "id": "id",
+    "name": "str"
+   },
+   "description": "The medical clinic whose referral volume is being tracked."
+  },
+  "referring_gp": {
+   "fields": {
+    "id": "id",
+    "name": "str",
+    "specialty": "str"
+   },
+   "description": "A general practitioner who can refer patients to the clinic."
+  },
+  "practice_manager": {
+   "fields": {
+    "id": "id",
+    "name": "str"
+   },
+   "description": "The clinic's practice manager, responsible for operational data."
+  },
+  "decision_holder": {
+   "fields": {
+    "id": "id",
+    "name": "str",
+    "role": "str"
+   },
+   "description": "A person with sole authority over fees and programs (e.g., Sam Whitfield)."
+  }
+ },
+ "fact_types": {
+  "monthly_referral_count": {
+   "fields": {
+    "clinic_id": "id",
+    "year_month": "str",
+    "count": "int",
+    "source_gp_id": "id"
+   },
+   "description": "Recorded count of referrals for a given month, optionally broken down by source GP."
+  },
+  "referral_source_stats_report": {
+   "fields": {
+    "report_date": "str",
+    "generated_by": "id",
+    "monthly_totals": "list"
+   },
+   "description": "A report pulled by Kim from the practice management system showing monthly referral counts."
+  },
+  "gp_willingness_status": {
+   "fields": {
+    "gp_id": "id",
+    "status": "str",
+    "determined_on": "str",
+    "determined_by": "id"
+   },
+   "description": "Result of asking a GP whether they are willing to resume referrals. Values: willing, conditional, permanently_moved."
+  },
+  "decision_record": {
+   "fields": {
+    "decision_holder_id": "id",
+    "decision_type": "str",
+    "decision": "str",
+    "recorded_on": "str",
+    "effective_date": "str"
+   },
+   "description": "A recorded decision by a decision holder (e.g., Sam Whitfield). Decision types: fee_change_reversal, referral_partner_program_launch."
+  },
+  "fee_change_reversal_cost": {
+   "fields": {
+    "quarter": "str",
+    "cost": "int"
+   },
+   "description": "Cost of reversing the January fee change for a given quarter. Fixed at 8000 per quarter."
+  },
+  "referral_partner_program_cost": {
+   "fields": {
+    "program_id": "str",
+    "cost": "int"
+   },
+   "description": "Cost of launching a referral-partner program. Fixed at 5000."
+  }
+ },
+ "relation_types": {
+  "top_referrer": {
+   "fields": {
+    "gp_id": "id",
+    "clinic_id": "id",
+    "monthly_rate": "int",
+    "stopped_month": "str"
+   },
+   "description": "Indicates a GP was the top referrer (25/month) and stopped in February 2025."
+  },
+  "referral_relationship_decay": {
+   "fields": {
+    "gp_id": "id",
+    "clinic_id": "id",
+    "last_referral_month": "str",
+    "decay_threshold_month": "str"
+   },
+   "description": "Tracks that a GP who stays away past October is unlikely to return this year. Decay threshold is October 2025."
+  }
+ },
+ "semantic_event_types": {
+  "referral_recorded": {
+   "fields": {
+    "clinic_id": "id",
+    "gp_id": "id",
+    "patient_id": "str",
+    "timestamp": "str"
+   },
+   "description": "A referral is logged in the practice management system."
+  },
+  "gp_willingness_asked": {
+   "fields": {
+    "gp_id": "id",
+    "asked_by": "id",
+    "asked_on": "str",
+    "response": "str"
+   },
+   "description": "A direct conversation occurs to determine if a GP is willing to resume referrals."
+  },
+  "decision_recorded": {
+   "fields": {
+    "decision_holder_id": "id",
+    "decision_type": "str",
+    "decision": "str",
+    "recorded_on": "str"
+   },
+   "description": "A decision holder records a decision in the system. If not recorded within two weeks of consideration, the decision lapses."
+  },
+  "referral_source_stats_pulled": {
+   "fields": {
+    "pulled_by": "id",
+    "pulled_on": "str",
+    "report_generated": "bool"
+   },
+   "description": "Kim pulls referral-source stats from the practice management system."
+  },
+  "unmodeled_actor_action": {
+   "description": "schema-scoped scaffolding: an actor action whose semantics could not be compiled; exact content preserved; counted as a fallback",
+   "fields": {
+    "action_name": "str",
+    "content": "str",
+    "target": "str"
+   },
+   "typical_visibility": "participants",
+   "scaffolding": true
+  }
+ },
+ "process_definitions": {
+  "referral_recovery_assessment": {
+   "states": [
+    "initial",
+    "stats_gathered",
+    "gp_willingness_known",
+    "decision_made",
+    "outcome_determined"
+   ],
+   "transitions": [
+    {
+     "from": "initial",
+     "to": "stats_gathered",
+     "trigger": "referral_source_stats_pulled"
+    },
+    {
+     "from": "stats_gathered",
+     "to": "gp_willingness_known",
+     "trigger": "gp_willingness_asked"
+    },
+    {
+     "from": "gp_willingness_known",
+     "to": "decision_made",
+     "trigger": "decision_recorded"
+    },
+    {
+     "from": "decision_made",
+     "to": "outcome_determined",
+     "trigger": "monthly_referral_count_updated"
+    }
+   ],
+   "description": "Process to determine whether monthly referrals recover to December level by mid-October 2025."
+  }
+ },
+ "institutional_definitions": {},
+ "physical_constraints": {
+  "fee_change_reversal_cost_constraint": {
+   "description": "Reversing the January fee change costs 8000 per quarter.",
+   "rule": "If fee_change_reversal is recorded, then cost = 8000 * number_of_quarters_affected.",
+   "evidence": "Reversing the January fee change costs 8k/quarter.",
+   "unresolved": true
+  },
+  "referral_partner_program_cost_constraint": {
+   "description": "Launching a referral-partner program costs 5000.",
+   "rule": "If referral_partner_program_launch is recorded, then cost = 5000.",
+   "evidence": "A referral-partner program costs 5k.",
+   "unresolved": true
+  },
+  "referral_relationship_decay_constraint": {
+   "description": "A GP who stays away past October is unlikely to return this year.",
+   "rule": "If last_referral_month > '2025-10' then return_this_year = false.",
+   "evidence": "Referral relationships decay slowly: a GP who stays away past October is unlikely to return this year.",
+   "unresolved": true
+  }
+ },
+ "resource_definitions": {
+  "practice_management_system": {
+   "type": "information_system",
+   "description": "Logs every referral with source and month. Monthly counts are directly measurable.",
+   "affordances": [
+    "query_monthly_counts",
+    "query_source_breakdown"
+   ]
+  },
+  "referral_source_stats_report": {
+   "type": "report",
+   "description": "Report generated by Kim from the practice management system within one week.",
+   "affordances": [
+    "provide_monthly_totals"
+   ]
+  }
+ },
+ "information_rules": {
+  "monthly_referral_count_measurability": {
+   "rule": "Monthly referral counts are directly measurable from the practice management system against the seasonally-adjusted December baseline of 60/month.",
+   "evidence": "The practice management system logs every referral with source and month, so monthly counts are directly measurable against the seasonally-adjusted December baseline of 60/month.",
+   "assumed": false
+  },
+  "gp_willingness_discoverability": {
+   "rule": "Whether GP Alvarez is willing to resume is unknown until someone asks him; his answer (willing / conditional / permanently moved) is discoverable by a direct conversation.",
+   "evidence": "Whether he is WILLING to resume is unknown until someone asks him, and his answer (willing / conditional / permanently moved) is discoverable by a direct conversation.",
+   "assumed": false
+  }
+ },
+ "actor_roles": {
+  "sam_whitfield": {
+   "role": "decision_holder",
+   "why_consequential": "Holds sole authority over fees and programs; any decision to reverse fee change or launch referral program requires his recorded decision.",
+   "affordances": [
+    "record_decision_to_reverse_fee_change",
+    "record_decision_to_launch_referral_program",
+    "delay_decision",
+    "drop_decision"
+   ]
+  },
+  "referring_gp_alvarez": {
+   "role": "top_referrer",
+   "why_consequential": "Was the top referrer (25/month) and stopped in February; his willingness to resume directly impacts whether referrals can recover to December level.",
+   "affordances": [
+    "respond_to_willingness_inquiry",
+    "resume_referrals",
+    "decline_to_resume",
+    "conditionally_resume"
+   ]
+  },
+  "practice_manager_kim": {
+   "role": "data_operator",
+   "why_consequential": "Can pull referral-source stats within a week, enabling measurement of current referral levels.",
+   "affordances": [
+    "pull_referral_source_stats",
+    "generate_monthly_report"
+   ]
+  }
+ },
+ "outcome_predicates": [
+  {
+   "predicate_id": "referral_recovery_by_mid_october",
+   "record_type": "monthly_referral_count",
+   "field": "count",
+   "op": "gte",
+   "value": 60,
+   "option_true": "Yes, referrals recover to December level (60/month) by mid-October 2025.",
+   "option_false": "No, referrals do not recover to December level by mid-October 2025."
+  }
+ ],
+ "unresolved_mechanisms": [
+  "Whether GP Alvarez will be asked about willingness before the horizon (2025-10-16).",
+  "Whether Sam Whitfield will make any decision within the two-week lapse window.",
+  "Whether any conditional response from GP Alvarez includes conditions that Sam Whitfield can or will meet.",
+  "fee_change_reversal_cost_constraint",
+  "referral_partner_program_cost_constraint",
+  "referral_relationship_decay_constraint",
+  "institution sam_whitfield_authority dropped: no decision holders declared",
+  "institution decision_lapse_rule dropped: no decision holders declared"
+ ],
+ "evidence_basis": [],
+ "assumptions": [
+  "The seasonally-adjusted December baseline of 60/month is the correct target for recovery.",
+  "No other GPs besides Alvarez significantly affect the monthly total (i.e., Alvarez's 25/month is the key variable).",
+  "The practice management system data is accurate and up-to-date as of prediction time.",
+  "Mid-October 2025 is interpreted as October 16, 2025 (the horizon date)."
+ ],
+ "provenance": {
+  "kind": "scenario.semantic.model.v1",
+  "compiler": "llm",
+  "compiled_at": 1752800000.0,
+  "auto_repairs": [
+   "constraint 'fee_change_reversal_cost_constraint' labeled unresolved (no executable rule)",
+   "constraint 'referral_partner_program_cost_constraint' labeled unresolved (no executable rule)",
+   "constraint 'referral_relationship_decay_constraint' labeled unresolved (no executable rule)",
+   "institution 'sam_whitfield_authority' dropped (no decision holders)",
+   "institution 'decision_lapse_rule' dropped (no decision holders)"
+  ],
+  "critic": {
+   "missing_decisive_elements": [
+    "no entity for the patient population or referral demand (e.g., seasonal illness patterns, local health trends) that could drive or suppress referrals independent of GP willingness",
+    "no entity for the clinic's capacity or appointment availability, which could cap referral acceptance even if GPs refer",
+    "no entity for competing clinics or alternative referral destinations that might divert GPs",
+    "no entity for the practice management system itself (e.g., software bugs, data lag, reporting errors) that could distort monthly_referral_count",
+    "no entity for the 'mid-October' date boundary \u2014 the model has no calendar or time progression mechanism to determine if recovery occurs by that specific date"
+   ],
+   "relabeled_progress_bars": [
+    "gp_willingness_asked \u2192 'GP willingness inquiry conducted' (but no bar for whether the GP actually resumes, only willingness status)",
+    "decision_recorded \u2192 'Decision recorded by Sam' (but no bar for whether the decision is implemented or effective before mid-October)",
+    "monthly_referral_count_updated \u2192 'Referral count updated' (but no bar for the count reaching 60, only that an update event occurs)"
+   ],
+   "hidden_answer_risks": [
+    "the model assumes that if GPs are 'willing' they will immediately refer at prior rates, ignoring ramp-up time, patient backlog, or scheduling friction",
+    "the model treats 'decision recorded' as sufficient for outcome, but Sam's decision could be to do nothing, and the model has no explicit 'no decision' path",
+    "the model has no mechanism for partial recovery (e.g., 55 referrals) \u2014 the outcome predicate is a binary threshold, but the process may never produce a count that triggers the predicate",
+    "the model does not account for the possibility that the December level (60) was anomalous (e.g., one-time event) and not a sustainable baseline"
+   ],
+   "direct_human_reaction_encodings": [
+    "gp_willingness_asked encodes a direct conversation but does not capture that a GP might lie, change their mind later, or be influenced by peer behavior",
+    "decision_recorded encodes Sam's action but not his reasoning, pressure from stakeholders, or the possibility of a decision being reversed after recording",
+    "referral_source_stats_pulled encodes Kim pulling data but not that Kim might misinterpret or selectively report the stats"
+   ],
+   "public_posture_vs_private_reality_conflations": [
+    "gp_willingness_status is treated as a factual state, but a GP might publicly state 'willing' while privately intending to refer only a few patients",
+    "decision_recorded is treated as authoritative, but Sam might publicly announce a reversal while privately delaying implementation",
+    "monthly_referral_count is treated as objective, but the practice management system could be gamed or contain errors that differ from ground truth"
+   ],
+   "outcome_predicate_matches_question": true,
+   "missing_nonhuman_mechanisms": [
+    "no mechanism for seasonal variation in referral rates (e.g., flu season, school holidays)",
+    "no mechanism for insurance or reimbursement changes that could affect referral behavior",
+    "no mechanism for electronic health record system outages or data transfer delays that could prevent referrals from being recorded",
+    "no mechanism for regulatory or compliance changes that could block or mandate referrals"
+   ],
+   "verdict": "needs_extension"
+  },
+  "frozen_at": 1752800000.0,
+  "content_hash": "5db0ce989ad08ad1"
+ },
+ "frozen": true,
+ "ancestry": []
+}
