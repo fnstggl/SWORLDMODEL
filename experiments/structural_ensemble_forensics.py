@@ -73,22 +73,35 @@ CASES = [
 
 
 class RecordingLLM:
-    """Production backend + full prompt/response tap (bounded) + exact counters."""
+    """Production backend + full prompt/response tap (bounded) + exact counters.
 
-    def __init__(self, max_tokens=2400):
+    Every call is ALSO streamed to a per-case partial JSONL as it happens, so a run killed at a
+    wall-clock cap still leaves its complete prompt/response trace on disk (honest partial evidence,
+    never lost work)."""
+
+    def __init__(self, max_tokens=2400, stream_path: Path = None):
         from swm.api.resilient_llm import ResilientLLM
         self.inner = ResilientLLM(max_tokens=max_tokens)
         self.calls = []
         self.t_llm = 0.0
+        self.stream_path = stream_path
 
     def __call__(self, prompt):
         t0 = time.time()
         out = self.inner(prompt)
         dt = time.time() - t0
         self.t_llm += dt
-        self.calls.append({"i": len(self.calls), "prompt": prompt[:4000],
-                           "response": (out or "")[:4000], "latency_s": round(dt, 2),
-                           "prompt_chars": len(prompt), "response_chars": len(out or "")})
+        row = {"i": len(self.calls), "prompt": prompt[:4000],
+               "response": (out or "")[:4000], "latency_s": round(dt, 2),
+               "prompt_chars": len(prompt), "response_chars": len(out or ""),
+               "provider_counters": dict(self.inner.calls)}
+        self.calls.append(row)
+        if self.stream_path is not None:
+            try:
+                with self.stream_path.open("a") as f:
+                    f.write(json.dumps(row) + "\n")
+            except OSError:
+                pass
         return out
 
     def counters(self):
@@ -117,7 +130,12 @@ def _model_rows(se, res):
 
 def run_case(case: dict, max_tokens: int) -> dict:
     from swm.world_model_v2.unified_runtime import simulate_world
-    llm = RecordingLLM(max_tokens=max_tokens)
+    stream = OUT / f"partial_{case['case_id']}.calls.jsonl"
+    try:                                       # each attempt streams its own complete sequence
+        stream.unlink()
+    except OSError:
+        pass
+    llm = RecordingLLM(max_tokens=max_tokens, stream_path=stream)
     t0 = time.time()
     err = ""
     try:
