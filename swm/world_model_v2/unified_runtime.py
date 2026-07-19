@@ -48,6 +48,18 @@ def _mani(available=True, selected=False, executed=False, omitted=False, reason=
             "causally_irrelevant": causally_irrelevant, "removal_changes_terminal": None}
 
 
+def evidence_sufficiency_signal(bundle, posterior, *, as_of, evidence_dropped=False, retried=False) -> dict:
+    """Explicit, testable evidence-sufficiency signal. `starved` is true when as_of was supplied (so
+    evidence was expected) yet ZERO effective observations reached the posterior — i.e. the forecast is
+    prior-driven, not evidence-driven. Pure function of counts; no side effects."""
+    n_docs = len(bundle.documents) if bundle is not None else 0
+    n_claims = len(bundle.included_claim_ids) if bundle is not None else 0
+    n_eff = int(getattr(posterior, "n_effective_observations", 0) or 0) if posterior is not None else 0
+    return {"as_of_supplied": bool(as_of), "n_documents": n_docs, "n_included_claims": n_claims,
+            "n_effective_observations": n_eff, "retried": bool(retried),
+            "starved": bool(as_of) and n_eff == 0 and not evidence_dropped}
+
+
 def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention: str = "",
                    user_context=None, prior_checkpoint=None, compute_budget=None, seed: int = 0,
                    llm=None, execution_policy: dict = None, trace_level: str = "standard",
@@ -109,6 +121,16 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
                 reqs = requirements_from_plan(plan, as_of_iso=_iso(as_of), question=question)
                 bundle = gather_evidence(question, as_of=as_of, requirements=reqs, llm=llm, config=cfg,
                                          plan_hash=plan.plan_hash(), seed=seed)
+                if not bundle.included_claim_ids:
+                    # Empty pull. Retrieval is a live query + LLM claim-extraction, both stochastic — an
+                    # empty bundle here is the EXP-104 failure (the run silently forecast from priors). Retry
+                    # ONCE with a fresh seed before letting the simulation run blind.
+                    retry = gather_evidence(question, as_of=as_of, requirements=reqs, llm=llm, config=cfg,
+                                            plan_hash=plan.plan_hash(), seed=seed + 1)
+                    lineage["evidence_retry"] = {"first_pull_empty": True,
+                                                 "retry_included_claims": len(retry.included_claim_ids)}
+                    if retry.included_claim_ids:
+                        bundle = retry
                 manifest["phase2_evidence"].update(selected=True, executed=True, version="phase2-1.0",
                                                    reason=f"{len(bundle.included_claim_ids)} as-of claims")
             revised, diff = recompile_with_evidence(plan, bundle, llm=llm, horizon=horizon)
@@ -145,6 +167,22 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
         manifest["phase3_posterior"].update(omitted=True,
                                             reason=("dropped_by_policy" if "phase3_posterior" in drop
                                                     else "no evidence bundle"))
+
+    # ---------- EVIDENCE-SUFFICIENCY GATE: a run must never simulate BLIND, silently ----------
+    # If as_of was supplied (evidence is expected) but nothing reached the posterior, the forecast is
+    # produced from PRIORS, not evidence — the EXP-104 failure where a rich structure hugged ~0.5 from
+    # imagination. Record the sufficiency signal explicitly on the result and warn loudly so a starved run
+    # is never a quiet coin flip. (This gates VISIBILITY, not execution — the forecast still returns, but
+    # honestly labelled evidence-starved so downstream/telemetry can see it.)
+    evidence_sufficiency = evidence_sufficiency_signal(
+        bundle, posterior, as_of=as_of, evidence_dropped="phase2_evidence" in drop,
+        retried="evidence_retry" in lineage)
+    lineage["evidence_sufficiency"] = evidence_sufficiency
+    if evidence_sufficiency["starved"]:
+        import warnings as _warnings
+        _warnings.warn(
+            f"EVIDENCE-STARVED run: as_of supplied but 0 effective observations reached the posterior — "
+            f"forecasting from priors, not evidence: {question[:70]!r}", stacklevel=1)
 
     # ---------- Phase 9: populations + multilayer networks — instantiate into the shared plan when declared --
     _thread_populations_networks(plan, manifest, drop)
@@ -302,6 +340,17 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
     # ---------- Terminal projection through the ONE funnel (Phase 8 persistence + P4/P6/P7/P10 operators) ----
     res = _project_terminal(question, plan, as_of, horizon, intervention, seed, llm, user_context,
                             prior_checkpoint, manifest, drop, t0)
+
+    # surface evidence sufficiency on the result (provenance + a loud limitation when starved), so a
+    # prior-driven forecast is never mistaken for an evidence-driven one.
+    try:
+        res.provenance["evidence_sufficiency"] = evidence_sufficiency
+        if evidence_sufficiency.get("starved"):
+            res.limitations = (list(res.limitations or []) + [
+                "EVIDENCE-STARVED: 0 as-of observations reached the posterior — this forecast is "
+                "prior-driven, not evidence-driven (retrieval returned nothing usable even after retry)"])
+    except Exception:  # noqa: BLE001 — telemetry attach must never break the forecast
+        pass
 
     # ---------- MANDATORY PHASE SUPERVISION: one PhaseExecutionRecord per phase, every run ----------
     # The manifest is DERIVED from these records; a relevant phase that did not execute is a recorded
