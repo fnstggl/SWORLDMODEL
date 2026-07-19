@@ -15,7 +15,15 @@ Leakage protocol (the whole point — enforced in code, not by care):
   * as-of = present_date, horizon = expected_resolution_date - present_date; no grounders, no web.
   * SOTA baseline (their published forecast per question) is joined only at scoring time.
 
-Run: DEEPSEEK_API_KEY=.. python -m experiments.exp101_btf3_pilot [n_questions=50]
+Arms (same 50 question ids -> paired comparison):
+  v4flash (default)  DeepSeek-V4-Flash direct. Official cutoff Apr 2026: outcomes (May-Jul 2026) are
+                     post-cutoff, and Apr-2026 knowledge approximates the intended as-of state — but the
+                     cutoff is fuzzy at week granularity, hence the second arm.
+  v3or               deepseek/deepseek-chat-v3-0324 via OpenRouter (cutoff ~mid-2024): unambiguously
+                     clean for BTF-3 AND for BTF-2's Oct-Dec 2025 windows, where V4 is contaminated.
+
+Run: DEEPSEEK_API_KEY=.. python -m experiments.exp101_btf3_pilot [n_questions=50] [arm=v4flash]
+     OPENROUTER_API_KEY=.. python -m experiments.exp101_btf3_pilot 50 v3or
 """
 from __future__ import annotations
 
@@ -27,7 +35,6 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from pathlib import Path
 
-from swm.api.deepseek_backend import deepseek_chat_fn
 from swm.api.mechanisms import mechanism_forecast
 from swm.eval.metrics import log_loss
 
@@ -35,8 +42,16 @@ ROWS_API = ("https://datasets-server.huggingface.co/rows"
             "?dataset=BTF-2%2FBTF-3&config=binary&split=test&offset={off}&length=100")
 RAW = Path("data/btf3/binary_full.json")                    # gitignored (data/): CC-BY-NC, not redistributed
 SAMPLE_IDS = Path("experiments/results/exp101_btf3_sample_ids.json")
-PRED = Path("experiments/results/exp101_btf3_predictions.json")
-RESULT = Path("experiments/results/exp101_btf3_pilot.json")
+ARMS = {"v4flash": lambda system: __import__("swm.api.deepseek_backend", fromlist=["x"])
+        .deepseek_chat_fn(system=system, max_tokens=700),
+        "v3or": lambda system: __import__("swm.api.openrouter_backend", fromlist=["x"])
+        .openrouter_chat_fn("deepseek/deepseek-chat-v3-0324", system=system, max_tokens=700)}
+
+
+def _paths(arm):
+    sfx = "" if arm == "v4flash" else f"_{arm}"
+    return (Path(f"experiments/results/exp101_btf3_predictions{sfx}.json"),
+            Path(f"experiments/results/exp101_btf3_pilot{sfx}.json"))
 
 ALLOWED_FIELDS = {"question_id", "question", "resolution_criteria", "background",
                   "present_date", "date_cutoff_end", "expected_resolution_date"}
@@ -88,7 +103,8 @@ def _brier(ps, ys):
     return round(sum((p - y) ** 2 for p, y in zip(ps, ys)) / len(ps), 4)
 
 
-def run(n_questions: int = 50) -> dict:
+def run(n_questions: int = 50, arm: str = "v4flash") -> dict:
+    PRED, RESULT = _paths(arm)
     rows = fetch_btf3()
     by_id = {r["question_id"]: r for r in rows}
     if SAMPLE_IDS.exists():
@@ -97,8 +113,7 @@ def run(n_questions: int = 50) -> dict:
         ids = sorted(random.Random(42).sample(sorted(by_id), n_questions))
         SAMPLE_IDS.write_text(json.dumps(ids, indent=1))
 
-    llm = deepseek_chat_fn(system="You are a careful superforecaster. Reply with ONLY compact JSON.",
-                           max_tokens=700)
+    llm = ARMS[arm]("You are a careful superforecaster. Reply with ONLY compact JSON.")
     done = {r["question_id"]: r for r in json.loads(PRED.read_text())} if PRED.exists() else {}
     preds = list(done.values())
 
@@ -133,7 +148,7 @@ def run(n_questions: int = 50) -> dict:
     base = sum(ys) / len(ys)
     sota_pairs = [(r["p_sota"], r["outcome"]) for r in preds if r["p_sota"] is not None]
 
-    res = {"n": len(preds), "base_rate_yes": round(base, 4),
+    res = {"n": len(preds), "arm": arm, "base_rate_yes": round(base, 4),
            "compile_failures": sum(r["compile_failed"] for r in preds),
            "model": {"brier": _brier(ps, ys), "log_loss": round(log_loss(ys, ps), 4),
                      "accuracy_at_0.5": round(sum((p > 0.5) == y for p, y in zip(ps, ys)) / len(ys), 4),
@@ -156,8 +171,8 @@ def run(n_questions: int = 50) -> dict:
     PRED.write_text(json.dumps(preds, indent=1))
 
     M, S, C = res["model"], res["sota_futuresearch"], res["const_baselines"]
-    print(f"\nEXP-101  BTF-3 pilot, no-evidence arm, n={res['n']} (yes-rate {res['base_rate_yes']})")
-    print(f"  WMv2+DeepSeek   brier {M['brier']}  log-loss {M['log_loss']}  acc@0.5 {M['accuracy_at_0.5']}"
+    print(f"\nEXP-101  BTF-3 pilot, no-evidence arm={arm}, n={res['n']} (yes-rate {res['base_rate_yes']})")
+    print(f"  WMv2+{arm}   brier {M['brier']}  log-loss {M['log_loss']}  acc@0.5 {M['accuracy_at_0.5']}"
           f"  AUC {M['AUC']}  extreme {M['frac_extreme']}")
     print(f"  FutureSearch SOTA (same qs, n={S['n']})  brier {S['brier']}  acc {S['accuracy_at_0.5']}"
           f"  AUC {S['AUC']}")
@@ -168,4 +183,5 @@ def run(n_questions: int = 50) -> dict:
 
 
 if __name__ == "__main__":
-    run(int(sys.argv[1]) if len(sys.argv) > 1 else 50)
+    run(int(sys.argv[1]) if len(sys.argv) > 1 else 50,
+        sys.argv[2] if len(sys.argv) > 2 else "v4flash")
