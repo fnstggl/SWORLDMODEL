@@ -104,6 +104,51 @@ class SimulationResult:
         return self.simulation_status in ("completed", "completed_with_degradation",
                                           "temporally_truncated")
 
+    def timing_narrative(self) -> dict:
+        """The §27 human-facing timing explanation, rendered from the temporal-runtime block:
+        what happens, when it is likely (DAY-level granularity — never false minute precision),
+        why the timing looks that way, what could make it earlier or later, and whether the
+        answer changes with the timing assumptions. Empty dict when no temporal block exists."""
+        trt = (self.provenance or {}).get("temporal_runtime") or {}
+        et = (self.provenance or {}).get("event_time") or {}
+        if not trt and not et:
+            return {}
+
+        def _day(ts):
+            if not isinstance(ts, (int, float)):
+                return None
+            import time as _t
+            return _t.strftime("%Y-%m-%d", _t.gmtime(ts))
+        qtl = et.get("first_passage_quantiles_ts") or {}
+        out = {
+            "what_happens": {"distribution": self.raw_distribution,
+                             "modes": et.get("mode_distribution")},
+            "when_likely": {"median_day": _day(qtl.get("0.5")),
+                            "p10_day": _day(qtl.get("0.1")), "p90_day": _day(qtl.get("0.9")),
+                            "p_not_by_horizon": et.get("p_censored"),
+                            "precision_note": "day-level; sub-day timing is not claimed"},
+            "why_this_timing": {
+                "generated_processes": {
+                    "channels": trt.get("generated_channels"),
+                    "institutional_stages": trt.get("institutional_stage_processes"),
+                    "continuous_processes": trt.get("continuous_processes")},
+                "known_scheduled_facts": trt.get("known_scheduled_facts"),
+                "decision_triggers_observed": trt.get("n_decision_triggers")},
+            "could_be_earlier_if": ["a watched state change accelerates a hazard "
+                                    "(re-projection preserves accumulated exposure)",
+                                    "an urgent channel interrupts attention",
+                                    "a deferred condition occurs sooner"],
+            "could_be_later_if": ["attention cycles, sleep/work windows, or institutional "
+                                  "queues defer the triggering events",
+                                  "a provisional end-state collapses and the process resumes"],
+            "sensitive_to_timing_assumptions": {
+                "unresolved_mechanisms": trt.get("unresolved_timing_mechanisms"),
+                "temporal_uncertainties": trt.get("temporal_uncertainties"),
+                "support": trt.get("timing_support_classification"),
+                "truncated": trt.get("temporally_truncated", False)},
+        }
+        return out
+
     def as_dict(self) -> dict:
         d = asdict(self)
         # backward-compatible mirror fields for OLD readers (deprecated; never drives new logic).
