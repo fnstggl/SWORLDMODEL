@@ -228,6 +228,18 @@ def _run_generated(problem: DecisionProblem, world_context, *, user_candidates=N
                   "n_simulated": sr.n_simulated}
     res.provenance["scenario_report"] = report.as_dict()
     res.provenance["human_summary"] = report.human_summary()
+    # the causal truth boundary's counters for THIS evaluation (attempts vs actual
+    # deliveries, mechanisms invoked/succeeded/failed/unresolved, plan steps fired) — read
+    # from the rollout operators that actually executed the candidates
+    for _op in getattr(ev, "operators", []) or []:
+        if getattr(_op, "name", "") in ("scenario_plan_step", "scenario_mechanism_runtime",
+                                        "scheduled_attempt_runtime") \
+                and isinstance(getattr(_op, "report", None), dict):
+            cb = res.provenance.setdefault("causal_consequence_report", {})
+            for k, v in _op.report.items():
+                if isinstance(v, (int, float)) and not isinstance(v, bool):
+                    cb[k] = max(float(cb.get(k, 0) or 0), float(v)) \
+                        if k in cb else v
     res.provenance["crn_manifest"] = getattr(ev, "crn_manifest", lambda b: {})(None) \
         if not hasattr(ev, "_assignment") else {
             "root_seed": ev.seed, "n_particles": ev.n_particles,

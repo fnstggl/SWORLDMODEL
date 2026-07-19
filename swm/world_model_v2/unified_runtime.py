@@ -59,6 +59,25 @@ _PHASES = ["phase1_compiler", "phase2_evidence", "phase3_posterior", "phase4_act
            "phase9_networks", "phase10_institutions", "phase11_recompilation"]
 
 
+def _bundle_text(b, max_chars: int) -> str:
+    """Evidence text for prompt context — tolerant of both bundle generations (the V2
+    bundle has no render()). Module-level: the per-plan conditioning helper (shared by the
+    single-model ablation and every structural-ensemble candidate) uses it."""
+    if b is None:
+        return ""
+    if hasattr(b, "render"):
+        try:
+            return b.render(max_chars=max_chars)
+        except Exception:  # noqa: BLE001
+            pass
+    rows = []
+    for c in (getattr(b, "claims", None) or [])[:20]:
+        if isinstance(c, dict):
+            rows.append(f"- {str(c.get('text', c.get('claim', '')))[:200]} "
+                        f"[{str(c.get('source', ''))[:40]}]")
+    return "\n".join(rows)[:max_chars]
+
+
 def _mani(available=True, selected=False, executed=False, omitted=False, reason="", version="",
           n_events=0, n_state_deltas=0, causally_irrelevant=False):
     return {"available": available, "selected": selected, "executed": executed, "omitted": omitted,
@@ -133,23 +152,6 @@ def _simulate_single_structural_model(question: str, *, as_of: str, horizon: str
     def _iso(s):
         return s
 
-    def _bundle_text(b, max_chars: int) -> str:
-        """Evidence text for prompt context — tolerant of both bundle generations (the V2
-        bundle has no render())."""
-        if b is None:
-            return ""
-        if hasattr(b, "render"):
-            try:
-                return b.render(max_chars=max_chars)
-            except Exception:  # noqa: BLE001
-                pass
-        rows = []
-        for c in (getattr(b, "claims", None) or [])[:20]:
-            if isinstance(c, dict):
-                rows.append(f"- {str(c.get('text', c.get('claim', '')))[:200]} "
-                            f"[{str(c.get('source', ''))[:40]}]")
-        return "\n".join(rows)[:max_chars]
-
     # ---------- Phase 1: universal compiler → the ONE plan (explicit single-model ablation) ----------
     try:
         plan = compile_world(question, llm=llm, evidence="", as_of=as_of, horizon=horizon,
@@ -196,7 +198,8 @@ def _simulate_single_structural_model(question: str, *, as_of: str, horizon: str
     # ---------- Phase 3 + conditioning phases (shared with the ensemble runtime, per-plan) ----------
     posterior = _phase3_block(question, plan, bundle, llm, seed, manifest, drop)
     _condition_plan(question, plan, bundle, as_of, horizon, seed, llm,
-                    manifest, lineage, costs, drop)
+                    manifest, lineage, costs, drop,
+                    user_context=user_context, intervention=intervention)
 
     # ---------- Terminal projection through the ONE funnel (Phase 8 persistence + P4/P6/P7/P10 operators) ----
     res = _project_terminal(question, plan, as_of, horizon, intervention, seed, llm, user_context,
@@ -276,7 +279,8 @@ def _phase3_block(question, plan, bundle, llm, seed, manifest, drop):
     return posterior
 
 
-def _condition_plan(question, plan, bundle, as_of, horizon, seed, llm, manifest, lineage, costs, drop):
+def _condition_plan(question, plan, bundle, as_of, horizon, seed, llm, manifest, lineage, costs, drop,
+                    user_context=None, intervention="", structural_model_id=""):
     """Phases 9/10 + fidelity + activation synthesis + event-time conversion + Phase-11 recompilation for
     ONE plan. Mutates the plan in place (each structural model owns its plan object exclusively)."""
     # ---------- Phase 9: populations + multilayer networks — instantiate into the plan when declared --
@@ -400,7 +404,8 @@ def _condition_plan(question, plan, bundle, as_of, horizon, seed, llm, manifest,
             ev_text = _bundle_text(bundle, 2000)
             tmodel = compile_temporal_model(plan, llm=llm, question=question,
                                             evidence_text=ev_text, user_context=user_context,
-                                            intervention=intervention, seed=seed)
+                                            intervention=intervention, seed=seed,
+                                            structural_model_id=structural_model_id)
             lineage["temporal_model"] = attach_temporal_model(plan, tmodel)
             costs["llm_calls"] += len(tmodel.compilation_trace)
         except Exception as e:  # noqa: BLE001 — compilation failure is a LOUD degradation

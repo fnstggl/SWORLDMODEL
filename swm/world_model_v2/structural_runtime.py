@@ -279,7 +279,9 @@ def _condition_and_pilot_model(U, question, cand, bundle, as_of, horizon, interv
                                        "outcome_rate_mean": getattr(posterior, "outcome_rate_mean", None)}
                                       if posterior is not None else {"n_effective_observations": 0})
         U._condition_plan(question, plan, bundle, as_of, horizon, seed, model_llm,
-                          manifest, lineage, costs, drop)
+                          manifest, lineage, costs, drop,
+                          user_context=user_context, intervention=intervention,
+                          structural_model_id=cand.model_id)
         cand.plan_lineage = list(lineage["plan_hashes"]) or [plan.plan_hash()]
         # ---------- pilot through the canonical funnel (persistence-prepared, index-keyed slice) --------
         actor_cache.model_id = cand.model_id

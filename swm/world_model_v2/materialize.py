@@ -244,27 +244,37 @@ def operators_from_plan(plan, *, llm=None, allow_experimental=False) -> tuple:
             ops.append(InstitutionalVoteOperator())
     if mode == "generated_actor_mediated_world":
         # the generated actor-mediated control plane: semantic-event routing, observation
-        # delivery, persistent-actor invocation, the scenario-mechanism runtime, and the
-        # scheduled-attempt runtime share the bound runtime + its report. The mechanism
-        # runtime is the ONLY executor of external effects (delivery, publication, intake,
-        # settlement) — default-on for every generated-mode rollout.
+        # delivery, persistent-actor invocation, the scenario plan-step executor, the
+        # scenario-mechanism runtime, and the scheduled-attempt runtime share the bound
+        # runtime + its report. The mechanism runtime is the ONLY executor of external
+        # effects (delivery, publication, intake, settlement) — default-on for EVERY
+        # generated-mode rollout, with or without a bound actor runtime (a world with no
+        # consequential actor decisions still delivers, publishes and settles; only the
+        # actor-invocation operator requires an actual mind to invoke).
         from swm.world_model_v2 import causal_boundary as _cb
         from swm.world_model_v2 import generated_world as _genw
+        from swm.world_model_v2.phase13.scenario_actions.execution import ScenarioPlanOperator
         runtime = next((getattr(op, "runtime", None) for op in ops
                         if getattr(op, "name", "") == "production_actor_policy"
                         and getattr(op, "runtime", None) is not None), None)
+        report = runtime.consequence_report if runtime is not None \
+            else _genw.generated_report()
+        backend = (getattr(runtime, "consequence_llm", None) if runtime is not None
+                   else None) or llm
+        ops.append(_genw.GeneratedSemanticEventOperator(
+            report=report, frontier_llm=backend))
+        ops.append(_genw.GeneratedObservationDeliveryOperator(report=report))
+        for op in ops:                                        # rebind the shared attention op
+            if getattr(op, "name", "") == "generated_attention":
+                op.report = report
         if runtime is not None:
-            report = runtime.consequence_report
-            backend = getattr(runtime, "consequence_llm", None) or llm
-            ops.append(_genw.GeneratedSemanticEventOperator(
-                report=report, frontier_llm=backend))
-            ops.append(_genw.GeneratedObservationDeliveryOperator(report=report))
-            for op in ops:                                    # rebind the shared attention op
-                if getattr(op, "name", "") == "generated_attention":
-                    op.report = report
             ops.append(_genw.GeneratedActorInvocationOperator(runtime, report=report))
-            ops.append(_cb.MechanismRuntimeOperator(report=report, llm=backend))
-            ops.append(_cb.ScheduledAttemptOperator(report=report))
+        # generated/contingent decision actions (Phase 13) execute their compiled kernel
+        # steps through this same rollout — the plan-step executor must exist or scheduled
+        # scenario_plan_step events die silently in the queue
+        ops.append(ScenarioPlanOperator(report=report))
+        ops.append(_cb.MechanismRuntimeOperator(report=report, llm=backend))
+        ops.append(_cb.ScheduledAttemptOperator(report=report))
     return ops, rejections
 
 
