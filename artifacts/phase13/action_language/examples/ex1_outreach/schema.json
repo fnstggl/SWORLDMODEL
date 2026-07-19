@@ -1,0 +1,436 @@
+{
+ "schema_id": "schema_4ce4265e061b17e8",
+ "version": "1",
+ "question": "Will Halcyon Analytics renew its 120k contract after the botched migration, or churn by the September renewal date?",
+ "prediction_timestamp": 1752800000.0,
+ "horizon": 1756688000.0,
+ "entity_types": {
+  "halcyon_analytics": {
+   "description": "The vendor company whose contract is up for renewal.",
+   "fields": {
+    "name": "str",
+    "contract_value": "float",
+    "renewal_date": "time"
+   }
+  },
+  "customer_organization": {
+   "description": "The client company that holds the contract with Halcyon Analytics.",
+   "fields": {
+    "name": "str",
+    "decision_holder": "id"
+   }
+  },
+  "person": {
+   "description": "An individual actor in the scenario.",
+   "fields": {
+    "name": "str",
+    "role": "str",
+    "organization_id": "id"
+   }
+  },
+  "migration_project": {
+   "description": "The data migration project that was botched.",
+   "fields": {
+    "project_name": "str",
+    "status": "str",
+    "outage_duration_hours": "int",
+    "completion_date": "time"
+   }
+  },
+  "goodwill_credit": {
+   "description": "A financial credit offered by Halcyon to the customer as compensation.",
+   "fields": {
+    "amount": "float",
+    "authorized_by": "id",
+    "offered_date": "time",
+    "accepted": "bool"
+   }
+  },
+  "contract_renewal_decision": {
+   "description": "The formal decision record about contract renewal.",
+   "fields": {
+    "decision_maker": "id",
+    "decision": "str",
+    "decision_date": "time",
+    "notes": "str"
+   }
+  }
+ },
+ "fact_types": {
+  "contract_active": {
+   "description": "Whether the contract is currently active.",
+   "fields": {
+    "contract_id": "id",
+    "is_active": "bool"
+   }
+  },
+  "migration_botched": {
+   "description": "Whether the migration was considered botched by the customer.",
+   "fields": {
+    "migration_id": "id",
+    "is_botched": "bool",
+    "reported_by": "id"
+   }
+  },
+  "communication_silence": {
+   "description": "Whether a person has gone silent (not responding to communications).",
+   "fields": {
+    "person_id": "id",
+    "is_silent": "bool",
+    "since_date": "time"
+   }
+  },
+  "goodwill_credit_authorized": {
+   "description": "Whether a goodwill credit has been authorized by Nina.",
+   "fields": {
+    "credit_id": "id",
+    "is_authorized": "bool"
+   }
+  },
+  "renewal_decision_made": {
+   "description": "Whether a renewal decision has been formally made.",
+   "fields": {
+    "decision_id": "id",
+    "is_made": "bool"
+   }
+  }
+ },
+ "relation_types": {
+  "employs": {
+   "description": "Organization employs a person.",
+   "fields": {
+    "organization_id": "id",
+    "person_id": "id",
+    "role": "str"
+   }
+  },
+  "reports_to": {
+   "description": "Person reports to another person.",
+   "fields": {
+    "subordinate_id": "id",
+    "superior_id": "id"
+   }
+  },
+  "has_contract_with": {
+   "description": "Halcyon has a contract with the customer.",
+   "fields": {
+    "vendor_id": "id",
+    "customer_id": "id",
+    "contract_value": "float",
+    "renewal_date": "time"
+   }
+  },
+  "responsible_for_migration": {
+   "description": "Person or team responsible for the migration project.",
+   "fields": {
+    "person_id": "id",
+    "migration_id": "id"
+   }
+  },
+  "day_to_day_access": {
+   "description": "Customer success lead has day-to-day access to customer engineers.",
+   "fields": {
+    "success_lead_id": "id",
+    "engineer_id": "id"
+   }
+  }
+ },
+ "semantic_event_types": {
+  "migration_outage_occurred": {
+   "description": "A two-day outage occurred during migration.",
+   "fields": {
+    "migration_id": "id",
+    "outage_start": "time",
+    "outage_end": "time",
+    "affected_team": "id"
+   }
+  },
+  "goodwill_credit_offered": {
+   "description": "Nina offers a goodwill credit to the customer.",
+   "fields": {
+    "credit_id": "id",
+    "offered_by": "id",
+    "offered_to": "id",
+    "amount": "float"
+   }
+  },
+  "renewal_decision_recorded": {
+   "description": "Marcus Webb records his renewal decision.",
+   "fields": {
+    "decision_id": "id",
+    "decision_maker": "id",
+    "decision": "str",
+    "timestamp": "time"
+   }
+  },
+  "communication_breakdown": {
+   "description": "A person stops responding to communications.",
+   "fields": {
+    "person_id": "id",
+    "date": "time"
+   }
+  },
+  "unmodeled_actor_action": {
+   "description": "schema-scoped scaffolding: an actor action whose semantics could not be compiled; exact content preserved; counted as a fallback",
+   "fields": {
+    "action_name": "str",
+    "content": "str",
+    "target": "str"
+   },
+   "typical_visibility": "participants",
+   "scaffolding": true
+  }
+ },
+ "process_definitions": {
+  "renewal_decision_process": {
+   "description": "The process by which Marcus Webb decides to renew or churn.",
+   "states": [
+    "undecided",
+    "leaning_renew",
+    "leaning_churn",
+    "decided_renew",
+    "decided_churn"
+   ],
+   "transitions": [
+    {
+     "from": "undecided",
+     "to": "leaning_renew",
+     "trigger": "goodwill_credit_accepted_and_satisfactory"
+    },
+    {
+     "from": "undecided",
+     "to": "leaning_churn",
+     "trigger": "continued_silence_or_escalation"
+    },
+    {
+     "from": "leaning_renew",
+     "to": "decided_renew",
+     "trigger": "formal_decision_recorded"
+    },
+    {
+     "from": "leaning_churn",
+     "to": "decided_churn",
+     "trigger": "formal_decision_recorded"
+    },
+    {
+     "from": "undecided",
+     "to": "decided_churn",
+     "trigger": "deadline_passed_without_decision"
+    }
+   ],
+   "initial_state": "undecided",
+   "terminal_states": [
+    "decided_renew",
+    "decided_churn"
+   ]
+  },
+  "goodwill_credit_process": {
+   "description": "Process for offering and accepting a goodwill credit.",
+   "states": [
+    "not_offered",
+    "offered",
+    "accepted",
+    "rejected"
+   ],
+   "transitions": [
+    {
+     "from": "not_offered",
+     "to": "offered",
+     "trigger": "nina_authorizes_credit"
+    },
+    {
+     "from": "offered",
+     "to": "accepted",
+     "trigger": "marcus_accepts_credit"
+    },
+    {
+     "from": "offered",
+     "to": "rejected",
+     "trigger": "marcus_rejects_credit"
+    }
+   ],
+   "initial_state": "not_offered",
+   "terminal_states": [
+    "accepted",
+    "rejected"
+   ]
+  }
+ },
+ "institutional_definitions": {
+  "renewal_decision_authority": {
+   "description": "Who holds the authority to decide renewal.",
+   "decision_holders": [
+    "marcus_webb"
+   ],
+   "aggregation": {
+    "kind": "single_authority",
+    "threshold": 1
+   },
+   "evidence": "Renewal decision rests solely with Webb.",
+   "assumed": false,
+   "decision_record_type": ""
+  },
+  "goodwill_credit_authority": {
+   "description": "Who can authorize a goodwill credit.",
+   "decision_holders": [
+    "nina_petrova"
+   ],
+   "aggregation": {
+    "kind": "single_authority",
+    "threshold": 1
+   },
+   "evidence": "A goodwill credit of up to 15k is within Nina's authority.",
+   "assumed": false,
+   "decision_record_type": ""
+  }
+ },
+ "physical_constraints": {
+  "renewal_deadline": {
+   "description": "The contract renewal date is September 1, 2025.",
+   "constraint": "renewal_decision must be made on or before 2025-09-01",
+   "unresolved": true
+  },
+  "credit_limit": {
+   "description": "Nina can authorize up to $15,000 goodwill credit.",
+   "constraint": "goodwill_credit.amount <= 15000",
+   "unresolved": true
+  }
+ },
+ "resource_definitions": {
+  "contract_document": {
+   "description": "The existing 120k contract document.",
+   "fields": {
+    "contract_id": "id",
+    "value": "float",
+    "renewal_date": "time",
+    "terms": "str"
+   }
+  },
+  "goodwill_credit_budget": {
+   "description": "Budget line for goodwill credits.",
+   "fields": {
+    "max_amount": "float",
+    "remaining": "float"
+   }
+  }
+ },
+ "information_rules": {
+  "marcus_webb_silence_rule": {
+   "description": "Marcus Webb has gone quiet; this is known to Nina and Tran.",
+   "visibility": "known_to_nina_and_tran",
+   "accuracy": "confirmed"
+  },
+  "tran_access_rule": {
+   "description": "Tran has day-to-day access to Webb's engineers.",
+   "visibility": "known_to_all",
+   "accuracy": "confirmed"
+  },
+  "decision_solely_webb_rule": {
+   "description": "Only Marcus Webb can make the renewal decision.",
+   "visibility": "known_to_all",
+   "accuracy": "confirmed"
+  }
+ },
+ "actor_roles": {
+  "nina_petrova": {
+   "role": "Founder-CEO of Halcyon Analytics (vendor side)",
+   "why_consequential": "She can authorize goodwill credit up to $15k to influence the renewal decision.",
+   "affordances": [
+    "offer_goodwill_credit(amount: float)",
+    "communicate_with_marcus_webb",
+    "delegate_to_tran"
+   ]
+  },
+  "marcus_webb": {
+   "role": "VP Data at customer organization",
+   "why_consequential": "He holds sole authority over the renewal decision; his team suffered the outage.",
+   "affordances": [
+    "record_renewal_decision(decision: str)",
+    "accept_or_reject_goodwill_credit",
+    "communicate_with_nina_or_tran"
+   ]
+  },
+  "success_lead_tran": {
+   "role": "Customer-success lead at Halcyon",
+   "why_consequential": "Has day-to-day access to Webb's engineers, can gather intelligence on sentiment.",
+   "affordances": [
+    "gather_sentiment_from_engineers",
+    "report_to_nina",
+    "facilitate_communication_with_webb"
+   ]
+  }
+ },
+ "outcome_predicates": [
+  {
+   "predicate_id": "renewal_outcome",
+   "record_type": "contract_renewal_decision",
+   "field": "decision",
+   "op": "eq",
+   "value": "renew",
+   "option_true": "Halcyon Analytics renews the 120k contract",
+   "option_false": "Halcyon Analytics churns (does not renew)"
+  }
+ ],
+ "unresolved_mechanisms": [
+  "Whether Marcus Webb will accept any goodwill credit offered.",
+  "Whether the two-day outage is considered irreparable damage by Webb.",
+  "Whether Tran's access to engineers can surface actionable sentiment before the deadline.",
+  "renewal_deadline",
+  "credit_limit"
+ ],
+ "evidence_basis": [],
+ "assumptions": [
+  "No other decision-makers exist for the renewal; Webb is the sole authority.",
+  "Nina has not yet offered a goodwill credit as of prediction time.",
+  "The contract value is exactly $120,000.",
+  "The renewal date is exactly September 1, 2025."
+ ],
+ "provenance": {
+  "kind": "scenario.semantic.model.v1",
+  "compiler": "llm",
+  "compiled_at": 1752800000.0,
+  "auto_repairs": [
+   "constraint 'renewal_deadline' labeled unresolved (no executable rule)",
+   "constraint 'credit_limit' labeled unresolved (no executable rule)"
+  ],
+  "critic": {
+   "missing_decisive_elements": [
+    "No representation of the customer's internal business impact (e.g., lost revenue, SLA penalties, reputational damage) which is the primary driver of churn, not just the botched migration itself.",
+    "No representation of competing vendor offers or market alternatives that Marcus Webb might be evaluating.",
+    "No representation of the personal relationship or trust history between Nina Petrova and Marcus Webb prior to the migration.",
+    "No representation of the customer's contractual exit penalties or switching costs that could anchor the decision."
+   ],
+   "relabeled_progress_bars": [
+    "The 'goodwill_credit_accepted_and_satisfactory' trigger is a false progress bar \u2014 acceptance does not imply satisfaction; the credit could be accepted but deemed insultingly low, still driving churn.",
+    "The 'continued_silence_or_escalation' trigger conflates passive silence with active escalation, which are opposite signals in real negotiation dynamics.",
+    "The 'deadline_passed_without_decision' terminal state is a cop-out \u2014 it assumes indecision defaults to churn, but in practice many contracts auto-renew or roll over."
+   ],
+   "hidden_answer_risks": [
+    "The model assumes goodwill credit is the only lever Nina has, ignoring escalation to higher management, personal apologies, or technical remediation offers.",
+    "The model treats Marcus Webb as a rational economic actor, but real renewal decisions are heavily influenced by internal politics, blame avoidance, and career risk after a public failure.",
+    "The model does not account for the possibility that the botched migration was actually caused by the customer's own data or requirements, shifting blame and reducing churn risk."
+   ],
+   "direct_human_reaction_encodings": [
+    "No encoding of anger, frustration, or loss of trust as emotional states that can override rational cost-benefit analysis.",
+    "No encoding of 'face-saving' behavior \u2014 Marcus Webb may need to publicly punish Halcyon to demonstrate accountability to his own team or superiors, even if the credit is generous.",
+    "No encoding of fatigue or decision avoidance \u2014 after a stressful migration, the path of least resistance may be to do nothing (auto-renew) rather than actively churn."
+   ],
+   "public_posture_vs_private_reality_conflations": [
+    "The model treats 'communication_silence' as a fact, but silence could be strategic (buying time, negotiating leverage) rather than a signal of impending churn.",
+    "The model assumes 'goodwill_credit_offered' is a transparent event, but in practice such offers are often made privately with non-disclosure agreements, making the public posture different from the private settlement.",
+    "The 'renewal_decision_recorded' event assumes a single formal timestamp, but real decisions are often provisional, reversible, or made informally long before being recorded."
+   ],
+   "outcome_predicate_matches_question": true,
+   "missing_nonhuman_mechanisms": [
+    "No representation of automated contract renewal clauses or notice periods that could force a decision regardless of human sentiment.",
+    "No representation of the technical state of the migrated system post-botch (e.g., data corruption, performance degradation) which is a non-human factor that independently drives churn.",
+    "No representation of calendar or scheduling constraints (e.g., Marcus Webb's availability to make a decision before September, or competing projects that delay attention)."
+   ],
+   "verdict": "needs_extension"
+  },
+  "frozen_at": 1752800000.0,
+  "content_hash": "842f3b517fe27b13"
+ },
+ "frozen": true,
+ "ancestry": []
+}

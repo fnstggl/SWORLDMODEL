@@ -183,7 +183,7 @@ def ex2_partnership():
                      "monthly and its decision is recorded; the production freeze is in "
                      "~8 weeks; Kite can offer a 12% volume discount or a co-marketing "
                      "clause, not both.",
-            horizon_days=60),
+            horizon_days=74),        # aligned with the contract horizon (2025-09-30)
         actors=["amara_diallo", "erik_halvorsen", "sofia_brandt"],
         resources_hint={},
         contract_kwargs=dict(decision_id="ex2", decision_maker="amara_diallo",

@@ -1,0 +1,342 @@
+{
+ "schema_id": "schema_bb15879a8a011845",
+ "version": "1",
+ "question": "Will the Harborview Cooperative's board adopt the workspace-sublease bylaw amendment at or before the October meeting?",
+ "prediction_timestamp": 1752800000.0,
+ "horizon": 1759280000.0,
+ "entity_types": {
+  "harborview_coop_board_member": {
+   "description": "An individual serving on the three-member board of the Harborview Cooperative.",
+   "fields": {
+    "member_id": "id",
+    "name": "str",
+    "role_on_board": "str"
+   }
+  },
+  "workspace_sublease_bylaw_amendment": {
+   "description": "The proposed bylaw amendment to allow workspace subleasing within the cooperative.",
+   "fields": {
+    "amendment_id": "id",
+    "proposer_id": "id",
+    "proposal_date": "time",
+    "status": "str"
+   }
+  },
+  "board_meeting": {
+   "description": "A scheduled or special meeting of the Harborview Cooperative board.",
+   "fields": {
+    "meeting_id": "id",
+    "meeting_type": "str",
+    "scheduled_date": "time",
+    "call_notice_date": "time"
+   }
+  },
+  "written_decision_record": {
+   "description": "A written record of a board member's decision on a bylaw amendment.",
+   "fields": {
+    "record_id": "id",
+    "member_id": "id",
+    "amendment_id": "id",
+    "decision": "str",
+    "decision_date": "time"
+   }
+  }
+ },
+ "fact_types": {
+  "board_member_liability_concern": {
+   "description": "A board member's stated concern about liability related to the sublease amendment.",
+   "fields": {
+    "member_id": "id",
+    "amendment_id": "id",
+    "concern_level": "str"
+   }
+  },
+  "board_member_trust_on_liability": {
+   "description": "A board member's trust in another member's judgment on liability questions.",
+   "fields": {
+    "trusting_member_id": "id",
+    "trusted_member_id": "id",
+    "amendment_id": "id"
+   }
+  },
+  "meeting_occurrence": {
+   "description": "Records that a board meeting actually took place on a given date.",
+   "fields": {
+    "meeting_id": "id",
+    "occurred_date": "time"
+   }
+  }
+ },
+ "relation_types": {
+  "board_membership": {
+   "description": "Links a person to the Harborview Cooperative board.",
+   "fields": {
+    "person_id": "id",
+    "board_id": "id",
+    "member_role": "str"
+   }
+  },
+  "amendment_under_consideration": {
+   "description": "Links an amendment to a meeting where it is being considered.",
+   "fields": {
+    "amendment_id": "id",
+    "meeting_id": "id"
+   }
+  },
+  "decision_record_for_amendment": {
+   "description": "Links a written decision record to the amendment and the meeting.",
+   "fields": {
+    "record_id": "id",
+    "amendment_id": "id",
+    "meeting_id": "id"
+   }
+  }
+ },
+ "semantic_event_types": {
+  "propose_amendment": {
+   "description": "A board member formally proposes the workspace-sublease bylaw amendment.",
+   "fields": {
+    "proposer_id": "id",
+    "amendment_id": "id",
+    "proposal_date": "time"
+   }
+  },
+  "schedule_meeting": {
+   "description": "A board meeting is scheduled, either regular or special.",
+   "fields": {
+    "meeting_id": "id",
+    "meeting_type": "str",
+    "scheduled_date": "time",
+    "call_notice_date": "time"
+   }
+  },
+  "record_decision": {
+   "description": "A board member records a written decision on the amendment.",
+   "fields": {
+    "record_id": "id",
+    "member_id": "id",
+    "amendment_id": "id",
+    "decision": "str",
+    "decision_date": "time"
+   }
+  },
+  "hold_meeting": {
+   "description": "A board meeting is held on a given date.",
+   "fields": {
+    "meeting_id": "id",
+    "occurred_date": "time"
+   }
+  },
+  "adopt_amendment": {
+   "description": "The board officially adopts the amendment based on majority vote.",
+   "fields": {
+    "amendment_id": "id",
+    "meeting_id": "id",
+    "adoption_date": "time"
+   }
+  },
+  "unmodeled_actor_action": {
+   "description": "schema-scoped scaffolding: an actor action whose semantics could not be compiled; exact content preserved; counted as a fallback",
+   "fields": {
+    "action_name": "str",
+    "content": "str",
+    "target": "str"
+   },
+   "typical_visibility": "participants",
+   "scaffolding": true
+  }
+ },
+ "process_definitions": {
+  "bylaw_amendment_adoption_process": {
+   "description": "Process by which the board adopts a bylaw amendment via majority vote with written decisions.",
+   "states": [
+    "proposed",
+    "under_consideration",
+    "voted",
+    "adopted",
+    "rejected"
+   ],
+   "transitions": [
+    {
+     "from": "proposed",
+     "to": "under_consideration",
+     "trigger": "schedule_meeting with amendment on agenda"
+    },
+    {
+     "from": "under_consideration",
+     "to": "voted",
+     "trigger": "all three board members record_decision"
+    },
+    {
+     "from": "voted",
+     "to": "adopted",
+     "trigger": "majority of decisions are 'support'"
+    },
+    {
+     "from": "voted",
+     "to": "rejected",
+     "trigger": "majority of decisions are 'oppose' or tie with no majority support"
+    }
+   ],
+   "initial_state": "proposed"
+  }
+ },
+ "institutional_definitions": {
+  "harborview_coop_board": {
+   "description": "The three-member board that adopts bylaw amendments by majority vote.",
+   "decision_holders": [
+    "june_okafor",
+    "raul_mendes",
+    "petra_lindqvist"
+   ],
+   "decision_record_type": "written_decision_record",
+   "aggregation_arithmetic": {
+    "kind": "majority",
+    "threshold": 2,
+    "assumed": false,
+    "evidence": "Three-member board adopts by majority vote, each member recording a written decision."
+   },
+   "meeting_frequency": "monthly",
+   "special_meeting_rules": "Can be called with 7 days notice.",
+   "assumed": true,
+   "aggregation": {
+    "kind": "majority"
+   }
+  }
+ },
+ "physical_constraints": {
+  "meeting_scheduling": {
+   "description": "Regular monthly meetings occur; special meetings require 7 days notice.",
+   "rule": "A special meeting can only be held if call_notice_date is at least 7 days before scheduled_date.",
+   "unresolved": true
+  },
+  "decision_recording": {
+   "description": "Each board member must record a written decision for the amendment to be voted.",
+   "rule": "The amendment status transitions to 'voted' only after three written_decision_record entities exist for that amendment.",
+   "unresolved": true
+  }
+ },
+ "resource_definitions": {
+  "board_meeting_agenda": {
+   "description": "The agenda for a board meeting, which must include the amendment for it to be considered.",
+   "fields": {
+    "meeting_id": "id",
+    "amendment_id": "id",
+    "agenda_published_date": "time"
+   }
+  }
+ },
+ "information_rules": {
+  "written_decision_visibility": {
+   "description": "Written decisions are recorded and visible to all board members.",
+   "rule": "Any board member can view all written_decision_record entities for a given amendment."
+  },
+  "meeting_notice": {
+   "description": "For special meetings, notice must be given at least 7 days prior.",
+   "rule": "The call_notice_date must be <= scheduled_date - 7 days."
+  }
+ },
+ "actor_roles": {
+  "june_okafor": {
+   "role": "Proposer and supporter of the amendment",
+   "why_consequential": "She proposed the amendment and supports subleasing; her vote is one of three needed for majority.",
+   "affordances": [
+    "Propose the amendment formally.",
+    "Record a written decision of 'support'.",
+    "Call for a special meeting with 7 days notice.",
+    "Persuade other members informally."
+   ]
+  },
+  "raul_mendes": {
+   "role": "Board member with liability concerns",
+   "why_consequential": "He worries about liability; his vote could be decisive, and Petra trusts his judgment on liability.",
+   "affordances": [
+    "Record a written decision of 'oppose' or 'support'.",
+    "Express liability concerns in discussions.",
+    "Influence Petra's decision through trusted judgment."
+   ]
+  },
+  "petra_lindqvist": {
+   "role": "Undecided board member who trusts Raul on liability",
+   "why_consequential": "Her vote is the swing; she is undecided and relies on Raul's judgment on liability questions.",
+   "affordances": [
+    "Record a written decision of 'support', 'oppose', or 'abstain'.",
+    "Seek Raul's opinion on liability.",
+    "Change her decision based on Raul's expressed concerns."
+   ]
+  }
+ },
+ "outcome_predicates": [
+  {
+   "predicate_id": "amendment_adopted_by_october_meeting",
+   "record_type": "workspace_sublease_bylaw_amendment",
+   "field": "status",
+   "op": "eq",
+   "value": "adopted",
+   "option_true": "Yes, the amendment will be adopted at or before the October meeting.",
+   "option_false": "No, the amendment will not be adopted by the October meeting."
+  }
+ ],
+ "unresolved_mechanisms": [
+  "Whether Raul Mendes will ultimately support or oppose the amendment after liability review.",
+  "Whether Petra Lindqvist will follow Raul's judgment or form an independent opinion.",
+  "Whether a special meeting will be called before the October regular meeting.",
+  "meeting_scheduling",
+  "decision_recording"
+ ],
+ "evidence_basis": [],
+ "assumptions": [
+  "The October meeting is the regular monthly meeting scheduled for October 1, 2025 or earlier in October.",
+  "No other board members exist beyond the three named.",
+  "Abstentions count as not supporting, thus not contributing to the majority threshold of 2.",
+  "The amendment was proposed before the prediction time and is in 'proposed' state."
+ ],
+ "provenance": {
+  "kind": "scenario.semantic.model.v1",
+  "compiler": "llm",
+  "compiled_at": 1752800000.0,
+  "auto_repairs": [
+   "constraint 'meeting_scheduling' labeled unresolved (no executable rule)",
+   "constraint 'decision_recording' labeled unresolved (no executable rule)",
+   "institution 'harborview_coop_board' labeled assumed (no evidence cited)",
+   "institution 'harborview_coop_board' aggregation defaulted to majority (none declared; labeled assumed)"
+  ],
+  "critic": {
+   "missing_decisive_elements": [
+    "No representation of informal persuasion or lobbying between board members outside of formal meetings.",
+    "No representation of external pressures (e.g., tenant complaints, legal advice, financial incentives) that could shift a member's stance.",
+    "No representation of the board chair's procedural power to set the agenda or delay a vote.",
+    "No representation of the possibility of abstention or recusal, which could break a majority.",
+    "No representation of the timeline for 'call_notice_date' relative to the October meeting \u2014 a special meeting might be called too late."
+   ],
+   "relabeled_progress_bars": [
+    "The 'bylaw_amendment_adoption_process' states that all three members must 'record_decision' to move from 'under_consideration' to 'voted', but the model does not enforce that decisions must be recorded before or during a meeting \u2014 they could be recorded after, making the process asynchronous and potentially missing the October deadline.",
+    "The transition from 'proposed' to 'under_consideration' requires 'schedule_meeting with amendment on agenda', but there is no event type for placing an item on an agenda \u2014 only scheduling a meeting is modeled."
+   ],
+   "hidden_answer_risks": [
+    "The model assumes that 'majority of decisions are support' leads to adoption, but the institutional definition says 'adopts by majority vote' \u2014 it does not specify whether a tie (1 support, 1 oppose, 1 abstain) counts as rejection or no decision. The process definition says 'tie with no majority support' leads to rejection, but 'abstain' is not modeled as a decision value.",
+    "The model does not account for the possibility that the board might table the amendment at the October meeting without a vote, which would not be 'adopted' but also not 'rejected' \u2014 the process has no 'tabled' state.",
+    "The 'adopt_amendment' event requires a 'meeting_id', but the model does not enforce that the meeting must be the October meeting \u2014 adoption could occur at a later meeting and still satisfy the predicate if the predicate is interpreted loosely."
+   ],
+   "direct_human_reaction_encodings": [
+    "Petra Lindqvist's trust in Raul Mendes on liability is modeled as a static fact ('board_member_trust_on_liability'), but trust can be eroded or reinforced by events \u2014 the model has no mechanism for trust dynamics.",
+    "Raul Mendes's 'liability concern' is a static level ('concern_level'), but concerns can escalate or diminish based on new information (e.g., legal review) \u2014 no event type captures this change."
+   ],
+   "public_posture_vs_private_reality_conflations": [
+    "The model assumes that a 'written_decision_record' reflects the member's true intention, but a member might publicly record 'support' while privately intending to oppose later, or vice versa \u2014 no distinction is made between public record and private stance.",
+    "The 'board_member_liability_concern' fact is treated as a private state, but it could be publicly stated or privately held \u2014 the model does not distinguish between stated and unstated concerns."
+   ],
+   "outcome_predicate_matches_question": true,
+   "missing_nonhuman_mechanisms": [
+    "No representation of the cooperative's governing documents or legal requirements that might impose a minimum notice period for bylaw amendments beyond the 7-day special meeting rule.",
+    "No representation of the physical or digital infrastructure for recording decisions \u2014 e.g., if the written decision record system fails or is inaccessible, the process stalls.",
+    "No representation of the calendar \u2014 the model does not track whether the October meeting date is before or after the proposal date, or whether there is enough time for all three members to record decisions before the meeting."
+   ],
+   "verdict": "needs_extension"
+  },
+  "frozen_at": 1752800000.0,
+  "content_hash": "e6c5eee639d25362"
+ },
+ "frozen": true,
+ "ancestry": []
+}
