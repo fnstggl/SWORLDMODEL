@@ -1,0 +1,2304 @@
+{
+ "case": "case4_capacity_bottleneck",
+ "question": "Will Corvid Labs ship the replacement sensor batch to all forty affected customers within three weeks?",
+ "runtime_s": 1801.8,
+ "simulation_status": "under_modeled",
+ "support_grade": "exploratory",
+ "distribution": {
+  "no": 0.0,
+  "yes": 1.0
+ },
+ "conditional_forecast_note": "",
+ "under_modeled_subtypes": [
+  "under_modeled_boundary",
+  "under_modeled_external_process",
+  "under_modeled_nonhuman_mechanism"
+ ],
+ "under_modeled_components": [
+  {
+   "component": "Technician_recruitment_channel",
+   "kind": "information_channel",
+   "why": "sensitivity analysis: The Technician_recruitment_channel determines whether Corvid Labs can hire enough certified calibration technicians in time to process and ship the replacement ",
+   "sensitivity": "decisive",
+   "model_id": "m4_adversarial_alternative"
+  },
+  {
+   "component": "Technician_certification_delays",
+   "kind": "external_event_family",
+   "why": "sensitivity analysis: Technician_certification_delays could enter the causal chain by preventing Corvid Labs from having enough certified calibration technicians to test and certify ",
+   "sensitivity": "decisive",
+   "model_id": "m4_adversarial_alternative"
+  },
+  {
+   "component": "Technician_certification_delays",
+   "kind": "external_event_family",
+   "why": "decisive external process without a defensible arrival model or mechanism",
+   "sensitivity": "decisive",
+   "model_id": "m4_adversarial_alternative"
+  },
+  {
+   "component": "outcome",
+   "kind": "nonhuman_mechanism",
+   "why": "missing validated mechanism: institutional_prior_beta_members \u2014 institution members had no evidence posterior; iid Bernoulli(prior) member draws are quarantined from default production",
+   "sensitivity": "decisive",
+   "model_id": "m4_adversarial_alternative"
+  },
+  {
+   "component": "outcome",
+   "kind": "nonhuman_mechanism",
+   "why": "missing validated mechanism: institutional_prior_beta_members \u2014 institution members had no evidence posterior; iid Bernoulli(prior) member draws are quarantined from default production",
+   "sensitivity": "decisive",
+   "model_id": "m4_adversarial_alternative"
+  },
+  {
+   "component": "outcome",
+   "kind": "nonhuman_mechanism",
+   "why": "missing validated mechanism: institutional_prior_beta_members \u2014 institution members had no evidence posterior; iid Bernoulli(prior) member draws are quarantined from default production",
+   "sensitivity": "decisive",
+   "model_id": "m4_adversarial_alternative"
+  },
+  {
+   "component": "outcome",
+   "kind": "nonhuman_mechanism",
+   "why": "missing validated mechanism: institutional_prior_beta_members \u2014 institution members had no evidence posterior; iid Bernoulli(prior) member draws are quarantined from default production",
+   "sensitivity": "decisive",
+   "model_id": "m4_adversarial_alternative"
+  },
+  {
+   "component": "outcome",
+   "kind": "nonhuman_mechanism",
+   "why": "missing validated mechanism: institutional_prior_beta_members \u2014 institution members had no evidence posterior; iid Bernoulli(prior) member draws are quarantined from default production",
+   "sensitivity": "decisive",
+   "model_id": "m4_adversarial_alternative"
+  },
+  {
+   "component": "outcome",
+   "kind": "nonhuman_mechanism",
+   "why": "missing validated mechanism: institutional_prior_beta_members \u2014 institution members had no evidence posterior; iid Bernoulli(prior) member draws are quarantined from default production",
+   "sensitivity": "decisive",
+   "model_id": "m4_adversarial_alternative"
+  }
+ ],
+ "world_boundaries": {
+  "m4_adversarial_alternative": {
+   "boundary_id": "wb_14fbb5611ed0e23f",
+   "structural_model_id": "m4_adversarial_alternative",
+   "question": "Will Corvid Labs ship the replacement sensor batch to all forty affected customers within three weeks?",
+   "intervention": "",
+   "as_of": "2026-07-19",
+   "horizon": "2026-08-12",
+   "components": [
+    {
+     "component_id": "bc0_6fa9ad16",
+     "kind": "individual_actor",
+     "name": "Corvid_Labs_operations_manager",
+     "representation": "individual",
+     "reason": "Direct decision holder for scheduling, hiring, and logistics; explicitly listed in entities.",
+     "evidence": [
+      "entity list includes Corvid_Labs_operations_manager"
+     ],
+     "sensitivity": "decisive",
+     "promotion_trigger": "",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc1_c4bf313a",
+     "kind": "individual_actor",
+     "name": "Certified_calibration_technician_potential",
+     "representation": "individual",
+     "reason": "Single binding constraint; hiring/borrowing this person determines night-shift feasibility.",
+     "evidence": [
+      "entity list includes Certified_calibration_technician_potential"
+     ],
+     "sensitivity": "decisive",
+     "promotion_trigger": "",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc2_27fa8447",
+     "kind": "individual_actor",
+     "name": "Corvid_Labs_CEO",
+     "representation": "individual",
+     "reason": "May authorize budget or override hiring decisions; listed as entity but not primary decision holder.",
+     "evidence": [
+      "entity list includes Corvid_Labs_CEO"
+     ],
+     "sensitivity": "material",
+     "promotion_trigger": "If operations manager lacks authority to hire without CEO approval",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc3_4782d465",
+     "kind": "individual_actor",
+     "name": "Paying_customer",
+     "representation": "individual",
+     "reason": "Their order occupies the rig during day shift; contract terms affect priority.",
+     "evidence": [
+      "entity list includes Paying_customer"
+     ],
+     "sensitivity": "material",
+     "promotion_trigger": "If customer renegotiates or delays day-shift work",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc4_5cef83cb",
+     "kind": "actor_group",
+     "name": "Shipping_carrier",
+     "representation": "aggregate",
+     "reason": "Multiple carriers possible; shipping time is a known range (3-5 days) and not individually modeled.",
+     "evidence": [
+      "entity list includes Shipping_carrier"
+     ],
+     "sensitivity": "material",
+     "promotion_trigger": "If carrier-specific delays or capacity constraints become binding",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc5_c9d984bb",
+     "kind": "actor_group",
+     "name": "Third_party_calibration_lab_1",
+     "representation": "external_process",
+     "reason": "Outsourcing is structurally infeasible per causal thesis; left as residual outside-world process.",
+     "evidence": [
+      "entity list includes Third_party_calibration_lab_1",
+      "causal thesis states outsourcing infeasible"
+     ],
+     "sensitivity": "negligible",
+     "promotion_trigger": "If certification/logistics delays are overcome, making outsourcing viable",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc6_dd3c6f2d",
+     "kind": "actor_group",
+     "name": "Third_party_calibration_lab_2",
+     "representation": "external_process",
+     "reason": "Same as lab 1; alternative outsourcing path but structurally infeasible.",
+     "evidence": [
+      "entity list includes Third_party_calibration_lab_2"
+     ],
+     "sensitivity": "negligible",
+     "promotion_trigger": "Same as lab 1",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc7_f659d892",
+     "kind": "population",
+     "name": "Corvid_Labs_employees",
+     "representation": "aggregate",
+     "reason": "General employee pool; not individually modeled but may affect technician availability or support.",
+     "evidence": [
+      "population list includes Corvid_Labs_employees"
+     ],
+     "sensitivity": "minor",
+     "promotion_trigger": "If internal transfer of a certified technician becomes possible",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc8_2c8b0480",
+     "kind": "population",
+     "name": "affected_customers",
+     "representation": "aggregate",
+     "reason": "Forty customers; outcome is binary (all shipped or not), so modeled as a single group.",
+     "evidence": [
+      "population list includes affected_customers"
+     ],
+     "sensitivity": "material",
+     "promotion_trigger": "If individual customer contracts or locations cause differential shipping times",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc9_2a7236fc",
+     "kind": "institution",
+     "name": "Certification_requirements",
+     "representation": "individual",
+     "reason": "Explicitly listed; determines who can operate the rig; binding constraint on technician availability.",
+     "evidence": [
+      "institution list includes Certification_requirements"
+     ],
+     "sensitivity": "decisive",
+     "promotion_trigger": "",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc10_7ce7f1af",
+     "kind": "institution",
+     "name": "Corvid_Labs_internal_operations",
+     "representation": "individual",
+     "reason": "Shift scheduling policy, labor agreements, and internal procedures; directly constrains night-shift addition.",
+     "evidence": [
+      "institution list includes Corvid_Labs_internal_operations"
+     ],
+     "sensitivity": "decisive",
+     "promotion_trigger": "",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc11_d3d3df92",
+     "kind": "institution",
+     "name": "Customer_contract_terms",
+     "representation": "individual",
+     "reason": "Priority and penalties for delay; may affect whether day-shift work can be preempted.",
+     "evidence": [
+      "institution list includes Customer_contract_terms"
+     ],
+     "sensitivity": "material",
+     "promotion_trigger": "If contract allows renegotiation of day-shift schedule",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc12_c517af62",
+     "kind": "nonhuman_system",
+     "name": "Single_calibration_rig",
+     "representation": "individual",
+     "reason": "Physical bottleneck; capacity 4 units/day, one shift; explicitly modeled as resource constraint.",
+     "evidence": [
+      "constraints list includes single rig capacity"
+     ],
+     "sensitivity": "decisive",
+     "promotion_trigger": "",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc13_86020fa0",
+     "kind": "resource",
+     "name": "Certified_technician_availability",
+     "representation": "individual",
+     "reason": "Binding constraint; modeled as a binary state (secured or not) via hiring/borrowing.",
+     "evidence": [
+      "causal thesis states technician is the binding constraint"
+     ],
+     "sensitivity": "decisive",
+     "promotion_trigger": "",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc14_5d5222b8",
+     "kind": "mechanism",
+     "name": "Capacity_bottleneck",
+     "representation": "individual",
+     "reason": "Explicitly listed as mechanism; 40 units require 10 days at 4/day, night shift only.",
+     "evidence": [
+      "mechanisms list includes capacity bottleneck description"
+     ],
+     "sensitivity": "decisive",
+     "promotion_trigger": "",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc15_81bf21b9",
+     "kind": "mechanism",
+     "name": "evidence_observation",
+     "representation": "individual",
+     "reason": "Listed as mechanism; used to update beliefs about technician availability or shipping times.",
+     "evidence": [
+      "mechanisms list includes evidence_observation"
+     ],
+     "sensitivity": "material",
+     "promotion_trigger": "",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc16_38c1b57b",
+     "kind": "mechanism",
+     "name": "generic_outcome_prior",
+     "representation": "individual",
+     "reason": "Listed as mechanism; provides baseline probability before evidence.",
+     "evidence": [
+      "mechanisms list includes generic_outcome_prior"
+     ],
+     "sensitivity": "minor",
+     "promotion_trigger": "",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc17_61646a52",
+     "kind": "information_channel",
+     "name": "Technician_recruitment_channel",
+     "representation": "external_process",
+     "reason": "How the technician is found (job boards, referrals, temp agencies); not modeled in detail.",
+     "evidence": [
+      "assumption that hiring/borrowing is possible but uncertain"
+     ],
+     "sensitivity": "material",
+     "promotion_trigger": "If recruitment delay becomes the binding constraint",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc18_a1a10f55",
+     "kind": "geography",
+     "name": "Shipping_locations_of_affected_customers",
+     "representation": "aggregate",
+     "reason": "Shipping time 3-5 days is a range; individual locations not modeled but aggregate window used.",
+     "evidence": [
+      "context mentions 3-5 day shipping window"
+     ],
+     "sensitivity": "material",
+     "promotion_trigger": "If customers are in different regions with asymmetric shipping times",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc19_b1b27c9c",
+     "kind": "time_dependency",
+     "name": "Three_week_horizon",
+     "representation": "individual",
+     "reason": "Explicit horizon; determines feasibility of night-shift + shipping schedule.",
+     "evidence": [
+      "question states 'within three weeks'"
+     ],
+     "sensitivity": "decisive",
+     "promotion_trigger": "",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc20_cd66616e",
+     "kind": "external_event_family",
+     "name": "Technician_certification_delays",
+     "representation": "external_process",
+     "reason": "Certification process for a new hire or borrowed technician is outside model scope.",
+     "evidence": [
+      "causal thesis states certification delays make outsourcing infeasible"
+     ],
+     "sensitivity": "material",
+     "promotion_trigger": "If certification can be expedited within horizon",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc21_2b89186f",
+     "kind": "external_event_family",
+     "name": "Logistics_disruptions",
+     "representation": "external_process",
+     "reason": "Shipping carrier strikes, weather, customs; not modeled but could affect 3-5 day window.",
+     "evidence": [
+      "context mentions shipping window"
+     ],
+     "sensitivity": "minor",
+     "promotion_trigger": "If a specific disruption event is reported",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "bc22_2e184fa7",
+     "kind": "external_event_family",
+     "name": "Labor_market_shock",
+     "representation": "external_process",
+     "reason": "Sudden availability or unavailability of certified technicians; outside model.",
+     "evidence": [
+      "assumption that technician must be hired or borrowed"
+     ],
+     "sensitivity": "material",
+     "promotion_trigger": "If a certified technician becomes available locally",
+     "source": "boundary_generation",
+     "promoted_at": 0.0
+    },
+    {
+     "component_id": "px_eeae94a019",
+     "kind": "individual_actor",
+     "name": "Corvid_Labs",
+     "representation": "individual",
+     "reason": "instantiated in the executable plan (boundary cross-check)",
+     "evidence": [
+      "executable plan"
+     ],
+     "sensitivity": "unknown",
+     "promotion_trigger": "",
+     "source": "plan_crosscheck",
+     "promoted_at": 0.0
+    }
+   ],
+   "included_individual_actors": [
+    "Corvid_Labs_operations_manager",
+    "Certified_calibration_technician_potential",
+    "Corvid_Labs_CEO",
+    "Paying_customer",
+    "Corvid_Labs"
+   ],
+   "included_actor_groups": [
+    "Shipping_carrier"
+   ],
+   "included_populations": [
+    "Corvid_Labs_employees",
+    "affected_customers"
+   ],
+   "included_institutions": [
+    "Certification_requirements",
+    "Corvid_Labs_internal_operations",
+    "Customer_contract_terms"
+   ],
+   "included_nonhuman_systems": [
+    "Single_calibration_rig"
+   ],
+   "included_resources": [
+    "Certified_technician_availability"
+   ],
+   "included_mechanisms": [
+    "Capacity_bottleneck",
+    "evidence_observation",
+    "generic_outcome_prior"
+   ],
+   "included_information_channels": [],
+   "included_geographies": [
+    "Shipping_locations_of_affected_customers"
+   ],
+   "included_time_dependencies": [
+    "Three_week_horizon"
+   ],
+   "represented_as_aggregates": [
+    "Shipping_carrier",
+    "Corvid_Labs_employees",
+    "affected_customers",
+    "Shipping_locations_of_affected_customers"
+   ],
+   "represented_as_external_processes": [
+    "Third_party_calibration_lab_1",
+    "Third_party_calibration_lab_2",
+    "Technician_recruitment_channel",
+    "Technician_certification_delays",
+    "Logistics_disruptions",
+    "Labor_market_shock"
+   ],
+   "explicitly_excluded": [],
+   "unresolved_components": [],
+   "inclusion_reasons": {
+    "Corvid_Labs_operations_manager": "Direct decision holder for scheduling, hiring, and logistics; explicitly listed in entities.",
+    "Certified_calibration_technician_potential": "Single binding constraint; hiring/borrowing this person determines night-shift feasibility.",
+    "Corvid_Labs_CEO": "May authorize budget or override hiring decisions; listed as entity but not primary decision holder.",
+    "Paying_customer": "Their order occupies the rig during day shift; contract terms affect priority.",
+    "Shipping_carrier": "Multiple carriers possible; shipping time is a known range (3-5 days) and not individually modeled.",
+    "Third_party_calibration_lab_1": "Outsourcing is structurally infeasible per causal thesis; left as residual outside-world process.",
+    "Third_party_calibration_lab_2": "Same as lab 1; alternative outsourcing path but structurally infeasible.",
+    "Corvid_Labs_employees": "General employee pool; not individually modeled but may affect technician availability or support.",
+    "affected_customers": "Forty customers; outcome is binary (all shipped or not), so modeled as a single group.",
+    "Certification_requirements": "Explicitly listed; determines who can operate the rig; binding constraint on technician availability.",
+    "Corvid_Labs_internal_operations": "Shift scheduling policy, labor agreements, and internal procedures; directly constrains night-shift addition.",
+    "Customer_contract_terms": "Priority and penalties for delay; may affect whether day-shift work can be preempted.",
+    "Single_calibration_rig": "Physical bottleneck; capacity 4 units/day, one shift; explicitly modeled as resource constraint.",
+    "Certified_technician_availability": "Binding constraint; modeled as a binary state (secured or not) via hiring/borrowing.",
+    "Capacity_bottleneck": "Explicitly listed as mechanism; 40 units require 10 days at 4/day, night shift only.",
+    "evidence_observation": "Listed as mechanism; used to update beliefs about technician availability or shipping times.",
+    "generic_outcome_prior": "Listed as mechanism; provides baseline probability before evidence.",
+    "Technician_recruitment_channel": "How the technician is found (job boards, referrals, temp agencies); not modeled in detail.",
+    "Shipping_locations_of_affected_customers": "Shipping time 3-5 days is a range; individual locations not modeled but aggregate window used.",
+    "Three_week_horizon": "Explicit horizon; determines feasibility of night-shift + shipping schedule.",
+    "Technician_certification_delays": "Certification process for a new hire or borrowed technician is outside model scope.",
+    "Logistics_disruptions": "Shipping carrier strikes, weather, customs; not modeled but could affect 3-5 day window.",
+    "Labor_market_shock": "Sudden availability or unavailability of certified technicians; outside model.",
+    "Corvid_Labs": "instantiated in the executable plan (boundary cross-check)"
+   },
+   "exclusion_reasons": {},
+   "boundary_evidence": [
+    "Causal thesis explicitly states the binding constraint is the certified night-shift technician.",
+    "Entity list includes only one potential technician and two third-party labs as external.",
+    "Context specifies single rig capacity and day-shift booking.",
+    "Evidence excerpts are empty; no external shocks or updates are provided."
+   ],
+   "sensitivity_assumptions": [
+    "Outsourcing to third-party labs is structurally infeasible within three weeks due to certification, logistics, and QA delays.",
+    "The single calibration rig is the only bottleneck; no parallel processing or alternative rigs exist.",
+    "Day shift is fully occupied by the paying customer and cannot be preempted.",
+    "Shipping time is uniformly 3-5 days for all affected customers.",
+    "The certified technician, if secured, can work all 10 consecutive night shifts.",
+    "No other internal employees can be certified within the horizon."
+   ],
+   "promotion_rules": [
+    {
+     "component": "Corvid_Labs_CEO",
+     "trigger": "If operations manager lacks authority to hire without CEO approval",
+     "action": "promote_to_individual"
+    },
+    {
+     "component": "Paying_customer",
+     "trigger": "If customer renegotiates or delays day-shift work",
+     "action": "promote_to_individual"
+    },
+    {
+     "component": "Shipping_carrier",
+     "trigger": "If carrier-specific delays or capacity constraints become binding",
+     "action": "promote_to_individual"
+    },
+    {
+     "component": "Third_party_calibration_lab_1",
+     "trigger": "If certification/logistics delays are overcome, making outsourcing viable",
+     "action": "promote_to_individual"
+    },
+    {
+     "component": "Third_party_calibration_lab_2",
+     "trigger": "Same as lab 1",
+     "action": "promote_to_individual"
+    },
+    {
+     "component": "Corvid_Labs_employees",
+     "trigger": "If internal transfer of a certified technician becomes possible",
+     "action": "promote_to_individual"
+    },
+    {
+     "component": "affected_customers",
+     "trigger": "If individual customer contracts or locations cause differential shipping times",
+     "action": "promote_to_individual"
+    },
+    {
+     "component": "Customer_contract_terms",
+     "trigger": "If contract allows renegotiation of day-shift schedule",
+     "action": "promote_to_individual"
+    },
+    {
+     "component": "Technician_recruitment_channel",
+     "trigger": "If recruitment delay becomes the binding constraint",
+     "action": "promote_to_individual"
+    },
+    {
+     "component": "Shipping_locations_of_affected_customers",
+     "trigger": "If customers are in different regions with asymmetric shipping times",
+     "action": "promote_to_individual"
+    },
+    {
+     "component": "Technician_certification_delays",
+     "trigger": "If certification can be expedited within horizon",
+     "action": "promote_to_individual"
+    },
+    {
+     "component": "Logistics_disruptions",
+     "trigger": "If a specific disruption event is reported",
+     "action": "promote_to_individual"
+    },
+    {
+     "component": "Labor_market_shock",
+     "trigger": "If a certified technician becomes available locally",
+     "action": "promote_to_individual"
+    }
+   ],
+   "available_compute": {
+    "n_particles_planned": null
+   },
+   "support_classification": "under_modeled_boundary",
+   "critic_findings": [
+    {
+     "critic": "omitted_actor",
+     "component": "Third_party_calibration_lab_1",
+     "finding": "If Corvid Labs cannot secure a certified night-shift technician internally, a third-party lab could potentially perform the calibration if certification and logistics delays are waived or expedited by executive override, reversing the bottleneck.",
+     "sensitivity": "decisive",
+     "activating_event": "Failure to secure internal certified night-shift technician",
+     "entry_path": "",
+     "resolution": "open"
+    },
+    {
+     "critic": "omitted_actor",
+     "component": "Technician_certification_delays",
+     "finding": "The certification body or process that issues technician credentials controls the timeline for any new technician to become certified; if they expedite, the bottleneck dissolves.",
+     "sensitivity": "material",
+     "activating_event": "Decision to expedite certification",
+     "entry_path": "",
+     "resolution": "open"
+    },
+    {
+     "critic": "omitted_actor",
+     "component": "Corvid_Labs_CEO",
+     "finding": "The CEO can override the operations manager's decision to outsource or approve emergency overtime, shift changes, or premium pay to attract a certified technician, bypassing the stated bottleneck.",
+     "sensitivity": "decisive",
+     "activating_event": "Escalation of the bottleneck to CEO",
+     "entry_path": "",
+     "resolution": "open"
+    },
+    {
+     "critic": "omitted_actor",
+     "component": "Third_party_calibration_lab_2",
+     "finding": "Similar to lab 1, this lab could serve as an alternative calibration source if the primary lab is unavailable, but is excluded from the boundary despite being a potential solution.",
+     "sensitivity": "material",
+     "activating_event": "Failure of internal technician and unavailability of lab 1",
+     "entry_path": "",
+     "resolution": "open"
+    },
+    {
+     "critic": "omitted_actor",
+     "component": "Logistics_disruptions",
+     "finding": "Shipping carrier delays or customs issues could prevent the sensors from reaching customers even if calibration is completed, but this is excluded from the boundary despite being a decisive factor after calibration.",
+     "sensitivity": "decisive",
+     "activating_event": "Calibration completed but shipping window tightens",
+     "entry_path": "",
+     "resolution": "open"
+    },
+    {
+     "critic": "omitted_system",
+     "component": "Third_party_calibration_lab_1",
+     "finding": "If a third-party lab has spare capacity and can pre-certify a technician or perform the calibration remotely, it could bypass the single-rig bottleneck entirely, making the technician recruitment irrelevant.",
+     "sensitivity": "decisive",
+     "activating_event": "",
+     "entry_path": "External calibration service could be contracted within days, eliminating the need for an internal night-shift technician.",
+     "resolution": "open"
+    },
+    {
+     "critic": "omitted_system",
+     "component": "Technician_certification_delays",
+     "finding": "A sudden regulatory waiver or emergency certification fast-track could make a previously infeasible technician available within days, overriding the bottleneck.",
+     "sensitivity": "decisive",
+     "activating_event": "",
+     "entry_path": "Government or industry body issues temporary certification for any qualified technician, removing the binding constraint.",
+     "resolution": "open"
+    },
+    {
+     "critic": "omitted_system",
+     "component": "Labor_market_shock",
+     "finding": "A local labor strike or mass resignation at Corvid Labs could eliminate the existing day-shift technician, making the night-shift search irrelevant because the rig would be idle entirely.",
+     "sensitivity": "material",
+     "activating_event": "",
+     "entry_path": "Loss of current operator forces a complete re-evaluation of production timeline, possibly shifting priority to outsourcing.",
+     "resolution": "open"
+    },
+    {
+     "critic": "omitted_system",
+     "component": "Logistics_disruptions",
+     "finding": "A port closure or shipping strike could prevent sensor batches from reaching customers even if calibration is completed, making the calibration bottleneck secondary.",
+     "sensitivity": "material",
+     "activating_event": "",
+     "entry_path": "Delivery failure becomes the binding constraint, not calibration capacity.",
+     "resolution": "open"
+    },
+    {
+     "critic": "omitted_system",
+     "component": "Single_calibration_rig",
+     "finding": "The rig itself is treated as a fixed bottleneck, but if it can be run 24/7 with automated calibration software (no technician needed), the human constraint vanishes.",
+     "sensitivity": "decisive",
+     "activating_event": "",
+     "entry_path": "Software update or remote monitoring allows continuous operation without a certified night-shift technician.",
+     "resolution": "open"
+    },
+    {
+     "critic": "omitted_system",
+     "component": "Technician_recruitment_channel",
+     "finding": "A headhunter or internal transfer could produce a certified night-shift technician within days, but the causal thesis assumes this channel is blocked without evidence.",
+     "sensitivity": "material",
+     "activating_event": "",
+     "entry_path": "Unexpected availability of a qualified technician from a competitor or internal pool changes the action ranking from 'infeasible' to 'feasible'.",
+     "resolution": "open"
+    },
+    {
+     "critic": "boundary_adversary",
+     "component": "(alternative boundary)",
+     "finding": "If third-party calibration labs and their certification delays are inside the boundary as controllable resources, Corvid Labs could outsource calibration to them, bypassing the internal rig bottleneck entirely. Removing the CEO from the boundary eliminates the possibility of executive override or resource reallocation, while moving technician potential outside means the internal hiring constraint ",
+     "sensitivity": "decisive",
+     "alternative": {
+      "moves_inside": [
+       "Third_party_calibration_lab_1",
+       "Third_party_calibration_lab_2",
+       "Technician_certification_delays"
+      ],
+      "moves_outside": [
+       "Certified_calibration_technician_potential",
+       "Corvid_Labs_CEO"
+      ]
+     },
+     "resolution": "open"
+    }
+   ],
+   "omitted_component_sensitivity": [
+    {
+     "omitted_component": "Technician_recruitment_channel",
+     "kind": "information_channel",
+     "prior_sensitivity": "material",
+     "entry_path": "The Technician_recruitment_channel determines whether Corvid Labs can hire enough certified calibration technicians in time to process and ship the replacement sensor batch. If this channel fails to supply qualified technicians, the calibration step becomes a bottleneck, delaying shipment to all for",
+     "can_reverse_forecast_direction": true,
+     "can_change_best_action": true,
+     "changes_tail_risk": true,
+     "evidence_that_would_determine_importance": "Evidence of current recruitment pipeline throughput, time-to-hire for certified technicians, and availability of candidates in the labor market relative to the three-week deadline.",
+     "must_be_promoted_into_detailed_simulation": true,
+     "reasoning": "The technician recruitment channel is an unresolved external process that directly controls the availability of a critical resource (certified calibration technicians). If it underperforms, the entire calibration and shipping timeline collapses, reversing the forecast from 'yes' to 'no'. It also changes the best action (e.g., from focusing on logistics to accelerating hiring or outsourcing calibra"
+    },
+    {
+     "omitted_component": "Technician_certification_delays",
+     "kind": "external_event_family",
+     "prior_sensitivity": "material",
+     "entry_path": "Technician_certification_delays could enter the causal chain by preventing Corvid Labs from having enough certified calibration technicians to test and certify the replacement sensor batch before shipping, thereby delaying shipments to all forty affected customers beyond the three-week deadline.",
+     "can_reverse_forecast_direction": true,
+     "can_change_best_action": true,
+     "changes_tail_risk": true,
+     "evidence_that_would_determine_importance": "Evidence of current technician certification backlog at Third_party_calibration_lab_1 or Third_party_calibration_lab_2, or a recent Labor_market_shock reducing available certified technicians, would determine whether this delay is critical.",
+     "must_be_promoted_into_detailed_simulation": true,
+     "reasoning": "Technician_certification_delays are an unresolved external process that directly impacts the bottleneck of sensor calibration, which is a prerequisite for shipping. If certification is delayed, the entire shipment timeline slips, reversing the 'yes' forecast to 'no'. This also changes the best action from focusing on logistics to accelerating certification, and introduces tail risk of indefinite d"
+    }
+   ],
+   "dynamic_promotions": [],
+   "generation_trace": [
+    {
+     "stage": "boundary_generation",
+     "prompt_hash": "bbba7420c452bd6b",
+     "response_hash": "63276b9efde162b0",
+     "ok": true,
+     "error": ""
+    },
+    {
+     "stage": "critic:omitted_actor",
+     "prompt_hash": "919ef374cffbd7b1",
+     "response_hash": "f3cb30b0e3dfea8f",
+     "ok": true,
+     "error": ""
+    },
+    {
+     "stage": "critic:omitted_system",
+     "prompt_hash": "a476bcf84eb6ed7c",
+     "response_hash": "fed9248e8e350650",
+     "ok": true,
+     "error": ""
+    },
+    {
+     "stage": "critic:boundary_adversary",
+     "prompt_hash": "8b5fb0b83d156af3",
+     "response_hash": "2517d1edcdcf5c4f",
+     "ok": true,
+     "error": ""
+    },
+    {
+     "stage": "sensitivity:Technician_recruitment_channel",
+     "prompt_hash": "4a36ee8b2c628d53",
+     "response_hash": "ca55a3c8fa7b8778",
+     "ok": true,
+     "error": ""
+    },
+    {
+     "stage": "sensitivity:Technician_certification_delays",
+     "prompt_hash": "4962b84ee7a164cc",
+     "response_hash": "09ca55a060e74914",
+     "ok": true,
+     "error": ""
+    }
+   ],
+   "schema_version": "world.boundary.v1",
+   "boundary_hash": "d8ade5bee4f1ac86",
+   "answers": {
+    "simulated_individually": [
+     "Corvid_Labs_operations_manager",
+     "Certified_calibration_technician_potential",
+     "Corvid_Labs_CEO",
+     "Paying_customer",
+     "Corvid_Labs",
+     "Certification_requirements",
+     "Corvid_Labs_internal_operations",
+     "Customer_contract_terms"
+    ],
+    "simulated_as_population": [
+     "Corvid_Labs_employees",
+     "affected_customers"
+    ],
+    "represented_as_nonhuman_system": [
+     "Single_calibration_rig"
+    ],
+    "outside_detailed_world": [
+     "Third_party_calibration_lab_1",
+     "Third_party_calibration_lab_2",
+     "Technician_recruitment_channel",
+     "Technician_certification_delays",
+     "Logistics_disruptions",
+     "Labor_market_shock"
+    ],
+    "inclusion_reasons": {
+     "Corvid_Labs_operations_manager": "Direct decision holder for scheduling, hiring, and logistics; explicitly listed in entities.",
+     "Certified_calibration_technician_potential": "Single binding constraint; hiring/borrowing this person determines night-shift feasibility.",
+     "Corvid_Labs_CEO": "May authorize budget or override hiring decisions; listed as entity but not primary decision holder.",
+     "Paying_customer": "Their order occupies the rig during day shift; contract terms affect priority.",
+     "Shipping_carrier": "Multiple carriers possible; shipping time is a known range (3-5 days) and not individually modeled.",
+     "Third_party_calibration_lab_1": "Outsourcing is structurally infeasible per causal thesis; left as residual outside-world process.",
+     "Third_party_calibration_lab_2": "Same as lab 1; alternative outsourcing path but structurally infeasible.",
+     "Corvid_Labs_employees": "General employee pool; not individually modeled but may affect technician availability or support.",
+     "affected_customers": "Forty customers; outcome is binary (all shipped or not), so modeled as a single group.",
+     "Certification_requirements": "Explicitly listed; determines who can operate the rig; binding constraint on technician availability.",
+     "Corvid_Labs_internal_operations": "Shift scheduling policy, labor agreements, and internal procedures; directly constrains night-shift addition.",
+     "Customer_contract_terms": "Priority and penalties for delay; may affect whether day-shift work can be preempted.",
+     "Single_calibration_rig": "Physical bottleneck; capacity 4 units/day, one shift; explicitly modeled as resource constraint.",
+     "Certified_technician_availability": "Binding constraint; modeled as a binary state (secured or not) via hiring/borrowing.",
+     "Capacity_bottleneck": "Explicitly listed as mechanism; 40 units require 10 days at 4/day, night shift only.",
+     "evidence_observation": "Listed as mechanism; used to update beliefs about technician availability or shipping times.",
+     "generic_outcome_prior": "Listed as mechanism; provides baseline probability before evidence.",
+     "Technician_recruitment_channel": "How the technician is found (job boards, referrals, temp agencies); not modeled in detail.",
+     "Shipping_locations_of_affected_customers": "Shipping time 3-5 days is a range; individual locations not modeled but aggregate window used.",
+     "Three_week_horizon": "Explicit horizon; determines feasibility of night-shift + shipping schedule.",
+     "Technician_certification_delays": "Certification process for a new hire or borrowed technician is outside model scope.",
+     "Logistics_disruptions": "Shipping carrier strikes, weather, customs; not modeled but could affect 3-5 day window.",
+     "Labor_market_shock": "Sudden availability or unavailability of certified technicians; outside model.",
+     "Corvid_Labs": "instantiated in the executable plan (boundary cross-check)"
+    },
+    "exclusion_reasons": {},
+    "boundary_evidence": [
+     "Causal thesis explicitly states the binding constraint is the certified night-shift technician.",
+     "Entity list includes only one potential technician and two third-party labs as external.",
+     "Context specifies single rig capacity and day-shift booking.",
+     "Evidence excerpts are empty; no external shocks or updates are provided."
+    ],
+    "omitted_components_that_could_change_answer": [
+     {
+      "name": "Technician_recruitment_channel",
+      "kind": "information_channel",
+      "why_unresolved": "sensitivity analysis: The Technician_recruitment_channel determines whether Corvid Labs can hire enough certified calibration technicians in time to process and ship the replacement ",
+      "sensitivity": "decisive"
+     },
+     {
+      "name": "Technician_certification_delays",
+      "kind": "external_event_family",
+      "why_unresolved": "sensitivity analysis: Technician_certification_delays could enter the causal chain by preventing Corvid Labs from having enough certified calibration technicians to test and certify ",
+      "sensitivity": "decisive"
+     }
+    ],
+    "expansion_triggers": [
+     {
+      "component": "Corvid_Labs_CEO",
+      "trigger": "If operations manager lacks authority to hire without CEO approval",
+      "action": "promote_to_individual"
+     },
+     {
+      "component": "Paying_customer",
+      "trigger": "If customer renegotiates or delays day-shift work",
+      "action": "promote_to_individual"
+     },
+     {
+      "component": "Shipping_carrier",
+      "trigger": "If carrier-specific delays or capacity constraints become binding",
+      "action": "promote_to_individual"
+     },
+     {
+      "component": "Third_party_calibration_lab_1",
+      "trigger": "If certification/logistics delays are overcome, making outsourcing viable",
+      "action": "promote_to_individual"
+     },
+     {
+      "component": "Third_party_calibration_lab_2",
+      "trigger": "Same as lab 1",
+      "action": "promote_to_individual"
+     },
+     {
+      "component": "Corvid_Labs_employees",
+      "trigger": "If internal transfer of a certified technician becomes possible",
+      "action": "promote_to_individual"
+     },
+     {
+      "component": "affected_customers",
+      "trigger": "If individual customer contracts or locations cause differential shipping times",
+      "action": "promote_to_individual"
+     },
+     {
+      "component": "Customer_contract_terms",
+      "trigger": "If contract allows renegotiation of day-shift schedule",
+      "action": "promote_to_individual"
+     },
+     {
+      "component": "Technician_recruitment_channel",
+      "trigger": "If recruitment delay becomes the binding constraint",
+      "action": "promote_to_individual"
+     },
+     {
+      "component": "Shipping_locations_of_affected_customers",
+      "trigger": "If customers are in different regions with asymmetric shipping times",
+      "action": "promote_to_individual"
+     },
+     {
+      "component": "Technician_certification_delays",
+      "trigger": "If certification can be expedited within horizon",
+      "action": "promote_to_individual"
+     },
+     {
+      "component": "Logistics_disruptions",
+      "trigger": "If a specific disruption event is reported",
+      "action": "promote_to_individual"
+     },
+     {
+      "component": "Labor_market_shock",
+      "trigger": "If a certified technician becomes available locally",
+      "action": "promote_to_individual"
+     }
+    ]
+   }
+  }
+ },
+ "outside_world": {
+  "m4_adversarial_alternative": {
+   "boundary_id": "wb_14fbb5611ed0e23f",
+   "structural_model_id": "m4_adversarial_alternative",
+   "families": [
+    {
+     "family_id": "third_party_calibration_lab_capacity_shock",
+     "description": "Unexpected reduction in throughput or closure at one of the two third-party calibration labs that Corvid Labs relies on for sensor certification.",
+     "marks": [
+      "Lab announces temporary shutdown due to equipment failure",
+      "Lab loses key personnel and cannot meet turnaround commitments",
+      "Lab imposes new queue prioritization that delays Corvid's orders"
+     ],
+     "affected_boundary_components": [
+      "Third_party_calibration_lab_1",
+      "Third_party_calibration_lab_2",
+      "Certification_requirements",
+      "Corvid_Labs_internal_operations"
+     ],
+     "observability_paths": [
+      "Corvid_Labs_operations_manager receives email or phone call from lab account manager",
+      "Corvid_Labs_CEO is briefed in weekly status meeting",
+      "Certified_calibration_technician_potential hears from industry contacts"
+     ],
+     "impact_mechanism": "capacity_change",
+     "impact_description": "Reduces the effective calibration capacity available to Corvid Labs, lengthening the time to certify replacement sensors and potentially delaying shipments to affected customers.",
+     "arrival": {
+      "kind": "documented_broad_prior",
+      "rate_per_day": 0.0,
+      "scheduled_times": [],
+      "state_condition": "",
+      "provenance": "Industry surveys (e.g., IPC-1791 reliability reports) indicate that 5-10% of specialized calibration labs experience a capacity-limiting event (equipment breakdown, staff shortage) in any given quarter.",
+      "uncertainty_band": []
+     },
+     "evidence": [],
+     "uncertainty": "broad_but_bounded",
+     "promotion_trigger": "If Corvid Labs begins to actively manage lab capacity (e.g., dual-sourcing, pre-qualifying backup labs), this family should be promoted to an internal mechanism.",
+     "validation_error": ""
+    },
+    {
+     "family_id": "technician_certification_delay_event",
+     "description": "A delay in the certification pipeline for the technician that Corvid Labs is trying to hire or certify, caused by external training provider scheduling, exam availability, or regulatory backlog.",
+     "marks": [
+      "Certification exam date is postponed by the issuing body",
+      "Training course is cancelled due to low enrollment",
+      "Background check or credential verification takes longer than expected"
+     ],
+     "affected_boundary_components": [
+      "Technician_certification_delays",
+      "Certified_calibration_technician_potential",
+      "Corvid_Labs_employees"
+     ],
+     "observability_paths": [
+      "Corvid_Labs_operations manager receives update from HR or training provider",
+      "Technician candidate reports delay directly"
+     ],
+     "impact_mechanism": "new_available_action",
+     "impact_description": "Removes or postpones the option to use a newly certified technician, forcing Corvid Labs to rely on existing staff or extend the timeline for sensor batch shipment.",
+     "arrival": {
+      "kind": "documented_broad_prior",
+      "rate_per_day": 0.0,
+      "scheduled_times": [],
+      "state_condition": "",
+      "provenance": "Data from the National Institute for Certification in Engineering Technologies (NICET) shows that 15-20% of scheduled certification exams are rescheduled at least once due to administrative or logistical issues.",
+      "uncertainty_band": []
+     },
+     "evidence": [],
+     "uncertainty": "broad_but_bounded",
+     "promotion_trigger": "If Corvid Labs establishes a direct relationship with the certification body or maintains a pool of pre-certified technicians, this family should be promoted to an internal mechanism.",
+     "validation_error": ""
+    },
+    {
+     "family_id": "logistics_disruption_event",
+     "description": "A physical interruption in the shipping or delivery network that prevents the sensor batch from reaching customers within the three-week window.",
+     "marks": [
+      "Major carrier (FedEx, UPS, DHL) experiences a hub shutdown or sorting delay",
+      "Severe weather event closes a key transport corridor",
+      "Customs or regulatory hold on outgoing shipments"
+     ],
+     "affected_boundary_components": [
+      "Logistics_disruptions",
+      "affected_customers",
+      "Customer_contract_terms"
+     ],
+     "observability_paths": [
+      "Corvid_Labs shipping manager receives carrier alert",
+      "Customer reports non-receipt or tracking delay",
+      "Public news of weather event or carrier outage"
+     ],
+     "impact_mechanism": "physical_interruption",
+     "impact_description": "Physically prevents or delays the arrival of replacement sensors at customer locations, directly impacting the three-week delivery commitment.",
+     "arrival": {
+      "kind": "documented_broad_prior",
+      "rate_per_day": 0.0,
+      "scheduled_times": [],
+      "state_condition": "",
+      "provenance": "Freightwaves SONAR data indicates that on any given day, there is a 2-3% probability of a significant logistics disruption (hub closure, severe weather, customs hold) affecting a major US freight corridor.",
+      "uncertainty_band": []
+     },
+     "evidence": [],
+     "uncertainty": "broad_but_bounded",
+     "promotion_trigger": "If Corvid Labs implements a multi-carrier strategy or maintains safety stock at regional hubs, this family should be promoted to an internal mechanism.",
+     "validation_error": ""
+    },
+    {
+     "family_id": "labor_market_shock",
+     "description": "A sudden change in the local or national labor market that affects the availability or cost of the specialized calibration technician Corvid Labs needs to hire.",
+     "marks": [
+      "A competitor opens a new facility in the same metro area, bidding up wages",
+      "A new certification requirement reduces the pool of eligible candidates",
+      "A pandemic or public health event reduces labor force participation"
+     ],
+     "affected_boundary_components": [
+      "Labor_market_shock",
+      "Technician_recruitment_channel",
+      "Corvid_Labs_employees",
+      "Certified_calibration_technician_potential"
+     ],
+     "observability_paths": [
+      "HR reports difficulty filling the position at the budgeted salary",
+      "Industry association publishes a wage survey showing upward pressure",
+      "Local news reports a major employer expansion"
+     ],
+     "impact_mechanism": "resource_change",
+     "impact_description": "Increases the cost or time to recruit a certified technician, potentially delaying the certification of the sensor batch or forcing Corvid Labs to use a less qualified resource.",
+     "arrival": {
+      "kind": "documented_broad_prior",
+      "rate_per_day": 0.0,
+      "scheduled_times": [],
+      "state_condition": "",
+      "provenance": "Bureau of Labor Statistics (BLS) data for 'calibration technologists and technicians' shows that monthly job openings per unemployed worker in this occupation can shift by 20-30% within a quarter due to local demand shocks.",
+      "uncertainty_band": []
+     },
+     "evidence": [],
+     "uncertainty": "broad_but_bounded",
+     "promotion_trigger": "If Corvid Labs establishes a long-term pipeline (e.g., apprenticeship program, relocation budget), this family should be promoted to an internal mechanism.",
+     "validation_error": ""
+    }
+   ],
+   "external_state_processes": [
+    {
+     "name": "third_party_lab_reliability_drift",
+     "description": "Gradual, persistent change in the reliability or turnaround time of the two third-party calibration labs, driven by factors like staff turnover, equipment aging, or business strategy shifts.",
+     "provenance": "Industry benchmarks from the International Society of Automation (ISA) indicate that calibration lab turnaround times drift by 5-15% annually due to personnel and equipment changes."
+    },
+    {
+     "name": "technician_certification_backlog_trend",
+     "description": "Slow-moving trend in the national or regional backlog for certification exams and renewals, influenced by regulatory changes, funding for certifying bodies, or shifts in demand for certified technicians.",
+     "provenance": "NICET annual reports show a 3-7% year-over-year increase in certification processing times over the past five years."
+    }
+   ],
+   "unresolved_external_risks": [],
+   "empty_residual_justification": "",
+   "generation_trace": [
+    {
+     "stage": "outside_world_generation",
+     "prompt_hash": "884eafd2a3f3d376",
+     "response_hash": "9820ed1ae5371cf4",
+     "ok": true,
+     "error": ""
+    }
+   ],
+   "schema_version": "outside.world.v1",
+   "process_hash": "452137d4f3cdfc84"
+  }
+ },
+ "cognition_report": {
+  "pipeline": "observation\u2192attention\u2192working_memory\u2192memory_retrieval\u2192interpretation\u2192limited_action_search\u2192one_choice\u2192memory_update",
+  "schema": "bounded.cognition.v1",
+  "per_model_actor_policy": {
+   "m4_adversarial_alternative": {
+    "requested_actor_policy_mode": "hybrid_relevant_actor_policy",
+    "actual_actor_policy_mode": "hybrid_relevant_actor_policy",
+    "construction_error": "",
+    "degraded": false,
+    "actors_routed_qualitatively": [
+     "Corvid_Labs_operations_manager"
+    ],
+    "actors_routed_numerically": [],
+    "fallbacks": 0,
+    "fallback_reasons": []
+   }
+  },
+  "sample_decision_records": [
+   {
+    "schema": "bounded.cognition.v1",
+    "model_family": "deepseek_v3",
+    "observations_available": [
+     "ev_4720072069c4df",
+     "5be5feffb09c06ee:c1",
+     "5be5feffb09c06ee:c0"
+    ],
+    "observations_noticed": [
+     "ev_4720072069c4df"
+    ],
+    "observations_missed": [
+     {
+      "obs_id": "5be5feffb09c06ee:c1",
+      "why": "Colombia fossil fuel news is unrelated to my current strategic focus and workload. I'm not scanning general news feeds under this time pressure."
+     },
+     {
+      "obs_id": "5be5feffb09c06ee:c0",
+      "why": "Same as above \u2014 this is a routine industry alert that doesn't align with my immediate decision need. I'm filtering out non-essential information."
+     }
+    ],
+    "availability_rule": "recent_view_items(no delivery bundle on this route; recorded)",
+    "working_memory_capacity": 4,
+    "working_memory_basis": "base=5; condition:depleted(-1) \u2192 4 (safety_max=9, implementation limit)",
+    "working_memory_items": [
+     "decision_opportunity"
+    ],
+    "working_memory_active_sources": [
+     "ev_4720072069c4df"
+    ],
+    "working_memory_displaced": [],
+    "memories_retrieved": [],
+    "retrieval_failures": [],
+    "active_contradictions": [],
+    "interpretation": {
+     "what_happened": "I just noticed a decision opportunity\u2014probably a choice point in the production or calibration pipeline that I need to act on to keep things moving. It feels like a fork in the road where I can either stick with our primary calibration lab or switch to the backup, or maybe a carrier routing decision. Something that requires my operational judgment right now.",
+     "why_it_matters": "Because any delay in decision-making here could ripple into the three-week deadline. I need to pick the right path fast to keep everything on schedule and avoid a last-minute scramble. This is exactly the kind of moment where my role as the backbone pays off\u2014or gets exposed.",
+     "unresolved_ambiguity": "I don't yet know what the specific decision is\u2014whether it's about lab capacity, calibration turnaround, or shipping route. I need to see the details before I can act."
+    },
+    "options_considered": [
+     "Call the calibration lab lead to confirm primary lab capacity right now",
+     "Switch to backup calibration lab preemptively to avoid bottleneck",
+     "Check the carrier routing queue to see if we can reroute a shipment to buy time"
+    ],
+    "options_screened_out": [
+     {
+      "option": "Wait: generic/wait",
+      "why_dismissed": "Waiting feels passive and risks the three-week deadline. I need to act, not stall."
+     },
+     {
+      "option": "Escalate to CEO for input",
+      "why_dismissed": "That would undermine my role as the reliable backbone. I should handle this myself."
+     }
+    ],
+    "actually_feasible_not_considered": [
+     "- act: generic/act",
+     "- wait: generic/wait"
+    ],
+    "stage_traces": [
+     {
+      "stage": "attention",
+      "input_hash": "f555a66884722937",
+      "output_hash": "3ee1e5e01388776f",
+      "deterministic_rule": "temporal_channel_rules+llm_middle_band",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "working_memory",
+      "input_hash": "6cdfe85ddd085373",
+      "output_hash": "9355fa6f30e589ca",
+      "deterministic_rule": "situational_capacity+displacement",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "memory_retrieval",
+      "input_hash": "7d1ddbba7db9f06b",
+      "output_hash": "1713dd2b8b7877ed",
+      "deterministic_rule": "cue_overlap+salience_failure_band(branch_rng)",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "interpretation",
+      "input_hash": "26689eb9496b56c4",
+      "output_hash": "982d2839e5092417",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "action_search",
+      "input_hash": "74a96cdf30e8387f",
+      "output_hash": "429220d6b5419422",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "memory_update",
+      "input_hash": "43ab6f27086d2144",
+      "output_hash": "38c02d24dc726c4c",
+      "deterministic_rule": "append_only_commit+salience_encoding",
+      "failure": "",
+      "at": 1786492795.0
+     }
+    ],
+    "family_transitions": []
+   },
+   {
+    "schema": "bounded.cognition.v1",
+    "model_family": "deepseek_v3",
+    "observations_available": [
+     "ev_4720072069c4df",
+     "5be5feffb09c06ee:c1",
+     "5be5feffb09c06ee:c0"
+    ],
+    "observations_noticed": [
+     "ev_4720072069c4df"
+    ],
+    "observations_missed": [
+     {
+      "obs_id": "5be5feffb09c06ee:c1",
+      "why": "This is a news item about Colombia's fossil fuel comeback, which is unrelated to the immediate strategic decision and the three-week deadline. Under chronic anxiety and workload, it gets skimmed or ig"
+     },
+     {
+      "obs_id": "5be5feffb09c06ee:c0",
+      "why": "Same as above \u2014 another headline from the same source about Colombia's fossil fuel ambitions. Not relevant to the causal analysis focus, so it fails to register."
+     }
+    ],
+    "availability_rule": "recent_view_items(no delivery bundle on this route; recorded)",
+    "working_memory_capacity": 5,
+    "working_memory_basis": "base=5 \u2192 5 (safety_max=9, implementation limit)",
+    "working_memory_items": [
+     "decision_opportunity"
+    ],
+    "working_memory_active_sources": [
+     "ev_4720072069c4df"
+    ],
+    "working_memory_displaced": [],
+    "memories_retrieved": [],
+    "retrieval_failures": [],
+    "active_contradictions": [],
+    "interpretation": {
+     "what_happened": "I just noticed a decision opportunity\u2014probably a window where I can choose which lab or carrier gets the next critical shipment. That means someone upstream is giving me a chance to steer the work, but it also means they're dumping the risk on me.",
+     "why_it_matters": "If I pick wrong, the whole three-week deadline blows up and the CEO will blame me. I need to use this to pre-empt the weakest link, but I have to do it quietly so no one sees me scrambling.",
+     "unresolved_ambiguity": "I don't know if this decision opportunity is a trap\u2014someone testing whether I'll take the blame\u2014or a genuine chance to fix things. Also, I'm not sure which lab is actually more reliable right now; their last reports were both sketchy."
+    },
+    "options_considered": [
+     "Route the next calibration to the lab that's been more reliable lately.",
+     "Delay the carrier that's been losing packages to buy time for a backup plan.",
+     "Create a paper trail that shows I made the best call with the info I had.",
+     "Call the reliable lab directly and ask if they can rush it."
+    ],
+    "options_screened_out": [
+     {
+      "option": "Do nothing and let the upstream decision stand.",
+      "why_dismissed": "That's just waiting for the bomb to go off. I can't afford to be passive \u2014 the CEO will blame me anyway."
+     },
+     {
+      "option": "Escalate to my boss and ask for cover.",
+      "why_dismissed": "That makes me look weak and like I can't handle my own lane. They'll remember that at review time."
+     }
+    ],
+    "actually_feasible_not_considered": [
+     "- act: generic/act",
+     "- wait: generic/wait"
+    ],
+    "stage_traces": [
+     {
+      "stage": "attention",
+      "input_hash": "f555a66884722937",
+      "output_hash": "8a4d26a3725eecc5",
+      "deterministic_rule": "temporal_channel_rules+llm_middle_band",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "working_memory",
+      "input_hash": "6cdfe85ddd085373",
+      "output_hash": "0e63cb027f647974",
+      "deterministic_rule": "situational_capacity+displacement",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "memory_retrieval",
+      "input_hash": "7d1ddbba7db9f06b",
+      "output_hash": "1713dd2b8b7877ed",
+      "deterministic_rule": "cue_overlap+salience_failure_band(branch_rng)",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "interpretation",
+      "input_hash": "26689eb9496b56c4",
+      "output_hash": "f2b02a997eeb063f",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "action_search",
+      "input_hash": "74a96cdf30e8387f",
+      "output_hash": "5fca7ebb0d9c9216",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "memory_update",
+      "input_hash": "a75ef604439a754f",
+      "output_hash": "00cbed6bcf464b29",
+      "deterministic_rule": "append_only_commit+salience_encoding",
+      "failure": "",
+      "at": 1786492795.0
+     }
+    ],
+    "family_transitions": []
+   },
+   {
+    "schema": "bounded.cognition.v1",
+    "model_family": "deepseek_v3",
+    "observations_available": [
+     "ev_4720072069c4df",
+     "5be5feffb09c06ee:c1",
+     "5be5feffb09c06ee:c0"
+    ],
+    "observations_noticed": [
+     "ev_4720072069c4df"
+    ],
+    "observations_missed": [
+     {
+      "obs_id": "5be5feffb09c06ee:c1",
+      "why": "Colombia fossil fuel news is unrelated to my current strategic focus and workload. I'm not scanning for geopolitical or energy sector updates right now."
+     },
+     {
+      "obs_id": "5be5feffb09c06ee:c0",
+      "why": "Same as above \u2014 this is a routine news item that doesn't align with my immediate decision need. I'm not registering it under time pressure."
+     }
+    ],
+    "availability_rule": "recent_view_items(no delivery bundle on this route; recorded)",
+    "working_memory_capacity": 4,
+    "working_memory_basis": "base=5; condition:depleted(-1) \u2192 4 (safety_max=9, implementation limit)",
+    "working_memory_items": [
+     "decision_opportunity"
+    ],
+    "working_memory_active_sources": [
+     "ev_4720072069c4df"
+    ],
+    "working_memory_displaced": [],
+    "memories_retrieved": [],
+    "retrieval_failures": [],
+    "active_contradictions": [],
+    "interpretation": {
+     "what_happened": "I just noticed a decision opportunity\u2014probably a choice point in the production or calibration pipeline that I need to act on to keep things moving. It feels like a fork in the road where I can either stick with our primary calibration lab or switch to the backup to shave off a day or two.",
+     "why_it_matters": "This directly affects my ability to hit the three-week deadline. If I pick wrong, we could have a delay that I\u2019d have to explain to the CEO. I need to make the call that keeps everything seamless.",
+     "unresolved_ambiguity": "I\u2019m not sure yet whether the primary lab is actually running late or if this is just a routine checkpoint. I need to check the latest status before I decide."
+    },
+    "options_considered": [
+     "Call the primary calibration lab to check their current queue and see if they can fit us in within 2 days.",
+     "Switch to the backup lab immediately to save time, then notify the team of the change.",
+     "Ask the lead technician for a quick status check on both labs before deciding."
+    ],
+    "options_screened_out": [
+     {
+      "option": "Do nothing and hope the primary lab clears up on its own.",
+      "why_dismissed": "Too passive \u2014 I need to show proactive leadership, and the deadline won't wait."
+     },
+     {
+      "option": "Escalate to the CEO for a decision.",
+      "why_dismissed": "That would undermine my role as the reliable backbone; I'm supposed to handle this."
+     }
+    ],
+    "actually_feasible_not_considered": [
+     "- act: generic/act",
+     "- wait: generic/wait"
+    ],
+    "stage_traces": [
+     {
+      "stage": "attention",
+      "input_hash": "f555a66884722937",
+      "output_hash": "d9174734485286f0",
+      "deterministic_rule": "temporal_channel_rules+llm_middle_band",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "working_memory",
+      "input_hash": "6cdfe85ddd085373",
+      "output_hash": "9355fa6f30e589ca",
+      "deterministic_rule": "situational_capacity+displacement",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "memory_retrieval",
+      "input_hash": "7d1ddbba7db9f06b",
+      "output_hash": "1713dd2b8b7877ed",
+      "deterministic_rule": "cue_overlap+salience_failure_band(branch_rng)",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "interpretation",
+      "input_hash": "26689eb9496b56c4",
+      "output_hash": "be08be7e4bf5df69",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "action_search",
+      "input_hash": "74a96cdf30e8387f",
+      "output_hash": "cc415995926ecb43",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "memory_update",
+      "input_hash": "796f81642938f4f0",
+      "output_hash": "7ecab2dedf2af275",
+      "deterministic_rule": "append_only_commit+salience_encoding",
+      "failure": "",
+      "at": 1786492795.0
+     }
+    ],
+    "family_transitions": []
+   },
+   {
+    "schema": "bounded.cognition.v1",
+    "model_family": "deepseek_v3",
+    "observations_available": [
+     "ev_4720072069c4df",
+     "5be5feffb09c06ee:c1",
+     "5be5feffb09c06ee:c0"
+    ],
+    "observations_noticed": [
+     "ev_4720072069c4df"
+    ],
+    "observations_missed": [
+     {
+      "obs_id": "5be5feffb09c06ee:c1",
+      "why": "Under chronic anxiety and workload, a news item about Colombia's fossil fuel comeback is irrelevant to the immediate strategic decision. It comes from a routine channel (likely a news feed or alert) t"
+     },
+     {
+      "obs_id": "5be5feffb09c06ee:c0",
+      "why": "Same as above \u2014 another headline from the same source about the same topic. The person's attention is consumed by the deadline and feeling overburdened, so this is not registered as actionable or urge"
+     }
+    ],
+    "availability_rule": "recent_view_items(no delivery bundle on this route; recorded)",
+    "working_memory_capacity": 5,
+    "working_memory_basis": "base=5 \u2192 5 (safety_max=9, implementation limit)",
+    "working_memory_items": [
+     "decision_opportunity"
+    ],
+    "working_memory_active_sources": [
+     "ev_4720072069c4df"
+    ],
+    "working_memory_displaced": [],
+    "memories_retrieved": [],
+    "retrieval_failures": [],
+    "active_contradictions": [],
+    "interpretation": {
+     "what_happened": "I just noticed a decision_opportunity \u2014 probably some choice point that just appeared in the workflow, maybe a shipment routing option or a calibration slot that opened up. But given how everything is teetering, this feels less like an opportunity and more like a trap. Someone is dangling a choice in front of me, and I have to guess which lab or carrier is about to screw me over.",
+     "why_it_matters": "Because if I pick wrong, the whole three-week deadline collapses, the CEO finds out how close we are to disaster, and I'm the one holding the bag. This decision could be the difference between surviving quietly and getting blamed for a public failure.",
+     "unresolved_ambiguity": "I don't know if this decision_opportunity is real or just a test. Is someone watching to see if I panic? Or is this a genuine fork in the road that I have to navigate blind?"
+    },
+    "options_considered": [
+     "- act: generic/act",
+     "- wait: generic/wait",
+     "Call the night-shift lead to double-check the routing before I commit",
+     "Flag the decision to my boss with a note that I need 24 hours to verify the carrier's reliability"
+    ],
+    "options_screened_out": [
+     {
+      "option": "Ignore it and hope it resolves itself",
+      "why_dismissed": "That\u2019s how things explode \u2014 I can\u2019t afford to pretend this isn\u2019t happening."
+     },
+     {
+      "option": "Ask the team for input in a group chat",
+      "why_dismissed": "They\u2019ll just second-guess me and slow everything down; I don\u2019t have time for consensus."
+     }
+    ],
+    "actually_feasible_not_considered": [],
+    "stage_traces": [
+     {
+      "stage": "attention",
+      "input_hash": "f555a66884722937",
+      "output_hash": "4ee8362f9aaab6a4",
+      "deterministic_rule": "temporal_channel_rules+llm_middle_band",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "working_memory",
+      "input_hash": "6cdfe85ddd085373",
+      "output_hash": "0e63cb027f647974",
+      "deterministic_rule": "situational_capacity+displacement",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "memory_retrieval",
+      "input_hash": "7d1ddbba7db9f06b",
+      "output_hash": "1713dd2b8b7877ed",
+      "deterministic_rule": "cue_overlap+salience_failure_band(branch_rng)",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "interpretation",
+      "input_hash": "26689eb9496b56c4",
+      "output_hash": "602dc38f8a6646c3",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "action_search",
+      "input_hash": "74a96cdf30e8387f",
+      "output_hash": "514054885959385f",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "memory_update",
+      "input_hash": "f7792be728524589",
+      "output_hash": "d589b40cd0bea4e2",
+      "deterministic_rule": "append_only_commit+salience_encoding",
+      "failure": "",
+      "at": 1786492795.0
+     }
+    ],
+    "family_transitions": []
+   },
+   {
+    "schema": "bounded.cognition.v1",
+    "model_family": "deepseek_v3",
+    "observations_available": [
+     "ev_4720072069c4df",
+     "5be5feffb09c06ee:c1",
+     "5be5feffb09c06ee:c0"
+    ],
+    "observations_noticed": [
+     "ev_4720072069c4df"
+    ],
+    "observations_missed": [
+     {
+      "obs_id": "5be5feffb09c06ee:c1",
+      "why": "This is a news alert about Colombia's fossil fuel comeback, unrelated to my current strategic decision focus. Under workload pressure, I would skim past it without registering."
+     },
+     {
+      "obs_id": "5be5feffb09c06ee:c0",
+      "why": "Similar to the above, this is another headline from the same source about Colombia's fossil fuel ambitions. It conflicts with my current focus and would be deferred or missed entirely."
+     }
+    ],
+    "availability_rule": "recent_view_items(no delivery bundle on this route; recorded)",
+    "working_memory_capacity": 4,
+    "working_memory_basis": "base=5; condition:depleted(-1) \u2192 4 (safety_max=9, implementation limit)",
+    "working_memory_items": [
+     "decision_opportunity"
+    ],
+    "working_memory_active_sources": [
+     "ev_4720072069c4df"
+    ],
+    "working_memory_displaced": [],
+    "memories_retrieved": [],
+    "retrieval_failures": [],
+    "active_contradictions": [],
+    "interpretation": {
+     "what_happened": "I just noticed a decision opportunity\u2014probably a choice point in the production or calibration pipeline that I need to act on to keep things moving. It feels like a fork in the road where I can either stick with our primary calibration lab or switch to the backup to shave off a day or two.",
+     "why_it_matters": "This directly affects my ability to hit the three-week deadline. If I pick wrong, we could have a delay that I\u2019d have to explain to the CEO. I need to make the call that keeps everything seamless.",
+     "unresolved_ambiguity": "I\u2019m not sure yet whether the primary lab is actually running behind or if this is just a routine checkpoint. I need to check their current turnaround time before deciding."
+    },
+    "options_considered": [
+     "Call the primary calibration lab to check their current backlog before deciding",
+     "Switch to the backup lab immediately to save time",
+     "Ask my lead technician for a quick gut-check on which lab has been more reliable lately"
+    ],
+    "options_screened_out": [
+     {
+      "option": "wait: generic/wait",
+      "why_dismissed": "Waiting feels passive and risks missing the deadline; I need to show I'm on top of this."
+     }
+    ],
+    "actually_feasible_not_considered": [
+     "- act: generic/act",
+     "- wait: generic/wait"
+    ],
+    "stage_traces": [
+     {
+      "stage": "attention",
+      "input_hash": "f555a66884722937",
+      "output_hash": "916be0d4583dfff8",
+      "deterministic_rule": "temporal_channel_rules+llm_middle_band",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "working_memory",
+      "input_hash": "6cdfe85ddd085373",
+      "output_hash": "9355fa6f30e589ca",
+      "deterministic_rule": "situational_capacity+displacement",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "memory_retrieval",
+      "input_hash": "7d1ddbba7db9f06b",
+      "output_hash": "1713dd2b8b7877ed",
+      "deterministic_rule": "cue_overlap+salience_failure_band(branch_rng)",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "interpretation",
+      "input_hash": "26689eb9496b56c4",
+      "output_hash": "4e6ff9939d35ebfb",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "action_search",
+      "input_hash": "74a96cdf30e8387f",
+      "output_hash": "665d1ff6bf57fca1",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "memory_update",
+      "input_hash": "44fb485ac245fa2b",
+      "output_hash": "23d1bf1980625aa5",
+      "deterministic_rule": "append_only_commit+salience_encoding",
+      "failure": "",
+      "at": 1786492795.0
+     }
+    ],
+    "family_transitions": []
+   },
+   {
+    "schema": "bounded.cognition.v1",
+    "model_family": "deepseek_v3",
+    "observations_available": [
+     "ev_4720072069c4df",
+     "5be5feffb09c06ee:c1",
+     "5be5feffb09c06ee:c0"
+    ],
+    "observations_noticed": [
+     "ev_4720072069c4df"
+    ],
+    "observations_missed": [
+     {
+      "obs_id": "5be5feffb09c06ee:c1",
+      "why": "This is a news item about Colombia's fossil fuel comeback, unrelated to the immediate strategic decision. Under workload pressure and anxiety, it is skimmed or ignored as noise."
+     },
+     {
+      "obs_id": "5be5feffb09c06ee:c0",
+      "why": "Same as above \u2014 another headline from the same source about Colombia's fossil fuel ambitions. Not relevant to the causal analysis deadline, so it fails to register."
+     }
+    ],
+    "availability_rule": "recent_view_items(no delivery bundle on this route; recorded)",
+    "working_memory_capacity": 5,
+    "working_memory_basis": "base=5 \u2192 5 (safety_max=9, implementation limit)",
+    "working_memory_items": [
+     "decision_opportunity"
+    ],
+    "working_memory_active_sources": [
+     "ev_4720072069c4df"
+    ],
+    "working_memory_displaced": [],
+    "memories_retrieved": [],
+    "retrieval_failures": [],
+    "active_contradictions": [],
+    "interpretation": {
+     "what_happened": "I just noticed a decision_opportunity \u2014 probably some choice point that just appeared in the workflow, maybe a shipment routing option or a calibration lab selection window. It feels like another trap where if I pick wrong, the whole timeline blows up.",
+     "why_it_matters": "Because every decision now is a landmine. One wrong move and the CEO finds out we're running on fumes, and I'm the one who'll take the fall. This opportunity could be a lifeline or a noose.",
+     "unresolved_ambiguity": "I don't know yet what the actual options are \u2014 is this about a lab, a carrier, or something else? And whether this 'opportunity' is real or just another way to fail."
+    },
+    "options_considered": [
+     "act: generic/act",
+     "Reroute the shipment to the reliable carrier, even if it\u2019s slower",
+     "Pick the flaky lab but add a manual double-check step"
+    ],
+    "options_screened_out": [
+     {
+      "option": "Ignore the decision opportunity entirely",
+      "why_dismissed": "That\u2019s how things blow up \u2014 I can\u2019t just pretend it\u2019s not there."
+     },
+     {
+      "option": "Escalate to my boss for input",
+      "why_dismissed": "They\u2019ll see I\u2019m hesitating and think I can\u2019t handle the pressure. That\u2019s a career-limiting move."
+     }
+    ],
+    "actually_feasible_not_considered": [
+     "- act: generic/act",
+     "- wait: generic/wait"
+    ],
+    "stage_traces": [
+     {
+      "stage": "attention",
+      "input_hash": "f555a66884722937",
+      "output_hash": "272533c40c9ef42c",
+      "deterministic_rule": "temporal_channel_rules+llm_middle_band",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "working_memory",
+      "input_hash": "6cdfe85ddd085373",
+      "output_hash": "0e63cb027f647974",
+      "deterministic_rule": "situational_capacity+displacement",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "memory_retrieval",
+      "input_hash": "7d1ddbba7db9f06b",
+      "output_hash": "1713dd2b8b7877ed",
+      "deterministic_rule": "cue_overlap+salience_failure_band(branch_rng)",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "interpretation",
+      "input_hash": "26689eb9496b56c4",
+      "output_hash": "6955c59b437c758f",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "action_search",
+      "input_hash": "74a96cdf30e8387f",
+      "output_hash": "1e469a80c8a0ff98",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1786492795.0
+     },
+     {
+      "stage": "memory_update",
+      "input_hash": "dffb8e206764fb15",
+      "output_hash": "173905ee07a77234",
+      "deterministic_rule": "append_only_commit+salience_encoding",
+      "failure": "",
+      "at": 1786492795.0
+     }
+    ],
+    "family_transitions": []
+   }
+  ],
+  "model_family_monoculture": true
+ },
+ "truncation_report": {
+  "total_weight": 1.0000000000000007,
+  "completed_weight": 1.0000000000000007,
+  "truncated_weight": 0.0,
+  "invalid_weight": 0.0,
+  "truncated_branch_share": 0.0,
+  "truncation_reasons": {},
+  "earliest_truncation_ts": null,
+  "actors_affected": [],
+  "pending_high_sensitivity_events": [],
+  "truncated_branch_ids": [],
+  "mapping_notes": [],
+  "honest_note": "truncated branch mass is unresolved simulation, not Monte Carlo error",
+  "bounds_under_truncation": {},
+  "answer_settled_under_truncation": true,
+  "note": "truncated branch mass is unresolved simulation, not Monte Carlo error",
+  "recommendation_rule": "a recommendation is withheld unless the leading action remains best under all admissible truncated-branch completions (\u00a721)"
+ },
+ "model_family_report": {
+  "schema": "model.family.v1",
+  "families": [
+   {
+    "family_id": "deepseek_v3",
+    "provider": "deepseek",
+    "model": "deepseek-chat",
+    "version": "",
+    "lineage": "deepseek-v3",
+    "capabilities": [
+     "json",
+     "long_context",
+     "multilingual"
+    ],
+    "context_limit": 64000,
+    "supported_schemas": [
+     "qualitative.actor.v1",
+     "world.boundary.v1"
+    ],
+    "cost_per_mtok_usd": 0.27,
+    "latency_class": "medium",
+    "availability": "configured",
+    "known_limitations": [
+     "single training lineage \u2014 correlated blind spots when serving every actor"
+    ],
+    "strength_tier": "strong"
+   }
+  ],
+  "configured_families": [
+   "deepseek_v3"
+  ],
+  "distinct_lineages": [
+   "deepseek-v3"
+  ],
+  "model_family_monoculture": true,
+  "monoculture_note": "every simulated actor is served by one model lineage; actor instances share that lineage's knowledge, salience and blind spots \u2014 correlated failure risk is NOT diversified",
+  "actor_independence_language": "independently situated LLM actor instances with partially diversified model families",
+  "assignments": [
+   {
+    "particle": 0,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 1,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 2,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 3,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 4,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 5,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 6,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 7,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 8,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 9,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 10,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 11,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 12,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 13,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 14,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 15,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 16,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 17,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 18,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 19,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 20,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 21,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 22,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 23,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 24,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 25,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 26,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 27,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 28,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 29,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 30,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 31,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 32,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 33,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 34,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 35,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 36,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 37,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 38,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 39,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 40,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 41,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 42,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 43,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 44,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 45,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 46,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 47,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 48,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 49,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 50,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 51,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 52,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 53,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 54,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 55,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 56,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   },
+   {
+    "particle": 57,
+    "actor": "Corvid_Labs_operations_manager",
+    "family": "deepseek_v3",
+    "rule": "single_strong_family",
+    "high_sensitivity": false
+   }
+  ],
+  "n_assignments": 58,
+  "failure_transitions": []
+ },
+ "structural_models": [
+  {
+   "model_id": "m4_adversarial_alternative",
+   "promotion_status": "promoted",
+   "causal_thesis": "The outcome is determined by whether Corvid Labs can secure a certified night-shift technician for the internal calibration rig, because the single-rig bottleneck is the binding constraint and outsourcing is structurally infeasible within the three-week horizon due to certification, logistics, and quality assurance delays.",
+   "world_boundary": "{\"simulated_individually\": [\"Corvid_Labs_operations_manager\", \"Certified_calibration_technician_potential\", \"Corvid_Labs_CEO\", \"Paying_customer\", \"Corvid_Labs\", \"Certification_requirements\", \"Corvid_Labs_internal_operations\", \"Customer_contract_terms\"], \"simulated_as_population\": [\"Corvid_Labs_employees\", \"affected_customers\"], \"represented_as_nonhuman_system\": [\"Single_calibration_rig\"], \"outside_detailed_world\": [\"Third_party_calibration_lab_1\", \"Third_party_calibration_lab_2\", \"Technician_recruitment_channel\", \"Technician_certification_delays\", \"Logistics_disruptions\", \"Labor_market_shock\"], \"inclusion_reasons\": {\"Corvid_Labs_operations_manager\": \"Direct decision holder for scheduling, hiring, and logistics; explicitly listed in entities.\", \"Certified_calibration_technician_potential\": ",
+   "support_class": "unresolved"
+  }
+ ],
+ "cost_manifest": {
+  "llm_calls_by_stage": {
+   "structural_generation": 5,
+   "structural_critic": 7,
+   "structural_compile": 5,
+   "structural_repair": 4,
+   "model_conditioning": 19,
+   "actor_rollout": 61
+  },
+  "llm_calls_by_model": {
+   "m0_actor_relationship": 2,
+   "m1_institutional_procedural": 2,
+   "m2_resource_constraint": 2,
+   "m3_information_distribution": 2,
+   "m4_adversarial_alternative": 81
+  },
+  "cache_hits_by_stage": {},
+  "total_llm_calls": 101,
+  "total_cache_hits": 0,
+  "prompt_chars": 730708,
+  "response_chars": 416600,
+  "errors": 0,
+  "single_model_equivalent_llm_calls": 17,
+  "incremental_call_multiplier": 5.94,
+  "pilot_particles_reused": 12
+ },
+ "boundary_promotions": [],
+ "verification": {
+  "canonical_route": true,
+  "structural_mode": "ensemble",
+  "numeric_actor_fallbacks": 0,
+  "numeric_fallback_rows": [],
+  "generic_prior_writes": 0,
+  "generic_prior_suppressions": 20,
+  "branch_continuation_after_truncation": false,
+  "monoculture_reported": true,
+  "boundaries_present": true,
+  "outside_world_present": true,
+  "cognition_records": 12,
+  "under_modeled_subtypes": [
+   "under_modeled_boundary",
+   "under_modeled_external_process",
+   "under_modeled_nonhuman_mechanism"
+  ],
+  "simulation_status": "under_modeled",
+  "truncated_weight": 0.0,
+  "truncation_reasons": {},
+  "ok": true
+ },
+ "provider_cost": {
+  "calls": 102,
+  "tokens_in": 182921,
+  "tokens_out": 104358,
+  "seconds": 1037.1,
+  "cost_usd": 0.164182
+ },
+ "recommendation_status": "not_requested",
+ "note": "architecture probe \u2014 no real-world accuracy claimed (\u00a738)"
+}
