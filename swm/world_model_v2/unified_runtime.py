@@ -354,6 +354,26 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
     res = _project_terminal(question, plan, as_of, horizon, intervention, seed, llm, user_context,
                             prior_checkpoint, manifest, drop, t0)
 
+    # ROLLOUT RETRY: the persistence-aware rollout is stochastic; an INTERMITTENT empty/failed rollout
+    # (observed: BoJ once ran 47 calls with an empty operator census → no absorber → no forecast, and the
+    # next run of the SAME plan ran the full 266-call rollout to 0.73) recovers on a re-roll. Retry ONCE
+    # with a fresh seed before falling back — this recovers the real simulation instead of settling for the
+    # prior. Records the first failure so a persistent (non-transient) cause stays diagnosable.
+    def _no_forecast(r):
+        return (not r.has_forecast()) or (r.raw_probability is None and r.calibrated_probability is None)
+
+    if _no_forecast(res):
+        census0 = ((res.provenance or {}).get("operator_delta_census") or {})
+        lineage["rollout_retry"] = {"first_status": res.simulation_status,
+                                    "first_taxonomy": res.failure_taxonomy,
+                                    "first_census_ops": sorted(census0.keys())}
+        res_retry = _project_terminal(question, plan, as_of, horizon, intervention, seed + 1, llm,
+                                      user_context, prior_checkpoint, manifest, drop, t0)
+        lineage["rollout_retry"]["retry_status"] = res_retry.simulation_status
+        lineage["rollout_retry"]["recovered"] = not _no_forecast(res_retry)
+        if not _no_forecast(res_retry):
+            res = res_retry
+
     # surface evidence sufficiency on the result (provenance + a loud limitation when starved), so a
     # prior-driven forecast is never mistaken for an evidence-driven one.
     try:
@@ -365,22 +385,28 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
     except Exception:  # noqa: BLE001 — telemetry attach must never break the forecast
         pass
 
-    # NO-NULL GUARANTEE: a coherent run must NEVER return without a probability. If the rollout produced no
-    # bound outcome (empty operator census / event-time with nothing absorbed), fall back to the grounded
-    # posterior/prior mean — honestly labelled EXECUTION-DEGRADED — instead of p=None. (General fix for the
-    # binary-first-passage-with-no-absorber fragility; a binary question always resolves to a probability.)
+    # NO-NULL GUARANTEE: a COHERENT question must NEVER return without a probability — not on an empty
+    # rollout (completed_with_degradation, nothing absorbed) NOR on an execution_failed exception that the
+    # retry above did not recover. In either case fall back to the grounded posterior/prior mean, honestly
+    # labelled EXECUTION-DEGRADED, and mark the run completed_with_degradation so it carries a forecast.
+    # (Only a genuine clarification_required — an incoherent question — is exempt.) A last resort, not the
+    # primary path: the retry recovers the real simulation first; this only guarantees we never emit None.
     try:
-        if res.has_forecast() and res.raw_probability is None and res.calibrated_probability is None:
+        coherent = res.simulation_status != "clarification_required"
+        no_p = res.raw_probability is None and res.calibrated_probability is None
+        if coherent and no_p:
             fb = grounded_fallback_mean if grounded_fallback_mean is not None else 0.5
             src = ("posterior" if (posterior is not None
                                    and int(getattr(posterior, "n_effective_observations", 0) or 0) > 0)
                    else "prior")
+            orig_status = res.simulation_status
             res.raw_probability = round(float(fb), 4)
+            res.simulation_status = "completed_with_degradation"   # now carries a forecast
             res.limitations = (list(res.limitations or []) + [
-                f"EXECUTION-DEGRADED: the rollout produced no bound outcome; forecast falls back to the "
-                f"grounded {src} mean ({fb:.3f}) rather than returning no probability"])
+                f"EXECUTION-DEGRADED (was {orig_status!r}): the rollout produced no bound outcome even after "
+                f"retry; forecast falls back to the grounded {src} mean ({fb:.3f}) rather than returning None"])
             res.provenance["execution_degraded_fallback"] = {"used": True, "value": round(float(fb), 4),
-                                                             "source": src}
+                                                             "source": src, "original_status": orig_status}
     except Exception:  # noqa: BLE001 — the guard must never itself break the forecast
         pass
 
