@@ -30,6 +30,17 @@ from swm.world_model_v2.phase13.contracts import Abstention, DecisionProblem, De
 DECISION_REGRET_MATERIAL_SHARE = 0.15
 
 
+
+def _error_with_site(e: BaseException) -> str:
+    """type: message @ last in-repo frame — a failed model is recorded loudly AND locatably."""
+    import traceback
+    site = ""
+    for fr in reversed(traceback.extract_tb(e.__traceback__)):
+        if "swm/" in fr.filename.replace("\\", "/"):
+            site = f" @ {fr.filename.rsplit('swm/', 1)[-1]}:{fr.lineno}:{fr.name}"
+            break
+    return (f"{type(e).__name__}: {e}"[:200]) + site[:120]
+
 def extract_ensemble_models(world_context) -> dict:
     """Normalize any ensemble-shaped world context into {model_id: {"plan", "meta"}}.
 
@@ -96,7 +107,7 @@ def recommend_action_across_models(problem: DecisionProblem, models: dict, *, bu
             per_model[mid] = {"result": r, "meta": entry.get("meta", {}), "error": ""}
         except Exception as e:  # noqa: BLE001 — a failed model is recorded loudly, never hidden
             per_model[mid] = {"result": None, "meta": entry.get("meta", {}),
-                              "error": f"{type(e).__name__}: {e}"[:200]}
+                              "error": _error_with_site(e)}
     ok = {m: v for m, v in per_model.items() if v["result"] is not None}
     res = DecisionResult(decision_id=problem.decision_id, contract_hash=problem.contract_hash(),
                          runtime_fingerprint={"phase13": "phase13-ensemble-1.0"}, seed=seed)
@@ -305,7 +316,7 @@ def optimize_policy_across_models(problem: DecisionProblem, policies: list, mode
             per_model[mid] = {"result": r, "meta": entry.get("meta", {}), "error": ""}
         except Exception as e:  # noqa: BLE001
             per_model[mid] = {"result": None, "meta": entry.get("meta", {}),
-                              "error": f"{type(e).__name__}: {e}"[:200]}
+                              "error": _error_with_site(e)}
     ok = {m: v for m, v in per_model.items() if v["result"] is not None}
     res = DecisionResult(decision_id=problem.decision_id, contract_hash=problem.contract_hash(),
                          runtime_fingerprint={"phase13": "phase13-ensemble-1.0"}, seed=seed)
