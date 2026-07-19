@@ -30,7 +30,9 @@ T0 = 1_700_000_000.0
 
 
 def lab_schema():
-    """A replication-controversy scenario — nothing about it exists in repository code."""
+    """A replication-controversy scenario — nothing about it exists in repository code.
+    Carries its OWN causal mechanisms: a collegial email channel and a science press wire —
+    delivery and publication are mechanism outcomes, never direct effects."""
     return ScenarioSemanticModel(
         question="Will the replication controversy end in a retraction?",
         prediction_timestamp=T0, horizon=T0 + 30 * 86400,
@@ -42,15 +44,53 @@ def lab_schema():
                                           "fields": {"paper": "str", "position": "str",
                                                      "matter": "str"}}},
         semantic_event_types={
-            "replication_failure_disclosed": {"description": "x",
+            "replication_failure_disclosed": {"description": "attempt: private heads-up",
                                               "fields": {"finding": "str"},
                                               "typical_visibility": "participants"},
-            "public_defense_statement": {"description": "x", "fields": {},
+            "replication_disclosure_delivered": {"description": "channel outcome",
+                                                 "fields": {"finding": "str"},
+                                                 "typical_visibility": "participants"},
+            "public_defense_statement": {"description": "attempt: public statement",
+                                         "fields": {},
+                                         "typical_visibility": "public"},
+            "public_defense_published": {"description": "press outcome", "fields": {},
                                          "typical_visibility": "public"}},
         relation_types={"scientific_rival_of": {"description": "rivalry", "directed": False}},
         resource_definitions={"grant_funds": {"unit": "usd", "conserved": True}},
         actor_roles={"dr_okafor": {"role": "original author", "why_consequential": "her paper",
                                    "affordances": ["issue public defense"]}},
+        mechanism_definitions={
+            "collegial_email_channel": {
+                "description": "the lab-to-lab email channel carrying private disclosures",
+                "triggering_event_types": ["replication_failure_disclosed"],
+                "accepted_inputs": {"finding": "str"},
+                "controlling_actor_or_system": "university_mail_infrastructure",
+                "state_machine": {"queued": ["delivered"]},
+                "initial_state": "queued", "success_states": ["delivered"],
+                "failure_states": ["undeliverable"], "unresolved_states": [],
+                "possible_output_event_types": {
+                    "on_success": ["replication_disclosure_delivered"], "on_failure": []},
+                "observation_rules": {"recipients": "direct_targets",
+                                      "representation": "complete"},
+                "timing_rules": {"delay_s": 60.0},
+                "assumptions": ["ordinary email reliability"],
+                "uncertainty_source": "recipient mailbox availability"},
+            "science_press_wire": {
+                "description": "the press/preprint wire that makes statements available",
+                "triggering_event_types": ["public_defense_statement"],
+                "accepted_inputs": {},
+                "controlling_actor_or_system": "science_press",
+                "state_machine": {"submitted": ["published"]},
+                "initial_state": "submitted", "success_states": ["published"],
+                "failure_states": ["spiked"], "unresolved_states": [],
+                "possible_output_event_types": {
+                    "on_success": ["public_defense_published"], "on_failure": []},
+                "observation_rules": {"recipients": "direct_targets",
+                                      "availability": "public",
+                                      "representation": "complete"},
+                "timing_rules": {"delay_s": 120.0},
+                "assumptions": ["wire picks up statements from known labs"],
+                "uncertainty_source": "editorial pickup"}},
         outcome_predicates=[{"predicate_id": "retracted", "record_type": "retraction_record",
                              "op": "exists", "option_true": "retraction",
                              "option_false": "no_retraction"}],
@@ -140,10 +180,19 @@ def test_5_6_scenario_types_and_events_need_no_repository_registration():
          "exact_content": "Claim filed in commercial court.",
          "structured_fields": {"claim": "oppression"}}], actor="owner_b")
     assert not ctx["quarantined"]
-    assert w.semantic_log[0]["semantic_type_id"] == "minority_owner_files_oppression_claim"
-    # NOT in the global event registry — the envelope rode a ctrl_* control task instead
+    sev = w.semantic_log[0]
+    assert sev["semantic_type_id"] == "minority_owner_files_oppression_claim"
+    # NOT in the global event registry — scenario meanings never enter global registration
     assert "minority_owner_files_oppression_claim" not in _EVENT_TYPES
-    assert [e.etype for e in events] == ["ctrl_semantic_event"]
+    # the emit is an actor-controlled ATTEMPT: unverified, routed to nobody's eyes, and its
+    # intended publicity is honestly unresolved (this schema declares no publication
+    # mechanism) — never silently treated as public awareness
+    assert sev["causal_layer"] == "actor_controlled"
+    assert sev["observability_verified"] is False and sev["actual_recipients"] == []
+    assert [e.etype for e in events] == []
+    assert ctx["report"]["intended_publications"] == 1
+    assert ctx["report"]["actual_publications"] == 0
+    assert ctx["report"]["deliveries_unresolved_no_mechanism"] == 1
 
 
 # ------------------------------------------------- 7-8: runtime extension, branch isolation
@@ -170,24 +219,22 @@ def test_7_8_schema_extends_during_rollout_versioned_and_branch_isolated():
 # ------------------------------------------------- 9-10: control plane ≠ world plane
 def test_9_10_internal_tasks_never_appear_as_world_semantics():
     w = world()
-    _, _, events = run_ops(w, [
-        {"op": "emit_semantic_event", "semantic_type_id": "replication_failure_disclosed",
-         "exact_content": "n=400, null result", "direct_targets": ["dr_okafor"]}])
     report = gw.generated_report()
-    router = gw.GeneratedSemanticEventOperator(report=report)
-    deliver = gw.GeneratedObservationDeliveryOperator(report=report)
-    rd, _ = router.run(w, events[0], None)
-    follow = rd.follow_up_events
-    assert all(f["etype"].startswith("ctrl_") for f in follow)
-    for f in follow:
-        if f["etype"] == "ctrl_deliver_observation":
-            dd, _ = deliver.run(w, Event(ts=f["ts"], etype=f["etype"],
-                                         participants=f["participants"],
-                                         payload=f["payload"]), None)
-    # the world-plane log records ONLY scenario-typed happenings
+    ctx, d, events = run_ops(w, [
+        {"op": "emit_semantic_event", "semantic_type_id": "replication_failure_disclosed",
+         "exact_content": "n=400, null result", "direct_targets": ["dr_okafor"]}],
+        report=report)
+    # the attempt itself queues ONLY the mechanism step (a ctrl_* control task)
+    assert all(e.etype.startswith("ctrl_") for e in events)
+    assert w.mechanism_instances                     # the channel mechanism took the attempt
+    step_mechanisms(w, report)
+    # the world-plane log records ONLY scenario-typed happenings — attempts and mechanism
+    # outputs alike; control-plane tasks never appear
     assert all(not str(x.get("semantic_type_id", "")).startswith("ctrl")
                for x in w.semantic_log)
     assert all(x.get("semantic_type_id") in w.scenario_schema.semantic_event_types
+               for x in w.semantic_log)
+    assert any(x["semantic_type_id"] == "replication_disclosure_delivered"
                for x in w.semantic_log)
 
 
@@ -213,7 +260,12 @@ class ScriptedBackend:
         self.prompts.append(prompt)
         if "CONSEQUENCE COMPILER" in prompt:
             raise AssertionError("fixed-v1 consequence compiler ran in generated mode")
-        if "DIRECT-EFFECT COMPILER" in prompt:
+        if "CAUSAL DIRECTNESS CRITIC" in prompt:
+            return "[]"                          # no objections — deterministic layer stands
+        if "You adjudicate ONE next transition" in prompt:
+            raise AssertionError("scripted mechanisms are deterministic; adjudication "
+                                 "should not fire in these tests")
+        if "ACTION-ATTEMPT COMPILER" in prompt or "DIRECT-EFFECT COMPILER" in prompt:
             actor = prompt.split("ACTOR:")[1].split("\n")[0].strip()
             return json.dumps(self.compile_ops.get(actor, []))
         actor = prompt.split("You ARE ")[1].split(",")[0].split(".")[0].strip() \
@@ -250,17 +302,58 @@ def generated_runtime(backend):
 
 
 def run_cascade(w, backend, *, kickoff_actor, kickoff_situation, horizon_days=20, seed=5):
+    from swm.world_model_v2 import causal_boundary as cb
     rt = generated_runtime(backend)
     report = rt.consequence_report
     ops = [ProductionActorPolicyOperator(runtime=rt),
            gw.GeneratedSemanticEventOperator(report=report),
            gw.GeneratedObservationDeliveryOperator(report=report),
-           gw.GeneratedActorInvocationOperator(rt, report=report)]
+           gw.GeneratedActorInvocationOperator(rt, report=report),
+           cb.MechanismRuntimeOperator(report=report),
+           cb.ScheduledAttemptOperator(report=report)]
     q = EventQueue(horizon_ts=T0 + horizon_days * 86400)
     q.schedule(Event(ts=T0 + 60, etype="decision_opportunity", participants=[kickoff_actor],
                      payload={"situation": kickoff_situation}))
     branch = RolloutEngine(operators=ops).run_branch(w, q, seed=seed)
     return rt, report, branch
+
+
+def step_mechanisms(w, report, *, llm=None, rounds=4):
+    """Drive pending mechanism instances + routing outside a full rollout: repeatedly run the
+    mechanism runtime on pending instances and route any verified outputs."""
+    from swm.world_model_v2 import causal_boundary as cb
+    runtime_op = cb.MechanismRuntimeOperator(report=report, llm=llm)
+    router = gw.GeneratedSemanticEventOperator(report=report)
+    deliver = gw.GeneratedObservationDeliveryOperator(report=report)
+    deltas = []
+    for _ in range(rounds):
+        pending = [i for i in w.mechanism_instances.values() if i.status == "pending"]
+        if not pending:
+            break
+        for inst in pending:
+            ev = Event(ts=max(w.clock.now, inst.pending_transition_at),
+                       etype="ctrl_mechanism_step", payload={"instance_id": inst.instance_id})
+            if ev.ts > w.clock.now:
+                w.clock.advance_to(ev.ts)
+            d, _ = runtime_op.run(w, ev, None)
+            deltas.append(d)
+            for fu in d.follow_up_events:
+                fev = Event(ts=max(w.clock.now, fu["ts"]), etype=fu["etype"],
+                            participants=list(fu.get("participants") or []),
+                            payload=dict(fu.get("payload") or {}))
+                if fev.etype == "ctrl_semantic_event":
+                    rd, _ = router.run(w, fev, None)
+                    deltas.append(rd)
+                    for f2 in rd.follow_up_events:
+                        if f2["etype"] == "ctrl_deliver_observation":
+                            if f2["ts"] > w.clock.now:
+                                w.clock.advance_to(f2["ts"])
+                            dd, _ = deliver.run(
+                                w, Event(ts=f2["ts"], etype=f2["etype"],
+                                         participants=list(f2.get("participants") or []),
+                                         payload=dict(f2.get("payload") or {})), None)
+                            deltas.append(dd)
+    return deltas
 
 
 # ------------------------------------------------- 11-16: actor-mediated causality
@@ -283,20 +376,28 @@ def test_11_12_16_reconsideration_wait_and_own_policy_response():
                                      kickoff_situation="your replication failed; decide")
     log = [x["semantic_type_id"] for x in w.semantic_log]
     assert "replication_failure_disclosed" in log
-    # 11: receiving the disclosure triggered okafor's reconsideration via the control plane
+    # the attempt CROSSED THE CAUSAL BOUNDARY: the channel mechanism delivered it, and only
+    # that verified delivery reached okafor's eyes
+    assert "replication_disclosure_delivered" in log
+    assert report["mechanisms_invoked"] >= 2 and report["mechanism_successes"] >= 2
+    assert report["actual_deliveries"] >= 1
+    # 11: receiving the DELIVERED disclosure triggered okafor's reconsideration
     assert report["actors_reconsidered"] >= 1 and report["observations_delivered"] >= 1
     # 16: okafor's response came from HER policy (public defense), NOT from lin's
     # expectation ("they will fold immediately" — stored as lin's subjective state only)
     assert "public_defense_statement" in log
+    assert "public_defense_published" in log         # the wire, not the intent, published it
     lin_expect = w.entity("dr_lin").value("expected_reactions") or {}
     assert "fold immediately" in json.dumps(lin_expect)      # subjective, actor-local
     assert not any("fold immediately" in str(x.get("exact_content", ""))
                    + json.dumps(x.get("structured_fields", {}))
                    for x in w.semantic_log)                  # never became world truth
-    # 12: dr_lin, re-invoked on the defense, decided nothing was warranted — first-class
+    # 12: dr_lin, re-invoked on the published defense, decided nothing was warranted
     assert report["actors_declined_to_act"] >= 1
     assert report["human_reactions_written_directly"] == 0
     assert report["fixed_ontology_uses"] == 0
+    assert report["external_successes_written_directly"] == 0
+    assert report["numeric_fallbacks"] == 0
     assert report["actual_mode"] == "generated_actor_mediated_world"
 
 
@@ -352,17 +453,30 @@ def test_17_18_19_visibility_reach_and_representations():
                                 "default_delay_s": 60.0}
     w = world(schema, actors=("dr_okafor", "dr_lin", "dr_padilla"))
     long_text = "The replication used the wrong reagent lot. " * 12
-    _, _, events = run_ops(w, [
+    report = gw.generated_report()
+    ctx, _, events = run_ops(w, [
         {"op": "emit_semantic_event", "semantic_type_id": "public_defense_statement",
          "exact_content": long_text, "intended_visibility": "public",
-         "direct_targets": ["dr_lin"]}], actor="dr_okafor")
-    report = gw.generated_report()
+         "direct_targets": ["dr_lin"]}], actor="dr_okafor", report=report)
+    # INTENDED publicity is not ACTUAL availability: the attempt routes to nobody until the
+    # press-wire mechanism actually publishes it
     router = gw.GeneratedSemanticEventOperator(report=report)
-    rd, _ = router.run(w, events[0], None)
-    deliveries = [f for f in rd.follow_up_events if f["etype"] == "ctrl_deliver_observation"]
-    # 17: public information reaches several actors (both non-sources)
+    attempt = next(x for x in w.semantic_log
+                   if x["semantic_type_id"] == "public_defense_statement")
+    assert attempt["observability_verified"] is False
+    assert report["intended_publications"] == 1 and report["actual_publications"] == 0
+    step_mechanisms(w, report)                      # the wire publishes
+    assert report["actual_publications"] == 1
+    published = next(x for x in w.semantic_log
+                     if x["semantic_type_id"] == "public_defense_published")
+    assert published["availability"] == "public" and published["observability_verified"]
+    deliveries = [e for e in router.run(
+        w, Event(ts=w.clock.now, etype="ctrl_semantic_event",
+                 payload={"semantic_event": published}), None)[0].follow_up_events
+        if e["etype"] == "ctrl_deliver_observation"]
+    # 17: ACTUAL publication reaches the direct target AND the wider public
     assert {d["payload"]["recipient"] for d in deliveries} == {"dr_lin", "dr_padilla"}
-    # 19: the DIRECT target gets the complete text now; the public gets the summarized
+    # 19: the direct recipient gets the complete text sooner; the public gets the summarized
     # press representation later
     by = {d["payload"]["recipient"]: d for d in deliveries}
     assert by["dr_lin"]["payload"]["representation"] == "complete"
@@ -372,15 +486,21 @@ def test_17_18_19_visibility_reach_and_representations():
     for f in deliveries:
         deliver.run(w, Event(ts=f["ts"], etype=f["etype"], participants=f["participants"],
                              payload=f["payload"]), None)
-    pad = w.information.visible_to("dr_padilla", at=T0 + 10_000)
+    pad = w.information.visible_to("dr_padilla", at=T0 + 100_000)
     assert any("[summarized in transit]" in item.content for item, _ in pad)
-    # 18: PRIVATE information does not reach unrelated actors
+    # 18: PRIVATE information does not reach unrelated actors — even after real delivery
     w2 = world(lab_schema(), actors=("dr_okafor", "dr_lin", "dr_padilla"))
-    _, _, ev2 = run_ops(w2, [
+    report2 = gw.generated_report()
+    run_ops(w2, [
         {"op": "emit_semantic_event", "semantic_type_id": "replication_failure_disclosed",
          "exact_content": "private null result", "direct_targets": ["dr_okafor"],
-         "intended_visibility": "participants"}])
-    rd2, _ = gw.GeneratedSemanticEventOperator(report=report).run(w2, ev2[0], None)
+         "intended_visibility": "participants"}], report=report2)
+    step_mechanisms(w2, report2)
+    delivered = next(x for x in w2.semantic_log
+                     if x["semantic_type_id"] == "replication_disclosure_delivered")
+    rd2, _ = gw.GeneratedSemanticEventOperator(report=report2).run(
+        w2, Event(ts=w2.clock.now, etype="ctrl_semantic_event",
+                  payload={"semantic_event": delivered}), None)
     recips = {f["payload"]["recipient"] for f in rd2.follow_up_events
               if f["etype"] == "ctrl_deliver_observation"}
     assert recips == {"dr_okafor"} and "dr_padilla" not in recips
@@ -463,8 +583,21 @@ def test_26_27_predicates_reference_dynamic_records_and_cannot_be_set_directly()
     w = world()
     readout = gw.make_generated_predicate_readout(w.scenario_schema)
     assert readout(w) == "no_retraction"
-    run_ops(w, [{"op": "create_or_update_record", "record_type": "retraction_record",
-                 "fields": {"paper": "effect X"}}], actor="dr_okafor")
+    # TERMINAL SMUGGLING: a direct action write that would satisfy the outcome predicate is
+    # rejected — the outcome arises from mechanisms and other actors
+    ctx0, _, _ = run_ops(w, [{"op": "create_or_update_record",
+                              "record_type": "retraction_record",
+                              "fields": {"paper": "effect X"}}], actor="dr_okafor")
+    assert ctx0["quarantined"] and "terminal_smuggling" in ctx0["quarantined"][0]["reason"]
+    assert readout(w) == "no_retraction"
+    # the journal's retraction process (a mechanism — plane 'mechanism') writes the record
+    # when it actually decides; the predicate then resolves from the generated record
+    ctx_m = ctx_for(w, actor="journal_editorial_office")
+    ctx_m["plane"] = "mechanism"
+    d = StateDelta(at=w.clock.now, event_type="actor_action", operator="test")
+    gw.k_create_or_update_record(w, {"op": "create_or_update_record",
+                                     "record_type": "retraction_record",
+                                     "fields": {"paper": "effect X"}}, ctx_m, d)
     assert readout(w) == "retraction"               # 26: resolves from generated records
     # 27: no op can mint a probability/forecast field toward the predicate
     ctx, _, _ = run_ops(w, [{"op": "create_or_update_record",
@@ -536,8 +669,9 @@ def test_30_31_32_matched_counterfactuals_pairing_and_replay():
     clone = w3.clone(branch_id="b0:intervention")
     assert clone.scenario_schema is not w3.scenario_schema
     assert clone.scenario_schema.schema_id == w3.scenario_schema.schema_id
-    run_ops(clone, [{"op": "create_or_update_record", "record_type": "retraction_record",
-                     "fields": {"paper": "x"}}], actor="dr_okafor")
+    run_ops(clone, [{"op": "create_or_update_record", "record_type": "replication_attempt",
+                     "fields": {"finding": "x", "status": "in_progress"}}],
+            actor="dr_okafor")
     assert clone.objects and not w3.objects
 
 

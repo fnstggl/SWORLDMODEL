@@ -137,7 +137,8 @@ def run_with_persistence(question, plan, *, llm=None, context=None, actor_histor
       persist feedback → commit a new versioned checkpoint → attach lineage/versions/support/limitations.
 
     No-abstention preserved. When no history/checkpoint exists it runs the ordinary path with broad priors."""
-    from swm.world_model_v2.materialize import (build_world, check_readout_binding, operators_from_plan,
+    from swm.world_model_v2.materialize import (_bind_scenario_schema, build_world,
+                                                check_readout_binding, operators_from_plan,
                                                 queue_builder_from_plan)
     from swm.world_model_v2.init_state import InitialStateModel
     from swm.world_model_v2.rollout import WorldModelV2Run
@@ -146,6 +147,10 @@ def run_with_persistence(question, plan, *, llm=None, context=None, actor_histor
                                                    support_grade_effect)
     t0 = t0 if t0 is not None else _time.time()
     base = build_world(plan, evidence_hash=(plan.provenance or {}).get("evidence_bundle_hash", ""))
+    # generated mode (the default) binds THIS plan's scenario schema + causal mechanisms onto
+    # the base world — the persistence funnel is the ordinary simulate_world terminal path, so
+    # the causal boundary must be live here, not only in run_from_plan
+    _bind_scenario_schema(plan, base, llm)
     family_ids = list(family_ids or ["engagement_propensity"])
     meta = {"materialized": 0, "history_events": 0, "checkpoint_loaded": False,
             "checkpoint_committed": False, "families_selected": [], "families_blocked": []}
@@ -213,6 +218,14 @@ def run_with_persistence(question, plan, *, llm=None, context=None, actor_histor
     result["omissions"] = list(getattr(base, "omissions", []))
     from swm.world_model_v2.materialize import attach_actor_decision_distributions
     attach_actor_decision_distributions(ops, result)
+    for _k in ("scenario_schema_error", "mechanism_model_error"):
+        _err = (plan.provenance or {}).get(_k)
+        if _err:
+            _rep = result.setdefault("consequence_report", {})
+            _rep["structurally_under_modeled"] = True
+            _rep[_k] = _err
+            if _k == "scenario_schema_error":
+                _rep["degraded"] = True
     res = result_from_run(question, plan, result, branches, intervention=intervention, t0=t0,
                           calibrator=calibrator, cal_key=cal_key)
     res.provenance = {**(res.provenance or {}),
@@ -223,6 +236,7 @@ def run_with_persistence(question, plan, *, llm=None, context=None, actor_histor
                           "actor_decision_distributions": result["actor_decision_distributions"],
                           "actor_policy_mode": result.get("actor_policy_mode", "")}
     _surface_actor_policy_degradation(res, result.get("actor_policy_report", {}))
+    _surface_consequence_degradation(res, result.get("consequence_report", {}))
 
     # 8) persist feedback + commit a new versioned checkpoint (advance lineage) + attach support effect
     if context is not None and actor_history:
@@ -264,6 +278,28 @@ def _surface_actor_policy_degradation(res, report: dict) -> None:
     if report.get("degraded") and res.support_grade in ("empirically_supported",
                                                         "transfer_supported"):
         res.support_grade = "exploratory"
+
+
+def _surface_consequence_degradation(res, report: dict) -> None:
+    """A structurally under-modeled consequence run (no scenario schema, or no mechanism
+    model — external effects could not be processed; attempts preserved, unresolved marked)
+    caps the support grade and lands in limitations. It never silently reads as a complete
+    execution."""
+    if not isinstance(report, dict) or not report:
+        return
+    if report.get("structurally_under_modeled"):
+        why = report.get("scenario_schema_error") or report.get("mechanism_model_error") \
+            or "mechanism model missing or incomplete"
+        res.limitations = list(res.limitations) + [
+            f"causal_boundary: structurally under-modeled — {str(why)[:150]}; attempts "
+            f"preserved, external effects unresolved (fixed-v1 NOT served)"]
+        if res.support_grade in ("empirically_supported", "transfer_supported"):
+            res.support_grade = "exploratory"
+    unresolved = int(report.get("mechanism_unresolved", 0) or 0)
+    if unresolved:
+        res.limitations = list(res.limitations) + [
+            f"causal_boundary: {unresolved} mechanism transition(s) honestly unresolved "
+            f"(success never assumed)"]
 
 
 def get_persistent_variable_scope(vid: str) -> str:

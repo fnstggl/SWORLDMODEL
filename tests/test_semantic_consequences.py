@@ -116,8 +116,9 @@ def test_fixed_v1_execution_writes_no_pathway_scalars():
 
 def test_generated_default_without_schema_degrades_loudly_never_silently():
     """The production default is generated_actor_mediated_world; a world with NO scenario
-    schema serves the fixed baseline STAMPED (actual mode, degraded flag, counted fixed-
-    ontology use, reason) — a silent swap is impossible."""
+    schema is EXECUTION-INCOMPLETE: the exact attempt is preserved, the branch is marked
+    structurally under-modeled, and the fixed-v1 consequence system is NOT served in its
+    place. Generated mode never degrades to fixed-v1 — silent or stamped."""
     w = world(declared_bar=True)
     runtime = ActorPolicyRuntime()                  # resolved default: generated
     decision = {"candidate_actions": [{"name": "reject", "family": "negotiation",
@@ -127,12 +128,18 @@ def test_generated_default_without_schema_degrades_loudly_never_silently():
     delta = result["executions"][0]["delta"]
     rep = runtime.consequence_report
     assert rep["requested_mode"] == "generated_actor_mediated_world"
-    assert rep["actual_mode"] == "fixed_semantic_consequence_policy_v1"
-    assert rep["degraded"] is True and rep["fixed_ontology_uses"] >= 1
+    assert rep["actual_mode"] == "generated_actor_mediated_world"   # mode never swaps
+    assert rep["structurally_under_modeled"] is True and rep["degraded"] is True
+    assert rep["fixed_ontology_uses"] == 0          # fixed-v1 did NOT serve
     assert any(fr.get("kind") == "no_scenario_schema" for fr in rep["fallback_reasons"])
-    assert "generated_mode_degraded_to_fixed_v1" in delta.reason_codes
+    assert "execution_incomplete:no_scenario_schema" in delta.reason_codes
+    assert delta.uncertainty["unexecuted_attempt"]["action"] == \
+        result["selected_action"].action_name          # the exact attempt is preserved
+    assert w.objects == {}                          # no fixed-catalog objects appeared
     assert not any("pathway_progress" in c["path"] and "(derived)" not in c["path"]
                    for c in delta.changes)
+    hist = w.entity("alice").value("past_actions") or []
+    assert hist and hist[-1]["completion_status"] == "execution_incomplete"
 
 
 def test_legacy_mode_is_the_only_scalar_path_and_is_counted():
@@ -332,7 +339,10 @@ def test_sender_expectation_never_becomes_recipient_reaction():
     w = world()
     engine = QualitativeDecisionEngine(QualitativeConfig(llm=backend, llm_hypotheses=False,
                                                          n_hypotheses=2))
-    rt = QualitativeActorPolicyRuntime(engine, mode="persistent_qualitative_llm_policy")
+    # the fixed-v1 BASELINE flow (explicitly requested — schemaless generated mode is
+    # execution-incomplete by design and serves nothing)
+    rt = QualitativeActorPolicyRuntime(engine, mode="persistent_qualitative_llm_policy",
+                                       consequence_mode="fixed_semantic_consequence_policy_v1")
     op = ProductionActorPolicyOperator(runtime=rt)
     q = EventQueue(horizon_ts=T0 + 5 * 86400)
     q.schedule(Event(ts=T0 + 60, etype="decision_opportunity", participants=["alice"],
@@ -345,7 +355,8 @@ def test_sender_expectation_never_becomes_recipient_reaction():
     assert alice_expect.get("bob", {}).get("expects") == "will comply immediately"
     assert alice_expect.get("bob", {}).get("subjective") is True
     bob_history = w.entity("bob").value("past_actions") or []
-    assert any(a["action"] == "reject" and a["status"] == "executed" for a in bob_history)
+    assert any(a["action"] == "reject" and a["status"] == "action_attempt_initiated"
+               for a in bob_history)                 # bob's OWN attempt, never 'executed'
     assert not any(a["action"] == "comply" for a in bob_history)   # expectation never executed
     comm = [o for o in w.objects.values() if o.object_type == "private_communication"]
     assert comm and comm[0].attributes["content"] == msg and comm[0].status == "delivered"
@@ -562,14 +573,13 @@ def test_novel_action_never_reduces_to_nearest_label_scalar_effects():
     """A compiled novel action carrying an ontology anchor must NOT inherit the anchor's
     ACTION_PATHWAY_EFFECTS in semantic mode — its world change is its compiled program."""
     w = world(declared_bar=True)
-    runtime = ActorPolicyRuntime()
+    runtime = ActorPolicyRuntime(consequence_mode="fixed_semantic_consequence_policy_v1")
     novel = act("stage_hunger_strike", family="generic",
                 ontology_anchor={"name": "escalate", "family": "participation"})
     decision = {"candidate_actions": [{"name": "reject", "family": "negotiation",
                                        "target": {"target_type": "person",
                                                   "target_id": "bob"}}]}
-    _, posterior, trace = ActorPolicyRuntime().decide(Plan(), [w], "alice",
-                                                      decision=decision, seed=1)
+    _, posterior, trace = runtime.decide(Plan(), [w], "alice", decision=decision, seed=1)
     before = w.quantities["pathway_progress:cooperative_agreement"].value
     delta, events = runtime.execute(w, novel, posterior, trace, seed=1)
     direct = [c for c in delta.changes
@@ -619,10 +629,30 @@ def test_run_from_plan_carries_consequence_report_and_semantic_default():
                          as_of="2025-01-01", horizon="2025-01-10", persist=False)
     result, branches = run_from_plan(plan, n_particles=4, seed=3)
     rep = result["consequence_report"]
-    # no LLM backend → the generated default degrades to the fixed baseline, STAMPED
+    # no LLM backend → no scenario schema can compile → the generated default is
+    # EXECUTION-INCOMPLETE and structurally under-modeled; fixed-v1 is NOT served
     assert rep["requested_mode"] == "generated_actor_mediated_world"
-    assert rep["actual_mode"] == "fixed_semantic_consequence_policy_v1"
+    assert rep["actual_mode"] == "generated_actor_mediated_world"
     assert rep["degraded"] is True
+    assert rep["structurally_under_modeled"] is True
+    assert rep["fixed_ontology_uses"] == 0
+    assert rep["legacy_scalar_writes"] == 0
+    assert rep.get("scenario_schema_error")
+    for b in branches:                                # no fixed-catalog consequence appeared
+        assert not [o for o in b.world.objects.values() if o.object_type == "submission"]
+
+
+def test_run_from_plan_fixed_baseline_still_runnable_when_explicitly_requested(monkeypatch):
+    from tests.test_wmv2_phase4_e2e import compiled_payload
+    from swm.world_model_v2.compiler import compile_world
+    from swm.world_model_v2.materialize import run_from_plan
+    monkeypatch.setenv("SWM_CONSEQUENCES", "fixed_semantic_consequence_policy_v1")
+    plan = compile_world("Will the manager approve the project?",
+                         llm=lambda _: json.dumps(compiled_payload()), evidence="",
+                         as_of="2025-01-01", horizon="2025-01-10", persist=False)
+    result, branches = run_from_plan(plan, n_particles=4, seed=3)
+    rep = result["consequence_report"]
+    assert rep["actual_mode"] == "fixed_semantic_consequence_policy_v1"
     assert rep["institutional_submissions"] >= 1
     assert rep["legacy_scalar_writes"] == 0
     for b in branches:                                # the typed decision exists in every branch
@@ -663,12 +693,15 @@ def test_individual_reaction_artifact_carries_consequence_report():
         n_hypotheses=2, samples_per_hypothesis=1, seed=0, as_of=T0,
         config=QualitativeConfig(llm=backend, llm_hypotheses=False, n_hypotheses=2))
     rep = result["consequence_report"]
-    # without a scenario schema the generated default is served by fixed-v1, STAMPED
+    # without a scenario schema the generated default is EXECUTION-INCOMPLETE: the reply
+    # attempt is preserved, fixed-v1 is NOT served, and the artifact says so — the reaction
+    # DISTRIBUTION (the deliverable) still comes from the actor's own decisions
     assert rep["requested_mode"] == "generated_actor_mediated_world"
-    assert rep["actual_mode"] == "fixed_semantic_consequence_policy_v1"
-    assert rep["degraded"] is True
-    assert rep["direct_operations_applied"] >= 1
+    assert rep["actual_mode"] == "generated_actor_mediated_world"
+    assert rep["degraded"] is True and rep["structurally_under_modeled"] is True
+    assert rep["fixed_ontology_uses"] == 0
     assert rep["legacy_scalar_writes"] == 0
+    assert result["raw_qualitative_simulation_distribution"]      # the answer still counts
 
 
 def test_counterfactual_branches_keep_objects_isolated():
@@ -688,12 +721,19 @@ def test_qualitative_decision_wording_reaches_the_compiler_prompt():
     from swm.world_model_v2.qualitative_actor import (
         QualitativeActorPolicyRuntime, QualitativeConfig, QualitativeDecisionEngine,
     )
+    from swm.world_model_v2.scenario_schema import ScenarioSemanticModel
     seen = {}
 
     def backend(prompt):
-        if "CONSEQUENCE COMPILER" in prompt:
+        if "ACTION-ATTEMPT COMPILER" in prompt:
             seen["compile_prompt"] = prompt
-            return json.dumps([{"op": "record_observation", "note": "ok"}])
+            return json.dumps([{"op": "emit_semantic_event",
+                                "semantic_type_id": "counteroffer_message_drafted",
+                                "exact_content": "I counter at 40 with the audit clause "
+                                                 "intact",
+                                "direct_targets": ["bob"]}])
+        if "CAUSAL DIRECTNESS CRITIC" in prompt:
+            return "[]"
         return json.dumps({
             "schema_version": "qualitative.actor.v1",
             "situation_interpretation": {"what_changed": "x", "why_it_matters": "y",
@@ -713,19 +753,36 @@ def test_qualitative_decision_wording_reaches_the_compiler_prompt():
                                                          n_hypotheses=2))
     rt = QualitativeActorPolicyRuntime(engine, mode="persistent_qualitative_llm_policy")
     w = world()
+    w.scenario_schema = ScenarioSemanticModel(
+        question="Will alice and bob agree terms?", prediction_timestamp=T0,
+        horizon=T0 + 10 * 86400,
+        semantic_event_types={"counteroffer_message_drafted":
+                              {"description": "attempt", "fields": {},
+                               "typical_visibility": "participants"}},
+        outcome_predicates=[{"predicate_id": "agreed", "record_type": "signed_agreement",
+                             "op": "exists", "option_true": "deal",
+                             "option_false": "no_deal"}],
+        fact_types={"signed_agreement": {"description": "x", "fields": {}}},
+        provenance={"compiler": "test"}).freeze()
     decision = {"candidate_actions": [{"name": "counteroffer", "family": "negotiation",
                                        "target": {"target_type": "person",
                                                   "target_id": "bob"}}],
                 "situation": "bob offered 55"}
     sel, post, tr = rt.decide(Plan(), [w], "alice", decision=decision, seed=2)
     rt.execute(w, sel, post, tr, seed=2)
+    # the actor's own wording reaches the attempt compiler AND the attempt event verbatim
     assert "I counter at 40 with the audit clause intact" in seen["compile_prompt"]
     assert rt.consequence_report["actions_compiled"] == 1
+    assert rt.consequence_report["action_attempts"] == 1
+    attempt = next(x for x in w.semantic_log
+                   if x["semantic_type_id"] == "counteroffer_message_drafted")
+    assert attempt["exact_content"] == "I counter at 40 with the audit clause intact"
+    assert attempt["observability_verified"] is False       # drafting is not delivery
 
 
 def test_execute_returns_semantic_events_on_the_delta_for_the_engine():
     w = world()
-    runtime = ActorPolicyRuntime()
+    runtime = ActorPolicyRuntime(consequence_mode="fixed_semantic_consequence_policy_v1")
     decision = {"candidate_actions": [{"name": "reply_now", "family": "messaging",
                                        "target": {"target_type": "person",
                                                   "target_id": "bob"}}]}

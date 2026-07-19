@@ -219,6 +219,10 @@ class WorldState:
     semantic_log: list = field(default_factory=list)      # world-plane history: SemanticWorldEvent
     #                                                       dicts (what actually happened, in scenario
     #                                                       terms) — control-plane tasks never appear here
+    mechanism_instances: dict = field(default_factory=dict)  # id -> causal_boundary.MechanismInstance —
+    #                                                       live scenario-mechanism executions (channel/
+    #                                                       platform/institutional/physical processing of
+    #                                                       action attempts); branch-local via deep copy
 
     def version_hash(self) -> str:
         payload = f"{self.world_id}|{self.branch_id}|{self.clock.now}|{len(self.entities)}|{self.evidence_hash}"

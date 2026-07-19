@@ -499,7 +499,8 @@ def _project_terminal(question, plan, as_of, horizon, intervention, seed, llm, u
         if persistence_dropped:
             from swm.world_model_v2.materialize import run_from_plan
             from swm.world_model_v2.pipeline import result_from_run
-            from swm.world_model_v2.phase8_pipeline import _surface_actor_policy_degradation
+            from swm.world_model_v2.phase8_pipeline import (
+                _surface_actor_policy_degradation, _surface_consequence_degradation)
             result, branches = run_from_plan(plan, llm=llm, seed=seed)
             res = result_from_run(question, plan, result, branches, intervention=intervention, t0=t0)
             res.provenance = {**(res.provenance or {}),
@@ -509,6 +510,7 @@ def _project_terminal(question, plan, as_of, horizon, intervention, seed, llm, u
                 res.provenance["actor_decision_distributions"] = \
                     result["actor_decision_distributions"]
             _surface_actor_policy_degradation(res, result.get("actor_policy_report", {}))
+            _surface_consequence_degradation(res, result.get("consequence_report", {}))
             manifest["phase8_persistence"].update(omitted=True, reason="dropped_by_policy")
         else:
             res, _p8meta = run_with_persistence(question, plan, llm=llm, context=user_context,

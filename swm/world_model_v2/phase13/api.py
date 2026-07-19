@@ -113,6 +113,16 @@ def recommend_action(problem: DecisionProblem, world_context, *, budget: str = "
     res.provenance["crn_manifest"] = bundle.crn_manifest
     res.provenance["hypothesis_assignment"] = sorted(set(bundle.hypothesis_assignment))
     res.active_phases = _active_phases(bundle)
+    # the causal-boundary report for decision actions: attempts vs deliveries, mechanisms
+    # invoked/succeeded/failed/unresolved, rejected directness claims — same contract as
+    # ordinary forecasts (§causal truth boundary)
+    for op in ev.operators:
+        if getattr(op, "name", "") == "decision_action" and getattr(op, "report", None):
+            res.provenance["causal_consequence_report"] = {
+                k: v for k, v in op.report.items() if k != "causal_action_reports"}
+            res.provenance["causal_action_reports"] = \
+                list(op.report.get("causal_action_reports") or [])[:12]
+            break
 
     # 6. robust evaluation (Parts 15–16)
     evals = evaluate_bundle(bundle, feasible, problem)

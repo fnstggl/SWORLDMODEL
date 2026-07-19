@@ -78,6 +78,16 @@ class ScenarioSemanticModel:
     actor_roles: dict = field(default_factory=dict)         # actor_id -> {role, affordance
     #                                                          EXAMPLES (never a required menu),
     #                                                          why_consequential}
+    mechanism_definitions: dict = field(default_factory=dict)  # mechanism_id -> the scenario's OWN
+    #                       Layer-B causal mechanisms (channels, platforms, institutions, physical/
+    #                       administrative processes): {description, causal_role,
+    #                       triggering_event_types, accepted_inputs, controlling_actor_or_system,
+    #                       authority_requirements, preconditions, required_records,
+    #                       required_resources, state_machine, initial_state, intermediate_states,
+    #                       success_states, failure_states, unresolved_states, transition_rules,
+    #                       possible_output_event_types, possible_record_updates, observation_rules,
+    #                       timing_rules, evidence_basis, assumptions, uncertainty_source,
+    #                       executor_binding}. Generated per scenario — never a global catalog.
     outcome_predicates: list = field(default_factory=list)  # [{predicate_id, description,
     #                       record_type, op: exists|eq|in, field, value, option_true,
     #                       option_false}]
@@ -121,9 +131,11 @@ class ScenarioSemanticModel:
                 v = coerced
             if want is dict and not isinstance(v, dict):
                 v = {}
-            if want is dict and k != "provenance":
+            if want is dict and k not in ("provenance", "information_rules"):
                 # inner definitions must be objects too — wrap stray strings/lists so the
-                # deterministic validators see a uniform shape instead of crashing
+                # deterministic validators see a uniform shape instead of crashing.
+                # information_rules carries SCALAR routing knobs (delays, channel names) and
+                # is consumed as-is by the observation router — never wrapped.
                 v = {str(ik): (iv if isinstance(iv, dict)
                                else {"description": json.dumps(iv, default=str)[:200]})
                      for ik, iv in v.items()}
@@ -149,6 +161,10 @@ class ScenarioSemanticModel:
             if want is list and not isinstance(v, list):
                 v = [v] if v else []
             out[k] = v
+        if out.get("mechanism_definitions"):
+            out["mechanism_definitions"] = {
+                mid: normalize_mechanism_definition(md)
+                for mid, md in out["mechanism_definitions"].items() if isinstance(md, dict)}
         return cls(**out)
 
     def freeze(self):
@@ -164,6 +180,176 @@ class ScenarioSemanticModel:
         self.provenance["content_hash"] = _hash(
             {k: v for k, v in self.as_dict().items() if k not in ("provenance", "ancestry")})
         return self
+
+
+MECHANISM_CAUSAL_ROLE = "mechanism_mediated"      # Layer B — the only role a mechanism serves
+#: semantically neutral executor bindings the fixed engine provides (state machines, arithmetic,
+#: transport, settlement, scheduling) — the MEANING of each mechanism stays scenario-generated
+MECHANISM_EXECUTOR_BINDINGS = ("", "generic_state_machine", "institutional_aggregation",
+                               "conserved_resource_settlement", "information_transport",
+                               "event_scheduling", "population_response")
+
+
+def normalize_mechanism_definition(md: dict) -> dict:
+    """Shape-normalize ONE untrusted mechanism proposal: state lists coerced to strings,
+    state_machine to {state: [next, …]}, outputs to {on_success: […], on_failure: […]},
+    accepted_inputs to {name: kind}. Never invents semantics — only shapes."""
+    out = dict(md)
+
+    def _strs(v):
+        if isinstance(v, dict):
+            v = list(v)
+        if not isinstance(v, list):
+            v = [v] if v not in (None, "", {}) else []
+        return [str(s.get("name") or s.get("id") or s.get("state")
+                    or json.dumps(s, default=str)[:40]) if isinstance(s, dict) else str(s)
+                for s in v]
+
+    for k in ("triggering_event_types", "intermediate_states", "success_states",
+              "failure_states", "unresolved_states", "required_records", "evidence_basis",
+              "assumptions", "possible_record_updates", "authority_requirements"):
+        out[k] = _strs(out.get(k))[:16]
+    sm = out.get("state_machine")
+    if isinstance(sm, list):                                  # [{from, to}] form
+        coerced = {}
+        for row in sm:
+            if isinstance(row, dict) and row.get("from") is not None:
+                coerced.setdefault(str(row["from"]), []).extend(_strs(row.get("to")))
+        sm = coerced
+    if not isinstance(sm, dict):
+        sm = {}
+    out["state_machine"] = {str(s): _strs(n)[:6] for s, n in sm.items()}
+    outputs = out.get("possible_output_event_types")
+    if isinstance(outputs, dict):
+        out["possible_output_event_types"] = {"on_success": _strs(outputs.get("on_success"))[:6],
+                                              "on_failure": _strs(outputs.get("on_failure"))[:6]}
+    else:
+        out["possible_output_event_types"] = {"on_success": _strs(outputs)[:6], "on_failure": []}
+    ai = out.get("accepted_inputs")
+    if isinstance(ai, list):
+        ai = {str(f.get("name", f"f{i}") if isinstance(f, dict) else f):
+              (f.get("kind") or f.get("type") or "str") if isinstance(f, dict) else "str"
+              for i, f in enumerate(ai)}
+    out["accepted_inputs"] = {str(k): str(v) for k, v in (ai or {}).items()} \
+        if isinstance(ai, dict) else {}
+    rr = out.get("required_resources")
+    out["required_resources"] = {str(k): float(v) for k, v in rr.items()
+                                 if isinstance(v, (int, float))} if isinstance(rr, dict) else {}
+    tr = out.get("transition_rules")
+    out["transition_rules"] = [r for r in (tr if isinstance(tr, list) else [])
+                               if isinstance(r, dict)][:16]
+    pre = out.get("preconditions")
+    out["preconditions"] = [p for p in (pre if isinstance(pre, list) else [])
+                            if isinstance(p, dict)][:8]
+    obs = out.get("observation_rules")
+    out["observation_rules"] = obs if isinstance(obs, dict) else {}
+    tm = out.get("timing_rules")
+    out["timing_rules"] = tm if isinstance(tm, dict) else {}
+    out["causal_role"] = MECHANISM_CAUSAL_ROLE
+    out["initial_state"] = str(out.get("initial_state", ""))[:60]
+    out["controlling_actor_or_system"] = str(out.get("controlling_actor_or_system", ""))[:80]
+    out["uncertainty_source"] = str(out.get("uncertainty_source", ""))[:200]
+    binding = str(out.get("executor_binding", ""))[:40]
+    out["executor_binding"] = binding if binding in MECHANISM_EXECUTOR_BINDINGS else ""
+    return out
+
+
+def mechanism_states(md: dict) -> list:
+    """Every declared state of a normalized mechanism definition, initial first."""
+    states = [md.get("initial_state", "")] + list(md.get("intermediate_states") or []) \
+        + list(md.get("success_states") or []) + list(md.get("failure_states") or []) \
+        + list(md.get("unresolved_states") or [])
+    seen, out = set(), []
+    for s in states:
+        if s and s not in seen:
+            seen.add(s)
+            out.append(s)
+    return out
+
+
+def validate_mechanism_definitions(model: "ScenarioSemanticModel", issues: list):
+    """Deterministic acceptance gate for scenario mechanisms: real state machines, terminal
+    states declared, outputs typed against THIS schema, no numeric minting, no reaction
+    coefficients, no mechanism that claims to decide a human's reaction (that is Layer C)."""
+    events = set(model.semantic_event_types)
+    records = set(model.record_types())
+    for mid, md in (model.mechanism_definitions or {}).items():
+        if not _ID_RE.match(str(mid)):
+            issues.append(f"mechanism id {mid!r} is not a stable snake_case id")
+        if not isinstance(md, dict):
+            issues.append(f"mechanism {mid!r} definition must be an object")
+            continue
+        if _FORBIDDEN_FIELD.search(json.dumps([mid, md.get("accepted_inputs"),
+                                               md.get("state_machine")], default=str)):
+            issues.append(f"mechanism {mid!r} mints forbidden numerics")
+        if _REACTION_COEFF.search(json.dumps(md, default=str)):
+            issues.append(f"mechanism {mid!r} encodes a human-reaction coefficient — another "
+                          f"actor's response comes only from that actor's own simulation")
+        states = mechanism_states(md)
+        if len(states) < 2:
+            issues.append(f"mechanism {mid!r} needs at least two states (initial + terminal)")
+            continue
+        if not md.get("initial_state"):
+            issues.append(f"mechanism {mid!r} declares no initial_state")
+        if not (md.get("success_states") or md.get("failure_states")
+                or md.get("unresolved_states")):
+            issues.append(f"mechanism {mid!r} declares no terminal states")
+        for s, nexts in (md.get("state_machine") or {}).items():
+            for n in nexts:
+                if n not in states:
+                    issues.append(f"mechanism {mid!r} transition to undeclared state {n!r}")
+        for et in md.get("triggering_event_types") or []:
+            if et not in events:
+                issues.append(f"mechanism {mid!r} trigger {et!r} is not a declared event type")
+        for side in ("on_success", "on_failure"):
+            for et in (md.get("possible_output_event_types") or {}).get(side, []):
+                if et not in events:
+                    issues.append(f"mechanism {mid!r} output {et!r} is not a declared "
+                                  f"event type")
+        for rt in md.get("possible_record_updates") or []:
+            if rt not in records:
+                issues.append(f"mechanism {mid!r} record update {rt!r} undeclared")
+        if not md.get("evidence_basis") and not md.get("assumptions"):
+            issues.append(f"mechanism {mid!r} must cite evidence or label assumptions")
+
+
+def mechanism_output_event_types(model: "ScenarioSemanticModel") -> dict:
+    """event_type -> mechanism_id for every declared mechanism OUTPUT. A direct action may
+    never emit one of these — claiming a mechanism's result is claiming the external success."""
+    out = {}
+    for mid, md in (model.mechanism_definitions or {}).items():
+        if not isinstance(md, dict):
+            continue
+        for side in ("on_success", "on_failure"):
+            for et in (md.get("possible_output_event_types") or {}).get(side, []):
+                out.setdefault(et, mid)
+    return out
+
+
+def mechanisms_triggered_by(model: "ScenarioSemanticModel", event_type: str) -> list:
+    """mechanism_ids whose declared triggering_event_types include this event type."""
+    return [mid for mid, md in (model.mechanism_definitions or {}).items()
+            if isinstance(md, dict) and event_type in (md.get("triggering_event_types") or [])]
+
+
+def externally_controlled_record_types(model: "ScenarioSemanticModel", actor_id: str) -> dict:
+    """record_type -> controller for record types a DIRECT action by `actor_id` may not
+    create or update: types a mechanism produces (unless the actor IS the controlling system),
+    and types whose definition declares a different controller."""
+    out = {}
+    for mid, md in (model.mechanism_definitions or {}).items():
+        if not isinstance(md, dict):
+            continue
+        controller = str(md.get("controlling_actor_or_system", "")) or mid
+        if controller == actor_id:
+            continue
+        for rt in md.get("possible_record_updates") or []:
+            out.setdefault(rt, controller)
+    for rt, td in model.record_types().items():
+        controller = str((td or {}).get("controlled_by", "")) if isinstance(td, dict) else ""
+        if controller and controller != actor_id:
+            out[rt] = controller
+    return out
 
 
 # ---------------------------------------------------------------- deterministic validation
@@ -237,6 +423,7 @@ def validate_scenario_schema(model: ScenarioSemanticModel) -> tuple:
         if isinstance(a, dict) and a.get("required_menu"):
             issues.append("actor_roles may list affordance EXAMPLES only — a required menu "
                           "substitutes for the actor's open-ended decision")
+    validate_mechanism_definitions(model, issues)
     return (not issues), issues
 
 
@@ -479,6 +666,15 @@ class SchemaCompiler:
         if model.provenance["critic"].get("verdict") == "fatal":
             raise ValueError(f"schema critic verdict fatal: "
                              f"{model.provenance['critic'].get('hidden_answer_risks')}")
+        # §CAUSAL-BOUNDARY: the scenario's OWN Layer-B mechanisms (channels, platforms,
+        # institutions, physical/administrative processes) — a SEPARATE proposal call, an
+        # independent causal-boundary critic call, and one bounded repair call. Without a
+        # mechanism model the world cannot deliver, publish, accept, or settle anything —
+        # the run is marked structurally under-modeled, never quietly optimistic.
+        if not model.mechanism_definitions:
+            from swm.world_model_v2.causal_boundary import MechanismCompiler
+            MechanismCompiler(self.llm, critic_llm=self.critic_llm).attach(model,
+                                                                           evidence=evidence)
         return model.freeze()
 
     def criticize(self, model: ScenarioSemanticModel) -> dict:
@@ -509,7 +705,11 @@ def extend_schema(model: ScenarioSemanticModel, proposal: dict, *, reason: str,
     Returns (ok, issues_or_added)."""
     adds = {k: dict(proposal.get(k) or {}) for k in
             ("entity_types", "fact_types", "relation_types", "semantic_event_types",
-             "process_definitions")}
+             "process_definitions", "mechanism_definitions")}
+    if adds.get("mechanism_definitions"):
+        adds["mechanism_definitions"] = {
+            mid: normalize_mechanism_definition(md)
+            for mid, md in adds["mechanism_definitions"].items() if isinstance(md, dict)}
     added_ids = [tid for d in adds.values() for tid in d]
     if not added_ids:
         return False, ["extension adds nothing"]

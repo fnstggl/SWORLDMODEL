@@ -334,7 +334,13 @@ def test_novel_action_with_causal_reading_is_compiled_and_moves_the_world():
                                               "required_authority": "none",
                                               "required_resources": "attention",
                                               "proposed_mechanisms": "public escalation"})
-    rt = qruntime(QLLM(payload))
+    # the fixed-v1 BASELINE consequence flow (ontology anchor → typed program → derived
+    # projection); schemaless generated mode is execution-incomplete by design
+    rt = QualitativeActorPolicyRuntime(
+        QualitativeDecisionEngine(QualitativeConfig(llm=QLLM(payload), llm_hypotheses=False,
+                                                    n_hypotheses=3)),
+        mode="persistent_qualitative_llm_policy",
+        consequence_mode="fixed_semantic_consequence_policy_v1")
     w = world()
     register_quantity_type("pathway_progress", units="process_state")
     w.quantities["pathway_progress:cooperative_agreement"] = Quantity(

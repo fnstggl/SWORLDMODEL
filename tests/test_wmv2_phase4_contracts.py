@@ -227,7 +227,10 @@ def test_deterministic_replay_and_trace_corruption_detection():
 
 
 def test_execution_consumes_resources_creates_commitment_events_and_delta():
-    w = world(); runtime = ActorPolicyRuntime()
+    # the fixed-v1 BASELINE (quantity projection of a decided submission is its machinery);
+    # schemaless generated mode is execution-incomplete by design and projects nothing
+    w = world(); runtime = ActorPolicyRuntime(
+        consequence_mode="fixed_semantic_consequence_policy_v1")
     decision = {"candidate_actions": [{
         "name": "approve", "family": "institutional",
         "target": {"target_type": "institution", "target_id": "board"},

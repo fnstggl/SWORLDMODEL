@@ -49,12 +49,12 @@ class MatchedEvaluator:
     stratification, plan operators) or from raw runtime pieces (controlled benchmark tasks)."""
 
     def __init__(self, *, initial, queue_builder, operators, contract, n_particles=60, seed=0,
-                 hypotheses=None, outcome_fn=None, max_events=500):
+                 hypotheses=None, outcome_fn=None, max_events=500, decision_llm=None):
         self.initial = initial
         self.queue_builder = queue_builder
         self.operators = list(operators)
         if not any(getattr(op, "name", "") == "decision_action" for op in self.operators):
-            self.operators.append(DecisionActionOperator())
+            self.operators.append(DecisionActionOperator(llm=decision_llm))
         self.contract = contract
         self.n_particles = int(n_particles)
         self.seed = int(seed)
@@ -68,11 +68,15 @@ class MatchedEvaluator:
     @classmethod
     def from_plan(cls, plan, *, llm=None, n_particles=None, seed=0, outcome_fn=None):
         from swm.world_model_v2.init_state import InitialStateModel
-        from swm.world_model_v2.materialize import (build_world, check_readout_binding,
+        from swm.world_model_v2.materialize import (_bind_scenario_schema, build_world,
+                                                    check_readout_binding,
                                                     _inject_posterior_rate, operators_from_plan,
                                                     queue_builder_from_plan)
         base = build_world(plan, evidence_hash=(plan.provenance or {}).get("evidence_bundle_hash", ""))
         check_readout_binding(plan, base)
+        # Phase 13 arms roll the SAME generated world semantics + causal boundary as ordinary
+        # forecasts: the branch schema and its mechanisms ride on every cloned particle
+        _bind_scenario_schema(plan, base, llm)
         _inject_posterior_rate(plan)
         ops, rejections = operators_from_plan(plan, llm=llm)
         init = InitialStateModel(base_world=base, latents=list(plan.latents))
@@ -80,7 +84,7 @@ class MatchedEvaluator:
                  contract=plan.outcome_contract,
                  n_particles=n_particles or plan.compute_plan.get("n_particles", 60), seed=seed,
                  hypotheses=list(getattr(plan, "structural_hypotheses", []) or []),
-                 outcome_fn=outcome_fn)
+                 outcome_fn=outcome_fn, decision_llm=llm)
         ev.operator_rejections = rejections
         return ev
 

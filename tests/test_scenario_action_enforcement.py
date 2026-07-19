@@ -23,10 +23,13 @@ FORBIDDEN_ONTOLOGY_NAMES = {"_OPERATIONS", "operation_registered", "operation_sp
 #: the legacy verb set — imported ONLY to build the reference for the whitelist check
 LEGACY_VERBS = set(ontology._OPERATIONS)
 
-#: the kernel is storage/integrity mechanics only — this is the entire permitted surface
+#: the kernel is storage/integrity mechanics only — this is the entire permitted surface.
+#: invoke_scenario_mechanism is semantically empty by the same standard: it names a
+#: SCENARIO-generated mechanism id exactly as emit_semantic_event names a scenario event
+#: type; the kernel only validates shape/authority/preconditions and starts the instance.
 KERNEL_ALLOWLIST = {"declare_schema_definition", "create_or_update_record", "remove_record",
                     "create_or_remove_relation", "emit_semantic_event", "schedule_semantic_event",
-                    "transfer_conserved_quantity"}
+                    "transfer_conserved_quantity", "invoke_scenario_mechanism"}
 
 
 def test_the_package_has_modules_to_check():

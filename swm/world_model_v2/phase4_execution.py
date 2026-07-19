@@ -60,7 +60,9 @@ class ActorPolicyRuntime:
         self.consequence_mode = requested
         self.consequence_llm = consequence_llm
         self.consequence_compiler = None              # fixed-v1 compiler, built lazily
-        self.generated_compiler = None                # generated-world compiler, built lazily
+        self.generated_compiler = None                # causal-boundary compiler, built lazily
+        self._directness_validator = None             # causal-boundary validator, built lazily
+        self._boundary_critic_fn = None               # runtime schema-extension critic
         from swm.world_model_v2.generated_world import generated_report
         self.consequence_report = {"requested_mode": requested, "actual_mode": requested,
                                    **semcons.empty_report(), **generated_report()}
@@ -132,18 +134,21 @@ class ActorPolicyRuntime:
             actor.set("current_action", F(action.as_dict(), status="derived",
                                            method="production_actor_policy", updated_at=world.clock.now))
             delta.change(f"{action.actor_id}.current_action", before, action.as_dict())
-            self._append_history(world, action, "executed", delta)
-            self._consume_resources(world, action, delta)
-            self._create_commitments(world, action, delta)
+            # CAUSAL BOUNDARY: selecting an action makes it an ATTEMPT, never an execution.
+            # The history entry starts at action_attempt_initiated; completion is decided by
+            # mechanisms, other actors, and the program's own completion conditions later.
+            self._append_history(world, action, "action_attempt_initiated", delta)
+            self._consume_resources(world, action, delta)     # the actor's OWN attempt costs
+            self._create_commitments(world, action, delta)    # the actor's OWN expressed word
             semantic_events = self._apply_consequences(world, action, posterior, trace, delta)
             self._post_execute(world, action, posterior, trace, delta)
-            if self.consequence_mode == "generated_actor_mediated_world" \
-                    and getattr(world, "scenario_schema", None) is not None:
+            if self.consequence_mode == "generated_actor_mediated_world":
                 # the generated control plane owns ALL downstream routing: observation
                 # delivery and actor invocation replace the legacy mechanism emissions
                 # (message pings, institution markers, actor_reaction with fixed candidate
                 # menus) — a reaction must have exactly ONE route: the affected actor's own
-                # invocation.
+                # invocation. This holds with OR WITHOUT a scenario schema: a schemaless
+                # generated branch is execution-incomplete, never a legacy-ping emitter.
                 events = list(semantic_events)
             else:
                 events = self._follow_up_events(
@@ -190,44 +195,83 @@ class ActorPolicyRuntime:
             delta.reason_codes.append("legacy_scalar_pathway_consequences")
             return []
         if mode == "generated_actor_mediated_world":
+            from swm.world_model_v2 import causal_boundary as cb
             from swm.world_model_v2 import generated_world as genw
             schema = getattr(world, "scenario_schema", None)
             if schema is not None:
+                # THE causal truth boundary (the one canonical action→consequence path):
+                # attempt-premise compile → deterministic + LLM directness validation →
+                # Layer-A kernel ops + explicit mechanism invocations. Never Layer C/D.
                 if self.generated_compiler is None:
-                    self.generated_compiler = genw.GeneratedActionCompiler(self.consequence_llm)
+                    self.generated_compiler = cb.CausalActionCompiler(self.consequence_llm)
+                if self._directness_validator is None:
+                    self._directness_validator = cb.DirectnessValidator(self.consequence_llm)
                 qualitative = self._qualitative_for_trace(trace, posterior)
-                ops, meta = self.generated_compiler.compile(world, action,
-                                                            qualitative=qualitative,
-                                                            report=report)
+                program = self.generated_compiler.compile(world, action,
+                                                          qualitative=qualitative,
+                                                          report=report)
+                self._directness_validator.validate(world, program, report=report)
                 ctx = {"actor_id": action.actor_id, "action_id": action.action_id,
                        "now": world.clock.now, "report": report,
-                       "compiler": meta.get("compiler", ""),
+                       "compiler": program.compiler_provenance.get("compiler", ""),
+                       "plane": "direct_action",
+                       "boundary_critic": self._boundary_critic(),
                        "budgets": genw._budgets(world), "events": [], "quarantined": []}
-                events = genw.execute_kernel_ops(world, ops, ctx, delta)
+                events = genw.execute_kernel_ops(world, program.kernel_ops(), ctx, delta)
                 report["actions_compiled"] += 1
+                report["action_attempts"] = report.get("action_attempts", 0) + 1
                 report["direct_operations_applied"] += max(
-                    0, len(ops) - len(ctx["quarantined"]))
+                    0, len(program.kernel_ops()) - len(ctx["quarantined"]))
                 s = world.scenario_schema
                 report["scenario_schema_id"] = getattr(s, "schema_id", "")
                 report["scenario_schema_version"] = getattr(s, "version", "")
+                if cb.mechanism_model_missing(s):
+                    # a schema without mechanisms cannot process external effects: the run
+                    # is structurally under-modeled — attempts stand, deliveries stay
+                    # unresolved, and NO fixed-v1 semantics are served in its place
+                    report["structurally_under_modeled"] = True
                 if ctx["quarantined"]:
                     delta.uncertainty["kernel_quarantined"] = ctx["quarantined"][:6]
-                delta.uncertainty["consequence_compiler"] = meta.get("compiler", "")
+                delta.uncertainty["consequence_compiler"] = \
+                    program.compiler_provenance.get("compiler", "")
+                attempt_status = self._finalize_attempt(world, action, program, ctx, delta)
+                car = cb.build_causal_action_report(action, program, ctx, attempt_status)
+                reports = report.setdefault("causal_action_reports", [])
+                reports.append(car)
+                del reports[:-40]
+                delta.uncertainty["causal_action_report"] = {
+                    k: car[k] for k in ("completion_status", "mechanism_invocations",
+                                        "direct_effects_rejected_by_critic",
+                                        "unresolved_claims")}
                 return events
-            # NO scenario schema on this world: the generated architecture cannot run.
-            # Degrade LOUDLY into the fixed-v1 baseline — stamped, surfaced, counted, and
-            # excluded from any pure generated-world evaluation. Never silent.
-            report["actual_mode"] = "fixed_semantic_consequence_policy_v1"
+            # NO scenario schema on this world: the generated architecture cannot execute
+            # external consequences. §15: the branch is EXECUTION-INCOMPLETE / structurally
+            # under-modeled — the exact attempt is preserved, only deterministically provable
+            # actor-controlled effects applied (none exist without a schema), and the
+            # fixed-v1 consequence system is NOT served in its place.
+            report["structurally_under_modeled"] = True
             report["degraded"] = True
-            report["fixed_ontology_uses"] += 1
+            report["action_attempts"] = report.get("action_attempts", 0) + 1
             if not any(fr.get("kind") == "no_scenario_schema"
                        for fr in report["fallback_reasons"] if isinstance(fr, dict)):
                 report["fallback_reasons"].append(
                     {"kind": "no_scenario_schema",
-                     "reason": "generated_actor_mediated_world requested but the world "
-                               "carries no ScenarioSemanticModel (schema compilation needs "
-                               "an LLM backend); fixed-v1 baseline served, stamped"})
-            delta.reason_codes.append("generated_mode_degraded_to_fixed_v1")
+                     "reason": "generated_actor_mediated_world requires a "
+                               "ScenarioSemanticModel; none is bound to this world — the "
+                               "branch is execution_incomplete: the exact attempt is "
+                               "preserved, no external consequence is claimed, and the "
+                               "fixed-v1 baseline is NOT served"})
+            delta.reason_codes.append("execution_incomplete:no_scenario_schema")
+            delta.uncertainty["unexecuted_attempt"] = {
+                "action": action.action_name[:80],
+                "intended_effect": str((action.parameters or {}).get("intended_effect",
+                                                                     ""))[:300],
+                "content": str((action.parameters or {}).get("content", ""))[:400]}
+            self._mark_history_status(world, action, "execution_incomplete", delta)
+            trace.warnings.append(
+                "execution_incomplete: no scenario schema — attempt preserved, no "
+                "consequences claimed (fixed-v1 NOT served)")
+            return []
         program = self._consequence_program(world, action, posterior, trace)
         events = semcons.execute_program(world, program, delta, report)
         semcons.project_decided_outcome_quantities(world, action, delta, report)
@@ -265,6 +309,54 @@ class ActorPolicyRuntime:
         qualitative = self._qualitative_for_trace(trace, posterior)
         return self.consequence_compiler.compile(world, action, qualitative=qualitative)
 
+    def _boundary_critic(self):
+        """The runtime schema-extension critic (causal boundary §schema-extensions): one
+        bounded LLM judgment before an action may add causal semantics mid-rollout."""
+        if self.consequence_llm is None:
+            return None
+        if self._boundary_critic_fn is None:
+            from swm.world_model_v2.causal_boundary import make_extension_boundary_critic
+            self._boundary_critic_fn = make_extension_boundary_critic(self.consequence_llm)
+        return self._boundary_critic_fn
+
+    def _finalize_attempt(self, world, action: TypedAction, program, ctx: dict,
+                          delta: StateDelta) -> str:
+        """Stamp the attempt record with the program's truth: actor-controlled effects,
+        mechanisms invoked (pending — results land later), unresolved claims, completion
+        conditions, and the live completion status. Actions are attempts until their
+        scenario-specific completion conditions actually occur."""
+        from swm.world_model_v2 import causal_boundary as cb
+        status, why = cb._completion_status_for_action(
+            world, action.action_id,
+            {"completion_conditions": program.completion_conditions})
+        if status == "actor_controlled_steps_applied" and program.unmodeled:
+            status = "execution_incomplete"
+        updates = {
+            "intended": {"action": action.action_name,
+                         "intent": program.exact_intent[:200]},
+            "attempted": action.action_name,
+            "actor_controlled_effects": len(program.actor_controlled_operations),
+            "mechanisms_invoked": list(ctx.get("mechanism_instances_started") or []),
+            "unresolved": program.unresolved_claims[:6],
+            "completion_conditions": program.completion_conditions[:6],
+            "completion_status": status, "status": status,
+            "provenance": {
+                "path": "causal_boundary",
+                "compiler": (program.compiler_provenance or {}).get("compiler", ""),
+                "critic": (program.critic_provenance or {}).get("critic", "")}}
+        if why:
+            updates["failure_reason"] = why
+        cb.update_action_attempt(world, action.actor_id, action.action_id, updates,
+                                 delta=delta)
+        return status
+
+    def _mark_history_status(self, world, action: TypedAction, status: str,
+                             delta: StateDelta):
+        from swm.world_model_v2 import causal_boundary as cb
+        cb.update_action_attempt(world, action.actor_id, action.action_id,
+                                 {"status": status, "completion_status": status},
+                                 delta=delta)
+
     def _qualitative_for_trace(self, trace: DecisionTrace, posterior: ActionPosterior):
         """The qualitative decision content backing this action, when one exists — the
         consequence compiler's LLM path runs only for qualitatively-decided actions; numeric/
@@ -276,12 +368,22 @@ class ActorPolicyRuntime:
 
     @staticmethod
     def _append_history(world, action: TypedAction, status: str, delta: StateDelta):
+        """The attempt record (§action-history): intended action, attempted action, and slots
+        the causal boundary fills in as mechanisms actually resolve — never 'executed' merely
+        because the actor selected it."""
         actor = world.entity(action.actor_id)
         current = actor.get("past_actions")
         before = list(current.value) if isinstance(current, StateField) and isinstance(current.value, list) else []
         after = before + [{"at": world.clock.now, "action": action.action_name,
                            "action_id": action.action_id, "status": status,
-                           "target": action.target.target_id, "public": True}]
+                           "target": action.target.target_id, "public": True,
+                           "intended": {"action": action.action_name,
+                                        "target": action.target.target_id},
+                           "attempted": action.action_name,
+                           "completion_status": status,
+                           "mechanisms_invoked": [], "mechanism_results": {},
+                           "unresolved": [], "failure_reason": "",
+                           "provenance": {"path": "production_actor_policy"}}]
         actor.set("past_actions", F(after, status="derived", method="production_actor_policy",
                                     updated_at=world.clock.now))
         delta.change(f"{action.actor_id}.past_actions", before, after)
@@ -300,12 +402,19 @@ class ActorPolicyRuntime:
 
     @staticmethod
     def _create_commitments(world, action: TypedAction, delta: StateDelta):
+        """§commitments: an actor may directly create THEIR OWN expressed commitment — a
+        Layer-A act. It never creates the other party's commitment, a valid bilateral
+        agreement, institutional acceptance, legal enforceability, or implementation; those
+        require the scenario's mechanisms or the other actors."""
         if not action.commitments_created:
             return
         actor = world.entity(action.actor_id)
         sf = actor.get("commitments")
         before = list(sf.value) if isinstance(sf, StateField) and isinstance(sf.value, list) else []
-        created = [{**c, "created_by_action_id": action.action_id, "created_at": world.clock.now}
+        created = [{**c, "created_by_action_id": action.action_id, "created_at": world.clock.now,
+                    "commitment_kind": str(c.get("commitment_kind",
+                                                 "unilateral_expressed"))[:40],
+                    "binds_others": False}
                    for c in action.commitments_created]
         after = before + created
         actor.set("commitments", F(after, status="derived", method="production_actor_policy",

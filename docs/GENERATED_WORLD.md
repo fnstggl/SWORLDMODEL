@@ -6,11 +6,39 @@ information access, physical/legal feasibility, authority, resource conservation
 execution, recursion budgets, schema validation, institutional arithmetic, aggregation, and
 calibration. It contains **no fixed semantic model** of messages, proposals, launches,
 negotiations, approvals, adoptions, or reactions. Each scenario **generates** its own
-semantic types, facts, relations, events, processes, institutional procedures, and outcome
-predicates; when a world change affects a consequential human, the engine delivers the
-actor-specific observation and **invokes that actor's persistent LLM** — the actor decides
-whether anything should be done, and what, including nothing, or an action no menu
-anticipated. Probabilities come afterward, by counting independently realized trajectories.
+semantic types, facts, relations, events, processes, institutional procedures, causal
+mechanisms, and outcome predicates; when a world change affects a consequential human, the
+engine delivers the actor-specific observation and **invokes that actor's persistent LLM** —
+the actor decides whether anything should be done, and what, including nothing, or an action
+no menu anticipated. Probabilities come afterward, by counting independently realized
+trajectories.
+
+**The causal truth boundary (default-on).** Every consequence belongs to one causal layer:
+**A** actor-controlled direct effect (the actor's own records, artifacts, recorded decision,
+initiated attempt, committed own resources); **B** mechanism-mediated effect (anything
+needing a channel, platform, technical system, institution, administrative/legal procedure,
+market, or physical process — delivery, publication, intake, registration, settlement);
+**C** actor-mediated effect (another actor perceiving, interpreting, deciding, acting);
+**D** the terminal readout. The direct-effect compiler may produce **only Layer A plus
+explicit invocations of Layer-B mechanisms** — never C or D. The premise handed to it is
+*"the actor selected an intended action and is attempting the steps under their control"*,
+never *"the actor successfully performed the action"*. The full chain:
+
+```
+actor intent
+→ actor-controlled attempt            (Layer A: exact content, own records, attempt events)
+→ scenario-specific mechanism         (Layer B: generated per scenario, generic runtime)
+→ actual world transition             (mechanism success/failure/unresolved — never assumed)
+→ actual observation                  (verified recipients only; intended ≠ actual)
+→ affected actor reaction             (Layer C: that actor's own simulation)
+→ downstream world evolution          (recursion through the same boundary)
+```
+
+Intended visibility is **not** actual observability; an intended target is **not** an actual
+recipient; an attempted action is **not** a completed action; scheduling is **not**
+occurrence; submission is **not** acceptance; transmission is **not** delivery; one
+signature is **not** a bilateral agreement; a request is **not** the other actor's act.
+Unresolved mechanisms remain explicitly unresolved — success is never assumed.
 
 ## Two planes
 
@@ -44,42 +72,92 @@ scenario-generated definitions.
   one LLM repair round, an adversarial critic pass, then **frozen**. Runtime extension is
   versioned, ancestry-preserving, additive-only, and **branch-local** (the schema lives on
   the branch's world; `clone()` isolates it).
+- **Scenario mechanisms** (`ScenarioSemanticModel.mechanism_definitions` +
+  `causal_boundary.py`) — each scenario generates its OWN Layer-B mechanisms (channels,
+  platforms, institutions, administrative/physical processes): triggers (attempt event
+  types), accepted inputs, controlling system, authority, preconditions, a real state
+  machine (initial/intermediate/success/failure/unresolved), executable transition rules
+  over branch state, typed outputs, record updates, observation rules, timing, evidence/
+  assumptions, uncertainty source, and a semantically neutral `executor_binding`
+  (institutional arithmetic, conserved-resource settlement, transport, scheduling). There is
+  **no global catalog** of email/launch/application/meeting/payment mechanisms. Generation
+  uses ACTUAL LLM calls: one proposal, one **independent causal-boundary critic** ("could
+  the actor do every step under their control and the effect still fail?"), one bounded
+  repair — traced and content-addressed cached. One generic `MechanismRuntimeOperator`
+  executes every definition: declared rules first, neutral bindings second, single declared
+  paths third, LLM adjudication of ONE concrete next transition per branch fourth (never a
+  probability, labeled `model_based_unvalidated`), and honest `unresolved` last.
 - **The kernel** (semantically empty storage + integrity): `declare_schema_definition`,
   `create_or_update_record`, `remove_record`, `create_or_remove_relation`,
-  `emit_semantic_event`, `schedule_semantic_event`, `transfer_conserved_quantity`. It
-  validates instances against the **branch schema** — there is no `create_product` or
-  `on_message_delivered` anywhere. Untrusted-op failures quarantine loudly; ops that try to
-  write another human's mind/choice are rejected and counted.
-- **`GeneratedActionCompiler`** — the actor's exact chosen action (their words, target,
-  timing, secrecy) → **direct effects only** as kernel ops against the branch schema. It may
-  never assert another person's reaction. Total fallback preserves the exact action as the
-  schema-scoped `unmodeled_actor_action` scaffolding event, counted as a fallback.
-- **Observation routing** — deterministic: recipients from targets/visibility/information
-  rules; per-recipient channel, delay, and representation (`complete` vs rule-declared
-  `summary`); the router never interprets. Delivery updates the recipient's information
-  ledger with the exact (or rule-degraded) content and schedules THEIR reconsideration.
-- **Causal frontier** — per-event discovery of actors who may now matter (targets,
-  institutional decision holders touched by the matter, network neighbors of public
-  sources, optional LLM extension) with deterministic validation, dedup, and budgets.
+  `emit_semantic_event`, `schedule_semantic_event`, `transfer_conserved_quantity`,
+  `invoke_scenario_mechanism`. It validates instances against the **branch schema** — there
+  is no `create_product` or `on_message_delivered` anywhere. The boundary is kernel-enforced
+  on the direct-action plane: no writing externally-controlled or another party's records,
+  no non-unilateral relations, no emitting mechanism-output event types, no scheduling
+  future successes (a scheduled attempt re-enters the boundary at fire time), no direct
+  transfers past a declared settlement mechanism, no outcome-satisfying writes
+  (terminal smuggling; institution decision holders recording their OWN decision are the
+  scenario-declared exception), no runtime causal-semantics extension without the boundary
+  critic. Untrusted-op failures quarantine loudly; ops that try to write another human's
+  mind/choice are rejected and counted.
+- **`causal_boundary.CausalActionCompiler` + `DirectnessValidator`** — the actor's exact
+  chosen action (their words, target, timing, secrecy) → a typed `DirectActionProgram`:
+  actor-controlled operations, attempt events, mechanism invocations, deferred actor
+  dependencies, unresolved claims, rejected claims, completion conditions, compiler + critic
+  provenance. Deterministic directness tests (ownership, external-acceptance, terminal
+  smuggling) convert or reject failed claims; an LLM directness critic challenges the rest
+  (unilateral-control, social-agency, temporal, observability, institutional, physical) —
+  failed claims become mechanism invocations, deferred actor decisions, unresolved, or
+  rejected — never silently retained. Op budget is complexity-aware; overflow marks the
+  program partially modeled, never silently truncated. Total fallback preserves the exact
+  action as the schema-scoped `unmodeled_actor_action` scaffolding attempt, counted.
+- **Observation routing** — deterministic, and only for VERIFIED observability: a
+  mechanism's successful output carries `actual_recipients` (and `availability="public"`
+  only after an actual publication/availability mechanism succeeded); the router delivers
+  those and only those, with per-recipient channel, delay, and representation. An
+  unprocessed attempt routes to nobody. Delivery updates the recipient's information ledger
+  with the exact (or rule-degraded) content and schedules THEIR reconsideration.
+- **Causal frontier** — per-event discovery of actors who may now matter, run ONLY on
+  verified-observable events (actual recipients, institutional decision holders touched by
+  the matter, network neighbors on actually-published events, optional LLM extension) with
+  deterministic validation, dedup, and budgets. Nobody is invoked by an intended target
+  list.
+- **Action history as attempts** — `past_actions` records
+  `action_attempt_initiated → mechanism_pending → mechanism_succeeded/failed/unresolved →
+  action_partially_completed/action_completed` (plus `execution_incomplete`, `blocked`),
+  with intended action, attempted action, actor-controlled effects, mechanisms invoked,
+  mechanism results, unresolved steps, completion conditions, failure reason, provenance.
+  An action is `action_completed` only when its scenario-specific completion conditions
+  actually hold in the world.
 - **Actor invocation** — rebuilds the view, presents the new observation as the situation,
   passes schema affordances only as examples, and lets the persistent qualitative actor
   decide: wait (first-class, counted), a listed affordance, or any novel feasible action.
   Feasibility/authority validation is unchanged (`execute()`); consequences compile through
   the generated compiler; new events recurse through the same canonical queue.
 - **Modes** — `generated_actor_mediated_world` (default),
-  `fixed_semantic_consequence_policy_v1` (the previous fixed-catalog baseline;
-  `semantic_world_consequences` is its alias), `legacy_scalar_pathway_consequences`
-  (benchmark-only), `dual_run_consequence_audit`. A schema-less world under the generated
-  default degrades to fixed-v1 **stamped** (actual mode, degraded flag, counted
-  `fixed_ontology_uses`, reason) — silent fallback is structurally impossible, and pure
-  generated evaluations exclude degraded runs. Both scalar writers raise under every
-  non-legacy mode.
+  `fixed_semantic_consequence_policy_v1` (the previous fixed-catalog baseline, explicitly
+  requested ONLY; `semantic_world_consequences` is its alias),
+  `legacy_scalar_pathway_consequences` (benchmark-only), `dual_run_consequence_audit`.
+  **Generated mode never degrades to fixed-v1** — silent or stamped. A world with no
+  scenario schema (or no mechanism model) is `structurally_under_modeled` /
+  `execution_incomplete`: the exact attempt is preserved, only deterministically provable
+  actor-controlled effects apply, unresolved mechanisms are marked, the support grade is
+  capped, and NO old consequence path serves in its place. Both scalar writers raise under
+  every non-legacy mode.
 - **Reporting** — every result carries the full contract: requested/actual mode, schema id +
   version, types generated, events emitted, schema extensions, observations delivered,
-  actors reconsidered/invoked/declined, actions executed, cascade depth,
-  `human_reactions_written_directly` (structurally 0; attempts are quarantined and counted
-  separately), `fixed_ontology_uses` (0 in pure runs), unsupported semantics, fallbacks with
-  reasons.
+  actors reconsidered/invoked/declined, actions executed, cascade depth, plus the
+  causal-boundary counters: `action_attempts`, `actor_controlled_effects`,
+  `mechanisms_invoked` / `mechanism_successes` / `mechanism_failures` /
+  `mechanism_unresolved`, `intended_deliveries` vs `actual_deliveries`,
+  `intended_publications` vs `actual_publications`, `directness_claims_rejected`,
+  `deliveries_unresolved_no_mechanism`, `scheduled_attempts(_fired)`,
+  `structurally_under_modeled`, and per-action `causal_action_reports` (selected/attempted
+  action, exact content, proposed vs rejected direct effects, mechanism instances,
+  deferred actor dependencies, unresolved claims, completion conditions + status, LLM
+  calls, compiler/critic provenance). Pure-run invariants:
+  `human_reactions_written_directly == 0`, `external_successes_written_directly == 0`,
+  `fixed_ontology_uses == 0`, `numeric_fallbacks == 0`.
 
 ## Final audit (the required fifteen questions, answered honestly)
 
@@ -92,17 +170,20 @@ scenario-generated definitions.
    design (they ride the `ctrl_semantic_event` envelope).
 2. **Are any load-bearing in production mode?** No. Tests 1–3/28–29 prove records/events are
    accepted solely by the branch schema, and the fixed catalog/scalar writers cannot run in
-   generated mode. The one deliberate seam: a schema-less world degrades to fixed-v1
-   **stamped and counted** — visible on every report.
+   generated mode. A schema-less world is `execution_incomplete` / structurally
+   under-modeled — the attempt is preserved and **no fixed-v1 consequence is served**
+   (`tests/test_causal_boundary.py::test_11`).
 3. **Can a novel scenario create a new type without code changes?** Yes — demoD's supplier-
    qualification and demoC's reaction types exist nowhere in the repository; test 5 proves
    it offline.
 4. **Novel semantic event without global registration?** Yes (test 6 asserts the type is
    absent from the global registry while the event flows).
 5. **Does receiving an event invoke the actor rather than a reaction handler?** Yes:
-   delivery → `ctrl_invoke_actor` → the actor's own policy. The fixed
-   `message_delivered → acknowledge/ignore` path is baseline-only; in generated mode the
-   legacy mechanism emissions are disabled so a reaction has exactly one route.
+   mechanism success → verified observability → delivery → `ctrl_invoke_actor` → the
+   actor's own policy. The fixed `message_delivered → acknowledge/ignore` path is
+   baseline-only; in generated mode the legacy mechanism emissions are disabled (schema or
+   not) so a reaction has exactly one route — and nobody is invoked before an ACTUAL
+   observation (`test_causal_boundary.py::test_2/test_14`).
 6. **Can an actor choose an action outside every supplied menu?** Yes (test 13; the
    qualitative schema always invited novel actions; affordances are examples).
 7. **Deliberate inaction?** Yes — `wait` is first-class and counted
@@ -119,7 +200,10 @@ scenario-generated definitions.
     additive-only, ancestry-preserving, branch-isolated (tests 7–8).
 12. **Does the public default path use the generated architecture?** Yes —
     `resolve_consequence_mode()` defaults to it across `run_from_plan`, `simulate_world`,
-    phase-8 persistence, and individual reactions (with the stamped schema-less seam above).
+    phase-8 persistence (which now binds the scenario schema + mechanisms too), Phase-13
+    matched evaluation, and individual reactions. The schema-less case is
+    `execution_incomplete`, never a fixed-v1 swap
+    (`experiments/causal_boundary_smoke.py` proves the default route end to end).
 13. **Do Phase-13 rollouts use it?** Yes — matched counterfactuals clone worlds carrying the
     schema and run the same operators/engine with paired seeds (test 30–31).
 14. **Can fixed-v1 still run as a baseline?** Yes — explicit mode, full artifact set kept
