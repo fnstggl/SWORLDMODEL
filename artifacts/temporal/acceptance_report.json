@@ -1,13 +1,13 @@
 {
- "generated_at": "2026-07-19T00:49:08Z",
- "commit": "985f98fdbe3c5fdf6dc589f17ac3035ed32ea128",
- "accepted": false,
+ "generated_at": "2026-07-19T01:09:35Z",
+ "commit": "219700d7306925b158bcbe70803a2179acb2b480",
+ "accepted": true,
  "generation": "computed from code/tests/artifacts by experiments/temporal_acceptance_report.py \u2014 not handwritten",
  "checks": {
   "periodic_scheduler_unreachable": {
    "cmd": "pytest -q tests/test_temporal_enforcement.py",
    "returncode": 0,
-   "tail": "12 passed in 0.87s",
+   "tail": "12 passed in 1.02s",
    "passed": true
   },
   "assumption_audit_removals": {
@@ -18,13 +18,13 @@
   "behavioral_invariants": {
    "cmd": "pytest -q tests/test_temporal_invariants.py",
    "returncode": 0,
-   "tail": "26 passed in 0.20s",
+   "tail": "26 passed in 0.15s",
    "passed": true
   },
   "cross_domain_fixtures": {
    "cmd": "pytest -q tests/test_temporal_fixtures.py",
    "returncode": 0,
-   "tail": "11 passed in 0.17s",
+   "tail": "11 passed in 0.18s",
    "passed": true
   },
   "llm_temporal_compilation_default": {
@@ -42,37 +42,37 @@
   "suite_event_time_rollout_dynamics": {
    "cmd": "pytest -q tests/test_wmv2_event_time.py tests/test_wmv2_world_dynamics.py tests/test_world_model_v2.py tests/test_event_coupled_rollout.py",
    "returncode": 0,
-   "tail": "83 passed in 1.81s",
+   "tail": "83 passed in 1.84s",
    "passed": true
   },
   "suite_semantic_and_generated": {
    "cmd": "pytest -q tests/test_semantic_consequences.py tests/test_generated_world.py",
    "returncode": 0,
-   "tail": "54 passed in 1.33s",
+   "tail": "54 passed in 1.35s",
    "passed": true
   },
   "suite_qualitative_actors": {
    "cmd": "pytest -q tests/test_qualitative_actor.py tests/test_llm_actor.py",
    "returncode": 0,
-   "tail": "51 passed in 0.69s",
+   "tail": "51 passed in 0.59s",
    "passed": true
   },
   "suite_phase13": {
    "cmd": "pytest -q tests/test_phase13_engine.py tests/test_scenario_action_layer.py tests/test_scenario_action_invariants.py tests/test_scenario_action_enforcement.py tests/test_scenario_cross_domain.py",
    "returncode": 0,
-   "tail": "131 passed in 1.62s",
+   "tail": "131 passed in 1.64s",
    "passed": true
   },
   "suite_pr115_messages": {
    "cmd": "pytest -q tests/test_reply_first.py tests/test_content_graph.py tests/test_message_optimizer.py",
    "returncode": 0,
-   "tail": "53 passed in 116.41s (0:01:56)",
+   "tail": "53 passed in 106.30s (0:01:46)",
    "passed": true
   },
   "suite_unified_runtime": {
    "cmd": "pytest -q tests/test_wmv2_unified_runtime.py tests/test_wmv2_phase8.py tests/test_wmv2_activation_synthesis.py tests/test_wmv2_phase_supervision.py",
    "returncode": 0,
-   "tail": "87 passed in 1.09s",
+   "tail": "87 passed in 1.16s",
    "passed": true
   },
   "suite_benchmark_harness": {
@@ -82,9 +82,9 @@
    "passed": true
   },
   "forensic_traces": {
-   "passed": false,
-   "n_case_artifacts": 1,
-   "n_verified": 0,
+   "passed": true,
+   "n_case_artifacts": 6,
+   "n_verified": 6,
    "note": "six live LLM-backed production-runtime cases with \u00a730 verification blocks"
   },
   "cost_measured": {
@@ -92,5 +92,5 @@
    "artifact": "artifacts/temporal/cost_benchmark.json"
   }
  },
- "runtime_s": 127.1
+ "runtime_s": 117.4
 }
