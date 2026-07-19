@@ -132,9 +132,12 @@ def test_fixture_public_information_publish_exposure_moderation_and_nonreach():
                                                "typical_visibility": "participants"}},
         information_rules={"default_channel": "feed"},
         provenance={"compiler": "test"}).freeze()
+    # combined causal boundary (#119): only a VERIFIED delivered/published event routes —
+    # the mechanism's verified recipients, never intent
     sev = {"event_id": "p1", "semantic_type_id": "announcement", "exact_content": "launch!",
            "intended_visibility": "participants", "direct_targets": [key_actor],
-           "source_actor_id": src}
+           "source_actor_id": src, "observability_verified": True,
+           "causal_layer": "mechanism_output", "actual_recipients": [key_actor]}
     deliveries = gw.route_semantic_event(w, sev, gw.generated_report())
     assert {d.payload["recipient"] for d in deliveries} == {key_actor}
 
@@ -374,9 +377,13 @@ def test_fixture_eight_decisive_actors_all_receive_their_triggers():
         information_rules={"default_channel": "direct"},
         provenance={"compiler": "test"}).freeze()
     src_id = next(a for a in sorted(w.entities) if a.startswith("source"))
+    # combined causal boundary (#119): the routed event is the mechanism's VERIFIED public
+    # publication — availability "public" routes broad exposure; verified recipients route direct
     sev = {"event_id": "big1", "semantic_type_id": "joint_announcement",
            "exact_content": "the consortium terms changed", "intended_visibility": "public",
-           "direct_targets": list(actors), "source_actor_id": src_id}
+           "direct_targets": list(actors), "source_actor_id": src_id,
+           "observability_verified": True, "causal_layer": "mechanism_output",
+           "actual_recipients": list(actors), "availability": "public"}
     deliveries = gw.route_semantic_event(w, sev, gw.generated_report())
     recipients = {d.payload["recipient"] for d in deliveries}
     assert set(actors) <= recipients and len(recipients) >= 9   # nobody dropped by rank

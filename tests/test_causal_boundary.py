@@ -202,7 +202,25 @@ def step_all_mechanisms(w, report, *, llm=None, rounds=4):
     op = cb.MechanismRuntimeOperator(report=report, llm=llm)
     router = gw.GeneratedSemanticEventOperator(report=report)
     deliver = gw.GeneratedObservationDeliveryOperator(report=report)
+    attend = gw.GeneratedAttentionOperator(report=report)
     invocations = []
+
+    def _attend(follow_ups):
+        # combined runtime: delivery is availability; the invocation arrives only after the
+        # actor's REAL attention event (#120) — drive that step here
+        out = []
+        for fa in follow_ups:
+            if fa["etype"] == "ctrl_attention":
+                if fa["ts"] > w.clock.now:
+                    w.clock.advance_to(fa["ts"])
+                ad, _ = attend.run(w, Event(ts=fa["ts"], etype=fa["etype"],
+                                            participants=list(fa.get("participants") or []),
+                                            payload=dict(fa.get("payload") or {})), None)
+                out.extend(x for x in ((ad.follow_up_events if ad else None) or [])
+                           if x["etype"] == "ctrl_invoke_actor")
+            elif fa["etype"] == "ctrl_invoke_actor":
+                out.append(fa)
+        return out
     for _ in range(rounds):
         pending = [i for i in w.mechanism_instances.values() if i.status == "pending"]
         if not pending:
@@ -227,8 +245,7 @@ def step_all_mechanisms(w, report, *, llm=None, rounds=4):
                             w, Event(ts=f2["ts"], etype=f2["etype"],
                                      participants=list(f2.get("participants") or []),
                                      payload=dict(f2.get("payload") or {})), None)
-                        invocations.extend(x for x in dd.follow_up_events
-                                           if x["etype"] == "ctrl_invoke_actor")
+                        invocations.extend(_attend(dd.follow_up_events or []))
                     elif f2["etype"] == "ctrl_invoke_actor":
                         invocations.append(f2)
     return invocations
@@ -668,6 +685,7 @@ def test_15_ordinary_run_route_uses_boundary_compiler_and_mechanism_runtime_by_d
     ops = [ProductionActorPolicyOperator(runtime=rt),
            gw.GeneratedSemanticEventOperator(report=report),
            gw.GeneratedObservationDeliveryOperator(report=report),
+           gw.GeneratedAttentionOperator(report=report),
            gw.GeneratedActorInvocationOperator(rt, report=report),
            cb.MechanismRuntimeOperator(report=report),
            cb.ScheduledAttemptOperator(report=report)]

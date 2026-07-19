@@ -506,11 +506,16 @@ def test_17_18_19_visibility_reach_and_representations():
                                 if fu["etype"] == "ctrl_attention")
     # DELIVERED ≠ READ (§9, invariants 17/18): availability alone exposes nothing
     assert not w.information.visible_to("dr_padilla", at=w.clock.now)
+    # drive every pending attention check (§20: repeated deliveries COALESCE into the actor's
+    # already-scheduled channel check, so the authoritative pending set lives on the world)
     att = gw.GeneratedAttentionOperator(report=report)
-    for f in attention_events:
-        w.clock.now = max(w.clock.now, f["ts"])
-        att.run(w, Event(ts=f["ts"], etype=f["etype"], participants=f["participants"],
-                         payload=f["payload"]), None)
+    checks = sorted((ts, aid, ch)
+                    for aid, buf in (getattr(w, "temporal_attention", {}) or {}).items()
+                    for ch, ts in (buf.get("scheduled_attention") or {}).items())
+    for ts, aid, ch in checks:
+        w.clock.now = max(w.clock.now, ts)
+        att.run(w, Event(ts=ts, etype="ctrl_attention", participants=[aid],
+                         payload={"actor_id": aid, "channel": ch}), None)
     pad = w.information.visible_to("dr_padilla", at=w.clock.now)
     assert any("[summarized in transit]" in item.content for item, _ in pad)
     # 18: PRIVATE information does not reach unrelated actors — even after real delivery
