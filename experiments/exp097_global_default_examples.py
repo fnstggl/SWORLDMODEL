@@ -268,12 +268,17 @@ def ex5_info_gathering():
             institutions=[],
             evidence="Kim can pull referral-source stats within a week; the practice "
                      "management system logs every referral with source and month, so "
-                     "monthly counts are directly measurable against the December "
-                     "baseline of 60/month. GP Alvarez was the top referrer (25/month) "
-                     "and stopped in February; his stated reason is unknown until asked. "
-                     "Sam Whitfield holds sole authority over fees and programs. "
-                     "Reversing the January fee change costs 8k/quarter; a "
-                     "referral-partner program costs 5k to stand up.",
+                     "monthly counts are directly measurable against the "
+                     "seasonally-adjusted December baseline of 60/month. GP Alvarez was "
+                     "the top referrer (25/month) and stopped in February; whether he is "
+                     "WILLING to resume is unknown until someone asks him, and his "
+                     "answer (willing / conditional / permanently moved) is discoverable "
+                     "by a direct conversation. Referral relationships decay slowly: a "
+                     "GP who stays away past October is unlikely to return this year. "
+                     "Sam Whitfield holds sole authority over fees and programs; any of "
+                     "Sam's decisions can also be delayed or dropped (a decision not "
+                     "recorded within two weeks lapses). Reversing the January fee "
+                     "change costs 8k/quarter; a referral-partner program costs 5k.",
             horizon_days=90),
         actors=["sam_whitfield", "referring_gp_alvarez", "practice_manager_kim"],
         resources_hint={"budget": 20000.0},
