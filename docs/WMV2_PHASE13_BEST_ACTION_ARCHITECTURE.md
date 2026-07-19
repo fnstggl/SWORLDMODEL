@@ -1,5 +1,17 @@
 # World Model V2 — Phase 13: Universal Best-Action Layer (Architecture)
 
+> **PRODUCTION NOTE (v2).** The fixed action ontology documented in §4 below is **LEGACY**:
+> generated-mode decisions (any world carrying a scenario schema) route through the
+> **scenario-generated action layer** — `swm/world_model_v2/phase13/scenario_actions/` —
+> which generates a per-decision action language from the scenario world, represents
+> candidates as concrete plans (exact content, no verb labels), compiles them once into the
+> semantically-empty generated-world kernel, executes through the canonical control plane
+> (affected actors react through their own simulations), and evaluates with a scenario goal
+> contract (counted frequencies + real quantities; no minted scalars). The catalog remains
+> reachable only via `mode="legacy_fixed_v1"` (baselines/ablations/frozen tests) and for
+> non-generated controlled tasks. Full architecture: `docs/WMV2_SCENARIO_ACTION_LAYER.md`.
+> Demolition audit: `artifacts/phase13/action_language/audit_phase13_catalog.json`.
+
 Phase 13 is the universal decision layer for World Model V2. It transforms a decision-maker's
 information, authority, resources, goals, constraints, and uncertainty into a validated feasible
 action space, matched counterfactual simulations through the **canonical** unified runtime, robust

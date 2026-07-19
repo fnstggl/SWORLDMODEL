@@ -109,7 +109,8 @@ class PlannerResult:
 class ReplyFirstPlanner:
     def __init__(self, chat_fn=None, *, sender_brief, dossier, hypotheses=None,
                  recipient_notes: str = "", seed: int = 0, trace_path: str = None,
-                 max_llm_calls: int = 150, persona_draws: int = 3):
+                 max_llm_calls: int = 150, persona_draws: int = 3,
+                 use_content_graph: bool = True):
         self.chat = chat_fn
         self.brief = sender_brief
         self.dossier = dossier
@@ -119,6 +120,11 @@ class ReplyFirstPlanner:
         self.trace_path = trace_path
         self.max_llm_calls = max_llm_calls
         self.persona_draws = persona_draws
+        # semantic-planning stage (content_graph.py): search over ideas/information and turn the
+        # winning plan into language, as ADDITIONAL seed candidates + a final deletion gauntlet, all
+        # flowing through the same three judges. Contributes nothing offline (a plan needs a writer
+        # to become language) or when off, so the offline pipeline stays byte-identical either way.
+        self.use_content_graph = use_content_graph
         self.calls = 0
         self.allowed = allowed_numbers(sender_brief.to_prompt() if sender_brief else "",
                                        recipient_notes)
@@ -399,6 +405,59 @@ class ReplyFirstPlanner:
         beam = out.get("beam") or []
         return beam[0].text if beam else text
 
+    # ---------------------------------------------------------------- semantic-planning stage
+    def _cg_chat(self):
+        """A budget- and trace-aware chat wrapper handed to the content-graph stage: its calls count
+        against max_llm_calls (fail-closed to '' once exhausted). None stays None (offline)."""
+        if self.chat is None:
+            return None
+
+        def wrapped(prompt, **kw):
+            if self.calls >= self.max_llm_calls:
+                return ""
+            self.calls += 1
+            try:
+                return _call(self.chat, prompt, **kw)
+            except Exception:  # noqa: BLE001 — a dead backend degrades the stage, never crashes it
+                return ""
+        return wrapped
+
+    def _content_graph_seeds(self, replies: list, *, max_seeds: int = 4) -> list:
+        """Build the graph -> plan semantics -> verbalize, returning CG seed candidates labeled
+        'CG:<plan_id>.<j>'. Bounded: the wrapper caps LLM calls at max_llm_calls and the seed count
+        is capped; returns [] on any failure so the beat-structure seeds always still run."""
+        from swm.decision.content_graph import (build_content_graph, plan_semantics, verbalize)
+        cg_chat = self._cg_chat()
+        graph = build_content_graph(cg_chat, self.brief, self.dossier, trace_path=self.trace_path)
+        if not graph.units:
+            return []
+        plans = plan_semantics(cg_chat, graph.units, replies, k=4, trace_path=self.trace_path)
+        seeds = []
+        for plan in plans:
+            if len(seeds) >= max_seeds or self.calls >= self.max_llm_calls:
+                break
+            for j, txt in enumerate(verbalize(cg_chat, plan, graph.units, self.brief, n=2,
+                                              trace_path=self.trace_path)):
+                seeds.append({"label": f"CG:{plan.plan_id}.{j}", "text": txt,
+                              "origin": "content_graph", "plan_id": plan.plan_id})
+        return seeds[:max_seeds]
+
+    def _adversarial_variants(self, text: str, *, max_variants: int = 3) -> list:
+        """Adversarial-deletion candidates for the finalist: the strongest-reason repair plus a few
+        surviving single-sentence deletions, labeled 'AD:...'. This stage never picks a winner —
+        deterministic admissibility only (numbers + contract); the SAME truth + language gates and
+        the blind outcome judge re-judge these in the final gauntlet."""
+        from swm.decision.content_graph import adversarial_deletion
+        ad = adversarial_deletion(self._cg_chat(), text, self.brief, judge=None,
+                                  trace_path=self.trace_path)
+        cands = []
+        if ad.get("repaired_ok"):
+            cands.append({"label": "AD:repair", "text": ad["repaired"], "origin": "adversarial"})
+        for i, d in enumerate(ad.get("deletions", [])):
+            if d.get("truth_ok"):
+                cands.append({"label": f"AD:del_{i}", "text": d["text"], "origin": "adversarial"})
+        return cands[:max_variants]
+
     # ---------------------------------------------------------------- the full pipeline
     def run(self) -> PlannerResult:
         replies = self.desired_replies()
@@ -412,6 +471,16 @@ class ReplyFirstPlanner:
                 continue
             candidates.append({"label": f"S:{'>'.join(b[:4] for b in st)}", "text": t,
                                "origin": "structure", "structure": st})
+
+        # SEMANTIC-PLANNING STAGE: search over ideas/information (content units -> best subset and
+        # ordering -> several verbalizations) BEFORE the beat structures, and add the results as
+        # additional seed candidates. Skipped offline (no writer to verbalize a plan) and when the
+        # flag is off, so the offline pipeline stays byte-identical to the pre-content-graph default.
+        cg_seeds = []
+        if self.use_content_graph and self.chat is not None:
+            cg_seeds = self._content_graph_seeds(replies)
+        candidates = cg_seeds + candidates
+
         from swm.decision.outreach_contract import plain_baseline_draft
         candidates.append({"label": "plain_baseline", "origin": "baseline",
                            "text": plain_baseline_draft(self.brief,
@@ -421,8 +490,11 @@ class ReplyFirstPlanner:
         if not gated:
             gated = [candidates[-1]]                       # plain baseline always survives truth
 
-        # blind outcome ranking of structure candidates -> beat search on the top structure
-        rank1 = self.outcome_rank([{"label": c["label"], "text": c["text"]} for c in gated[:6]])
+        # blind outcome ranking of the seed candidates -> beat search on the top seed. Widen the
+        # ranking pool only when content-graph seeds are present, so structures still get ranked.
+        pool_cap = 8 if cg_seeds else 6
+        rank1 = self.outcome_rank([{"label": c["label"], "text": c["text"]}
+                                   for c in gated[:pool_cap]])
         top_label = rank1["order"][0]
         top = next(c for c in gated if c["label"] == top_label)
         variants = self.beat_variants(top.get("structure", STRUCTURES[0]), top["text"])
@@ -438,6 +510,13 @@ class ReplyFirstPlanner:
         polished = self.wording_pass(best_v["text"])
         finalists = [{"label": "polished", "text": polished},
                      {"label": "pre_polish", "text": best_v["text"]}]
+
+        # ADVERSARIAL DELETION on the finalist: a strongest-reason repair + per-sentence deletion
+        # probes; the surviving variants join the SAME final gauntlet (truth + language + blind
+        # outcome). Skipped offline / when the flag is off -> byte-identical offline behavior.
+        if self.use_content_graph and self.chat is not None:
+            finalists += self._adversarial_variants(polished)
+
         final_gated = self._gate_pool(finalists)
         if not final_gated:
             final_gated = [finalists[1]]
