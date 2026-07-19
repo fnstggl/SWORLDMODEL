@@ -58,7 +58,9 @@ EVIDENCE: {ev}
 {timing_doc}
 
 Identify for THIS scenario (omit sections that genuinely do not apply — an empty list is a
-valid answer; do not pad):
+valid answer; do not pad). Return COMPACT JSON (minimal whitespace) and OMIT empty sections
+entirely so the response fits the token budget; prioritize channels, actor-relevant timing,
+institutional stages and deadlines over exhaustive uncertainty prose:
 1. timezones: where each named actor/institution plausibly operates (IANA names). Unknown = omit.
 2. calendars: working calendars that matter (business days/hours, weekend behavior). Only if relevant.
 3. channels: the ACTUAL information channels between these actors (direct message, email, call,
@@ -72,7 +74,7 @@ valid answer; do not pad):
    queue buildup, pressure) as {{process_id, writes, form: exponential_decay|linear_drift|
    exponential_approach, rate_per_day, target?, active_when?}}. Only if causally relevant.
 6. deadlines: real deadlines with exact ts when known (else TIMING), what they bind, source.
-7. dependencies: events that cannot happen before другие events (list {{event, depends_on, why}}).
+7. dependencies: events that cannot happen before other events (list {{event, depends_on, why}}).
 8. recurring_obligations: ONLY real documented recurrences (a known weekly meeting, a scheduled
    committee session). Each MUST carry source + timezone + local time + participants + relevance.
    NO generic review cadences — if you cannot name the real recurring process, return none.

@@ -1,287 +1,10 @@
 {
- "generated_at": "2026-07-18T23:35:56Z",
- "commit": "8c0223c719c17c024c886ffd537fa36929b95513",
+ "generated_at": "2026-07-19T00:41:37Z",
+ "commit": "4570acd8f81e5c44cfb2fc94349689db856fd87f",
  "n_assumptions": 31,
  "n_requiring_removal": 26,
- "n_removal_verified": 0,
- "removal_failures": [
-  {
-   "id": "periodic_strategic_review",
-   "why": "pattern still in production file (should live only in quarantine)",
-   "matches": [
-    {
-     "line": 180,
-     "text": "\"payload\": {\"situation\": f\"periodic strategic review ({k}/{n_points})\","
-    }
-   ]
-  },
-  {
-   "id": "six_actor_cap",
-   "why": "pattern still in production file (should live only in quarantine)",
-   "matches": [
-    {
-     "line": 168,
-     "text": "strategic = actors[:6] if req.get(\"phase4_actor_policy\", {}).get(\"required\") else []"
-    }
-   ]
-  },
-  {
-   "id": "default_cadence_horizon_over_6",
-   "why": "pattern still in production file (should live only in quarantine)",
-   "matches": [
-    {
-     "line": 163,
-     "text": "cad = cadence_days or max(1.0, horizon_days / 6.0)"
-    }
-   ]
-  },
-  {
-   "id": "deepen_trajectory_call",
-   "why": "pattern still present in production file",
-   "matches": [
-    {
-     "line": 264,
-     "text": "from swm.world_model_v2.fidelity import deepen_trajectory"
-    },
-    {
-     "line": 266,
-     "text": "lineage[\"trajectory_depth\"] = deepen_trajectory(plan, req, cadence_days=cad)"
-    }
-   ]
-  },
-  {
-   "id": "hazard_round_grid_when",
-   "why": "pattern still present in production file",
-   "matches": [
-    {
-     "line": 927,
-     "text": "for k in range(1, n_rounds + 1):"
-    },
-    {
-     "line": 950,
-     "text": "for k in range(1, n_rounds + 1):"
-    },
-    {
-     "line": 1182,
-     "text": "round_ts = [plan.as_of + (k / (n_rounds + 1)) * span for k in range(1, n_rounds + 1)]"
-    }
-   ]
-  },
-  {
-   "id": "mode_cap_six",
-   "why": "pattern still present in production file",
-   "matches": [
-    {
-     "line": 897,
-     "text": "for m in modes[:6]:"
-    }
-   ]
-  },
-  {
-   "id": "binary_residual_grid",
-   "why": "pattern still present in production file",
-   "matches": [
-    {
-     "line": 1182,
-     "text": "round_ts = [plan.as_of + (k / (n_rounds + 1)) * span for k in range(1, n_rounds + 1)]"
-    }
-   ]
-  },
-  {
-   "id": "stance_review_grid",
-   "why": "pattern still present in production file",
-   "matches": [
-    {
-     "line": 952,
-     "text": "\"etype\": \"stance_review\","
-    }
-   ]
-  },
-  {
-   "id": "frontier_cap_8",
-   "why": "pattern still present in production file",
-   "matches": [
-    {
-     "line": 680,
-     "text": "return out[:8]"
-    }
-   ]
-  },
-  {
-   "id": "direct_delivery_60s",
-   "why": "pattern still present in production file",
-   "matches": [
-    {
-     "line": 559,
-     "text": "delay = float(rules.get(\"default_delay_s\", 60.0) or 60.0)"
-    }
-   ]
-  },
-  {
-   "id": "public_delivery_3600s",
-   "why": "pattern still present in production file",
-   "matches": [
-    {
-     "line": 563,
-     "text": "delay = float(rules.get(\"public_delay_s\", 3600.0) or 3600.0)"
-    }
-   ]
-  },
-  {
-   "id": "reconsideration_1800s",
-   "why": "pattern still present in production file",
-   "matches": [
-    {
-     "line": 614,
-     "text": "observation_ids=(), delay_s: float = 1800.0):"
-    }
-   ]
-  },
-  {
-   "id": "semcons_delivery_60s",
-   "why": "pattern still present in production file",
-   "matches": [
-    {
-     "line": 330,
-     "text": "delay = max(1.0, float(op.get(\"delivery_delay_s\", 60.0) or 60.0))"
-    }
-   ]
-  },
-  {
-   "id": "semcons_post_delivery_1800s",
-   "why": "pattern still present in production file",
-   "matches": [
-    {
-     "line": 1056,
-     "text": "\"etype\": \"decision_opportunity\", \"ts\": world.clock.now + 1800.0,"
-    }
-   ]
-  },
-  {
-   "id": "semcons_reply_60s_6h",
-   "why": "pattern still present in production file",
-   "matches": [
-    {
-     "line": 914,
-     "text": "\"delivery_delay_s\": 60.0 if name == \"reply_now\" else 6 * 3600.0})"
-    }
-   ]
-  },
-  {
-   "id": "phase4_reaction_60s",
-   "why": "pattern still present in production file",
-   "matches": [
-    {
-     "line": 473,
-     "text": "delay = max(1.0, float(action.parameters.get(\"reaction_delay_s\", 60.0) or 60.0))"
-    }
-   ]
-  },
-  {
-   "id": "background_daily_tick",
-   "why": "pattern still present in production file",
-   "matches": [
-    {
-     "line": 27,
-     "text": "background_every_days: float = 1.0     # apply background dynamics at most this often (elapsed-driven)"
-    }
-   ]
-  },
-  {
-   "id": "crn_background_daily_tick",
-   "why": "pattern still present in production file",
-   "matches": [
-    {
-     "line": 109,
-     "text": "if (ev.ts - last_bg) >= self.background_every_days * 86400.0:"
-    }
-   ]
-  },
-  {
-   "id": "interventions_plus_1s",
-   "why": "pattern still present in production file",
-   "matches": [
-    {
-     "line": 209,
-     "text": "\"etype\": fu_type, \"ts\": world.clock.now + 1.0,"
-    }
-   ]
-  },
-  {
-   "id": "api_default_decision_point_1s",
-   "why": "pattern still present in production file",
-   "matches": [
-    {
-     "line": 211,
-     "text": "points = [float(ev.particles()[0].clock.now) + 1.0]"
-    }
-   ]
-  },
-  {
-   "id": "step_recheck_6h",
-   "why": "pattern still present in production file",
-   "matches": [
-    {
-     "line": 40,
-     "text": "_RECHECK_S = 21600.0          # conditional steps re-check every 6h until max checks"
-    }
-   ]
-  },
-  {
-   "id": "step_gap_60s",
-   "why": "pattern still present in production file",
-   "matches": [
-    {
-     "line": 41,
-     "text": "_STEP_GAP_S = 60.0            # dependent steps fire shortly after their parents complete"
-    }
-   ]
-  },
-  {
-   "id": "midpoint_timing_variant",
-   "why": "pattern still present in production file",
-   "matches": [
-    {
-     "line": 84,
-     "text": "mid = now + 0.5 * (hz - now)"
-    }
-   ]
-  },
-  {
-   "id": "individual_history_1day_grid",
-   "why": "pattern still present in production file",
-   "matches": [
-    {
-     "line": 52,
-     "text": "created_at=now - 86400.0 * (len(context.get(\"history\") or []) - i)))"
-    },
-    {
-     "line": 53,
-     "text": "w.information.expose(person_id, iid, now - 86400.0 * (len(context.get(\"history\") or []) - i))"
-    }
-   ]
-  },
-  {
-   "id": "attrition_per_review",
-   "why": "pattern still present in production file",
-   "matches": [
-    {
-     "line": 302,
-     "text": "drain = sampled_coupling(world, \"attrition_per_review\")"
-    }
-   ]
-  },
-  {
-   "id": "stance_review_count_cooldown",
-   "why": "pattern still present in production file",
-   "matches": [
-    {
-     "line": 81,
-     "text": "STANCE_REVIEW_COOLDOWN = 1"
-    }
-   ]
-  }
- ],
+ "n_removal_verified": 26,
+ "removal_failures": [],
  "assumptions": [
   {
    "id": "periodic_strategic_review",
@@ -299,14 +22,18 @@
    "replacement": "scenario temporal model + DecisionTriggers: actors decide only when a real trigger occurs (temporal_compiler + temporal_runtime)",
    "disposition": "quarantined_legacy_ablation",
    "quarantine_file": "swm/world_model_v2/legacy_ablations.py",
-   "production_matches": [
+   "production_matches": [],
+   "quarantine_matches": [
     {
-     "line": 180,
+     "line": 13,
+     "text": "a \"periodic strategic review\" decision at every point. That is a scheduler convenience, not a"
+    },
+    {
+     "line": 52,
      "text": "\"payload\": {\"situation\": f\"periodic strategic review ({k}/{n_points})\","
     }
    ],
-   "quarantine_matches": [],
-   "removal_verified": false
+   "removal_verified": true
   },
   {
    "id": "six_actor_cap",
@@ -324,14 +51,14 @@
    "replacement": "causal relevance / frontier discovery / authority \u2014 no fixed actor cap; compute limits mark branches temporally_truncated instead",
    "disposition": "quarantined_legacy_ablation",
    "quarantine_file": "swm/world_model_v2/legacy_ablations.py",
-   "production_matches": [
+   "production_matches": [],
+   "quarantine_matches": [
     {
-     "line": 168,
+     "line": 40,
      "text": "strategic = actors[:6] if req.get(\"phase4_actor_policy\", {}).get(\"required\") else []"
     }
    ],
-   "quarantine_matches": [],
-   "removal_verified": false
+   "removal_verified": true
   },
   {
    "id": "default_cadence_horizon_over_6",
@@ -349,14 +76,14 @@
    "replacement": "no generic cadence anywhere; timing from generated triggers/processes",
    "disposition": "quarantined_legacy_ablation",
    "quarantine_file": "swm/world_model_v2/legacy_ablations.py",
-   "production_matches": [
+   "production_matches": [],
+   "quarantine_matches": [
     {
-     "line": 163,
+     "line": 35,
      "text": "cad = cadence_days or max(1.0, horizon_days / 6.0)"
     }
    ],
-   "quarantine_matches": [],
-   "removal_verified": false
+   "removal_verified": true
   },
   {
    "id": "deepen_trajectory_call",
@@ -373,17 +100,8 @@
    "affects_terminal": true,
    "replacement": "compile_temporal_model + attach_temporal_events (LLM temporal compilation)",
    "disposition": "removed_from_production",
-   "production_matches": [
-    {
-     "line": 264,
-     "text": "from swm.world_model_v2.fidelity import deepen_trajectory"
-    },
-    {
-     "line": 266,
-     "text": "lineage[\"trajectory_depth\"] = deepen_trajectory(plan, req, cadence_days=cad)"
-    }
-   ],
-   "removal_verified": false
+   "production_matches": [],
+   "removal_verified": true
   },
   {
    "id": "hazard_round_grid_when",
@@ -400,21 +118,8 @@
    "affects_terminal": true,
    "replacement": "continuous-time first-passage scheduling (temporal_hazards): per-branch Exp(1) threshold, cumulative intensity, state-preserving re-projection",
    "disposition": "removed_from_production",
-   "production_matches": [
-    {
-     "line": 927,
-     "text": "for k in range(1, n_rounds + 1):"
-    },
-    {
-     "line": 950,
-     "text": "for k in range(1, n_rounds + 1):"
-    },
-    {
-     "line": 1182,
-     "text": "round_ts = [plan.as_of + (k / (n_rounds + 1)) * span for k in range(1, n_rounds + 1)]"
-    }
-   ],
-   "removal_verified": false
+   "production_matches": [],
+   "removal_verified": true
   },
   {
    "id": "mode_cap_six",
@@ -431,13 +136,8 @@
    "affects_terminal": true,
    "replacement": "all canonical modes carry first-passage processes",
    "disposition": "removed_from_production",
-   "production_matches": [
-    {
-     "line": 897,
-     "text": "for m in modes[:6]:"
-    }
-   ],
-   "removal_verified": false
+   "production_matches": [],
+   "removal_verified": true
   },
   {
    "id": "binary_residual_grid",
@@ -454,13 +154,8 @@
    "affects_terminal": true,
    "replacement": "one first-passage process with calibrated cumulative intensity (-ln(1-target)), family-curve shaped",
    "disposition": "removed_from_production",
-   "production_matches": [
-    {
-     "line": 1182,
-     "text": "round_ts = [plan.as_of + (k / (n_rounds + 1)) * span for k in range(1, n_rounds + 1)]"
-    }
-   ],
-   "removal_verified": false
+   "production_matches": [],
+   "removal_verified": true
   },
   {
    "id": "stance_review_grid",
@@ -477,13 +172,8 @@
    "affects_terminal": true,
    "replacement": "event-driven stance updating: material state changes emit stance_relevant_change events; elapsed-time hysteresis",
    "disposition": "removed_from_production",
-   "production_matches": [
-    {
-     "line": 952,
-     "text": "\"etype\": \"stance_review\","
-    }
-   ],
-   "removal_verified": false
+   "production_matches": [],
+   "removal_verified": true
   },
   {
    "id": "invocations_per_actor_5",
@@ -500,12 +190,7 @@
    "affects_terminal": true,
    "replacement": "causal quiescence stopping; safety budget exhaustion \u2192 simulation_status=temporally_truncated with actor/pending records",
    "disposition": "safety_limit_with_truncation",
-   "production_matches": [
-    {
-     "line": 53,
-     "text": "DEFAULT_BUDGETS = {\"max_invocations_per_actor\": 5, \"max_semantic_events\": 150,"
-    }
-   ],
+   "production_matches": [],
    "removal_verified": null
   },
   {
@@ -523,12 +208,7 @@
    "affects_terminal": true,
    "replacement": "quiescence; safety budget with truncation records",
    "disposition": "safety_limit_with_truncation",
-   "production_matches": [
-    {
-     "line": 54,
-     "text": "\"max_cascade_depth\": 8}"
-    }
-   ],
+   "production_matches": [],
    "removal_verified": null
   },
   {
@@ -546,13 +226,8 @@
    "affects_terminal": true,
    "replacement": "uncapped discovery; safety truncation recorded when hit",
    "disposition": "removed_from_production",
-   "production_matches": [
-    {
-     "line": 680,
-     "text": "return out[:8]"
-    }
-   ],
-   "removal_verified": false
+   "production_matches": [],
+   "removal_verified": true
   },
   {
    "id": "direct_delivery_60s",
@@ -569,13 +244,8 @@
    "affects_terminal": true,
    "replacement": "ChannelTemporalModel stages (transmission/delivery/availability) from the scenario temporal model; attention separated from delivery",
    "disposition": "replaced_scenario_generated",
-   "production_matches": [
-    {
-     "line": 559,
-     "text": "delay = float(rules.get(\"default_delay_s\", 60.0) or 60.0)"
-    }
-   ],
-   "removal_verified": false
+   "production_matches": [],
+   "removal_verified": true
   },
   {
    "id": "public_delivery_3600s",
@@ -592,13 +262,8 @@
    "affects_terminal": true,
    "replacement": "publication immediate at channel; per-actor exposure/attention from profiles (exposure spreads, key actors can see earlier/later)",
    "disposition": "replaced_scenario_generated",
-   "production_matches": [
-    {
-     "line": 563,
-     "text": "delay = float(rules.get(\"public_delay_s\", 3600.0) or 3600.0)"
-    }
-   ],
-   "removal_verified": false
+   "production_matches": [],
+   "removal_verified": true
   },
   {
    "id": "reconsideration_1800s",
@@ -615,13 +280,8 @@
    "affects_terminal": true,
    "replacement": "attention events from ActorTemporalProfile (channel checking, urgency interrupts, sleep/work windows) + DecisionTrigger provenance",
    "disposition": "replaced_scenario_generated",
-   "production_matches": [
-    {
-     "line": 614,
-     "text": "observation_ids=(), delay_s: float = 1800.0):"
-    }
-   ],
-   "removal_verified": false
+   "production_matches": [],
+   "removal_verified": true
   },
   {
    "id": "semcons_delivery_60s",
@@ -638,13 +298,8 @@
    "affects_terminal": true,
    "replacement": "channel timing resolved through the temporal model (resolve_timing)",
    "disposition": "replaced_scenario_generated",
-   "production_matches": [
-    {
-     "line": 330,
-     "text": "delay = max(1.0, float(op.get(\"delivery_delay_s\", 60.0) or 60.0))"
-    }
-   ],
-   "removal_verified": false
+   "production_matches": [],
+   "removal_verified": true
   },
   {
    "id": "semcons_post_delivery_1800s",
@@ -661,13 +316,8 @@
    "affects_terminal": true,
    "replacement": "attention event (delivery \u2260 attention); actor sees the full available bundle",
    "disposition": "replaced_scenario_generated",
-   "production_matches": [
-    {
-     "line": 1056,
-     "text": "\"etype\": \"decision_opportunity\", \"ts\": world.clock.now + 1800.0,"
-    }
-   ],
-   "removal_verified": false
+   "production_matches": [],
+   "removal_verified": true
   },
   {
    "id": "semcons_reply_60s_6h",
@@ -684,13 +334,8 @@
    "affects_terminal": true,
    "replacement": "actor temporal intent compiled through TimingSpec/calendar (\u00a711)",
    "disposition": "replaced_scenario_generated",
-   "production_matches": [
-    {
-     "line": 914,
-     "text": "\"delivery_delay_s\": 60.0 if name == \"reply_now\" else 6 * 3600.0})"
-    }
-   ],
-   "removal_verified": false
+   "production_matches": [],
+   "removal_verified": true
   },
   {
    "id": "phase4_reaction_60s",
@@ -707,13 +352,8 @@
    "affects_terminal": true,
    "replacement": "delivery through channel + recipient attention",
    "disposition": "replaced_scenario_generated",
-   "production_matches": [
-    {
-     "line": 473,
-     "text": "delay = max(1.0, float(action.parameters.get(\"reaction_delay_s\", 60.0) or 60.0))"
-    }
-   ],
-   "removal_verified": false
+   "production_matches": [],
+   "removal_verified": true
   },
   {
    "id": "background_daily_tick",
@@ -730,13 +370,8 @@
    "affects_terminal": true,
    "replacement": "advance_interval(world, start_ts, end_ts, ctx, rng): declared continuous processes update over the exact elapsed interval between events",
    "disposition": "removed_from_production",
-   "production_matches": [
-    {
-     "line": 27,
-     "text": "background_every_days: float = 1.0     # apply background dynamics at most this often (elapsed-driven)"
-    }
-   ],
-   "removal_verified": false
+   "production_matches": [],
+   "removal_verified": true
   },
   {
    "id": "crn_background_daily_tick",
@@ -753,13 +388,8 @@
    "affects_terminal": true,
    "replacement": "advance_interval in the matched engine (same as rollout)",
    "disposition": "removed_from_production",
-   "production_matches": [
-    {
-     "line": 109,
-     "text": "if (ev.ts - last_bg) >= self.background_every_days * 86400.0:"
-    }
-   ],
-   "removal_verified": false
+   "production_matches": [],
+   "removal_verified": true
   },
   {
    "id": "interventions_plus_1s",
@@ -776,13 +406,8 @@
    "affects_terminal": true,
    "replacement": "channel-resolved delivery timing (temporal model aware)",
    "disposition": "replaced_scenario_generated",
-   "production_matches": [
-    {
-     "line": 209,
-     "text": "\"etype\": fu_type, \"ts\": world.clock.now + 1.0,"
-    }
-   ],
-   "removal_verified": false
+   "production_matches": [],
+   "removal_verified": true
   },
   {
    "id": "api_default_decision_point_1s",
@@ -799,13 +424,8 @@
    "affects_terminal": true,
    "replacement": "decision points anchored to real triggers (intervention initiation, scenario anchors); synthetic point retained only as the policy's own explicitly-labeled initiation event",
    "disposition": "replaced_scenario_generated",
-   "production_matches": [
-    {
-     "line": 211,
-     "text": "points = [float(ev.particles()[0].clock.now) + 1.0]"
-    }
-   ],
-   "removal_verified": false
+   "production_matches": [],
+   "removal_verified": true
   },
   {
    "id": "step_recheck_6h",
@@ -822,13 +442,8 @@
    "affects_terminal": true,
    "replacement": "condition-watch triggers: the step wakes when a watched field changes (state-change subscription), with a bounded fallback recheck labeled a safety net",
    "disposition": "replaced_scenario_generated",
-   "production_matches": [
-    {
-     "line": 40,
-     "text": "_RECHECK_S = 21600.0          # conditional steps re-check every 6h until max checks"
-    }
-   ],
-   "removal_verified": false
+   "production_matches": [],
+   "removal_verified": true
   },
   {
    "id": "step_gap_60s",
@@ -845,13 +460,8 @@
    "affects_terminal": true,
    "replacement": "dependency triggers: the step fires when its parent's consequence lands",
    "disposition": "replaced_scenario_generated",
-   "production_matches": [
-    {
-     "line": 41,
-     "text": "_STEP_GAP_S = 60.0            # dependent steps fire shortly after their parents complete"
-    }
-   ],
-   "removal_verified": false
+   "production_matches": [],
+   "removal_verified": true
   },
   {
    "id": "midpoint_timing_variant",
@@ -868,13 +478,8 @@
    "affects_terminal": true,
    "replacement": "timing variants anchored to real scenario anchors (deadlines, scheduled events, availability windows) from the temporal model",
    "disposition": "replaced_scenario_generated",
-   "production_matches": [
-    {
-     "line": 84,
-     "text": "mid = now + 0.5 * (hz - now)"
-    }
-   ],
-   "removal_verified": false
+   "production_matches": [],
+   "removal_verified": true
   },
   {
    "id": "individual_history_1day_grid",
@@ -891,17 +496,8 @@
    "affects_terminal": true,
    "replacement": "real timestamps from supplied history (context['history'][i]['ts']); unknown times labeled unresolved, not gridded",
    "disposition": "replaced_scenario_generated",
-   "production_matches": [
-    {
-     "line": 52,
-     "text": "created_at=now - 86400.0 * (len(context.get(\"history\") or []) - i)))"
-    },
-    {
-     "line": 53,
-     "text": "w.information.expose(person_id, iid, now - 86400.0 * (len(context.get(\"history\") or []) - i))"
-    }
-   ],
-   "removal_verified": false
+   "production_matches": [],
+   "removal_verified": true
   },
   {
    "id": "attrition_per_review",
@@ -918,13 +514,8 @@
    "affects_terminal": true,
    "replacement": "attrition_rate_per_day continuous process integrated over the exact elapsed interval (advance_interval)",
    "disposition": "removed_from_production",
-   "production_matches": [
-    {
-     "line": 302,
-     "text": "drain = sampled_coupling(world, \"attrition_per_review\")"
-    }
-   ],
-   "removal_verified": false
+   "production_matches": [],
+   "removal_verified": true
   },
   {
    "id": "stance_review_count_cooldown",
@@ -941,13 +532,8 @@
    "affects_terminal": true,
    "replacement": "elapsed-time hysteresis (min real seconds between changes) + material-change trigger thresholds",
    "disposition": "removed_from_production",
-   "production_matches": [
-    {
-     "line": 81,
-     "text": "STANCE_REVIEW_COOLDOWN = 1"
-    }
-   ],
-   "removal_verified": false
+   "production_matches": [],
+   "removal_verified": true
   },
   {
    "id": "seq_insertion_tiebreak",
@@ -966,7 +552,7 @@
    "disposition": "safety_limit_with_truncation",
    "production_matches": [
     {
-     "line": 96,
+     "line": 126,
      "text": "self._seq += 1"
     }
    ],
@@ -987,12 +573,7 @@
    "affects_terminal": true,
    "replacement": "kept as safety limit, but exhaustion now records simulation_status=temporally_truncated with pending events",
    "disposition": "safety_limit_with_truncation",
-   "production_matches": [
-    {
-     "line": 29,
-     "text": "def run_branch(self, world, queue: EventQueue, *, seed: int = 0, max_events: int = 500) -> WorldBranch:"
-    }
-   ],
+   "production_matches": [],
    "removal_verified": null
   },
   {
@@ -1019,5 +600,5 @@
    "removal_verified": null
   }
  ],
- "all_removals_verified": false
+ "all_removals_verified": true
 }

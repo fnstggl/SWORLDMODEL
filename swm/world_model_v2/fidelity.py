@@ -147,9 +147,8 @@ def _candidate_actions(entity: dict, pathways: list) -> list:
 
 
 # NOTE (event-driven temporal architecture): the periodic scheduler that used to live here
-# (`deepen_trajectory` — evenly spaced "periodic strategic review" decisions for the six
-# highest-sensitivity actors) is QUARANTINED in legacy_ablations.legacy_periodic_review_ablation
-# and is not importable as a production scheduler. Production decision events are created only
-# by real DecisionTriggers from the scenario temporal model (temporal_compiler /
-# temporal_runtime); `_candidate_actions` above remains as the universal ontology candidate set
-# those triggered decisions carry.
+# (evenly spaced review decisions for the six highest-sensitivity actors) is QUARANTINED in
+# legacy_ablations.legacy_periodic_review_ablation and is not importable as a production
+# scheduler. Production decision events are created only by real DecisionTriggers from the
+# scenario temporal model (temporal_compiler / temporal_runtime); `_candidate_actions` above
+# remains as the universal ontology candidate set those triggered decisions carry.

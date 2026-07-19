@@ -88,6 +88,23 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
     def _iso(s):
         return s
 
+    def _bundle_text(b, max_chars: int) -> str:
+        """Evidence text for prompt context — tolerant of both bundle generations (the V2
+        bundle has no render())."""
+        if b is None:
+            return ""
+        if hasattr(b, "render"):
+            try:
+                return b.render(max_chars=max_chars)
+            except Exception:  # noqa: BLE001
+                pass
+        rows = []
+        for c in (getattr(b, "claims", None) or [])[:20]:
+            if isinstance(c, dict):
+                rows.append(f"- {str(c.get('text', c.get('claim', '')))[:200]} "
+                            f"[{str(c.get('source', ''))[:40]}]")
+        return "\n".join(rows)[:max_chars]
+
     # ---------- Phase 1: universal compiler → the ONE shared plan ----------
     try:
         plan = compile_world(question, llm=llm, evidence="", as_of=as_of, horizon=horizon,
@@ -183,7 +200,7 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
             from swm.world_model_v2.scheduled_facts import extract_scheduled_facts, attach_scheduled_facts
             from swm.world_model_v2.resolution_criteria import (parse_resolution_criterion,
                                                                 ground_actor_intentions)
-            ev_text = bundle.render(max_chars=2400) if bundle is not None else ""
+            ev_text = _bundle_text(bundle, 2400)
             # universal resolution-criterion parsing: the precise state that resolves YES anchors the
             # contract's rule, the fact-entailment judgments, and the intention grounding
             crit = parse_resolution_criterion(question, horizon=horizon, llm=llm)
@@ -274,7 +291,7 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
         try:
             from swm.world_model_v2.temporal_compiler import (attach_temporal_model,
                                                               compile_temporal_model)
-            ev_text = bundle.render(max_chars=2000) if bundle is not None else ""
+            ev_text = _bundle_text(bundle, 2000)
             tmodel = compile_temporal_model(plan, llm=llm, question=question,
                                             evidence_text=ev_text, user_context=user_context,
                                             intervention=intervention, seed=seed)
@@ -507,12 +524,29 @@ def _project_terminal(question, plan, as_of, horizon, intervention, seed, llm, u
     default-on; when no history/checkpoint exists it runs the ordinary rollout with broad priors."""
     from swm.world_model_v2.phase8_pipeline import run_with_persistence
     persistence_dropped = "phase8_persistence" in drop
+    # COMPUTE knob (§26): an explicit particle budget prioritizes Monte-Carlo resolution under
+    # a caller's compute budget — it never truncates causal chains, drops actors, or shortens
+    # the horizon (those produce temporally_truncated records instead). Recorded on the plan.
+    n_particles = None
+    policy = drop and {} or {}
+    if isinstance(user_context, dict) and isinstance(user_context.get("_execution_policy"),
+                                                     dict):
+        policy = user_context["_execution_policy"]
+    np_req = policy.get("n_particles")
+    if isinstance(np_req, (int, float)) and np_req >= 1:
+        n_particles = int(np_req)
+        plan.compute_plan["n_particles"] = n_particles
+        plan.provenance = {**(plan.provenance or {}),
+                           "n_particles_override": {"value": n_particles,
+                                                    "reason": "caller compute budget (§26); "
+                                                              "MC resolution only"}}
     try:
         if persistence_dropped:
             from swm.world_model_v2.materialize import run_from_plan
             from swm.world_model_v2.pipeline import result_from_run
             from swm.world_model_v2.phase8_pipeline import _surface_actor_policy_degradation
-            result, branches = run_from_plan(plan, llm=llm, seed=seed)
+            result, branches = run_from_plan(plan, llm=llm, seed=seed,
+                                             n_particles=n_particles)
             res = result_from_run(question, plan, result, branches, intervention=intervention, t0=t0)
             res.provenance = {**(res.provenance or {}),
                               "actor_policy_report": result.get("actor_policy_report", {}),
@@ -525,7 +559,8 @@ def _project_terminal(question, plan, as_of, horizon, intervention, seed, llm, u
         else:
             res, _p8meta = run_with_persistence(question, plan, llm=llm, context=user_context,
                                                 actor_history=(prior_checkpoint or {}).get("actor_history") if prior_checkpoint else None,
-                                                intervention=intervention, t0=t0, seed=seed)
+                                                intervention=intervention, t0=t0, seed=seed,
+                                                n_particles=n_particles)
             manifest["phase8_persistence"].update(
                 selected=True, executed=True, version="phase8-1.0",
                 reason=("checkpoint-conditioned" if prior_checkpoint else "no prior history — broad-prior rollout"))

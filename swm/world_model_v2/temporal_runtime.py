@@ -272,12 +272,21 @@ def compute_notice_ts(world, model, *, actor_id: str, channel_id: str, available
                 factor = LATENT_STATE_CHECK_FACTOR.get(actor_latent_state(world, actor_id), 1.0)
                 prio = (prof.relationship_priority or {}).get(sender, 0.0)
                 factor *= max(0.25, 1.0 - 0.5 * prio)          # prioritized senders get seen sooner
-                # the NEXT check is uniform inside the (stretched) gap — the message lands at a
-                # random phase of the actor's checking cycle, per particle
-                phase = particle_rng(world, f"phase:{actor_id}:{channel_id}:{round(available_ts)}")
-                notice = available_ts + phase.uniform(0.0, max(1.0, gap * factor))
+                # the actor checks this channel in a CYCLE: per-particle anchor phase + gap.
+                # The next check after availability is the next cycle point — so several items
+                # arriving before one check naturally coalesce into one bundle (§20), and the
+                # cycle persists coherently within the particle (§21)
+                import math as _m
+                eff_gap = max(1.0, gap * factor)
+                phase = particle_rng(world,
+                                     f"phase:{actor_id}:{channel_id}").uniform(0.0, eff_gap)
+                anchor_ts = float(getattr(world.clock, "as_of", available_ts)) + phase
+                k = _m.ceil(max(0.0, available_ts - anchor_ts) / eff_gap)
+                notice = anchor_ts + k * eff_gap
+                if notice <= available_ts:
+                    notice += eff_gap
                 notice = _defer_to_waking(notice, prof, cal)
-                return notice, "profile_channel_checking"
+                return notice, "profile_channel_checking_cycle"
         if prof.sleep_window or prof.active_window:
             notice = _defer_to_waking(available_ts, prof, cal)
             if notice > available_ts:
@@ -368,8 +377,11 @@ def collect_attention_bundle(world, *, actor_id: str, now_ts: float, channel: st
     if take and world.information is not None:
         for it in take:
             if it.get("iid"):
-                world.information.expose(actor_id, it["iid"], now_ts,
-                                         channel=str(it.get("channel", ""))[:24])
+                try:
+                    world.information.expose(actor_id, it["iid"], now_ts,
+                                             channel=str(it.get("channel", ""))[:24])
+                except KeyError:
+                    continue                                # availability without a ledger item
     if stats is not None and take:
         stats.attention_batches.append(len(take))
         for it in take:
@@ -449,9 +461,11 @@ def advance_interval(world, start_ts: float, end_ts: float, temporal_context=Non
         x2 = max(spec.floor, min(spec.ceil if spec.ceil is not None else float("inf"), x2))
         if abs(x2 - x) > 1e-12:
             register_quantity_type(getattr(q, "qtype", spec.writes), units=spec.units)
+            # full float precision: a chain of short intervals must equal one long interval
+            # exactly (invariant 23) — rounding would break elapsed-time additivity
             world.quantities[spec.writes] = Quantity(name=spec.writes,
                                                      qtype=getattr(q, "qtype", spec.writes),
-                                                     value=round(x2, 6), timestamp=end_ts)
+                                                     value=x2, timestamp=end_ts)
             n_writes += 1
             if branch_log is not None:
                 d = StateDelta(at=end_ts, event_type="interval_evolution",
