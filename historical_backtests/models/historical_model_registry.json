@@ -1,0 +1,50 @@
+{
+  "version": "hist-model-registry-1.0",
+  "note": "Approved period-bounded open-weight checkpoints for historical WMv2 backtesting. OpenRouter metadata is discovery evidence, not temporal proof. effective_temporal_boundary = exact_checkpoint_public_release_timestamp (NOT the knowledge cutoff): every benchmark question must OPEN strictly after it.",
+  "approval_statuses": [
+    "APPROVED_FULL_BENCHMARK", "APPROVED_DIAGNOSTIC_ONLY", "REJECTED_TEMPORAL_EVIDENCE",
+    "REJECTED_MUTABLE_ALIAS", "REJECTED_CAPABILITY", "REJECTED_CONTEXT_LIMIT",
+    "REJECTED_PROVIDER_UNAVAILABLE", "REJECTED_UNCLEAR_CHECKPOINT"
+  ],
+  "models": [
+    {
+      "registry_model_id": "llama31_70b_instruct_post_release",
+      "model_family": "llama-3.1",
+      "exact_checkpoint": "meta-llama/Llama-3.1-70B-Instruct",
+      "openrouter_slug": "meta-llama/llama-3.1-70b-instruct",
+      "open_weight_repository": "https://huggingface.co/meta-llama/Llama-3.1-70B-Instruct",
+      "hf_revision_sha": "1605565b47bb9346c5515c34102e054115b4f98b",
+      "hf_revision_note": "current main revision recorded 2026-07-17; lastModified 2024-12-15T01:55:33Z (metadata/config edits post-release; weights frozen at release)",
+      "tokenizer_revision": "1605565b47bb9346c5515c34102e054115b4f98b",
+      "base_model_knowledge_cutoff": "2023-12-31",
+      "continued_pretraining_cutoff": "training_stage_temporal_boundary_unverified",
+      "instruction_tuning_cutoff": "training_stage_temporal_boundary_unverified",
+      "preference_training_cutoff": "training_stage_temporal_boundary_unverified",
+      "public_release_timestamp": "2024-07-23T00:00:00Z",
+      "release_evidence": [
+        "https://ai.meta.com/blog/meta-llama-3-1/ (2024-07-23 announcement)",
+        "https://huggingface.co/meta-llama/Llama-3.1-70B-Instruct (repo created 2024-07)"
+      ],
+      "effective_temporal_boundary": "2024-07-23T23:59:59Z",
+      "eligible_question_open_after": "2024-07-23T23:59:59Z",
+      "openrouter_provider": "wandb",
+      "openrouter_provider_display": "WandB",
+      "quantization": "bf16",
+      "quantization_evidence": "openrouter /models/{slug}/endpoints metadata 2026-07-17: WandB bf16 ctx=128000 $0.8/M in+out; DeepInfra serves fp8 only (does not meet the BF16/FP16 preference), Amazon Bedrock quantization unknown",
+      "context_length": 128000,
+      "structured_output_capability": "json-in-prose with parse_json extraction (repo contract); verified in smoke test",
+      "request_configuration": {
+        "temperature": 0.2, "max_tokens": 2400,
+        "provider": {"order": ["wandb"], "allow_fallbacks": false,
+                     "require_parameters": true, "data_collection": "deny",
+                     "quantizations": ["bf16"]},
+        "plugins": "none (no web search, no response healing)"
+      },
+      "temporal_safety_tier": "TIER_B_PROVIDER_PINNED_POST_RELEASE",
+      "mutable_serving_limitation": "OpenRouter/WandB cannot prove the serving endpoint is byte-identical to HF revision 1605565b… or that it was never silently updated. Tier A requires a dedicated hash-verified deployment of the same frozen benchmark.",
+      "estimated_full_simulation_cost_usd": null,
+      "audit_status": "audited",
+      "approval_status": "APPROVED_FULL_BENCHMARK"
+    }
+  ]
+}

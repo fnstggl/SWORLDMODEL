@@ -1252,6 +1252,12 @@ def convert_binary_to_event_time(plan, criterion: dict, *, lineage: dict = None,
            "fallback_rate_provenance": fbr_src,
            "posterior_calibrated": bool(calibration_base["posterior_rate_particles"]),
            "n_resolver_events_removed": len(removed)}
+    # a first-passage CDF needs particle resolution a point forecast does not — the SAME floor the
+    # when-question conversion applies (every event-time contract, both entry paths)
+    cp = getattr(plan, "compute_plan", None)
+    if isinstance(cp, dict):
+        cp["n_particles"] = max(int(cp.get("n_particles", 30) or 30), 200)
+        rep["n_particles"] = cp["n_particles"]
     if lineage is not None:
         lineage["event_time"] = rep
     return rep

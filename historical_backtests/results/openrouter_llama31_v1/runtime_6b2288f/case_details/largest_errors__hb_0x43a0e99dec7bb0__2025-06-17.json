@@ -1,0 +1,339 @@
+{
+ "group": "largest_errors",
+ "question": "Israel x Hamas ceasefire before August?",
+ "cutoff": "2025-06-17T15:36:05Z",
+ "actual_outcome": 0,
+ "wmv2_p": 0.995,
+ "direct_p": 0.6,
+ "market_p": 0.385,
+ "brier_wmv2": 0.99,
+ "brier_direct": 0.36,
+ "modes": null,
+ "hazard_ratio_by_mode": null,
+ "decision_structures": null,
+ "stances": [
+  {
+   "actor": "Israel",
+   "stated_intention": "Maintain a strong stance against Hamas",
+   "basis_quote": "Israel will not tolerate attacks from Gaza",
+   "source": "model_knowledge",
+   "commitment_level": "conditionally_opposed",
+   "target_mode": "null",
+   "pathway": "unilateral_action",
+   "control": "sole_authority",
+   "capability": "high",
+   "reliability": "high",
+   "entails_direction": "no"
+  },
+  {
+   "actor": "Hamas",
+   "stated_intention": "Resist Israeli occupation",
+   "basis_quote": "We will continue to fight for our rights",
+   "source": "model_knowledge",
+   "commitment_level": "actively_pursuing",
+   "target_mode": "null",
+   "pathway": "unilateral_action",
+   "control": "sole_authority",
+   "capability": "medium",
+   "reliability": "high",
+   "entails_direction": "no"
+  },
+  {
+   "actor": "United States",
+   "stated_intention": "Support a two-state solution",
+   "basis_quote": "We support a negotiated two-state solution",
+   "source": "model_knowledge",
+   "commitment_level": "inclined_toward",
+   "target_mode": "null",
+   "pathway": "cooperative_agreement",
+   "control": "informal_influence",
+   "capability": "high",
+   "reliability": "high",
+   "entails_direction": "yes"
+  },
+  {
+   "actor": "European Union",
+   "stated_intention": "Promote peace and stability in the region",
+   "basis_quote": "We support a peaceful resolution to the conflict",
+   "source": "model_knowledge",
+   "commitment_level": "inclined_toward",
+   "target_mode": "null",
+   "pathway": "cooperative_agreement",
+   "control": "informal_influence",
+   "capability": "medium",
+   "reliability": "high",
+   "entails_direction": "yes"
+  },
+  {
+   "actor": "Benny Gantz",
+   "stated_intention": "Prioritize Israel's security",
+   "basis_quote": "Security is our top priority",
+   "source": "model_knowledge",
+   "commitment_level": "conditionally_opposed",
+   "target_mode": "null",
+   "pathway": "unilateral_action",
+   "control": "partial_implementation",
+   "capability": "medium",
+   "reliability": "high",
+   "entails_direction": "no"
+  },
+  {
+   "actor": "Yair Lapid",
+   "stated_intention": "Seek a diplomatic solution",
+   "basis_quote": "We need to find a diplomatic solution",
+   "source": "model_knowledge",
+   "commitment_level": "inclined_toward",
+   "target_mode": "null",
+   "pathway": "cooperative_agreement",
+   "control": "partial_implementation",
+   "capability": "medium",
+   "reliability": "high",
+   "entails_direction": "yes"
+  },
+  {
+   "actor": "Ismail Haniyeh",
+   "stated_intention": "Resist Israeli occupation",
+   "basis_quote": "We will continue to resist the occupation",
+   "source": "model_knowledge",
+   "commitment_level": "actively_pursuing",
+   "target_mode": "null",
+   "pathway": "unilateral_action",
+   "control": "sole_authority",
+   "capability": "medium",
+   "reliability": "high",
+   "entails_direction": "no"
+  },
+  {
+   "actor": "Mahmoud Abbas",
+   "stated_intention": "Seek a peaceful resolution",
+   "basis_quote": "We want a peaceful resolution to the conflict",
+   "source": "model_knowledge",
+   "commitment_level": "inclined_toward",
+   "target_mode": "null",
+   "pathway": "cooperative_agreement",
+   "control": "informal_influence",
+   "capability": "low",
+   "reliability": "high",
+   "entails_direction": "yes"
+  }
+ ],
+ "mode_distribution": {
+  "entailed_fact:scheduled_meeting": 0.985,
+  "institutional:Israeli government": 0.01
+ },
+ "cdf": [
+  0.71,
+  0.94,
+  0.94,
+  0.94,
+  0.94,
+  0.94,
+  0.985,
+  0.985,
+  0.985,
+  0.995
+ ],
+ "support_grade": "exploratory",
+ "limitations": [
+  "degraded: support grade exploratory; 3 fallback mechanism(s) used"
+ ],
+ "full_run_proof": {
+  "entrypoint": "swm.world_model_v2.unified_runtime.simulate_world",
+  "runtime_fingerprint": "unified-1.0",
+  "implementation_commit": "6b2288f",
+  "simulation_status": "completed_with_degradation",
+  "phase_execution_records": {
+   "phase1_compiler": {
+    "relevant": true,
+    "execution_status": "causally_active",
+    "n_state_deltas": 0,
+    "no_op_reason": "",
+    "terminal_influence": "",
+    "implementation_version": "compiler"
+   },
+   "phase2_evidence": {
+    "relevant": true,
+    "execution_status": "causally_active",
+    "n_state_deltas": 0,
+    "no_op_reason": "",
+    "terminal_influence": "",
+    "implementation_version": "phase2-1.0"
+   },
+   "phase3_posterior": {
+    "relevant": true,
+    "execution_status": "no_op_causally_irrelevant",
+    "n_state_deltas": 0,
+    "no_op_reason": "no admissible as-of evidence updated the posterior",
+    "terminal_influence": "",
+    "implementation_version": ""
+   },
+   "phase4_actor_policy": {
+    "relevant": true,
+    "execution_status": "causally_active",
+    "n_state_deltas": 4176,
+    "no_op_reason": "",
+    "terminal_influence": "state_only",
+    "implementation_version": "phase4"
+   },
+   "phase6_registry": {
+    "relevant": true,
+    "execution_status": "causally_active",
+    "n_state_deltas": 400,
+    "no_op_reason": "",
+    "terminal_influence": "direct_resolution",
+    "implementation_version": ""
+   },
+   "phase7_nonlinear": {
+    "relevant": true,
+    "execution_status": "causally_active",
+    "n_state_deltas": 3800,
+    "no_op_reason": "",
+    "terminal_influence": "state_only",
+    "implementation_version": "phase7"
+   },
+   "phase8_persistence": {
+    "relevant": true,
+    "execution_status": "causally_active",
+    "n_state_deltas": 0,
+    "no_op_reason": "",
+    "terminal_influence": "",
+    "implementation_version": "phase8-1.0"
+   },
+   "phase9_populations": {
+    "relevant": false,
+    "execution_status": "no_op_causally_irrelevant",
+    "n_state_deltas": 0,
+    "no_op_reason": "populations (constructible) declared but no causal process of this kind \u2014 context only",
+    "terminal_influence": "",
+    "implementation_version": "phase9-pop"
+   },
+   "phase9_networks": {
+    "relevant": true,
+    "execution_status": "causally_active",
+    "n_state_deltas": 200,
+    "no_op_reason": "",
+    "terminal_influence": "state_only",
+    "implementation_version": ""
+   },
+   "phase10_institutions": {
+    "relevant": true,
+    "execution_status": "causally_active",
+    "n_state_deltas": 3,
+    "no_op_reason": "",
+    "terminal_influence": "direct_resolution",
+    "implementation_version": "phase10"
+   },
+   "phase11_recompilation": {
+    "relevant": true,
+    "execution_status": "causally_active",
+    "n_state_deltas": 0,
+    "no_op_reason": "",
+    "terminal_influence": "",
+    "implementation_version": "phase11"
+   }
+  },
+  "n_phases_recorded": 11,
+  "operator_delta_census": {
+   "nonlinear_state_step": {
+    "n_deltas": 3800,
+    "event_types": [
+     "state_step"
+    ]
+   },
+   "production_actor_policy": {
+    "n_deltas": 4000,
+    "event_types": [
+     "actor_action"
+    ]
+   },
+   "scheduled_fact": {
+    "n_deltas": 600,
+    "event_types": [
+     "scheduled_fact"
+    ]
+   },
+   "hazard_round": {
+    "n_deltas": 270,
+    "event_types": [
+     "hazard_round"
+    ]
+   },
+   "absorption_monitor": {
+    "n_deltas": 199,
+    "event_types": [
+     "absorption"
+    ]
+   },
+   "network_diffusion": {
+    "n_deltas": 200,
+    "event_types": [
+     "network_diffusion"
+    ]
+   },
+   "structural_process_prior": {
+    "n_deltas": 400,
+    "event_types": [
+     "structural_process_prior"
+    ]
+   },
+   "actor_action_aggregation": {
+    "n_deltas": 176,
+    "event_types": [
+     "actor_action_aggregation"
+    ]
+   },
+   "institutional_decision": {
+    "n_deltas": 3,
+    "event_types": [
+     "institutional_decision"
+    ]
+   }
+  },
+  "n_actor_action_deltas": 4000,
+  "actors_with_views": 4,
+  "n_particles": 200,
+  "event_time_readout": {
+   "p_event_by_deadline": 0.995,
+   "p_censored": 0.005,
+   "occurrence_resolves": "yes",
+   "n_particles": 200
+  },
+  "terminal_source": "simulated_world_states/first_passage_readout",
+  "fully_integrated": true,
+  "integration_failures": [],
+  "fallbacks_used": [
+   {
+    "process": "outcome_resolution",
+    "tier": 7,
+    "family": "generic_outcome_prior",
+    "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+   },
+   {
+    "process": "negotiation",
+    "tier": 6,
+    "family": "structural_process_prior",
+    "why": "no validated registry family answers this required causal process \u2014 transparent broad-prior fallback (registry gap)"
+   },
+   {
+    "process": "public opinion",
+    "tier": 6,
+    "family": "structural_process_prior",
+    "why": "no validated registry family answers this required causal process \u2014 transparent broad-prior fallback (registry gap)"
+   }
+  ],
+  "manifest_executed": {
+   "phase1_compiler": true,
+   "phase2_evidence": true,
+   "phase3_posterior": false,
+   "phase4_actor_policy": true,
+   "phase6_registry": true,
+   "phase7_nonlinear": true,
+   "phase8_persistence": true,
+   "phase9_populations": false,
+   "phase9_networks": true,
+   "phase10_institutions": true,
+   "phase11_recompilation": true
+  },
+  "proof_at": 1784349137.839103
+ }
+}
