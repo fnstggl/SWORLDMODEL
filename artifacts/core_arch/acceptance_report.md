@@ -1,21 +1,21 @@
 # Core-architecture acceptance report (§42) — machine-generated
 
-Generated 2026-07-19T18:08:23Z by `experiments/core_arch_acceptance.py`. **27/27 gates green.**
+Generated 2026-07-19T20:53:51Z by `experiments/core_arch_acceptance.py`. **27/27 gates green.**
 
-- ✅ `boundary_contract_suite` (suite): 18 passed in 0.09s
-- ✅ `outside_world_suite` (suite): 19 passed in 0.09s
-- ✅ `bounded_cognition_suite` (suite): 35 passed in 0.13s
+- ✅ `boundary_contract_suite` (suite): 18 passed in 0.10s
+- ✅ `outside_world_suite` (suite): 19 passed in 0.12s
+- ✅ `bounded_cognition_suite` (suite): 35 passed in 0.11s
 - ✅ `truncation_suite` (suite): 21 passed in 0.07s
-- ✅ `mechanism_spec_suite` (suite): 19 passed in 0.22s
-- ✅ `invariant_enforcement_suite` (suite): 34 passed in 1.34s
-- ✅ `cross_domain_fixture_suite` (suite): 10 passed, 1 skipped in 0.13s
-- ✅ `phase13_integration_suite` (suite): 15 passed in 0.24s
-- ✅ `qualitative_actor_suite` (suite): 28 passed in 0.37s
-- ✅ `generated_world_suite` (suite): 17 passed in 1.18s
+- ✅ `mechanism_spec_suite` (suite): 19 passed in 0.19s
+- ✅ `invariant_enforcement_suite` (suite): 34 passed in 1.28s
+- ✅ `cross_domain_fixture_suite` (suite): 10 passed, 1 skipped in 0.14s
+- ✅ `phase13_integration_suite` (suite): 15 passed in 0.25s
+- ✅ `qualitative_actor_suite` (suite): 28 passed in 0.38s
+- ✅ `generated_world_suite` (suite): 17 passed in 1.19s
 - ✅ `structural_ensemble_suite` (suite): 35 passed in 1.85s
 - ✅ `combined_runtime_suite` (suite): 9 passed in 0.44s
-- ✅ `forensic_traces_exist` (trace): 1 live case artifact(s)
-- ✅ `actual_llm_calls_used` (trace): calls per case: [('case1_founder_platform.json', 126)]
+- ✅ `forensic_traces_exist` (trace): 6 live case artifact(s)
+- ✅ `actual_llm_calls_used` (trace): calls per case: [('case1_founder_platform.json', 126), ('case2_personal_message.json', 82), ('case3_institutional_promotion.json', 268), ('case4_capacity_bottleneck.json', 102), ('case5_population_ado
 - ✅ `explicit_boundaries_default` (trace): world_boundaries section present on ensemble-route live results
 - ✅ `residual_outside_world_default` (trace): outside_world section present on live results
 - ✅ `boundary_criticism_ran` (trace): critic stages present in live boundary generation traces
