@@ -6,7 +6,7 @@ judgments) are PINNED to what the previous LIVE compile of the same question pro
 branch trace, 2026-07-16). Everything downstream is the REAL production code path, unmodified:
 mode_graph.canonical_modes reconciles the pinned passes; resolution_criteria.ground_actor_intentions
 runs the real grounding (fake-llm returning the pinned JSON) — commitments, prohibitions, aggregate;
-fidelity.deepen_trajectory schedules the real decision events; event_time.convert_to_event_time
+the QUARANTINED legacy periodic scheduler feeds the ablation arm; event_time.convert_to_event_time
 builds the real machinery; materialize.run_from_plan → build_world → phase-4 policies → pathway
 writes → hazard rounds → absorption monitor → EventTimeContract readout. The rollout layer is
 LLM-free by design, so the simulation itself is production-exact.
@@ -30,7 +30,8 @@ from types import SimpleNamespace
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from swm.world_model_v2.event_time import convert_to_event_time
-from swm.world_model_v2.fidelity import deepen_trajectory
+from swm.world_model_v2.legacy_ablations import (ABLATION_TOKEN,
+                                                 legacy_periodic_review_ablation)
 from swm.world_model_v2.materialize import run_from_plan
 from swm.world_model_v2.mode_graph import (canonical_modes, declare_pathway_processes,
                                            ground_process_states, mode_pathway, progress_var)
@@ -267,9 +268,11 @@ def assemble(plan: Plan, llm) -> dict:
     # 3b. capability becomes a live, depletable capacity resource
     from swm.world_model_v2.world_dynamics import declare_actor_capacity
     lineage["actor_capacity"] = declare_actor_capacity(plan)
-    # 4. situation-dependent trajectory depth (real decision events, real candidates)
-    lineage["trajectory_depth"] = deepen_trajectory(plan, {"phase4_actor_policy": {"required": True}},
-                                                    cadence_days=7.0)
+    # 4. LEGACY ABLATION comparison arm: the quarantined periodic scheduler (explicitly
+    #    acknowledged) — production uses scenario-generated decision triggers instead
+    lineage["trajectory_depth"] = legacy_periodic_review_ablation(
+        plan, {"phase4_actor_policy": {"required": True}}, cadence_days=7.0,
+        acknowledge=ABLATION_TOKEN)
     # 5. event-time conversion (real machinery; entailment filter pinned)
     lineage["event_time"] = convert_to_event_time(plan, CRITERION, lineage=lineage, llm=llm)
     return lineage
@@ -489,7 +492,8 @@ def _mini(question, criterion, modes, stances, process_states, entities, institu
         if recs:
             e.setdefault("fields", {})["stances"] = recs
     if entities:
-        deepen_trajectory(plan, {"phase4_actor_policy": {"required": True}}, cadence_days=14.0)
+        legacy_periodic_review_ablation(plan, {"phase4_actor_policy": {"required": True}},
+                                        cadence_days=14.0, acknowledge=ABLATION_TOKEN)
     rep = convert_to_event_time(plan, criterion, lineage=lineage, llm=None)
     plan.compute_plan["n_particles"] = n_particles              # keep fixtures small (floor is 200)
     result, branches = run_from_plan(plan, llm=None, seed=seed)

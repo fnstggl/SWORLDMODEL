@@ -56,6 +56,18 @@ what actually happened, with the exact content) and `WorldState.objects` as **re
 types come from the branch's `ScenarioSemanticModel`. The world's meaning lives entirely in
 scenario-generated definitions.
 
+## Temporal semantics (event-driven)
+
+Delivery and reconsideration timing in this control plane are now governed by the scenario
+temporal model (see `docs/TEMPORAL_ARCHITECTURE.md`): `route_semantic_event` resolves each
+recipient's availability through the channel's generated stages (never a fixed 60 s/1 h
+constant), `GeneratedObservationDeliveryOperator` records AVAILABILITY (delivered ≠ read),
+`GeneratedAttentionOperator` collects the actor's noticed bundle at their real attention
+opportunity, and `GeneratedActorInvocationOperator` runs on a first-class DecisionTrigger.
+Budgets are SAFETY limits: exhaustion records a temporal truncation
+(`simulation_status="temporally_truncated"`), never a silent drop or numeric fallback, and the
+causal frontier carries no fixed size cap.
+
 ## The pieces
 
 - **`scenario_schema.ScenarioSemanticModel`** — per-question generated semantics: entity/

@@ -92,8 +92,42 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
         limitations.append(f"{unresolved:.0%} of terminal worlds outside the declared option space")
     high_sens_unknowns = [l.path for l in plan.latents if getattr(l, "sensitivity", 0.5) >= 0.6]
     status = "completed_with_degradation" if plan.degraded else "completed"
+    # ---- §27 temporal-runtime block + §12 truncation surfacing ----
+    temporal = result.get("temporal_runtime") or {}
+    support_grade = plan.support_grade
+    if temporal.get("temporally_truncated"):
+        status = "temporally_truncated"
+        share = temporal.get("truncated_branch_share", 0.0)
+        limitations.append(
+            f"temporally truncated: {share:.0%} of branches hit a safety budget before causal "
+            f"quiescence — pending events/actors recorded in provenance.temporal_runtime; "
+            f"consequential recommendations are withheld at this support level")
+        if support_grade in ("empirically_supported", "transfer_supported"):
+            support_grade = "exploratory"
+    tmodel = getattr(plan, "temporal_model", None)
+    if tmodel is not None:
+        temporal = {**temporal,
+                    "temporal_model_id": tmodel.scenario_id,
+                    "temporal_model_hash": tmodel.temporal_model_hash(),
+                    "as_of": tmodel.as_of, "horizon_ts": tmodel.horizon_ts,
+                    "timezone_assumptions": dict(tmodel.timezones),
+                    "calendar_assumptions": dict(tmodel.calendars),
+                    "known_scheduled_facts": list(tmodel.scheduled_facts)[:12],
+                    "generated_channels": sorted(tmodel.channels),
+                    "generated_actor_profiles": sorted(tmodel.actor_profiles),
+                    "institutional_stage_processes": [p.process_id for p in
+                                                      tmodel.institutional_processes],
+                    "continuous_processes": [p.process_id for p in
+                                             tmodel.continuous_processes],
+                    "temporal_latent_hypotheses": list(tmodel.correlated_latents)[:8],
+                    "temporal_uncertainties": list(tmodel.temporal_uncertainties)[:12],
+                    "unresolved_timing_mechanisms": list(tmodel.unresolved_mechanisms)[:12],
+                    "timing_support_classification": tmodel.support_classification,
+                    "temporal_compilation_llm_calls": len(tmodel.compilation_trace),
+                    "critic_findings": list(tmodel.critic_findings)[:12],
+                    "degraded": tmodel.degraded or None}
     return SimulationResult(
-        question=question, simulation_status=status, support_grade=plan.support_grade,
+        question=question, simulation_status=status, support_grade=support_grade,
         recommendation_status=_recommendation_status(intervention, plan.support_grade),
         raw_distribution={k: round(v, 4) for k, v in dist.items()} if dist else result.get("quantiles", {}),
         calibrated_distribution=({str(k): cal_p} if cal_p is not None else None),
@@ -115,6 +149,10 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
                     "n_deltas": result.get("n_deltas"), "n_particles": plan.compute_plan.get("n_particles"),
                     # event-time contracts: the full first-passage readout (CDF/survival/quantiles/mode×time)
                     "event_time": result.get("event_time"),
+                    # §27: the temporal-runtime block — model hash/assumptions, event counts by
+                    # type, invocations by actor and trigger, stage delays, batches, conflicts,
+                    # cancellations, pending-at-horizon, truncations, unresolved mechanisms
+                    "temporal_runtime": temporal or None,
                     # phase-supervision inputs: exactly which operators produced StateDeltas, and which
                     # state paths they wrote — the PhaseExecutionRecord is derived from THIS census, so
                     # activation accounting cannot drift from what actually executed.

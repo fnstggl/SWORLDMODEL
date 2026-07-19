@@ -1,17 +1,20 @@
 """Single-individual reaction simulation — the same qualitative actor architecture, focused on
-one person.
+one person, THROUGH THE TEMPORAL MODEL (§25).
 
-Route for questions like "how will this person react if I skip dinner?", "how will my manager
-interpret this message?", "will this customer accept the offer?". The target individual is
-AUTOMATICALLY Tier 1 (reaction_is_the_question) — no formal stances, institutional capacity,
-network degree, or world-model goals are required. The system builds several qualitative
-hidden-state hypotheses for the person from the supplied relationship history, shows them the
-exact stimulus as they would experience it, lets the LLM inhabit each hypothesis to interpret,
-react internally, and choose an observable response, then aggregates the independently chosen
-responses across particles and samples into a raw empirical distribution (externally calibrated
-where history exists; labeled ``unvalidated`` otherwise). This is not a one-off prompt: it runs
-`QualitativeActorPolicyRuntime` on a real (miniature) world through the standard decide/execute
-path, so information boundaries, feasibility, execution, and provenance all apply."""
+Route for questions like "how will this person react if I send this tonight?". The target
+individual is AUTOMATICALLY Tier 1 (reaction_is_the_question). The stimulus is not teleported
+into their head: it is SENT at the real send time, travels the channel (delivery), waits for
+the person's real attention (their timezone, sleep/active windows, channel-checking habits and
+sampled availability — user-supplied context strongly informs all of these), and only a NOTICED
+stimulus produces a decision. Per-sample temporal outcomes are first-class and distinguishable:
+
+    responded            — noticed and chose an observable response (with response time)
+    read_but_deferred    — noticed, deliberately chose to wait / revisit later
+    unread_by_horizon    — never noticed within the question's window (NOT "ignored")
+
+History items may carry REAL timestamps ({"text": ..., "ts": ...} or (text, ts)); bare strings
+keep relative order with the spacing recorded as an UNRESOLVED timing assumption — never a
+fabricated 1-day grid presented as real."""
 from __future__ import annotations
 
 import time as _time
@@ -23,38 +26,114 @@ from swm.world_model_v2.qualitative_actor import (
     QualitativeDecisionEngine, aggregate_actor_decisions,
 )
 from swm.world_model_v2.state import Entity, F, SimulationClock, WorldState
+from swm.world_model_v2.temporal_model import (ActorTemporalProfile, ScenarioTemporalModel,
+                                               ChannelTemporalModel)
 
 #: default observable-response menu: the messaging slice of the shared action ontology
 DEFAULT_RESPONSE_ACTIONS = ("reply_now", "reply_later", "acknowledge", "clarify", "ignore")
 
 
-def _mini_world(person_id: str, counterpart_id: str, context: dict, stimulus: str,
-                channel: str, now: float, branch_id: str) -> WorldState:
+def _history_entries(context: dict) -> tuple:
+    """Normalize history to [(text, ts_or_None)] preserving order; count how many carried
+    real timestamps (provenance honesty)."""
+    out, n_real = [], 0
+    for item in (context.get("history") or [])[:12]:
+        if isinstance(item, dict):
+            txt = str(item.get("text", item.get("content", "")))[:400]
+            ts = item.get("ts", item.get("at"))
+            if isinstance(ts, str):
+                try:
+                    from swm.world_model_v2.state import parse_time
+                    ts = parse_time(ts)
+                except (ValueError, TypeError):
+                    ts = None
+            ts = float(ts) if isinstance(ts, (int, float)) else None
+        elif isinstance(item, (list, tuple)) and len(item) == 2:
+            txt, ts = str(item[0])[:400], (float(item[1])
+                                           if isinstance(item[1], (int, float)) else None)
+        else:
+            txt, ts = str(item)[:400], None
+        if ts is not None:
+            n_real += 1
+        out.append((txt, ts))
+    return out, n_real
+
+
+def _person_temporal_model(person_id: str, context: dict, *, now: float,
+                           horizon_ts: float, channel: str) -> ScenarioTemporalModel:
+    """A minimal per-question temporal model built ONLY from user-supplied context: timezone,
+    sleep/active windows, channel checking, availability hypotheses. Nothing invented — absent
+    fields stay absent and the attention model falls back to labeled broad bands."""
+    tm = ScenarioTemporalModel(scenario_id=f"individual:{person_id}", as_of=now,
+                               horizon_ts=horizon_ts)
+    tz = str(context.get("timezone", "") or "")
+    if "/" in tz:
+        tm.timezones[person_id] = tz
+
+    def _win(v):
+        if isinstance(v, (list, tuple)) and len(v) == 2:
+            try:
+                return (float(v[0]), float(v[1]))
+            except (TypeError, ValueError):
+                return None
+        return None
+    prof = ActorTemporalProfile(
+        actor_id=person_id, timezone=tz if "/" in tz else "",
+        sleep_window=_win(context.get("sleep_window")),
+        active_window=_win(context.get("active_window")),
+        workload_regime=str(context.get("workload", "") or "")[:24],
+        channel_checking=({channel: dict(context["channel_check_gap"])}
+                          if isinstance(context.get("channel_check_gap"), dict) else {}),
+        relationship_priority=({str(context.get("relationship", "you")):
+                                max(0.0, min(1.0, float(context["relationship_priority"])))}
+                               if isinstance(context.get("relationship_priority"),
+                                             (int, float)) else {}),
+        latent_hypotheses=[h for h in (context.get("availability_hypotheses") or [])
+                           if isinstance(h, dict) and h.get("state")],
+        temporal_evidence=[f"user_context:{k}" for k in
+                           ("timezone", "sleep_window", "active_window", "workload",
+                            "channel_check_gap", "availability_hypotheses")
+                           if context.get(k)],
+        unresolved=[k for k in ("timezone", "sleep_window", "channel_check_gap")
+                    if not context.get(k)],
+        provenance="user_context")
+    tm.actor_profiles[person_id] = prof
+    if isinstance(context.get("channel_model"), dict):
+        cm = context["channel_model"]
+        tm.channels[channel] = ChannelTemporalModel(
+            channel_id=channel, kind=str(cm.get("kind", channel))[:40],
+            delivery=cm.get("delivery"), exposure=cm.get("exposure"),
+            requires_attention=bool(cm.get("requires_attention", True)),
+            provenance="user_context")
+    tm.support_classification = "user_context_informed"
+    return tm
+
+
+def _mini_world(person_id: str, counterpart_id: str, context: dict, now: float,
+                branch_id: str, history, n_real_ts: int) -> WorldState:
     w = WorldState("individual", branch_id, SimulationClock(now, now),
                    network=RelationGraph(), information=InformationLedger())
     person = Entity(person_id)
     person.set("roles", F([str(context.get("role", "person"))], status="observed"))
     if context.get("goals"):
         person.set("goals", F([str(g) for g in context["goals"]], status="inferred"))
-    person.set("memory", F([str(m)[:300] for m in (context.get("history") or [])][:12],
-                           status="observed"))
+    person.set("memory", F([t for t, _ in history][:12], status="observed"))
     person.set("past_actions", F([], status="observed"))
     counterpart = Entity(counterpart_id)
     counterpart.set("roles", F([str(context.get("your_role", "counterpart"))], status="observed"))
     w.entities = {person_id: person, counterpart_id: counterpart}
     w.network.add(counterpart_id, "communicates_with", person_id)
-    # relationship history reaches the person as their OWN observed information (leakage-safe)
-    for i, item in enumerate((context.get("history") or [])[:12]):
+    # relationship history reaches the person as their OWN observed information at its REAL
+    # times where supplied; unsupplied times keep order with spacing marked unresolved
+    n = len(history)
+    for i, (txt, ts) in enumerate(history):
         iid = f"history_{i}"
-        w.information.publish(InformationItem(iid, str(item)[:400],
+        at = ts if ts is not None else now - 86400.0 * (n - i)
+        w.information.publish(InformationItem(iid, txt,
                                               source=str(context.get("relationship",
                                                                      counterpart_id)),
-                                              created_at=now - 86400.0 * (len(context.get("history") or []) - i)))
-        w.information.expose(person_id, iid, now - 86400.0 * (len(context.get("history") or []) - i))
-    w.information.publish(InformationItem("stimulus", str(stimulus)[:800],
-                                          kind=channel or "message",
-                                          source=counterpart_id, created_at=now))
-    w.information.expose(person_id, "stimulus", now)
+                                              created_at=at))
+        w.information.expose(person_id, iid, at)
     return w
 
 
@@ -62,18 +141,24 @@ def simulate_individual_reaction(*, person_id: str, stimulus: str, context: dict
                                  llm=None, counterpart_id: str = "you", channel: str = "message",
                                  n_hypotheses: int = 3, samples_per_hypothesis: int = 2,
                                  response_actions=DEFAULT_RESPONSE_ACTIONS, seed: int = 0,
-                                 as_of: float | None = None, config: QualitativeConfig | None = None,
+                                 as_of: float | None = None, horizon_s: float = 7 * 86400.0,
+                                 config: QualitativeConfig | None = None,
                                  calibrator: ActorPolicyCalibrator | None = None,
                                  scenario_schema=None) -> dict:
-    """Simulate one person's reaction to one exact stimulus.
+    """Simulate one person's reaction to one exact stimulus THROUGH the temporal model.
 
-    ``context`` may supply: role, your_role, relationship (how the person labels the
-    counterpart), history (list of prior interactions, oldest first), goals. Returns the full
-    artifact: per-sample rows (hypothesis inhabited, interpretation, internal reaction,
-    observable response, novel/unmodeled flags), the raw empirical response distribution, and
-    the calibrated-or-unvalidated distribution."""
+    ``context`` may supply: role, your_role, relationship, history (strings or {"text","ts"}),
+    goals, timezone (IANA), sleep_window/active_window ([start_hour, end_hour] local),
+    channel_check_gap (TimingSpec dict), relationship_priority (0..1),
+    availability_hypotheses ([{state, prior, why}]), channel_model, urgency (0..1)."""
+    from swm.world_model_v2.temporal_runtime import (channel_delivery_ts, compute_notice_ts,
+                                                     get_stats, sample_temporal_latents)
     context = context or {}
     now = float(as_of if as_of is not None else _time.time())
+    horizon_ts = now + max(3600.0, float(horizon_s))
+    history, n_real_ts = _history_entries(context)
+    tmodel = _person_temporal_model(person_id, context, now=now, horizon_ts=horizon_ts,
+                                    channel=channel)
     cfg = config or QualitativeConfig(llm=llm, n_hypotheses=n_hypotheses,
                                       max_llm_calls=4 * n_hypotheses * samples_per_hypothesis)
     cfg.persistent = True
@@ -82,15 +167,16 @@ def simulate_individual_reaction(*, person_id: str, stimulus: str, context: dict
         engine, mode="persistent_qualitative_llm_policy",
         tiers={person_id: {"tier": 1, "reasons": ["reaction_is_the_question"],
                            "selector": "individual-mode"}})
-    situation = (f"You just received this via {channel} from "
-                 f"{context.get('relationship', counterpart_id)}: \"{str(stimulus)[:500]}\"")
-    decision = {"situation": situation,
-                "candidate_actions": [{"name": a, "target": counterpart_id}
-                                      for a in response_actions]}
-    outcomes, total = [], max(1, n_hypotheses) * max(1, samples_per_hypothesis)
+    urgency = max(0.0, min(1.0, float(context.get("urgency", 0.0) or 0.0)))
+    outcomes, samples = [], []
+    total = max(1, n_hypotheses) * max(1, samples_per_hypothesis)
+    n_unread = 0
     for i in range(total):
-        world = _mini_world(person_id, counterpart_id, context, stimulus, channel, now,
-                            branch_id=f"b{i:03d}")
+        world = _mini_world(person_id, counterpart_id, context, now,
+                            branch_id=f"b{i:03d}", history=history, n_real_ts=n_real_ts)
+        world.temporal_model = tmodel
+        stats = get_stats(world)
+        sample_temporal_latents(world, tmodel)
         if scenario_schema is not None:
             # generated actor-mediated mode for the individual route: the reply becomes a
             # scenario-typed ATTEMPT processed by the scenario's own mechanisms; without a
@@ -99,45 +185,100 @@ def simulate_individual_reaction(*, person_id: str, stimulus: str, context: dict
             # route's deliverable, still comes from the actor's own decisions either way
             import copy as _copy
             world.scenario_schema = _copy.deepcopy(scenario_schema)
+        # ---- the stimulus TRAVELS: send → channel delivery → the person's real attention ----
+        avail_ts, d_prov = channel_delivery_ts(world, tmodel, channel_id=channel, sent_ts=now,
+                                               urgency=urgency, recipient=person_id,
+                                               salt=f"stimulus:{i}", stats=stats)
+        notice_ts, n_prov = compute_notice_ts(world, tmodel, actor_id=person_id,
+                                              channel_id=channel, available_ts=avail_ts,
+                                              urgency=urgency, sender=counterpart_id,
+                                              stats=stats)
+        if notice_ts > horizon_ts:
+            # UNREAD within the window — a real, distinguishable outcome; no LLM is asked to
+            # role-play a person who never saw the message (invariant 17; §25)
+            n_unread += 1
+            samples.append({"hypothesis_id": "", "decision_source": "not_invoked_unread",
+                            "temporal_state": "unread_by_horizon",
+                            "available_ts": avail_ts, "noticed_ts": None,
+                            "delivery_provenance": d_prov, "notice_provenance": n_prov,
+                            "observable_response": "", "trace_id": f"unread_{i}"})
+            continue
+        world.clock.advance_to(max(now, notice_ts))
+        world.information.publish(InformationItem("stimulus", str(stimulus)[:800],
+                                                  kind=channel or "message",
+                                                  source=counterpart_id, created_at=now))
+        world.information.expose(person_id, "stimulus", notice_ts)
+        import datetime as _dt
+        local = _dt.datetime.fromtimestamp(notice_ts).strftime("%H:%M")
+        situation = (f"You just noticed (around {local}) this via {channel} from "
+                     f"{context.get('relationship', counterpart_id)}: \"{str(stimulus)[:500]}\"")
+        decision = {"situation": situation,
+                    "candidate_actions": [{"name": a, "target": counterpart_id}
+                                          for a in response_actions],
+                    "trigger": {"trigger_type": "newly_noticed_information",
+                                "actor_id": person_id,
+                                "why_now": n_prov, "provenance": "individual_reaction_route"}}
         selected, posterior, trace = runtime.decide(
-            None, [world], person_id, decision=dict(decision), seed=seed * 7919 + i)
+            None, [world], person_id, decision=decision, seed=seed * 7919 + i)
         runtime.execute(world, selected, posterior, trace, seed=seed * 7919 + i)
         outcomes.append((posterior, trace))
+        q = (posterior.provenance or {}).get("qualitative") or {}
+        chosen = next((a for a in trace.candidate_actions
+                       if a.get("action_id") == trace.sampled_action_id), {})
+        deferred = q.get("act_or_wait") == "wait" or \
+            str(chosen.get("action_name", "")) in ("wait", "reply_later", "ignore")
+        samples.append({
+            "hypothesis_id": q.get("hypothesis_id", ""),
+            "decision_source": q.get("decision_source", "numeric_fallback"),
+            "temporal_state": ("read_but_deferred" if deferred else "responded"),
+            "available_ts": avail_ts, "noticed_ts": notice_ts,
+            "delivery_provenance": d_prov, "notice_provenance": n_prov,
+            "availability_latent": str(getattr(world.quantities.get(
+                f"temporal_latent:actor:{person_id}"), "value", "") or ""),
+            "interpretation": q.get("situation_interpretation", {}),
+            "internal_reaction": q.get("internal_reaction", ""),
+            "observable_response": chosen.get("action_name", ""),
+            "timing_intent": q.get("timing", ""),
+            "target": (chosen.get("target") or {}).get("target_id", ""),
+            "decision_summary": q.get("decision_summary", ""),
+            "novel_action_unmodeled": bool(q.get("novel_action_unmodeled")),
+            "trace_id": trace.trace_id,
+        })
     agg = aggregate_actor_decisions(outcomes, clusterer=ActionClusterer(),
                                     calibrator=calibrator or
                                     ActorPolicyCalibrator.from_file())
     result = agg.get(person_id, {"raw_qualitative_simulation_distribution": {},
                                  "calibrated_distribution": {},
                                  "calibration_status": "unvalidated", "rows": []})
-    samples = []
-    for posterior, trace in outcomes:
-        q = (posterior.provenance or {}).get("qualitative") or {}
-        chosen = next((a for a in trace.candidate_actions
-                       if a.get("action_id") == trace.sampled_action_id), {})
-        samples.append({
-            "hypothesis_id": q.get("hypothesis_id", ""),
-            "decision_source": q.get("decision_source", "numeric_fallback"),
-            "interpretation": q.get("situation_interpretation", {}),
-            "internal_reaction": q.get("internal_reaction", ""),
-            "observable_response": chosen.get("action_name", ""),
-            "target": (chosen.get("target") or {}).get("target_id", ""),
-            "decision_summary": q.get("decision_summary", ""),
-            "novel_action_unmodeled": bool(q.get("novel_action_unmodeled")),
-            "trace_id": trace.trace_id,
-        })
+    raw = dict(result["raw_qualitative_simulation_distribution"])
+    if n_unread:
+        # unread mass enters the distribution explicitly — "no response yet" is NOT "ignored"
+        scale = (total - n_unread) / total if total else 0.0
+        raw = {k: round(v * scale, 4) for k, v in raw.items()}
+        raw["unread_no_response_yet"] = round(n_unread / total, 4)
     return {
-        "schema_version": "individual.reaction.v1",
+        "schema_version": "individual.reaction.v2_temporal",
         "person_id": person_id, "stimulus": str(stimulus)[:800], "channel": channel,
         "n_hypotheses": n_hypotheses, "samples_per_hypothesis": samples_per_hypothesis,
         "samples": samples,
-        "raw_qualitative_simulation_distribution":
-            result["raw_qualitative_simulation_distribution"],
+        "raw_qualitative_simulation_distribution": raw,
         "calibrated_distribution": result["calibrated_distribution"],
         "calibration_status": result["calibration_status"],
         "n_excluded_numeric_fallbacks": result.get("n_excluded_numeric_fallbacks", 0),
+        "n_unread_by_horizon": n_unread,
         "consequence_report": runtime.consequence_report,
         "llm_calls": engine.calls_used(),
+        "temporal": {
+            "temporal_model_hash": tmodel.temporal_model_hash(),
+            "support_classification": tmodel.support_classification,
+            "horizon_s": float(horizon_s),
+            "history_timestamps": {"n_supplied_real": n_real_ts,
+                                   "n_total": len(history),
+                                   "unresolved_spacing": len(history) - n_real_ts},
+            "profile_evidence": list(tmodel.actor_profiles[person_id].temporal_evidence),
+            "profile_unresolved": list(tmodel.actor_profiles[person_id].unresolved)},
         "provenance": {"as_of": now, "tier_rule": "reaction_is_the_question → Tier 1",
                        "runtime": "QualitativeActorPolicyRuntime",
+                       "temporal_route": "delivery→attention→decision (§25)",
                        "aggregation": "branch-selection counting (cluster-1.0)"},
     }

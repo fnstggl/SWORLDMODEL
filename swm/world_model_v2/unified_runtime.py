@@ -88,6 +88,23 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
     def _iso(s):
         return s
 
+    def _bundle_text(b, max_chars: int) -> str:
+        """Evidence text for prompt context — tolerant of both bundle generations (the V2
+        bundle has no render())."""
+        if b is None:
+            return ""
+        if hasattr(b, "render"):
+            try:
+                return b.render(max_chars=max_chars)
+            except Exception:  # noqa: BLE001
+                pass
+        rows = []
+        for c in (getattr(b, "claims", None) or [])[:20]:
+            if isinstance(c, dict):
+                rows.append(f"- {str(c.get('text', c.get('claim', '')))[:200]} "
+                            f"[{str(c.get('source', ''))[:40]}]")
+        return "\n".join(rows)[:max_chars]
+
     # ---------- Phase 1: universal compiler → the ONE shared plan ----------
     try:
         plan = compile_world(question, llm=llm, evidence="", as_of=as_of, horizon=horizon,
@@ -183,7 +200,7 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
             from swm.world_model_v2.scheduled_facts import extract_scheduled_facts, attach_scheduled_facts
             from swm.world_model_v2.resolution_criteria import (parse_resolution_criterion,
                                                                 ground_actor_intentions)
-            ev_text = bundle.render(max_chars=2400) if bundle is not None else ""
+            ev_text = _bundle_text(bundle, 2400)
             # universal resolution-criterion parsing: the precise state that resolves YES anchors the
             # contract's rule, the fact-entailment judgments, and the intention grounding
             crit = parse_resolution_criterion(question, horizon=horizon, llm=llm)
@@ -259,16 +276,30 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
             rep = synthesize_activation(plan, req)
             rep["_pre_synthesis_requirements"] = req         # the ONE relevance verdict, reused by assess
             lineage["activation_synthesis"] = rep
-            # situation-dependent trajectory depth (never one decision at horizon-3d)
-            if "fidelity" not in drop:
-                from swm.world_model_v2.fidelity import deepen_trajectory
-                cad = (lineage.get("fidelity_expansion") or {}).get("decision_cadence_days")
-                lineage["trajectory_depth"] = deepen_trajectory(plan, req, cadence_days=cad)
             for ph, r in req.items():
                 if ph in manifest:
                     manifest[ph]["relevance"] = {"required": r["required"], "why": r["why"]}
         except Exception as e:  # noqa: BLE001 — synthesis must never block the forecast
             lineage["activation_synthesis"] = {"error": f"{type(e).__name__}: {e}"[:160]}
+
+    # ---------- SCENARIO TEMPORAL MODEL: the default-on LLM temporal compilation stage ----------
+    # Replaces the quarantined periodic scheduler (legacy_ablations): the LLM generates the
+    # scenario's real temporal structure (channels, actor attention, institutional stages,
+    # continuous processes, deadlines, sourced recurrences, decision-trigger sources), two
+    # independent critics check it, and the runtime executes decisions only on real triggers.
+    if "temporal_model" not in drop:
+        try:
+            from swm.world_model_v2.temporal_compiler import (attach_temporal_model,
+                                                              compile_temporal_model)
+            ev_text = _bundle_text(bundle, 2000)
+            tmodel = compile_temporal_model(plan, llm=llm, question=question,
+                                            evidence_text=ev_text, user_context=user_context,
+                                            intervention=intervention, seed=seed)
+            lineage["temporal_model"] = attach_temporal_model(plan, tmodel)
+            costs["llm_calls"] += len(tmodel.compilation_trace)
+        except Exception as e:  # noqa: BLE001 — compilation failure is a LOUD degradation
+            lineage["temporal_model"] = {"error": f"{type(e).__name__}: {e}"[:200],
+                                         "degraded": "temporal_compilation_failed"}
 
     # ---------- Event-time conversion: the outcome of the simulation IS the answer ----------
     # READOUT, NOT RESOLVER. The answer mechanism needs a readout (translate the simulated world into the
@@ -295,9 +326,7 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
                 convert_to_event_time(plan, crit, lineage=lineage, llm=llm,
                                       categorical_options=_opts)
             else:
-                fex = lineage.get("fidelity_expansion")
-                cad = fex.get("decision_cadence_days") if isinstance(fex, dict) else None
-                convert_binary_to_event_time(plan, crit, lineage=lineage, llm=llm, cadence_days=cad)
+                convert_binary_to_event_time(plan, crit, lineage=lineage, llm=llm)
         except Exception as e:  # noqa: BLE001 — conversion must never block the forecast
             lineage["event_time"] = {"error": f"{type(e).__name__}: {e}"[:160]}
 
@@ -495,13 +524,30 @@ def _project_terminal(question, plan, as_of, horizon, intervention, seed, llm, u
     default-on; when no history/checkpoint exists it runs the ordinary rollout with broad priors."""
     from swm.world_model_v2.phase8_pipeline import run_with_persistence
     persistence_dropped = "phase8_persistence" in drop
+    # COMPUTE knob (§26): an explicit particle budget prioritizes Monte-Carlo resolution under
+    # a caller's compute budget — it never truncates causal chains, drops actors, or shortens
+    # the horizon (those produce temporally_truncated records instead). Recorded on the plan.
+    n_particles = None
+    policy = drop and {} or {}
+    if isinstance(user_context, dict) and isinstance(user_context.get("_execution_policy"),
+                                                     dict):
+        policy = user_context["_execution_policy"]
+    np_req = policy.get("n_particles")
+    if isinstance(np_req, (int, float)) and np_req >= 1:
+        n_particles = int(np_req)
+        plan.compute_plan["n_particles"] = n_particles
+        plan.provenance = {**(plan.provenance or {}),
+                           "n_particles_override": {"value": n_particles,
+                                                    "reason": "caller compute budget (§26); "
+                                                              "MC resolution only"}}
     try:
         if persistence_dropped:
             from swm.world_model_v2.materialize import run_from_plan
             from swm.world_model_v2.pipeline import result_from_run
             from swm.world_model_v2.phase8_pipeline import (
                 _surface_actor_policy_degradation, _surface_consequence_degradation)
-            result, branches = run_from_plan(plan, llm=llm, seed=seed)
+            result, branches = run_from_plan(plan, llm=llm, seed=seed,
+                                             n_particles=n_particles)
             res = result_from_run(question, plan, result, branches, intervention=intervention, t0=t0)
             res.provenance = {**(res.provenance or {}),
                               "actor_policy_report": result.get("actor_policy_report", {}),
@@ -515,7 +561,8 @@ def _project_terminal(question, plan, as_of, horizon, intervention, seed, llm, u
         else:
             res, _p8meta = run_with_persistence(question, plan, llm=llm, context=user_context,
                                                 actor_history=(prior_checkpoint or {}).get("actor_history") if prior_checkpoint else None,
-                                                intervention=intervention, t0=t0, seed=seed)
+                                                intervention=intervention, t0=t0, seed=seed,
+                                                n_particles=n_particles)
             manifest["phase8_persistence"].update(
                 selected=True, executed=True, version="phase8-1.0",
                 reason=("checkpoint-conditioned" if prior_checkpoint else "no prior history — broad-prior rollout"))

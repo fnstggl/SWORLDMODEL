@@ -125,17 +125,19 @@ def test_convert_to_event_time_full_rewire():
     assert isinstance(p.outcome_contract, EventTimeContract)
     assert p.outcome_contract.resolution_rule.startswith("an agreed end")
     assert not any(e["etype"] == "resolve_outcome" for e in p.scheduled_events)
-    rounds = [e for e in p.scheduled_events if e["etype"] == "hazard_round"]
-    assert rounds and rep["n_hazard_rounds"] == len(rounds)
-    assert {e["payload"]["mode"] for e in rounds} == {"negotiated_settlement", "military_collapse",
-                                                      "frozen_conflict"}
-    assert all(e["payload"]["consume"] == [{"var": "actor_intentions", "weight": 0.2}] for e in rounds)
-    assert all(T0 < e["ts"] < T1 for e in rounds)
-    # total scheduled hazard mass equals the base envelope (0.5) — no len(modes) inflation
-    assert sum(e["payload"]["base_hazard"] for e in rounds) == pytest.approx(0.5)
+    # CONTINUOUS-TIME FIRST PASSAGE: one process per mode — NO evenly spaced hazard grid
+    assert not any(e["etype"] == "hazard_round" for e in p.scheduled_events)
+    procs = list(p.first_passage_processes)
+    assert procs and rep["n_first_passage_processes"] == len(procs)
+    assert rep["scheduling"] == "continuous_first_passage"
+    assert {s["mode"] for s in procs} == {"negotiated_settlement", "military_collapse",
+                                          "frozen_conflict"}
+    assert all(s["consume"] == [{"var": "actor_intentions", "weight": 0.2}] for s in procs)
+    # total structural mass equals the base envelope — no len(modes) inflation
+    assert sum(s["share"] for s in procs) == pytest.approx(1.0)
     # grounded stances modulate ONLY agreement modes, as a DISTRIBUTION (binding = most-opposed
     # veto actor: high-reliability categorical refusal → median 0.55), never a unilateral end-state
-    by_mode = {e["payload"]["mode"]: e["payload"]["hr"] for e in rounds}
+    by_mode = {s["mode"]: s["hr"] for s in procs}
     assert by_mode["negotiated_settlement"]["median"] == pytest.approx(0.55)
     assert by_mode["negotiated_settlement"]["lo80"] < by_mode["negotiated_settlement"]["hi80"]
     assert by_mode["military_collapse"]["median"] == 1.0
@@ -143,7 +145,7 @@ def test_convert_to_event_time_full_rewire():
     assert rep["agreement_hazard_ratio"]["binding_actor"] == "leader_a"
     assert rep["hazard_ratio_source"] in ("documented_priors_unfitted", "fitted_pack")
     ops = {m["operator"] for m in p.accepted_mechanisms}
-    assert {"absorption_monitor", "hazard_round"} <= ops
+    assert {"absorption_monitor", "first_passage"} <= ops
     declared = {q["name"] for q in p.quantities}
     assert {"absorbed_at", "absorbing_state_reached"} <= declared   # readout binds at materialization
     assert p.compute_plan["n_particles"] == 200               # CDF particle floor
@@ -159,9 +161,9 @@ def test_mode_entailment_filter_drops_non_absorbing_modes():
     rep = convert_to_event_time(p, {"resolves_yes_iff": "hostilities formally end"}, llm=fake_llm)
     assert set(rep["modes"]) == {"negotiated_settlement", "military_collapse"}
     assert rep["rejected_non_absorbing_modes"] == ["frozen_conflict"]
-    rounds = [e for e in p.scheduled_events if e["etype"] == "hazard_round"]
-    assert not any(e["payload"]["mode"] == "frozen_conflict" for e in rounds)
-    assert sum(e["payload"]["base_hazard"] for e in rounds) == pytest.approx(0.5)  # renormalized
+    procs = list(p.first_passage_processes)
+    assert not any(s["mode"] == "frozen_conflict" for s in procs)
+    assert sum(s["share"] for s in procs) == pytest.approx(1.0)   # renormalized
 
 
 def test_mode_entailment_filter_fails_open():
@@ -348,9 +350,8 @@ def test_time_indexed_duplicate_modes_merge():
                                {"id": "military_collapse", "prior": 0.5}]
     rep = convert_to_event_time(p, {"resolves_yes_iff": "x"})
     assert set(rep["modes"]) == {"ceasefire", "military_collapse"}
-    rounds = [e for e in p.scheduled_events if e["etype"] == "hazard_round"
-              and e["payload"]["mode"] == "ceasefire"]
-    assert sum(e["payload"]["base_hazard"] for e in rounds) == pytest.approx(0.5 * 0.5)  # priors summed
+    cf = [s for s in p.first_passage_processes if s["mode"] == "ceasefire"]
+    assert len(cf) == 1 and cf[0]["share"] == pytest.approx(0.5)  # priors summed
 
 
 def test_fit_intention_hazard_ratios_pools_toward_no_effect():
@@ -392,9 +393,12 @@ def _binary_plan(question="Will X be out as CEO by the deadline?", options=("yes
 
 
 def _rollout(p, n_particles=300, seed=3, extra_ops=None, meta=None):
+    from swm.world_model_v2.event_time import FirstPassageOperator, ensure_first_passage_state
     from swm.world_model_v2.events import Event, EventQueue
     from swm.world_model_v2.rollout import RolloutEngine
-    ops = [HazardRoundOperator(), AbsorptionMonitorOperator()] + list(extra_ops or [])
+    from swm.world_model_v2.temporal_hazards import schedule_crossing
+    ops = [HazardRoundOperator(), FirstPassageOperator(), AbsorptionMonitorOperator()] \
+        + list(extra_ops or [])
     branches = []
     for i in range(n_particles):
         w = _world()
@@ -406,6 +410,9 @@ def _rollout(p, n_particles=300, seed=3, extra_ops=None, meta=None):
             q.schedule(Event(ts=ev["ts"], etype=ev["etype"],
                              participants=list(ev.get("participants") or []),
                              payload=dict(ev["payload"]), source="scheduled"))
+        for spec in (getattr(p, "first_passage_processes", None) or []):
+            st = ensure_first_passage_state(w, spec)
+            schedule_crossing(q, w, st, etype="first_passage")
         branches.append(RolloutEngine(operators=ops).run_branch(w, q, seed=seed * 7919 + i))
     return p.outcome_contract.project(branches), branches
 
@@ -423,14 +430,15 @@ def test_binary_conversion_removes_every_resolver_and_rewires():
                    for e in p.scheduled_events)                # NO component declares the answer
     assert isinstance(p.outcome_contract, EventTimeContract)
     assert p.outcome_contract.options == ["yes", "no"]         # the question's own options project
-    rounds = [e for e in p.scheduled_events if e["etype"] == "hazard_round"]
-    assert rounds and all("calibration" in e["payload"] for e in rounds)
-    assert sum(e["payload"]["calibration"]["exponent"] for e in rounds) == pytest.approx(1.0)
-    assert all(e["payload"]["consume"] == [{"var": "actor_intentions", "weight": 0.2}] for e in rounds)
-    assert all(T0 < e["ts"] <= p.outcome_contract.deadline_ts for e in rounds)
+    # ONE continuous-time calibrated residual process — no evenly spaced grid, no cadence
+    assert not any(e["etype"] == "hazard_round" for e in p.scheduled_events)
+    procs = [s for s in p.first_passage_processes if s["kind"] == "calibrated_resolution"]
+    assert len(procs) == 1 and rep["n_residual_processes"] == 1
+    assert rep["scheduling"] == "continuous_first_passage"
+    assert procs[0]["consume"] == [{"var": "actor_intentions", "weight": 0.2}]
     order = [m["operator"] for m in p.accepted_mechanisms]
     # absorbing writers run BEFORE the monitor so first passage stamps at the write's own clock time
-    assert order.index("hazard_round") < order.index("absorption_monitor")
+    assert order.index("first_passage") < order.index("absorption_monitor")
     assert {q["name"] for q in p.quantities} >= {"absorbed_at", "absorbing_state_reached"}
     assert lin["event_time"] is rep and rep["posterior_calibrated"] is True
 
@@ -447,12 +455,14 @@ def test_binary_residual_chain_consumes_declared_pathway_processes():
     rep = convert_binary_to_event_time(p, {"resolves_yes_iff": "X remains CEO",
                                            "event_polarity": "occurrence_resolves_no"})
     assert rep["endogenous_channels"] == ["pathway_progress:unilateral_action"]
-    rounds = [e for e in p.scheduled_events if e["etype"] == "hazard_round"]
-    chan = [c for e in rounds for c in e["payload"]["consume"]
+    procs = [s for s in p.first_passage_processes if s["kind"] == "calibrated_resolution"]
+    chan = [c for s in procs for c in s["consume"]
             if c["var"] == "pathway_progress:unilateral_action"]
     assert chan and all(c["weight"] == 0.6 for c in chan)
     # survival polarity: the process advancing the state-BREAKING event must be inverted
     assert all(c.get("invert") for c in chan)
+    # and the process declares its read set so state changes re-project the crossing (§16)
+    assert "pathway_progress:unilateral_action" in procs[0]["reads"]
 
 
 def test_binary_answer_is_first_passage_readout_matching_posterior_target():
@@ -513,7 +523,7 @@ def test_absorbing_institution_is_the_resolution_path():
     p = _binary_plan(extra_events=[inst_ev])
     rep = convert_binary_to_event_time(p, {})
     assert rep["absorbing_institutions"] == ["senate"]
-    assert rep["n_residual_rounds"] == 0 and rep["residual_skipped_reason"]
+    assert rep["n_residual_processes"] == 0 and rep["residual_skipped_reason"]
     ie = next(e for e in p.scheduled_events if e["etype"] == "institutional_decision")
     assert ie["payload"]["absorbing"] is True
     from swm.world_model_v2.phase_consumers import CollectiveThresholdDecisionOperator
@@ -582,8 +592,10 @@ def test_criterion_deadline_bounds_the_chain_and_the_binary_view():
     p = _binary_plan(posterior=[(0.5, 1.0)])
     rep = convert_binary_to_event_time(p, {"deadline": "2024-01-01"})   # inside [T0, T1]
     assert T0 < rep["deadline_ts"] < T1
-    rounds = [e for e in p.scheduled_events if e["etype"] == "hazard_round"]
-    assert rounds and all(e["ts"] <= rep["deadline_ts"] for e in rounds)
+    procs = [s for s in p.first_passage_processes if s["kind"] == "calibrated_resolution"]
+    # the residual process's intensity window is bounded by the DEADLINE, not the horizon
+    assert procs and all(s["as_of"] + s["span_s"] == pytest.approx(rep["deadline_ts"])
+                         for s in procs)
     assert p.outcome_contract.deadline_ts == pytest.approx(rep["deadline_ts"])
 
 

@@ -76,18 +76,41 @@ def generate_actions(world, problem, *, llm=None, max_llm_proposals: int = 8,
             base = ActionSchema(action_id=f"{op}{'_' + obj if obj else ''}", actor=maker,
                                 operation=op, object=obj, authority_basis=cap, timing_ts=now)
             add(base, "authority")
-            # timing variants for time-family and communication operations: act now vs mid-horizon
+            # timing variants for time-family and communication operations: alternatives are
+            # anchored to REAL scenario times (§23) — acting just before/after a scheduled
+            # event, a deadline, or an institutional decision already in this world's queue —
+            # never an arbitrary "mid-horizon" point
             if problem.horizon and spec["family"] in ("information", "negotiation", "time"):
                 from swm.world_model_v2.state import parse_time
                 try:
                     hz = parse_time(problem.horizon)
-                    mid = now + 0.5 * (hz - now)
-                    if mid > now:
-                        add(ActionSchema(action_id=f"{op}{'_' + obj if obj else ''}_later",
-                                         actor=maker, operation=op, object=obj, authority_basis=cap,
-                                         timing_ts=mid, params={"timing": "mid_horizon"}), "authority")
                 except ValueError:
-                    pass
+                    hz = None
+                anchors = []
+                tmodel = getattr(world, "temporal_model", None)
+                for d in (getattr(tmodel, "deadlines", None) or []):
+                    t = (d.get("timing") or {}).get("ts")
+                    if isinstance(t, (int, float)) and now < t and (hz is None or t <= hz):
+                        anchors.append((float(t), f"before_deadline:{d.get('label', '')[:40]}"))
+                for f in (getattr(tmodel, "scheduled_facts", None) or []):
+                    t = f.get("ts")
+                    if isinstance(t, (int, float)) and now < t and (hz is None or t <= hz):
+                        anchors.append((float(t),
+                                        f"after_{str(f.get('fact', 'scheduled_fact'))[:32]}"))
+                for dp in (problem.decision_points or []):
+                    try:
+                        t = parse_time(dp)
+                    except (ValueError, TypeError):
+                        continue
+                    if now < t and (hz is None or t <= hz):
+                        anchors.append((float(t), "at_decision_point"))
+                for i, (a_ts, a_lbl) in enumerate(sorted(set(anchors))[:3]):
+                    add(ActionSchema(action_id=f"{op}{'_' + obj if obj else ''}_at_{i}",
+                                     actor=maker, operation=op, object=obj, authority_basis=cap,
+                                     timing_ts=a_ts,
+                                     params={"timing": a_lbl,
+                                             "timing_anchor": "real_scenario_time"}),
+                        "authority")
 
     # --- controllable quantities → set_parameter grids ---------------------------------------------
     for qname, amount in (problem.controllable_resources or {}).items():

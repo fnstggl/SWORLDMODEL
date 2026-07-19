@@ -37,8 +37,10 @@ if not event_type_registered(PLAN_STEP_ETYPE):
     register_event_type(PLAN_STEP_ETYPE, scheduling="scheduled", validated=True,
                         parameter_source="phase13 scenario action layer")
 
-_RECHECK_S = 21600.0          # conditional steps re-check every 6h until max checks
-_STEP_GAP_S = 60.0            # dependent steps fire shortly after their parents complete
+# Conditional steps are CHANGE-TRIGGERED, not polled (§14): an unmet guard registers a state
+# watch and the step re-checks when the observable state actually changes; dependent steps
+# fire the INSTANT their parents complete (same timestamp, next causal microstep) — no
+# synthetic re-check interval, no synthetic inter-step gap.
 
 
 # ---------------------------------------------------------------- observable projection
@@ -213,18 +215,29 @@ class ScenarioPlanOperator:
                 delta.uncertainty["stop_condition"] = json.dumps(
                     sc.as_dict() if isinstance(sc, ConditionSpec) else sc, default=str)[:200]
                 return delta, ValidationResult(ok=True)
-        # step guards: unmet => bounded re-check, then a RECORDED lapse (never silent)
+        # step guards: unmet => CHANGE-TRIGGERED re-check (a state watch fires the step when
+        # the observable world actually changes), bounded, then a RECORDED lapse (never silent,
+        # never a fixed polling interval)
         unmet = [c for c in step.conditions if not condition_holds(c, projection)]
         if unmet:
             checks = state["checks"].get(step_id, 0) + 1
             state["checks"][step_id] = checks
             if checks <= int(step.max_condition_checks):
-                delta.reason_codes.append(f"step_condition_unmet:recheck_{checks}")
-                delta.follow_up_events = [{
-                    "etype": PLAN_STEP_ETYPE, "ts": world.clock.now + _RECHECK_S,
-                    "participants": [plan.actor_id],
-                    "payload": {"candidate_id": plan.candidate_id, "step_id": step_id,
-                                "plan": plan, "source_decision": True}}]
+                from swm.world_model_v2.temporal_runtime import (get_stats,
+                                                                 register_state_watch)
+                delta.reason_codes.append(
+                    f"step_condition_unmet:watching_state_change_{checks}")
+                register_state_watch(
+                    world,
+                    match_substrings=("objects[", ".resources[", "information",
+                                      "quantities["),
+                    event_spec={"etype": PLAN_STEP_ETYPE,
+                                "participants": [plan.actor_id],
+                                "payload": {"candidate_id": plan.candidate_id,
+                                            "step_id": step_id, "plan": plan,
+                                            "source_decision": True}},
+                    max_fires=1, provenance="plan_step_condition_watch",
+                    stats=get_stats(world))
             else:
                 state["lapsed"].append(step_id)
                 self.report["steps_lapsed"] += 1
@@ -278,13 +291,17 @@ class ScenarioPlanOperator:
             if nxt.step_id in done or nxt.step_id in state["failed"]:
                 continue
             if nxt.after_steps and set(nxt.after_steps) <= done:
+                # the dependent step's earliest start is its own declared timing, else the
+                # INSTANT the dependency completes — same timestamp, next causal microstep
+                # (the parent link orders it), no synthetic gap
                 ts = float(nxt.timing_ts) if nxt.timing_ts and \
-                    nxt.timing_ts > world.clock.now else world.clock.now + _STEP_GAP_S
+                    nxt.timing_ts > world.clock.now else world.clock.now
                 fu.append({"etype": PLAN_STEP_ETYPE, "ts": ts,
                            "participants": [plan.actor_id],
                            "payload": {"candidate_id": plan.candidate_id,
                                        "step_id": nxt.step_id, "plan": plan,
-                                       "source_decision": True}})
+                                       "source_decision": True},
+                           "parent_ids": [event.event_id]})
         delta.follow_up_events = fu
         return delta, ValidationResult(ok=True)
 

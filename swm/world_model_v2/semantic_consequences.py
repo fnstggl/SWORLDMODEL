@@ -306,10 +306,31 @@ def _x_publish_artifact(world, op, ctx, delta):
     delta.change(f"information[{iid}]", None, "published")
 
 
+def _resolve_op_timing(world, op, ctx, *, key: str, regime: str, salt: str) -> tuple:
+    """Situation-resolved timing for one compiled action op (§9/§10): an EXPLICIT delay or a
+    timing regime stated by the compiled action is GENERATED content and wins; otherwise the
+    duration samples per particle from a labeled broad regime band — never a fixed constant.
+    Returns (delay_s, provenance)."""
+    from swm.world_model_v2.temporal_model import TIMING_REGIMES, TimingSpec, particle_rng
+    v = op.get(key)
+    if isinstance(v, (int, float)) and not isinstance(v, bool) and v > 0:
+        return max(1.0, float(v)), "action_specified"
+    stated = str(op.get("timing_regime", "") or "").strip()
+    reg = stated if stated in TIMING_REGIMES else regime
+    rng = particle_rng(world, f"semcons:{salt}")
+    dur = TimingSpec(kind="regime", regime=reg,
+                     provenance="action_stated_regime" if stated else
+                     "unmodeled_broad_band").sample_duration_s(rng)
+    return max(1.0, dur), ("action_stated_regime:" + reg if stated
+                           else "broad_band:" + reg)
+
+
 def _x_deliver_information(world, op, ctx, delta):
     """A REAL communication: private_communication object carrying the exact message + an
-    information item + a message_delivered event whose consumption exposes the content to the
-    recipient and opens THEIR decision. Never an empty-content ping."""
+    information item + a message_delivered event. Delivery timing comes from the scenario
+    temporal model's channel when one exists, else the action's own stated timing, else a
+    labeled per-particle broad band — never a 60-second constant. Delivery is AVAILABILITY;
+    the recipient's attention is a separate stage (CommunicationDeliveryOperator)."""
     _need(op, "recipient", "content")
     recipient = str(op["recipient"])
     if recipient not in world.entities:
@@ -327,13 +348,32 @@ def _x_deliver_information(world, op, ctx, delta):
         world.information.publish(InformationItem(
             iid, str(op["content"])[:1200], kind="private", source=ctx["actor_id"],
             created_at=ctx["now"], about=str(op.get("about", ""))[:60]))
-    delay = max(1.0, float(op.get("delivery_delay_s", 60.0) or 60.0))
+    chan = str(op.get("channel", "message"))[:40]
+    tmodel = getattr(world, "temporal_model", None)
+    delay_prov = ""
+    if isinstance(op.get("delivery_delay_s"), (int, float)) and op["delivery_delay_s"] > 0:
+        delay, delay_prov = max(1.0, float(op["delivery_delay_s"])), "action_specified"
+    elif tmodel is not None and (chan in (tmodel.channels or {})
+                                 or any(getattr(c, "kind", "") == chan
+                                        for c in (tmodel.channels or {}).values())):
+        from swm.world_model_v2.temporal_runtime import channel_delivery_ts, get_stats
+        from swm.world_model_v2.generated_world import _channel_model_id
+        cid = _channel_model_id(tmodel, chan)
+        avail_ts, delay_prov = channel_delivery_ts(
+            world, tmodel, channel_id=cid, sent_ts=ctx["now"],
+            urgency=max(0.0, min(1.0, float(op.get("urgency", 0.0) or 0.0))),
+            recipient=recipient, salt=f"deliver:{oid}", stats=get_stats(world))
+        delay = max(1.0, avail_ts - ctx["now"])
+    else:
+        delay, delay_prov = _resolve_op_timing(world, op, ctx, key="delivery_delay_s",
+                                               regime="within_hour", salt=f"deliver:{oid}")
     ctx["events"].append(Event(
         ts=ctx["now"] + delay, etype="message_delivered",
         participants=[recipient, ctx["actor_id"]],
         payload={"item_id": iid, "communication_object": oid, "sender": ctx["actor_id"],
                  "recipient": recipient, "content": str(op["content"])[:1200],
-                 "channel": str(op.get("channel", "message"))[:40],
+                 "channel": chan, "urgency": float(op.get("urgency", 0.0) or 0.0),
+                 "delivery_provenance": delay_prov,
                  "source_action_id": ctx["action_id"]},
         visibility="participants", source="endogenous:semantic_consequences"))
     ctx["report"]["information_deliveries"] += 1
@@ -529,23 +569,55 @@ def _x_submit_to_institution(world, op, ctx, delta):
         delta.change(f"objects[{sub_id}].outcome", None, requested)
         ctx["report"]["facts_changed"] += 1
         return
-    delay = max(3600.0, float(op.get("procedure_delay_s", 86400.0) or 86400.0))
+    # institutional timing (§17): the scenario temporal model's generated stage machine wins
+    # when it covers this institution; else the action's stated timing; else a labeled broad
+    # band. The authority holders' decision opportunities arrive when the submission REACHES
+    # them in the queue (per-particle queue position), before the vote — never at delay/2.
+    from swm.world_model_v2.temporal_model import particle_rng
+    delay, delay_prov = _resolve_op_timing(world, op, ctx, key="procedure_delay_s",
+                                           regime="days", salt=f"proc:{sub_id}")
+    tmodel = getattr(world, "temporal_model", None)
+    if tmodel is not None and not isinstance(op.get("procedure_delay_s"), (int, float)):
+        for proc in (tmodel.institutional_processes or []):
+            if str(getattr(proc, "institution_id", "")) == inst_id and proc.stages:
+                from swm.world_model_v2.temporal_runtime import resolve_timing_spec, get_stats
+                t = ctx["now"]
+                for stg in proc.stages[:6]:
+                    st_ts = resolve_timing_spec(getattr(stg, "duration", None), world=world,
+                                                model=tmodel, ref_ts=t, calendar_of=inst_id,
+                                                salt=f"stage:{inst_id}:{stg.stage_id}:{sub_id}",
+                                                stats=get_stats(world))
+                    if st_ts is not None and st_ts > t:
+                        t = st_ts
+                if t > ctx["now"]:
+                    delay, delay_prov = t - ctx["now"], f"institutional_process:{proc.process_id}"
+                break
     voters = sorted(h for h in holders if h in world.entities) or [inst_id]
     ctx["events"].append(Event(
         ts=ctx["now"] + delay, etype="collective_vote", participants=voters,
         payload={"institution": inst_id, "institution_id": inst_id, "submission": sub_id,
                  "matter": str(op.get("matter", ""))[:300],
                  "requested_outcome": requested, "process_object": f"proc_{sub_id}",
+                 "timing_provenance": delay_prov,
                  "source_action_id": ctx["action_id"]},
         visibility="institutional", source="endogenous:semantic_consequences"))
     for holder in sorted(holders):
         if holder in world.entities and holder != ctx["actor_id"]:
+            # queue-position uncertainty: the holder's decision opportunity lands at a
+            # per-particle point strictly inside (submission, vote) — matched across arms
+            frac = particle_rng(world, f"queuepos:{sub_id}:{holder}").uniform(0.2, 0.9)
             ctx["events"].append(Event(
-                ts=ctx["now"] + delay / 2, etype="decision_opportunity", participants=[holder],
+                ts=ctx["now"] + frac * delay, etype="decision_opportunity",
+                participants=[holder],
                 payload={"situation": f"{ctx['actor_id']} submitted {op.get('matter', sub_id)!s}"
                                       f" to {inst_id}; your decision right applies",
                          "candidate_actions": ["approve", "reject", "amend", "defer"],
-                         "submission": sub_id},
+                         "submission": sub_id,
+                         "trigger": {"trigger_type": "institutional_stage_reached",
+                                     "actor_id": holder,
+                                     "why_now": "the submission reached this authority holder "
+                                                "in the institution's queue",
+                                     "provenance": "institutional_process"}},
                 visibility="institutional", source="endogenous:semantic_consequences"))
             ctx["report"]["actor_decisions_opened"] += 1
 
@@ -556,11 +628,17 @@ def _x_open_actor_decision(world, op, ctx, delta):
     if target not in world.entities:
         raise OpError(f"actor {target!r} does not exist")
     candidates = [str(c)[:40] for c in (op.get("candidate_actions") or [])][:8]
+    delay, prov = _resolve_op_timing(world, op, ctx, key="delay_s", regime="hours",
+                                     salt=f"open_dec:{ctx['action_id']}:{target}")
     ctx["events"].append(Event(
-        ts=ctx["now"] + max(1.0, float(op.get("delay_s", 3600.0) or 3600.0)),
+        ts=ctx["now"] + delay,
         etype="decision_opportunity", participants=[target],
         payload={"situation": str(op.get("situation", ""))[:400],
                  **({"candidate_actions": candidates} if candidates else {}),
+                 "timing_provenance": prov,
+                 "trigger": {"trigger_type": "direct_request", "actor_id": target,
+                             "why_now": "another actor's action opened this decision",
+                             "provenance": "action_consequence"},
                  "source_action_id": ctx["action_id"]},
         visibility="participants", source="endogenous:semantic_consequences"))
     ctx["report"]["actor_decisions_opened"] += 1
@@ -568,12 +646,15 @@ def _x_open_actor_decision(world, op, ctx, delta):
 
 def _x_open_population_response(world, op, ctx, delta):
     _need(op, "population")
+    delay, prov = _resolve_op_timing(world, op, ctx, key="delay_s", regime="days",
+                                     salt=f"pop:{ctx['action_id']}")
     ctx["events"].append(Event(
-        ts=ctx["now"] + max(1.0, float(op.get("delay_s", 86400.0) or 86400.0)),
+        ts=ctx["now"] + delay,
         etype="population_response_opened", participants=[],
         payload={"population": str(op["population"])[:80],
                  "stimulus": str(op.get("stimulus", ""))[:300],
                  "response_kind": str(op.get("response_kind", "adoption"))[:40],
+                 "timing_provenance": prov,
                  "source_action_id": ctx["action_id"]},
         visibility="public", source="endogenous:semantic_consequences"))
     ctx["report"]["population_responses_opened"] += 1
@@ -586,7 +667,9 @@ def _x_schedule_event(world, op, ctx, delta):
                "collective_vote", "external_shock", "delayed_action_effect")
     if etype not in allowed:
         raise OpError(f"etype {etype!r} not schedulable by actions (allowed: {allowed})")
-    ts = ctx["now"] + max(1.0, float(op.get("delay_s", 3600.0) or 3600.0))
+    delay, _prov = _resolve_op_timing(world, op, ctx, key="delay_s", regime="hours",
+                                      salt=f"sched:{ctx['action_id']}:{etype}")
+    ts = ctx["now"] + delay
     ctx["events"].append(Event(ts=ts, etype=etype,
                                participants=[str(p) for p in (op.get("participants") or [])][:6],
                                payload={k: v for k, v in (op.get("payload") or {}).items()
@@ -909,9 +992,13 @@ class SemanticConsequenceCompiler:
                            {"op": "record_observation", "note": content[:100]})
         elif name in ("reply_now", "reply_later", "acknowledge", "clarify", "follow_up",
                       "escalate_message", "reveal_information", "delegate") and target:
+            # §11: the actor's OWN stated timing intent compiles to a qualitative regime the
+            # runtime samples per particle — "now" is the immediate band, "later" the same-day
+            # band — never a fixed 60s/6h constant
             ops.append({"op": "deliver_information", "recipient": target, "content": content,
                         "channel": "private" if private else "message",
-                        "delivery_delay_s": 60.0 if name == "reply_now" else 6 * 3600.0})
+                        "timing_regime": ("immediate" if name in ("reply_now", "acknowledge")
+                                          else "same_day")})
         elif name in ("hire", "fire") and target:
             ops.append({"op": "update_world_object", "object_id": target}
                        if target in world.objects else
@@ -1037,14 +1124,15 @@ class CommunicationDeliveryOperator:
 
     def run(self, world, event, rng):
         from swm.world_model_v2.transitions import StateDelta, ValidationResult
+        from swm.world_model_v2.temporal_runtime import (get_stats,
+                                                         record_available_observation,
+                                                         schedule_attention,
+                                                         temporal_model_of)
         p = event.payload
         recipient = str(p.get("recipient", (event.participants or [""])[0]))
         delta = StateDelta(at=world.clock.now, event_type="message_delivered",
                            operator=self.name,
                            reason_codes=["semantic_delivery", f"from={p.get('sender', '')}"])
-        if world.information is not None and p.get("item_id") and recipient in world.entities:
-            world.information.expose(recipient, str(p["item_id"]), world.clock.now)
-            delta.change(f"information_exposure[{recipient}]", None, str(p["item_id"]))
         comm = world.objects.get(str(p.get("communication_object", "")))
         if comm is not None:
             before = comm.status
@@ -1052,14 +1140,30 @@ class CommunicationDeliveryOperator:
             comm.updated_at = world.clock.now
             delta.change(f"objects[{comm.object_id}].status", before, "delivered")
         if recipient in world.entities:
-            delta.follow_up_events = [{
-                "etype": "decision_opportunity", "ts": world.clock.now + 1800.0,
-                "participants": [recipient],
-                "payload": {"situation": f"You received this from {p.get('sender', 'someone')}"
-                                         f" via {p.get('channel', 'message')}: "
-                                         f"\"{str(p.get('content', ''))[:400]}\"",
-                            "source_action_id": p.get("source_action_id", "")},
-                "visibility": "participants"}]
+            # DELIVERED ≠ READ (§9, invariants 17/18): the message becomes AVAILABLE and waits
+            # for the recipient's REAL attention opportunity; noticing exposes it and opens the
+            # recipient's decision with a first-class trigger — never a fixed 30-minute timer.
+            stats = get_stats(world)
+            record_available_observation(
+                world, recipient=recipient,
+                item={"iid": str(p.get("item_id", "")), "content": str(p.get("content", "")),
+                      "source": str(p.get("sender", "")),
+                      "urgency": float(p.get("urgency", 0.0) or 0.0),
+                      "source_action_id": p.get("source_action_id", ""),
+                      "communication_object": p.get("communication_object")},
+                available_ts=world.clock.now, channel=str(p.get("channel", "message"))[:40],
+                stats=stats)
+            delta.change(f"information_available[{recipient}]", None, str(p.get("item_id", "")))
+            att = schedule_attention(world, temporal_model_of(world), actor_id=recipient,
+                                     channel_id=str(p.get("channel", "message"))[:40],
+                                     available_ts=world.clock.now,
+                                     urgency=float(p.get("urgency", 0.0) or 0.0),
+                                     sender=str(p.get("sender", "")), stats=stats)
+            if att is not None:
+                delta.follow_up_events = [{"etype": att.etype, "ts": att.ts,
+                                           "participants": list(att.participants),
+                                           "payload": dict(att.payload),
+                                           "parent_ids": [event.event_id]}]
         return delta, ValidationResult(ok=True)
 
 

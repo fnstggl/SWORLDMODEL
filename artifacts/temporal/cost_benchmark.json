@@ -1,0 +1,134 @@
+{
+ "generated_at": "2026-07-19T00:33:28Z",
+ "unit": "actor invocations (deterministic spy; 1 invocation \u2261 1 would-be actor LLM call). Temporal-compilation overhead in the live path: 4 LLM calls per scenario (2 compilation stages + 2 critics), content-addressed cached across particles and arms \u2014 measured in the forensic runs.",
+ "scenarios": [
+  {
+   "scenario": "quiet_long",
+   "n_actors": 5,
+   "horizon_days": 270.0,
+   "n_real_triggers": 1,
+   "old": {
+    "arm": "old_periodic",
+    "total_actor_invocations": 31,
+    "periodic_invocations": 30,
+    "real_trigger_invocations": 1,
+    "calls_by_actor": {
+     "quiet_long_actor_0": 7,
+     "quiet_long_actor_1": 6,
+     "quiet_long_actor_2": 6,
+     "quiet_long_actor_3": 6,
+     "quiet_long_actor_4": 6
+    },
+    "events_processed": 31,
+    "truncated": false,
+    "wall_s": 0.0273
+   },
+   "new": {
+    "arm": "new_event_driven",
+    "total_actor_invocations": 1,
+    "periodic_invocations": 0,
+    "real_trigger_invocations": 1,
+    "calls_by_actor": {
+     "quiet_long_actor_0": 1
+    },
+    "events_processed": 1,
+    "truncated": false,
+    "wall_s": 0.0002
+   },
+   "artificial_periodic_calls_removed": 30,
+   "invocation_delta_new_minus_old": -30,
+   "note": "quiet world: the event-driven arm spends only what reality warrants"
+  },
+  {
+   "scenario": "moderate",
+   "n_actors": 6,
+   "horizon_days": 60.0,
+   "n_real_triggers": 6,
+   "old": {
+    "arm": "old_periodic",
+    "total_actor_invocations": 42,
+    "periodic_invocations": 36,
+    "real_trigger_invocations": 6,
+    "calls_by_actor": {
+     "moderate_actor_0": 7,
+     "moderate_actor_1": 7,
+     "moderate_actor_2": 7,
+     "moderate_actor_3": 7,
+     "moderate_actor_4": 7,
+     "moderate_actor_5": 7
+    },
+    "events_processed": 42,
+    "truncated": false,
+    "wall_s": 0.0015
+   },
+   "new": {
+    "arm": "new_event_driven",
+    "total_actor_invocations": 6,
+    "periodic_invocations": 0,
+    "real_trigger_invocations": 6,
+    "calls_by_actor": {
+     "moderate_actor_0": 1,
+     "moderate_actor_1": 1,
+     "moderate_actor_2": 1,
+     "moderate_actor_3": 1,
+     "moderate_actor_4": 1,
+     "moderate_actor_5": 1
+    },
+    "events_processed": 6,
+    "truncated": false,
+    "wall_s": 0.0003
+   },
+   "artificial_periodic_calls_removed": 36,
+   "invocation_delta_new_minus_old": -36,
+   "note": "eventful world: cost follows real causal activity, not cadence"
+  },
+  {
+   "scenario": "eventful_crisis",
+   "n_actors": 8,
+   "horizon_days": 2.0,
+   "n_real_triggers": 18,
+   "old": {
+    "arm": "old_periodic",
+    "total_actor_invocations": 30,
+    "periodic_invocations": 12,
+    "real_trigger_invocations": 18,
+    "calls_by_actor": {
+     "eventful_crisis_actor_0": 5,
+     "eventful_crisis_actor_1": 5,
+     "eventful_crisis_actor_2": 4,
+     "eventful_crisis_actor_3": 4,
+     "eventful_crisis_actor_4": 4,
+     "eventful_crisis_actor_5": 4,
+     "eventful_crisis_actor_6": 2,
+     "eventful_crisis_actor_7": 2
+    },
+    "events_processed": 30,
+    "truncated": false,
+    "wall_s": 0.0013
+   },
+   "new": {
+    "arm": "new_event_driven",
+    "total_actor_invocations": 18,
+    "periodic_invocations": 0,
+    "real_trigger_invocations": 18,
+    "calls_by_actor": {
+     "eventful_crisis_actor_0": 3,
+     "eventful_crisis_actor_1": 3,
+     "eventful_crisis_actor_2": 2,
+     "eventful_crisis_actor_3": 2,
+     "eventful_crisis_actor_4": 2,
+     "eventful_crisis_actor_5": 2,
+     "eventful_crisis_actor_6": 2,
+     "eventful_crisis_actor_7": 2
+    },
+    "events_processed": 18,
+    "truncated": false,
+    "wall_s": 0.0009
+   },
+   "artificial_periodic_calls_removed": 12,
+   "invocation_delta_new_minus_old": -12,
+   "note": "eventful world: cost follows real causal activity, not cadence"
+  }
+ ],
+ "honesty": "the new system is not forced to look cheaper: it spends less in quiet worlds and may spend more in genuinely eventful ones (\u00a732)"
+}

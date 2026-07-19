@@ -22,7 +22,7 @@ from dataclasses import dataclass, field, asdict
 
 # ------------------------------------------------------------------ the three independent axes
 SIMULATION_STATUSES = ("completed", "completed_with_degradation", "clarification_required",
-                       "execution_failed")
+                       "execution_failed", "temporally_truncated")
 SUPPORT_GRADES = ("empirically_supported", "transfer_supported", "exploratory", "highly_speculative")
 RECOMMENDATION_STATUSES = ("eligible", "limited", "withheld", "not_requested")
 
@@ -91,14 +91,63 @@ class SimulationResult:
     def __post_init__(self):
         if self.simulation_status not in SIMULATION_STATUSES:
             raise ValueError(f"bad simulation_status {self.simulation_status!r}")
-        if self.simulation_status in ("completed", "completed_with_degradation"):
+        if self.simulation_status in ("completed", "completed_with_degradation",
+                                      "temporally_truncated"):
             if self.support_grade not in SUPPORT_GRADES:
                 raise ValueError(f"completed result needs a valid support_grade, got {self.support_grade!r}")
         if self.recommendation_status not in RECOMMENDATION_STATUSES:
             raise ValueError(f"bad recommendation_status {self.recommendation_status!r}")
 
     def has_forecast(self) -> bool:
-        return self.simulation_status in ("completed", "completed_with_degradation")
+        # temporally_truncated results carry a forecast — from an INCOMPLETE causal unfolding
+        # (§12): usable, but the truncation record and lowered support ride with it
+        return self.simulation_status in ("completed", "completed_with_degradation",
+                                          "temporally_truncated")
+
+    def timing_narrative(self) -> dict:
+        """The §27 human-facing timing explanation, rendered from the temporal-runtime block:
+        what happens, when it is likely (DAY-level granularity — never false minute precision),
+        why the timing looks that way, what could make it earlier or later, and whether the
+        answer changes with the timing assumptions. Empty dict when no temporal block exists."""
+        trt = (self.provenance or {}).get("temporal_runtime") or {}
+        et = (self.provenance or {}).get("event_time") or {}
+        if not trt and not et:
+            return {}
+
+        def _day(ts):
+            if not isinstance(ts, (int, float)):
+                return None
+            import time as _t
+            return _t.strftime("%Y-%m-%d", _t.gmtime(ts))
+        qtl = et.get("first_passage_quantiles_ts") or {}
+        out = {
+            "what_happens": {"distribution": self.raw_distribution,
+                             "modes": et.get("mode_distribution")},
+            "when_likely": {"median_day": _day(qtl.get("0.5")),
+                            "p10_day": _day(qtl.get("0.1")), "p90_day": _day(qtl.get("0.9")),
+                            "p_not_by_horizon": et.get("p_censored"),
+                            "precision_note": "day-level; sub-day timing is not claimed"},
+            "why_this_timing": {
+                "generated_processes": {
+                    "channels": trt.get("generated_channels"),
+                    "institutional_stages": trt.get("institutional_stage_processes"),
+                    "continuous_processes": trt.get("continuous_processes")},
+                "known_scheduled_facts": trt.get("known_scheduled_facts"),
+                "decision_triggers_observed": trt.get("n_decision_triggers")},
+            "could_be_earlier_if": ["a watched state change accelerates a hazard "
+                                    "(re-projection preserves accumulated exposure)",
+                                    "an urgent channel interrupts attention",
+                                    "a deferred condition occurs sooner"],
+            "could_be_later_if": ["attention cycles, sleep/work windows, or institutional "
+                                  "queues defer the triggering events",
+                                  "a provisional end-state collapses and the process resumes"],
+            "sensitive_to_timing_assumptions": {
+                "unresolved_mechanisms": trt.get("unresolved_timing_mechanisms"),
+                "temporal_uncertainties": trt.get("temporal_uncertainties"),
+                "support": trt.get("timing_support_classification"),
+                "truncated": trt.get("temporally_truncated", False)},
+        }
+        return out
 
     def as_dict(self) -> dict:
         d = asdict(self)

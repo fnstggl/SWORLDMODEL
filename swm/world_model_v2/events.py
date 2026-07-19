@@ -42,24 +42,54 @@ for _n, _s in (("message_delivered", "scheduled"), ("inbox_checked", "hazard"),
                ("measurement", "scheduled"), ("deadline", "scheduled"),
                ("distraction", "hazard"), ("illness", "hazard"), ("external_shock", "hazard"),
                ("follow_up", "scheduled"), ("background_tick", "scheduled"),
-               ("resolve_outcome", "scheduled")):   # terminal-outcome resolution (generic fallback + others)
+               ("resolve_outcome", "scheduled"),    # terminal-outcome resolution (generic fallback + others)
+               # ---- event-driven temporal architecture (§6/§9/§13/§15/§17) ----
+               ("ctrl_attention", "scheduled"),          # an actor's real attention opportunity
+               ("stance_relevant_change", "endogenous"), # material state change → stance review
+               ("first_passage", "scheduled"),           # cumulative-hazard threshold crossing
+               ("institutional_stage_complete", "scheduled"),
+               ("conditional_trigger", "endogenous")):   # a watched condition became true
     register_event_type(_n, scheduling=_s, validated=True)
 
 
 @dataclass(order=True)
 class Event:
     ts: float                             # exact unix timestamp — the heap key
-    seq: int = 0                          # tiebreaker
+    seq: int = 0                          # HEAP STABILITY ONLY — never semantic order: same-
+    #                                       timestamp events are popped as one batch and layered
+    #                                       by causal dependency + canonical content order
+    #                                       (temporal_runtime); insertion order must not decide
+    #                                       reality (§19)
     etype: str = field(default="", compare=False)
     participants: list = field(default_factory=list, compare=False)
     payload: dict = field(default_factory=dict, compare=False)
     visibility: str = field(default="public", compare=False)
     source: str = field(default="", compare=False)       # provenance: scheduled|hazard:<name>|endogenous:<op>
     preconditions: dict = field(default_factory=dict, compare=False)
+    # ---- causal metadata (§19): generic, optional, carried by the batch architecture ----
+    event_id: str = field(default="", compare=False)
+    parent_ids: list = field(default_factory=list, compare=False)     # causal parents
+    dependency_ids: list = field(default_factory=list, compare=False) # must-run-before deps
+    microstep: int = field(default=0, compare=False)      # same-timestamp causal layer
+    read_set: tuple = field(default=(), compare=False)    # declared state paths read
+    write_set: tuple = field(default=(), compare=False)   # declared state paths written
+    trigger: dict = field(default_factory=dict, compare=False)  # DecisionTrigger.as_dict() for
+    #                                                             decision events (§6)
 
     def __post_init__(self):
         if self.etype and self.etype not in _EVENT_TYPES:
             raise KeyError(f"unregistered event type {self.etype!r} — register_event_type() first")
+        if not self.event_id:
+            import hashlib as _h
+            key = f"{self.ts}|{self.etype}|{sorted(map(str, self.participants))}|" \
+                  f"{sorted((str(k), str(v)[:80]) for k, v in (self.payload or {}).items())}"
+            self.event_id = "ev_" + _h.sha256(key.encode()).hexdigest()[:14]
+
+    def content_key(self) -> str:
+        """Deterministic content-derived ordering key — identical regardless of queue insertion
+        order, so independent same-timestamp events evaluate in an insertion-order-invariant
+        canonical order (§19, invariant 32)."""
+        return f"{self.event_id}|{self.etype}"
 
 
 @dataclass
@@ -121,6 +151,33 @@ class EventQueue:
                                             payload=dict(hz.payload), source=ev.source))
             return ev
         return None
+
+    def pop_batch(self, *, rng=None, world=None):
+        """Pop ALL events sharing the earliest timestamp <= horizon (§19). Returns a list (empty
+        at exhaustion). Hazard re-arming matches next_event. The batch is the same-time unit the
+        temporal runtime layers into causal microsteps — the heap's insertion order inside the
+        batch carries NO semantics."""
+        first = self.next_event(rng=rng, world=world)
+        if first is None:
+            return []
+        batch = [first]
+        while self.events and self.events[0].ts == first.ts \
+                and self.events[0].ts <= self.horizon_ts:
+            nxt = self.next_event(rng=rng, world=world)
+            if nxt is None:
+                break
+            batch.append(nxt)
+        return batch
+
+    def peek_pending(self, limit: int = 50) -> list:
+        """Non-destructive view of pending in-horizon events (truncation/horizon reporting)."""
+        out = []
+        for ev in sorted(self.events)[:limit]:
+            if ev.ts <= self.horizon_ts:
+                out.append({"ts": ev.ts, "etype": ev.etype,
+                            "participants": list(ev.participants)[:4],
+                            "event_id": ev.event_id})
+        return out
 
     def empty(self) -> bool:
         return not self.events or all(e.ts > self.horizon_ts for e in self.events)

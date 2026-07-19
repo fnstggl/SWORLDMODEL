@@ -214,9 +214,11 @@ def build_context(schema, actors, *, script=None, maker_resources=None, n_partic
                                                     ScheduledAttemptOperator)
     rep = report if report is not None else generated_report()
     runtime = ScriptedActorRuntime(script)
+    from swm.world_model_v2.generated_world import GeneratedAttentionOperator
     operators = [ScenarioPlanOperator(report=rep),
                  GeneratedSemanticEventOperator(report=rep),
                  GeneratedObservationDeliveryOperator(report=rep),
+                 GeneratedAttentionOperator(report=rep),
                  ScriptedInvocationOperator(runtime, report=rep),
                  MechanismRuntimeOperator(report=rep),
                  ScheduledAttemptOperator(report=rep)]

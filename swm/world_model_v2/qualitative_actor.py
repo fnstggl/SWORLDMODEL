@@ -466,6 +466,9 @@ decision-relevant summaries — no hidden chain-of-thought, and NO numbers, scor
  "decision": {{"act_or_wait": "<act|wait|gather_information|delegate|do_nothing>",
    "chosen_action": "<a menu action name, or a short snake_case name for your own action>",
    "target": "<id or ''>", "timing": "<immediate|soon|delayed|conditional>",
+   "revisit": {{"when": "<tomorrow_morning|end_of_day|this_evening|next_business_day|'' if not time-based>",
+     "condition": {{"etype": "<the event type you are waiting for, or ''>",
+                    "participant": "<who it must involve, or ''>"}}}},
    "observability": "<public|private|mixed>", "intended_effect": "...",
    "linked_actions": ["<optional further parts>"]}},
  "decision_summary": "...",
@@ -492,6 +495,8 @@ class QualitativeDecision:
     act_or_wait: str = "act"
     target: str = ""
     timing: str = "immediate"
+    revisit: dict = field(default_factory=dict)           # §11: {"when": calendar_expr | "",
+    #                                                       "condition": {etype, participant}}
     observability: str = "public"
     intended_effect: str = ""
     linked_actions: list = field(default_factory=list)
@@ -562,6 +567,7 @@ def parse_qualitative_decision(raw_text: str, actor_id: str) -> QualitativeDecis
                                    "do_nothing") else "act",
         target=str(decision.get("target", "") or "")[:60],
         timing=str(decision.get("timing", "immediate") or "immediate")[:24],
+        revisit=(decision.get("revisit") if isinstance(decision.get("revisit"), dict) else {}),
         observability=str(decision.get("observability", "public") or "public")[:12],
         intended_effect=str(decision.get("intended_effect", ""))[:400],
         linked_actions=[str(x)[:80] for x in decision.get("linked_actions") or []][:4],
@@ -673,7 +679,12 @@ class QualitativeConfig:
     llm_hypotheses: bool = True              # False ⇒ deterministic labeled fallback set (tests)
     n_hypotheses: int = 3
     persistent: bool = True                  # False = stateless_llm_policy (arm C)
-    max_llm_calls: int = 240                 # per-run budget across all branches/actors/decisions
+    #: per-run SAFETY budget across all branches/actors/decisions (§12/§26): a service-
+    #: protection limit, NOT a model of reality — production operators gate BEFORE invoking an
+    #: actor and record a TEMPORAL TRUNCATION when it is exhausted (never a numeric decision
+    #: invented for the actor). Overridable per run via SWM_ACTOR_LLM_BUDGET.
+    max_llm_calls: int = field(default_factory=lambda: int(
+        __import__("os").environ.get("SWM_ACTOR_LLM_BUDGET", "240") or 240))
     retries: int = 1
     revision_rounds: int = 1                 # perceived-infeasible choice → one revision chance
     prompt_events: int = 10
@@ -1043,6 +1054,7 @@ class QualitativeActorPolicyRuntime(ActorPolicyRuntime):
                     "revised_after_obstacle": revised,
                     "novel_action_unmodeled": unmodeled,
                     "act_or_wait": qd.act_or_wait,
+                    "timing": qd.timing, "revisit": dict(qd.revisit or {}),
                     "linked_actions": qd.linked_actions,
                     "known_entities": sorted(
                         set(view.network_position.get("reachable_actor_ids") or [])

@@ -283,13 +283,35 @@ class DecisionActionOperator(TransitionOperator):
 
         # ---- the actor-response bridge (LEGACY/BASELINE ONLY): in generated mode the affected
         #      actor is invoked by the control plane AFTER an actual observation, never by a
-        #      hardcoded operation→message_delivered mapping ---------------------------------------
+        #      hardcoded operation→message_delivered mapping. When the legacy bridge does fire,
+        #      the follow-up's TIME is the action's channel-resolved delivery/availability —
+        #      never a universal +1s: a message travels its channel; a publication publishes;
+        #      a submission enters the institution's queue (§2/§10). Downstream ATTENTION is
+        #      separate (message_delivered → availability → the recipient's notice).
         fu_type = None if generated else _FOLLOW_UP_ETYPE.get(a.operation)
         if fu_type and event_type_registered(fu_type):
+            from swm.world_model_v2.temporal_runtime import (channel_delivery_ts, get_stats,
+                                                             temporal_model_of)
+            tmodel = temporal_model_of(world)
+            chan = str((a.content or {}).get("channel", "")
+                       or ("public_broadcast" if fu_type == "information_published"
+                           else "direct"))[:40]
+            recipients = list(a.recipients or [])
+            fu_ts, prov = channel_delivery_ts(
+                world, tmodel, channel_id=chan, sent_ts=world.clock.now,
+                urgency=max(0.0, min(1.0, float((a.content or {}).get("urgency", 0.0) or 0.0))),
+                recipient=(recipients[0] if recipients else ""),
+                salt=f"p13:{a.action_id}", stats=get_stats(world))
+            if fu_type == "decision_opportunity":
+                # a submission's decision opportunity reaches the holder through the
+                # institution's own queue — the delivery resolver above covers transmission;
+                # institutional stage timing applies downstream (§17)
+                prov += "+institutional_queue"
             d.follow_up_events.append({
-                "etype": fu_type, "ts": world.clock.now + 1.0,
-                "participants": [a.actor] + list(a.recipients or []),
+                "etype": fu_type, "ts": max(float(fu_ts), world.clock.now),
+                "participants": [a.actor] + recipients,
                 "payload": {"from_decision_action": a.action_id, "operation": a.operation,
+                            "timing_provenance": prov,
                             "content": {k: v for k, v in (a.content or {}).items()
                                         if isinstance(v, (int, float, str, bool))}}})
         # record the actor's own ATTEMPT on their entity (past_actions is canonical schema) —

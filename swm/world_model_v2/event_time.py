@@ -614,8 +614,251 @@ register_operator("absorption_monitor", AbsorptionMonitorOperator(), requires=("
                   validated=True)
 register_operator("hazard_round", HazardRoundOperator(), requires=("quantities",),
                   modifies=("quantities",), temporal_scale="scheduled",
-                  parameter_source="fitted family hazard curve × sampled stance hazard ratio × consumed "
-                                   "causal state (bounded, inside the mechanism)", validated=True)
+                  parameter_source="dated outcome-entailing facts (success_prob at their real "
+                                   "dates); legacy grid parameterizations survive only in "
+                                   "explicit ablations", validated=True)
+
+
+# ---------------------------------------------------------------- 3b. continuous-time first passage
+# (§15–§16): the production replacement for evenly spaced hazard-round grids. Each mode (or the
+# binary residual) is ONE process: per-branch persistent Exp(1) threshold (particle-rooted →
+# matched across counterfactual arms), piecewise cumulative intensity from the fitted family
+# curve, live modulation = sampled stance hazard ratio × consumed causal state. State changes
+# preserve accumulated hazard + threshold and only re-project the crossing.
+
+def _fp_sampled_hr(world, spec) -> float:
+    """The branch's persistent sampled stance hazard ratio for a mode process — re-derived from
+    LIVE stances when the stance state has changed (salt = live stance hash), endogenous-split
+    when the behavioral channel is live. Particle-rooted stream: matched arms share the draw."""
+    from swm.world_model_v2.temporal_model import particle_rng
+    from swm.world_model_v2.quantities import Quantity, register_quantity_type
+    hr = dict(spec.get("hr") or {})
+    if not hr or hr.get("median") is None:
+        return 1.0
+    salt = ""
+    if isinstance(spec.get("mode_def"), dict):
+        from swm.world_model_v2.world_dynamics import live_capacity, live_stances, stance_state_hash
+        stances = live_stances(world)
+        h_now = stance_state_hash(stances)
+        if stances and h_now != str(spec.get("stances_hash", "")):
+            live = combine_stances(stances, str(spec.get("pathway", "")),
+                                   mode=spec["mode_def"], hr_table=_hr_table(),
+                                   live_capacity=live_capacity(world))
+            if live.get("median") is not None:
+                hr = {k: live[k] for k in ("median", "lo80", "hi80")}
+                salt = h_now
+    if spec.get("endogenous_live"):
+        from swm.world_model_v2.world_dynamics import sampled_coupling
+        s = sampled_coupling(world, "endogenous_stance_split")
+        hr = {k: math.exp(s * math.log(max(1e-6, float(hr.get(k, 1.0)))))
+              for k in ("median", "lo80", "hi80")}
+    qname = f"sampled_intention_hr:{spec.get('mode')}" + (f":{salt}" if salt else "")
+    q = world.quantities.get(qname)
+    if q is not None and isinstance(getattr(q, "value", None), (int, float)):
+        return float(q.value)
+    med = max(1e-6, float(hr.get("median", 1.0)))
+    lo, hi = float(hr.get("lo80", med)), float(hr.get("hi80", med))
+    sigma = (math.log(max(hi, 1e-6)) - math.log(max(lo, 1e-6))) / (2 * _Z80) if hi > lo else 0.0
+    rng = particle_rng(world, f"fp_hr:{spec.get('mode')}:{salt}")
+    val = med * math.exp(sigma * rng.gauss(0.0, 1.0)) if sigma > 0 else med
+    val = max(0.05, min(3.0, val))
+    register_quantity_type("sampled_intention_hr", units="hazard_ratio")
+    world.quantities[qname] = Quantity(name=qname, qtype="sampled_intention_hr", value=val,
+                                       timestamp=world.clock.now)
+    return val
+
+
+def _fp_consume_factor(world, spec) -> float:
+    """Bounded multiplicative state modulation — same relative semantics as
+    HazardRoundOperator._consume_state_hazard (×2 per full weight at an extreme state,
+    clamped [0.25, 4])."""
+    logf, used = 0.0, 0
+    for m in (spec.get("consume") or []):
+        var, w = str(m.get("var", "")), float(m.get("weight", 0.0) or 0.0)
+        if m.get("coupling"):
+            from swm.world_model_v2.world_dynamics import sampled_coupling
+            w = sampled_coupling(world, str(m["coupling"]))
+        q = world.quantities.get(var)
+        v = getattr(q, "value", None)
+        if w <= 0.0 or not isinstance(v, (int, float)):
+            continue
+        v = max(0.0, min(1.0, float(v)))
+        if m.get("invert"):
+            v = 1.0 - v
+        logf += w * (v - 0.5) * 2.0 * math.log(2.0)
+        used += 1
+    return max(0.25, min(4.0, math.exp(logf))) if used else 1.0
+
+
+def _fp_modulation(world, st) -> float:
+    spec = st.payload.get("spec") or {}
+    if spec.get("kind") == "calibrated_resolution":
+        base = max(0.0, min(2.0, float(spec.get("intention_factor", 1.0) or 1.0)))
+        return base * _fp_consume_factor(world, spec)
+    return _fp_sampled_hr(world, spec) * _fp_consume_factor(world, spec)
+
+
+def _fp_target_mass(world, cal: dict) -> tuple:
+    """Per-particle calibrated target absorbed-mass — the same posterior→fallback→lean ladder
+    as the legacy calibrated chains, drawn from the PARTICLE stream so matched arms share the
+    target (§23)."""
+    from swm.world_model_v2.fallback import LEAN_BETA, _apply_lean_shift, _beta_sample
+    from swm.world_model_v2.phase_consumers import _draw_rate
+    from swm.world_model_v2.temporal_model import particle_rng
+    rng = particle_rng(world, "event_time_target")
+    parts = cal.get("posterior_rate_particles")
+    if parts:
+        r, src = _draw_rate(parts, rng), "posterior"
+    elif isinstance(cal.get("fallback_rate"), (int, float)):
+        r, src = float(cal["fallback_rate"]), str(cal.get("fallback_provenance")
+                                                  or "fitted_family_prior")
+    else:
+        av, bv = LEAN_BETA.get(str(cal.get("lean", "neutral")), (1.0, 1.0))
+        r, src = _beta_sample(rng, av, bv), "prior_beta"
+    lean_h = (getattr(world, "uncertainty_meta", None) or {}).get("hypothesis_lean")
+    if lean_h:
+        r = _apply_lean_shift(max(0.0, min(1.0, r)), str(lean_h))
+    r = max(0.0, min(1.0, r))
+    t = r if str(cal.get("absorb_from", "rate")) == "rate" else 1.0 - r
+    c = max(0.0, min(0.999, float(cal.get("fact_floor", 0.0) or 0.0)))
+    if c > 0.0:
+        t = max(0.0, (t - c) / (1.0 - c))
+    return max(0.0, min(0.98, t)), src
+
+
+def ensure_first_passage_state(world, spec: dict):
+    """Get-or-create the branch's CumulativeHazardState for one plan-level process spec, with
+    per-particle base rates (mode share × family curve; or the calibrated target's cumulative
+    intensity) and live initial modulation."""
+    from swm.world_model_v2.temporal_hazards import (ensure_hazard_state,
+                                                     rates_from_target_mass)
+    pid = str(spec.get("process_id"))
+    store = getattr(world, "temporal_hazards", None) or {}
+    if pid in store:
+        return store[pid]
+    as_of = float(spec.get("as_of", world.clock.now))
+    span_s = max(1.0, float(spec.get("span_s", 1.0)))
+    curve = spec.get("curve")
+    if spec.get("kind") == "calibrated_resolution":
+        target, src = _fp_target_mass(world, spec.get("calibration") or {})
+        base_rates = rates_from_target_mass(target, span_s=span_s, curve=curve)
+        extra = {"target_mass": round(target, 4), "rate_source": src}
+    else:
+        share = max(0.0, min(1.0, float(spec.get("share", 1.0) or 1.0)))
+        bucket_days = (span_s / _BUCKETS) / 86400.0
+        if curve:
+            base_rates = [share * (-math.log(1.0 - max(0.0, min(0.999999, float(h)))))
+                          / max(1e-9, bucket_days) for h in curve]
+        else:
+            lam_total = 0.5 * share                       # legacy no-curve prior mass, exact
+            base_rates = [lam_total / _BUCKETS / max(1e-9, bucket_days)] * _BUCKETS
+        extra = {"share": share}
+    st = ensure_hazard_state(world, pid, as_of=as_of, horizon_ts=as_of + span_s,
+                             base_rates=base_rates, reads=spec.get("reads") or (),
+                             payload={"etype": "first_passage", "spec": dict(spec),
+                                      "mode": spec.get("mode"), **extra,
+                                      "modulation_hook": "event_time_mode"})
+    st.modulation = _fp_modulation(world, st)
+    return st
+
+
+class FirstPassageOperator(TransitionOperator):
+    """Executes a first-passage crossing: the process's cumulative hazard reached its branch
+    threshold at THIS real timestamp. Persistence-window criteria write a PROVISIONAL
+    absorption + schedule the persistence check; otherwise the absorbing state is written
+    directly. On a later persistence COLLAPSE the process RESUMES with a fresh threshold
+    segment (memoryless continuation — accumulated exposure preserved, invariant 26)."""
+    name = "first_passage"
+
+    def applicable(self, world, event):
+        q = world.quantities.get("absorbed_at")
+        flag = world.quantities.get("absorbing_state_reached")
+        prov = world.quantities.get("provisional_absorbing_mode")
+        return event.etype == "first_passage" and getattr(q, "value", None) in (None, 0) \
+            and not getattr(flag, "value", None) and not getattr(prov, "value", None)
+
+    def validate(self, world, proposal):
+        return ValidationResult(ok=True)
+
+    def propose(self, world, event, rng):
+        return TransitionProposal(operator=self.name, action=dict(event.payload),
+                                  reason_codes=[f"mode={event.payload.get('mode', '?')}"])
+
+    def apply(self, world, proposal):
+        from swm.world_model_v2.quantities import Quantity, register_quantity_type
+        a = proposal.action
+        pid = str(a.get("hazard_process_id", ""))
+        st = (getattr(world, "temporal_hazards", None) or {}).get(pid)
+        spec = (st.payload.get("spec") if st is not None else None) or a.get("spec") or {}
+        if st is not None:
+            st.accumulate_to(world.clock.now)
+            st.fired = True
+        d = StateDelta(at=world.clock.now, event_type="first_passage", operator=self.name,
+                       reason_codes=[f"mode={spec.get('mode', a.get('mode', '?'))}",
+                                     "threshold_crossed"],
+                       uncertainty={"process_id": pid,
+                                    "accumulated_hazard": (round(st.accumulated, 4)
+                                                           if st is not None else None),
+                                    "threshold": (round(st.threshold, 4)
+                                                  if st is not None else None),
+                                    "n_reprojections": (st.n_reprojections
+                                                        if st is not None else None)})
+        persistence_s = float(spec.get("persistence_s", 0.0) or 0.0)
+        mode = str(spec.get("mode", a.get("mode", "unspecified")))
+        if persistence_s > 0.0:
+            register_quantity_type("provisional_absorbing_mode", units="mode")
+            world.quantities["provisional_absorbing_mode"] = Quantity(
+                name="provisional_absorbing_mode", qtype="provisional_absorbing_mode",
+                value=mode, timestamp=world.clock.now)
+            d.change("quantities[provisional_absorbing_mode]", None, mode)
+            d.reason_codes.append("provisional_pending_persistence")
+            d.follow_up_events.append({
+                "etype": "persistence_check", "ts": world.clock.now + persistence_s,
+                "participants": [],
+                "payload": {"mode": mode, "pathway": str(spec.get("pathway", "")),
+                            "first_passage_process_id": pid}})
+        else:
+            register_quantity_type("absorbing_state_reached", units="bool")
+            register_quantity_type("absorbing_mode", units="mode")
+            world.quantities["absorbing_state_reached"] = Quantity(
+                name="absorbing_state_reached", qtype="absorbing_state_reached", value=True,
+                timestamp=world.clock.now)
+            world.quantities["absorbing_mode"] = Quantity(
+                name="absorbing_mode", qtype="absorbing_mode", value=mode,
+                timestamp=world.clock.now)
+            d.change("quantities[absorbing_state_reached]", None, True)
+        return d
+
+
+def resume_first_passage_after_collapse(world, process_id: str) -> tuple:
+    """A provisional end-state COLLAPSED: the mode's process resumes with a fresh threshold
+    segment above the exposure already accumulated (memoryless continuation; particle-rooted
+    draw, deterministic per collapse count). Returns (state, next_crossing_ts | None)."""
+    from swm.world_model_v2.temporal_model import particle_rng
+    st = (getattr(world, "temporal_hazards", None) or {}).get(str(process_id))
+    if st is None:
+        return None, None
+    st.accumulate_to(world.clock.now)
+    n_collapses = int(st.payload.get("n_collapses", 0)) + 1
+    st.payload["n_collapses"] = n_collapses
+    rng = particle_rng(world, f"fp_resume:{process_id}:{n_collapses}")
+    st.threshold = st.accumulated + rng.expovariate(1.0)
+    st.fired = False
+    st.generation += 1
+    st.modulation = _fp_modulation(world, st)
+    return st, st.project_crossing()
+
+
+register_operator("first_passage", FirstPassageOperator(), requires=("quantities",),
+                  modifies=("quantities",), temporal_scale="event",
+                  parameter_source="continuous-time cumulative-hazard first passage: per-branch "
+                                   "Exp(1) threshold (particle-matched), fitted family curve "
+                                   "intensity × sampled stance hazard ratio × consumed causal "
+                                   "state; state changes preserve accumulated hazard",
+                  validated=True)
+
+from swm.world_model_v2.temporal_hazards import register_modulation_hook  # noqa: E402
+register_modulation_hook("event_time_mode", _fp_modulation)
 
 from swm.world_model_v2.events import event_type_registered, register_event_type  # noqa: E402
 for _et in ("hazard_round", "absorption"):
@@ -716,15 +959,19 @@ def _filter_absorbing_modes(modes: list, criterion: dict, llm) -> tuple:
 
 
 def _ensure_event_time_mechanisms(plan, curve_src: str):
-    """Accept the timing machinery on the plan. ORDER MATTERS: absorbing writers (hazard_round) must come
-    BEFORE the absorption monitor in the operator list so the monitor observes a same-event write and
-    stamps first passage at the write's own clock time, not one event late."""
-    for mech_id, op in (("hazard_rounds", "hazard_round"), ("absorption_monitor", "absorption_monitor")):
+    """Accept the timing machinery on the plan. ORDER MATTERS: absorbing writers (first_passage
+    crossings; dated-fact hazard_round events) must come BEFORE the absorption monitor in the
+    operator list so the monitor observes a same-event write and stamps first passage at the
+    write's own clock time, not one event late."""
+    for mech_id, op in (("first_passage_processes", "first_passage"),
+                        ("hazard_rounds", "hazard_round"),
+                        ("absorption_monitor", "absorption_monitor")):
         if not any(x.get("operator") == op for x in plan.accepted_mechanisms if isinstance(x, dict)):
             plan.accepted_mechanisms.append({
                 "mech_id": mech_id, "ontology_type": "event_time", "operator": op,
-                "causal_role": "first-passage timing machinery",
-                "parameter_source": curve_src if op == "hazard_round" else "observation",
+                "causal_role": ("continuous-time first-passage scheduling"
+                                if op == "first_passage" else "first-passage timing machinery"),
+                "parameter_source": curve_src if op != "absorption_monitor" else "observation",
                 "temporal_scale": "event", "calibration_status": curve_src, "sensitivity": 1.0})
 
 
@@ -887,14 +1134,12 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=No
         return mode_hazard_ratio(stances, pathway, mode=mode)
     agr_hr = _pathway_hr("cooperative_agreement")             # reported for auditability
     span = plan.horizon_ts - plan.as_of
-    horizon_days = max(1.0, span / 86400.0)
-    # timing resolution scales with the horizon (a 2.5-year question deserves finer absorption
-    # dates than 10 per mode); mass conservation is bucket-based so any n_rounds preserves it
-    n_rounds = max(6, min(40, int(horizon_days / 21.0)))
     base_consumed = list(getattr(plan, "_consumed_state", []) or [])
     n_ev = 0
     mode_hr = {}
-    for m in modes[:6]:
+    if not hasattr(plan, "first_passage_processes") or plan.first_passage_processes is None:
+        plan.first_passage_processes = []
+    for m in modes:                     # ALL canonical modes — no fixed mode cap (§7 analogue)
         share = m["prior"] / z
         # each mode consumes the stance hazard ratio of ITS OWN causal pathway under ITS decision
         # structure, and the endogenous state channels of its pathway processes
@@ -924,35 +1169,30 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=No
         mode_def = {"id": m["id"], "pathway": pathway}
         if isinstance(m.get("decision_structure"), dict):
             mode_def["decision_structure"] = m["decision_structure"]
-        for k in range(1, n_rounds + 1):
-            ts = plan.as_of + (k / (n_rounds + 1)) * span
-            # per-round per-mode hazard: bucket hazard spread over the bucket's rounds (n_rounds/_BUCKETS)
-            # weighted by the mode's structural share — summed over modes+rounds it reproduces the fitted
-            # family curve exactly (no len(modes) inflation)
-            plan.scheduled_events.append({
-                "etype": "hazard_round", "ts": ts, "participants": [],
-                "payload": {"mode": m["id"], "base_hazard": 0.5 * share / n_rounds,
-                            "hazard_bucket_curve": ([h * share * _BUCKETS / n_rounds for h in curve]
-                                                    if curve else None),
-                            "hr": {k2: hr_m.get(k2) for k2 in ("median", "lo80", "hi80")},
-                            "endogenous_live": endo_split_applied,
-                            "mode_def": mode_def, "stances_hash": baked_hash,
-                            "persistence_s": persistence_s,
-                            "requires_agreement": agreement, "pathway": pathway,
-                            "as_of": plan.as_of, "span_s": span,
-                            "consume": consume_m}})
-            n_ev += 1
-    # STANCE DYNAMICS: review rounds at the same cadence — the world-dynamics operator may move
-    # each actor's stances one level per review (ripeness/winning/exhaustion/bandwagon), so the
-    # behavior AND the hazard ratios evolve mid-trajectory
+        # CONTINUOUS-TIME FIRST PASSAGE (§15): one process per mode — per-branch Exp(1)
+        # threshold (particle-rooted: matched across counterfactual arms), cumulative intensity
+        # from the fitted family curve × the mode's structural share, live modulation from the
+        # sampled stance hazard ratio and consumed causal state. State changes preserve the
+        # accumulated hazard and the threshold and only re-project the crossing (§16). No
+        # evenly spaced grid; no visible integration rounds.
+        reads = sorted({str(c.get("var")) for c in consume_m if isinstance(c, dict)
+                        and c.get("var")})
+        if stances:
+            reads.append("stances")                       # stance rewrites re-derive the HR
+        plan.first_passage_processes.append({
+            "process_id": f"mode:{m['id']}", "kind": "mode_transition",
+            "mode": m["id"], "pathway": pathway, "mode_def": mode_def, "share": share,
+            "curve": list(curve) if curve else None,
+            "hr": {k2: hr_m.get(k2) for k2 in ("median", "lo80", "hi80")},
+            "endogenous_live": endo_split_applied, "stances_hash": baked_hash,
+            "persistence_s": persistence_s, "requires_agreement": agreement,
+            "as_of": plan.as_of, "span_s": span, "consume": consume_m, "reads": reads})
+        n_ev += 1
+    # STANCE DYNAMICS are EVENT-DRIVEN (§13): the temporal runtime emits
+    # stance_relevant_change when a batch's writes cross a stance-rule threshold or move a
+    # watched process var materially — no review grid, no review-count cooldowns. The
+    # stance_dynamics mechanism below makes the operator live for those events.
     n_reviews = 0
-    if stances:
-        for k in range(1, n_rounds + 1):
-            plan.scheduled_events.append({
-                "etype": "stance_review",
-                "ts": plan.as_of + (k / (n_rounds + 1)) * span - 1.0,   # just before the hazard round
-                "participants": [], "payload": {"round": k}})
-            n_reviews += 1
     # a scheduled institutional decision becomes an ABSORBING WRITER for the institutional-pathway
     # mode (pass ⇒ absorbed at the vote's real date; fail ⇒ the world stays unabsorbed): the declared
     # procedure executes INSIDE the trajectory instead of writing a dead outcome variable no
@@ -1016,7 +1256,8 @@ def convert_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=No
     rep = {"modes": [m["id"] for m in modes], "rejected_non_absorbing_modes": rejected_modes,
            "mode_consensus": consensus or None,
            "n_particles": n_particles,
-           "n_hazard_rounds": n_ev, "rounds_per_mode": n_rounds,
+           "n_first_passage_processes": n_ev, "scheduling": "continuous_first_passage",
+           "stance_updating": ("event_driven_material_change" if stances else None),
            "n_stance_reviews": n_reviews,
            "persistence_window_days": round(persistence_s / 86400.0, 1) if persistence_s else 0,
            "contested_mode_channels": contested_rep,
@@ -1077,8 +1318,8 @@ def _mass_weights_from_curve(curve) -> list:
     return [m / z for m in mass]
 
 
-def convert_binary_to_event_time(plan, criterion: dict, *, lineage: dict = None, llm=None,
-                                 cadence_days: float = None) -> dict:
+def convert_binary_to_event_time(plan, criterion: dict, *, lineage: dict = None,
+                                 llm=None) -> dict:
     """Rewire a binary deadline question so the answer is DERIVED from the simulation instead of declared
     by a terminal resolver. Universal — built only from the plan's own structure:
 
@@ -1171,20 +1412,12 @@ def convert_binary_to_event_time(plan, criterion: dict, *, lineage: dict = None,
     if polarity == "occurrence_resolves_no":
         consumed = [{**m, "invert": True} for m in consumed]
 
-    # ---- residual chain geometry: rounds at the trajectory cadence, exponents shaped by the family curve
+    # ---- residual process: ONE continuous-time first-passage process whose per-particle
+    #      cumulative intensity is −ln(1−target) shaped by the fitted family curve (§15) —
+    #      exact mass conservation with no evenly spaced grid and no cadence parameter
     curve, fam, curve_src = family_hazard_curve(question)
     from swm.world_model_v2.family_hazards import family_base_rate
     fbr, _fam2, fbr_src = family_base_rate(question)
-    horizon_days = max(1.0, span / 86400.0)
-    cad = max(0.5, float(cadence_days)) if cadence_days else max(1.0, horizon_days / 10.0)
-    n_rounds = max(4, min(20, int(round(horizon_days / cad))))
-    weights = _mass_weights_from_curve(curve)
-    round_ts = [plan.as_of + (k / (n_rounds + 1)) * span for k in range(1, n_rounds + 1)]
-    buckets = [min(int(((t - plan.as_of) / max(1.0, span)) * _BUCKETS), _BUCKETS - 1) for t in round_ts]
-    per_bucket = {b: buckets.count(b) for b in set(buckets)}
-    exponents = [weights[b] / per_bucket[b] for b in buckets]
-    z = sum(exponents) or 1.0
-    exponents = [x / z for x in exponents]                     # Σ = 1 ⇒ chain mass = target exactly
 
     calibration_base = {"absorb_from": ("rate" if absorb_dir == "yes" else "one_minus_rate"),
                         "fact_floor": fact_floor, "lean": lean,
@@ -1212,13 +1445,16 @@ def convert_binary_to_event_time(plan, criterion: dict, *, lineage: dict = None,
         pl["absorbing_mode"] = f"institutional:{str(pl.get('institution_id', ''))[:28]}"
     n_resid = 0
     if not inst_in_window:
-        for ts, exp in zip(round_ts, exponents):
-            plan.scheduled_events.append({
-                "etype": "hazard_round", "ts": ts, "participants": [],
-                "payload": {"mode": "resolution", "intention_factor": 1.0,
-                            "as_of": plan.as_of, "span_s": span, "consume": consumed,
-                            "calibration": {**calibration_base, "exponent": exp}}})
-            n_resid += 1
+        if not hasattr(plan, "first_passage_processes") or plan.first_passage_processes is None:
+            plan.first_passage_processes = []
+        reads = sorted({str(c.get("var")) for c in consumed if isinstance(c, dict)
+                        and c.get("var")})
+        plan.first_passage_processes.append({
+            "process_id": "resolution", "kind": "calibrated_resolution", "mode": "resolution",
+            "curve": list(curve) if curve else None, "calibration": dict(calibration_base),
+            "deadline_ts": deadline_ts, "as_of": plan.as_of, "span_s": span,
+            "consume": consumed, "reads": reads})
+        n_resid = 1
     removed = [e for e in plan.scheduled_events
                if e.get("etype") in ("resolve_outcome", "aggregate_outcome_resolution")]
     plan.scheduled_events = [e for e in plan.scheduled_events
@@ -1244,7 +1480,7 @@ def convert_binary_to_event_time(plan, criterion: dict, *, lineage: dict = None,
            "n_opposite_direction_facts": len(opposite_facts),
            "absorbing_institutions": [str((e.get("payload") or {}).get("institution_id", ""))
                                       for e in inst_events],
-           "n_residual_rounds": n_resid,
+           "n_residual_processes": n_resid, "scheduling": "continuous_first_passage",
            "residual_skipped_reason": ("institutional decision is the resolution path"
                                        if inst_in_window else None),
            "consumed_state": consumed, "endogenous_channels": endo_channels,

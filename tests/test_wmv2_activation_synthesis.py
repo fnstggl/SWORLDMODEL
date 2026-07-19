@@ -259,12 +259,26 @@ def test_family_hazard_pack_replaces_broad_prior_when_fit():
         assert rate is not None and "fitted" in src or src == "global_pooled"
 
 
-def test_trajectory_depth_scales_with_situation():
-    from swm.world_model_v2.fidelity import deepen_trajectory
+def test_periodic_scheduler_is_quarantined_not_production():
+    """The old deepen_trajectory (evenly spaced 'periodic strategic review' for actors[:6])
+    is QUARANTINED: gone from fidelity, unreachable without the explicit ablation token, and
+    never referenced by the production runtime (§5)."""
+    import inspect
+    import pytest
+    from swm.world_model_v2 import fidelity as F
+    assert not hasattr(F, "deepen_trajectory")
+    from swm.world_model_v2 import legacy_ablations as LA
     p = _plan(processes=["strategic_decision_negotiation"],
               entities=[{"id": f"a{i}", "type": "person", "fields": {}, "sensitivity": 0.8}
                         for i in range(3)])
-    rep = deepen_trajectory(p, {"phase4_actor_policy": {"required": True}}, cadence_days=3.0)
-    assert rep["decision_events_added"] >= 6                      # actors x points, never one decision
-    rep2 = deepen_trajectory(_plan(processes=[]), {"phase4_actor_policy": {"required": False}})
-    assert rep2["decision_events_added"] == 0                     # no strategic phase -> no decisions
+    with pytest.raises(PermissionError):
+        LA.legacy_periodic_review_ablation(p, {"phase4_actor_policy": {"required": True}})
+    assert not any(e.get("etype") == "decision_opportunity" for e in p.scheduled_events)
+    # explicit old-vs-new benchmarks may still run it, loudly labeled
+    rep = LA.legacy_periodic_review_ablation(p, {"phase4_actor_policy": {"required": True}},
+                                             cadence_days=3.0, acknowledge=LA.ABLATION_TOKEN)
+    assert rep["legacy_ablation"] is True and rep["decision_events_added"] >= 6
+    # the production runtime never mentions the quarantined scheduler
+    from swm.world_model_v2 import unified_runtime as U
+    src = inspect.getsource(U)
+    assert "deepen_trajectory" not in src and "legacy_periodic_review_ablation" not in src

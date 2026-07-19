@@ -1,0 +1,566 @@
+{
+ "case_id": "crisis_simultaneous",
+ "input": {
+  "question": "Will the ferry operator restore service on the main route within 48 hours of the dockside power failure?",
+  "as_of": "2026-07-06T06:00:00Z",
+  "horizon": "2026-07-08T06:00:00Z",
+  "intervention": null,
+  "user_context": {
+   "note": "power failed at 05:40; the harbormaster, the operator's duty manager, and the utility's crew chief are all being notified through different channels at nearly the same time"
+  }
+ },
+ "simulation_status": "completed_with_degradation",
+ "support_grade": "exploratory",
+ "distribution": {
+  "restored_within_48h": 0.0,
+  "not_restored_within_48h": 1.0
+ },
+ "generated_causal_world": {
+  "plan_hash": "b9b6b589ccbb",
+  "manifest": {
+   "phase1_compiler": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "always required",
+    "version": "compiler",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "status": "causally_active"
+   },
+   "phase2_evidence": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "as_of supplied",
+    "version": "phase2-1.0",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "status": "causally_active"
+   },
+   "phase3_posterior": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "evidence bundle present",
+    "version": "phase3",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "status": "causally_active"
+   },
+   "phase4_actor_policy": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "causal signal ['causal_dependencies.strategic_actor_decisions'] + declared strategic actors",
+    "version": "phase4",
+    "n_events": 0,
+    "n_state_deltas": 2,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "relevance": {
+     "required": true,
+     "why": "causal signal ['causal_dependencies.strategic_actor_decisions'] + declared strategic actors"
+    },
+    "status": "causally_active"
+   },
+   "phase6_registry": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "social causal mechanism required (dependency signal)",
+    "version": "",
+    "n_events": 0,
+    "n_state_deltas": 4,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "relevance": {
+     "required": true,
+     "why": "social causal mechanism required (dependency signal)"
+    },
+    "status": "causally_active"
+   },
+   "phase7_nonlinear": {
+    "available": true,
+    "selected": false,
+    "executed": false,
+    "omitted": true,
+    "reason": "no nonlinear causal structure named",
+    "version": "phase7",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": true,
+    "removal_changes_terminal": null,
+    "relevance": {
+     "required": false,
+     "why": "no nonlinear causal structure named"
+    },
+    "status": "no_op_causally_irrelevant"
+   },
+   "phase8_persistence": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "default-on persistence-aware rollout",
+    "version": "phase8-1.0",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "status": "causally_active"
+   },
+   "phase9_populations": {
+    "available": true,
+    "selected": false,
+    "executed": false,
+    "omitted": true,
+    "reason": "populations (constructible) declared but no causal process of this kind \u2014 context only",
+    "version": "phase9-pop",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": true,
+    "removal_changes_terminal": null,
+    "relevance": {
+     "required": false,
+     "why": "populations (constructible) declared but no causal process of this kind \u2014 context only"
+    },
+    "status": "no_op_causally_irrelevant"
+   },
+   "phase9_networks": {
+    "available": true,
+    "selected": false,
+    "executed": false,
+    "omitted": true,
+    "reason": "relations (or inferable entity/population substrate) declared but no causal process of this kind \u2014 context only",
+    "version": "",
+    "n_events": 0,
+    "n_state_deltas": 0,
+    "causally_irrelevant": true,
+    "removal_changes_terminal": null,
+    "relevance": {
+     "required": false,
+     "why": "relations (or inferable entity/population substrate) declared but no causal process of this kind \u2014 context only"
+    },
+    "status": "no_op_causally_irrelevant"
+   },
+   "phase10_institutions": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "causal signal ['causal_dependencies.institutional_decision_process'] + declared institutions",
+    "version": "phase10",
+    "n_events": 0,
+    "n_state_deltas": 2,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "normalization": {
+     "executable_rules_before": 0,
+     "executable_rules_after": 1,
+     "institutions": 1,
+     "rules_total": 1,
+     "already_executable": 0,
+     "normalized": 0,
+     "unmapped_to_procedure": 1
+    },
+    "relevance": {
+     "required": true,
+     "why": "causal signal ['causal_dependencies.institutional_decision_process'] + declared institutions"
+    },
+    "status": "causally_active"
+   },
+   "phase11_recompilation": {
+    "available": true,
+    "selected": true,
+    "executed": true,
+    "omitted": false,
+    "reason": "observations available",
+    "version": "phase11",
+    "n_events": 12,
+    "n_state_deltas": 0,
+    "causally_irrelevant": false,
+    "removal_changes_terminal": null,
+    "status": "causally_active"
+   }
+  },
+  "fidelity": {
+   "entities_added": 0,
+   "relations_added": 0,
+   "institutions_grounded": 0
+  },
+  "scheduled_reality": {
+   "n_facts_extracted": 0,
+   "n_scheduled_in_window": 0,
+   "n_outcome_entailing": 0,
+   "facts": []
+  },
+  "event_time": {
+   "contract": "binary_first_passage",
+   "options": [
+    "restored_within_48h",
+    "not_restored_within_48h"
+   ],
+   "event_polarity": "occurrence_resolves_yes",
+   "polarity_source": "criterion_parser",
+   "deadline_ts": 1783468800.0,
+   "n_absorbing_fact_events": 0,
+   "fact_floor": 0.0,
+   "n_opposite_direction_facts": 0,
+   "absorbing_institutions": [
+    "ferry_rate_regulation_rule"
+   ],
+   "n_residual_processes": 1,
+   "scheduling": "continuous_first_passage",
+   "residual_skipped_reason": null,
+   "consumed_state": [
+    {
+     "var": "actor_intentions",
+     "weight": 0.2
+    },
+    {
+     "var": "mechanism_outcome:fallback:strategic_actor_decisions",
+     "weight": 0.1
+    },
+    {
+     "var": "mechanism_outcome:fallback:institutional_decision_process",
+     "weight": 0.1
+    },
+    {
+     "var": "actor_action_share",
+     "weight": 0.05
+    },
+    {
+     "var": "pathway_progress:cooperative_agreement",
+     "weight": 0.6
+    },
+    {
+     "var": "pathway_progress:institutional_procedure",
+     "weight": 0.6
+    },
+    {
+     "var": "pathway_progress:operational_execution",
+     "weight": 0.6
+    }
+   ],
+   "endogenous_channels": [
+    "pathway_progress:cooperative_agreement",
+    "pathway_progress:institutional_procedure",
+    "pathway_progress:operational_execution"
+   ],
+   "family": "generic",
+   "hazard_curve_source": "fitted_family_survival(n=319)",
+   "fallback_rate_provenance": "fitted_family_prior(n=4)",
+   "posterior_calibrated": true,
+   "n_resolver_events_removed": 1
+  }
+ },
+ "temporal_model_report": {
+  "temporal_model_hash": "548b6d4c2536b881",
+  "n_channels": 4,
+  "n_actor_profiles": 0,
+  "n_institutional_processes": 2,
+  "n_continuous_processes": 0,
+  "n_deadline_events": 1,
+  "n_recurrence_events": 0,
+  "n_recurrences_accepted": 0,
+  "n_critic_findings": 8,
+  "n_llm_calls": 4,
+  "degraded": null,
+  "unresolved": [
+   "utility_crew_dispatch_and_repair_time_distribution"
+  ]
+ },
+ "temporal_runtime": {
+  "event_counts": {
+   "observe_evidence": 16,
+   "deadline": 2,
+   "decision_opportunity": 2,
+   "first_passage_beyond_horizon": 4,
+   "structural_process_prior": 4,
+   "actor_action_aggregation": 2,
+   "institutional_decision": 2
+  },
+  "actor_invocations": {},
+  "n_decision_triggers": 0,
+  "decision_triggers": [],
+  "delivery_to_attention_delays_s": null,
+  "attention_to_decision_delays_s": null,
+  "decision_to_action_delays_s": null,
+  "action_to_completion_delays_s": null,
+  "same_time_batches": 12,
+  "max_batch_size": 8,
+  "max_microsteps": 1,
+  "simultaneity_conflicts": [],
+  "n_simultaneity_conflicts": 0,
+  "events_canceled": 0,
+  "events_rescheduled": 4,
+  "pending_at_horizon": [],
+  "temporally_truncated": false,
+  "truncation": null,
+  "safety_limits": {
+   "safety_max_events": 2000
+  },
+  "unresolved_timing": [
+   {
+    "kind": "unmodeled_channel",
+    "channel": "direct"
+   },
+   {
+    "kind": "unmodeled_attention",
+    "actor": "ferry_operator_marine_superintendent",
+    "channel": "direct"
+   },
+   {
+    "kind": "unmodeled_channel",
+    "channel": "direct"
+   },
+   {
+    "kind": "unmodeled_attention",
+    "actor": "ferry_operator_marine_superintendent",
+    "channel": "direct"
+   }
+  ],
+  "interval_advances": 10,
+  "attention_batch_sizes": [],
+  "n_branches": 2,
+  "n_branches_truncated": 0,
+  "truncated_branch_share": 0.0,
+  "temporal_model_hashes": [
+   "548b6d4c2536b881"
+  ],
+  "temporal_model_id": "a6dc0f8b3f25",
+  "temporal_model_hash": "548b6d4c2536b881",
+  "as_of": 1783317600.0,
+  "horizon_ts": 1783490400.0,
+  "timezone_assumptions": {
+   "ferry_operator_ceo": "America/New_York",
+   "ferry_operator_maintenance_head": "America/New_York",
+   "ferry_operator_marine_superintendent": "America/New_York",
+   "port_authority_harbormaster": "America/New_York",
+   "coast_guard_captain_of_port": "America/New_York",
+   "local_utility_company_rep": "America/New_York",
+   "ferry_operator_company": "America/New_York",
+   "port_authority": "America/New_York",
+   "coast_guard": "America/New_York",
+   "local_utility_company": "America/New_York",
+   "mackinac_island_authority": "America/Detroit",
+   "mackinaw_city_council": "America/Detroit",
+   "maine_regulators": "America/New_York",
+   "chappy_ferry_authority": "America/New_York"
+  },
+  "calendar_assumptions": {
+   "ferry_ops_cal": {
+    "tz": "America/New_York",
+    "business_days": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7
+    ],
+    "open_hour": 5.0,
+    "close_hour": 23.0,
+    "holidays": [],
+    "provenance": "model_knowledge"
+   },
+   "utility_crew_cal": {
+    "tz": "America/New_York",
+    "business_days": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7
+    ],
+    "open_hour": 6.0,
+    "close_hour": 22.0,
+    "holidays": [],
+    "provenance": "model_knowledge"
+   }
+  },
+  "known_scheduled_facts": [],
+  "generated_channels": [
+   "ferry_duty_manager_to_maintenance_head",
+   "harbormaster_to_ferry_duty_manager",
+   "maintenance_head_to_marine_superintendent",
+   "utility_crew_chief_to_ferry_ops"
+  ],
+  "generated_actor_profiles": [],
+  "institutional_stage_processes": [
+   "power_restoration",
+   "ferry_service_restoration"
+  ],
+  "continuous_processes": [],
+  "temporal_latent_hypotheses": [],
+  "temporal_uncertainties": [
+   {
+    "about": "exact_duration_of_power_restoration",
+    "why_unknown": "no_utility_crew_eta_or_repair_complexity_known",
+    "impact": "determines_whether_48h_horizon_is_met"
+   },
+   {
+    "about": "resume_service",
+    "why_unknown": "The resume_service stage is treated as immediate, but in reality there is a lag between the CEO's decision and the actual resumption of ferry operations (e.g., crew recall, vessel startup).",
+    "impact": "critic-adjusted timing: {\"kind\": \"range\", \"lo_s\": 600, \"hi_s\": 3600}",
+    "critic": "temporal_critic_A"
+   }
+  ],
+  "unresolved_timing_mechanisms": [
+   "utility_crew_dispatch_and_repair_time_distribution"
+  ],
+  "timing_support_classification": "scenario_generated_unvalidated",
+  "temporal_compilation_llm_calls": 4,
+  "critic_findings": [
+   {
+    "critic": "temporal_critic_A",
+    "class": "missing_availability",
+    "where": "institutional_processes.ferry_service_restoration.stages.safety_check",
+    "problem": "The safety_check stage does not account for the marine superintendent's off-duty hours or sleep constraints, which could delay the start until the next business day.",
+    "applied": false
+   },
+   {
+    "critic": "temporal_critic_A",
+    "class": "missing_availability",
+    "where": "institutional_processes.ferry_service_restoration.stages.resume_service",
+    "problem": "The resume_service stage is assigned to the CEO but does not consider that the CEO may be unavailable outside business hours or asleep, causing a delay.",
+    "applied": false
+   },
+   {
+    "critic": "temporal_critic_A",
+    "class": "missing_stages",
+    "where": "institutional_processes.power_restoration",
+    "problem": "The power restoration process collapses notification, crew mobilization, and travel to site into one 'dispatch_crew' stage, omitting the separate step of the utility receiving and logging the failure ",
+    "applied": false
+   },
+   {
+    "critic": "temporal_critic_A",
+    "class": "missing_implementation_lag",
+    "where": "institutional_processes.ferry_service_restoration.stages.resume_service",
+    "problem": "The resume_service stage is treated as immediate, but in reality there is a lag between the CEO's decision and the actual resumption of ferry operations (e.g., crew recall, vessel startup).",
+    "applied": true
+   },
+   {
+    "critic": "temporal_critic_B",
+    "class": "missing_deadline",
+    "where": "institutional_processes.power_restoration.stages.assess_and_repair",
+    "problem": "The utility crew repair stage has no deadline, but the scenario question imposes a 48-hour deadline from the power failure at 05:40 on 2026-07-06.",
+    "applied": false
+   },
+   {
+    "critic": "temporal_critic_B",
+    "class": "missing_deadline",
+    "where": "institutional_processes.ferry_service_restoration.stages.safety_check",
+    "problem": "The safety check stage has no deadline, but the overall 48-hour restoration deadline from the power failure applies to the entire ferry service restoration process.",
+    "applied": false
+   },
+   {
+    "critic": "temporal_critic_B",
+    "class": "missing_calendar_effect",
+    "where": "institutional_processes.power_restoration.stages.dispatch_crew",
+    "problem": "The dispatch_crew stage uses utility_crew_cal (06:00-22:00) but the power failure occurs at 05:40, before the calendar opens; no mechanism models that the crew cannot be dispatched until 06:00.",
+    "applied": false
+   },
+   {
+    "critic": "temporal_critic_B",
+    "class": "missing_calendar_effect",
+    "where": "institutional_processes.power_restoration.stages.assess_and_repair",
+    "problem": "The assess_and_repair stage uses utility_crew_cal (06:00-22:00) but if work spans multiple days, the calendar's close_hour (22:00) may force work to stop overnight; no overnight pause is modeled.",
+    "applied": false
+   }
+  ],
+  "degraded": null
+ },
+ "individual_temporal": null,
+ "actor_policy_report": {
+  "requested_actor_policy_mode": "hybrid_relevant_actor_policy",
+  "actual_actor_policy_mode": "hybrid_relevant_actor_policy",
+  "construction_error": "",
+  "degraded": false,
+  "actors_routed_qualitatively": [
+   "ferry_operator_ceo"
+  ],
+  "actors_routed_numerically": [],
+  "fallbacks": 0,
+  "fallback_reasons": []
+ },
+ "consequence_report": {
+  "requested_mode": "generated_actor_mediated_world",
+  "actual_mode": "fixed_semantic_consequence_policy_v1",
+  "actions_compiled": 2,
+  "direct_operations_applied": 11,
+  "events_scheduled": 0,
+  "processes_started": 1,
+  "objects_created": 6,
+  "facts_changed": 4,
+  "institutional_submissions": 0,
+  "actor_decisions_opened": 1,
+  "population_responses_opened": 0,
+  "information_deliveries": 2,
+  "unsupported_semantics": 0,
+  "fallbacks": 0,
+  "fallback_reasons": [
+   {
+    "kind": "no_scenario_schema",
+    "reason": "generated_actor_mediated_world requested but the world carries no ScenarioSemanticModel (schema compilation needs an LLM backend); fixed-v1 baseline served, stamped"
+   }
+  ],
+  "legacy_scalar_writes": 0,
+  "scenario_schema_id": "",
+  "scenario_schema_version": "",
+  "scenario_types_generated": 0,
+  "scenario_events_emitted": 0,
+  "schema_extensions": 0,
+  "observations_delivered": 0,
+  "actors_reconsidered": 0,
+  "actors_invoked": 0,
+  "actor_actions_executed": 0,
+  "actors_declined_to_act": 0,
+  "recursive_cascade_depth": 0,
+  "human_reactions_written_directly": 0,
+  "fixed_ontology_uses": 2,
+  "mechanistic_fallbacks": 0,
+  "numeric_fallbacks": 0,
+  "attention_events": 0,
+  "observation_bundles_delivered": 0,
+  "temporal_truncations": [],
+  "degraded": true
+ },
+ "limitations": [
+  "degraded: support grade exploratory; 3 fallback mechanism(s) used"
+ ],
+ "llm": {
+  "n_calls": 34,
+  "chars_in": 98916,
+  "chars_out": 69959,
+  "cost_usd": "not_reported_by_backend (deepseek-v4-flash; call/char proxy recorded)"
+ },
+ "runtime_s": 161.92,
+ "verification": {
+  "no_periodic_strategic_review": true,
+  "no_six_actor_truncation": true,
+  "no_fixed_30min_reconsideration": true,
+  "no_fixed_one_hour_broadcast": true,
+  "no_numeric_actor_fallback_on_truncation": true,
+  "same_time_batches_live": true,
+  "canonical_runtime_used": true,
+  "temporal_model_compiled": true,
+  "decision_triggers_recorded": true,
+  "all_passed": true
+ }
+}
