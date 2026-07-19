@@ -1,0 +1,132 @@
+{
+ "schema_version": "structural_ensemble.cost_benchmark.v1",
+ "question": "Will the initiative be approved?",
+ "arms": [
+  {
+   "arm": "A_single_model_ablation",
+   "status": "completed_with_degradation",
+   "backend_llm_calls": 5,
+   "prompt_chars": 12308,
+   "response_chars": 877,
+   "llm_calls_by_stage": {},
+   "cache_hits_by_stage": {},
+   "total_cache_hits": 0,
+   "n_models_fully_simulated": 1,
+   "pilot_particles": 0,
+   "full_particles": 35,
+   "pilot_particles_reused_pct": null,
+   "wall_clock_s": 0.098,
+   "provider_cost_note": "scripted deterministic backend \u2014 call/char counts are exact; no provider pricing is fabricated (see forensics for live-call counts)",
+   "llm_call_multiplier_vs_single": 1.0,
+   "particle_multiplier_vs_single": 1.0
+  },
+  {
+   "arm": "B_default_ensemble",
+   "status": "completed_with_degradation",
+   "backend_llm_calls": 21,
+   "prompt_chars": 77684,
+   "response_chars": 6343,
+   "llm_calls_by_stage": {
+    "structural_generation": 4,
+    "structural_critic": 5,
+    "structural_compile": 4,
+    "model_conditioning": 8
+   },
+   "cache_hits_by_stage": {
+    "structural_critic": 1,
+    "model_conditioning": 4
+   },
+   "total_cache_hits": 5,
+   "n_models_fully_simulated": 3,
+   "pilot_particles": 24,
+   "full_particles": 132,
+   "pilot_particles_reused_pct": 100.0,
+   "wall_clock_s": 0.051,
+   "provider_cost_note": "scripted deterministic backend \u2014 call/char counts are exact; no provider pricing is fabricated (see forensics for live-call counts)",
+   "llm_call_multiplier_vs_single": 4.2,
+   "particle_multiplier_vs_single": 3.77
+  },
+  {
+   "arm": "C_ensemble_cache_off",
+   "status": "completed_with_degradation",
+   "backend_llm_calls": 26,
+   "prompt_chars": 83559,
+   "response_chars": 6740,
+   "llm_calls_by_stage": {
+    "structural_generation": 4,
+    "structural_critic": 6,
+    "structural_compile": 4,
+    "model_conditioning": 12
+   },
+   "cache_hits_by_stage": {},
+   "total_cache_hits": 0,
+   "n_models_fully_simulated": 3,
+   "pilot_particles": 24,
+   "full_particles": 132,
+   "pilot_particles_reused_pct": 100.0,
+   "wall_clock_s": 0.039,
+   "provider_cost_note": "scripted deterministic backend \u2014 call/char counts are exact; no provider pricing is fabricated (see forensics for live-call counts)",
+   "llm_call_multiplier_vs_single": 5.2,
+   "particle_multiplier_vs_single": 3.77
+  },
+  {
+   "arm": "D_ensemble_no_pilot_reuse",
+   "status": "completed_with_degradation",
+   "backend_llm_calls": 21,
+   "prompt_chars": 77684,
+   "response_chars": 6343,
+   "llm_calls_by_stage": {
+    "structural_generation": 4,
+    "structural_critic": 5,
+    "structural_compile": 4,
+    "model_conditioning": 8
+   },
+   "cache_hits_by_stage": {
+    "structural_critic": 1,
+    "model_conditioning": 4
+   },
+   "total_cache_hits": 5,
+   "n_models_fully_simulated": 3,
+   "pilot_particles": 24,
+   "full_particles": 132,
+   "pilot_particles_reused_pct": 0.0,
+   "wall_clock_s": 0.039,
+   "provider_cost_note": "scripted deterministic backend \u2014 call/char counts are exact; no provider pricing is fabricated (see forensics for live-call counts)",
+   "llm_call_multiplier_vs_single": 4.2,
+   "particle_multiplier_vs_single": 3.77
+  },
+  {
+   "arm": "E_ensemble_max_capacity",
+   "status": "completed_with_degradation",
+   "backend_llm_calls": 21,
+   "prompt_chars": 77684,
+   "response_chars": 6343,
+   "llm_calls_by_stage": {
+    "structural_generation": 4,
+    "structural_critic": 5,
+    "structural_compile": 4,
+    "model_conditioning": 8
+   },
+   "cache_hits_by_stage": {
+    "structural_critic": 1,
+    "model_conditioning": 4
+   },
+   "total_cache_hits": 5,
+   "n_models_fully_simulated": 3,
+   "pilot_particles": 24,
+   "full_particles": 132,
+   "pilot_particles_reused_pct": 100.0,
+   "wall_clock_s": 0.041,
+   "provider_cost_note": "scripted deterministic backend \u2014 call/char counts are exact; no provider pricing is fabricated (see forensics for live-call counts)",
+   "llm_call_multiplier_vs_single": 4.2,
+   "particle_multiplier_vs_single": 3.77
+  }
+ ],
+ "observed_savings": {
+  "identical_call_caching": 5,
+  "pilot_reuse_particles": 24,
+  "evidence_sharing": "evidence gathered once per run in every ensemble arm (union of recon requirements; hermetic arms drop retrieval identically)",
+  "deduplication": "duplicate candidates merge before pilot/full simulation (arm B merged 3 of 4 initial candidates into full simulation)",
+  "note": "the observed multiplier depends on how many models survive and how many actor calls they require \u2014 it is reported, not promised"
+ }
+}

@@ -65,7 +65,12 @@ def simulate_structural_ensemble(question: str, *, as_of: str, horizon: str = ""
     drop = set(policy.get("drop_phases", []))
     t0 = _time.time()
     ledger = CallLedger()
-    cache_store: dict = {}
+    # COST-BENCHMARK-ONLY knobs (Section 27 arms). Both can only cost MORE — never less accuracy:
+    # cache_mode=off disables identical-call reuse; pilot_reuse=off discards pilot particles and reruns
+    # the full budget from index 0 (the manifest records the waste honestly).
+    from swm.world_model_v2.llm_call_cache import NullStore
+    cache_store: dict = NullStore() if policy.get("cache_mode") == "off" else {}
+    pilot_reuse = policy.get("pilot_reuse", "on") != "off"
     gen_policy = dict(policy.get("generation_policy") or {})
     if compute_budget in ("maximum_capacity", "max", "max_capacity"):
         gen_policy.setdefault("max_capacity", True)
@@ -175,7 +180,7 @@ def simulate_structural_ensemble(question: str, *, as_of: str, horizon: str = ""
         rec = runs[cand.model_id]
         if rec.get("error"):
             continue
-        _extend_to_full(cand, rec, seed, actor_cache)
+        _extend_to_full(cand, rec, seed, actor_cache, reuse_pilot=pilot_reuse)
     # disagreement-driven extension AFTER first full pass (Section 0.9): more particles when structural
     # disagreement is material, never fewer
     dists0 = {m: r.get("full_distribution") or r.get("pilot_distribution") or {}
@@ -219,7 +224,8 @@ def simulate_structural_ensemble(question: str, *, as_of: str, horizon: str = ""
         ens.full_models.append(cand.model_id)
         ens.simulation_manifest[cand.model_id] = {
             "pilot_particles": rec["n_pilot"], "final_particles": len(rec["branches"]),
-            "full_budget_required": rec["n_full"], "pilot_reused_as_prefix": True,
+            "full_budget_required": rec["n_full"],
+            "pilot_reused_as_prefix": not rec.get("pilot_discarded", False),
             "extensions": rec.get("extensions", []), "status": "completed"}
     for cand in ens.surviving():
         if cand.promotion_status != "promoted" and cand.model_id in runs:
@@ -371,12 +377,20 @@ def _core_similarity(a, b) -> float:
                            structural_signature(b.executable_plan))["structural_min"]
 
 
-def _extend_to_full(cand, rec, seed, actor_cache, extra_particles: int = 0, reason: str = ""):
+def _extend_to_full(cand, rec, seed, actor_cache, extra_particles: int = 0, reason: str = "",
+                    reuse_pilot: bool = True):
     """Progressive extension: continue the SAME prepared run from the pilot prefix to the full budget
     (plus any disagreement extension). Pilot particles are retained — identical worlds/seeds by particle
-    index — so nothing is rerun and nothing is discarded."""
+    index — so nothing is rerun and nothing is discarded. `reuse_pilot=False` exists ONLY for the cost
+    benchmark's reuse-off arm: it reruns the full budget from index 0 (strictly more compute, identical
+    result by index-keyed determinism) and records the discarded pilot honestly."""
     from swm.world_model_v2.phase8_pipeline import run_persistence_slice
     target = rec["n_full"] + int(extra_particles)
+    if not reuse_pilot and rec["branches"] and not rec.get("pilot_discarded"):
+        rec["pilot_discarded"] = True
+        rec["extensions"].append({"from": len(rec["branches"]), "to": 0,
+                                  "reason": "pilot_reuse_disabled_benchmark_arm: pilot discarded"})
+        rec["branches"] = []
     start = len(rec["branches"])
     if start >= target:
         return
@@ -386,7 +400,7 @@ def _extend_to_full(cand, rec, seed, actor_cache, extra_particles: int = 0, reas
     rec["branches"] = list(rec["branches"]) + list(new)
     rec["extensions"].append({"from": start, "to": target,
                               "reason": reason or "promotion_to_full_budget"})
-    cand.pilot_status = "reused_in_full"
+    cand.pilot_status = "reused_in_full" if reuse_pilot else "completed"
 
 
 def _finalize_model(U, question, cand, rec, bundle, as_of, intervention, seed, t0):

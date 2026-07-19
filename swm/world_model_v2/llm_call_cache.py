@@ -25,6 +25,17 @@ import hashlib
 from dataclasses import dataclass, field
 
 
+class NullStore(dict):
+    """A cache store that never retains — the COST-BENCHMARK-ONLY cache-off arm (Section 27). Disabling
+    the cache only ever costs more; it can never change results (reuse requires identical inputs)."""
+
+    def __contains__(self, key):  # noqa: D105
+        return False
+
+    def __setitem__(self, key, value):  # noqa: D105
+        return None
+
+
 def backend_fingerprint(llm) -> str:
     """Result-determining backend identity, as far as the callable exposes it. Honest limitation: a bare
     function exposes nothing, so its fingerprint is its qualified name — reuse then assumes the backend is

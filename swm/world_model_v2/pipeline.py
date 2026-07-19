@@ -126,7 +126,13 @@ def simulate(question: str, *, llm, evidence="", as_of: str, horizon: str, inter
              n_particles=None, seed: int = 0, calibrator=None, cal_key: str = "",
              persistence=None, actor_history=None, persistence_families=None,
              persistence_provider=None) -> SimulationResult:
-    """The one canonical production entry. When `actor_history` names a durable actor identity, persistence is
+    """LEGACY SINGLE-STRUCTURAL-MODEL compatibility helper — NOT the public production entry. The
+    canonical default is `unified_runtime.simulate_world`, which runs the structural-model ENSEMBLE
+    (several independently generated causal models, each fully simulated); this helper compiles exactly
+    one plan and is retained for phase-scoped science and frozen-artifact compatibility only, equivalent
+    in status to the explicit `single_structural_model` ablation.
+
+    When `actor_history` names a durable actor identity, persistence is
     part of THIS path AUTOMATICALLY — no caller needs to hand-build a PersistenceContext: an explicit
     `persistence=` wins; otherwise a `PersistenceContextProvider` (injected or built from environment config)
     resolves identity, constructs/reuses the transactional store, loads prior history/checkpoints, and returns
