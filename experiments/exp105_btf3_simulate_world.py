@@ -43,18 +43,31 @@ def pick_fresh_qids(rows, n=5) -> list:
 
 
 def run() -> dict:
+    import os
     from swm.api.deepseek_backend import default_chat_fn
     from swm.world_model_v2.unified_runtime import simulate_world
 
+    # FULL actor cognition — no per-run call budget cap (per-question wall-clock is the only limiter)
+    os.environ.setdefault("SWM_ACTOR_MAX_CALLS", "1000000")
     rows = {r["question_id"]: r for r in fetch_btf3()}
     qids = pick_fresh_qids(list(rows.values()))
     # 3600 tokens: enough for an untruncated decomposition with the reordered schema, while staying
     # inside the backend's 120s HTTP timeout (6000 tokens exceeds it and livelocks on retries); any
     # residual clipping is handled by the compiler's truncation-recovery continuation call.
     base_llm = default_chat_fn(system="Reply ONLY JSON.", max_tokens=3600, temperature=0.2)
-    traces, results = [], []
+    # RESUME: per-question checkpointing — completed questions are never re-run
+    traces = json.loads(TRACES.read_text()) if TRACES.exists() else []
+    done_qids = {t["qid"] for t in traces}
+    results = [{"qid": t["qid"], "question": t["question"][:110],
+                "status": t["simulation_result"].get("simulation_status"),
+                "p_raw": t["simulation_result"].get("raw_probability"),
+                "p_cal": t["simulation_result"].get("calibrated_probability"),
+                "n_llm_calls": t["n_llm_calls"],
+                "latency_s": t["simulation_result"].get("latency_s")} for t in traces]
 
     for qid in qids:
+        if qid in done_qids:
+            continue
         q = _forecast_input(rows[qid])
         evidence = (f"Resolution criteria: {q['resolution_criteria']}\n\n"
                     f"Background (as of {str(q['present_date'])[:10]}): {q['background']}")

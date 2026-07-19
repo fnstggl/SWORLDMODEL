@@ -1,9 +1,16 @@
-"""The production simulation pipeline — question → SimulationResult (no-abstention).
+"""QUARANTINED LEGACY ENTRY — use `unified_runtime.simulate_world` instead.
 
-`simulate()` is the one V2 production entry. It ALWAYS attempts a simulation for a coherent question and
-returns a `SimulationResult` with a forecast whenever the simulation ran. Epistemic weakness lowers the
-support grade and widens uncertainty; it never refuses. Only technical failures → execution_failed; only
-genuinely incoherent questions → clarification_required (rare).
+`simulate()` below is NOT the V2 production entry (its docstring used to claim it was; EXP-102 ran it on
+that claim and silently skipped evidence gathering, the posterior, resolution-criterion parsing, fidelity
+expansion, mode graphs and event-time conversion). The ONE canonical public entry is
+`swm.world_model_v2.unified_runtime.simulate_world` (what `swm.facade` serves). Calling `simulate()`
+directly emits a DeprecationWarning naming the canonical entry.
+
+Retained because the canonical runtime composes pieces of it (`result_from_run`, the persistence
+delegation) and the test suite exercises the inner funnel through it. Since the validation-gate removal it
+is also HARDENED (`harden_general_path`): even this legacy entry binds compiled actors/institutions/
+populations/calendar facts to the readout, so no caller — old scripts included — can reach the
+broad-prior-only degradation again. See docs/WMV2_CANONICAL_PATH.md.
 """
 from __future__ import annotations
 
@@ -190,6 +197,10 @@ def simulate(question: str, *, llm, evidence="", as_of: str, horizon: str, inter
     blocked), and lineage/support effects are returned in the result. Anonymous/stateless requests (no
     actor_history) and any storage/identity failure DEGRADE honestly to the ordinary non-persistent path —
     never an abstention, never a crash. Without persistence work, behaviour is byte-identical (no regression)."""
+    import warnings
+    warnings.warn("pipeline.simulate() is a QUARANTINED legacy entry — use "
+                  "swm.world_model_v2.unified_runtime.simulate_world (the one canonical V2 entry; "
+                  "see docs/WMV2_CANONICAL_PATH.md)", DeprecationWarning, stacklevel=2)
     t0 = _time.time()
     # ---- automatic persistence-context construction (final usability gap): if the caller did not pass an
     #      explicit context but a durable actor identity is available, request one from the provider. ----

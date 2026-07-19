@@ -1234,6 +1234,12 @@ def build_qualitative_runtime(plan=None, *, llm=None, mode: str,
     # actors know the public calendar their real counterpart knows (scheduled-reality layer)
     if not cfg.public_facts and plan is not None:
         cfg.public_facts = list(getattr(plan, "_scheduled_facts", []) or [])
+    # SWM_ACTOR_MAX_CALLS: caller-controlled per-run actor-cognition budget. The default stays a
+    # cost backstop, but a run that wants FULL actor cognition (every consequential decision gets a
+    # real call — no silent numeric fallback after call N) can lift it without touching code.
+    import os as _os
+    if config is None and _os.environ.get("SWM_ACTOR_MAX_CALLS", "").strip().isdigit():
+        cfg.max_llm_calls = int(_os.environ["SWM_ACTOR_MAX_CALLS"])
     if mode == "hybrid_relevant_actor_policy" and selector is None:
         from swm.world_model_v2.actor_selection import RelevantActorSelector
         selector = RelevantActorSelector()
