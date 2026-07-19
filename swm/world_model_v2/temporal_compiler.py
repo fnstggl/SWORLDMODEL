@@ -28,7 +28,7 @@ import time as _time
 from swm.world_model_v2.temporal_model import (ActorTemporalProfile, ChannelTemporalModel,
                                                ContinuousProcessSpec, InstitutionalProcessModel,
                                                InstitutionalStage, ScenarioTemporalModel,
-                                               TIMING_REGIMES, TimingSpec)
+                                               TimingSpec)
 
 _CACHE: dict = {}                                             # content-addressed, in-process
 

@@ -25,7 +25,7 @@ assumes one global calendar.
 from __future__ import annotations
 
 import datetime as _dt
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from zoneinfo import ZoneInfo
 
 UTC = ZoneInfo("UTC")
