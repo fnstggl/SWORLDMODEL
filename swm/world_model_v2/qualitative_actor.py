@@ -679,7 +679,12 @@ class QualitativeConfig:
     llm_hypotheses: bool = True              # False ⇒ deterministic labeled fallback set (tests)
     n_hypotheses: int = 3
     persistent: bool = True                  # False = stateless_llm_policy (arm C)
-    max_llm_calls: int = 240                 # per-run budget across all branches/actors/decisions
+    #: per-run SAFETY budget across all branches/actors/decisions (§12/§26): a service-
+    #: protection limit, NOT a model of reality — production operators gate BEFORE invoking an
+    #: actor and record a TEMPORAL TRUNCATION when it is exhausted (never a numeric decision
+    #: invented for the actor). Overridable per run via SWM_ACTOR_LLM_BUDGET.
+    max_llm_calls: int = field(default_factory=lambda: int(
+        __import__("os").environ.get("SWM_ACTOR_LLM_BUDGET", "240") or 240))
     retries: int = 1
     revision_rounds: int = 1                 # perceived-infeasible choice → one revision chance
     prompt_events: int = 10

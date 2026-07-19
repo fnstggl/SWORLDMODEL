@@ -551,6 +551,26 @@ class ProductionActorPolicyOperator:
         decision = dict(event.payload or {})
         if "candidate_actions" not in decision and "actions" in decision:
             decision["candidate_actions"] = decision["actions"]
+        engine = getattr(self.runtime, "engine", None)
+        if engine is not None and hasattr(engine, "budget_left") and not engine.budget_left():
+            # LLM-call SAFETY budget exhausted (invariant 38): the decision cannot be
+            # simulated — record a temporal truncation; never invent a numeric decision
+            from swm.world_model_v2.temporal_runtime import get_stats
+            stats = get_stats(world)
+            stats.temporally_truncated = True
+            if not stats.truncation:
+                stats.truncation = {"reason": "actor_llm_budget_exhausted",
+                                    "at_ts": world.clock.now, "actors_not_processed": [],
+                                    "note": "qualitative runtime call budget reached; "
+                                            "additional compute would simulate the pending "
+                                            "decisions"}
+            naf = stats.truncation.setdefault("actors_not_processed", [])
+            if actor_id not in naf:
+                naf.append(actor_id)
+            d = StateDelta(at=world.clock.now, event_type=event.etype, operator=self.name,
+                           reason_codes=["temporally_truncated:actor_llm_budget_exhausted",
+                                         f"actor:{actor_id}"])
+            return d, ValidationResult(ok=True)
         selected, posterior, trace = self.runtime.decide(
             None, [world], actor_id, decision=decision, seed=seed,
             question_id=str(decision.get("question_id", "")),

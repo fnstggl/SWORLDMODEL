@@ -546,6 +546,33 @@ def test_inv39_pending_high_sensitivity_events_surfaced_at_horizon():
     assert branch.temporal_stats.event_counts.get("measurement") == 1
 
 
+def test_inv38_actor_llm_budget_exhaustion_truncates_never_numeric():
+    """Invariant 38 at the operator level: when the qualitative runtime's LLM SAFETY budget is
+    exhausted, the pending decision is NOT simulated numerically — the branch records a
+    temporal truncation and no behavior is invented for the actor."""
+    from swm.world_model_v2.phase4_execution import ProductionActorPolicyOperator
+
+    class _ExhaustedEngine:
+        def budget_left(self):
+            return False
+
+    class _Runtime:
+        engine = _ExhaustedEngine()
+
+        def decide(self, *a, **k):                         # must never be reached
+            raise AssertionError("decide() invoked despite exhausted budget")
+    w = _world()
+    op = ProductionActorPolicyOperator(runtime=_Runtime())
+    ev = Event(ts=T0 + 60.0, etype="decision_opportunity", participants=["alice"],
+               payload={"situation": "s"})
+    w.clock.advance_to(ev.ts)
+    delta, vr = op.run(w, ev, random.Random(0))
+    assert vr.ok and any("temporally_truncated" in r for r in delta.reason_codes)
+    st = tr.get_stats(w)
+    assert st.temporally_truncated and "alice" in st.truncation["actors_not_processed"]
+    assert not delta.changes                               # no invented behavior
+
+
 # ---------------------------------------------------------------- 40/41/42: routes use the model
 def test_inv40_personal_reaction_route_uses_the_temporal_model():
     import inspect

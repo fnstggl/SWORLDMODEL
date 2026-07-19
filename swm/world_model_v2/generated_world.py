@@ -950,6 +950,17 @@ class GeneratedActorInvocationOperator:
                                detail=f"cap {budgets['max_invocations_per_actor']} at "
                                       f"invocation time")
             return delta, ValidationResult(ok=True)
+        engine = getattr(self.runtime, "engine", None)
+        if engine is not None and hasattr(engine, "budget_left") and not engine.budget_left():
+            # LLM-call SAFETY budget exhausted (invariant 38): the pending decision cannot be
+            # simulated — record a temporal truncation and DO NOT invent behavior for the
+            # actor (no numeric fallback, no fake wait)
+            delta.reason_codes.append("temporally_truncated:actor_llm_budget_exhausted")
+            _record_truncation(world, self.report, kind="actor_llm_budget_exhausted",
+                               actor=actor_id,
+                               detail="qualitative runtime call budget reached before this "
+                                      "invocation; additional compute would simulate it")
+            return delta, ValidationResult(ok=True)
         budgets["invocations"][actor_id] = used + 1
         sev = p.get("triggering_semantic_event") or {}
         trigger = dict(p.get("trigger") or {})
@@ -1035,7 +1046,8 @@ def compile_actor_deferral(world, actor_id: str, qual: dict, sev: dict, trigger:
     model = temporal_model_of(world)
     stats = get_stats(world)
     intent = qual.get("revisit") if isinstance(qual.get("revisit"), dict) else {}
-    timing_label = str(qual.get("timing", "") or intent.get("timing", "")).strip().lower()
+    timing_label = str(intent.get("when", "") or qual.get("timing", "")
+                       or intent.get("timing", "")).strip().lower()
     cond = intent.get("condition") or qual.get("timing_condition")
     if isinstance(cond, str) and cond.strip():
         # a natural-language condition without a mappable event type stays UNRESOLVED (§11) —
