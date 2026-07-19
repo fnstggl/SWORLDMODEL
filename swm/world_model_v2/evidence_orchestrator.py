@@ -19,9 +19,9 @@ from dataclasses import dataclass
 from swm.world_model_v2.evidence_bundle_v2 import EvidenceBundleV2, partition_claims
 from swm.world_model_v2.evidence_claims import extract_claims
 from swm.world_model_v2.evidence_connectors import GoogleNewsRSSConnector, RawContentStore
-from swm.world_model_v2.evidence_connectors_more import (LocalDatasetConnector, PriorArtifactConnector,
-                                                         UserDocumentConnector, WebPageConnector,
-                                                         WikipediaConnector)
+from swm.world_model_v2.evidence_connectors_more import (GdeltDocConnector, LocalDatasetConnector,
+                                                         PriorArtifactConnector, UserDocumentConnector,
+                                                         WebPageConnector, WikipediaConnector)
 from swm.world_model_v2.evidence_contradictions import build_contradiction_graph
 from swm.world_model_v2.evidence_dependence import cluster_dependence, independent_count
 from swm.world_model_v2.evidence_entities import EntityResolver
@@ -43,9 +43,13 @@ class OrchestratorConfig:
 
     verify_online: bool = False                 # Wayback verification (network); off by default for speed
     use_wikipedia: bool = True
+    use_gdelt: bool = True                      # GDELT DOC 2.0 — free/keyless breadth layer: precise
+                                                # date windows over thousands of outlets per facet query
+    wiki_entities_per_req: int = 2              # as-of Wikipedia revisions per requirement (structured
+                                                # depth: timelines, aid lists, order-of-battle pages)
     extract_claims: bool = True
-    max_requirements_retrieved: int = 8         # cap RSS queries to the top-VoI requirements
-    max_claim_docs: int = 16                    # cap LLM claim-extraction calls per question
+    max_requirements_retrieved: int = 8         # cap RSS/GDELT queries to the top-VoI requirements
+    max_claim_docs: int = 24                    # cap LLM claim-extraction calls per question
 
 
 def _window(as_of_ts: float, lookback_days: int) -> tuple:
@@ -104,6 +108,7 @@ def gather_evidence(question: str, *, as_of: str, requirements: list, llm=None,
     as_of_iso = _time.strftime("%Y-%m-%d", _time.gmtime(as_of_ts))
     t0 = _time.time()
     gnews = GoogleNewsRSSConnector(store=store)
+    gdelt = GdeltDocConnector(store=store)
     wiki = WikipediaConnector(store=store)
     verifier = TemporalVerifier(verify_online=cfg.verify_online, margin_days=1.0)
 
@@ -126,13 +131,29 @@ def gather_evidence(question: str, *, as_of: str, requirements: list, llm=None,
                                        "error": tr.error, "requirement_id": req.requirement_id})
         for it in items:
             documents.append(_doc_from_item(it, "news"))
-        # Wikipedia background for the top entity (server-side revision time)
+        # GDELT DOC — the free breadth layer: the SAME facet query over thousands of outlets with a
+        # precise date window (battlefield reporting, aid packages, domestic politics, alliance
+        # commitments all arrive through the requirement-driven queries)
+        if cfg.use_gdelt:
+            gitems, gtr = gdelt.search_historical(terms, after_date=after, before_date=before,
+                                                  requirement_id=req.requirement_id,
+                                                  k=cfg.max_items_per_query)
+            traces.append(gtr.as_dict())
+            if gtr.connector_status not in ("ok", "zero_results"):
+                connector_failures.append({"connector": gtr.connector_id,
+                                           "status": gtr.connector_status,
+                                           "error": gtr.error, "requirement_id": req.requirement_id})
+            for it in gitems:
+                documents.append(_doc_from_item(it, "news"))
+        # Wikipedia as-of revisions — the structured DEPTH layer (timelines, aid lists,
+        # order-of-battle pages, negotiation-history articles), per scoped entity
         if cfg.use_wikipedia and req.entity_scope:
-            witems, wtr = wiki.fetch(str(req.entity_scope[0]), requirement_id=req.requirement_id,
-                                     as_of_iso=as_of_iso)
-            traces.append(wtr.as_dict())
-            for it in witems:
-                documents.append(_doc_from_item(it, "wikipedia_revision"))
+            for ent in req.entity_scope[:max(1, int(cfg.wiki_entities_per_req))]:
+                witems, wtr = wiki.fetch(str(ent), requirement_id=req.requirement_id,
+                                         as_of_iso=as_of_iso)
+                traces.append(wtr.as_dict())
+                for it in witems:
+                    documents.append(_doc_from_item(it, "wikipedia_revision"))
 
     # user documents (private by default via visibility hint)
     if user_documents:

@@ -244,3 +244,112 @@ def _iso_ts(s: str):
         except (ValueError, TypeError):
             continue
     return None
+
+
+# ---------------------------------------------------------------- GDELT DOC 2.0 (free, keyless)
+GDELT_DOC = "https://api.gdeltproject.org/api/v2/doc/doc"
+_GDELT_MIN_INTERVAL_S = 6.5                       # published rate limit: one request per 5 seconds
+                                                  # (headroom — enforcement is sliding per IP)
+_gdelt_last_call = [0.0]
+
+
+class GdeltDocConnector:
+    """Historical full-text news discovery via the GDELT 2.0 DOC API — the breadth layer the free
+    stack was missing. Free, keyless, updated every 15 minutes since 2017, and date-scoped
+    PRECISELY (startdatetime/enddatetime), unlike Google News RSS whose after:/before: operators
+    cap at ~20 items and are sometimes ignored server-side. One requirement's facet query (an
+    actor's statements, a quantity's measurements, the scheduled calendar) fans out to dozens of
+    dated articles across thousands of outlets — battlefield reporting, aid packages, domestic
+    politics, alliance commitments all arrive through the SAME requirement-driven queries.
+
+    Same contract as GoogleNewsRSSConnector: paired dates REQUIRED (the production as-of
+    invariant); every invocation produces a RetrievalTrace (failures included). Respects the
+    published rate limit (>=5s between requests, module-wide) with one retry."""
+    connector_id = "gdelt_doc"
+
+    def __init__(self, store: RawContentStore | None = None):
+        self.store = store or RawContentStore()
+
+    @staticmethod
+    def _dt(date_iso: str, end: bool = False) -> str:
+        return date_iso.replace("-", "") + ("235959" if end else "000000")
+
+    def search_historical(self, query_terms: str, *, after_date: str, before_date: str,
+                          requirement_id: str = "", k: int = 20, timeout: int = 25,
+                          retries: int = 2) -> tuple:
+        from swm.world_model_v2.evidence_connectors import PairedDateError, paired_dates_ok
+        if not paired_dates_ok(after_date, before_date):
+            raise PairedDateError(
+                f"historical GDELT query requires BOTH after and before (ISO YYYY-MM-DD); "
+                f"got after={after_date!r} before={before_date!r}")
+        q = " ".join(str(query_terms).split()[:8])            # GDELT dislikes very long queries
+        params = urllib.parse.urlencode({
+            "query": f"{q} sourcelang:english", "mode": "artlist", "maxrecords": int(k),
+            "format": "json", "sort": "hybridrel",
+            "startdatetime": self._dt(after_date), "enddatetime": self._dt(before_date, end=True)})
+        wire = f"{GDELT_DOC}?{params}"
+        tr = RetrievalTrace(connector_id=self.connector_id, connector_version=CONNECTOR_VERSION,
+                            requirement_id=requirement_id, logical_query=f"{q} [{after_date}..{before_date}]",
+                            wire_url=wire, after_date=after_date, before_date=before_date,
+                            retrieved_at=_time.time())
+        raw = None
+        for attempt in range(retries + 1):
+            wait = _GDELT_MIN_INTERVAL_S - (_time.time() - _gdelt_last_call[0])
+            if wait > 0:
+                _time.sleep(wait)                             # module-wide pacing (published limit)
+            _gdelt_last_call[0] = _time.time()
+            t0 = _time.time()
+            try:
+                req = urllib.request.Request(wire, headers={"User-Agent": "swm-evidence/1.0 (research)",
+                                                            "Accept": "application/json"})
+                resp = urllib.request.urlopen(req, timeout=timeout)
+                raw = resp.read()
+                tr.status_code = resp.status
+                tr.latency_s = round(_time.time() - t0, 3)
+                if raw[:1] not in (b"{", b"["):               # rate-limit / advisory plain text
+                    tr.connector_status, tr.error = "http_error", raw[:120].decode("utf-8", "ignore")
+                    raw = None
+                else:
+                    break
+            except urllib.error.HTTPError as e:
+                tr.status_code = e.code
+                tr.connector_status, tr.error = "http_error", f"HTTP {e.code}: {str(e)[:100]}"
+            except (TimeoutError, urllib.error.URLError) as e:
+                is_to = isinstance(e, TimeoutError) or "timed out" in str(e).lower()
+                tr.connector_status = "timeout" if is_to else "network_error"
+                tr.error = f"{type(e).__name__}: {str(e)[:100]}"
+            except Exception as e:  # noqa: BLE001
+                tr.connector_status, tr.error = "network_error", f"{type(e).__name__}: {str(e)[:100]}"
+        if raw is None:
+            tr.latency_s = tr.latency_s or 0.0
+            return [], tr                                     # technical failure — status set, NOT zero
+        tr.raw_content_hash = self.store.put(raw)
+        tr.n_bytes = len(raw)
+        try:
+            items = self.parse_articles(raw, tr.logical_query, wire, requirement_id,
+                                        tr.raw_content_hash, k)
+        except Exception as e:  # noqa: BLE001
+            tr.connector_status, tr.error = "parse_error", f"{type(e).__name__}: {str(e)[:100]}"
+            return [], tr
+        tr.n_items = len(items)
+        tr.connector_status = "ok" if items else "zero_results"
+        return items, tr
+
+    def parse_articles(self, raw: bytes, logical: str, wire: str, req_id: str,
+                       raw_hash: str, k: int) -> list:
+        doc = json.loads(raw.decode("utf-8", "ignore"))
+        out, now = [], _time.time()
+        for rank, a in enumerate((doc.get("articles") or [])[:k], 1):
+            seen = str(a.get("seendate", ""))                 # YYYYMMDDTHHMMSSZ
+            ts = None
+            try:
+                ts = _time.mktime(_time.strptime(seen, "%Y%m%dT%H%M%SZ")) - _time.timezone
+            except (ValueError, TypeError):
+                pass
+            out.append(DiscoveredItem(
+                connector_id=self.connector_id, requirement_id=req_id, logical_query=logical,
+                wire_url=wire, rank=rank, title=str(a.get("title", ""))[:300],
+                link=str(a.get("url", "")), google_redirect_url="",
+                source_name=str(a.get("domain", "")), feed_pubdate=seen, feed_pubdate_ts=ts,
+                description="", raw_content_hash=raw_hash, retrieved_at=now))
+        return out

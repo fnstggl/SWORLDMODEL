@@ -28,11 +28,13 @@ def _fixture_market(i, end_ts, p_yes=0.4):
             "outcomePrices": json.dumps([str(p_yes), str(1 - p_yes)])}
 
 
-def _build_fixture_vault(tmp_path, monkeypatch, n=12):
-    """Run the REAL builder main() against a stubbed gamma API into tmp paths."""
+def _build_fixture_vault(tmp_path, monkeypatch, n=15, near_price=0.4):
+    """Run the REAL builder main() against a stubbed gamma API into tmp paths. n=15 → 5 near
+    (resolving within ~30h) + 10 far (30..100d out)."""
     import experiments.replay_v2.build_vault as V2B
     now = time.time()
-    page = [_fixture_market(i, now + (30 + i * 7) * DAY) for i in range(n)]
+    page = ([_fixture_market(i, now + (6 + i * 5) * 3600.0, p_yes=near_price) for i in range(5)]
+            + [_fixture_market(100 + i, now + (30 + i * 7) * DAY) for i in range(10)])
     monkeypatch.setattr(V2B, "_get", lambda url: page if "offset=0" in url else [])
     monkeypatch.setattr(V2B, "_history", lambda tok: [], raising=False)
     monkeypatch.setattr(BV, "OUT", tmp_path / "event_time_frozen_vault.json")
@@ -42,48 +44,65 @@ def _build_fixture_vault(tmp_path, monkeypatch, n=12):
     return BV.OUT, BV.SEAL
 
 
-def test_build_seals_future_window_vault_and_never_rebuilds(tmp_path, monkeypatch):
+def test_build_seals_two_tranche_vault_and_never_rebuilds(tmp_path, monkeypatch):
     out, seal_p = _build_fixture_vault(tmp_path, monkeypatch)
     vault = json.loads(out.read_text())
     seal = json.loads(seal_p.read_text())
-    assert vault["n_questions"] == 12
-    assert all(q["market_p_yes_at_freeze"] == pytest.approx(0.4) for q in vault["questions"])
+    assert vault["n_questions"] == 15 and vault["n_near"] == 5 and vault["n_far"] == 10
+    near = [q for q in vault["questions"] if q["tranche"] == "near"]
+    far = [q for q in vault["questions"] if q["tranche"] == "far"]
+    now = time.time()
+    assert all(q["end_ts"] <= now + 2.1 * DAY for q in near)   # resolves today/tomorrow
+    assert all(q["end_ts"] >= now + 21 * DAY for q in far)
     assert seal["sha256"] == hashlib.sha256(canonical_bytes(vault)).hexdigest()
-    assert seal["opened"] is False
-    opens = dt.datetime.fromisoformat(seal["opens_after"]).timestamp()
-    assert opens > max(q["end_ts"] for q in vault["questions"])   # opens only after the window
+    tr = seal["tranches"]
+    assert tr["near"]["opened"] is False and tr["far"]["opened"] is False
+    near_opens = dt.datetime.fromisoformat(tr["near"]["opens_after"]).timestamp()
+    far_opens = dt.datetime.fromisoformat(tr["far"]["opens_after"]).timestamp()
+    assert near_opens < now + 3.5 * DAY < far_opens            # near scoreable within days
+    assert near_opens > max(q["end_ts"] for q in near)         # ... but only after ITS window
     # a frozen vault is never rebuilt in place
     with pytest.raises(SystemExit, match="never rebuilt"):
         BV.main()
 
 
-def test_scorer_time_gate_refuses_early(tmp_path, monkeypatch):
+def test_near_tranche_excludes_already_effectively_decided_markets(tmp_path, monkeypatch):
+    """'resolve today/tomorrow if they HAVEN'T happened yet': a near-dated market whose freeze
+    price is pinned at 0.99 has effectively happened — it must not enter the near tranche."""
+    with pytest.raises(SystemExit, match="too small"):
+        _build_fixture_vault(tmp_path, monkeypatch, near_price=0.99)
+
+
+def test_scorer_time_gate_refuses_early_per_tranche(tmp_path, monkeypatch):
     out, seal_p = _build_fixture_vault(tmp_path, monkeypatch)
     monkeypatch.setattr(SV, "OUT", out)
     monkeypatch.setattr(SV, "SEAL", seal_p)
-    with pytest.raises(SystemExit, match="refusing to score early"):
-        SV.main()
+    for tranche in ("near", "far", "all"):
+        with pytest.raises(SystemExit, match="refusing to score early"):
+            SV.main(tranche=tranche)
 
 
-def test_scorer_tamper_gate_and_single_open_gate(tmp_path, monkeypatch):
+def test_scorer_tamper_gate_and_per_tranche_single_open(tmp_path, monkeypatch):
     out, seal_p = _build_fixture_vault(tmp_path, monkeypatch)
     monkeypatch.setattr(SV, "OUT", out)
     monkeypatch.setattr(SV, "SEAL", seal_p)
-    # move the clock past the window: rewrite opens_after into the past (the gate itself is what we
-    # bypass here, to reach the TAMPER gate behind it)
+    # move the clock past the NEAR window: rewrite its opens_after into the past (the gate itself
+    # is what we bypass here, to reach the TAMPER gate behind it)
     seal = json.loads(seal_p.read_text())
-    seal["opens_after"] = _iso(time.time() - DAY)
+    seal["tranches"]["near"]["opens_after"] = _iso(time.time() - DAY)
     seal_p.write_text(json.dumps(seal))
     vault = json.loads(out.read_text())
     vault["questions"][0]["market_p_yes_at_freeze"] = 0.9      # tamper
     out.write_text(json.dumps(vault, indent=1))
     with pytest.raises(SystemExit, match="SEAL MISMATCH"):
-        SV.main()
-    # single-open: an already-opened seal refuses a second scoring run
-    seal["opened"] = True
+        SV.main(tranche="near")
+    # single-open PER TRANCHE: a consumed near tranche refuses; far stays gated by ITS window
+    seal["tranches"]["near"]["opened"] = True
     seal_p.write_text(json.dumps(seal))
     with pytest.raises(SystemExit, match="already opened"):
-        SV.main()
+        SV.main(tranche="near")
+    with pytest.raises(SystemExit, match="refusing to score early"):
+        SV.main(tranche="far")
 
 
 # ---------------------------------------------------------------- placebo-controlled measurement

@@ -98,10 +98,31 @@ evidence.**
 
 ## Evidence breadth
 
-`requirements_from_plan` now derives per-actor recent-statement requirements (the stance grounding
+`requirements_from_plan` derives per-actor recent-statement requirements (the stance grounding
 substrate), declared-quantity measurement requirements (the order-of-battle class), and a
 scheduled-calendar requirement, all from the plan's own structure; orchestrator caps raised
-(3→8 retrieved requirements, 8→16 claim docs).
+(3→8 retrieved requirements, 8→16→24 claim docs).
+
+**The free-source stack (no paid APIs anywhere).** More Google RSS alone is NOT the answer — RSS
+caps ~20 items per query and sometimes ignores after:/before: server-side. The layered design:
+
+1. **GDELT 2.0 DOC API** (`GdeltDocConnector`) — keyless, thousands of outlets, PRECISE
+   startdatetime/enddatetime windows, updated every 15 minutes since 2017. The BREADTH layer: the
+   same requirement-driven facet queries (an actor's statements, a quantity's measurements, the
+   calendar) fan out to dozens of dated articles — battlefield reporting, aid packages, domestic
+   politics, alliance commitments arrive without any scenario-specific code. Published rate limit
+   honored (module-wide ≥6.5s pacing; the plain-text advisory is classified http_error).
+2. **As-of Wikipedia revisions** (existing connector, widened to 2 scoped entities per
+   requirement) — the structured DEPTH layer: timeline articles, "List of military aid…",
+   order-of-battle pages, negotiation-history pages carry exactly the battlefield/aid/negotiation
+   state a war question needs, in one server-side-dated fetch each.
+3. **Google News RSS** (existing) — the recency/headline layer.
+
+Live measurement on the Ukraine question's facets: **~13 archived items → 127 dated items across
+8 requirement-driven facets** (terminal, Putin/Zelenskyy/Trump statements, battlefield, aid
+schedules, negotiations, calendar). Next free increments, each a slot not a redesign: Wayback CDX
+snapshots of institutional pages (ISW, ministries), and Wikidata SPARQL for structured
+composition/capacity facts.
 
 ## The world-dynamics layer (`world_dynamics.py`) — the five ranked gaps, closed
 
