@@ -1,85 +1,702 @@
 {
  "case": "case2_personal_message",
  "question": "How will Tomas react if I send this message tonight?",
- "runtime_s": 852.3,
+ "runtime_s": 631.7,
  "simulation_status": "completed",
  "support_grade": "exploratory",
  "distribution": {
-  "acknowledge@you": 0.2083,
-  "acknowledge[multi_part]@you": 0.0417,
-  "acknowledge_and_deflect@you": 0.0417,
-  "open_shared_folder_first[multi_part]": 0.0833,
-  "reply_later[multi_part]@you": 0.0417,
-  "reply_now@you": 0.2917,
-  "reply_now[multi_part]@you": 0.125,
-  "reply_with_curt_acknowledgment_and_deflect[multi_part]@you": 0.0417,
-  "reply_with_firm_boundary[private]@you": 0.0417,
-  "reply_with_only_receipt_and_procedure[multi_part]@you": 0.0417,
-  "thank_you_but_push_back_gently[multi_part]@you": 0.0417
+  "acknowledge@you": 0.05,
+  "acknowledge[multi_part]@you": 0.05,
+  "acknowledge_and_delay@you": 0.05,
+  "delay_and_escalate_internally[multi_part]": 0.05,
+  "do_nothing[multi_part]": 0.05,
+  "reply_later[multi_part]@you": 0.1,
+  "reply_now@you": 0.4,
+  "reply_now[multi_part]@you": 0.05,
+  "reply_with_deflection[multi_part]@you": 0.05,
+  "send_brief_factual_reply@you": 0.05,
+  "send_one_line_thanks_and_defer[private]@you": 0.05,
+  "send_quick_thank_you_deflect_role[private]@you": 0.05
  },
  "conditional_forecast_note": "",
  "under_modeled_subtypes": [],
  "under_modeled_components": [],
  "world_boundaries": {},
  "outside_world": {},
- "cognition_report": {},
+ "cognition_report": {
+  "pipeline": "stimulus availability \u2192 attention \u2192 working_memory \u2192 memory_retrieval \u2192 interpretation \u2192 limited_action_search \u2192 one_choice \u2192 memory_update",
+  "schema": "bounded.cognition.v1",
+  "sample_decision_records": [
+   {
+    "model_family": "primary",
+    "observations_noticed": [
+     "stimulus"
+    ],
+    "observations_missed": [],
+    "working_memory_capacity": 4,
+    "memories_retrieved": [],
+    "retrieval_failures": [],
+    "options_considered": [
+     "reply_now with a short, formal thank-you for the reconciliation, then deflect the coffee by saying 'let's circle back after audit week'",
+     "reply_later \u2014 buy time to think, but I'll have to respond within the hour or it looks like I'm dodging"
+    ],
+    "actually_feasible_not_considered": [
+     "- reply_now: messaging/reply_now (target: you)",
+     "- reply_later: messaging/reply_later (target: you)",
+     "- acknowledge: messaging/acknowledge (target: you)",
+     "- clarify: messaging/clarify (target: you)",
+     "- ignore: platform/ignore (target: you)"
+    ],
+    "stage_traces": [
+     {
+      "stage": "attention",
+      "input_hash": "24ae969a6b49af74",
+      "output_hash": "6c3f09b548ce227a",
+      "deterministic_rule": "temporal_channel_rules+llm_middle_band",
+      "failure": "",
+      "at": 1784498808.7642927
+     },
+     {
+      "stage": "working_memory",
+      "input_hash": "24ae969a6b49af74",
+      "output_hash": "290702ab3946d15a",
+      "deterministic_rule": "situational_capacity+displacement",
+      "failure": "",
+      "at": 1784498808.7642927
+     },
+     {
+      "stage": "memory_retrieval",
+      "input_hash": "97243901c023e3d4",
+      "output_hash": "1713dd2b8b7877ed",
+      "deterministic_rule": "cue_overlap+salience_failure_band(branch_rng)",
+      "failure": "",
+      "at": 1784498808.7642927
+     },
+     {
+      "stage": "interpretation",
+      "input_hash": "09bfd6f7c3f3a07d",
+      "output_hash": "ee5226c04db0a2d9",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1784498808.7642927
+     },
+     {
+      "stage": "action_search",
+      "input_hash": "b29a309ec93adf43",
+      "output_hash": "684c7ede9166c8d1",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1784498808.7642927
+     },
+     {
+      "stage": "memory_update",
+      "input_hash": "8ee1022183fa6d0a",
+      "output_hash": "097fa509bfdbf84c",
+      "deterministic_rule": "append_only_commit+salience_encoding",
+      "failure": "",
+      "at": 1784498808.7642927
+     }
+    ]
+   },
+   {
+    "model_family": "primary",
+    "observations_noticed": [
+     "stimulus"
+    ],
+    "observations_missed": [],
+    "working_memory_capacity": 4,
+    "memories_retrieved": [],
+    "retrieval_failures": [],
+    "options_considered": [
+     "reply_now: messaging/reply_now",
+     "acknowledge: messaging/acknowledge",
+     "Send a quick thank-you and say we'll talk about the team lead after the audit deadline"
+    ],
+    "actually_feasible_not_considered": [
+     "- reply_now: messaging/reply_now (target: you)",
+     "- reply_later: messaging/reply_later (target: you)",
+     "- acknowledge: messaging/acknowledge (target: you)",
+     "- clarify: messaging/clarify (target: you)",
+     "- ignore: platform/ignore (target: you)"
+    ],
+    "stage_traces": [
+     {
+      "stage": "attention",
+      "input_hash": "24ae969a6b49af74",
+      "output_hash": "3479921681d2c346",
+      "deterministic_rule": "temporal_channel_rules+llm_middle_band",
+      "failure": "",
+      "at": 1784523600.0
+     },
+     {
+      "stage": "working_memory",
+      "input_hash": "24ae969a6b49af74",
+      "output_hash": "435c5987fd03e079",
+      "deterministic_rule": "situational_capacity+displacement",
+      "failure": "",
+      "at": 1784523600.0
+     },
+     {
+      "stage": "memory_retrieval",
+      "input_hash": "97243901c023e3d4",
+      "output_hash": "1713dd2b8b7877ed",
+      "deterministic_rule": "cue_overlap+salience_failure_band(branch_rng)",
+      "failure": "",
+      "at": 1784523600.0
+     },
+     {
+      "stage": "interpretation",
+      "input_hash": "09bfd6f7c3f3a07d",
+      "output_hash": "eb9616f65a7e6db3",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1784523600.0
+     },
+     {
+      "stage": "action_search",
+      "input_hash": "b29a309ec93adf43",
+      "output_hash": "9282bbb78588dabb",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1784523600.0
+     },
+     {
+      "stage": "memory_update",
+      "input_hash": "8ee1022183fa6d0a",
+      "output_hash": "98db739464707ad4",
+      "deterministic_rule": "append_only_commit+salience_encoding",
+      "failure": "",
+      "at": 1784523600.0
+     }
+    ]
+   },
+   {
+    "model_family": "primary",
+    "observations_noticed": [
+     "stimulus"
+    ],
+    "observations_missed": [],
+    "working_memory_capacity": 4,
+    "memories_retrieved": [],
+    "retrieval_failures": [],
+    "options_considered": [
+     "acknowledge the reconciliation briefly, ignore the promotion and coffee mention",
+     "reply_later with a non-committal 'thanks, will check the file'",
+     "ignore entirely until after audit week"
+    ],
+    "actually_feasible_not_considered": [
+     "- reply_now: messaging/reply_now (target: you)",
+     "- reply_later: messaging/reply_later (target: you)",
+     "- acknowledge: messaging/acknowledge (target: you)",
+     "- clarify: messaging/clarify (target: you)",
+     "- ignore: platform/ignore (target: you)"
+    ],
+    "stage_traces": [
+     {
+      "stage": "attention",
+      "input_hash": "24ae969a6b49af74",
+      "output_hash": "f9542ff0d43b4b48",
+      "deterministic_rule": "temporal_channel_rules+llm_middle_band",
+      "failure": "",
+      "at": 1784523600.0
+     },
+     {
+      "stage": "working_memory",
+      "input_hash": "24ae969a6b49af74",
+      "output_hash": "435c5987fd03e079",
+      "deterministic_rule": "situational_capacity+displacement",
+      "failure": "",
+      "at": 1784523600.0
+     },
+     {
+      "stage": "memory_retrieval",
+      "input_hash": "97243901c023e3d4",
+      "output_hash": "1713dd2b8b7877ed",
+      "deterministic_rule": "cue_overlap+salience_failure_band(branch_rng)",
+      "failure": "",
+      "at": 1784523600.0
+     },
+     {
+      "stage": "interpretation",
+      "input_hash": "09bfd6f7c3f3a07d",
+      "output_hash": "1c3db1deb3acb26a",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1784523600.0
+     },
+     {
+      "stage": "action_search",
+      "input_hash": "b29a309ec93adf43",
+      "output_hash": "581bd87961ecb287",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1784523600.0
+     },
+     {
+      "stage": "memory_update",
+      "input_hash": "944717463ecb5a3a",
+      "output_hash": "f3dbf6bbbf2326c9",
+      "deterministic_rule": "append_only_commit+salience_encoding",
+      "failure": "",
+      "at": 1784523600.0
+     }
+    ]
+   },
+   {
+    "model_family": "primary",
+    "observations_noticed": [
+     "stimulus"
+    ],
+    "observations_missed": [],
+    "working_memory_capacity": 4,
+    "memories_retrieved": [],
+    "retrieval_failures": [],
+    "options_considered": [
+     "reply_now",
+     "acknowledge",
+     "apologize directly in the reply"
+    ],
+    "actually_feasible_not_considered": [
+     "- reply_now: messaging/reply_now (target: you)",
+     "- reply_later: messaging/reply_later (target: you)",
+     "- acknowledge: messaging/acknowledge (target: you)",
+     "- clarify: messaging/clarify (target: you)",
+     "- ignore: platform/ignore (target: you)"
+    ],
+    "stage_traces": [
+     {
+      "stage": "attention",
+      "input_hash": "24ae969a6b49af74",
+      "output_hash": "f445d988e47f85ab",
+      "deterministic_rule": "temporal_channel_rules+llm_middle_band",
+      "failure": "",
+      "at": 1784552420.3026805
+     },
+     {
+      "stage": "working_memory",
+      "input_hash": "24ae969a6b49af74",
+      "output_hash": "784c843fb61d9fef",
+      "deterministic_rule": "situational_capacity+displacement",
+      "failure": "",
+      "at": 1784552420.3026805
+     },
+     {
+      "stage": "memory_retrieval",
+      "input_hash": "97243901c023e3d4",
+      "output_hash": "1713dd2b8b7877ed",
+      "deterministic_rule": "cue_overlap+salience_failure_band(branch_rng)",
+      "failure": "",
+      "at": 1784552420.3026805
+     },
+     {
+      "stage": "interpretation",
+      "input_hash": "09bfd6f7c3f3a07d",
+      "output_hash": "39758b275d7b24a2",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1784552420.3026805
+     },
+     {
+      "stage": "action_search",
+      "input_hash": "b29a309ec93adf43",
+      "output_hash": "c114f944a1a94025",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1784552420.3026805
+     },
+     {
+      "stage": "memory_update",
+      "input_hash": "8ee1022183fa6d0a",
+      "output_hash": "24d6d0bf0f9b705f",
+      "deterministic_rule": "append_only_commit+salience_encoding",
+      "failure": "",
+      "at": 1784552420.3026805
+     }
+    ]
+   },
+   {
+    "model_family": "primary",
+    "observations_noticed": [
+     "stimulus"
+    ],
+    "observations_missed": [],
+    "working_memory_capacity": 4,
+    "memories_retrieved": [],
+    "retrieval_failures": [],
+    "options_considered": [
+     "send a formal email logging his request and redirecting to HR channels",
+     "reply with a brief, procedural acknowledgment that I saw his message but will only discuss the team lead role via scheduled meeting"
+    ],
+    "actually_feasible_not_considered": [
+     "- reply_now: messaging/reply_now (target: you)",
+     "- reply_later: messaging/reply_later (target: you)",
+     "- acknowledge: messaging/acknowledge (target: you)",
+     "- clarify: messaging/clarify (target: you)",
+     "- ignore: platform/ignore (target: you)"
+    ],
+    "stage_traces": [
+     {
+      "stage": "attention",
+      "input_hash": "24ae969a6b49af74",
+      "output_hash": "62803930c2948cca",
+      "deterministic_rule": "temporal_channel_rules+llm_middle_band",
+      "failure": "",
+      "at": 1784498808.7642927
+     },
+     {
+      "stage": "working_memory",
+      "input_hash": "24ae969a6b49af74",
+      "output_hash": "290702ab3946d15a",
+      "deterministic_rule": "situational_capacity+displacement",
+      "failure": "",
+      "at": 1784498808.7642927
+     },
+     {
+      "stage": "memory_retrieval",
+      "input_hash": "97243901c023e3d4",
+      "output_hash": "1713dd2b8b7877ed",
+      "deterministic_rule": "cue_overlap+salience_failure_band(branch_rng)",
+      "failure": "",
+      "at": 1784498808.7642927
+     },
+     {
+      "stage": "interpretation",
+      "input_hash": "09bfd6f7c3f3a07d",
+      "output_hash": "d6e6756cad259f0c",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1784498808.7642927
+     },
+     {
+      "stage": "action_search",
+      "input_hash": "b29a309ec93adf43",
+      "output_hash": "fd48ab71e573dae3",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1784498808.7642927
+     },
+     {
+      "stage": "memory_update",
+      "input_hash": "8ee1022183fa6d0a",
+      "output_hash": "097fa509bfdbf84c",
+      "deterministic_rule": "append_only_commit+salience_encoding",
+      "failure": "",
+      "at": 1784498808.7642927
+     }
+    ]
+   },
+   {
+    "model_family": "primary",
+    "observations_noticed": [
+     "stimulus"
+    ],
+    "observations_missed": [],
+    "working_memory_capacity": 5,
+    "memories_retrieved": [],
+    "retrieval_failures": [],
+    "options_considered": [
+     "reply_now",
+     "acknowledge",
+     "send a quick thank-you message now, but deflect on the coffee/role discussion until after audit week"
+    ],
+    "actually_feasible_not_considered": [
+     "- reply_now: messaging/reply_now (target: you)",
+     "- reply_later: messaging/reply_later (target: you)",
+     "- acknowledge: messaging/acknowledge (target: you)",
+     "- clarify: messaging/clarify (target: you)",
+     "- ignore: platform/ignore (target: you)"
+    ],
+    "stage_traces": [
+     {
+      "stage": "attention",
+      "input_hash": "24ae969a6b49af74",
+      "output_hash": "0b2becff41fd224d",
+      "deterministic_rule": "temporal_channel_rules+llm_middle_band",
+      "failure": "",
+      "at": 1784523600.0
+     },
+     {
+      "stage": "working_memory",
+      "input_hash": "24ae969a6b49af74",
+      "output_hash": "042c22dca9517aa7",
+      "deterministic_rule": "situational_capacity+displacement",
+      "failure": "",
+      "at": 1784523600.0
+     },
+     {
+      "stage": "memory_retrieval",
+      "input_hash": "97243901c023e3d4",
+      "output_hash": "1713dd2b8b7877ed",
+      "deterministic_rule": "cue_overlap+salience_failure_band(branch_rng)",
+      "failure": "",
+      "at": 1784523600.0
+     },
+     {
+      "stage": "interpretation",
+      "input_hash": "09bfd6f7c3f3a07d",
+      "output_hash": "3f4c5853037c63e5",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1784523600.0
+     },
+     {
+      "stage": "action_search",
+      "input_hash": "b29a309ec93adf43",
+      "output_hash": "b8aa53d6064c7ae6",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1784523600.0
+     },
+     {
+      "stage": "memory_update",
+      "input_hash": "a7f5b469aa0c9423",
+      "output_hash": "72614e2fa6a5306d",
+      "deterministic_rule": "append_only_commit+salience_encoding",
+      "failure": "",
+      "at": 1784523600.0
+     }
+    ]
+   },
+   {
+    "model_family": "primary",
+    "observations_noticed": [
+     "stimulus"
+    ],
+    "observations_missed": [],
+    "working_memory_capacity": 4,
+    "memories_retrieved": [],
+    "retrieval_failures": [],
+    "options_considered": [
+     "acknowledge",
+     "ignore",
+     "send a brief, purely factual reply confirming the file is logged and nothing else"
+    ],
+    "actually_feasible_not_considered": [
+     "- reply_now: messaging/reply_now (target: you)",
+     "- reply_later: messaging/reply_later (target: you)",
+     "- acknowledge: messaging/acknowledge (target: you)",
+     "- clarify: messaging/clarify (target: you)",
+     "- ignore: platform/ignore (target: you)"
+    ],
+    "stage_traces": [
+     {
+      "stage": "attention",
+      "input_hash": "24ae969a6b49af74",
+      "output_hash": "f48178e43337a27b",
+      "deterministic_rule": "temporal_channel_rules+llm_middle_band",
+      "failure": "",
+      "at": 1784523600.0
+     },
+     {
+      "stage": "working_memory",
+      "input_hash": "24ae969a6b49af74",
+      "output_hash": "435c5987fd03e079",
+      "deterministic_rule": "situational_capacity+displacement",
+      "failure": "",
+      "at": 1784523600.0
+     },
+     {
+      "stage": "memory_retrieval",
+      "input_hash": "97243901c023e3d4",
+      "output_hash": "1713dd2b8b7877ed",
+      "deterministic_rule": "cue_overlap+salience_failure_band(branch_rng)",
+      "failure": "",
+      "at": 1784523600.0
+     },
+     {
+      "stage": "interpretation",
+      "input_hash": "09bfd6f7c3f3a07d",
+      "output_hash": "694243b975e3b690",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1784523600.0
+     },
+     {
+      "stage": "action_search",
+      "input_hash": "b29a309ec93adf43",
+      "output_hash": "9ff2c303ac903b7d",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1784523600.0
+     },
+     {
+      "stage": "memory_update",
+      "input_hash": "f0412aaeb0b42bd2",
+      "output_hash": "32d09645a4021419",
+      "deterministic_rule": "append_only_commit+salience_encoding",
+      "failure": "",
+      "at": 1784523600.0
+     }
+    ]
+   },
+   {
+    "model_family": "primary",
+    "observations_noticed": [
+     "stimulus"
+    ],
+    "observations_missed": [],
+    "working_memory_capacity": 5,
+    "memories_retrieved": [],
+    "retrieval_failures": [],
+    "options_considered": [
+     "Verify your work quietly in the shared folder, then send a terse 'Got it' without engaging on the role topic.",
+     "Reply with a deflection: 'Thanks. Let's focus on audit first. We'll talk after.'",
+     "ignore: platform/ignore (target: you)"
+    ],
+    "actually_feasible_not_considered": [
+     "- reply_now: messaging/reply_now (target: you)",
+     "- reply_later: messaging/reply_later (target: you)",
+     "- acknowledge: messaging/acknowledge (target: you)",
+     "- clarify: messaging/clarify (target: you)",
+     "- ignore: platform/ignore (target: you)"
+    ],
+    "stage_traces": [
+     {
+      "stage": "attention",
+      "input_hash": "24ae969a6b49af74",
+      "output_hash": "7c402db877b16728",
+      "deterministic_rule": "temporal_channel_rules+llm_middle_band",
+      "failure": "",
+      "at": 1784552420.3026805
+     },
+     {
+      "stage": "working_memory",
+      "input_hash": "24ae969a6b49af74",
+      "output_hash": "5caa452277086e01",
+      "deterministic_rule": "situational_capacity+displacement",
+      "failure": "",
+      "at": 1784552420.3026805
+     },
+     {
+      "stage": "memory_retrieval",
+      "input_hash": "97243901c023e3d4",
+      "output_hash": "1713dd2b8b7877ed",
+      "deterministic_rule": "cue_overlap+salience_failure_band(branch_rng)",
+      "failure": "",
+      "at": 1784552420.3026805
+     },
+     {
+      "stage": "interpretation",
+      "input_hash": "09bfd6f7c3f3a07d",
+      "output_hash": "b32255149dab2834",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1784552420.3026805
+     },
+     {
+      "stage": "action_search",
+      "input_hash": "b29a309ec93adf43",
+      "output_hash": "2f6353bea218c17b",
+      "deterministic_rule": "",
+      "failure": "",
+      "at": 1784552420.3026805
+     },
+     {
+      "stage": "memory_update",
+      "input_hash": "c8f37179dd5ee964",
+      "output_hash": "abdf90a680cf7675",
+      "deterministic_rule": "append_only_commit+salience_encoding",
+      "failure": "",
+      "at": 1784552420.3026805
+     }
+    ]
+   }
+  ],
+  "nonresponse_breakdown": {
+   "considered_but_deferred": 4
+  },
+  "model_family_monoculture": true
+ },
  "truncation_report": {},
- "model_family_report": {},
+ "model_family_report": {
+  "schema": "model.family.v1",
+  "families": [
+   {
+    "family_id": "deepseek_v3",
+    "provider": "deepseek",
+    "model": "deepseek-chat",
+    "version": "",
+    "lineage": "deepseek-v3",
+    "capabilities": [
+     "json",
+     "long_context",
+     "multilingual"
+    ],
+    "context_limit": 64000,
+    "supported_schemas": [
+     "qualitative.actor.v1",
+     "world.boundary.v1"
+    ],
+    "cost_per_mtok_usd": 0.27,
+    "latency_class": "medium",
+    "availability": "configured",
+    "known_limitations": [
+     "single training lineage \u2014 correlated blind spots when serving every actor"
+    ],
+    "strength_tier": "strong"
+   }
+  ],
+  "configured_families": [
+   "deepseek_v3"
+  ],
+  "distinct_lineages": [
+   "deepseek-v3"
+  ],
+  "model_family_monoculture": true,
+  "monoculture_note": "every simulated actor is served by one model lineage; actor instances share that lineage's knowledge, salience and blind spots \u2014 correlated failure risk is NOT diversified",
+  "actor_independence_language": "independently situated LLM actor instances with partially diversified model families",
+  "assignments": [],
+  "n_assignments": 0,
+  "failure_transitions": []
+ },
  "structural_models": [
   {
    "model_id": "m0_actor_relationship",
    "promotion_status": "promoted",
-   "causal_thesis": "Tomas's reaction is determined by his strategic calculus of preserving his own standing under audit-week pressure, where the message's content is filtered through his perception of your role as a senior analyst and the latent tension in your relationship, making his response a function of perceived threat to his workflow control rather than the message's literal content.",
+   "causal_thesis": "Tomas's reaction is determined by his strategic calculus of preserving professional standing under audit-week pressure, where the message's content is filtered through his perception of your role as a senior analyst and the latent tension in your relationship, making his response a function of perceived threat to his workload control and reputation.",
    "world_boundary": null,
    "support_class": null
   },
   {
    "model_id": "m1_institutional_procedural",
    "promotion_status": "promoted",
-   "causal_thesis": "Tomas\u2019s reaction is determined by the formal audit-week escalation procedure and his role as finance manager under mandatory overtime, which overrides personal tension and forces a procedural, risk-averse response regardless of message content.",
+   "causal_thesis": "Tomas's reaction is determined by the formal audit-week escalation procedure and his role as finance manager under workload constraints, which override any personal tension and force a procedural, risk-averse response.",
    "world_boundary": null,
    "support_class": null
   },
   {
    "model_id": "m2_resource_constraint",
    "promotion_status": "promoted",
-   "causal_thesis": "Tomas\u2019s reaction is determined by his current cognitive load and operational capacity during audit-week, not by the message content itself; the resource constraint of his depleted attention and time buffer will cause a delayed, minimal, or defensive response regardless of message tone.",
+   "causal_thesis": "Tomas\u2019s reaction is determined by his current cognitive load and emotional bandwidth under audit-week deadlines, which override any latent collegial tension; the message will be read as an additional operational demand, triggering a curt, task-focused reply or a delayed response, not an emotional confrontation.",
    "world_boundary": null,
    "support_class": null
   },
   {
    "model_id": "m3_information_distribution",
    "promotion_status": "promoted",
-   "causal_thesis": "Tomas's reaction is determined by the information load and channel congestion he experiences during audit week: the message will be received as a low-priority interrupt, triggering a delayed, curt, or defensive reply because his attention is captured by higher-stakes institutional reporting deadlines and his own performance anxiety.",
+   "causal_thesis": "Tomas\u2019s reaction is determined by the information load and channel congestion during his audit-week peak, not by the message content itself; the message will be deprioritized or misread due to attention scarcity and procedural filtering.",
    "world_boundary": null,
    "support_class": null
   },
   {
    "model_id": "m4_adversarial_alternative",
    "promotion_status": "promoted",
-   "causal_thesis": "Tomas's reaction is determined by his personal relationship with you and his desire to avoid conflict, overriding audit-week pressures entirely",
-   "world_boundary": null,
-   "support_class": null
-  },
-  {
-   "model_id": "m5_adversarial_alternative",
-   "promotion_status": "promoted",
-   "causal_thesis": "Tomas's reaction is determined by whether the message activates a latent institutional loyalty script (defending the finance team's reputation) or a personal grievance script (resentment toward the sender's perceived encroachment), with the decisive factor being the message's framing relative to Tomas's internalized role identity as 'guardian of fiscal propriety' rather than its surface emotional valence.",
+   "causal_thesis": "Tomas's reaction is determined by his fear of personal liability for an audit finding that your message might reference; he will escalate to his supervisor or legal before responding to you, if at all.",
    "world_boundary": null,
    "support_class": null
   }
  ],
  "cost_manifest": {
   "llm_calls_by_stage": {
-   "structural_generation": 6,
+   "structural_generation": 5,
    "structural_critic": 2
   },
   "llm_calls_by_model": {},
   "cache_hits_by_stage": {},
-  "total_llm_calls": 8,
+  "total_llm_calls": 7,
   "total_cache_hits": 0,
-  "prompt_chars": 27213,
-  "response_chars": 24721,
+  "prompt_chars": 24521,
+  "response_chars": 19676,
   "errors": 0
  },
  "boundary_promotions": [],
@@ -91,10 +708,10 @@
   "generic_prior_writes": 0,
   "generic_prior_suppressions": 0,
   "branch_continuation_after_truncation": false,
-  "monoculture_reported": null,
+  "monoculture_reported": true,
   "boundaries_present": false,
   "outside_world_present": false,
-  "cognition_records": 0,
+  "cognition_records": 8,
   "under_modeled_subtypes": [],
   "simulation_status": "completed",
   "truncated_weight": null,
@@ -102,11 +719,11 @@
   "ok": true
  },
  "provider_cost": {
-  "calls": 98,
-  "tokens_in": 93606,
-  "tokens_out": 75048,
-  "seconds": 851.96,
-  "cost_usd": 0.107826
+  "calls": 82,
+  "tokens_in": 78446,
+  "tokens_out": 61938,
+  "seconds": 631.46,
+  "cost_usd": 0.089312
  },
  "recommendation_status": "not_requested",
  "note": "architecture probe \u2014 no real-world accuracy claimed (\u00a738)"
