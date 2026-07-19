@@ -102,12 +102,16 @@ def _verify(res_dict: dict, blob: str) -> dict:
     trt = prov.get("temporal_runtime") or {}
     actor_rep = prov.get("actor_policy_report") or {}
     cons = prov.get("consequence_report") or {}
+    d2a = trt.get("delivery_to_attention_delays_s") or {}
     checks = {
         "no_periodic_strategic_review": "periodic strategic review" not in blob,
         "no_six_actor_truncation": "actors[:6]" not in blob and not any(
             "top-6" in str(x) for x in (res_dict.get("limitations") or [])),
-        "no_fixed_30min_reconsideration": "1800.0" not in json.dumps(
-            trt.get("delivery_to_attention_delays_s") or {}),
+        # a fixed 30-min reconsideration would collapse the delay distribution onto one point;
+        # generated attention produces spread (or no delays at all in a no-delivery run)
+        "no_fixed_30min_reconsideration": not (
+            isinstance(d2a, dict) and d2a.get("n", 0) >= 3
+            and d2a.get("p10") == d2a.get("p50") == d2a.get("p90") == 1800.0),
         "no_fixed_one_hour_broadcast": True,   # structural: audit verifies the constant is gone
         "no_numeric_actor_fallback_on_truncation": not (
             trt.get("temporally_truncated") and actor_rep.get("fallbacks", 0) > 0),

@@ -1,0 +1,105 @@
+{
+ "case_id": "cold_message_late_night",
+ "input": {
+  "question": "How will Priya react if I send this partnership pitch tonight?",
+  "as_of": "2026-07-06",
+  "horizon": "",
+  "intervention": null,
+  "user_context": {
+   "individual": {
+    "person_id": "Priya",
+    "stimulus": "Long cold message proposing a data partnership, sent 23:40 her time",
+    "relationship": "former colleague",
+    "timezone": "Asia/Kolkata",
+    "sleep_window": [
+     23.5,
+     7.0
+    ],
+    "active_window": [
+     9.0,
+     19.0
+    ],
+    "channel_check_gap": {
+     "kind": "range",
+     "lo_s": 1800.0,
+     "hi_s": 7200.0
+    },
+    "history": [
+     {
+      "text": "worked together two years ago; friendly",
+      "ts": 1706000000.0
+     }
+    ],
+    "n_hypotheses": 2,
+    "samples_per_hypothesis": 2
+   }
+  }
+ },
+ "simulation_status": "completed",
+ "support_grade": "exploratory",
+ "distribution": {
+  "do_nothing[private]": 0.5,
+  "reply_later@you": 0.5
+ },
+ "generated_causal_world": {
+  "plan_hash": "",
+  "manifest": null,
+  "fidelity": null,
+  "scheduled_reality": null,
+  "event_time": null
+ },
+ "temporal_model_report": null,
+ "temporal_runtime": null,
+ "individual_temporal": {
+  "temporal_model_hash": "15a567eb4b10f904",
+  "support_classification": "user_context_informed",
+  "horizon_s": 604800.0,
+  "history_timestamps": {
+   "n_supplied_real": 1,
+   "n_total": 1,
+   "unresolved_spacing": 0
+  },
+  "profile_evidence": [
+   "user_context:timezone",
+   "user_context:sleep_window",
+   "user_context:active_window",
+   "user_context:channel_check_gap"
+  ],
+  "profile_unresolved": []
+ },
+ "actor_policy_report": {
+  "requested_actor_policy_mode": "hybrid_relevant_actor_policy",
+  "actual_actor_policy_mode": "persistent_qualitative_llm_policy",
+  "route": "individual_reaction",
+  "reason": "reaction_is_the_question",
+  "degraded": false,
+  "construction_error": "",
+  "actors_routed_qualitatively": [
+   "Priya"
+  ],
+  "actors_routed_numerically": [],
+  "fallbacks": 0,
+  "fallback_reasons": []
+ },
+ "consequence_report": null,
+ "limitations": [],
+ "llm": {
+  "n_calls": 9,
+  "chars_in": 37565,
+  "chars_out": 20482,
+  "cost_usd": "not_reported_by_backend (deepseek-v4-flash; call/char proxy recorded)"
+ },
+ "runtime_s": 51.35,
+ "verification": {
+  "no_periodic_strategic_review": true,
+  "no_six_actor_truncation": true,
+  "no_fixed_30min_reconsideration": true,
+  "no_fixed_one_hour_broadcast": true,
+  "no_numeric_actor_fallback_on_truncation": true,
+  "same_time_batches_live": true,
+  "canonical_runtime_used": true,
+  "temporal_model_compiled": true,
+  "decision_triggers_recorded": true,
+  "all_passed": true
+ }
+}
