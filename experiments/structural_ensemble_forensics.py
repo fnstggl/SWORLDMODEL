@@ -99,12 +99,15 @@ def _model_rows(se, res):
     rows = []
     per_prov = (res.provenance or {}).get("per_model_provenance") or {}
     for m in se.get("models", []):
-        prov = per_prov.get(m["model_id"]) or {}
-        rows.append({**{k: m[k] for k in ("model_id", "generation_role", "causal_thesis",
-                                          "plan_hash", "schema_hash", "support_class",
-                                          "promotion_status", "promotion_reason",
-                                          "pilot_particles", "final_particles", "plan_lineage",
-                                          "pilot_result", "prediction", "validation")},
+        prov = per_prov.get(m.get("model_id")) or {}
+        # tolerant access: full-route rows carry plan hashes/pilots; personal-reaction frame rows
+        # carry the frame subset — both are archived as-is
+        rows.append({**{k: m.get(k) for k in ("model_id", "generation_role", "causal_thesis",
+                                              "plan_hash", "schema_hash", "support_class",
+                                              "promotion_status", "promotion_reason",
+                                              "pilot_particles", "final_particles", "plan_lineage",
+                                              "pilot_result", "prediction", "validation",
+                                              "decisive_actors", "decisive_constraints")},
                      "operator_delta_census": prov.get("operator_delta_census"),
                      "n_particles_executed": prov.get("n_particles"),
                      "actor_policy_report": prov.get("actor_policy_report"),
