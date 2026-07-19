@@ -47,19 +47,42 @@ class WorldModelV2Run:
     n_particles: int = 30
 
     def run(self, *, seed: int = 0) -> dict:
+        branches = self.run_particle_range(seed=seed, n_total=self.n_particles,
+                                           start=0, stop=self.n_particles)
+        return self.project(branches), branches
+
+    def run_particle_range(self, *, seed: int = 0, n_total: int = None, start: int = 0,
+                           stop: int = None, particle_scope=None) -> list:
+        """Deterministic INDEX-KEYED slice of an n_total-particle run — the progressive-simulation
+        primitive for structural-ensemble pilots. The full particle set is sampled (index-stable: the
+        initial-state RNG is consumed in fixed particle order, so particle i's world is identical for any
+        n_total ≥ i+1 under the same seed) and only [start, stop) is rolled, each branch with the same
+        per-index exogenous seed law `seed*7919 + i` the full run uses. Therefore pilot [0,p) plus
+        extension [p,n) equals a direct [0,n) run branch-for-branch, and pilot computation is REUSED, not
+        discarded. `particle_scope` (optional) is notified via `enter_branch(i)` before each roll so a
+        cross-model actor-decision cache can align common random numbers by particle index."""
         self.contract.validate()
         engine = RolloutEngine(operators=self.operators)
-        worlds = self.initial.sample_particles(self.n_particles, seed=seed)
+        total = n_total if n_total is not None else self.n_particles
+        stop = total if stop is None else min(stop, total)
+        worlds = self.initial.sample_particles(total, seed=seed)
         branches = []
-        for i, w in enumerate(worlds):
+        for i in range(start, stop):
+            w = worlds[i]
             q = self.queue_builder(w)
+            if particle_scope is not None and hasattr(particle_scope, "enter_branch"):
+                particle_scope.enter_branch(i)
             branches.append(engine.run_branch(w, q, seed=seed * 7919 + i))
+        return branches
+
+    def project(self, branches: list) -> dict:
+        """Terminal projection over (possibly progressively accumulated) branches."""
         result = self.contract.project(branches)
         result["n_deltas"] = sum(len(b.log) for b in branches)
         result["readout"] = "terminal_states"                # provenance: numbers came from worlds, not an LLM
         from swm.world_model_v2.temporal_runtime import aggregate_temporal_stats
         result["temporal_runtime"] = aggregate_temporal_stats(branches)
-        return result, branches
+        return result
 
     # ---------------- Phase 7: matched counterfactuals ----------------
     def evaluate_interventions(self, action_space, utility, *, seed: int = 0) -> dict:

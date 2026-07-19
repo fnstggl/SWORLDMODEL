@@ -111,6 +111,40 @@ QUESTION
 
 ---
 
+## 2b. Structural-model uncertainty is DEFAULT-ON (the ensemble compiler)
+
+Law 1 says accuracy lives in matching the causal **structure** — which makes *uncertainty about the
+structure itself* the first-class uncertainty. Compiling one causally-sufficient schema and simulating
+uncertainty inside it is not enough: a perfectly executed simulation of the wrong causal model is still
+wrong. The canonical runtime therefore no longer begins with one `compile_world(...)`; it begins with a
+**structural ensemble** (`swm/world_model_v2/ensemble_compiler.py` + `structural_runtime.py`):
+
+- several **independent** actual LLM generation calls (normal target four, adaptive up to a soft
+  ceiling) each propose a materially different causal model — separate calls, blind to each other,
+  through general causal perspectives (actors, institutions, constraints, information, exogenous
+  systems, adversarial alternative);
+- adversarial critics hunt for missing decisive actors/institutions/constraints/mechanisms and can
+  spawn expansion candidates; invalid or evidence-contradicted candidates are rejected with cited
+  claims; equivalent candidates merge conservatively (deterministic structural comparison first, a
+  blind LLM judge only for near-matches);
+- every surviving model compiles into its **own executable plan** against ONE shared immutable as-of
+  evidence bundle, receives its **own posterior**, its own event-time conversion and Phase-11 lineage;
+- every plausible model gets a **real pilot** through the full canonical funnel (reduced particle count
+  only), and every promoted model then receives **at least the complete single-model particle budget**,
+  with pilot particles reused as a deterministic prefix — budgets are never divided across models;
+- results report per-model distributions, a labeled equal-weight compatibility mixture (no LLM-minted
+  model probabilities, ever), robust ranges, a structural-sensitivity classification, the assumption
+  that would reverse the answer, and the observation that would distinguish the surviving models;
+- Phase 13 evaluates every action across the surviving models (winner-by-model, minimax regret,
+  conditional strategies when models disagree); personal-reaction questions run several causal frames
+  of the reaction through the same machinery.
+
+Single-model compilation survives only as the explicit
+`execution_policy={"structural_mode": "single_structural_model"}` ablation (plus frozen-artifact
+compatibility and isolated compiler tests); enforcement tests fail if a production route reaches the
+single-plan compiler any other way. Full contract, budgets, cost controls and known limitations:
+`docs/WMV2_STRUCTURAL_ENSEMBLE.md`.
+
 ## 3. How far are we — honestly
 
 | Stage | Status |

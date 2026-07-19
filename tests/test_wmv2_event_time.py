@@ -608,7 +608,14 @@ def test_mass_weights_from_curve_shape():
 
 
 def test_unified_runtime_routes_binary_through_event_time():
+    """The event-time conversion lives in the shared per-plan conditioning step (_condition_plan),
+    which BOTH structural modes run — the default ensemble applies it to every model's own plan, and
+    the explicit single-model ablation applies it to its one plan."""
     import inspect
     from swm.world_model_v2 import unified_runtime as U
-    src = inspect.getsource(U.simulate_world)
+    from swm.world_model_v2 import structural_runtime as SR
+    src = inspect.getsource(U._condition_plan)
     assert "convert_binary_to_event_time" in src and "convert_to_event_time" in src
+    # both modes reach the conditioning step
+    assert "_condition_plan" in inspect.getsource(U._simulate_single_structural_model)
+    assert "_condition_plan" in inspect.getsource(SR._condition_and_pilot_model)

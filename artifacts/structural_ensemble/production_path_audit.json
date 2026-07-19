@@ -1,0 +1,670 @@
+{
+ "schema_version": "structural_ensemble.audit.v1",
+ "integration_invariants": {
+  "canonical_entry_dispatches_to_ensemble": true,
+  "canonical_entry_calls_single_plan_compiler_directly": false,
+  "ensemble_runtime_calls_single_plan_compiler_directly": false,
+  "ensemble_runtime_uses_ensemble_compiler": true,
+  "single_model_mode_is_explicit": true,
+  "default_mode_literal": true
+ },
+ "call_sites": {
+  "compile_world_call_sites": [
+   {
+    "file": "swm/world_model_v2/compiler.py",
+    "line": 718,
+    "code": "new = compile_world(plan.question, llm=llm, evidence=new_evidence,",
+    "classification": "definition_or_recompile_library"
+   },
+   {
+    "file": "swm/world_model_v2/ensemble_compiler.py",
+    "line": 3,
+    "code": "The canonical runtime no longer begins with one `compile_world(...)` call. It begins here:",
+    "classification": "ensemble_stage_b_backend"
+   },
+   {
+    "file": "swm/world_model_v2/ensemble_compiler.py",
+    "line": 630,
+    "code": "plan = compile_world(ens.question, llm=comp_llm.with_stage(\"structural_compile\",",
+    "classification": "ensemble_stage_b_backend"
+   },
+   {
+    "file": "swm/world_model_v2/ensemble_compiler.py",
+    "line": 644,
+    "code": "plan = compile_world(ens.question, llm=comp_llm.with_stage(\"structural_repair\",",
+    "classification": "ensemble_stage_b_backend"
+   },
+   {
+    "file": "swm/world_model_v2/evidence_pipeline.py",
+    "line": 36,
+    "code": "plan = compile_world(question, llm=llm, evidence=\"\", as_of=as_of, horizon=horizon,",
+    "classification": "phase_scoped_science_route"
+   },
+   {
+    "file": "swm/world_model_v2/phase3_pipeline.py",
+    "line": 79,
+    "code": "plan = compile_world(question, llm=llm, evidence=\"\", as_of=as_of, horizon=horizon,",
+    "classification": "phase_scoped_science_route"
+   },
+   {
+    "file": "swm/world_model_v2/phase8_pipeline.py",
+    "line": 353,
+    "code": "plan = compile_world(question, llm=llm, evidence=\"\", as_of=as_of, horizon=horizon,",
+    "classification": "phase_scoped_science_route"
+   },
+   {
+    "file": "swm/world_model_v2/phase9_pipeline.py",
+    "line": 48,
+    "code": "plan = compile_world(question, llm=llm, evidence=\"\", as_of=as_of, horizon=horizon,",
+    "classification": "phase_scoped_science_route"
+   },
+   {
+    "file": "swm/world_model_v2/pipeline.py",
+    "line": 153,
+    "code": "plan = compile_world(question, llm=llm, evidence=evidence, as_of=as_of, horizon=horizon,",
+    "classification": "legacy_compat_helper_not_public_default"
+   },
+   {
+    "file": "swm/world_model_v2/unified_runtime.py",
+    "line": 10,
+    "code": "STRUCTURAL-MODEL UNCERTAINTY IS DEFAULT-ON. The runtime no longer begins with one `compile_world(...)`:",
+    "classification": "explicit_single_structural_model_ablation"
+   },
+   {
+    "file": "swm/world_model_v2/unified_runtime.py",
+    "line": 138,
+    "code": "plan = compile_world(question, llm=llm, evidence=\"\", as_of=as_of, horizon=horizon,",
+    "classification": "explicit_single_structural_model_ablation"
+   },
+   {
+    "file": "experiments/activation200.py",
+    "line": 74,
+    "code": "base = compile_world(q, llm=llm, evidence=\"\", as_of=as_of, horizon=horizon, seed=0)",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/integration_activation.py",
+    "line": 61,
+    "code": "plan = compile_world(q, llm=llm, evidence=\"\", as_of=as_of, horizon=horizon, seed=0)",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/integration_activation2.py",
+    "line": 104,
+    "code": "base_plan = compile_world(q, llm=llm, evidence=\"\", as_of=as_of, horizon=horizon, seed=0)",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/replay_forecast.py",
+    "line": 61,
+    "code": "plan = compile_world(question, llm=llm, evidence=\"\", as_of=as_of, horizon=horizon, seed=seed)",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/wmv2_compiler_generality.py",
+    "line": 218,
+    "code": "plan = compile_world(q, llm=lambda p: call(llm, p), evidence=\"\", as_of=as_of, horizon=horizon)",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/wmv2_phase1_ablations.py",
+    "line": 107,
+    "code": "plan = compile_world(q, llm=lambda p: call(p), evidence=\"\", as_of=as_of, horizon=horizon, seed=7)",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/wmv2_phase1_forensic_traces.py",
+    "line": 47,
+    "code": "plan = compile_world(q, llm=call, evidence=\"\", as_of=as_of, horizon=horizon, seed=7)",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/wmv2_phase1_no_abstention_generality.py",
+    "line": 112,
+    "code": "plan = compile_world(q, llm=lambda p: call(p), evidence=\"\", as_of=as_of, horizon=horizon, seed=7)",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/wmv2_phase2_forensic_traces.py",
+    "line": 65,
+    "code": "plan = compile_world(q, llm=llm, evidence=\"\", as_of=as_of, horizon=horizon, seed=7)",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "tests/test_semantic_consequences.py",
+    "line": 617,
+    "code": "plan = compile_world(\"Will the manager approve the project?\",",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_structural_ensemble.py",
+    "line": 382,
+    "code": "return compile_world(\"Will the initiative be approved?\", llm=llm, evidence=\"\",",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_evidence_phase2.py",
+    "line": 245,
+    "code": "return compile_world(\"Will the VP approve the two backend hires?\", llm=lambda p: json.dumps(d),",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_phase3_posterior.py",
+    "line": 38,
+    "code": "return compile_world(\"Will yes?\", llm=_llm(decomp), evidence=\"\", as_of=AS_OF, horizon=HORIZON, seed=1)",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_phase4_e2e.py",
+    "line": 51,
+    "code": "plan = compile_world(",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_phase4_e2e.py",
+    "line": 66,
+    "code": "plan = compile_world(",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_phase4_e2e.py",
+    "line": 78,
+    "code": "plan = compile_world(",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_tier_a_fixes.py",
+    "line": 49,
+    "code": "return compile_world(\"test?\", llm=lambda p: json.dumps(plan_dict), evidence=\"\",",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_tier_a_fixes.py",
+    "line": 165,
+    "code": "plan = compile_world(\"Will the manager reply?\", llm=lambda pr: json.dumps(decomp),",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_world_model_v2.py",
+    "line": 354,
+    "code": "plan = compile_world(\"Will the nurses ratify the hospital contract?\",",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_world_model_v2.py",
+    "line": 381,
+    "code": "plan = compile_world(\"q\", llm=lambda p: json.dumps({\"outcome\": {\"family\": \"binary\"}}),",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_world_model_v2.py",
+    "line": 391,
+    "code": "plan2 = compile_world(\"q\", llm=lambda p: json.dumps(",
+    "classification": "test"
+   }
+  ],
+  "run_from_plan_call_sites": [
+   {
+    "file": "swm/world_model_v2/evidence_materialize.py",
+    "line": 155,
+    "code": "pre_res, pre_branches = run_from_plan(plan, llm=None, n_particles=n_particles, seed=seed)",
+    "classification": "library_diagnostic"
+   },
+   {
+    "file": "swm/world_model_v2/evidence_materialize.py",
+    "line": 158,
+    "code": "post_res, post_branches = run_from_plan(revised, llm=None, n_particles=n_particles, seed=seed)",
+    "classification": "library_diagnostic"
+   },
+   {
+    "file": "swm/world_model_v2/evidence_pipeline.py",
+    "line": 63,
+    "code": "result, branches = run_from_plan(revised, llm=llm, seed=seed)",
+    "classification": "phase_scoped_science_route"
+   },
+   {
+    "file": "swm/world_model_v2/phase3_pipeline.py",
+    "line": 162,
+    "code": "result, branches = run_from_plan(revised, llm=llm, seed=seed)",
+    "classification": "phase_scoped_science_route"
+   },
+   {
+    "file": "swm/world_model_v2/pipeline.py",
+    "line": 190,
+    "code": "result, branches = run_from_plan(plan, llm=llm, n_particles=n_particles, seed=seed)",
+    "classification": "legacy_compat_helper_not_public_default"
+   },
+   {
+    "file": "swm/world_model_v2/unified_runtime.py",
+    "line": 604,
+    "code": "result, branches = run_from_plan(plan, llm=llm, seed=seed)",
+    "classification": "explicit_single_structural_model_ablation"
+   },
+   {
+    "file": "experiments/activation200.py",
+    "line": 59,
+    "code": "res, branches = run_from_plan(plan, llm=None, seed=seed)",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/causal_audit_actor_policy.py",
+    "line": 142,
+    "code": "result, branches = run_from_plan(build_plan(), llm=llm, n_particles=N_PARTICLES,",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/generated_world_demo.py",
+    "line": 247,
+    "code": "result, branches = run_from_plan(plan, llm=llm,",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/generated_world_demo.py",
+    "line": 376,
+    "code": "result, branches = run_from_plan(plan, llm=llm, n_particles=8, seed=SEED)",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/generated_world_demo.py",
+    "line": 431,
+    "code": "result, branches = run_from_plan(plan_demoB(), llm=None, n_particles=2, seed=SEED)",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/integration_activation2.py",
+    "line": 62,
+    "code": "res, branches = run_from_plan(plan, llm=None, seed=seed)",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/integration_activation2.py",
+    "line": 82,
+    "code": "res, _ = run_from_plan(plan, llm=None, seed=seed)",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/replay_v3/offline_event_time_demo.py",
+    "line": 401,
+    "code": "result, branches = run_from_plan(plan, llm=None, seed=seed)",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/replay_v3/offline_event_time_demo.py",
+    "line": 495,
+    "code": "result, branches = run_from_plan(plan, llm=None, seed=seed)",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/replay_v3/sensitivity_harness.py",
+    "line": 41,
+    "code": "result, _branches = run_from_plan(plan, llm=None, seed=seed)",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/semantic_consequences_demo.py",
+    "line": 281,
+    "code": "result, branches = run_from_plan(plan, llm=llm,",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/semantic_consequences_demo.py",
+    "line": 349,
+    "code": "result, branches = run_from_plan(plan, llm=llm if cfg[\"needs_llm\"] else None,",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/wmv2_compiler_generality.py",
+    "line": 239,
+    "code": "result, branches = run_from_plan(plan, n_particles=12, seed=7)",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/wmv2_phase1_ablations.py",
+    "line": 117,
+    "code": "result, branches = run_from_plan(ap, seed=7)",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/wmv2_phase1_forensic_traces.py",
+    "line": 56,
+    "code": "result, branches = run_from_plan(plan, seed=7)",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/wmv2_phase1_no_abstention_generality.py",
+    "line": 134,
+    "code": "result, branches = run_from_plan(plan, seed=7)",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "tests/test_semantic_consequences.py",
+    "line": 620,
+    "code": "result, branches = run_from_plan(plan, n_particles=4, seed=3)",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_activation_synthesis.py",
+    "line": 82,
+    "code": "res, branches = run_from_plan(p, llm=None, seed=3)",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_activation_synthesis.py",
+    "line": 92,
+    "code": "res2, _ = run_from_plan(p2, llm=None, seed=3)",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_activation_synthesis.py",
+    "line": 103,
+    "code": "res, _ = run_from_plan(p, llm=None, seed=5)",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_activation_synthesis.py",
+    "line": 114,
+    "code": "res, branches = run_from_plan(p, llm=None, seed=3)",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_activation_synthesis.py",
+    "line": 129,
+    "code": "_, branches = run_from_plan(p, llm=None, seed=3)",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_activation_synthesis.py",
+    "line": 153,
+    "code": "_, branches = run_from_plan(p, llm=None, seed=3)",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_activation_synthesis.py",
+    "line": 173,
+    "code": "run_from_plan(p, llm=None, seed=3)                          # must not raise",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_activation_synthesis.py",
+    "line": 248,
+    "code": "_, branches = run_from_plan(p, llm=None, seed=3)",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_phase3_posterior.py",
+    "line": 200,
+    "code": "prior_result, _ = run_from_plan(base, seed=0, n_particles=200)",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_phase3_posterior.py",
+    "line": 205,
+    "code": "yes_result, yes_branches = run_from_plan(yes_plan, seed=0, n_particles=200)",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_phase3_posterior.py",
+    "line": 210,
+    "code": "no_result, _ = run_from_plan(no_plan, seed=0, n_particles=200)",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_phase3_posterior.py",
+    "line": 223,
+    "code": "_, branches = run_from_plan(base, seed=0, n_particles=50)",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_phase3_posterior.py",
+    "line": 235,
+    "code": "result, _ = run_from_plan(plan, seed=0, n_particles=200)",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_phase4_e2e.py",
+    "line": 58,
+    "code": "result, branches = run_from_plan(plan, n_particles=8, seed=7)",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_phase4_e2e.py",
+    "line": 70,
+    "code": "result, branches = run_from_plan(plan, n_particles=4, seed=3)",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_phase_supervision.py",
+    "line": 110,
+    "code": "res, branches = run_from_plan(p, llm=None, seed=3)",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_tier_a_fixes.py",
+    "line": 112,
+    "code": "result, _ = run_from_plan(plan_only_bad, n_particles=6, seed=1)",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_tier_a_fixes.py",
+    "line": 129,
+    "code": "result, branches = run_from_plan(plan, n_particles=4, seed=1)",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_tier_a_fixes.py",
+    "line": 143,
+    "code": "result, branches = run_from_plan(plan, n_particles=4, seed=1)",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_wmv2_tier_a_fixes.py",
+    "line": 167,
+    "code": "res, _ = run_from_plan(plan, n_particles=n, seed=3)",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_world_model_v2.py",
+    "line": 366,
+    "code": "result, branches = run_from_plan(plan, llm=None, n_particles=8, seed=4)",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_world_model_v2.py",
+    "line": 387,
+    "code": "result, _ = run_from_plan(plan, n_particles=6, seed=1)",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_world_model_v2.py",
+    "line": 398,
+    "code": "result2, _ = run_from_plan(plan2, n_particles=6, seed=1)",
+    "classification": "test"
+   }
+  ],
+  "simulate_world_call_sites": [
+   {
+    "file": "swm/facade.py",
+    "line": 90,
+    "code": "res = simulate_world(question, as_of=as_of, horizon=horizon, llm=llm,",
+    "classification": "public_default_ensemble_route"
+   },
+   {
+    "file": "swm/world_model_v2/unified_runtime.py",
+    "line": 5,
+    "code": "pipelines and nonlinear mechanisms (Phase 7) were CLI-only. `simulate_world()` unifies them: a single",
+    "classification": "explicit_single_structural_model_ablation"
+   },
+   {
+    "file": "experiments/replay_forecast.py",
+    "line": 103,
+    "code": "res = simulate_world(bq, as_of=cutoff, horizon=ev.horizon, llm=llm,",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/replay_forecast.py",
+    "line": 106,
+    "code": "res = simulate_world(ev.question, as_of=cutoff, horizon=ev.horizon, llm=llm,",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/replay_v2/forecast.py",
+    "line": 166,
+    "code": "res = simulate_world(bq, as_of=cutoff, horizon=w[\"horizon\"], llm=llm,",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/replay_v2/forecast.py",
+    "line": 170,
+    "code": "res = simulate_world(w[\"question\"], as_of=cutoff, horizon=w[\"horizon\"],",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/replay_v3/run_benchmark.py",
+    "line": 7,
+    "code": "simulate_world(blinded question, prebuilt_bundle=blinded capsule) with deepseek-v4-flash \u2192",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/replay_v3/run_benchmark.py",
+    "line": 192,
+    "code": "res = simulate_world(bq, as_of=cutoff, horizon=w[\"horizon\"], llm=llm, seed=0,",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/replay_v3/score_event_time_vault.py",
+    "line": 89,
+    "code": "res = simulate_world(w[\"question\"], as_of=as_of_iso, horizon=str(w[\"end_date\"])[:10],",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/structural_ensemble_cost_benchmark.py",
+    "line": 57,
+    "code": "res = simulate_world(QUESTION, as_of=\"2025-06-01\", horizon=\"2025-09-01\", llm=llm, seed=3,",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/unified_ablations.py",
+    "line": 59,
+    "code": "full = simulate_world(q, as_of=as_of, horizon=horizon, seed=0, llm=llm)",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/unified_ablations.py",
+    "line": 65,
+    "code": "r = simulate_world(q, as_of=as_of, horizon=horizon, seed=0, llm=llm,",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/unified_traces.py",
+    "line": 36,
+    "code": "res = simulate_world(q, as_of=as_of, horizon=horizon, seed=0, llm=llm)",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "experiments/wmv2_historical_benchmark.py",
+    "line": 190,
+    "code": "_res = _simulate_world(i.question, llm=call_compiler, as_of=asof_s, horizon=hor_s, seed=7)",
+    "classification": "experiment_or_benchmark"
+   },
+   {
+    "file": "tests/test_structural_ensemble.py",
+    "line": 152,
+    "code": "return simulate_world(\"Will the initiative be approved?\", as_of=\"2025-06-01\",",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_structural_ensemble.py",
+    "line": 287,
+    "code": "res = simulate_world(\"Will the initiative be approved?\", as_of=\"2025-06-01\",",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_structural_ensemble.py",
+    "line": 300,
+    "code": "res = simulate_world(\"Will the initiative be approved?\", as_of=\"2025-06-01\",",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_structural_ensemble.py",
+    "line": 368,
+    "code": "res = simulate_world(\"Will the initiative be approved?\", as_of=\"2025-06-01\",",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_structural_ensemble.py",
+    "line": 641,
+    "code": "simulate_world(\"Will the initiative be approved?\", as_of=\"2025-06-01\",",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_structural_ensemble.py",
+    "line": 650,
+    "code": "res = simulate_world(\"Will the initiative be approved?\", as_of=\"2025-06-01\",",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_structural_ensemble.py",
+    "line": 657,
+    "code": "simulate_world(\"q\", as_of=\"2025-06-01\", horizon=\"2025-09-01\", llm=four_way_llm(),",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_structural_ensemble.py",
+    "line": 666,
+    "code": "res = simulate_world(\"Will the initiative be approved?\", as_of=\"2025-06-01\",",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_structural_ensemble_enforcement.py",
+    "line": 128,
+    "code": "res = simulate_world(\"How will Dana react if I skip dinner tonight?\", as_of=\"2025-06-01\",",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_structural_ensemble_enforcement.py",
+    "line": 141,
+    "code": "res = simulate_world(\"How will Dana react if I skip dinner tonight?\", as_of=\"2025-06-01\",",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_structural_ensemble_enforcement.py",
+    "line": 166,
+    "code": "res = simulate_world(\"When will the initiative be approved?\", as_of=\"2025-06-01\",",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_structural_ensemble_enforcement.py",
+    "line": 204,
+    "code": "res = simulate_world(\"Will the initiative be approved?\", as_of=\"2025-06-01\",",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_structural_ensemble_fixtures.py",
+    "line": 133,
+    "code": "res = simulate_world(f\"Will the {domain.replace('_', ' ')} resolve favorably?\",",
+    "classification": "test"
+   },
+   {
+    "file": "tests/test_structural_ensemble_fixtures.py",
+    "line": 168,
+    "code": "res = simulate_world(\"Will the supply dispute resolve favorably?\", as_of=\"2025-06-01\",",
+    "classification": "test"
+   }
+  ]
+ },
+ "findings": {
+  "single_plan_assumptions_before_this_change": [
+   "unified_runtime.simulate_world compiled exactly ONE WorldExecutionPlan (now: ensemble)",
+   "plan.structural_hypotheses stored competing narratives INSIDE one plan (level-B only)",
+   "evidence requirements derived from one schema (now: union over recon candidates)",
+   "particles were created from one causal representation (now: per-model particle sets)",
+   "aggregation covered hidden-state uncertainty only (now: between-model decomposition)",
+   "individual-reaction route bypassed compilation with one unchallenged frame (now: frame ensemble)",
+   "Phase 13 compared actions inside one causal model (now: cross-model default + guard)",
+   "wmv2_historical_benchmark B6 arm called compile_world+run_from_plan directly (now routed through simulate_world)"
+  ],
+  "silent_single_model_continuation_paths": "none: ensemble-stage failures return execution_failed loudly; a single survivor requires a convergence certificate (EnsembleIntegrityError otherwise)"
+ },
+ "unsanctioned_violations": [],
+ "ok": true
+}

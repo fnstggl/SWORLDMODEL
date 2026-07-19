@@ -3,10 +3,25 @@
 Before this module the facade ran the lightweight `pipeline.simulate` (no posterior), while the posterior
 (Phase 3), populations/networks (Phase 9), and dynamic recompilation (Phase 11) lived in separate orphan
 pipelines and nonlinear mechanisms (Phase 7) were CLI-only. `simulate_world()` unifies them: a single
-question→terminal path that threads ONE `WorldExecutionPlan`, ONE evidence bundle, ONE posterior, ONE
-persistent-state lineage, ONE Phase-11 recompilation loop, and ONE terminal projection through the single
-`run_from_plan` / persistence rollout funnel (which already fires the Phase-4 actor-policy, Phase-6/7 registry,
-and Phase-10 institution operators the compiled plan names).
+question→terminal path that threads ONE evidence bundle and ONE persistent-state lineage per structural
+model through the single `run_from_plan` / persistence rollout funnel (which already fires the Phase-4
+actor-policy, Phase-6/7 registry, and Phase-10 institution operators the compiled plan names).
+
+STRUCTURAL-MODEL UNCERTAINTY IS DEFAULT-ON. The runtime no longer begins with one `compile_world(...)`:
+it begins with the ensemble compiler (swm.world_model_v2.ensemble_compiler) — several INDEPENDENT actual
+LLM generation calls produce materially different candidate causal models; adversarial critics search for
+missing actors/institutions/constraints/mechanisms; candidates compile SEPARATELY against one shared
+immutable evidence bundle; conservative dedup collapses only genuine structural equivalence; every
+plausible distinct model gets a REAL pilot through this same canonical funnel; promoted models each get
+AT LEAST the full single-model particle budget (pilot particles reused as a deterministic prefix); and
+the result reports per-model distributions, structural sensitivity, reversal conditions and structural
+value-of-information. A perfectly executed simulation of the wrong causal model is still wrong — that is
+why one valid schema is no longer enough. See swm/world_model_v2/structural_runtime.py.
+
+Single-model compilation survives ONLY as the explicitly named ablation
+`execution_policy={"structural_mode": "single_structural_model"}` (scientific ablations, frozen
+historical artifact compatibility, isolated compiler unit tests). An ordinary caller cannot silently
+reach it, and a missing LLM backend fails loudly instead of producing a deterministic fallback model.
 
 DEFAULT-ON: the caller does not opt subsystems in. Every completed phase is available automatically; the
 compiler decides causal relevance; a subsystem executes when relevant and its omission is RECORDED (with a
@@ -34,7 +49,10 @@ try:
 except Exception:  # noqa: BLE001
     _NONLINEAR_OPERATORS_REGISTERED = False
 
-RUNTIME_VERSION = "unified-1.0"
+RUNTIME_VERSION = "unified-2.0-structural-ensemble"
+#: modes for execution_policy["structural_mode"]; "ensemble" is the ONLY default. The single-model mode
+#: is an explicit ablation/baseline label — tests enforce that ordinary calls never reach it silently.
+STRUCTURAL_MODES = ("ensemble", "single_structural_model")
 # Phases that are default-on and threaded through the one funnel.
 _PHASES = ["phase1_compiler", "phase2_evidence", "phase3_posterior", "phase4_actor_policy",
            "phase6_registry", "phase7_nonlinear", "phase8_persistence", "phase9_populations",
@@ -52,20 +70,47 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
                    user_context=None, prior_checkpoint=None, compute_budget=None, seed: int = 0,
                    llm=None, execution_policy: dict = None, trace_level: str = "standard",
                    config=None, prebuilt_bundle=None) -> SimulationResult:
-    """THE canonical public V2 entry. One shared plan/world/queue/StateDelta/terminal path across all phases.
+    """THE canonical public V2 entry. One shared evidence bundle; one funnel; DEFAULT structural-model
+    ensemble (several independently generated causal models, each fully simulated).
 
-    The ordinary caller does NOT choose which phases run — the compiler selects causally-relevant subsystems.
-    `execution_policy` may cap fidelity for the compute budget or force an ablation (removal of a named phase)
-    for the causal-ablation harness; it is NOT how normal callers enable/disable phases.
-    """
+    The ordinary caller does NOT choose which phases run — the compiler selects causally-relevant
+    subsystems — and does NOT enable the structural ensemble: it is the default. `execution_policy` may
+    cap fidelity for the compute budget, force an ablation (removal of a named phase), or select the
+    explicit `single_structural_model` ablation baseline; it is NOT how normal callers enable/disable
+    behavior."""
+    policy = execution_policy or {}
+    mode = str(policy.get("structural_mode", "ensemble"))
+    if mode not in STRUCTURAL_MODES:
+        raise ValueError(f"unknown structural_mode {mode!r}; one of {STRUCTURAL_MODES} "
+                         f"(single_structural_model is an explicit ablation, never a default)")
+    if mode == "single_structural_model":
+        return _simulate_single_structural_model(
+            question, as_of=as_of, horizon=horizon, intervention=intervention,
+            user_context=user_context, prior_checkpoint=prior_checkpoint,
+            compute_budget=compute_budget, seed=seed, llm=llm, execution_policy=policy,
+            trace_level=trace_level, config=config, prebuilt_bundle=prebuilt_bundle)
+    from swm.world_model_v2.structural_runtime import simulate_structural_ensemble
+    return simulate_structural_ensemble(
+        question, as_of=as_of, horizon=horizon, intervention=intervention,
+        user_context=user_context, prior_checkpoint=prior_checkpoint,
+        compute_budget=compute_budget, seed=seed, llm=llm, execution_policy=policy,
+        trace_level=trace_level, config=config, prebuilt_bundle=prebuilt_bundle)
+
+
+def _simulate_single_structural_model(question: str, *, as_of: str, horizon: str = "",
+                                      intervention: str = "", user_context=None, prior_checkpoint=None,
+                                      compute_budget=None, seed: int = 0, llm=None,
+                                      execution_policy: dict = None, trace_level: str = "standard",
+                                      config=None, prebuilt_bundle=None) -> SimulationResult:
+    """The EXPLICIT single-structural-model ablation/baseline: exactly the pre-ensemble canonical path
+    (one compile_world plan, one funnel). Retained for scientific ablations, frozen historical artifact
+    compatibility and isolated compiler tests — never the default; reaching it requires
+    execution_policy={"structural_mode": "single_structural_model"}."""
     from swm.world_model_v2.compiler import compile_world
     from swm.world_model_v2.evidence_orchestrator import OrchestratorConfig, gather_evidence
     from swm.world_model_v2.evidence_requirements import requirements_from_plan
     from swm.world_model_v2.evidence_recompile import recompile_with_evidence
     from swm.world_model_v2.evidence_materialize import attach_evidence_observations
-    from swm.world_model_v2.phase3_latent_spec import tag_claims
-    from swm.world_model_v2.phase3_posterior import infer_posterior
-    from swm.world_model_v2.phase3_priors import build_outcome_rate_prior
 
     policy = execution_policy or {}
     drop = set(policy.get("drop_phases", []))            # ablation hook (harness only)
@@ -105,7 +150,7 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
                             f"[{str(c.get('source', ''))[:40]}]")
         return "\n".join(rows)[:max_chars]
 
-    # ---------- Phase 1: universal compiler → the ONE shared plan ----------
+    # ---------- Phase 1: universal compiler → the ONE plan (explicit single-model ablation) ----------
     try:
         plan = compile_world(question, llm=llm, evidence="", as_of=as_of, horizon=horizon,
                              intervention=intervention, seed=seed)
@@ -118,7 +163,7 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
                                 failure_taxonomy=e.taxonomy, latency_s=round(_time.time() - t0, 3),
                                 provenance={"runtime": RUNTIME_VERSION, "active_component_manifest": manifest})
     manifest["phase1_compiler"].update(selected=True, executed=True, version="compiler",
-                                       reason="always required")
+                                       reason="always required (single_structural_model ablation)")
     lineage["plan_hashes"].append(plan.plan_hash())
 
     # ---------- Phase 2: strict as-of evidence → bundle → evidence-conditioned compiler revision ----------
@@ -148,7 +193,63 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
                                            reason=("dropped_by_policy" if "phase2_evidence" in drop
                                                    else "no as_of supplied"))
 
-    # ---------- Phase 3: posterior over hidden state + structural hypotheses → materialize onto the plan ----
+    # ---------- Phase 3 + conditioning phases (shared with the ensemble runtime, per-plan) ----------
+    posterior = _phase3_block(question, plan, bundle, llm, seed, manifest, drop)
+    _condition_plan(question, plan, bundle, as_of, horizon, seed, llm,
+                    manifest, lineage, costs, drop)
+
+    # ---------- Terminal projection through the ONE funnel (Phase 8 persistence + P4/P6/P7/P10 operators) ----
+    res = _project_terminal(question, plan, as_of, horizon, intervention, seed, llm, user_context,
+                            prior_checkpoint, manifest, drop, t0)
+
+    _attach_supervision(res, plan, as_of, bundle, manifest, lineage)
+
+    # ---------- attach unified provenance + manifest + Phase-12 incompatibility ----------
+    res.provenance["runtime"] = RUNTIME_VERSION
+    res.provenance["structural_mode"] = "single_structural_model"
+    res.provenance["active_component_manifest"] = manifest
+    res.provenance["plan_lineage"] = lineage
+    res.provenance["evidence_bundle_hash"] = bundle.bundle_hash() if bundle is not None else ""
+    res.provenance["posterior_consumed"] = bool(posterior and posterior.n_effective_observations > 0)
+    res.provenance["calibration_compatibility"] = {
+        "old_phase12_calibrator": "INCOMPATIBLE",
+        "reason": "unified runtime changes the forecast distribution; the pre-unification Phase-12 calibrator "
+                  "must be refit on the post-unification corpus before it may serve this runtime.",
+        "refit_command": "PYTHONPATH=. python experiments/phase12_refit.py --regen"}
+    res.latency_s = round(_time.time() - t0, 3)
+    return res
+
+
+# ------------------------------------------------------------------ shared per-plan phase helpers
+# These are the SAME phase steps for both structural modes: the ensemble runtime applies them to EVERY
+# structural model's own plan (no mutable state shared across models); the single-model ablation applies
+# them to its one plan. Extracting them is what guarantees a pilot/full ensemble simulation runs the full
+# causal runtime, not a simplified copy.
+
+def _apply_evidence_to_plan(question, plan, bundle, llm, horizon, manifest, lineage):
+    """Evidence-conditioned compiler revision + observation attachment for ONE plan (retrieval NOT
+    included — the shared bundle is gathered once at ensemble level under one as-of boundary)."""
+    from swm.world_model_v2.evidence_recompile import recompile_with_evidence
+    from swm.world_model_v2.evidence_materialize import attach_evidence_observations
+    try:
+        revised, _diff = recompile_with_evidence(plan, bundle, llm=llm, horizon=horizon)
+        revised = attach_evidence_observations(revised, bundle)
+        lineage["plan_hashes"].append(revised.plan_hash())
+        manifest["phase2_evidence"].update(selected=True, executed=True, version="phase2-1.0",
+                                           reason=f"{len(bundle.included_claim_ids)} as-of claims (shared bundle)")
+        return revised
+    except Exception as e:  # noqa: BLE001 — evidence failure never blocks the forecast
+        manifest["phase2_evidence"].update(omitted=True, reason=f"evidence_error: {type(e).__name__}")
+        return plan
+
+
+def _phase3_block(question, plan, bundle, llm, seed, manifest, drop):
+    """Phase 3: evidence-updated posterior over hidden state + structural hypotheses for ONE plan.
+    Every structural model receives ITS OWN posterior — latent definitions differ across models, so a
+    posterior is never copied between plans."""
+    from swm.world_model_v2.phase3_latent_spec import tag_claims
+    from swm.world_model_v2.phase3_posterior import infer_posterior
+    from swm.world_model_v2.phase3_priors import build_outcome_rate_prior
     posterior = None
     if "phase3_posterior" not in drop and bundle is not None:
         try:
@@ -172,8 +273,13 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
         manifest["phase3_posterior"].update(omitted=True,
                                             reason=("dropped_by_policy" if "phase3_posterior" in drop
                                                     else "no evidence bundle"))
+    return posterior
 
-    # ---------- Phase 9: populations + multilayer networks — instantiate into the shared plan when declared --
+
+def _condition_plan(question, plan, bundle, as_of, horizon, seed, llm, manifest, lineage, costs, drop):
+    """Phases 9/10 + fidelity + activation synthesis + event-time conversion + Phase-11 recompilation for
+    ONE plan. Mutates the plan in place (each structural model owns its plan object exclusively)."""
+    # ---------- Phase 9: populations + multilayer networks — instantiate into the plan when declared --
     _thread_populations_networks(plan, manifest, drop)
 
     # ---------- Phase 10 completion: normalize declared institution rule kinds onto the EXECUTABLE set so a
@@ -338,62 +444,51 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
             omitted=True, reason=("dropped_by_policy" if "phase11_recompilation" in drop
                                   else "no observations"))
 
-    # ---------- Terminal projection through the ONE funnel (Phase 8 persistence + P4/P6/P7/P10 operators) ----
-    res = _project_terminal(question, plan, as_of, horizon, intervention, seed, llm, user_context,
-                            prior_checkpoint, manifest, drop, t0)
 
-    # ---------- MANDATORY PHASE SUPERVISION: one PhaseExecutionRecord per phase, every run ----------
-    # The manifest is DERIVED from these records; a relevant phase that did not execute is a recorded
-    # integration failure (blocked_*) that lowers support — a phase can never disappear silently.
-    if res.has_forecast():
-        try:
-            from swm.world_model_v2 import phase_supervision as PS
-            pre_req = (lineage.get("activation_synthesis") or {}).get("_pre_synthesis_requirements")
-            recs = PS.assess(plan, has_as_of=bool(as_of), has_bundle=bundle is not None,
-                             versions={p: manifest[p].get("version", "") for p in manifest},
-                             req=pre_req)
-            core_meta = {p: {"executed": bool(manifest[p].get("executed")),
-                             "reason": manifest[p].get("reason", "")}
-                         for p in ("phase1_compiler", "phase2_evidence", "phase3_posterior",
-                                   "phase8_persistence", "phase11_recompilation")}
-            sup = PS.finalize(recs, plan, res, phase_meta=core_meta)
-            for ph, m in sup["manifest"].items():
-                manifest[ph].update(m)
-            res.provenance["phase_execution_records"] = {p: r.as_dict() for p, r in sup["records"].items()}
-            res.provenance["phase_integration_failures"] = sup["integration_failures"]
-            res.provenance["fully_integrated"] = sup["fully_integrated"]
-            if sup["integration_failures"]:
-                if res.support_grade in ("empirically_supported", "transfer_supported"):
-                    res.support_grade = "exploratory"
-                res.limitations = list(res.limitations) + [
-                    f"integration failure: {f['phase']} {f['status']} ({f['reason'][:60]})"
-                    for f in sup["integration_failures"][:4]]
-        except Exception as e:  # noqa: BLE001 — supervision must not kill the forecast, but never hides
-            res.provenance["phase_supervision_error"] = f"{type(e).__name__}: {e}"[:160]
-            res.provenance["fully_integrated"] = False
-
-    # ---------- attach unified provenance + manifest + Phase-12 incompatibility ----------
-    res.provenance["runtime"] = RUNTIME_VERSION
-    res.provenance["active_component_manifest"] = manifest
-    res.provenance["plan_lineage"] = lineage
-    res.provenance["evidence_bundle_hash"] = bundle.bundle_hash() if bundle is not None else ""
-    res.provenance["posterior_consumed"] = bool(posterior and posterior.n_effective_observations > 0)
-    res.provenance["calibration_compatibility"] = {
-        "old_phase12_calibrator": "INCOMPATIBLE",
-        "reason": "unified runtime changes the forecast distribution; the pre-unification Phase-12 calibrator "
-                  "must be refit on the post-unification corpus before it may serve this runtime.",
-        "refit_command": "PYTHONPATH=. python experiments/phase12_refit.py --regen"}
-    res.latency_s = round(_time.time() - t0, 3)
-    return res
+def _attach_supervision(res, plan, as_of, bundle, manifest, lineage):
+    """MANDATORY PHASE SUPERVISION: one PhaseExecutionRecord per phase, every run. The manifest is
+    DERIVED from these records; a relevant phase that did not execute is a recorded integration failure
+    (blocked_*) that lowers support — a phase can never disappear silently."""
+    if not res.has_forecast():
+        return
+    try:
+        from swm.world_model_v2 import phase_supervision as PS
+        pre_req = (lineage.get("activation_synthesis") or {}).get("_pre_synthesis_requirements")
+        recs = PS.assess(plan, has_as_of=bool(as_of), has_bundle=bundle is not None,
+                         versions={p: manifest[p].get("version", "") for p in manifest},
+                         req=pre_req)
+        core_meta = {p: {"executed": bool(manifest[p].get("executed")),
+                         "reason": manifest[p].get("reason", "")}
+                     for p in ("phase1_compiler", "phase2_evidence", "phase3_posterior",
+                               "phase8_persistence", "phase11_recompilation")}
+        sup = PS.finalize(recs, plan, res, phase_meta=core_meta)
+        for ph, m in sup["manifest"].items():
+            manifest[ph].update(m)
+        res.provenance["phase_execution_records"] = {p: r.as_dict() for p, r in sup["records"].items()}
+        res.provenance["phase_integration_failures"] = sup["integration_failures"]
+        res.provenance["fully_integrated"] = sup["fully_integrated"]
+        if sup["integration_failures"]:
+            if res.support_grade in ("empirically_supported", "transfer_supported"):
+                res.support_grade = "exploratory"
+            res.limitations = list(res.limitations) + [
+                f"integration failure: {f['phase']} {f['status']} ({f['reason'][:60]})"
+                for f in sup["integration_failures"][:4]]
+    except Exception as e:  # noqa: BLE001 — supervision must not kill the forecast, but never hides
+        res.provenance["phase_supervision_error"] = f"{type(e).__name__}: {e}"[:160]
+        res.provenance["fully_integrated"] = False
 
 
 def _route_individual_reaction(question, user_context, llm, as_of, seed, t0):
-    """SimulationResult for a personal reaction question with supplied individual context, or
-    None (ordinary compiled route). The caller's context — who the person is, the relationship,
-    the history, optionally the exact stimulus — is preserved verbatim into the person's
-    actor-local world; the target is automatically Tier 1; the answer is the counted (and
-    externally calibrated or `unvalidated`) distribution over the person's simulated observable
-    responses, with the full per-sample artifact and the actor-policy report in provenance."""
+    """SINGLE-FRAME individual-reaction route — used ONLY by the explicit single_structural_model
+    ablation. The DEFAULT ensemble path routes personal reactions through
+    structural_runtime._route_individual_reaction_ensemble, which simulates several plausible causal
+    models of the reaction (relationship / attention / interpretation / obligations …) rather than one
+    unchallenged frame. Returns a SimulationResult, or None (ordinary compiled route). The caller's
+    context — who the person is, the relationship, the history, optionally the exact stimulus — is
+    preserved verbatim into the person's actor-local world; the target is automatically Tier 1; the
+    answer is the counted (and externally calibrated or `unvalidated`) distribution over the person's
+    simulated observable responses, with the full per-sample artifact and the actor-policy report in
+    provenance."""
     from swm.world_model_v2.actor_selection import is_individual_reaction_question
     person = (user_context or {}).get("individual") if isinstance(user_context, dict) else None
     if not isinstance(person, dict) or not is_individual_reaction_question(question):
@@ -433,6 +528,7 @@ def _route_individual_reaction(question, user_context, llm, as_of, seed, t0):
                          ["reaction distribution is counted from qualitative simulations and "
                           "is unvalidated (no fitted calibrator for this person/role)"]),
             provenance={"runtime": RUNTIME_VERSION, "route": "individual_reaction",
+                        "structural_mode": "single_structural_model",
                         "actor_policy_report": {
                             **report, "actors_routed_qualitatively": [artifact["person_id"]],
                             "actors_routed_numerically": [], "fallbacks": fallbacks,
@@ -518,10 +614,15 @@ def _run_recompilation(plan, bundle, as_of, horizon, seed, llm, manifest, lineag
 
 
 def _project_terminal(question, plan, as_of, horizon, intervention, seed, llm, user_context,
-                      prior_checkpoint, manifest, drop, t0):
+                      prior_checkpoint, manifest, drop, t0, particle_plan: dict = None,
+                      particle_scope=None):
     """Terminal projection through the single funnel: Phase-8 persistence-aware rollout (which fires the
     Phase-4 actor-policy, Phase-6/7 registry, and Phase-10 institution operators the plan names). Phase 8 is
-    default-on; when no history/checkpoint exists it runs the ordinary rollout with broad priors."""
+    default-on; when no history/checkpoint exists it runs the ordinary rollout with broad priors.
+
+    `particle_plan` (structural-ensemble progressive simulation): {"n_total", "start", "stop"} rolls a
+    deterministic index-keyed slice through the SAME canonical funnel; used with a shared handle by the
+    ensemble runtime (see structural_runtime) so pilot particles become a reusable prefix of the full run."""
     from swm.world_model_v2.phase8_pipeline import run_with_persistence
     persistence_dropped = "phase8_persistence" in drop
     # COMPUTE knob (§26): an explicit particle budget prioritizes Monte-Carlo resolution under

@@ -144,13 +144,21 @@ def simulate_individual_reaction(*, person_id: str, stimulus: str, context: dict
                                  as_of: float | None = None, horizon_s: float = 7 * 86400.0,
                                  config: QualitativeConfig | None = None,
                                  calibrator: ActorPolicyCalibrator | None = None,
-                                 scenario_schema=None) -> dict:
+                                 scenario_schema=None, structural_frame: str = "") -> dict:
     """Simulate one person's reaction to one exact stimulus THROUGH the temporal model.
 
     ``context`` may supply: role, your_role, relationship, history (strings or {"text","ts"}),
     goals, timezone (IANA), sleep_window/active_window ([start_hour, end_hour] local),
     channel_check_gap (TimingSpec dict), relationship_priority (0..1),
-    availability_hypotheses ([{state, prior, why}]), channel_model, urgency (0..1)."""
+    availability_hypotheses ([{state, prior, why}]), channel_model, urgency (0..1).
+
+    ``structural_frame`` (structural-ensemble level-A uncertainty): ONE ensemble branch's
+    hypothesized causal circumstance for the reaction (e.g. the relationship reading, attention
+    and delivery, competing obligations). It conditions the hidden-state hypothesis SPACE the
+    qualitative engine explores — always labeled a conjecture, never injected as observed fact,
+    and never shown to the person as part of the stimulus. The default production route runs
+    several such frames (structural_runtime._route_individual_reaction_ensemble), each with its
+    own full sample budget."""
     from swm.world_model_v2.temporal_runtime import (channel_delivery_ts, compute_notice_ts,
                                                      get_stats, sample_temporal_latents)
     context = context or {}
@@ -162,6 +170,8 @@ def simulate_individual_reaction(*, person_id: str, stimulus: str, context: dict
     cfg = config or QualitativeConfig(llm=llm, n_hypotheses=n_hypotheses,
                                       max_llm_calls=4 * n_hypotheses * samples_per_hypothesis)
     cfg.persistent = True
+    if structural_frame:
+        cfg.structural_frame = str(structural_frame)[:600]
     engine = QualitativeDecisionEngine(cfg)
     runtime = QualitativeActorPolicyRuntime(
         engine, mode="persistent_qualitative_llm_policy",
@@ -280,5 +290,6 @@ def simulate_individual_reaction(*, person_id: str, stimulus: str, context: dict
         "provenance": {"as_of": now, "tier_rule": "reaction_is_the_question → Tier 1",
                        "runtime": "QualitativeActorPolicyRuntime",
                        "temporal_route": "delivery→attention→decision (§25)",
-                       "aggregation": "branch-selection counting (cluster-1.0)"},
+                       "aggregation": "branch-selection counting (cluster-1.0)",
+                       "structural_frame": getattr(cfg, "structural_frame", "") or ""},
     }

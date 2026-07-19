@@ -66,6 +66,15 @@ class SimulationResult:
     uncertainty_decomposition: dict = field(default_factory=dict)
     structural_disagreement: dict = None
     mechanism_disagreement: dict = None
+    # STRUCTURAL-MODEL ENSEMBLE (level-A uncertainty; default-on). The full machine-readable record of
+    # the independently generated causal models: generation/critic/merge manifests, per-model predictions
+    # and trajectory summaries, support classes, pilot/full particle counts, aggregation method,
+    # structural-sensitivity classification, reversal conditions, structural value-of-information, cost
+    # manifest and stopping reason. None only on the explicit single_structural_model ablation and on
+    # legacy phase-scoped science routes. Human-facing emphasis order: (1) the answer, (2) whether it
+    # survives across models, (3) the strongest competing causal explanation, (4) what assumption
+    # reverses the answer, (5) what information would resolve the disagreement.
+    structural_ensemble: dict = None
     # Phase 3: evidence-updated posterior over hidden world-state (rate) + structure. Present only when the
     # posterior pipeline ran AND ≥1 effective (dependence-collapsed) observation actually updated it; the
     # decomposition names prior→posterior deltas, ESS, and the per-observation assimilation ledger so a

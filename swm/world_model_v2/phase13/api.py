@@ -26,12 +26,27 @@ from swm.world_model_v2.phase13.utility import evaluate_utility, pareto_frontier
 from swm.world_model_v2.phase13.voi import information_report
 
 
-def _evaluator(world_context, *, n_particles=None, seed=0, llm=None) -> MatchedEvaluator:
+class SingleModelContextError(TypeError):
+    """A bare single WorldExecutionPlan was passed where the structural ensemble is the default.
+    Phase 13 evaluates every serious action ACROSS the surviving structural models; comparing actions
+    inside only one causal model requires the explicit `allow_single_structural_model=True` ablation."""
+
+
+def _evaluator(world_context, *, n_particles=None, seed=0, llm=None,
+               allow_single_structural_model=False) -> MatchedEvaluator:
     from swm.world_model_v2.compiler import WorldExecutionPlan
     if isinstance(world_context, WorldExecutionPlan):
+        if not allow_single_structural_model:
+            raise SingleModelContextError(
+                "Phase 13 evaluates actions across the structural ensemble by default. Pass the "
+                "ensemble (a StructuralModelEnsemble, the SimulationResult from the default runtime, "
+                "or {model_id: plan}) — or set allow_single_structural_model=True for the explicit "
+                "single-model ablation.")
         return MatchedEvaluator.from_plan(world_context, llm=llm,
                                           n_particles=n_particles, seed=seed)
     if isinstance(world_context, dict) and "initial" in world_context:
+        # the CONTROLLED-BENCHMARK context: synthetic runtime pieces with known ground truth — a test
+        # harness, not a compiled world model, so the structural-ensemble default does not apply.
         return MatchedEvaluator(initial=world_context["initial"],
                                 queue_builder=world_context["queue_builder"],
                                 operators=list(world_context.get("operators", [])),
@@ -39,8 +54,15 @@ def _evaluator(world_context, *, n_particles=None, seed=0, llm=None) -> MatchedE
                                 n_particles=n_particles or world_context.get("n_particles", 60),
                                 seed=seed, hypotheses=world_context.get("hypotheses"),
                                 max_events=world_context.get("max_events", 500))
-    raise TypeError("world_context must be a WorldExecutionPlan or a dict of runtime pieces "
+    raise TypeError("world_context must be a structural ensemble, a WorldExecutionPlan (explicit "
+                    "single-model ablation only), or a dict of runtime pieces "
                     "(initial/queue_builder/operators/contract) — Phase 13 never forks the runtime")
+
+
+def _ensemble_context(world_context) -> dict:
+    """{model_id: {plan, meta}} when the context is ensemble-shaped, else {}."""
+    from swm.world_model_v2.phase13.ensemble import extract_ensemble_models
+    return extract_ensemble_models(world_context)
 
 
 def _fingerprint() -> dict:
@@ -56,8 +78,16 @@ def recommend_action(problem: DecisionProblem, world_context, *, budget: str = "
                      seed: int = 0, n_particles: int = None, llm=None,
                      candidate_observations: list = None, mode: str = "auto",
                      goal_text: str = "", trace_path: str = "",
-                     forensic_dir: str = "") -> DecisionResult:
+                     forensic_dir: str = "",
+                     allow_single_structural_model: bool = False) -> DecisionResult:
     """The full Phase-13 pipeline. Abstains (with what is needed) instead of fabricating certainty.
+
+    STRUCTURAL-ENSEMBLE DEFAULT: an ensemble-shaped `world_context` (StructuralModelEnsemble /
+    default-runtime SimulationResult / {model_id: plan}) evaluates every action across ALL surviving
+    structural models with per-model budgets and cross-model robustness (see phase13.ensemble); each
+    per-model evaluation re-enters this function with that model's own context, so a generated-world
+    model routes through the scenario-generated action layer INSIDE its model. A bare single plan is
+    the explicit ablation and requires `allow_single_structural_model=True`.
 
     mode="auto" (default): a generated scenario world routes through the scenario-generated
     action layer (scenario_actions.api) — goal-backward discovery, scenario action language,
@@ -69,6 +99,13 @@ def recommend_action(problem: DecisionProblem, world_context, *, budget: str = "
                                                                  is_generated_context)
     if mode not in ("auto", "legacy_fixed_v1"):
         raise ValueError(f"unknown mode {mode!r} (valid: auto | legacy_fixed_v1)")
+    models = _ensemble_context(world_context)
+    if models:
+        from swm.world_model_v2.phase13.ensemble import recommend_action_across_models
+        return recommend_action_across_models(problem, models, budget=budget, seed=seed,
+                                              n_particles=n_particles, llm=llm,
+                                              candidate_observations=candidate_observations,
+                                              mode=mode, goal_text=goal_text)
     if mode == "auto" and is_generated_context(world_context):
         return discover_best_action(goal_text or problem.context, world_context,
                                     problem=problem, budget=budget, seed=seed,
@@ -84,7 +121,8 @@ def recommend_action(problem: DecisionProblem, world_context, *, budget: str = "
     # 1. contract validation + underspecification (Part 2)
     defects = problem.validate()
     missing = problem.underspecification()
-    ev = _evaluator(world_context, n_particles=n_particles, seed=seed, llm=llm)
+    ev = _evaluator(world_context, n_particles=n_particles, seed=seed, llm=llm,
+                    allow_single_structural_model=allow_single_structural_model)
     base_world = ev.particles()[0] if ev.n_particles else None
 
     # 2. action space: affordances + user candidates + baselines (Part 5)
@@ -177,14 +215,25 @@ def recommend_action(problem: DecisionProblem, world_context, *, budget: str = "
 def evaluate_actions(problem: DecisionProblem, actions: list, world_context, *,
                      budget: str = "standard", seed: int = 0, n_particles: int = None,
                      llm=None, mode: str = "auto", goal_text: str = "",
-                     trace_path: str = "", forensic_dir: str = "") -> DecisionResult:
+                     trace_path: str = "", forensic_dir: str = "",
+                     allow_single_structural_model: bool = False) -> DecisionResult:
     """Evaluate ONLY the supplied actions (plus the mandatory do-nothing reference).
     Differs from recommend_action ONLY in where candidates come from. The caller's
-    DecisionProblem is never mutated."""
+    DecisionProblem is never mutated.
+
+    Ensemble-shaped contexts evaluate the SAME actions inside every structural model (per-model
+    budgets, cross-model robustness); a bare single plan requires the explicit ablation flag."""
     from swm.world_model_v2.phase13.scenario_actions.api import (evaluate_actions_generated,
                                                                  is_generated_context)
     if mode not in ("auto", "legacy_fixed_v1"):
         raise ValueError(f"unknown mode {mode!r} (valid: auto | legacy_fixed_v1)")
+    models = _ensemble_context(world_context)
+    if models:
+        from swm.world_model_v2.phase13.ensemble import recommend_action_across_models
+        return recommend_action_across_models(problem, models, budget=budget, seed=seed,
+                                              n_particles=n_particles, llm=llm,
+                                              actions=list(actions), mode=mode,
+                                              goal_text=goal_text)
     if mode == "auto" and is_generated_context(world_context):
         return evaluate_actions_generated(problem, actions, world_context,
                                           goal_text=goal_text or problem.context,
@@ -197,13 +246,14 @@ def evaluate_actions(problem: DecisionProblem, actions: list, world_context, *,
     p2.candidate_actions = list(actions)
     p2.generated_action_permission = False
     return recommend_action(p2, world_context, budget=budget, seed=seed,
-                            n_particles=n_particles, llm=llm, mode=mode)
+                            n_particles=n_particles, llm=llm, mode=mode,
+                            allow_single_structural_model=allow_single_structural_model)
 
 
 def optimize_policy(problem: DecisionProblem, policies: list, world_context, *,
                     seed: int = 0, n_particles: int = None, llm=None, mode: str = "auto",
-                    goal_text: str = "", trace_path: str = "",
-                    forensic_dir: str = "") -> DecisionResult:
+                    goal_text: str = "", trace_path: str = "", forensic_dir: str = "",
+                    allow_single_structural_model: bool = False) -> DecisionResult:
     """Sequential policies (Part 12): each Policy rolls through the SAME matched particles with
     decision points scheduled; a do-nothing policy is the reference. Policies act on belief state only
     (policies.belief_state — the canonical observable-view boundary)."""
@@ -223,10 +273,16 @@ def optimize_policy(problem: DecisionProblem, policies: list, world_context, *,
     from swm.world_model_v2.phase13.policies import (Policy, PolicyExecutionOperator,
                                                      schedule_decision_points)
     from swm.world_model_v2.phase13.counterfactual import MatchedBundle, paired_report
+    models = _ensemble_context(world_context)
+    if models:
+        from swm.world_model_v2.phase13.ensemble import optimize_policy_across_models
+        return optimize_policy_across_models(problem, policies, models, seed=seed,
+                                             n_particles=n_particles, llm=llm)
     t0 = _time.time()
     res = DecisionResult(decision_id=problem.decision_id, contract_hash=problem.contract_hash(),
                         runtime_fingerprint=_fingerprint(), seed=seed)
-    ev = _evaluator(world_context, n_particles=n_particles, seed=seed, llm=llm)
+    ev = _evaluator(world_context, n_particles=n_particles, seed=seed, llm=llm,
+                    allow_single_structural_model=allow_single_structural_model)
     from swm.world_model_v2.state import parse_time
     points = []
     for dp in problem.decision_points or []:

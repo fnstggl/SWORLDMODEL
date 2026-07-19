@@ -180,14 +180,22 @@ def run(limit, seed):
                 row["B1_grounded"] = min(0.99, max(0.01, float(r1.get("p"))))
             except (TypeError, ValueError):
                 row["B1_grounded"] = None
-        # ---- B6 full V2 (general path) ----
+        # ---- B6 full V2 (general path) — the CANONICAL default runtime, so the benchmark records the
+        # structural ensemble (per-model distributions, sensitivity, certificates) like production ----
         try:
             import time as _t2
             asof_s = _t2.strftime("%Y-%m-%d", _t2.gmtime(i.as_of))
             hor_s = _t2.strftime("%Y-%m-%d", _t2.gmtime(i.resolve_ts or (i.as_of + 30 * 86400)))
-            plan = compile_world(i.question, llm=call_compiler, evidence=bundle,
-                                 as_of=asof_s, horizon=hor_s)
-            result, branches = run_from_plan(plan, n_particles=12, seed=7)
+            from swm.world_model_v2.unified_runtime import simulate_world as _simulate_world
+            _res = _simulate_world(i.question, llm=call_compiler, as_of=asof_s, horizon=hor_s, seed=7)
+            result = {"distribution": dict(_res.raw_distribution or {}),
+                      "unresolved_share": (_res.provenance or {}).get("unresolved_share", 0)}
+            row["structural_ensemble"] = ({
+                "n_models": (_res.structural_ensemble or {}).get("n_fully_simulated"),
+                "sensitivity": ((_res.structural_ensemble or {}).get("structural_sensitivity")
+                                or {}).get("classification"),
+                "aggregation": (_res.structural_ensemble or {}).get("aggregation_method")}
+                if _res.structural_ensemble else None)
             dist = result.get("distribution") or {}
             # map terminal distribution to P(YES): look for a true-ish / yes-ish key
             p_yes = None
