@@ -13,12 +13,20 @@ def _plan(question="Will X happen?", lean="weak_no", as_of="2026-05-07"):
 def test_grounded_estimate_prior_is_continuous_and_bounded():
     # a recurrence with base rate 0.95 grounds the prior mean HIGH (not the 0.70 lean ceiling)...
     spec = grounded_estimate_prior("annual OS at conference", 0.95, transport_risk="low",
-                                   n_examples=8, is_recurrence=True)
+                                   n_examples=8, is_recurrence=True, evidence_quality="sourced")
     assert 0.80 < spec.mean < 0.98 and spec.source_class == "recurrence"
-    # ...but stays weakly-informative: effective sample size capped low (never a data-backed certainty)
-    assert spec.retained_effective_n <= 10.0
     # continuous: a 0.62 estimate lands off the coarse {.30,.41,.50,.59,.70} lean grid
     assert abs(grounded_estimate_prior("c", 0.62, n_examples=6).mean - 0.62) < 0.12
+
+
+def test_influence_scales_with_evidence_quality_not_flat():
+    # user refinement: sourced history => relatively strong; model memory => broad. Same rate, more weight
+    # when sourced (higher effective N), so the prior is tighter around the estimate.
+    sourced = grounded_estimate_prior("x", 0.9, transport_risk="low", n_examples=30, evidence_quality="sourced")
+    memory = grounded_estimate_prior("x", 0.9, transport_risk="low", n_examples=30, evidence_quality="model_memory")
+    assert sourced.retained_effective_n > memory.retained_effective_n
+    assert sourced.mean > memory.mean            # sourced concentrates nearer the high estimate
+    assert memory.retained_effective_n <= 8.0    # memory stays broad / weakly weighted
 
 
 def test_estimate_parses_and_bounds(monkeypatch):

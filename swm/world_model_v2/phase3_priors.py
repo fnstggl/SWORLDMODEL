@@ -29,6 +29,11 @@ MAX_EFFECTIVE_N = 40.0
 #: an LLM-ESTIMATED base rate (no held-out data) is capped MUCH tighter — it grounds the prior MEAN
 #: continuously but stays weakly-informative, so it can never masquerade as a data-backed prior.
 MAX_LLM_EFFECTIVE_N = 10.0
+#: influence is DISCOUNTED BY EVIDENCE QUALITY, not flat: a recurrence COUNTED from sourced history may be
+#: a relatively strong (not certain) prior; a base rate from the model's incomplete memory stays broad and
+#: weakly weighted. An unsupported precise point estimate is never allowed to be tight (that is the whole
+#: point of the cap). Keyed by the estimator's self-reported evidence quality.
+QUALITY_MAX_N = {"sourced": 34.0, "model_memory": 8.0}
 TRANSPORT_RISKS = tuple(TRANSPORT_RETAINED)
 
 
@@ -81,16 +86,23 @@ def reference_class_prior(reference_class: str, successes: float, total: float, 
 
 
 def grounded_estimate_prior(reference_class: str, base_rate: float, *, transport_risk: str = "moderate",
-                            n_examples: float = 6.0, is_recurrence: bool = False, why: str = "") -> PriorSpec:
-    """Build a CONTINUOUS Beta prior centred on an LLM-ESTIMATED base rate (or a calendar recurrence rate),
-    with a bounded, transport-discounted effective sample size. Distinct from `reference_class_prior`
-    (held-out DATA): here the base rate is a grounded ESTIMATE, so it is capped at MAX_LLM_EFFECTIVE_N and
-    labelled `llm_estimated_reference`/`recurrence` — it moves the prior MEAN off the coarse 5-value lean
-    grid, but stays weakly-informative and never a data-backed certainty. A strong recurrence (annual event
-    that reliably happens) legitimately carries low transport risk and a high base rate."""
+                            n_examples: float = 6.0, is_recurrence: bool = False,
+                            evidence_quality: str = "model_memory", why: str = "") -> PriorSpec:
+    """Build a CONTINUOUS Beta prior centred on a grounded base-rate ESTIMATE, with an effective sample size
+    DISCOUNTED BY EVIDENCE QUALITY (not a flat heavy discount that would throw away real signal):
+
+      * evidence_quality="sourced"       — the rate is counted from sourced history (retrieved past cases, a
+        verified recurrence). May be a relatively STRONG (never certain) prior: cap QUALITY_MAX_N['sourced'].
+      * evidence_quality="model_memory"  — the model's incomplete recall. BROAD, weakly weighted: cap
+        QUALITY_MAX_N['model_memory'].
+
+    In both cases the mean is continuous (off the 5-value lean grid) and transport risk still widens. This is
+    distinct from `reference_class_prior` (explicit successes/total DATA). The LLM may PROPOSE the rate but its
+    INFLUENCE depends on the evidence behind it — an unsupported precise number can never be tight."""
     p = min(0.98, max(0.02, float(base_rate)))
     retained = TRANSPORT_RETAINED.get(transport_risk, 0.4)
-    eff_n = min(MAX_LLM_EFFECTIVE_N, max(1.0, float(n_examples)) * retained)
+    cap = QUALITY_MAX_N.get(evidence_quality, MAX_LLM_EFFECTIVE_N)
+    eff_n = min(cap, max(1.0, float(n_examples)) * retained)
     a = p * eff_n + 1.0
     b = (1.0 - p) * eff_n + 1.0
     src = "recurrence" if is_recurrence else "llm_estimated_reference"
@@ -99,11 +111,12 @@ def grounded_estimate_prior(reference_class: str, base_rate: float, *, transport
         reference_class=reference_class, transport_risk=transport_risk,
         retained_effective_n=round(eff_n, 3), raw_effective_n=round(float(n_examples), 3),
         provenance={"estimated_base_rate": round(p, 4), "is_recurrence": is_recurrence,
-                    "n_examples_estimated": n_examples, "transport_retained_fraction": retained,
-                    "widening": f"effective N capped at {MAX_LLM_EFFECTIVE_N} → {eff_n:.1f}",
+                    "evidence_quality": evidence_quality, "n_examples_estimated": n_examples,
+                    "transport_retained_fraction": retained,
+                    "widening": f"effective N capped at {cap} (evidence_quality={evidence_quality}) → {eff_n:.1f}",
                     "why": why[:160],
-                    "rule": "continuous grounded MEAN, bounded precision — an ESTIMATE, not held-out data",
-                    "llm_role": "proposed reference class + bounded base-rate estimate + transport risk"})
+                    "rule": "continuous grounded MEAN; precision scaled by EVIDENCE QUALITY, not flat",
+                    "llm_role": "proposed reference class + base-rate estimate; influence set by evidence behind it"})
 
 
 def generic_lean_prior(lean: str, *, reason: str = "no reference class identified") -> PriorSpec:
@@ -151,6 +164,10 @@ reference class of comparable past situations. Reason like a superforecaster's O
 QUESTION: {question}
 AS-OF: {as_of}
 {recurrence_block}
+You may PROPOSE a numerical base rate, but you must NEVER present an unsupported guess as precise historical
+fact. Your estimate's INFLUENCE depends on the evidence behind it — say honestly whether it is counted from
+specific sourced history or is your incomplete recollection.
+
 Decide:
 1. reference_class: the most apt class of comparable past cases (short descriptor), or "" if none.
 2. is_recurrence: true if the question hinges on a RELIABLY RECURRING or SCHEDULED event (an annual
@@ -162,9 +179,12 @@ Decide:
 4. n_examples: roughly how many past comparable cases your rate is based on (integer; be conservative).
 5. transport_risk: none|low|moderate|high|severe — how much this class differs from THIS scenario
    (a reliable recurrence with no disruption = low; a loose analogy across eras = high).
+6. evidence_quality: "sourced" if you can point to specific recent past instances (named years/events) that
+   you are confident occurred — the recurrence is countable — else "model_memory" (a general impression).
 
 Return ONLY JSON: {{"reference_class": "...", "is_recurrence": true|false, "base_rate": <0..1>,
-"n_examples": <int>, "transport_risk": "none|low|moderate|high|severe", "why": "<one line>"}}"""
+"n_examples": <int>, "transport_risk": "none|low|moderate|high|severe",
+"evidence_quality": "sourced|model_memory", "why": "<one line>"}}"""
 
 
 def estimate_reference_base_rate(question: str, *, llm, as_of: str = "", recurrence: dict = None) -> dict:
@@ -193,11 +213,13 @@ def estimate_reference_base_rate(question: str, *, llm, as_of: str = "", recurre
     except (TypeError, ValueError):
         return {}
     tr = str(raw.get("transport_risk", "high"))
+    eq = str(raw.get("evidence_quality", "model_memory")).lower()
     return {"reference_class": str(raw.get("reference_class", ""))[:120],
             "is_recurrence": bool(raw.get("is_recurrence")),
             "base_rate": br,
             "n_examples": max(1.0, min(60.0, float(raw.get("n_examples", 5) or 5))),
             "transport_risk": tr if tr in TRANSPORT_RETAINED else "high",
+            "evidence_quality": eq if eq in ("sourced", "model_memory") else "model_memory",
             "why": str(raw.get("why", ""))[:160]}
 
 
@@ -240,6 +262,7 @@ def build_outcome_rate_prior(plan, *, llm=None, reference_data: dict = None, rec
             else est["transport_risk"]
         return grounded_estimate_prior(est["reference_class"], est["base_rate"], transport_risk=tr,
                                        n_examples=est["n_examples"], is_recurrence=est["is_recurrence"],
+                                       evidence_quality=est.get("evidence_quality", "model_memory"),
                                        why=est["why"])
     # 4. weak fallback: the coarse qualitative-lean Beta (honestly labeled)
     spec = generic_lean_prior(lean, reason="no reference class or base-rate estimate available")

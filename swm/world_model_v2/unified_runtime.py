@@ -145,6 +145,7 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
 
     # ---------- Phase 3: posterior over hidden state + structural hypotheses → materialize onto the plan ----
     posterior = None
+    prior_spec = None
     if "phase3_posterior" not in drop and bundle is not None:
         try:
             tags = tag_claims(question, bundle, plan, llm=llm)
@@ -183,6 +184,18 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
         _warnings.warn(
             f"EVIDENCE-STARVED run: as_of supplied but 0 effective observations reached the posterior — "
             f"forecasting from priors, not evidence: {question[:70]!r}", stacklevel=1)
+
+    # grounded fallback probability: the posterior mean if evidence updated it, else the (now grounded)
+    # prior mean. Used ONLY as the last-resort guard when the rollout produces no bound outcome, so a
+    # coherent question is NEVER returned with p=None.
+    grounded_fallback_mean = None
+    try:
+        if posterior is not None and int(getattr(posterior, "n_effective_observations", 0) or 0) > 0:
+            grounded_fallback_mean = float(getattr(posterior, "outcome_rate_mean"))
+        elif prior_spec is not None:
+            grounded_fallback_mean = float(prior_spec.mean)
+    except Exception:  # noqa: BLE001
+        grounded_fallback_mean = None
 
     # ---------- Phase 9: populations + multilayer networks — instantiate into the shared plan when declared --
     _thread_populations_networks(plan, manifest, drop)
@@ -350,6 +363,25 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
                 "EVIDENCE-STARVED: 0 as-of observations reached the posterior — this forecast is "
                 "prior-driven, not evidence-driven (retrieval returned nothing usable even after retry)"])
     except Exception:  # noqa: BLE001 — telemetry attach must never break the forecast
+        pass
+
+    # NO-NULL GUARANTEE: a coherent run must NEVER return without a probability. If the rollout produced no
+    # bound outcome (empty operator census / event-time with nothing absorbed), fall back to the grounded
+    # posterior/prior mean — honestly labelled EXECUTION-DEGRADED — instead of p=None. (General fix for the
+    # binary-first-passage-with-no-absorber fragility; a binary question always resolves to a probability.)
+    try:
+        if res.has_forecast() and res.raw_probability is None and res.calibrated_probability is None:
+            fb = grounded_fallback_mean if grounded_fallback_mean is not None else 0.5
+            src = ("posterior" if (posterior is not None
+                                   and int(getattr(posterior, "n_effective_observations", 0) or 0) > 0)
+                   else "prior")
+            res.raw_probability = round(float(fb), 4)
+            res.limitations = (list(res.limitations or []) + [
+                f"EXECUTION-DEGRADED: the rollout produced no bound outcome; forecast falls back to the "
+                f"grounded {src} mean ({fb:.3f}) rather than returning no probability"])
+            res.provenance["execution_degraded_fallback"] = {"used": True, "value": round(float(fb), 4),
+                                                             "source": src}
+    except Exception:  # noqa: BLE001 — the guard must never itself break the forecast
         pass
 
     # ---------- MANDATORY PHASE SUPERVISION: one PhaseExecutionRecord per phase, every run ----------
