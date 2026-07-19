@@ -30,7 +30,15 @@ from swm.world_model_v2.scenario_schema import ScenarioSemanticModel
 
 
 def is_generated_context(world_context) -> bool:
-    """Generated mode = the initial worlds carry a scenario schema."""
+    """Generated mode = the initial worlds carry a scenario schema — OR the context is a
+    compiled plan that carries/declares one (the structural-ensemble per-model re-entry passes
+    each model's OWN WorldExecutionPlan, whose schema was bound during its pilot; that model
+    must route through the scenario-generated action layer, never fixed-v1)."""
+    if getattr(world_context, "scenario_schema", None) is not None:
+        return True
+    prov = getattr(world_context, "provenance", None)
+    if isinstance(prov, dict) and isinstance(prov.get("scenario_schema"), dict):
+        return True
     initial = getattr(world_context, "initial", None) if not isinstance(world_context, dict) \
         else world_context.get("initial")
     if initial is None:
@@ -54,8 +62,12 @@ def _schema_of(evaluator) -> ScenarioSemanticModel:
 
 
 def _make_evaluator(world_context, *, n_particles, seed, llm):
+    # the structural-ensemble guard was already applied at the phase13.api entry (a bare plan
+    # without the explicit ablation flag never reaches this layer); per-model ensemble re-entry
+    # legitimately evaluates ONE model's plan here
     from swm.world_model_v2.phase13.api import _evaluator
-    return _evaluator(world_context, n_particles=n_particles, seed=seed, llm=llm)
+    return _evaluator(world_context, n_particles=n_particles, seed=seed, llm=llm,
+                      allow_single_structural_model=True)
 
 
 def _nl_to_candidate(text: str, i: int, problem, language, runner) -> ConcreteAction:

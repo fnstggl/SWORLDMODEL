@@ -65,6 +65,19 @@ def _ensemble_context(world_context) -> dict:
     return extract_ensemble_models(world_context)
 
 
+def _guard_single_plan(world_context, allow_single_structural_model: bool) -> None:
+    """The structural-ensemble default applies to the generated route too: a BARE single plan
+    (even a generated-world one) is the explicit single-model ablation. The ensemble's own
+    per-model re-entry passes allow_single_structural_model=True."""
+    from swm.world_model_v2.compiler import WorldExecutionPlan
+    if isinstance(world_context, WorldExecutionPlan) and not allow_single_structural_model:
+        raise SingleModelContextError(
+            "Phase 13 evaluates actions across the structural ensemble by default. Pass the "
+            "ensemble (a StructuralModelEnsemble, the SimulationResult from the default runtime, "
+            "or {model_id: plan}) — or set allow_single_structural_model=True for the explicit "
+            "single-model ablation.")
+
+
 def _fingerprint() -> dict:
     try:
         from swm.world_model_v2.runtime_fingerprint import runtime_fingerprint
@@ -107,6 +120,7 @@ def recommend_action(problem: DecisionProblem, world_context, *, budget: str = "
                                               candidate_observations=candidate_observations,
                                               mode=mode, goal_text=goal_text)
     if mode == "auto" and is_generated_context(world_context):
+        _guard_single_plan(world_context, allow_single_structural_model)
         return discover_best_action(goal_text or problem.context, world_context,
                                     problem=problem, budget=budget, seed=seed,
                                     n_particles=n_particles, llm=llm,
@@ -235,6 +249,7 @@ def evaluate_actions(problem: DecisionProblem, actions: list, world_context, *,
                                               actions=list(actions), mode=mode,
                                               goal_text=goal_text)
     if mode == "auto" and is_generated_context(world_context):
+        _guard_single_plan(world_context, allow_single_structural_model)
         return evaluate_actions_generated(problem, actions, world_context,
                                           goal_text=goal_text or problem.context,
                                           budget=budget, seed=seed,
@@ -261,10 +276,17 @@ def optimize_policy(problem: DecisionProblem, policies: list, world_context, *,
                                                                  optimize_policy_generated)
     if mode not in ("auto", "legacy_fixed_v1"):
         raise ValueError(f"unknown mode {mode!r} (valid: auto | legacy_fixed_v1)")
+    models = _ensemble_context(world_context)
+    if models:
+        from swm.world_model_v2.phase13.ensemble import optimize_policy_across_models
+        return optimize_policy_across_models(problem, policies, models, seed=seed,
+                                             n_particles=n_particles, llm=llm, mode=mode,
+                                             goal_text=goal_text or problem.context)
     if mode == "auto" and is_generated_context(world_context):
         # contingent/sequential plans on a generated world route through the scenario layer:
         # ConcreteActions with observation-gated conditional steps, executed on the maker's
         # observable projection through the same canonical funnel
+        _guard_single_plan(world_context, allow_single_structural_model)
         return optimize_policy_generated(problem, policies, world_context,
                                          goal_text=goal_text or problem.context, seed=seed,
                                          n_particles=n_particles, llm=llm,
@@ -273,11 +295,6 @@ def optimize_policy(problem: DecisionProblem, policies: list, world_context, *,
     from swm.world_model_v2.phase13.policies import (Policy, PolicyExecutionOperator,
                                                      schedule_decision_points)
     from swm.world_model_v2.phase13.counterfactual import MatchedBundle, paired_report
-    models = _ensemble_context(world_context)
-    if models:
-        from swm.world_model_v2.phase13.ensemble import optimize_policy_across_models
-        return optimize_policy_across_models(problem, policies, models, seed=seed,
-                                             n_particles=n_particles, llm=llm)
     t0 = _time.time()
     res = DecisionResult(decision_id=problem.decision_id, contract_hash=problem.contract_hash(),
                         runtime_fingerprint=_fingerprint(), seed=seed)

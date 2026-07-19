@@ -161,10 +161,15 @@ def test_default_route_is_the_temporal_runtime():
     assert "run_branch_temporal" in inspect.getsource(RolloutEngine.run_branch)
     assert "run_branch_temporal" in inspect.getsource(MatchedRolloutEngine.run_branch)
     from swm.world_model_v2 import unified_runtime as U
-    src = inspect.getsource(U.simulate_world)
+    # the temporal compile lives in the per-plan conditioning helper shared by BOTH routes:
+    # the single-model ablation AND every structural-ensemble candidate model
+    src = inspect.getsource(U._condition_plan)
     assert "compile_temporal_model" in src and "attach_temporal_model" in src
     # and the temporal stage is not gated behind an off-by-default flag
     assert 'if "temporal_model" not in drop' in src        # ablation-drop only, default ON
+    from swm.world_model_v2 import structural_runtime as SR
+    per_model = inspect.getsource(SR._condition_and_pilot_model)
+    assert "_condition_plan" in per_model    # every structural model compiles ITS OWN temporal model
 
 
 def test_rollout_engine_has_no_background_tick_cadence():

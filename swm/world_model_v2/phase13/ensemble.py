@@ -289,7 +289,8 @@ def _synthesize(ok: dict, problem) -> dict:
 
 
 def optimize_policy_across_models(problem: DecisionProblem, policies: list, models: dict, *,
-                                  seed: int = 0, n_particles: int = None, llm=None) -> DecisionResult:
+                                  seed: int = 0, n_particles: int = None, llm=None,
+                                  mode: str = "auto", goal_text: str = "") -> DecisionResult:
     """Policy optimization across structural models: the full canonical policy evaluation inside every
     model (same seed → CRN alignment), then the same cross-model synthesis over policy values."""
     from swm.world_model_v2.phase13.api import optimize_policy
@@ -298,7 +299,8 @@ def optimize_policy_across_models(problem: DecisionProblem, policies: list, mode
     for mid, entry in models.items():
         try:
             r = optimize_policy(copy.deepcopy(problem), policies, entry["plan"], seed=seed,
-                                n_particles=n_particles, llm=llm,
+                                n_particles=n_particles, llm=llm, mode=mode,
+                                goal_text=goal_text,
                                 allow_single_structural_model=True)
             per_model[mid] = {"result": r, "meta": entry.get("meta", {}), "error": ""}
         except Exception as e:  # noqa: BLE001
