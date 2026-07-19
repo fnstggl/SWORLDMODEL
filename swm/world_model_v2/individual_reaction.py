@@ -376,6 +376,14 @@ def simulate_individual_reaction(*, person_id: str, stimulus: str, context: dict
             "decision_summary": q.get("decision_summary", ""),
             "novel_action_unmodeled": bool(q.get("novel_action_unmodeled")),
             "trace_id": trace.trace_id,
+            # §35.2: the per-sample bounded-cognition record (compact stage outputs)
+            "cognition": {k: v for k, v in
+                          (((posterior.provenance or {}).get("cognition")) or {}).items()
+                          if k in ("model_family", "observations_noticed",
+                                   "observations_missed", "working_memory_capacity",
+                                   "memories_retrieved", "retrieval_failures",
+                                   "options_considered", "actually_feasible_not_considered",
+                                   "stage_traces")},
         })
     for s in samples:
         if s.get("nonresponse_state"):

@@ -1117,6 +1117,28 @@ def _route_individual_reaction_ensemble(question, user_context, llm, as_of, seed
         voi = _structural_value_of_information(ens, promoted, model_dists)
         ens.cost_manifest = ledger.as_dict()
         fallbacks = sum(int(a.get("n_excluded_numeric_fallbacks", 0)) for a in model_artifacts.values())
+        # §33: personal-reaction results carry the SAME §35.2 family/cognition reporting as
+        # every route — monoculture is never silently unreported at the personal scale
+        try:
+            from swm.world_model_v2.model_families import default_family_pool
+            _pool = default_family_pool(llm)
+            fam_report = _pool.report()
+        except Exception:  # noqa: BLE001
+            fam_report = {"model_family_monoculture": True, "families": [],
+                          "monoculture_note": "family pool unavailable — single injected backend"}
+        _cog_samples = [s.get("cognition") for a in model_artifacts.values()
+                        for s in (a.get("samples") or []) if s.get("cognition")][:8]
+        _nonresp = {}
+        for a in model_artifacts.values():
+            for k, v in (a.get("nonresponse_breakdown") or {}).items():
+                _nonresp[k] = _nonresp.get(k, 0) + int(v or 0)
+        cog_report = {
+            "pipeline": "stimulus availability → attention → working_memory → memory_retrieval "
+                        "→ interpretation → limited_action_search → one_choice → memory_update",
+            "schema": "bounded.cognition.v1",
+            "sample_decision_records": _cog_samples,
+            "nonresponse_breakdown": _nonresp,
+            "model_family_monoculture": fam_report.get("model_family_monoculture", True)}
         limitations = ["reaction distributions are counted from qualitative simulations per structural "
                        "frame and are unvalidated (no fitted calibrator)"]
         if classification["classification"] == "materially_structurally_sensitive":
@@ -1128,6 +1150,8 @@ def _route_individual_reaction_ensemble(question, user_context, llm, as_of, seed
             structural_disagreement=dict(model_dists),
             uncertainty_decomposition=decompose_uncertainty(model_dists),
             limitations=limitations,
+            cognition_report=cog_report,
+            model_family_report=fam_report,
             interpretation_hypotheses=[{"model_id": c.model_id, "thesis": c.causal_thesis}
                                        for c in promoted],
             structural_ensemble={
