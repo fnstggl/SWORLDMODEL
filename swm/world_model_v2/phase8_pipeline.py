@@ -202,14 +202,23 @@ def run_with_persistence(question, plan, *, llm=None, context=None, actor_histor
         meta["support_grade_effect"] = grade_effect
 
     check_readout_binding(plan, base)
-    ops, _rej = operators_from_plan(plan, llm=llm)
+    # parity with run_from_plan (the persistence funnel must not silently lose capabilities): the
+    # evidence-updated posterior reaches the resolver events, experimental mechanisms EXECUTE labeled
+    # (run-everything principle), and competing structural hypotheses stratify the particles.
+    from swm.world_model_v2.materialize import _inject_posterior_rate, _run_with_hypotheses
+    _inject_posterior_rate(plan)
+    ops, _rej = operators_from_plan(plan, llm=llm, allow_experimental=True)
     import swm.world_model_v2.phase8_transitions as _p8t
     ops = ops + [_p8t.PersistenceUpdateOperator(), _p8t.MemoryConsolidationOperator()]
     init = InitialStateModel(base_world=base, latents=list(plan.latents))
     npart = n_particles or plan.compute_plan.get("n_particles", 30)
     run = WorldModelV2Run(initial=init, queue_builder=queue_builder_from_plan(plan),
                           operators=ops, contract=plan.outcome_contract, n_particles=npart)
-    result, branches = run.run(seed=seed)
+    hyps = list(getattr(plan, "structural_hypotheses", []) or [])
+    if len(hyps) > 1:
+        result, branches = _run_with_hypotheses(run, plan, hyps, seed)
+    else:
+        result, branches = run.run(seed=seed)
     result["omissions"] = list(getattr(base, "omissions", []))
     from swm.world_model_v2.materialize import attach_actor_decision_distributions
     attach_actor_decision_distributions(ops, result)
