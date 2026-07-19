@@ -785,10 +785,14 @@ class PersonaActorPolicyRuntime(ActorPolicyRuntime):
                 after[other] = {"expects": expectation, "at": world.clock.now}
             after = dict(sorted(after.items(), key=lambda kv: -float(
                 kv[1].get("at", 0.0) if isinstance(kv[1], dict) else 0.0))[:cfg.max_expected_reactions])
-            actor.set("expected_reactions", F(after, status="derived",
-                                              method="llm_persona_expected_reactions",
-                                              updated_at=world.clock.now))
-            delta.change(f"{action.actor_id}.expected_reactions", sorted(before), sorted(after))
+            try:
+                actor.set("expected_reactions", F(after, status="derived",
+                                                  method="llm_persona_expected_reactions",
+                                                  updated_at=world.clock.now))
+                delta.change(f"{action.actor_id}.expected_reactions", sorted(before), sorted(after))
+            except KeyError:
+                # an entity type no extension covers must degrade to a recorded skip, never kill the run
+                delta.reason_codes.append("expected_reactions_skipped_unregistered_entity_type")
         delta.reason_codes.append("llm_persona_state_update")
 
 

@@ -47,7 +47,17 @@ def build_world(plan, *, world_id: str = "w0", evidence_hash: str = "", versions
     omissions = []
     prompt_hash = (plan.provenance or {}).get("prompt_hash", "")
     for e in plan.entities:
-        ent = Entity(identity=str(e.get("id")), entity_type=str(e.get("type", "person")))
+        # ENTITY-TYPE NORMALIZATION (repair, never refuse): the universal schema is person|institution,
+        # but the LLM sometimes proposes "organization"/"political_party"/etc. An unnormalized type makes
+        # every registered extension field inapplicable and crashes actor-cognition writes mid-rollout
+        # (EXP-105 Colombia). Non-person types normalize to institution, recorded as an omission.
+        etype = str(e.get("type", "person")).strip().lower()
+        if etype not in ("person", "institution"):
+            omissions.append({"kind": "entity_type_normalized", "entity": str(e.get("id")),
+                              "from": etype, "to": "institution",
+                              "reason": "universal schema is person|institution; extensions must bind"})
+            etype = "institution"
+        ent = Entity(identity=str(e.get("id")), entity_type=etype)
         for fname, val in (e.get("fields") or {}).items():
             if val in ("?", None, ""):
                 continue                                     # unknowns stay latent, not fabricated
