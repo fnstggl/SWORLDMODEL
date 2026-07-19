@@ -197,14 +197,21 @@ def simulate_structural_ensemble(question: str, *, as_of: str, horizon: str = ""
                             reason="material_structural_disagreement")
 
     # ---------- finalize each promoted model through the canonical result funnel ----------
+    # exactly ONE model (the first promoted) commits the persistence checkpoint — one run advances
+    # the actor-history lineage once, exactly as the single-model runtime did
     model_results = {}
+    checkpoint_committed = False
     for cand in ens.surviving():
         rec = runs.get(cand.model_id)
         if rec is None or rec.get("error"):
             continue
-        res_m = _finalize_model(U, question, cand, rec, bundle, as_of, intervention, seed, t0)
+        commit = cand.promotion_status == "promoted" and not checkpoint_committed
+        res_m = _finalize_model(U, question, cand, rec, bundle, as_of, intervention, seed, t0,
+                                commit_checkpoint=commit)
         if res_m is not None:
             model_results[cand.model_id] = res_m
+            if commit:
+                checkpoint_committed = True
     promoted = [c for c in ens.surviving() if c.promotion_status == "promoted"
                 and c.model_id in model_results]
     if not promoted:
@@ -403,12 +410,16 @@ def _extend_to_full(cand, rec, seed, actor_cache, extra_particles: int = 0, reas
     cand.pilot_status = "reused_in_full" if reuse_pilot else "completed"
 
 
-def _finalize_model(U, question, cand, rec, bundle, as_of, intervention, seed, t0):
+def _finalize_model(U, question, cand, rec, bundle, as_of, intervention, seed, t0,
+                    commit_checkpoint: bool = True):
     """Terminal projection + result contract for ONE model over ALL its accumulated branches, through the
-    canonical finalize funnel, with per-model phase supervision."""
+    canonical finalize funnel, with per-model phase supervision. `commit_checkpoint=False` neutralizes
+    the persistence-checkpoint commit (history was already materialized at prepare time; only one model
+    per run advances the lineage)."""
     from swm.world_model_v2.phase8_pipeline import finalize_persistence_run
+    handle = rec["handle"] if commit_checkpoint else {**rec["handle"], "actor_history": None}
     try:
-        res, _artifacts = finalize_persistence_run(rec["handle"], rec["branches"],
+        res, _artifacts = finalize_persistence_run(handle, rec["branches"],
                                                    intervention=intervention, t0=t0, seed=seed)
     except Exception as e:  # noqa: BLE001
         rec["error"] = f"finalize: {type(e).__name__}: {e}"[:200]

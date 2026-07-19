@@ -173,34 +173,53 @@ def run_case(case: dict, max_tokens: int) -> dict:
     return art
 
 
+def rebuild_summary() -> dict:
+    """Combined summary from EVERY case artifact on disk (single-case invocations may run in
+    parallel; the summary is always the union, never one invocation's slice)."""
+    rows = []
+    for p in sorted(OUT.glob("*.json")):
+        if p.name == "summary.json":
+            continue
+        try:
+            art = json.loads(p.read_text())
+        except (OSError, ValueError):
+            continue
+        ens = art.get("ensemble") or {}
+        rows.append({"case_id": (art.get("case") or {}).get("case_id", p.stem),
+                     "status": (art.get("result") or {}).get("simulation_status", "harness_error"),
+                     "n_independent_generation_calls": ens.get("n_independent_generation_calls"),
+                     "n_fully_simulated": ens.get("n_fully_simulated"),
+                     "sensitivity": (ens.get("structural_sensitivity") or {}).get("classification"),
+                     "n_llm_calls": art.get("n_llm_calls_recorded"),
+                     "provider_counters": (art.get("backend") or {}).get("provider_counters"),
+                     "wall_clock_s": art.get("wall_clock_s"),
+                     "error": str(art.get("harness_error", ""))[:160]})
+    summary = {"schema_version": "structural_ensemble.forensics.summary.v1",
+               "note": "architecture probes — no predictive-accuracy claim",
+               "cases": rows}
+    (OUT / "summary.json").write_text(json.dumps(summary, indent=1))
+    return summary
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--case", type=int, default=None, help="run one case index (0-4)")
     ap.add_argument("--max-tokens", type=int, default=2400)
+    ap.add_argument("--summary-only", action="store_true")
     args = ap.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
+    if args.summary_only:
+        s = rebuild_summary()
+        print(json.dumps(s["cases"], indent=1))
+        return 0
     cases = CASES if args.case is None else [CASES[args.case]]
-    summary = []
     for case in cases:
         print(f"=== {case['case_id']} ===", flush=True)
         art = run_case(case, args.max_tokens)
         path = OUT / f"{case['case_id']}.json"
         path.write_text(json.dumps(art, indent=1, default=str))
-        ens = art["ensemble"] or {}
-        row = {"case_id": case["case_id"],
-               "status": (art["result"] or {}).get("simulation_status", "harness_error"),
-               "n_independent_generation_calls": ens.get("n_independent_generation_calls"),
-               "n_fully_simulated": ens.get("n_fully_simulated"),
-               "sensitivity": (ens.get("structural_sensitivity") or {}).get("classification"),
-               "n_llm_calls": art["n_llm_calls_recorded"],
-               "provider_counters": art["backend"]["provider_counters"],
-               "wall_clock_s": art["wall_clock_s"], "error": art["harness_error"][:160]}
-        summary.append(row)
-        print(json.dumps(row), flush=True)
-        (OUT / "summary.json").write_text(json.dumps(
-            {"schema_version": "structural_ensemble.forensics.summary.v1",
-             "note": "architecture probes — no predictive-accuracy claim",
-             "cases": summary}, indent=1))
+        summary = rebuild_summary()
+        print(json.dumps(summary["cases"][-1] if summary["cases"] else {}), flush=True)
     print(f"-> {OUT}")
     return 0
 

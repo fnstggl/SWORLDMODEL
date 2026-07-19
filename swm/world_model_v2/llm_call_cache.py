@@ -176,9 +176,10 @@ class ScopedActorCache:
         self._fingerprint = backend_fingerprint(llm)
 
     def enter_branch(self, scope):
-        """Called by the runtime before each branch roll; resets occurrence counters for the scope."""
+        """Called by the runtime before each branch roll; resets occurrence counters for THIS scope
+        (other scopes' counters are untouched — they reset when their own branch is entered)."""
         self.scope = scope
-        self._occurrence = {k: 0 for k in self._occurrence if k[0] != scope}
+        self._occurrence = {k: v for k, v in self._occurrence.items() if k[0] != scope}
 
     def __call__(self, prompt: str) -> str:
         if self.scope is None:
