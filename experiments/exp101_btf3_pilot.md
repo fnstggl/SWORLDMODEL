@@ -113,3 +113,18 @@ research on an old-cutoff model, then RetroSearch-lite).
 
 The 200-question by-mechanism table (arrival n=107 at 0.167 is the workhorse; escalation/persistence
 small-n and weak; aggregation still worst at 0.294) is in `results/exp101_btf3_pilot_widened200.json`.
+
+## Under the hood (traced, 5 questions) — and two wiring gaps found by tracing
+
+Full-transparency traces (temperature 0, same calls as the run) show the per-question anatomy: ONE LLM
+call (~5,000-char prompt = question + resolution criteria + truncated background + the 7-mechanism menu),
+one JSON reply (a mechanism label + 1–5 scalars), then a ~4,000-draw Monte-Carlo integration of a
+one-line kernel. No actors, institutions, populations, or state transitions run in this path — per the
+EXP-089 mandate (deeper simulation machinery measurably hurt on open-domain questions).
+
+Gaps found by tracing (to fix in the next paired run, NOT retro-fixed into reported results):
+1. **Nested-params drop:** the LLM sometimes returns `{"params": {...}}`; the router reads only top-level
+   keys, so those params vanish and the kernel lands on the base-rate fallback (BoJ, Banxico → 0.5).
+   Honest by accident; the fix is to flatten `params` into the top level.
+2. **`contest.win_prob` bypasses provenance:** an invented win_prob is returned verbatim (pre-fix Wale
+   0.98 was the LLM's raw guess passing straight through). Needs the same anchor/widening treatment.
