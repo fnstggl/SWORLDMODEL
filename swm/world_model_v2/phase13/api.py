@@ -65,6 +65,17 @@ def _ensemble_context(world_context) -> dict:
     return extract_ensemble_models(world_context)
 
 
+def _source_result(world_context):
+    """The ensemble SimulationResult when the caller passed one as the world context — the object
+    carrying the §20/§21 truncation_report, §35 under-modeled accounting and §17.4 model-family
+    report that the §31 withholding rules consume, and whose
+    structural_ensemble["recommendation_stability"] Phase 13 fills. None for every other
+    ensemble-shaped context (a raw StructuralModelEnsemble or {model_id: plan} carries no
+    run-level uncertainty axes to consume)."""
+    return world_context if hasattr(world_context, "truncation_report") and \
+        hasattr(world_context, "structural_ensemble") else None
+
+
 def _guard_single_plan(world_context, allow_single_structural_model: bool) -> None:
     """The structural-ensemble default applies to the generated route too: a BARE single plan
     (even a generated-world one) is the explicit single-model ablation. The ensemble's own
@@ -118,7 +129,8 @@ def recommend_action(problem: DecisionProblem, world_context, *, budget: str = "
         return recommend_action_across_models(problem, models, budget=budget, seed=seed,
                                               n_particles=n_particles, llm=llm,
                                               candidate_observations=candidate_observations,
-                                              mode=mode, goal_text=goal_text)
+                                              mode=mode, goal_text=goal_text,
+                                              source_result=_source_result(world_context))
     if mode == "auto" and is_generated_context(world_context):
         _guard_single_plan(world_context, allow_single_structural_model)
         return discover_best_action(goal_text or problem.context, world_context,
@@ -156,6 +168,7 @@ def recommend_action(problem: DecisionProblem, world_context, *, budget: str = "
     if ab is not None and not ab.partial.get("continue_for_pareto"):
         res.abstention = ab.as_dict()
         res.recommendation_kind = "abstain"
+        res.recommendation_status = "withheld"
         res.latency_s = round(_time.time() - t0, 3)
         return res
 
@@ -218,6 +231,9 @@ def recommend_action(problem: DecisionProblem, world_context, *, budget: str = "
         res.recommendation_kind = "abstain"
     res.provenance["ranking"] = evals["_ranking"]
     res.provenance["minimax_regret_action"] = evals["_regret"]["minimax_regret_action"]
+    res.recommendation_status = ("eligible" if res.recommendation_kind == "action" else
+                                 "limited" if res.recommendation_kind == "gather_information"
+                                 else "withheld")
     res.causal_claim = "simulated_mechanism_counterfactual"
     res.support_grade = "exploratory"
     res.cost = {"arm_evaluations": res.search.get("n_evaluated", 0),
@@ -247,7 +263,8 @@ def evaluate_actions(problem: DecisionProblem, actions: list, world_context, *,
         return recommend_action_across_models(problem, models, budget=budget, seed=seed,
                                               n_particles=n_particles, llm=llm,
                                               actions=list(actions), mode=mode,
-                                              goal_text=goal_text)
+                                              goal_text=goal_text,
+                                              source_result=_source_result(world_context))
     if mode == "auto" and is_generated_context(world_context):
         _guard_single_plan(world_context, allow_single_structural_model)
         return evaluate_actions_generated(problem, actions, world_context,

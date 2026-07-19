@@ -1,30 +1,68 @@
-"""Production result semantics — the no-abstention contract (Part A).
+"""Production result semantics — honest epistemic statuses (Part A + §8/§20/§21/§35).
 
-The product simulates EVERY coherent social question. Weak evidence, missing validated mechanisms,
-transport risk, unfamiliar domains and uncertain hidden state do NOT prevent a forecast — they widen priors,
-add competing hypotheses, lower the SUPPORT GRADE and add limitations. Binary forecast abstention is
-replaced by three INDEPENDENT concepts:
+ACCURACY BEFORE APPARENT COMPLETENESS. Weak evidence, missing validated mechanisms, transport risk,
+unfamiliar domains and uncertain hidden state do NOT prevent a forecast — they widen priors, add
+competing hypotheses, lower the SUPPORT GRADE and add limitations. But apparent completeness is never
+bought with silently over-claimed forecasts either: when the represented world demonstrably fails to
+contain a high-sensitivity part of the real causal system, or when simulated branch mass was cut off
+before causal resolution, the result SAYS SO in a first-class status instead of dressing up as an
+ordinary completed forecast. Binary forecast abstention stays replaced by three INDEPENDENT concepts:
 
-  SimulationStatus     — did the simulation run?  completed / completed_with_degradation /
-                         clarification_required / execution_failed
+  SimulationStatus     — did the simulation run, and how completely does the represented world cover
+                         the question?  completed / completed_with_degradation /
+                         clarification_required / execution_failed / under_modeled / truncated
+                         (+ the legacy alias temporally_truncated)
   SupportGrade         — how well-evidenced is it? empirically_supported / transfer_supported /
                          exploratory / highly_speculative
   RecommendationStatus — may we recommend an action? eligible / limited / withheld / not_requested
 
+`under_modeled` (§35) and `truncated` (§20/§21) are EPISTEMIC/REPRESENTATIONAL states of the result —
+NOT engineering exceptions and NOT clarification. under_modeled: the run executed but a
+high-sensitivity component of the real causal system is known to be missing, unrepresentable or
+unresolvably disputed in the represented world (the UNDER_MODELED_SUBTYPES name what kind; the
+under_modeled_components name which pieces). truncated: simulated branch probability mass was cut off
+by a budget or failure before resolution, and the truncation_report (§35.4) accounts for that mass —
+truncated branch mass is unresolved simulation, not Monte Carlo error. Both statuses MAY carry a
+partial exploratory distribution where mathematically defensible, but that distribution remains
+EXPLICITLY CONDITIONAL on the modeled portion of the world (conditional_forecast_note rides with it);
+it is never presented as an ordinary completed forecast over the full question.
+
 `clarification_required` is reserved for genuinely incoherent questions (no simulable interpretation exists,
 even after generating competing ones) and must be RARE. `execution_failed` is an engineering/architectural
 failure (exception, unresolved reference, invalid plan, unbindable readout, missing operator) — NOT
-epistemic abstention. Neither may be used to hide compiler incompleteness or missing mechanism coverage.
+epistemic abstention. Neither may be used to hide compiler incompleteness or missing mechanism coverage —
+naming those gaps honestly is exactly what under_modeled exists for.
 """
 from __future__ import annotations
 
 from dataclasses import dataclass, field, asdict
 
 # ------------------------------------------------------------------ the three independent axes
+# "truncated" is the FIRST-CLASS truncation status (§20/§21): new code emits it WITH a populated
+# truncation_report (see swm/world_model_v2/truncation.py). "temporally_truncated" remains a readable
+# LEGACY ALIAS status so historical artifacts and pre-§20 emitters keep loading unchanged; new
+# emitters must prefer "truncated".
 SIMULATION_STATUSES = ("completed", "completed_with_degradation", "clarification_required",
-                       "execution_failed", "temporally_truncated")
+                       "execution_failed", "temporally_truncated", "under_modeled", "truncated")
 SUPPORT_GRADES = ("empirically_supported", "transfer_supported", "exploratory", "highly_speculative")
 RECOMMENDATION_STATUSES = ("eligible", "limited", "withheld", "not_requested")
+
+#: §35 under-modeled subtypes — WHAT KIND of representational gap makes a result under_modeled.
+#: An under_modeled result must name at least one subtype or one structured component; an unnamed
+#: gap is not an honest gap.
+UNDER_MODELED_SUBTYPES = (
+    "under_modeled_boundary",                 # the world boundary excludes a high-sensitivity region (§35.1)
+    "under_modeled_actor",                    # a decisive actor could not be represented
+    "under_modeled_population",               # a decisive population/aggregate could not be represented
+    "under_modeled_nonhuman_mechanism",       # a physical/algorithmic/biological mechanism is missing (§35.3)
+    "under_modeled_external_process",         # an outside-world process drives the outcome (§35.1)
+    "under_modeled_parameterization",         # structure exists but no defensible parameterization does
+    "under_modeled_structural_disagreement",  # structural models disagree beyond what evidence resolves
+)
+
+#: The exact §35 conditionality sentence that rides with any partial under_modeled distribution.
+CONDITIONAL_FORECAST_SENTENCE = ("This distribution is conditional on the represented world boundary "
+                                 "and excludes unresolved high-sensitivity processes.")
 
 #: engineering failure taxonomy — every execution_failed result names one of these
 FAILURE_TAXONOMY = (
@@ -51,8 +89,9 @@ class ClarificationRequired(Exception):
 
 @dataclass
 class SimulationResult:
-    """The full user-facing result. Every completed/degraded result carries all epistemic fields; a
-    forecast is present whenever the simulation ran (status completed or completed_with_degradation)."""
+    """The full user-facing result. Every completed/degraded result carries all epistemic fields and a
+    forecast; under_modeled/truncated results carry their gap accounting (§35) and MAY carry a partial
+    distribution that stays explicitly conditional on the modeled portion of the world."""
     question: str
     simulation_status: str                                  # SIMULATION_STATUSES
     support_grade: str = "exploratory"                      # SUPPORT_GRADES (set for completed/degraded)
@@ -87,6 +126,17 @@ class SimulationResult:
     omitted_high_sensitivity_variables: list = field(default_factory=list)
     sensitivity_contributors: list = field(default_factory=list)
     interpretation_hypotheses: list = field(default_factory=list)
+    # §35 honest under-modeling + §20/§21 truncation accounting (all additive; empty on ordinary
+    # completed results — populating them never blocks a forecast, hiding them is what is forbidden)
+    under_modeled_subtypes: list = field(default_factory=list)     # UNDER_MODELED_SUBTYPES members
+    under_modeled_components: list = field(default_factory=list)   # [{component, kind, why, sensitivity}]
+    conditional_forecast_note: str = ""                            # rides with any partial distribution
+    world_boundaries: dict = field(default_factory=dict)           # per-structural-model §35.1 blocks
+    outside_world: dict = field(default_factory=dict)              # §35.1 processes left OUTSIDE the boundary
+    cognition_report: dict = field(default_factory=dict)           # §35.2 actor-cognition coverage/fidelity
+    hybrid_mechanisms: dict = field(default_factory=dict)          # §35.3 nonhuman/hybrid mechanism coverage
+    truncation_report: dict = field(default_factory=dict)          # §35.4 aggregated branch truncation (§21)
+    model_family_report: dict = field(default_factory=dict)        # model families used + family failures
     # failure / clarification
     failure_taxonomy: str = ""                              # set iff execution_failed
     clarification_reason: str = ""                          # set iff clarification_required
@@ -100,16 +150,28 @@ class SimulationResult:
     def __post_init__(self):
         if self.simulation_status not in SIMULATION_STATUSES:
             raise ValueError(f"bad simulation_status {self.simulation_status!r}")
+        # under_modeled/truncated are epistemic states of a RUN result — like completed, they must
+        # carry an honest support grade (they are graded claims about the world, not failures)
         if self.simulation_status in ("completed", "completed_with_degradation",
-                                      "temporally_truncated"):
+                                      "temporally_truncated", "under_modeled", "truncated"):
             if self.support_grade not in SUPPORT_GRADES:
-                raise ValueError(f"completed result needs a valid support_grade, got {self.support_grade!r}")
+                raise ValueError(f"{self.simulation_status} result needs a valid support_grade, "
+                                 f"got {self.support_grade!r}")
+        if self.simulation_status == "under_modeled" and not (self.under_modeled_subtypes
+                                                              or self.under_modeled_components):
+            raise ValueError("under_modeled requires at least one under_modeled subtype or structured "
+                             "component — an unnamed representational gap is not an honest gap")
         if self.recommendation_status not in RECOMMENDATION_STATUSES:
             raise ValueError(f"bad recommendation_status {self.recommendation_status!r}")
 
     def has_forecast(self) -> bool:
         # temporally_truncated results carry a forecast — from an INCOMPLETE causal unfolding
         # (§12): usable, but the truncation record and lowered support ride with it
+        if self.simulation_status in ("under_modeled", "truncated"):
+            # §35/§21: these MAY carry a partial exploratory distribution where mathematically
+            # defensible — a forecast exists iff that partial distribution does, and it stays
+            # explicitly conditional on the modeled portion of the world
+            return bool(self.raw_distribution)
         return self.simulation_status in ("completed", "completed_with_degradation",
                                           "temporally_truncated")
 
@@ -159,9 +221,15 @@ class SimulationResult:
         return out
 
     def as_dict(self) -> dict:
+        # §35: a partial under_modeled distribution is NEVER served without its conditionality sentence
+        if (self.simulation_status == "under_modeled" and self.raw_distribution
+                and not self.conditional_forecast_note):
+            self.conditional_forecast_note = CONDITIONAL_FORECAST_SENTENCE
         d = asdict(self)
         # backward-compatible mirror fields for OLD readers (deprecated; never drives new logic).
         # A forecast that ran is NEVER an abstention; only a genuine clarification maps to the old flag.
+        # under_modeled/truncated are epistemic/representational states, NOT clarification — they must
+        # never mirror to abstain=True.
         d["abstain"] = self.simulation_status == "clarification_required"
         d["abstain_reason"] = self.clarification_reason if d["abstain"] else ""
         d["_semantics"] = "no_abstention_v2"                 # marks results produced under the new contract

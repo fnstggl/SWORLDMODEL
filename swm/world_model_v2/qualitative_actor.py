@@ -67,6 +67,45 @@ CALIBRATION_PACK = "experiments/actor_decision_calibration.json"
 POLICY_MODES = ("numeric_policy", "persona_blended_numeric_policy", "stateless_llm_policy",
                 "persistent_qualitative_llm_policy", "hybrid_relevant_actor_policy")
 
+#: §0.2/§19 actor-integrity contract. ``qualitative_strict`` (the DEFAULT) guarantees an actor
+#: represented as a qualitative LLM actor stays one for the entire branch: budget exhaustion,
+#: provider failure, parse failure, deep cascades and cost NEVER swap in `ActorPolicyModel`,
+#: a logit, a persona score, a template personality or a hardcoded action — the branch stops
+#: (truncation) instead. ``numeric_baseline_explicit`` re-enables the numeric machinery ONLY as
+#: an explicitly named baseline/ablation arm (legacy_ablations, science routes, test comparison).
+ACTOR_INTEGRITY_MODES = ("qualitative_strict", "numeric_baseline_explicit")
+
+#: §19 allowance: the numeric actor system may serve as a TEST COMPARISON. Offline suites set
+#: this env marker (tests/conftest); production code never does — enforcement tests grep for it
+#: and also run the default route with it unset.
+_NUMERIC_TEST_MARKER = "SWM_ALLOW_NUMERIC_BASELINE"
+
+
+def _numeric_allowed(integrity: str) -> bool:
+    import os as _os
+    return integrity == "numeric_baseline_explicit" or \
+        _os.environ.get(_NUMERIC_TEST_MARKER, "") == "1"
+
+
+class ActorDecisionUnavailable(RuntimeError):
+    """§19/§20: one actor decision could not be produced under the qualitative contract
+    (budget exhausted / provider failed across families / unparseable after the repair ladder /
+    no backend / hypothesis generation failed / a cognition stage failed). The branch MUST stop
+    at this timestamp and be reported truncated — generating a substitute decision with a
+    numerical policy is prohibited."""
+
+    REASONS = ("actor_llm_budget_exhausted", "provider_failure_all_families",
+               "unparseable_after_retries", "no_llm_backend", "hypothesis_generation_failed",
+               "cognition_stage_failure", "multi_particle_bridge_requires_explicit_baseline",
+               "numeric_route_requires_explicit_baseline")
+
+    def __init__(self, message: str, *, reason: str, actor_id: str = "", branch_id: str = "",
+                 at: float = 0.0, family_transitions: list = None):
+        super().__init__(message)
+        self.reason = reason if reason in self.REASONS else "provider_failure_all_families"
+        self.actor_id, self.branch_id, self.at = actor_id, branch_id, float(at)
+        self.family_transitions = list(family_transitions or [])
+
 #: qualitative state sections — primarily free text / categorical records / short lists
 STATE_SECTIONS = (
     "identity_and_role", "core_worldview", "current_goals", "fears_and_failure_conditions",
@@ -300,10 +339,11 @@ class QualitativeParticleHypothesizer:
     into each branch's world, where it persists and evolves independently."""
 
     def __init__(self, llm=None, *, k: int = 3, max_evidence_chars: int = 2400,
-                 structural_frame: str = ""):
+                 structural_frame: str = "", integrity: str = "qualitative_strict"):
         self.llm = llm
         self.k = max(1, int(k))
         self.max_evidence_chars = max_evidence_chars
+        self.integrity = integrity if integrity in ACTOR_INTEGRITY_MODES else "qualitative_strict"
         #: one structural-ensemble branch's hypothesized causal circumstance. Conditions the hypothesis
         #: SPACE this hypothesizer explores — always labeled a conjecture under evaluation, never
         #: presented to the model (or the fallback rows) as observed evidence.
@@ -336,6 +376,17 @@ class QualitativeParticleHypothesizer:
             except Exception:  # noqa: BLE001
                 rows = None
         if not rows:
+            # §0.2/§19: hypothesis generation is part of the actor's psychology. In strict mode a
+            # failed (or absent) hypothesis LLM STOPS the branch — template personalities
+            # (steady_confident/private_doubt/…) may serve only the explicit numeric-baseline arm
+            # and offline test comparisons.
+            if not _numeric_allowed(self.integrity):
+                raise ActorDecisionUnavailable(
+                    f"hypothesis generation failed for {view.actor_id} — refusing template "
+                    "personality substitution; the branch must truncate",
+                    reason=("hypothesis_generation_failed" if self.llm is not None
+                            else "no_llm_backend"),
+                    actor_id=view.actor_id, at=float(view.observed_time or 0.0))
             rows = _fallback_hypotheses(view, self.k, structural_frame=self.structural_frame)
             for r in rows:
                 r.setdefault("assumptions", []).append(
@@ -530,6 +581,7 @@ class QualitativeDecision:
     numeric_fields_dropped: int = 0
     llm_calls: int = 0
     raw_source: str = "llm"
+    family_transitions: list = field(default_factory=list)   # §17.2/§19.1 recorded transitions
 
 
 def _salvage_truncated(raw_text: str) -> dict | None:
@@ -713,11 +765,24 @@ class QualitativeConfig:
     #: structural-ensemble frame (level-A uncertainty): the hypothesized causal circumstance ONE
     #: ensemble branch explores. Conditions hypothesis generation only, always labeled a conjecture.
     structural_frame: str = ""
+    #: §0.2/§19 actor-integrity contract (see ACTOR_INTEGRITY_MODES). Strict is the default:
+    #: budget/provider/parse failure STOPS the branch instead of switching psychology.
+    integrity: str = "qualitative_strict"
+    #: §17 model-family pool (model_families.FamilyPool) — when present, family failure
+    #: transitions are recorded on the pool and comparable alternatives come from it (the
+    #: legacy fallback_llms list remains supported for injected test backends).
+    family_pool: object = None
+    #: §9-§15 bounded cognition: attention → finite working memory → imperfect retrieval →
+    #: situated interpretation → limited action search run BEFORE the decision call, which then
+    #: sees only the surviving material. Default-on; the stateless ablation and explicit
+    #: baseline arms may disable it.
+    bounded_cognition: bool = True
 
     def hypothesizer(self) -> QualitativeParticleHypothesizer:
         backend = (self.hypothesis_llm or self.llm) if self.llm_hypotheses else None
         return QualitativeParticleHypothesizer(backend, k=self.n_hypotheses,
-                                               structural_frame=self.structural_frame)
+                                               structural_frame=self.structural_frame,
+                                               integrity=self.integrity)
 
 
 class QualitativeDecisionEngine:
@@ -740,28 +805,78 @@ class QualitativeDecisionEngine:
         with self._lock:
             return self._calls_used < self.config.max_llm_calls
 
+    def budgeted_llm(self, *, actor_id: str = "", branch_id: str = "", stage: str = "cognition"):
+        """A budget-charging wrapper for the bounded-cognition stages: every stage call draws
+        from the SAME per-run safety budget as decisions (§34 — extra stages are real work, not
+        free). Exhaustion under the strict contract raises ActorDecisionUnavailable so the
+        branch truncates at this exact trigger (§20)."""
+        return self._budgeted(actor_id=actor_id, branch_id=branch_id, stage=stage)
+
+    def _budgeted(self, *, actor_id: str = "", branch_id: str = "", stage: str = "cognition",
+                  backend=None):
+        target = backend if backend is not None else self.config.llm
+
+        def _call(prompt: str) -> str:
+            with self._lock:
+                if self._calls_used >= self.config.max_llm_calls:
+                    if not _numeric_allowed(self.config.integrity):
+                        raise ActorDecisionUnavailable(
+                            f"actor LLM budget exhausted before {stage} stage",
+                            reason="actor_llm_budget_exhausted", actor_id=actor_id,
+                            branch_id=branch_id)
+                    raise RuntimeError("actor LLM budget exhausted (baseline mode)")
+                self._calls_used += 1
+            return target(prompt)
+        return _call
+
     def decide(self, view: ActorView, state: QualitativeActorState | None,
-               situation: str, menu: list[dict], *, obstacle: str = "") -> QualitativeDecision | None:
+               situation: str, menu: list[dict], *, obstacle: str = "",
+               cognition=None) -> QualitativeDecision | None:
+        """§19.1 failure ladder for ONE actor decision:
+             1. parse/schema salvage on every raw response (parse_qualitative_decision);
+             2. retry the SAME primary family within the bounded retry policy;
+             3. try each configured comparable alternative family once (family pool first,
+                then injected fallback_llms), recording every family transition;
+             4. safe extraction happens inside the parser (partial-object salvage);
+             5. no valid decision → STOP THE BRANCH (ActorDecisionUnavailable) under the strict
+                contract — never a numerical substitute decision. The explicit numeric-baseline
+                arm keeps the legacy None return (its caller runs the named baseline)."""
+        strict = not _numeric_allowed(self.config.integrity)
+        branch_id = str(getattr(view, "branch_id", "") or "")
         if self.config.llm is None:
+            if strict:
+                raise ActorDecisionUnavailable(
+                    f"no LLM backend for {view.actor_id}'s decision",
+                    reason="no_llm_backend", actor_id=view.actor_id, branch_id=branch_id,
+                    at=float(view.observed_time or 0.0))
             return None
-        prompt = self.build_prompt(view, state, situation, menu, obstacle=obstacle)
+        prompt = self.build_prompt(view, state, situation, menu, obstacle=obstacle,
+                                   cognition=cognition)
         used = 0
-        # primary backend with retries, then each configured fallback model family once — a
-        # Tier-1 decision reaches the numeric fallback only after EVERY family failed, and the
-        # serving family is recorded on the decision (raw_source suffix).
-        backends = [("primary", self.config.llm)] + [
-            (f"fallback_family_{i}", b) for i, b in enumerate(self.config.fallback_llms or [])]
+        pool = self.config.family_pool
+        backends = [("primary", self.config.llm)]
+        if pool is not None:
+            primary_fam = getattr(pool, "_current_family", "") or ""
+            alt = pool.comparable_alternative(primary_fam) if primary_fam else None
+            if alt is not None:
+                backends.append((f"family:{alt}", lambda p, _a=alt: pool.call(_a, p)))
+        backends += [(f"fallback_family_{i}", b)
+                     for i, b in enumerate(self.config.fallback_llms or [])]
+        transitions, got_any_text, budget_hit = [], False, False
         for family, backend in backends:
             attempts = 1 + max(0, int(self.config.retries)) if family == "primary" else 1
             for _ in range(attempts):
                 with self._lock:
                     if self._calls_used >= self.config.max_llm_calls:
-                        return None
+                        budget_hit = True
+                        break
                     self._calls_used += 1
                 used += 1
                 try:
                     text = backend(prompt)
-                except Exception:  # noqa: BLE001
+                    got_any_text = True
+                except Exception as e:  # noqa: BLE001
+                    transitions.append({"family": family, "error": f"{type(e).__name__}"[:60]})
                     continue
                 qd = parse_qualitative_decision(text, view.actor_id)
                 if qd is not None:
@@ -769,17 +884,79 @@ class QualitativeDecisionEngine:
                     qd.llm_calls = used
                     if family != "primary":
                         qd.raw_source = f"{qd.raw_source}:{family}"
+                        transitions.append({"family": family, "error": "",
+                                            "served_after_primary_failure": True})
+                        if pool is not None and family.startswith("family:"):
+                            pool.record_failure_transition(
+                                particle_index=-1, actor_id=view.actor_id,
+                                from_family=getattr(pool, "_current_family", ""),
+                                to_family=family.split(":", 1)[1],
+                                error="primary family failed/unparseable",
+                                at=float(view.observed_time or 0.0))
+                    qd.family_transitions = transitions
                     return qd
+                transitions.append({"family": family, "error": "unparseable"})
+            if budget_hit:
+                break
+        if strict:
+            if budget_hit:
+                raise ActorDecisionUnavailable(
+                    f"actor LLM budget exhausted mid-decision for {view.actor_id}",
+                    reason="actor_llm_budget_exhausted", actor_id=view.actor_id,
+                    branch_id=branch_id, at=float(view.observed_time or 0.0),
+                    family_transitions=transitions)
+            raise ActorDecisionUnavailable(
+                f"no valid decision for {view.actor_id} after the §19.1 ladder "
+                f"({len(transitions)} family attempts)",
+                reason=("unparseable_after_retries" if got_any_text
+                        else "provider_failure_all_families"),
+                actor_id=view.actor_id, branch_id=branch_id,
+                at=float(view.observed_time or 0.0), family_transitions=transitions)
         return None
 
     def build_prompt(self, view: ActorView, state: QualitativeActorState | None,
-                     situation: str, menu: list[dict], *, obstacle: str = "") -> str:
+                     situation: str, menu: list[dict], *, obstacle: str = "",
+                     cognition=None) -> str:
         role = f", {view.actor_role}" if view.actor_role and view.actor_role != "unknown" else ""
-        observations = "\n".join(
-            f"- [{str(e.get('source', e.get('etype', 'event')))[:40]}] "
-            + str(e.get("content") or e.get("situation") or e.get("etype") or "")[:220]
-            for e in list(reversed(view.observed_events))[:self.config.prompt_events]) \
-            or "- (nothing new observed)"
+        if cognition is not None:
+            # §9/§11: the decision sees ONLY what survived the bounded-cognition stages — the
+            # actor's finite working memory, retrieved memories and interpretation — never the
+            # global event ledger or unnoticed observations.
+            ctx = cognition.decision_context()
+            # §32: an exact realized message in working memory is shown to the actor whole
+            # (up to the realizer's cap) — the decision reads the actual words
+            from swm.world_model_v2.bounded_cognition import EXACT_MESSAGE_CHARS as _EXACT_CH
+            wm_lines = [f"- ({i.get('kind', 'item')}) "
+                        f"{str(i.get('content', ''))[:_EXACT_CH if i.get('exact') else 220]}"
+                        for i in (ctx.get("working_memory") or [])] or \
+                ["- (nothing currently active in mind)"]
+            contra = ctx.get("active_contradictions") or []
+            if contra:
+                wm_lines.append("- NOTE: you simultaneously hold these conflicting beliefs "
+                                "(both are yours; you may act from either): "
+                                + "; ".join(str(c.get("contents")) for c in contra[:2]))
+            observations = "\n".join(wm_lines)
+            interp = ctx.get("interpretation") or {}
+            if interp.get("what_happened"):
+                situation = (f"{str(situation)[:300]}\nYOUR OWN READING OF IT: "
+                             f"{str(interp.get('what_happened', ''))[:260]} — "
+                             f"{str(interp.get('why_it_matters', ''))[:200]}"
+                             + (f"\nSTILL UNCLEAR TO YOU: "
+                                f"{str(interp.get('unresolved_ambiguity', ''))[:160]}"
+                                if interp.get("unresolved_ambiguity") else ""))
+            shortlist = ctx.get("shortlist") or []
+            if shortlist:
+                menu = ([{"line": f"- (you are actively considering) {str(s)[:160]}"}
+                         for s in shortlist]
+                        + [m for m in menu
+                           if not any(str(s).lower()[:40] in str(m.get('line', '')).lower()
+                                      for s in shortlist)])
+        else:
+            observations = "\n".join(
+                f"- [{str(e.get('source', e.get('etype', 'event')))[:40]}] "
+                + str(e.get("content") or e.get("situation") or e.get("etype") or "")[:220]
+                for e in list(reversed(view.observed_events))[:self.config.prompt_events]) \
+                or "- (nothing new observed)"
         constraints = []
         for r in view.institution_rules[:8]:
             constraints.append(f"- rule {r.get('institution_id')}:{r.get('kind')} "
@@ -898,6 +1075,112 @@ class QualitativeActorPolicyRuntime(ActorPolicyRuntime):
             return False, {"tier": 3, "reasons": ["not selected as causally consequential"]}
         return int(assignment.get("tier", 3)) <= 2, assignment
 
+    # ---- §9-§15 bounded cognition ---------------------------------------------------
+    def _run_bounded_cognition(self, world, view, state, decision, actor_id, seed, menu):
+        """Run the staged pipeline for THIS invocation. Availability comes from the delivered
+        observation bundle when the control plane provides one; on routes without a bundle the
+        recent actor-local view items stand in as the availability set (rule recorded).
+        CognitionStageFailure → ActorDecisionUnavailable under the strict contract (§0.2);
+        the explicit numeric-baseline arm degrades to no-cognition (legacy prompt)."""
+        from swm.world_model_v2 import bounded_cognition as BC
+        import random as _random
+        branch_id = str(getattr(world, "branch_id", ""))
+        at = float(getattr(getattr(world, "clock", None), "now", 0.0) or 0.0)
+        bundle = decision.get("observation_bundle") or []
+        if bundle:
+            # §32 (PR#115): an item carrying the EXACT realized text of a message for this
+            # recipient keeps its full content (up to the realizer's 2000-char cap) — the
+            # recipient reads the actual words, never a 300-char digest. Everything else keeps
+            # the ordinary summary width. Only representation=='summary' transit (upstream
+            # delivery) may summarize.
+            from swm.world_model_v2.bounded_cognition import EXACT_MESSAGE_CHARS, _is_exact_message
+            available = []
+            for i, it in enumerate(bundle[:16]):
+                exact = _is_exact_message(it)
+                available.append({
+                    "obs_id": str(it.get("iid") or f"ob{i}"),
+                    "channel": str(it.get("channel", ""))[:40],
+                    "source": str(it.get("source", ""))[:60],
+                    "summary": str(it.get("content", ""))[
+                        :EXACT_MESSAGE_CHARS if exact else 300],
+                    "urgency": str(it.get("urgency", ""))[:20],
+                    "interrupting": bool(it.get("interrupting")),
+                    "exact_realized_message": exact})
+            availability_rule = "delivered_observation_bundle"
+        else:
+            recent = list(reversed(view.observed_events))[: self.engine.config.prompt_events]
+            available = [{"obs_id": str(e.get("event_id") or e.get("iid") or f"ev{i}"),
+                          "channel": str(e.get("channel", e.get("etype", "")))[:40],
+                          "source": str(e.get("source", ""))[:60],
+                          "summary": str(e.get("content") or e.get("situation")
+                                         or e.get("etype") or "")[:300]}
+                         for i, e in enumerate(recent) if isinstance(e, dict)]
+            availability_rule = "recent_view_items(no delivery bundle on this route; recorded)"
+        # §17.2 deterministic family assignment, preserved through the branch
+        pool = self.engine.config.family_pool
+        family_id, backend = "", None
+        if pool is not None and pool.strong():
+            try:
+                pidx = int(getattr(world, "particle_index", -1))
+            except (TypeError, ValueError):
+                pidx = -1
+            if pidx < 0:
+                pidx = int(_hash([branch_id])[:6] or "0", 16) % 997
+            prior = getattr(world, "_family_assignments", None) or {}
+            family_id = prior.get(actor_id) or pool.assign(particle_index=pidx,
+                                                           actor_id=actor_id)
+            try:
+                prior[actor_id] = family_id
+                world._family_assignments = prior
+            except Exception:  # noqa: BLE001 — worlds without attr slots keep pool log only
+                pass
+            pool._current_family = family_id
+            fam = pool.by_id(family_id)
+            if fam is not None and fam.client is not None \
+                    and fam.client is not self.engine.config.llm:
+                backend = fam.client
+        llm = self.engine._budgeted(actor_id=actor_id, branch_id=branch_id,
+                                    stage="cognition", backend=backend)
+        try:
+            cog = BC.run_cognition_pipeline(
+                world=world, actor_id=actor_id, branch_id=branch_id, at=at,
+                available=available,
+                identity=(state.identity_and_role if state is not None else
+                          f"{actor_id}, {view.actor_role}"),
+                goals=(list(state.current_goals) if state is not None
+                       else [str(g) for g in (view.goals or [])]),
+                relationships=(dict(state.relationships) if state is not None else {}),
+                condition=(state.personal_condition if state is not None else ""),
+                attention_context={
+                    "focus": str(decision.get("situation", ""))[:120],
+                    "workload": (state.organizational_pressures if state is not None else ""),
+                    "condition": (state.personal_condition if state is not None else ""),
+                    "obligations": [t.get("task", "") for t in
+                                    BC.load_memory(world, actor_id).unresolved_tasks[:4]]},
+                known_options=[str(m.get("line", ""))[:120] for m in (menu or [])[:12]],
+                suggestions=[str(s)[:120] for s in
+                             (decision.get("candidate_actions") or [])[:6]],
+                rng=_random.Random((int(seed) & 0x7FFFFFFF) ^ 0xC09),
+                llm=llm, family_id=family_id or "primary")
+            cog.attention["availability_rule"] = availability_rule
+            return cog
+        except BC.CognitionStageFailure as e:
+            if not _numeric_allowed(self.engine.config.integrity):
+                raise ActorDecisionUnavailable(
+                    f"cognition stage failed for {actor_id}: {e}",
+                    reason="cognition_stage_failure", actor_id=actor_id,
+                    branch_id=branch_id, at=at) from e
+            return None
+        except ActorDecisionUnavailable:
+            raise
+        except Exception as e:  # noqa: BLE001 — unexpected pipeline bug: strict = truncate
+            if not _numeric_allowed(self.engine.config.integrity):
+                raise ActorDecisionUnavailable(
+                    f"cognition pipeline error for {actor_id}: {type(e).__name__}: {e}"[:200],
+                    reason="cognition_stage_failure", actor_id=actor_id,
+                    branch_id=branch_id, at=at) from e
+            return None
+
     # ---- decide ---------------------------------------------------------------------
     def decide(self, plan, posterior_worlds: list, actor_id: str, *, decision: dict,
                seed: int, question_id: str = "", observed_events=None,
@@ -905,17 +1188,36 @@ class QualitativeActorPolicyRuntime(ActorPolicyRuntime):
         started = _time.monotonic()
         if not posterior_worlds:
             raise ValueError("posterior_worlds cannot be empty")
+        strict = not _numeric_allowed(self.engine.config.integrity)
         numeric_reason = ""
+        world = posterior_worlds[0]
         if len(posterior_worlds) > 1:
             # The Phase-3→4 posterior-integration bridge pools particles into ONE action by
-            # construction — incompatible with branch-specific qualitative decisions. It stays
-            # numeric, recorded, rather than forcing the architecture through the wrong seam.
+            # construction — a NUMERIC seam. Under the strict contract it is not a legal way to
+            # decide for a person; it survives only on the explicit numeric-baseline arm.
+            if strict:
+                raise ActorDecisionUnavailable(
+                    "the multi-particle posterior bridge decides numerically — prohibited on "
+                    "the default path; use the explicit numeric-baseline arm or the per-branch "
+                    "rollout seam",
+                    reason="multi_particle_bridge_requires_explicit_baseline",
+                    actor_id=actor_id, branch_id=str(getattr(world, "branch_id", "")),
+                    at=float(getattr(getattr(world, "clock", None), "now", 0.0) or 0.0))
             numeric_reason = "multi_particle_bridge_is_numeric"
-        world = posterior_worlds[0]
         routed, assignment = self._routes_qualitative(world, actor_id, decision)
         if not routed:
-            numeric_reason = numeric_reason or f"tier{assignment.get('tier')}_routine_actor"
-        if not numeric_reason and not self.engine.budget_left():
+            if strict:
+                # §19.2: an individual is NEVER handed a numerical psychology because routing
+                # called them routine — they are promoted to a full qualitative actor (cost is
+                # governed by event-driven triggers and the honest truncation budget).
+                routed = True
+                assignment = {**assignment, "tier": 1,
+                              "integrity_promotion": "routine_actor_promoted_to_qualitative "
+                                                     "(§19.2: no hidden numeric psychology)"}
+                self.tiers[actor_id] = assignment
+            else:
+                numeric_reason = numeric_reason or f"tier{assignment.get('tier')}_routine_actor"
+        if not strict and not numeric_reason and not self.engine.budget_left():
             numeric_reason = "llm_budget_exhausted"
         if numeric_reason:
             selected, posterior, trace = super().decide(
@@ -925,6 +1227,7 @@ class QualitativeActorPolicyRuntime(ActorPolicyRuntime):
             posterior.provenance["qualitative"] = {
                 "routed": False, "mode": self.mode, "decision_source": "numeric_policy",
                 "reason": numeric_reason, "tier": assignment,
+                "explicit_baseline_arm": True,
                 "branch_id": str(getattr(world, "branch_id", ""))}
             with self._lock:
                 self.decision_records.append((posterior, trace))
@@ -943,8 +1246,20 @@ class QualitativeActorPolicyRuntime(ActorPolicyRuntime):
                 store_actor_state(world, state, method="qualitative_hypothesis_init")
         # stateless arm (C): role-conditioned, actor-local view, NO persistent private state
         situation = str(decision.get("situation") or decision.get("question_id") or "")
-        qd = self.engine.decide(view, state, situation, menu)
+        # ---------------- §9-§15 bounded cognition (default-on): attention → finite working
+        # memory → imperfect retrieval → situated interpretation → limited action search. The
+        # decision call below receives ONLY the surviving material. Stage failure = branch
+        # truncation (converted to ActorDecisionUnavailable), never a substitute psychology.
+        cog = decision.get("cognition")
+        if cog is None and self.engine.config.bounded_cognition and self.mode != "stateless_llm_policy":
+            cog = self._run_bounded_cognition(world, view, state, decision, actor_id, seed, menu)
+        qd = self.engine.decide(view, state, situation, menu, cognition=cog)
         if qd is None:
+            if strict:
+                raise ActorDecisionUnavailable(
+                    f"engine returned no decision for {actor_id} under the strict contract",
+                    reason="provider_failure_all_families", actor_id=actor_id,
+                    branch_id=str(getattr(world, "branch_id", "")))
             selected, posterior, trace = super().decide(
                 plan, posterior_worlds, actor_id, decision=decision, seed=seed,
                 question_id=question_id, observed_events=observed_events,
@@ -952,6 +1267,7 @@ class QualitativeActorPolicyRuntime(ActorPolicyRuntime):
             posterior.provenance["qualitative"] = {
                 "routed": True, "mode": self.mode, "decision_source": "numeric_fallback",
                 "reason": "llm_failed_or_unparseable", "tier": assignment,
+                "explicit_baseline_arm": True,
                 "branch_id": str(getattr(world, "branch_id", "")),
                 "excluded_from_qualitative_aggregation": True}
             trace.warnings.append("qualitative LLM decision failed; numeric fallback (marked)")
@@ -968,18 +1284,73 @@ class QualitativeActorPolicyRuntime(ActorPolicyRuntime):
         if not fd.perceived_feasible and self.engine.config.revision_rounds > 0:
             qd2 = self.engine.decide(view, state, situation, menu,
                                      obstacle=f"{fd.perceived_status}: "
-                                              + "; ".join(fd.perceived_reasons[:3]))
+                                              + "; ".join(fd.perceived_reasons[:3]),
+                                     cognition=cog)
             if qd2 is not None:
                 qd2.llm_calls += qd.llm_calls
                 qd, revised = qd2, True
                 selected, unmodeled, resolution = self._resolve(qd, view, decision, actions, menu)
                 fd = self.feasibility.classify(selected, view, world)
+        # §12/§13 post-choice memory commit: episodic append with provenance, belief
+        # reinforcement (contradictions persist), habit reinforcement — append-only, actor-local
+        if cog is not None and not getattr(cog, "failure", ""):
+            try:
+                from swm.world_model_v2.bounded_cognition import commit_decision
+                import random as _random
+                commit_decision(world=world, cog=cog,
+                                decision={"chosen_action": qd.chosen_action,
+                                          "decision_id": qd.prompt_hash},
+                                rng=_random.Random(seed ^ 0x5EED))
+            except Exception as _e:  # noqa: BLE001 — commit failure recorded, never fatal
+                cog.stage_traces.append({"stage": "memory_update", "failure":
+                                         f"{type(_e).__name__}: {_e}"[:120]})
         if selected.action_id not in {a.action_id for a in actions}:
             actions = actions + [selected]
         feasibility = [[self.feasibility.classify(a, view, world) for a in actions]]
         posterior = self._observed_choice_posterior(view, selected, qd, state, feasibility,
                                                     assignment, unmodeled, resolution, revised,
                                                     world)
+        if cog is not None:
+            # §35.2 per-decision cognition record: machine-readable stage outputs, no
+            # chain-of-thought — what was available/noticed/missed, what was active in working
+            # memory, what was retrieved, the interpretation, the searched shortlist.
+            posterior.provenance["cognition"] = {
+                "schema": getattr(cog, "family_id", "") and "bounded.cognition.v1"
+                          or "bounded.cognition.v1",
+                "model_family": cog.family_id or "primary",
+                "observations_available": list(cog.observations_available)[:16],
+                "observations_noticed": [n.get("obs_id") for n in
+                                         cog.attention.get("noticed", [])][:16],
+                "observations_missed": cog.attention.get("missed", [])[:12],
+                "availability_rule": cog.attention.get("availability_rule", ""),
+                "working_memory_capacity": cog.working_memory.get("capacity"),
+                "working_memory_basis": cog.working_memory.get("capacity_basis", ""),
+                "working_memory_items": [str(i.get("content", ""))[:120] for i in
+                                         cog.working_memory.get("active_items", [])][:12],
+                # §33 nonresponse accounting: which availability items are STILL active in
+                # working memory vs displaced — lets routes distinguish
+                # noticed_but_deprioritized from a considered decision
+                "working_memory_active_sources": [str(i.get("source", "")) for i in
+                                                  cog.working_memory.get("active_items",
+                                                                         [])][:16],
+                "working_memory_displaced": list(cog.working_memory.get("displaced", []))[:12],
+                "memories_retrieved": cog.retrieval.get("retrieved", [])[:8],
+                "retrieval_failures": cog.retrieval.get("retrieval_failures", [])[:6],
+                "active_contradictions": cog.retrieval.get("active_contradictions", [])[:4],
+                "interpretation": {k: cog.interpretation.get(k) for k in
+                                   ("what_happened", "why_it_matters",
+                                    "unresolved_ambiguity", "active_belief")
+                                   if cog.interpretation.get(k)},
+                "options_considered": cog.search.get("shortlist", [])[:8],
+                "options_screened_out": cog.search.get("options_screened_out", [])[:6],
+                "actually_feasible_not_considered":
+                    cog.search.get("actually_feasible_not_considered", [])[:8],
+                "stage_traces": [{k: t.get(k) for k in
+                                  ("stage", "input_hash", "output_hash",
+                                   "deterministic_rule", "failure", "at")}
+                                 for t in cog.stage_traces][:10],
+                "family_transitions": list(getattr(qd, "family_transitions", []))[:6],
+            }
         trace = build_trace(
             question_id=question_id or f"question_{_hash(getattr(plan, 'question', ''))[:20]}",
             plan=plan, worlds=[world], views=[view], actions=actions, feasibility=feasibility,
@@ -1404,7 +1775,9 @@ def aggregate_actor_decisions(posteriors_and_traces, *, clusterer: ActionCluster
 def build_qualitative_runtime(plan=None, *, llm=None, mode: str,
                               config: QualitativeConfig | None = None,
                               selector=None, tiers: dict | None = None,
-                              model=None, fallback_llms=None) -> QualitativeActorPolicyRuntime | None:
+                              model=None, fallback_llms=None,
+                              integrity: str = "qualitative_strict",
+                              family_pool=None) -> QualitativeActorPolicyRuntime | None:
     """Construct the routed qualitative runtime for one run. ``hybrid_relevant_actor_policy``
     computes question-specific tiers from the plan (RelevantActorSelector); pure modes route
     every decision actor. Returns None when no backend exists (numeric production unchanged)."""
@@ -1413,6 +1786,18 @@ def build_qualitative_runtime(plan=None, *, llm=None, mode: str,
     cfg = config or QualitativeConfig(llm=llm)
     if fallback_llms and not cfg.fallback_llms:
         cfg.fallback_llms = list(fallback_llms)
+    if integrity in ACTOR_INTEGRITY_MODES:
+        cfg.integrity = integrity
+    if family_pool is not None and cfg.family_pool is None:
+        cfg.family_pool = family_pool
+    elif cfg.family_pool is None:
+        # §17: the pool is built from what is ACTUALLY configured — a single family is honest
+        # monoculture, reported on every result; never fabricated diversity
+        try:
+            from swm.world_model_v2.model_families import default_family_pool
+            cfg.family_pool = default_family_pool(cfg.llm)
+        except Exception:  # noqa: BLE001 — pool construction must never block the runtime
+            cfg.family_pool = None
     cfg.persistent = mode != "stateless_llm_policy"
     if mode == "hybrid_relevant_actor_policy" and selector is None:
         from swm.world_model_v2.actor_selection import RelevantActorSelector

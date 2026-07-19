@@ -69,6 +69,7 @@ class WorldModelV2Run:
         branches = []
         for i in range(start, stop):
             w = worlds[i]
+            w.particle_index = i               # §17.2: deterministic family assignment key
             q = self.queue_builder(w)
             if particle_scope is not None and hasattr(particle_scope, "enter_branch"):
                 particle_scope.enter_branch(i)
@@ -96,6 +97,7 @@ class WorldModelV2Run:
             branches = []
             for i, w0 in enumerate(base_worlds):
                 w = w0.clone(branch_id=f"{w0.branch_id}:{iv.intervention_id}")
+                w.particle_index = i           # matched arms share the particle identity
                 q = self.queue_builder(w)
                 if iv.apply is not None:
                     iv.apply(w, q)

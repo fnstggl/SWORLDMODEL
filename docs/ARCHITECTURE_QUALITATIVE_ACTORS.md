@@ -102,8 +102,16 @@ Selected by `SWM_ACTOR_POLICY` (or programmatically). **Default-on wiring:** whe
 is supplied to the core V2 funnel, `materialize.operators_from_plan` binds
 `hybrid_relevant_actor_policy`; with no backend, `numeric_policy`. Modes C/D/E never call
 `ActorPolicyModel.decide`, `UtilityInference`, family scoring, or the persona blend to choose a
-Tier-1 action; the numeric policy appears only as a separately-reported baseline, a marked
-fallback on total LLM failure, or the Tier-3 routine-actor policy in hybrid mode.
+Tier-1 action. **Core-architecture update (docs/WMV2_CORE_ARCHITECTURE.md): on the DEFAULT
+production path (`integrity="qualitative_strict"`), total LLM failure, budget exhaustion,
+parse failure and Tier-3 routing NEVER produce a numeric decision — the §19.1 ladder (schema
+salvage → same-family retries → comparable-family transitions → safe extraction) either yields
+the actor's own decision or raises `ActorDecisionUnavailable`, and the branch STOPS with a
+first-class truncation status. Routine actors are promoted to full qualitative actors rather
+than handed a hidden numeric psychology. The numeric policy survives only as the explicitly
+named baseline arm (`integrity="numeric_baseline_explicit"`) and the offline test-comparison
+arena (`SWM_ALLOW_NUMERIC_BASELINE=1`, set in tests/conftest.py, never in production). The
+marked-fallback description below documents that explicit baseline arm.**
 
 ## 3. Qualitative actor particles (`QualitativeActorState`)
 

@@ -1,0 +1,267 @@
+{
+  "audit": "World Model V2 — public production routes and default execution (branch claude/worldmodel-v2-core-arch-73s7eq, commit 5e7646c, 2026-07-19)",
+  "routes": [
+    {
+      "entry": "swm.facade.forecast",
+      "kind": "public_api",
+      "default_chain": [
+        "swm/facade.py:forecast:75  (architecture is MANDATORY; no ambiguous default; 'world_model_v2' branch at :82)",
+        "swm/world_model_v2/unified_runtime.py:simulate_world:88  (imported at facade.py:89, called facade.py:90-94)",
+        "swm/world_model_v2/structural_runtime.py:simulate_structural_ensemble:55  (dispatch unified_runtime.py:111-116; structural_mode default 'ensemble' at unified_runtime.py:101)",
+        "swm/facade.py:RunRecord.finalize:53  (product-eligibility stamp; legacy contamination raises ArchitectureError at :56; product_eligible=False today because V2_VALIDATION_STATUS='architecture_validated' facade.py:27,:61)"
+      ],
+      "gates": [
+        {"flag": "architecture kwarg", "default": "none — caller must name one of ARCHITECTURES (facade.py:24)", "effect": "world_model_v2 -> unified runtime; baseline:* -> legacy engines with legacy_executed=True (facade.py:99)"}
+      ],
+      "notes": "The ONE public door. Baselines: grounded_direct -> swm/engine/grounding.SceneGrounder + swm/eval/ablation._p_single (facade.py:100-106); direct_ensemble -> tiered_ablation._grounded_ensemble (:107-115); parametric_v1 -> swm/engine/front_door.parametric_binary_p (:116-121); observer_panel_v1/society_v1 -> front_door.agent_world_model (:122-129). All baselines product_eligible=False."
+    },
+    {
+      "entry": "swm.world_model_v2.unified_runtime.simulate_world",
+      "kind": "public_api",
+      "default_chain": [
+        "unified_runtime.py:simulate_world:88 (policy parse :100-104; single_structural_model reachable ONLY via execution_policy={'structural_mode':'single_structural_model'} :105-110)",
+        "structural_runtime.py:simulate_structural_ensemble:55",
+        "structural_runtime.py:_route_individual_reaction_ensemble:757 (early return iff user_context['individual'] dict AND actor_selection.is_individual_reaction_question; checked at :79)",
+        "ensemble_compiler.py:reconnoiter_structures:114 (Stage A: >=3, target 4 independent LLM recon calls; ceiling 8, 12 in max-capacity; constants structural_contracts.py:63-66; llm=None raises CompilerExecutionError 'unavailable_service' :121-124)",
+        "ensemble_compiler.py:union_evidence_requirements:206 -> evidence_orchestrator.py:gather_evidence:95 (shared bundle gathered ONCE, gated on as_of != '' and 'phase2_evidence' not in drop_phases; structural_runtime.py:104-119; prebuilt_bundle replaces retrieval :107)",
+        "ensemble_compiler.py:run_omission_critic:342, run_contrast_critic:418, expansion_triggers:441 -> expand_candidates:468, run_candidate_critics:370",
+        "ensemble_compiler.py:compile_candidates:616 -> compiler.py:compile_world:337 PER CANDIDATE with _structural_directive (ensemble_compiler.py:674); executability check via materialize build_world/check_readout_binding/operators_from_plan (ensemble_compiler.py:692-706); one bounded repair recompile :642-656",
+        "ensemble_compiler.py:deduplicate_candidates:547, finalize_survivorship:710; ens.validate_integrity (structural_runtime.py:155-158)",
+        "structural_runtime.py:_condition_and_pilot_model:254 PER MODEL:",
+        "  unified_runtime.py:_apply_evidence_to_plan:232 (evidence_recompile.recompile_with_evidence + evidence_materialize.attach_evidence_observations)",
+        "  unified_runtime.py:_phase3_block:249 (phase3_latent_spec.tag_claims, phase3_priors.build_outcome_rate_prior, phase3_posterior.infer_posterior -> plan.posterior_rate_particles/plan.structural_posterior :262-265)",
+        "  unified_runtime.py:_condition_plan:282 = _thread_populations_networks:555 (P9) + integration_completion.normalize_institution_rules:35 (P10, unified_runtime.py:294-303) + fidelity block :307-371 (resolution_criteria.parse_resolution_criterion, fidelity.fidelity_expand, scheduled_facts.extract/attach, mode_graph.canonical_modes for when-questions, resolution_criteria.ground_actor_intentions, world_dynamics.declare_actor_capacity) + activation_synthesis.synthesize_activation :380-393 + temporal_compiler.py:compile_temporal_model:241 & attach_temporal_model:619 (unified_runtime.py:395-413) + event_time conversion :415-442 (event_time.py:convert_to_event_time:1087 for when/categorical, convert_binary_to_event_time:1321 for binary — swaps plan.outcome_contract to EventTimeContract at event_time.py:1242/1469, removes resolve_outcome resolvers :1458-1461, adds calibrated first-passage 'resolution' process :1452) + phase11 _run_recompilation:591 (RecompilationController max_recompiles=2 :607)",
+        "  phase8_pipeline.py:prepare_persistence_run:129 (materialize.py:build_world:42 -> _bind_scenario_schema:441 [scenario_schema.SchemaCompiler + causal_boundary.ensure_mechanism_model:1383; failure stamps scenario_schema_error/mechanism_model_error -> structurally_under_modeled] -> check_readout_binding:119 -> operators_from_plan:176 [+PersistenceUpdateOperator+MemoryConsolidationOperator phase8_pipeline.py:206-207] -> init_state.InitialStateModel -> rollout.WorldModelV2Run; n_particles = plan.compute_plan['n_particles'] default 30, compiler._fidelity_plan clamps 12..80 compiler.py:177, event-time when/categorical raises to >=200 event_time.py:1254)",
+        "  pilot slice: n_pilot=min(n_full, max(8, ceil(0.20*n_full))) structural_runtime.py:292 -> phase8_pipeline.py:run_persistence_slice:218 -> rollout.py:run_particle_range:54 -> rollout.py:RolloutEngine.run_branch:32 -> temporal_runtime.py:run_branch_temporal:892 (event loop: process_timestamp:748, advance_interval:415, reproject_hazards:550; safety_max_events=2000 -> temporally_truncated record :911-922)",
+        "structural_runtime.py:_promote_models:321 (promote-by-default; only exclusion ground = pilot indistinguishable from stronger model: spread<=0.02, similarity>=0.75, pilot>=12 :332-344)",
+        "structural_runtime.py:_extend_to_full:390 (pilot is prefix; budget invariant >= n_full per promoted model :222-229; +25% disagreement extension when classify_forecast_sensitivity says materially_structurally_sensitive :189-197)",
+        "structural_runtime.py:_finalize_model:416 -> phase8_pipeline.py:finalize_persistence_run:226 (run.project(branches) rollout.py:78 -> contracts.py:OutcomeContract.project:65 OR event_time.py:EventTimeContract.project:233; materialize.attach_actor_decision_distributions:353; structurally_under_modeled surfacing phase8_pipeline.py:240-249; pipeline.py:result_from_run:55; _surface_actor_policy_degradation:311 + _surface_consequence_degradation:326; single checkpoint commit :263-281) + unified_runtime._record_operator_phases:688 + _attach_supervision:453 (phase_supervision.py:assess:99/finalize:152)",
+        "structural_runtime.py:_assemble_ensemble_result:443 (classify_forecast_sensitivity structural_contracts.py:313; _equal_weight_mixture:602; _robust_range:610; decompose_uncertainty; _reversal_conditions:638; _structural_value_of_information:685; _human_summary:738; SimulationResult built :559-584; live res._ensemble_handle = ens :588 for Phase 13)"
+      ],
+      "gates": [
+        {"flag": "execution_policy.structural_mode", "default": "ensemble (unified_runtime.py:101; STRUCTURAL_MODES :55)", "effect": "'single_structural_model' = explicit ablation -> _simulate_single_structural_model:119 (one compile_world plan, same funnel)"},
+        {"flag": "execution_policy.drop_phases", "default": "empty", "effect": "ablation-harness-only removal of named phases (phase2_evidence/phase3_posterior/fidelity/activation_synthesis/temporal_model/event_time/phase11_recompilation/phase8_persistence/...)"},
+        {"flag": "execution_policy.n_particles (also user_context._execution_policy.n_particles)", "default": "unset -> plan.compute_plan (12..80; >=200 event-time)", "effect": "MC-resolution-only override, recorded (unified_runtime.py:636-648)"},
+        {"flag": "execution_policy.cache_mode / pilot_reuse", "default": "on / on", "effect": "cost-benchmark-only arms: 'off' disables identical-call cache (NullStore) / discards pilot prefix (structural_runtime.py:68-73)"},
+        {"flag": "compute_budget", "default": "None", "effect": "'maximum_capacity' sets generation_policy.max_capacity -> recon ceiling 12 (structural_runtime.py:75-76)"},
+        {"flag": "SWM_CONSEQUENCES", "default": "generated_actor_mediated_world (semantic_consequences.py:81-84)", "effect": "consequence architecture; generated mode binds scenario schema + causal-boundary mechanism runtime + generated operators (materialize.py:229-277, :441-519); fixed_semantic_consequence_policy_v1 / legacy_scalar_pathway_consequences are baselines"},
+        {"flag": "SWM_ACTOR_POLICY", "default": "hybrid_relevant_actor_policy (materialize.py:285-298)", "effect": "actor cognition mode; numeric_policy only as explicit benchmark/ablation; served-vs-requested recorded in actor_policy_report (materialize.py:301-336)"},
+        {"flag": "SWM_LLM_ACTORS", "default": "unset ('relevant' scope; llm_actor.py:800)", "effect": "'off' forces numeric_policy (materialize.py:293); legacy alias of SWM_ACTOR_POLICY"},
+        {"flag": "SWM_ACTOR_LLM_BUDGET", "default": "240 (qualitative_actor.py:706-707)", "effect": "per-run actor-LLM safety budget; exhaustion -> temporal truncation record, never a fabricated decision (generated_world.py:1233-1243)"},
+        {"flag": "SWM_PERSISTENCE_BACKEND / SWM_PERSISTENCE_DIR", "default": "memory / '' (phase8_provider.py:47-48)", "effect": "durable actor-history store for the legacy pipeline.simulate(actor_history=...) path; unified runtime passes prior_checkpoint/user_context instead"},
+        {"flag": "DEEPSEEK_API_KEY / HF_TOKEN", "default": "unset in code (must be provided)", "effect": "backend existence; simulate_world(llm=None) -> ensemble fails LOUDLY with taxonomy unavailable_service (ensemble_compiler.py:121-124); HF_TOKEN also enables Tier-1 fallback families (materialize.py:339-350)"}
+      ],
+      "notes": "THE canonical V2 entry. No SWM_ env var switches the runtime itself — composition is env-gated only via SWM_CONSEQUENCES (default generated world) and SWM_ACTOR_POLICY (default hybrid qualitative). Legacy pipeline.simulate (pipeline.py:163) is a single-model compatibility helper, not public. Individual-reaction ensemble route: per-frame recon+critics then individual_reaction.py:simulate_individual_reaction:140 per surviving frame with FULL sample budget (structural_runtime.py:826-848), equal-weight mixture result :862-912."
+    },
+    {
+      "entry": "swm.world_model_v2.phase13.api.recommend_action",
+      "kind": "public_api",
+      "default_chain": [
+        "phase13/api.py:recommend_action:90 (modes: auto|legacy_fixed_v1 :113)",
+        "phase13/api.py:_ensemble_context:62 -> phase13/ensemble.py:extract_ensemble_models:33 (accepts StructuralModelEnsemble, SimulationResult._ensemble_handle, {model_id: plan}, [plans])",
+        "phase13/ensemble.py:recommend_action_across_models:69 (DEFAULT for ensemble-shaped context; per-model re-entry with allow_single_structural_model=True :84-95)",
+        "per model: phase13/api.py:recommend_action -> scenario_actions/api.py:is_generated_context:33 True (plan carries scenario_schema) -> scenario_actions/api.py:discover_best_action:290 (goal-backward discovery, generated action language, kernel-compiled candidates, matched simulation) — fixed-v1 catalog ONLY for non-generated contexts or explicit mode='legacy_fixed_v1' (api.py:105-130)",
+        "per-model non-generated fallback pipeline (controlled contexts): _evaluator:35 -> counterfactual.py:MatchedEvaluator.from_plan:69 (build_world + _bind_scenario_schema + _inject_posterior_rate:80 + operators_from_plan; hypothesis stratification _assign_hypotheses:100) -> affordances.generate_actions -> feasibility.FeasibilityEngine -> abstain.abstention_check:16 -> search.select_and_run (SearchBudget.tiered: diagnostic 12/standard 64/production 256/maximum_capacity 4096, search.py:22-27) -> robust.evaluate_bundle -> utility/pareto -> voi.information_report",
+        "phase13/ensemble.py:_synthesize:167 (winner_by_model, minimax regret across models, equal-mixture UNCALIBRATED; stability classification :215-231) -> DecisionResult with recommendation_kind action|gather_information|pareto|abstain (:122-143) and provenance.structural_ensemble.recommendation_stability (:285,:335)"
+      ],
+      "gates": [
+        {"flag": "allow_single_structural_model kwarg", "default": "False", "effect": "a bare WorldExecutionPlan raises SingleModelContextError (api.py:29,:38-44,:68-78) — ensemble evaluation is the default"},
+        {"flag": "mode kwarg", "default": "auto", "effect": "'legacy_fixed_v1' = explicit baseline; generated worlds never silently fall back (api.py:105-130)"},
+        {"flag": "budget kwarg", "default": "standard (64 arm evaluations)", "effect": "SearchBudget tier (search.py:22-27)"}
+      ],
+      "notes": "Sibling entries in the same module share the funnel: evaluate_actions:229, optimize_policy:268, value_of_information:361. Recommendations are emitted HERE (DecisionResult.recommended/recommendation_kind, phase13/contracts.py:206-238), not on SimulationResult; SimulationResult only carries recommendation_status (eligible/limited/withheld/not_requested) set by pipeline.py:_recommendation_status:29 from intervention+support_grade. structural_runtime leaves structural_ensemble.recommendation_stability=None (structural_runtime.py:545) for Phase 13 to fill."
+    },
+    {
+      "entry": "swm.world_model_v2.pipeline.simulate",
+      "kind": "public_api (LEGACY compatibility, not the production default)",
+      "default_chain": [
+        "pipeline.py:simulate:163 (docstring: legacy single-structural-model helper, status = single_structural_model ablation)",
+        "compiler.py:compile_world:337",
+        "IF persistence/actor_history: phase8_provider.py:build_provider:110 (SWM_PERSISTENCE_BACKEND) -> phase8_pipeline.py:run_with_persistence:289 (prepare:129 -> slice:218 -> finalize:226)",
+        "ELSE materialize.py:run_from_plan:522 (build_world -> check_readout_binding -> _bind_scenario_schema -> _inject_posterior_rate:408 -> operators_from_plan -> WorldModelV2Run.run; multi-hypothesis stratification _run_with_hypotheses:573)",
+        "pipeline.py:result_from_run:55"
+      ],
+      "gates": [{"flag": "(callers only)", "default": "-", "effect": "guarded by tests/test_wmv2_unified_runtime.py: facade must NOT import it"}],
+      "notes": "Retained for phase-scoped science + frozen artifacts. NOTE: prepare_persistence_run does NOT call _inject_posterior_rate (only run_from_plan:535 and phase13 counterfactual.py:80 do); on the default ensemble path the posterior instead reaches execution through event-time calibration payloads (event_time.py:1424, consumed at :520/:709) — relevant if the resolver path survives an event-time conversion failure inside the persistence funnel."
+    },
+    {
+      "entry": "api/app.py (FastAPI /v1/predict, /v1/compare-actions, /v1/suggest, /v1/optimize-message, ...)",
+      "kind": "api_http",
+      "default_chain": [
+        "api/app.py:36-42 (World from swm/worlds/world.py over EventStore, SWM_DB default data/events.db)",
+        "api/app.py:predict:97 -> swm.worlds.world.World.predict (V1 variable-map machinery)"
+      ],
+      "gates": [{"flag": "SWM_DB / SWM_MODELS", "default": "data/events.db / models", "effect": "storage paths"}],
+      "notes": "SIDE PATH: the legacy V1 personal-communication product. Never touches swm.facade or World Model V2. Uses swm/llm.py (anthropic claude-opus-4-8) for trait extraction/drafts."
+    },
+    {
+      "entry": "swm/api/* (forecast.live_forecaster, simulate.Simulator, general_simulate.GeneralSimulator, world_model, action_simulate, individual_simulate, ...)",
+      "kind": "public_api (LEGACY V1 side paths)",
+      "default_chain": ["swm/api/forecast.py -> latent_forecast.py (validated V1 forecaster)", "swm/api/general_simulate.py -> grounded_simulate/question_engine"],
+      "gates": [],
+      "notes": "Frozen V1 science/product paths per the facade freeze policy. swm/api/deepseek_backend.py + resilient_llm.py + hf_backend.py live here and ARE used by V2 drivers as the backend factory."
+    },
+    {
+      "entry": "benchmarks/temporal/harness.py:run_arm",
+      "kind": "benchmark",
+      "default_chain": ["harness.py:run_arm:135 -> unified_runtime.simulate_world:145 (canonical facade path; n_particles via user_context._execution_policy)"],
+      "gates": [{"flag": "arm", "default": "event_driven (production runtime)", "effect": "periodic_ablation flag consumed by the harness only"}],
+      "notes": "Canonical. Scores CRPS/coverage/trigger precision from provenance.event_time + provenance.temporal_runtime."
+    },
+    {
+      "entry": "benchmarks/phase13/run_controlled.py",
+      "kind": "benchmark",
+      "default_chain": ["run_controlled.py:31 -> phase13.api.recommend_action/optimize_policy with dict world_context (initial/queue_builder/operators/contract)"],
+      "gates": [],
+      "notes": "Canonical Phase-13 funnel but the CONTROLLED context branch of _evaluator (api.py:47-56) — synthetic ground-truth worlds, not compiled plans. benchmarks/phase13/real/* uses OPE utilities, not the facade. benchmarks/upworthy/run.py wraps legacy exp054."
+    },
+    {
+      "entry": "experiments drivers (production-facade users)",
+      "kind": "experiment",
+      "default_chain": [
+        "experiments/combined_runtime_forensics.py:103,151,173 -> simulate_world (+ phase13.recommend_action across the ensemble handle in case3) — the newest end-to-end driver (commit 5e7646c)",
+        "experiments/causal_boundary_smoke.py:186 -> swm.facade.forecast(architecture='world_model_v2')",
+        "experiments/structural_ensemble_forensics.py:132, structural_ensemble_acceptance.py:38, structural_ensemble_cost_benchmark.py:54, temporal_forensics.py:135, unified_traces.py:27, unified_ablations.py:43, wmv2_historical_benchmark.py:189 (B6 arm) -> simulate_world"
+      ],
+      "gates": [{"flag": "backend factory", "default": "swm.api.deepseek_backend.deepseek_chat_fn('deepseek-v4-flash') or resilient_llm", "effect": "drivers construct llm explicitly; no ambient default"}],
+      "notes": "These are the canonical-path exercisers; other experiments/* (exp0xx, datasets_*) are legacy V1 science."
+    },
+    {
+      "entry": "replay (sealed temporal replay laboratory)",
+      "kind": "replay",
+      "default_chain": [
+        "experiments/replay_forecast.py:68,:104 / replay_v2/forecast.py:110,:167-171 / replay_v3/run_benchmark.py:131,:193 -> simulate_world(question, prebuilt_bundle=frozen capsule)",
+        "prebuilt_bundle consumed at structural_runtime.py:107 (ensemble) / unified_runtime.py:175-182 (single-model ablation) — replaces live retrieval, recorded",
+        "swm/replay/vault.py:sealed_resolutions (scorer-only, REPLAY_SCORER=1 gate), swm/replay/blinding.py, swm/replay/probes.py:run_probes (leakage probes)"
+      ],
+      "gates": [{"flag": "REPLAY_SCORER", "default": "unset (forecaster process can NEVER load outcomes)", "effect": "process-level seal of the resolution store"}],
+      "notes": "Canonical facade path with the evidence stage swapped for a frozen, optionally blinded capsule. replay_v3 pins MODEL='deepseek-v4-flash' (run_benchmark.py:38)."
+    },
+    {
+      "entry": "individual_reaction routes",
+      "kind": "public_api (sub-route of simulate_world)",
+      "default_chain": [
+        "DEFAULT: structural_runtime.py:_route_individual_reaction_ensemble:757 (frames via ensemble_compiler recon+critics; per-frame FULL budget simulate_individual_reaction; equal-weight mixture; SimulationResult :862)",
+        "ABLATION (single_structural_model only): unified_runtime.py:_route_individual_reaction:486 -> individual_reaction.py:simulate_individual_reaction:140 (person temporal model, delivery->attention->decision, counted distribution; calibrated only if a fitted per-person calibrator exists)"
+      ],
+      "gates": [{"flag": "user_context['individual'] + is_individual_reaction_question", "default": "off (ordinary compiled route)", "effect": "activates the personal-scale route; llm=None -> execution_failed missing_required_operator"}],
+      "notes": "Named public figures WITHOUT supplied context flow through ordinary compilation (selector's reaction_is_the_question makes them Tier 1)."
+    },
+    {
+      "entry": "phase12_serve.py (calibrated serving)",
+      "kind": "public_api (NOT wired into the default runtime)",
+      "default_chain": ["phase12_serve.py:load_phase12_bundle:23 -> calibrated_result:52 (populates calibrated_probability/support grade in place)"],
+      "gates": [{"flag": "compatible_with(bundle, phase11_present=True)", "default": "refuses the provisional pre-Phase-11 bundle", "effect": "stale-calibrator guard"}],
+      "notes": "Only tests + experiments/phase12_traces.py call it. Both production runtimes stamp provenance.calibration_compatibility.old_phase12_calibrator='INCOMPATIBLE' (unified_runtime.py:217-221, structural_runtime.py:580-583), so calibrated_probability is None on the default path today."
+    },
+    {
+      "entry": "phase8_service.py (persistence service)",
+      "kind": "public_api (infrastructure)",
+      "default_chain": ["phase8_service.py:PersistentStore (event log + replay + checkpoint) <- phase8_provider.py:build_provider:110 <- pipeline.simulate(actor_history=...) legacy path; the unified runtime reaches persistence via prepare/finalize_persistence_run with context=user_context"],
+      "gates": [{"flag": "SWM_PERSISTENCE_BACKEND", "default": "memory", "effect": "sqlite|jsonl need SWM_PERSISTENCE_DIR"}],
+      "notes": "In the DEFAULT ensemble run context/actor_history are None unless the caller passes user_context/prior_checkpoint, so prepare_persistence_run runs the broad-prior branch (phase8_pipeline.py:155 guard) and no checkpoint IO happens."
+    },
+    {
+      "entry": "CLI entrypoints",
+      "kind": "cli",
+      "default_chain": [
+        "python -m swm.world_model_v2.nonlinear (nonlinear/__main__.py -> cli.main) — Phase-7 tooling, side path",
+        "uvicorn api.app:app — legacy V1 HTTP",
+        "PYTHONPATH=. python experiments/<driver>.py and benchmarks/*/... — the de-facto CLIs for V2 (no console_scripts in pyproject.toml)"
+      ],
+      "gates": [],
+      "notes": "No packaged CLI hits the V2 facade; pyproject.toml defines no [project.scripts]."
+    }
+  ],
+  "default_runtime_summary": "TODAY'S DEFAULT: facade.forecast(architecture='world_model_v2') -> unified_runtime.simulate_world -> structural_runtime.simulate_structural_ensemble (structural_mode='ensemble' is the only default; single-model is an explicit ablation). unified_runtime.py is the ORCHESTRATOR (per-plan phase helpers _apply_evidence_to_plan/_phase3_block/_condition_plan shared by both modes); structural_runtime.py is the DEFAULT DRIVER (Stage A recon -> shared evidence -> critics -> per-candidate Stage B compile_world -> dedup -> per-model conditioning+pilot -> promotion -> full budgets -> aggregation); the per-model terminal path is ALWAYS phase8_pipeline prepare/slice/finalize -> materialize (build_world, _bind_scenario_schema, operators_from_plan) -> rollout.WorldModelV2Run.run_particle_range -> temporal_runtime.run_branch_temporal (the event loop for EVERY branch) -> contract.project. generated_world.py is not a runtime but the default OPERATOR SET + kernel bound into every rollout because SWM_CONSEQUENCES defaults to 'generated_actor_mediated_world' (operators_from_plan materialize.py:229-277 appends GeneratedSemanticEventOperator/GeneratedObservationDelivery/GeneratedAttention/GeneratedActorInvocation/ScenarioPlanOperator/MechanismRuntimeOperator/ScheduledAttemptOperator). temporal_compiler.py runs once per structural model inside _condition_plan (cache key includes structural_model_id, temporal_compiler.py:250-253) and its ScenarioTemporalModel rides on the plan/world; temporal_runtime.py executes it per branch. Composition per structural model: own plan -> own posterior -> own temporal model -> own scenario schema/mechanisms -> own pilot+full particle slices through the ONE funnel; only the evidence bundle, the LLM call cache/ledger, and the CRN particle alignment (ScopedActorCache) are shared across models; exactly one promoted model commits the persistence checkpoint. Aggregation is per-model first (contract.project over branches), then cross-model equal-weight mixture + robust range + sensitivity classification in _assemble_ensemble_result. Answer readout: after event-time conversion the answer is F(deadline)/first-passage read from trajectories (EventTimeContract.project); otherwise frequency projection (OutcomeContract.project). No LLM is asked for a number after simulation.",
+  "llm_backends": [
+    {
+      "module": "swm/api/deepseek_backend.py",
+      "provider": "DeepSeek direct (OpenAI-compatible https://api.deepseek.com/chat/completions)",
+      "models": ["deepseek-v4-flash (default, thinking disabled :40-41)", "deepseek-chat", "deepseek-reasoner"],
+      "budget_mechanism": "none here — per-call max_tokens default 800 with per-call override (fn kwargs :30-39); budgets enforced downstream",
+      "retry": "5 attempts, deterministic backoff 1/2/4/8s on 429/500/502/503/504/URLError/timeout; non-transient 4xx raises immediately (:47-64)",
+      "notes": "default_chat_fn:70 is THE standard selector: DeepSeek if DEEPSEEK_API_KEY else HF router else None. API key env-only; non-ASCII key fails loudly."
+    },
+    {
+      "module": "swm/api/hf_backend.py",
+      "provider": "HuggingFace Inference router",
+      "models": ["Qwen/Qwen2.5-72B-Instruct (default hf_chat_fn:18)"],
+      "budget_mechanism": "none",
+      "retry": "caller-side",
+      "notes": "Also serves as the Tier-1 actor-decision fallback family when HF_TOKEN is set (materialize.py:_fallback_backends:339-350)."
+    },
+    {
+      "module": "swm/api/resilient_llm.py",
+      "provider": "HF router primary + DeepSeek direct fallback",
+      "models": ["deepseek-ai/DeepSeek-V3-0324 (HF)", "deepseek-chat (fallback)"],
+      "budget_mechanism": "on-disk content cache data/llm_cache (free re-runs); calls counter {cache,hf,deepseek,fail}",
+      "retry": "retries=2 loop over both providers, sleep 1.5*(attempt+1); returns '' on total failure (fails open — callers must handle empty)",
+      "notes": "Backtest/ablation harness backend, not the runtime default."
+    },
+    {
+      "module": "swm/world_model_v2/llm_call_cache.py",
+      "provider": "(wrappers, provider-agnostic)",
+      "models": [],
+      "budget_mechanism": "CallLedger:56 = ACCOUNTING ONLY (calls_by_stage/calls_by_model/cache hits/chars; total_calls:75) -> structural_ensemble.cost_manifest incl. single_model_equivalent_llm_calls + incremental_call_multiplier (structural_runtime.py:548-555,:592-599). No hard cap at ensemble level.",
+      "retry": "none (pass-through)",
+      "notes": "CachedLLM:117 content-addressed exact-input reuse for deterministic ensemble stages; ScopedActorCache:157 cross-model CRN actor-decision sharing keyed (particle, prompt, occurrence)."
+    },
+    {
+      "module": "swm/world_model_v2/qualitative_actor.py",
+      "provider": "(engine over any fn(prompt)->text)",
+      "models": [],
+      "budget_mechanism": "QualitativeConfig.max_llm_calls = SWM_ACTOR_LLM_BUDGET default 240 per run across all branches/actors (:702-707); ENFORCED under lock in QualitativeDecisionEngine.decide (:757-760) and PRE-GATED by GeneratedActorInvocationOperator.budget_left -> temporally_truncated:actor_llm_budget_exhausted (generated_world.py:1233-1243). Per-branch invocation caps DEFAULT_BUDGETS (generated_world.py:60-61): 40 invocations/actor, 1000 semantic events, cascade depth 64 — exhaustion is a recorded temporal truncation, never a numeric fallback.",
+      "retry": "primary retries=1 then each fallback family once; serving family recorded on the decision (:749-769)",
+      "notes": "The main production LLM spend: per-particle actor cognition."
+    },
+    {
+      "module": "swm/world_model_v2/evidence_orchestrator.py",
+      "provider": "(uses passed llm for claim extraction)",
+      "models": [],
+      "budget_mechanism": "OrchestratorConfig:37 — max_claim_docs=16 LLM claim-extraction calls, max_requirements_retrieved=8, lookback 120d; verify_online off by default",
+      "retry": "connector-level",
+      "notes": "Shared bundle gathered once per ensemble."
+    },
+    {
+      "module": "swm/llm.py (+ api/app.py)",
+      "provider": "Anthropic (legacy V1 only)",
+      "models": ["claude-opus-4-8"],
+      "budget_mechanism": "none",
+      "retry": "SDK",
+      "notes": "V1 trait extraction/drafts; degrades to heuristics without credentials. NOT on the V2 path."
+    }
+  ],
+  "result_construction": [
+    {"file": "swm/world_model_v2/result.py", "function": "SimulationResult dataclass :52 (+__post_init__ validation :100)", "statuses": ["SIMULATION_STATUSES :24 = completed | completed_with_degradation | clarification_required | execution_failed | temporally_truncated", "SUPPORT_GRADES :26 = empirically_supported | transfer_supported | exploratory | highly_speculative", "RECOMMENDATION_STATUSES :27 = eligible | limited | withheld | not_requested", "FAILURE_TAXONOMY :30 = runtime_exception | unresolved_reference | invalid_execution_plan | terminal_readout_unbindable | missing_required_operator | corrupt_evidence_artifact | unavailable_service | serialization_failure | parser_failure_after_retries | timeout"]},
+    {"file": "swm/world_model_v2/pipeline.py", "function": "result_from_run:55 (THE per-model contract assembler)", "statuses": ["completed / completed_with_degradation from plan.degraded :94", "temporally_truncated when temporal_runtime.temporally_truncated :98-106 (support capped to exploratory, recommendation withheld note)", "execution_failed terminal_readout_unbindable when no dist/quantiles :69-75", "recommendation_status via _recommendation_status:29 (intervention + support grade)"]},
+    {"file": "swm/world_model_v2/structural_runtime.py", "function": "_assemble_ensemble_result:443 (SimulationResult :559) + _fail:84 + clarification :142 + individual routes :772/:862/:914/:922", "statuses": ["completed_with_degradation when any per-model degradation OR incomplete ensemble :561", "limitations carry 'ensemble execution incomplete' :479-483 and 'structurally underidentified' :476-478", "structural_ensemble.structural_sensitivity.classification = STRUCTURAL_SENSITIVITY_CLASSES (structural_contracts.py:69-75): structurally_stable | mildly_structurally_sensitive | materially_structurally_sensitive | structurally_underidentified | ensemble_execution_incomplete (thresholds 0.05/0.15 :81-84; classify_forecast_sensitivity :313; single survivor without convergence certificate => incomplete structural_runtime.py:450-452)"]},
+    {"file": "swm/world_model_v2/unified_runtime.py", "function": "single-model ablation constructions :160,:164,:506,:529,:546,:676,:680", "statuses": ["clarification_required", "execution_failed (taxonomy from CompilerExecutionError)", "individual-reaction completed/execution_failed"]},
+    {"file": "swm/world_model_v2/phase8_pipeline.py", "function": "finalize_persistence_run:226 surfacing + simulate_with_persistence:381", "statuses": ["consequence_report.structurally_under_modeled stamped :240-249 (also materialize.run_from_plan :559-569) -> limitation + support cap via _surface_consequence_degradation:326; actor-policy degradation via _surface_actor_policy_degradation:311"]},
+    {"file": "swm/world_model_v2/phase13/contracts.py", "function": "DecisionResult:206", "statuses": ["recommendation_kind = action | policy | pareto | abstain | gather_information :215", "abstention codes seen: invalid_contract, authority_unclear, prohibited_harm, no_substantive_actions, utility_underspecified (abstain.py:16-46), no_viable_action (api.py:214), ensemble_execution_incomplete (ensemble.py:105), structurally_sensitive_recommendation (ensemble.py:129,:139)"]},
+    {"file": "swm/world_model_v2/result.py", "function": "migrate_legacy_result:172", "statuses": ["legacy abstain -> clarification_required or execution_failed(+taxonomy); as_dict emits _semantics='no_abstention_v2' mirror :161-168"]},
+    {"file": "(note)", "function": "run_classification", "statuses": ["TERM NOT FOUND in repo — the classification field is structural_ensemble.structural_sensitivity['classification'] plus phase13 recommendation_stability (ensemble.py:335)"]}
+  ],
+  "aggregation_points": [
+    "swm/world_model_v2/contracts.py:OutcomeContract.project:65 — frequency/quantile projection over weighted terminal branches; unresolved_share for out-of-option-space mass",
+    "swm/world_model_v2/event_time.py:EventTimeContract.project:233 — first-passage CDF/survival/quantiles/mode marginal; binary answer = F(deadline) polarity-mapped :263-271; categorical = absorbed_by marginal + none_of_the_options_by_horizon :272-286",
+    "swm/world_model_v2/rollout.py:WorldModelV2Run.project:78 — contract.project + n_deltas + temporal_runtime block (temporal_runtime.py:aggregate_temporal_stats:941)",
+    "swm/world_model_v2/materialize.py:_run_with_hypotheses:573 — per-hypothesis stratified projection + structural_realized_mass :613-632 (single-model path)",
+    "swm/world_model_v2/structural_runtime.py:_assemble_ensemble_result:443 — cross-model: _equal_weight_mixture:602, _robust_range:610, structural_contracts.decompose_uncertainty, classify_forecast_sensitivity, reversal:638, VOI:685, human_summary:738",
+    "swm/world_model_v2/structural_runtime.py:_route_individual_reaction_ensemble:849-901 — per-frame counted distributions -> equal-weight mixture",
+    "swm/world_model_v2/qualitative_actor.py:aggregate_actor_decisions — counted per-actor action distributions attached via materialize.attach_actor_decision_distributions:353",
+    "swm/world_model_v2/phase13/robust.py:evaluate_bundle — per-arm robust evaluation + ranking (called api.py:181)",
+    "swm/world_model_v2/phase13/ensemble.py:_synthesize:167 — cross-model winner/minimax-regret/mixture ranking/stability",
+    "swm/world_model_v2/pipeline.py:result_from_run:55 — final per-model contract assembly incl. calibration.decompose_uncertainty :78"
+  ],
+  "branch_weight_locations": [
+    "swm/world_model_v2/state.py:WorldBranch.weight:248 (default 1.0; 'assimilation reweights') — consumed by every contract.project",
+    "swm/world_model_v2/materialize.py:_run_with_hypotheses:583-592 — hypothesis strata weights: plan.structural_posterior (Phase 3) else compiler prior; realized mass :617-622",
+    "swm/world_model_v2/phase13/counterfactual.py:_assign_hypotheses:100 — same stratification by particle INDEX for matched arms",
+    "swm/world_model_v2/unified_runtime.py:_phase3_block:262-265 — plan.posterior_rate_particles + plan.structural_posterior written from the evidence posterior",
+    "swm/world_model_v2/materialize.py:_inject_posterior_rate:408 — posterior particles copied into resolve_outcome/institutional_decision/hazard_round payloads + first_passage calibration (run_from_plan + phase13 paths)",
+    "swm/world_model_v2/event_time.py:1422-1428 (calibration_base.posterior_rate_particles) consumed at :520/:709 — the posterior as per-particle target mass on the DEFAULT event-time path",
+    "swm/world_model_v2/structural_runtime.py — CROSS-MODEL weights DO NOT EXIST by design: equal_weight_mixture:602 labeled 'equal_weight_uncalibrated_structural_average' :533-539; per-model distributions + robust_range are primary; qualitative support classes (support_class per candidate) are never numerified (module docstring :23-25)",
+    "swm/world_model_v2/structural_contracts.py:decompose_uncertainty — between-model vs within-model split feeding uncertainty_decomposition"
+  ]
+}

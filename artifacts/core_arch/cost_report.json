@@ -1,0 +1,220 @@
+{
+ "note": "per-stage call counts from live forensic cases (CountingLLM meters + ensemble cost manifests); ablation arms above separate the accuracy-increasing additional work (staged cognition, boundary generation+critics) from savings (event-driven attention, caching, honest truncation stopping branches early)",
+ "cases": {
+  "case1_founder_platform.json": {
+   "provider_cost": {
+    "calls": 126,
+    "tokens_in": 203413,
+    "tokens_out": 182487,
+    "seconds": 1683.94,
+    "cost_usd": 0.255657
+   },
+   "ensemble_cost_manifest": {
+    "llm_calls_by_stage": {
+     "structural_generation": 5,
+     "structural_critic": 7,
+     "structural_compile": 5,
+     "structural_repair": 4,
+     "model_conditioning": 21,
+     "actor_rollout": 84
+    },
+    "llm_calls_by_model": {
+     "m0_actor_relationship": 2,
+     "m1_institutional_procedural": 2,
+     "m2_resource_constraint": 2,
+     "m3_information_distribution": 2,
+     "m4_adversarial_alternative": 106
+    },
+    "cache_hits_by_stage": {},
+    "total_llm_calls": 126,
+    "total_cache_hits": 0,
+    "prompt_chars": 813824,
+    "response_chars": 730133,
+    "errors": 0,
+    "single_model_equivalent_llm_calls": 22,
+    "incremental_call_multiplier": 5.73,
+    "pilot_particles_reused": 8
+   },
+   "runtime_s": 2483.9,
+   "truncated_weight": 0.9142857142857145
+  },
+  "case2_personal_message.json": {
+   "provider_cost": {
+    "calls": 82,
+    "tokens_in": 78446,
+    "tokens_out": 61938,
+    "seconds": 631.46,
+    "cost_usd": 0.089312
+   },
+   "ensemble_cost_manifest": {
+    "llm_calls_by_stage": {
+     "structural_generation": 5,
+     "structural_critic": 2
+    },
+    "llm_calls_by_model": {},
+    "cache_hits_by_stage": {},
+    "total_llm_calls": 7,
+    "total_cache_hits": 0,
+    "prompt_chars": 24521,
+    "response_chars": 19676,
+    "errors": 0
+   },
+   "runtime_s": 631.7,
+   "truncated_weight": null
+  },
+  "case3_institutional_promotion.json": {
+   "provider_cost": {
+    "calls": 268,
+    "tokens_in": 443259,
+    "tokens_out": 275973,
+    "seconds": 2518.41,
+    "cost_usd": 0.42325
+   },
+   "ensemble_cost_manifest": {
+    "llm_calls_by_stage": {
+     "structural_generation": 5,
+     "structural_critic": 7,
+     "structural_compile": 5,
+     "structural_repair": 2,
+     "model_conditioning": 66,
+     "actor_rollout": 183
+    },
+    "llm_calls_by_model": {
+     "m0_actor_relationship": 78,
+     "m1_institutional_procedural": 77,
+     "m2_resource_constraint": 52,
+     "m3_information_distribution": 47,
+     "m4_adversarial_alternative": 2
+    },
+    "cache_hits_by_stage": {
+     "model_conditioning": 10
+    },
+    "total_llm_calls": 268,
+    "total_cache_hits": 10,
+    "prompt_chars": 1773447,
+    "response_chars": 1104310,
+    "errors": 0,
+    "single_model_equivalent_llm_calls": 50,
+    "incremental_call_multiplier": 5.36,
+    "pilot_particles_reused": 38
+   },
+   "runtime_s": 4351.7,
+   "truncated_weight": 0.0
+  },
+  "case4_capacity_bottleneck.json": {
+   "provider_cost": {
+    "calls": 102,
+    "tokens_in": 182921,
+    "tokens_out": 104358,
+    "seconds": 1037.1,
+    "cost_usd": 0.164182
+   },
+   "ensemble_cost_manifest": {
+    "llm_calls_by_stage": {
+     "structural_generation": 5,
+     "structural_critic": 7,
+     "structural_compile": 5,
+     "structural_repair": 4,
+     "model_conditioning": 19,
+     "actor_rollout": 61
+    },
+    "llm_calls_by_model": {
+     "m0_actor_relationship": 2,
+     "m1_institutional_procedural": 2,
+     "m2_resource_constraint": 2,
+     "m3_information_distribution": 2,
+     "m4_adversarial_alternative": 81
+    },
+    "cache_hits_by_stage": {},
+    "total_llm_calls": 101,
+    "total_cache_hits": 0,
+    "prompt_chars": 730708,
+    "response_chars": 416600,
+    "errors": 0,
+    "single_model_equivalent_llm_calls": 17,
+    "incremental_call_multiplier": 5.94,
+    "pilot_particles_reused": 12
+   },
+   "runtime_s": 1801.8,
+   "truncated_weight": 0.0
+  },
+  "case5_population_adoption.json": {
+   "provider_cost": {
+    "calls": 569,
+    "tokens_in": 788827,
+    "tokens_out": 599235,
+    "seconds": 5491.06,
+    "cost_usd": 0.872142
+   },
+   "ensemble_cost_manifest": {
+    "llm_calls_by_stage": {
+     "structural_generation": 5,
+     "structural_critic": 7,
+     "structural_compile": 5,
+     "structural_repair": 2,
+     "model_conditioning": 78,
+     "actor_rollout": 469
+    },
+    "llm_calls_by_model": {
+     "m0_actor_relationship": 137,
+     "m1_institutional_procedural": 122,
+     "m2_resource_constraint": 2,
+     "m3_information_distribution": 96,
+     "m4_adversarial_alternative": 197
+    },
+    "cache_hits_by_stage": {
+     "model_conditioning": 10
+    },
+    "total_llm_calls": 566,
+    "total_cache_hits": 10,
+    "prompt_chars": 3152591,
+    "response_chars": 2395266,
+    "errors": 0,
+    "single_model_equivalent_llm_calls": 110,
+    "incremental_call_multiplier": 5.15,
+    "pilot_particles_reused": 43
+   },
+   "runtime_s": 8767.3,
+   "truncated_weight": 0.28879984514130863
+  },
+  "case6_budget_exhaustion.json": {
+   "provider_cost": {
+    "calls": 94,
+    "tokens_in": 104052,
+    "tokens_out": 101570,
+    "seconds": 888.8,
+    "cost_usd": 0.139821
+   },
+   "ensemble_cost_manifest": {
+    "llm_calls_by_stage": {
+     "structural_generation": 5,
+     "structural_critic": 7,
+     "structural_compile": 5,
+     "structural_repair": 4,
+     "model_conditioning": 59,
+     "actor_rollout": 12
+    },
+    "llm_calls_by_model": {
+     "m0_actor_relationship": 25,
+     "m1_institutional_procedural": 2,
+     "m2_resource_constraint": 26,
+     "m3_information_distribution": 2,
+     "m4_adversarial_alternative": 25
+    },
+    "cache_hits_by_stage": {
+     "model_conditioning": 7
+    },
+    "total_llm_calls": 92,
+    "total_cache_hits": 7,
+    "prompt_chars": 414061,
+    "response_chars": 404964,
+    "errors": 0,
+    "single_model_equivalent_llm_calls": 15,
+    "incremental_call_multiplier": 6.13,
+    "pilot_particles_reused": 31
+   },
+   "runtime_s": 959.0,
+   "truncated_weight": 0.9819527078565992
+  }
+ }
+}

@@ -2,6 +2,17 @@
 
 *A first-principles answer to: is our approach right, how far are we, and how do we build the real vision?*
 
+> **Core architecture (default-on for every V2 simulation):** explicit dynamically expandable
+> world boundaries per structural model; a residual outside-world event process; mechanically
+> bounded, heterogeneous LLM cognition (attention → finite working memory → imperfect persistent
+> memory → interpretation → limited action search → one choice); a hybrid runtime where LLM
+> actors and real institutional/population/numerical/operational/physical mechanisms share one
+> typed world, clock and `StateDelta` contract; and an absolute prohibition on silently
+> replacing an LLM actor with a different numerical psychology when compute is exhausted — the
+> branch truncates and is reported. Results classify honestly: `completed`,
+> `completed_with_degradation`, `under_modeled` (+subtypes), `truncated`,
+> `clarification_required`, `execution_failed`. See **docs/WMV2_CORE_ARCHITECTURE.md**.
+
 ---
 
 ## 1. Your thesis, stated precisely — and where it is right vs wrong

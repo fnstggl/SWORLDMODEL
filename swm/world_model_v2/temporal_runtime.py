@@ -67,6 +67,13 @@ class TemporalRunStats:
     unresolved_timing: list = field(default_factory=list)
     interval_advances: int = 0
     attention_batches: list = field(default_factory=list)     # bounded: bundle sizes
+    #: §20 branch-halt contract: set by _record_truncation(halt=True); the branch loop stops
+    #: at the current timestamp and the branch carries a first-class truncation status
+    branch_halted: bool = False
+    branch_status: str = ""                                   # truncation.BRANCH_STATUSES value
+    #: §28: broad-prior resolutions the default runtime REFUSED (generic outcome prior /
+    #: prior-beta institutional members / prior-beta aggregates) — under_modeled trail
+    mechanism_suppressions: list = field(default_factory=list)
 
     def count(self, etype: str):
         self.event_counts[etype] = self.event_counts.get(etype, 0) + 1
@@ -95,10 +102,15 @@ class TemporalRunStats:
                 "pending_at_horizon": self.pending_at_horizon[:30],
                 "temporally_truncated": self.temporally_truncated,
                 "truncation": self.truncation or None,
+                "branch_halted": self.branch_halted,
+                "branch_status": self.branch_status or ("truncated_event_budget"
+                                                        if self.temporally_truncated else
+                                                        "completed"),
                 "safety_limits": self.safety_limits or None,
                 "unresolved_timing": self.unresolved_timing[:20],
                 "interval_advances": self.interval_advances,
-                "attention_batch_sizes": self.attention_batches[:40]}
+                "attention_batch_sizes": self.attention_batches[:40],
+                "mechanism_suppressions": self.mechanism_suppressions[:20]}
 
 
 def get_stats(world) -> TemporalRunStats:
@@ -931,6 +943,20 @@ def run_branch_temporal(world, queue, operators, *, seed: int = 0,
             world.clock.advance_to(next_ts)
         n += process_timestamp(world, queue, operators, rng, branch.log,
                                stats=stats, rng_for=rng_for, horizon_ts=queue.horizon_ts)
+        if getattr(stats, "branch_halted", False):
+            # §20: an actor decision could not execute (budget/provider/parse/cognition) — the
+            # branch STOPS at this exact timestamp with full world state, pending events and
+            # the unresolved decision trigger preserved. No substitute action; no further
+            # advancement; never presented as having reached the horizon.
+            stats.temporally_truncated = True
+            trunc = stats.truncation if isinstance(stats.truncation, dict) else {}
+            trunc.setdefault("reason", getattr(stats, "branch_status", "truncated_actor_budget"))
+            trunc["branch_status"] = getattr(stats, "branch_status", "truncated_actor_budget")
+            trunc["at_ts"] = world.clock.now
+            trunc["pending_events"] = queue.peek_pending(30)
+            trunc["halted"] = True
+            stats.truncation = trunc
+            break
     # horizon reporting: pending in-horizon events that never ran (§27)
     stats.pending_at_horizon = queue.peek_pending(30)
     branch.terminal = True
@@ -973,9 +999,24 @@ def aggregate_temporal_stats(branches) -> dict:
             n_truncated += 1
             if not agg.truncation:
                 agg.truncation = dict(st.truncation)
+            # §21: every truncated branch stays individually visible in aggregation
+            agg.truncation.setdefault("branches", []).append({
+                "branch_id": str(getattr(b, "branch_id",
+                                         getattr(getattr(b, "world", None), "branch_id", ""))),
+                "branch_status": (st.truncation or {}).get("branch_status",
+                                                           st.branch_status or
+                                                           "truncated_event_budget"),
+                "reason": (st.truncation or {}).get("reason", ""),
+                "at_ts": (st.truncation or {}).get("at_ts"),
+                "actors": list((st.truncation or {}).get("actors_not_processed", [])),
+                "unresolved_decision_trigger":
+                    (st.truncation or {}).get("unresolved_decision_trigger", {}),
+            })
         if len(agg.pending_at_horizon) < 30:
             agg.pending_at_horizon.extend(st.pending_at_horizon[:5])
         agg.unresolved_timing.extend(st.unresolved_timing[:5])
+        agg.mechanism_suppressions.extend(
+            getattr(st, "mechanism_suppressions", [])[:5])
         if st.safety_limits:
             agg.safety_limits.update(st.safety_limits)
         mw = getattr(getattr(b, "world", None), "temporal_model", None)

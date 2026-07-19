@@ -115,13 +115,27 @@ class CollectiveThresholdDecisionOperator(TransitionOperator):
             reason_codes=[f"institution={p.get('institution_id', '?')}", f"rule={needed}/{n}"])
 
     def apply(self, world, proposal):
-        from swm.world_model_v2.fallback import LEAN_BETA, _beta_sample
+        from swm.world_model_v2.fallback import (LEAN_BETA, _beta_sample,
+                                                 generic_prior_allowed,
+                                                 record_prior_suppression)
         from swm.world_model_v2.quantities import Quantity, register_quantity_type
         a = proposal.action
         rng = _branch_rng(world, f"inst:{a['institution_id']}")
         post = a.get("posterior_rate_particles")
         if post:
             prop, src = _draw_rate(post, rng), "posterior"
+        elif not generic_prior_allowed():
+            # §19.2/§26/§28: iid-Bernoulli members from a bare lean prior would replace the
+            # institution's actual members with invented propensities. Default production
+            # refuses: the institutional outcome stays unresolved and the run classifies
+            # under_modeled_nonhuman_mechanism (generated-mode real member votes are the
+            # supported path; a fitted/evidence posterior also remains legal).
+            record_prior_suppression(world, mechanism="institutional_prior_beta_members",
+                                     var=str(a.get("outcome_var", "")),
+                                     why="institution members had no evidence posterior; "
+                                         "iid Bernoulli(prior) member draws are quarantined "
+                                         "from default production")
+            return None
         else:
             av, bv = LEAN_BETA.get(a["lean"], (1.0, 1.0))
             prop, src = _beta_sample(rng, av, bv), "prior_beta"
@@ -289,7 +303,9 @@ class AggregateOutcomeOperator(TransitionOperator):
             reason_codes=["aggregate_realization"])
 
     def apply(self, world, proposal):
-        from swm.world_model_v2.fallback import LEAN_BETA, _beta_sample
+        from swm.world_model_v2.fallback import (LEAN_BETA, _beta_sample,
+                                                 generic_prior_allowed,
+                                                 record_prior_suppression)
         from swm.world_model_v2.quantities import Quantity, register_quantity_type
         a = proposal.action
         var = a["outcome_var"]
@@ -302,6 +318,14 @@ class AggregateOutcomeOperator(TransitionOperator):
         elif isinstance(a.get("fitted_base_rate"), (int, float)):
             # learned family hazard (fit on calibration-split outcomes only; partial pooling)
             base, src = float(a["fitted_base_rate"]), str(a.get("base_rate_provenance", "fitted_family_prior"))
+        elif not generic_prior_allowed():
+            # §28: an aggregate realization from a bare lean prior is a broad-prior terminal in
+            # disguise — quarantined from default production (fitted rates and posteriors stay)
+            record_prior_suppression(world, mechanism="aggregate_outcome_prior_beta", var=var,
+                                     why="aggregate outcome had neither a fitted base rate nor "
+                                         "an evidence posterior; broad-prior realization is "
+                                         "quarantined from default production")
+            return None
         else:
             av, bv = LEAN_BETA.get(a["lean"], (1.0, 1.0))
             base, src = _beta_sample(rng, av, bv), "prior_beta"

@@ -1,0 +1,182 @@
+{
+ "answers": {
+  "1": {
+   "q": "Does every structural model have an explicit boundary?",
+   "answer": true,
+   "evidence": "structural_runtime._condition_and_pilot_model generates a WorldBoundary per candidate; live world_boundaries sections"
+  },
+  "2": {
+   "q": "Does every boundary say what remains outside it?",
+   "answer": true,
+   "evidence": "boundary_answers()['outside_detailed_world'] + explicitly_excluded/represented_as_external_processes tests"
+  },
+  "3": {
+   "q": "Can outside events affect the world without directly writing the answer?",
+   "answer": true,
+   "evidence": "validate_entry FORBIDDEN_WRITES + OutsideWorldEntryOperator typed-mechanism routing tests"
+  },
+  "4": {
+   "q": "Can new actors be promoted during rollout?",
+   "answer": true,
+   "evidence": "BoundaryMonitorOperator promotion tests + live promotions"
+  },
+  "5": {
+   "q": "Do promoted actors receive only information they could have observed?",
+   "answer": true,
+   "evidence": "_reconstructable_history public-only test"
+  },
+  "6": {
+   "q": "Can a high-sensitivity omitted actor force under_modeled?",
+   "answer": true,
+   "evidence": "classify_support decisive-unresolved -> under_modeled_boundary"
+  },
+  "7": {
+   "q": "Is actor attention separate from information availability?",
+   "answer": true,
+   "evidence": "attention_stage noticed/missed separate from availability; unnoticed content absent from prompt"
+  },
+  "8": {
+   "q": "Is working memory mechanically finite?",
+   "answer": true,
+   "evidence": "situational_capacity + displacement tests"
+  },
+  "9": {
+   "q": "Can memory retrieval fail?",
+   "answer": true,
+   "evidence": "salience-band retrieval failure test (seeded)"
+  },
+  "10": {
+   "q": "Can contradictory beliefs persist?",
+   "answer": true,
+   "evidence": "BeliefRecord conflicts persist un-averaged"
+  },
+  "11": {
+   "q": "Can two particles interpret the same observation differently?",
+   "answer": true,
+   "evidence": "fixture 37.6/37.8"
+  },
+  "12": {
+   "q": "Can an actor fail to consider the globally best action?",
+   "answer": true,
+   "evidence": "actually_feasible_not_considered test + fixture 37.9"
+  },
+  "13": {
+   "q": "Does private actor state persist?",
+   "answer": true,
+   "evidence": "QualitativeActorState + ActorMemoryState persistence tests"
+  },
+  "14": {
+   "q": "Are model families genuinely distinct?",
+   "answer": true,
+   "evidence": "FamilyIdentityError on same provider+model (temperature rule); lineage-keyed monoculture"
+  },
+  "15": {
+   "q": "Is monoculture reported when only one family is available?",
+   "answer": true,
+   "evidence": "model_family_report.model_family_monoculture on live cases"
+  },
+  "16": {
+   "q": "Does budget exhaustion ever invoke a numerical actor policy?",
+   "answer": false,
+   "must_be": false,
+   "evidence": "live verification numeric_actor_fallbacks==0 + strict-mode call-spy tests"
+  },
+  "17": {
+   "q": "Does parse failure ever invoke a numerical actor policy?",
+   "answer": false,
+   "must_be": false,
+   "evidence": "unparseable_after_retries raises; spy shows zero numeric calls"
+  },
+  "18": {
+   "q": "Does provider failure ever invoke a numerical actor policy?",
+   "answer": false,
+   "must_be": false,
+   "evidence": "provider_failure_all_families raises; spy zero"
+  },
+  "19": {
+   "q": "Does a failed actor decision stop the branch?",
+   "answer": true,
+   "evidence": "branch_halted + run_branch_temporal break test"
+  },
+  "20": {
+   "q": "Does a truncated branch continue advancing?",
+   "answer": false,
+   "must_be": false,
+   "evidence": "queue pending + clock stopped at truncation ts"
+  },
+  "21": {
+   "q": "Is truncated weight preserved?",
+   "answer": true,
+   "evidence": "aggregate_branch_statuses weight identity property tests"
+  },
+  "22": {
+   "q": "Can truncated mass withhold a recommendation?",
+   "answer": true,
+   "evidence": "recommendation_eligibility wiring + withholding tests"
+  },
+  "23": {
+   "q": "Is generic outcome prior reachable from default World Model V2?",
+   "answer": false,
+   "must_be": false,
+   "evidence": "strict-mode suppression tests + live generic_prior_writes==0"
+  },
+  "24": {
+   "q": "Can LLM-generated equations execute as validated mechanisms?",
+   "answer": false,
+   "must_be": false,
+   "evidence": "no eval/exec of LLM text (AST scan); adapters refuse dynamically generated callables"
+  },
+  "25": {
+   "q": "Are missing high-sensitivity mechanisms surfaced?",
+   "answer": true,
+   "evidence": "mechanism_suppressions -> under_modeled_nonhuman_mechanism"
+  },
+  "26": {
+   "q": "Do human and nonhuman mechanisms share the same world and clock?",
+   "answer": true,
+   "evidence": "one WorldState/clock/queue; kernel ports through StateDelta"
+  },
+  "27": {
+   "q": "Can populations be simulated without replacing decisive individuals?",
+   "answer": true,
+   "evidence": "population_segment_exposure port + strict tier promotion"
+  },
+  "28": {
+   "q": "Can a population member be promoted without double-counting?",
+   "answer": true,
+   "evidence": "population_promotions decrement record test"
+  },
+  "29": {
+   "q": "Does Phase 13 evaluate actions across these uncertainties?",
+   "answer": true,
+   "evidence": "recommendation_stability + truncation/monoculture axes"
+  },
+  "30": {
+   "q": "Do personal-reaction routes use bounded cognition?",
+   "answer": true,
+   "evidence": "individual_reaction bounded-cognition integration tests"
+  },
+  "31": {
+   "q": "Does every production route use the new architecture?",
+   "answer": true,
+   "evidence": "default facade->ensemble route live; boundary/cognition default-on; no side-path exceptions found by audit"
+  },
+  "32": {
+   "q": "Were actual LLM-backed forensic runs completed?",
+   "answer": true,
+   "evidence": "6 live case artifact(s) with provider call counts"
+  },
+  "33": {
+   "q": "Were costs measured?",
+   "answer": true,
+   "evidence": "cost_report.json + per-case provider_cost meters"
+  },
+  "34": {
+   "q": "Are unresolved limitations stated honestly?",
+   "answer": true,
+   "evidence": "no-universal-coverage statement + per-case under_modeled and downgrade records + PR classification"
+  }
+ },
+ "incomplete_questions": [],
+ "task_complete_by_section_43": true
+}

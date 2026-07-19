@@ -188,6 +188,13 @@ class ScenarioActionCompiler:
                 report.violations.append({"step": step.step_id,
                                           "violations": step_violations[:8]})
             if kept:
+                # §32 (PR#115): a step whose words were REALIZED by the reply-first bridge
+                # marks its content-carrying ops so delivery and the recipient's cognition
+                # keep the exact text verbatim (full length, never a summary slice)
+                if isinstance(step.provenance.get("message_realizer"), dict):
+                    for op in kept:
+                        if str(op.get("exact_content", "")).strip():
+                            op["exact_realized_message"] = True
                 step.compiled_ops = kept
                 step.compile_meta = {"compiler": path, "compiler_version": COMPILER_VERSION,
                                      "schema_version": schema.version}
@@ -208,6 +215,9 @@ class ScenarioActionCompiler:
                     step.compiled_ops = [{
                         "op": "emit_semantic_event",
                         "semantic_type_id": UNMODELED_EVENT_TYPE,
+                        "exact_realized_message":
+                            isinstance(step.provenance.get("message_realizer"), dict)
+                            and bool(step.exact_content.strip()),
                         "exact_content": step.exact_content or step.intent,
                         "structured_fields": {"action_name": step.intent[:60],
                                               "content": (step.exact_content
