@@ -194,10 +194,39 @@ def run_case(case: dict, max_tokens: int) -> dict:
     return art
 
 
+def _stage_census(rows: list) -> dict:
+    """Count streamed calls by recognizable pipeline stage — the execution-path evidence a partial
+    trace still carries."""
+    census = {"independent_generation": 0, "critics": 0, "stage_b_compile": 0,
+              "actor_cognition": 0, "consequence_compiler": 0, "hypothesis_generation": 0,
+              "other_conditioning": 0}
+    for r in rows:
+        p = r.get("prompt", "")
+        if "STRUCTURAL CAUSAL RECONNAISSANCE" in p:
+            census["independent_generation"] += 1
+        elif "OMISSION CRITIC" in p or "CONTRAST CRITIC" in p or "CANDIDATE CAUSAL CRITIC" in p \
+                or "EQUIVALENCE JUDGE" in p:
+            census["critics"] += 1
+        elif "WORLD-SLICE COMPILER" in p:
+            census["stage_b_compile"] += 1
+        elif p.startswith("You ARE "):
+            census["actor_cognition"] += 1
+        elif "CONSEQUENCE COMPILER" in p:
+            census["consequence_compiler"] += 1
+        elif "ALTERNATIVE HYPOTHESES" in p:
+            census["hypothesis_generation"] += 1
+        else:
+            census["other_conditioning"] += 1
+    return census
+
+
 def rebuild_summary() -> dict:
     """Combined summary from EVERY case artifact on disk (single-case invocations may run in
-    parallel; the summary is always the union, never one invocation's slice)."""
+    parallel; the summary is always the union, never one invocation's slice). Cases whose process
+    died at a wall-clock cap before writing a final artifact are reported HONESTLY as
+    execution-incomplete, with their complete streamed call traces as the execution-path evidence."""
     rows = []
+    complete_ids = set()
     for p in sorted(OUT.glob("*.json")):
         if p.name == "summary.json":
             continue
@@ -206,7 +235,9 @@ def rebuild_summary() -> dict:
         except (OSError, ValueError):
             continue
         ens = art.get("ensemble") or {}
-        rows.append({"case_id": (art.get("case") or {}).get("case_id", p.stem),
+        cid = (art.get("case") or {}).get("case_id", p.stem)
+        complete_ids.add(cid)
+        rows.append({"case_id": cid,
                      "status": (art.get("result") or {}).get("simulation_status", "harness_error"),
                      "n_independent_generation_calls": ens.get("n_independent_generation_calls"),
                      "n_fully_simulated": ens.get("n_fully_simulated"),
@@ -215,8 +246,31 @@ def rebuild_summary() -> dict:
                      "provider_counters": (art.get("backend") or {}).get("provider_counters"),
                      "wall_clock_s": art.get("wall_clock_s"),
                      "error": str(art.get("harness_error", ""))[:160]})
+    for p in sorted(OUT.glob("partial_*.calls.jsonl")):
+        cid = p.name[len("partial_"):-len(".calls.jsonl")]
+        if cid in complete_ids:
+            continue
+        calls = []
+        for line in p.read_text().splitlines():
+            try:
+                calls.append(json.loads(line))
+            except ValueError:
+                continue
+        counters = (calls[-1].get("provider_counters") if calls else {}) or {}
+        census = _stage_census(calls)
+        rows.append({"case_id": cid,
+                     "status": "execution_incomplete_wall_clock_cap",
+                     "n_independent_generation_calls": census["independent_generation"] or None,
+                     "n_fully_simulated": None, "sensitivity": "ensemble_execution_incomplete",
+                     "n_llm_calls": len(calls), "provider_counters": counters,
+                     "stage_census": census,
+                     "trace": p.name,
+                     "error": "killed at the harness wall-clock cap before terminal projection; the "
+                              "COMPLETE per-call prompt/response trace is archived (no result is "
+                              "claimed for this case)"})
     summary = {"schema_version": "structural_ensemble.forensics.summary.v1",
-               "note": "architecture probes — no predictive-accuracy claim",
+               "note": "architecture probes — no predictive-accuracy claim; incomplete cases are "
+                       "marked, never back-filled",
                "cases": rows}
     (OUT / "summary.json").write_text(json.dumps(summary, indent=1))
     return summary
