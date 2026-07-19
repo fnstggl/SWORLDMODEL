@@ -76,13 +76,22 @@ CASES = [
 
 
 class CountingLLM:
-    def __init__(self, inner):
-        self.inner, self.n_calls, self.chars_in, self.chars_out = inner, 0, 0, 0
+    """Counts calls and routes token budgets by ROLE: temporal-compilation/critic prompts get
+    the long budget (their JSON is large); everything else the standard one. A compute knob
+    (§26) — never a change to what is simulated."""
+
+    _LONG_ROLES = ("SCENARIO TEMPORAL COMPILER", "ACTOR TEMPORAL PROFILER", "TEMPORAL CRITIC")
+
+    def __init__(self, inner_std, inner_long=None):
+        self.inner_std, self.inner_long = inner_std, (inner_long or inner_std)
+        self.n_calls, self.chars_in, self.chars_out = 0, 0, 0
 
     def __call__(self, prompt):
         self.n_calls += 1
-        self.chars_in += len(str(prompt))
-        out = self.inner(prompt)
+        p = str(prompt)
+        self.chars_in += len(p)
+        fn = self.inner_long if any(r in p[:200] for r in self._LONG_ROLES) else self.inner_std
+        out = fn(prompt)
         self.chars_out += len(str(out or ""))
         return out
 
@@ -116,12 +125,12 @@ def _verify(res_dict: dict, blob: str) -> dict:
     return checks
 
 
-def run_case(case: dict, llm) -> dict:
+def run_case(case: dict, llm, llm_long=None) -> dict:
     t0 = time.time()
-    wrapped = CountingLLM(llm)
+    wrapped = CountingLLM(llm, llm_long)
     from swm.world_model_v2.unified_runtime import simulate_world
     uc = dict(case.get("user_context") or {})
-    uc["_execution_policy"] = {"n_particles": 3}          # compute budget: MC resolution only
+    uc["_execution_policy"] = {"n_particles": 2}          # compute budget: MC resolution only
     res = simulate_world(case["question"], as_of=case["as_of"],
                          horizon=case.get("horizon", ""),
                          intervention=case.get("intervention", ""),
@@ -165,16 +174,22 @@ def main():
     ap.add_argument("--offline", action="store_true", help="no backend → fail loudly")
     args = ap.parse_args()
     from swm.api.deepseek_backend import default_chat_fn
-    llm = default_chat_fn(max_tokens=2600, temperature=0.3)
+    llm = default_chat_fn(max_tokens=1400, temperature=0.3)
+    llm_long = default_chat_fn(max_tokens=2600, temperature=0.3)   # temporal compile/critics
     if llm is None:
         raise SystemExit("no LLM backend — live forensics need DEEPSEEK_API_KEY or HF_TOKEN")
     OUT.mkdir(parents=True, exist_ok=True)
     cases = CASES if args.case is None else [CASES[args.case]]
+    # ascending expected cost: light routes first so a wall-clock kill loses the least
+    order = {"cold_message_late_night": 0, "long_horizon_sparse": 1, "crisis_simultaneous": 2,
+             "public_announcement_exposure": 3, "institutional_multistage": 4,
+             "founder_launch_timing": 5}
+    cases = sorted(cases, key=lambda c: order.get(c["case_id"], 9))
     summary = []
     for case in cases:
         print(f"— running {case['case_id']} …", flush=True)
         try:
-            art = run_case(case, llm)
+            art = run_case(case, llm, llm_long)
         except Exception as e:  # noqa: BLE001 — record the failure, keep the battery going
             art = {"case_id": case["case_id"], "error": f"{type(e).__name__}: {e}"[:400]}
         (OUT / f"{case['case_id']}.json").write_text(json.dumps(art, indent=1, default=str))
