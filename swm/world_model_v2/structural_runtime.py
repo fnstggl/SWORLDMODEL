@@ -686,6 +686,37 @@ def _assemble_ensemble_result(U, question, ens, runs, model_results, promoted, b
         "model_family_monoculture": model_family_report.get("model_family_monoculture", True),
     }
 
+    # §29: does the ANSWER change because of each uncertainty axis? Measured where the run
+    # actually varied the axis; honestly not-measured otherwise (never fabricated).
+    answer_change_attribution = {
+        "structural_model": {"measured": len(model_dists) > 1,
+                             "changes_answer": classification["classification"] in
+                             ("materially_structurally_sensitive",
+                              "structurally_underidentified"),
+                             "basis": classification.get("classification")},
+        "world_boundary": {"measured": bool(boundaries),
+                           "changes_answer": "under_modeled_boundary" in under_subtypes,
+                           "basis": "boundary critics + sensitivity analysis"},
+        "actor_cognition": {"measured": False,
+                            "basis": "per-run cognition variants not run in-band; see the "
+                                     "bounded-vs-oneshot ablation arm "
+                                     "(artifacts/core_arch/ablation_report.json)"},
+        "model_family": {"measured": not model_family_report.get("model_family_monoculture",
+                                                                 True),
+                         "changes_answer": None,
+                         "basis": ("single-lineage monoculture — family disagreement is "
+                                   "UNMEASURABLE this run and reported as risk"
+                                   if model_family_report.get("model_family_monoculture", True)
+                                   else "per-family decisions recorded in assignments")},
+        "nonhuman_mechanism": {"measured": True,
+                               "changes_answer": "under_modeled_nonhuman_mechanism"
+                               in under_subtypes,
+                               "basis": "mechanism suppressions + unresolved mechanisms"},
+        "truncation": {"measured": True,
+                       "changes_answer": (trunc_weight > 0 and not answer_settled),
+                       "basis": "per-option bounds under admissible truncated completions"},
+    }
+
     if under_subtypes:
         limitations.append(
             "UNDER-MODELED: unresolved high-sensitivity boundary components remain outside the "
@@ -765,6 +796,7 @@ def _assemble_ensemble_result(U, question, ens, runs, model_results, promoted, b
                               m.get("pilot_particles", 0) for m in ens.simulation_manifest.values()
                               if m.get("pilot_reused_as_prefix"))},
         "human_summary": _human_summary(question, mixture, classification, reversal, voi, promoted),
+        "answer_change_attribution": answer_change_attribution,
     }
 
     # ---------- §8 status ladder (epistemic states, never engineering exceptions):
