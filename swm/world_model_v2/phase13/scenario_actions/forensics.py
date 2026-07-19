@@ -28,9 +28,11 @@ def _deltas(branch) -> list:
                            for c in _change_rows(d)][:16]}
         unc = getattr(d, "uncertainty", None)
         if unc:
-            row["notes"] = {k: str(v)[:240] for k, v in unc.items()
+            row["notes"] = {k: (v if k == "kernel_quarantined" else str(v)[:240])
+                            for k, v in unc.items()
                             if k in ("executed_action", "decision_summary", "stop_condition",
-                                     "step_intent")}
+                                     "step_intent", "kernel_quarantined",
+                                     "consequence_compiler")}
         out.append(row)
     return out
 

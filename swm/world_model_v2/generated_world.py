@@ -122,6 +122,13 @@ def _validate_fields(schema_fields: dict, fields: dict, *, type_id: str,
         k = str(k)[:60]
         if _FORBIDDEN_KEYS.search(k):
             raise KernelError(f"forbidden numeric-minting field {k!r}")
+        if v is None:
+            # a null is "no value": DROP it (surfaced), never op-fatal — one stray null from
+            # an LLM was quarantining entire otherwise-valid decision records (ex4 forensic:
+            # hundreds of typed actor reactions died on {"proposal_id": null})
+            if dropped is not None:
+                dropped.append(f"{type_id}.{k}=null")
+            continue
         if not isinstance(v, (str, int, float, bool, list)):
             raise KernelError(f"field {k!r} must be a simple typed value")
         if schema_fields and k not in schema_fields and k != "status":
