@@ -933,11 +933,22 @@ class GeneratedSemanticEventOperator:
         return delta, ValidationResult(ok=True)
 
 
-def _record_truncation(world, report, *, kind: str, actor: str, detail: str = ""):
-    """A SAFETY budget was hit: record a temporal truncation on the report AND the branch's
-    temporal stats — the branch is temporally truncated, never silently quiescent (§12)."""
+def _record_truncation(world, report, *, kind: str, actor: str, detail: str = "",
+                       halt: bool = True, pending_trigger: dict = None):
+    """§20 first-class branch truncation: record the exact reason at the exact timestamp,
+    preserve the pending decision trigger, and (default) HALT the branch — a truncated branch
+    never continues advancing under a missing actor decision. A safety budget is an execution
+    limit, not a causal event; the branch is truncated, never silently quiescent, and no
+    substitute action is ever created for the actor (§0.2/§19)."""
     from swm.world_model_v2.temporal_runtime import get_stats
-    rec = {"kind": kind, "actor": actor, "at_ts": world.clock.now, "detail": str(detail)[:160],
+    try:
+        from swm.world_model_v2.truncation import map_truncation_kind
+        status = map_truncation_kind(kind)
+    except Exception:  # noqa: BLE001 — vocabulary module optional during migration
+        status = "truncated_event_budget"
+    rec = {"kind": kind, "branch_status": status, "actor": actor, "at_ts": world.clock.now,
+           "detail": str(detail)[:200],
+           "unresolved_decision_trigger": dict(pending_trigger or {}),
            "why_actor_matters": "a pending causal chain names this actor; additional compute "
                                 "would process their reconsideration"}
     if report is not None:
@@ -946,11 +957,17 @@ def _record_truncation(world, report, *, kind: str, actor: str, detail: str = ""
     stats = get_stats(world)
     stats.temporally_truncated = True
     if not stats.truncation:
-        stats.truncation = {"reason": kind, "at_ts": world.clock.now,
-                            "actors_not_processed": [], "note": rec["why_actor_matters"]}
+        stats.truncation = {"reason": kind, "branch_status": status, "at_ts": world.clock.now,
+                            "actors_not_processed": [], "note": rec["why_actor_matters"],
+                            "unresolved_decision_trigger": dict(pending_trigger or {})}
     naf = stats.truncation.setdefault("actors_not_processed", [])
     if actor not in naf:
         naf.append(actor)
+    if halt:
+        # the branch loop checks this flag after every processed timestamp and stops the
+        # branch with full world state + pending events preserved (§20.1-§20.8)
+        stats.branch_halted = True
+        stats.branch_status = status
 
 
 def _invocation_event(world, actor_id: str, sev: dict, *, reason: str,
@@ -1209,6 +1226,37 @@ class GeneratedActorInvocationOperator:
         return event.etype == "ctrl_invoke_actor" and bool(event.participants) \
             and getattr(world, "scenario_schema", None) is not None
 
+    _PERSISTENT_CHANNEL_MARKERS = ("email", "inbox", "mail", "document", "portal", "queue",
+                                   "ticket", "letter", "filing", "message")
+
+    def _requeue_missed(self, world, actor_id, bundle, posterior):
+        """§10: an item the actor cognitively missed on a PERSISTENT channel remains available
+        (bounded re-attempts recorded); missed ephemeral items are recorded as missed for good.
+        Exposure honesty: the item was presented, not registered — the cognition record carries
+        which and why."""
+        cog = ((getattr(posterior, "provenance", None) or {}).get("cognition")
+               if posterior is not None else None) or {}
+        missed = {str(m.get("obs_id")) for m in (cog.get("observations_missed") or [])
+                  if isinstance(m, dict)}
+        if not missed:
+            return
+        store = getattr(world, "temporal_attention", None)
+        if not isinstance(store, dict):
+            return
+        buf = store.setdefault(actor_id, {"available": [], "scheduled_attention": {}})
+        for it in bundle:
+            iid = str(it.get("iid", ""))
+            if iid not in missed:
+                continue
+            channel = str(it.get("channel", "")).lower()
+            persistent = any(k in channel for k in self._PERSISTENT_CHANNEL_MARKERS)
+            attempts = int(it.get("_notice_reattempts", 0) or 0)
+            if persistent and attempts < 2:
+                item = dict(it)
+                item["_notice_reattempts"] = attempts + 1
+                item.setdefault("available_ts", world.clock.now)
+                buf["available"].append(item)
+
     def run(self, world, event, rng):
         from swm.world_model_v2.temporal_runtime import get_stats, record_invocation
         p = event.payload
@@ -1268,16 +1316,31 @@ class GeneratedActorInvocationOperator:
                          if sev else str(p.get("reason_actor_may_be_causally_relevant", "")))
         decision = {"situation": situation[:900],
                     "question_id": f"reconsider_{sev.get('event_id', '')[:20]}",
-                    "trigger": trigger}
+                    "trigger": trigger,
+                    # §10: the delivered bundle is the availability set for the actor's
+                    # bounded-cognition attention stage (availability ≠ noticing)
+                    "observation_bundle": bundle}
         affordances = [a for a in (role.get("affordances") or []) if isinstance(a, str)][:8]
         if affordances:
             # EXAMPLES of feasible capabilities — the qualitative schema explicitly allows an
             # action outside this list, and choosing nothing at all
             decision["candidate_actions"] = affordances
         seed = rng.randrange(0, 2**31 - 1)
-        selected, posterior, trace = self.runtime.decide(
-            None, [world], actor_id, decision=decision, seed=seed,
-            observed_events=[event])
+        try:
+            selected, posterior, trace = self.runtime.decide(
+                None, [world], actor_id, decision=decision, seed=seed,
+                observed_events=[event])
+        except Exception as e:  # noqa: BLE001 — §19/§20: a failed actor decision TRUNCATES
+            from swm.world_model_v2.qualitative_actor import ActorDecisionUnavailable
+            if isinstance(e, ActorDecisionUnavailable):
+                delta.reason_codes.append(f"branch_truncated:{e.reason}")
+                _record_truncation(world, self.report, kind=e.reason, actor=actor_id,
+                                   detail=str(e), halt=True, pending_trigger=trigger)
+                return delta, ValidationResult(ok=True)
+            raise
+        # §10: cognitively MISSED persistent-channel items stay available for a later real
+        # attention opportunity (an unread email remains in the inbox); ephemeral items do not.
+        self._requeue_missed(world, actor_id, bundle, posterior)
         self.report["actors_invoked"] += 1
         qual = (posterior.provenance or {}).get("qualitative") or {}
         # delivery→attention→decision accounting (§27)

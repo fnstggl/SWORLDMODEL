@@ -676,15 +676,51 @@ class ProductionActorPolicyOperator:
             naf = stats.truncation.setdefault("actors_not_processed", [])
             if actor_id not in naf:
                 naf.append(actor_id)
+            stats.branch_halted = True                        # §20: the branch STOPS here
+            stats.branch_status = "truncated_actor_budget"
+            stats.truncation["branch_status"] = "truncated_actor_budget"
+            stats.truncation["unresolved_decision_trigger"] = dict(
+                decision.get("trigger") or {"trigger_type": event.etype, "actor_id": actor_id})
             d = StateDelta(at=world.clock.now, event_type=event.etype, operator=self.name,
                            reason_codes=["temporally_truncated:actor_llm_budget_exhausted",
                                          f"actor:{actor_id}"])
             return d, ValidationResult(ok=True)
-        selected, posterior, trace = self.runtime.decide(
-            None, [world], actor_id, decision=decision, seed=seed,
-            question_id=str(decision.get("question_id", "")),
-            observed_events=[event],
-        )
+        try:
+            selected, posterior, trace = self.runtime.decide(
+                None, [world], actor_id, decision=decision, seed=seed,
+                question_id=str(decision.get("question_id", "")),
+                observed_events=[event],
+            )
+        except Exception as e:  # noqa: BLE001 — §19/§20: failed decision truncates the branch
+            from swm.world_model_v2.qualitative_actor import ActorDecisionUnavailable
+            if isinstance(e, ActorDecisionUnavailable):
+                from swm.world_model_v2.temporal_runtime import get_stats
+                try:
+                    from swm.world_model_v2.truncation import map_truncation_kind
+                    status = map_truncation_kind(e.reason)
+                except Exception:  # noqa: BLE001
+                    status = "truncated_provider_failure"
+                stats = get_stats(world)
+                stats.temporally_truncated = True
+                stats.branch_halted = True
+                stats.branch_status = status
+                if not stats.truncation:
+                    stats.truncation = {"reason": e.reason, "at_ts": world.clock.now,
+                                        "actors_not_processed": [], "branch_status": status,
+                                        "note": "actor decision unavailable under the strict "
+                                                "qualitative contract; no substitute action"}
+                stats.truncation["branch_status"] = status
+                stats.truncation["unresolved_decision_trigger"] = dict(
+                    decision.get("trigger") or {"trigger_type": event.etype,
+                                                "actor_id": actor_id})
+                naf = stats.truncation.setdefault("actors_not_processed", [])
+                if actor_id not in naf:
+                    naf.append(actor_id)
+                d = StateDelta(at=world.clock.now, event_type=event.etype, operator=self.name,
+                               reason_codes=[f"branch_truncated:{e.reason}",
+                                             f"actor:{actor_id}"])
+                return d, ValidationResult(ok=True)
+            raise
         delta, _events = self.runtime.execute(world, selected, posterior, trace, seed=seed)
         self.traces.append(trace)
         return delta, ValidationResult(ok=True)

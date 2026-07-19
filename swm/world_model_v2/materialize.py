@@ -169,6 +169,15 @@ def queue_builder_from_plan(plan):
                 world.omissions.append({"kind": "first_passage_process",
                                         "process": str(spec.get("process_id", "?")),
                                         "reason": f"{type(e).__name__}: {e}"[:120]})
+        # §5: residual outside-world arrivals — branch-root rng (matched counterfactual
+        # streams); unresolved families surface as omissions, never as invented draws
+        if getattr(plan, "_outside_world", None) is not None:
+            try:
+                from swm.world_model_v2.boundary_monitor import schedule_outside_arrivals
+                schedule_outside_arrivals(plan, world, q)
+            except Exception as e:  # noqa: BLE001 — recorded loudly, never a silent absence
+                world.omissions.append({"kind": "outside_world_scheduling",
+                                        "reason": f"{type(e).__name__}: {e}"[:140]})
         return q
     return build
 
@@ -275,6 +284,19 @@ def operators_from_plan(plan, *, llm=None, allow_experimental=False) -> tuple:
         ops.append(ScenarioPlanOperator(report=report))
         ops.append(_cb.MechanismRuntimeOperator(report=report, llm=backend))
         ops.append(_cb.ScheduledAttemptOperator(report=report))
+    # ---------- §5/§7: outside-world entry + boundary monitor (default-on when the model
+    # carries an explicit boundary/residual — both consequence modes; shared report) ----------
+    if getattr(plan, "_outside_world", None) is not None \
+            or getattr(plan, "_world_boundary", None) is not None:
+        from swm.world_model_v2 import boundary_monitor as _bm
+        _rep = next((getattr(op, "report", None) for op in ops
+                     if getattr(op, "name", "") == "generated_semantic_event"), None)
+        if _rep is None:
+            _rep = {}
+        if getattr(plan, "_outside_world", None) is not None:
+            ops.append(_bm.OutsideWorldEntryOperator(report=_rep))
+        if getattr(plan, "_world_boundary", None) is not None:
+            ops.append(_bm.BoundaryMonitorOperator(plan._world_boundary, report=_rep, llm=llm))
     return ops, rejections
 
 
@@ -306,15 +328,27 @@ def _actor_policy_runtime(plan, llm):
     requested = resolve_actor_policy_mode(llm)
     report = {"requested_actor_policy_mode": requested,
               "actual_actor_policy_mode": requested, "construction_error": "", "degraded": False}
+    from swm.world_model_v2.qualitative_actor import _numeric_allowed
     if requested == "numeric_policy":
         report["actual_actor_policy_mode"] = "numeric_policy"
         report["reason"] = "numeric_policy explicitly requested (benchmark/ablation)"
+        report["explicit_baseline_arm"] = True
         return None, report
     if llm is None:
-        # honest capability statement, loudly reported — there is no backend to run cognition
+        if not _numeric_allowed("qualitative_strict"):
+            # §0.2/§19: a qualitative run without a backend FAILS LOUDLY — the world's people
+            # are never silently re-implemented as a numeric policy. The offline test marker
+            # (SWM_ALLOW_NUMERIC_BASELINE=1) preserves the legacy numeric comparison arena.
+            from swm.world_model_v2.result import CompilerExecutionError
+            raise CompilerExecutionError(
+                "qualitative actor policy requires an LLM backend and none was supplied; "
+                "refusing the numeric-psychology substitution (§19) — pass llm= or run the "
+                "explicit numeric baseline (SWM_ACTOR_POLICY=numeric_policy)",
+                taxonomy="unavailable_service")
         report.update(actual_actor_policy_mode="numeric_policy", reason="no_llm_backend",
-                      warning="requested LLM actor policy cannot run without a backend; "
-                              "numeric policy served — supply llm= to simulate_world/run_from_plan")
+                      explicit_baseline_arm=True,
+                      warning="offline test-comparison arena (SWM_ALLOW_NUMERIC_BASELINE): "
+                              "numeric policy served in place of LLM actors")
         return None, report
     try:
         if requested == "persona_blended_numeric_policy":
@@ -323,14 +357,23 @@ def _actor_policy_runtime(plan, llm):
         else:
             from swm.world_model_v2.qualitative_actor import build_qualitative_runtime
             runtime = build_qualitative_runtime(plan, llm=llm, mode=requested,
-                                                fallback_llms=_fallback_backends(llm))
+                                                fallback_llms=_fallback_backends(llm),
+                                                family_pool=getattr(plan, "_family_pool", None))
         if runtime is None:
             raise RuntimeError("runtime constructor returned None despite a backend")
         return runtime, report
-    except Exception as e:  # noqa: BLE001 — LOUD degradation, never a silent numeric swap
+    except Exception as e:  # noqa: BLE001 — LOUD failure, never a silent numeric swap
+        if not _numeric_allowed("qualitative_strict"):
+            from swm.world_model_v2.result import CompilerExecutionError
+            raise CompilerExecutionError(
+                f"qualitative actor runtime failed to construct "
+                f"({type(e).__name__}: {e}"[:220] + ") — refusing the numeric-psychology "
+                "substitution (§19); this run fails loudly instead",
+                taxonomy="runtime_exception") from e
         report.update(actual_actor_policy_mode="numeric_policy", degraded=True,
                       construction_error=f"{type(e).__name__}: {e}"[:300],
                       reason="qualitative_runtime_construction_failed",
+                      explicit_baseline_arm=True,
                       warning="requested actor policy FAILED to construct; numeric policy "
                               "served as a degraded run — this is a defect, not a mode choice")
         return None, report
@@ -367,6 +410,17 @@ def attach_actor_decision_distributions(ops, container: dict) -> None:
                 consequence_report = runtime.consequence_report
             if getattr(op, "actor_policy_report", None):
                 runtime_report = op.actor_policy_report
+        # §35.2: a bounded sample of per-decision cognition records (attention/working-memory/
+        # retrieval/interpretation/search stage outputs) rides the run container
+        samples = []
+        for post, _tr in records:
+            cogd = (getattr(post, "provenance", None) or {}).get("cognition")
+            if cogd:
+                samples.append(cogd)
+            if len(samples) >= 6:
+                break
+        if samples:
+            container["cognition_records_sample"] = samples
         # the consequence report rides on EVERY result that executed actor actions — the
         # requested/actual consequence mode and every fallback are visible, never inferred
         if consequence_report is None:

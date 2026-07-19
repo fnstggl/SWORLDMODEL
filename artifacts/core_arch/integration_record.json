@@ -1,0 +1,30 @@
+{
+  "starting_branch": "claude/worldmodel-v2-core-arch-73s7eq",
+  "starting_commit": "5e7646c13a8d6d5cbedd33cc27ecea35e9f5e7db",
+  "starting_commit_note": "identical to origin/claude/world-model-v2 at session start (the integration target had been fast-forwarded to this branch's prior work): merges of PR #119 (causal truth boundary), #120 (event-driven temporal runtime), #121 (scenario-generated action layer), #122 (structural-model ensemble runtime), plus the combined-runtime integration and forensic driver from predecessor sessions",
+  "source_branches_inspected": [
+    "claude/world-model-v2 (integration target; head == starting commit)",
+    "history of merged PRs #108-#113 (Phase 13, qualitative actors, semantic consequences, generated world), #115 (messaging composition seam), #116-#118 (semantic world consequences, generated-world artifacts, scenario action language), #119-#122 (merged into this branch by predecessor sessions)"
+  ],
+  "changes_integrated": [
+    "explicit per-structural-model WorldBoundary contract + generation + three critics + sensitivity (world_boundary.py; structural_runtime conditioning)",
+    "residual OutsideWorldProcess with defensible-only arrival models + typed entry mechanisms (outside_world.py; boundary_monitor.py; materialize queue builder)",
+    "runtime boundary monitor: actor promotion with reconstructable-only history, population decrement records, external promotion (boundary_monitor.py)",
+    "mechanical bounded cognition: attention / finite working memory / imperfect persistent memory / contradictions / situated interpretation / limited action search / one choice / memory commit (bounded_cognition.py; qualitative_actor.py integration)",
+    "model-family pool, deterministic assignment, monoculture reporting, failure transitions (model_families.py)",
+    "strict actor integrity: §19.1 ladder, ActorDecisionUnavailable, branch halting, first-class truncation statuses, honest aggregation with bounds (qualitative_actor.py, generated_world.py, temporal_runtime.py, phase4_execution.py, truncation.py, pipeline.py, structural_runtime.py)",
+    "generic-outcome-prior quarantine from default production; under_modeled_nonhuman_mechanism classification (fallback.py, phase_consumers.py, pipeline.py)",
+    "typed MechanismSpec join over all operator registries + unified calibration vocabulary + external-simulator adapter contract + four provenance-mandatory kernel ports + migration manifest (mechanism_spec.py, kernel_ports.py, artifacts/core_arch/kernel_migration_manifest.json)",
+    "result contract: under_modeled/truncated statuses + subtypes + boundary/outside/cognition/hybrid/truncation/family sections (result.py)",
+    "Phase 13 / personal-reaction / PR#115 messaging integration with withholding rules (phase13/, individual_reaction.py)"
+  ],
+  "changes_intentionally_rejected": [
+    "PR #114 wholesale (not merged, per instruction): its numeric-actor-fallback-after-budget-exhaustion design (966 recorded numeric fallbacks) is the exact §0.2 violation this architecture removes; its semantic-event/observation-delivery/frontier concepts were already integrated via the #116-#118/#119 lineage and are preserved",
+    "numerical human substitution on any default path (quarantined to the explicit numeric_baseline_explicit arm + offline test marker)",
+    "template personality hypotheses on hypothesis-LLM failure (now branch truncation in strict mode)",
+    "generic outcome prior as a default terminal resolver (quarantined; under_modeled instead)",
+    "fixed cascades / fixed actor limits / periodic decision events / fixed action catalogs / generic direct-outcome resolution (none reintroduced; enforcement tests pin)"
+  ],
+  "resulting_branch": "claude/worldmodel-v2-core-arch-73s7eq",
+  "integration_target_for_draft_pr": "claude/world-model-v2"
+}

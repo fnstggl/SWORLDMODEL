@@ -61,6 +61,29 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
     dist = result.get("distribution") or {}
     quant = result.get("quantiles") or {}
     unresolved = result.get("unresolved_share", 0.0)
+    # §28: when the DEFAULT runtime refused a broad-prior terminal resolution (no validated
+    # mechanism, no posterior), an unresolved readout is the HONEST epistemic state — the run
+    # classifies under_modeled_nonhuman_mechanism, naming the missing mechanism. It is not an
+    # engineering failure and not a completed forecast.
+    _temporal_pre = result.get("temporal_runtime") or {}
+    _suppressions = list(_temporal_pre.get("mechanism_suppressions") or [])
+    if not dist and not quant and _suppressions:
+        return SimulationResult(
+            question=question, simulation_status="under_modeled",
+            support_grade=plan.support_grade,
+            under_modeled_subtypes=["under_modeled_nonhuman_mechanism"],
+            under_modeled_components=[
+                {"component": s.get("outcome_var", ""), "kind": "nonhuman_mechanism",
+                 "why": f"missing validated mechanism: {s.get('mechanism', '')} — "
+                        f"{str(s.get('why', ''))[:160]}",
+                 "sensitivity": "decisive"} for s in _suppressions[:8]],
+            limitations=["no validated mechanism resolved the terminal outcome; the default "
+                         "runtime refuses the broad-prior terminal draw (§28) — the missing "
+                         "mechanism is named in under_modeled_components"],
+            plan_hash=plan.plan_hash(),
+            provenance={"temporal_runtime": _temporal_pre or None,
+                        "n_particles": plan.compute_plan.get("n_particles")},
+            latency_s=round(_time.time() - t0, 3) if t0 is not None else 0.0)
     # INVARIANT: a completed simulation must carry a forecast. If the rollout produced NO binnable terminal
     # distribution AND no quantiles (every terminal world fell outside the declared option space), the
     # terminal readout is technically unbindable — an ENGINEERING failure (execution_failed), never a
@@ -95,12 +118,33 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
     # ---- §27 temporal-runtime block + §12 truncation surfacing ----
     temporal = result.get("temporal_runtime") or {}
     support_grade = plan.support_grade
+    truncation_report = {}
     if temporal.get("temporally_truncated"):
-        status = "temporally_truncated"
         share = temporal.get("truncated_branch_share", 0.0)
+        trunc = temporal.get("truncation") or {}
+        branch_status = str(trunc.get("branch_status", ""))
+        # §20/§8: actor/provider/cognition-driven halts carry the first-class `truncated`
+        # status + a truncation report; the legacy pure event-safety budget keeps its
+        # historical `temporally_truncated` label (readable alias)
+        if branch_status and branch_status != "truncated_event_budget":
+            status = "truncated"
+        else:
+            status = "temporally_truncated"
+        from swm.world_model_v2.truncation import honest_note
+        truncation_report = {
+            "branch_status": branch_status or "truncated_event_budget",
+            "reason": trunc.get("reason", ""),
+            "truncated_branch_share": share,
+            "n_branches_truncated": temporal.get("n_branches_truncated"),
+            "earliest_truncation_ts": trunc.get("at_ts"),
+            "actors_affected": trunc.get("actors_not_processed", []),
+            "pending_events": (trunc.get("pending_events") or [])[:12],
+            "unresolved_decision_trigger": trunc.get("unresolved_decision_trigger", {}),
+            "branches": (trunc.get("branches") or [])[:20],
+            "note": honest_note()}
         limitations.append(
-            f"temporally truncated: {share:.0%} of branches hit a safety budget before causal "
-            f"quiescence — pending events/actors recorded in provenance.temporal_runtime; "
+            f"truncated: {share:.0%} of branches stopped before causal quiescence "
+            f"({trunc.get('reason', 'safety budget')}) — pending events/actors recorded; "
             f"consequential recommendations are withheld at this support level")
         if support_grade in ("empirically_supported", "transfer_supported"):
             support_grade = "exploratory"
@@ -141,6 +185,7 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
         omitted_high_sensitivity_variables=high_sens_unknowns,
         sensitivity_contributors=[c["process"] for c in plan.mechanism_choices if c["tier"] >= 5][:5],
         interpretation_hypotheses=plan.interpretations,
+        truncation_report=truncation_report,
         plan_hash=plan.plan_hash(),
         provenance={"compiler_version": plan.provenance.get("compiler_version"),
                     "prompt_hash": plan.provenance.get("prompt_hash"),

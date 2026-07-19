@@ -26,6 +26,7 @@ qualitative support classes come from evidence-fit critics and are never convert
 """
 from __future__ import annotations
 
+import json
 import math
 import time as _time
 
@@ -160,10 +161,19 @@ def simulate_structural_ensemble(question: str, *, as_of: str, horizon: str = ""
     # ---------- per-model conditioning + REAL pilots through the canonical funnel ----------
     cond_llm = CachedLLM(llm, ledger=ledger, stage="model_conditioning", store=cache_store)
     actor_cache = ScopedActorCache(llm, ledger=ledger, stage="actor_rollout")
+    # §17: ONE model-family pool for the whole run — deterministic per-(particle, actor)
+    # assignments, recorded transitions, honest monoculture reporting on the result
+    try:
+        from swm.world_model_v2.model_families import default_family_pool
+        family_pool = default_family_pool(llm)
+    except Exception:  # noqa: BLE001
+        family_pool = None
     runs = {}                                     # model_id -> per-model run record
     for cand in ens.surviving():
         if cand.executable_plan is None:
             continue
+        if family_pool is not None:
+            cand.executable_plan._family_pool = family_pool
         rec = _condition_and_pilot_model(U, question, cand, bundle, as_of, horizon, intervention,
                                          seed, cond_llm, actor_cache, user_context, prior_checkpoint,
                                          drop, t0)
@@ -273,6 +283,53 @@ def _condition_and_pilot_model(U, question, cand, bundle, as_of, horizon, interv
             plan = U._apply_evidence_to_plan(question, plan, bundle, model_llm, horizon,
                                              manifest, lineage)
             cand.executable_plan = plan
+        # ---------- §3-§6: EXPLICIT WORLD BOUNDARY per structural model (default-on) ----------
+        # generation (actual LLM) → three independent critics → residual outside-world process →
+        # bounded adversarial sensitivity. Never inferred solely from plan.entities; the plan is
+        # cross-checked INTO the boundary. Results ride the plan into world construction (the
+        # boundary monitor + outside-world arrivals) and into the §35.1 result sections.
+        if "world_boundary" not in drop:
+            try:
+                from swm.world_model_v2.world_boundary import (
+                    boundary_sensitivity_analysis, generate_world_boundary, run_boundary_critics)
+                from swm.world_model_v2.outside_world import generate_outside_world
+                ev_text = U._bundle_text(bundle, 2000)
+                boundary = generate_world_boundary(
+                    question=question, structural_model_id=cand.model_id,
+                    thesis=cand.causal_thesis,
+                    decisive={"actors": cand.decisive_actors,
+                              "institutions": cand.decisive_institutions,
+                              "constraints": cand.decisive_constraints,
+                              "mechanisms": cand.decisive_mechanisms},
+                    plan=plan, as_of=as_of, horizon=horizon, intervention=intervention,
+                    user_context=user_context, evidence_text=ev_text, llm=model_llm,
+                    available_compute={"n_particles_planned": None})
+                run_boundary_critics(boundary, llm=model_llm, thesis=cand.causal_thesis)
+                outside = generate_outside_world(boundary, llm=model_llm, evidence_text=ev_text)
+                try:
+                    _opts = [str(o) for o in
+                             (getattr(plan.outcome_contract, "options", None) or [])]
+                except Exception:  # noqa: BLE001
+                    _opts = []
+                boundary_sensitivity_analysis(boundary, llm=model_llm, options=_opts)
+                plan._world_boundary = boundary
+                plan._outside_world = outside
+                rec["boundary"] = boundary
+                rec["outside_world"] = outside
+                cand.world_boundary = json.dumps(boundary.boundary_answers(), default=str)[:800] \
+                    if boundary.components else cand.world_boundary
+                lineage["world_boundary"] = {"boundary_id": boundary.boundary_id,
+                                             "boundary_hash": boundary.boundary_hash(),
+                                             "support": boundary.support_classification,
+                                             "n_components": len(boundary.components),
+                                             "n_critic_findings": len(boundary.critic_findings),
+                                             "outside_families": len(outside.families),
+                                             "outside_unresolved":
+                                                 len(outside.unresolved_external_risks)}
+            except Exception as e:  # noqa: BLE001 — a failed boundary stage is a LOUD gap, not
+                # a silent completion: recorded on the record; classification downgrades below
+                rec["boundary_error"] = f"{type(e).__name__}: {e}"[:200]
+                lineage["world_boundary"] = {"error": rec["boundary_error"]}
         posterior = U._phase3_block(question, plan, bundle, model_llm, seed, manifest, drop)
         rec["posterior_consumed"] = bool(posterior and posterior.n_effective_observations > 0)
         cand.posterior_diagnostics = ({"n_effective_observations": posterior.n_effective_observations,
@@ -484,6 +541,160 @@ def _assemble_ensemble_result(U, question, ens, runs, model_results, promoted, b
     degraded = any(model_results[c.model_id].simulation_status == "completed_with_degradation"
                    for c in promoted)
 
+    # ---------- §3/§5/§8/§17/§20/§21/§35: boundary, outside-world, family, truncation ----------
+    boundaries = {m: runs[m]["boundary"] for m in model_dists
+                  if runs.get(m, {}).get("boundary") is not None}
+    outsides = {m: runs[m]["outside_world"] for m in model_dists
+                if runs.get(m, {}).get("outside_world") is not None}
+    under_subtypes, under_components = [], []
+    for c in promoted:
+        rec_c = runs.get(c.model_id, {})
+        b = rec_c.get("boundary")
+        if b is None:
+            under_subtypes.append("under_modeled_boundary")
+            under_components.append({
+                "component": "(world boundary)", "kind": "boundary",
+                "why": rec_c.get("boundary_error") or "no boundary was generated for this model",
+                "sensitivity": "unknown", "model_id": c.model_id})
+            continue
+        if b.support_classification == "under_modeled_boundary":
+            under_subtypes.append("under_modeled_boundary")
+            for u in b.unresolved_decisive()[:6]:
+                under_components.append({"component": u.get("name", ""),
+                                         "kind": u.get("kind", ""),
+                                         "why": u.get("why_unresolved", ""),
+                                         "sensitivity": u.get("sensitivity", "decisive"),
+                                         "model_id": c.model_id})
+        for row in b.omitted_component_sensitivity:
+            if row.get("kind") == "external_event_family" and \
+                    (row.get("can_reverse_forecast_direction") or
+                     row.get("can_change_best_action")):
+                under_subtypes.append("under_modeled_external_process")
+                under_components.append({"component": row.get("omitted_component", ""),
+                                         "kind": "external_event_family",
+                                         "why": "decisive external process without a defensible "
+                                                "arrival model or mechanism",
+                                         "sensitivity": "decisive", "model_id": c.model_id})
+    # §28: broad-prior terminal resolutions the default runtime refused → the missing mechanism
+    # is named and the run classifies under_modeled_nonhuman_mechanism (never a hidden draw)
+    for c in promoted:
+        trt = (model_results[c.model_id].provenance or {}).get("temporal_runtime") or {}
+        for sup in (trt.get("mechanism_suppressions") or [])[:6]:
+            under_subtypes.append("under_modeled_nonhuman_mechanism")
+            under_components.append({
+                "component": str(sup.get("outcome_var", sup.get("mechanism", ""))),
+                "kind": "nonhuman_mechanism",
+                "why": f"missing validated mechanism: {sup.get('mechanism', '')} — "
+                       f"{str(sup.get('why', ''))[:160]}",
+                "sensitivity": "decisive", "model_id": c.model_id})
+    under_subtypes = sorted(set(under_subtypes))
+
+    # §21 truncation aggregation: per-branch statuses from each promoted model's temporal stats
+    from swm.world_model_v2.truncation import aggregate_branch_statuses, honest_note
+    branch_rows, per_branch_modal = [], {}
+    for c in promoted:
+        trt = (model_results[c.model_id].provenance or {}).get("temporal_runtime") or {}
+        n_b = int(trt.get("n_branches") or runs[c.model_id].get("n_full") or 0) or \
+            len(runs[c.model_id].get("branches") or [])
+        n_trunc = int(trt.get("n_branches_truncated") or 0)
+        listed = ((trt.get("truncation") or {}).get("branches") or [])
+        for i in range(n_b):
+            bid = f"{c.model_id}/b{i:03d}"
+            row = {"branch_id": bid, "truncated": False, "truncation": {},
+                   "weight": 1.0 / max(1, n_b) / max(1, len(promoted))}
+            branch_rows.append(row)
+        for j, tb in enumerate(listed[:n_trunc] if listed else
+                               [{"branch_status": "truncated_event_budget"}] * n_trunc):
+            if j < n_b:
+                branch_rows[len(branch_rows) - n_b + j].update(
+                    truncated=True, truncation=dict(tb))
+    trunc_agg = aggregate_branch_statuses(branch_rows)
+    trunc_weight = float(trunc_agg.get("truncated_weight") or 0.0)
+    bounds = {}
+    # §21 bounds from the mixture: completed mass per option scaled by the non-truncated
+    # share; the truncated share swings fully for/against each option (pure arithmetic)
+    if mixture and trunc_weight > 0:
+        comp = 1.0 - trunc_weight
+        bounds = {o: {"lower": round(float(mixture.get(o, 0.0)) * comp, 4),
+                      "upper": round(float(mixture.get(o, 0.0)) * comp + trunc_weight, 4)}
+                  for o in mixture}
+        modal_o = max(mixture, key=mixture.get)
+        answer_settled = all(bounds[modal_o]["lower"] >= bounds[o]["upper"]
+                             for o in mixture if o != modal_o)
+    else:
+        answer_settled = True
+    truncation_report = {
+        **trunc_agg, "bounds_under_truncation": bounds,
+        "answer_settled_under_truncation": answer_settled,
+        "note": honest_note(),
+        "recommendation_rule": "a recommendation is withheld unless the leading action remains "
+                               "best under all admissible truncated-branch completions (§21)"}
+
+    # §17.4 model-family report (one pool serves the whole run)
+    fam_pool = getattr(promoted[0].executable_plan, "_family_pool", None)
+    model_family_report = fam_pool.report() if fam_pool is not None else {
+        "model_family_monoculture": True,
+        "monoculture_note": "no family pool constructed — single injected backend",
+        "families": []}
+
+    # §35.3 hybrid-mechanism report: what executed on the shared world, with unified
+    # calibration statuses; unresolved/suppressed mechanisms named
+    hybrid_mechanisms = {"shared_world_contract": "one typed WorldState, one clock, one event "
+                                                  "queue, StateDelta everywhere",
+                         "per_model": {}, "unresolved_mechanisms": [], "external_adapters": []}
+    for c in promoted:
+        provm = model_results[c.model_id].provenance or {}
+        cr = provm.get("consequence_report") or {}
+        trt = provm.get("temporal_runtime") or {}
+        hybrid_mechanisms["per_model"][c.model_id] = {
+            "mechanisms_invoked": cr.get("mechanisms_invoked"),
+            "mechanism_successes": cr.get("mechanism_successes"),
+            "mechanism_failures": cr.get("mechanism_failures"),
+            "mechanism_unresolved": cr.get("mechanism_unresolved"),
+            "outside_events_entered": cr.get("outside_events_entered"),
+            "outside_entry_downgrades": (cr.get("outside_entry_downgrades") or [])[:6],
+            "operator_delta_census": (provm.get("operator_delta_census") or [])[:12]
+            if isinstance(provm.get("operator_delta_census"), list)
+            else provm.get("operator_delta_census"),
+            "accepted_mechanisms": [
+                {k: m.get(k) for k in ("mech_id", "ontology_type", "operator",
+                                       "calibration_status", "parameter_source")}
+                for m in (getattr(c.executable_plan, "accepted_mechanisms", None) or [])
+                if isinstance(m, dict)][:16],
+        }
+        for sup in (trt.get("mechanism_suppressions") or [])[:4]:
+            hybrid_mechanisms["unresolved_mechanisms"].append(
+                {"model_id": c.model_id, **{k: sup.get(k) for k in
+                                            ("mechanism", "outcome_var", "why")}})
+    try:
+        from swm.world_model_v2.mechanism_spec import known_external_adapters
+        hybrid_mechanisms["external_adapters"] = sorted(known_external_adapters())[:8]
+    except Exception:  # noqa: BLE001 — adapter registry optional
+        pass
+
+    # §35.2 cognition report (stage architecture + per-model actor reports + bounded samples)
+    cognition_report = {
+        "pipeline": "observation→attention→working_memory→memory_retrieval→interpretation→"
+                    "limited_action_search→one_choice→memory_update",
+        "schema": "bounded.cognition.v1",
+        "per_model_actor_policy": {m: (model_results[m].provenance or {}).get(
+            "actor_policy_report") for m in model_dists},
+        "sample_decision_records": [
+            s for m in model_dists
+            for s in ((model_results[m].provenance or {}).get("cognition_records_sample")
+                      or [])][:8],
+        "model_family_monoculture": model_family_report.get("model_family_monoculture", True),
+    }
+
+    if under_subtypes:
+        limitations.append(
+            "UNDER-MODELED: unresolved high-sensitivity boundary components remain outside the "
+            "represented world (see under_modeled_components); the distribution is conditional "
+            "on the represented boundary")
+    if trunc_weight > 0:
+        limitations.append(
+            f"truncated branch weight {round(trunc_weight, 4)} — {honest_note()}")
+
     primary = promoted[0]
     single_equivalent_calls = _single_model_equivalent_calls(ledger)
     ensemble_block = {
@@ -556,19 +767,39 @@ def _assemble_ensemble_result(U, question, ens, runs, model_results, promoted, b
         "human_summary": _human_summary(question, mixture, classification, reversal, voi, promoted),
     }
 
+    # ---------- §8 status ladder (epistemic states, never engineering exceptions):
+    # under_modeled (an unresolved high-sensitivity component) dominates truncated (compute
+    # stopped branches whose mass could change the answer) dominates degradation.
+    if under_subtypes:
+        sim_status = "under_modeled"
+    elif trunc_weight > 0 and not answer_settled:
+        sim_status = "truncated"
+    elif degraded or incomplete or trunc_weight > 0:
+        sim_status = "completed_with_degradation"
+    else:
+        sim_status = "completed"
     res = SimulationResult(
         question=question,
-        simulation_status="completed_with_degradation" if (degraded or incomplete) else "completed",
+        simulation_status=sim_status,
         support_grade=grade,
         raw_distribution=mixture,
         raw_probability=_binary_projection(mixture, promoted[0].executable_plan),
         uncertainty_decomposition=decomposition,
         structural_disagreement={m: d for m, d in model_dists.items()},
-        limitations=limitations[:8],
+        limitations=limitations[:10],
         interpretation_hypotheses=[{"model_id": c.model_id, "thesis": c.causal_thesis}
                                    for c in promoted],
         plan_hash=primary.plan_hash,
         structural_ensemble=ensemble_block,
+        under_modeled_subtypes=under_subtypes,
+        under_modeled_components=under_components[:16],
+        world_boundaries={m: {**b.as_dict(), "answers": b.boundary_answers()}
+                          for m, b in boundaries.items()},
+        outside_world={m: ow.as_dict() for m, ow in outsides.items()},
+        cognition_report=cognition_report,
+        hybrid_mechanisms=hybrid_mechanisms,
+        truncation_report=truncation_report,
+        model_family_report=model_family_report,
         provenance={
             "runtime": U.RUNTIME_VERSION, "structural_mode": "ensemble",
             "ensemble_id": ens.ensemble_id,

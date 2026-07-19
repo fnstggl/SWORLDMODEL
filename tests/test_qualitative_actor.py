@@ -87,7 +87,10 @@ class QLLM:
 
 
 def qruntime(llm, mode="persistent_qualitative_llm_policy", **cfg):
-    defaults = dict(llm=llm, llm_hypotheses=False, n_hypotheses=3)
+    # bounded_cognition=False: this file unit-tests the DECISION seam in isolation; the staged
+    # attention/memory/interpretation/search pipeline has its own contract + integration suites
+    # (tests/test_bounded_cognition_contracts.py, tests/test_core_arch_invariants.py)
+    defaults = dict(llm=llm, llm_hypotheses=False, n_hypotheses=3, bounded_cognition=False)
     defaults.update(cfg)
     return QualitativeActorPolicyRuntime(QualitativeDecisionEngine(QualitativeConfig(**defaults)),
                                          mode=mode)
@@ -432,7 +435,7 @@ def test_selector_assigns_causal_tiers_with_reasons():
 
 def test_hybrid_routes_routine_actors_to_numeric_and_promotes_dynamically():
     llm = QLLM()
-    engine = QualitativeDecisionEngine(QualitativeConfig(llm=llm, llm_hypotheses=False))
+    engine = QualitativeDecisionEngine(QualitativeConfig(llm=llm, llm_hypotheses=False, bounded_cognition=False))
     rt = QualitativeActorPolicyRuntime(engine, mode="hybrid_relevant_actor_policy",
                                        tiers={"alice": {"tier": 1, "reasons": ["authority"]}},
                                        selector=RelevantActorSelector())
@@ -709,7 +712,7 @@ def test_qualitative_operator_in_the_event_loop_aggregates_per_branch():
         return qpayload(chosen="delay", target="") if "privately doubts" in prompt \
             else qpayload(chosen="approve")
     llm = QLLM(decide)
-    engine = QualitativeDecisionEngine(QualitativeConfig(llm=llm, llm_hypotheses=False))
+    engine = QualitativeDecisionEngine(QualitativeConfig(llm=llm, llm_hypotheses=False, bounded_cognition=False))
     rt = QualitativeActorPolicyRuntime(engine, mode="persistent_qualitative_llm_policy")
     op = ProductionActorPolicyOperator(runtime=rt)
     for i in range(3):

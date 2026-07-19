@@ -124,6 +124,42 @@ def overall_support_grade(choices) -> str:
     return TIER_SUPPORT_GRADE[worst]
 
 
+# ------------------------------------------------------------------ §28 production quarantine
+#: The broad-prior TERMINAL rung is quarantined from default World Model V2: a missing causal
+#: model must classify `under_modeled_nonhuman_mechanism`, never silently draw the answer from a
+#: broad prior. Explicit baseline/diagnostic arms set the policy flag (legacy_ablations) or the
+#: offline test marker SWM_ALLOW_GENERIC_PRIOR=1 (tests/conftest — enforcement tests unset it).
+#: A POSTERIOR-parameterized draw remains legal everywhere (§28: a base-rate prior may inform a
+#: parameter posterior / an explicitly modeled residual process — that is not this rung).
+ALLOW_GENERIC_PRIOR_POLICY = False
+
+
+def generic_prior_allowed() -> bool:
+    import os
+    return ALLOW_GENERIC_PRIOR_POLICY or os.environ.get("SWM_ALLOW_GENERIC_PRIOR", "") == "1"
+
+
+def record_prior_suppression(world, *, mechanism: str, var: str, why: str):
+    """Record one suppressed broad-prior resolution on the branch's temporal stats + world
+    omissions — the §28 under_modeled_nonhuman_mechanism trail (aggregated on the result)."""
+    rec = {"mechanism": mechanism, "outcome_var": var, "at_ts": world.clock.now,
+           "why": why[:200],
+           "classification": "under_modeled_nonhuman_mechanism"}
+    try:
+        from swm.world_model_v2.temporal_runtime import get_stats
+        stats = get_stats(world)
+        if not hasattr(stats, "mechanism_suppressions"):
+            stats.mechanism_suppressions = []
+        stats.mechanism_suppressions.append(rec)
+    except Exception:  # noqa: BLE001
+        pass
+    try:
+        world.omissions.append({"kind": "generic_prior_suppressed", **rec})
+    except Exception:  # noqa: BLE001
+        pass
+    return rec
+
+
 # ------------------------------------------------------------------ the generic outcome mechanism (tier 6/7)
 class GenericOutcomeOperator(TransitionOperator):
     """Tier-6/7 fallback: a REAL typed mechanism that resolves the terminal outcome from a BROAD prior when
@@ -177,6 +213,18 @@ class GenericOutcomeOperator(TransitionOperator):
                 p = _draw_posterior_rate(post, rng)
                 p = _apply_lean_shift(p, a["lean"])          # competing structures shift the posterior base
                 rate_src = "posterior"
+            elif not generic_prior_allowed():
+                # §28: no posterior, no validated mechanism — the default runtime does NOT draw
+                # the answer from a broad prior; the readout stays unresolved and the run
+                # classifies under_modeled_nonhuman_mechanism
+                record_prior_suppression(world, mechanism="generic_outcome_prior", var=var,
+                                         why="terminal outcome had no validated mechanism and "
+                                             "no evidence posterior; broad-prior terminal draw "
+                                             "is quarantined from default production")
+                return StateDelta(at=world.clock.now, event_type="resolve_outcome",
+                                  operator=self.name,
+                                  reason_codes=["generic_prior_suppressed_default",
+                                                "under_modeled_nonhuman_mechanism"])
             else:
                 p = _beta_sample(rng, av, bv)                # per-particle base-rate draw (broad prior)
                 rate_src = "prior_beta"
@@ -186,6 +234,14 @@ class GenericOutcomeOperator(TransitionOperator):
             opts = a["options"] if len(a["options"]) == 2 else ["True", "False"]
             val = opts[0] if rng.random() < p else opts[1]
         elif fam == "categorical":
+            if not generic_prior_allowed():
+                record_prior_suppression(world, mechanism="generic_outcome_prior", var=var,
+                                         why="categorical terminal had no validated mechanism; "
+                                             "broad-prior draw quarantined from default")
+                return StateDelta(at=world.clock.now, event_type="resolve_outcome",
+                                  operator=self.name,
+                                  reason_codes=["generic_prior_suppressed_default",
+                                                "under_modeled_nonhuman_mechanism"])
             opts = a["options"] or ["A", "B", "C"]
             weights = [_beta_sample(rng, 1.0, 1.0) for _ in opts]   # broad Dirichlet-ish
             z = sum(weights) or 1.0
@@ -197,6 +253,14 @@ class GenericOutcomeOperator(TransitionOperator):
                     val = o
                     break
         else:                                                # continuous-like: wide Normal on [lo,hi]
+            if not generic_prior_allowed():
+                record_prior_suppression(world, mechanism="generic_outcome_prior", var=var,
+                                         why="continuous terminal had no validated mechanism; "
+                                             "wide-Normal draw quarantined from default")
+                return StateDelta(at=world.clock.now, event_type="resolve_outcome",
+                                  operator=self.name,
+                                  reason_codes=["generic_prior_suppressed_default",
+                                                "under_modeled_nonhuman_mechanism"])
             lo = float(a["lo"]) if a["lo"] is not None else 0.0
             hi = float(a["hi"]) if a["hi"] is not None else 1.0
             mid = (lo + hi) / 2.0

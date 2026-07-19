@@ -256,6 +256,9 @@ def finalize_persistence_run(handle: dict, branches: list, *, intervention="", t
         res.provenance = {**(res.provenance or {}),
                           "actor_decision_distributions": result["actor_decision_distributions"],
                           "actor_policy_mode": result.get("actor_policy_mode", "")}
+    if result.get("cognition_records_sample"):
+        res.provenance = {**(res.provenance or {}),
+                          "cognition_records_sample": result["cognition_records_sample"]}
     _surface_actor_policy_degradation(res, result.get("actor_policy_report", {}))
     _surface_consequence_degradation(res, result.get("consequence_report", {}))
 
