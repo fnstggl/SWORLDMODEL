@@ -57,6 +57,18 @@ NONRESPONSE_STATES = ("unread", "noticed_but_deprioritized", "interpreted_differ
                       "remembered_incorrectly", "considered_but_deferred", "no_response_chosen",
                       "response_blocked_by_outside_circumstances")
 
+#: §32 (PR#115 audit): a message REALIZED for this recipient reaches their cognition as the
+#: full exact text — up to this cap (the realizer's own output cap), never a 220/300-char
+#: slice. Applies to availability items flagged `exact_realized_message` (or arriving on a
+#: 'direct_message' channel) and to the working-memory/interpretation renderings of them.
+EXACT_MESSAGE_CHARS = 2000
+
+
+def _is_exact_message(item: dict) -> bool:
+    """An availability item carrying the exact realized text of a message for this recipient."""
+    return bool((item or {}).get("exact_realized_message")) or \
+        str((item or {}).get("channel", "")).strip().lower() == "direct_message"
+
 
 class CognitionStageFailure(RuntimeError):
     """A cognition stage could not produce a valid output (LLM/parse failure after retries).
@@ -182,6 +194,10 @@ class WorkingMemoryItem:
     refreshed_at: float = 0.0
     source: str = ""
     activation: str = "active"            # active|displaced
+    #: §32 (PR#115): True when this item carries the EXACT realized text of a message composed
+    #: for this recipient — such content is never re-summarized by prompt-side slicing; the
+    #: person reads the actual words (up to EXACT_MESSAGE_CHARS), not a 220-char digest.
+    exact: bool = False
 
     def as_dict(self) -> dict:
         return asdict(self)
@@ -342,7 +358,9 @@ def attention_stage(*, actor_id: str, branch_id: str, at: float, available: list
         items_txt = "\n".join(
             f"- obs_id={o.get('obs_id')} channel={o.get('channel')} source={o.get('source')} "
             f"urgency={o.get('urgency', '?')} relationship={o.get('relationship', '?')} "
-            f"novelty={o.get('novelty', '?')} :: {str(o.get('summary', ''))[:200]}"
+            f"novelty={o.get('novelty', '?')} :: "
+            # §32: an exact realized message is judged on its actual words, not a 200-char cut
+            f"{str(o.get('summary', ''))[:1200 if _is_exact_message(o) else 200]}"
             for o in ambiguous[:16])
         prompt = _ATTENTION_PROMPT.format(
             actor_id=actor_id, focus=str(ctx.get("focus", "unknown"))[:160],
@@ -416,14 +434,20 @@ def working_memory_stage(*, wm: WorkingMemoryState, actor_id: str, branch_id: st
     for n in noticed:
         oid = str(n.get("obs_id"))
         ob = available_by_id.get(oid) or {}
-        content = str(ob.get("summary", ob.get("content", oid)))[:400]
+        # §32: the exact realized text of a message for this recipient enters working memory
+        # whole (up to the realizer's own cap) — only representation=='summary' transit may
+        # summarize, never this stage
+        exact = _is_exact_message(ob)
+        content = str(ob.get("summary", ob.get("content", oid)))[
+            :EXACT_MESSAGE_CHARS if exact else 400]
         existing = next((i for i in wm.items if i.source == oid and i.activation == "active"), None)
         if existing is not None:
             existing.refreshed_at = at
             refreshed.append(existing.item_id)
             continue
         item = WorkingMemoryItem(item_id=f"wmi_{_hash([oid, at])[:10]}", kind="observation",
-                                 content=content, entered_at=at, refreshed_at=at, source=oid)
+                                 content=content, entered_at=at, refreshed_at=at, source=oid,
+                                 exact=exact)
         wm.items.append(item)
         entered.append(item.item_id)
     # displacement: keep at most `cap` active items; stalest (oldest refresh) non-plan items go first
@@ -560,7 +584,10 @@ def interpretation_stage(*, actor_id: str, branch_id: str, at: float, identity: 
         belief_txt += " | NOTE these coexist and conflict: " + \
             "; ".join(str(c["contents"]) for c in contradictions[:2])
     mem_txt = "; ".join(f"[{mid}]" for mid in (retrieved.get("retrieved") or [])[:6]) or "(none)"
-    wm_txt = "\n".join(f"- ({i.kind}) {i.content[:220]}" for i in wm.active()) or "(empty)"
+    # §32: exact realized messages are interpreted from their full text, never a 220-char slice
+    wm_txt = "\n".join(
+        f"- ({i.kind}) {i.content[:EXACT_MESSAGE_CHARS if getattr(i, 'exact', False) else 220]}"
+        for i in wm.active()) or "(empty)"
     prompt = _INTERPRET_PROMPT.format(
         identity=(identity or actor_id)[:500], wm=wm_txt, memories=mem_txt, beliefs=belief_txt,
         relationships=json.dumps(relationships or {}, default=str)[:400],

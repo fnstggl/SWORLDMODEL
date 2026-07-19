@@ -14,7 +14,18 @@ stimulus produces a decision. Per-sample temporal outcomes are first-class and d
 
 History items may carry REAL timestamps ({"text": ..., "ts": ...} or (text, ts)); bare strings
 keep relative order with the spacing recorded as an UNRESOLVED timing assumption — never a
-fabricated 1-day grid presented as real."""
+fabricated 1-day grid presented as real.
+
+STRICT SAMPLE INTEGRITY (§20/§33): a sample whose LLM decision fails after the §19.1 retry
+ladder is recorded TRUNCATED (first-class §20 status, normally `truncated_provider_failure`) —
+never excluded-and-continued with a numeric substitute, never silently resampled. The reported
+distribution counts ONLY completed samples, carries an explicit note, and rides with §21
+truncation bounds (the truncated share can swing any option). The recipient runs through the
+SAME §9-§15 bounded-cognition stages as every other qualitative actor: the stimulus enters as
+the availability set (obs_id 'stimulus', the question's channel, FULL exact text — §32), and
+the decision call sees only the surviving material. Each sample's outcome additionally maps
+onto the distinguishable §33 nonresponse states (bounded_cognition.NONRESPONSE_STATES) where
+applicable, reported as `nonresponse_breakdown`."""
 from __future__ import annotations
 
 import time as _time
@@ -22,8 +33,9 @@ import time as _time
 from swm.world_model_v2.information import InformationItem, InformationLedger
 from swm.world_model_v2.network import RelationGraph
 from swm.world_model_v2.qualitative_actor import (
-    ActionClusterer, ActorPolicyCalibrator, QualitativeActorPolicyRuntime, QualitativeConfig,
-    QualitativeDecisionEngine, aggregate_actor_decisions,
+    ActionClusterer, ActorDecisionUnavailable, ActorPolicyCalibrator,
+    QualitativeActorPolicyRuntime, QualitativeConfig, QualitativeDecisionEngine,
+    aggregate_actor_decisions,
 )
 from swm.world_model_v2.state import Entity, F, SimulationClock, WorldState
 from swm.world_model_v2.temporal_model import (ActorTemporalProfile, ScenarioTemporalModel,
@@ -31,6 +43,60 @@ from swm.world_model_v2.temporal_model import (ActorTemporalProfile, ScenarioTem
 
 #: default observable-response menu: the messaging slice of the shared action ontology
 DEFAULT_RESPONSE_ACTIONS = ("reply_now", "reply_later", "acknowledge", "clarify", "ignore")
+
+#: §20 statuses for a per-sample truncation on this route: everything on the decision path is a
+#: provider/parse/cognition failure except an exhausted actor budget (its own first-class kind)
+_REASON_TO_BRANCH_STATUS = {
+    "actor_llm_budget_exhausted": "truncated_actor_budget",
+    "invocation_safety_budget_reached": "truncated_actor_budget",
+    "llm_budget_exhausted": "truncated_actor_budget",
+}
+
+
+def _truncation_status(reason: str, detail: str = "") -> str:
+    """Map a decision-failure reason onto the first-class §20 branch status for one SAMPLE.
+    Budget exhaustion is `truncated_actor_budget`; every other failure on this route (provider
+    down, unparseable after retries, no backend, cognition stage failure, refused numeric
+    fallback) is `truncated_provider_failure` — the decision could not be produced."""
+    if reason in _REASON_TO_BRANCH_STATUS:
+        return _REASON_TO_BRANCH_STATUS[reason]
+    if "budget" in f"{reason} {detail}".lower():
+        return "truncated_actor_budget"
+    return "truncated_provider_failure"
+
+
+def _nonresponse_state(*, temporal_state: str = "", cognition: dict | None = None,
+                       act_or_wait: str = "", observable_response: str = "",
+                       blocked: bool = False) -> str:
+    """Map one COMPLETED sample's outcome onto the §33 nonresponse vocabulary
+    (bounded_cognition.NONRESPONSE_STATES) where applicable; '' means an actual response
+    happened (not a nonresponse). Precedence mirrors the causal chain: an outside-mechanism
+    block dominates (they tried), then never-reached attention ('unread' — on this route the
+    temporal attention model owns noticing, so `unread_by_horizon` IS attention missing the
+    stimulus; a bundle-level attention miss maps the same way), then working-memory
+    displacement ('noticed_but_deprioritized'), then the decision itself (defer vs explicit
+    no-reply)."""
+    if blocked:
+        return "response_blocked_by_outside_circumstances"
+    if temporal_state == "unread_by_horizon":
+        return "unread"
+    cog = cognition or {}
+    missed = {str((m or {}).get("obs_id", "")) for m in (cog.get("observations_missed") or [])
+              if isinstance(m, dict)}
+    if "stimulus" in missed:
+        return "unread"                       # attention never registered the stimulus
+    noticed = {str(n) for n in (cog.get("observations_noticed") or [])}
+    active_sources = cog.get("working_memory_active_sources")
+    if "stimulus" in noticed and isinstance(active_sources, list) \
+            and "stimulus" not in {str(s) for s in active_sources}:
+        return "noticed_but_deprioritized"    # working memory displaced it before the choice
+    act = str(act_or_wait or "").lower()
+    resp = str(observable_response or "").lower()
+    if resp == "ignore" or act == "do_nothing":
+        return "no_response_chosen"           # an explicit, deliberate no-reply
+    if act in ("wait", "gather_information", "delegate") or resp in ("wait", "reply_later"):
+        return "considered_but_deferred"
+    return ""
 
 
 def _history_entries(context: dict) -> tuple:
@@ -178,9 +244,24 @@ def simulate_individual_reaction(*, person_id: str, stimulus: str, context: dict
         tiers={person_id: {"tier": 1, "reasons": ["reaction_is_the_question"],
                            "selector": "individual-mode"}})
     urgency = max(0.0, min(1.0, float(context.get("urgency", 0.0) or 0.0)))
-    outcomes, samples = [], []
+    outcomes, samples, truncated_samples = [], [], []
+    nonresponse_breakdown: dict = {}
     total = max(1, n_hypotheses) * max(1, samples_per_hypothesis)
     n_unread = 0
+
+    def _record_truncated(i, *, reason, detail, at):
+        """§20/§33: one UNRESOLVED sample, first-class. Recorded exactly once (never resampled),
+        never replaced by numeric anything, excluded from the distribution WITH its mass
+        accounted in the truncation block."""
+        status = _truncation_status(reason, detail)
+        row = {"sample_index": i, "status": status, "reason": str(reason)[:80],
+               "detail": str(detail)[:240], "at_ts": at,
+               "hypothesis_id": "", "decision_source": "none_truncated",
+               "temporal_state": "unresolved_truncated", "observable_response": "",
+               "nonresponse_state": "", "trace_id": f"truncated_{i}"}
+        truncated_samples.append(row)
+        samples.append(dict(row))
+
     for i in range(total):
         world = _mini_world(person_id, counterpart_id, context, now,
                             branch_id=f"b{i:03d}", history=history, n_real_ts=n_real_ts)
@@ -205,10 +286,14 @@ def simulate_individual_reaction(*, person_id: str, stimulus: str, context: dict
                                               stats=stats)
         if notice_ts > horizon_ts:
             # UNREAD within the window — a real, distinguishable outcome; no LLM is asked to
-            # role-play a person who never saw the message (invariant 17; §25)
+            # role-play a person who never saw the message (invariant 17; §25). §33: on this
+            # route the temporal attention model owns noticing, so this IS "attention missed
+            # the stimulus" → nonresponse state `unread`.
             n_unread += 1
             samples.append({"hypothesis_id": "", "decision_source": "not_invoked_unread",
+                            "status": "completed",
                             "temporal_state": "unread_by_horizon",
+                            "nonresponse_state": "unread",
                             "available_ts": avail_ts, "noticed_ts": None,
                             "delivery_provenance": d_prov, "notice_provenance": n_prov,
                             "observable_response": "", "trace_id": f"unread_{i}"})
@@ -225,22 +310,60 @@ def simulate_individual_reaction(*, person_id: str, stimulus: str, context: dict
         decision = {"situation": situation,
                     "candidate_actions": [{"name": a, "target": counterpart_id}
                                           for a in response_actions],
+                    # §9-§15/§32/§33: the stimulus IS the availability set for the recipient's
+                    # bounded-cognition stages — full exact text (never a summary slice), the
+                    # question's channel, marked already-noticed because THIS route's temporal
+                    # model (delivery→attention, §25) resolved noticing at notice_ts. The
+                    # decision call then sees only the surviving cognition material.
+                    "observation_bundle": [{
+                        "iid": "stimulus", "channel": channel or "message",
+                        "source": counterpart_id,
+                        "content": str(stimulus)[:2000],
+                        "urgency": urgency, "sent_ts": now,
+                        "interrupting": True,
+                        "exact_realized_message": True}],
                     "trigger": {"trigger_type": "newly_noticed_information",
                                 "actor_id": person_id,
                                 "why_now": n_prov, "provenance": "individual_reaction_route"}}
-        selected, posterior, trace = runtime.decide(
-            None, [world], person_id, decision=decision, seed=seed * 7919 + i)
-        runtime.execute(world, selected, posterior, trace, seed=seed * 7919 + i)
-        outcomes.append((posterior, trace))
+        try:
+            selected, posterior, trace = runtime.decide(
+                None, [world], person_id, decision=decision, seed=seed * 7919 + i)
+        except ActorDecisionUnavailable as e:
+            # §20/§33 strict integrity: the sample is TRUNCATED, first-class — never excluded-
+            # and-continued with numeric anything, never silently resampled
+            _record_truncated(i, reason=e.reason, detail=str(e), at=notice_ts)
+            continue
         q = (posterior.provenance or {}).get("qualitative") or {}
+        if q.get("decision_source") not in ("persistent_qualitative_llm", "stateless_llm"):
+            # §33: on the personal-reaction route the numeric baseline arm is NEVER an
+            # admissible substitute for the person's decision — even where the offline test
+            # allowance (§19) lets other routes run it. The sample truncates instead.
+            _record_truncated(
+                i, reason=str(q.get("reason", "llm_failed_or_unparseable")),
+                detail="numeric fallback refused on the personal-reaction route "
+                       "(§33 strict sample integrity); sample recorded truncated",
+                at=notice_ts)
+            continue
+        delta, _val = runtime.execute(world, selected, posterior, trace,
+                                      seed=seed * 7919 + i)
+        outcomes.append((posterior, trace))
         chosen = next((a for a in trace.candidate_actions
                        if a.get("action_id") == trace.sampled_action_id), {})
         deferred = q.get("act_or_wait") == "wait" or \
             str(chosen.get("action_name", "")) in ("wait", "reply_later", "ignore")
+        blocked = any("blocked" in str(rc).lower()
+                      for rc in (getattr(delta, "reason_codes", None) or []))
+        nr = _nonresponse_state(
+            temporal_state=("read_but_deferred" if deferred else "responded"),
+            cognition=(posterior.provenance or {}).get("cognition") or {},
+            act_or_wait=str(q.get("act_or_wait", "")),
+            observable_response=str(chosen.get("action_name", "")), blocked=blocked)
         samples.append({
             "hypothesis_id": q.get("hypothesis_id", ""),
-            "decision_source": q.get("decision_source", "numeric_fallback"),
+            "decision_source": q.get("decision_source", ""),
+            "status": "completed",
             "temporal_state": ("read_but_deferred" if deferred else "responded"),
+            "nonresponse_state": nr,
             "available_ts": avail_ts, "noticed_ts": notice_ts,
             "delivery_provenance": d_prov, "notice_provenance": n_prov,
             "availability_latent": str(getattr(world.quantities.get(
@@ -254,6 +377,10 @@ def simulate_individual_reaction(*, person_id: str, stimulus: str, context: dict
             "novel_action_unmodeled": bool(q.get("novel_action_unmodeled")),
             "trace_id": trace.trace_id,
         })
+    for s in samples:
+        if s.get("nonresponse_state"):
+            nonresponse_breakdown[s["nonresponse_state"]] = \
+                nonresponse_breakdown.get(s["nonresponse_state"], 0) + 1
     agg = aggregate_actor_decisions(outcomes, clusterer=ActionClusterer(),
                                     calibrator=calibrator or
                                     ActorPolicyCalibrator.from_file())
@@ -261,13 +388,38 @@ def simulate_individual_reaction(*, person_id: str, stimulus: str, context: dict
                                  "calibrated_distribution": {},
                                  "calibration_status": "unvalidated", "rows": []})
     raw = dict(result["raw_qualitative_simulation_distribution"])
-    if n_unread:
+    # ---- §20/§21 honest aggregation: the distribution covers ONLY completed samples --------
+    n_truncated = len(truncated_samples)
+    n_completed = total - n_truncated
+    trunc_share = round(n_truncated / total, 6) if total else 0.0
+    if n_unread and n_completed:
         # unread mass enters the distribution explicitly — "no response yet" is NOT "ignored"
-        scale = (total - n_unread) / total if total else 0.0
+        scale = (n_completed - n_unread) / n_completed
         raw = {k: round(v * scale, 4) for k, v in raw.items()}
-        raw["unread_no_response_yet"] = round(n_unread / total, 4)
+        raw["unread_no_response_yet"] = round(n_unread / n_completed, 4)
+    from swm.world_model_v2.truncation import honest_note, truncation_bounds
+    dist_by_branch = {str(row.get("branch_id") or row.get("trace_id") or f"s{j}"):
+                      row["cluster"] for j, row in enumerate(result.get("rows") or [])}
+    for s in samples:
+        if s.get("temporal_state") == "unread_by_horizon":
+            dist_by_branch[str(s.get("trace_id"))] = "unread_no_response_yet"
+    truncation_block = {
+        "n_samples_truncated": n_truncated,
+        "truncated_share": trunc_share,
+        "statuses": {st: sum(1 for t in truncated_samples if t["status"] == st)
+                     for st in sorted({t["status"] for t in truncated_samples})},
+        "bounds_under_truncation": truncation_bounds(dist_by_branch, trunc_share,
+                                                     sorted(raw) or
+                                                     sorted(set(dist_by_branch.values()))),
+        "distribution_note": (
+            f"the distribution counts ONLY the {n_completed} completed samples; the truncated "
+            f"share ({trunc_share}) is unresolved and could swing ANY option — see "
+            "bounds_under_truncation" if n_truncated else
+            "no samples were truncated; bounds collapse to the point distribution"),
+        "honest_note": honest_note(),
+    }
     return {
-        "schema_version": "individual.reaction.v2_temporal",
+        "schema_version": "individual.reaction.v3_truncation_honest",
         "person_id": person_id, "stimulus": str(stimulus)[:800], "channel": channel,
         "n_hypotheses": n_hypotheses, "samples_per_hypothesis": samples_per_hypothesis,
         "samples": samples,
@@ -276,6 +428,14 @@ def simulate_individual_reaction(*, person_id: str, stimulus: str, context: dict
         "calibration_status": result["calibration_status"],
         "n_excluded_numeric_fallbacks": result.get("n_excluded_numeric_fallbacks", 0),
         "n_unread_by_horizon": n_unread,
+        # §20/§33 first-class sample truncation accounting
+        "n_samples_total": total,
+        "n_samples_completed": n_completed,
+        "n_samples_truncated": n_truncated,
+        "truncated_samples": truncated_samples,
+        "truncation": truncation_block,
+        # §33 distinguishable nonresponse states over completed samples
+        "nonresponse_breakdown": nonresponse_breakdown,
         "consequence_report": runtime.consequence_report,
         "llm_calls": engine.calls_used(),
         "temporal": {
@@ -290,6 +450,12 @@ def simulate_individual_reaction(*, person_id: str, stimulus: str, context: dict
         "provenance": {"as_of": now, "tier_rule": "reaction_is_the_question → Tier 1",
                        "runtime": "QualitativeActorPolicyRuntime",
                        "temporal_route": "delivery→attention→decision (§25)",
+                       "cognition_route": "stimulus availability set → bounded cognition "
+                                          "(§9-§15; full exact stimulus text, §32) → decision "
+                                          "sees only surviving material",
+                       "sample_integrity": "failed decision ⇒ first-class truncated sample "
+                                           "(§20/§33); numeric substitution and silent "
+                                           "resampling are prohibited on this route",
                        "aggregation": "branch-selection counting (cluster-1.0)",
                        "structural_frame": getattr(cfg, "structural_frame", "") or ""},
     }

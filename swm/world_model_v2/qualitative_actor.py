@@ -923,7 +923,11 @@ class QualitativeDecisionEngine:
             # actor's finite working memory, retrieved memories and interpretation — never the
             # global event ledger or unnoticed observations.
             ctx = cognition.decision_context()
-            wm_lines = [f"- ({i.get('kind', 'item')}) {str(i.get('content', ''))[:220]}"
+            # §32: an exact realized message in working memory is shown to the actor whole
+            # (up to the realizer's cap) — the decision reads the actual words
+            from swm.world_model_v2.bounded_cognition import EXACT_MESSAGE_CHARS as _EXACT_CH
+            wm_lines = [f"- ({i.get('kind', 'item')}) "
+                        f"{str(i.get('content', ''))[:_EXACT_CH if i.get('exact') else 220]}"
                         for i in (ctx.get("working_memory") or [])] or \
                 ["- (nothing currently active in mind)"]
             contra = ctx.get("active_contradictions") or []
@@ -1084,13 +1088,24 @@ class QualitativeActorPolicyRuntime(ActorPolicyRuntime):
         at = float(getattr(getattr(world, "clock", None), "now", 0.0) or 0.0)
         bundle = decision.get("observation_bundle") or []
         if bundle:
-            available = [{"obs_id": str(it.get("iid") or f"ob{i}"),
-                          "channel": str(it.get("channel", ""))[:40],
-                          "source": str(it.get("source", ""))[:60],
-                          "summary": str(it.get("content", ""))[:300],
-                          "urgency": str(it.get("urgency", ""))[:20],
-                          "interrupting": bool(it.get("interrupting"))}
-                         for i, it in enumerate(bundle[:16])]
+            # §32 (PR#115): an item carrying the EXACT realized text of a message for this
+            # recipient keeps its full content (up to the realizer's 2000-char cap) — the
+            # recipient reads the actual words, never a 300-char digest. Everything else keeps
+            # the ordinary summary width. Only representation=='summary' transit (upstream
+            # delivery) may summarize.
+            from swm.world_model_v2.bounded_cognition import EXACT_MESSAGE_CHARS, _is_exact_message
+            available = []
+            for i, it in enumerate(bundle[:16]):
+                exact = _is_exact_message(it)
+                available.append({
+                    "obs_id": str(it.get("iid") or f"ob{i}"),
+                    "channel": str(it.get("channel", ""))[:40],
+                    "source": str(it.get("source", ""))[:60],
+                    "summary": str(it.get("content", ""))[
+                        :EXACT_MESSAGE_CHARS if exact else 300],
+                    "urgency": str(it.get("urgency", ""))[:20],
+                    "interrupting": bool(it.get("interrupting")),
+                    "exact_realized_message": exact})
             availability_rule = "delivered_observation_bundle"
         else:
             recent = list(reversed(view.observed_events))[: self.engine.config.prompt_events]
@@ -1312,6 +1327,13 @@ class QualitativeActorPolicyRuntime(ActorPolicyRuntime):
                 "working_memory_basis": cog.working_memory.get("capacity_basis", ""),
                 "working_memory_items": [str(i.get("content", ""))[:120] for i in
                                          cog.working_memory.get("active_items", [])][:12],
+                # §33 nonresponse accounting: which availability items are STILL active in
+                # working memory vs displaced — lets routes distinguish
+                # noticed_but_deprioritized from a considered decision
+                "working_memory_active_sources": [str(i.get("source", "")) for i in
+                                                  cog.working_memory.get("active_items",
+                                                                         [])][:16],
+                "working_memory_displaced": list(cog.working_memory.get("displaced", []))[:12],
                 "memories_retrieved": cog.retrieval.get("retrieved", [])[:8],
                 "retrieval_failures": cog.retrieval.get("retrieval_failures", [])[:6],
                 "active_contradictions": cog.retrieval.get("active_contradictions", [])[:4],

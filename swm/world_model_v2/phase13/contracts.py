@@ -221,6 +221,13 @@ class DecisionResult:
     causal_claim: str = "simulated_mechanism_counterfactual"
     empirical_validation: str = "not_validated_on_this_decision"
     support_grade: str = "exploratory"
+    # §31 recommendation axis (same vocabulary as result.RECOMMENDATION_STATUSES): "withheld"
+    # when an under-modeled subtype is present on the ensemble result, when the winner does not
+    # survive every admissible completion of truncated branch mass (§21), or when >1 model
+    # family was configured but the recommendation was exercised under only one. Existing gates
+    # (abstention / pareto / gather_information) keep deciding `recommendation_kind`; this axis
+    # rides alongside them and never silently relaxes them.
+    recommendation_status: str = "not_requested"
     abstention: dict = None
     active_phases: dict = field(default_factory=dict)
     provenance: dict = field(default_factory=dict)    # crn manifest, plan hashes, delta counts, seeds
@@ -233,8 +240,8 @@ class DecisionResult:
             "decision_id", "contract_hash", "runtime_fingerprint", "reference_action", "evaluated",
             "policies", "recommended", "recommendation_kind", "pareto_frontier", "feasibility",
             "counterfactual", "value_of_information", "search", "causal_claim",
-            "empirical_validation", "support_grade", "abstention", "active_phases", "provenance",
-            "cost", "latency_s", "seed")}
+            "empirical_validation", "support_grade", "recommendation_status", "abstention",
+            "active_phases", "provenance", "cost", "latency_s", "seed")}
         return d
 
     def to_json(self) -> str:

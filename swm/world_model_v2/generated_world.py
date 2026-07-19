@@ -122,6 +122,10 @@ class SemanticWorldEvent:
     parent_event_ids: list = field(default_factory=list)
     branch_id: str = ""
     cascade_depth: int = 0
+    #: §32 (PR#115): True when exact_content is the REALIZED message text composed for the
+    #: intended recipient(s) — delivery and the recipient's cognition must carry it verbatim
+    #: (full text; only representation=='summary' transit may summarize).
+    exact_realized_message: bool = False
     provenance: dict = field(default_factory=dict)
 
     def as_dict(self) -> dict:
@@ -356,7 +360,10 @@ def k_emit_semantic_event(world, op, ctx, delta):
         schema_id=schema.schema_id, schema_version=schema.version,
         source_actor_id=ctx["actor_id"],
         direct_targets=targets,
-        exact_content=str(op.get("exact_content", op.get("content", "")))[:1200],
+        # §32: 2000 matches the message realizer's own output cap — a realized message is
+        # never silently clipped between composition and the recipient's eyes
+        exact_content=str(op.get("exact_content", op.get("content", "")))[:2000],
+        exact_realized_message=bool(op.get("exact_realized_message")),
         structured_fields=fields, occurred_at=ctx["now"],
         intended_visibility=str(op.get("intended_visibility",
                                        tdef.get("typical_visibility", "participants")))[:20],
@@ -1109,6 +1116,10 @@ class GeneratedObservationDeliveryOperator:
             item={"iid": iid, "semantic_event": sev, "content": content,
                   "source": str(sev.get("source_actor_id", "")),
                   "urgency": float(p.get("urgency", 0.0) or 0.0),
+                  # §32: the flag rides with the item so the recipient's bounded-cognition
+                  # availability set keeps the FULL exact text (unless summarized in transit)
+                  "exact_realized_message": bool(sev.get("exact_realized_message"))
+                  and str(p.get("representation")) != "summary",
                   "sent_ts": p.get("sent_ts")},
             available_ts=world.clock.now, channel=str(p.get("channel", ""))[:40], stats=stats)
         delta.change(f"information_available[{recipient}]", None, iid)
@@ -1188,7 +1199,8 @@ class GeneratedAttentionOperator:
                                     at_ts=world.clock.now, trigger=trigger,
                                     bundle=[{k: it.get(k) for k in
                                              ("iid", "content", "source", "channel",
-                                              "available_ts", "urgency")}
+                                              "available_ts", "urgency",
+                                              "exact_realized_message")}
                                             for it in bundle], report=self.report)
             if inv is not None:
                 delta.follow_up_events = [{"etype": inv.etype, "ts": inv.ts,
