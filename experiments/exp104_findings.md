@@ -59,3 +59,27 @@ p = CDF-at-horizon = 0.493 (a coin), not P(announced | WWDC happens ≈ 1).
 
 Structure running was necessary but not sufficient. The lever is now clearly EVIDENCE + PRIORS feeding the
 structure, exactly the direction the whole project's backtests keep pointing at.
+
+## EXP-105/106 addendum — paired re-run after the first fix wave (evidence gate, recurrence calendar,
+## grounded prior, rollout retry)
+
+| q | EXP-104 | EXP-106 diag | EXP-105 paired | actual | SOTA |
+|---|---|---|---|---|---|
+| visionOS 27 @ WWDC | 0.493 | — | **0.563** (brier 0.191 < 0.257) | YES | 0.91 |
+| BoJ June hike | 0.057 | **0.727** | **0.085** (brier 0.838) | YES | 0.74 |
+
+Two honest findings:
+1. **visionOS crossed to the correct side** (0.56, was 0.49) — the recurrence-aware calendar + grounded
+   prior moved it the right way, but far less than the component-level signals implied (prior ~0.9,
+   fact_entailment 0.98). The first-passage machinery + structural hypotheses still dilute the calendar.
+2. **Run-to-run variance is now the dominant error mode.** BoJ, same code, same seed, two runs: 0.727
+   (correct) vs 0.085 (badly wrong). The temp-0.2 compile draws different worlds per run and the forecast
+   swings by ±0.6. This is the BTF-1 finding (single forecasts unreliable; mean-of-5 cuts SD ~2/3) and
+   FutureSearch's #1 disclosed lever (mean of multiple runs) reproduced in our own stack. A single-run
+   number from this pipeline is noise-dominated and must not be interpreted alone.
+
+Implications, in order: (a) mean-of-K (K≥3) aggregation belongs in the measurement harness NOW and in the
+production path as an option; (b) BoJ's persistent low side is the evidence-targeting gap (the hawkish
+May-2026 signals are never retrieved — queries target actors, not the decisive fact), the sanctioned next
+fix; (c) component-level wins do not compose linearly through the funnel — every future fix gets measured
+end-to-end, mean-of-K, before any claim.
