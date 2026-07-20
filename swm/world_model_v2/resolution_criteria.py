@@ -9,27 +9,27 @@ the question into a precise machine-readable criterion (subject, predicate, targ
 disambiguations of near-miss states), which then anchors (a) the outcome contract's resolution rule,
 (b) the scheduled-facts extractor's entailment judgments, (c) the fidelity critic.
 
-ACTOR INTENTIONS — a strategic actor's PUBLIC STATED intention (with quote + date) is world state, not a
-Tier-7 mixture's guess. The LLM only ever CLASSIFIES (commitment level, pathway, target mode, graded
-control, capability, reliability) — it never mints effect sizes. Stances are MODE-SCOPED when the
-canonical mode set exists (`target_mode`): Russia can pursue ITS victory while committed to preventing
-Ukraine's while conditionally open to a ceasefire. Grounded stances are written THREE places:
-  1. plan._intention_stances — consumed by event_time/mode_graph to build per-mode hazard-ratio
-     DISTRIBUTIONS under each mode's decision structure;
-  2. the entity's `stances` field (registered extension) — projected into the Phase-4 ActorView so the
-     actor's ACTION POLICY is conditioned on their own stated commitments (the behavior channel);
-  3. the entity's `commitments` field as TYPED commitment dicts — a high-reliability categorical
-     stance becomes a BINDING commitment that prohibits the actions most contrary to it (the
-     feasibility channel), until evidence revises it.
-Plus the `actor_intentions` aggregate quantity (confidence-weighted yes-share) for the bounded state
-channel — evidence-grounded, provenance-labeled, never a probability override.
+ACTOR INTENTIONS — a strategic actor's PUBLIC STATED intention (with quote + date) is world state. The
+LLM only ever CLASSIFIES (commitment level, pathway, target mode, graded control, capability,
+reliability, basis kind) — it never mints effect sizes, and NOTHING here converts the classification
+into a number (§NAP: the old _STANCE_WEIGHT 0.95/0.75/0.4/… aggregation and the `actor_intentions`
+share quantity are gone). Grounded stances are written TWO places:
+  1. plan._intention_stances — the auditable qualitative record (reports, conversion provenance);
+  2. the entity's `stances` field (registered extension) — projected into the actor's own view so the
+     actor's OWN situated cognition is conditioned on its stated commitments (the behavior channel).
+Plus TYPED commitments on the entity's `commitments` field. A commitment is BINDING only when its
+basis is itself a binding instrument (law / treaty / contract / formal institutional rule) — a public
+statement, however firm, conditions the actor's reasoning but never hard-blocks feasibility. The
+`prohibits` list of a binding commitment is the LITERAL content of the instrument (what its text
+actually forbids, quoted) — never a table of hand-authored action magnitudes over a 0.5 threshold
+(§NAP: actions_advancing_pathway is quarantined). Ambiguous contradiction stays an actor choice.
 """
 from __future__ import annotations
 
 from swm.world_model_v2.state import register_entity_extension
 
 # the grounded stance record is a TYPED extension field so materialization keeps it addressable and
-# the Phase-4 ActorViewBuilder can project it into the actor's own view (never simulator-only state)
+# the ActorViewBuilder can project it into the actor's own view (never simulator-only state)
 register_entity_extension("grounded_stances", fields={
     "stances": "evidence-grounded stance records (mode-scoped, graded control, classification only)",
 }, entity_types=("person", "institution"))
@@ -51,7 +51,8 @@ when YES means the current state PERSISTS to the deadline and the event breaking
 
 _INTENTIONS_PROMPT = """For each STRATEGIC ACTOR below, state their PUBLICLY STATED or strongly evidenced
 intentions relevant to this question, using the evidence and your knowledge of the real people/institutions.
-Only include intentions you can ground. CLASSIFY qualitatively — do NOT invent numeric strengths.
+Only include intentions you can ground. CLASSIFY qualitatively — do NOT invent numeric strengths,
+weights, or probabilities anywhere.
 An actor may hold SEVERAL stances at once toward different end-states (pursuing their own preferred
 outcome while committed to preventing a rival's) — list each separately with its target_mode.
 
@@ -64,28 +65,29 @@ EVIDENCE: {ev}
 Return ONLY JSON:
 {{"intentions": [{{"actor": "<entity id>", "stated_intention": "<one sentence>",
   "basis_quote": "<short quote or knowledge basis>", "source": "evidence|model_knowledge",
+  "basis_kind": "law|treaty|contract|formal_institutional_rule|public_statement|reported_leaning|inference — what KIND of thing the basis is; only a literally binding instrument (law/treaty/contract/formal rule) is 'binding'",
   "commitment_level": "committed_to_prevent|conditionally_opposed|weakly_opposed|neutral|inclined_toward|actively_pursuing|formally_committed — the actor's stance toward the target end-state (universal: works for a deal, a resignation, a rate cut, a bill, a launch)",
   "target_mode": "<the specific end-state id from the CANDIDATE END-STATES this stance concerns, or null when it concerns the resolution as a whole>",
   "pathway": "cooperative_agreement|unilateral_action|institutional_procedure|operational_execution|competitive_interaction|any — which causal pathway this stance concerns (a refusal to negotiate concerns the cooperative path; a vow to fight on concerns the unilateral path; a whip count concerns the institutional path)",
   "control": "sole_authority|veto|agenda_setting|partial_implementation|coalition_member|operational_capability|informal_influence|none — the actor's REAL degree of control over that pathway (a president may want a bill but lack the votes; a legislature may pass one but lack implementation capacity)",
   "capability": "high|medium|low — can the actor practically act on this stance (means, position, resources)?",
-  "reliability": "high|medium|low — how reliable/binding the basis is (law/treaty=high, direct public statement=high, reported leaning=medium, inference=low)",
+  "reliability": "high|medium|low — how reliable the basis is (law/treaty=high, direct public statement=high, reported leaning=medium, inference=low)",
+  "explicit_prohibitions": ["<ONLY for a binding basis_kind: the concrete acts the instrument's LITERAL text forbids, each a short verb phrase quoted or closely paraphrased from the instrument; [] otherwise>"],
   "entails_direction": "yes|no|neutral — under the resolution criterion",
   "date": "<YYYY-MM-DD or null>"}}]}}"""
 
-# Stance-weight map used ONLY to aggregate the direction-share quantity (`actor_intentions`, consumed
-# through the bounded state channel). These are documented aggregation weights, not effect sizes —
-# the EFFECT of stances on timing hazards lives in event_time.INTENTION_HR_PRIORS (distributions,
-# sampled per particle, replaceable by a fitted pack).
-_STANCE_WEIGHT = {"committed_to_prevent": 0.95, "conditionally_opposed": 0.75, "weakly_opposed": 0.4,
-                  "neutral": 0.0, "inclined_toward": 0.6, "actively_pursuing": 0.85,
-                  "formally_committed": 0.95,
-                  # legacy agreement-specific labels (older packs/transcripts) map onto the universal set
-                  "categorical_refusal": 0.95, "conditional_refusal": 0.75, "weak_opposition": 0.4,
-                  "openness_to_agreement": 0.6, "formal_commitment_toward_agreement": 0.95}
+#: qualitative vocabularies — classification targets only; no entry maps to any number (§NAP)
 _CONTROLS = ("sole_authority", "veto", "agenda_setting", "partial_implementation", "coalition_member",
              "operational_capability", "informal_influence", "none")
 _LEVELS3 = ("high", "medium", "low")
+_BINDING_BASIS_KINDS = ("law", "treaty", "contract", "formal_institutional_rule")
+_BASIS_KINDS = _BINDING_BASIS_KINDS + ("public_statement", "reported_leaning", "inference")
+_STANCE_LEVELS_ALL = (
+    "committed_to_prevent", "conditionally_opposed", "weakly_opposed", "neutral",
+    "inclined_toward", "actively_pursuing", "formally_committed",
+    # legacy agreement-specific labels (older packs/transcripts) map onto the universal set
+    "categorical_refusal", "conditional_refusal", "weak_opposition",
+    "openness_to_agreement", "formal_commitment_toward_agreement")
 
 
 def parse_resolution_criterion(question, *, horizon, llm=None) -> dict:
@@ -107,26 +109,23 @@ def parse_resolution_criterion(question, *, horizon, llm=None) -> dict:
 
 
 def _binding_prohibitions(stance: dict) -> list:
-    """A HIGH-reliability categorical stance is a public commitment device: the actions most contrary
-    to it become infeasible-until-revised (the FeasibilityEngine's binding-commitment contract).
-    Only prevent-side stances prohibit — an actor formally committed TOWARD an outcome is pushed by
-    the utility channel, not hard-blocked from hesitating. Universal: prohibitions are derived from
-    the phase4 action ontology's pathway effects, never from scenario keywords."""
-    if str(stance.get("reliability")) != "high" or \
-            str(stance.get("commitment_level")) not in ("committed_to_prevent", "categorical_refusal"):
+    """§NAP: a commitment is binding ONLY when its basis is itself a literally binding instrument
+    (law/treaty/contract/formal institutional rule), and its prohibition set is the instrument's
+    OWN literal content (`explicit_prohibitions`, quoted from the basis) — never a hand-authored
+    action-magnitude table over an arbitrary threshold. A firm public statement conditions the
+    actor's own reasoning (the stance rides in its view) but never hard-blocks feasibility.
+    Ambiguity → no prohibition: an ambiguous contradiction remains the actor's choice."""
+    if str(stance.get("basis_kind", "")) not in _BINDING_BASIS_KINDS:
         return []
-    try:
-        from swm.world_model_v2.phase4_policy import actions_advancing_pathway
-        return actions_advancing_pathway(str(stance.get("pathway", "any")), min_effect=0.5)
-    except Exception:  # noqa: BLE001 — grounding must never block on the policy layer
-        return []
+    return [str(p)[:60] for p in (stance.get("explicit_prohibitions") or [])
+            if isinstance(p, str) and p.strip()][:12]
 
 
 def ground_actor_intentions(plan, question, *, criterion=None, evidence_text="", llm=None,
                             modes: list = None) -> dict:
-    """Extract grounded stances for declared strategic actors; write them onto entity fields (stances +
-    typed commitments) so the Phase-4 policy consumes them; aggregate an `actor_intentions` quantity
-    into the plan for mechanism consumption. Mode-scoped when a canonical mode set exists. Universal —
+    """Extract grounded stances for declared strategic actors; write them onto entity fields
+    (stances + typed commitments) so the actor's own cognition consumes them. QUALITATIVE ONLY
+    (§NAP): no share quantity, no consumed-state weight, no numeric strength anywhere. Universal —
     uses only the plan's own entities and modes."""
     if llm is None:
         return {"skipped": "no llm"}
@@ -141,7 +140,7 @@ def ground_actor_intentions(plan, question, *, criterion=None, evidence_text="",
         modes=(mode_ids or "(none elicited — use null target_mode)"),
         actors=actors, ev=evidence_text[:1600] or "(none)"))) or {}
     ents = {str(e.get("id")): e for e in plan.entities if isinstance(e, dict)}
-    n_grounded, num, den = 0, 0.0, 0.0
+    n_grounded = 0
     kept, stances = [], []
     per_actor_records = {}
     from swm.world_model_v2.mode_graph import PATHWAYS
@@ -151,7 +150,7 @@ def ground_actor_intentions(plan, question, *, criterion=None, evidence_text="",
         actor_id = str(it["actor"])
         e = ents[actor_id]
         level = str(it.get("commitment_level", "neutral")).strip().lower()
-        if level not in _STANCE_WEIGHT:
+        if level not in _STANCE_LEVELS_ALL:
             level = "neutral"
         reliability = str(it.get("reliability", "medium")).strip().lower()
         if reliability not in _LEVELS3:
@@ -159,6 +158,9 @@ def ground_actor_intentions(plan, question, *, criterion=None, evidence_text="",
         capability = str(it.get("capability", "high")).strip().lower()
         if capability not in _LEVELS3:
             capability = "high"
+        basis_kind = str(it.get("basis_kind", "")).strip().lower()
+        if basis_kind not in _BASIS_KINDS:
+            basis_kind = "inference"
         pathway = str(it.get("pathway", "any")).strip().lower()
         if pathway not in PATHWAYS and pathway != "any":
             pathway = "any"
@@ -168,13 +170,16 @@ def ground_actor_intentions(plan, question, *, criterion=None, evidence_text="",
         target_mode = str(it.get("target_mode") or "").strip() or None
         if target_mode and mode_ids and target_mode not in mode_ids:
             target_mode = None                               # unknown mode id → resolution as a whole
-        strength = _STANCE_WEIGHT[level]
         stance = {"actor": actor_id, "commitment_level": level,
                   "reliability": reliability, "capability": capability,
+                  "basis_kind": basis_kind,
                   "pathway": pathway, "target_mode": target_mode,
                   "quote": str(it.get("basis_quote", ""))[:160],
                   "statement": str(it.get("stated_intention", ""))[:160],
                   "source": str(it.get("source", "model_knowledge")),
+                  "explicit_prohibitions": [str(p)[:60] for p in
+                                            (it.get("explicit_prohibitions") or [])
+                                            if isinstance(p, str)][:12],
                   "entails": str(it.get("entails_direction", "neutral")).lower()}
         if control:
             stance["control"] = control
@@ -188,15 +193,12 @@ def ground_actor_intentions(plan, question, *, criterion=None, evidence_text="",
                            "pathway": pathway, "controls_pathway": bool(it.get("controls_pathway")),
                            "entails": stance["entails"]}
         n_grounded += 1
-        d = stance["entails"]
-        if d in ("yes", "no"):
-            num += strength * (1.0 if d == "yes" else 0.0)
-            den += strength
         kept.append({k: it.get(k) for k in ("actor", "stated_intention", "basis_quote", "source",
-                                            "commitment_level", "target_mode", "pathway", "control",
-                                            "capability", "reliability", "entails_direction")})
+                                            "basis_kind", "commitment_level", "target_mode",
+                                            "pathway", "control", "capability", "reliability",
+                                            "entails_direction")})
     # write per-actor structured stances + typed commitments onto the entity so materialization
-    # carries them into the world and the ActorView projects them into the POLICY (behavior channel)
+    # carries them into the world and the ActorView projects them into the actor's OWN cognition
     for actor_id, recs in per_actor_records.items():
         e = ents[actor_id]
         fields = e.setdefault("fields", {})
@@ -208,21 +210,16 @@ def ground_actor_intentions(plan, question, *, criterion=None, evidence_text="",
                                       + (f":{st['target_mode']}" if st.get("target_mode") else ""),
                                 "kind": "stated_intention", "statement": st["statement"],
                                 "quote": st["quote"], "source": st["source"],
+                                "basis_kind": st["basis_kind"],
                                 "binding": bool(prohibits), "prohibits": prohibits,
                                 "commitment_level": st["commitment_level"],
                                 "pathway": st["pathway"], "target_mode": st.get("target_mode")})
         fields["commitments"] = commitments
-    # the full qualitative record — consumed by event_time/mode_graph to build per-mode hazard-ratio
-    # DISTRIBUTIONS under each mode's decision structure (never a point coefficient invented here)
+    # the full qualitative record — auditable provenance for reports and conversion (§NAP: no
+    # aggregate share quantity and no consumed-state weight are derived from these)
     plan._intention_stances = stances
-    if den > 0:
-        share = num / den
-        plan.quantities.append({"name": "actor_intentions", "qtype": "actor_intentions",
-                                "value": round(share, 4), "sd": None})
-        if not hasattr(plan, "_consumed_state"):
-            plan._consumed_state = []
-        if not any(m.get("var") == "actor_intentions" for m in plan._consumed_state):
-            plan._consumed_state.append({"var": "actor_intentions", "weight": 0.2})
     return {"n_actors": len(actors), "n_grounded": n_grounded,
             "n_mode_scoped": sum(1 for s in stances if s.get("target_mode")),
-            "intention_yes_share": (round(num / den, 3) if den > 0 else None), "intentions": kept[:12]}
+            "n_binding_instruments": sum(1 for s in stances
+                                         if s.get("basis_kind") in _BINDING_BASIS_KINDS),
+            "intentions": kept[:12]}

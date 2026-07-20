@@ -349,9 +349,22 @@ def _phase3_block(question, plan, bundle, llm, seed, manifest, drop):
             tags = tag_claims(question, bundle, plan, llm=llm)
             prior_spec = build_outcome_rate_prior(plan, llm=llm)
             # stash the prior spec on the plan: the no-silent-None guard and provenance surfacing
-            # need the grounded prior mean even when the posterior saw zero observations
+            # need the grounded prior mean even when the posterior saw zero observations. Its FULL
+            # provenance (grounded/recurrence/reference-class/lean, evidence quality, retained
+            # effective N) also rides the plan so the §NAP ledger row for the residual outcome
+            # process names the actual prior behind the posterior — the acknowledged remaining
+            # assumption is specific, not generic.
             try:
                 plan._outcome_prior_spec = prior_spec
+                plan._outcome_prior_provenance = {
+                    "source_class": getattr(prior_spec, "source_class", None),
+                    "reference_class": getattr(prior_spec, "reference_class", None),
+                    "transport_risk": getattr(prior_spec, "transport_risk", None),
+                    "retained_effective_n": getattr(prior_spec, "retained_effective_n", None),
+                    "mean": round(float(prior_spec.mean), 4),
+                    **{k: v for k, v in (getattr(prior_spec, "provenance", None) or {}).items()
+                       if k in ("evidence_quality", "is_recurrence", "estimated_base_rate",
+                                "widening", "rule")}}
             except Exception:  # noqa: BLE001
                 pass
             posterior = infer_posterior(plan, bundle, tags, seed=seed, prior_spec=prior_spec)
@@ -458,10 +471,12 @@ def _condition_plan(question, plan, bundle, as_of, horizon, seed, llm, manifest,
             lineage["scheduled_reality"] = attach_scheduled_facts(plan, facts)
             lineage["scheduled_reality"]["facts"] = facts[:8]
             # canonical mode decomposition BEFORE intention grounding, so stances can be
-            # MODE-SCOPED (stance(actor, mode)) and the pathway processes exist for the trajectory
-            # layer + hazard consumption. K-pass self-consistency makes the mode set reproducible.
+            # MODE-SCOPED (stance(actor, mode)) and the typed process records exist for the
+            # trajectory layer. K-pass self-consistency makes the mode set reproducible. §NAP:
+            # process grounding is QUALITATIVE — typed {state, waiting_on, basis} records, never
+            # a 0-1 progress bar; no capacity resource is invented.
             from swm.world_model_v2.event_time import is_when_question as _is_when
-            from swm.world_model_v2.mode_graph import (canonical_modes, declare_pathway_processes,
+            from swm.world_model_v2.mode_graph import (canonical_modes, declare_typed_processes,
                                                        ground_process_states, mode_pathway)
             if _is_when(question):
                 _modes, _cons = canonical_modes(
@@ -473,18 +488,15 @@ def _condition_plan(question, plan, bundle, as_of, horizon, seed, llm, manifest,
                 _pws = sorted({mode_pathway(m) for m in _modes})
                 _states = ground_process_states(question, crit, _pws, as_of=as_of,
                                                 evidence_text=ev_text, llm=llm)
-                lineage["pathway_processes"] = declare_pathway_processes(plan, _modes,
-                                                                         grounding=_states)
+                lineage["pathway_processes"] = declare_typed_processes(plan, _modes,
+                                                                       grounding=_states)
             # per-actor evidence-grounded intentions (state, not policy guesses) — mode-scoped
             # against the canonical modes when they exist
             lineage["actor_intentions"] = ground_actor_intentions(
                 plan, question, criterion=crit, evidence_text=ev_text, llm=llm,
                 modes=getattr(plan, "_canonical_modes", None))
-            # capability becomes a live, depletable capacity resource (world-dynamics layer)
-            from swm.world_model_v2.world_dynamics import declare_actor_capacity
-            lineage["actor_capacity"] = declare_actor_capacity(plan)
             # binary/other questions: the resolution's causal pathways are named by the grounded
-            # stances themselves — declare their processes so actions move the residual chain too
+            # stances themselves — record their QUALITATIVE typed process state too
             if not getattr(plan, "_declared_pathways", None):
                 _st_pws = sorted({str(s.get("pathway")) for s in
                                   (getattr(plan, "_intention_stances", None) or [])
@@ -493,8 +505,8 @@ def _condition_plan(question, plan, bundle, as_of, horizon, seed, llm, manifest,
                     _pseudo = [{"id": pw, "pathway": pw} for pw in _st_pws]
                     _states = ground_process_states(question, crit, _st_pws, as_of=as_of,
                                                     evidence_text=ev_text, llm=llm)
-                    lineage["pathway_processes"] = declare_pathway_processes(plan, _pseudo,
-                                                                             grounding=_states)
+                    lineage["pathway_processes"] = declare_typed_processes(plan, _pseudo,
+                                                                           grounding=_states)
         except Exception as e:  # noqa: BLE001 — fidelity must never block the forecast
             lineage["fidelity_expansion"] = {"error": f"{type(e).__name__}: {e}"[:140]}
 
@@ -614,17 +626,41 @@ def _project_terminal_guarded(question, plan, as_of, horizon, intervention, seed
     return res
 
 
+def _manifest_row(res, bucket: str, row: dict):
+    """Append one late numeric-provenance row to the result's `numeric_causal_inputs` manifest
+    (the projection-time merge has already run when the guards fire)."""
+    try:
+        rr = res.resolution_report if isinstance(getattr(res, "resolution_report", None), dict) else None
+        if rr is None:
+            return
+        man = rr.setdefault("numeric_causal_inputs", {})
+        man.setdefault(bucket, []).append(dict(row, n_occurrences=1))
+        man["n_inputs"] = int(man.get("n_inputs", 0) or 0) + 1
+        if bucket == "rejected":
+            man["n_rejected"] = int(man.get("n_rejected", 0) or 0) + 1
+    except Exception:  # noqa: BLE001
+        pass
+
+
 def _apply_result_guards(res, *, posterior=None, prior_spec=None, evidence_sufficiency=None,
-                         lineage=None):
+                         lineage=None, plan=None):
     """Post-projection honesty guards shared by BOTH structural modes:
 
     1. surface evidence sufficiency on the result (provenance + a loud limitation when starved), so a
        prior-driven forecast is never mistaken for an evidence-driven one;
-    2. NO-SILENT-NONE GUARANTEE: a COHERENT question must never return a silent nothing — not on an
-       empty rollout NOR on an execution_failed exception the retry did not recover. When a grounded
-       posterior/prior mean exists, fall back to it, honestly labelled EXECUTION-DEGRADED. Honest §NAP
-       refusals (`unresolved` / `partially_resolved`) pass through untouched: they are structured
-       epistemic outcomes, not silent Nones."""
+    2. NO-SILENT-NONE GUARANTEE (§NAP-composed): a COHERENT question must never return a silent
+       nothing — not on an empty rollout NOR on an execution_failed exception the retry did not
+       recover. The fallback ladder is provenance-gated:
+         * evidence-updated POSTERIOR mean exists → EXECUTION-DEGRADED forecast from it (a
+           deterministic derivation of ledger-registered evidence — recorded in the manifest);
+         * no posterior, generic prior EXPLICITLY allowed (§28 door: SWM_ALLOW_GENERIC_PRIOR /
+           policy) → a deliberately PRIOR-DRIVEN forecast, loudly labelled as such;
+         * no posterior, prior NOT allowed → an explicit `unresolved` result (§NAP): the missing
+           mechanism is named, the grounded prior mean rides ONLY as a labelled non-headline
+           diagnostic (`prior_driven_reference`, registered REJECTED in the manifest), and no
+           probability is manufactured.
+       Honest §NAP refusals (`unresolved` / `partially_resolved`) pass through untouched: they are
+       structured epistemic outcomes, not silent Nones."""
     try:
         if evidence_sufficiency is not None:
             res.provenance["evidence_sufficiency"] = evidence_sufficiency
@@ -638,22 +674,83 @@ def _apply_result_guards(res, *, posterior=None, prior_spec=None, evidence_suffi
     try:
         exempt = res.simulation_status in ("clarification_required", "unresolved", "partially_resolved")
         no_p = res.raw_probability is None and res.calibrated_probability is None
-        if not exempt and no_p:
-            fb = _grounded_fallback_mean(posterior, prior_spec)
-            src = ("posterior" if (posterior is not None
-                                   and int(getattr(posterior, "n_effective_observations", 0) or 0) > 0)
-                   else "prior")
-            orig_status = res.simulation_status
+        if exempt or not no_p:
+            return res
+        orig_status = res.simulation_status
+        has_posterior = (posterior is not None
+                         and int(getattr(posterior, "n_effective_observations", 0) or 0) > 0)
+        fb = _grounded_fallback_mean(posterior, prior_spec)
+        from swm.world_model_v2.fallback import generic_prior_allowed
+        if has_posterior and fb is not None:
+            res.raw_probability = round(float(fb), 4)
+            res.simulation_status = "completed_with_degradation"  # now carries a forecast
+            res.limitations = (list(res.limitations or []) + [
+                f"EXECUTION-DEGRADED (was {orig_status!r}): the rollout produced no bound outcome "
+                f"even after retry; forecast falls back to the evidence-updated posterior mean "
+                f"({fb:.3f}) rather than returning None"])
+            res.provenance["execution_degraded_fallback"] = {
+                "used": True, "value": round(float(fb), 4), "source": "posterior",
+                "original_status": orig_status}
+            _manifest_row(res, "approved_and_consumed", {
+                "name": "execution_degraded_fallback_mean", "value": round(float(fb), 4),
+                "units": "probability", "causal_role": "evidence-updated posterior mean served as "
+                "the execution-degraded fallback forecast", "source_class": "derived_deterministic",
+                "consumer": "unified_runtime._apply_result_guards",
+                "evidence_id": "phase3_posterior", "production_eligible": True, "consumed": True})
+        elif fb is not None and generic_prior_allowed():
+            res.raw_probability = round(float(fb), 4)
+            res.simulation_status = "completed_with_degradation"
+            res.limitations = (list(res.limitations or []) + [
+                f"PRIOR-DRIVEN forecast (was {orig_status!r}): the rollout produced no bound outcome; "
+                f"the generic-prior door is EXPLICITLY open (SWM_ALLOW_GENERIC_PRIOR/policy) so the "
+                f"grounded prior mean ({fb:.3f}) is served, labelled — this is NOT a simulated "
+                f"structural outcome"])
+            res.provenance["execution_degraded_fallback"] = {
+                "used": True, "value": round(float(fb), 4), "source": "prior_explicitly_allowed",
+                "original_status": orig_status}
+        else:
+            # §NAP: no evidence-updated posterior and no explicit prior door — the honest result is
+            # UNRESOLVED, with the missing mechanism named and the prior kept as a labelled,
+            # non-headline diagnostic. Never a silent None; never a manufactured probability.
+            rr = res.resolution_report if isinstance(getattr(res, "resolution_report", None), dict) \
+                else {}
+            missing = list(rr.get("missing_mechanisms") or [])
+            missing.append({"mechanism": "rollout_execution",
+                            "why": f"terminal projection produced no bound outcome even after retry "
+                                   f"(was {orig_status!r}); no evidence-updated posterior exists to "
+                                   f"ground a degraded fallback",
+                            "missing": "recoverable rollout or evidence-updated posterior"})
+            rr.update({"unresolved_share": rr.get("unresolved_share") or 1.0,
+                       "missing_mechanisms": missing,
+                       "note": rr.get("note") or
+                       "no probability was manufactured for a failed rollout without evidence (§NAP)"})
+            res.resolution_report = rr
+            res.simulation_status = "unresolved"
+            if getattr(res, "recommendation_status", "") not in ("", "not_requested"):
+                res.recommendation_status = "withheld"      # §NAP: unresolved mass gates actions
+            if res.support_grade not in ("empirically_supported", "transfer_supported",
+                                         "exploratory", "highly_speculative"):
+                res.support_grade = "highly_speculative"
+            res.limitations = (list(res.limitations or []) + [
+                "Outcome unresolved under the current model: the rollout produced no bound outcome "
+                "even after retry and no evidence-updated posterior exists — no broad-prior or "
+                "neutral-default probability was manufactured (§NAP); the grounded prior mean is "
+                "recorded only as a labelled diagnostic (provenance.prior_driven_reference)"])
             if fb is not None:
-                res.raw_probability = round(float(fb), 4)
-                res.simulation_status = "completed_with_degradation"  # now carries a forecast
-                res.limitations = (list(res.limitations or []) + [
-                    f"EXECUTION-DEGRADED (was {orig_status!r}): the rollout produced no bound outcome "
-                    f"even after retry; forecast falls back to the grounded {src} mean ({fb:.3f}) "
-                    f"rather than returning None"])
-                res.provenance["execution_degraded_fallback"] = {
-                    "used": True, "value": round(float(fb), 4), "source": src,
-                    "original_status": orig_status}
+                res.provenance["prior_driven_reference"] = {
+                    "value": round(float(fb), 4), "source": "grounded_prior_mean",
+                    "headline": False,
+                    "note": "diagnostic only — NOT the forecast; provenance class llm_estimated is "
+                            "not approved to alter production output (§NAP)"}
+                _manifest_row(res, "rejected", {
+                    "name": "prior_driven_reference", "value": round(float(fb), 4),
+                    "units": "probability", "causal_role": "grounded prior mean considered as a "
+                    "no-null fallback forecast", "source_class": "llm_estimated",
+                    "consumer": "unified_runtime._apply_result_guards",
+                    "production_eligible": False, "consumed": False,
+                    "rejection_reason": "no evidence-updated posterior and the generic-prior door "
+                                        "is closed — an LLM-estimated mean may not become the "
+                                        "headline probability (§NAP)"})
     except Exception:  # noqa: BLE001 — the guard must never itself break the forecast
         pass
     return res

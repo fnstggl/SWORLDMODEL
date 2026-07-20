@@ -214,22 +214,46 @@ class PopulationAggregationOperator(TransitionOperator):
                                   reason_codes=["population_consumer"])
 
     def apply(self, world, proposal):
+        from swm.world_model_v2.fallback import generic_prior_allowed
+        from swm.world_model_v2.numeric_provenance import record_unresolved_mechanism
         from swm.world_model_v2.quantities import Quantity, register_quantity_type
         a = proposal.action
         pop = world.populations[a["population_id"]]
         rng = _branch_rng(world, f"pop:{a['population_id']}")
         weights = pop.normalized_weights()
-        agg, seg_values = 0.0, {}
+        agg, seg_values, ungrounded = 0.0, {}, []
+        total_w = 0.0
         for seg in pop.segments:
             vals = []
-            for sf in (seg.heterogeneity or {}).values():
-                d = (sf.dist or {}) if isinstance(sf, StateField) else {}
-                mean, sd = float(d.get("mean", 0.5)), float(d.get("sd", 0.2))
-                vals.append(min(1.0, max(0.0, rng.gauss(mean, sd))))
-            seg_val = sum(vals) / len(vals) if vals else 0.5
+            for name, sf in (seg.heterogeneity or {}).items():
+                if not isinstance(sf, StateField) or not isinstance(sf.dist, dict) \
+                        or "mean" not in sf.dist:
+                    ungrounded.append(f"{seg.segment_id}.{name}:no_declared_distribution")
+                    continue
+                status = str(getattr(getattr(sf, "prov", None), "status", "assumed"))
+                if status not in ("observed", "derived") and not generic_prior_allowed():
+                    # §NAP: an LLM/compiler-assumed heterogeneity prior is not a measurement —
+                    # it may not enter causal aggregation
+                    ungrounded.append(f"{seg.segment_id}.{name}:status={status}")
+                    continue
+                mean, sd = float(sf.dist["mean"]), float(sf.dist.get("sd", 0.0) or 0.0)
+                vals.append(min(1.0, max(0.0, rng.gauss(mean, sd) if sd > 0 else mean)))
+            if not vals:
+                continue                                      # honest gap, never a 0.5 default
+            seg_val = sum(vals) / len(vals)
             seg_values[seg.segment_id] = round(seg_val, 4)
-            agg += weights.get(seg.segment_id, 0.0) * seg_val
-        agg = min(1.0, max(0.0, agg))
+            w = weights.get(seg.segment_id, 0.0)
+            agg += w * seg_val
+            total_w += w
+        if total_w <= 0.0:
+            record_unresolved_mechanism(
+                world, mechanism=f"population_aggregation:{a['population_id']}",
+                why="no segment carried an observed/derived heterogeneity distribution; assumed "
+                    "priors are refused and there is no 0.5 default (§NAP)",
+                missing="measured or evidence-derived segment distributions",
+                var=str(a.get("out_var", "")))
+            return None
+        agg = min(1.0, max(0.0, agg / total_w))
         var = a["out_var"]
         register_quantity_type(var, units="share")
         before = world.quantities[var].value if var in world.quantities else None
@@ -237,7 +261,9 @@ class PopulationAggregationOperator(TransitionOperator):
         d = StateDelta(at=world.clock.now, event_type="population_aggregation", operator=self.name,
                        reason_codes=proposal.reason_codes,
                        uncertainty={"segments": seg_values,
-                                    "note": "segment heterogeneity sampled from labeled broad priors"})
+                                    "ungrounded_fields_skipped": ungrounded[:8],
+                                    "note": "only observed/derived segment distributions "
+                                            "aggregate (§NAP)"})
         return d.change(f"quantities[{var}]", before, round(agg, 4))
 
 
@@ -315,9 +341,24 @@ class AggregateOutcomeOperator(TransitionOperator):
         post = a.get("posterior_rate_particles")
         if post:
             base, src = _draw_rate(post, rng), "posterior"
+        elif isinstance(a.get("fitted_base_rate"), (int, float)) and generic_prior_allowed():
+            # explicit baseline/diagnostic arm only — production never consumes the family rate
+            base, src = float(a["fitted_base_rate"]), str(a.get("base_rate_provenance",
+                                                                "fitted_family_prior"))
         elif isinstance(a.get("fitted_base_rate"), (int, float)):
-            # learned family hazard (fit on calibration-split outcomes only; partial pooling)
-            base, src = float(a["fitted_base_rate"]), str(a.get("base_rate_provenance", "fitted_family_prior"))
+            # §NAP: the keyword-family "fitted" rate is a 40-world reference class with no
+            # held-out validation or transport check — it fails the provenance gate and may not
+            # realize an aggregate outcome. Recorded and refused, never consumed.
+            record_prior_suppression(world, mechanism="aggregate_outcome_family_rate", var=var,
+                                     why="keyword-family reference-class rate fails the numeric "
+                                         "provenance contract (no held-out validation/transport "
+                                         "check); diagnostic only (§NAP)")
+            from swm.world_model_v2.numeric_provenance import record_unresolved_mechanism
+            record_unresolved_mechanism(world, mechanism="aggregate_outcome_mechanism",
+                                        why="no posterior; family rate ineligible (§NAP)",
+                                        missing="evidence-updated posterior or eligible fitted "
+                                                "rate", var=var)
+            return None
         elif not generic_prior_allowed():
             # §28: an aggregate realization from a bare lean prior is a broad-prior terminal in
             # disguise — quarantined from default production (fitted rates and posteriors stay)
@@ -371,9 +412,26 @@ class StructuralProcessPriorOperator(TransitionOperator):
                                   reason_codes=["registry_gap_fallback", "exploratory"])
 
     def apply(self, world, proposal):
-        from swm.world_model_v2.fallback import LEAN_BETA, _beta_sample
+        from swm.world_model_v2.fallback import (LEAN_BETA, _beta_sample,
+                                                 generic_prior_allowed,
+                                                 record_prior_suppression)
+        from swm.world_model_v2.numeric_provenance import record_unresolved_mechanism
         from swm.world_model_v2.quantities import Quantity, register_quantity_type
         a = proposal.action
+        if not generic_prior_allowed():
+            # §NAP: a registry gap does not license a broad-prior draw that modulates the
+            # terminal — the required causal process stays honestly UNRESOLVED, named.
+            record_prior_suppression(world, mechanism="structural_process_prior",
+                                     var=str(a.get("out_var", "")),
+                                     why=f"required causal process {a.get('process')!r} has no "
+                                         f"validated mechanism; broad-prior modulation is "
+                                         f"quarantined from default production (§NAP)")
+            record_unresolved_mechanism(world, mechanism=f"structural_process:{a.get('process')}",
+                                        why="no validated registry family answers this required "
+                                            "causal process; broad-prior fallback refused (§NAP)",
+                                        missing="validated mechanism family for this process",
+                                        var=str(a.get("out_var", "")))
+            return None
         rng = _branch_rng(world, f"proc:{a['process']}")
         av, bv = LEAN_BETA.get(a["lean"], (1.5, 1.5))
         val = round(_beta_sample(rng, av, bv), 4)
@@ -479,8 +537,26 @@ class NetworkDiffusionOperator(TransitionOperator):
                                   reason_codes=["network_consumer"])
 
     def apply(self, world, proposal):
+        from swm.world_model_v2.fallback import generic_prior_allowed, record_prior_suppression
+        from swm.world_model_v2.numeric_provenance import record_unresolved_mechanism
         from swm.world_model_v2.quantities import Quantity, register_quantity_type
         a = proposal.action
+        if not generic_prior_allowed():
+            # §NAP: the per-layer transmissibility numbers (0.25…0.45 ± sd) are hand-authored
+            # social effect sizes, never fitted — they may not parameterize a causal cascade in
+            # production. The diffusion mechanism is honestly unresolved until a fitted,
+            # eligibility-passing transmissibility artifact exists.
+            record_prior_suppression(world, mechanism="network_diffusion_transmissibility",
+                                     var=str(a.get("out_var", "")),
+                                     why="layer transmissibility priors are unfitted "
+                                         "hand-authored effect sizes (§NAP)")
+            record_unresolved_mechanism(world, mechanism="network_diffusion",
+                                        why="no fitted transmissibility parameters; cascade "
+                                            "refused (§NAP)",
+                                        missing="fitted, eligibility-passing per-layer "
+                                                "transmissibility artifact",
+                                        var=str(a.get("out_var", "")))
+            return None
         rng = _branch_rng(world, "net:diffusion")
         edges = list(world.network.edges)
         nodes, adj = set(), {}

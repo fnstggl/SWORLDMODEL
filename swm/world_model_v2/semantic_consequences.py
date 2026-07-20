@@ -1017,9 +1017,19 @@ class SemanticConsequenceCompiler:
 
 
 # ------------------------------------------------------------------- derived summaries
-def derive_pathway_summaries(world, delta=None) -> dict:
-    """`pathway_progress:*` as READ-ONLY projections of typed state — facts → summary →
-    readout, never action → bar. Only recomputes bars the world already declares."""
+def derive_pathway_summaries(world, delta=None, *, acknowledge: str = "") -> dict:
+    """QUARANTINED LEGACY (§NAP): the fixed stage→fraction projection (signed→0.95, live
+    proposal→0.45, communication open→0.30, floor 0.15, stage index/len). These are invented
+    numbers for qualitative states — a negotiation is not 45% complete. Production declares NO
+    numeric `pathway_progress:*` quantities (typed process records replaced them), so this
+    writer has nothing to project onto; calling it at all now requires the legacy ablation
+    acknowledgement token."""
+    from swm.world_model_v2.legacy_numeric_ablations import ABLATION_TOKEN
+    if acknowledge != ABLATION_TOKEN:
+        raise PermissionError(
+            "derive_pathway_summaries is a QUARANTINED legacy numeric projection (§NAP): "
+            "qualitative object state must not become a generic completion fraction. Pass "
+            "acknowledge=ABLATION_TOKEN only from an explicitly named legacy ablation.")
     from swm.world_model_v2.quantities import Quantity, register_quantity_type
     register_quantity_type("derived_pathway_summary", units="process_state")
 

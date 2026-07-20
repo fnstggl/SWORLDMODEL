@@ -94,13 +94,20 @@ def extract_scheduled_facts(question, *, as_of, horizon, evidence_text="", llm=N
             continue
         influence = str(f.get("outcome_influence", "")).lower()
         strength = max(0.0, min(1.0, float(f.get("influence_strength", 0.0) or 0.0)))
+        pattern = str(f.get("pattern_strength", "base_rate"))[:24]
         # back-compat: legacy callers/tests read outcome_entailing + entailed_direction. Accept the new
         # influence schema OR the old entailing schema; derive one from the other so both always agree.
+        # STRICT entailment is a separate, narrower judgment: only a strictly entailing fact may become
+        # a deterministic absorbing event on the event-time path (§NAP) — a weak influence nudge is
+        # calendar CONTEXT (prior/actor knowledge), never an absorber.
         if influence in ("raises", "lowers"):
             entailing = strength > 0.0
             direction = "yes" if influence == "raises" else "no"
+            strictly = bool(f.get("outcome_entailing")) or pattern == "confirmed_scheduled" \
+                or strength >= 0.9
         else:
             entailing = bool(f.get("outcome_entailing"))
+            strictly = entailing                              # old schema: the LLM judged DIRECT entailment
             direction = (str(f.get("entailed_direction")).lower()
                          if f.get("entailed_direction") in ("yes", "no") else None)
             if entailing and direction:                       # old schema → synthesize an influence
@@ -113,10 +120,11 @@ def extract_scheduled_facts(question, *, as_of, horizon, evidence_text="", llm=N
                     "evidence_quote": (str(f.get("evidence_quote"))[:200]
                                        if f.get("evidence_quote") else None),
                     "confidence": max(0.0, min(1.0, float(f.get("confidence", 0.6) or 0.6))),
-                    "pattern_strength": str(f.get("pattern_strength", "base_rate"))[:24],
+                    "pattern_strength": pattern,
                     "outcome_influence": influence if influence in ("raises", "lowers", "neutral") else "neutral",
                     "influence_strength": strength,
                     "outcome_entailing": entailing,
+                    "strictly_entailing": strictly and direction in ("yes", "no"),
                     "entailed_direction": direction,
                     "reason": (str(f.get("reason"))[:160] if f.get("reason") else None)})
     return out

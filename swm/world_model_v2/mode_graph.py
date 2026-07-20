@@ -2,35 +2,36 @@
 DECISION STRUCTURES. This is the layer that keeps the event-time architecture a WORLD model rather
 than a generalized event-resolution template:
 
-  * PATHWAYS is a registry of causal route types, actor-driven AND world-driven. A hurricane has no
+  * PATHWAYS is a registry of causal route TYPES, actor-driven AND world-driven. A hurricane has no
     stance; inflation is not controlled by the most-opposed actor; adoption emerges from millions of
-    weakly-coupled decisions. Stance logic is therefore ONE mechanism family, applied only where the
-    pathway is actor-driven — world-driven pathways couple to the population / nonlinear / scheduled
-    mechanisms instead (event_time._endogenous_consume), and stances shrink to near-irrelevance under
-    the `aggregation` combination rule.
-  * Each mode carries a DECISION STRUCTURE ({rule, approvers}) from which the stance-combination law
-    is DERIVED. "Most-opposed binds" is the unanimity/veto case — correct for a treaty, wrong for a
-    218-vote bill (majority), a voluntary resignation (unilateral), or a market (aggregation).
-  * Stances are MODE-SCOPED (`stance(actor, mode)`): Russia can simultaneously pursue its own victory,
-    be committed to preventing Ukraine's, and be conditionally open to a ceasefire. A stance may carry
-    `target_mode`; per (actor, mode) the most specific stance wins.
-  * CONTROL is graded (sole_authority … informal_influence), not a boolean: a president may want a
-    bill but lack the votes; a legislature may pass one but lack implementation capacity.
+    weakly-coupled decisions. The registry is qualitative structure only — which kinds of routes
+    exist and who decides on them — never effect sizes.
+  * Each mode carries a DECISION STRUCTURE ({rule, approvers}) naming who actually decides it —
+    a treaty needs the principals' consent; a 218-vote bill needs a majority; a resignation is
+    unilateral. The structure routes WHICH institutional/actor mechanisms execute the mode; it is
+    not a stance-combination formula.
+  * Stances are MODE-SCOPED (`stance(actor, mode)`) qualitative records: Russia can simultaneously
+    pursue its own victory, be committed to preventing Ukraine's, and be conditionally open to a
+    ceasefire. A stance conditions the ACTOR'S OWN situated cognition (the behavior channel); it
+    never becomes a hazard coefficient, an orientation weight, or a utility term (§NAP — those
+    tables are buried in legacy_numeric_ablations).
   * `canonical_modes` makes the decomposition REPRODUCIBLE: K independent elicitation passes are
     reconciled with the compiler's structural hypotheses (id canonicalization, cluster, majority
-    vote, averaged priors) — compile variance in the mode set becomes a measured consensus score
-    instead of silent nondeterminism.
+    vote) — compile variance in the mode set becomes a measured consensus score instead of silent
+    nondeterminism. Modes carry SUPPORT COUNTS (how many independent sources proposed them), never
+    LLM-minted numeric priors.
+  * `ground_process_states` classifies each pathway's CURRENT process state from evidence into a
+    QUALITATIVE label with its evidential basis. There is no label→number map: a negotiation is
+    not 45% complete. The typed record conditions actors and structure generation; causal
+    consequences flow only through scenario-generated events and mechanisms.
 
-Everything here is question-general: no scenario branching, no benchmark keys. Effect-size tables
-are NOT owned here — callers pass the fitted-or-prior hazard-ratio table in (event_time owns packs).
+Everything here is question-general: no scenario branching, no benchmark keys, no effect sizes.
 """
 from __future__ import annotations
 
-import math
 import re
 from dataclasses import dataclass
 
-_Z80 = 1.2816
 
 # ---------------------------------------------------------------- pathway registry (universal)
 @dataclass(frozen=True)
@@ -128,8 +129,10 @@ def mode_pathway(mode) -> str:
 
 
 # ---------------------------------------------------------------- stance taxonomy (universal)
-#: stance commitment levels — the LLM only ever CLASSIFIES into these; effect sizes live in the
-#: caller-supplied hazard-ratio table (fitted pack or documented priors)
+#: stance commitment levels — the LLM only ever CLASSIFIES into these. The levels are a qualitative
+#: vocabulary: they condition the actor's own cognition and the qualitative binding-commitment
+#: check. They carry NO numeric orientation, shrink, control weight or hazard ratio (§NAP — the
+#: historical tables are quarantined in legacy_numeric_ablations).
 STANCE_LEVELS = ("committed_to_prevent", "conditionally_opposed", "weakly_opposed", "neutral",
                  "inclined_toward", "actively_pursuing", "formally_committed")
 LEGACY_LEVELS = {"categorical_refusal": "committed_to_prevent",
@@ -137,106 +140,20 @@ LEGACY_LEVELS = {"categorical_refusal": "committed_to_prevent",
                  "weak_opposition": "weakly_opposed",
                  "openness_to_agreement": "inclined_toward",
                  "formal_commitment_toward_agreement": "formally_committed"}
-#: signed orientation weight of each level (used for POLICY conditioning, not for hazards)
-STANCE_ORIENTATION = {"committed_to_prevent": -0.9, "conditionally_opposed": -0.55,
-                      "weakly_opposed": -0.25, "neutral": 0.0, "inclined_toward": 0.35,
-                      "actively_pursuing": 0.7, "formally_committed": 0.9}
 
-#: reliability shrinks the LOG-effect toward 1.0 (an inferred leaning moves hazards less than a law)
-RELIABILITY_SHRINK = {"high": 1.0, "medium": 0.6, "low": 0.3}
-#: capability — can the actor practically act on this stance (means, position, resources)?
-CAPABILITY_SHRINK = {"high": 1.0, "medium": 0.75, "low": 0.4}
-#: GRADED control over the pathway — replaces the controls_pathway boolean. Log-effect multipliers.
-CONTROL_WEIGHTS = {"sole_authority": 1.0, "veto": 1.0, "agenda_setting": 0.75,
-                   "partial_implementation": 0.6, "coalition_member": 0.5,
-                   "operational_capability": 0.5, "informal_influence": 0.3, "none": 0.25}
-#: share of a stance's total log-effect kept on the DIRECT hazard channel when the behavioral
-#: channel (stance→policy→actions→pathway process→hazard) is live for the mode — the rest of the
-#: effect is expected to be realized through simulated behavior. Documented structural choice;
-#: the sensitivity harness varies it.
-ENDOGENOUS_STANCE_SPLIT = 0.6
+#: qualitative process-state vocabulary — an evidence-grounded CLASSIFICATION of whether a causal
+#: process is underway. It maps to no number and no generic completion fraction.
+PROCESS_STATE_VOCAB = ("dormant", "exploratory", "active", "advanced", "imminent")
 
-#: pathway-process quantities — written by simulated actor actions (phase4_execution), institutions
-#: and world-driven consumers; consumed by hazard rounds. THE endogenous half of the hazard clock.
-PROGRESS_PREFIX = "pathway_progress:"
-#: current process state → initial progress value (0.5 = neutral / no effect on hazards)
-PROCESS_STATE_LEVELS = {"dormant": 0.15, "exploratory": 0.3, "active": 0.5,
-                        "advanced": 0.7, "imminent": 0.85}
-
-
-def progress_var(pathway_id: str) -> str:
-    return f"{PROGRESS_PREFIX}{str(pathway_id).strip().lower()}"
+#: prefix of the QUALITATIVE typed process-state quantities (string-valued; see
+#: declare_typed_processes). The legacy numeric `pathway_progress:*` quantities no longer exist
+#: on any production plan.
+PROCESS_STATE_PREFIX = "process_state:"
 
 
 def canon_level(level: str) -> str:
     lvl = str(level or "").strip().lower()
     return LEGACY_LEVELS.get(lvl, lvl)
-
-
-def stance_control_weight(stance: dict) -> float:
-    """Graded control weight of a stance; legacy controls_pathway booleans map veto/informal.
-    An absent/None `control` falls through to the legacy boolean — only an explicit string "none"
-    means the graded no-control level."""
-    raw = stance.get("control")
-    c = str(raw).strip().lower() if isinstance(raw, str) else ""
-    if c in CONTROL_WEIGHTS:
-        return CONTROL_WEIGHTS[c]
-    legacy = stance.get("controls_pathway")
-    if legacy is True:
-        return CONTROL_WEIGHTS["veto"]
-    if legacy is False:
-        return CONTROL_WEIGHTS["informal_influence"]
-    return CONTROL_WEIGHTS["informal_influence"]
-
-
-def _stance_hr(stance: dict, hr_table: dict, *, control_scaled: bool = True,
-               live_capacity: dict = None):
-    """One stance → shrunk (median, lo80, hi80) hazard-ratio interval, or None when the stance's
-    level is unknown. Log-effect × reliability × capability × (graded control weight). When a LIVE
-    capacity map is supplied (the depletable capacity resource the simulated actions burn), it
-    replaces the static capability label: shrink = 0.4 + 0.6 × capacity — an exhausted actor's
-    stance moves hazards less than a fresh one's."""
-    tup = hr_table.get(canon_level(stance.get("commitment_level")))
-    if not tup:
-        return None
-    s = RELIABILITY_SHRINK.get(str(stance.get("reliability", "medium")).lower(), 0.6)
-    cap_live = (live_capacity or {}).get(str(stance.get("actor")))
-    if isinstance(cap_live, (int, float)):
-        s *= 0.4 + 0.6 * max(0.0, min(1.0, float(cap_live)))
-    else:
-        s *= CAPABILITY_SHRINK.get(str(stance.get("capability", "high")).lower(), 1.0)
-    if control_scaled:
-        s *= stance_control_weight(stance)
-    med, lo, hi = tup
-    return (math.exp(s * math.log(med)), math.exp(s * math.log(lo)), math.exp(s * math.log(hi)))
-
-
-def _relevant_stances(stances: list, pathway: str, mode: dict = None) -> list:
-    """Per actor, the MOST SPECIFIC relevant stance wins: target_mode == this mode  >  pathway match
-    > 'any'. A stance targeting a DIFFERENT mode is irrelevant here (Russia's stance toward Ukrainian
-    victory must not bind Russian-victory hazards)."""
-    mode_id = str((mode or {}).get("id", "") or "")
-    best = {}
-    for st in (stances or []):
-        if not isinstance(st, dict):
-            continue
-        actor = str(st.get("actor", ""))
-        tm = str(st.get("target_mode", "") or "")
-        pw = str(st.get("pathway", "any")).lower()
-        if tm:
-            if mode_id and tm == mode_id:
-                rank = 2
-            else:
-                continue                              # scoped to another mode — irrelevant here
-        elif pw == pathway:
-            rank = 1
-        elif pw == "any":
-            rank = 0
-        else:
-            continue
-        if actor not in best or rank > best[actor][0]:
-            best[actor] = (rank, st)
-    return [st for _, st in best.values()]
 
 
 def _mode_decision_structure(mode: dict, pathway: str) -> dict:
@@ -248,152 +165,6 @@ def _mode_decision_structure(mode: dict, pathway: str) -> dict:
         rule = pathway_of(pathway).default_rule
     return {"rule": rule, "approvers": [str(a) for a in (ds.get("approvers") or [])],
             "stages": [str(s) for s in (ds.get("stages") or [])]}
-
-
-def combine_stances(stances: list, pathway: str, *, mode: dict = None, hr_table: dict,
-                    live_capacity: dict = None) -> dict:
-    """Combine grounded stances into ONE hazard-ratio distribution for a mode, under the mode's
-    DECISION STRUCTURE — the combination law is derived from the structure, never hard-coded:
-
-      unanimity / weakest_link   any required party can block → the most-opposed relevant stance
-                                 binds (veto logic; correct for treaties, NOT for bills)
-      majority / weighted_coalition
-                                 no single member binds → weighted geometric mean of the approvers'
-                                 (or all relevant) stance effects — the median legislator, not the
-                                 most opposed one
-      hierarchy / unilateral     the actor with the strongest CONTROL binds at full effect; everyone
-                                 else is resistance with log-effect ×0.25
-      strongest_actor            competitive contest → the largest-|log| stance dominates
-      cumulative_pressure        stances add up (log-sum, each ×0.5) — no veto, no majority
-      aggregation                population/market-scale outcome → stances shrink ×0.25 (a market is
-                                 not commanded); world-driven state channels carry the causality
-      none                       a physical/scheduled process — stances have NO effect (×1.0)
-
-    Returns {median, lo80, hi80, binding_actor, binding_level, combination_rule, ...} — every binding
-    choice auditable in provenance."""
-    ds = _mode_decision_structure(mode, pathway)
-    rule = ds["rule"]
-    neutral = {"median": 1.0, "lo80": 0.8, "hi80": 1.25, "binding_actor": None,
-               "binding_level": "no_grounded_stance", "binding_reliability": None,
-               "binding_pathway": pathway, "combination_rule": rule, "n_stances_combined": 0}
-    if rule == "none":
-        return dict(neutral, binding_level="pathway_not_stance_driven")
-    relevant = _relevant_stances(stances, pathway, mode)
-    if ds["approvers"] and rule in ("unanimity", "majority", "weighted_coalition"):
-        # a declared approver set narrows who can bind a consent/vote structure
-        apr = {a.lower() for a in ds["approvers"]}
-        narrowed = [st for st in relevant if str(st.get("actor", "")).lower() in apr]
-        relevant = narrowed or relevant
-
-    def _entry(st, tup):
-        med, lo, hi = tup
-        return {"median": round(med, 4), "lo80": round(lo, 4), "hi80": round(hi, 4),
-                "binding_actor": st.get("actor"), "binding_level": st.get("commitment_level"),
-                "binding_reliability": st.get("reliability"), "binding_pathway": pathway,
-                "combination_rule": rule, "n_stances_combined": len(relevant)}
-
-    if rule in ("unanimity", "weakest_link"):
-        pool = [(st, _stance_hr(st, hr_table, control_scaled=False, live_capacity=live_capacity)) for st in relevant]
-        pool = [(st, t) for st, t in pool if t]
-        if not pool:
-            return neutral
-        st, t = min(pool, key=lambda x: x[1][0])
-        return _entry(st, t)
-
-    if rule in ("hierarchy", "unilateral"):
-        pool = [(st, _stance_hr(st, hr_table, live_capacity=live_capacity)) for st in relevant]
-        pool = [(st, t) for st, t in pool if t]
-        if not pool:
-            return neutral
-        ctrl_st, ctrl_t = max(pool, key=lambda x: stance_control_weight(x[0]))
-        logm, loglo, loghi = (math.log(x) for x in ctrl_t)
-        for st, t in pool:                        # others: shrunk resistance/support
-            if st is ctrl_st:
-                continue
-            logm += 0.25 * math.log(t[0])
-            loglo += 0.25 * math.log(t[1])
-            loghi += 0.25 * math.log(t[2])
-        return _entry(ctrl_st, (math.exp(logm), math.exp(loglo), math.exp(loghi)))
-
-    if rule in ("majority", "weighted_coalition"):
-        pool = [(st, _stance_hr(st, hr_table, live_capacity=live_capacity)) for st in relevant]
-        pool = [(st, t) for st, t in pool if t]
-        if not pool:
-            return neutral
-        wts = [max(0.05, stance_control_weight(st)) for st, _ in pool]
-        z = sum(wts)
-        logm = sum(w * math.log(t[0]) for w, (_, t) in zip(wts, pool)) / z
-        loglo = sum(w * math.log(t[1]) for w, (_, t) in zip(wts, pool)) / z
-        loghi = sum(w * math.log(t[2]) for w, (_, t) in zip(wts, pool)) / z
-        st = max(pool, key=lambda x: abs(math.log(x[1][0])))[0]     # largest contributor, for audit
-        out = _entry(st, (math.exp(logm), math.exp(loglo), math.exp(loghi)))
-        out["binding_actor"] = f"{rule}:{len(pool)} actors (largest: {st.get('actor')})"
-        return out
-
-    if rule == "strongest_actor":
-        pool = [(st, _stance_hr(st, hr_table, live_capacity=live_capacity)) for st in relevant]
-        pool = [(st, t) for st, t in pool if t]
-        if not pool:
-            return neutral
-        st, t = max(pool, key=lambda x: abs(math.log(x[1][0])))
-        return _entry(st, t)
-
-    if rule == "aggregation":
-        pool = [(st, _stance_hr(st, hr_table, live_capacity=live_capacity)) for st in relevant]
-        pool = [(st, t) for st, t in pool if t]
-        if not pool:
-            return dict(neutral, binding_level="aggregation_no_stance_channel")
-        z = len(pool)
-        shrink = 0.25                              # a market/population is not commanded
-        logm = shrink * sum(math.log(t[0]) for _, t in pool) / z
-        loglo = shrink * sum(math.log(t[1]) for _, t in pool) / z
-        loghi = shrink * sum(math.log(t[2]) for _, t in pool) / z
-        st = pool[0][0]
-        out = _entry(st, (math.exp(logm), math.exp(loglo), math.exp(loghi)))
-        out["binding_actor"] = f"aggregation:{z} actors (shrunk ×{shrink})"
-        return out
-
-    # cumulative_pressure (and the conservative unknown default): stances add
-    pool = [(st, _stance_hr(st, hr_table, live_capacity=live_capacity)) for st in relevant]
-    pool = [(st, t) for st, t in pool if t]
-    if not pool:
-        return neutral
-    logm = sum(0.5 * math.log(t[0]) for _, t in pool)
-    loglo = sum(0.5 * math.log(t[1]) for _, t in pool)
-    loghi = sum(0.5 * math.log(t[2]) for _, t in pool)
-    logm = max(math.log(0.2), min(math.log(5.0), logm))
-    loglo = max(math.log(0.1), min(math.log(5.0), loglo))
-    loghi = max(math.log(0.2), min(math.log(8.0), loghi))
-    st = max(pool, key=lambda x: abs(math.log(x[1][0])))[0]
-    out = _entry(st, (math.exp(logm), math.exp(loglo), math.exp(loghi)))
-    out["binding_actor"] = f"cumulative:{len(pool)} actors (largest: {st.get('actor')})"
-    return out
-
-
-# ---------------------------------------------------------------- policy conditioning (stance→behavior)
-def pathway_orientation(stances: list, pathway: str) -> float:
-    """The actor's net orientation toward the PATHWAY PROCESS advancing, in [-1, 1] — the quantity
-    the Phase-4 policy consumes. Pursue-stances push positive. Prevent-stances push negative when
-    UNTARGETED (opposing the process itself: refusing to negotiate) or when the pathway is one
-    SHARED process (stalling any specific deal stalls the talks); a targeted prevent on a
-    per-actor pathway (Russia preventing UKRAINE'S victory) says nothing about the actor's appetite
-    for the process (their own campaign) and contributes 0 — that stance binds the TARGET MODE's
-    hazard instead (combine_stances)."""
-    shared = pathway_of(pathway).shared_process
-    total = 0.0
-    for st in (stances or []):
-        if not isinstance(st, dict):
-            continue
-        pw = str(st.get("pathway", "any")).lower()
-        if pw not in (pathway, "any"):
-            continue
-        w = STANCE_ORIENTATION.get(canon_level(st.get("commitment_level")), 0.0)
-        if w < 0.0 and st.get("target_mode") and not shared:
-            continue
-        w *= RELIABILITY_SHRINK.get(str(st.get("reliability", "medium")).lower(), 0.6)
-        w *= CAPABILITY_SHRINK.get(str(st.get("capability", "high")).lower(), 1.0)
-        total += w
-    return max(-1.0, min(1.0, total))
 
 
 # ---------------------------------------------------------------- canonical mode decomposition
@@ -412,10 +183,11 @@ For each end-state give:
  * decision_structure — who/what decides it: rule one of unanimity|majority|weighted_coalition|
    hierarchy|unilateral|weakest_link|strongest_actor|cumulative_pressure|aggregation|none, and
    approvers = the named actors/bodies whose consent or vote that rule runs over (empty if none).
+Do NOT assign probabilities or numeric weights to the end-states — identify structure only.
 QUESTION: {q}
 RESOLUTION CRITERION: {crit}
 Return ONLY JSON:
-{{"modes": [{{"id": "<snake_case>", "prior": <0..1 relative weight>,
+{{"modes": [{{"id": "<snake_case>",
    "pathway": "<one of the pathway ids above>",
    "decision_structure": {{"rule": "<rule>", "approvers": ["<name>", ...]}},
    "describe": "<one sentence>"}}]}}"""
@@ -454,7 +226,7 @@ def _elicit_modes_once(question, criterion, llm, k, n) -> list:
     out = []
     for m in (raw.get("modes") or []):
         if isinstance(m, dict) and m.get("id"):
-            ent = {"id": str(m["id"])[:40], "prior": max(0.0, float(m.get("prior", 1.0) or 1.0))}
+            ent = {"id": str(m["id"])[:40]}
             pw = str(m.get("pathway", "")).lower()
             if pw in PATHWAYS:
                 ent["pathway"] = pw
@@ -475,10 +247,13 @@ def canonical_modes(*, question: str, criterion: dict, hypotheses: list, options
                     llm=None, k_passes: int = 3) -> tuple:
     """The REPRODUCIBLE mode decomposition: reconcile the compiler's structural hypotheses, the
     contract's categorical options, and K independent elicitation passes into one canonical mode set
-    with majority-vote support. Returns (modes, consensus_report). Fails toward the declared
-    structure (never blocks): with no LLM, the compiler hypotheses/options pass through canonicalized."""
+    with majority-vote support. Returns (modes, consensus_report). Modes carry SUPPORT counts
+    (independent sources that proposed them) — no numeric priors exist anywhere in the mode set
+    (§NAP: an LLM does not mint mode probabilities; relative likelihood of end-states is an OUTPUT
+    of simulation, never an input). Fails toward the declared structure (never blocks): with no
+    LLM, the compiler hypotheses/options pass through canonicalized."""
     sources = []                                   # each source: list of candidate mode dicts
-    hyp = [{"id": str(h["id"])[:40], "prior": float(h.get("prior", 1.0) or 1.0),
+    hyp = [{"id": str(h["id"])[:40],
             **({"pathway": h["pathway"]} if isinstance(h, dict) and h.get("pathway") in PATHWAYS else {}),
             **({"requires_agreement": h["requires_agreement"]}
                if isinstance(h, dict) and "requires_agreement" in h else {}),
@@ -488,8 +263,7 @@ def canonical_modes(*, question: str, criterion: dict, hypotheses: list, options
     if hyp:
         sources.append(("compiler_hypotheses", hyp))
     elif options and len(options) > 2:
-        sources.append(("categorical_options", [{"id": str(o)[:40], "prior": 1.0}
-                                                for o in options[:6]]))
+        sources.append(("categorical_options", [{"id": str(o)[:40]} for o in options[:6]]))
     n_llm = 0
     if llm is not None:
         for k in range(1, max(1, int(k_passes)) + 1):
@@ -501,23 +275,21 @@ def canonical_modes(*, question: str, criterion: dict, hypotheses: list, options
                 sources.append((f"elicitation_{k}", cand))
                 n_llm += 1
     if not sources:
-        return ([{"id": "resolution", "prior": 1.0}],
+        return ([{"id": "resolution", "support": 0}],
                 {"n_sources": 0, "agreement": None, "note": "no structure and no llm"})
-    clusters = {}                                  # canonical id -> {sources:set, priors:[], fields}
+    clusters = {}                                  # canonical id -> {sources:set, fields}
     for src_name, cands in sources:
         seen_in_src = set()
         for m in cands:
             key = _cluster_key(m["id"], clusters)
-            c = clusters.setdefault(key, {"sources": set(), "priors": [], "pathways": [],
+            c = clusters.setdefault(key, {"sources": set(), "pathways": [],
                                           "structures": [], "describe": None, "names": set(),
                                           "requires_agreement": None})
             c["names"].add(_canon_mode_id(m["id"]))
             if key in seen_in_src:
-                c["priors"][-1] += m["prior"]      # time-indexed duplicates within one source: sum
-                continue
+                continue                           # time-indexed duplicates within one source
             seen_in_src.add(key)
             c["sources"].add(src_name)
-            c["priors"].append(m["prior"])
             if m.get("pathway"):
                 c["pathways"].append(m["pathway"])
             if m.get("requires_agreement") is not None and c["requires_agreement"] is None:
@@ -537,7 +309,7 @@ def canonical_modes(*, question: str, criterion: dict, hypotheses: list, options
         # the cluster's CANONICAL name is its shortest member id (the consensus name, reproducible
         # across compiles): 'peace_treaty' beats 'comprehensive_peace_treaty'
         cid = min(c["names"], key=lambda s: (len(s), s)) if c["names"] else key
-        ent = {"id": cid, "prior": sum(c["priors"]) / len(c["priors"]), "support": support}
+        ent = {"id": cid, "support": support}
         if c["pathways"]:
             ent["pathway"] = max(set(c["pathways"]), key=c["pathways"].count)   # majority pathway
         elif c["requires_agreement"] is not None:
@@ -552,10 +324,11 @@ def canonical_modes(*, question: str, criterion: dict, hypotheses: list, options
         modes.append(ent)
     if not modes:                                  # majority filter emptied everything: fail open
         best = max(clusters.items(), key=lambda kv: len(kv[1]["sources"]))
-        modes = [{"id": best[0], "prior": 1.0, "support": len(best[1]["sources"])}]
-    modes.sort(key=lambda m: -m["prior"])
+        modes = [{"id": best[0], "support": len(best[1]["sources"])}]
+    modes.sort(key=lambda m: (-m["support"], m["id"]))
     modes = modes[:6]
-    agree = round(sum(m["support"] for m in modes) / (len(modes) * n_sources), 3)
+    agree = round(sum(m["support"] for m in modes) / (len(modes) * n_sources), 3) \
+        if n_sources else None
     report = {"n_sources": n_sources, "n_elicitation_passes": n_llm,
               "sources": [s for s, _ in sources], "agreement": agree,
               "modes": [{"id": m["id"], "support": f"{m['support']}/{n_sources}",
@@ -564,22 +337,27 @@ def canonical_modes(*, question: str, criterion: dict, hypotheses: list, options
     return modes, report
 
 
-# ---------------------------------------------------------------- pathway-process declaration
+# ---------------------------------------------------------------- typed process-state grounding
 _PROCESS_PROMPT = """For each causal PATHWAY below, classify the CURRENT state of that process toward
 the question's resolution, strictly as of {as_of}, from the evidence (not from what you know happened
 later). dormant = no process underway; exploratory = feelers/preparation only; active = process
 genuinely underway; advanced = well past midpoint; imminent = resolution via this route appears close.
+Also name the CONCRETE next step or stage the process is waiting on, if the evidence shows one.
 QUESTION: {q}
 RESOLUTION CRITERION: {crit}
 PATHWAYS: {pathways}
 EVIDENCE: {ev}
 Return ONLY JSON: {{"process_states": [{{"pathway": "<id>",
-  "state": "dormant|exploratory|active|advanced|imminent", "basis": "<short quote or fact>"}}]}}"""
+  "state": "dormant|exploratory|active|advanced|imminent",
+  "waiting_on": "<the concrete next step/stage, or null>",
+  "basis": "<short quote or fact>"}}]}}"""
 
 
 def ground_process_states(question, criterion, pathways, *, as_of="", evidence_text="", llm=None) -> dict:
-    """Classify each pathway's CURRENT process state from evidence (LLM classifies; the value mapping
-    is the documented PROCESS_STATE_LEVELS table). {} on any failure — unknown stays neutral 0.5."""
+    """Classify each pathway's CURRENT process state from evidence — a QUALITATIVE typed record
+    {state, waiting_on, basis}. No value mapping exists: the record conditions actors and structure
+    generation; it never enters a hazard, a progress bar, or any other number (§NAP). {} on any
+    failure — an ungrounded process is simply ungrounded, never 'neutral 0.5'."""
     if llm is None or not pathways:
         return {}
     try:
@@ -594,33 +372,41 @@ def ground_process_states(question, criterion, pathways, *, as_of="", evidence_t
                 continue
             pw = str(row.get("pathway", "")).lower()
             state = str(row.get("state", "")).lower()
-            if pw in {str(p).lower() for p in pathways} and state in PROCESS_STATE_LEVELS:
-                out[pw] = {"state": state, "value": PROCESS_STATE_LEVELS[state],
+            if pw in {str(p).lower() for p in pathways} and state in PROCESS_STATE_VOCAB:
+                out[pw] = {"state": state,
+                           "waiting_on": (str(row["waiting_on"])[:160]
+                                          if row.get("waiting_on") else None),
                            "basis": str(row.get("basis", ""))[:160]}
         return out
     except Exception:  # noqa: BLE001 — grounding must never block the forecast
         return {}
 
 
-def declare_pathway_processes(plan, modes: list, *, grounding: dict = None) -> dict:
-    """Declare one `pathway_progress:<pathway>` quantity per pathway present in the mode set —
-    initialized from the grounded process state (documented level map) or neutral 0.5. These are the
-    state variables the simulated actors' ACTIONS (phase4_execution), institutional stage reviews and
-    world-driven consumers move, and the hazard rounds consume — the endogenous clock. Idempotent."""
+def declare_typed_processes(plan, modes: list, *, grounding: dict = None) -> dict:
+    """Declare one QUALITATIVE `process_state:<pathway>` record per pathway present in the mode
+    set — a string-valued typed quantity carrying the grounded state label, plus the full record
+    on `plan._process_records`. These are typed facts about what is actually true in the compiled
+    world; they condition actor views and scenario structure generation. They are NOT numbers:
+    nothing consumes them as intensity, progress, or probability (§NAP replaces the numeric
+    `pathway_progress:*` declaration chain). An ungrounded pathway gets state `ungrounded` — an
+    honest unknown, never a neutral midpoint. Idempotent."""
     grounding = grounding or {}
     pathways = sorted({mode_pathway(m) for m in (modes or [])})
     declared = {str(q.get("name")) for q in plan.quantities if isinstance(q, dict)}
+    records = dict(getattr(plan, "_process_records", None) or {})
     added = {}
     for pw in pathways:
-        var = progress_var(pw)
+        var = f"{PROCESS_STATE_PREFIX}{pw}"
+        g = grounding.get(pw) or {}
+        rec = {"pathway": pw, "state": str(g.get("state") or "ungrounded"),
+               "waiting_on": g.get("waiting_on"), "basis": g.get("basis")}
+        records[pw] = rec
         if var in declared:
             continue
-        g = grounding.get(pw) or {}
-        val = float(g.get("value", 0.5))
-        plan.quantities.append({"name": var, "qtype": "pathway_progress",
-                                "value": round(val, 3), "sd": 0.15})
-        added[pw] = {"var": var, "initial": round(val, 3),
-                     "state": g.get("state", "unknown_neutral"), "basis": g.get("basis")}
+        plan.quantities.append({"name": var, "qtype": "process_state",
+                                "value": rec["state"], "sd": None})
+        added[pw] = rec
+    plan._process_records = records
     prior = set(getattr(plan, "_declared_pathways", None) or [])
     plan._declared_pathways = sorted(prior | set(pathways))
-    return {"pathways": pathways, "declared": added}
+    return {"pathways": pathways, "declared": added, "qualitative": True}

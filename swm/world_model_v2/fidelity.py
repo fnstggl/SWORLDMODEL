@@ -100,18 +100,17 @@ def fidelity_expand(plan, question, *, as_of, evidence_text="", llm=None) -> dic
     return rep
 
 
-#: high-effort ontology actions burn the actor's capacity resource (world_dynamics) — attrition is
-#: how exhaustion ends wars, delays launches and kills bills; costs apply only when the actor has a
-#: declared capacity resource (resource accounting is a no-op otherwise)
-_EFFORTFUL = ("escalate", "mobilize", "strike", "launch", "protest", "enforce")
+# §NAP: the invented capacity-cost accounting (0.02 per "effortful" action on a unit-less 0-1
+# resource) is removed with the capacity resource itself. Real resource costs belong to typed
+# quantities with real units.
 
 
 def _candidate_actions(entity: dict, pathways: list) -> list:
     """The REAL ontology candidate set for one strategic actor's recurring decision — universal:
     derived from the actor's entity type and the causal pathways present in the plan's mode graph,
-    never from scenario keywords. A contentless [act, wait] decision can neither express a stance
-    nor move a pathway process; these candidates can do both (phase4 scores them against the actor's
-    own grounded stances; execution writes their pathway effects into `pathway_progress:*`)."""
+    never from scenario keywords. A contentless [act, wait] decision cannot express a stance;
+    these candidates can. The actor's own qualitative cognition chooses among them (§NAP: no
+    numeric stance scoring, no scalar pathway effects)."""
     pws = set(pathways or [])
     etype = str(entity.get("type", "person"))
     acts = []
@@ -137,13 +136,7 @@ def _candidate_actions(entity: dict, pathways: list) -> list:
             acts += [{"type": n, "family": "organizational_market"}
                      for n in ("launch", "delay_launch", "authorize")]
     acts.append({"type": "wait"})
-    out = []
-    for a in acts[:12]:
-        if a["type"] in _EFFORTFUL:
-            from swm.world_model_v2.world_dynamics import EFFORTFUL_ACTION_COST
-            a = dict(a, resource_costs={"capacity": EFFORTFUL_ACTION_COST})
-        out.append(a)
-    return out
+    return acts[:12]
 
 
 # NOTE (event-driven temporal architecture): the periodic scheduler that used to live here

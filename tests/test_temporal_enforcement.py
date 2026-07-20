@@ -179,22 +179,16 @@ def test_rollout_engine_has_no_background_tick_cadence():
     assert "background_every_days" not in src
 
 
-def test_stance_reviews_are_event_driven_not_scheduled():
+def test_stance_dynamics_are_actor_mediated_not_numeric_rules():
+    """§NAP supersedes the numeric stance-review layer entirely: no rule thresholds, no
+    hysteresis constant, no attrition coupling, no StanceReviewOperator. Stances change through
+    the actors' OWN cognition at their real decision triggers."""
     from swm.world_model_v2 import world_dynamics as WD
-    assert not hasattr(WD, "STANCE_REVIEW_COOLDOWN")       # review-count cooldown is gone
-    assert hasattr(WD, "STANCE_MATERIAL_HYSTERESIS")
-    assert hasattr(WD, "contested_attrition_interval")     # elapsed-time attrition exists
-    assert "attrition_per_review" not in {k for k in WD.COUPLING_PRIORS}
-    assert "attrition_rate_per_day" in WD.COUPLING_PRIORS
-    op = WD.StanceReviewOperator()
-
-    class _Ev:
-        etype = "stance_relevant_change"
-        payload = {}
-
-    class _W:
-        quantities = {}
-    assert op.applicable(_W(), _Ev())
+    for gone in ("STANCE_REVIEW_COOLDOWN", "STANCE_MATERIAL_HYSTERESIS", "COUPLING_PRIORS",
+                 "contested_attrition_interval", "StanceReviewOperator", "sampled_coupling"):
+        assert not hasattr(WD, gone), f"{gone} must not exist in production world_dynamics"
+    from swm.world_model_v2.temporal_runtime import emit_stance_relevant_changes
+    assert emit_stance_relevant_changes(None, None, {"quantities[x]"}) == 0   # inert stub
 
 
 def test_event_time_uses_first_passage_not_grids():

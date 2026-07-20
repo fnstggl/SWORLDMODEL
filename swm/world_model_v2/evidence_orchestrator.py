@@ -152,13 +152,20 @@ def gather_evidence(question: str, *, as_of: str, requirements: list, llm=None,
         _run_query(terms, req.requirement_id, entity_for_wiki=wiki_ent, force_wiki=escalated)
 
     # escalation adds ONE extra decisive-fact query straight from question + resolution criterion, so a
-    # thin first pull gets a genuinely reformulated shot at the outcome-determining signal.
+    # thin first pull gets a genuinely reformulated shot at the outcome-determining signal — plus an
+    # OFFICIAL-SOURCE variant (announcement/statement/press-release terms) hunting the primary record
+    # a decisive fact would leave. Genuinely different retrieval, not re-rolls of the same query.
     if escalated:
         decisive = " ".join(_keywords(f"{question} {resolution_rule}", 10))
         if decisive:
             retrieval_plan.append({"requirement_id": "decisive_reformulation", "terms": decisive,
                                    "after": after, "before": before, "strategy": "escalated"})
             _run_query(decisive, "decisive_reformulation")
+            official = " ".join(_keywords(f"{question} {resolution_rule}", 6)
+                                + ["announcement", "statement", "press release"])
+            retrieval_plan.append({"requirement_id": "official_source_query", "terms": official,
+                                   "after": after, "before": before, "strategy": "escalated"})
+            _run_query(official, "official_source_query")
 
     # user documents (private by default via visibility hint)
     if user_documents:

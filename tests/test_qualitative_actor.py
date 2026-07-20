@@ -356,8 +356,9 @@ def test_novel_action_with_causal_reading_is_compiled_and_moves_the_world():
     assert post.provenance["qualitative"]["novel_action_unmodeled"] is False
     assert sel.mechanisms_triggered                         # executable, not decorative
     delta, _ = rt.execute(w, sel, post, tr, seed=1)
-    moved = [c for c in delta.changes if "pathway_progress" in c.get("path", "")]
-    assert moved                                            # the novel action moved the process
+    assert delta.changes                                    # the novel action moved TYPED state
+    # §NAP: even the fixed baseline projects NO generic progress bar from the action
+    assert not [c for c in delta.changes if "pathway_progress" in c.get("path", "")]
 
 
 def test_novel_action_without_causal_reading_is_marked_unmodeled():

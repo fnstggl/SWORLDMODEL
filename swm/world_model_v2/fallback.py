@@ -211,7 +211,10 @@ class GenericOutcomeOperator(TransitionOperator):
             post = a.get("posterior_rate_particles")
             if post:                                         # Phase 3: draw the rate from the POSTERIOR
                 p = _draw_posterior_rate(post, rng)
-                p = _apply_lean_shift(p, a["lean"])          # competing structures shift the posterior base
+                # §NAP: competing structural hypotheses stay SEPARATE qualitative structures —
+                # the ±0.2/±0.4 numeric lean shift on the posterior base is quarantined
+                # (legacy_numeric_ablations.LEAN_SHIFT); the hypothesis label rides in
+                # provenance, never in the number.
                 rate_src = "posterior"
             elif not generic_prior_allowed():
                 # §28: no posterior, no validated mechanism — the default runtime does NOT draw
@@ -299,11 +302,6 @@ def _modulate_rate(world, p: float, modulators) -> tuple:
     return (1.0 - total_w) * p + blended, used
 
 
-#: per-hypothesis lean → multiplicative shift on a posterior rate, so competing structures produce genuinely
-#: different terminals from the SAME evidence-updated base rate (kept in [0,1]).
-_LEAN_SHIFT = {"strong_no": -0.4, "weak_no": -0.2, "neutral": 0.0, "weak_yes": 0.2, "strong_yes": 0.4}
-
-
 def _draw_posterior_rate(particles, rng) -> float:
     """Weighted draw of one rate from the posterior rate particles [(rate, weight)]. Propagates posterior
     uncertainty: different particles pick different rates, so the terminal spread reflects the posterior."""
@@ -317,14 +315,16 @@ def _draw_posterior_rate(particles, rng) -> float:
 
 
 def _apply_lean_shift(p: float, lean: str) -> float:
-    """Shift a posterior base rate toward a hypothesis lean (toward 1 for yes-leans, toward 0 for no-leans),
-    magnitude bounded so the posterior still dominates. Identity for neutral."""
-    s = _LEAN_SHIFT.get(lean, 0.0)
-    if s > 0:
-        return min(1.0, p + (1.0 - p) * s)
-    if s < 0:
-        return max(0.0, p * (1.0 + s))
-    return p
+    """§NAP QUARANTINED: the hypothesis-lean numeric shift (±0.2/±0.4) may not alter production
+    rates — competing structures stay separate qualitative structures. Raises on any non-neutral
+    use; the historical table lives in legacy_numeric_ablations (LEAN_SHIFT)."""
+    if str(lean or "neutral") == "neutral":
+        return p
+    raise PermissionError(
+        "hypothesis-lean numeric shifts are quarantined (§NAP): a structural hypothesis is a "
+        "distinct qualitative model, never a ±0.2/±0.4 nudge on a posterior rate. Use "
+        "legacy_numeric_ablations.legacy_numeric_table('LEAN_SHIFT', acknowledge=...) only from "
+        "an explicit ablation.")
 
 
 def _beta_sample(rng, a, b):

@@ -52,115 +52,13 @@ ACTION_ONTOLOGY = {
 KNOWN_ACTIONS = {name: family for family, names in ACTION_ONTOLOGY.items() for name in names}
 
 # ---------------------------------------------------------------------------------------------
-# ACTION → PATHWAY-PROCESS EFFECTS (universal, ontology-level — never scenario keywords).
-# Each entry maps an ontology action to the signed effect its EXECUTION has on the causal pathway
-# PROCESSES of the question's mode graph (mode_graph.PATHWAYS): accepting advances the shared
-# cooperative process whoever does it; rejecting/exiting stalls it; mobilizing/striking advances a
-# unilateral campaign; approving/scheduling advances an institutional procedure; launching advances
-# operational execution. Effects are in [-1, 1] and are DIRECTIONS with documented magnitudes, not
-# fitted parameters — they parameterize (a) how executed actions move the `pathway_progress:*`
-# quantities the hazard rounds consume (phase4_execution._apply_pathway_effects, the endogenous
-# clock) and (b) the stance-consistency utility component (an actor committed against a pathway is
-# penalized for actions that advance it). Keyed (family, name) with a name-level fallback because a
-# few names (escalate, exit, reject) live in several families with the same causal reading.
-ACTION_PATHWAY_EFFECTS = {
-    # --- negotiation: one SHARED cooperative process; escalation bleeds into the unilateral track
-    ("negotiation", "accept"): {"cooperative_agreement": 1.0},
-    ("negotiation", "concede"): {"cooperative_agreement": 0.6},
-    ("negotiation", "counteroffer"): {"cooperative_agreement": 0.35},
-    ("negotiation", "seek_mediator"): {"cooperative_agreement": 0.4},
-    ("negotiation", "reveal"): {"cooperative_agreement": 0.15},
-    ("negotiation", "delay"): {"cooperative_agreement": -0.2},
-    ("negotiation", "hold_position"): {"cooperative_agreement": -0.3},
-    ("negotiation", "conceal"): {"cooperative_agreement": -0.1},
-    ("negotiation", "reject"): {"cooperative_agreement": -0.7},
-    ("negotiation", "exit"): {"cooperative_agreement": -1.0},
-    ("negotiation", "escalate"): {"cooperative_agreement": -0.5, "unilateral_action": 0.4,
-                                  "competitive_interaction": 0.3},
-    # --- participation: mobilization is unilateral-campaign fuel; support/oppose act on procedures
-    ("participation", "mobilize"): {"unilateral_action": 0.5, "competitive_interaction": 0.3},
-    ("participation", "strike"): {"unilateral_action": 0.35},
-    ("participation", "protest"): {"institutional_procedure": -0.2, "unilateral_action": 0.2},
-    ("participation", "support"): {"institutional_procedure": 0.35},
-    ("participation", "oppose"): {"institutional_procedure": -0.35},
-    ("participation", "coordinate"): {"cooperative_agreement": 0.3},
-    ("participation", "defect"): {"cooperative_agreement": -0.4},
-    ("participation", "persuade"): {"cooperative_agreement": 0.2},
-    ("participation", "withdraw"): {"cooperative_agreement": -0.3, "unilateral_action": -0.2},
-    # --- institutional: the procedure's own steps
-    ("institutional", "approve"): {"institutional_procedure": 0.8},
-    ("institutional", "reject"): {"institutional_procedure": -0.8},
-    ("institutional", "veto"): {"institutional_procedure": -1.0},
-    ("institutional", "amend"): {"institutional_procedure": 0.15},
-    ("institutional", "defer"): {"institutional_procedure": -0.3},
-    ("institutional", "refer"): {"institutional_procedure": 0.1},
-    ("institutional", "schedule"): {"institutional_procedure": 0.3},
-    ("institutional", "place_on_agenda"): {"institutional_procedure": 0.3},
-    ("institutional", "enforce"): {"institutional_procedure": 0.3, "operational_execution": 0.3},
-    ("institutional", "appeal"): {"institutional_procedure": -0.2},
-    ("institutional", "escalate"): {"institutional_procedure": 0.2},
-    # --- organizational/market: operational execution + market/cooperative edges
-    ("organizational_market", "launch"): {"operational_execution": 0.9},
-    ("organizational_market", "delay_launch"): {"operational_execution": -0.6},
-    ("organizational_market", "authorize"): {"operational_execution": 0.5},
-    ("organizational_market", "allocate_budget"): {"operational_execution": 0.3,
-                                                   "resource_depletion": 0.2},
-    ("organizational_market", "request_approval"): {"institutional_procedure": 0.3},
-    ("organizational_market", "acquire"): {"operational_execution": 0.4,
-                                           "market_aggregation": 0.2},
-    ("organizational_market", "hire"): {"operational_execution": 0.2},
-    ("organizational_market", "fire"): {"operational_execution": -0.2},
-    ("organizational_market", "purchase"): {"market_aggregation": 0.15},
-    ("organizational_market", "sell"): {"market_aggregation": -0.15},
-    ("organizational_market", "withdraw_offer"): {"cooperative_agreement": -0.7},
-    # --- messaging: weak signals into the shared cooperative track
-    ("messaging", "escalate_message"): {"cooperative_agreement": -0.15},
-    ("messaging", "reveal_information"): {"cooperative_agreement": 0.1},
-    ("messaging", "withhold_information"): {"cooperative_agreement": -0.1},
-}
-_NAME_LEVEL_EFFECTS = {}
-for (_f, _n), _eff in ACTION_PATHWAY_EFFECTS.items():
-    _NAME_LEVEL_EFFECTS.setdefault(_n, _eff)
-
-
-def action_pathway_effects(action_family: str, action_name: str) -> dict:
-    """The signed pathway-process effects of one ontology action ({} for effect-free actions like
-    wait/acknowledge — they move nothing and alignment is 0)."""
-    return dict(ACTION_PATHWAY_EFFECTS.get((str(action_family), str(action_name)))
-                or _NAME_LEVEL_EFFECTS.get(str(action_name)) or {})
-
-
-def actions_advancing_pathway(pathway: str, *, min_effect: float = 0.5) -> list:
-    """Ontology actions whose execution advances the given pathway by at least `min_effect` — the
-    prohibition set a binding prevent-commitment implies (resolution_criteria._binding_prohibitions)."""
-    pw = str(pathway).strip().lower()
-    out = set()
-    for (fam, name), eff in ACTION_PATHWAY_EFFECTS.items():
-        if pw == "any":
-            if any(v >= min_effect for v in eff.values()):
-                out.add(name)
-        elif eff.get(pw, 0.0) >= min_effect:
-            out.add(name)
-    return sorted(out)
-
-
-def stance_action_alignment(stances: list, action) -> float:
-    """How consistent this action is with the actor's OWN grounded public stances, in [-1, 1] —
-    the behavior channel: stance → policy → action. Per pathway the actor's net orientation
-    (mode_graph.pathway_orientation: pursue-stances positive; prevent-stances negative when the
-    pathway is one shared process or the stance is untargeted) multiplies the action's signed
-    effect on that pathway. Putin (committed against the cooperative process) is penalized for
-    `accept` and rewarded for `hold_position`; simultaneously (pursuing his own unilateral
-    campaign) rewarded for `mobilize` — one actor, several stances, coherent behavior."""
-    effects = action_pathway_effects(getattr(action, "action_family", ""),
-                                     getattr(action, "action_name", ""))
-    if not effects or not stances:
-        return 0.0
-    from swm.world_model_v2.mode_graph import pathway_orientation
-    total = 0.0
-    for pw, eff in effects.items():
-        total += pathway_orientation(stances, pw) * float(eff)
-    return max(-1.0, min(1.0, total))
+# §NAP: the ACTION → PATHWAY-PROCESS EFFECTS table (accept +1.0, concede +0.6, reject −0.7,
+# launch +0.9 …) is QUARANTINED in legacy_numeric_ablations. An action name does not carry a
+# universal numeric world effect: consequences flow through the generated causal-boundary
+# architecture (attempt → mechanisms → typed state), and stance-consistency conditions the
+# actor's OWN qualitative cognition, never a utility coefficient. The `actions_advancing_pathway`
+# ≥0.5 prohibition derivation is likewise quarantined — binding prohibitions now come from
+# literal binding instruments plus qualitative contradiction judgment (resolution_criteria).
 
 FEASIBILITY_STATUSES = (
     "feasible", "feasible_with_uncertainty", "temporarily_unavailable",
@@ -401,11 +299,16 @@ class ActorViewBuilder:
         # outcome/readout machinery (absorption stamps, sampled coefficients, provisional flags)
         # is simulator-only state and NEVER enters an actor's view.
         for qname, q in (world.quantities or {}).items():
-            if qname.startswith(("pathway_progress:", "mode_progress:", "population_aggregate:")) \
-                    or qname == "nonlinear_state":
+            if qname.startswith(("population_aggregate:",)) or qname == "nonlinear_state":
                 v = getattr(q, "value", None)
                 if isinstance(v, (int, float)):
                     beliefs[f"process:{qname}"] = float(v)
+            elif qname.startswith("process_state:"):
+                # §NAP: process state is a QUALITATIVE typed fact — actors perceive the label
+                # ("active", "exploratory", …), never a completion fraction
+                v = getattr(q, "value", None)
+                if isinstance(v, str) and v:
+                    beliefs[f"process:{qname}"] = v
         resources = self._mapping(fields.get("resources"))
         prefs = self._mapping(fields.get("preferences"))
         uncertainty = {
@@ -813,11 +716,11 @@ class UtilityInference:
             "obligation": float(action.parameters.get("obligation_alignment", 0.0) or 0.0),
             "reputation": float(action.parameters.get("reputation_effect", 0.0) or 0.0),
             "commitment": float(len(action.commitments_created)) * 0.1,
-            # the BEHAVIOR channel of grounded intentions: consistency of this action with the
-            # actor's OWN evidence-grounded public stances (mode_graph orientation × ontology
-            # pathway effects). This is how a stated refusal conditions which actions get chosen —
-            # not just which hazards get multiplied.
-            "stance": stance_action_alignment(view.stances, action),
+            # §NAP: the numeric stance-alignment component (orientation × hand-authored pathway
+            # effects) is quarantined. Even in this explicit numeric-baseline arm the stance
+            # channel is not numerically synthesized; production stance conditioning is the
+            # qualitative actor's own cognition.
+            "stance": 0.0,
         }
         for name in self.COMPONENTS:
             g = group_params.get(name, {"mean": 0.0, "sd": 1.0})

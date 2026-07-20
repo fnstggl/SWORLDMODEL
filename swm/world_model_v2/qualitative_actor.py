@@ -51,7 +51,7 @@ from swm.world_model_v2.mechanisms import MechanismEntry, register_mechanism
 from swm.world_model_v2.phase4_execution import ActorPolicyRuntime
 from swm.world_model_v2.phase4_policy import (
     ACTION_ONTOLOGY, ActionPosterior, ActionTarget, ActorView, KNOWN_ACTIONS,
-    PolicyFamilyPosterior, SCHEMA_VERSION, TypedAction, action_pathway_effects, build_trace,
+    PolicyFamilyPosterior, SCHEMA_VERSION, TypedAction, build_trace,
 )
 from swm.world_model_v2.state import F
 
@@ -692,13 +692,9 @@ class NovelActionCompiler:
         if anchor:
             params["ontology_anchor"] = {"family": anchor[0], "name": anchor[1],
                                          "matched_by": anchor[2]}
-            if anchor[1] in self.EFFORTFUL:
-                from swm.world_model_v2.world_dynamics import EFFORTFUL_ACTION_COST
-                params_costs = {"capacity": EFFORTFUL_ACTION_COST}
-            else:
-                params_costs = {}
-        else:
-            params_costs = {}
+        # §NAP: no invented capacity cost — effort reaches the actor through typed world state
+        # its own cognition observes, never through a unit-less 0-1 resource drain
+        params_costs = {}
         observability = {"default": {"public": "public", "private": "participants",
                                      "mixed": "participants"}.get(qd.observability, "participants")}
         action = TypedAction(
@@ -728,11 +724,13 @@ class NovelActionCompiler:
             str(qd.novel_action_proposal.get("description", "")),
             qd.intended_effect)).lower()))
         best = None
+        # §NAP: the anchor decision is purely SEMANTIC (token overlap with the ontology names) —
+        # it no longer requires the action to carry a hand-authored pathway magnitude
         for family, names in ACTION_ONTOLOGY.items():
             for oname in names:
                 otokens = set(oname.split("_"))
                 overlap = len(otokens & text_tokens)
-                if overlap and action_pathway_effects(family, oname):
+                if overlap:
                     score = overlap / len(otokens)
                     if score >= 1.0 and (best is None or score > best[3]):
                         best = (family, oname, "token_overlap", score)

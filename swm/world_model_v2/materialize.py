@@ -123,6 +123,13 @@ def build_world(plan, *, world_id: str = "w0", evidence_hash: str = "", versions
         except KeyError:
             omissions.append({"kind": "quantity", "name": name, "reason": "quantity construction failed"})
     w.omissions = omissions
+    # §NAP: conversion-time unresolved-mechanism records (refused numeric provenance) ride onto
+    # every branch, so the terminal readout classifies their mass `unresolved_mechanism` instead
+    # of silently reading non-absorption as "no"
+    plan_unresolved = list(getattr(plan, "_unresolved_mechanisms", None) or [])
+    if plan_unresolved:
+        w._unresolved_mechanisms = [dict(r) for r in plan_unresolved]
+        w.omissions.extend({"kind": "unresolved_mechanism", **r} for r in plan_unresolved[:12])
     return w
 
 
@@ -174,6 +181,11 @@ def queue_builder_from_plan(plan):
                 from swm.world_model_v2.event_time import ensure_first_passage_state
                 from swm.world_model_v2.temporal_hazards import schedule_crossing
                 st = ensure_first_passage_state(world, spec)
+                if st is None:
+                    # §NAP: the spec's numeric provenance was refused — the mechanism is already
+                    # recorded unresolved on the branch; nothing is scheduled and no default
+                    # intensity is substituted
+                    continue
                 schedule_crossing(q, world, st, etype="first_passage")
             except Exception as e:  # noqa: BLE001 — a broken process spec is recorded, not fatal
                 world.omissions.append({"kind": "first_passage_process",
@@ -339,15 +351,28 @@ def ensure_outcome_pathway(plan, ops, rejections=None) -> dict:
     stochastic compile/instantiation draw left the plan with NOTHING able to write the outcome → 0 deltas,
     empty census, p=None, no error anywhere). Enforced immediately before rollout:
 
-      at least one outcome-capable (scheduled event, instantiated operator) pair must exist.
+      at least one outcome-capable pathway must exist — a (scheduled event, instantiated operator)
+      pair, OR an event-time absorbing channel (dated absorbing fact / absorbing institutional
+      decision / provenance-approved first-passage residual process, plus the absorption monitor).
 
     If violated, REPAIR in place (recorded, never silent):
       1. an outcome event exists but its writer operator was dropped (e.g. silently rejected at
-         instantiation) → re-instantiate that operator into `ops`;
-      2. no outcome event survived at all (e.g. event-time conversion removed the resolver and left no
-         absorber) → re-add the canonical `resolve_outcome` terminal event + guarantee its operator.
-    Returns a report for provenance: capable events, repairs made, and the operator rejections that were
-    previously discarded silently."""
+         instantiation) → re-instantiate that operator into `ops` (structure decides the outcome —
+         declared components are restored, never replaced by a prior);
+      2. an event-time plan has absorbing channels but lost the absorption monitor → re-instantiate
+         the monitor (the readout observes absorption; without the monitor nothing is stamped);
+      3. a RESOLVER-CONTRACT plan lost every outcome event → re-add the canonical `resolve_outcome`
+         terminal event + guarantee its operator (with the posterior attached when present; without a
+         posterior the generic operator itself enforces the §NAP/§28 refusal gate).
+
+    NOT a violation (§NAP): a plan whose outcome mechanism was deliberately recorded UNRESOLVED
+    (`plan._unresolved_mechanisms`) — the absence of a resolving channel is the honest epistemic
+    state; the unabsorbed mass classifies `unresolved_mechanism` at readout and the result reports
+    status `unresolved` with the missing mechanisms named. Bolting a resolver onto it would
+    manufacture the certainty the model explicitly refused to manufacture.
+
+    Returns a report for provenance: capable pathways, repairs made, honest-unresolved marking, and
+    the operator rejections that were previously discarded silently."""
     op_names = {getattr(o, "name", "") for o in ops}
     capable, missing = [], []
     for e in plan.scheduled_events:
@@ -363,21 +388,67 @@ def ensure_outcome_pathway(plan, ops, rejections=None) -> dict:
             capable.append(et)
         else:
             missing.extend(needed)
+    # event-time absorbing channels: provenance-approved first-passage residual processes live on
+    # plan.first_passage_processes (crossings are scheduled per branch by the queue builder)
+    fp_specs = list(getattr(plan, "first_passage_processes", None) or [])
+    fp_viable = [s for s in fp_specs
+                 if str(s.get("kind")) == "calibrated_resolution"
+                 and (s.get("calibration") or {}).get("posterior_rate_particles")]
+    is_event_time = str(getattr(plan.outcome_contract, "family", "")) == "event_time"
+    if fp_viable:
+        if "first_passage" in op_names:
+            capable.append("first_passage")
+        else:
+            missing.append("first_passage")
+    # event-time plans READ absorption: any absorbing channel (present or restorable) needs the
+    # monitor too — absorbing writers without the monitor stamp nothing and the readout is empty
+    if is_event_time and (capable or missing) and "absorption_monitor" not in op_names:
+        missing.append("absorption_monitor")
     report = {"outcome_capable_events": sorted(set(capable)), "repaired": False, "repairs": [],
               "operator_rejections": list(rejections or [])[:8]}
-    if capable:
+    if capable and "absorption_monitor" not in missing:
         return report
-    # repair 1: outcome events exist, writers were dropped — re-instantiate them
+    # repair 1/2: outcome events (or the absorption monitor) exist/needed, writers were dropped —
+    # re-instantiate them. Restoring DECLARED structure always precedes any resolver fallback.
     for name in dict.fromkeys(missing):
         try:
             ops.append(_instantiate_operator(name))
+            op_names.add(name)
             report["repairs"].append(f"reinstantiated_dropped_writer:{name}")
             report["repaired"] = True
         except Exception as e:  # noqa: BLE001 — fall through to the resolver repair
             report["repairs"].append(f"reinstantiation_failed:{name}:{type(e).__name__}")
     if report["repaired"]:
+        report["outcome_capable_events"] = sorted(set(capable) | set(missing) & op_names)
         return report
-    # repair 2: no outcome event survived — re-add the canonical terminal resolver (+ its operator)
+    # §NAP: a deliberate unresolved recording is an HONEST terminal state, not a broken pathway —
+    # never repaired with a resolver; the readout classifies the mass unresolved_mechanism.
+    if list(getattr(plan, "_unresolved_mechanisms", None) or []):
+        report["honest_unresolved_by_design"] = True
+        report["repairs"].append("no_repair_unresolved_mechanism_recorded (§NAP)")
+        return report
+    if is_event_time:
+        # an event-time plan with NO absorbing channel and NO unresolved record is an accidental
+        # total loss — record it unresolved (named, preserved) rather than inventing a resolver
+        # the readout-not-resolver architecture forbids. Never silent, never pretending success.
+        try:
+            from swm.world_model_v2.numeric_provenance import plan_record_unresolved
+            plan_record_unresolved(
+                plan, mechanism="outcome_pathway",
+                why="event-time plan retained no absorbing channel (no dated absorbing fact, no "
+                    "absorbing institutional decision, no provenance-approved residual process) — "
+                    "recorded unresolved instead of bolting a terminal resolver onto a "
+                    "readout-not-resolver contract",
+                missing="scenario-generated resolving mechanism, evidence-cited scheduled fact, "
+                        "absorbing institutional decision, or evidence-updated posterior")
+            report["repairs"].append("recorded_unresolved_no_absorbing_channel (§NAP)")
+            report["honest_unresolved_by_design"] = True
+        except Exception as e:  # noqa: BLE001
+            report["repairs"].append(f"unresolved_recording_failed:{type(e).__name__}")
+        return report
+    # repair 3: resolver-contract plan lost every outcome event — re-add the canonical terminal
+    # resolver (+ its operator). With a posterior attached the resolver draws from evidence; without
+    # one, GenericOutcomeOperator itself enforces the §NAP/§28 broad-prior refusal gate.
     contract = plan.outcome_contract
     var = getattr(contract, "readout_var", None) or "outcome"
     options = [str(o) for o in (getattr(contract, "options", None)
