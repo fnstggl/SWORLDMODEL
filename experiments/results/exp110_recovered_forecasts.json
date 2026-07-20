@@ -1,0 +1,226 @@
+{
+ "experiment": "EXP-110 forecast recovery from existing checkpoints (no reruns, no new calls, original as_of/evidence untouched)",
+ "lean": [
+  {
+   "qid": "017e64ef-7354-56c4-8a4d-e27121bc639a",
+   "question": "Will daily oil tanker transits through the Strait of Hormuz reach 50 or more on any day between April 29 and J",
+   "original_status": "under_modeled",
+   "original_p_raw": null,
+   "per_model": {
+    "m0_actor_relationship": {
+     "probability": 1.0,
+     "source": "partial_rollouts",
+     "grade": "exploratory",
+     "conditional_on_resolved": 1.0,
+     "unresolved_mass": 0.303,
+     "interval": [
+      0.697,
+      1.0
+     ],
+     "weight_sensitive": false
+    },
+    "m1_lean_reversal_challenger": {
+     "probability": 0.769,
+     "source": "evidence_conditioned_prior",
+     "grade": "exploratory",
+     "conditional_on_resolved": null,
+     "unresolved_mass": 0.0,
+     "interval": null,
+     "weight_sensitive": true
+    }
+   },
+   "recovered_probability": 0.8845,
+   "recovered_interval": [
+    0.769,
+    1.0
+   ],
+   "weight_sensitive": true,
+   "probability_source": "mixed:evidence_conditioned_prior+partial_rollouts",
+   "grounding_grade": "exploratory",
+   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)"
+  },
+  {
+   "qid": "5c0765ed-cbd1-5af5-bce0-adbfebd4e0f6",
+   "question": "Will Apple announce visionOS 27 (or a successor major version to visionOS 26) at WWDC 2026?",
+   "original_status": "under_modeled",
+   "original_p_raw": 0.0,
+   "per_model": {
+    "m0_actor_relationship": {
+     "probability": 0.834,
+     "source": "evidence_conditioned_prior",
+     "grade": "exploratory",
+     "conditional_on_resolved": null,
+     "unresolved_mass": 0.0,
+     "interval": null,
+     "weight_sensitive": true
+    },
+    "m1_lean_reversal_challenger": {
+     "probability": 0.0,
+     "source": "partial_rollouts",
+     "grade": "exploratory",
+     "conditional_on_resolved": 0.0,
+     "unresolved_mass": 0.9688,
+     "interval": [
+      0.0,
+      0.9688
+     ],
+     "weight_sensitive": true
+    }
+   },
+   "recovered_probability": 0.417,
+   "recovered_interval": [
+    0.0,
+    0.834
+   ],
+   "weight_sensitive": true,
+   "probability_source": "mixed:evidence_conditioned_prior+partial_rollouts",
+   "grounding_grade": "exploratory",
+   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)"
+  },
+  {
+   "qid": "7279494c-a775-5a57-a5f2-ac22252fb286",
+   "question": "Will the Bank of Japan raise its short-term policy interest rate at the June 15\u201316, 2026 Monetary Policy Meeti",
+   "original_status": "under_modeled",
+   "original_p_raw": null,
+   "per_model": {
+    "m0_actor_relationship": {
+     "probability": 1.0,
+     "source": "completed_rollouts",
+     "grade": "partially_grounded",
+     "conditional_on_resolved": 1.0,
+     "unresolved_mass": 0.0,
+     "interval": [
+      1.0,
+      1.0
+     ],
+     "weight_sensitive": false
+    },
+    "m1_lean_reversal_challenger": {
+     "probability": 0.129,
+     "source": "evidence_conditioned_prior",
+     "grade": "exploratory",
+     "conditional_on_resolved": null,
+     "unresolved_mass": 0.0,
+     "interval": null,
+     "weight_sensitive": true
+    }
+   },
+   "recovered_probability": 0.5645,
+   "recovered_interval": [
+    0.129,
+    1.0
+   ],
+   "weight_sensitive": true,
+   "probability_source": "mixed:completed_rollouts+evidence_conditioned_prior",
+   "grounding_grade": "exploratory",
+   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)"
+  },
+  {
+   "qid": "741b4bed-7502-5cd2-9cbe-949fbc70f857",
+   "question": "Will Matthew Wale be elected as the next Prime Minister of Solomon Islands following the May 2026 no-confidenc",
+   "original_status": "unresolved",
+   "original_p_raw": null,
+   "per_model": {
+    "m0_actor_relationship": {
+     "probability": 0.435,
+     "source": "evidence_conditioned_prior",
+     "grade": "exploratory",
+     "conditional_on_resolved": null,
+     "unresolved_mass": 0.0,
+     "interval": null,
+     "weight_sensitive": true
+    },
+    "m1_lean_reversal_challenger": {
+     "probability": 0.435,
+     "source": "evidence_conditioned_prior",
+     "grade": "exploratory",
+     "conditional_on_resolved": null,
+     "unresolved_mass": 0.0,
+     "interval": null,
+     "weight_sensitive": true
+    }
+   },
+   "recovered_probability": 0.435,
+   "recovered_interval": [
+    0.435,
+    0.435
+   ],
+   "weight_sensitive": true,
+   "probability_source": "evidence_conditioned_prior",
+   "grounding_grade": "exploratory",
+   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)"
+  },
+  {
+   "qid": "cfb43147-d9d2-5bd9-903f-f449e9a5aecf",
+   "question": "Will the Banxico Governing Board's June 25, 2026, interest rate decision be unanimous (5-0 vote)?",
+   "original_status": "unresolved",
+   "original_p_raw": null,
+   "per_model": {
+    "m0_actor_relationship": {
+     "probability": 0.769,
+     "source": "evidence_conditioned_prior",
+     "grade": "exploratory",
+     "conditional_on_resolved": null,
+     "unresolved_mass": 0.0,
+     "interval": null,
+     "weight_sensitive": true
+    },
+    "m1_lean_reversal_challenger": {
+     "probability": 0.769,
+     "source": "evidence_conditioned_prior",
+     "grade": "exploratory",
+     "conditional_on_resolved": null,
+     "unresolved_mass": 0.0,
+     "interval": null,
+     "weight_sensitive": true
+    }
+   },
+   "recovered_probability": 0.769,
+   "recovered_interval": [
+    0.769,
+    0.769
+   ],
+   "weight_sensitive": true,
+   "probability_source": "evidence_conditioned_prior",
+   "grounding_grade": "exploratory",
+   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)"
+  }
+ ],
+ "full_fidelity": [
+  {
+   "qid": "5c0765ed-cbd1-5af5-bce0-adbfebd4e0f6",
+   "question": "Will Apple announce visionOS 27 (or a successor major version to visionOS 26) at WWDC 2026?",
+   "original_status": "unresolved",
+   "original_p_raw": null,
+   "per_model": {
+    "m3_information_distribution": {
+     "probability": 0.834,
+     "source": "evidence_conditioned_prior",
+     "grade": "exploratory",
+     "conditional_on_resolved": null,
+     "unresolved_mass": 0.0,
+     "interval": null,
+     "weight_sensitive": true
+    },
+    "m4_adversarial_alternative": {
+     "probability": 0.834,
+     "source": "evidence_conditioned_prior",
+     "grade": "exploratory",
+     "conditional_on_resolved": null,
+     "unresolved_mass": 0.0,
+     "interval": null,
+     "weight_sensitive": true
+    }
+   },
+   "recovered_probability": 0.834,
+   "recovered_interval": [
+    0.834,
+    0.834
+   ],
+   "weight_sensitive": true,
+   "probability_source": "evidence_conditioned_prior",
+   "grounding_grade": "exploratory",
+   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)"
+  }
+ ]
+}

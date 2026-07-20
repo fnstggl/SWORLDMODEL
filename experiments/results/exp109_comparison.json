@@ -1,0 +1,1355 @@
+{
+ "experiment": "EXP-109 \u00a723 comparison: full_fidelity (EXP-107) vs lean_adaptive (EXP-108) on the five frozen BTF-3 questions",
+ "price_assumptions": {
+  "model": "deepseek-v4-flash",
+  "input_per_m_cache_miss": 0.28,
+  "input_per_m_cache_hit": 0.028,
+  "output_per_m": 0.42,
+  "note": "cost = tokens \u00d7 these unit prices; tokens are provider-reported"
+ },
+ "totals": {
+  "full_fidelity": {
+   "n_llm_calls": 2411,
+   "input_tokens": 2603452,
+   "output_tokens": 1115462,
+   "provider_cache_hit_tokens": 737152,
+   "wall_clock_s": 12720.6,
+   "cost_usd": 1.0117,
+   "n_scored": 1,
+   "brier": 0.0276,
+   "accuracy_at_0.5": 1.0
+  },
+  "lean_adaptive": {
+   "n_llm_calls": 1052,
+   "input_tokens": 1333710,
+   "output_tokens": 814374,
+   "provider_cache_hit_tokens": 217472,
+   "wall_clock_s": 8039.7,
+   "cost_usd": 0.6606,
+   "n_scored": 5,
+   "brier": 0.3369,
+   "accuracy_at_0.5": 0.4
+  }
+ },
+ "per_question": [
+  {
+   "qid": "7279494c-a775-5a57-a5f2-ac22252fb286",
+   "question": "Will the Bank of Japan raise its short-term policy interest rate at the June 15\u201316, 2026 Monetary Policy Meeting?",
+   "outcome": 1,
+   "full_fidelity": {
+    "prediction": null,
+    "status": null,
+    "brier": null,
+    "side_of_0.5": "no_forecast",
+    "correct_side": null,
+    "llm_calls": null,
+    "calls_by_stage": {},
+    "actor_calls": null,
+    "structural_models_generated": null,
+    "structural_models_simulated": null,
+    "particles_by_model": null,
+    "input_tokens": null,
+    "output_tokens": null,
+    "provider_cache_hit_tokens": null,
+    "wall_clock_s": null,
+    "cost_usd": null,
+    "truncation": 0,
+    "limitation_heads": [],
+    "grounding_grade": null,
+    "probability_source": null,
+    "uncertainty_interval": null,
+    "weight_sensitive": null,
+    "probability_recovered_by": null
+   },
+   "lean_adaptive": {
+    "prediction": 0.5645,
+    "status": "under_modeled",
+    "brier": 0.1897,
+    "side_of_0.5": "yes",
+    "correct_side": true,
+    "llm_calls": 115,
+    "calls_by_stage": {},
+    "actor_calls": null,
+    "input_tokens": 180076,
+    "output_tokens": 134399,
+    "provider_cache_hit_tokens": 38400,
+    "wall_clock_s": 1218.0,
+    "cost_usd": 0.0972,
+    "truncation": 4,
+    "limitation_heads": [
+     "omitted (negligible-sensitivity): global financial market shocks",
+     "omitted (negligible-sensitivity): political pressure from government",
+     "Outcome unresolved under the current model: no validated causal mechanism resolv",
+     "structurally underidentified: the generation ceiling was reached while the omiss",
+     "UNDER-MODELED: unresolved high-sensitivity boundary components remain outside th"
+    ],
+    "grounding_grade": "exploratory",
+    "probability_source": "mixed:completed_rollouts+evidence_conditioned_prior",
+    "uncertainty_interval": [
+     0.129,
+     1.0
+    ],
+    "weight_sensitive": true,
+    "probability_recovered_by": "exp110_from_stored_artifacts",
+    "one_call_successes": 27,
+    "escalations": {
+     "actor_blocked_on_missing_decisive_fact": 3
+    },
+    "unique_decision_contexts": 30,
+    "decision_cache_hits": 449,
+    "invalidated_cache_hits": 0,
+    "largest_context_reuse": [
+     {
+      "context_hash": "52c86ea8da68718128fd04c9c78499b955d4eee3847e17ad89ac7f9f54d76cad",
+      "n_reuses": 17
+     },
+     {
+      "context_hash": "d013206aac58fb2a298f2dac935b5858335c390b0b12e5fde16af9266b957efc",
+      "n_reuses": 17
+     },
+     {
+      "context_hash": "65ee104b58f3cef01d6bc2271c427365cbd70e66bdbd8ae4dbcceeb93dafd53f",
+      "n_reuses": 17
+     },
+     {
+      "context_hash": "f624fa6e6032bb95f3e71a36db2234890d616ec38ea9f8222964c2f6aaf2a770",
+      "n_reuses": 17
+     },
+     {
+      "context_hash": "8ea5746b804fbcb3fe1f05c3e6856a5462863e4fe5780709b90fe384b188153b",
+      "n_reuses": 17
+     },
+     {
+      "context_hash": "f97dc40b9398e663d263f79bb95a57fa1b8acdfdd00d11bb664c2ea3042850c5",
+      "n_reuses": 17
+     },
+     {
+      "context_hash": "83b956d90f9bb793583fea4b102e5057b2eadc72e49e5380141dc57f4bff0d7b",
+      "n_reuses": 17
+     },
+     {
+      "context_hash": "1c921383699c70b42df0d57cb895c5f66f258d3d65fd539eef671854956e1865",
+      "n_reuses": 17
+     },
+     {
+      "context_hash": "2b1776ae0a4a33a5dc1fc2c6847c979a6e1bed85ac08a361f9908dba5b90d8db",
+      "n_reuses": 17
+     },
+     {
+      "context_hash": "a0f0652bb98344193e974d225c32f875e6bb21b7c92a98e92b4d3f40e66a7851",
+      "n_reuses": 17
+     }
+    ],
+    "actor_calls_avoided_total": 449,
+    "actor_calls_avoided_by_reason": {
+     "equivalent_decision_context": 449
+    },
+    "execution_classifications": {
+     "human_discretion_required": 400
+    },
+    "largest_cohorts": [
+     {
+      "n_particles": 36,
+      "actor_id": "Tamura Naoki",
+      "cohort_id": "c1"
+     },
+     {
+      "n_particles": 36,
+      "actor_id": "Tamura Naoki",
+      "cohort_id": "c0"
+     },
+     {
+      "n_particles": 36,
+      "actor_id": "Nakagawa Junko",
+      "cohort_id": "c1"
+     },
+     {
+      "n_particles": 36,
+      "actor_id": "Nakagawa Junko",
+      "cohort_id": "c0"
+     },
+     {
+      "n_particles": 36,
+      "actor_id": "Governor Ueda Kazuo",
+      "cohort_id": "c1"
+     },
+     {
+      "n_particles": 36,
+      "actor_id": "Governor Ueda Kazuo",
+      "cohort_id": "c0"
+     },
+     {
+      "n_particles": 34,
+      "actor_id": "Tamura Naoki",
+      "cohort_id": "c2"
+     },
+     {
+      "n_particles": 34,
+      "actor_id": "Nakagawa Junko",
+      "cohort_id": "c2"
+     },
+     {
+      "n_particles": 34,
+      "actor_id": "Governor Ueda Kazuo",
+      "cohort_id": "c2"
+     },
+     {
+      "n_particles": 28,
+      "actor_id": "Takata Hajime",
+      "cohort_id": "c0"
+     }
+    ],
+    "under_modeled_actors": [],
+    "prompt_chars_sent": 207098,
+    "prompt_chars_saved": 621294,
+    "consequence_compile_calls": 7,
+    "consequence_cache_reuses": 90,
+    "structural": {
+     "version": "lean.structural.v1",
+     "verdict": {
+      "materially_different_model_plausible": true,
+      "supported_or_left_open_by_evidence": true,
+      "could_reverse_binary_forecast": true,
+      "could_reverse_recommended_action": true,
+      "differing_assumption": "The primary model assumes that internal BOJ dynamics and domestic data are decisive, but a challenger model assumes that external political pressure from the Japanese government or international financial conditions (e.g., US Fed rate decisions, yen depreciation) can override the internal vote balance.",
+      "reversal_causal_chain": "If the yen depreciates sharply or US interest rates rise unexpectedly, the Japanese government (e.g., Ministry of Finance) pressures the BOJ to raise rates to stabilize the currency and control import inflation, causing moderate BOJ members to switch their votes to a hike, reversing the primary model's expectation of no hike.",
+      "distinguishing_evidence": "Evidence of direct government statements urging a rate hike, sudden yen depreciation below 150 per dollar, or a surprise Fed rate hike before June 15-16 would support the challenger model; absence of such external pressure supports the primary model.",
+      "causally_executable": true,
+      "prose_variation_only": false,
+      "contains_outcome_pathway": true,
+      "challenger_thesis": "The BOJ's decision is driven by external political and financial pressures, particularly from the Japanese government and global monetary policy shifts, which can force a rate hike even if internal data and moderate members would otherwise prefer to wait.",
+      "challenger_decisive_actors": [
+       "Japanese Prime Minister",
+       "Ministry of Finance officials",
+       "US Federal Reserve",
+       "Foreign exchange markets"
+      ],
+      "challenger_decisive_institutions": [
+       "Japanese government cabinet",
+       "Ministry of Finance",
+       "US Federal Reserve",
+       "Foreign exchange market"
+      ],
+      "challenger_decisive_mechanisms": [
+       "Political pressure via informal channels or public statements",
+       "Yen depreciation triggering import inflation and policy urgency",
+       "Global rate differentials forcing BOJ action to prevent capital outflows"
+      ],
+      "additional_credible_alternatives": [
+       "A sudden domestic inflation spike from supply shocks (e.g., oil price surge) could force a hike despite moderate preferences.",
+       "A financial stability event (e.g., bond market turmoil) could prompt a hike to defend the yield curve control exit."
+      ],
+      "reasoning": "The primary model focuses on internal BOJ dynamics and domestic data, but the evidence leaves open the possibility that external political or financial pressures could reverse the outcome. The challenger model is materially different because it shifts causality from internal voting to external coercion, and it is supported by historical instances of government influence on BOJ policy. Distinguishing evidence exists, and the causal chain is executable, making this a plausible reversal."
+     },
+     "challenger_generated": true,
+     "underidentified": true,
+     "challenger_model_id": "m1_lean_reversal_challenger"
+    },
+    "particle_stopping": [
+     {
+      "model_id": "m0_actor_relationship",
+      "n_full_budget": 53,
+      "n_executed": 53,
+      "stopped_early": false,
+      "stop_reason": "extended to full budget: primary/challenger disagree (spread 1.000 > 0.1)",
+      "particles_avoided": 0,
+      "forced_full_reasons": [
+       "material_structural_disagreement(spread=1.000)"
+      ]
+     },
+     {
+      "model_id": "m1_lean_reversal_challenger",
+      "n_full_budget": 55,
+      "n_executed": 55,
+      "stopped_early": false,
+      "stop_reason": "extended to full budget: primary/challenger disagree (spread 1.000 > 0.1)",
+      "particles_avoided": 0,
+      "forced_full_reasons": [
+       "material_structural_disagreement(spread=1.000)"
+      ]
+     }
+    ],
+    "stability_signals": {
+     "version": "lean.stability.v1",
+     "primary_challenger_disagree": true,
+     "critic_unresolved_reversal_risk": true,
+     "evidence_insufficient": false,
+     "major_compilation_repair": false,
+     "outcome_pathway_repaired": false,
+     "progressive_never_stabilized": false,
+     "terminal_prior_divergence": true,
+     "details": [
+      "primary/challenger max spread 1.000 > 0.1",
+      "structurally underidentified (critic named unresolved alternatives)",
+      "m0_actor_relationship: terminal 1.000 vs evidence-updated prior 0.129 diverge sharply"
+     ],
+     "escalation_recommended": true
+    },
+    "stability_replicate": {
+     "replicate_index": 1,
+     "forecast": 1.0,
+     "distribution": {
+      "Yes": 1.0,
+      "No": 0.0
+     },
+     "n_particles": 53,
+     "status": "completed"
+    },
+    "frontier_skips": 0
+   },
+   "deltas": {
+    "llm_calls_removed": null,
+    "prediction_moved": null,
+    "side_changed": null,
+    "wall_clock_saved_s": null,
+    "input_tokens_saved": null,
+    "output_tokens_saved": null
+   }
+  },
+  {
+   "qid": "5c0765ed-cbd1-5af5-bce0-adbfebd4e0f6",
+   "question": "Will Apple announce visionOS 27 (or a successor major version to visionOS 26) at WWDC 2026?",
+   "outcome": 1,
+   "full_fidelity": {
+    "prediction": 0.834,
+    "status": "unresolved",
+    "brier": 0.0276,
+    "side_of_0.5": "yes",
+    "correct_side": true,
+    "llm_calls": 2411,
+    "calls_by_stage": {},
+    "actor_calls": null,
+    "structural_models_generated": null,
+    "structural_models_simulated": null,
+    "particles_by_model": null,
+    "input_tokens": 2603452,
+    "output_tokens": 1115462,
+    "provider_cache_hit_tokens": 737152,
+    "wall_clock_s": 12720.6,
+    "cost_usd": 1.0117,
+    "truncation": 5,
+    "limitation_heads": [
+     "Outcome unresolved under the current model: no validated causal mechanism resolv",
+     "causal_boundary: 10 mechanism transition(s) honestly unresolved (success never a",
+     "Outcome unresolved under the current model: no validated causal mechanism resolv",
+     "UNDER-MODELED: unresolved high-sensitivity boundary components remain outside th"
+    ],
+    "grounding_grade": "exploratory",
+    "probability_source": "evidence_conditioned_prior",
+    "uncertainty_interval": [
+     0.834,
+     0.834
+    ],
+    "weight_sensitive": true,
+    "probability_recovered_by": "exp110_from_stored_artifacts"
+   },
+   "lean_adaptive": {
+    "prediction": 0.417,
+    "status": "under_modeled",
+    "brier": 0.3399,
+    "side_of_0.5": "no",
+    "correct_side": false,
+    "llm_calls": 119,
+    "calls_by_stage": {},
+    "actor_calls": null,
+    "input_tokens": 146150,
+    "output_tokens": 105815,
+    "provider_cache_hit_tokens": 27520,
+    "wall_clock_s": 1039.4,
+    "cost_usd": 0.0784,
+    "truncation": 2,
+    "limitation_heads": [
+     "Outcome unresolved under the current model: no validated causal mechanism resolv",
+     "omitted (negligible-sensitivity): hardware_sales_figures_as_causal_driver",
+     "omitted (negligible-sensitivity): competitor_actions",
+     "UNDER-MODELED: unresolved high-sensitivity boundary components remain outside th",
+     "truncated branch weight 0.0156 \u2014 truncated branch mass is unresolved simulation,"
+    ],
+    "grounding_grade": "exploratory",
+    "probability_source": "mixed:evidence_conditioned_prior+partial_rollouts",
+    "uncertainty_interval": [
+     0.0,
+     0.834
+    ],
+    "weight_sensitive": true,
+    "probability_recovered_by": "exp110_from_stored_artifacts",
+    "one_call_successes": 1,
+    "escalations": {
+     "provider_failure": 1,
+     "actor_blocked_on_missing_decisive_fact": 7
+    },
+    "unique_decision_contexts": 9,
+    "decision_cache_hits": 70,
+    "invalidated_cache_hits": 0,
+    "largest_context_reuse": [
+     {
+      "context_hash": "54a62fcb9346144d04480ff99dfb9e01d5f932a9d04278549273f384c5b6a848",
+      "n_reuses": 10
+     },
+     {
+      "context_hash": "db5083caaac2b868738fd22f2af68ef3f05bf6678d3b98b51d839bf97ddd440d",
+      "n_reuses": 9
+     },
+     {
+      "context_hash": "f3f34a2c9b1f13f284ba6afcfa121e5145febe6bbb0f00847facc99ef53455fd",
+      "n_reuses": 9
+     },
+     {
+      "context_hash": "38768414c6b5293060eece2191d8b768347cf70e36050a13e6dcbf4ea47600cf",
+      "n_reuses": 7
+     },
+     {
+      "context_hash": "11f45d48b062b78ac82ee186951e05011e0c1127eca3a5dfd260f9dbf0af8230",
+      "n_reuses": 7
+     },
+     {
+      "context_hash": "cf9d52a5e99cd28a46b50ce3e5cee8050241373b9cf06e817438595cf0e50121",
+      "n_reuses": 7
+     },
+     {
+      "context_hash": "deaca006e9a920b517b40fa3d6b409d12d50d0d38746076e23bcae7904e4395b",
+      "n_reuses": 7
+     },
+     {
+      "context_hash": "d798534e81c8c7d0d18bdd8052ca58a7b7f967b9b27c5cbe8ec582f5793d579a",
+      "n_reuses": 7
+     },
+     {
+      "context_hash": "eaabed24afdaad89f93db23994b25593ab8c8ac82955ff0d0afacad9a3087092",
+      "n_reuses": 7
+     }
+    ],
+    "actor_calls_avoided_total": 70,
+    "actor_calls_avoided_by_reason": {
+     "equivalent_decision_context": 70
+    },
+    "execution_classifications": {
+     "human_discretion_required": 79
+    },
+    "largest_cohorts": [
+     {
+      "n_particles": 32,
+      "actor_id": "Apple_executive_leadership",
+      "cohort_id": "c2"
+     },
+     {
+      "n_particles": 16,
+      "actor_id": "Apple_executive_leadership",
+      "cohort_id": "c0"
+     },
+     {
+      "n_particles": 11,
+      "actor_id": "tim_cook",
+      "cohort_id": "c1"
+     },
+     {
+      "n_particles": 10,
+      "actor_id": "tim_cook",
+      "cohort_id": "c2"
+     },
+     {
+      "n_particles": 10,
+      "actor_id": "tim_cook",
+      "cohort_id": "c0"
+     }
+    ],
+    "under_modeled_actors": [],
+    "prompt_chars_sent": 55597,
+    "prompt_chars_saved": 166791,
+    "consequence_compile_calls": 6,
+    "consequence_cache_reuses": 56,
+    "structural": {
+     "version": "lean.structural.v1",
+     "verdict": {
+      "materially_different_model_plausible": true,
+      "supported_or_left_open_by_evidence": true,
+      "could_reverse_binary_forecast": true,
+      "could_reverse_recommended_action": true,
+      "differing_assumption": "Apple's executive leadership may decide that a major visionOS announcement is necessary to maintain developer trust and long-term platform viability, despite low sales, because the strategic cost of abandoning the platform's software narrative outweighs the short-term embarrassment.",
+      "reversal_causal_chain": "Apple's leadership, facing negative press and developer attrition, calculates that not announcing a major visionOS version would signal total abandonment, killing any future spatial computing ambitions and harming the Apple brand's innovation image. Therefore, they choose to announce a major version (e.g., visionOS 27) at WWDC 2026, even with a reduced feature set, to preserve optionality and developer goodwill.",
+      "distinguishing_evidence": "Evidence of internal memos or public statements emphasizing long-term commitment to spatial computing, continued hiring for visionOS roles, or developer outreach programs would support the challenger model. Conversely, evidence of complete team dissolution or explicit statements deprioritizing the platform would support the primary model.",
+      "causally_executable": true,
+      "prose_variation_only": false,
+      "contains_outcome_pathway": true,
+      "challenger_thesis": "Apple's decision to announce a major visionOS version at WWDC 2026 is driven by the strategic imperative to preserve the spatial computing platform's future and developer ecosystem, even in the face of low sales, because abandoning the software narrative would irreparably damage Apple's innovation brand and close the door on a potentially transformative product category.",
+      "challenger_decisive_actors": [
+       "Apple executive leadership (CEO, SVP of Software Engineering, SVP of Hardware Technologies)",
+       "Apple Vision Products Group (remaining core team)"
+      ],
+      "challenger_decisive_institutions": [
+       "Apple's annual WWDC keynote planning process",
+       "Apple's product lifecycle and OS release cadence",
+       "Apple's developer relations and ecosystem strategy"
+      ],
+      "challenger_decisive_mechanisms": [
+       "Executive strategic calculus: announcing a major visionOS version signals continued commitment, preserves developer trust, and maintains the option for future spatial computing products, outweighing the risk of embarrassment from low adoption.",
+       "Resource allocation: Apple can allocate a minimal team to produce a credible major update (e.g., visionOS 27) by leveraging existing codebase and incremental improvements, making the cost manageable."
+      ],
+      "additional_credible_alternatives": [],
+      "reasoning": "The primary model assumes that low sales and team redistribution make a major visionOS announcement unlikely. However, a materially different model is plausible: Apple's leadership may view the announcement as necessary to avoid signaling total abandonment, which could harm the brand and future spatial computing efforts. The evidence as of May 7, 2026, does not definitively rule out this alternative; it only reports low sales and team shifts, which could be interpreted as reasons to cut losses or as reasons to double down on software commitment. The challenger model reverses the forecast by positing that the strategic cost of silence outweighs the embarrassment of a low-impact announcement, leading to a 'Yes' outcome. This model is causally executable because Apple can choose to announce a major version with minimal resources, and it is supported by the historical pattern of Apple maintaining OS updates even for niche products (e.g., macOS for PowerPC after Intel transition). Distinguishing evidence would include any signals of continued investment or developer outreach."
+     },
+     "challenger_generated": true,
+     "underidentified": false,
+     "challenger_model_id": "m1_lean_reversal_challenger"
+    },
+    "particle_stopping": [
+     {
+      "model_id": "m0_actor_relationship",
+      "n_full_budget": 53,
+      "n_executed": 24,
+      "stopped_early": true,
+      "stop_reason": "all stopping conditions held for 2 consecutive checkpoints at n=24 (full budget 53)",
+      "particles_avoided": 29,
+      "forced_full_reasons": []
+     },
+     {
+      "model_id": "m1_lean_reversal_challenger",
+      "n_full_budget": 48,
+      "n_executed": 32,
+      "stopped_early": true,
+      "stop_reason": "all stopping conditions held for 2 consecutive checkpoints at n=32 (full budget 48)",
+      "particles_avoided": 16,
+      "forced_full_reasons": []
+     }
+    ],
+    "stability_signals": {
+     "version": "lean.stability.v1",
+     "primary_challenger_disagree": true,
+     "critic_unresolved_reversal_risk": false,
+     "evidence_insufficient": false,
+     "major_compilation_repair": false,
+     "outcome_pathway_repaired": false,
+     "progressive_never_stabilized": false,
+     "terminal_prior_divergence": true,
+     "details": [
+      "primary/challenger max spread 0.969 > 0.1",
+      "m1_lean_reversal_challenger: terminal 0.000 vs evidence-updated prior 0.834 diverge sharply"
+     ],
+     "escalation_recommended": true
+    },
+    "stability_replicate": {
+     "replicate_index": 1,
+     "forecast": 1.0,
+     "distribution": {
+      "yes": 0.0,
+      "no": 0.0,
+      "unresolved_mechanism": 1.0
+     },
+     "n_particles": 24,
+     "status": "completed"
+    },
+    "frontier_skips": 0
+   },
+   "deltas": {
+    "llm_calls_removed": 2292,
+    "prediction_moved": -0.417,
+    "side_changed": true,
+    "wall_clock_saved_s": 11681.2,
+    "input_tokens_saved": 2457302,
+    "output_tokens_saved": 1009647
+   }
+  },
+  {
+   "qid": "741b4bed-7502-5cd2-9cbe-949fbc70f857",
+   "question": "Will Matthew Wale be elected as the next Prime Minister of Solomon Islands following the May 2026 no-confidence vote?",
+   "outcome": 1,
+   "full_fidelity": {
+    "prediction": null,
+    "status": null,
+    "brier": null,
+    "side_of_0.5": "no_forecast",
+    "correct_side": null,
+    "llm_calls": null,
+    "calls_by_stage": {},
+    "actor_calls": null,
+    "structural_models_generated": null,
+    "structural_models_simulated": null,
+    "particles_by_model": null,
+    "input_tokens": null,
+    "output_tokens": null,
+    "provider_cache_hit_tokens": null,
+    "wall_clock_s": null,
+    "cost_usd": null,
+    "truncation": 0,
+    "limitation_heads": [],
+    "grounding_grade": null,
+    "probability_source": null,
+    "uncertainty_interval": null,
+    "weight_sensitive": null,
+    "probability_recovered_by": null
+   },
+   "lean_adaptive": {
+    "prediction": 0.435,
+    "status": "unresolved",
+    "brier": 0.3192,
+    "side_of_0.5": "no",
+    "correct_side": false,
+    "llm_calls": 418,
+    "calls_by_stage": {},
+    "actor_calls": null,
+    "input_tokens": 493747,
+    "output_tokens": 251321,
+    "provider_cache_hit_tokens": 83968,
+    "wall_clock_s": 2633.1,
+    "cost_usd": 0.2226,
+    "truncation": 5,
+    "limitation_heads": [
+     "Outcome unresolved under the current model: no validated causal mechanism resolv",
+     "Outcome unresolved under the current model: no validated causal mechanism resolv",
+     "causal_boundary: structurally under-modeled \u2014 ValueError: mechanism proposal unp",
+     "structurally underidentified: the generation ceiling was reached while the omiss",
+     "UNDER-MODELED: unresolved high-sensitivity boundary components remain outside th"
+    ],
+    "grounding_grade": "exploratory",
+    "probability_source": "evidence_conditioned_prior",
+    "uncertainty_interval": [
+     0.435,
+     0.435
+    ],
+    "weight_sensitive": true,
+    "probability_recovered_by": "exp110_from_stored_artifacts",
+    "one_call_successes": 28,
+    "escalations": {
+     "actor_blocked_on_missing_decisive_fact": 25
+    },
+    "unique_decision_contexts": 53,
+    "decision_cache_hits": 331,
+    "invalidated_cache_hits": 0,
+    "largest_context_reuse": [
+     {
+      "context_hash": "198fa92ffdb8394ba16dea46b2e8322d59a3cc0a8a92a07cbaf29ea379d6edfd",
+      "n_reuses": 7
+     },
+     {
+      "context_hash": "064e0ef577435dcce9ccb172c8c6a4690498d9497916c0906306d93c6f9bde36",
+      "n_reuses": 7
+     },
+     {
+      "context_hash": "4c9d78394bc43d94c750f3703f6d8c817856129f90a33097b2dc7cec585191a9",
+      "n_reuses": 7
+     },
+     {
+      "context_hash": "5dfb964b9664ae0e8b85cc9dfdd5aa95c4bce6cc3fd67d0a39791d6b3f7b44de",
+      "n_reuses": 7
+     },
+     {
+      "context_hash": "62ece7b09bd9dc1568eb3b64dc9a43e5b0e37c2df10c97c5e334fecc8ef31f56",
+      "n_reuses": 7
+     },
+     {
+      "context_hash": "16cbf085dc86a282568a99eab7465edfe0d3faeab56514add0622a0044c6e353",
+      "n_reuses": 7
+     },
+     {
+      "context_hash": "4436ca5528a75a4750c61e5855f36ac6fbcf9435913685572ef45d814c423d6f",
+      "n_reuses": 7
+     },
+     {
+      "context_hash": "47f888a84457905a6a8e7ffc2a0997617bf9711fb74d8ef8b58cda7ffb49bb81",
+      "n_reuses": 7
+     },
+     {
+      "context_hash": "c6e9c81eb3bebf81f4ae8c8460160c95b7db0f4403284d2bdd7919040958f2a0",
+      "n_reuses": 7
+     },
+     {
+      "context_hash": "643ccc1c1224800748c9a72921c6d78e6c00f33a8640211a37632deb50f29f1b",
+      "n_reuses": 7
+     }
+    ],
+    "actor_calls_avoided_total": 331,
+    "actor_calls_avoided_by_reason": {
+     "equivalent_decision_context": 331
+    },
+    "execution_classifications": {
+     "human_discretion_required": 384
+    },
+    "largest_cohorts": [
+     {
+      "n_particles": 32,
+      "actor_id": "Peter_Shanel_Agovaka",
+      "cohort_id": "c2"
+     },
+     {
+      "n_particles": 32,
+      "actor_id": "Parliament_of_Solomon_Islands",
+      "cohort_id": "c2"
+     },
+     {
+      "n_particles": 32,
+      "actor_id": "Frederick_Kologeto",
+      "cohort_id": "c2"
+     },
+     {
+      "n_particles": 24,
+      "actor_id": "Peter_Shanel_Agovaka",
+      "cohort_id": "c0"
+     },
+     {
+      "n_particles": 18,
+      "actor_id": "Matthew_Wale",
+      "cohort_id": "c3"
+     },
+     {
+      "n_particles": 18,
+      "actor_id": "Matthew_Wale",
+      "cohort_id": "c2"
+     },
+     {
+      "n_particles": 18,
+      "actor_id": "Matthew_Wale",
+      "cohort_id": "c1"
+     },
+     {
+      "n_particles": 18,
+      "actor_id": "Matthew_Wale",
+      "cohort_id": "c0"
+     },
+     {
+      "n_particles": 16,
+      "actor_id": "Peter_Shanel_Agovaka",
+      "cohort_id": "c1"
+     },
+     {
+      "n_particles": 16,
+      "actor_id": "Parliament_of_Solomon_Islands",
+      "cohort_id": "c0"
+     }
+    ],
+    "under_modeled_actors": [],
+    "prompt_chars_sent": 300888,
+    "prompt_chars_saved": 902664,
+    "consequence_compile_calls": 35,
+    "consequence_cache_reuses": 125,
+    "structural": {
+     "version": "lean.structural.v1",
+     "verdict": {
+      "materially_different_model_plausible": true,
+      "supported_or_left_open_by_evidence": true,
+      "could_reverse_binary_forecast": true,
+      "could_reverse_recommended_action": true,
+      "differing_assumption": "The coalition's 26 members are not unified behind Wale; instead, a rival faction within the coalition, possibly backed by external diplomatic pressure (e.g., from China), coalesces around Peter Shanel Agovaka, splitting the coalition and enabling Agovaka to secure a majority with defectors from the opposition.",
+      "reversal_causal_chain": "Frederick Kologeto's coalition, despite winning the no-confidence vote, fails to agree on a single candidate. Peter Shanel Agovaka, leveraging his experience as former Foreign Minister and support from China-aligned MPs, attracts enough coalition members to form a separate bloc. Simultaneously, some opposition MPs, fearing Wale's policies, defect to Agovaka. In the parliamentary vote, Agovaka wins a majority (e.g., 27-21), becoming Prime Minister instead of Wale.",
+      "distinguishing_evidence": "Reports of internal coalition splits, public endorsements of Agovaka by key coalition figures, or statements from foreign governments (especially China) indicating a preference for Agovaka. Conversely, unified public support for Wale from all 26 coalition MPs would support the primary model.",
+      "causally_executable": true,
+      "prose_variation_only": false,
+      "contains_outcome_pathway": true,
+      "challenger_thesis": "Matthew Wale's election is not assured because the winning coalition is fragile and subject to external influence; Peter Shanel Agovaka can assemble a rival majority by exploiting coalition divisions and attracting opposition defectors, particularly if China exerts diplomatic pressure to block Wale's premiership.",
+      "challenger_decisive_actors": [
+       "Peter Shanel Agovaka",
+       "Frederick Kologeto",
+       "Matthew Wale",
+       "Chinese diplomatic representatives",
+       "Opposition MPs"
+      ],
+      "challenger_decisive_institutions": [
+       "Parliament of Solomon Islands",
+       "Coalition negotiation framework",
+       "Foreign diplomatic channels"
+      ],
+      "challenger_decisive_mechanisms": [
+       "External diplomatic pressure (China) influencing MP loyalty",
+       "Defection of coalition members to Agovaka",
+       "Formation of a cross-coalition majority via side deals"
+      ],
+      "additional_credible_alternatives": [
+       "A third candidate emerges from within the coalition (e.g., Frederick Kologeto himself) and wins with support from both coalition and opposition MPs, defeating Wale."
+      ],
+      "reasoning": "The primary model assumes the 26-member coalition will remain unified behind Wale, but the evidence only states that the coalition won the no-confidence vote, not that it has agreed on a candidate. Given the narrow majority and the history of fluid allegiances in Solomon Islands politics, a materially different model where Agovaka or another candidate secures a majority through defections is plausible. This model is supported by the background mentioning Agovaka as a leading candidate and the lack of explicit coalition unity. It could reverse the forecast from Yes to No, and the causal chain is executable via known political dynamics. Distinguishing evidence would be reports of coalition splits or foreign interference."
+     },
+     "challenger_generated": true,
+     "underidentified": true,
+     "challenger_model_id": "m1_lean_reversal_challenger"
+    },
+    "particle_stopping": [
+     {
+      "model_id": "m0_actor_relationship",
+      "n_full_budget": 66,
+      "n_executed": 24,
+      "stopped_early": true,
+      "stop_reason": "all stopping conditions held for 2 consecutive checkpoints at n=24 (full budget 66)",
+      "particles_avoided": 42,
+      "forced_full_reasons": []
+     },
+     {
+      "model_id": "m1_lean_reversal_challenger",
+      "n_full_budget": 45,
+      "n_executed": 24,
+      "stopped_early": true,
+      "stop_reason": "all stopping conditions held for 2 consecutive checkpoints at n=24 (full budget 45)",
+      "particles_avoided": 21,
+      "forced_full_reasons": []
+     }
+    ],
+    "stability_signals": {
+     "version": "lean.stability.v1",
+     "primary_challenger_disagree": false,
+     "critic_unresolved_reversal_risk": true,
+     "evidence_insufficient": false,
+     "major_compilation_repair": false,
+     "outcome_pathway_repaired": false,
+     "progressive_never_stabilized": false,
+     "terminal_prior_divergence": false,
+     "details": [
+      "structurally underidentified (critic named unresolved alternatives)"
+     ],
+     "escalation_recommended": true
+    },
+    "stability_replicate": {
+     "replicate_index": 1,
+     "forecast": 1.0,
+     "distribution": {
+      "Yes": 0.0,
+      "No": 0.0,
+      "unresolved_mechanism": 1.0
+     },
+     "n_particles": 24,
+     "status": "completed"
+    },
+    "frontier_skips": 0
+   },
+   "deltas": {
+    "llm_calls_removed": null,
+    "prediction_moved": null,
+    "side_changed": null,
+    "wall_clock_saved_s": null,
+    "input_tokens_saved": null,
+    "output_tokens_saved": null
+   }
+  },
+  {
+   "qid": "017e64ef-7354-56c4-8a4d-e27121bc639a",
+   "question": "Will daily oil tanker transits through the Strait of Hormuz reach 50 or more on any day between April 29 and June 1, 202",
+   "outcome": 0,
+   "full_fidelity": {
+    "prediction": null,
+    "status": null,
+    "brier": null,
+    "side_of_0.5": "no_forecast",
+    "correct_side": null,
+    "llm_calls": null,
+    "calls_by_stage": {},
+    "actor_calls": null,
+    "structural_models_generated": null,
+    "structural_models_simulated": null,
+    "particles_by_model": null,
+    "input_tokens": null,
+    "output_tokens": null,
+    "provider_cache_hit_tokens": null,
+    "wall_clock_s": null,
+    "cost_usd": null,
+    "truncation": 0,
+    "limitation_heads": [],
+    "grounding_grade": null,
+    "probability_source": null,
+    "uncertainty_interval": null,
+    "weight_sensitive": null,
+    "probability_recovered_by": null
+   },
+   "lean_adaptive": {
+    "prediction": 0.8845,
+    "status": "under_modeled",
+    "brier": 0.7823,
+    "side_of_0.5": "yes",
+    "correct_side": false,
+    "llm_calls": 170,
+    "calls_by_stage": {},
+    "actor_calls": null,
+    "input_tokens": 199839,
+    "output_tokens": 136163,
+    "provider_cache_hit_tokens": 25600,
+    "wall_clock_s": 1341.0,
+    "cost_usd": 0.1067,
+    "truncation": 8,
+    "limitation_heads": [
+     "omitted (negligible-sensitivity): None",
+     "degraded: support grade exploratory; 3 fallback mechanism(s) used",
+     "Outcome unresolved under the current model: no validated causal mechanism resolv",
+     "causal_boundary: structurally under-modeled \u2014 ValueError: mechanism proposal unp",
+     "structurally underidentified: the generation ceiling was reached while the omiss"
+    ],
+    "grounding_grade": "exploratory",
+    "probability_source": "mixed:evidence_conditioned_prior+partial_rollouts",
+    "uncertainty_interval": [
+     0.769,
+     1.0
+    ],
+    "weight_sensitive": true,
+    "probability_recovered_by": "exp110_from_stored_artifacts",
+    "one_call_successes": 2,
+    "escalations": {
+     "actor_blocked_on_missing_decisive_fact": 16,
+     "provider_failure": 1
+    },
+    "unique_decision_contexts": 19,
+    "decision_cache_hits": 335,
+    "invalidated_cache_hits": 0,
+    "largest_context_reuse": [
+     {
+      "context_hash": "7c5c5343331beff8207eae9be20d0bbea41be6d960b47695e9668ff6b630a3eb",
+      "n_reuses": 32
+     },
+     {
+      "context_hash": "f2f4182420bd7aaab7226048323f52a05144f1827f9e0723046afa4966ebf9b6",
+      "n_reuses": 32
+     },
+     {
+      "context_hash": "47700f192bffe79fe605a7df880eeed1351fc6ce2d5e1090568f3af44fd5334c",
+      "n_reuses": 32
+     },
+     {
+      "context_hash": "e2f09faacd66884fac4cb14d9eb57e9fd435f2a06c414a02c7ab801a15359b53",
+      "n_reuses": 32
+     },
+     {
+      "context_hash": "fe068d074902d2cf5e2e64ad450f99ba2b2b26390cb60e415631ee61ff5619ce",
+      "n_reuses": 16
+     },
+     {
+      "context_hash": "32f18be06329ad8139ac7502d325d5bf7f94e8eff8e1d794ff5e8cf5f9654fff",
+      "n_reuses": 16
+     },
+     {
+      "context_hash": "6c5d319c0ea5724019ec6d97e743433d5c0ffe36443a91f28df1099c09e01764",
+      "n_reuses": 16
+     },
+     {
+      "context_hash": "f3b7baaff10f74b2a4dcb93f2916ed858a114b7ab0c7d7bac66ac2539bb285d7",
+      "n_reuses": 16
+     },
+     {
+      "context_hash": "945c0bfe591d58f9f6a12b66300f437a814cfd947f97b0f2856d783a1ed1629a",
+      "n_reuses": 15
+     },
+     {
+      "context_hash": "2f2581287fe71c85d330cd3187c41bd23eb4d403c09d147d6a96ce14f9dcd8ea",
+      "n_reuses": 15
+     }
+    ],
+    "actor_calls_avoided_total": 335,
+    "actor_calls_avoided_by_reason": {
+     "equivalent_decision_context": 335
+    },
+    "execution_classifications": {
+     "human_discretion_required": 354
+    },
+    "largest_cohorts": [
+     {
+      "n_particles": 66,
+      "actor_id": "U.S. Navy (CENTCOM)",
+      "cohort_id": "c1"
+     },
+     {
+      "n_particles": 66,
+      "actor_id": "U.S. Navy (CENTCOM)",
+      "cohort_id": "c0"
+     },
+     {
+      "n_particles": 34,
+      "actor_id": "Iranian Revolutionary Guard Corps Navy (IRGCN)",
+      "cohort_id": "c1"
+     },
+     {
+      "n_particles": 34,
+      "actor_id": "Iranian Revolutionary Guard Corps Navy (IRGCN)",
+      "cohort_id": "c0"
+     },
+     {
+      "n_particles": 32,
+      "actor_id": "Iranian Revolutionary Guard Corps Navy (IRGCN)",
+      "cohort_id": "c3"
+     },
+     {
+      "n_particles": 32,
+      "actor_id": "Iranian Revolutionary Guard Corps Navy (IRGCN)",
+      "cohort_id": "c2"
+     },
+     {
+      "n_particles": 15,
+      "actor_id": "US_Central_Command",
+      "cohort_id": "c2"
+     },
+     {
+      "n_particles": 15,
+      "actor_id": "US_Central_Command",
+      "cohort_id": "c1"
+     },
+     {
+      "n_particles": 15,
+      "actor_id": "US_Central_Command",
+      "cohort_id": "c0"
+     },
+     {
+      "n_particles": 12,
+      "actor_id": "Iran_Supreme_National_Security_Council",
+      "cohort_id": "c0"
+     }
+    ],
+    "under_modeled_actors": [],
+    "prompt_chars_sent": 109036,
+    "prompt_chars_saved": 327108,
+    "consequence_compile_calls": 22,
+    "consequence_cache_reuses": 158,
+    "structural": {
+     "version": "lean.structural.v1",
+     "verdict": {
+      "materially_different_model_plausible": true,
+      "supported_or_left_open_by_evidence": true,
+      "could_reverse_binary_forecast": true,
+      "could_reverse_recommended_action": true,
+      "differing_assumption": "Iran may deliberately allow or even facilitate a single day of high tanker traffic as a political signal or to test the coalition's response, rather than consistently blocking transits.",
+      "reversal_causal_chain": "Iran, seeking to demonstrate its control or to probe coalition resolve, temporarily halts harassment and minesweeping interference, allowing a large convoy of previously waiting tankers to transit in a single day, pushing the count above 50.",
+      "distinguishing_evidence": "Reports of a coordinated, single-day spike in transits followed by a return to low levels, or statements from Iranian officials about a 'goodwill gesture' or 'test'.",
+      "causally_executable": true,
+      "prose_variation_only": false,
+      "contains_outcome_pathway": true,
+      "challenger_thesis": "The outcome is determined by Iran's tactical decision to permit a one-time surge of tanker traffic through the Strait of Hormuz for political or strategic reasons, such as signaling flexibility, testing coalition capabilities, or alleviating economic pressure, rather than by the steady progress of mine clearance and naval escort operations.",
+      "challenger_decisive_actors": [
+       "Iranian Supreme Leader (interim)",
+       "IRGCN commanders",
+       "Iranian oil ministry"
+      ],
+      "challenger_decisive_institutions": [
+       "Iranian Supreme National Security Council"
+      ],
+      "challenger_decisive_mechanisms": [
+       "Iranian order to temporarily cease harassment",
+       "coordinated passage of a large convoy",
+       "political signaling via transit spike"
+      ],
+      "additional_credible_alternatives": [
+       "A single-day spike could also occur due to a navigational error or data misreporting by AIS, or a short-lived insurance waiver that triggers a rush of transits before being rescinded."
+      ],
+      "reasoning": "The primary model assumes a gradual recovery driven by coalition mine clearance and escort capacity, but the evidence does not rule out a deliberate, temporary Iranian opening of the strait. Such an event would reverse the forecast from NO to YES, as only one day above 50 is needed. This challenger is supported by the fact that Iran has previously used oil as a political tool, and the resolution window is short enough that a single coordinated action could meet the threshold without sustained recovery."
+     },
+     "challenger_generated": true,
+     "underidentified": true,
+     "challenger_model_id": "m1_lean_reversal_challenger"
+    },
+    "particle_stopping": [
+     {
+      "model_id": "m0_actor_relationship",
+      "n_full_budget": 66,
+      "n_executed": 66,
+      "stopped_early": false,
+      "stop_reason": "extended to full budget: primary/challenger disagree (spread 0.719 > 0.1)",
+      "particles_avoided": 0,
+      "forced_full_reasons": [
+       "material_structural_disagreement(spread=0.719)"
+      ]
+     },
+     {
+      "model_id": "m1_lean_reversal_challenger",
+      "n_full_budget": 45,
+      "n_executed": 45,
+      "stopped_early": false,
+      "stop_reason": "extended to full budget: primary/challenger disagree (spread 0.719 > 0.1)",
+      "particles_avoided": 0,
+      "forced_full_reasons": [
+       "material_structural_disagreement(spread=0.719)"
+      ]
+     }
+    ],
+    "stability_signals": {
+     "version": "lean.stability.v1",
+     "primary_challenger_disagree": true,
+     "critic_unresolved_reversal_risk": true,
+     "evidence_insufficient": false,
+     "major_compilation_repair": false,
+     "outcome_pathway_repaired": false,
+     "progressive_never_stabilized": false,
+     "terminal_prior_divergence": false,
+     "details": [
+      "primary/challenger max spread 0.697 > 0.1",
+      "structurally underidentified (critic named unresolved alternatives)"
+     ],
+     "escalation_recommended": true
+    },
+    "stability_replicate": {
+     "replicate_index": 1,
+     "forecast": 0.697,
+     "distribution": {
+      "yes": 0.697,
+      "no": 0.0,
+      "unresolved_mechanism": 0.303
+     },
+     "n_particles": 66,
+     "status": "completed"
+    },
+    "frontier_skips": 0
+   },
+   "deltas": {
+    "llm_calls_removed": null,
+    "prediction_moved": null,
+    "side_changed": null,
+    "wall_clock_saved_s": null,
+    "input_tokens_saved": null,
+    "output_tokens_saved": null
+   }
+  },
+  {
+   "qid": "cfb43147-d9d2-5bd9-903f-f449e9a5aecf",
+   "question": "Will the Banxico Governing Board's June 25, 2026, interest rate decision be unanimous (5-0 vote)?",
+   "outcome": 1,
+   "full_fidelity": {
+    "prediction": null,
+    "status": null,
+    "brier": null,
+    "side_of_0.5": "no_forecast",
+    "correct_side": null,
+    "llm_calls": null,
+    "calls_by_stage": {},
+    "actor_calls": null,
+    "structural_models_generated": null,
+    "structural_models_simulated": null,
+    "particles_by_model": null,
+    "input_tokens": null,
+    "output_tokens": null,
+    "provider_cache_hit_tokens": null,
+    "wall_clock_s": null,
+    "cost_usd": null,
+    "truncation": 0,
+    "limitation_heads": [],
+    "grounding_grade": null,
+    "probability_source": null,
+    "uncertainty_interval": null,
+    "weight_sensitive": null,
+    "probability_recovered_by": null
+   },
+   "lean_adaptive": {
+    "prediction": 0.769,
+    "status": "unresolved",
+    "brier": 0.0534,
+    "side_of_0.5": "yes",
+    "correct_side": true,
+    "llm_calls": 230,
+    "calls_by_stage": {},
+    "actor_calls": null,
+    "input_tokens": 313898,
+    "output_tokens": 186676,
+    "provider_cache_hit_tokens": 41984,
+    "wall_clock_s": 1808.2,
+    "cost_usd": 0.1557,
+    "truncation": 4,
+    "limitation_heads": [
+     "Outcome unresolved under the current model: no validated causal mechanism resolv",
+     "Outcome unresolved under the current model: no validated causal mechanism resolv",
+     "structurally underidentified: the generation ceiling was reached while the omiss",
+     "UNDER-MODELED: unresolved high-sensitivity boundary components remain outside th",
+     "truncated branch weight 0.0208 \u2014 truncated branch mass is unresolved simulation,"
+    ],
+    "grounding_grade": "exploratory",
+    "probability_source": "evidence_conditioned_prior",
+    "uncertainty_interval": [
+     0.769,
+     0.769
+    ],
+    "weight_sensitive": true,
+    "probability_recovered_by": "exp110_from_stored_artifacts",
+    "one_call_successes": 24,
+    "escalations": {
+     "actor_blocked_on_missing_decisive_fact": 16
+    },
+    "unique_decision_contexts": 40,
+    "decision_cache_hits": 303,
+    "invalidated_cache_hits": 0,
+    "largest_context_reuse": [
+     {
+      "context_hash": "ea277e160dc10a42cc7732170202d6dcc8b26f762945e2a54b53593ff2b8a357",
+      "n_reuses": 11
+     },
+     {
+      "context_hash": "6b7e4168b2d5d3885bea126b56819521ee0b7a5b440d4af83f669ccfc742cf98",
+      "n_reuses": 11
+     },
+     {
+      "context_hash": "828f2cee01e00d9c38b2b61958737993854464c0fbb9d81cee9e99db9a4ba24a",
+      "n_reuses": 11
+     },
+     {
+      "context_hash": "9818a7efaab55868c0de07a422fbee15d88c8319a6352c12d64197f5fadb0a65",
+      "n_reuses": 11
+     },
+     {
+      "context_hash": "58189c2d53af5e8e58e585d992e4e9581894ca9b1cf90ea00395aa90d3f376f4",
+      "n_reuses": 11
+     },
+     {
+      "context_hash": "64a7d4526d092b79d897801dfc026bc753d3ed73b34f22346088caa0b484697d",
+      "n_reuses": 10
+     },
+     {
+      "context_hash": "9db9f6374bd3b1062268d832655e2f6f8e2f4502bd308b91bf8a1d795b0ccad8",
+      "n_reuses": 7
+     },
+     {
+      "context_hash": "553565a6a066867e77c0b73caf69c9ee890f2994213dedb0a6dada580664a62e",
+      "n_reuses": 7
+     },
+     {
+      "context_hash": "b6f960dd8cebbc1b82dc0ca0f7570ab92bd064d6b6d633ab0c11215b4a743a68",
+      "n_reuses": 7
+     },
+     {
+      "context_hash": "582d2e586877c197ac01496e90fd73b6feac581eb0753c7f5a2d94fa6d4fb2f5",
+      "n_reuses": 7
+     }
+    ],
+    "actor_calls_avoided_total": 303,
+    "actor_calls_avoided_by_reason": {
+     "equivalent_decision_context": 303
+    },
+    "execution_classifications": {
+     "human_discretion_required": 311
+    },
+    "largest_cohorts": [
+     {
+      "n_particles": 24,
+      "actor_id": "Irene_Espinosa",
+      "cohort_id": "c1"
+     },
+     {
+      "n_particles": 23,
+      "actor_id": "Irene_Espinosa",
+      "cohort_id": "c0"
+     },
+     {
+      "n_particles": 16,
+      "actor_id": "Victoria_Rodriguez_Ceja",
+      "cohort_id": "c2"
+     },
+     {
+      "n_particles": 16,
+      "actor_id": "Victoria_Rodriguez_Ceja",
+      "cohort_id": "c1"
+     },
+     {
+      "n_particles": 16,
+      "actor_id": "Victoria_Rodriguez_Ceja",
+      "cohort_id": "c0"
+     },
+     {
+      "n_particles": 16,
+      "actor_id": "Jonathan_Heath",
+      "cohort_id": "c2"
+     },
+     {
+      "n_particles": 16,
+      "actor_id": "Jonathan_Heath",
+      "cohort_id": "c1"
+     },
+     {
+      "n_particles": 16,
+      "actor_id": "Jonathan_Heath",
+      "cohort_id": "c0"
+     },
+     {
+      "n_particles": 16,
+      "actor_id": "Banxico_Governing_Board_members",
+      "cohort_id": "c2"
+     },
+     {
+      "n_particles": 16,
+      "actor_id": "Banxico_Governing_Board_members",
+      "cohort_id": "c1"
+     }
+    ],
+    "under_modeled_actors": [],
+    "prompt_chars_sent": 270949,
+    "prompt_chars_saved": 812847,
+    "consequence_compile_calls": 25,
+    "consequence_cache_reuses": 191,
+    "structural": {
+     "version": "lean.structural.v1",
+     "verdict": {
+      "materially_different_model_plausible": true,
+      "supported_or_left_open_by_evidence": true,
+      "could_reverse_binary_forecast": true,
+      "could_reverse_recommended_action": true,
+      "differing_assumption": "The primary model assumes internal board dynamics and persuasion determine unanimity, but a materially different model assumes that external political pressure from the Mexican government or powerful economic interests directly compels one or more board members to dissent, overriding internal cohesion.",
+      "reversal_causal_chain": "External political pressure (e.g., from the executive branch or business groups) targets a specific board member, threatening consequences if they vote with the majority. That member dissents to signal independence or avoid backlash, producing a 4-1 split even if all members privately agree on the policy action.",
+      "distinguishing_evidence": "Evidence of public statements or leaks indicating political interference, unusual dissent patterns in prior votes, or a dissenter's subsequent career changes would distinguish the models. The primary model predicts unanimity if internal persuasion succeeds; the challenger predicts a split regardless of internal agreement if external pressure is applied.",
+      "causally_executable": true,
+      "prose_variation_only": false,
+      "contains_outcome_pathway": true,
+      "challenger_thesis": "The vote outcome is determined by external political or economic pressure on individual board members, overriding internal board dynamics. A dissenter may vote against the majority to demonstrate independence or due to coercion, even if they agree with the policy, leading to a non-unanimous decision.",
+      "challenger_decisive_actors": [
+       "Mexican government officials",
+       "powerful economic interest groups",
+       "individual Banxico board members susceptible to pressure"
+      ],
+      "challenger_decisive_institutions": [
+       "Mexican political system (executive influence)",
+       "media and public opinion channels"
+      ],
+      "challenger_decisive_mechanisms": [
+       "Direct coercion or inducement of a board member",
+       "Strategic dissent to signal independence or appease external stakeholders"
+      ],
+      "additional_credible_alternatives": [
+       "A model where a board member dissents due to a personal ideological shift or new economic data that changes their view, independent of internal persuasion or external pressure."
+      ],
+      "reasoning": "The primary model focuses on internal board dynamics and persuasion, but external political pressure is a plausible alternative mechanism that could cause a dissent even when internal agreement exists. This is supported by historical instances of central bank dissent under political pressure, and the evidence does not rule out such influence. The challenger model could reverse the forecast from unanimous to split, making it materially different and reversal-capable."
+     },
+     "challenger_generated": true,
+     "underidentified": true,
+     "challenger_model_id": "m1_lean_reversal_challenger"
+    },
+    "particle_stopping": [
+     {
+      "model_id": "m0_actor_relationship",
+      "n_full_budget": 68,
+      "n_executed": 24,
+      "stopped_early": true,
+      "stop_reason": "all stopping conditions held for 2 consecutive checkpoints at n=24 (full budget 68)",
+      "particles_avoided": 44,
+      "forced_full_reasons": []
+     },
+     {
+      "model_id": "m1_lean_reversal_challenger",
+      "n_full_budget": 80,
+      "n_executed": 24,
+      "stopped_early": true,
+      "stop_reason": "all stopping conditions held for 2 consecutive checkpoints at n=24 (full budget 80)",
+      "particles_avoided": 56,
+      "forced_full_reasons": []
+     }
+    ],
+    "stability_signals": {
+     "version": "lean.stability.v1",
+     "primary_challenger_disagree": false,
+     "critic_unresolved_reversal_risk": true,
+     "evidence_insufficient": false,
+     "major_compilation_repair": false,
+     "outcome_pathway_repaired": false,
+     "progressive_never_stabilized": false,
+     "terminal_prior_divergence": false,
+     "details": [
+      "structurally underidentified (critic named unresolved alternatives)"
+     ],
+     "escalation_recommended": true
+    },
+    "stability_replicate": {
+     "replicate_index": 1,
+     "forecast": 1.0,
+     "distribution": {
+      "Yes": 0.0,
+      "No": 0.0,
+      "unresolved_mechanism": 1.0
+     },
+     "n_particles": 24,
+     "status": "completed"
+    },
+    "frontier_skips": 0
+   },
+   "deltas": {
+    "llm_calls_removed": null,
+    "prediction_moved": null,
+    "side_changed": null,
+    "wall_clock_saved_s": null,
+    "input_tokens_saved": null,
+    "output_tokens_saved": null
+   }
+  }
+ ]
+}

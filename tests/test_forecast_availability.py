@@ -152,3 +152,23 @@ def test_guard_serves_prior_on_unresolved_execution_without_changing_status(monk
     assert res.probability_source == "grounded_reference_prior"
     assert res.has_forecast()
     assert any("labeled" in l for l in res.limitations)
+
+
+def test_all_five_lean_btf3_runs_recovered_scoreable_probabilities():
+    """Requirement 6 (live harness): the committed EXP-110 recovery over the five lean BTF-3
+    checkpoints produced a scoreable, labeled probability for every question — from stored
+    simulation artifacts (weighted distributions + evidence-updated posteriors), never a rerun,
+    never a neutral default."""
+    import json
+    from pathlib import Path
+    p = Path("experiments/results/exp110_recovered_forecasts.json")
+    assert p.exists(), "run experiments/exp110_recover_lean_forecasts first"
+    rows = json.loads(p.read_text())["lean"]
+    assert len(rows) == 5
+    for r in rows:
+        assert r.get("recovered_probability") is not None, f"{r.get('qid')} unscoreable"
+        assert r.get("probability_source"), f"{r.get('qid')} missing source"
+        assert r.get("grounding_grade") in ("grounded", "partially_grounded", "exploratory",
+                                            "ungrounded")
+        assert r["recovered_probability"] != 0.5 or r.get("probability_source") != "", \
+            "a bare neutral default is not a source"

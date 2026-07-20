@@ -16,6 +16,7 @@ from experiments.exp107_btf3_full_fidelity_post127 import usable_probability
 FF_DIR = Path("experiments/results/exp107_checkpoints")
 LEAN_DIR = Path("experiments/results/exp108_checkpoints")
 OUT = Path("experiments/results/exp109_comparison.json")
+RECOVERED = Path("experiments/results/exp110_recovered_forecasts.json")
 
 #: DeepSeek published prices per 1M tokens (USD) at run time — recorded as assumptions so cost
 #: rows are reproducible from the token counts; tokens are the primary metric.
@@ -35,9 +36,31 @@ def _cost(m: dict) -> float:
                  + out / 1e6 * PRICE_ASSUMPTIONS["output_per_m"], 4)
 
 
+def _recovered(arm: str, qid: str) -> dict:
+    """EXP-110 recovery rows for checkpoints that predate the forecast-availability contract
+    (their stored p_raw carries legacy suppressed/projection semantics — the recovery
+    supersedes it; new-code checkpoints already carry the native fields)."""
+    if not RECOVERED.exists():
+        return {}
+    rows = json.loads(RECOVERED.read_text()).get(arm) or []
+    return next((r for r in rows if r.get("qid") == qid), {})
+
+
 def _load(d: Path, qid: str) -> dict:
     p = d / f"{qid}.json"
-    return json.loads(p.read_text())["metrics"] if p.exists() else {}
+    if not p.exists():
+        return {}
+    m = json.loads(p.read_text())["metrics"]
+    arm = "lean" if "exp108" in str(d) else "full_fidelity"
+    rec = _recovered(arm, qid)
+    if rec.get("recovered_probability") is not None and not m.get("grounding_grade"):
+        m = {**m, "p_raw": rec["recovered_probability"], "p_cal": None,
+             "grounding_grade": rec.get("grounding_grade"),
+             "probability_source": rec.get("probability_source"),
+             "uncertainty_interval": rec.get("recovered_interval"),
+             "weight_sensitive": rec.get("weight_sensitive"),
+             "probability_recovered_by": "exp110_from_stored_artifacts"}
+    return m
 
 
 def _side(p) -> str:
@@ -80,7 +103,12 @@ def compare() -> dict:
                 "provider_cache_hit_tokens": ff.get("provider_cache_hit_tokens"),
                 "wall_clock_s": ff.get("wall_clock_s"), "cost_usd": _cost(ff) if ff else None,
                 "truncation": len(ff.get("truncation") or []),
-                "limitation_heads": [str(x)[:80] for x in (ff.get("limitations") or [])][:5]},
+                "limitation_heads": [str(x)[:80] for x in (ff.get("limitations") or [])][:5],
+                "grounding_grade": ff.get("grounding_grade"),
+                "probability_source": ff.get("probability_source"),
+                "uncertainty_interval": ff.get("uncertainty_interval"),
+                "weight_sensitive": ff.get("weight_sensitive"),
+                "probability_recovered_by": ff.get("probability_recovered_by")},
             "lean_adaptive": {
                 "prediction": p_ln, "status": lean.get("status"),
                 "brier": None if p_ln is None else round((p_ln - outcome) ** 2, 4),
@@ -96,6 +124,11 @@ def compare() -> dict:
                 "cost_usd": _cost(lean) if lean else None,
                 "truncation": len(lean.get("truncation") or []),
                 "limitation_heads": [str(x)[:80] for x in (lean.get("limitations") or [])][:5],
+                "grounding_grade": lean.get("grounding_grade"),
+                "probability_source": lean.get("probability_source"),
+                "uncertainty_interval": lean.get("uncertainty_interval"),
+                "weight_sensitive": lean.get("weight_sensitive"),
+                "probability_recovered_by": lean.get("probability_recovered_by"),
                 **{k: lm.get(k) for k in
                    ("one_call_successes", "escalations", "unique_decision_contexts",
                     "decision_cache_hits", "invalidated_cache_hits", "largest_context_reuse",
