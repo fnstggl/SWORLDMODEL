@@ -59,6 +59,30 @@ class PriorSpec:
         return d
 
 
+#: source_class values that count as a GROUNDED outside-view forecast — a named reference class of
+#: comparable cases (counted data, deadline-conditioned world-knowledge estimate, or a reliable
+#: recurrence). A grounded prior mean IS a legitimate reference-class forecast (what a superforecaster's
+#: outside view produces) and MAY be served as a headline in forecasting mode when the rollout is
+#: under-modeled. Distinct from "generic_weakly_informative" (a fixed qualitative-lean broad Beta with NO
+#: reference class) — §NAP forbids that generic number from ever headlining a forecast. Centralized here so
+#: the grounded/generic boundary can never drift between the prior builder and the runtime guards.
+GROUNDED_SOURCE_CLASSES = frozenset({"reference_class", "llm_estimated_reference", "recurrence"})
+
+
+def is_grounded_prior(spec) -> bool:
+    """True iff `spec` is a grounded reference-class outside-view prior (servable as a forecast headline),
+    False for the generic qualitative-lean fallback or a missing/degenerate spec."""
+    if spec is None:
+        return False
+    try:
+        if str(getattr(spec, "source_class", "")) not in GROUNDED_SOURCE_CLASSES:
+            return False
+        # a grounded prior must actually name a reference class and carry a usable mean
+        return bool(getattr(spec, "reference_class", "")) and (getattr(spec, "mean", None) is not None)
+    except Exception:  # noqa: BLE001
+        return False
+
+
 def reference_class_prior(reference_class: str, successes: float, total: float, *,
                           transport_risk: str = "high", lean: str = "neutral") -> PriorSpec:
     """Build a Beta prior from reference-class data (successes/total), then INFLATE its variance by the

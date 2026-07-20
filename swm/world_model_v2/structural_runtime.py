@@ -933,6 +933,20 @@ def _assemble_ensemble_result(U, question, ens, runs, model_results, promoted, b
                 "reason": "the structural-ensemble runtime changes the forecast distribution; refit "
                           "required before any calibrator may serve this runtime."}},
         latency_s=round(_time.time() - t0, 3))
+    # ── FORECASTING-MODE NO-SILENT-NONE (ensemble level) ────────────────────────────────────────────
+    # The per-model no-silent-None guard (unified_runtime._apply_result_guards) runs BEFORE aggregation;
+    # this aggregated ensemble result is assembled fresh above and would otherwise ship a silent None
+    # headline whenever the status ladder lands on an epistemically-weak state (under_modeled /
+    # partially_resolved / truncated) or a fully-unresolved ensemble. CONTRACT (the p=None fix): an
+    # epistemically-weak status LOWERS confidence — it must NEVER erase a supported probability. §NAP
+    # still refuses to manufacture a GENERIC (~0.5, no reference class) number, but a GROUNDED
+    # reference-class / deadline-conditioned / recurrence outside-view estimate IS a legitimate forecast
+    # (reference-class forecasting) and survives the weak status as the headline, loudly labelled, with
+    # the weak status kept as a warning. Only a genuine engineering failure returns no forecast.
+    if res.raw_probability is None and sim_status not in ("execution_failed", "clarification_required"):
+        grounded = _ensemble_grounded_forecast(runs, promoted)
+        if grounded is not None:
+            res = _serve_grounded_outside_view(res, grounded, sim_status, primary.executable_plan)
     # live handle for Phase 13: the SAME ensemble (its executable plans included) so decisions are
     # evaluated across these models by default. Deliberately a non-dataclass attribute — plans carry
     # callables and never belong in the serialized result dict.
@@ -973,6 +987,96 @@ def _binary_projection(dist: dict, plan) -> float:
     except Exception:  # noqa: BLE001
         pass
     return None
+
+
+def _grounded_option_distribution(mean: float, plan) -> dict:
+    """A binary distribution keyed to the plan's declared options so `_binary_projection` recovers `mean`
+    as P(YES). options[0] is the YES/first option by the projection convention; falls back to True/False."""
+    p = max(0.0, min(1.0, float(mean)))
+    try:
+        opts = [str(o) for o in (plan.outcome_contract.options or [])]
+    except Exception:  # noqa: BLE001
+        opts = []
+    if len(opts) == 2:
+        return {opts[0]: round(p, 4), opts[1]: round(1.0 - p, 4)}
+    return {"True": round(p, 4), "False": round(1.0 - p, 4)}
+
+
+def _ensemble_grounded_forecast(runs, promoted):
+    """Collect a GROUNDED outside-view forecast across the promoted models for the ensemble-level
+    no-silent-None guard: per model prefer an evidence-updated posterior mean, else the grounded prior
+    mean (source_class in GROUNDED_SOURCE_CLASSES). Equal-weight average across the models that HAVE one.
+    Returns {mean, source, source_classes, reference_classes, n_models, per_model} or None when NO promoted
+    model carries a grounded prior/evidence-updated posterior — §NAP: a generic weakly-informative prior is
+    NOT grounded and never becomes a headline."""
+    from swm.world_model_v2.phase3_priors import is_grounded_prior
+    means, srcs, refs, per_model, evidence_backed = [], set(), set(), {}, False
+    for c in promoted:
+        rec = runs.get(getattr(c, "model_id", None), {}) or {}
+        posterior = rec.get("posterior")
+        prior_spec = rec.get("prior_spec")
+        grounded = is_grounded_prior(prior_spec)
+        m = None
+        if posterior is not None and int(getattr(posterior, "n_effective_observations", 0) or 0) > 0 \
+                and getattr(posterior, "outcome_rate_mean", None) is not None:
+            m = float(posterior.outcome_rate_mean)          # real evidence updated the prior → servable
+            srcs.add("evidence_updated_posterior")
+            evidence_backed = True
+            if grounded:
+                refs.add(str(getattr(prior_spec, "reference_class", "")))
+        elif grounded:
+            m = float(prior_spec.mean)                       # grounded reference-class outside-view mean
+            srcs.add(str(getattr(prior_spec, "source_class", "")))
+            refs.add(str(getattr(prior_spec, "reference_class", "")))
+        if m is not None:
+            means.append(m)
+            per_model[str(getattr(c, "model_id", "?"))] = round(m, 4)
+    if not means:
+        return None
+    return {"mean": round(sum(means) / len(means), 4),
+            "source": "evidence_updated_posterior_mean" if evidence_backed else "grounded_prior_mean",
+            "source_classes": sorted(s for s in srcs if s),
+            "reference_classes": sorted(r for r in refs if r)[:4],
+            "n_models": len(means), "per_model": per_model}
+
+
+def _serve_grounded_outside_view(res, grounded, sim_status, plan):
+    """FORECASTING-MODE no-silent-None (§NAP-composed): populate the headline with the grounded
+    outside-view forecast and KEEP the epistemic-weakness status as a loud warning (never upgraded to
+    `completed`). A bare `unresolved` (which by contract carries no forecast) is retagged `under_modeled`
+    with a named gap: in forecasting mode 'no promoted model validated a complete mechanism' is an
+    under-modeling of the world, not a refusal to forecast — the grounded outside view still answers."""
+    from swm.world_model_v2.result import CONDITIONAL_FORECAST_SENTENCE
+    p = float(grounded["mean"])
+    res.raw_distribution = _grounded_option_distribution(p, plan)
+    res.raw_probability = round(p, 4)
+    res.conditional_forecast_note = CONDITIONAL_FORECAST_SENTENCE   # the partial dist stays conditional
+    if sim_status == "unresolved":
+        res.simulation_status = "under_modeled"
+        if not (res.under_modeled_subtypes or res.under_modeled_components):
+            miss = (res.resolution_report or {}).get("missing_mechanisms") or []
+            res.under_modeled_subtypes = ["under_modeled_nonhuman_mechanism"]
+            res.under_modeled_components = [{
+                "component": str((miss[0].get("mechanism") if miss else "") or "(terminal mechanism)"),
+                "kind": "nonhuman_mechanism",
+                "why": "no promoted structural model validated a complete causal mechanism resolving the "
+                       "outcome; the grounded outside-view estimate is served as the forecast",
+                "sensitivity": "decisive"}]
+    res.provenance = dict(res.provenance or {})
+    res.provenance["grounded_outside_view_fallback"] = {
+        "used": True, "value": round(p, 4), "source": grounded["source"],
+        "source_classes": grounded["source_classes"], "reference_classes": grounded["reference_classes"],
+        "n_models": grounded["n_models"], "per_model": grounded["per_model"],
+        "original_status": sim_status,
+        "note": "reference-class OUTSIDE-VIEW forecast served because the rollout produced no bound "
+                "terminal distribution; the epistemically-weak status is kept as a warning (§NAP: a "
+                "GROUNDED reference-class estimate is a legitimate forecast; a generic ~0.5 prior is not)"}
+    warning = (f"UNDER-MODELED FORECAST (was {sim_status!r}): the actor rollout could not validate a "
+               f"complete causal mechanism, so the forecast falls back to the grounded outside-view "
+               f"estimate ({p:.1%}; reference class: {', '.join(grounded['reference_classes']) or 'n/a'})."
+               f" Treat as a lower-confidence reference-class forecast, not a simulated structural outcome.")
+    res.limitations = [warning] + list(res.limitations or [])       # loud warning leads
+    return res
 
 
 def _trajectory_summary(res) -> dict:
