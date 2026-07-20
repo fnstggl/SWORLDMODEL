@@ -108,27 +108,15 @@ def simulate_structural_ensemble(question: str, *, as_of: str, horizon: str = ""
             if prebuilt_bundle is not None:
                 bundle = prebuilt_bundle           # sealed-replay injection (frozen, time-locked, recorded)
             else:
-                from swm.world_model_v2.evidence_orchestrator import OrchestratorConfig, gather_evidence
+                from swm.world_model_v2.evidence_orchestrator import (
+                    OrchestratorConfig, gather_evidence_with_escalation)
                 reqs = EC.union_evidence_requirements(ens, as_of_iso=as_of)
-                bundle = gather_evidence(question, as_of=as_of, requirements=reqs, llm=llm,
-                                         config=config or OrchestratorConfig(),
-                                         plan_hash=ens.ensemble_id, seed=seed)
-                if len(bundle.included_claim_ids) < 3:
-                    # Thin/empty first pull (a stochastic live query + LLM extraction — the EXP-104
-                    # failure where the run silently forecast from priors). ESCALATE, not re-roll: a
-                    # genuinely different retrieval strategy (2x window, forced Wikipedia on every
-                    # requirement, a decisive-fact reformulation). Keep whichever bundle has more
-                    # admissible claims. Shared-bundle analog of the single-model evidence retry.
-                    esc = gather_evidence(question, as_of=as_of, requirements=reqs, llm=llm,
-                                          config=config or OrchestratorConfig(),
-                                          plan_hash=ens.ensemble_id, seed=seed + 1,
-                                          strategy="escalated")
-                    ens.generation_policy["evidence_retry"] = {
-                        "first_pull_claims": len(bundle.included_claim_ids),
-                        "strategy": "escalated",
-                        "escalated_claims": len(esc.included_claim_ids)}
-                    if len(esc.included_claim_ids) > len(bundle.included_claim_ids):
-                        bundle = esc
+                # ONE evidence-retry authority shared with the single-model path
+                bundle, retry_rec = gather_evidence_with_escalation(
+                    question, as_of=as_of, requirements=reqs, llm=llm,
+                    config=config or OrchestratorConfig(), plan_hash=ens.ensemble_id, seed=seed)
+                if retry_rec:
+                    ens.generation_policy["evidence_retry"] = retry_rec
             evidence_text = (bundle.render(max_chars=2400) if hasattr(bundle, "render")
                              else str(evidence or "")[:2400])
             ens.shared_evidence_bundle_hash = bundle.bundle_hash() if hasattr(bundle, "bundle_hash") else ""

@@ -269,6 +269,30 @@ def gather_evidence(question: str, *, as_of: str, requirements: list, llm=None,
 
 
 # --------------------------------------------------------------------------- helpers
+def gather_evidence_with_escalation(question: str, *, as_of: str, requirements: list, llm=None,
+                                    config=None, plan_hash: str = "", seed: int = 0,
+                                    resolution_rule: str = "", min_claims: int = 3) -> tuple:
+    """THE evidence-retry authority, shared by every runtime path (single-model ablation AND the
+    structural-ensemble shared bundle): one primary pull; if it lands under `min_claims` admissible
+    claims (a stochastic live query + LLM extraction — the EXP-104 failure where a run silently
+    forecast from priors), ESCALATE with a genuinely different strategy (2x window, forced Wikipedia
+    on every requirement, decisive-fact reformulation from the resolution criterion, official-source
+    query) rather than re-rolling the same query. Returns (bundle, retry_record|None) keeping
+    whichever bundle has more admissible claims."""
+    bundle = gather_evidence(question, as_of=as_of, requirements=requirements, llm=llm, config=config,
+                             plan_hash=plan_hash, seed=seed, resolution_rule=resolution_rule)
+    if len(bundle.included_claim_ids) >= int(min_claims):
+        return bundle, None
+    esc = gather_evidence(question, as_of=as_of, requirements=requirements, llm=llm, config=config,
+                          plan_hash=plan_hash, seed=seed + 1, strategy="escalated",
+                          resolution_rule=resolution_rule)
+    record = {"first_pull_claims": len(bundle.included_claim_ids), "strategy": "escalated",
+              "escalated_claims": len(esc.included_claim_ids)}
+    if len(esc.included_claim_ids) > len(bundle.included_claim_ids):
+        bundle = esc
+    return bundle, record
+
+
 def _doc_from_item(item, source_type: str) -> dict:
     import hashlib
     text = f"{item.title}. {item.description}".strip()

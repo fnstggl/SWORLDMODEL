@@ -767,6 +767,10 @@ def run_from_plan(plan, *, llm=None, n_particles=None, seed=0):
             "no accepted mechanism resolves to an executable operator despite the fallback hierarchy "
             f"(rejections: {[r['reason'][:60] for r in rejections]})",
             taxonomy="missing_required_operator")
+    # ROLLOUT-VIABILITY INVARIANT (the ONE authority, same as the persistence funnel): the plan must
+    # retain an outcome-capable pathway; accidental losses are repaired in place, §NAP honest
+    # unresolved states pass through, and the report rides the result for provenance.
+    outcome_pathway = ensure_outcome_pathway(plan, ops, rejections)
     init = InitialStateModel(base_world=base, latents=list(plan.latents))
     npart = n_particles or plan.compute_plan.get("n_particles", 30)
     run = WorldModelV2Run(initial=init, queue_builder=queue_builder_from_plan(plan),
@@ -782,6 +786,7 @@ def run_from_plan(plan, *, llm=None, n_particles=None, seed=0):
         result, branches = run.run(seed=seed)
     result["omissions"] = list(getattr(base, "omissions", []))
     result["operator_rejections"] = rejections
+    result["outcome_pathway"] = outcome_pathway
     attach_actor_decision_distributions(ops, result)
     err = (plan.provenance or {}).get("scenario_schema_error")
     if err:

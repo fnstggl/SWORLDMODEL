@@ -191,7 +191,8 @@ def _simulate_single_structural_model(question: str, *, as_of: str, horizon: str
     compatibility and isolated compiler tests — never the default; reaching it requires
     execution_policy={"structural_mode": "single_structural_model"}."""
     from swm.world_model_v2.compiler import compile_world
-    from swm.world_model_v2.evidence_orchestrator import OrchestratorConfig, gather_evidence
+    from swm.world_model_v2.evidence_orchestrator import (OrchestratorConfig,
+                                                          gather_evidence_with_escalation)
     from swm.world_model_v2.evidence_requirements import requirements_from_plan
     from swm.world_model_v2.evidence_recompile import recompile_with_evidence
     from swm.world_model_v2.evidence_materialize import attach_evidence_observations
@@ -249,22 +250,13 @@ def _simulate_single_structural_model(question: str, *, as_of: str, horizon: str
             else:
                 reqs = requirements_from_plan(plan, as_of_iso=_iso(as_of), question=question)
                 rrule = str(getattr(plan.outcome_contract, "resolution_rule", "") or "")
-                bundle = gather_evidence(question, as_of=as_of, requirements=reqs, llm=llm, config=cfg,
-                                         plan_hash=plan.plan_hash(), seed=seed, resolution_rule=rrule)
-                if len(bundle.included_claim_ids) < 3:
-                    # Thin/empty first pull (a stochastic live query + LLM extraction — the EXP-104 failure
-                    # where the run silently forecast from priors). ESCALATE, not re-roll: a genuinely
-                    # different retrieval strategy (2x window, forced Wikipedia on every requirement, a
-                    # decisive-fact reformulation from the resolution criterion). Keep whichever bundle has
-                    # more admissible claims.
-                    esc = gather_evidence(question, as_of=as_of, requirements=reqs, llm=llm, config=cfg,
-                                          plan_hash=plan.plan_hash(), seed=seed + 1,
-                                          strategy="escalated", resolution_rule=rrule)
-                    lineage["evidence_retry"] = {"first_pull_claims": len(bundle.included_claim_ids),
-                                                 "strategy": "escalated",
-                                                 "escalated_claims": len(esc.included_claim_ids)}
-                    if len(esc.included_claim_ids) > len(bundle.included_claim_ids):
-                        bundle = esc
+                # ONE evidence-retry authority (escalation on a thin first pull) shared with the
+                # ensemble runtime — see evidence_orchestrator.gather_evidence_with_escalation
+                bundle, retry_rec = gather_evidence_with_escalation(
+                    question, as_of=as_of, requirements=reqs, llm=llm, config=cfg,
+                    plan_hash=plan.plan_hash(), seed=seed, resolution_rule=rrule)
+                if retry_rec:
+                    lineage["evidence_retry"] = retry_rec
                 manifest["phase2_evidence"].update(selected=True, executed=True, version="phase2-1.0",
                                                    reason=f"{len(bundle.included_claim_ids)} as-of claims")
             revised, diff = recompile_with_evidence(plan, bundle, llm=llm, horizon=horizon)
