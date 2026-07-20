@@ -95,6 +95,9 @@ def _extract_metrics(d: dict, calls: list, wall_s: float) -> dict:
 
 
 def run_worker(i: int) -> dict:
+    from datetime import datetime, timezone
+
+    from experiments.btf3_frozen_bundle import frozen_background_bundle
     from swm.api.deepseek_backend import deepseek_chat_fn
     from swm.world_model_v2.unified_runtime import simulate_world
 
@@ -110,6 +113,15 @@ def run_worker(i: int) -> dict:
     q = _forecast_input(rows[qid])
     evidence = (f"Resolution criteria: {q['resolution_criteria']}\n\n"
                 f"Background (as of {str(q['present_date'])[:10]}): {q['background']}")
+    # sealed-replay injection: the benchmark's own as-of background as a FROZEN bundle, so the
+    # Phase-3 posterior is evidence-updated exactly as production would be (post-#127, a run
+    # without a bundle has no §NAP-admissible fallback when a world cannot bind its outcome —
+    # the pre-#127 harnesses only needed the conditioning text). Same bundle in BOTH arms.
+    as_of_ts = datetime.fromisoformat(str(q["present_date"]).split(".")[0]) \
+        .replace(tzinfo=timezone.utc).timestamp()
+    bundle = frozen_background_bundle(q["question"], as_of_ts=as_of_ts,
+                                      background=q["background"],
+                                      resolution_criteria=q["resolution_criteria"], seed=SEED)
 
     calls = []
     pending_usage = []
@@ -129,7 +141,7 @@ def run_worker(i: int) -> dict:
     res = simulate_world(q["question"], llm=llm, evidence=evidence,
                          as_of=str(q["present_date"])[:10],
                          horizon=str(q["expected_resolution_date"])[:10], seed=SEED,
-                         execution_policy={"drop_phases": ["phase2_evidence"]},
+                         prebuilt_bundle=bundle,
                          execution_profile="full_fidelity")
     wall = time.time() - t0
     d = dataclasses.asdict(res) if dataclasses.is_dataclass(res) else dict(res.__dict__)
