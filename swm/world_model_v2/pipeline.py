@@ -6,7 +6,12 @@ institution normalization and the scheduled-reality/calendar layer, so it silent
 prior on any question whose outcome those subsystems resolve (the EXP-102 failure that collapsed 4/5
 questions to ~0.5). The canonical forecast entry is `unified_runtime.simulate_world` (production:
 `swm.facade.forecast(architecture="world_model_v2")`). `simulate()` is kept only for the pinned validation
-experiments that test the bare loop; calling it emits a loud DeprecationWarning.
+experiments that test the bare loop; calling it emits a loud DeprecationWarning naming the canonical
+entry (see docs/WMV2_CANONICAL_PATH.md).
+
+Since the validation-gate removal `simulate()` is also HARDENED (`harden_general_path`): even this legacy
+entry binds compiled actors/institutions/populations/calendar facts to the readout, so no caller — old
+scripts included — can reach the broad-prior-only degradation again.
 
 The module's OTHER exports (`result_from_run`, `_operator_delta_census`, `_binary_projection`, …) are NOT
 deprecated — the canonical path imports them. Only the `simulate()` entry is quarantined.
@@ -198,6 +203,9 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
                     "prompt_hash": plan.provenance.get("prompt_hash"),
                     "readout_var": plan.outcome_contract.readout_var,
                     "readout_repaired": plan.provenance.get("readout_repaired"),
+                    "truncated_reply": plan.provenance.get("truncated_reply"),
+                    "truncation_recovered_keys": plan.provenance.get("truncation_recovered_keys"),
+                    "general_path_hardening": plan.provenance.get("general_path_hardening"),
                     "n_deltas": result.get("n_deltas"), "n_particles": plan.compute_plan.get("n_particles"),
                     # event-time contracts: the full first-passage readout (CDF/survival/quantiles/mode×time)
                     "event_time": result.get("event_time"),
@@ -210,6 +218,58 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
                     # activation accounting cannot drift from what actually executed.
                     "operator_delta_census": _operator_delta_census(branches)},
         latency_s=round(_time.time() - t0, 3) if t0 is not None else 0.0)
+
+
+def harden_general_path(plan, question: str, *, llm=None, evidence="", as_of: str = "",
+                        horizon: str = "") -> dict:
+    """Bind the compiled world to the readout on EVERY entry point (validation-gate removal).
+
+    The EXP-102 forensic traces showed the bare path compiling rich worlds (named actors, institutions,
+    thresholds, hypotheses) and then resolving the outcome from the broad prior because nothing bound the
+    structure to the readout — the calendar layer, institution normalization, and activation synthesis were
+    wired only into unified_runtime. This closes that gap for pipeline.simulate() too:
+
+      1. institution rule NORMALIZATION — declared institutions become executable, not ornamental;
+      2. the SCHEDULED-REALITY layer — dated public facts AND recurring institutional calendars
+         (annual conferences, meeting schedules, release cadences) execute deterministically and feed
+         the outcome mechanism; facts are also exposed to actor cognition (plan._scheduled_facts);
+      3. ACTIVATION SYNTHESIS — institutional_decision / population_aggregation /
+         actor_action_aggregation / aggregate_outcome_resolution events are synthesized from the
+         DECLARED components, so the compiled actors, institutions and populations actually write the
+         readout and the generic prior is reduced to a no-op safety net.
+
+    Every step is best-effort and recorded; failure never blocks the forecast."""
+    report = {}
+    try:
+        from swm.world_model_v2.integration_completion import normalize_institution_rules
+        report["institution_normalization"] = normalize_institution_rules(plan)
+    except Exception as e:  # noqa: BLE001
+        report["institution_normalization"] = {"error": f"{type(e).__name__}: {e}"[:120]}
+    if llm is not None:
+        try:
+            from swm.world_model_v2.scheduled_facts import (attach_scheduled_facts,
+                                                            extract_scheduled_facts)
+            ev_text = evidence.render(max_chars=2400) if hasattr(evidence, "render") \
+                else str(evidence or "")[:2400]
+            facts = extract_scheduled_facts(question, as_of=as_of, horizon=horizon,
+                                            evidence_text=ev_text, llm=llm)
+            report["scheduled_reality"] = attach_scheduled_facts(plan, facts)
+            report["scheduled_reality"]["facts"] = facts[:8]
+        except Exception as e:  # noqa: BLE001
+            report["scheduled_reality"] = {"error": f"{type(e).__name__}: {e}"[:120]}
+    try:
+        from swm.world_model_v2.activation_synthesis import phase_requirements, synthesize_activation
+        req = phase_requirements(plan)
+        report["activation_synthesis"] = synthesize_activation(plan, req)
+    except Exception as e:  # noqa: BLE001
+        report["activation_synthesis"] = {"error": f"{type(e).__name__}: {e}"[:120]}
+    try:
+        plan.provenance["general_path_hardening"] = {
+            k: (v if k != "scheduled_reality" else {kk: vv for kk, vv in v.items() if kk != "facts"})
+            for k, v in report.items()}
+    except Exception:  # noqa: BLE001
+        pass
+    return report
 
 
 @quarantined(reason="bare compile→run loop; skips evidence/posterior/institution-normalization/calendar")
@@ -232,6 +292,8 @@ def simulate(question: str, *, llm, evidence="", as_of: str, horizon: str, inter
     blocked), and lineage/support effects are returned in the result. Anonymous/stateless requests (no
     actor_history) and any storage/identity failure DEGRADE honestly to the ordinary non-persistent path —
     never an abstention, never a crash. Without persistence work, behaviour is byte-identical (no regression)."""
+    # (the @quarantined decorator above emits the DeprecationWarning naming the canonical entry —
+    # see docs/WMV2_CANONICAL_PATH.md — so no second inline warning is raised here)
     t0 = _time.time()
     # ---- automatic persistence-context construction (final usability gap): if the caller did not pass an
     #      explicit context but a durable actor identity is available, request one from the provider. ----
@@ -259,6 +321,11 @@ def simulate(question: str, *, llm, evidence="", as_of: str, horizon: str, inter
         return SimulationResult(question=question, simulation_status="execution_failed",
                                 failure_taxonomy=e.taxonomy, limitations=[f"compiler: {e}"],
                                 latency_s=round(_time.time() - t0, 3))
+
+    # ---- GENERAL-PATH HARDENING: bind the compiled world (actors/institutions/populations/calendar) to
+    #      the readout so the simulation itself decides the outcome on EVERY entry point — the broad-prior
+    #      resolver is a no-op safety net, never the forecast. ----
+    harden_general_path(plan, question, llm=llm, evidence=evidence, as_of=as_of, horizon=horizon)
 
     # ---- CANONICAL PERSISTENCE PATH: when history/checkpoint is available, persistence is part of the
     #      ordinary simulate() flow (no separate entry point). Delegates to the shared run_with_persistence.

@@ -1,4 +1,7 @@
-"""Posterior-conditioned simulation entry — Phase 3.
+"""QUARANTINED LEGACY ENTRY — Phase 3 is served by `unified_runtime.simulate_world`; do not call this
+module's entry directly for new work (see docs/WMV2_CANONICAL_PATH.md).
+
+Posterior-conditioned simulation entry — Phase 3.
 
 The full production path, extending the Phase-2 evidence pipeline with a REAL numeric posterior over hidden
 world-state that is CAUSALLY CONSUMED by the simulator:

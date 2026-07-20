@@ -1,4 +1,8 @@
-"""ForecastBench-class V2-supported subset — resolved-market corpus, leak-free, paired (item 5).
+"""QUARANTINED — this harness's "V2 arm" is a crowd-anchored RESCALING, NOT the simulator. Any claim
+about world-model-v2 accuracy must run `unified_runtime.simulate_world` (see docs/WMV2_CANONICAL_PATH.md
+and EXP-105); results from this file must never be reported as simulator performance.
+
+ForecastBench-class V2-supported subset — resolved-market corpus, leak-free, paired (item 5).
 
 Corpus: 661 cutoff-clean RESOLVED binary questions (Manifold/Polymarket) with the CROWD probability
 reconstructed at the same as-of the model forecasts from. V2-SUPPORTED SUBSET: deadline-event questions

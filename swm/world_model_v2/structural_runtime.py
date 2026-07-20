@@ -54,6 +54,7 @@ PILOT_MIN_N_FOR_EXCLUSION = 12
 
 
 def simulate_structural_ensemble(question: str, *, as_of: str, horizon: str = "", intervention: str = "",
+                                 evidence: str = "",
                                  user_context=None, prior_checkpoint=None, compute_budget=None,
                                  seed: int = 0, llm=None, execution_policy: dict = None,
                                  trace_level: str = "standard", config=None,
@@ -128,7 +129,8 @@ def simulate_structural_ensemble(question: str, *, as_of: str, horizon: str = ""
                         "escalated_claims": len(esc.included_claim_ids)}
                     if len(esc.included_claim_ids) > len(bundle.included_claim_ids):
                         bundle = esc
-            evidence_text = bundle.render(max_chars=2400) if hasattr(bundle, "render") else ""
+            evidence_text = (bundle.render(max_chars=2400) if hasattr(bundle, "render")
+                             else str(evidence or "")[:2400])
             ens.shared_evidence_bundle_hash = bundle.bundle_hash() if hasattr(bundle, "bundle_hash") else ""
             ens.shared_evidence_as_of = as_of
         except Exception as e:  # noqa: BLE001 — evidence failure never blocks the forecast
@@ -148,8 +150,8 @@ def simulate_structural_ensemble(question: str, *, as_of: str, horizon: str = ""
         EC.run_candidate_critics(ens, llm=llm, evidence_text=evidence_text, ledger=ledger,
                                  cache_store=cache_store)
         EC.compile_candidates(ens, llm=llm, as_of=as_of, horizon=horizon, intervention=intervention,
-                              evidence=bundle if bundle is not None else "", seed=seed, ledger=ledger,
-                              cache_store=cache_store)
+                              evidence=bundle if bundle is not None else (evidence or ""), seed=seed,
+                              ledger=ledger, cache_store=cache_store)
     except EnsembleIntegrityError as e:
         return _fail("invalid_execution_plan", f"ensemble integrity violation: {e}")
     executable = [c for c in ens.surviving() if c.executable_plan is not None]
@@ -192,7 +194,7 @@ def simulate_structural_ensemble(question: str, *, as_of: str, horizon: str = ""
             cand.executable_plan._family_pool = family_pool
         rec = _condition_and_pilot_model(U, question, cand, bundle, as_of, horizon, intervention,
                                          seed, cond_llm, actor_cache, user_context, prior_checkpoint,
-                                         drop, t0)
+                                         drop, t0, evidence=evidence)
         runs[cand.model_id] = rec
         ens.pilot_models.append(cand.model_id)
     ens.candidates_rejected = sum(1 for c in ens.candidates
@@ -278,7 +280,8 @@ def simulate_structural_ensemble(question: str, *, as_of: str, horizon: str = ""
 
 # ------------------------------------------------------------------ per-model pipeline
 def _condition_and_pilot_model(U, question, cand, bundle, as_of, horizon, intervention, seed,
-                               cond_llm, actor_cache, user_context, prior_checkpoint, drop, t0):
+                               cond_llm, actor_cache, user_context, prior_checkpoint, drop, t0,
+                               evidence=""):
     """Condition ONE model's own plan (evidence recompile → ITS OWN posterior → fidelity/event-time/
     Phase 11) and run its REAL pilot through the canonical persistence funnel. The pilot uses the full
     causal runtime — the model's actual plan, actual posterior, actual qualitative actors, actual
@@ -360,7 +363,7 @@ def _condition_and_pilot_model(U, question, cand, bundle, as_of, horizon, interv
         U._condition_plan(question, plan, bundle, as_of, horizon, seed, model_llm,
                           manifest, lineage, costs, drop,
                           user_context=user_context, intervention=intervention,
-                          structural_model_id=cand.model_id)
+                          structural_model_id=cand.model_id, evidence=evidence)
         cand.plan_lineage = list(lineage["plan_hashes"]) or [plan.plan_hash()]
         # ---------- pilot through the canonical funnel (persistence-prepared, index-keyed slice) --------
         actor_cache.model_id = cand.model_id

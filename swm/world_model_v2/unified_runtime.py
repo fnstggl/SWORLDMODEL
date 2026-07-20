@@ -147,9 +147,12 @@ def simulate_world_stable(question: str, *, n_runs: int = 3, **kwargs):
 def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention: str = "",
                    user_context=None, prior_checkpoint=None, compute_budget=None, seed: int = 0,
                    llm=None, execution_policy: dict = None, trace_level: str = "standard",
-                   config=None, prebuilt_bundle=None) -> SimulationResult:
+                   config=None, prebuilt_bundle=None, evidence: str = "") -> SimulationResult:
     """THE canonical public V2 entry. One shared evidence bundle; one funnel; DEFAULT structural-model
     ensemble (several independently generated causal models, each fully simulated).
+
+    `evidence` (caller-supplied as-of text, e.g. a frozen benchmark background) conditions the
+    decomposition directly; the Phase-2 retrieval bundle still supersedes it downstream when built.
 
     The ordinary caller does NOT choose which phases run — the compiler selects causally-relevant
     subsystems — and does NOT enable the structural ensemble: it is the default. `execution_policy` may
@@ -166,20 +169,23 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
             question, as_of=as_of, horizon=horizon, intervention=intervention,
             user_context=user_context, prior_checkpoint=prior_checkpoint,
             compute_budget=compute_budget, seed=seed, llm=llm, execution_policy=policy,
-            trace_level=trace_level, config=config, prebuilt_bundle=prebuilt_bundle)
+            trace_level=trace_level, config=config, prebuilt_bundle=prebuilt_bundle,
+            evidence=evidence)
     from swm.world_model_v2.structural_runtime import simulate_structural_ensemble
     return simulate_structural_ensemble(
         question, as_of=as_of, horizon=horizon, intervention=intervention,
         user_context=user_context, prior_checkpoint=prior_checkpoint,
         compute_budget=compute_budget, seed=seed, llm=llm, execution_policy=policy,
-        trace_level=trace_level, config=config, prebuilt_bundle=prebuilt_bundle)
+        trace_level=trace_level, config=config, prebuilt_bundle=prebuilt_bundle,
+        evidence=evidence)
 
 
 def _simulate_single_structural_model(question: str, *, as_of: str, horizon: str = "",
                                       intervention: str = "", user_context=None, prior_checkpoint=None,
                                       compute_budget=None, seed: int = 0, llm=None,
                                       execution_policy: dict = None, trace_level: str = "standard",
-                                      config=None, prebuilt_bundle=None) -> SimulationResult:
+                                      config=None, prebuilt_bundle=None,
+                                      evidence: str = "") -> SimulationResult:
     """The EXPLICIT single-structural-model ablation/baseline: exactly the pre-ensemble canonical path
     (one compile_world plan, one funnel). Retained for scientific ablations, frozen historical artifact
     compatibility and isolated compiler tests — never the default; reaching it requires
@@ -212,8 +218,10 @@ def _simulate_single_structural_model(question: str, *, as_of: str, horizon: str
         return s
 
     # ---------- Phase 1: universal compiler → the ONE plan (explicit single-model ablation) ----------
+    # `evidence` (caller-supplied as-of text, e.g. a frozen benchmark background) conditions the
+    # decomposition directly; the Phase-2 retrieval bundle still supersedes it downstream when built.
     try:
-        plan = compile_world(question, llm=llm, evidence="", as_of=as_of, horizon=horizon,
+        plan = compile_world(question, llm=llm, evidence=evidence, as_of=as_of, horizon=horizon,
                              intervention=intervention, seed=seed)
     except ClarificationRequired as e:
         return SimulationResult(question=question, simulation_status="clarification_required",
@@ -276,7 +284,7 @@ def _simulate_single_structural_model(question: str, *, as_of: str, horizon: str
                                                        as_of=as_of, drop=drop, lineage=lineage)
     _condition_plan(question, plan, bundle, as_of, horizon, seed, llm,
                     manifest, lineage, costs, drop,
-                    user_context=user_context, intervention=intervention)
+                    user_context=user_context, intervention=intervention, evidence=evidence)
 
     # ---------- Terminal projection through the ONE funnel (Phase 8 persistence + P4/P6/P7/P10 operators) ----
     # guarded: one recorded rollout retry on an intermittent empty rollout, then the honesty guards
@@ -400,7 +408,7 @@ def _grounded_fallback_mean(posterior, prior_spec):
 
 
 def _condition_plan(question, plan, bundle, as_of, horizon, seed, llm, manifest, lineage, costs, drop,
-                    user_context=None, intervention="", structural_model_id=""):
+                    user_context=None, intervention="", structural_model_id="", evidence=""):
     """Phases 9/10 + fidelity + activation synthesis + event-time conversion + Phase-11 recompilation for
     ONE plan. Mutates the plan in place (each structural model owns its plan object exclusively)."""
     # ---------- Phase 9: populations + multilayer networks — instantiate into the plan when declared --
@@ -430,7 +438,7 @@ def _condition_plan(question, plan, bundle, as_of, horizon, seed, llm, manifest,
             from swm.world_model_v2.scheduled_facts import extract_scheduled_facts, attach_scheduled_facts
             from swm.world_model_v2.resolution_criteria import (parse_resolution_criterion,
                                                                 ground_actor_intentions)
-            ev_text = _bundle_text(bundle, 2400)
+            ev_text = _bundle_text(bundle, 2400) or str(evidence or "")[:2400]
             # universal resolution-criterion parsing: the precise state that resolves YES anchors the
             # contract's rule, the fact-entailment judgments, and the intention grounding
             crit = parse_resolution_criterion(question, horizon=horizon, llm=llm)
@@ -521,7 +529,7 @@ def _condition_plan(question, plan, bundle, as_of, horizon, seed, llm, manifest,
         try:
             from swm.world_model_v2.temporal_compiler import (attach_temporal_model,
                                                               compile_temporal_model)
-            ev_text = _bundle_text(bundle, 2000)
+            ev_text = _bundle_text(bundle, 2000) or str(evidence or "")[:2000]
             tmodel = compile_temporal_model(plan, llm=llm, question=question,
                                             evidence_text=ev_text, user_context=user_context,
                                             intervention=intervention, seed=seed,

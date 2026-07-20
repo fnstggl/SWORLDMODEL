@@ -66,12 +66,25 @@ class WorldModelV2Run:
         total = n_total if n_total is not None else self.n_particles
         stop = total if stop is None else min(stop, total)
         worlds = self.initial.sample_particles(total, seed=seed)
+        if particle_scope is None:
+            # independent particle worlds roll out serially or thread-parallel (SWM_BRANCH_THREADS);
+            # submission-order collection keeps serial/parallel results identical. Index keys are
+            # preserved: particle i's world and exogenous seed law are the same either way.
+            from swm.world_model_v2.materialize import run_branches
+            jobs = []
+            for i in range(start, stop):
+                w = worlds[i]
+                w.particle_index = i           # §17.2: deterministic family assignment key
+                jobs.append((w, self.queue_builder(w), seed * 7919 + i))
+            return run_branches(engine, jobs)
+        # a particle_scope (cross-model actor-decision cache) is notified via enter_branch(i)
+        # IMMEDIATELY before each roll — an order-sensitive contract, so this path stays serial
         branches = []
         for i in range(start, stop):
             w = worlds[i]
             w.particle_index = i               # §17.2: deterministic family assignment key
             q = self.queue_builder(w)
-            if particle_scope is not None and hasattr(particle_scope, "enter_branch"):
+            if hasattr(particle_scope, "enter_branch"):
                 particle_scope.enter_branch(i)
             branches.append(engine.run_branch(w, q, seed=seed * 7919 + i))
         return branches
