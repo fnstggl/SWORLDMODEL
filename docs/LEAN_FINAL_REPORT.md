@@ -44,6 +44,35 @@ frozen-background protocol — the compiled worlds' required causal processes la
 mechanism families and the runtime refuses to manufacture probability mass. Status-gated
 scoring (one rule, both arms): refusals have no scoreable forecast.
 
+
+## Forecast-availability contract (user directive, applied after the first runs)
+
+Grounding quality and forecast availability are now SEPARATE (`forecast_recovery.py`): every
+coherent binary question returns its best defensible probability with
+`probability_source` / `grounding_grade` / `confidence` / `unresolved_mass` /
+`probability_conditional_on_resolved` / `uncertainty_interval` / `weight_sensitive` as
+separate fields; execution status describes the run and never erases the probability
+(`has_forecast()` is status-independent — regression-pinned). No neutral 0.5 exists anywhere
+(AST-pinned); with no defensible source the probability honestly stays None.
+
+**EXP-110** recovered all five lean forecasts from the EXISTING checkpoints (no reruns, no new
+calls, original as_of/evidence untouched — pure readout re-derivation from stored weighted
+distributions + evidence-updated posterior means):
+
+| Question | recovered p | outcome | Brier | side | source | grade |
+|---|---|---|---|---|---|---|
+| BoJ June hike | 0.565 | 1 | 0.190 | ✓ | completed_rollouts+evidence_prior | exploratory |
+| visionOS 27 | 0.417 | 1 | 0.340 | ✗ | evidence_prior+partial_rollouts | exploratory |
+| Wale PM | 0.435 | 1 | 0.319 | ✗ | evidence_conditioned_prior | exploratory |
+| Hormuz transits | 0.885 | 0 | 0.782 | ✗ | evidence_prior+partial_rollouts | exploratory |
+| Banxico unanimity | 0.769 | 1 | 0.053 | ✓ | evidence_conditioned_prior | exploratory |
+
+Lean arm: Brier 0.337, 2/5 correct side — every row weight-sensitive and exploratory-grade
+(the labels say exactly how weak these are; for context the pre-#127 EXP-104 full system
+scored 0.393 / 1/5 on the same frozen set; FutureSearch SOTA 0.165). FF visionOS recovered
+0.834 → Brier 0.028 (its arm completes separately). The five-question set remains an
+architecture/performance diagnostic, not an accuracy claim.
+
 ## Full-fidelity baseline (EXP-107) — FF-PENDING
 
 Per-question and total: prediction/status/Brier/side, calls, calls by stage, tokens,
