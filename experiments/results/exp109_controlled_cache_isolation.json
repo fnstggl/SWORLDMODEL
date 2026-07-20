@@ -1,0 +1,11 @@
+{
+ "experiment": "controlled cache-isolation parity gate (deterministic scripted fixture, tests/test_lean_integration.py::test_isolated_caching_parity_gate)",
+ "arms": "identical compiled worlds/evidence/models/cohorts/particles/seeds; ONLY decision+consequence caches differ",
+ "parity": {"identical_decisions_distributions_statuses_censuses_forecasts": true},
+ "decision_provider_calls": {"caches_off": 70, "caches_on": 4},
+ "total_scripted_calls": {"caches_off": 89, "caches_on": 19},
+ "unique_decision_contexts": 4,
+ "decision_cache_hits": 101,
+ "particles": 35,
+ "note": "35 particles contained 4 genuinely distinct actor decision situations (2 behavioral cohorts x 2 decision rounds); the cache spent exactly 4 calls on them - the architectural target realized under the mandatory isolated parity gate"
+}
