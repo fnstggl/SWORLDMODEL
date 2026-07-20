@@ -161,38 +161,59 @@ def propose_reference_class(question: str, *, llm, context: str = "") -> dict:
 _ESTIMATE_PROMPT = """You are grounding the STARTING probability (base rate) for a forecasting question in a
 reference class of comparable past situations. Reason like a superforecaster's OUTSIDE VIEW.
 
+The single most important discipline: A PLAUSIBLE STORY IS NOT EVIDENCE THAT A SPECIFIC EVENT WILL HAPPEN
+BEFORE A DEADLINE. Most specific proposed/attempted events do NOT complete within a short window. Raise the
+probability only when comparable events COMMONLY happen within comparable time, OR this specific case is
+materially advancing toward completion, OR it is a reliable recurrence.
+
 QUESTION: {question}
 AS-OF: {as_of}
+TIME REMAINING until the deadline: about {horizon_days} days.
 {recurrence_block}
 You may PROPOSE a numerical base rate, but you must NEVER present an unsupported guess as precise historical
-fact. Your estimate's INFLUENCE depends on the evidence behind it — say honestly whether it is counted from
-specific sourced history or is your incomplete recollection.
+fact, and you must NEVER invent a numeric "completion percentage". Ground everything in comparable cases.
 
 Decide:
 1. reference_class: the most apt class of comparable past cases (short descriptor), or "" if none.
-2. is_recurrence: true if the question hinges on a RELIABLY RECURRING or SCHEDULED event (an annual
-   release/conference, a body that meets on a fixed calendar, a regular filing). Such events have a HIGH,
-   well-identified base rate.
-3. base_rate: the historical frequency the YES outcome occurs in that class, 0..1. For a strong recurrence
-   this is high (e.g. an annual product cycle that has happened every year ≈ 0.9-0.97). Be honest and
-   calibrated; do NOT default to 0.5.
-4. n_examples: roughly how many past comparable cases your rate is based on (integer; be conservative).
-5. transport_risk: none|low|moderate|high|severe — how much this class differs from THIS scenario
-   (a reliable recurrence with no disruption = low; a loose analogy across eras = high).
-6. evidence_quality: "sourced" if you can point to specific recent past instances (named years/events) that
-   you are confident occurred — the recurrence is countable — else "model_memory" (a general impression).
+2. is_recurrence: true ONLY if the question hinges on a RELIABLY RECURRING or SCHEDULED event (an annual
+   release/conference, a body that meets on a fixed calendar) whose next instance falls inside the window.
+3. stage: the CURRENT qualitative stage of this specific event, from evidence/world-knowledge — one of:
+   "mere_proposal_or_speculation" | "formally_initiated" | "scheduled_or_on_calendar" |
+   "advanced_prerequisites_met" | "essentially_decided_awaiting_formality" | "recurring_due_this_window" |
+   "blocked_or_stalled" | "unknown". Do NOT invent a number for it.
+4. base_rate: among comparable past cases AT THIS SAME STAGE, the fraction that actually REACHED the YES
+   outcome WITHIN about this much remaining time. Count cases that had not happened by a comparable horizon
+   as NOT-yet (censored ⇒ they count toward "did not happen in time"), not as if they eventually succeeded.
+   A vague proposal with a short deadline is usually LOW; an essentially-decided or recurring-due case is
+   HIGH. Be honest and calibrated; do NOT default to 0.5 and do NOT default to optimism.
+5. status_quo: one sentence on what happens if NO decisive change occurs before the deadline (delay,
+   blockage, cancellation, unresolved process) — and whether the status quo is the likely outcome here.
+6. n_examples: roughly how many comparable past cases at this stage your rate is based on (integer;
+   conservative — count real instances, not vague impressions).
+7. transport_risk: none|low|moderate|high|severe — how much this class differs from THIS scenario.
+8. evidence_quality: "sourced" if you can point to specific comparable cases (named instances) you are
+   confident about — else "model_memory" (a general impression).
 
-Return ONLY JSON: {{"reference_class": "...", "is_recurrence": true|false, "base_rate": <0..1>,
-"n_examples": <int>, "transport_risk": "none|low|moderate|high|severe",
-"evidence_quality": "sourced|model_memory", "why": "<one line>"}}"""
+Return ONLY JSON: {{"reference_class": "...", "is_recurrence": true|false, "stage": "...",
+"base_rate": <0..1>, "status_quo": "...", "n_examples": <int>,
+"transport_risk": "none|low|moderate|high|severe", "evidence_quality": "sourced|model_memory",
+"why": "<one line grounding the rate in comparable cases at this stage within this window>"}}"""
+
+#: stages where the deadline-conditioned base rate is the load-bearing signal (specific one-off events).
+#: "recurring_due_this_window" and "essentially_decided_awaiting_formality" legitimately support HIGH rates;
+#: the rest are where over-prediction of occurrence lives and the outside view must dominate.
+_OCCURRENCE_STAGES = {"mere_proposal_or_speculation", "formally_initiated", "scheduled_or_on_calendar",
+                      "advanced_prerequisites_met", "blocked_or_stalled", "unknown"}
 
 
-def estimate_reference_base_rate(question: str, *, llm, as_of: str = "", recurrence: dict = None) -> dict:
-    """LLM OUTSIDE-VIEW estimate: name a reference class and estimate its base rate (bounded), flag
-    recurrences, judge transport risk. The estimate is grounded world-knowledge, NOT held-out data — the
-    caller discounts it heavily (grounded_estimate_prior). A `recurrence` hint from the calendar layer
-    (e.g. {"base_rate": 0.9, "strength": 0.8}) is passed to the model as prior context. Safe defaults on
-    failure; returns {} when nothing usable."""
+def estimate_reference_base_rate(question: str, *, llm, as_of: str = "", horizon_days=None,
+                                 recurrence: dict = None) -> dict:
+    """DEADLINE-AWARE OUTSIDE-VIEW estimate (§8-9): name a reference class and estimate the base rate as the
+    fraction of comparable cases AT THE SAME STAGE that reached YES WITHIN the remaining time — grounded in
+    comparable-case timing, never a hardcoded decay or invented completion %. Returns the qualitative stage
+    and the status-quo consideration too. The estimate is grounded world-knowledge, NOT held-out data — the
+    caller discounts it by evidence quality (grounded_estimate_prior). Safe defaults on failure; {} when
+    nothing usable."""
     if llm is None:
         return {}
     from swm.engine.grounding import parse_json
@@ -201,9 +222,10 @@ def estimate_reference_base_rate(question: str, *, llm, as_of: str = "", recurre
         rblock = (f"CALENDAR SIGNAL: a scheduled/recurring-event analysis suggests a base rate near "
                   f"{float(recurrence['base_rate']):.2f} (pattern strength {recurrence.get('strength', 0)}). "
                   f"Weigh this; override only with good reason.\n")
+    hd = "unknown" if horizon_days is None else str(int(max(0, round(float(horizon_days)))))
     try:
         raw = parse_json(llm(_ESTIMATE_PROMPT.format(question=question, as_of=as_of or "n/a",
-                                                     recurrence_block=rblock))) or {}
+                                                     horizon_days=hd, recurrence_block=rblock))) or {}
     except Exception:  # noqa: BLE001
         raw = {}
     if not raw or raw.get("base_rate") is None:
@@ -214,9 +236,14 @@ def estimate_reference_base_rate(question: str, *, llm, as_of: str = "", recurre
         return {}
     tr = str(raw.get("transport_risk", "high"))
     eq = str(raw.get("evidence_quality", "model_memory")).lower()
+    stage = str(raw.get("stage", "unknown")).lower().strip()
     return {"reference_class": str(raw.get("reference_class", ""))[:120],
             "is_recurrence": bool(raw.get("is_recurrence")),
+            "stage": stage if stage else "unknown",
             "base_rate": br,
+            "status_quo": str(raw.get("status_quo", ""))[:200],
+            "deadline_conditioned": horizon_days is not None,
+            "horizon_days": None if horizon_days is None else int(max(0, round(float(horizon_days)))),
             "n_examples": max(1.0, min(60.0, float(raw.get("n_examples", 5) or 5))),
             "transport_risk": tr if tr in TRANSPORT_RETAINED else "high",
             "evidence_quality": eq if eq in ("sourced", "model_memory") else "model_memory",
@@ -252,18 +279,34 @@ def build_outcome_rate_prior(plan, *, llm=None, reference_data: dict = None, rec
                 str(row.get("reference_class", "curated_reference")),
                 float(row.get("successes", 0) or 0), float(row["total"]),
                 transport_risk=str(row.get("transport_risk", "moderate")), lean=lean)
-    # 3. LLM outside-view base-rate ESTIMATE (recurrence-aware) → continuous grounded prior
+    # 3. DEADLINE-AWARE outside-view base-rate ESTIMATE (recurrence + stage + status-quo) → grounded prior.
+    #    The remaining time is derived deterministically from the plan (horizon − as_of); the base rate is
+    #    the fraction of comparable cases AT THIS STAGE that reached YES within that window (§8-9).
+    horizon_days = None
+    try:
+        a0 = float(getattr(plan, "as_of", 0.0) or 0.0)
+        h0 = float(getattr(plan, "horizon_ts", 0.0) or 0.0)
+        if h0 > a0 > 0:
+            horizon_days = (h0 - a0) / 86400.0
+    except Exception:  # noqa: BLE001
+        horizon_days = None
     est = estimate_reference_base_rate(plan.question, llm=llm,
                                        as_of=str((plan.provenance or {}).get("as_of", "")),
-                                       recurrence=recurrence)
+                                       horizon_days=horizon_days, recurrence=recurrence)
     if est:
-        # a strong calendar recurrence sets a low transport floor (a reliable annual event transports well)
+        # a strong calendar recurrence DUE this window transports well (low risk); everything else keeps the
+        # model's judged transport risk — no blanket optimism, no blanket pessimism.
         tr = "low" if (est["is_recurrence"] and est["transport_risk"] in ("moderate", "high")) \
             else est["transport_risk"]
-        return grounded_estimate_prior(est["reference_class"], est["base_rate"], transport_risk=tr,
+        spec = grounded_estimate_prior(est["reference_class"], est["base_rate"], transport_risk=tr,
                                        n_examples=est["n_examples"], is_recurrence=est["is_recurrence"],
                                        evidence_quality=est.get("evidence_quality", "model_memory"),
                                        why=est["why"])
+        spec.provenance.update({"stage": est.get("stage"), "status_quo": est.get("status_quo"),
+                                "deadline_conditioned": est.get("deadline_conditioned"),
+                                "horizon_days": est.get("horizon_days"),
+                                "occurrence_class": est.get("stage") in _OCCURRENCE_STAGES})
+        return spec
     # 4. weak fallback: the coarse qualitative-lean Beta (honestly labeled)
     spec = generic_lean_prior(lean, reason="no reference class or base-rate estimate available")
     return spec
