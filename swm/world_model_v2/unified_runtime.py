@@ -53,6 +53,26 @@ RUNTIME_VERSION = "unified-2.0-structural-ensemble"
 #: modes for execution_policy["structural_mode"]; "ensemble" is the ONLY default. The single-model mode
 #: is an explicit ablation/baseline label — tests enforce that ordinary calls never reach it silently.
 STRUCTURAL_MODES = ("ensemble", "single_structural_model")
+#: The two PERMANENT execution profiles. `full_fidelity` is the research-grade PR-#127 runtime,
+#: byte-for-byte the pre-profile behavior; `lean_adaptive` preserves the same causal architecture while
+#: removing duplicated computation (shared run artifacts, actor-state cohorts, decision-equivalence
+#: caching, reversal-triggered structural models, progressive particles). The product is world_model_v2;
+#: profiles are internal execution strategies, never product names. The default stays `full_fidelity`
+#: until the §25 acceptance checks pass (see lean_runtime.DEFAULT_SWITCH).
+EXECUTION_PROFILES = ("full_fidelity", "lean_adaptive")
+DEFAULT_EXECUTION_PROFILE = "full_fidelity"
+
+
+def resolve_execution_profile(execution_profile=None) -> str:
+    """One authority for profile resolution: explicit argument > SWM_EXECUTION_PROFILE env override >
+    module default. Unknown names fail loudly — a profile typo must never silently run the wrong
+    execution strategy."""
+    import os as _os
+    prof = str(execution_profile or _os.environ.get("SWM_EXECUTION_PROFILE", "").strip()
+               or DEFAULT_EXECUTION_PROFILE)
+    if prof not in EXECUTION_PROFILES:
+        raise ValueError(f"unknown execution_profile {prof!r}; one of {EXECUTION_PROFILES}")
+    return prof
 # Phases that are default-on and threaded through the one funnel.
 _PHASES = ["phase1_compiler", "phase2_evidence", "phase3_posterior", "phase4_actor_policy",
            "phase6_registry", "phase7_nonlinear", "phase8_persistence", "phase9_populations",
@@ -147,37 +167,57 @@ def simulate_world_stable(question: str, *, n_runs: int = 3, **kwargs):
 def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention: str = "",
                    user_context=None, prior_checkpoint=None, compute_budget=None, seed: int = 0,
                    llm=None, execution_policy: dict = None, trace_level: str = "standard",
-                   config=None, prebuilt_bundle=None, evidence: str = "") -> SimulationResult:
+                   config=None, prebuilt_bundle=None, evidence: str = "",
+                   execution_profile: str = None) -> SimulationResult:
     """THE canonical public V2 entry. One shared evidence bundle; one funnel; DEFAULT structural-model
     ensemble (several independently generated causal models, each fully simulated).
 
     `evidence` (caller-supplied as-of text, e.g. a frozen benchmark background) conditions the
     decomposition directly; the Phase-2 retrieval bundle still supersedes it downstream when built.
 
+    `execution_profile` selects an execution STRATEGY, never a different product: `full_fidelity`
+    (default) is the research-grade PR-#127 runtime unchanged; `lean_adaptive` runs the same causal
+    architecture through the lean runtime (shared artifacts, cohorts, decision-equivalence caching,
+    reversal-triggered structural models, progressive particles). See EXECUTION_PROFILES.
+
     The ordinary caller does NOT choose which phases run — the compiler selects causally-relevant
     subsystems — and does NOT enable the structural ensemble: it is the default. `execution_policy` may
     cap fidelity for the compute budget, force an ablation (removal of a named phase), or select the
     explicit `single_structural_model` ablation baseline; it is NOT how normal callers enable/disable
     behavior."""
+    profile = resolve_execution_profile(execution_profile)
     policy = execution_policy or {}
     mode = str(policy.get("structural_mode", "ensemble"))
     if mode not in STRUCTURAL_MODES:
         raise ValueError(f"unknown structural_mode {mode!r}; one of {STRUCTURAL_MODES} "
                          f"(single_structural_model is an explicit ablation, never a default)")
-    if mode == "single_structural_model":
-        return _simulate_single_structural_model(
+    if profile == "lean_adaptive":
+        from swm.world_model_v2.lean_runtime import simulate_world_lean
+        res = simulate_world_lean(
             question, as_of=as_of, horizon=horizon, intervention=intervention,
             user_context=user_context, prior_checkpoint=prior_checkpoint,
             compute_budget=compute_budget, seed=seed, llm=llm, execution_policy=policy,
             trace_level=trace_level, config=config, prebuilt_bundle=prebuilt_bundle,
             evidence=evidence)
-    from swm.world_model_v2.structural_runtime import simulate_structural_ensemble
-    return simulate_structural_ensemble(
-        question, as_of=as_of, horizon=horizon, intervention=intervention,
-        user_context=user_context, prior_checkpoint=prior_checkpoint,
-        compute_budget=compute_budget, seed=seed, llm=llm, execution_policy=policy,
-        trace_level=trace_level, config=config, prebuilt_bundle=prebuilt_bundle,
-        evidence=evidence)
+        res.provenance = {**(res.provenance or {}), "execution_profile": "lean_adaptive"}
+        return res
+    if mode == "single_structural_model":
+        res = _simulate_single_structural_model(
+            question, as_of=as_of, horizon=horizon, intervention=intervention,
+            user_context=user_context, prior_checkpoint=prior_checkpoint,
+            compute_budget=compute_budget, seed=seed, llm=llm, execution_policy=policy,
+            trace_level=trace_level, config=config, prebuilt_bundle=prebuilt_bundle,
+            evidence=evidence)
+    else:
+        from swm.world_model_v2.structural_runtime import simulate_structural_ensemble
+        res = simulate_structural_ensemble(
+            question, as_of=as_of, horizon=horizon, intervention=intervention,
+            user_context=user_context, prior_checkpoint=prior_checkpoint,
+            compute_budget=compute_budget, seed=seed, llm=llm, execution_policy=policy,
+            trace_level=trace_level, config=config, prebuilt_bundle=prebuilt_bundle,
+            evidence=evidence)
+    res.provenance = {**(res.provenance or {}), "execution_profile": "full_fidelity"}
+    return res
 
 
 def _simulate_single_structural_model(question: str, *, as_of: str, horizon: str = "",
