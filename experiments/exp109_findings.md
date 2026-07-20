@@ -116,8 +116,21 @@ survive** (≈ compile + N models × per-model conditioning/actor rollout), **no
 definitive per-stage `calls_by_stage` breakdown comes from the frozen-5 full-actor pass (EXP-110), where
 runs that complete/under-model expose the stage histogram.
 
-- **Fix verification (Step 4):** _pending final Knesset re-run_ — expect a NUMBER (grounded ~5%),
-  `status=under_modeled`, `has_forecast=True`, `grounded_outside_view_fallback.used=True`.
+- **Fix verification (Step 4): CONFIRMED.** The Knesset re-run now returns
+  `p=0.14, status=under_modeled, has_forecast=True, raw_distribution={True:0.14, False:0.86}` — no longer a
+  silent `None`. It again hit the compilation-collapse path (`execution_failed`, zero models, 43 calls /
+  446 s), so the **top-level floor** fired: it built the grounded prior independently (reference class
+  *"Israeli Knesset committee approvals of private member bills with short deadlines"*, stage
+  `formally_initiated` → 0.14) and served it, with the failure NAMED
+  (`grounded_outside_view_fallback.original_status=execution_failed`,
+  `original_failure_taxonomy=invalid_execution_plan`) and a loud limitation. Against the held-out answer
+  (outcome NO, SOTA 3 %), 0.14 is on the correct side. The prior varies run-to-run with the stage
+  classification (0.05 `mere_proposal` ↔ 0.14 `formally_initiated`) — expected LLM-estimate variance.
+
+  **Engineering signal:** Knesset hit compilation collapse on BOTH re-runs (38 then 43 calls). The ensemble
+  compiler frequently rejects every candidate for this question (`no_executable_structural_candidate` /
+  `invalid_execution_plan`). The floor guarantees a forecast regardless, but the compiler's fragility on
+  short-deadline institutional questions is a genuine, separate robustness gap worth a dedicated fix.
 
 ## 4. Lean §8-9 deadline-prior forecaster (EXP-111, Step 6)
 
