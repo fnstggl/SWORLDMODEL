@@ -236,22 +236,75 @@ def weighted_distribution(weights) -> dict:
             for o in options}
 
 
-def p_yes(dist: dict, *, yes_keys=None) -> float:
-    """Project a distribution onto P(YES) using the same convention as the runtime's _binary_projection."""
+#: distribution keys that are NOT resolved outcomes — unresolved/censored/under-modeled mass. Excluded from
+#: the P(YES) denominator so the affirmative share is P(YES | the world actually resolved the outcome).
+_UNRESOLVED_KEYS = frozenset({"none", "no_choice", "unresolved", "unresolved_mechanism", "under_modeled",
+                              "censored", "censored_by_real_horizon", "truncated", "unbound"})
+
+
+def _is_negative_label(label) -> bool:
+    """True when an outcome label reads NEGATIVE (no_raise, not_approved, hold, rejected …). Reuses the
+    compiler's curated negation lexicon; token-split so 'no_raise'/'not-approved' are caught without
+    false-positives on substrings."""
+    import re
+    from swm.world_model_v2.compiler import _NEG_TOKENS
+    toks = [t for t in re.split(r"[_\-\s./]+", str(label).strip().lower()) if t]
+    return any(t in _NEG_TOKENS for t in toks)
+
+
+def affirmative_p(dist: dict, *, options=None, resolution_rule="") -> float:
+    """P(YES) = share of RESOLVED outcome mass on the AFFIRMATIVE outcome. Robust to the terminal binning
+    using semantic labels ('raise'/'no_raise') that do NOT match the contract's declared options:
+      1. if the 2 contract options actually key the distribution, options[0] is the affirmative (contract);
+      2. else identify the affirmative SEMANTICALLY — the non-negative outcome label(s) vs. the negation
+         lexicon (so 'raise' beats 'no_raise', 'approved' beats 'not_approved');
+      3. last resort: 2 keys → first; else the modal key.
+    Unresolved/censored mass is excluded from the denominator (P(YES | resolved)). Returns None on no dist."""
     if not dist:
         return None
-    keys = list(yes_keys or []) + ["True", "true", "yes", "Yes", "1"]
-    for k in keys:
-        if k in dist:
-            return round(_num(dist[k]), 6)
-    nonnull = {k: _num(v) for k, v in dist.items() if k not in ("None", "no_choice")}
-    return round(max(nonnull.values()), 6) if nonnull else None
+    outcomes = {k: _num(v) for k, v in dist.items()
+                if str(k).strip().lower() not in _UNRESOLVED_KEYS}
+    total = sum(outcomes.values())
+    if not outcomes or total <= 0:
+        return None
+    if options and len([o for o in options if str(o).strip()]) == 2:
+        o0, o1 = str(options[0]), str(options[1])
+        if o0 in outcomes or o1 in outcomes:
+            return round(outcomes.get(o0, 0.0) / total, 6)             # contract: options[0] is affirmative
+    neg = {k for k in outcomes if _is_negative_label(k)}
+    aff = [k for k in outcomes if k not in neg]
+    if aff and neg:                                                    # a negation distinguishes them
+        return round(sum(outcomes[k] for k in aff) / total, 6)
+    keys = list(outcomes)
+    if len(keys) == 2:
+        return round(outcomes[keys[0]] / total, 6)
+    return round(max(outcomes.values()) / total, 6)
 
 
-def weighted_spread(weights) -> float:
+def weighted_p_yes(weights, *, options=None, resolution_rule="") -> float:
+    """The rich forecast headline: Σ (world weight × P(YES) INSIDE that world). Per-world P(YES) uses the
+    robust affirmative-share (above), so this is genuinely 'how plausible is the world × how often the
+    outcome happens in it' — not a projection artifact. Worlds whose P(YES) is undefined are dropped and
+    the remaining weights renormalized. Returns None if no world yields a defined P(YES)."""
+    contribs = [(ww.weight, affirmative_p(ww.dist, options=options, resolution_rule=resolution_rule))
+                for ww in weights]
+    contribs = [(w, p) for w, p in contribs if p is not None]
+    tot = sum(w for w, _ in contribs)
+    if not contribs or tot <= 0:
+        return None
+    return round(sum(w * p for w, p in contribs) / tot, 6)
+
+
+def p_yes(dist: dict, *, yes_keys=None) -> float:
+    """Back-compat wrapper — now the semantic affirmative share. `yes_keys` (contract options) is honored
+    first when it keys the distribution."""
+    return affirmative_p(dist, options=(list(yes_keys) + [None] if yes_keys else None))
+
+
+def weighted_spread(weights, *, options=None) -> float:
     """Weight-agnostic disagreement measure: max−min of the worlds' P(YES). Reported as uncertainty when the
     weighted headline is served despite disagreement."""
-    ps = [p_yes(ww.dist) for ww in weights]
+    ps = [affirmative_p(ww.dist, options=options) for ww in weights]
     ps = [p for p in ps if p is not None]
     return round(max(ps) - min(ps), 4) if len(ps) >= 2 else 0.0
 

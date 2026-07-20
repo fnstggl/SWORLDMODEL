@@ -572,8 +572,9 @@ def _assemble_ensemble_result(U, question, ens, runs, model_results, promoted, b
     # (objective model quality × a CITED LLM plausibility; uncited confidence is capped) → average the
     # simulated outcomes. Disagreement is expressed as SPREAD + lowered support, not as a refusal to answer.
     from swm.world_model_v2 import model_weighting as MW
-    _yes_opts = [str(o) for o in
-                 (getattr(promoted[0].executable_plan.outcome_contract, "options", None) or [])][:1]
+    _oc = promoted[0].executable_plan.outcome_contract
+    _opts = [str(o) for o in (getattr(_oc, "options", None) or []) if str(o).strip()]
+    _rule = str(getattr(_oc, "resolution_rule", "") or "")
     _world_infos = [MW.WorldInfo(
         model_id=c.model_id, dist=model_dists.get(c.model_id, {}),
         support_grade=model_results[c.model_id].support_grade,
@@ -591,12 +592,21 @@ def _assemble_ensemble_result(U, question, ens, runs, model_results, promoted, b
     _valid_worlds, _rejected_worlds = MW.curate_worlds(_world_infos)
     _merged_worlds, _merge_records = MW.merge_duplicates(_valid_worlds)
     _world_weights = MW.grounded_world_weights(question, _merged_worlds, evidence_text, llm)
-    _weighted_dist = MW.weighted_distribution(_world_weights)
-    _weighted_p = MW.p_yes(_weighted_dist, yes_keys=_yes_opts) if _weighted_dist else None
+    _weighted_dist = MW.weighted_distribution(_world_weights)          # rich per-outcome average (report)
+    # headline P(YES) = Σ (world weight × P(YES) INSIDE that world), where per-world P(YES) is the robust
+    # AFFIRMATIVE share (semantic, unresolved mass excluded) — never a positional/max projection artifact.
+    _weighted_p = MW.weighted_p_yes(_world_weights, options=_opts, resolution_rule=_rule) \
+        if _world_weights else None
     sim_forecast_valid = bool(_world_weights) and _weighted_p is not None
     # the SIMULATION forecast is the headline whenever valid worlds ran (even if they disagree); only when
     # NO valid simulated world exists does the headline stay empty and the grounded outside-view take over.
-    headline = dict(_weighted_dist) if sim_forecast_valid else {}
+    # CANONICAL 2-option headline so the runtime's _binary_projection recovers exactly _weighted_p as P(YES).
+    if sim_forecast_valid:
+        _p = round(max(0.0, min(1.0, _weighted_p)), 6)
+        headline = {_opts[0]: _p, _opts[1]: round(1.0 - _p, 6)} if len(_opts) == 2 \
+            else {"True": _p, "False": round(1.0 - _p, 6)}
+    else:
+        headline = {}
     _grounded_baseline = _ensemble_grounded_forecast(runs, promoted)   # reported baseline (+ emergency use)
     _outside_p = (_grounded_baseline or {}).get("mean")
     # THREE TRANSPARENT NUMBERS: outside-view baseline, simulation-derived, and a final COMBINED number that
@@ -624,9 +634,9 @@ def _assemble_ensemble_result(U, question, ens, runs, model_results, promoted, b
         "simulation_confidence": _sim_conf,
         "weighted_simulation_forecast": {
             "p_yes": _weighted_p, "distribution": _weighted_dist, "n_worlds": len(_world_weights),
-            "spread": MW.weighted_spread(_world_weights),
+            "spread": MW.weighted_spread(_world_weights, options=_opts),
             "world_weights": [{"model_id": ww.model_id, "weight": ww.weight,
-                               "p_yes": MW.p_yes(ww.dist, yes_keys=_yes_opts),
+                               "p_yes": MW.affirmative_p(ww.dist, options=_opts, resolution_rule=_rule),
                                "plausibility": ww.plausibility, "objective_quality": ww.objective_quality,
                                "rationale": ww.rationale, "citations": ww.citations,
                                "unsupported_assumptions": ww.unsupported_assumptions,

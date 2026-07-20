@@ -112,6 +112,25 @@ def test_weighted_aggregation_is_plausibility_weighted_not_mean():
 
 # ---- the no-silent-substitution contract ----
 
+def test_affirmative_p_semantic_yes_identification():
+    from swm.world_model_v2.model_weighting import affirmative_p, weighted_p_yes, WorldWeight
+    # BoJ shape: 'raise' is YES, 'no_raise' is NO, unresolved mass excluded from the denominator
+    boj = {"no_raise": 0.73, "raise": 0.019, "unresolved_mechanism": 0.25}
+    p = affirmative_p(boj)
+    assert abs(p - 0.019 / (0.019 + 0.73)) < 1e-4                     # ~0.025, NOT 0.73 (the NO mass)
+    assert p < 0.1                                                    # simulation says BoJ holds
+    # a positional/max projection would have returned 0.73 — guard against regression
+    assert p != 0.73
+    # contract options take precedence when they key the distribution (options[0] = affirmative)
+    assert affirmative_p({"approve": 0.3, "reject": 0.7}, options=["approve", "reject"]) == 0.3
+    # unresolved-only distribution has no defined P(YES)
+    assert affirmative_p({"unresolved_mechanism": 1.0}) is None
+    # weighted headline uses per-world affirmative share, not distribution-key averaging
+    ws = [WorldWeight("A", 0.5, 0.5, 0.5, {"raise": 0.1, "no_raise": 0.9}),
+          WorldWeight("B", 0.5, 0.5, 0.5, {"raise": 0.3, "no_raise": 0.7})]
+    assert abs(weighted_p_yes(ws) - 0.2) < 1e-6                       # 0.5*0.1 + 0.5*0.3
+
+
 def test_no_silent_substitution_when_valid_sims_ran():
     # valid simulated forecast exists -> source MUST be weighted_simulation, never the fallback
     sel = final_forecast_selection(n_worlds_valid=3, weighted_p=0.42, outside_p=0.05, combined=0.30)
