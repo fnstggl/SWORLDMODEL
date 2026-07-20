@@ -659,3 +659,15 @@ def test_replicate_index_enters_the_signature_and_default_is_one():
     assert c._replicate_for(w0) == 0 and c._replicate_for(w1) == 1  # deterministic assignment
     assert context_rng_seed("sig", replicate_index=0) != context_rng_seed(
         "sig", replicate_index=1)
+
+
+# ------------------------------------------------------------------ escalation gating (EXP-108)
+def test_missing_fact_escalates_only_when_the_actor_is_blocked():
+    """Live models fill missing_decisive_fact eagerly (EXP-108 smoke: 15/16 contexts escalated).
+    The ground requires a BLOCKED actor: fact named AND wait/gather chosen. A committed action
+    alongside a named fact records the fact without spending staged-pipeline calls."""
+    import inspect
+    from swm.world_model_v2 import lean_controller as LC
+    src = inspect.getsource(LC.LeanActorController._fresh)
+    assert 'act_or_wait in ("wait", "gather_information")' in src
+    assert "actor_blocked_on_missing_decisive_fact" in src

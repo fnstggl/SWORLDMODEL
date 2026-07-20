@@ -340,10 +340,14 @@ class LeanActorController:
             if outcome.escalated:
                 escalation_reason = outcome.escalation_reason
             elif outcome.qd is not None and \
-                    str(outcome.cog.interpretation.get("missing_decisive_fact", "")).strip():
-                # the actor names a missing decisive fact — allowed escalation ground; the
-                # staged pipeline gives interpretation/search their own full calls
-                escalation_reason = "actor_identified_missing_decisive_fact"
+                    str(outcome.cog.interpretation.get("missing_decisive_fact", "")).strip() \
+                    and outcome.qd.act_or_wait in ("wait", "gather_information"):
+                # the actor is genuinely BLOCKED on a missing decisive fact (named it AND chose
+                # to wait/gather) — allowed escalation ground; the staged pipeline gives
+                # interpretation/search their own full calls. A named fact alongside a
+                # committed action is recorded, not escalated (live models fill the field
+                # eagerly — EXP-108 smoke: 15/16 contexts escalated before this gate).
+                escalation_reason = "actor_blocked_on_missing_decisive_fact"
         if escalation_reason and (outcome is None or outcome.qd is None
                                   or "missing_decisive_fact" in escalation_reason):
             self.escalations.append({"actor_id": actor_id, "branch_id": branch_id,
