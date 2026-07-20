@@ -165,19 +165,24 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
         raise ValueError(f"unknown structural_mode {mode!r}; one of {STRUCTURAL_MODES} "
                          f"(single_structural_model is an explicit ablation, never a default)")
     if mode == "single_structural_model":
-        return _simulate_single_structural_model(
+        res = _simulate_single_structural_model(
             question, as_of=as_of, horizon=horizon, intervention=intervention,
             user_context=user_context, prior_checkpoint=prior_checkpoint,
             compute_budget=compute_budget, seed=seed, llm=llm, execution_policy=policy,
             trace_level=trace_level, config=config, prebuilt_bundle=prebuilt_bundle,
             evidence=evidence)
-    from swm.world_model_v2.structural_runtime import simulate_structural_ensemble
-    return simulate_structural_ensemble(
-        question, as_of=as_of, horizon=horizon, intervention=intervention,
-        user_context=user_context, prior_checkpoint=prior_checkpoint,
-        compute_budget=compute_budget, seed=seed, llm=llm, execution_policy=policy,
-        trace_level=trace_level, config=config, prebuilt_bundle=prebuilt_bundle,
-        evidence=evidence)
+    else:
+        from swm.world_model_v2.structural_runtime import simulate_structural_ensemble
+        res = simulate_structural_ensemble(
+            question, as_of=as_of, horizon=horizon, intervention=intervention,
+            user_context=user_context, prior_checkpoint=prior_checkpoint,
+            compute_budget=compute_budget, seed=seed, llm=llm, execution_policy=policy,
+            trace_level=trace_level, config=config, prebuilt_bundle=prebuilt_bundle,
+            evidence=evidence)
+    # TOP-LEVEL forecasting-mode floor: even a total structural failure (execution_failed, zero models)
+    # must not return a silent None when a GROUNDED outside-view estimate can be computed — the estimate
+    # is independent of the ensemble. The underlying failure stays named (see _forecasting_mode_floor).
+    return _forecasting_mode_floor(res, question, as_of=as_of, horizon=horizon, llm=llm)
 
 
 def _simulate_single_structural_model(question: str, *, as_of: str, horizon: str = "",
@@ -410,6 +415,78 @@ def _grounded_fallback_mean(posterior, prior_spec):
     except Exception:  # noqa: BLE001
         return None
     return None
+
+
+def _forecasting_mode_floor(res, question, *, as_of, horizon, llm):
+    """TOP-LEVEL forecasting-mode floor (the deeper p=None fix). The grounded outside-view estimate does
+    NOT depend on the structural ensemble — it needs only the question + remaining time — so forecasting
+    mode must never return a silent None when it can be computed, not even when the ensemble ENTIRELY
+    fails to compile (execution_failed, zero promoted models) and the ensemble-level guard had no
+    per-model prior to serve. This computes the grounded reference-class prior INDEPENDENTLY and serves it
+    as an `under_modeled` forecast, while KEEPING the underlying failure named (original status/taxonomy in
+    provenance + a loud limitation) so a genuine engineering gap is surfaced, never hidden.
+
+    §NAP preserved: only a GROUNDED reference-class estimate is served; a generic (no-reference-class)
+    prior is never manufactured, and a genuine `clarification_required` is never floored. Best-effort:
+    the floor must never itself break the return."""
+    try:
+        if res is None:
+            return res
+        has_p = (getattr(res, "raw_probability", None) is not None
+                 or getattr(res, "calibrated_probability", None) is not None)
+        if has_p or res.has_forecast() or res.simulation_status == "clarification_required":
+            return res
+        from types import SimpleNamespace
+        from swm.world_model_v2.phase3_priors import build_outcome_rate_prior, is_grounded_prior
+        from swm.world_model_v2.state import parse_time
+        from swm.world_model_v2.result import CONDITIONAL_FORECAST_SENTENCE, SUPPORT_GRADES
+        try:
+            a0 = float(parse_time(as_of)) if as_of else 0.0
+            h0 = float(parse_time(horizon)) if horizon else 0.0
+        except Exception:  # noqa: BLE001
+            a0 = h0 = 0.0
+        plan = SimpleNamespace(question=question, as_of=a0, horizon_ts=h0,
+                               provenance={"outcome_lean": "neutral", "as_of": as_of or ""})
+        spec = build_outcome_rate_prior(plan, llm=llm)
+        if not is_grounded_prior(spec):
+            return res                                       # §NAP: no generic number manufactured
+        p = round(max(0.0, min(1.0, float(spec.mean))), 4)
+        orig, orig_tax = res.simulation_status, getattr(res, "failure_taxonomy", "") or ""
+        res.raw_distribution = {"True": p, "False": round(1.0 - p, 4)}
+        res.raw_probability = p
+        res.conditional_forecast_note = CONDITIONAL_FORECAST_SENTENCE
+        res.simulation_status = "under_modeled"              # a graded state that CAN carry a forecast
+        res.failure_taxonomy = ""                            # no longer a bare engineering failure...
+        if res.support_grade not in SUPPORT_GRADES:
+            res.support_grade = "highly_speculative"
+        if not (res.under_modeled_subtypes or res.under_modeled_components):
+            res.under_modeled_subtypes = ["under_modeled_nonhuman_mechanism"]
+            res.under_modeled_components = [{
+                "component": "(structural engine)", "kind": "nonhuman_mechanism",
+                "why": f"the structural engine returned {orig!r}"
+                       + (f" ({orig_tax})" if orig_tax else "")
+                       + " with no usable forecast; the grounded outside-view estimate is served instead",
+                "sensitivity": "decisive"}]
+        res.provenance = dict(res.provenance or {})
+        res.provenance["grounded_outside_view_fallback"] = {
+            "used": True, "value": p, "source": "grounded_prior_mean",
+            "floor": "top_level_forecasting_mode",
+            "source_classes": [getattr(spec, "source_class", "")],
+            "reference_classes": [getattr(spec, "reference_class", "")][:1],
+            "stage": (getattr(spec, "provenance", None) or {}).get("stage"),
+            "original_status": orig, "original_failure_taxonomy": orig_tax,
+            "note": "the structural ensemble produced no forecast; the grounded reference-class "
+                    "outside-view estimate is served so forecasting mode never returns a silent None "
+                    "(§NAP: generic priors are still never manufactured; the failure is named above)"}
+        res.limitations = [
+            f"UNDER-MODELED FORECAST (structural engine was {orig!r}"
+            + (f"/{orig_tax}" if orig_tax else "") + f"): no structural model produced a forecast, so the "
+            f"result falls back to the grounded outside-view estimate ({p:.1%}; reference class: "
+            f"{getattr(spec, 'reference_class', '') or 'n/a'}). Treat as a lower-confidence reference-class "
+            f"forecast, not a simulated structural outcome."] + list(res.limitations or [])
+        return res
+    except Exception:  # noqa: BLE001 — the floor must never break the return
+        return res
 
 
 def _condition_plan(question, plan, bundle, as_of, horizon, seed, llm, manifest, lineage, costs, drop,
