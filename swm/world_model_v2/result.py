@@ -107,6 +107,16 @@ class SimulationResult:
     calibrated_distribution: dict = None
     raw_probability: float = None                           # binary convenience projection
     calibrated_probability: float = None
+    # FORECAST AVAILABILITY ≠ GROUNDING QUALITY (forecast_recovery contract): the probability is
+    # required whenever any defensible source exists; these labels say HOW it was produced and
+    # how much to trust it. A weak forecast is a labeled forecast, never a missing one.
+    probability_source: str = ""                            # forecast_recovery.PROBABILITY_SOURCES
+    grounding_grade: str = ""                               # forecast_recovery.GROUNDING_GRADES
+    confidence: str = ""                                    # qualitative label, never a number
+    unresolved_mass: float = None                           # disclosed, never renormalized away
+    probability_conditional_on_resolved: float = None       # resolved-mass-only readout
+    uncertainty_interval: list = None                       # [lower, upper] on P(yes)
+    weight_sensitive: bool = False                          # plausible weight changes cross 0.5
     # epistemics
     uncertainty_decomposition: dict = field(default_factory=dict)
     structural_disagreement: dict = None
@@ -183,17 +193,15 @@ class SimulationResult:
             raise ValueError(f"bad recommendation_status {self.recommendation_status!r}")
 
     def has_forecast(self) -> bool:
-        # temporally_truncated results carry a forecast — from an INCOMPLETE causal unfolding
-        # (§12): usable, but the truncation record and lowered support ride with it
-        if self.simulation_status in ("under_modeled", "truncated", "partially_resolved"):
-            # §35/§21/§NAP: these MAY carry a partial exploratory distribution where mathematically
-            # defensible — a forecast exists iff that partial distribution does, and it stays
-            # explicitly conditional on the modeled portion of the world
-            return bool(self.raw_distribution)
-        if self.simulation_status == "unresolved":
-            return False                     # "Outcome unresolved under the current model."
-        return self.simulation_status in ("completed", "completed_with_degradation",
-                                          "temporally_truncated")
+        """STATUS NEVER CONTROLS FORECAST AVAILABILITY (forecast_recovery contract): a forecast
+        exists iff a probability or distribution exists. The execution status DESCRIBES how the
+        run went (completed / degraded / under_modeled / unresolved / truncated ...); grounding
+        quality lives in grounding_grade/probability_source/confidence; suppressing an available
+        probability because of a status label is the exact defect this replaces. A result with
+        no probability AND no distribution (malformed question, execution failure with nothing
+        recoverable, clarification) honestly has no forecast."""
+        return (self.raw_probability is not None or self.calibrated_probability is not None
+                or bool(self.raw_distribution))
 
     def timing_narrative(self) -> dict:
         """The §27 human-facing timing explanation, rendered from the temporal-runtime block:

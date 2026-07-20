@@ -356,45 +356,57 @@ def test_guard_ladder_posterior_backed_fallback():
     assert res.provenance["execution_degraded_fallback"]["source"] == "posterior"
 
 
-def test_guard_ladder_prior_requires_the_explicit_door(monkeypatch):
+def test_guard_ladder_prior_serves_as_labeled_probability(monkeypatch):
+    """FORECAST-AVAILABILITY CONTRACT (supersedes the old door-gated refusal): with no
+    evidence-updated posterior, the unresolved status stays honest AND the grounded prior mean
+    ships as the labeled headline probability — probability_source/grounding_grade disclose its
+    weakness; the numeric manifest records it consumed, not rejected. Status never erases the
+    probability; no neutral 0.5 is invented anywhere."""
     import swm.world_model_v2.unified_runtime as U
-    prior = SimpleNamespace(mean=0.41)
-    # door CLOSED (§NAP): unresolved, prior recorded as labelled diagnostic only
+    prior = SimpleNamespace(mean=0.41, source_class="reference_class")
     monkeypatch.delenv("SWM_ALLOW_GENERIC_PRIOR", raising=False)
     res = _result(status="execution_failed", p=None, rec="withheld",
                   rr={"missing_mechanisms": []})
     U._apply_result_guards(res, posterior=None, prior_spec=prior)
-    assert res.simulation_status == "unresolved"
-    assert res.raw_probability is None and not res.has_forecast()
-    assert res.provenance["prior_driven_reference"]["value"] == 0.41
-    assert res.provenance["prior_driven_reference"]["headline"] is False
-    rejected = res.resolution_report["numeric_causal_inputs"]["rejected"]
-    assert any(r["name"] == "prior_driven_reference" and r["source_class"] == "llm_estimated"
-               for r in rejected)
-    assert res.recommendation_status == "withheld"
-    # door OPEN (explicit §28 ablation): deliberately prior-driven, loudly labelled
-    monkeypatch.setenv("SWM_ALLOW_GENERIC_PRIOR", "1")
-    res2 = _result(status="execution_failed", p=None)
-    U._apply_result_guards(res2, posterior=None, prior_spec=prior)
-    assert res2.raw_probability == 0.41
-    assert res2.simulation_status == "completed_with_degradation"
-    assert any("PRIOR-DRIVEN" in l for l in res2.limitations)
+    assert res.simulation_status == "unresolved"            # the honest execution status stays
+    assert res.raw_probability == 0.41 and res.has_forecast()
+    assert res.probability_source == "grounded_reference_prior"
+    assert res.grounding_grade in ("exploratory", "ungrounded")
+    assert res.provenance["prior_driven_reference"]["headline"] is True
+    consumed = res.resolution_report["numeric_causal_inputs"]["approved_and_consumed"]
+    assert any(r["name"] == "prior_driven_reference" and r["consumed"] for r in consumed)
+    assert res.recommendation_status == "withheld"          # actions still gated
+    # with NO prior of any kind the probability honestly stays None — never a neutral default
+    res2 = _result(status="execution_failed", p=None, rr={"missing_mechanisms": []})
+    U._apply_result_guards(res2, posterior=None, prior_spec=None)
+    assert res2.simulation_status == "unresolved" and res2.raw_probability is None
+    assert any("no neutral default" in l.lower() for l in res2.limitations)
 
 
-def test_guards_never_touch_honest_unresolved_or_partially_resolved():
+def test_guards_keep_refusal_status_but_fill_the_labeled_probability():
+    """Honest refusals keep their STATUS (never retried, never re-labeled completed) — and the
+    forecast-availability contract fills the labeled probability from the best defensible
+    source. Status describes the forecast; it does not erase it."""
     import swm.world_model_v2.unified_runtime as U
     rr = {"unresolved_share": 1.0, "missing_mechanisms": [{"mechanism": "m"}]}
     res = _result(status="unresolved", p=None, rr=rr)
     U._apply_result_guards(res, posterior=SimpleNamespace(n_effective_observations=9,
                                                           outcome_rate_mean=0.7),
-                           prior_spec=SimpleNamespace(mean=0.5))
-    assert res.simulation_status == "unresolved" and res.raw_probability is None
-    assert U._no_forecast(res) is False                      # never retried either
+                           prior_spec=SimpleNamespace(mean=0.5, source_class="reference_class"))
+    assert res.simulation_status == "unresolved"             # status untouched
+    assert res.raw_probability == 0.7                        # posterior served, labeled
+    assert res.probability_source == "evidence_conditioned_prior"
+    assert U._no_forecast(res) is False                      # still never retried
     pr = _result(status="partially_resolved", p=None,
                  rr={"unresolved_share": 0.4, "missing_mechanisms": []})
     pr.raw_distribution = {"yes": 0.3, "no": 0.3, "unresolved_mechanism": 0.4}
-    U._apply_result_guards(pr, posterior=None, prior_spec=SimpleNamespace(mean=0.5))
-    assert pr.simulation_status == "partially_resolved" and pr.raw_probability is None
+    U._apply_result_guards(pr, posterior=None,
+                           prior_spec=SimpleNamespace(mean=0.5, source_class="reference_class"))
+    assert pr.simulation_status == "partially_resolved"      # status untouched
+    # resolved mass 0.6 at P(yes|resolved)=0.5 + unresolved 0.4 at the grounded prior 0.5
+    assert pr.raw_probability == 0.5
+    assert pr.probability_conditional_on_resolved == 0.5
+    assert pr.unresolved_mass == 0.4 and pr.probability_source == "partial_rollouts"
 
 
 # ------------------------------------------------------------------ 12. no bypass

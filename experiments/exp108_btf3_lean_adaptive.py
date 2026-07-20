@@ -30,13 +30,15 @@ from experiments.exp107_btf3_full_fidelity_post127 import (MODEL, MAX_TOKENS, TE
                                                            _extract_metrics, _merge_commit)
 
 
-SCOREABLE_STATUSES = ("completed", "completed_with_degradation")
+SCOREABLE_STATUSES = ("completed", "completed_with_degradation", "partially_resolved",
+                      "under_modeled", "unresolved", "truncated", "temporally_truncated")
 
 
 def usable_probability(m: dict):
-    """The §NAP-faithful scored probability: a run that refused (unresolved / under_modeled /
-    partially_resolved / failed) has NO scoreable forecast — its p_raw is a residual resolved-mass
-    readout, not a prediction. One rule, both arms."""
+    """Forecast availability is separate from grounding (forecast_recovery contract): score the
+    probability whenever the run served one — the status and grounding_grade are reported
+    alongside, never used to erase the forecast. Only malformed/failed runs (no probability at
+    all) stay unscored."""
     if m.get("status") not in SCOREABLE_STATUSES:
         return None
     return m.get("p_cal") if m.get("p_cal") is not None else m.get("p_raw")

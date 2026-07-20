@@ -119,11 +119,16 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
     resolution = _resolution_report(plan, result, branches)
     resolution["numeric_causal_inputs"] = _numeric_manifest(plan, branches)
     unresolved_mass = float(resolution.get("unresolved_share") or 0.0)
-    # §NAP honest-resolution statuses: with the ENTIRE branch mass unresolved there is no
-    # forecast — "Outcome unresolved under the current model." Partial unresolved mass keeps the
-    # resolved shares as an explicitly partial readout with bounds.
+    # §NAP honest-resolution statuses + FORECAST AVAILABILITY (forecast_recovery contract):
+    # with the ENTIRE branch mass unresolved the status stays "unresolved" — but the status
+    # DESCRIBES the run, it does not erase the best defensible probability. The layered recovery
+    # serves the evidence-conditioned posterior / grounded reference prior (never an invented
+    # neutral 0.5); grounding_grade/probability_source say exactly how weak it is.
+    from swm.world_model_v2.forecast_recovery import (attach_recovery, plan_prior_inputs,
+                                                      recover_forecast)
+    _prior_inputs = plan_prior_inputs(plan)
     if unresolved_mass >= 0.999:
-        return SimulationResult(
+        res_u = SimulationResult(
             question=question, simulation_status="unresolved",
             support_grade=plan.support_grade,
             resolution_report=resolution,
@@ -137,14 +142,17 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
                         "temporal_runtime": result.get("temporal_runtime") or None,
                         "n_particles": plan.compute_plan.get("n_particles")},
             latency_s=round(_time.time() - t0, 3) if t0 is not None else 0.0)
+        rec = recover_forecast(distribution=dist, options=plan.outcome_contract.options,
+                               unresolved_mass=unresolved_mass, **_prior_inputs)
+        return attach_recovery(res_u, rec, override_probability=True)
     # §28: when the DEFAULT runtime refused a broad-prior terminal resolution (no validated
-    # mechanism, no posterior), an unresolved readout is the HONEST epistemic state — the run
-    # classifies under_modeled_nonhuman_mechanism, naming the missing mechanism. It is not an
-    # engineering failure and not a completed forecast.
+    # mechanism, no posterior), the run classifies under_modeled_nonhuman_mechanism, naming the
+    # missing mechanism — and the layered recovery still serves the best defensible probability
+    # with its grade. It is not an engineering failure and not a completed forecast.
     _temporal_pre = result.get("temporal_runtime") or {}
     _suppressions = list(_temporal_pre.get("mechanism_suppressions") or [])
     if not dist and not quant and _suppressions:
-        return SimulationResult(
+        res_um = SimulationResult(
             question=question, simulation_status="under_modeled",
             support_grade=plan.support_grade,
             under_modeled_subtypes=["under_modeled_nonhuman_mechanism"],
@@ -160,6 +168,9 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
             provenance={"temporal_runtime": _temporal_pre or None,
                         "n_particles": plan.compute_plan.get("n_particles")},
             latency_s=round(_time.time() - t0, 3) if t0 is not None else 0.0)
+        rec = recover_forecast(distribution={}, options=plan.outcome_contract.options,
+                               unresolved_mass=1.0, **_prior_inputs)
+        return attach_recovery(res_um, rec, override_probability=True)
     # INVARIANT: a completed simulation must carry a forecast. If the rollout produced NO binnable terminal
     # distribution AND no quantiles (every terminal world fell outside the declared option space), the
     # terminal readout is technically unbindable — an ENGINEERING failure (execution_failed), never a
@@ -257,7 +268,7 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
     rec_status = _recommendation_status(intervention, plan.support_grade)
     if intervention and unresolved_mass > 0.0:
         rec_status = "withheld"                              # §NAP: unresolved mass gates actions
-    return SimulationResult(
+    res = SimulationResult(
         question=question, simulation_status=status, support_grade=support_grade,
         recommendation_status=rec_status,
         resolution_report=resolution,
@@ -294,6 +305,17 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
                     # activation accounting cannot drift from what actually executed.
                     "operator_delta_census": _operator_delta_census(branches)},
         latency_s=round(_time.time() - t0, 3) if t0 is not None else 0.0)
+    # forecast_recovery labels on every served result. partially_resolved: the headline becomes
+    # the explicit unresolved-mass treatment (resolved mass keeps its simulated frequency AND
+    # weights; unresolved mass takes the best prior — both disclosed; the raw yes-mass projection
+    # stays in provenance as legacy_binary_projection). completed paths keep their numbers and
+    # only gain labels.
+    rec = recover_forecast(distribution=dist, options=plan.outcome_contract.options,
+                           unresolved_mass=unresolved_mass, **_prior_inputs)
+    if status == "partially_resolved" and rec is not None and rec.probability is not None:
+        res.provenance["legacy_binary_projection"] = raw_p
+        return attach_recovery(res, rec, override_probability=True)
+    return attach_recovery(res, rec, override_probability=False)
 
 
 def harden_general_path(plan, question: str, *, llm=None, evidence="", as_of: str = "",
