@@ -29,6 +29,19 @@ from experiments.exp102_btf3_wmv2_full import QIDS
 from experiments.exp107_btf3_full_fidelity_post127 import (MODEL, MAX_TOKENS, TEMPERATURE, SEED,
                                                            _extract_metrics, _merge_commit)
 
+
+SCOREABLE_STATUSES = ("completed", "completed_with_degradation")
+
+
+def usable_probability(m: dict):
+    """The §NAP-faithful scored probability: a run that refused (unresolved / under_modeled /
+    partially_resolved / failed) has NO scoreable forecast — its p_raw is a residual resolved-mass
+    readout, not a prediction. One rule, both arms."""
+    if m.get("status") not in SCOREABLE_STATUSES:
+        return None
+    return m.get("p_cal") if m.get("p_cal") is not None else m.get("p_raw")
+
+
 CKPT_DIR = Path("experiments/results/exp108_checkpoints")
 SUMMARY = Path("experiments/results/exp108_lean_adaptive.json")
 
@@ -147,7 +160,7 @@ def merge_and_score() -> dict:
         r["outcome"] = int(row["resolution"])
         sota = row.get("sota_forecast_probability")
         r["p_sota"] = None if sota is None else round(float(sota) / 100.0, 4)
-        p = r["p_cal"] if r["p_cal"] is not None else r["p_raw"]
+        p = usable_probability(r)
         r["p_used"] = p
         r["brier"] = None if p is None else round((p - r["outcome"]) ** 2, 4)
         r["correct_at_0.5"] = None if p is None else bool((p > 0.5) == r["outcome"])

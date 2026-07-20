@@ -11,6 +11,7 @@ from pathlib import Path
 
 from experiments.exp101_btf3_pilot import fetch_btf3
 from experiments.exp102_btf3_wmv2_full import QIDS
+from experiments.exp107_btf3_full_fidelity_post127 import usable_probability
 
 FF_DIR = Path("experiments/results/exp107_checkpoints")
 LEAN_DIR = Path("experiments/results/exp108_checkpoints")
@@ -58,8 +59,7 @@ def compare() -> dict:
     for qid in QIDS:
         ff, lean = _load(FF_DIR, qid), _load(LEAN_DIR, qid)
         outcome = int(rows[qid]["resolution"])
-        p_ff = ff.get("p_cal") if ff.get("p_cal") is not None else ff.get("p_raw")
-        p_ln = lean.get("p_cal") if lean.get("p_cal") is not None else lean.get("p_raw")
+        p_ff, p_ln = usable_probability(ff), usable_probability(lean)
         lm = lean.get("lean") or {}
         stage_ff = ff.get("llm_calls_by_stage") or {}
         stage_ln = lean.get("llm_calls_by_stage") or {}
