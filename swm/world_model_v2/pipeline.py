@@ -52,6 +52,49 @@ def _operator_delta_census(branches) -> dict:
     return census
 
 
+def _numeric_manifest(plan, branches) -> dict:
+    """§NAP: merge the plan-level (conversion-time) numeric-provenance ledger with every branch
+    world's runtime ledger into ONE `numeric_causal_inputs` manifest for the result."""
+    from swm.world_model_v2.numeric_provenance import merge_manifests
+    manifests = []
+    led = getattr(plan, "_numeric_ledger", None)
+    if led is not None:
+        manifests.append(led.manifest())
+    for b in (branches or []):
+        wled = getattr(getattr(b, "world", None), "_numeric_ledger", None)
+        if wled is not None:
+            manifests.append(wled.manifest())
+    return merge_manifests(*manifests)
+
+
+def _resolution_report(plan, result, branches) -> dict:
+    """§NAP: the honest-resolution accounting — branch terminal categories, unresolved mass
+    (never normalized away), honest bounds, resolved-conditional distribution, the exact missing
+    mechanisms, and the numeric-causal-inputs manifest."""
+    et = result.get("event_time") or {}
+    unresolved_share = float(et.get("unresolved_share") or 0.0)
+    missing = []
+    for rec in (getattr(plan, "_unresolved_mechanisms", None) or [])[:12]:
+        missing.append({k: rec.get(k) for k in ("mechanism", "why", "missing")})
+    seen = {m["mechanism"] for m in missing}
+    for b in (branches or [])[:50]:
+        for rec in (getattr(getattr(b, "world", None), "_unresolved_mechanisms", None) or []):
+            if rec.get("mechanism") not in seen and len(missing) < 20:
+                seen.add(rec.get("mechanism"))
+                missing.append({k: rec.get(k) for k in ("mechanism", "why", "missing")})
+    return {
+        "branch_terminals": et.get("branch_terminals"),
+        "unresolved_share": round(unresolved_share, 4),
+        "censored_modeled_share": et.get("censored_modeled_share"),
+        "bounds": et.get("bounds"),
+        "resolved_conditional": et.get("resolved_conditional"),
+        "missing_mechanisms": missing,
+        "frequency_semantics": et.get("frequency_semantics", "simulated_scenario_frequency"),
+        "note": "unresolved branch mass is preserved explicitly; it is never renormalized into "
+                "the resolved options and never drawn from a prior (§NAP)",
+    }
+
+
 def result_from_run(question, plan, result, branches, *, intervention="", t0=None, calibrator=None,
                     cal_key="") -> SimulationResult:
     """Build the shipped SimulationResult from a completed (plan, terminal result, branches). Extracted so
@@ -61,6 +104,27 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
     dist = result.get("distribution") or {}
     quant = result.get("quantiles") or {}
     unresolved = result.get("unresolved_share", 0.0)
+    resolution = _resolution_report(plan, result, branches)
+    resolution["numeric_causal_inputs"] = _numeric_manifest(plan, branches)
+    unresolved_mass = float(resolution.get("unresolved_share") or 0.0)
+    # §NAP honest-resolution statuses: with the ENTIRE branch mass unresolved there is no
+    # forecast — "Outcome unresolved under the current model." Partial unresolved mass keeps the
+    # resolved shares as an explicitly partial readout with bounds.
+    if unresolved_mass >= 0.999:
+        return SimulationResult(
+            question=question, simulation_status="unresolved",
+            support_grade=plan.support_grade,
+            resolution_report=resolution,
+            recommendation_status=("withheld" if intervention else "not_requested"),
+            limitations=["Outcome unresolved under the current model: no validated causal "
+                         "mechanism resolves the outcome — the missing mechanisms are named in "
+                         "resolution_report.missing_mechanisms; no broad-prior, family-rate or "
+                         "neutral-default mass was manufactured (§NAP)"],
+            plan_hash=plan.plan_hash(),
+            provenance={"event_time": result.get("event_time"),
+                        "temporal_runtime": result.get("temporal_runtime") or None,
+                        "n_particles": plan.compute_plan.get("n_particles")},
+            latency_s=round(_time.time() - t0, 3) if t0 is not None else 0.0)
     # §28: when the DEFAULT runtime refused a broad-prior terminal resolution (no validated
     # mechanism, no posterior), an unresolved readout is the HONEST epistemic state — the run
     # classifies under_modeled_nonhuman_mechanism, naming the missing mechanism. It is not an
@@ -148,6 +212,14 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
             f"consequential recommendations are withheld at this support level")
         if support_grade in ("empirically_supported", "transfer_supported"):
             support_grade = "exploratory"
+    # §NAP: partial unresolved mass makes the result PARTIALLY resolved — the resolved shares are
+    # served with explicit bounds; consequential recommendations are withheld
+    if unresolved_mass > 0.0 and status in ("completed", "completed_with_degradation"):
+        status = "partially_resolved"
+        limitations.append(
+            f"{unresolved_mass:.0%} of branch mass is unresolved_mechanism mass (missing "
+            f"mechanisms named in resolution_report); the resolved shares carry min/max bounds "
+            f"and are simulated-scenario frequencies, not calibrated probabilities")
     tmodel = getattr(plan, "temporal_model", None)
     if tmodel is not None:
         temporal = {**temporal,
@@ -170,9 +242,13 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
                     "temporal_compilation_llm_calls": len(tmodel.compilation_trace),
                     "critic_findings": list(tmodel.critic_findings)[:12],
                     "degraded": tmodel.degraded or None}
+    rec_status = _recommendation_status(intervention, plan.support_grade)
+    if intervention and unresolved_mass > 0.0:
+        rec_status = "withheld"                              # §NAP: unresolved mass gates actions
     return SimulationResult(
         question=question, simulation_status=status, support_grade=support_grade,
-        recommendation_status=_recommendation_status(intervention, plan.support_grade),
+        recommendation_status=rec_status,
+        resolution_report=resolution,
         raw_distribution={k: round(v, 4) for k, v in dist.items()} if dist else result.get("quantiles", {}),
         calibrated_distribution=({str(k): cal_p} if cal_p is not None else None),
         raw_probability=raw_p, calibrated_probability=cal_p,

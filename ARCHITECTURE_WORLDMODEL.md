@@ -10,8 +10,22 @@
 > typed world, clock and `StateDelta` contract; and an absolute prohibition on silently
 > replacing an LLM actor with a different numerical psychology when compute is exhausted — the
 > branch truncates and is reported. Results classify honestly: `completed`,
-> `completed_with_degradation`, `under_modeled` (+subtypes), `truncated`,
-> `clarification_required`, `execution_failed`. See **docs/WMV2_CORE_ARCHITECTURE.md**.
+> `completed_with_degradation`, `under_modeled` (+subtypes), `truncated`, `unresolved`,
+> `partially_resolved`, `clarification_required`, `execution_failed`.
+> See **docs/WMV2_CORE_ARCHITECTURE.md**.
+>
+> **§NAP — no arbitrary numeric reality (default-on):** a numerical value may alter production
+> execution only under approved causal provenance (observed measurement, explicit user input,
+> literal institutional rule, physical identity, an empirically fitted artifact passing the
+> eligibility gate, or deterministic derivation from those). Qualitative social facts never
+> become invented numbers: no process-progress bars, no stance→hazard ratios, no hand-authored
+> action magnitudes, no capacity psychology, no persistence-survival coins, no keyword
+> family-rate or lean-Beta outcome manufacturing, no LLM-minted mode priors, and no equal-weight
+> structural averaging served as a headline probability. Missing mechanisms are recorded
+> `unresolved_mechanism`; that branch mass is preserved with honest bounds and gates
+> recommendations. Every result carries a `numeric_causal_inputs` provenance manifest. The
+> historical tables are buried in `legacy_numeric_ablations` behind an acknowledgement token.
+> See **artifacts/no_arbitrary_numeric_reality/deliverables.md**.
 
 ---
 

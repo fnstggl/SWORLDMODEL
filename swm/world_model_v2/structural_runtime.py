@@ -511,6 +511,41 @@ def _assemble_ensemble_result(U, question, ens, runs, model_results, promoted, b
         model_dists, underidentified=ens.structurally_underidentified, incomplete=incomplete)
     mixture = _equal_weight_mixture(model_dists)
     robust = _robust_range(model_dists)
+    # §NAP: per-model honest-resolution accounting (unresolved mass, bounds, missing mechanisms,
+    # numeric-causal-input manifests) rolls up into ONE ensemble resolution report
+    per_model_resolution = {m: dict(model_results[m].resolution_report or {})
+                            for m in model_results}
+    unresolved_by_model = {m: float((per_model_resolution.get(m) or {}).get("unresolved_share")
+                                    or 0.0) for m in model_dists}
+    all_unresolved = bool(model_results) and all(
+        model_results[m].simulation_status == "unresolved" for m in model_results)
+    any_unresolved_mass = any(v > 0.0 for v in unresolved_by_model.values())
+    # §NAP headline policy: when plausible structural models MATERIALLY disagree (or the ensemble
+    # is underidentified/incomplete), their conditionals are NOT averaged into one headline
+    # probability — per-model distributions + the robust range are the primary readout. The
+    # equal-weight mixture survives only as a labeled diagnostic.
+    material_disagreement = classification["classification"] in (
+        "materially_structurally_sensitive", "structurally_underidentified",
+        "ensemble_execution_incomplete") and len(model_dists) > 1
+    headline = {} if material_disagreement else dict(mixture)
+    from swm.world_model_v2.numeric_provenance import merge_manifests as _merge_manifests
+    ensemble_resolution = {
+        "per_model": per_model_resolution,
+        "unresolved_share_by_model": {m: round(v, 4) for m, v in unresolved_by_model.items()},
+        "robust_range": robust,
+        "aggregation": ("per_model_conditionals_no_headline_average" if material_disagreement
+                        else ("single_surviving_model" if len(model_dists) <= 1
+                              else "agreeing_models_mixture")),
+        "missing_mechanisms": [mm for m in sorted(per_model_resolution)
+                               for mm in (per_model_resolution[m].get("missing_mechanisms")
+                                          or [])][:20],
+        "frequency_semantics": "simulated_scenario_frequency",
+        "numeric_causal_inputs": _merge_manifests(
+            *[(per_model_resolution.get(m) or {}).get("numeric_causal_inputs") or {}
+              for m in sorted(per_model_resolution)]),
+        "note": "unresolved mass is preserved per model and never normalized away; disagreeing "
+                "structural models are reported as separate conditionals, never averaged into a "
+                "headline probability (§NAP)"}
     within = {m: dict(model_results[m].uncertainty_decomposition or {}) for m in model_dists}
     decomposition = decompose_uncertainty(model_dists, within_model=within)
     reversal = _reversal_conditions(ens, promoted, model_dists, mixture)
@@ -773,14 +808,21 @@ def _assemble_ensemble_result(U, question, ens, runs, model_results, promoted, b
         "shared_evidence_bundle_hash": ens.shared_evidence_bundle_hash,
         "shared_evidence_as_of": ens.shared_evidence_as_of,
         "aggregation_method": ("single_surviving_model" if len(promoted) == 1
-                               else "equal_weight_uncalibrated_structural_average"),
+                               else ("per_model_conditionals_no_headline_average"
+                                     if material_disagreement
+                                     else "agreeing_models_equal_weight_mixture")),
         "aggregation_note": ("one surviving model with a recorded convergence certificate"
                              if len(promoted) == 1 else
-                             "no defensible model weights exist; the mixture is an UNCALIBRATED "
-                             "equal-weight compatibility summary — per-model distributions and the "
-                             "robust range are the primary readouts"),
+                             ("§NAP: plausible structural models materially disagree — their "
+                              "conditionals are NOT averaged into a headline probability; "
+                              "per-model distributions and the robust range are the primary "
+                              "readouts (the equal-weight mixture survives only as a labeled "
+                              "diagnostic)" if material_disagreement else
+                              "models agree within the exposed spread thresholds; the mixture "
+                              "is served as the surviving shared conclusion, with the robust "
+                              "range alongside")),
         "model_distributions": model_dists,
-        "equal_weight_mixture": mixture,
+        "equal_weight_mixture_diagnostic": mixture,
         "robust_range": robust,
         "uncertainty_decomposition": decomposition,
         "structural_sensitivity": classification,
@@ -799,13 +841,20 @@ def _assemble_ensemble_result(U, question, ens, runs, model_results, promoted, b
         "answer_change_attribution": answer_change_attribution,
     }
 
-    # ---------- §8 status ladder (epistemic states, never engineering exceptions):
-    # under_modeled (an unresolved high-sensitivity component) dominates truncated (compute
-    # stopped branches whose mass could change the answer) dominates degradation.
-    if under_subtypes:
+    # ---------- §8/§NAP status ladder (epistemic states, never engineering exceptions):
+    # fully-unresolved dominates everything (there is no forecast to serve); under_modeled (an
+    # unresolved high-sensitivity component) dominates truncated (compute stopped branches whose
+    # mass could change the answer) dominates partially_resolved (explicit unresolved mass or
+    # material structural disagreement — conditionals served, no headline) dominates degradation.
+    if all_unresolved:
+        sim_status = "unresolved"
+        headline = {}
+    elif under_subtypes:
         sim_status = "under_modeled"
     elif trunc_weight > 0 and not answer_settled:
         sim_status = "truncated"
+    elif any_unresolved_mass or material_disagreement:
+        sim_status = "partially_resolved"
     elif degraded or incomplete or trunc_weight > 0:
         sim_status = "completed_with_degradation"
     else:
@@ -814,8 +863,10 @@ def _assemble_ensemble_result(U, question, ens, runs, model_results, promoted, b
         question=question,
         simulation_status=sim_status,
         support_grade=grade,
-        raw_distribution=mixture,
-        raw_probability=_binary_projection(mixture, promoted[0].executable_plan),
+        raw_distribution=headline,
+        raw_probability=(_binary_projection(headline, promoted[0].executable_plan)
+                         if headline else None),
+        resolution_report=ensemble_resolution,
         uncertainty_decomposition=decomposition,
         structural_disagreement={m: d for m, d in model_dists.items()},
         limitations=limitations[:10],

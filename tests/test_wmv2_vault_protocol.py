@@ -110,10 +110,12 @@ def test_placebo_control_removes_secular_drift():
     assert meas2 is not None and meas2["hazard_ratio"] < 0.75
 
 
-def test_stratified_fit_and_pathway_table_overlay(tmp_path, monkeypatch):
-    from swm.world_model_v2.event_time import (fit_intention_hazard_ratios, _hr_table,
-                                               hr_pack_info)
-    import swm.world_model_v2.event_time as ET
+def test_stratified_fit_stays_offline_and_the_channel_stays_quarantined(tmp_path):
+    """§NAP: the intention-HR fitting utility remains an OFFLINE artifact producer, but there is
+    NO production stance→hazard channel to overlay it onto — and the artifact it produces does
+    not pass the provenance-eligibility gate until it carries the full contract."""
+    from swm.world_model_v2.event_time import fit_intention_hazard_ratios, hr_pack_info
+    from swm.world_model_v2.numeric_provenance import fitted_artifact_eligible
     rows = ([{"commitment_level": "committed_to_prevent", "hazard_ratio": 0.5,
               "pathway": "cooperative_agreement"}] * 8
             + [{"commitment_level": "committed_to_prevent", "hazard_ratio": 0.9,
@@ -123,16 +125,10 @@ def test_stratified_fit_and_pathway_table_overlay(tmp_path, monkeypatch):
     coop = pack["hazard_ratios_by_pathway"]["cooperative_agreement"]["committed_to_prevent"][0]
     inst = pack["hazard_ratios_by_pathway"]["institutional_procedure"]["committed_to_prevent"][0]
     assert coop < pooled < inst                               # strata differ, pooled sits between
-    pack["fitted_at"] = "2026-07-17T00:00:00+00:00"
-    p = tmp_path / "intention_hr_pack.json"
-    p.write_text(json.dumps(pack))
-    monkeypatch.setattr(ET, "INTENTION_HR_PACK", p)
-    t_coop = _hr_table("cooperative_agreement")["committed_to_prevent"][0]
-    t_inst = _hr_table("institutional_procedure")["committed_to_prevent"][0]
-    assert t_coop == pytest.approx(coop) and t_inst == pytest.approx(inst)
     info = hr_pack_info()
-    assert info["source"] == "fitted_pack" and info["stratified"] is True
-    assert info["fitted_at"].startswith("2026-07-17")
+    assert info["source"] == "quarantined_no_production_stance_hazard_channel"
+    ok, why = fitted_artifact_eligible(pack)
+    assert not ok and "missing required provenance keys" in why
 
 
 def test_sensitivity_harness_importable_and_arms_defined():

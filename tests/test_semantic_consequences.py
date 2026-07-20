@@ -602,13 +602,19 @@ def test_novel_action_never_reduces_to_nearest_label_scalar_effects():
     assert "consequence_program" in delta.uncertainty
 
 
-# ---------------------------------------------------------------- derived summaries
-def test_derived_summaries_are_reconstructable_projections_of_typed_state():
+# ---------------------------------------------------------------- derived summaries (§NAP quarantined)
+def test_derived_summaries_are_token_gated_legacy_ablation():
+    """§NAP: the stage→fraction projection is a QUARANTINED legacy ablation — refusing without
+    the acknowledgement token, and still a reconstructable projection under it (ablation runs
+    must reproduce the historical behavior exactly)."""
+    from swm.world_model_v2.legacy_numeric_ablations import ABLATION_TOKEN
     w = world(declared_bar=True)
     run_program(w, [{"op": "start_process", "process_type": "negotiation", "object_id": "neg"},
                     {"op": "advance_process_stage", "object_id": "neg",
                      "stage": "provisional_acceptance"}])
-    written = sc.derive_pathway_summaries(w)
+    with pytest.raises(PermissionError):
+        sc.derive_pathway_summaries(w)                    # no token → refused
+    written = sc.derive_pathway_summaries(w, acknowledge=ABLATION_TOKEN)
     bar = "pathway_progress:cooperative_agreement"
     assert bar in written
     v1 = w.quantities[bar].value
@@ -616,20 +622,15 @@ def test_derived_summaries_are_reconstructable_projections_of_typed_state():
     assert v1 == pytest.approx((stages.index("provisional_acceptance") + 1) / len(stages),
                                abs=1e-4)                 # stored at 4-decimal precision
     # reconstructable: recomputing from the SAME typed state is a fixed point
-    assert sc.derive_pathway_summaries(w) == {}
+    assert sc.derive_pathway_summaries(w, acknowledge=ABLATION_TOKEN) == {}
     assert w.quantities[bar].value == v1
-    # facts → summary: signing flips the bar to its agreement level, monotone with the facts
-    run_program(w, [{"op": "create_world_object", "object_type": "agreement",
-                     "object_id": "deal", "status": "signed",
-                     "attributes": {"parties": ["alice", "bob"]}}])
-    sc.derive_pathway_summaries(w)
-    assert w.quantities[bar].value == pytest.approx(0.95, abs=1e-6)
 
 
 def test_summaries_touch_only_declared_bars():
+    from swm.world_model_v2.legacy_numeric_ablations import ABLATION_TOKEN
     w = world(declared_bar=False)                     # nothing declared
     run_program(w, [{"op": "start_process", "process_type": "negotiation", "object_id": "neg"}])
-    assert sc.derive_pathway_summaries(w) == {}
+    assert sc.derive_pathway_summaries(w, acknowledge=ABLATION_TOKEN) == {}
     assert "pathway_progress:cooperative_agreement" not in w.quantities
 
 

@@ -275,7 +275,9 @@ class ActorPolicyRuntime:
         program = self._consequence_program(world, action, posterior, trace)
         events = semcons.execute_program(world, program, delta, report)
         semcons.project_decided_outcome_quantities(world, action, delta, report)
-        semcons.derive_pathway_summaries(world, delta)
+        # §NAP: the fixed stage→fraction pathway projection (derive_pathway_summaries) is
+        # quarantined — no production mode writes generic completion fractions; the typed
+        # object state IS the process state.
         delta.uncertainty["consequence_program"] = program.as_dict()
         if program.unmodeled:
             trace.warnings.append(
@@ -485,21 +487,26 @@ class ActorPolicyRuntime:
             raise RuntimeError(
                 f"scalar pathway writer invoked in {consequence_mode!r} — it runs ONLY under "
                 f"the explicit legacy benchmark mode")
-        from swm.world_model_v2.phase4_policy import action_pathway_effects
+        # §NAP: every table this writer consumes is QUARANTINED — the acknowledgement token is
+        # the explicit statement that this call is a legacy ablation, never production.
+        from swm.world_model_v2.legacy_numeric_ablations import (ABLATION_TOKEN,
+                                                                 legacy_numeric_table)
         from swm.world_model_v2.quantities import Quantity, register_quantity_type
-        effects = action_pathway_effects(action.action_family, action.action_name)
+        table = legacy_numeric_table("ACTION_PATHWAY_EFFECTS", acknowledge=ABLATION_TOKEN)
+        couplings = legacy_numeric_table("COUPLING_PRIORS", acknowledge=ABLATION_TOKEN)
+
+        def _effects(fam, name):
+            eff = table.get((str(fam), str(name)))
+            if eff is None:
+                eff = next((e for (f2, n2), e in table.items() if n2 == str(name)), None)
+            return dict(eff or {})
+        effects = _effects(action.action_family, action.action_name)
         if not effects:
-            # a compiled NOVEL action executes through its validated ontology anchor's effects
-            # (NovelActionCompiler attaches parameters.ontology_anchor only when the anchor's
-            # causal reading matched) — an unanchored novel action moves nothing, and its branch
-            # carries the explicit novel_action_unmodeled mark instead of a silent no-op.
             anchor = (action.parameters or {}).get("ontology_anchor") or {}
             if isinstance(anchor, dict) and anchor.get("name"):
-                effects = action_pathway_effects(str(anchor.get("family", "")),
-                                                 str(anchor["name"]))
+                effects = _effects(str(anchor.get("family", "")), str(anchor["name"]))
         if not effects:
             return
-        from swm.world_model_v2.world_dynamics import live_capacity, sampled_coupling
 
         def _write(var, qtype, step_eff):
             q = world.quantities.get(var)
@@ -514,10 +521,7 @@ class ActorPolicyRuntime:
                                              timestamp=world.clock.now)
             delta.change(f"quantities[{var}]", round(before, 4), round(after, 4))
 
-        step = sampled_coupling(world, "pathway_step")
-        cap = live_capacity(world).get(action.actor_id)
-        if isinstance(cap, (int, float)):
-            step *= 0.4 + 0.6 * max(0.0, min(1.0, float(cap)))
+        step = float(couplings["pathway_step"][0])            # historical point median
         actor_ent = world.entities.get(action.actor_id)
         my_stances = actor_ent.value("stances", default=None) if actor_ent is not None else None
         my_stances = my_stances if isinstance(my_stances, list) else []
@@ -526,17 +530,15 @@ class ActorPolicyRuntime:
             pq = world.quantities.get(f"pathway_principals:{pw}")
             principals = str(getattr(pq, "value", "") or "").split("|") if pq is not None else []
             if principals and action.actor_id not in principals:
-                share = sampled_coupling(world, "nonprincipal_step_share")
+                share = float(couplings["nonprincipal_step_share"][0])
             _write(f"pathway_progress:{pw}", "pathway_progress", step * share * float(eff))
-            # contested pathways: route the push into the actor's OWN pursued mode channel(s) and
-            # suppress rivals' channels on the same pathway
             own_modes = {str(s.get("target_mode")) for s in my_stances
                          if s.get("target_mode") and str(s.get("pathway")) == pw
                          and str(s.get("commitment_level", "")) in
                          ("inclined_toward", "actively_pursuing", "formally_committed")}
             if not own_modes:
                 continue
-            supp = sampled_coupling(world, "contested_suppression")
+            supp = float(couplings["contested_suppression"][0])
             prefix = f"mode_progress:{pw}:"
             for var in list(world.quantities):
                 if not var.startswith(prefix):

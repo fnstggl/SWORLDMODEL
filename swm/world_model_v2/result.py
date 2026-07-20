@@ -43,7 +43,13 @@ from dataclasses import dataclass, field, asdict
 # LEGACY ALIAS status so historical artifacts and pre-§20 emitters keep loading unchanged; new
 # emitters must prefer "truncated".
 SIMULATION_STATUSES = ("completed", "completed_with_degradation", "clarification_required",
-                       "execution_failed", "temporally_truncated", "under_modeled", "truncated")
+                       "execution_failed", "temporally_truncated", "under_modeled", "truncated",
+                       # §NAP honest-resolution statuses: `unresolved` — no validated causal
+                       # mechanism resolves the outcome (the answer is "Outcome unresolved under
+                       # the current model", never a broad-prior draw); `partially_resolved` —
+                       # some branch mass resolved through modeled mechanisms while the rest is
+                       # explicit unresolved mass (the resolution_report carries honest bounds)
+                       "unresolved", "partially_resolved")
 SUPPORT_GRADES = ("empirically_supported", "transfer_supported", "exploratory", "highly_speculative")
 RECOMMENDATION_STATUSES = ("eligible", "limited", "withheld", "not_requested")
 
@@ -137,6 +143,12 @@ class SimulationResult:
     hybrid_mechanisms: dict = field(default_factory=dict)          # §35.3 nonhuman/hybrid mechanism coverage
     truncation_report: dict = field(default_factory=dict)          # §35.4 aggregated branch truncation (§21)
     model_family_report: dict = field(default_factory=dict)        # model families used + family failures
+    # §NAP resolution accounting: per-branch terminal categories (resolved_yes / resolved_no /
+    # censored_by_real_horizon / unresolved_mechanism / under_modeled / truncated), the unresolved
+    # share (NEVER normalized away), honest bounds (min supported yes share; max possible yes share
+    # given unresolved branches), the resolved-conditional distribution, and the exact mechanisms
+    # that are missing. Also carries the run's `numeric_causal_inputs` manifest.
+    resolution_report: dict = field(default_factory=dict)
     # failure / clarification
     failure_taxonomy: str = ""                              # set iff execution_failed
     clarification_reason: str = ""                          # set iff clarification_required
@@ -153,10 +165,16 @@ class SimulationResult:
         # under_modeled/truncated are epistemic states of a RUN result — like completed, they must
         # carry an honest support grade (they are graded claims about the world, not failures)
         if self.simulation_status in ("completed", "completed_with_degradation",
-                                      "temporally_truncated", "under_modeled", "truncated"):
+                                      "temporally_truncated", "under_modeled", "truncated",
+                                      "unresolved", "partially_resolved"):
             if self.support_grade not in SUPPORT_GRADES:
                 raise ValueError(f"{self.simulation_status} result needs a valid support_grade, "
                                  f"got {self.support_grade!r}")
+        if self.simulation_status in ("unresolved", "partially_resolved") \
+                and not self.resolution_report:
+            raise ValueError(f"{self.simulation_status} requires a resolution_report naming the "
+                             "missing mechanisms and the unresolved mass — an unnamed refusal is "
+                             "not an honest refusal")
         if self.simulation_status == "under_modeled" and not (self.under_modeled_subtypes
                                                               or self.under_modeled_components):
             raise ValueError("under_modeled requires at least one under_modeled subtype or structured "
@@ -167,11 +185,13 @@ class SimulationResult:
     def has_forecast(self) -> bool:
         # temporally_truncated results carry a forecast — from an INCOMPLETE causal unfolding
         # (§12): usable, but the truncation record and lowered support ride with it
-        if self.simulation_status in ("under_modeled", "truncated"):
-            # §35/§21: these MAY carry a partial exploratory distribution where mathematically
+        if self.simulation_status in ("under_modeled", "truncated", "partially_resolved"):
+            # §35/§21/§NAP: these MAY carry a partial exploratory distribution where mathematically
             # defensible — a forecast exists iff that partial distribution does, and it stays
             # explicitly conditional on the modeled portion of the world
             return bool(self.raw_distribution)
+        if self.simulation_status == "unresolved":
+            return False                     # "Outcome unresolved under the current model."
         return self.simulation_status in ("completed", "completed_with_degradation",
                                           "temporally_truncated")
 

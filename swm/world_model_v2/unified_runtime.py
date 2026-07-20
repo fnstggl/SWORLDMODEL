@@ -330,10 +330,12 @@ def _condition_plan(question, plan, bundle, as_of, horizon, seed, llm, manifest,
             lineage["scheduled_reality"] = attach_scheduled_facts(plan, facts)
             lineage["scheduled_reality"]["facts"] = facts[:8]
             # canonical mode decomposition BEFORE intention grounding, so stances can be
-            # MODE-SCOPED (stance(actor, mode)) and the pathway processes exist for the trajectory
-            # layer + hazard consumption. K-pass self-consistency makes the mode set reproducible.
+            # MODE-SCOPED (stance(actor, mode)) and the typed process records exist for the
+            # trajectory layer. K-pass self-consistency makes the mode set reproducible. §NAP:
+            # process grounding is QUALITATIVE — typed {state, waiting_on, basis} records, never
+            # a 0-1 progress bar; no capacity resource is invented.
             from swm.world_model_v2.event_time import is_when_question as _is_when
-            from swm.world_model_v2.mode_graph import (canonical_modes, declare_pathway_processes,
+            from swm.world_model_v2.mode_graph import (canonical_modes, declare_typed_processes,
                                                        ground_process_states, mode_pathway)
             if _is_when(question):
                 _modes, _cons = canonical_modes(
@@ -345,18 +347,15 @@ def _condition_plan(question, plan, bundle, as_of, horizon, seed, llm, manifest,
                 _pws = sorted({mode_pathway(m) for m in _modes})
                 _states = ground_process_states(question, crit, _pws, as_of=as_of,
                                                 evidence_text=ev_text, llm=llm)
-                lineage["pathway_processes"] = declare_pathway_processes(plan, _modes,
-                                                                         grounding=_states)
+                lineage["pathway_processes"] = declare_typed_processes(plan, _modes,
+                                                                       grounding=_states)
             # per-actor evidence-grounded intentions (state, not policy guesses) — mode-scoped
             # against the canonical modes when they exist
             lineage["actor_intentions"] = ground_actor_intentions(
                 plan, question, criterion=crit, evidence_text=ev_text, llm=llm,
                 modes=getattr(plan, "_canonical_modes", None))
-            # capability becomes a live, depletable capacity resource (world-dynamics layer)
-            from swm.world_model_v2.world_dynamics import declare_actor_capacity
-            lineage["actor_capacity"] = declare_actor_capacity(plan)
             # binary/other questions: the resolution's causal pathways are named by the grounded
-            # stances themselves — declare their processes so actions move the residual chain too
+            # stances themselves — record their QUALITATIVE typed process state too
             if not getattr(plan, "_declared_pathways", None):
                 _st_pws = sorted({str(s.get("pathway")) for s in
                                   (getattr(plan, "_intention_stances", None) or [])
@@ -365,8 +364,8 @@ def _condition_plan(question, plan, bundle, as_of, horizon, seed, llm, manifest,
                     _pseudo = [{"id": pw, "pathway": pw} for pw in _st_pws]
                     _states = ground_process_states(question, crit, _st_pws, as_of=as_of,
                                                     evidence_text=ev_text, llm=llm)
-                    lineage["pathway_processes"] = declare_pathway_processes(plan, _pseudo,
-                                                                             grounding=_states)
+                    lineage["pathway_processes"] = declare_typed_processes(plan, _pseudo,
+                                                                           grounding=_states)
         except Exception as e:  # noqa: BLE001 — fidelity must never block the forecast
             lineage["fidelity_expansion"] = {"error": f"{type(e).__name__}: {e}"[:140]}
 

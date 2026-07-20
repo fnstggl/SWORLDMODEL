@@ -113,6 +113,13 @@ def build_world(plan, *, world_id: str = "w0", evidence_hash: str = "", versions
         except KeyError:
             omissions.append({"kind": "quantity", "name": name, "reason": "quantity construction failed"})
     w.omissions = omissions
+    # §NAP: conversion-time unresolved-mechanism records (refused numeric provenance) ride onto
+    # every branch, so the terminal readout classifies their mass `unresolved_mechanism` instead
+    # of silently reading non-absorption as "no"
+    plan_unresolved = list(getattr(plan, "_unresolved_mechanisms", None) or [])
+    if plan_unresolved:
+        w._unresolved_mechanisms = [dict(r) for r in plan_unresolved]
+        w.omissions.extend({"kind": "unresolved_mechanism", **r} for r in plan_unresolved[:12])
     return w
 
 
@@ -164,6 +171,11 @@ def queue_builder_from_plan(plan):
                 from swm.world_model_v2.event_time import ensure_first_passage_state
                 from swm.world_model_v2.temporal_hazards import schedule_crossing
                 st = ensure_first_passage_state(world, spec)
+                if st is None:
+                    # §NAP: the spec's numeric provenance was refused — the mechanism is already
+                    # recorded unresolved on the branch; nothing is scheduled and no default
+                    # intensity is substituted
+                    continue
                 schedule_crossing(q, world, st, etype="first_passage")
             except Exception as e:  # noqa: BLE001 — a broken process spec is recorded, not fatal
                 world.omissions.append({"kind": "first_passage_process",

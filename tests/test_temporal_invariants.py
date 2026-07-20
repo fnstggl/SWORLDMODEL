@@ -583,19 +583,31 @@ def test_inv40_personal_reaction_route_uses_the_temporal_model():
 
 
 def test_inv41_event_time_route_uses_first_passage_processes():
+    """§NAP update: the residual first-passage process exists ONLY under an evidence-updated
+    posterior; without one the residual mechanism is recorded UNRESOLVED — never grid events,
+    never a family/lean fallback."""
     import types as _t
     from swm.world_model_v2.event_time import convert_binary_to_event_time
     contract = _t.SimpleNamespace(family="binary", options=["yes", "no"], resolution_rule="")
-    p = _t.SimpleNamespace(question="Will X happen by the deadline?", as_of=T0,
-                           horizon_ts=T0 + 60 * DAY, outcome_contract=contract,
-                           scheduled_events=[{"etype": "resolve_outcome", "ts": T0 + 59 * DAY,
-                                              "participants": [],
-                                              "payload": {"outcome_var": "outcome"}}],
-                           accepted_mechanisms=[], quantities=[], provenance={},
-                           posterior_rate_particles=None, _consumed_state=[])
+
+    def plan(posterior):
+        return _t.SimpleNamespace(question="Will X happen by the deadline?", as_of=T0,
+                                  horizon_ts=T0 + 60 * DAY, outcome_contract=contract,
+                                  scheduled_events=[{"etype": "resolve_outcome",
+                                                     "ts": T0 + 59 * DAY, "participants": [],
+                                                     "payload": {"outcome_var": "outcome"}}],
+                                  accepted_mechanisms=[], quantities=[], provenance={},
+                                  posterior_rate_particles=posterior)
+    p = plan([(0.3, 1.0)])
     rep = convert_binary_to_event_time(p, {})
-    assert rep["scheduling"] == "continuous_first_passage"
-    assert p.first_passage_processes
+    assert rep["scheduling"] == "provenance_gated_event_time"
+    assert p.first_passage_processes and rep["n_residual_processes"] == 1
+    assert not any(e["etype"] == "hazard_round" for e in p.scheduled_events)   # no grids
+    p2 = plan(None)
+    rep2 = convert_binary_to_event_time(p2, {})
+    assert rep2["n_residual_processes"] == 0
+    assert any(r["mechanism"] == "residual_outcome_process"
+               for r in p2._unresolved_mechanisms)
 
 
 def test_inv42_phase13_engine_is_the_temporal_runtime():
