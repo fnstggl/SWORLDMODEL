@@ -690,17 +690,41 @@ def _structural_directive(cand: StructuralModelCandidate) -> str:
 
 
 def _executability_check(plan, *, llm=None) -> tuple:
-    """Deterministic executability critic: the retained model must materialize and bind through the
-    canonical semantic runtime (world build + readout binding + operator instantiation). No LLM opinion
-    substitutes for this check."""
+    """Deterministic executability critic: the retained model must MATERIALIZE and BIND through the
+    canonical semantic runtime — world build + readout binding + at least one OUTCOME-CAPABLE pathway.
+
+    Two deliberate design points, both fixing the ensemble-collapse class (frozen-5: 4/5 questions rejected
+    every candidate because a well-formed model with named actors/institutions was declared non-executable):
+
+      1. Operators that only need a RUNTIME LLM backend not yet bound (the default-on qualitative actor
+         policy, which refuses the numeric substitution per §19) are DEFERRED — that backend is present at
+         rollout and is a runtime resource, not a plan defect. The actor policy is not an outcome writer, so
+         deferring it never hides an unrunnable plan. (Previously the actor policy's llm=None construction
+         refusal aborted operators_from_plan before the terminal outcome writer was even instantiated, so
+         EVERY candidate looked non-executable — an over-strict check, not an impossible plan.)
+      2. A missing/dropped outcome WRITER is REPAIRED in place via the rollout-viability invariant
+         (ensure_outcome_pathway: re-instantiate the dropped writer, or synthesize the canonical
+         resolve_outcome pathway) — never a bare rejection. Only a genuinely unresolvable plan (an
+         event-time contract that retained no absorbing channel) still fails, honestly named.
+
+    No LLM opinion substitutes for this check (instantiation is deterministic; the actor policy is deferred,
+    not consulted)."""
     try:
         from swm.world_model_v2.materialize import (build_world, check_readout_binding,
-                                                    operators_from_plan)
+                                                    operators_from_plan, ensure_outcome_pathway)
         base = build_world(plan)
         check_readout_binding(plan, base)
-        ops, _rej = operators_from_plan(plan, llm=None)
-        if not ops:
-            return False, "no executable operator instantiated"
+        # match the rollout's instantiation (allow_experimental=True) but DEFER runtime-backend operators
+        ops, rej = operators_from_plan(plan, llm=None, allow_experimental=True,
+                                       defer_backend_operators=True)
+        report = ensure_outcome_pathway(plan, ops, rej)       # repair a dropped/absent outcome writer
+        outcome_ok = bool(report.get("outcome_capable_events") or report.get("repaired")
+                          or report.get("honest_unresolved_by_design"))
+        if not outcome_ok:
+            if not ops:
+                return False, "no executable operator and no outcome pathway could be synthesized"
+            return False, ("no outcome-capable pathway (event-time contract retained no absorbing "
+                           "channel and no resolver could be synthesized)")
         return True, ""
     except Exception as e:  # noqa: BLE001
         return False, f"{type(e).__name__}: {e}"[:180]

@@ -204,10 +204,18 @@ def queue_builder_from_plan(plan):
     return build
 
 
-def operators_from_plan(plan, *, llm=None, allow_experimental=False) -> tuple:
+def operators_from_plan(plan, *, llm=None, allow_experimental=False,
+                        defer_backend_operators=False) -> tuple:
     """Instantiate operators for accepted mechanisms. Mechanisms that name NO operator are returned as
     rejections (they must have been rejected at compile; this is defense in depth) — never silently
-    skipped. Returns (operators, rejections)."""
+    skipped. Returns (operators, rejections).
+
+    `defer_backend_operators` (compile-time EXECUTABILITY CHECK only, never the real rollout): an operator
+    that requires a RUNTIME LLM backend not yet bound — today the default-on qualitative actor policy, which
+    refuses the numeric substitution (§19) — is recorded as a deferred rejection and SKIPPED instead of
+    aborting the whole instantiation. That backend is present at rollout; its absence at check time is a
+    runtime-resource gap, not a plan defect. Such operators are not outcome WRITERS, so the outcome pathway
+    is verified without them."""
     ops, seen, rejections = [], set(), []
     for m in plan.accepted_mechanisms:
         opname = m.get("operator")
@@ -236,7 +244,21 @@ def operators_from_plan(plan, *, llm=None, allow_experimental=False) -> tuple:
                 # Tier-3 routine policy, or a LOUDLY-REPORTED degradation (no backend /
                 # construction failure) — never a silent swap. The report rides on the operator
                 # and is attached to every run result by attach_actor_decision_distributions.
-                bound_runtime, policy_report = _actor_policy_runtime(plan, llm)
+                try:
+                    bound_runtime, policy_report = _actor_policy_runtime(plan, llm)
+                except Exception as e:  # noqa: BLE001
+                    # §19: the qualitative actor policy refuses to run without a backend. When only
+                    # VERIFYING executability (no backend bound yet), DEFER it to the rollout where the
+                    # backend exists — it is a runtime resource and not an outcome writer, so skipping it
+                    # here never hides an unrunnable plan. On the real rollout path this flag is off and
+                    # the loud failure propagates unchanged.
+                    from swm.world_model_v2.result import CompilerExecutionError
+                    if defer_backend_operators and isinstance(e, CompilerExecutionError) \
+                            and getattr(e, "taxonomy", "") in ("unavailable_service", "runtime_exception"):
+                        rejections.append({"mech_id": "production_actor_policy",
+                                           "reason": f"deferred_to_runtime_backend: {e}"[:200]})
+                        continue
+                    raise
                 op = factory(runtime=bound_runtime) if bound_runtime is not None else factory()
                 op.actor_policy_report = policy_report
                 if policy_report.get("degraded"):
