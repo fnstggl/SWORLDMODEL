@@ -300,6 +300,94 @@ def operators_from_plan(plan, *, llm=None, allow_experimental=False) -> tuple:
     return ops, rejections
 
 
+#: events that can WRITE the terminal outcome, and the operator each needs. The rollout is only answerable
+#: if at least one such (event, instantiated operator) pair survives plan surgery + operator instantiation.
+OUTCOME_EVENT_OPERATORS = {
+    "resolve_outcome": ("generic_outcome_prior",),
+    "aggregate_outcome_resolution": ("aggregate_outcome_mechanism",),
+    "hazard_round": ("hazard_round",),
+    "institutional_decision": ("institutional_decision",),
+}
+
+
+def _instantiate_operator(name):
+    """Instantiate one registered operator the same way operators_from_plan does (class → call;
+    configured prototype instance → deepcopy). Raises on unknown name. Warms the registering modules
+    first so the repair path never depends on incidental transitive imports."""
+    import swm.world_model_v2.event_time  # noqa: F401 — registers hazard_round/absorption_monitor
+    import swm.world_model_v2.fallback  # noqa: F401 — registers generic_outcome_prior
+    import swm.world_model_v2.phase_consumers  # noqa: F401 — registers institutional_decision et al.
+    from swm.world_model_v2.transitions import get_operator
+    factory = get_operator(name)
+    if hasattr(factory, "run") and hasattr(factory, "applicable") and not isinstance(factory, type):
+        return copy.deepcopy(factory)
+    return factory()
+
+
+def ensure_outcome_pathway(plan, ops, rejections=None) -> dict:
+    """ROLLOUT-VIABILITY INVARIANT — the root fix for the silent-empty-rollout class (EXP-105 BoJ: a
+    stochastic compile/instantiation draw left the plan with NOTHING able to write the outcome → 0 deltas,
+    empty census, p=None, no error anywhere). Enforced immediately before rollout:
+
+      at least one outcome-capable (scheduled event, instantiated operator) pair must exist.
+
+    If violated, REPAIR in place (recorded, never silent):
+      1. an outcome event exists but its writer operator was dropped (e.g. silently rejected at
+         instantiation) → re-instantiate that operator into `ops`;
+      2. no outcome event survived at all (e.g. event-time conversion removed the resolver and left no
+         absorber) → re-add the canonical `resolve_outcome` terminal event + guarantee its operator.
+    Returns a report for provenance: capable events, repairs made, and the operator rejections that were
+    previously discarded silently."""
+    op_names = {getattr(o, "name", "") for o in ops}
+    capable, missing = [], []
+    for e in plan.scheduled_events:
+        et = str(e.get("etype", ""))
+        needed = OUTCOME_EVENT_OPERATORS.get(et)
+        if not needed:
+            continue
+        if et == "institutional_decision":
+            p = e.get("payload") or {}
+            if not (p.get("outcome_var") or p.get("absorbing")):
+                continue                                      # ornamental vote: cannot write the outcome
+        if any(n in op_names for n in needed):
+            capable.append(et)
+        else:
+            missing.extend(needed)
+    report = {"outcome_capable_events": sorted(set(capable)), "repaired": False, "repairs": [],
+              "operator_rejections": list(rejections or [])[:8]}
+    if capable:
+        return report
+    # repair 1: outcome events exist, writers were dropped — re-instantiate them
+    for name in dict.fromkeys(missing):
+        try:
+            ops.append(_instantiate_operator(name))
+            report["repairs"].append(f"reinstantiated_dropped_writer:{name}")
+            report["repaired"] = True
+        except Exception as e:  # noqa: BLE001 — fall through to the resolver repair
+            report["repairs"].append(f"reinstantiation_failed:{name}:{type(e).__name__}")
+    if report["repaired"]:
+        return report
+    # repair 2: no outcome event survived — re-add the canonical terminal resolver (+ its operator)
+    contract = plan.outcome_contract
+    var = getattr(contract, "readout_var", None) or "outcome"
+    options = [str(o) for o in (getattr(contract, "options", None)
+                                or getattr(contract, "binary_options", None) or ["True", "False"])]
+    plan.scheduled_events.append({
+        "etype": "resolve_outcome", "ts": float(plan.horizon_ts) - 1.0, "participants": [],
+        "payload": {"outcome_var": var, "family": getattr(contract, "family", "binary"),
+                    "options": options,
+                    "lean": str((plan.provenance or {}).get("outcome_lean", "neutral")),
+                    "posterior_rate_particles": (list(getattr(plan, "posterior_rate_particles", None) or [])
+                                                 or None),
+                    "lo": None, "hi": None}})
+    if "generic_outcome_prior" not in op_names:
+        from swm.world_model_v2.fallback import GenericOutcomeOperator
+        ops.append(GenericOutcomeOperator())
+    report["repairs"].append("readded_canonical_resolve_outcome")
+    report["repaired"] = True
+    return report
+
+
 ACTOR_POLICY_MODES = ("numeric_policy", "persona_blended_numeric_policy", "stateless_llm_policy",
                       "persistent_qualitative_llm_policy", "hybrid_relevant_actor_policy")
 

@@ -202,7 +202,11 @@ def prepare_persistence_run(question, plan, *, llm=None, context=None, actor_his
         meta["support_grade_effect"] = grade_effect
 
     check_readout_binding(plan, base)
-    ops, _rej = operators_from_plan(plan, llm=llm)
+    from swm.world_model_v2.materialize import ensure_outcome_pathway
+    ops, op_rejections = operators_from_plan(plan, llm=llm)
+    # ROLLOUT-VIABILITY INVARIANT: rejections are never discarded silently, and the plan must retain an
+    # outcome-capable (event, operator) pair — repaired in place otherwise (the silent-empty-rollout fix).
+    outcome_pathway = ensure_outcome_pathway(plan, ops, op_rejections)
     import swm.world_model_v2.phase8_transitions as _p8t
     ops = ops + [_p8t.PersistenceUpdateOperator(), _p8t.MemoryConsolidationOperator()]
     init = InitialStateModel(base_world=base, latents=list(plan.latents))
@@ -212,7 +216,8 @@ def prepare_persistence_run(question, plan, *, llm=None, context=None, actor_his
     return {"question": question, "plan": plan, "base": base, "ops": ops, "run": run,
             "n_particles": npart, "meta": meta, "family_manifests": family_manifests,
             "materialized": materialized, "prior_watermark": prior_watermark,
-            "context": context, "actor_history": actor_history}
+            "context": context, "actor_history": actor_history,
+            "outcome_pathway": outcome_pathway}
 
 
 def run_persistence_slice(handle: dict, *, seed: int = 0, n_total: int = None, start: int = 0,
@@ -249,9 +254,14 @@ def finalize_persistence_run(handle: dict, branches: list, *, intervention="", t
                 _rep["degraded"] = True
     res = result_from_run(question, plan, result, branches, intervention=intervention, t0=t0,
                           calibrator=calibrator, cal_key=cal_key)
+    outcome_pathway = handle.get("outcome_pathway") or {}
     res.provenance = {**(res.provenance or {}),
                       "actor_policy_report": result.get("actor_policy_report", {}),
-                      "consequence_report": result.get("consequence_report", {})}
+                      "consequence_report": result.get("consequence_report", {}),
+                      "outcome_pathway": outcome_pathway}
+    if outcome_pathway.get("repaired"):
+        res.limitations = (list(res.limitations or [])
+                           + [f"outcome-pathway repaired before rollout: {outcome_pathway['repairs']}"])
     if result.get("actor_decision_distributions"):
         res.provenance = {**(res.provenance or {}),
                           "actor_decision_distributions": result["actor_decision_distributions"],

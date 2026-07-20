@@ -1,0 +1,55 @@
+{
+ "n": 200,
+ "arm": "v4flash",
+ "tag": "widened200",
+ "base_rate_yes": 0.34,
+ "compile_failures": 0,
+ "model": {
+  "brier": 0.2168,
+  "log_loss": 0.6948,
+  "accuracy_at_0.5": 0.695,
+  "AUC": 0.6765,
+  "frac_extreme": 0.37
+ },
+ "sota_futuresearch": {
+  "n": 187,
+  "brier": 0.1048,
+  "accuracy_at_0.5": 0.861,
+  "AUC": 0.9263
+ },
+ "const_baselines": {
+  "p=0.5": 0.25,
+  "p=sample_base_rate": 0.2244,
+  "p=0.33_global_prior": 0.2245
+ },
+ "by_mechanism": {
+  "aggregation": {
+   "n": 12,
+   "brier": 0.2936
+  },
+  "arrival": {
+   "n": 107,
+   "brier": 0.1674
+  },
+  "contest": {
+   "n": 30,
+   "brier": 0.2604
+  },
+  "diffusion": {
+   "n": 3,
+   "brier": 0.2343
+  },
+  "escalation": {
+   "n": 5,
+   "brier": 0.3216
+  },
+  "persistence": {
+   "n": 11,
+   "brier": 0.3388
+  },
+  "whipcount": {
+   "n": 32,
+   "brier": 0.2523
+  }
+ }
+}

@@ -112,6 +112,22 @@ def simulate_structural_ensemble(question: str, *, as_of: str, horizon: str = ""
                 bundle = gather_evidence(question, as_of=as_of, requirements=reqs, llm=llm,
                                          config=config or OrchestratorConfig(),
                                          plan_hash=ens.ensemble_id, seed=seed)
+                if len(bundle.included_claim_ids) < 3:
+                    # Thin/empty first pull (a stochastic live query + LLM extraction — the EXP-104
+                    # failure where the run silently forecast from priors). ESCALATE, not re-roll: a
+                    # genuinely different retrieval strategy (2x window, forced Wikipedia on every
+                    # requirement, a decisive-fact reformulation). Keep whichever bundle has more
+                    # admissible claims. Shared-bundle analog of the single-model evidence retry.
+                    esc = gather_evidence(question, as_of=as_of, requirements=reqs, llm=llm,
+                                          config=config or OrchestratorConfig(),
+                                          plan_hash=ens.ensemble_id, seed=seed + 1,
+                                          strategy="escalated")
+                    ens.generation_policy["evidence_retry"] = {
+                        "first_pull_claims": len(bundle.included_claim_ids),
+                        "strategy": "escalated",
+                        "escalated_claims": len(esc.included_claim_ids)}
+                    if len(esc.included_claim_ids) > len(bundle.included_claim_ids):
+                        bundle = esc
             evidence_text = bundle.render(max_chars=2400) if hasattr(bundle, "render") else ""
             ens.shared_evidence_bundle_hash = bundle.bundle_hash() if hasattr(bundle, "bundle_hash") else ""
             ens.shared_evidence_as_of = as_of
@@ -332,6 +348,12 @@ def _condition_and_pilot_model(U, question, cand, bundle, as_of, horizon, interv
                 lineage["world_boundary"] = {"error": rec["boundary_error"]}
         posterior = U._phase3_block(question, plan, bundle, model_llm, seed, manifest, drop)
         rec["posterior_consumed"] = bool(posterior and posterior.n_effective_observations > 0)
+        rec["posterior"] = posterior
+        rec["prior_spec"] = getattr(plan, "_outcome_prior_spec", None)
+        # evidence-sufficiency gate, PER structural model (each model has its own posterior):
+        # a starved model must never be silently mistaken for evidence-driven
+        rec["evidence_sufficiency"] = U._evidence_sufficiency_block(
+            question, bundle, posterior, as_of=as_of, drop=drop, lineage=lineage)
         cand.posterior_diagnostics = ({"n_effective_observations": posterior.n_effective_observations,
                                        "outcome_rate_mean": getattr(posterior, "outcome_rate_mean", None)}
                                       if posterior is not None else {"n_effective_observations": 0})
@@ -476,7 +498,7 @@ def _finalize_model(U, question, cand, rec, bundle, as_of, intervention, seed, t
     canonical finalize funnel, with per-model phase supervision. `commit_checkpoint=False` neutralizes
     the persistence-checkpoint commit (history was already materialized at prepare time; only one model
     per run advances the lineage)."""
-    from swm.world_model_v2.phase8_pipeline import finalize_persistence_run
+    from swm.world_model_v2.phase8_pipeline import finalize_persistence_run, run_persistence_slice
     handle = rec["handle"] if commit_checkpoint else {**rec["handle"], "actor_history": None}
     try:
         res, _artifacts = finalize_persistence_run(handle, rec["branches"],
@@ -484,11 +506,35 @@ def _finalize_model(U, question, cand, rec, bundle, as_of, intervention, seed, t
     except Exception as e:  # noqa: BLE001
         rec["error"] = f"finalize: {type(e).__name__}: {e}"[:200]
         return None
+    # ROLLOUT RETRY (per structural model): the persistence-aware rollout is stochastic; an
+    # INTERMITTENT empty rollout (EXP-106 BoJ: one run's operator census came up empty → no absorber →
+    # no forecast; the next run of the SAME plan rolled fully) recovers on a re-roll. Retry ONCE with a
+    # fresh seed, recorded — honest unresolved results are exempt (see unified_runtime._no_forecast).
+    if U._no_forecast(res):
+        rec["lineage"]["rollout_retry"] = {"first_status": res.simulation_status,
+                                           "first_taxonomy": res.failure_taxonomy}
+        try:
+            n = max(1, len(rec["branches"]))
+            retry_branches = run_persistence_slice(rec["handle"], seed=seed + 1, n_total=n,
+                                                   start=0, stop=n)
+            res_retry, _ = finalize_persistence_run(handle, retry_branches,
+                                                    intervention=intervention, t0=t0, seed=seed + 1)
+            rec["lineage"]["rollout_retry"]["retry_status"] = res_retry.simulation_status
+            rec["lineage"]["rollout_retry"]["recovered"] = not U._no_forecast(res_retry)
+            if not U._no_forecast(res_retry):
+                res = res_retry
+                rec["branches"] = list(retry_branches)
+        except Exception as e:  # noqa: BLE001 — the retry must never make things worse
+            rec["lineage"]["rollout_retry"]["retry_error"] = f"{type(e).__name__}: {e}"[:120]
     rec["manifest"]["phase8_persistence"].update(selected=True, executed=True, version="phase8-1.0",
                                                  reason=f"{len(rec['branches'])} particles "
                                                         f"(pilot prefix {rec['n_pilot']} reused)")
     U._record_operator_phases(cand.executable_plan, res, rec["manifest"])
     U._attach_supervision(res, cand.executable_plan, as_of, bundle, rec["manifest"], rec["lineage"])
+    # evidence-sufficiency surfacing + the no-silent-None guard, per structural model
+    U._apply_result_guards(res, posterior=rec.get("posterior"), prior_spec=rec.get("prior_spec"),
+                           evidence_sufficiency=rec.get("evidence_sufficiency"),
+                           lineage=rec["lineage"])
     res.provenance["structural_model_id"] = cand.model_id
     res.provenance["active_component_manifest"] = rec["manifest"]
     res.provenance["plan_lineage"] = rec["lineage"]

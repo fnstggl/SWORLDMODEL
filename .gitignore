@@ -9,6 +9,12 @@ venv/
 data/
 *.parquet
 
+# large per-run forensic LLM-trace dumps (re-derivable by re-running; the committed *_findings.md +
+# summary JSON + stdout are the verifiable record). Full traces contain every prompt/reply and are big.
+experiments/results/exp104_simulate_world_traces.json
+experiments/results/exp104_checkpoints/
+experiments/results/exp104_checkpoints_*/
+
 # large re-derivable data-scaling caches (rebuild: python -m experiments.data.build_scaling_caches)
 experiments/results/exp074/cmv_pairs.json
 experiments/results/exp075/cmv_perop.json
@@ -34,3 +40,5 @@ experiments/results/phase10/voteview/
 experiments/results/phase10/scdb/
 data/phase13_real/
 artifacts/phase13/real/results*.jsonl
+
+experiments/results/exp105_checkpoints/

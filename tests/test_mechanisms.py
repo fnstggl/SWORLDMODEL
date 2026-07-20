@@ -53,3 +53,27 @@ def test_router_dispatches_and_falls_back():
     assert simulate_mechanism("nonsense", {}) is None         # unknown -> caller falls back to generic sim
     assert set(MECHANISMS) == {"aggregation", "contest", "diffusion", "arrival", "whipcount",
                                "escalation", "persistence"}
+
+
+def test_provenance_widening_exp101():
+    # invented params may not assert near-certainty: no hard gates, anchored toward the base rate
+    g = sim_whipcount(committed_yes=30, undecided=0, needed=50, base_rate=0.4)                  # grounded gate
+    i = sim_whipcount(committed_yes=30, undecided=0, needed=50, base_rate=0.4, provenance="invented")
+    assert g < 0.05 and 0.05 < i < 0.6 and i > g
+    ga = sim_aggregation(0.30, base_rate=0.4)
+    ia = sim_aggregation(0.30, base_rate=0.4, provenance="invented")
+    assert ia > ga and 0.03 < ia < 0.6
+    # quoted sits between grounded and invented; grounded behavior is unchanged by the new tiers
+    qa = sim_aggregation(0.30, base_rate=0.4, provenance="quoted")
+    assert ga <= qa <= ia
+    assert simulate_mechanism("whipcount", {"committed_yes": 60, "needed": 50}) > 0.95          # default grounded
+
+
+def test_null_params_land_on_base_rate_exp101():
+    # LLM omits/nulls its counts -> no whip information -> base rate, never "0 committed" (and never a crash)
+    p = simulate_mechanism("whipcount", {"committed_yes": None, "undecided": None, "needed": 50,
+                                         "lean": None, "provenance": "invented"}, base_rate=0.3)
+    assert abs(p - 0.3) < 1e-9
+    assert simulate_mechanism("aggregation", {"share": None, "provenance": "invented"}, base_rate=0.4) == 0.4
+    assert 0.05 < simulate_mechanism("aggregation", {"share": 0.4, "share_sd": None, "threshold": None,
+                                                     "provenance": "invented"}, base_rate=0.35) < 0.6

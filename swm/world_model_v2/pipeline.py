@@ -1,14 +1,21 @@
-"""The production simulation pipeline — question → SimulationResult (no-abstention).
+"""Lower-level simulation pipeline — question → SimulationResult (no-abstention).
 
-`simulate()` is the one V2 production entry. It ALWAYS attempts a simulation for a coherent question and
-returns a `SimulationResult` with a forecast whenever the simulation ran. Epistemic weakness lowers the
-support grade and widens uncertainty; it never refuses. Only technical failures → execution_failed; only
-genuinely incoherent questions → clarification_required (rare).
+QUARANTINED ENTRY: `simulate()` is NOT the live world-model-v2 forecast path. It is the bare
+compile→run→project inner loop; it SKIPS evidence retrieval, Phase-3 posterior reweighting, Phase-10
+institution normalization and the scheduled-reality/calendar layer, so it silently degrades to a broad
+prior on any question whose outcome those subsystems resolve (the EXP-102 failure that collapsed 4/5
+questions to ~0.5). The canonical forecast entry is `unified_runtime.simulate_world` (production:
+`swm.facade.forecast(architecture="world_model_v2")`). `simulate()` is kept only for the pinned validation
+experiments that test the bare loop; calling it emits a loud DeprecationWarning.
+
+The module's OTHER exports (`result_from_run`, `_operator_delta_census`, `_binary_projection`, …) are NOT
+deprecated — the canonical path imports them. Only the `simulate()` entry is quarantined.
 """
 from __future__ import annotations
 
 import time as _time
 
+from swm.world_model_v2._quarantine import quarantined
 from swm.world_model_v2.compiler import compile_world
 from swm.world_model_v2.result import (ClarificationRequired, CompilerExecutionError, SimulationResult)
 
@@ -205,6 +212,7 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
         latency_s=round(_time.time() - t0, 3) if t0 is not None else 0.0)
 
 
+@quarantined(reason="bare compile→run loop; skips evidence/posterior/institution-normalization/calendar")
 def simulate(question: str, *, llm, evidence="", as_of: str, horizon: str, intervention: str = "",
              n_particles=None, seed: int = 0, calibrator=None, cal_key: str = "",
              persistence=None, actor_history=None, persistence_families=None,
