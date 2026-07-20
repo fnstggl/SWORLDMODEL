@@ -84,13 +84,54 @@ validate a complete causal mechanism, so the forecast falls back to the grounded
 
 ---
 
-## 3. Reproduction + per-stage timing (EXP-109)  — LIVE RESULTS PENDING
+## 3. Reproduction exposed a SECOND failure mode — and the deeper fix
 
-`python -m experiments.exp109_knesset_repro` — single run, full LLM actors, on the fixed runtime.
+`python -m experiments.exp109_knesset_repro` — single run, full LLM actors, on the fixed runtime — did
+**not** reproduce the `under_modeled`/189-call path. It hit a *different* failure:
+`status=execution_failed`, **zero promoted models**, limitation *"no executable structural candidate
+remained after generation, critics and bounded repair"*, **38 calls / 403 s**.
 
-- **Fix verification (Step 4):** _pending_ — expect `p ≈ 0.05`, `status = under_modeled`,
-  `has_forecast = True`, `grounded_outside_view_fallback.used = True`.
-- **Timing profile (Step 1):** _pending_ — `llm_calls_by_stage` / `_by_model`, total calls, wall time,
-  and the timing wrapper's true backend-call count vs. the ledger total (the gap = actor-rollout cost).
-  This determines whether the 189 calls are an accidental loop / repeated validation or the architecture's
-  normal cost.
+**The run is stochastic.** The original malformed run reached the rollout (models survived → under_modeled,
+189 calls, 1707 s); this re-run collapsed at ensemble **compilation** before any model — or any prior —
+existed. The ensemble-level guard correctly did *not* fire (a genuine engineering failure, and there was
+no per-model `prior_spec` to serve).
+
+But the grounded outside-view estimate does not depend on the ensemble at all. So a **top-level
+forecasting-mode floor** (`unified_runtime._forecasting_mode_floor`, commit `17f5d07`) now computes the
+grounded reference-class prior *independently* and serves it as an `under_modeled` forecast whenever the
+structural engine returns no forecast — while keeping the original status/taxonomy named in provenance and
+a loud limitation, so the engineering failure is surfaced, not hidden. §NAP preserved (grounded-only;
+generic never manufactured; `clarification_required` never floored). Two composed guards now:
+
+| failure mode | who serves the grounded prior |
+|---|---|
+| models executed but rollout under-modeled (headline None) | ensemble-level guard (`structural_runtime`) |
+| ensemble produced NO forecast at all (execution_failed, 0 models) | top-level floor (`unified_runtime`) |
+
+### Timing note (what the 38-call vs 189-call gap means)
+The 38-call run died at compilation (generation + critics + bounded repair produced zero survivors); the
+189-call run got *further* — surviving models each ran full actor rollouts + particles + boundary/outside-
+world across the ensemble. So the 189 calls are the architecture's **normal ensemble cost when models
+survive** (≈ compile + N models × per-model conditioning/actor rollout), **not an accidental loop**. The
+definitive per-stage `calls_by_stage` breakdown comes from the frozen-5 full-actor pass (EXP-110), where
+runs that complete/under-model expose the stage histogram.
+
+- **Fix verification (Step 4):** _pending final Knesset re-run_ — expect a NUMBER (grounded ~5%),
+  `status=under_modeled`, `has_forecast=True`, `grounded_outside_view_fallback.used=True`.
+
+## 4. Lean §8-9 deadline-prior forecaster (EXP-111, Step 6)
+
+The lean path = the grounded deadline-aware prior mean as the forecast (no rollout, ~2 calls/q).
+
+| set | Brier | AUC | acc@0.5 | const base-rate | FutureSearch SOTA |
+|---|---|---|---|---|---|
+| frozen 5 (base 0.8) | 0.297 | **0.875** | 0.60 | 0.16 | 0.164 |
+| 25-set (base 0.4) | 0.258 | 0.603 | 0.64 | 0.24 | 0.176 |
+| combined 30 | 0.265 | 0.625 | 0.63 | 0.249 | 0.174 |
+
+The lever gives real **discrimination** (AUC 0.60–0.88) — a large repair over the older rich-numeric code
+(AUC 0.413, *anti*-discriminative). But absolute Brier (~0.26) is still slightly worse than the constant
+base-rate and well behind SOTA (0.174): the prior UNDER-predicts specific advanced YES cases (BoJ 0.22→YES,
+Wale 0.14→YES). That residual is exactly what evidence + actor simulation must close — the outside view is
+the floor, not the ceiling. Whether the rich full-actor pass beats this floor is the open question
+(EXP-110), and the malformed run does not settle it.
