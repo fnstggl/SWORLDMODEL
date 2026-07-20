@@ -37,11 +37,9 @@ from swm.world_model_v2.temporal_model import (DecisionTrigger, ScenarioTemporal
 LATENT_STATE_CHECK_FACTOR = {"available": 1.0, "in_meetings": 3.0, "traveling": 5.0,
                              "crisis_workload": 6.0, "asleep_offset": 1.0}
 
-#: material-change hysteresis for event-driven stance updating (§13): a watched process var
-#: must move at least this much since the actor's last stance change before another change —
-#: event-dependent hysteresis, not a review-count cooldown.
-STANCE_MATERIAL_CHANGE = 0.08
-_STANCE_WATCH_THRESHOLDS = (0.30, 0.70)                       # exhaustion / ripeness+bandwagon
+# §NAP: the numeric stance-watch layer (0.08 material-change hysteresis, 0.30/0.70
+# exhaustion/ripeness thresholds over 0-1 progress bars) is removed with the progress bars it
+# watched. Stances change through the actors' OWN cognition at their real decision triggers.
 
 
 @dataclass
@@ -431,8 +429,7 @@ def advance_interval(world, start_ts: float, end_ts: float, temporal_context=Non
         for the logistic form — internal only, no world events, no actor decisions);
       * legacy background operators (memory/salience decay), fed the exact elapsed interval —
         the daily-threshold tick is GONE: a 10-day gap is one exact 10-day update, not ten
-        synthetic daily events;
-      * contested attrition over real elapsed time (world_dynamics.contested_attrition_interval).
+        synthetic daily events.
     Returns the number of state writes."""
     elapsed_s = float(end_ts) - float(start_ts)
     if elapsed_s <= 0:
@@ -488,13 +485,9 @@ def advance_interval(world, start_ts: float, end_ts: float, temporal_context=Non
                                             "calibration": spec.calibration_status})
                 branch_log.append(d.change(f"quantities[{spec.writes}]",
                                            round(x, 6), round(x2, 6)))
-    # ---- contested attrition over real elapsed time (§13) ----
-    try:
-        from swm.world_model_v2.world_dynamics import contested_attrition_interval
-        n_writes += contested_attrition_interval(world, dt_days, branch_log=branch_log,
-                                                 at_ts=end_ts)
-    except Exception:  # noqa: BLE001 — attrition is optional state; never kills the interval
-        pass
+    # §NAP: the contested-attrition capacity drain (0.0007/day on a unit-less 0-1 "capacity")
+    # was an invented psychology parameter — removed. Exhaustion reaches actors the way it
+    # reaches real ones: through typed world state their own cognition observes.
     # ---- legacy background operators over the exact interval ----
     if operators:
         bg = Event(ts=end_ts, etype="background_tick",
@@ -590,55 +583,17 @@ def reproject_hazards(world, queue, written_paths: set, *, stats: TemporalRunSta
     return n
 
 
-# ---------------------------------------------------------------- §13: stance-change monitor
+# ---------------------------------------------------------------- §13 → §NAP: stance dynamics
 def emit_stance_relevant_changes(world, queue, written_paths: set,
                                  *, stats: TemporalRunStats = None) -> int:
-    """Event-driven stance updating: when a batch's writes cross a stance-rule threshold on a
-    watched process var (or move materially since an actor's last stance change), emit ONE
-    stance_relevant_change event at the current timestamp (next microstep). Passage of time
-    alone never reviews a stance (invariant 13 analogue for stances, §13)."""
-    if not written_paths:
-        return 0
-    watched = [p for p in written_paths
-               if "pathway_progress:" in p or "mode_progress:" in p
-               or ".resources[capacity]" in p]
-    if not watched:
-        return 0
-    mem = world.uncertainty_meta.setdefault("stance_watch", {})
-    triggering = []
-    for path in watched:
-        var = path.split("[", 1)[-1].rstrip("]") if path.startswith("quantities[") else path
-        q = world.quantities.get(var)
-        v = getattr(q, "value", None)
-        if path.endswith(".resources[capacity]"):
-            v = _capacity_from_path(world, path)
-        if not isinstance(v, (int, float)):
-            continue
-        last = mem.get(path)
-        crossed = last is not None and any(
-            (last < t <= v) or (v <= t < last) for t in _STANCE_WATCH_THRESHOLDS)
-        material = last is None or abs(v - last) >= STANCE_MATERIAL_CHANGE
-        if crossed or (material and last is not None):
-            triggering.append({"path": path, "before": last, "after": round(float(v), 4),
-                               "crossed_threshold": crossed})
-        mem[path] = float(v)
-    if not triggering:
-        return 0
-    queue.schedule(Event(ts=world.clock.now, etype="stance_relevant_change", participants=[],
-                         payload={"changes": triggering[:8],
-                                  "provenance": "material_state_change"},
-                         source="endogenous:temporal_stance_monitor"))
-    if stats is not None:
-        stats.count("stance_relevant_change_emitted")
-    return 1
-
-
-def _capacity_from_path(world, path: str):
-    aid = path.split(".", 1)[0]
-    ent = (world.entities or {}).get(aid)
-    if ent is None:
-        return None
-    return ent.value("resources", key="capacity", default=None)
+    """§NAP: the numeric stance-change monitor is GONE. It watched 0-1 progress bars and a
+    unit-less capacity resource against invented thresholds (0.30/0.70/±0.08) and fed a rule
+    table that moved stance labels mechanically. Neither the bars nor the rule table exist in
+    production. Stances now change the way real stances change: the actor's OWN situated
+    cognition, invoked at its real decision triggers (temporal_compiler), observes the concrete
+    typed state the batch wrote and rewrites its own stance record. This stub returns 0 and
+    exists so the batch loop keeps a single, documented seam."""
+    return 0
 
 
 # ---------------------------------------------------------------- §11: conditional deferrals

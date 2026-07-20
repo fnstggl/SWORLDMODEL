@@ -133,7 +133,10 @@ def test_domain_fixture_generates_represents_rejects_merges_pilots_promotes(doma
     res = simulate_world(f"Will the {domain.replace('_', ' ')} resolve favorably?",
                          as_of="2025-06-01", horizon="2025-09-01", llm=llm, seed=7,
                          execution_policy=dict(HERMETIC))
-    assert res.simulation_status in ("completed", "completed_with_degradation")
+    # §NAP: fixtures whose models materially disagree serve per-model conditionals
+    # (partially_resolved) instead of an averaged headline
+    assert res.simulation_status in ("completed", "completed_with_degradation",
+                                     "partially_resolved")
     se = res.structural_ensemble
     # several distinct models generated; the known decisive structure and one alternative represented
     promoted = [m for m in se["models"] if m["promotion_status"] == "promoted"]

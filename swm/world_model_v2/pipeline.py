@@ -1,14 +1,26 @@
-"""The production simulation pipeline — question → SimulationResult (no-abstention).
+"""Lower-level simulation pipeline — question → SimulationResult (no-abstention).
 
-`simulate()` is the one V2 production entry. It ALWAYS attempts a simulation for a coherent question and
-returns a `SimulationResult` with a forecast whenever the simulation ran. Epistemic weakness lowers the
-support grade and widens uncertainty; it never refuses. Only technical failures → execution_failed; only
-genuinely incoherent questions → clarification_required (rare).
+QUARANTINED ENTRY: `simulate()` is NOT the live world-model-v2 forecast path. It is the bare
+compile→run→project inner loop; it SKIPS evidence retrieval, Phase-3 posterior reweighting, Phase-10
+institution normalization and the scheduled-reality/calendar layer, so it silently degrades to a broad
+prior on any question whose outcome those subsystems resolve (the EXP-102 failure that collapsed 4/5
+questions to ~0.5). The canonical forecast entry is `unified_runtime.simulate_world` (production:
+`swm.facade.forecast(architecture="world_model_v2")`). `simulate()` is kept only for the pinned validation
+experiments that test the bare loop; calling it emits a loud DeprecationWarning naming the canonical
+entry (see docs/WMV2_CANONICAL_PATH.md).
+
+Since the validation-gate removal `simulate()` is also HARDENED (`harden_general_path`): even this legacy
+entry binds compiled actors/institutions/populations/calendar facts to the readout, so no caller — old
+scripts included — can reach the broad-prior-only degradation again.
+
+The module's OTHER exports (`result_from_run`, `_operator_delta_census`, `_binary_projection`, …) are NOT
+deprecated — the canonical path imports them. Only the `simulate()` entry is quarantined.
 """
 from __future__ import annotations
 
 import time as _time
 
+from swm.world_model_v2._quarantine import quarantined
 from swm.world_model_v2.compiler import compile_world
 from swm.world_model_v2.result import (ClarificationRequired, CompilerExecutionError, SimulationResult)
 
@@ -52,6 +64,49 @@ def _operator_delta_census(branches) -> dict:
     return census
 
 
+def _numeric_manifest(plan, branches) -> dict:
+    """§NAP: merge the plan-level (conversion-time) numeric-provenance ledger with every branch
+    world's runtime ledger into ONE `numeric_causal_inputs` manifest for the result."""
+    from swm.world_model_v2.numeric_provenance import merge_manifests
+    manifests = []
+    led = getattr(plan, "_numeric_ledger", None)
+    if led is not None:
+        manifests.append(led.manifest())
+    for b in (branches or []):
+        wled = getattr(getattr(b, "world", None), "_numeric_ledger", None)
+        if wled is not None:
+            manifests.append(wled.manifest())
+    return merge_manifests(*manifests)
+
+
+def _resolution_report(plan, result, branches) -> dict:
+    """§NAP: the honest-resolution accounting — branch terminal categories, unresolved mass
+    (never normalized away), honest bounds, resolved-conditional distribution, the exact missing
+    mechanisms, and the numeric-causal-inputs manifest."""
+    et = result.get("event_time") or {}
+    unresolved_share = float(et.get("unresolved_share") or 0.0)
+    missing = []
+    for rec in (getattr(plan, "_unresolved_mechanisms", None) or [])[:12]:
+        missing.append({k: rec.get(k) for k in ("mechanism", "why", "missing")})
+    seen = {m["mechanism"] for m in missing}
+    for b in (branches or [])[:50]:
+        for rec in (getattr(getattr(b, "world", None), "_unresolved_mechanisms", None) or []):
+            if rec.get("mechanism") not in seen and len(missing) < 20:
+                seen.add(rec.get("mechanism"))
+                missing.append({k: rec.get(k) for k in ("mechanism", "why", "missing")})
+    return {
+        "branch_terminals": et.get("branch_terminals"),
+        "unresolved_share": round(unresolved_share, 4),
+        "censored_modeled_share": et.get("censored_modeled_share"),
+        "bounds": et.get("bounds"),
+        "resolved_conditional": et.get("resolved_conditional"),
+        "missing_mechanisms": missing,
+        "frequency_semantics": et.get("frequency_semantics", "simulated_scenario_frequency"),
+        "note": "unresolved branch mass is preserved explicitly; it is never renormalized into "
+                "the resolved options and never drawn from a prior (§NAP)",
+    }
+
+
 def result_from_run(question, plan, result, branches, *, intervention="", t0=None, calibrator=None,
                     cal_key="") -> SimulationResult:
     """Build the shipped SimulationResult from a completed (plan, terminal result, branches). Extracted so
@@ -61,6 +116,27 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
     dist = result.get("distribution") or {}
     quant = result.get("quantiles") or {}
     unresolved = result.get("unresolved_share", 0.0)
+    resolution = _resolution_report(plan, result, branches)
+    resolution["numeric_causal_inputs"] = _numeric_manifest(plan, branches)
+    unresolved_mass = float(resolution.get("unresolved_share") or 0.0)
+    # §NAP honest-resolution statuses: with the ENTIRE branch mass unresolved there is no
+    # forecast — "Outcome unresolved under the current model." Partial unresolved mass keeps the
+    # resolved shares as an explicitly partial readout with bounds.
+    if unresolved_mass >= 0.999:
+        return SimulationResult(
+            question=question, simulation_status="unresolved",
+            support_grade=plan.support_grade,
+            resolution_report=resolution,
+            recommendation_status=("withheld" if intervention else "not_requested"),
+            limitations=["Outcome unresolved under the current model: no validated causal "
+                         "mechanism resolves the outcome — the missing mechanisms are named in "
+                         "resolution_report.missing_mechanisms; no broad-prior, family-rate or "
+                         "neutral-default mass was manufactured (§NAP)"],
+            plan_hash=plan.plan_hash(),
+            provenance={"event_time": result.get("event_time"),
+                        "temporal_runtime": result.get("temporal_runtime") or None,
+                        "n_particles": plan.compute_plan.get("n_particles")},
+            latency_s=round(_time.time() - t0, 3) if t0 is not None else 0.0)
     # §28: when the DEFAULT runtime refused a broad-prior terminal resolution (no validated
     # mechanism, no posterior), an unresolved readout is the HONEST epistemic state — the run
     # classifies under_modeled_nonhuman_mechanism, naming the missing mechanism. It is not an
@@ -148,6 +224,14 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
             f"consequential recommendations are withheld at this support level")
         if support_grade in ("empirically_supported", "transfer_supported"):
             support_grade = "exploratory"
+    # §NAP: partial unresolved mass makes the result PARTIALLY resolved — the resolved shares are
+    # served with explicit bounds; consequential recommendations are withheld
+    if unresolved_mass > 0.0 and status in ("completed", "completed_with_degradation"):
+        status = "partially_resolved"
+        limitations.append(
+            f"{unresolved_mass:.0%} of branch mass is unresolved_mechanism mass (missing "
+            f"mechanisms named in resolution_report); the resolved shares carry min/max bounds "
+            f"and are simulated-scenario frequencies, not calibrated probabilities")
     tmodel = getattr(plan, "temporal_model", None)
     if tmodel is not None:
         temporal = {**temporal,
@@ -170,9 +254,13 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
                     "temporal_compilation_llm_calls": len(tmodel.compilation_trace),
                     "critic_findings": list(tmodel.critic_findings)[:12],
                     "degraded": tmodel.degraded or None}
+    rec_status = _recommendation_status(intervention, plan.support_grade)
+    if intervention and unresolved_mass > 0.0:
+        rec_status = "withheld"                              # §NAP: unresolved mass gates actions
     return SimulationResult(
         question=question, simulation_status=status, support_grade=support_grade,
-        recommendation_status=_recommendation_status(intervention, plan.support_grade),
+        recommendation_status=rec_status,
+        resolution_report=resolution,
         raw_distribution={k: round(v, 4) for k, v in dist.items()} if dist else result.get("quantiles", {}),
         calibrated_distribution=({str(k): cal_p} if cal_p is not None else None),
         raw_probability=raw_p, calibrated_probability=cal_p,
@@ -191,6 +279,9 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
                     "prompt_hash": plan.provenance.get("prompt_hash"),
                     "readout_var": plan.outcome_contract.readout_var,
                     "readout_repaired": plan.provenance.get("readout_repaired"),
+                    "truncated_reply": plan.provenance.get("truncated_reply"),
+                    "truncation_recovered_keys": plan.provenance.get("truncation_recovered_keys"),
+                    "general_path_hardening": plan.provenance.get("general_path_hardening"),
                     "n_deltas": result.get("n_deltas"), "n_particles": plan.compute_plan.get("n_particles"),
                     # event-time contracts: the full first-passage readout (CDF/survival/quantiles/mode×time)
                     "event_time": result.get("event_time"),
@@ -205,6 +296,59 @@ def result_from_run(question, plan, result, branches, *, intervention="", t0=Non
         latency_s=round(_time.time() - t0, 3) if t0 is not None else 0.0)
 
 
+def harden_general_path(plan, question: str, *, llm=None, evidence="", as_of: str = "",
+                        horizon: str = "") -> dict:
+    """Bind the compiled world to the readout on EVERY entry point (validation-gate removal).
+
+    The EXP-102 forensic traces showed the bare path compiling rich worlds (named actors, institutions,
+    thresholds, hypotheses) and then resolving the outcome from the broad prior because nothing bound the
+    structure to the readout — the calendar layer, institution normalization, and activation synthesis were
+    wired only into unified_runtime. This closes that gap for pipeline.simulate() too:
+
+      1. institution rule NORMALIZATION — declared institutions become executable, not ornamental;
+      2. the SCHEDULED-REALITY layer — dated public facts AND recurring institutional calendars
+         (annual conferences, meeting schedules, release cadences) execute deterministically and feed
+         the outcome mechanism; facts are also exposed to actor cognition (plan._scheduled_facts);
+      3. ACTIVATION SYNTHESIS — institutional_decision / population_aggregation /
+         actor_action_aggregation / aggregate_outcome_resolution events are synthesized from the
+         DECLARED components, so the compiled actors, institutions and populations actually write the
+         readout and the generic prior is reduced to a no-op safety net.
+
+    Every step is best-effort and recorded; failure never blocks the forecast."""
+    report = {}
+    try:
+        from swm.world_model_v2.integration_completion import normalize_institution_rules
+        report["institution_normalization"] = normalize_institution_rules(plan)
+    except Exception as e:  # noqa: BLE001
+        report["institution_normalization"] = {"error": f"{type(e).__name__}: {e}"[:120]}
+    if llm is not None:
+        try:
+            from swm.world_model_v2.scheduled_facts import (attach_scheduled_facts,
+                                                            extract_scheduled_facts)
+            ev_text = evidence.render(max_chars=2400) if hasattr(evidence, "render") \
+                else str(evidence or "")[:2400]
+            facts = extract_scheduled_facts(question, as_of=as_of, horizon=horizon,
+                                            evidence_text=ev_text, llm=llm)
+            report["scheduled_reality"] = attach_scheduled_facts(plan, facts)
+            report["scheduled_reality"]["facts"] = facts[:8]
+        except Exception as e:  # noqa: BLE001
+            report["scheduled_reality"] = {"error": f"{type(e).__name__}: {e}"[:120]}
+    try:
+        from swm.world_model_v2.activation_synthesis import phase_requirements, synthesize_activation
+        req = phase_requirements(plan)
+        report["activation_synthesis"] = synthesize_activation(plan, req)
+    except Exception as e:  # noqa: BLE001
+        report["activation_synthesis"] = {"error": f"{type(e).__name__}: {e}"[:120]}
+    try:
+        plan.provenance["general_path_hardening"] = {
+            k: (v if k != "scheduled_reality" else {kk: vv for kk, vv in v.items() if kk != "facts"})
+            for k, v in report.items()}
+    except Exception:  # noqa: BLE001
+        pass
+    return report
+
+
+@quarantined(reason="bare compile→run loop; skips evidence/posterior/institution-normalization/calendar")
 def simulate(question: str, *, llm, evidence="", as_of: str, horizon: str, intervention: str = "",
              n_particles=None, seed: int = 0, calibrator=None, cal_key: str = "",
              persistence=None, actor_history=None, persistence_families=None,
@@ -224,6 +368,8 @@ def simulate(question: str, *, llm, evidence="", as_of: str, horizon: str, inter
     blocked), and lineage/support effects are returned in the result. Anonymous/stateless requests (no
     actor_history) and any storage/identity failure DEGRADE honestly to the ordinary non-persistent path —
     never an abstention, never a crash. Without persistence work, behaviour is byte-identical (no regression)."""
+    # (the @quarantined decorator above emits the DeprecationWarning naming the canonical entry —
+    # see docs/WMV2_CANONICAL_PATH.md — so no second inline warning is raised here)
     t0 = _time.time()
     # ---- automatic persistence-context construction (final usability gap): if the caller did not pass an
     #      explicit context but a durable actor identity is available, request one from the provider. ----
@@ -251,6 +397,11 @@ def simulate(question: str, *, llm, evidence="", as_of: str, horizon: str, inter
         return SimulationResult(question=question, simulation_status="execution_failed",
                                 failure_taxonomy=e.taxonomy, limitations=[f"compiler: {e}"],
                                 latency_s=round(_time.time() - t0, 3))
+
+    # ---- GENERAL-PATH HARDENING: bind the compiled world (actors/institutions/populations/calendar) to
+    #      the readout so the simulation itself decides the outcome on EVERY entry point — the broad-prior
+    #      resolver is a no-op safety net, never the forecast. ----
+    harden_general_path(plan, question, llm=llm, evidence=evidence, as_of=as_of, horizon=horizon)
 
     # ---- CANONICAL PERSISTENCE PATH: when history/checkpoint is available, persistence is part of the
     #      ordinary simulate() flow (no separate entry point). Delegates to the shared run_with_persistence.

@@ -58,7 +58,9 @@ def _problem(**kw):
 #    multiple structural models, EACH with its own compiled temporal model
 def test_1_default_run_generates_multiple_models_each_with_distinct_temporal_model():
     res = run_default()
-    assert res.simulation_status in ("completed", "completed_with_degradation")
+    # §NAP: materially disagreeing models serve per-model conditionals (partially_resolved)
+    assert res.simulation_status in ("completed", "completed_with_degradation",
+                                     "partially_resolved")
     assert res.provenance["structural_mode"] == "ensemble"
     handle = res._ensemble_handle
     surviving = [c for c in handle.surviving() if c.executable_plan is not None]

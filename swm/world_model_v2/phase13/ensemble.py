@@ -249,6 +249,20 @@ def _apply_core_uncertainty_axes(res: DecisionResult, synthesis: dict, source_re
                          "detail": f"ensemble result carries under-modeled subtypes {subtypes} — "
                                    "a recommendation over a world missing a high-sensitivity "
                                    "component would mint certainty (§35/§31)"})
+    # §NAP: unresolved branch mass gates recommendations exactly like truncated mass — an
+    # admissible resolution of the unresolved mechanisms could flip the choice
+    rr = dict(getattr(source_result, "resolution_report", None) or {})
+    unresolved_shares = [v for v in (rr.get("unresolved_share_by_model") or {}).values()
+                         if isinstance(v, (int, float))]
+    unres_share = max([float(rr.get("unresolved_share") or 0.0)] + unresolved_shares)
+    src_status = str(getattr(source_result, "simulation_status", "") or "")
+    if unres_share > 0.0 or src_status in ("unresolved", "partially_resolved"):
+        withheld.append({"code": "unresolved_mechanism_mass_present",
+                         "detail": "the forecast carries explicit unresolved_mechanism mass "
+                                   f"(max share {round(unres_share, 4)}; status {src_status or '?'}) — "
+                                   "the missing mechanisms are named in resolution_report; "
+                                   "recommending over unresolved mass would mint certainty (§NAP)",
+                         "unresolved_share": round(unres_share, 6)})
     if res.recommended and res.recommendation_kind == "action" and trunc_share > 0.0 \
             and not eligibility.get("eligible"):
         withheld.append({"code": "winner_not_best_under_truncated_completions",

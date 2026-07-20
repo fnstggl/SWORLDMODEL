@@ -157,10 +157,16 @@ def run_default(llm=None, seed=3, policy=None, **kw):
 # ------------------------------------------------------------------ 24.1 / 24.2 default route
 def test_default_route_is_ensemble_without_any_enable_flag():
     res = run_default()
-    assert res.simulation_status in ("completed", "completed_with_degradation")
+    # §NAP: materially disagreeing models now serve per-model conditionals (partially_resolved)
+    # instead of an averaged headline; agreeing models complete normally
+    assert res.simulation_status in ("completed", "completed_with_degradation",
+                                     "partially_resolved")
     assert res.structural_ensemble is not None
     assert res.provenance["structural_mode"] == "ensemble"
     assert res.structural_ensemble["structural_mode"] == "ensemble"
+    if res.simulation_status == "partially_resolved":
+        assert res.resolution_report["per_model"] is not None
+        assert not res.raw_distribution                # no averaged headline under disagreement
 
 
 def test_facade_v2_route_carries_structural_ensemble():
@@ -529,16 +535,23 @@ def test_llm_cannot_mint_model_probabilities():
         {"support_class": "plausible"}
 
 
-def test_unknown_weights_produce_labeled_equal_mixture_and_robust_outputs():
+def test_unknown_weights_never_average_into_a_headline_probability():
+    """§NAP: with no defensible model weights, materially disagreeing conditionals are NOT
+    averaged into a headline — per-model distributions + the robust range are primary; the
+    equal-weight mixture survives only as a labeled diagnostic."""
     res = run_default()
     se = res.structural_ensemble
-    assert se["aggregation_method"] == "equal_weight_uncalibrated_structural_average"
-    assert "UNCALIBRATED" in se["aggregation_note"]
-    assert se["equal_weight_mixture"] and se["robust_range"]
+    assert se["aggregation_method"] in ("per_model_conditionals_no_headline_average",
+                                        "agreeing_models_equal_weight_mixture",
+                                        "single_surviving_model")
+    assert se["equal_weight_mixture_diagnostic"] and se["robust_range"]
     for opt, rng in se["robust_range"].items():
-        assert rng["min"] <= se["equal_weight_mixture"][opt] <= rng["max"]
+        assert rng["min"] <= se["equal_weight_mixture_diagnostic"][opt] <= rng["max"]
+    if se["aggregation_method"] == "per_model_conditionals_no_headline_average":
+        assert not res.raw_distribution
+        assert "§NAP" in se["aggregation_note"]
+        assert res.resolution_report["robust_range"] == se["robust_range"]
     dec = se["uncertainty_decomposition"]
-    assert dec["weighting"] == "equal_weight_uncalibrated_structural_average"
     assert "between_model" in dec and "within_model" in dec
 
 

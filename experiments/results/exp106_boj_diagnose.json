@@ -1,0 +1,179 @@
+{
+ "qid": "7279494c-a775-5a57-a5f2-ac22252fb286",
+ "question": "Will the Bank of Japan raise its short-term policy interest rate at the June 15\u201316, 2026 Monetary Policy Meeting?",
+ "n_llm_calls": 266,
+ "simulation_status": "completed_with_degradation",
+ "failure_taxonomy": "",
+ "raw_probability": 0.7273,
+ "calibrated_probability": null,
+ "limitations": [
+  "omitted (negligible-sensitivity): detailed_household_spending_models",
+  "omitted (negligible-sensitivity): individual_bank_lending_details",
+  "degraded: support grade exploratory; 3 fallback mechanism(s) used"
+ ],
+ "census_ops": [
+  "absorption_monitor",
+  "actor_action_aggregation",
+  "background_dynamics",
+  "evidence_observation",
+  "institutional_decision",
+  "production_actor_policy",
+  "structural_process_prior"
+ ],
+ "operator_delta_census": {
+  "evidence_observation": {
+   "n_deltas": 528,
+   "fields_written": [
+    "quantities[evidence::f362bdae1083c0a2:c0]",
+    "information.exposures[f362bdae1083c0a2:c0]",
+    "quantities[evidence::213fe4cf9befdb1c:c0]",
+    "information.exposures[213fe4cf9befdb1c:c0]",
+    "quantities[evidence::213fe4cf9befdb1c:c1]",
+    "information.exposures[213fe4cf9befdb1c:c1]",
+    "quantities[evidence::fc8e74c6fc5a2c8e:c0]",
+    "information.exposures[fc8e74c6fc5a2c8e:c0]"
+   ],
+   "event_types": [
+    "observe_evidence"
+   ]
+  },
+  "background_dynamics": {
+   "n_deltas": 463,
+   "fields_written": [],
+   "event_types": [
+    "background_tick"
+   ]
+  },
+  "production_actor_policy": {
+   "n_deltas": 2623,
+   "fields_written": [
+    "Kazuo_Ueda.current_action",
+    "Kazuo_Ueda.past_actions",
+    "BOJ_PolicyBoard_Members.current_action",
+    "BOJ_PolicyBoard_Members.past_actions",
+    "Bank_of_Japan.current_action",
+    "Bank_of_Japan.past_actions",
+    "Ryozo_Himino.current_action",
+    "Ryozo_Himino.past_actions"
+   ],
+   "event_types": [
+    "actor_action"
+   ]
+  },
+  "structural_process_prior": {
+   "n_deltas": 132,
+   "fields_written": [
+    "quantities[mechanism_outcome:fallback:BOJ_PolicyBoard_deliberation_and_vote]",
+    "quantities[mechanism_outcome:fallback:economic_data_release_and_analysis]"
+   ],
+   "event_types": [
+    "structural_process_prior"
+   ]
+  },
+  "actor_action_aggregation": {
+   "n_deltas": 53,
+   "fields_written": [
+    "quantities[actor_action_share]"
+   ],
+   "event_types": [
+    "actor_action_aggregation"
+   ]
+  },
+  "institutional_decision": {
+   "n_deltas": 66,
+   "fields_written": [
+    "institution[BOJ_PolicyBoard_Members].decision",
+    "quantities[absorbing_state_reached]"
+   ],
+   "event_types": [
+    "institutional_decision"
+   ]
+  },
+  "absorption_monitor": {
+   "n_deltas": 48,
+   "fields_written": [
+    "quantities[absorbed_at]"
+   ],
+   "event_types": [
+    "absorption"
+   ]
+  }
+ },
+ "execution_degraded_fallback": null,
+ "evidence_sufficiency": {
+  "as_of_supplied": true,
+  "n_documents": 48,
+  "n_included_claims": 21,
+  "n_effective_observations": 15,
+  "retried": false,
+  "starved": false
+ },
+ "fully_integrated": true,
+ "phase_integration_failures": [],
+ "phase8_persistence": {
+  "available": true,
+  "selected": true,
+  "executed": true,
+  "omitted": false,
+  "reason": "default-on persistence-aware rollout",
+  "version": "phase8-1.0",
+  "n_events": 0,
+  "n_state_deltas": 0,
+  "causally_irrelevant": false,
+  "removal_changes_terminal": null,
+  "status": "causally_active"
+ },
+ "phase10_institutions": {
+  "available": true,
+  "selected": true,
+  "executed": true,
+  "omitted": false,
+  "reason": "causal signal ['causal_dependencies.institutional_decision_process'] + declared institutions",
+  "version": "phase10",
+  "n_events": 0,
+  "n_state_deltas": 66,
+  "causally_irrelevant": false,
+  "removal_changes_terminal": null,
+  "normalization": {
+   "executable_rules_before": 0,
+   "executable_rules_after": 5,
+   "institutions": 2,
+   "rules_total": 5,
+   "already_executable": 0,
+   "normalized": 0,
+   "unmapped_to_procedure": 5
+  },
+  "relevance": {
+   "required": true,
+   "why": "causal signal ['causal_dependencies.institutional_decision_process'] + declared institutions"
+  },
+  "status": "causally_active"
+ },
+ "readout_var": "absorbed_at",
+ "readout_repaired": true,
+ "event_time": {
+  "n_absorbed": 48,
+  "n_particles": 66,
+  "p_censored": 0.2727
+ },
+ "fallbacks_used": [
+  {
+   "process": "outcome_resolution",
+   "tier": 7,
+   "family": "generic_outcome_prior",
+   "why": "broad-prior terminal safety net (writes only if domain mechanisms leave it unset)"
+  },
+  {
+   "process": "BOJ_PolicyBoard_deliberation_and_vote",
+   "tier": 6,
+   "family": "structural_process_prior",
+   "why": "no validated registry family answers this required causal process \u2014 transparent broad-prior fallback (registry gap)"
+  },
+  {
+   "process": "economic_data_release_and_analysis",
+   "tier": 6,
+   "family": "structural_process_prior",
+   "why": "no validated registry family answers this required causal process \u2014 transparent broad-prior fallback (registry gap)"
+  }
+ ]
+}

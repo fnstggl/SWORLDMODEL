@@ -47,7 +47,17 @@ def build_world(plan, *, world_id: str = "w0", evidence_hash: str = "", versions
     omissions = []
     prompt_hash = (plan.provenance or {}).get("prompt_hash", "")
     for e in plan.entities:
-        ent = Entity(identity=str(e.get("id")), entity_type=str(e.get("type", "person")))
+        # ENTITY-TYPE NORMALIZATION (repair, never refuse): the universal schema is person|institution,
+        # but the LLM sometimes proposes "organization"/"political_party"/etc. An unnormalized type makes
+        # every registered extension field inapplicable and crashes actor-cognition writes mid-rollout
+        # (EXP-105 Colombia). Non-person types normalize to institution, recorded as an omission.
+        etype = str(e.get("type", "person")).strip().lower()
+        if etype not in ("person", "institution"):
+            omissions.append({"kind": "entity_type_normalized", "entity": str(e.get("id")),
+                              "from": etype, "to": "institution",
+                              "reason": "universal schema is person|institution; extensions must bind"})
+            etype = "institution"
+        ent = Entity(identity=str(e.get("id")), entity_type=etype)
         for fname, val in (e.get("fields") or {}).items():
             if val in ("?", None, ""):
                 continue                                     # unknowns stay latent, not fabricated
@@ -113,6 +123,13 @@ def build_world(plan, *, world_id: str = "w0", evidence_hash: str = "", versions
         except KeyError:
             omissions.append({"kind": "quantity", "name": name, "reason": "quantity construction failed"})
     w.omissions = omissions
+    # §NAP: conversion-time unresolved-mechanism records (refused numeric provenance) ride onto
+    # every branch, so the terminal readout classifies their mass `unresolved_mechanism` instead
+    # of silently reading non-absorption as "no"
+    plan_unresolved = list(getattr(plan, "_unresolved_mechanisms", None) or [])
+    if plan_unresolved:
+        w._unresolved_mechanisms = [dict(r) for r in plan_unresolved]
+        w.omissions.extend({"kind": "unresolved_mechanism", **r} for r in plan_unresolved[:12])
     return w
 
 
@@ -164,6 +181,11 @@ def queue_builder_from_plan(plan):
                 from swm.world_model_v2.event_time import ensure_first_passage_state
                 from swm.world_model_v2.temporal_hazards import schedule_crossing
                 st = ensure_first_passage_state(world, spec)
+                if st is None:
+                    # §NAP: the spec's numeric provenance was refused — the mechanism is already
+                    # recorded unresolved on the branch; nothing is scheduled and no default
+                    # intensity is substituted
+                    continue
                 schedule_crossing(q, world, st, etype="first_passage")
             except Exception as e:  # noqa: BLE001 — a broken process spec is recorded, not fatal
                 world.omissions.append({"kind": "first_passage_process",
@@ -298,6 +320,153 @@ def operators_from_plan(plan, *, llm=None, allow_experimental=False) -> tuple:
         if getattr(plan, "_world_boundary", None) is not None:
             ops.append(_bm.BoundaryMonitorOperator(plan._world_boundary, report=_rep, llm=llm))
     return ops, rejections
+
+
+#: events that can WRITE the terminal outcome, and the operator each needs. The rollout is only answerable
+#: if at least one such (event, instantiated operator) pair survives plan surgery + operator instantiation.
+OUTCOME_EVENT_OPERATORS = {
+    "resolve_outcome": ("generic_outcome_prior",),
+    "aggregate_outcome_resolution": ("aggregate_outcome_mechanism",),
+    "hazard_round": ("hazard_round",),
+    "institutional_decision": ("institutional_decision",),
+}
+
+
+def _instantiate_operator(name):
+    """Instantiate one registered operator the same way operators_from_plan does (class → call;
+    configured prototype instance → deepcopy). Raises on unknown name. Warms the registering modules
+    first so the repair path never depends on incidental transitive imports."""
+    import swm.world_model_v2.event_time  # noqa: F401 — registers hazard_round/absorption_monitor
+    import swm.world_model_v2.fallback  # noqa: F401 — registers generic_outcome_prior
+    import swm.world_model_v2.phase_consumers  # noqa: F401 — registers institutional_decision et al.
+    from swm.world_model_v2.transitions import get_operator
+    factory = get_operator(name)
+    if hasattr(factory, "run") and hasattr(factory, "applicable") and not isinstance(factory, type):
+        return copy.deepcopy(factory)
+    return factory()
+
+
+def ensure_outcome_pathway(plan, ops, rejections=None) -> dict:
+    """ROLLOUT-VIABILITY INVARIANT — the root fix for the silent-empty-rollout class (EXP-105 BoJ: a
+    stochastic compile/instantiation draw left the plan with NOTHING able to write the outcome → 0 deltas,
+    empty census, p=None, no error anywhere). Enforced immediately before rollout:
+
+      at least one outcome-capable pathway must exist — a (scheduled event, instantiated operator)
+      pair, OR an event-time absorbing channel (dated absorbing fact / absorbing institutional
+      decision / provenance-approved first-passage residual process, plus the absorption monitor).
+
+    If violated, REPAIR in place (recorded, never silent):
+      1. an outcome event exists but its writer operator was dropped (e.g. silently rejected at
+         instantiation) → re-instantiate that operator into `ops` (structure decides the outcome —
+         declared components are restored, never replaced by a prior);
+      2. an event-time plan has absorbing channels but lost the absorption monitor → re-instantiate
+         the monitor (the readout observes absorption; without the monitor nothing is stamped);
+      3. a RESOLVER-CONTRACT plan lost every outcome event → re-add the canonical `resolve_outcome`
+         terminal event + guarantee its operator (with the posterior attached when present; without a
+         posterior the generic operator itself enforces the §NAP/§28 refusal gate).
+
+    NOT a violation (§NAP): a plan whose outcome mechanism was deliberately recorded UNRESOLVED
+    (`plan._unresolved_mechanisms`) — the absence of a resolving channel is the honest epistemic
+    state; the unabsorbed mass classifies `unresolved_mechanism` at readout and the result reports
+    status `unresolved` with the missing mechanisms named. Bolting a resolver onto it would
+    manufacture the certainty the model explicitly refused to manufacture.
+
+    Returns a report for provenance: capable pathways, repairs made, honest-unresolved marking, and
+    the operator rejections that were previously discarded silently."""
+    op_names = {getattr(o, "name", "") for o in ops}
+    capable, missing = [], []
+    for e in plan.scheduled_events:
+        et = str(e.get("etype", ""))
+        needed = OUTCOME_EVENT_OPERATORS.get(et)
+        if not needed:
+            continue
+        if et == "institutional_decision":
+            p = e.get("payload") or {}
+            if not (p.get("outcome_var") or p.get("absorbing")):
+                continue                                      # ornamental vote: cannot write the outcome
+        if any(n in op_names for n in needed):
+            capable.append(et)
+        else:
+            missing.extend(needed)
+    # event-time absorbing channels: provenance-approved first-passage residual processes live on
+    # plan.first_passage_processes (crossings are scheduled per branch by the queue builder)
+    fp_specs = list(getattr(plan, "first_passage_processes", None) or [])
+    fp_viable = [s for s in fp_specs
+                 if str(s.get("kind")) == "calibrated_resolution"
+                 and (s.get("calibration") or {}).get("posterior_rate_particles")]
+    is_event_time = str(getattr(plan.outcome_contract, "family", "")) == "event_time"
+    if fp_viable:
+        if "first_passage" in op_names:
+            capable.append("first_passage")
+        else:
+            missing.append("first_passage")
+    # event-time plans READ absorption: any absorbing channel (present or restorable) needs the
+    # monitor too — absorbing writers without the monitor stamp nothing and the readout is empty
+    if is_event_time and (capable or missing) and "absorption_monitor" not in op_names:
+        missing.append("absorption_monitor")
+    report = {"outcome_capable_events": sorted(set(capable)), "repaired": False, "repairs": [],
+              "operator_rejections": list(rejections or [])[:8]}
+    if capable and "absorption_monitor" not in missing:
+        return report
+    # repair 1/2: outcome events (or the absorption monitor) exist/needed, writers were dropped —
+    # re-instantiate them. Restoring DECLARED structure always precedes any resolver fallback.
+    for name in dict.fromkeys(missing):
+        try:
+            ops.append(_instantiate_operator(name))
+            op_names.add(name)
+            report["repairs"].append(f"reinstantiated_dropped_writer:{name}")
+            report["repaired"] = True
+        except Exception as e:  # noqa: BLE001 — fall through to the resolver repair
+            report["repairs"].append(f"reinstantiation_failed:{name}:{type(e).__name__}")
+    if report["repaired"]:
+        report["outcome_capable_events"] = sorted(set(capable) | set(missing) & op_names)
+        return report
+    # §NAP: a deliberate unresolved recording is an HONEST terminal state, not a broken pathway —
+    # never repaired with a resolver; the readout classifies the mass unresolved_mechanism.
+    if list(getattr(plan, "_unresolved_mechanisms", None) or []):
+        report["honest_unresolved_by_design"] = True
+        report["repairs"].append("no_repair_unresolved_mechanism_recorded (§NAP)")
+        return report
+    if is_event_time:
+        # an event-time plan with NO absorbing channel and NO unresolved record is an accidental
+        # total loss — record it unresolved (named, preserved) rather than inventing a resolver
+        # the readout-not-resolver architecture forbids. Never silent, never pretending success.
+        try:
+            from swm.world_model_v2.numeric_provenance import plan_record_unresolved
+            plan_record_unresolved(
+                plan, mechanism="outcome_pathway",
+                why="event-time plan retained no absorbing channel (no dated absorbing fact, no "
+                    "absorbing institutional decision, no provenance-approved residual process) — "
+                    "recorded unresolved instead of bolting a terminal resolver onto a "
+                    "readout-not-resolver contract",
+                missing="scenario-generated resolving mechanism, evidence-cited scheduled fact, "
+                        "absorbing institutional decision, or evidence-updated posterior")
+            report["repairs"].append("recorded_unresolved_no_absorbing_channel (§NAP)")
+            report["honest_unresolved_by_design"] = True
+        except Exception as e:  # noqa: BLE001
+            report["repairs"].append(f"unresolved_recording_failed:{type(e).__name__}")
+        return report
+    # repair 3: resolver-contract plan lost every outcome event — re-add the canonical terminal
+    # resolver (+ its operator). With a posterior attached the resolver draws from evidence; without
+    # one, GenericOutcomeOperator itself enforces the §NAP/§28 broad-prior refusal gate.
+    contract = plan.outcome_contract
+    var = getattr(contract, "readout_var", None) or "outcome"
+    options = [str(o) for o in (getattr(contract, "options", None)
+                                or getattr(contract, "binary_options", None) or ["True", "False"])]
+    plan.scheduled_events.append({
+        "etype": "resolve_outcome", "ts": float(plan.horizon_ts) - 1.0, "participants": [],
+        "payload": {"outcome_var": var, "family": getattr(contract, "family", "binary"),
+                    "options": options,
+                    "lean": str((plan.provenance or {}).get("outcome_lean", "neutral")),
+                    "posterior_rate_particles": (list(getattr(plan, "posterior_rate_particles", None) or [])
+                                                 or None),
+                    "lo": None, "hi": None}})
+    if "generic_outcome_prior" not in op_names:
+        from swm.world_model_v2.fallback import GenericOutcomeOperator
+        ops.append(GenericOutcomeOperator())
+    report["repairs"].append("readded_canonical_resolve_outcome")
+    report["repaired"] = True
+    return report
 
 
 ACTOR_POLICY_MODES = ("numeric_policy", "persona_blended_numeric_policy", "stateless_llm_policy",
@@ -582,18 +751,26 @@ def run_from_plan(plan, *, llm=None, n_particles=None, seed=0):
     base = build_world(plan, evidence_hash=(plan.provenance or {}).get("evidence_bundle_hash", ""))
     check_readout_binding(plan, base)
     _bind_scenario_schema(plan, base, llm)
+    # RUN-EVERYTHING PRINCIPLE: mechanisms labeled experimental EXECUTE (with widened uncertainty and an
+    # exploratory support grade) rather than being silently rejected into the broad-prior path. Blocking is
+    # reserved for operators that cannot run at all — never for "not yet held-out validated".
+    allow_experimental = True
     # Phase 3: if the pipeline attached an evidence-updated outcome-rate posterior, hand its particles to the
     # canonical resolve_outcome event so the terminal resolver draws each particle's Bernoulli rate from the
     # POSTERIOR (not the broad lean-Beta prior). This is the single injection point shared by BOTH the
     # single-structure (run.run) and multi-hypothesis paths — both build queues from plan.scheduled_events.
     _inject_posterior_rate(plan)
-    ops, rejections = operators_from_plan(plan, llm=llm)
+    ops, rejections = operators_from_plan(plan, llm=llm, allow_experimental=allow_experimental)
     if not ops:
         # the fallback guarantees generic_outcome_prior is accepted; reaching here is a compiler defect
         raise CompilerExecutionError(
             "no accepted mechanism resolves to an executable operator despite the fallback hierarchy "
             f"(rejections: {[r['reason'][:60] for r in rejections]})",
             taxonomy="missing_required_operator")
+    # ROLLOUT-VIABILITY INVARIANT (the ONE authority, same as the persistence funnel): the plan must
+    # retain an outcome-capable pathway; accidental losses are repaired in place, §NAP honest
+    # unresolved states pass through, and the report rides the result for provenance.
+    outcome_pathway = ensure_outcome_pathway(plan, ops, rejections)
     init = InitialStateModel(base_world=base, latents=list(plan.latents))
     npart = n_particles or plan.compute_plan.get("n_particles", 30)
     run = WorldModelV2Run(initial=init, queue_builder=queue_builder_from_plan(plan),
@@ -609,6 +786,7 @@ def run_from_plan(plan, *, llm=None, n_particles=None, seed=0):
         result, branches = run.run(seed=seed)
     result["omissions"] = list(getattr(base, "omissions", []))
     result["operator_rejections"] = rejections
+    result["outcome_pathway"] = outcome_pathway
     attach_actor_decision_distributions(ops, result)
     err = (plan.provenance or {}).get("scenario_schema_error")
     if err:
@@ -622,6 +800,30 @@ def run_from_plan(plan, *, llm=None, n_particles=None, seed=0):
         rep["structurally_under_modeled"] = True
         rep["mechanism_model_error"] = mech_err
     return result, branches
+
+
+def branch_thread_count() -> int:
+    """SWM_BRANCH_THREADS: opt-in parallel rollout of INDEPENDENT particle worlds. Branches are
+    embarrassingly parallel by construction — each world is its own deep copy with its own seed and its
+    own fresh event queue, and per-branch results are collected in submission order, so serial and
+    parallel runs produce IDENTICAL branches. With LLM actor cognition the wall-clock is dominated by
+    sequential API latency; threading branches turns hours into minutes without touching fidelity,
+    budgets or determinism. Default 1 (serial, exact legacy behavior)."""
+    import os
+    v = os.environ.get("SWM_BRANCH_THREADS", "").strip()
+    return max(1, int(v)) if v.isdigit() else 1
+
+
+def run_branches(engine, jobs) -> list:
+    """Roll out [(world, queue, seed)] jobs through the engine — serial, or thread-parallel when
+    SWM_BRANCH_THREADS > 1. Result order always equals submission order (determinism contract)."""
+    n = branch_thread_count()
+    if n <= 1 or len(jobs) <= 1:
+        return [engine.run_branch(w, q, seed=s) for w, q, s in jobs]
+    from concurrent.futures import ThreadPoolExecutor
+    with ThreadPoolExecutor(max_workers=min(n, len(jobs))) as pool:
+        futs = [pool.submit(engine.run_branch, w, q, seed=s) for w, q, s in jobs]
+        return [f.result() for f in futs]
 
 
 def _run_with_hypotheses(run, plan, hyps, seed):
@@ -648,7 +850,7 @@ def _run_with_hypotheses(run, plan, hyps, seed):
     worlds = run.initial.sample_particles(total, seed=seed)
     from swm.world_model_v2.rollout import RolloutEngine
     engine = RolloutEngine(operators=run.operators)
-    branches, wi = [], 0
+    jobs, wi = [], 0
     default_lean = (plan.provenance or {}).get("outcome_lean", "neutral")
     for h, k in zip(hyps, alloc):
         lean = str(h.get("lean") or h.get("outcome_lean") or default_lean)
@@ -663,7 +865,8 @@ def _run_with_hypotheses(run, plan, hyps, seed):
             for ev in q.events:
                 if ev.etype == "resolve_outcome":
                     ev.payload["lean"] = lean
-            branches.append(engine.run_branch(w, q, seed=seed * 7919 + wi))
+            jobs.append((w, q, seed * 7919 + wi))
+    branches = run_branches(engine, jobs)
     result = plan.outcome_contract.project(branches)
     result["n_deltas"] = sum(len(b.log) for b in branches)
     result["readout"] = "terminal_states"

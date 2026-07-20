@@ -29,24 +29,52 @@ from swm.world_model_v2.transitions import (StateDelta, TransitionOperator, Tran
 
 _EXTRACT_PROMPT = """You are the SCHEDULED-REALITY extractor for a world simulation. List every DATED PUBLIC
 FACT relevant to this question: term/mandate end dates, scheduled votes, meetings, hearings, deadlines,
-elections, expirations, launches. Use the evidence AND your world knowledge of the real named people and
-institutions. Only include facts you are confident are real, with dates as YYYY-MM-DD (approximate day is
-acceptable if the month is certain). For each, state whether its occurrence DIRECTLY entails the question's
-outcome and in which direction.
+elections, expirations, launches — AND recurring institutional patterns (annual conferences, regular
+meetings, election cycles, earnings/filing calendars, expected annual product/software cycles). Use the
+evidence AND your world knowledge of the real named people and institutions. Only include facts you are
+confident are real, with dates as YYYY-MM-DD (approximate day is acceptable if the month is certain).
+
+CRUCIAL — judge each fact's INFLUENCE ON THE OUTCOME, not just "direct entailment". A recurring pattern
+counts: if a question asks whether an event that reliably happens on a schedule will happen (e.g. a company
+that ships a new OS version at its annual conference every year, an incumbent body that meets and decides on
+a fixed calendar), the pattern RAISES the probability strongly even though the specific occurrence is not
+logically guaranteed. Weigh confirmed schedules and strong recurrences heavily; weigh one-off speculation
+lightly. A strong recurrence heavily informs the forecast but is NOT certainty — genuine disrupting evidence
+(cancellation, abandonment, a broken streak) can lower it.
+
+RECURRING EVENTS — CHECK THIS EXPLICITLY. The world runs on calendars: central banks meet on fixed
+schedules, companies hold annual conferences and ship annual OS/product releases, elections follow fixed
+cycles, courts have terms, leagues have seasons. If any institution, company or body named in the question
+has a RECURRING pattern relevant to the outcome (e.g. "Apple announces a new visionOS at WWDC every June",
+"the BoJ policy board meets 8 times a year on published dates"), you MUST list the NEXT expected instance
+inside the window as a dated fact with kind "recurring_event" and fill "recurrence" with the cadence and
+its PAST instances (all strictly before {as_of}). A long unbroken pattern (5+ consecutive instances)
+justifies confidence 0.9+; a question asking whether the next instance of an unbroken annual pattern will
+happen is usually outcome-entailing. Base-rate structure like this must never be lost to the simulation.
 
 QUESTION: {q}
 AS-OF: {as_of}   HORIZON: {horizon}
 EVIDENCE:
 {ev}
 
+For EACH fact give:
+- pattern_strength: "confirmed_scheduled" (a specific dated event is officially set) |
+  "strong_recurrence" (happens almost every cycle — e.g. annual OS at the annual conference) |
+  "base_rate" (ordinary historical frequency) | "speculative" (a guess/rumor).
+- outcome_influence: "raises" | "lowers" | "neutral" — does this fact make the question's YES more/less likely?
+- influence_strength: 0..1 — how strongly it moves P(YES). confirmed_scheduled decisive ~0.9;
+  strong_recurrence ~0.7-0.85; base_rate ~0.3-0.6; speculative ~0.1-0.3. Never 1.0 unless YES is logically entailed.
+
 Return ONLY JSON:
 {{"facts": [{{"fact": "<one sentence>", "date": "YYYY-MM-DD", "entity": "<who/what it concerns>",
-  "kind": "term_expiry|scheduled_vote|scheduled_meeting|deadline|election|expiration|other",
+  "kind": "term_expiry|scheduled_vote|scheduled_meeting|deadline|election|expiration|recurring_event|other",
+  "recurrence": "<cadence + past instances all before {as_of}, e.g. 'annual at WWDC each June: 2017..2025 unbroken', or null>",
   "source": "evidence|model_knowledge", "evidence_quote": "<short quote or null>",
   "confidence": <0..1>,
-  "outcome_entailing": true|false,
-  "entailed_direction": "yes|no|null",
-  "entailment_caveat": "<what could break the entailment, or null>"}}]}}"""
+  "pattern_strength": "confirmed_scheduled|strong_recurrence|base_rate|speculative",
+  "outcome_influence": "raises|lowers|neutral",
+  "influence_strength": <0..1>,
+  "reason": "<why it influences the outcome that way, or null>"}}]}}"""
 
 
 def extract_scheduled_facts(question, *, as_of, horizon, evidence_text="", llm=None) -> list:
@@ -64,18 +92,55 @@ def extract_scheduled_facts(question, *, as_of, horizon, evidence_text="", llm=N
             ts = parse_time(str(f["date"])[:10])
         except (ValueError, TypeError):
             continue
+        influence = str(f.get("outcome_influence", "")).lower()
+        strength = max(0.0, min(1.0, float(f.get("influence_strength", 0.0) or 0.0)))
+        pattern = str(f.get("pattern_strength", "base_rate"))[:24]
+        # back-compat: legacy callers/tests read outcome_entailing + entailed_direction. Accept the new
+        # influence schema OR the old entailing schema; derive one from the other so both always agree.
+        # STRICT entailment is a separate, narrower judgment: only a strictly entailing fact may become
+        # a deterministic absorbing event on the event-time path (§NAP) — a weak influence nudge is
+        # calendar CONTEXT (prior/actor knowledge), never an absorber.
+        if influence in ("raises", "lowers"):
+            entailing = strength > 0.0
+            direction = "yes" if influence == "raises" else "no"
+            strictly = bool(f.get("outcome_entailing")) or pattern == "confirmed_scheduled" \
+                or strength >= 0.9
+        else:
+            entailing = bool(f.get("outcome_entailing"))
+            strictly = entailing                              # old schema: the LLM judged DIRECT entailment
+            direction = (str(f.get("entailed_direction")).lower()
+                         if f.get("entailed_direction") in ("yes", "no") else None)
+            if entailing and direction:                       # old schema → synthesize an influence
+                influence = "raises" if direction == "yes" else "lowers"
+                strength = strength or 0.6
         out.append({"fact": str(f.get("fact", ""))[:200], "ts": ts, "date": str(f["date"])[:10],
                     "entity": str(f.get("entity", ""))[:60], "kind": str(f.get("kind", "other"))[:24],
+                    "recurrence": (str(f.get("recurrence"))[:200] if f.get("recurrence") else None),
                     "source": str(f.get("source", "model_knowledge")),
                     "evidence_quote": (str(f.get("evidence_quote"))[:200]
                                        if f.get("evidence_quote") else None),
                     "confidence": max(0.0, min(1.0, float(f.get("confidence", 0.6) or 0.6))),
-                    "outcome_entailing": bool(f.get("outcome_entailing")),
-                    "entailed_direction": (str(f.get("entailed_direction")).lower()
-                                           if f.get("entailed_direction") in ("yes", "no") else None),
-                    "entailment_caveat": (str(f.get("entailment_caveat"))[:160]
-                                          if f.get("entailment_caveat") else None)})
+                    "pattern_strength": pattern,
+                    "outcome_influence": influence if influence in ("raises", "lowers", "neutral") else "neutral",
+                    "influence_strength": strength,
+                    "outcome_entailing": entailing,
+                    "strictly_entailing": strictly and direction in ("yes", "no"),
+                    "entailed_direction": direction,
+                    "reason": (str(f.get("reason"))[:160] if f.get("reason") else None)})
     return out
+
+
+def entailment_nudge(influence: str, strength: float, confidence: float) -> float:
+    """Signed log-odds nudge one scheduled fact contributes to the shared `fact_entailment` accumulator.
+    raises→+, lowers→−, magnitude = strength·confidence·2.4, per-fact capped at ±1.8 so no single fact
+    dictates certainty. Pure + testable."""
+    influence = str(influence).lower()
+    if influence not in ("raises", "lowers"):
+        return 0.0
+    sign = 1.0 if influence == "raises" else -1.0
+    s = max(0.0, min(1.0, float(strength or 0.0)))
+    c = max(0.0, min(1.0, float(confidence or 0.6)))
+    return max(-1.8, min(1.8, sign * s * c * 2.4))
 
 
 class ScheduledFactOperator(TransitionOperator):
@@ -108,14 +173,27 @@ class ScheduledFactOperator(TransitionOperator):
                                     "evidence_quote": a.get("evidence_quote"),
                                     "confidence": a.get("confidence")})
         d.change(f"quantities[{var}]", None, 1.0)
-        if a.get("outcome_entailing") and a.get("entailed_direction") in ("yes", "no"):
+        influence = str(a.get("outcome_influence", "")).lower()
+        if influence in ("raises", "lowers"):
+            # ACCUMULATE net influence across ALL scheduled facts (not last-writer-wins): each fact nudges a
+            # shared log-odds by sign*strength*confidence, so a strong recurrence that RAISES YES and a
+            # disruption that LOWERS it compose into one honest fact_entailment (the visionOS case: WWDC-ships-
+            # a-new-visionOS-yearly raises; 'Vision Pro abandoned' lowers). No single fact saturates.
+            import math
             register_quantity_type("fact_entailment", units="share")
-            conf = float(a.get("confidence", 0.6))
-            val = conf if a["entailed_direction"] == "yes" else 1.0 - conf
+            register_quantity_type("fact_entailment_logodds", units="logodds")
+            nudge = entailment_nudge(influence, a.get("influence_strength", 0.0),
+                                     a.get("confidence", 0.6))            # per-fact cap: no lone certainty
+            acc0 = getattr(world.quantities.get("fact_entailment_logodds"), "value", 0.0) or 0.0
+            acc = max(-4.0, min(4.0, acc0 + nudge))
+            val = 1.0 / (1.0 + math.exp(-acc))
             before = world.quantities.get("fact_entailment")
-            world.quantities["fact_entailment"] = Quantity(name="fact_entailment",
-                                                           qtype="fact_entailment", value=round(val, 4),
-                                                           timestamp=world.clock.now)
+            world.quantities["fact_entailment_logodds"] = Quantity(
+                name="fact_entailment_logodds", qtype="fact_entailment_logodds", value=round(acc, 4),
+                timestamp=world.clock.now)
+            world.quantities["fact_entailment"] = Quantity(
+                name="fact_entailment", qtype="fact_entailment", value=round(val, 4),
+                timestamp=world.clock.now)
             d.change("quantities[fact_entailment]", getattr(before, "value", None), round(val, 4))
         return d
 
@@ -131,9 +209,26 @@ if not event_type_registered("scheduled_fact"):
                         deltas=("quantities",), parameter_source="scheduled-reality layer", validated=True)
 
 
+def public_facts_lines(facts: list, *, limit: int = 8) -> list:
+    """Render scheduled/recurring public facts as short lines for ACTOR COGNITION — the real Tim Cook knows
+    Apple's own calendar; the simulated one must too. Recurrence is included so the pattern (not just the
+    next date) enters the actor's knowledge."""
+    lines = []
+    for f in (facts or [])[:limit]:
+        rec = f" [{f['recurrence']}]" if f.get("recurrence") else ""
+        lines.append(f"- ({f.get('date', '?')}) {f.get('fact', '')}{rec}")
+    return lines
+
+
 def attach_scheduled_facts(plan, facts: list) -> dict:
     """Schedule in-window facts as deterministic events; wire the entailment quantity into the outcome
-    mechanism's consumption list at HIGH weight (a dated fact dominates broad priors). Returns a report."""
+    mechanism's consumption list at HIGH weight (a dated fact dominates broad priors). ALL extracted facts
+    (in-window or not) are kept on `plan._scheduled_facts` so actor cognition can know the public calendar
+    its real counterpart knows. Returns a report."""
+    try:
+        plan._scheduled_facts = list(facts or [])
+    except Exception:  # noqa: BLE001
+        pass
     n_sched, entailing = 0, 0
     for f in facts:
         if not (plan.as_of <= f["ts"] <= plan.horizon_ts):

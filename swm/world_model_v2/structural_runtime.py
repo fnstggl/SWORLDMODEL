@@ -54,6 +54,7 @@ PILOT_MIN_N_FOR_EXCLUSION = 12
 
 
 def simulate_structural_ensemble(question: str, *, as_of: str, horizon: str = "", intervention: str = "",
+                                 evidence: str = "",
                                  user_context=None, prior_checkpoint=None, compute_budget=None,
                                  seed: int = 0, llm=None, execution_policy: dict = None,
                                  trace_level: str = "standard", config=None,
@@ -107,12 +108,17 @@ def simulate_structural_ensemble(question: str, *, as_of: str, horizon: str = ""
             if prebuilt_bundle is not None:
                 bundle = prebuilt_bundle           # sealed-replay injection (frozen, time-locked, recorded)
             else:
-                from swm.world_model_v2.evidence_orchestrator import OrchestratorConfig, gather_evidence
+                from swm.world_model_v2.evidence_orchestrator import (
+                    OrchestratorConfig, gather_evidence_with_escalation)
                 reqs = EC.union_evidence_requirements(ens, as_of_iso=as_of)
-                bundle = gather_evidence(question, as_of=as_of, requirements=reqs, llm=llm,
-                                         config=config or OrchestratorConfig(),
-                                         plan_hash=ens.ensemble_id, seed=seed)
-            evidence_text = bundle.render(max_chars=2400) if hasattr(bundle, "render") else ""
+                # ONE evidence-retry authority shared with the single-model path
+                bundle, retry_rec = gather_evidence_with_escalation(
+                    question, as_of=as_of, requirements=reqs, llm=llm,
+                    config=config or OrchestratorConfig(), plan_hash=ens.ensemble_id, seed=seed)
+                if retry_rec:
+                    ens.generation_policy["evidence_retry"] = retry_rec
+            evidence_text = (bundle.render(max_chars=2400) if hasattr(bundle, "render")
+                             else str(evidence or "")[:2400])
             ens.shared_evidence_bundle_hash = bundle.bundle_hash() if hasattr(bundle, "bundle_hash") else ""
             ens.shared_evidence_as_of = as_of
         except Exception as e:  # noqa: BLE001 — evidence failure never blocks the forecast
@@ -132,8 +138,8 @@ def simulate_structural_ensemble(question: str, *, as_of: str, horizon: str = ""
         EC.run_candidate_critics(ens, llm=llm, evidence_text=evidence_text, ledger=ledger,
                                  cache_store=cache_store)
         EC.compile_candidates(ens, llm=llm, as_of=as_of, horizon=horizon, intervention=intervention,
-                              evidence=bundle if bundle is not None else "", seed=seed, ledger=ledger,
-                              cache_store=cache_store)
+                              evidence=bundle if bundle is not None else (evidence or ""), seed=seed,
+                              ledger=ledger, cache_store=cache_store)
     except EnsembleIntegrityError as e:
         return _fail("invalid_execution_plan", f"ensemble integrity violation: {e}")
     executable = [c for c in ens.surviving() if c.executable_plan is not None]
@@ -176,7 +182,7 @@ def simulate_structural_ensemble(question: str, *, as_of: str, horizon: str = ""
             cand.executable_plan._family_pool = family_pool
         rec = _condition_and_pilot_model(U, question, cand, bundle, as_of, horizon, intervention,
                                          seed, cond_llm, actor_cache, user_context, prior_checkpoint,
-                                         drop, t0)
+                                         drop, t0, evidence=evidence)
         runs[cand.model_id] = rec
         ens.pilot_models.append(cand.model_id)
     ens.candidates_rejected = sum(1 for c in ens.candidates
@@ -262,7 +268,8 @@ def simulate_structural_ensemble(question: str, *, as_of: str, horizon: str = ""
 
 # ------------------------------------------------------------------ per-model pipeline
 def _condition_and_pilot_model(U, question, cand, bundle, as_of, horizon, intervention, seed,
-                               cond_llm, actor_cache, user_context, prior_checkpoint, drop, t0):
+                               cond_llm, actor_cache, user_context, prior_checkpoint, drop, t0,
+                               evidence=""):
     """Condition ONE model's own plan (evidence recompile → ITS OWN posterior → fidelity/event-time/
     Phase 11) and run its REAL pilot through the canonical persistence funnel. The pilot uses the full
     causal runtime — the model's actual plan, actual posterior, actual qualitative actors, actual
@@ -332,13 +339,19 @@ def _condition_and_pilot_model(U, question, cand, bundle, as_of, horizon, interv
                 lineage["world_boundary"] = {"error": rec["boundary_error"]}
         posterior = U._phase3_block(question, plan, bundle, model_llm, seed, manifest, drop)
         rec["posterior_consumed"] = bool(posterior and posterior.n_effective_observations > 0)
+        rec["posterior"] = posterior
+        rec["prior_spec"] = getattr(plan, "_outcome_prior_spec", None)
+        # evidence-sufficiency gate, PER structural model (each model has its own posterior):
+        # a starved model must never be silently mistaken for evidence-driven
+        rec["evidence_sufficiency"] = U._evidence_sufficiency_block(
+            question, bundle, posterior, as_of=as_of, drop=drop, lineage=lineage)
         cand.posterior_diagnostics = ({"n_effective_observations": posterior.n_effective_observations,
                                        "outcome_rate_mean": getattr(posterior, "outcome_rate_mean", None)}
                                       if posterior is not None else {"n_effective_observations": 0})
         U._condition_plan(question, plan, bundle, as_of, horizon, seed, model_llm,
                           manifest, lineage, costs, drop,
                           user_context=user_context, intervention=intervention,
-                          structural_model_id=cand.model_id)
+                          structural_model_id=cand.model_id, evidence=evidence)
         cand.plan_lineage = list(lineage["plan_hashes"]) or [plan.plan_hash()]
         # ---------- pilot through the canonical funnel (persistence-prepared, index-keyed slice) --------
         actor_cache.model_id = cand.model_id
@@ -476,7 +489,7 @@ def _finalize_model(U, question, cand, rec, bundle, as_of, intervention, seed, t
     canonical finalize funnel, with per-model phase supervision. `commit_checkpoint=False` neutralizes
     the persistence-checkpoint commit (history was already materialized at prepare time; only one model
     per run advances the lineage)."""
-    from swm.world_model_v2.phase8_pipeline import finalize_persistence_run
+    from swm.world_model_v2.phase8_pipeline import finalize_persistence_run, run_persistence_slice
     handle = rec["handle"] if commit_checkpoint else {**rec["handle"], "actor_history": None}
     try:
         res, _artifacts = finalize_persistence_run(handle, rec["branches"],
@@ -484,11 +497,35 @@ def _finalize_model(U, question, cand, rec, bundle, as_of, intervention, seed, t
     except Exception as e:  # noqa: BLE001
         rec["error"] = f"finalize: {type(e).__name__}: {e}"[:200]
         return None
+    # ROLLOUT RETRY (per structural model): the persistence-aware rollout is stochastic; an
+    # INTERMITTENT empty rollout (EXP-106 BoJ: one run's operator census came up empty → no absorber →
+    # no forecast; the next run of the SAME plan rolled fully) recovers on a re-roll. Retry ONCE with a
+    # fresh seed, recorded — honest unresolved results are exempt (see unified_runtime._no_forecast).
+    if U._no_forecast(res):
+        rec["lineage"]["rollout_retry"] = {"first_status": res.simulation_status,
+                                           "first_taxonomy": res.failure_taxonomy}
+        try:
+            n = max(1, len(rec["branches"]))
+            retry_branches = run_persistence_slice(rec["handle"], seed=seed + 1, n_total=n,
+                                                   start=0, stop=n)
+            res_retry, _ = finalize_persistence_run(handle, retry_branches,
+                                                    intervention=intervention, t0=t0, seed=seed + 1)
+            rec["lineage"]["rollout_retry"]["retry_status"] = res_retry.simulation_status
+            rec["lineage"]["rollout_retry"]["recovered"] = not U._no_forecast(res_retry)
+            if not U._no_forecast(res_retry):
+                res = res_retry
+                rec["branches"] = list(retry_branches)
+        except Exception as e:  # noqa: BLE001 — the retry must never make things worse
+            rec["lineage"]["rollout_retry"]["retry_error"] = f"{type(e).__name__}: {e}"[:120]
     rec["manifest"]["phase8_persistence"].update(selected=True, executed=True, version="phase8-1.0",
                                                  reason=f"{len(rec['branches'])} particles "
                                                         f"(pilot prefix {rec['n_pilot']} reused)")
     U._record_operator_phases(cand.executable_plan, res, rec["manifest"])
     U._attach_supervision(res, cand.executable_plan, as_of, bundle, rec["manifest"], rec["lineage"])
+    # evidence-sufficiency surfacing + the no-silent-None guard, per structural model
+    U._apply_result_guards(res, posterior=rec.get("posterior"), prior_spec=rec.get("prior_spec"),
+                           evidence_sufficiency=rec.get("evidence_sufficiency"),
+                           lineage=rec["lineage"])
     res.provenance["structural_model_id"] = cand.model_id
     res.provenance["active_component_manifest"] = rec["manifest"]
     res.provenance["plan_lineage"] = rec["lineage"]
@@ -511,6 +548,41 @@ def _assemble_ensemble_result(U, question, ens, runs, model_results, promoted, b
         model_dists, underidentified=ens.structurally_underidentified, incomplete=incomplete)
     mixture = _equal_weight_mixture(model_dists)
     robust = _robust_range(model_dists)
+    # §NAP: per-model honest-resolution accounting (unresolved mass, bounds, missing mechanisms,
+    # numeric-causal-input manifests) rolls up into ONE ensemble resolution report
+    per_model_resolution = {m: dict(model_results[m].resolution_report or {})
+                            for m in model_results}
+    unresolved_by_model = {m: float((per_model_resolution.get(m) or {}).get("unresolved_share")
+                                    or 0.0) for m in model_dists}
+    all_unresolved = bool(model_results) and all(
+        model_results[m].simulation_status == "unresolved" for m in model_results)
+    any_unresolved_mass = any(v > 0.0 for v in unresolved_by_model.values())
+    # §NAP headline policy: when plausible structural models MATERIALLY disagree (or the ensemble
+    # is underidentified/incomplete), their conditionals are NOT averaged into one headline
+    # probability — per-model distributions + the robust range are the primary readout. The
+    # equal-weight mixture survives only as a labeled diagnostic.
+    material_disagreement = classification["classification"] in (
+        "materially_structurally_sensitive", "structurally_underidentified",
+        "ensemble_execution_incomplete") and len(model_dists) > 1
+    headline = {} if material_disagreement else dict(mixture)
+    from swm.world_model_v2.numeric_provenance import merge_manifests as _merge_manifests
+    ensemble_resolution = {
+        "per_model": per_model_resolution,
+        "unresolved_share_by_model": {m: round(v, 4) for m, v in unresolved_by_model.items()},
+        "robust_range": robust,
+        "aggregation": ("per_model_conditionals_no_headline_average" if material_disagreement
+                        else ("single_surviving_model" if len(model_dists) <= 1
+                              else "agreeing_models_mixture")),
+        "missing_mechanisms": [mm for m in sorted(per_model_resolution)
+                               for mm in (per_model_resolution[m].get("missing_mechanisms")
+                                          or [])][:20],
+        "frequency_semantics": "simulated_scenario_frequency",
+        "numeric_causal_inputs": _merge_manifests(
+            *[(per_model_resolution.get(m) or {}).get("numeric_causal_inputs") or {}
+              for m in sorted(per_model_resolution)]),
+        "note": "unresolved mass is preserved per model and never normalized away; disagreeing "
+                "structural models are reported as separate conditionals, never averaged into a "
+                "headline probability (§NAP)"}
     within = {m: dict(model_results[m].uncertainty_decomposition or {}) for m in model_dists}
     decomposition = decompose_uncertainty(model_dists, within_model=within)
     reversal = _reversal_conditions(ens, promoted, model_dists, mixture)
@@ -773,14 +845,21 @@ def _assemble_ensemble_result(U, question, ens, runs, model_results, promoted, b
         "shared_evidence_bundle_hash": ens.shared_evidence_bundle_hash,
         "shared_evidence_as_of": ens.shared_evidence_as_of,
         "aggregation_method": ("single_surviving_model" if len(promoted) == 1
-                               else "equal_weight_uncalibrated_structural_average"),
+                               else ("per_model_conditionals_no_headline_average"
+                                     if material_disagreement
+                                     else "agreeing_models_equal_weight_mixture")),
         "aggregation_note": ("one surviving model with a recorded convergence certificate"
                              if len(promoted) == 1 else
-                             "no defensible model weights exist; the mixture is an UNCALIBRATED "
-                             "equal-weight compatibility summary — per-model distributions and the "
-                             "robust range are the primary readouts"),
+                             ("§NAP: plausible structural models materially disagree — their "
+                              "conditionals are NOT averaged into a headline probability; "
+                              "per-model distributions and the robust range are the primary "
+                              "readouts (the equal-weight mixture survives only as a labeled "
+                              "diagnostic)" if material_disagreement else
+                              "models agree within the exposed spread thresholds; the mixture "
+                              "is served as the surviving shared conclusion, with the robust "
+                              "range alongside")),
         "model_distributions": model_dists,
-        "equal_weight_mixture": mixture,
+        "equal_weight_mixture_diagnostic": mixture,
         "robust_range": robust,
         "uncertainty_decomposition": decomposition,
         "structural_sensitivity": classification,
@@ -799,13 +878,20 @@ def _assemble_ensemble_result(U, question, ens, runs, model_results, promoted, b
         "answer_change_attribution": answer_change_attribution,
     }
 
-    # ---------- §8 status ladder (epistemic states, never engineering exceptions):
-    # under_modeled (an unresolved high-sensitivity component) dominates truncated (compute
-    # stopped branches whose mass could change the answer) dominates degradation.
-    if under_subtypes:
+    # ---------- §8/§NAP status ladder (epistemic states, never engineering exceptions):
+    # fully-unresolved dominates everything (there is no forecast to serve); under_modeled (an
+    # unresolved high-sensitivity component) dominates truncated (compute stopped branches whose
+    # mass could change the answer) dominates partially_resolved (explicit unresolved mass or
+    # material structural disagreement — conditionals served, no headline) dominates degradation.
+    if all_unresolved:
+        sim_status = "unresolved"
+        headline = {}
+    elif under_subtypes:
         sim_status = "under_modeled"
     elif trunc_weight > 0 and not answer_settled:
         sim_status = "truncated"
+    elif any_unresolved_mass or material_disagreement:
+        sim_status = "partially_resolved"
     elif degraded or incomplete or trunc_weight > 0:
         sim_status = "completed_with_degradation"
     else:
@@ -814,8 +900,10 @@ def _assemble_ensemble_result(U, question, ens, runs, model_results, promoted, b
         question=question,
         simulation_status=sim_status,
         support_grade=grade,
-        raw_distribution=mixture,
-        raw_probability=_binary_projection(mixture, promoted[0].executable_plan),
+        raw_distribution=headline,
+        raw_probability=(_binary_projection(headline, promoted[0].executable_plan)
+                         if headline else None),
+        resolution_report=ensemble_resolution,
         uncertainty_decomposition=decomposition,
         structural_disagreement={m: d for m, d in model_dists.items()},
         limitations=limitations[:10],

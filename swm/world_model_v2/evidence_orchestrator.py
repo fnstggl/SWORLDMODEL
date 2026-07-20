@@ -63,7 +63,10 @@ _STOP = frozenset((
     "has", "had", "at", "as", "with", "about", "if", "than", "then", "more", "less", "over", "under", "into",
     "out", "up", "down", "their", "his", "her", "our", "my", "your", "we", "they", "he", "she", "i", "you",
     "any", "some", "all", "no", "not", "so", "but", "there", "here", "when", "where", "who", "what", "which",
-    "how", "why", "whether", "still", "just", "now", "vote", "day", "week", "month", "quarter", "year"))
+    "how", "why", "whether", "still", "just", "now", "vote", "day", "week", "month", "quarter", "year",
+    # resolution-criterion boilerplate — never useful search terms, would pollute the decisive query
+    "resolve", "resolves", "resolved", "resolution", "yes", "criteria", "criterion", "iff", "announces",
+    "announce", "question", "according", "official", "officially", "date", "deadline"))
 
 
 def _keywords(text: str, k: int = 8) -> list:
@@ -79,12 +82,16 @@ def _keywords(text: str, k: int = 8) -> list:
     return out
 
 
-def _query_terms(req, question: str) -> str:
-    """Build a KEYWORD search query (never the full-sentence question). For the terminal outcome, keywords
-    from the question; for a component requirement, the cleaned component + need. Named entities from the
-    plan (entity_scope) are appended — those are the strongest search terms for named events."""
+def _query_terms(req, question: str, *, resolution_rule: str = "") -> str:
+    """Build a KEYWORD search query (never the full-sentence question). For the terminal outcome the query
+    targets the DECISIVE FACT — keywords from the question AND the resolution criterion (what actually
+    resolves YES), so it hunts the outcome-determining signal (e.g. 'BoJ rate hike expectations') rather
+    than only the question's nouns. For a component requirement, the cleaned component + need. Named
+    entities from the plan (entity_scope) are appended — the strongest terms for named events."""
     if req.affected_component == "terminal_outcome":
-        base = " ".join(_keywords(question, 8))
+        # question nouns + the distinctive terms of the resolution rule (deduped by _keywords' own seen-set
+        # when concatenated) — the resolution rule names the exact condition, which is the decisive query.
+        base = " ".join(_keywords(f"{question} {resolution_rule or req.claim_or_quantity}", 9))
     else:
         need = req.claim_or_quantity.replace("value/context of", " ").replace("_", " ").replace(".", " ")
         base = " ".join(_keywords(f"{req.affected_component.replace('_', ' ').replace('.', ' ')} {need}", 6))
@@ -96,8 +103,14 @@ def gather_evidence(question: str, *, as_of: str, requirements: list, llm=None,
                     user_documents: list | None = None, dataset_path: str = "",
                     prior_bundle_path: str = "", config: OrchestratorConfig | None = None,
                     plan_hash: str = "", seed: int = 0, store: RawContentStore | None = None,
-                    bundle_id: str = "") -> EvidenceBundleV2:
-    """Run the full evidence pipeline for a set of requirements and return a FROZEN EvidenceBundleV2."""
+                    bundle_id: str = "", strategy: str = "primary", resolution_rule: str = "") -> EvidenceBundleV2:
+    """Run the full evidence pipeline for a set of requirements and return a FROZEN EvidenceBundleV2.
+
+    strategy: "primary" (default) — one paired news query per top-VoI requirement + Wikipedia for entities.
+              "escalated" — the retry strategy for a thin/starved first pull: DOUBLE the lookback window,
+              force a Wikipedia revision on EVERY retrieved requirement (not just the entity ones), and add
+              an extra decisive-fact query built from the question + resolution criterion. Genuinely
+              DIFFERENT retrieval, not a re-roll of the same query."""
     cfg = config or OrchestratorConfig()
     store = store or RawContentStore()
     as_of_ts = parse_time(as_of)
@@ -108,31 +121,51 @@ def gather_evidence(question: str, *, as_of: str, requirements: list, llm=None,
     verifier = TemporalVerifier(verify_online=cfg.verify_online, margin_days=1.0)
 
     traces, documents, retrieval_plan, connector_failures = [], [], [], []
-    after, before = _window(as_of_ts, cfg.lookback_days)
+    escalated = strategy == "escalated"
+    lookback = cfg.lookback_days * (2 if escalated else 1)     # escalation widens the window
+    after, before = _window(as_of_ts, lookback)
+
+    def _run_query(terms, req_id, entity_for_wiki=None, force_wiki=False):
+        items, tr = gnews.search_historical(terms, after_date=after, before_date=before,
+                                            requirement_id=req_id, k=cfg.max_items_per_query)
+        traces.append(tr.as_dict())
+        if tr.connector_status not in ("ok", "zero_results"):
+            connector_failures.append({"connector": tr.connector_id, "status": tr.connector_status,
+                                       "error": tr.error, "requirement_id": req_id})
+        for it in items:
+            documents.append(_doc_from_item(it, "news"))
+        if cfg.use_wikipedia and (force_wiki or entity_for_wiki) and entity_for_wiki:
+            witems, wtr = wiki.fetch(str(entity_for_wiki), requirement_id=req_id, as_of_iso=as_of_iso)
+            traces.append(wtr.as_dict())
+            for it in witems:
+                documents.append(_doc_from_item(it, "wikipedia_revision"))
 
     # ---- retrieval per requirement (top-VoI requirements only, to bound retrieval + LLM cost) ----
     retrieved_reqs = sorted(requirements, key=lambda r: -r.expected_voi)[:cfg.max_requirements_retrieved]
     for req in retrieved_reqs:
-        terms = _query_terms(req, question)
-        retrieval_plan.append({"requirement_id": req.requirement_id, "terms": terms,
-                               "after": after, "before": before,
-                               "preferred": req.preferred_source_types})
-        # Google News RSS — paired after:/before: ALWAYS
-        items, tr = gnews.search_historical(terms, after_date=after, before_date=before,
-                                            requirement_id=req.requirement_id, k=cfg.max_items_per_query)
-        traces.append(tr.as_dict())
-        if tr.connector_status not in ("ok", "zero_results"):
-            connector_failures.append({"connector": tr.connector_id, "status": tr.connector_status,
-                                       "error": tr.error, "requirement_id": req.requirement_id})
-        for it in items:
-            documents.append(_doc_from_item(it, "news"))
-        # Wikipedia background for the top entity (server-side revision time)
-        if cfg.use_wikipedia and req.entity_scope:
-            witems, wtr = wiki.fetch(str(req.entity_scope[0]), requirement_id=req.requirement_id,
-                                     as_of_iso=as_of_iso)
-            traces.append(wtr.as_dict())
-            for it in witems:
-                documents.append(_doc_from_item(it, "wikipedia_revision"))
+        terms = _query_terms(req, question, resolution_rule=resolution_rule)
+        retrieval_plan.append({"requirement_id": req.requirement_id, "terms": terms, "strategy": strategy,
+                               "after": after, "before": before, "preferred": req.preferred_source_types})
+        # escalation forces a Wikipedia revision on EVERY requirement (an entity from its scope, or the
+        # first plan entity) — primary only fetches wiki when the requirement itself scopes an entity.
+        wiki_ent = (req.entity_scope[0] if req.entity_scope else None)
+        _run_query(terms, req.requirement_id, entity_for_wiki=wiki_ent, force_wiki=escalated)
+
+    # escalation adds ONE extra decisive-fact query straight from question + resolution criterion, so a
+    # thin first pull gets a genuinely reformulated shot at the outcome-determining signal — plus an
+    # OFFICIAL-SOURCE variant (announcement/statement/press-release terms) hunting the primary record
+    # a decisive fact would leave. Genuinely different retrieval, not re-rolls of the same query.
+    if escalated:
+        decisive = " ".join(_keywords(f"{question} {resolution_rule}", 10))
+        if decisive:
+            retrieval_plan.append({"requirement_id": "decisive_reformulation", "terms": decisive,
+                                   "after": after, "before": before, "strategy": "escalated"})
+            _run_query(decisive, "decisive_reformulation")
+            official = " ".join(_keywords(f"{question} {resolution_rule}", 6)
+                                + ["announcement", "statement", "press release"])
+            retrieval_plan.append({"requirement_id": "official_source_query", "terms": official,
+                                   "after": after, "before": before, "strategy": "escalated"})
+            _run_query(official, "official_source_query")
 
     # user documents (private by default via visibility hint)
     if user_documents:
@@ -236,6 +269,30 @@ def gather_evidence(question: str, *, as_of: str, requirements: list, llm=None,
 
 
 # --------------------------------------------------------------------------- helpers
+def gather_evidence_with_escalation(question: str, *, as_of: str, requirements: list, llm=None,
+                                    config=None, plan_hash: str = "", seed: int = 0,
+                                    resolution_rule: str = "", min_claims: int = 3) -> tuple:
+    """THE evidence-retry authority, shared by every runtime path (single-model ablation AND the
+    structural-ensemble shared bundle): one primary pull; if it lands under `min_claims` admissible
+    claims (a stochastic live query + LLM extraction — the EXP-104 failure where a run silently
+    forecast from priors), ESCALATE with a genuinely different strategy (2x window, forced Wikipedia
+    on every requirement, decisive-fact reformulation from the resolution criterion, official-source
+    query) rather than re-rolling the same query. Returns (bundle, retry_record|None) keeping
+    whichever bundle has more admissible claims."""
+    bundle = gather_evidence(question, as_of=as_of, requirements=requirements, llm=llm, config=config,
+                             plan_hash=plan_hash, seed=seed, resolution_rule=resolution_rule)
+    if len(bundle.included_claim_ids) >= int(min_claims):
+        return bundle, None
+    esc = gather_evidence(question, as_of=as_of, requirements=requirements, llm=llm, config=config,
+                          plan_hash=plan_hash, seed=seed + 1, strategy="escalated",
+                          resolution_rule=resolution_rule)
+    record = {"first_pull_claims": len(bundle.included_claim_ids), "strategy": "escalated",
+              "escalated_claims": len(esc.included_claim_ids)}
+    if len(esc.included_claim_ids) > len(bundle.included_claim_ids):
+        bundle = esc
+    return bundle, record
+
+
 def _doc_from_item(item, source_type: str) -> dict:
     import hashlib
     text = f"{item.title}. {item.description}".strip()

@@ -1,4 +1,7 @@
-"""Integrated population + multilayer-network simulation — Phase 9 (Parts G, L, T, U + no-abstention).
+"""QUARANTINED LEGACY ENTRY — Phase 9 is served by `unified_runtime.simulate_world`; do not call this
+module's entry directly for new work (see docs/WMV2_CANONICAL_PATH.md).
+
+Integrated population + multilayer-network simulation — Phase 9 (Parts G, L, T, U + no-abstention).
 
 The end-to-end path across all five planes:
 

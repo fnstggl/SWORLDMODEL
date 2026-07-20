@@ -202,17 +202,76 @@ def prepare_persistence_run(question, plan, *, llm=None, context=None, actor_his
         meta["support_grade_effect"] = grade_effect
 
     check_readout_binding(plan, base)
-    ops, _rej = operators_from_plan(plan, llm=llm)
+    # parity with run_from_plan (the persistence funnel must not silently lose capabilities): the
+    # evidence-updated posterior reaches the resolver events, experimental mechanisms EXECUTE labeled
+    # (run-everything principle), and competing structural hypotheses stratify the particles
+    # (index-keyed, so progressive pilot/extension slices see a stable assignment).
+    from swm.world_model_v2.materialize import _inject_posterior_rate, ensure_outcome_pathway
+    _inject_posterior_rate(plan)
+    ops, op_rejections = operators_from_plan(plan, llm=llm, allow_experimental=True)
+    # ROLLOUT-VIABILITY INVARIANT: rejections are never discarded silently, and the plan must retain an
+    # outcome-capable (event, operator) pair — repaired in place otherwise (the silent-empty-rollout fix).
+    outcome_pathway = ensure_outcome_pathway(plan, ops, op_rejections)
     import swm.world_model_v2.phase8_transitions as _p8t
     ops = ops + [_p8t.PersistenceUpdateOperator(), _p8t.MemoryConsolidationOperator()]
     init = InitialStateModel(base_world=base, latents=list(plan.latents))
     npart = n_particles or plan.compute_plan.get("n_particles", 30)
-    run = WorldModelV2Run(initial=init, queue_builder=queue_builder_from_plan(plan),
+    queue_builder = queue_builder_from_plan(plan)
+    hyps = list(getattr(plan, "structural_hypotheses", []) or [])
+    stratification = None
+    if len(hyps) > 1:
+        queue_builder, stratification = _stratified_queue_builder(plan, hyps, queue_builder, npart)
+    run = WorldModelV2Run(initial=init, queue_builder=queue_builder,
                           operators=ops, contract=plan.outcome_contract, n_particles=npart)
     return {"question": question, "plan": plan, "base": base, "ops": ops, "run": run,
             "n_particles": npart, "meta": meta, "family_manifests": family_manifests,
             "materialized": materialized, "prior_watermark": prior_watermark,
-            "context": context, "actor_history": actor_history}
+            "context": context, "actor_history": actor_history,
+            "outcome_pathway": outcome_pathway, "stratification": stratification}
+
+
+def _stratified_queue_builder(plan, hyps, inner_builder, total):
+    """HYPOTHESIS STRATIFICATION for the staged persistence funnel (parity with run_from_plan's
+    `_run_with_hypotheses`): competing structural hypotheses stratify the particles, each carrying a
+    lean the generic resolver reads, so competing structures produce genuinely different terminal
+    outcomes. Assignment is a pure function of the particle INDEX (same allocation law: Phase-3
+    structural-posterior weights when attached, else compiler priors; largest stratum absorbs the
+    remainder), so a pilot slice [0,p) plus an extension [p,n) sees exactly the assignment a direct
+    [0,n) roll would. Returns (queue_builder, stratification_meta)."""
+    struct_post = getattr(plan, "structural_posterior", None) or {}
+
+    def _weight(h):
+        hid = str(h.get("id", "H"))
+        if struct_post and hid in struct_post:
+            return max(0.0, float(struct_post[hid]))
+        return max(0.0, float(h.get("prior", 1.0) or 1.0))
+
+    z = sum(_weight(h) for h in hyps) or 1.0
+    alloc, assigned = [], 0
+    for i, h in enumerate(hyps):
+        k = max(1, round(total * _weight(h) / z)) if i < len(hyps) - 1 else max(0, total - assigned)
+        alloc.append(max(0, k))
+        assigned += alloc[-1]
+    default_lean = (plan.provenance or {}).get("outcome_lean", "neutral")
+    by_index = []
+    for h, k in zip(hyps, alloc):
+        lean = str(h.get("lean") or h.get("outcome_lean") or default_lean)
+        by_index.extend([(str(h.get("id", "H")), lean)] * k)
+
+    def builder(world):
+        q = inner_builder(world)
+        idx = int(getattr(world, "particle_index", 0) or 0)
+        hid, lean = by_index[idx % len(by_index)] if by_index else ("H", default_lean)
+        world.uncertainty_meta.setdefault("model", {})["hypothesis"] = hid
+        world.uncertainty_meta["hypothesis_lean"] = lean       # picked up by the resolve_outcome event
+        for ev in q.events:
+            if ev.etype == "resolve_outcome":
+                ev.payload["lean"] = lean
+        return q
+
+    meta = {"strata": {str(h.get("id", "H")): k for h, k in zip(hyps, alloc)},
+            "source": "phase3_evidence_posterior" if struct_post else "compiler_prior"}
+    return builder, meta
 
 
 def run_persistence_slice(handle: dict, *, seed: int = 0, n_total: int = None, start: int = 0,
@@ -236,6 +295,26 @@ def finalize_persistence_run(handle: dict, branches: list, *, intervention="", t
     materialized, prior_watermark = handle["materialized"], handle["prior_watermark"]
     result = handle["run"].project(branches)
     result["omissions"] = list(getattr(base, "omissions", []))
+    if handle.get("stratification"):
+        # hypothesis-stratified run: report realized structural mass (parity with
+        # materialize._run_with_hypotheses — same provenance keys, computed over ALL branches)
+        struct_post = getattr(plan, "structural_posterior", None) or {}
+        realized = {}
+        for b in branches:
+            hid = b.world.uncertainty_meta.get("model", {}).get("hypothesis", "H")
+            realized[hid] = realized.get(hid, 0.0) + 1.0 / max(1, len(branches))
+        result["structural_realized_mass"] = {k: round(v, 4) for k, v in realized.items()}
+        if struct_post:
+            result["structural_posterior"] = {k: round(float(v), 4) for k, v in struct_post.items()}
+            result["structural_source"] = "phase3_evidence_posterior"
+            result["structural_note"] = ("competing structures weighted by the LIKELIHOOD-UPDATED "
+                                         "structural posterior (Phase 3); strata allocated by "
+                                         "posterior mass")
+        else:
+            result["structural_posterior"] = result["structural_realized_mass"]
+            result["structural_source"] = "compiler_prior"
+            result["structural_note"] = ("priors materialized as competing particles; NOT "
+                                         "evidence-reweighted (no Phase-3 posterior attached)")
     attach_actor_decision_distributions(handle["ops"], result)
     # causal-boundary honesty (#119): a plan whose scenario schema / mechanism model failed to
     # compile is structurally under-modeled — surfaced on the result, never a silent fixed-v1
@@ -249,9 +328,14 @@ def finalize_persistence_run(handle: dict, branches: list, *, intervention="", t
                 _rep["degraded"] = True
     res = result_from_run(question, plan, result, branches, intervention=intervention, t0=t0,
                           calibrator=calibrator, cal_key=cal_key)
+    outcome_pathway = handle.get("outcome_pathway") or {}
     res.provenance = {**(res.provenance or {}),
                       "actor_policy_report": result.get("actor_policy_report", {}),
-                      "consequence_report": result.get("consequence_report", {})}
+                      "consequence_report": result.get("consequence_report", {}),
+                      "outcome_pathway": outcome_pathway}
+    if outcome_pathway.get("repaired"):
+        res.limitations = (list(res.limitations or [])
+                           + [f"outcome-pathway repaired before rollout: {outcome_pathway['repairs']}"])
     if result.get("actor_decision_distributions"):
         res.provenance = {**(res.provenance or {}),
                           "actor_decision_distributions": result["actor_decision_distributions"],
