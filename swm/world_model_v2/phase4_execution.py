@@ -662,6 +662,16 @@ class ProductionActorPolicyOperator:
         decision = dict(event.payload or {})
         if "candidate_actions" not in decision and "actions" in decision:
             decision["candidate_actions"] = decision["actions"]
+        lean = getattr(self.runtime, "lean_controller", None)
+        if lean is not None:
+            # LEAN causal-frontier gate (structural observability only; fails OPEN): an actor who
+            # never observed the event is not invoked. Dynamic promotion is untouched — the gate
+            # runs only on this already-scheduled invocation, it never de-lists actors.
+            invoke, gate_reason = lean.gate_invocation(world, event, actor_id)
+            if not invoke:
+                return StateDelta(at=world.clock.now, event_type=event.etype, operator=self.name,
+                                  reason_codes=[f"lean_frontier_skip:{gate_reason}",
+                                                f"actor:{actor_id}"]), ValidationResult(ok=True)
         engine = getattr(self.runtime, "engine", None)
         if engine is not None and hasattr(engine, "budget_left") and not engine.budget_left():
             # LLM-call SAFETY budget exhausted (invariant 38): the decision cannot be
