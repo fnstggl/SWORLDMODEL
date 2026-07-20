@@ -71,6 +71,22 @@ class PersistenceUpdateOperator(TransitionOperator):
         a = proposal.action
         payload, parts = a["payload"], a["participants"]
         actor_id = parts[0]
+        # ROBUSTNESS (EXP-108 Wale crash): compiled worlds can carry mixed entity-naming variants
+        # ('Jeremiah Manele' vs 'Jeremiah_Manele' — the compiler itself emitted both forms for
+        # other entities), and an event participant may use the variant the registry lacks. A
+        # persistence update for an entity this world does not hold cannot be applied — that is
+        # a RECORDED no-op for this operator, never a process-killing KeyError mid-rollout. The
+        # normalized-name match rescues the pure underscore/space variant; anything else skips.
+        if actor_id not in (world.entities or {}):
+            norm = str(actor_id).replace("_", " ").strip().lower()
+            match = next((eid for eid in (world.entities or {})
+                          if str(eid).replace("_", " ").strip().lower() == norm), None)
+            if match is None:
+                d = StateDelta(at=world.clock.now, event_type="persistence_update",
+                               operator=self.name,
+                               reason_codes=["skipped_unknown_entity", f"actor:{actor_id}"])
+                return d
+            actor_id = match
         actor = world.entity(actor_id)
         at = world.clock.now
         d = StateDelta(at=at, event_type="persistence_update", operator=self.name)
