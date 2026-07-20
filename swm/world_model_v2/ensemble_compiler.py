@@ -692,13 +692,17 @@ def _structural_directive(cand: StructuralModelCandidate) -> str:
 def _executability_check(plan, *, llm=None) -> tuple:
     """Deterministic executability critic: the retained model must materialize and bind through the
     canonical semantic runtime (world build + readout binding + operator instantiation). No LLM opinion
-    substitutes for this check."""
+    substitutes for this check — the backend is threaded ONLY so operator construction can verify
+    against the same configuration the rollout will use: since the §19 no-numeric-substitution
+    contract (PR #124/#127), instantiating the qualitative actor policy without a backend raises
+    loudly, so probing with llm=None wrongly rejected EVERY candidate on any live run (the EXP-107
+    all-candidates-nonexecutable failure). Construction makes no LLM calls."""
     try:
         from swm.world_model_v2.materialize import (build_world, check_readout_binding,
                                                     operators_from_plan)
         base = build_world(plan)
         check_readout_binding(plan, base)
-        ops, _rej = operators_from_plan(plan, llm=None)
+        ops, _rej = operators_from_plan(plan, llm=llm)
         if not ops:
             return False, "no executable operator instantiated"
         return True, ""
