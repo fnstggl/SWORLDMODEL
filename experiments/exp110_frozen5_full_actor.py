@@ -126,6 +126,19 @@ def _one(label, qid, rows, llm_factory):
             "A6_n_models": len(ens.get("model_distributions") or {}),
             "A6_aggregation": ens.get("aggregation_method"),
             "A6_structural_sensitivity": (ens.get("structural_sensitivity") or {}).get("classification"),
+            # WSim: the three transparent numbers + the surviving-world audit (Step 1 + Step 6/7)
+            "W_outside_view": (ens.get("simulation_forecast_report") or {}).get("outside_view_forecast"),
+            "W_simulation_derived": (ens.get("simulation_forecast_report") or {}).get("simulation_derived_forecast"),
+            "W_final_combined": (ens.get("simulation_forecast_report") or {}).get("final_combined_forecast"),
+            "W_final_source": ((ens.get("simulation_forecast_report") or {}).get("final_selected") or {}).get("source"),
+            "W_final_reason": ((ens.get("simulation_forecast_report") or {}).get("final_selected") or {}).get("reason"),
+            "W_confidence_alpha": ((ens.get("simulation_forecast_report") or {}).get("simulation_confidence") or {}).get("alpha"),
+            "W_n_worlds_valid": (ens.get("simulation_forecast_report") or {}).get("n_worlds_valid"),
+            "W_world_weights": ((ens.get("simulation_forecast_report") or {}).get("weighted_simulation_forecast") or {}).get("world_weights"),
+            "W_spread": ((ens.get("simulation_forecast_report") or {}).get("weighted_simulation_forecast") or {}).get("spread"),
+            "W_rejected_worlds": (ens.get("simulation_forecast_report") or {}).get("rejected_worlds"),
+            "W_merge_records": (ens.get("simulation_forecast_report") or {}).get("merge_records"),
+            "W_interpretation_hypotheses": d.get("interpretation_hypotheses"),
             "p": p, "raw_distribution": d.get("raw_distribution"),
             "A8_wall_s": wall, "A8_timing_wrapper": llm.profile(),
             "A8_ledger_total_calls": cost.get("total_llm_calls"),
@@ -160,12 +173,15 @@ def run(only_index=None):
     CKPT.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps({"n": len(results), "fidelity": "full_llm_actors_single_run",
                                "results": results}, indent=1, default=str))
-    print("\n=== EXP-110 frozen-5 full-actor audit ===")
+    print("\n=== EXP-110 frozen-5 full-actor audit (WSim) ===")
+    print("  label     | outside | sim    | combined | source            | n_worlds | SOTA | outcome")
     for r in results:
-        print(f"  {r['label']:9s} p={r.get('p')} status={r.get('A4_status')} "
-              f"has_forecast={r.get('A4_has_forecast')} SOTA={r.get('A7_sota')} outcome={r.get('A7_outcome')} "
-              f"| fallback={'Y' if r.get('A5_grounded_outside_view_fallback') else 'N'} "
-              f"calls={r.get('A8_ledger_total_calls')} wall={r.get('A8_wall_s')}s")
+        print(f"  {r['label']:9s} | {str(r.get('W_outside_view')):7s} | "
+              f"{str(r.get('W_simulation_derived')):6s} | {str(r.get('W_final_combined')):8s} | "
+              f"{str(r.get('W_final_source')):17s} | {str(r.get('W_n_worlds_valid')):8s} | "
+              f"{r.get('A7_sota')} | {r.get('A7_outcome')}")
+    genuine = [r for r in results if r.get('W_final_source') == 'weighted_simulation']
+    print(f"  → {len(genuine)}/{len(results)} final numbers came from ACTOR SIMULATION (weighted_simulation)")
     print(f"  wrote {OUT}")
     return results
 
