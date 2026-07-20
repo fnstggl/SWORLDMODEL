@@ -60,6 +60,44 @@ def evidence_sufficiency_signal(bundle, posterior, *, as_of, evidence_dropped=Fa
             "starved": bool(as_of) and n_eff == 0 and not evidence_dropped}
 
 
+def _used_probability(res):
+    """The probability a scorer reads from a result: calibrated if present, else the raw projection."""
+    p = getattr(res, "calibrated_probability", None)
+    return p if p is not None else getattr(res, "raw_probability", None)
+
+
+def simulate_world_stable(question: str, *, n_runs: int = 3, **kwargs):
+    """MEAN-OF-K (opt-in): run simulate_world K times with varied seeds and aggregate to a stable forecast.
+    A single run's temperature-0.2 compile draws a different world each time and the probability can swing by
+    ~0.6 (measured), so a lone number is noise-dominated — the BTF-1 finding and FutureSearch's #1 disclosed
+    lever (mean of multiple runs). The default single-run `simulate_world` is unchanged; callers opt in here.
+
+    Returns the run whose probability is closest to the mean, with its forecast REPLACED by the K-run mean and
+    `provenance.mean_of_k = {n_runs, per_run, mean, sd, spread}` attached. Runs that produced no forecast are
+    excluded from the mean (but counted). Cost ≈ K × a single run."""
+    k = max(1, int(n_runs))
+    base_seed = kwargs.pop("seed", 0)
+    runs = [simulate_world(question, seed=base_seed + i, **kwargs) for i in range(k)]
+    scored = [(r, _used_probability(r)) for r in runs]
+    valid = [(r, p) for r, p in scored if p is not None]
+    if not valid:
+        return runs[0]
+    ps = [p for _, p in valid]
+    mean_p = sum(ps) / len(ps)
+    sd = (sum((p - mean_p) ** 2 for p in ps) / len(ps)) ** 0.5
+    rep = min(valid, key=lambda rp: abs(rp[1] - mean_p))[0]     # representative = closest-to-mean run
+    rep.raw_probability = round(mean_p, 4)
+    rep.calibrated_probability = round(mean_p, 4)               # the scored value IS the K-run mean
+    rep.provenance = {**(rep.provenance or {}),
+                      "mean_of_k": {"n_runs": k, "n_valid": len(valid),
+                                    "per_run": [round(p, 4) for p in ps], "mean": round(mean_p, 4),
+                                    "sd": round(sd, 4), "spread": round(max(ps) - min(ps), 4)}}
+    rep.limitations = (list(rep.limitations or [])
+                       + [f"mean-of-{k}: forecast is the mean of {len(valid)} runs "
+                          f"(per-run {[round(p, 3) for p in ps]}, sd {sd:.3f})"])
+    return rep
+
+
 def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention: str = "",
                    user_context=None, prior_checkpoint=None, compute_budget=None, seed: int = 0,
                    llm=None, execution_policy: dict = None, trace_level: str = "standard",
@@ -119,18 +157,23 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
                     reason=f"injected_replay_bundle: {len(bundle.included_claim_ids)} as-of claims")
             else:
                 reqs = requirements_from_plan(plan, as_of_iso=_iso(as_of), question=question)
+                rrule = str(getattr(plan.outcome_contract, "resolution_rule", "") or "")
                 bundle = gather_evidence(question, as_of=as_of, requirements=reqs, llm=llm, config=cfg,
-                                         plan_hash=plan.plan_hash(), seed=seed)
-                if not bundle.included_claim_ids:
-                    # Empty pull. Retrieval is a live query + LLM claim-extraction, both stochastic — an
-                    # empty bundle here is the EXP-104 failure (the run silently forecast from priors). Retry
-                    # ONCE with a fresh seed before letting the simulation run blind.
-                    retry = gather_evidence(question, as_of=as_of, requirements=reqs, llm=llm, config=cfg,
-                                            plan_hash=plan.plan_hash(), seed=seed + 1)
-                    lineage["evidence_retry"] = {"first_pull_empty": True,
-                                                 "retry_included_claims": len(retry.included_claim_ids)}
-                    if retry.included_claim_ids:
-                        bundle = retry
+                                         plan_hash=plan.plan_hash(), seed=seed, resolution_rule=rrule)
+                if len(bundle.included_claim_ids) < 3:
+                    # Thin/empty first pull (a stochastic live query + LLM extraction — the EXP-104 failure
+                    # where the run silently forecast from priors). ESCALATE, not re-roll: a genuinely
+                    # different retrieval strategy (2x window, forced Wikipedia on every requirement, a
+                    # decisive-fact reformulation from the resolution criterion). Keep whichever bundle has
+                    # more admissible claims.
+                    esc = gather_evidence(question, as_of=as_of, requirements=reqs, llm=llm, config=cfg,
+                                          plan_hash=plan.plan_hash(), seed=seed + 1,
+                                          strategy="escalated", resolution_rule=rrule)
+                    lineage["evidence_retry"] = {"first_pull_claims": len(bundle.included_claim_ids),
+                                                 "strategy": "escalated",
+                                                 "escalated_claims": len(esc.included_claim_ids)}
+                    if len(esc.included_claim_ids) > len(bundle.included_claim_ids):
+                        bundle = esc
                 manifest["phase2_evidence"].update(selected=True, executed=True, version="phase2-1.0",
                                                    reason=f"{len(bundle.included_claim_ids)} as-of claims")
             revised, diff = recompile_with_evidence(plan, bundle, llm=llm, horizon=horizon)
