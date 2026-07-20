@@ -263,7 +263,7 @@ def simulate_structural_ensemble(question: str, *, as_of: str, horizon: str = ""
     # ---------- honest aggregation + sensitivity + reversal + structural value-of-information ----------
     ens.cost_manifest = ledger.as_dict()
     return _assemble_ensemble_result(U, question, ens, runs, model_results, promoted, bundle,
-                                     ledger, t0)
+                                     ledger, t0, evidence_text=evidence_text, llm=llm)
 
 
 # ------------------------------------------------------------------ per-model pipeline
@@ -534,7 +534,8 @@ def _finalize_model(U, question, cand, rec, bundle, as_of, intervention, seed, t
 
 
 # ------------------------------------------------------------------ aggregation + result assembly
-def _assemble_ensemble_result(U, question, ens, runs, model_results, promoted, bundle, ledger, t0):
+def _assemble_ensemble_result(U, question, ens, runs, model_results, promoted, bundle, ledger, t0,
+                              *, evidence_text="", llm=None):
     model_dists = {c.model_id: dict(model_results[c.model_id].raw_distribution or {})
                    for c in promoted}
     # HONESTY INVARIANT: any model that entered execution and died (pilot/conditioning failure) makes
@@ -564,7 +565,76 @@ def _assemble_ensemble_result(U, question, ens, runs, model_results, promoted, b
     material_disagreement = classification["classification"] in (
         "materially_structurally_sensitive", "structurally_underidentified",
         "ensemble_execution_incomplete") and len(model_dists) > 1
-    headline = {} if material_disagreement else dict(mixture)
+    # ---- GROUNDED-WEIGHTED SIMULATION FORECAST (WSim) ----------------------------------------------
+    # The rich forecast is a likelihood-WEIGHTED average of the SIMULATED worlds — never an equal-weight
+    # blur, and never silently discarded when worlds disagree. Curate (drop malformed/unresolved/fallback-
+    # derived worlds) → merge duplicate causal stories → weight each surviving world by grounded likelihood
+    # (objective model quality × a CITED LLM plausibility; uncited confidence is capped) → average the
+    # simulated outcomes. Disagreement is expressed as SPREAD + lowered support, not as a refusal to answer.
+    from swm.world_model_v2 import model_weighting as MW
+    _yes_opts = [str(o) for o in
+                 (getattr(promoted[0].executable_plan.outcome_contract, "options", None) or [])][:1]
+    _world_infos = [MW.WorldInfo(
+        model_id=c.model_id, dist=model_dists.get(c.model_id, {}),
+        support_grade=model_results[c.model_id].support_grade,
+        unresolved_share=unresolved_by_model.get(c.model_id, 0.0),
+        status=model_results[c.model_id].simulation_status,
+        posterior_consumed=bool(runs.get(c.model_id, {}).get("posterior_consumed")),
+        fallback_derived=bool((model_results[c.model_id].provenance or {})
+                              .get("execution_degraded_fallback", {}).get("used")),
+        n_particles=len(runs.get(c.model_id, {}).get("branches") or []) or getattr(c, "final_particles", 0),
+        thesis=getattr(c, "causal_thesis", "") or "",
+        actors=list(getattr(c, "decisive_actors", None) or []),
+        institutions=list(getattr(c, "decisive_institutions", None) or []),
+        mechanisms=list(getattr(c, "decisive_mechanisms", None) or []),
+        critic_findings=list(getattr(c, "critic_findings", None) or [])) for c in promoted]
+    _valid_worlds, _rejected_worlds = MW.curate_worlds(_world_infos)
+    _merged_worlds, _merge_records = MW.merge_duplicates(_valid_worlds)
+    _world_weights = MW.grounded_world_weights(question, _merged_worlds, evidence_text, llm)
+    _weighted_dist = MW.weighted_distribution(_world_weights)
+    _weighted_p = MW.p_yes(_weighted_dist, yes_keys=_yes_opts) if _weighted_dist else None
+    sim_forecast_valid = bool(_world_weights) and _weighted_p is not None
+    # the SIMULATION forecast is the headline whenever valid worlds ran (even if they disagree); only when
+    # NO valid simulated world exists does the headline stay empty and the grounded outside-view take over.
+    headline = dict(_weighted_dist) if sim_forecast_valid else {}
+    _grounded_baseline = _ensemble_grounded_forecast(runs, promoted)   # reported baseline (+ emergency use)
+    _outside_p = (_grounded_baseline or {}).get("mean")
+    # THREE TRANSPARENT NUMBERS: outside-view baseline, simulation-derived, and a final COMBINED number that
+    # shrinks the simulation toward the baseline ONLY in proportion to how weak the simulation is (1−alpha) —
+    # regularization by the simulation's own support, never a reward for agreeing with the baseline.
+    _sim_conf = MW.simulation_confidence(_world_weights, _merged_worlds)
+    _final_combined = MW.combined_forecast(_weighted_p, _outside_p, _sim_conf["alpha"]) \
+        if sim_forecast_valid else _outside_p
+    _final_sel = MW.final_forecast_selection(len(_world_weights), _weighted_p, _outside_p,
+                                             combined=_final_combined)
+    if _final_sel["source"] == "weighted_simulation":
+        _final_sel["reason"] = (f"{len(_world_weights)} valid simulated world(s) produced a grounded "
+                                f"weighted forecast (headline={_weighted_p}); outside-view baseline "
+                                f"{_outside_p} reported; combined={_final_combined} "
+                                f"(alpha={_sim_conf['alpha']} shrink toward baseline)")
+    else:
+        _final_sel["reason"] = ("no valid simulated world (all malformed / entirely unresolved / "
+                                "fallback-derived); grounded outside-view served as emergency fallback")
+    simulation_forecast_report = {
+        # the three numbers, up front and comparable
+        "outside_view_forecast": _outside_p,
+        "simulation_derived_forecast": _weighted_p,
+        "final_combined_forecast": _final_combined,
+        "final_selected": _final_sel,
+        "simulation_confidence": _sim_conf,
+        "weighted_simulation_forecast": {
+            "p_yes": _weighted_p, "distribution": _weighted_dist, "n_worlds": len(_world_weights),
+            "spread": MW.weighted_spread(_world_weights),
+            "world_weights": [{"model_id": ww.model_id, "weight": ww.weight,
+                               "p_yes": MW.p_yes(ww.dist, yes_keys=_yes_opts),
+                               "plausibility": ww.plausibility, "objective_quality": ww.objective_quality,
+                               "rationale": ww.rationale, "citations": ww.citations,
+                               "unsupported_assumptions": ww.unsupported_assumptions,
+                               "merged_from": ww.merged_from} for ww in _world_weights]},
+        "grounded_fallback_baseline": _grounded_baseline,
+        "rejected_worlds": [{"model_id": m, "reason": r} for m, r in _rejected_worlds],
+        "merge_records": _merge_records,
+        "n_worlds_entered": len(_world_infos), "n_worlds_valid": len(_world_weights)}
     from swm.world_model_v2.numeric_provenance import merge_manifests as _merge_manifests
     ensemble_resolution = {
         "per_model": per_model_resolution,
@@ -844,20 +914,21 @@ def _assemble_ensemble_result(U, question, ens, runs, model_results, promoted, b
         "simulation_manifest": ens.simulation_manifest,
         "shared_evidence_bundle_hash": ens.shared_evidence_bundle_hash,
         "shared_evidence_as_of": ens.shared_evidence_as_of,
-        "aggregation_method": ("single_surviving_model" if len(promoted) == 1
-                               else ("per_model_conditionals_no_headline_average"
-                                     if material_disagreement
-                                     else "agreeing_models_equal_weight_mixture")),
-        "aggregation_note": ("one surviving model with a recorded convergence certificate"
-                             if len(promoted) == 1 else
-                             ("§NAP: plausible structural models materially disagree — their "
-                              "conditionals are NOT averaged into a headline probability; "
-                              "per-model distributions and the robust range are the primary "
-                              "readouts (the equal-weight mixture survives only as a labeled "
-                              "diagnostic)" if material_disagreement else
-                              "models agree within the exposed spread thresholds; the mixture "
-                              "is served as the surviving shared conclusion, with the robust "
-                              "range alongside")),
+        "aggregation_method": ("grounded_weighted_simulation" if sim_forecast_valid and material_disagreement
+                               else ("single_surviving_model" if len(promoted) == 1
+                                     else ("per_model_conditionals_no_headline_average"
+                                           if material_disagreement
+                                           else "agreeing_models_equal_weight_mixture"))),
+        "aggregation_note": (
+            "WSim: plausible structural models disagree, so the headline is the GROUNDED-WEIGHTED average "
+            "of the simulated worlds (plausibility × outcome-in-world); the equal-weight mixture and robust "
+            "range remain labeled diagnostics — see simulation_forecast_report for weights and citations"
+            if sim_forecast_valid and material_disagreement else
+            ("one surviving model with a recorded convergence certificate" if len(promoted) == 1 else
+             ("models agree within the exposed spread thresholds; the mixture is served as the surviving "
+              "shared conclusion, with the robust range alongside" if not material_disagreement else
+              "plausible structural models materially disagree and no valid simulated world survived "
+              "curation — per-model conditionals + robust range are primary; no headline manufactured"))),
         "model_distributions": model_dists,
         "equal_weight_mixture_diagnostic": mixture,
         "robust_range": robust,
@@ -876,6 +947,9 @@ def _assemble_ensemble_result(U, question, ens, runs, model_results, promoted, b
                               if m.get("pilot_reused_as_prefix"))},
         "human_summary": _human_summary(question, mixture, classification, reversal, voi, promoted),
         "answer_change_attribution": answer_change_attribution,
+        # WSim: the grounded-weighted simulation forecast, the outside-view baseline, the final selected
+        # forecast + exact reason, and the curation/merge/rejection audit. This is the primary rich readout.
+        "simulation_forecast_report": simulation_forecast_report,
     }
 
     # ---------- §8/§NAP status ladder (epistemic states, never engineering exceptions):

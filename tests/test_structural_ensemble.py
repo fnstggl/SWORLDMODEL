@@ -157,16 +157,19 @@ def run_default(llm=None, seed=3, policy=None, **kw):
 # ------------------------------------------------------------------ 24.1 / 24.2 default route
 def test_default_route_is_ensemble_without_any_enable_flag():
     res = run_default()
-    # §NAP: materially disagreeing models now serve per-model conditionals (partially_resolved)
-    # instead of an averaged headline; agreeing models complete normally
+    # WSim: materially disagreeing models now produce a GROUNDED-WEIGHTED simulation headline (plausibility
+    # × outcome-in-world) rather than refusing to answer; the disagreement rides as spread + lowered support.
     assert res.simulation_status in ("completed", "completed_with_degradation",
-                                     "partially_resolved")
+                                     "partially_resolved", "under_modeled")
     assert res.structural_ensemble is not None
     assert res.provenance["structural_mode"] == "ensemble"
     assert res.structural_ensemble["structural_mode"] == "ensemble"
-    if res.simulation_status == "partially_resolved":
-        assert res.resolution_report["per_model"] is not None
-        assert not res.raw_distribution                # no averaged headline under disagreement
+    rep = res.structural_ensemble.get("simulation_forecast_report") or {}
+    if rep.get("n_worlds_valid", 0) >= 1:
+        # valid simulated worlds ran → the weighted simulation is the headline, never a silent fallback
+        assert res.raw_distribution                              # weighted headline present
+        assert rep["final_selected"]["source"] == "weighted_simulation"
+        assert rep["simulation_derived_forecast"] is not None
 
 
 def test_facade_v2_route_carries_structural_ensemble():
@@ -535,22 +538,33 @@ def test_llm_cannot_mint_model_probabilities():
         {"support_class": "plausible"}
 
 
-def test_unknown_weights_never_average_into_a_headline_probability():
-    """§NAP: with no defensible model weights, materially disagreeing conditionals are NOT
-    averaged into a headline — per-model distributions + the robust range are primary; the
-    equal-weight mixture survives only as a labeled diagnostic."""
+def test_disagreeing_models_produce_grounded_weighted_headline():
+    """WSim (replaces the old §NAP no-headline rule): materially disagreeing SIMULATED worlds are combined
+    into a GROUNDED-WEIGHTED headline (plausibility × outcome-in-world), not silently discarded for the
+    outside-view. The equal-weight mixture + robust range survive only as labeled diagnostics; the world
+    weights carry their grounding (objective quality + rationale/citations), never a bare equal split."""
     res = run_default()
     se = res.structural_ensemble
-    assert se["aggregation_method"] in ("per_model_conditionals_no_headline_average",
-                                        "agreeing_models_equal_weight_mixture",
-                                        "single_surviving_model")
-    assert se["equal_weight_mixture_diagnostic"] and se["robust_range"]
+    assert se["aggregation_method"] in ("grounded_weighted_simulation",
+                                        "per_model_conditionals_no_headline_average",
+                                        "agreeing_models_equal_weight_mixture", "single_surviving_model")
+    assert se["equal_weight_mixture_diagnostic"] and se["robust_range"]        # diagnostics preserved
     for opt, rng in se["robust_range"].items():
         assert rng["min"] <= se["equal_weight_mixture_diagnostic"][opt] <= rng["max"]
-    if se["aggregation_method"] == "per_model_conditionals_no_headline_average":
-        assert not res.raw_distribution
-        assert "§NAP" in se["aggregation_note"]
-        assert res.resolution_report["robust_range"] == se["robust_range"]
+    rep = se["simulation_forecast_report"]
+    # the three transparent numbers always exist as keys
+    assert "outside_view_forecast" in rep and "simulation_derived_forecast" in rep \
+        and "final_combined_forecast" in rep
+    if rep["n_worlds_valid"] >= 1:
+        # valid simulated worlds ran → the weighted simulation is the headline, never a silent fallback
+        assert res.raw_distribution
+        assert rep["final_selected"]["source"] == "weighted_simulation"
+        ww = rep["weighted_simulation_forecast"]["world_weights"]
+        assert abs(sum(w["weight"] for w in ww) - 1.0) < 1e-4                 # normalized
+        assert all("objective_quality" in w and "citations" in w for w in ww)   # grounded, not bare
+    else:
+        # no valid simulated world survived curation → the outside-view is the honest emergency fallback
+        assert rep["final_selected"]["source"] == "grounded_fallback"
     dec = se["uncertainty_decomposition"]
     assert "between_model" in dec and "within_model" in dec
 
