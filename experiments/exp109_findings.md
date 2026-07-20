@@ -148,3 +148,63 @@ base-rate and well behind SOTA (0.174): the prior UNDER-predicts specific advanc
 Wale 0.14→YES). That residual is exactly what evidence + actor simulation must close — the outside view is
 the floor, not the ceiling. Whether the rich full-actor pass beats this floor is the open question
 (EXP-110), and the malformed run does not settle it.
+
+## 5. Frozen-5 FULL-ACTOR pass (EXP-110, Step 5) — the decisive finding
+
+All five ran through `simulate_world` with full LLM actors, single run, per-question checkpoint.
+**Every question returned a number** (`has_forecast=True`) — the p=None class of failure is gone.
+
+| q | p (full-actor) | outcome | SOTA | wall | what actually happened |
+|---|---|---|---|---|---|
+| BoJ | 0.183 | YES | 0.74 | 492 s | **compiler collapsed** → floor served grounded prior |
+| visionOS | 0.844 | YES | 0.91 | 641 s | **compiler collapsed** → floor served grounded prior |
+| Wale | 0.140 | YES | 0.23 | 347 s | **compiler collapsed** → floor served grounded prior |
+| Hormuz | 0.000 | NO | 0.04 | 728 s | **RAN** — 1 model, evidence consumed, correct |
+| Banxico | 0.817 | YES | 0.61 | 472 s | **compiler collapsed** → floor served grounded prior |
+
+Full-actor Brier **0.293** ≈ lean **0.297** (acc 0.60). They match **because 4 of 5 forecasts ARE the
+grounded prior** — served by the floor, not by simulation.
+
+### The decisive finding: the rich pipeline barely ran
+- **4 of 5 questions collapsed at ensemble COMPILATION** (`execution_failed` /
+  `invalid_execution_plan`, `n_models=0`, **empty operator census `{}`**). 30–39 backend calls were spent
+  entirely in generation + critics + bounded repair, producing **zero executable models**, then the floor
+  served the grounded outside-view prior. This is NOT actor simulation — no actor acted, no institution
+  processed, no state evolved.
+- **Only Hormuz actually ran the rich world:** `n_models=1`, `single_surviving_model`,
+  `structurally_stable`, **`posterior_consumed=True`** (evidence reached the posterior), operator census
+  `persistence_update:53, evidence_observation:424, scheduled_fact:159, nonlinear_state_step:1007,
+  first_passage…`. It produced **0.00** against outcome **NO** — correct, and sharper than the lean 0.14.
+
+### Where the calls/time actually go (answers the 28-min question)
+The ONE run that survived compilation (Hormuz) has the ledger breakdown:
+`structural_generation:5, structural_critic:7, structural_compile:5, structural_repair:4,
+model_conditioning:23, actor_rollout:5` = 49 metered (62 true backend) calls, ~12 min. **`model_conditioning`
+dominates.** The original 189-call/28-min Knesset run was simply the multi-model version of this
+(several surviving models × conditioning + rollout). **There is no accidental loop and no repeated
+validation** — 189 calls is the ensemble's normal cost when several models survive; the collapse runs are
+*cheaper* (30–40 calls) because they die before conditioning.
+
+### Why 4/5 collapse — the real regression this exposed
+Weeks ago (EXP-105) these same questions produced forecasts via `generic_outcome_prior` (~0.5, no reference
+class — the "vague guess near 50%" you rejected). PR #124/#125 (validation-gate removal + §NAP) correctly
+made the compiler **refuse** any plan whose only terminal resolution is that broad prior — but those
+refusals surfaced as **silent `execution_failed`/p=None**. So the arc is:
+
+`OLD generic ~0.5`  →  `§NAP: correctly refuse the generic draw, but return a silent None`  →
+**`NOW: serve the GROUNDED reference-class outside-view prior, named under_modeled`** (this fix).
+
+The floor is strictly better than both the old generic guess and the broken silent None. **But it is not a
+substitute for the rich simulation actually running.** The `invalid_execution_plan` compiler-collapse rate
+(4/5 here) is now the #1 blocker to measuring — let alone realizing — the rich architecture's accuracy.
+
+## 6. Verdict (not a premature architecture choice)
+- The malformed Knesset run was **not a fluke**: it is a systematic compilation-collapse problem that the
+  §NAP refusal exposed. The fix ensures forecasting mode never again returns a silent None.
+- We **cannot yet judge the rich architecture's accuracy** on these questions, because on 4/5 it does not
+  execute. The one time it ran (Hormuz) it consumed real evidence and was correct.
+- The lean grounded-prior floor (Brier ~0.26, AUC 0.6–0.88) is a solid, honest baseline — and currently the
+  full-actor path equals it only because it *is* it on 4/5.
+- **Highest-value next lever:** fix the `invalid_execution_plan` compiler collapse so the rich simulation
+  actually runs on institutional/scheduled questions — then re-measure rich vs. the floor. That is the
+  question the data now poses, and it is a different (deeper) problem than p=None.
