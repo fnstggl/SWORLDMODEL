@@ -202,7 +202,11 @@ def run_with_persistence(question, plan, *, llm=None, context=None, actor_histor
         meta["support_grade_effect"] = grade_effect
 
     check_readout_binding(plan, base)
-    ops, _rej = operators_from_plan(plan, llm=llm)
+    from swm.world_model_v2.materialize import ensure_outcome_pathway
+    ops, op_rejections = operators_from_plan(plan, llm=llm)
+    # ROLLOUT-VIABILITY INVARIANT: rejections are never discarded silently, and the plan must retain an
+    # outcome-capable (event, operator) pair — repaired in place otherwise (the silent-empty-rollout fix).
+    outcome_pathway = ensure_outcome_pathway(plan, ops, op_rejections)
     import swm.world_model_v2.phase8_transitions as _p8t
     ops = ops + [_p8t.PersistenceUpdateOperator(), _p8t.MemoryConsolidationOperator()]
     init = InitialStateModel(base_world=base, latents=list(plan.latents))
@@ -215,6 +219,10 @@ def run_with_persistence(question, plan, *, llm=None, context=None, actor_histor
     attach_actor_decision_distributions(ops, result)
     res = result_from_run(question, plan, result, branches, intervention=intervention, t0=t0,
                           calibrator=calibrator, cal_key=cal_key)
+    res.provenance = {**(res.provenance or {}), "outcome_pathway": outcome_pathway}
+    if outcome_pathway.get("repaired"):
+        res.limitations = (list(res.limitations or [])
+                           + [f"outcome-pathway repaired before rollout: {outcome_pathway['repairs']}"])
     if result.get("actor_decision_distributions"):
         res.provenance = {**(res.provenance or {}),
                           "actor_decision_distributions": result["actor_decision_distributions"],
