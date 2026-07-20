@@ -1,0 +1,97 @@
+{
+ "label": "BoJ",
+ "qid": "7279494c-a775-5a57-a5f2-ac22252fb286",
+ "question": "Will the Bank of Japan raise its short-term policy interest rate at the June 15\u201316, 2026 Monetary Policy Meeti",
+ "horizon_days": 33.0,
+ "A1_grounded_prior": {
+  "reference_class": "BOJ policy rate changes at scheduled meetings",
+  "stage": "scheduled_or_on_calendar",
+  "base_rate": 0.15,
+  "status_quo": "If no change occurs, the BOJ will maintain its current policy rate, which is the most common outcome at a single meeting.",
+  "is_recurrence": true,
+  "transport_risk": "low",
+  "evidence_quality": "model_memory"
+ },
+ "A2_evidence_sufficiency": null,
+ "A2_posterior_consumed": true,
+ "A3_operator_census": {
+  "evidence_observation": 2752,
+  "scheduled_fact": 604,
+  "background_dynamics": 1007,
+  "production_actor_policy": 1348,
+  "institutional_decision": 71,
+  "outside_world_entry": 2,
+  "generated_attention": 2,
+  "actor_action_aggregation": 11,
+  "absorption_monitor": 4,
+  "nonlinear_state_step": 2280,
+  "behavioral_mechanism": 15
+ },
+ "A4_status": "under_modeled",
+ "A4_has_forecast": true,
+ "A4_under_modeled_subtypes": [
+  "under_modeled_boundary",
+  "under_modeled_external_process",
+  "under_modeled_nonhuman_mechanism"
+ ],
+ "A5_grounded_outside_view_fallback": {
+  "used": true,
+  "value": 0.2574,
+  "source": "evidence_updated_posterior_mean",
+  "source_classes": [
+   "evidence_updated_posterior"
+  ],
+  "reference_classes": [
+   "BOJ policy rate decisions at scheduled meetings with market expectations of no change"
+  ],
+  "n_models": 5,
+  "per_model": {
+   "m0_actor_relationship": 0.231,
+   "m1_institutional_procedural": 0.2545,
+   "m2_resource_constraint": 0.2637,
+   "m3_information_distribution": 0.2637,
+   "m4_adversarial_alternative": 0.2742
+  },
+  "original_status": "under_modeled",
+  "note": "reference-class OUTSIDE-VIEW forecast served because the rollout produced no bound terminal distribution; the epistemically-weak status is kept as a warning (\u00a7NAP: a GROUNDED reference-class estimate is a legitimate forecast; a generic ~0.5 prior is not)"
+ },
+ "A6_n_models": 5,
+ "A6_aggregation": "per_model_conditionals_no_headline_average",
+ "A6_structural_sensitivity": "materially_structurally_sensitive",
+ "p": 0.2574,
+ "raw_distribution": {
+  "raise": 0.2574,
+  "hold": 0.7426
+ },
+ "A8_wall_s": 7993.1,
+ "A8_timing_wrapper": {
+  "true_backend_calls": 512,
+  "llm_wall_s_total": 4887.4,
+  "call_s_mean": 9.55,
+  "call_s_median": 9.07,
+  "call_s_max": 48.16
+ },
+ "A8_ledger_total_calls": 497,
+ "A8_calls_by_stage": {
+  "structural_generation": 5,
+  "structural_critic": 7,
+  "structural_compile": 5,
+  "model_conditioning": 98,
+  "actor_rollout": 382
+ },
+ "A8_calls_by_model": {
+  "m0_actor_relationship": 99,
+  "m1_institutional_procedural": 25,
+  "m2_resource_constraint": 84,
+  "m3_information_distribution": 193,
+  "m4_adversarial_alternative": 84
+ },
+ "A8_incremental_multiplier": 5.12,
+ "limitations": [
+  "UNDER-MODELED FORECAST (was 'under_modeled'): the actor rollout could not validate a complete causal mechanism, so the forecast falls back to the grounded outside-view estimate (25.7%; reference class: BOJ policy rate decisions at scheduled meetings with market expectations of no change). Treat as a lower-confidence reference-class forecast, not a simulated structural outcome.",
+  "omitted (negligible-sensitivity): global_central_bank_coordination",
+  "omitted (negligible-sensitivity): algorithmic_trading_dynamics",
+  "Outcome unresolved under the current model: no validated causal mechanism resolves the outcome \u2014 the missing mechanisms are named in resolution_report.missing_mechanisms; no broad-prior, family-rate or neutral-default mass was manufactured (\u00a7NAP)",
+  "omitted (negligible-sensitivity): global_commodity_prices"
+ ]
+}
