@@ -67,7 +67,11 @@ STRUCTURAL_MODES = ("ensemble", "single_structural_model")
 #: probability_source; material savings (19× calls / 14.5× tokens / 12× cost / 17.7× time);
 #: unstable questions escalated to full budgets; full_fidelity remains available. `lean_adaptive`
 #: is therefore the default; `full_fidelity` is the explicit research-grade option.
-EXECUTION_PROFILES = ("full_fidelity", "lean_adaptive")
+#: `lean_v2` is the first-principles CONSUMER execution path (one blueprint call, answerability
+#: preflight, terminal-causal slicing, weighted world-state coalescing, conditional challenger,
+#: consumer compute budget). It is OPT-IN pending review of its live evaluation — Lean V1
+#: (`lean_adaptive`) remains the default; `full_fidelity` remains permanently available.
+EXECUTION_PROFILES = ("full_fidelity", "lean_adaptive", "lean_v2")
 DEFAULT_EXECUTION_PROFILE = "lean_adaptive"
 
 
@@ -208,6 +212,16 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
             trace_level=trace_level, config=config, prebuilt_bundle=prebuilt_bundle,
             evidence=evidence)
         res.provenance = {**(res.provenance or {}), "execution_profile": "lean_adaptive"}
+        return res
+    if profile == "lean_v2":
+        from swm.world_model_v2.lean_v2.runtime import simulate_world_lean_v2
+        res = simulate_world_lean_v2(
+            question, as_of=as_of, horizon=horizon, intervention=intervention,
+            user_context=user_context, prior_checkpoint=prior_checkpoint,
+            compute_budget=compute_budget, seed=seed, llm=llm, execution_policy=policy,
+            trace_level=trace_level, config=config, prebuilt_bundle=prebuilt_bundle,
+            evidence=evidence)
+        res.provenance = {**(res.provenance or {}), "execution_profile": "lean_v2"}
         return res
     if mode == "single_structural_model":
         res = _simulate_single_structural_model(
