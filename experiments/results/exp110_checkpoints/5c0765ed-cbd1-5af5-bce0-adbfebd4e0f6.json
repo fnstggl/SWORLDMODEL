@@ -1,0 +1,142 @@
+{
+ "label": "visionOS",
+ "qid": "5c0765ed-cbd1-5af5-bce0-adbfebd4e0f6",
+ "question": "Will Apple announce visionOS 27 (or a successor major version to visionOS 26) at WWDC 2026?",
+ "horizon_days": 35.3,
+ "A1_grounded_prior": {
+  "reference_class": "major Apple OS version announcements at WWDC",
+  "stage": "recurring_due_this_window",
+  "base_rate": 0.95,
+  "status_quo": "If no announcement occurs at WWDC 2026, the next opportunity would be at a later event or a separate release, but historically Apple announces the next major OS version at WWDC annually.",
+  "is_recurrence": true,
+  "transport_risk": "low",
+  "evidence_quality": "sourced"
+ },
+ "A2_evidence_sufficiency": null,
+ "A2_posterior_consumed": true,
+ "A3_operator_census": {
+  "production_actor_policy": 174,
+  "evidence_observation": 76,
+  "background_dynamics": 133,
+  "persistence_update": 19,
+  "scheduled_fact": 76,
+  "institutional_decision": 19,
+  "absorption_monitor": 19,
+  "actor_action_aggregation": 1
+ },
+ "A4_status": "under_modeled",
+ "A4_has_forecast": true,
+ "A4_under_modeled_subtypes": [
+  "under_modeled_boundary",
+  "under_modeled_external_process",
+  "under_modeled_nonhuman_mechanism"
+ ],
+ "A5_grounded_outside_view_fallback": null,
+ "A6_n_models": 5,
+ "A6_aggregation": "agreeing_models_equal_weight_mixture",
+ "A6_structural_sensitivity": "structurally_stable",
+ "W_outside_view": 0.8879,
+ "W_simulation_derived": 1.0,
+ "W_final_combined": 0.908336,
+ "W_final_source": "weighted_simulation",
+ "W_final_reason": "1 valid simulated world(s) produced a grounded weighted forecast (headline=1.0); outside-view baseline 0.8879 reported; combined=0.908336 (alpha=0.1823 shrink toward baseline)",
+ "W_confidence_alpha": 0.1823,
+ "W_n_worlds_valid": 1,
+ "W_world_weights": [
+  {
+   "model_id": "m0_actor_relationship",
+   "weight": 1.0,
+   "p_yes": 1.0,
+   "plausibility": 0.15,
+   "objective_quality": 0.185,
+   "rationale": "Setup is plausible but behavior is unrealistic: unresolved_share of 0.753 indicates most rollouts ended without a clear mechanism, which is inconsistent with the known institutional forcing function o",
+   "citations": [
+    "WWDC is a fixed annual event that forces major software announcements, as seen in past Apple keynotes.",
+    "Apple's visionOS development lifecycle typically aligns with WWDC for major version reveals."
+   ],
+   "unsupported_assumptions": [
+    "Assumes executive decision-making under uncertainty can lead to unresolved outcomes despite WWDC being a hard deadline.",
+    "Assumes path dependency from prior visionOS version commitments without evidence of such commitments for visionOS 27."
+   ],
+   "merged_from": []
+  }
+ ],
+ "W_spread": 0.0,
+ "W_rejected_worlds": [
+  {
+   "model_id": "m1_institutional_procedural",
+   "reason": "no_simulated_distribution"
+  },
+  {
+   "model_id": "m2_resource_constraint",
+   "reason": "no_simulated_distribution"
+  },
+  {
+   "model_id": "m3_information_distribution",
+   "reason": "no_simulated_distribution"
+  },
+  {
+   "model_id": "m4_adversarial_alternative",
+   "reason": "no_simulated_distribution"
+  }
+ ],
+ "W_merge_records": [],
+ "W_interpretation_hypotheses": [
+  {
+   "model_id": "m0_actor_relationship",
+   "thesis": "Apple's decision to announce visionOS 27 at WWDC 2026 is determined by the strategic calculus of its executive leadership, balancing the need to demonstrate sustained innovation in spatial computing against the risk of overpromising on an immature platform, with the outcome hinging on whether internal development milestones and market readiness align with the annual WWDC cadence."
+  },
+  {
+   "model_id": "m1_institutional_procedural",
+   "thesis": "Apple's announcement of visionOS 27 at WWDC 2026 is determined by the formal product release cycle and internal procedural milestones, where the decision hinges on whether the visionOS 26 release has met institutional go/no-go criteria for a major version update by the cutoff date."
+  },
+  {
+   "model_id": "m2_resource_constraint",
+   "thesis": "The announcement of visionOS 27 at WWDC 2026 is determined by Apple's internal resource allocation and engineering capacity, specifically whether the visionOS team can complete a major version update within the constrained development cycle following visionOS 26's release."
+  },
+  {
+   "model_id": "m3_information_distribution",
+   "thesis": "The decisive factor is whether Apple's internal information-distribution channels (executive briefings, engineering roadmaps, and developer-relations feedback loops) have already committed to a major version number for visionOS by the cutoff date, because WWDC announcements are primarily determined by pre-existing internal communication commitments rather than external market pressure."
+  },
+  {
+   "model_id": "m4_adversarial_alternative",
+   "thesis": "Apple will announce visionOS 27 at WWDC 2026 because the competitive pressure from Meta's spatial computing platform and the need to maintain developer mindshare will override internal resource constraints, forcing a major version increment to signal commitment and parity."
+  }
+ ],
+ "p": 1.0,
+ "raw_distribution": {
+  "announce": 1.0,
+  "not_announce": 0.0
+ },
+ "A8_wall_s": 9172.1,
+ "A8_timing_wrapper": {
+  "true_backend_calls": 850,
+  "llm_wall_s_total": 5930.4,
+  "call_s_mean": 6.98,
+  "call_s_median": 6.02,
+  "call_s_max": 44.21
+ },
+ "A8_ledger_total_calls": 845,
+ "A8_calls_by_stage": {
+  "structural_generation": 5,
+  "structural_critic": 7,
+  "structural_compile": 5,
+  "model_conditioning": 100,
+  "actor_rollout": 728
+ },
+ "A8_calls_by_model": {
+  "m0_actor_relationship": 90,
+  "m1_institutional_procedural": 191,
+  "m2_resource_constraint": 209,
+  "m3_information_distribution": 149,
+  "m4_adversarial_alternative": 194
+ },
+ "A8_incremental_multiplier": 5.09,
+ "limitations": [
+  "omitted (negligible-sensitivity): macroeconomic_conditions",
+  "omitted (negligible-sensitivity): consumer_adoption_rates",
+  "Outcome unresolved under the current model: no validated causal mechanism resolves the outcome \u2014 the missing mechanisms are named in resolution_report.missing_mechanisms; no broad-prior, family-rate or neutral-default mass was manufactured (\u00a7NAP)",
+  "Outcome unresolved under the current model: no validated causal mechanism resolves the outcome \u2014 the missing mechanisms are named in resolution_report.missing_mechanisms; no broad-prior, family-rate or neutral-default mass was manufactured (\u00a7NAP)",
+  "causal_boundary: structurally under-modeled \u2014 no mechanism survived validation \u2014 structurally under-modeled; attempts preserved, external effects unresolved (fixed-v1 NOT served)"
+ ]
+}
