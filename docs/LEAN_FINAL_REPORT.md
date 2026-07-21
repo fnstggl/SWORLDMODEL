@@ -1,148 +1,154 @@
 # World Model V2 — Lean-Adaptive Final Report
 
-> STATUS: lean arm (EXP-108) final; full-fidelity arm (EXP-107) cells marked **FF-PENDING**
-> fill from `experiments/results/exp109_comparison.json` when the baseline completes.
-
 Baseline: PR #127 merge commit `6e79fa345974031d5f2f1a17f3372cc28e76919e`.
-Model/provider both arms: `deepseek-v4-flash`, temperature 0.2, max_tokens 3600, seed 0,
-sealed-replay frozen-background bundle (`experiments/btf3_frozen_bundle.py`), full LLM actor
-cognition, no numeric actors.
+Both arms: `deepseek-v4-flash`, temperature 0.2, max_tokens 3600, seed 0, sealed-replay
+frozen-background bundle (`experiments/btf3_frozen_bundle.py`), full LLM actor cognition, no
+numeric actors, same maximum particle budgets. Machine-readable artifacts:
+`experiments/results/exp109_comparison.json`, `exp110_recovered_forecasts.json`,
+`exp108_arm_lean_manifest.json`, `exp109_controlled_cache_isolation.json`,
+`exp109_acceptance_static.json`, per-question checkpoints under `exp107_checkpoints/` and
+`exp108_checkpoints/`.
 
 ## Controlled gates (deterministic fixtures — the semantic-safety evidence)
 
-* **Isolated caching parity** (caches on vs off, everything else identical): identical
-  decisions, distributions, statuses, operator censuses and forecasts. Decision provider calls
-  **70 → 4** on 35 particles containing exactly 4 genuinely distinct decision situations
-  (101 cache hits). `experiments/results/exp109_controlled_cache_isolation.json`.
-* **Concurrency identity**: lean sequential == lean `SWM_BRANCH_THREADS=4` on all semantics.
-* Full-fidelity byte-untouchedness, research-first arming, replicate-index keying, no-empty-
-  rollout: `tests/test_lean_integration.py`, `tests/test_lean_units.py` (46 tests).
+* **Isolated caching parity** (mandatory §1): caches on vs off, everything else identical —
+  identical decisions, distributions, statuses, operator censuses, forecasts. Decision provider
+  calls **70 → 4** on 35 particles containing exactly 4 genuinely distinct decision situations
+  (101 hits, 0 invalidated).
+* **Concurrency identity** (mandatory §6): lean sequential == lean `SWM_BRANCH_THREADS=4`.
+* Full-fidelity byte-untouchedness, research-first arming, replicate-index keying,
+  no-empty-rollout, no-periodic-reconsideration, status-independence of forecast availability:
+  57 focused lean/contract tests, all green; full repo suite 1900+ green with 2 pre-existing
+  environment failures that fail identically at the #127 merge commit.
 
-## Live lean arm (EXP-108, five frozen BTF-3 questions) — FINAL
+## Live lean arm (EXP-108) — COMPLETE, all five questions
 
-| Question | status | calls | unique ctx | ctx reuses | particles (exec/budget) | wall |
-|---|---|---|---|---|---|---|
-| BoJ June hike | under_modeled | 115 | 30 | 449 | 108/108 (full kept) | 20.3 m |
-| visionOS 27 | under_modeled | 119 | 9 | 70 | 56/101 (early stop) | 17.3 m |
-| Wale PM | unresolved | 418 | 53 | 331 | 48/111 (early stop) | 43.9 m |
-| Hormuz transits | under_modeled | 170 | 19 | 335 | 111/111 (full kept) | 22.4 m |
-| Banxico unanimity | unresolved | 230 | 40 | 303 | 48/148 (early stop) | 30.1 m |
-| **Totals** | — | **1,052** | **151** | **1,488** | **371/579 (208 avoided)** | **134.0 m** |
+| Question | status | calls | unique ctx | reuses | particles | wall | recovered p (outcome) | Brier |
+|---|---|---|---|---|---|---|---|---|
+| BoJ June hike | under_modeled | 115 | 30 | 449 | 108/108 full | 20.3 m | 0.565 (1) ✓ | 0.190 |
+| visionOS 27 | under_modeled | 119 | 9 | 70 | 56/101 early | 17.3 m | 0.417 (1) ✗ | 0.340 |
+| Wale PM | unresolved | 418 | 53 | 331 | 48/111 early | 43.9 m | 0.435 (1) ✗ | 0.319 |
+| Hormuz transits | under_modeled | 170 | 19 | 335 | 111/111 full | 22.4 m | 0.885 (0) ✗ | 0.782 |
+| Banxico unanimity | unresolved | 230 | 40 | 303 | 48/148 early | 30.1 m | 0.769 (1) ✓ | 0.053 |
+| **Totals** | — | **1,052** | **151** | **1,488** | **371/579** | **134.0 m** | Brier **0.337**, 2/5 side | — |
 
-Arm-level §23 manifest (`experiments/results/exp108_arm_lean_manifest.json`): consequence
-compiles 95 with **620 reuses**; one-call successes 82; escalations 69 (67 blocked-on-
-missing-fact, 2 provider — every one recorded and its staged result cached); invalidated
-cache hits **0**; largest single decision context served **32 branches**; prompt chars sent
-943,568 vs 3,774,272 full-re-render equivalent (**75% reduction**); provider prompt-cache
-tokens 217,472; execution classifications: 1,528 human_discretion_required (the deterministic
-layer never suppressed a genuine human choice in these worlds); challengers generated 5/5
-questions (each critic found a reversal-capable alternative); structurally underidentified
-4/5 (full-fidelity escalation offered on the result face); stability replicates ran 5/5.
-
-Terminal statuses: all five are honest §NAP refusals (`under_modeled`/`unresolved`) under the
-frozen-background protocol — the compiled worlds' required causal processes lacked validated
-mechanism families and the runtime refuses to manufacture probability mass. Status-gated
-scoring (one rule, both arms): refusals have no scoreable forecast.
-
-
-## Forecast-availability contract (user directive, applied after the first runs)
-
-Grounding quality and forecast availability are now SEPARATE (`forecast_recovery.py`): every
-coherent binary question returns its best defensible probability with
-`probability_source` / `grounding_grade` / `confidence` / `unresolved_mass` /
-`probability_conditional_on_resolved` / `uncertainty_interval` / `weight_sensitive` as
-separate fields; execution status describes the run and never erases the probability
-(`has_forecast()` is status-independent — regression-pinned). No neutral 0.5 exists anywhere
-(AST-pinned); with no defensible source the probability honestly stays None.
-
-**EXP-110** recovered all five lean forecasts from the EXISTING checkpoints (no reruns, no new
-calls, original as_of/evidence untouched — pure readout re-derivation from stored weighted
-distributions + evidence-updated posterior means):
-
-| Question | recovered p | outcome | Brier | side | source | grade |
-|---|---|---|---|---|---|---|
-| BoJ June hike | 0.565 | 1 | 0.190 | ✓ | completed_rollouts+evidence_prior | exploratory |
-| visionOS 27 | 0.417 | 1 | 0.340 | ✗ | evidence_prior+partial_rollouts | exploratory |
-| Wale PM | 0.435 | 1 | 0.319 | ✗ | evidence_conditioned_prior | exploratory |
-| Hormuz transits | 0.885 | 0 | 0.782 | ✗ | evidence_prior+partial_rollouts | exploratory |
-| Banxico unanimity | 0.769 | 1 | 0.053 | ✓ | evidence_conditioned_prior | exploratory |
-
-Lean arm: Brier 0.337, 2/5 correct side — every row weight-sensitive and exploratory-grade
-(the labels say exactly how weak these are; for context the pre-#127 EXP-104 full system
-scored 0.393 / 1/5 on the same frozen set; FutureSearch SOTA 0.165). FF visionOS recovered
-0.834 → Brier 0.028 (its arm completes separately). The five-question set remains an
+All five probabilities are labeled `exploratory` + `weight_sensitive` (forecast-availability
+contract: availability preserved, weakness disclosed). Context: pre-#127 EXP-104 full system on
+the same frozen set: Brier 0.393, 1/5; FutureSearch SOTA 0.165. Five questions are an
 architecture/performance diagnostic, not an accuracy claim.
 
-## Full-fidelity baseline (EXP-107) — FF-PENDING
+## Full-fidelity baseline (EXP-107) — 1/5 completed in this environment
 
-Per-question and total: prediction/status/Brier/side, calls, calls by stage, tokens,
-provider-cache tokens, wall-clock, cost, structural models generated/simulated, particles,
-censuses → fill from `exp109_comparison.json`.
+* **visionOS 27 (completed)**: 2,411 calls, 2.60M in / 1.12M out tokens (737k provider-cached),
+  **212.0 min**, status unresolved, recovered p **0.834** (✓, Brier 0.028,
+  `evidence_conditioned_prior`, exploratory).
+* **Hormuz (one full attempt finished `execution_failed`)**: 3,050 calls / 251 min — both
+  promoted models failed terminal projection on the pre-hardening image; the per-model error
+  was unrecoverable from the artifact (that diagnosability gap + the recovery-can-never-kill-
+  finalize hardening are now fixed and regression-pinned).
+* **BoJ, Wale, Banxico (+ Hormuz rerun): did not complete.** The execution environment
+  terminates long processes (observed lifetimes ≈2.5–8 h; three restarts during this work);
+  these questions' serial full-fidelity runtimes repeatedly exceeded every window — cumulative
+  burned attempts ≈45 worker-hours for the arm (BoJ ~11 h over 3 attempts, Banxico ~17 h over
+  4, Wale ~14 h over 3, Hormuz ~12 h over 3). Ensemble rollouts pass a particle scope, which
+  forces the serial path, so branch-threading cannot shorten them without touching canonical
+  CRN semantics — declined by policy ("do not silently alter full fidelity").
+* A final relaunch attempt is running; if checkpoints land, `exp109`/`exp110` regenerate in
+  seconds and the numbers below update mechanically.
 
-## The 30 questions (§27) — fill FF-PENDING cells on baseline completion
+**The paired-question comparison that did complete** (visionOS): full fidelity 2,411 calls /
+3.72M tokens / $1.01 / 212 min vs lean 119 calls / 252K tokens / $0.07 / 17.3 min —
+**20× fewer calls, ~15× fewer tokens, ~14× cheaper, 12× faster**, same honest §NAP status
+family, both recovered probabilities exploratory-grade (FF 0.834 ✓ vs lean 0.417 ✗ on outcome
+1 — cause: FF's readout is the pure evidence-conditioned prior; lean's blends its small
+resolved no-leaning rollout mass with the same prior family — a partial_rollouts vs prior
+source difference, disclosed per row).
 
-1. **PR #127 full-fidelity five-question wall-clock**: FF-PENDING.
-2. **Lean adaptive wall-clock**: 134.0 minutes summed; 43.9 minutes maximum single question
-   (the five ran in parallel).
-3. **Total LLM calls removed**: FF-PENDING (lean total is 1,052).
-4. **Actor calls removed**: FF-PENDING (lean spent 82 one-call + 69 escalation-staged
-   decision rounds over 1,528 decision invocations; 1,488 invocations were served by reuse).
-5. **Unique actor decision contexts**: 151 across the arm (9–53 per question).
-6. **Particles sharing each major actor context**: largest 32; four contexts ≥ 17.
-7. **Unsafe merges**: none observed — invalidated cache hits 0; the isolated parity gate
-   showed byte-identical semantics; every reuse carries a certificate
-   (`explain_equivalence()`).
-8. **Calls avoided by unchanged-decision reuse**: 0 — in these worlds every trigger carried
-   new decision-relevant content, so the standing-decision layer never fired (its tests prove
-   it fires on true duplicates).
-9. **Calls avoided by duplicate-notification suppression**: 0 live (same reason); proven by
-   deterministic tests.
-10. **Compact prompting token reduction**: 75% of actor-prompt chars vs full re-render
-    (943,568 sent vs 3,774,272 equivalent).
-11. **Provider prompt caching achieved**: 217,472 cached prompt tokens (of 1,333,710 input).
+## The 30 answers (§27)
+
+1. **FF five-question wall-clock**: not measurable in this environment — 1/5 completed
+   (212 min); the other four exceeded every process-lifetime window (≈45 worker-hours burned).
+2. **Lean wall-clock**: 134.0 min summed; 43.9 min worst question; every question fits a window.
+3. **Total LLM calls removed**: on the paired question, 2,411 → 119 (95%). Arm-vs-arm totals
+   are not honestly comparable while 4 FF questions are incomplete; the lean arm total is 1,052.
+4. **Actor calls removed**: lean spent 151 fresh decision computations (82 one-call + 69
+   escalated-staged) for 1,528 decision invocations — 1,488 invocations (97%) served by reuse.
+   The FF staged path spends ~4–5 calls per invocation.
+5. **Unique actor decision contexts**: 151 (9–53 per question).
+6. **Particles sharing each major context**: largest 32; four contexts ≥17.
+7. **Unsafe merges**: none — 0 invalidated hits; parity gate byte-identical; every reuse
+   carries an `explain_equivalence()` certificate.
+8. **Unchanged-decision reuse avoided calls**: 0 live (every live trigger carried new
+   decision-relevant content); behavior proven by deterministic tests.
+9. **Duplicate-notification suppression avoided calls**: 0 live (same reason); test-proven.
+10. **Compact prompting reduction**: 75% of actor-prompt chars (943,568 sent vs 3,774,272
+    full-re-render equivalent).
+11. **Provider prompt caching**: lean 217,472 cached prompt tokens (16% of input); FF visionOS
+    737,152 (28% — staged re-sends create more identical prefixes, at 10× the volume).
 12. **Consequence compilations reused**: 620 of 715 (87%).
-13. **Structural models lean avoided**: FF-PENDING (lean generated 1 primary + 1 challenger
-    per question = 10 simulated; FF default generates ≥4 candidates + pilots each).
+13. **Structural models avoided**: lean simulated 2 per question (primary + reversal
+    challenger; 10 total) vs the FF default ≥4 candidates with pilots + full budgets each
+    (FF visionOS generated 5, simulated 2 after critics).
 14. **Particles avoided by progressive stopping**: 208 of 579 budgeted (36%).
-15. **Questions requiring the full particle budget**: BoJ and Hormuz (stability conditions
-    correctly refused early stop); visionOS/Wale/Banxico stopped early with records.
-16. **Questions requiring a challenger**: all five (each reversal critic found a plausible
-    reversal-capable alternative; each challenger compiled, deduped and simulated).
-17. **Questions requiring repeated-run escalation**: all five ran the capped
-    execution-replicate probe (underidentification is an escalation signal); results reported,
-    never averaged.
+15. **Full-budget questions**: BoJ and Hormuz (conditions correctly refused early stop).
+16. **Challenger questions**: all five (every reversal critic found a reversal-capable
+    alternative — these are contested questions by construction).
+17. **Repeated-run escalations**: all five ran the capped execution-replicate probe
+    (underidentification is an escalation signal); reported, never averaged.
 18. **Genuinely load-bearing calls**: structural generation/critic/compile, world boundary,
-    per-model conditioning, the 151 unique decision contexts, 95 consequence compiles, and
-    per-model finalization — everything else was reuse.
-19. **Did predictions materially change?** FF-PENDING; both arms are status-gated — lean
-    produced five honest refusals.
-20. **Why did each changed prediction change?** FF-PENDING (per-question §23 cause rows in
-    exp109).
-21. **Brier**: FF-PENDING (lean: no scoreable forecasts under §NAP honesty).
-22. **Wrong side of 0.5**: FF-PENDING.
-23. **Did ensure_outcome_pathway repair any lean plan?** No repairs were required at prepare
-    time (`outcome_pathway.repaired` false across checkpoints); the invariant ran on every
-    prepared model.
-24. **Did any lean optimization attempt to remove the terminal pathway?** No — pathway
-    validation runs inside `prepare_persistence_run` on every lean model; no
-    empty rollouts occurred.
-25. **Total token reduction**: FF-PENDING (lean: 1,333,710 in / 814,374 out).
-26. **Total cost reduction**: FF-PENDING (recorded price assumptions in exp109).
-27. **Total wall-clock reduction**: FF-PENDING.
-28. **Largest safe improvement**: the decision-equivalence cache (1,488 reuses at zero
-    invalidations, parity-gated), with consequence-response reuse (620) second and
-    progressive particles (208) third.
-29. **Should lean adaptive become the consumer default?** Decision recorded in
-    `§ Default-switch` below — FF-PENDING for the accuracy leg.
-30. **What stays exclusive to full-fidelity research mode?** The independent ≥4-candidate
-    structural ensemble with per-model full budgets, multi-call staged cognition as the
-    default, per-particle behavioral variance without context sharing, model-family pools,
-    and mean-of-K stability studies.
+    per-model conditioning, the 151 unique decision contexts, 95 consequence compiles,
+    finalization. Everything else was reuse.
+19. **Did predictions materially change?** On the paired question, yes (0.834 vs 0.417).
+20. **Why**: probability-source difference — FF read the evidence-conditioned prior (its
+    rollouts fully unresolved); lean's partial_rollouts blended a small no-leaning resolved
+    mass with the same prior family. Disclosed per row; both exploratory-grade.
+21. **Brier**: lean 0.337 (5 scored); FF 0.028 (1 scored) — not comparable at these sample
+    sizes; no accuracy claim is made from five questions.
+22. **Wrong side of 0.5**: lean 3/5 wrong (visionOS, Wale, Hormuz); FF wrong-side unknown for
+    4/5 (incomplete).
+23. **ensure_outcome_pathway repairs in lean**: none needed (validated on every prepared
+    model inside `prepare_persistence_run`).
+24. **Did any lean optimization attempt to remove the terminal pathway?** No; no empty
+    rollouts occurred.
+25. **Token reduction**: paired question 3.72M → 252K (93%). Lean arm total: 2.15M.
+26. **Cost reduction**: paired question $1.01 → $0.066 (93%); lean arm total $0.66 (recorded
+    price assumptions).
+27. **Wall-clock reduction**: paired question 212 → 17.3 min (92%); lean worst-case 44 min vs
+    FF's un-completable windows.
+28. **Largest safe improvement**: the decision-equivalence cache (1,488 reuses, 0
+    invalidations, parity-gated); consequence-response reuse (620) second; progressive
+    particles (208) third.
+29. **Consumer default?** **Not yet** — see the §25 decision below.
+30. **Exclusive to full-fidelity research mode**: the ≥4-candidate independent structural
+    ensemble with full per-model budgets, staged multi-call cognition as default,
+    per-particle behavioral variance without context sharing, model-family pools, mean-of-K
+    stability studies.
 
-## Default-switch (§25) — decision pending FF baseline
+## §25 Default-switch decision
 
-Static acceptance (`experiments/results/exp109_acceptance_static.json`): full_fidelity
-available and default; PR-#127 protection tests green; lean gates green; no numeric-actor
-paths in lean modules; controlled isolation parity recorded. Remaining legs: no catastrophic
-forecast degradation vs FF; explainable prediction changes; material call/token/cost/time
-reduction (lean side measured; FF side pending).
+**`world_model_v2` keeps `execution_profile="full_fidelity"` as the default.** The switch
+conditions are not all met: "no catastrophic forecast degradation appears on the five
+questions" requires five PAIRED completions, and this environment completed one FF question
+(on it, lean's recovered estimate was materially different and on the wrong side). Safety
+invariants, cache-parity, escalation and savings legs all PASS.
+
+**Safe to enable independently today** (each parity/test-gated, semantics-preserving by
+construction): run-shared artifacts; actor-state cohorting; decision-context caching +
+single-flight; decision invalidation + duplicate suppression; deterministic prechecks +
+execution classification; one-call cognition **with its recorded escalation ladder**; compact
+prompts; consequence-program caching; the forecast-availability contract (both profiles
+already share it). **Needs paired accuracy data before default**: reversal-triggered
+structural reduction and progressive particle stopping — the two semantics-visible
+reductions; they remain lean-profile-only pending a completed baseline (or an environment
+with longer process lifetimes / intra-question checkpointing for the FF arm).
+
+## Fixes contributed to the canonical runtime along the way (both profiles, regression-pinned)
+
+1. §19 executability probe backend threading — every live structural candidate was rejected.
+2. Unknown-entity persistence updates — mixed compiler naming variants killed whole runs.
+3. Type-tolerant predicate evaluation — LLM-shaped completion conditions killed a 4-h rollout.
+4. Sealed-replay frozen-background bundle for the BTF-3 protocol (post-#127 posterior shape).
+5. Forecast availability ≠ grounding (user directive): layered recovery, separated fields,
+   status-independent `has_forecast()`, no neutral-0.5 anywhere, weighted partial-rollout
+   aggregation with disclosed unresolved mass, ensemble weight-sensitivity marking.
+6. Finalize errors surface with tracebacks; recovery can never kill a finalize.
