@@ -118,13 +118,13 @@ def build_challenger_blueprint(bp: ConsumerWorldBlueprint, decision: ChallengerD
         '"changed_assumption": "...", "unchanged_note": "everything else identical"}')
     deps = {"blueprint": bp.raw_response_hash, "divergence": decision.divergence,
             "backend": gateway.backend_fingerprint}
-
-    def _call():
-        return gateway.call("structural_generation", prompt)
-    text, _hit = cache.get_or_compile("blueprint_response", deps, _call)
+    cached = cache.get("blueprint_response", deps)
+    text = cached if cached is not None else gateway.call("structural_generation", prompt)
     r = parse_json(text)
     if not isinstance(r, dict):
-        return None
+        return None                                 # failure never cached
+    if cached is None:
+        cache.put("blueprint_response", deps, text)
     ch = copy.deepcopy(bp)
     ch.causal_thesis = norm(r.get("challenger_thesis"), 600) or ("CHALLENGER: "
                                                                 + bp.causal_thesis)

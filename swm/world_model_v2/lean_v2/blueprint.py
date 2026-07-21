@@ -161,7 +161,10 @@ actions capable of changing the answer. Rules:
 - Numbers: ONLY inside grounded_rates, each with a VERBATIM basis_quote copied from the evidence.
   Never invent probabilities anywhere else. All other content is qualitative.
 - Dates: ISO YYYY-MM-DD, within [{as_of}, {horizon}] where the world's events occur.
-- Be concise; total under 500 lines.
+- COMPACTNESS IS MANDATORY (your reply has a hard token ceiling; a truncated world is a failed
+  world): NO prose outside the JSON. At most 6 actors, 2 variants per actor (3 only if a third
+  is GENUINELY distinct), 2 beliefs/goals per variant, each string under 18 words, lists under
+  6 items. Omit empty optional lists. Start your reply with '{{' immediately.
 
 Reply ONLY with JSON exactly matching this schema:
 {schema}"""
@@ -189,12 +192,28 @@ def compile_blueprint(*, question: str, as_of: str, horizon: str, evidence_text:
                                       evidence=evidence_text[:2600], extra=extra,
                                       schema=_BLUEPRINT_SCHEMA)
 
-    def _call():
-        return gateway.call("structural_generation", prompt)
-    text, from_cache = cache.get_or_compile("blueprint_response", deps, _call)
-    r = parse_json(text)
+    # PARSE BEFORE CACHE: an unparseable/truncated compile is a FAILURE and must never poison
+    # the immutable cache (the stage retry would otherwise re-read the same broken text).
+    cached = cache.get("blueprint_response", deps)
+    from_cache = cached is not None
+    text = cached
+    r = parse_json(text) if text is not None else None
     if not isinstance(r, dict):
-        raise ValueError("blueprint response is not a JSON object")
+        from_cache = False
+        text = gateway.call("structural_generation", prompt)
+        r = parse_json(text)
+    if not isinstance(r, dict):
+        # ONE compact re-emit: the dominant real failure is token-ceiling truncation
+        text = gateway.call(
+            "structural_generation",
+            prompt + "\n\nYOUR PREVIOUS ATTEMPT WAS TRUNCATED BEFORE THE JSON CLOSED. "
+                     "Re-emit the COMPLETE world 3x more compactly: fewer components, "
+                     "shorter strings, no optional fields. ONLY the JSON object.")
+        r = parse_json(text)
+    if not isinstance(r, dict):
+        raise ValueError("blueprint response is not a JSON object (after one compact retry)")
+    if not from_cache:
+        cache.put("blueprint_response", deps, text)
     bp = blueprint_from_dict(r)
     bp.raw_response_hash = hashlib.sha256(str(text).encode()).hexdigest()[:16]
     return bp, from_cache
@@ -476,14 +495,15 @@ def repair_blueprint(bp: ConsumerWorldBlueprint, fails: list, *, as_of: str, hor
             "failures": sorted(f["what"][:80] for f in fails)[:14],
             "backend": gateway.backend_fingerprint}
 
-    def _call():
-        return gateway.call("structural_compile", prompt)
-    text, _cached = cache.get_or_compile("blueprint_repair_response", deps, _call)
+    cached = cache.get("blueprint_repair_response", deps)
+    text = cached if cached is not None else gateway.call("structural_compile", prompt)
     r = parse_json(text)
     record = {"attempted": True, "failures_sent": len(fails)}
     if not isinstance(r, dict):
         record["outcome"] = "repair_unparseable"
-        return bp, fails, record
+        return bp, fails, record                    # failure never cached
+    if cached is None:
+        cache.put("blueprint_repair_response", deps, text)
     repaired = blueprint_from_dict(r)
     repaired.raw_response_hash = bp.raw_response_hash + "+repair"
     repaired.validation = dict(bp.validation)
