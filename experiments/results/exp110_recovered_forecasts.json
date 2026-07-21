@@ -37,7 +37,8 @@
    "weight_sensitive": true,
    "probability_source": "mixed:evidence_conditioned_prior+partial_rollouts",
    "grounding_grade": "exploratory",
-   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)"
+   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)",
+   "recovered_by": "exp110_from_stored_artifacts"
   },
   {
    "qid": "5c0765ed-cbd1-5af5-bce0-adbfebd4e0f6",
@@ -75,7 +76,8 @@
    "weight_sensitive": true,
    "probability_source": "mixed:evidence_conditioned_prior+partial_rollouts",
    "grounding_grade": "exploratory",
-   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)"
+   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)",
+   "recovered_by": "exp110_from_stored_artifacts"
   },
   {
    "qid": "7279494c-a775-5a57-a5f2-ac22252fb286",
@@ -113,7 +115,8 @@
    "weight_sensitive": true,
    "probability_source": "mixed:completed_rollouts+evidence_conditioned_prior",
    "grounding_grade": "exploratory",
-   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)"
+   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)",
+   "recovered_by": "exp110_from_stored_artifacts"
   },
   {
    "qid": "741b4bed-7502-5cd2-9cbe-949fbc70f857",
@@ -148,7 +151,8 @@
    "weight_sensitive": true,
    "probability_source": "evidence_conditioned_prior",
    "grounding_grade": "exploratory",
-   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)"
+   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)",
+   "recovered_by": "exp110_from_stored_artifacts"
   },
   {
    "qid": "cfb43147-d9d2-5bd9-903f-f449e9a5aecf",
@@ -183,7 +187,8 @@
    "weight_sensitive": true,
    "probability_source": "evidence_conditioned_prior",
    "grounding_grade": "exploratory",
-   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)"
+   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)",
+   "recovered_by": "exp110_from_stored_artifacts"
   }
  ],
  "full_fidelity": [
@@ -220,7 +225,63 @@
    "weight_sensitive": true,
    "probability_source": "evidence_conditioned_prior",
    "grounding_grade": "exploratory",
-   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)"
+   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)",
+   "recovered_by": "exp110_from_stored_artifacts"
+  },
+  {
+   "qid": "7279494c-a775-5a57-a5f2-ac22252fb286",
+   "question": "Will the Bank of Japan raise its short-term policy interest rate at the June 15\u201316, 2026 Monetary Policy Meeti",
+   "original_status": "under_modeled",
+   "original_p_raw": 0.22,
+   "per_model": {
+    "m2_resource_constraint": {
+     "probability": 1.0,
+     "source": "partial_rollouts",
+     "grade": "exploratory",
+     "conditional_on_resolved": 1.0,
+     "unresolved_mass": 0.9552,
+     "interval": [
+      0.0448,
+      1.0
+     ],
+     "weight_sensitive": true
+    },
+    "m3_information_distribution": {
+     "probability": 1.0,
+     "source": "partial_rollouts",
+     "grade": "exploratory",
+     "conditional_on_resolved": 1.0,
+     "unresolved_mass": 0.7273,
+     "interval": [
+      0.2727,
+      1.0
+     ],
+     "weight_sensitive": true
+    }
+   },
+   "recovered_probability": 0.22,
+   "probability_source": "mixed:grounded_reference_prior+partial_rollouts",
+   "grounding_grade": "exploratory",
+   "recovered_interval": [
+    0.1277,
+    0.3656
+   ],
+   "weight_sensitive": false,
+   "unresolved_mass": 0.8942,
+   "probability_conditional_on_resolved": null,
+   "recovered_by": "native_runtime_recovery",
+   "artifact_recomputation": {
+    "recovered_probability": 1.0,
+    "recovered_interval": [
+     1.0,
+     1.0
+    ],
+    "weight_sensitive": true,
+    "probability_source": "partial_rollouts",
+    "grounding_grade": "exploratory",
+    "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)",
+    "discrepancy": "artifact-side recomputation differs from the native runtime recovery (it reconstructs from a SUBSET of the runtime's inputs \u2014 per-model priors/posterior specs are not fully recoverable from the artifact); the native value is served"
+   }
   },
   {
    "qid": "741b4bed-7502-5cd2-9cbe-949fbc70f857",
@@ -290,14 +351,27 @@
     }
    },
    "recovered_probability": 0.1584,
+   "probability_source": "mixed:completed_rollouts+partial_rollouts",
+   "grounding_grade": "partially_grounded",
    "recovered_interval": [
     0.0,
     0.7922
    ],
    "weight_sensitive": true,
-   "probability_source": "mixed:completed_rollouts+partial_rollouts",
-   "grounding_grade": "exploratory",
-   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)"
+   "unresolved_mass": 0.5372,
+   "probability_conditional_on_resolved": null,
+   "recovered_by": "native_runtime_recovery",
+   "artifact_recomputation": {
+    "recovered_probability": 0.1584,
+    "recovered_interval": [
+     0.0,
+     0.7922
+    ],
+    "weight_sensitive": true,
+    "probability_source": "mixed:completed_rollouts+partial_rollouts",
+    "grounding_grade": "exploratory",
+    "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)"
+   }
   }
  ]
 }

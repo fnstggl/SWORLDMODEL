@@ -29,6 +29,25 @@ OUT = Path("experiments/results/exp110_recovered_forecasts.json")
 _P3 = re.compile(r"prior ([0-9.]+)→post ([0-9.]+)")
 
 
+def _native_row(d: dict, r: dict) -> dict | None:
+    """A checkpoint written by the post-contract runtime already carries the authoritative
+    recovery: the runtime saw strictly more inputs (per-model priors, posterior specs, the
+    ensemble mixture) than this artifact-side reader can reconstruct. When those fields are
+    present, THEY are the recovered forecast; the artifact recomputation below is attached as
+    a diagnostic only — and any disagreement is disclosed, never silently resolved."""
+    if r.get("raw_probability") is None or not r.get("probability_source"):
+        return None
+    return {"recovered_probability": r["raw_probability"],
+            "probability_source": r["probability_source"],
+            "grounding_grade": r.get("grounding_grade"),
+            "recovered_interval": r.get("uncertainty_interval"),
+            "weight_sensitive": r.get("weight_sensitive"),
+            "unresolved_mass": r.get("unresolved_mass"),
+            "probability_conditional_on_resolved":
+                r.get("probability_conditional_on_resolved"),
+            "recovered_by": "native_runtime_recovery"}
+
+
 def _posterior_mean(model_prov: dict):
     """The phase-3 posterior mean as recorded by the manifest ('N eff obs; prior a→post b')."""
     ph3 = ((model_prov.get("active_component_manifest") or {}).get("phase3_posterior") or {})
@@ -41,6 +60,7 @@ def _posterior_mean(model_prov: dict):
 def recover_checkpoint(path: Path) -> dict:
     d = json.loads(path.read_text())
     r = d["simulation_result"]
+    native = _native_row(d, r)
     prov = r.get("provenance") or {}
     pm = prov.get("per_model_provenance") or {}
     options = None
@@ -68,21 +88,40 @@ def recover_checkpoint(path: Path) -> dict:
            "original_status": d["metrics"]["status"],
            "original_p_raw": d["metrics"].get("p_raw"),
            "per_model": per_model}
+    recomputed = {}
     if per_model:
         ps = [v["probability"] for v in per_model.values() if v["probability"] is not None]
         if ps:
-            row["recovered_probability"] = round(sum(ps) / len(ps), 4)
-            row["recovered_interval"] = [round(min(ps), 4), round(max(ps), 4)]
-            row["weight_sensitive"] = (min(ps) < 0.5 < max(ps)) \
+            recomputed["recovered_probability"] = round(sum(ps) / len(ps), 4)
+            recomputed["recovered_interval"] = [round(min(ps), 4), round(max(ps), 4)]
+            recomputed["weight_sensitive"] = (min(ps) < 0.5 < max(ps)) \
                 or any(v["weight_sensitive"] for v in per_model.values())
             srcs = sorted({v["source"] for v in per_model.values() if v["source"]})
-            row["probability_source"] = srcs[0] if len(srcs) == 1 else "mixed:" + "+".join(srcs)
+            recomputed["probability_source"] = (srcs[0] if len(srcs) == 1
+                                                else "mixed:" + "+".join(srcs))
             order = ["grounded", "partially_grounded", "exploratory", "ungrounded"]
             grades = [v["grade"] for v in per_model.values() if v["grade"]]
-            row["grounding_grade"] = max(grades, key=lambda g: order.index(g)
-                                         if g in order else 2) if grades else ""
-            row["aggregation"] = "equal_weight_mixture_of_per_model_recovered_probabilities " \
-                                 "(same rule as the runtime's ensemble recovery)"
+            recomputed["grounding_grade"] = max(grades, key=lambda g: order.index(g)
+                                                if g in order else 2) if grades else ""
+            recomputed["aggregation"] = \
+                "equal_weight_mixture_of_per_model_recovered_probabilities " \
+                "(same rule as the runtime's ensemble recovery)"
+    if native is not None:
+        # post-contract checkpoint: the runtime's own recovery is authoritative
+        row.update(native)
+        if recomputed.get("recovered_probability") is not None:
+            row["artifact_recomputation"] = recomputed
+            if abs(recomputed["recovered_probability"]
+                   - native["recovered_probability"]) > 1e-6:
+                row["artifact_recomputation"]["discrepancy"] = (
+                    "artifact-side recomputation differs from the native runtime recovery "
+                    "(it reconstructs from a SUBSET of the runtime's inputs — per-model "
+                    "priors/posterior specs are not fully recoverable from the artifact); "
+                    "the native value is served")
+    else:
+        row.update(recomputed)
+        if recomputed.get("recovered_probability") is not None:
+            row["recovered_by"] = "exp110_from_stored_artifacts"
     return row
 
 

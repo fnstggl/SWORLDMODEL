@@ -9,15 +9,15 @@
  },
  "totals": {
   "full_fidelity": {
-   "n_llm_calls": 8308,
-   "input_tokens": 8786407,
-   "output_tokens": 3687046,
-   "provider_cache_hit_tokens": 2886784,
-   "wall_clock_s": 54267.2,
-   "cost_usd": 3.2813,
-   "n_scored": 2,
-   "brier": 0.3679,
-   "accuracy_at_0.5": 0.5
+   "n_llm_calls": 10995,
+   "input_tokens": 12095169,
+   "output_tokens": 5128983,
+   "provider_cache_hit_tokens": 4168704,
+   "wall_clock_s": 69936.3,
+   "cost_usd": 4.4903,
+   "n_scored": 3,
+   "brier": 0.4481,
+   "accuracy_at_0.5": 0.3333
   },
   "lean_adaptive": {
    "n_llm_calls": 1052,
@@ -37,29 +37,38 @@
    "question": "Will the Bank of Japan raise its short-term policy interest rate at the June 15\u201316, 2026 Monetary Policy Meeting?",
    "outcome": 1,
    "full_fidelity": {
-    "prediction": null,
-    "status": null,
-    "brier": null,
-    "side_of_0.5": "no_forecast",
-    "correct_side": null,
-    "llm_calls": null,
+    "prediction": 0.22,
+    "status": "under_modeled",
+    "brier": 0.6084,
+    "side_of_0.5": "no",
+    "correct_side": false,
+    "llm_calls": 2687,
     "calls_by_stage": {},
     "actor_calls": null,
     "structural_models_generated": null,
     "structural_models_simulated": null,
     "particles_by_model": null,
-    "input_tokens": null,
-    "output_tokens": null,
-    "provider_cache_hit_tokens": null,
-    "wall_clock_s": null,
-    "cost_usd": null,
-    "truncation": 0,
-    "limitation_heads": [],
-    "grounding_grade": null,
-    "probability_source": null,
-    "uncertainty_interval": null,
-    "weight_sensitive": null,
-    "probability_recovered_by": null
+    "input_tokens": 3308762,
+    "output_tokens": 1441937,
+    "provider_cache_hit_tokens": 1281920,
+    "wall_clock_s": 15669.1,
+    "cost_usd": 1.209,
+    "truncation": 5,
+    "limitation_heads": [
+     "omitted (negligible-sensitivity): Global financial market conditions",
+     "omitted (negligible-sensitivity): Detailed sectoral output data",
+     "omitted (negligible-sensitivity): geopolitical events outside information flow",
+     "omitted (negligible-sensitivity): other central bank actions",
+     "Outcome unresolved under the current model: no validated causal mechanism resolv"
+    ],
+    "grounding_grade": "exploratory",
+    "probability_source": "mixed:grounded_reference_prior+partial_rollouts",
+    "uncertainty_interval": [
+     0.1277,
+     0.3656
+    ],
+    "weight_sensitive": false,
+    "probability_recovered_by": "native_runtime_recovery"
    },
    "lean_adaptive": {
     "prediction": 0.5645,
@@ -298,12 +307,12 @@
     "frontier_skips": 0
    },
    "deltas": {
-    "llm_calls_removed": null,
-    "prediction_moved": null,
-    "side_changed": null,
-    "wall_clock_saved_s": null,
-    "input_tokens_saved": null,
-    "output_tokens_saved": null
+    "llm_calls_removed": 2572,
+    "prediction_moved": 0.3445,
+    "side_changed": true,
+    "wall_clock_saved_s": 14451.1,
+    "input_tokens_saved": 3128686,
+    "output_tokens_saved": 1307538
    }
   },
   {
@@ -578,14 +587,14 @@
      "omitted (negligible-sensitivity): international diplomatic pressure",
      "degraded: support grade exploratory; 3 fallback mechanism(s) used"
     ],
-    "grounding_grade": "exploratory",
+    "grounding_grade": "partially_grounded",
     "probability_source": "mixed:completed_rollouts+partial_rollouts",
     "uncertainty_interval": [
      0.0,
      0.7922
     ],
     "weight_sensitive": true,
-    "probability_recovered_by": "exp110_from_stored_artifacts"
+    "probability_recovered_by": "native_runtime_recovery"
    },
    "lean_adaptive": {
     "prediction": 0.435,

@@ -59,7 +59,8 @@ def _load(d: Path, qid: str) -> dict:
              "probability_source": rec.get("probability_source"),
              "uncertainty_interval": rec.get("recovered_interval"),
              "weight_sensitive": rec.get("weight_sensitive"),
-             "probability_recovered_by": "exp110_from_stored_artifacts"}
+             "probability_recovered_by": rec.get("recovered_by",
+                                                 "exp110_from_stored_artifacts")}
     return m
 
 
