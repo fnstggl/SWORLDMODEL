@@ -47,6 +47,7 @@ class WeightedWorldNode:
     delivered: dict = field(default_factory=dict)       # actor_id -> [fact records]
     pending_observations: dict = field(default_factory=dict)
     institution_state: dict = field(default_factory=dict)
+    shared_conditions: dict = field(default_factory=dict)   # {condition_id: condition_state}
     population_state: dict = field(default_factory=dict)
     resources: dict = field(default_factory=dict)
     commitments: dict = field(default_factory=dict)
@@ -78,6 +79,7 @@ class WeightedWorldNode:
             "delivered": canonicalize(self.delivered),
             "pending_observations": canonicalize(self.pending_observations),
             "institution_state": canonicalize(self.institution_state),
+            "shared_conditions": canonicalize(self.shared_conditions),
             "population_state": canonicalize(self.population_state),
             "resources": canonicalize(self.resources),
             "commitments": canonicalize(self.commitments),

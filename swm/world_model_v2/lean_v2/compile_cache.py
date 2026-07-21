@@ -29,6 +29,9 @@ PERSISTABLE_KINDS = (
     "resolution_interpretation", "evidence_canonicalization", "calendar", "institution_rules",
     "entity_aliases", "authority_graph", "procedural_rules", "action_schema",
     "consequence_templates", "blueprint_response", "blueprint_repair_response",
+    # counted historical reference classes are immutable given (question, as_of, evidence,
+    # backend) — safe to persist across runs; the cases and cutoff are baked into the key
+    "reference_class_grounding",
 )
 
 #: kinds that must NEVER persist (mutable / behavioral)

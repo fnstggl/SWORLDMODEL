@@ -128,7 +128,8 @@ class ScriptedLLM:
     def __init__(self, world: dict):
         self.world = world
         self.calls = {"blueprint": 0, "decision": 0, "repair": 0, "deliberation": 0,
-                      "novel": 0, "challenger_delta": 0, "other": 0}
+                      "novel": 0, "challenger_delta": 0, "grounding": 0, "state_gen": 0,
+                      "other": 0}
         self._lock = threading.Lock()
         self.decision_log = []
 
@@ -136,7 +137,51 @@ class ScriptedLLM:
         with self._lock:
             return self._route(prompt)
 
+    def _grounding(self) -> str:
+        # counted historical cases (all pre-as_of) — the LLM proposes CASES, never rates
+        unanimous = [{"description": f"meeting {i}", "date": f"2025-0{i}-01",
+                      "outcome": i <= 6, "source": "record",
+                      "basis_quote": "vote", "hierarchy_level": "same_institution"}
+                     for i in range(1, 9)]           # 6 of 8 unanimous → ~0.72
+        dissent = [{"description": f"m3 meeting {i}", "date": f"2025-0{i}-15",
+                    "outcome": i <= 2, "source": "record", "basis_quote": "dissent",
+                    "hierarchy_level": "same_role_same_institution"}
+                   for i in range(1, 9)]             # m3 dissents 2 of 8 → ~0.28
+        return json.dumps({
+            "shared_world_conditions": [],
+            "actor_state_reference_classes": [
+                {"actor_id": "m3", "quantity": "m3 dissents on a hold",
+                 "definition": "member m3 casts a dissenting vote", "reference_cases": dissent}],
+            "outcome_reference_class": {"quantity": "board vote is unanimous",
+                                        "definition": "5-0 vote", "reference_cases": unanimous},
+            "institutional_obligations": [
+                {"institution_id": "board", "deadline_day": "2026-06-25",
+                 "required_participants": ["m1", "m2", "m3"],
+                 "allowed_terminal_actions": ["hold", "hike"],
+                 "abstention_allowed": False, "waiting_allowed_before_deadline": True,
+                 "consequence_of_nonparticipation": "vote fails"}]})
+
+    def _state_gen(self, prompt: str) -> str:
+        # propose states per actor — NO numbers (weights come from the counted classes)
+        actors = []
+        for aid, lean in (("m1", "hold"), ("m2", "hold")):
+            actors.append({"actor_id": aid, "states": [
+                {"state_id": "aligned", "claim": f"{aid} holds", "beliefs": ["LEAN_HOLD"],
+                 "action_if_state": "hold", "reversal_capable": False}]})
+        actors.append({"actor_id": "m3", "states": [
+            {"state_id": "dove", "claim": "m3 falls in line", "beliefs": ["LEAN_HOLD"],
+             "action_if_state": "hold", "reversal_capable": False},
+            {"state_id": "dissenter", "claim": "m3 dissents", "beliefs": ["LEAN_HIKE"],
+             "action_if_state": "hike", "reversal_capable": True}]})
+        return json.dumps({"actors": actors})
+
     def _route(self, prompt: str) -> str:
+        if "assembling the GROUNDING inputs" in prompt:
+            self.calls["grounding"] += 1
+            return self._grounding()
+        if "Propose the genuinely DIFFERENT private realities" in prompt:
+            self.calls["state_gen"] += 1
+            return self._state_gen(prompt)
         if "Compile the MINIMAL terminal-relevant world" in prompt:
             self.calls["blueprint"] += 1
             return json.dumps(self.world)
@@ -209,20 +254,26 @@ def test_1_preflight_stops_impossible_rollout_before_actors_run():
     pf = res.provenance["lean_v2"]["preflight"]
     assert pf["verdict"] == "unanswerable"
     assert any("no actor simulation" in l.lower() for l in res.limitations)
-    # best defensible labeled forecast still served (grounded reference rate)
-    assert res.raw_probability == 0.7
+    # best defensible labeled forecast still served — the COUNTED outcome reference class
+    # (6 of 8 historical meetings unanimous → beta mean 0.7222), never a qualitative label
+    assert abs(res.raw_probability - 0.7222) < 1e-3
     assert res.probability_source == "grounded_reference_prior"
 
 
 def test_2_valid_rollout_passes_preflight_unchanged():
     res, llm = _run()
     assert res.provenance["lean_v2"]["preflight"]["verdict"] == "answerable"
-    assert res.simulation_status == "completed"
+    # m1/m2 carry coverage-driven unknown-state mass (single ungrounded state) → the run is
+    # honestly partially_resolved, never silently completed
+    assert res.simulation_status == "partially_resolved"
     assert res.has_forecast()
-    # p = P(m3=dove) = 0.6/(0.6+0.3) = 2/3 (support-class midpoints, normalized)
-    assert res.raw_probability is not None
-    assert abs(res.raw_probability - 0.6667) < 1e-3
-    assert res.probability_source == "completed_rollouts"
+    # the m3 dove/dissent weights are COUNTED (2 of 8 dissent → 0.28 / 0.72), NOT label
+    # midpoints; the grounded prior and simulation-conditional agree at 0.7222
+    fd = res.provenance["lean_v2"]["forecast_decomposition"]
+    assert abs(fd["grounded_prior"]["p"] - 0.7222) < 1e-3
+    assert abs(res.raw_probability - 0.7222) < 1e-2
+    law = res.provenance["lean_v2"]["engine_primary"]["grounded_weight_law"]["m3"]
+    assert abs(law["dissenter"] - 0.2778) < 1e-3   # counted, not a 0.15-0.45 label range
     assert res.provenance["execution_profile"] == "lean_v2"
 
 

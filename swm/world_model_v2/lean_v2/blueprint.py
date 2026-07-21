@@ -25,13 +25,12 @@ from swm.world_model_v2.lean_v2 import SCHEMA_VERSION
 
 _WS = re.compile(r"\s+")
 
-#: deterministic mapping of qualitative variant support -> broad defensible weight RANGE
-#: (lo, mid, hi). Never a precise LLM number; sensitivity runs across the ranges.
-SUPPORT_WEIGHT_RANGES = {
-    "well_supported": (0.45, 0.60, 0.75),
-    "plausible": (0.15, 0.30, 0.45),
-    "speculative": (0.02, 0.10, 0.25),
-}
+#: REMOVED from the forecast path (accuracy fix §1): a qualitative support label may NEVER be
+#: mapped to a probability. State/world weights now come ONLY from counted reference classes
+#: (lean_v2/grounding.py + states.py). The `support` label survives on a variant purely as a
+#: RETENTION/retrieval hint (which states to keep, whether to widen uncertainty) — it never
+#: becomes a number. This name is intentionally gone; any import of it is a regression.
+_SUPPORT_LABELS_FOR_RETENTION_ONLY = ("well_supported", "plausible", "speculative")
 
 DECISION_RULES = ("unanimity", "majority", "single", "all_option", "threshold")
 
@@ -417,10 +416,10 @@ def validate_blueprint(bp: ConsumerWorldBlueprint, *, as_of: str, horizon: str,
                  "why": "basis_quote not found verbatim in evidence" if not ok_quote
                  else "malformed value_range"})
 
-    # variant support classes normalize deterministically
+    # the `support` label is a RETENTION hint only (never a weight); normalize its vocabulary
     for a in bp.actors:
         for v in a.get("private_state_variants") or []:
-            if str(v.get("support")) not in SUPPORT_WEIGHT_RANGES:
+            if str(v.get("support")) not in _SUPPORT_LABELS_FOR_RETENTION_ONLY:
                 v["support"] = "speculative"
     return fails
 

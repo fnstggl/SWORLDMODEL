@@ -35,8 +35,11 @@ from swm.world_model_v2.lean_context import (DecisionRelevantContext,
 from swm.world_model_v2.lean_decision_cache import (ActorDecisionTemplate,
                                                     DecisionEquivalenceCache)
 from swm.world_model_v2.lean_v2 import PROMPT_VERSION
-from swm.world_model_v2.lean_v2.blueprint import (SUPPORT_WEIGHT_RANGES,
-                                                  ConsumerWorldBlueprint, norm, parse_day)
+from swm.world_model_v2.lean_v2.blueprint import (ConsumerWorldBlueprint, norm, parse_day)
+from swm.world_model_v2.lean_v2.obligations import is_deadline
+
+#: the explicit unknown-state variant id (never gets the prior, the average action, or 0.5)
+UNKNOWN_STATE = "__other_unknown_state__"
 from swm.world_model_v2.lean_v2.consequences import TemplateExecutor, compile_novel_action
 from swm.world_model_v2.lean_v2.deliberation import classify_limitation, run_deliberation
 from swm.world_model_v2.lean_v2.gateway import BudgetExhausted
@@ -103,12 +106,16 @@ class EngineResult:
     p_low: float = None
     p_high: float = None
     weight_sensitive: bool = False
+    dependence_sensitive: bool = False
+    dependence_range: tuple = None
     decisions_manifest: dict = field(default_factory=dict)
     deliberations: list = field(default_factory=list)
     escalations: list = field(default_factory=list)
     promotions: list = field(default_factory=list)
     avoided_reasks: list = field(default_factory=list)
     node_audit: list = field(default_factory=list)
+    node_audit_full: list = field(default_factory=list)
+    decision_trace: list = field(default_factory=list)
     unresolved_reasons: dict = field(default_factory=dict)
 
     def distribution(self) -> dict:
@@ -131,7 +138,10 @@ class WaveEngine:
                  config: EngineConfig = None,
                  coalescer: WeightedBranchCoalescer = None,
                  decision_cache: DecisionEquivalenceCache = None,
-                 structural_model: str = "primary"):
+                 structural_model: str = "primary",
+                 grounded_weights: dict = None, obligations: dict = None,
+                 shared_world: dict = None, shared_world_combos: list = None,
+                 grounded_weights_by_combo: dict = None):
         self.bp = bp
         self.kept = list(kept_actors)
         self.promotable = set(promotable or [])
@@ -139,6 +149,17 @@ class WaveEngine:
         self.gateway = gateway
         self.ledger = budget_ledger
         self.cache = compile_cache
+        # GROUNDED WEIGHTS ONLY: {actor_id: {"mid": {vid: w}, "rng": {vid: (lo,mid,hi)},
+        # "unknown": mass, "prov": {...}}} computed by ActorStatePosteriorEngine from COUNTED
+        # reference classes. No qualitative label is ever mapped to a number in this engine.
+        self.grounded_weights = grounded_weights or {}
+        self.obligations = obligations or {}          # institution_id -> ParticipationObligation
+        self.shared_world = dict(shared_world or {})  # {condition_id: condition_state} (MAP)
+        # shared-world uncertainty: [(combo_dict, counted_weight)]; each seeds a weighted root
+        # sharing the decision cache. Per-combo grounded weights encode the actor-state
+        # correlation induced by the shared common cause (conditional independence given combo).
+        self.shared_world_combos = shared_world_combos or []
+        self.grounded_weights_by_combo = grounded_weights_by_combo or {}
         self.cfg = config or EngineConfig()
         self.coalescer = coalescer or WeightedBranchCoalescer(
             max_nodes=budget_ledger.budget.max_weighted_nodes)
@@ -161,26 +182,68 @@ class WaveEngine:
             public_facts=[norm(t.get("what"), 120) for t in bp.temporal_anchors])
         self.result = EngineResult(options=[str(o) for o in
                                             (bp.resolution.get("options") or [])][:2])
-        self.variant_mid: dict = {}          # actor -> {variant: normalized mid weight}
-        self.variant_rng: dict = {}          # actor -> {variant: (lo_n, mid_n, hi_n)}
+        self.variant_mid: dict = {}          # actor -> {variant: grounded weight} (MAP combo)
+        self.variant_rng: dict = {}          # actor -> {variant: (lo, mid, hi)} (MAP combo)
+        self.variant_mid_by_combo: dict = {}  # combo_key -> {actor -> {variant: weight}}
+        self.actor_unknown: dict = {}        # actor -> unknown-state mass (never label-derived)
         self._delib_done: dict = {}          # context_hash -> (revised_r, record)
+        self.result.decision_trace = []
         self._lock = threading.RLock()
-        self._precompute_variant_weights()
+        self._load_grounded_weights()
+
+    @staticmethod
+    def _combo_key(combo: dict) -> str:
+        return json.dumps(combo or {}, sort_keys=True)
+
+    def _normalize_actor_weights(self, gw: dict) -> tuple:
+        """One actor's grounded weights → (normalized mid, normalized rng, unknown). An actor
+        with NO counted basis gets all mass on the explicit unknown state — never a label or
+        uniform number."""
+        mid = {vid: w for vid, w in (gw.get("mid") or {}).items() if w > 0}
+        rng = dict(gw.get("rng") or {})
+        unknown = float(gw.get("unknown", 0.0))
+        if not mid:
+            unknown = 1.0
+        if unknown > 1e-9:
+            mid[UNKNOWN_STATE] = round(unknown, 6)
+            rng[UNKNOWN_STATE] = (unknown, unknown, unknown)
+        z = sum(mid.values()) or 1.0
+        return ({vid: w / z for vid, w in mid.items()},
+                {vid: tuple(x / z for x in r) for vid, r in rng.items() if vid in mid},
+                round(unknown, 6))
 
     # ---------------------------------------------------------------- variant weight law
-    def _precompute_variant_weights(self):
+    def _load_grounded_weights(self):
+        """Load the COUNTED per-actor weights (ActorStatePosteriorEngine) for the MAP combo and
+        for every shared-world combo. No qualitative label becomes a number here."""
         for a in self.bp.actors:
-            variants = a.get("private_state_variants") or []
-            if not variants:
+            aid = a["id"]
+            if not (a.get("private_state_variants") or []):
                 continue
-            rows = []
-            for v in variants[:3]:
-                lo, mid, hi = SUPPORT_WEIGHT_RANGES[str(v.get("support", "speculative"))]
-                rows.append((str(v.get("variant_id") or f"v{len(rows)}"), lo, mid, hi))
-            zmid = sum(r[2] for r in rows) or 1.0
-            self.variant_mid[a["id"]] = {vid: mid / zmid for vid, _lo, mid, _hi in rows}
-            self.variant_rng[a["id"]] = {vid: (lo, mid / zmid, hi)
-                                         for vid, lo, mid, hi in rows}
+            mid, rng, unknown = self._normalize_actor_weights(
+                self.grounded_weights.get(aid) or {})
+            self.variant_mid[aid] = mid
+            self.variant_rng[aid] = rng
+            self.actor_unknown[aid] = unknown
+        for combo, _w in (self.shared_world_combos or [{}]) if self.shared_world_combos \
+                else [(self.shared_world, 1.0)]:
+            ck = self._combo_key(combo)
+            gwc = self.grounded_weights_by_combo.get(ck) or self.grounded_weights
+            table = {}
+            for a in self.bp.actors:
+                aid = a["id"]
+                if not (a.get("private_state_variants") or []):
+                    continue
+                mid, _rng, _u = self._normalize_actor_weights(gwc.get(aid) or {})
+                table[aid] = mid
+            self.variant_mid_by_combo[ck] = table
+
+    def _combo_mid(self, nd: WeightedWorldNode, actor_id: str) -> dict:
+        """The grounded weight table for an actor IN THIS NODE's shared world (falls back to
+        the MAP table)."""
+        ck = self._combo_key(nd.shared_conditions)
+        return (self.variant_mid_by_combo.get(ck, {}).get(actor_id)
+                or self.variant_mid.get(actor_id, {}))
 
     # ---------------------------------------------------------------- world seeding
     def seed_root(self, *, as_of: str, horizon: str) -> WeightedWorldNode:
@@ -215,9 +278,24 @@ class WaveEngine:
                 n.delivered[a["id"]] = []
         return n
 
+    def seed_roots(self, *, as_of: str, horizon: str) -> list:
+        """One weighted root per shared-world combo (counted weights), else a single root.
+        Different shared worlds never merge (shared_conditions is in the equivalence key)."""
+        combos = self.shared_world_combos or [(self.shared_world, 1.0)]
+        total = sum(w for _c, w in combos) or 1.0
+        roots = []
+        for i, (combo, w) in enumerate(combos):
+            r = self.seed_root(as_of=as_of, horizon=horizon)
+            r.node_id = f"w0_sw{i}"
+            r.weight = round(w / total, 6)
+            r.weight_range = (r.weight, r.weight)
+            r.shared_conditions = dict(combo)
+            roots.append(r)
+        return roots
+
     # ---------------------------------------------------------------- the wave loop
     def run(self, *, as_of: str, horizon: str) -> EngineResult:
-        nodes = [self.seed_root(as_of=as_of, horizon=horizon)]
+        nodes = self.seed_roots(as_of=as_of, horizon=horizon)
         hor = parse_day(horizon) or parse_day(self.bp.terminal.get("evaluation_day"))
         for _wave in range(self.cfg.max_waves):
             days = [e["day"] for nd in nodes for e in nd.event_queue
@@ -250,16 +328,16 @@ class WaveEngine:
                               if e["day"] == day and e["etype"] == "decision_trigger"]
                 split_actor = next((a for a in due_actors
                                     if not nd.actor_variant.get(a)
-                                    and len(self.variant_mid.get(a, {})) > 1), None)
+                                    and len(self._combo_mid(nd, a)) > 1), None)
                 if split_actor is None:
                     for a in due_actors:
-                        if not nd.actor_variant.get(a) \
-                                and len(self.variant_mid.get(a, {})) == 1:
-                            self._assign_variant(nd, a, next(iter(self.variant_mid[a])))
+                        cm = self._combo_mid(nd, a)
+                        if not nd.actor_variant.get(a) and len(cm) == 1:
+                            self._assign_variant(nd, a, next(iter(cm)))
                     out_nodes.append(nd)
                     continue
                 parts = []
-                for vid, w in sorted(self.variant_mid[split_actor].items()):
+                for vid, w in sorted(self._combo_mid(nd, split_actor).items()):
                     parts.append((f"{split_actor[:8]}-{vid}", w,
                                   self._variant_mutator(split_actor, vid)))
                 out_nodes.extend(self.coalescer.split(nd, parts))
@@ -272,8 +350,12 @@ class WaveEngine:
                             key=lambda e: (e.get("order", 5), str(e.get("actor_id", "")))):
                 if e["etype"] == "decision_trigger":
                     aid = e["actor_id"]
-                    if not nd.actor_variant.get(aid) and self.variant_mid.get(aid):
+                    if not nd.actor_variant.get(aid) and self._combo_mid(nd, aid):
                         continue             # split next wave (same day re-queued)
+                    if nd.actor_variant.get(aid) == UNKNOWN_STATE:
+                        # the actor is in an unmodeled private reality — we do NOT invent a
+                        # decision for it; its terminal contribution is unknown-state mass
+                        continue
                     if self._skip_reask(nd, e, aid):
                         continue
                     ctx = self._build_context(nd, aid, e)
@@ -308,10 +390,14 @@ class WaveEngine:
         return _m
 
     def _assign_variant(self, nd: WeightedWorldNode, actor_id: str, variant_id: str):
+        nd.actor_variant[actor_id] = variant_id
+        if variant_id == UNKNOWN_STATE:
+            # explicit unmodeled reality — no invented beliefs, no invented action
+            nd.actor_states[actor_id] = {"__unknown_state__": True}
+            return
         a = self.bp.actor_by_id(actor_id) or {}
         v = next((v for v in a.get("private_state_variants") or []
                   if str(v.get("variant_id")) == variant_id), None)
-        nd.actor_variant[actor_id] = variant_id
         state = dict((v or {}).get("state") or {})
         nd.actor_states[actor_id] = {
             "beliefs": [norm(b, 200) for b in state.get("beliefs") or []],
@@ -373,7 +459,17 @@ class WaveEngine:
             return True
         return False
 
-    def _menu(self, aid: str) -> list:
+    def _menu(self, aid: str, trigger_etype: str = "") -> list:
+        # at a mandatory-terminal reopening the menu is RESTRICTED to the procedurally-allowed
+        # terminal actions (a vote option, plus abstain/recuse/absent/delegate ONLY if the
+        # institution permits them) — the substantive choice is never forced, but "keep waiting"
+        # is no longer on the menu once the deadline has arrived
+        if trigger_etype == "mandatory_terminal":
+            ob = self._obligation_for(aid)
+            if ob is not None:
+                acts = ob.terminal_action_set()
+                return [{"line": f"cast_vote: choose exactly one — {', '.join(acts)}",
+                         "terminal_actions": acts}]
         lines = []
         for t in self.executor.templates.values():
             if t.actor_ids and aid not in t.actor_ids:
@@ -385,6 +481,46 @@ class WaveEngine:
                         str(o) for o in eff["params"]["options"][:6])
             lines.append({"line": f"{t.action_id}: {t.description}{opts}"})
         return lines
+
+    def _obligation_for(self, actor_id: str):
+        for ob in self.obligations.values():
+            if actor_id in (ob.required_participants or []):
+                return ob
+        return None
+
+    def _schedule_mandatory_terminal(self, nd: WeightedWorldNode, actor_id: str, day: str,
+                                     *, current_trigger: dict) -> bool:
+        """A required participant who waits must face the terminal decision at the deadline.
+        Returns True when a reopening was scheduled or an abstention was executed."""
+        ob = self._obligation_for(actor_id)
+        if ob is None or not ob.deadline_day:
+            return False
+        if is_deadline(ob, day):
+            # already at/past the deadline and still not voting: if abstention is permitted it
+            # is an EXECUTED institutional action; otherwise it stays honestly unresolved (a
+            # required participant who refused every allowed action — rare, disclosed)
+            if current_trigger.get("trigger_etype") == "mandatory_terminal":
+                if ob.abstention_allowed:
+                    inst = ob.institution_id
+                    nd.institution_state.setdefault(inst, {}).setdefault(
+                        "votes", {})[actor_id] = "__abstain__"
+                    return True
+                nd.unresolved_reason = f"required_participant_no_terminal_action:{actor_id}"
+                return True
+            return False
+        # before the deadline: reopen the decision AT the deadline with the terminal menu
+        if any(x.get("etype") == "decision_trigger"
+               and x.get("actor_id") == actor_id
+               and x.get("trigger_etype") == "mandatory_terminal"
+               and x.get("day") == ob.deadline_day for x in nd.event_queue):
+            return True
+        nd.event_queue.append({"day": ob.deadline_day, "order": 2,
+                               "etype": "decision_trigger", "actor_id": actor_id,
+                               "situation": f"the {ob.institution_id} decision deadline has "
+                                            f"arrived — you must now cast one of the allowed "
+                                            f"terminal actions",
+                               "trigger_etype": "mandatory_terminal"})
+        return True
 
     def _build_context(self, nd: WeightedWorldNode, aid: str, e: dict
                        ) -> DecisionRelevantContext:
@@ -422,7 +558,8 @@ class WaveEngine:
             resources=sorted(nd.resources.get(aid, [])),
             action_history=[norm(nd.prior_decisions.get(aid, {}).get("chosen", ""), 60)]
             if nd.prior_decisions.get(aid) else [],
-            feasible_actions=[m["line"] for m in self._menu(aid)],
+            feasible_actions=[m["line"] for m in
+                              self._menu(aid, str(e.get("trigger_etype") or ""))],
             day=e["day"], public_facts_hash=self.builder.public_facts_hash,
             prior_decision={k: norm(str(v), 120) for k, v in
                             (nd.prior_decisions.get(aid) or {}).items()
@@ -594,6 +731,14 @@ class WaveEngine:
         dec = r.get("decision") or {}
         act = str(dec.get("act_or_wait") or "act").lower()
         chosen = norm(dec.get("chosen_action"), 160)
+        with self._lock:
+            self.result.decision_trace.append(
+                {"actor": ctx.actor_id, "node": nd.node_id, "day": day,
+                 "variant": nd.actor_variant.get(ctx.actor_id),
+                 "trigger": e.get("trigger_etype"),
+                 "act_or_wait": act, "chosen": chosen,
+                 "vote_option": norm(dec.get("vote_option"), 40),
+                 "context_hash": sig[:16]})
         # state update (branch-local; the template is immutable)
         upd = r.get("actor_state_update") or {}
         st = nd.actor_states.setdefault(ctx.actor_id, {})
@@ -609,7 +754,12 @@ class WaveEngine:
         kind, detail = classify_limitation(
             r, available_fact_ids={o["obs_id"] for o in ctx.observations})
         if act in ("wait", "gather_information", "delegate", "do_nothing"):
-            if kind == "information":
+            # MANDATORY PARTICIPATION: if this actor is a required participant of an
+            # institution with a deadline, waiting is fine now but the decision MUST reopen at
+            # the deadline with the terminal feasible set — a wait never leaves the vote missing.
+            reopened = self._schedule_mandatory_terminal(nd, ctx.actor_id, day,
+                                                         current_trigger=e)
+            if kind == "information" and not reopened:
                 # schedule reconsideration for when new information could arrive
                 nxt = min((x["day"] for x in nd.event_queue if x["day"] > day),
                           default=None)
@@ -627,6 +777,21 @@ class WaveEngine:
                                           "observers": ["public"],
                                           "source": ctx.actor_id, "day": day})
             return
+        # mandatory-terminal non-vote actions (abstain/recuse/absent/delegate) are EXECUTED
+        # institutional actions when permitted — recorded directly on the vote tally
+        if e.get("trigger_etype") == "mandatory_terminal":
+            ob = self._obligation_for(ctx.actor_id)
+            terminal_kw = self._terminal_action_kind(chosen, dec)
+            if ob is not None and terminal_kw in ("abstain", "recuse", "be_absent",
+                                                  "delegate"):
+                allowed = {"abstain": ob.abstention_allowed, "recuse": ob.recusal_allowed,
+                           "be_absent": ob.absence_allowed,
+                           "delegate": ob.delegation_allowed}.get(terminal_kw, False)
+                if allowed:
+                    nd.institution_state.setdefault(ob.institution_id, {}).setdefault(
+                        "votes", {})[ctx.actor_id] = f"__{terminal_kw}__"
+                    return
+                # not permitted → the actor must choose an allowed action; fall through to vote
         # act: bind + validate + execute mechanically
         t = self.executor.find(chosen)
         if t is None:
@@ -704,6 +869,16 @@ class WaveEngine:
         return any(actor_id in (t.actor_ids or []) for t in self.executor.templates.values()
                    if t.writes_terminal)
 
+    @staticmethod
+    def _terminal_action_kind(chosen: str, dec: dict) -> str:
+        c = (norm(chosen, 60) + " " + norm(dec.get("act_or_wait"), 30)).lower()
+        for kw in ("abstain", "recuse", "delegate"):
+            if kw in c:
+                return kw
+        if "absent" in c or "absence" in c:
+            return "be_absent"
+        return "vote"
+
     # ---------------------------------------------------------------- terminal evaluation
     def _evaluate_terminal(self, nd: WeightedWorldNode, day: str):
         term = self.bp.terminal
@@ -712,30 +887,50 @@ class WaveEngine:
             inst = self.bp.institution_by_id(term.get("institution_id")) or {}
             members = list(inst.get("members") or [])
             votes = (nd.institution_state.get(inst.get("id")) or {}).get("votes", {})
+            # a member on the explicit unknown state has an unmodeled vote → unknown-state mass
+            unknown_members = [m for m in members
+                               if nd.actor_variant.get(m) == UNKNOWN_STATE]
+            if unknown_members:
+                nd.unresolved_reason = f"unknown_state:{','.join(unknown_members[:5])}"
+                nd.terminal = {"resolved": False, "day": day,
+                               "detail": nd.unresolved_reason}
+                return
             missing = [m for m in members if m not in votes]
             if missing:
+                # missing only matters BEFORE the deadline; at/after it, a still-missing
+                # required participant is the (rare) no-terminal-action case already recorded
                 nd.unresolved_reason = f"votes_missing:{','.join(missing[:5])}"
                 nd.terminal = {"resolved": False, "day": day,
                                "detail": nd.unresolved_reason}
                 return
             rule = str(term.get("decision_rule") or inst.get("decision_rule") or "unanimity")
-            vals = [votes[m] for m in members]
+            # abstain/recuse/absent are EXECUTED institutional actions with a rule-defined
+            # effect: they are not substantive votes, so a unanimity rule over substantive
+            # votes is broken by any non-substantive terminal action (a 4-1 with one abstention
+            # is NOT a 5-0 unanimous vote)
+            substantive = {m: v for m, v in votes.items()
+                           if not str(v).startswith("__")}
+            non_substantive = [m for m in members if str(votes.get(m, "")).startswith("__")]
+            vals = [substantive[m] for m in members if m in substantive]
             if rule == "unanimity":
-                yes = len(set(vals)) == 1
+                yes = (len(non_substantive) == 0 and len(vals) == len(members)
+                       and len(set(vals)) == 1)
             elif rule in ("all_option", "single"):
                 opt = str((term.get("rule_params") or {}).get("option") or "")
-                yes = all(v == opt for v in vals) if opt else len(set(vals)) == 1
+                yes = (len(non_substantive) == 0
+                       and (all(v == opt for v in vals) if opt else len(set(vals)) == 1))
             elif rule in ("majority", "threshold"):
                 opt = str((term.get("rule_params") or {}).get("option") or
-                          max(set(vals), key=vals.count))
+                          (max(set(vals), key=vals.count) if vals else ""))
                 need = float((term.get("rule_params") or {}).get("threshold") or 0.5)
-                yes = (vals.count(opt) / max(1, len(vals))) > need
+                yes = (vals.count(opt) / max(1, len(members))) > need
             else:
                 nd.unresolved_reason = f"unknown_rule:{rule}"
                 nd.terminal = {"resolved": False, "day": day, "detail": nd.unresolved_reason}
                 return
             nd.terminal = {"resolved": True, "outcome": "YES" if yes else "NO",
-                           "day": day, "detail": {"votes": dict(votes), "rule": rule}}
+                           "day": day, "detail": {"votes": dict(votes), "rule": rule,
+                                                  "non_substantive": non_substantive}}
         elif tk == "event_occurs":
             key = norm(term.get("yes_when"), 80) or "occurred"
             yes = bool(nd.world_state.get(key))
@@ -766,20 +961,26 @@ class WaveEngine:
                                                                nd.unresolved_reason or
                                                                "unresolved"),
                                    "ancestry_n": len(nd.ancestry)})
+        res.node_audit_full = res.node_audit
         res.truncated_mass = self.coalescer.truncated_mass
         res.terminal_nodes = len(nodes)
         resolved = res.yes_mass + res.no_mass
         if resolved > 0:
             res.p_mid = round(res.yes_mass / resolved, 4)
-        res.p_low, res.p_high = self._weight_sensitivity(nodes)
+        # weight sensitivity across the GROUNDED counted-rate intervals (never label ranges)
+        res.p_low, res.p_high = self._grounded_weight_sensitivity(nodes)
         if res.p_low is not None and res.p_high is not None:
             res.weight_sensitive = res.p_low < 0.5 < res.p_high
+        # dependence sensitivity: recompute under the independent vs comonotonic (shared-cause
+        # locked) structures — when the answer flips, the joint dependence is unidentified
+        res.dependence_sensitive, res.dependence_range = self._dependence_sensitivity(nodes)
         res.decisions_manifest = self.decisions.manifest()
 
-    def _weight_sensitivity(self, nodes: list) -> tuple:
-        """Bounded corner sweep across the grounded variant weight RANGES: per actor, the mid
-        law plus each variant pushed to its range extreme (others scaled), cartesian across
-        actors, capped. Exact node reweighting via the recorded variant assignments."""
+    def _grounded_weight_sensitivity(self, nodes: list) -> tuple:
+        """Bounded corner sweep across the COUNTED reference-class intervals (variant_rng holds
+        the beta-binomial (lo, mid, hi) per state — from grounding, not from any label). Each
+        actor's variant is pushed to its counted-interval extremes; exact node reweighting via
+        the recorded variant assignments."""
         actors = [a for a in self.variant_rng if len(self.variant_rng[a]) > 1]
         term_nodes = [nd for nd in nodes if nd.terminal.get("resolved")]
         if not term_nodes:
@@ -830,6 +1031,38 @@ class WaveEngine:
             return None, None
         return round(p_lo, 4), round(p_hi, 4)
 
+    def _dependence_sensitivity(self, nodes: list) -> tuple:
+        """(dependence_sensitive, (p_independent, p_comonotonic)). The node weights already
+        encode conditional independence given the shared conditions (the independent structure).
+        The comonotonic structure locks correlated actors to move together: worlds where the
+        correlated actors' states AGREE (all aligned / all opposed) keep their mass, mixed
+        worlds are downweighted. When the two structures put the answer on different sides of
+        0.5 the joint dependence is unidentified and the result is dependence_sensitive."""
+        term = [nd for nd in nodes if nd.terminal.get("resolved")]
+        if not term or self.result.p_mid is None:
+            return False, None
+        corr_actors = [a for a in self.variant_mid if len(self.variant_mid[a]) > 1]
+        if len(corr_actors) < 2:
+            return False, (self.result.p_mid, self.result.p_mid)
+        # comonotonic: keep only worlds where correlated actors share the SAME leaning label
+        # (first token of their assigned variant id), collapsing cross-actor independence
+        def leaning(vid: str) -> str:
+            return str(vid).split("-")[-1].split("_")[0][:6]
+        yes_c = no_c = 0.0
+        for nd in term:
+            leanings = {leaning(nd.actor_variant.get(a, "")) for a in corr_actors
+                        if nd.actor_variant.get(a)}
+            if len(leanings) > 1:
+                continue                          # mixed world excluded under full correlation
+            if nd.terminal.get("outcome") == "YES":
+                yes_c += nd.weight
+            else:
+                no_c += nd.weight
+        p_comono = round(yes_c / (yes_c + no_c), 4) if (yes_c + no_c) > 0 else self.result.p_mid
+        p_indep = self.result.p_mid
+        sensitive = (min(p_indep, p_comono) < 0.5 < max(p_indep, p_comono))
+        return sensitive, (round(min(p_indep, p_comono), 4), round(max(p_indep, p_comono), 4))
+
     def manifest(self) -> dict:
         return {"waves": self.result.waves,
                 "decisions": self.result.decisions_manifest,
@@ -838,6 +1071,15 @@ class WaveEngine:
                 "promotions": self.result.promotions,
                 "avoided_reasks": self.result.avoided_reasks,
                 "coalescer": self.coalescer.manifest(),
-                "variant_weight_law": {a: dict(v) for a, v in self.variant_mid.items()},
-                "variant_weight_ranges": {a: {vid: list(r) for vid, r in v.items()}
-                                          for a, v in self.variant_rng.items()}}
+                "decision_trace": self.result.decision_trace[:200],
+                "node_audit_full": self.result.node_audit_full,
+                "dependence_sensitive": self.result.dependence_sensitive,
+                "dependence_range": (list(self.result.dependence_range)
+                                     if self.result.dependence_range else None),
+                "shared_world": dict(self.shared_world),
+                "actor_unknown_mass": {a: m for a, m in self.actor_unknown.items()},
+                "grounded_weight_law": {a: dict(v) for a, v in self.variant_mid.items()},
+                "grounded_weight_intervals": {a: {vid: list(r) for vid, r in v.items()}
+                                              for a, v in self.variant_rng.items()},
+                "weight_source": "counted_reference_class_posteriors (no qualitative label is "
+                                 "mapped to a number anywhere in this engine)"}

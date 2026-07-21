@@ -22,7 +22,10 @@ ROUTING_VERSION = "lean.routing.v1"
 #: stages that may NEVER be routed below the strong tier (§15)
 STRONG_ONLY_STAGES = ("actor_decision", "actor_cognition", "structural_generation",
                       "structural_compile", "structural_critic", "consequence_compile",
-                      "evidence_interpretation_high_impact")
+                      "evidence_interpretation_high_impact",
+                      # reference-class case proposal is high-impact grounding — a weak model
+                      # here would propose worse historical cases; pinned strong
+                      "reference_class_grounding", "state_generation")
 
 #: default light-tier-eligible stages (low-risk language work)
 LIGHT_ELIGIBLE_STAGES = ("query_reformulation", "title_normalization", "schema_format_repair",
