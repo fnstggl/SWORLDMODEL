@@ -1,0 +1,135 @@
+{
+ "label": "Wale",
+ "qid": "741b4bed-7502-5cd2-9cbe-949fbc70f857",
+ "question": "Will Matthew Wale be elected as the next Prime Minister of Solomon Islands following the May 2026 no-confidenc",
+ "horizon_days": 13.1,
+ "A1_grounded_prior": {
+  "reference_class": "no-confidence votes in Pacific Island nations leading to immediate replacement of prime minister",
+  "stage": "formally_initiated",
+  "base_rate": 0.05,
+  "status_quo": "If no decisive change occurs, the no-confidence vote may fail or be delayed, and Matthew Wale will not become prime minister; the status quo (current PM remains) is the likely outcome.",
+  "is_recurrence": false,
+  "transport_risk": "moderate",
+  "evidence_quality": "model_memory"
+ },
+ "A2_evidence_sufficiency": null,
+ "A2_posterior_consumed": true,
+ "A3_operator_census": {
+  "evidence_observation": 800,
+  "scheduled_fact": 400,
+  "production_actor_policy": 220,
+  "background_dynamics": 195,
+  "institutional_decision": 19,
+  "absorption_monitor": 6,
+  "actor_action_aggregation": 4
+ },
+ "A4_status": "under_modeled",
+ "A4_has_forecast": true,
+ "A4_under_modeled_subtypes": [
+  "under_modeled_boundary",
+  "under_modeled_external_process",
+  "under_modeled_nonhuman_mechanism"
+ ],
+ "A5_grounded_outside_view_fallback": null,
+ "A6_n_models": 4,
+ "A6_aggregation": "grounded_weighted_simulation",
+ "A6_structural_sensitivity": "ensemble_execution_incomplete",
+ "W_outside_view": 0.1526,
+ "W_simulation_derived": 1.0,
+ "W_final_combined": 0.286489,
+ "W_final_source": "weighted_simulation",
+ "W_final_reason": "1 valid simulated world(s) produced a grounded weighted forecast (headline=1.0); outside-view baseline 0.1526 reported; combined=0.286489 (alpha=0.158 shrink toward baseline)",
+ "W_confidence_alpha": 0.158,
+ "W_n_worlds_valid": 1,
+ "W_world_weights": [
+  {
+   "model_id": "m3_information_distribution",
+   "weight": 1.0,
+   "p_yes": 1.0,
+   "plausibility": 0.15,
+   "objective_quality": 0.1472,
+   "rationale": "Setup is plausible but highly speculative given no evidence; behavior unrealistic due to 94% unresolved rate, indicating simulation failure.",
+   "citations": [
+    "No evidence available; historical base rate for no-confidence votes in Solomon Islands is low (e.g., only one successful no-confidence motion in 2014-2019 term)",
+    "Institutional rule: Parliament requires majority vote for removal; no evidence of opposition consolidation."
+   ],
+   "unsupported_assumptions": [
+    "Assumes effective opposition information channels exist without evidence.",
+    "Assumes foreign diplomatic missions actively fund media campaigns.",
+    "Assumes village chiefs and church networks reliably cascade information."
+   ],
+   "merged_from": []
+  }
+ ],
+ "W_spread": 0.0,
+ "W_rejected_worlds": [
+  {
+   "model_id": "m2_resource_constraint",
+   "reason": "no_simulated_distribution"
+  },
+  {
+   "model_id": "m4_adversarial_alternative",
+   "reason": "no_simulated_distribution"
+  },
+  {
+   "model_id": "m5_adversarial_alternative",
+   "reason": "no_simulated_distribution"
+  }
+ ],
+ "W_merge_records": [],
+ "W_interpretation_hypotheses": [
+  {
+   "model_id": "m2_resource_constraint",
+   "thesis": "The outcome of the no-confidence vote is determined by whether the coalition supporting Prime Minister Wale can secure the physical attendance and timely procedural votes of at least 22 MPs, given the severe logistical constraints of Solomon Islands' geography and limited transport capacity."
+  },
+  {
+   "model_id": "m3_information_distribution",
+   "thesis": "The outcome is determined by whether the opposition can consolidate a unified voting bloc through effective information channels and media narratives, overcoming the government's control of state communication networks and patronage-based attention flows."
+  },
+  {
+   "model_id": "m4_adversarial_alternative",
+   "thesis": "The outcome is determined by whether the judiciary upholds the constitutional requirement that the motion name a successor, potentially invalidating a vague motion and delaying the vote beyond the horizon."
+  },
+  {
+   "model_id": "m5_adversarial_alternative",
+   "thesis": "The outcome is determined by whether foreign powers (Australia, China, or regional organizations) can credibly threaten or promise aid, security, or diplomatic recognition to individual MPs, overriding local patronage."
+  }
+ ],
+ "p": 1.0,
+ "raw_distribution": {
+  "Matthew Wale elected PM": 1.0,
+  "Other candidate elected PM": 0.0
+ },
+ "A8_wall_s": 8873.5,
+ "A8_timing_wrapper": {
+  "true_backend_calls": 610,
+  "llm_wall_s_total": 5874.4,
+  "call_s_mean": 9.63,
+  "call_s_median": 8.61,
+  "call_s_max": 48.83
+ },
+ "A8_ledger_total_calls": 595,
+ "A8_calls_by_stage": {
+  "structural_generation": 6,
+  "structural_critic": 8,
+  "structural_compile": 6,
+  "model_conditioning": 113,
+  "actor_rollout": 462
+ },
+ "A8_calls_by_model": {
+  "m0_actor_relationship": 39,
+  "m1_institutional_procedural": 22,
+  "m2_resource_constraint": 106,
+  "m3_information_distribution": 85,
+  "m4_adversarial_alternative": 168,
+  "m5_adversarial_alternative": 161
+ },
+ "A8_incremental_multiplier": 6.2,
+ "limitations": [
+  "Outcome unresolved under the current model: no validated causal mechanism resolves the outcome \u2014 the missing mechanisms are named in resolution_report.missing_mechanisms; no broad-prior, family-rate or neutral-default mass was manufactured (\u00a7NAP)",
+  "causal_boundary: structurally under-modeled \u2014 AttributeError: 'list' object has no attribute 'items'; attempts preserved, external effects unresolved (fixed-v1 NOT served)",
+  "degraded: support grade exploratory; 3 fallback mechanism(s) used",
+  "truncated: 81% of branches stopped before causal quiescence (actor_llm_budget_exhausted) \u2014 pending events/actors recorded; consequential recommendations are withheld at this support level",
+  "Outcome unresolved under the current model: no validated causal mechanism resolves the outcome \u2014 the missing mechanisms are named in resolution_report.missing_mechanisms; no broad-prior, family-rate or neutral-default mass was manufactured (\u00a7NAP)"
+ ]
+}
