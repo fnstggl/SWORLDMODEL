@@ -187,7 +187,9 @@ def run(limit, seed):
             asof_s = _t2.strftime("%Y-%m-%d", _t2.gmtime(i.as_of))
             hor_s = _t2.strftime("%Y-%m-%d", _t2.gmtime(i.resolve_ts or (i.as_of + 30 * 86400)))
             from swm.world_model_v2.unified_runtime import simulate_world as _simulate_world
-            _res = _simulate_world(i.question, llm=call_compiler, as_of=asof_s, horizon=hor_s, seed=7)
+            # archival full-fidelity harness: pinned since the §25 default switch
+            _res = _simulate_world(i.question, llm=call_compiler, as_of=asof_s, horizon=hor_s, seed=7,
+                                   execution_profile="full_fidelity")
             result = {"distribution": dict(_res.raw_distribution or {}),
                       "unresolved_share": (_res.provenance or {}).get("unresolved_share", 0)}
             row["structural_ensemble"] = ({

@@ -100,7 +100,10 @@ def print_ensemble_trace(res, *, header):
 def case1(llm):
     """Personal communication: an exact message travels channel → attention → decision,
     through the individual-reaction ensemble route (structural frames, per-frame budgets)."""
-    from swm.world_model_v2.unified_runtime import simulate_world
+    import functools
+    from swm.world_model_v2.unified_runtime import simulate_world as _sw_default
+    # archival full-fidelity harness: pinned since the §25 default switch
+    simulate_world = functools.partial(_sw_default, execution_profile="full_fidelity")
     t0 = time.time()
     res = simulate_world(
         "How will Dana react if I send this message tonight?",

@@ -1,0 +1,565 @@
+{
+ "experiment": "EXP-110 forecast recovery from existing checkpoints (no reruns, no new calls, original as_of/evidence untouched)",
+ "lean": [
+  {
+   "qid": "017e64ef-7354-56c4-8a4d-e27121bc639a",
+   "question": "Will daily oil tanker transits through the Strait of Hormuz reach 50 or more on any day between April 29 and J",
+   "original_status": "under_modeled",
+   "original_p_raw": null,
+   "per_model": {
+    "m0_actor_relationship": {
+     "probability": 1.0,
+     "source": "partial_rollouts",
+     "grade": "exploratory",
+     "conditional_on_resolved": 1.0,
+     "unresolved_mass": 0.303,
+     "interval": [
+      0.697,
+      1.0
+     ],
+     "weight_sensitive": false
+    },
+    "m1_lean_reversal_challenger": {
+     "probability": 0.769,
+     "source": "evidence_conditioned_prior",
+     "grade": "exploratory",
+     "conditional_on_resolved": null,
+     "unresolved_mass": 0.0,
+     "interval": null,
+     "weight_sensitive": true
+    }
+   },
+   "recovered_probability": 0.8845,
+   "recovered_interval": [
+    0.769,
+    1.0
+   ],
+   "weight_sensitive": true,
+   "probability_source": "mixed:evidence_conditioned_prior+partial_rollouts",
+   "grounding_grade": "exploratory",
+   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)",
+   "recovered_by": "exp110_from_stored_artifacts"
+  },
+  {
+   "qid": "5c0765ed-cbd1-5af5-bce0-adbfebd4e0f6",
+   "question": "Will Apple announce visionOS 27 (or a successor major version to visionOS 26) at WWDC 2026?",
+   "original_status": "under_modeled",
+   "original_p_raw": 0.0,
+   "per_model": {
+    "m0_actor_relationship": {
+     "probability": 0.834,
+     "source": "evidence_conditioned_prior",
+     "grade": "exploratory",
+     "conditional_on_resolved": null,
+     "unresolved_mass": 0.0,
+     "interval": null,
+     "weight_sensitive": true
+    },
+    "m1_lean_reversal_challenger": {
+     "probability": 0.0,
+     "source": "partial_rollouts",
+     "grade": "exploratory",
+     "conditional_on_resolved": 0.0,
+     "unresolved_mass": 0.9688,
+     "interval": [
+      0.0,
+      0.9688
+     ],
+     "weight_sensitive": true
+    }
+   },
+   "recovered_probability": 0.417,
+   "recovered_interval": [
+    0.0,
+    0.834
+   ],
+   "weight_sensitive": true,
+   "probability_source": "mixed:evidence_conditioned_prior+partial_rollouts",
+   "grounding_grade": "exploratory",
+   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)",
+   "recovered_by": "exp110_from_stored_artifacts"
+  },
+  {
+   "qid": "7279494c-a775-5a57-a5f2-ac22252fb286",
+   "question": "Will the Bank of Japan raise its short-term policy interest rate at the June 15\u201316, 2026 Monetary Policy Meeti",
+   "original_status": "under_modeled",
+   "original_p_raw": null,
+   "per_model": {
+    "m0_actor_relationship": {
+     "probability": 1.0,
+     "source": "completed_rollouts",
+     "grade": "partially_grounded",
+     "conditional_on_resolved": 1.0,
+     "unresolved_mass": 0.0,
+     "interval": [
+      1.0,
+      1.0
+     ],
+     "weight_sensitive": false
+    },
+    "m1_lean_reversal_challenger": {
+     "probability": 0.129,
+     "source": "evidence_conditioned_prior",
+     "grade": "exploratory",
+     "conditional_on_resolved": null,
+     "unresolved_mass": 0.0,
+     "interval": null,
+     "weight_sensitive": true
+    }
+   },
+   "recovered_probability": 0.5645,
+   "recovered_interval": [
+    0.129,
+    1.0
+   ],
+   "weight_sensitive": true,
+   "probability_source": "mixed:completed_rollouts+evidence_conditioned_prior",
+   "grounding_grade": "exploratory",
+   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)",
+   "recovered_by": "exp110_from_stored_artifacts"
+  },
+  {
+   "qid": "741b4bed-7502-5cd2-9cbe-949fbc70f857",
+   "question": "Will Matthew Wale be elected as the next Prime Minister of Solomon Islands following the May 2026 no-confidenc",
+   "original_status": "unresolved",
+   "original_p_raw": null,
+   "per_model": {
+    "m0_actor_relationship": {
+     "probability": 0.435,
+     "source": "evidence_conditioned_prior",
+     "grade": "exploratory",
+     "conditional_on_resolved": null,
+     "unresolved_mass": 0.0,
+     "interval": null,
+     "weight_sensitive": true
+    },
+    "m1_lean_reversal_challenger": {
+     "probability": 0.435,
+     "source": "evidence_conditioned_prior",
+     "grade": "exploratory",
+     "conditional_on_resolved": null,
+     "unresolved_mass": 0.0,
+     "interval": null,
+     "weight_sensitive": true
+    }
+   },
+   "recovered_probability": 0.435,
+   "recovered_interval": [
+    0.435,
+    0.435
+   ],
+   "weight_sensitive": true,
+   "probability_source": "evidence_conditioned_prior",
+   "grounding_grade": "exploratory",
+   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)",
+   "recovered_by": "exp110_from_stored_artifacts"
+  },
+  {
+   "qid": "cfb43147-d9d2-5bd9-903f-f449e9a5aecf",
+   "question": "Will the Banxico Governing Board's June 25, 2026, interest rate decision be unanimous (5-0 vote)?",
+   "original_status": "unresolved",
+   "original_p_raw": null,
+   "per_model": {
+    "m0_actor_relationship": {
+     "probability": 0.769,
+     "source": "evidence_conditioned_prior",
+     "grade": "exploratory",
+     "conditional_on_resolved": null,
+     "unresolved_mass": 0.0,
+     "interval": null,
+     "weight_sensitive": true
+    },
+    "m1_lean_reversal_challenger": {
+     "probability": 0.769,
+     "source": "evidence_conditioned_prior",
+     "grade": "exploratory",
+     "conditional_on_resolved": null,
+     "unresolved_mass": 0.0,
+     "interval": null,
+     "weight_sensitive": true
+    }
+   },
+   "recovered_probability": 0.769,
+   "recovered_interval": [
+    0.769,
+    0.769
+   ],
+   "weight_sensitive": true,
+   "probability_source": "evidence_conditioned_prior",
+   "grounding_grade": "exploratory",
+   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)",
+   "recovered_by": "exp110_from_stored_artifacts"
+  }
+ ],
+ "full_fidelity": [
+  {
+   "qid": "017e64ef-7354-56c4-8a4d-e27121bc639a",
+   "question": "Will daily oil tanker transits through the Strait of Hormuz reach 50 or more on any day between April 29 and J",
+   "original_status": "under_modeled",
+   "original_p_raw": 0.0,
+   "per_model": {
+    "m3_information_distribution": {
+     "probability": 1.0,
+     "source": "partial_rollouts",
+     "grade": "exploratory",
+     "conditional_on_resolved": 1.0,
+     "unresolved_mass": 0.2857,
+     "interval": [
+      0.7143,
+      1.0
+     ],
+     "weight_sensitive": false
+    },
+    "m4_adversarial_alternative": {
+     "probability": 1.0,
+     "source": "partial_rollouts",
+     "grade": "exploratory",
+     "conditional_on_resolved": 1.0,
+     "unresolved_mass": 0.2785,
+     "interval": [
+      0.7215,
+      1.0
+     ],
+     "weight_sensitive": false
+    }
+   },
+   "recovered_probability": 0.8853,
+   "recovered_interval": [
+    0.78,
+    0.9387
+   ],
+   "weight_sensitive": true,
+   "probability_source": "mixed:grounded_reference_prior+partial_rollouts",
+   "grounding_grade": "exploratory",
+   "per_model_runtime_blocks": {
+    "m0_actor_relationship": {
+     "probability": 0.78,
+     "probability_source": "grounded_reference_prior",
+     "grounding_grade": "exploratory",
+     "unresolved_mass": 1.0,
+     "uncertainty_interval": [
+      0.0,
+      1.0
+     ],
+     "weight_sensitive": true
+    },
+    "m3_information_distribution": {
+     "probability": 0.9371,
+     "probability_source": "partial_rollouts",
+     "grounding_grade": "partially_grounded",
+     "unresolved_mass": 0.2857,
+     "uncertainty_interval": [
+      0.7143,
+      1.0
+     ],
+     "weight_sensitive": false
+    },
+    "m4_adversarial_alternative": {
+     "probability": 0.9387,
+     "probability_source": "partial_rollouts",
+     "grounding_grade": "partially_grounded",
+     "unresolved_mass": 0.2785,
+     "uncertainty_interval": [
+      0.7215,
+      1.0
+     ],
+     "weight_sensitive": false
+    }
+   },
+   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)",
+   "recovered_by": "per_model_runtime_recovery_mixture",
+   "artifact_recomputation": {
+    "recovered_probability": 1.0,
+    "recovered_interval": [
+     1.0,
+     1.0
+    ],
+    "weight_sensitive": false,
+    "probability_source": "partial_rollouts",
+    "grounding_grade": "exploratory",
+    "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)",
+    "discrepancy": "artifact-side recomputation differs from the runtime's own recovery (it reconstructs from a SUBSET of the runtime's inputs \u2014 per-model priors/posterior specs are not fully recoverable from the artifact); the runtime's value is served"
+   }
+  },
+  {
+   "qid": "5c0765ed-cbd1-5af5-bce0-adbfebd4e0f6",
+   "question": "Will Apple announce visionOS 27 (or a successor major version to visionOS 26) at WWDC 2026?",
+   "original_status": "unresolved",
+   "original_p_raw": null,
+   "per_model": {
+    "m3_information_distribution": {
+     "probability": 0.834,
+     "source": "evidence_conditioned_prior",
+     "grade": "exploratory",
+     "conditional_on_resolved": null,
+     "unresolved_mass": 0.0,
+     "interval": null,
+     "weight_sensitive": true
+    },
+    "m4_adversarial_alternative": {
+     "probability": 0.834,
+     "source": "evidence_conditioned_prior",
+     "grade": "exploratory",
+     "conditional_on_resolved": null,
+     "unresolved_mass": 0.0,
+     "interval": null,
+     "weight_sensitive": true
+    }
+   },
+   "recovered_probability": 0.834,
+   "recovered_interval": [
+    0.834,
+    0.834
+   ],
+   "weight_sensitive": true,
+   "probability_source": "evidence_conditioned_prior",
+   "grounding_grade": "exploratory",
+   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)",
+   "recovered_by": "exp110_from_stored_artifacts"
+  },
+  {
+   "qid": "7279494c-a775-5a57-a5f2-ac22252fb286",
+   "question": "Will the Bank of Japan raise its short-term policy interest rate at the June 15\u201316, 2026 Monetary Policy Meeti",
+   "original_status": "under_modeled",
+   "original_p_raw": 0.22,
+   "per_model": {
+    "m2_resource_constraint": {
+     "probability": 1.0,
+     "source": "partial_rollouts",
+     "grade": "exploratory",
+     "conditional_on_resolved": 1.0,
+     "unresolved_mass": 0.9552,
+     "interval": [
+      0.0448,
+      1.0
+     ],
+     "weight_sensitive": true
+    },
+    "m3_information_distribution": {
+     "probability": 1.0,
+     "source": "partial_rollouts",
+     "grade": "exploratory",
+     "conditional_on_resolved": 1.0,
+     "unresolved_mass": 0.7273,
+     "interval": [
+      0.2727,
+      1.0
+     ],
+     "weight_sensitive": true
+    }
+   },
+   "recovered_probability": 0.22,
+   "probability_source": "mixed:grounded_reference_prior+partial_rollouts",
+   "grounding_grade": "exploratory",
+   "recovered_interval": [
+    0.1277,
+    0.3656
+   ],
+   "weight_sensitive": false,
+   "unresolved_mass": 0.8942,
+   "probability_conditional_on_resolved": null,
+   "recovered_by": "native_runtime_recovery",
+   "artifact_recomputation": {
+    "recovered_probability": 1.0,
+    "recovered_interval": [
+     1.0,
+     1.0
+    ],
+    "weight_sensitive": true,
+    "probability_source": "partial_rollouts",
+    "grounding_grade": "exploratory",
+    "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)",
+    "discrepancy": "artifact-side recomputation differs from the runtime's own recovery (it reconstructs from a SUBSET of the runtime's inputs \u2014 per-model priors/posterior specs are not fully recoverable from the artifact); the runtime's value is served"
+   }
+  },
+  {
+   "qid": "741b4bed-7502-5cd2-9cbe-949fbc70f857",
+   "question": "Will Matthew Wale be elected as the next Prime Minister of Solomon Islands following the May 2026 no-confidenc",
+   "original_status": "under_modeled",
+   "original_p_raw": 0.1584,
+   "per_model": {
+    "m0_actor_relationship": {
+     "probability": 0.7922,
+     "source": "completed_rollouts",
+     "grade": "partially_grounded",
+     "conditional_on_resolved": 0.7922,
+     "unresolved_mass": 0.0,
+     "interval": [
+      0.7922,
+      0.7922
+     ],
+     "weight_sensitive": false
+    },
+    "m1_institutional_procedural": {
+     "probability": 0.0,
+     "source": "partial_rollouts",
+     "grade": "exploratory",
+     "conditional_on_resolved": 0.0,
+     "unresolved_mass": 0.7922,
+     "interval": [
+      0.0,
+      0.7922
+     ],
+     "weight_sensitive": true
+    },
+    "m2_resource_constraint": {
+     "probability": 0.0,
+     "source": "partial_rollouts",
+     "grade": "exploratory",
+     "conditional_on_resolved": 0.0,
+     "unresolved_mass": 0.7952,
+     "interval": [
+      0.0,
+      0.7952
+     ],
+     "weight_sensitive": true
+    },
+    "m3_information_distribution": {
+     "probability": 0.0,
+     "source": "partial_rollouts",
+     "grade": "exploratory",
+     "conditional_on_resolved": 0.0,
+     "unresolved_mass": 0.8,
+     "interval": [
+      0.0,
+      0.8
+     ],
+     "weight_sensitive": true
+    },
+    "m4_adversarial_alternative": {
+     "probability": 0.0,
+     "source": "partial_rollouts",
+     "grade": "exploratory",
+     "conditional_on_resolved": 0.0,
+     "unresolved_mass": 0.2985,
+     "interval": [
+      0.0,
+      0.2985
+     ],
+     "weight_sensitive": false
+    }
+   },
+   "recovered_probability": 0.1584,
+   "probability_source": "mixed:completed_rollouts+partial_rollouts",
+   "grounding_grade": "partially_grounded",
+   "recovered_interval": [
+    0.0,
+    0.7922
+   ],
+   "weight_sensitive": true,
+   "unresolved_mass": 0.5372,
+   "probability_conditional_on_resolved": null,
+   "recovered_by": "native_runtime_recovery",
+   "artifact_recomputation": {
+    "recovered_probability": 0.1584,
+    "recovered_interval": [
+     0.0,
+     0.7922
+    ],
+    "weight_sensitive": true,
+    "probability_source": "mixed:completed_rollouts+partial_rollouts",
+    "grounding_grade": "exploratory",
+    "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)"
+   }
+  },
+  {
+   "qid": "cfb43147-d9d2-5bd9-903f-f449e9a5aecf",
+   "question": "Will the Banxico Governing Board's June 25, 2026, interest rate decision be unanimous (5-0 vote)?",
+   "original_status": "under_modeled",
+   "original_p_raw": 0.0,
+   "per_model": {
+    "m3_information_distribution": {
+     "probability": 0.3146,
+     "source": "partial_rollouts",
+     "grade": "exploratory",
+     "conditional_on_resolved": 0.3146,
+     "unresolved_mass": 0.0632,
+     "interval": [
+      0.2947,
+      0.3579
+     ],
+     "weight_sensitive": false
+    }
+   },
+   "recovered_probability": 0.7294,
+   "recovered_interval": [
+    0.3468,
+    0.825
+   ],
+   "weight_sensitive": true,
+   "probability_source": "mixed:grounded_reference_prior+partial_rollouts",
+   "grounding_grade": "exploratory",
+   "per_model_runtime_blocks": {
+    "m0_actor_relationship": {
+     "probability": 0.825,
+     "probability_source": "grounded_reference_prior",
+     "grounding_grade": "exploratory",
+     "unresolved_mass": 1.0,
+     "uncertainty_interval": [
+      0.0,
+      1.0
+     ],
+     "weight_sensitive": true
+    },
+    "m1_institutional_procedural": {
+     "probability": 0.825,
+     "probability_source": "grounded_reference_prior",
+     "grounding_grade": "exploratory",
+     "unresolved_mass": 1.0,
+     "uncertainty_interval": [
+      0.0,
+      1.0
+     ],
+     "weight_sensitive": true
+    },
+    "m2_resource_constraint": {
+     "probability": 0.825,
+     "probability_source": "grounded_reference_prior",
+     "grounding_grade": "exploratory",
+     "unresolved_mass": 1.0,
+     "uncertainty_interval": [
+      0.0,
+      1.0
+     ],
+     "weight_sensitive": true
+    },
+    "m3_information_distribution": {
+     "probability": 0.3468,
+     "probability_source": "partial_rollouts",
+     "grounding_grade": "partially_grounded",
+     "unresolved_mass": 0.0632,
+     "uncertainty_interval": [
+      0.2947,
+      0.3579
+     ],
+     "weight_sensitive": false
+    },
+    "m4_adversarial_alternative": {
+     "probability": 0.825,
+     "probability_source": "grounded_reference_prior",
+     "grounding_grade": "exploratory",
+     "unresolved_mass": 1.0,
+     "uncertainty_interval": [
+      0.0,
+      1.0
+     ],
+     "weight_sensitive": true
+    }
+   },
+   "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)",
+   "recovered_by": "per_model_runtime_recovery_mixture",
+   "artifact_recomputation": {
+    "recovered_probability": 0.3146,
+    "recovered_interval": [
+     0.3146,
+     0.3146
+    ],
+    "weight_sensitive": false,
+    "probability_source": "partial_rollouts",
+    "grounding_grade": "exploratory",
+    "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities (same rule as the runtime's ensemble recovery)",
+    "discrepancy": "artifact-side recomputation differs from the runtime's own recovery (it reconstructs from a SUBSET of the runtime's inputs \u2014 per-model priors/posterior specs are not fully recoverable from the artifact); the runtime's value is served"
+   }
+  }
+ ]
+}

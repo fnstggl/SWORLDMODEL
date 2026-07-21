@@ -51,7 +51,10 @@ class CountingLLM:
 
 
 def _run(arm: str, policy: dict, compute_budget=None) -> dict:
-    from swm.world_model_v2.unified_runtime import simulate_world
+    import functools
+    from swm.world_model_v2.unified_runtime import simulate_world as _sw_default
+    # archival full-fidelity harness: pinned since the §25 default switch
+    simulate_world = functools.partial(_sw_default, execution_profile="full_fidelity")
     llm = CountingLLM()
     t0 = time.time()
     res = simulate_world(QUESTION, as_of="2025-06-01", horizon="2025-09-01", llm=llm, seed=3,

@@ -129,7 +129,10 @@ def _model_rows(se, res):
 
 
 def run_case(case: dict, max_tokens: int) -> dict:
-    from swm.world_model_v2.unified_runtime import simulate_world
+    import functools
+    from swm.world_model_v2.unified_runtime import simulate_world as _sw_default
+    # archival full-fidelity harness: pinned since the §25 default switch
+    simulate_world = functools.partial(_sw_default, execution_profile="full_fidelity")
     stream = OUT / f"partial_{case['case_id']}.calls.jsonl"
     try:                                       # each attempt streams its own complete sequence
         stream.unlink()

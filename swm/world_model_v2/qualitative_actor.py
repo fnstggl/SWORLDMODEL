@@ -1267,10 +1267,23 @@ class QualitativeActorPolicyRuntime(ActorPolicyRuntime):
         # memory → imperfect retrieval → situated interpretation → limited action search. The
         # decision call below receives ONLY the surviving material. Stage failure = branch
         # truncation (converted to ActorDecisionUnavailable), never a substitute psychology.
+        #
+        # LEAN SEAM (execution_profile="lean_adaptive" attaches a LeanActorController): the
+        # controller replaces the staged multi-call pipeline + decision call with deterministic
+        # prechecks → decision-equivalence cache → ONE structured call, escalating back to the
+        # staged path below on a recorded reason. Full fidelity (no controller) is untouched.
         cog = decision.get("cognition")
-        if cog is None and self.engine.config.bounded_cognition and self.mode != "stateless_llm_policy":
-            cog = self._run_bounded_cognition(world, view, state, decision, actor_id, seed, menu)
-        qd = self.engine.decide(view, state, situation, menu, cognition=cog)
+        lean = getattr(self, "lean_controller", None)
+        lean_meta = None
+        if lean is not None and cog is None and self.mode != "stateless_llm_policy":
+            qd, cog, lean_meta = lean.decision_for(self, world, view, state, situation, menu,
+                                                   decision, actor_id, seed)
+        else:
+            if cog is None and self.engine.config.bounded_cognition \
+                    and self.mode != "stateless_llm_policy":
+                cog = self._run_bounded_cognition(world, view, state, decision, actor_id, seed,
+                                                  menu)
+            qd = self.engine.decide(view, state, situation, menu, cognition=cog)
         if qd is None:
             if strict:
                 raise ActorDecisionUnavailable(
@@ -1299,10 +1312,16 @@ class QualitativeActorPolicyRuntime(ActorPolicyRuntime):
         fd = self.feasibility.classify(selected, view, world)
         revised = False
         if not fd.perceived_feasible and self.engine.config.revision_rounds > 0:
-            qd2 = self.engine.decide(view, state, situation, menu,
-                                     obstacle=f"{fd.perceived_status}: "
-                                              + "; ".join(fd.perceived_reasons[:3]),
-                                     cognition=cog)
+            obstacle_text = f"{fd.perceived_status}: " + "; ".join(fd.perceived_reasons[:3])
+            if lean is not None and lean_meta is not None:
+                # the obstacle is part of the projection — equivalent branches hitting the same
+                # perceived block share ONE revision call through the same cache
+                qd2, _cog2, _m2 = lean.decision_for(self, world, view, state, situation, menu,
+                                                    decision, actor_id, seed,
+                                                    obstacle=obstacle_text)
+            else:
+                qd2 = self.engine.decide(view, state, situation, menu, obstacle=obstacle_text,
+                                         cognition=cog)
             if qd2 is not None:
                 qd2.llm_calls += qd.llm_calls
                 qd, revised = qd2, True
@@ -1511,6 +1530,11 @@ class QualitativeActorPolicyRuntime(ActorPolicyRuntime):
         qd, state = pending
         if qd.actor_id != action.actor_id:
             return
+        lean = getattr(self, "lean_controller", None)
+        if lean is not None:
+            # branch-local standing-decision record (duplicate-notification suppression +
+            # unchanged-prior-decision reuse read it on the next trigger)
+            lean.after_execute(world, action, qd, state)
         if not self.config_persistent:
             delta.reason_codes.append("qualitative_stateless_no_persistence")
             return

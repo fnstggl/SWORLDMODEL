@@ -52,7 +52,10 @@ def _worker_traces(i: int) -> Path:
 def run(only_index: int = None) -> dict:
     import os
     from swm.api.deepseek_backend import default_chat_fn
-    from swm.world_model_v2.unified_runtime import simulate_world
+    import functools
+    from swm.world_model_v2.unified_runtime import simulate_world as _sw_default
+    # archival full-fidelity harness: pinned since the §25 default switch
+    simulate_world = functools.partial(_sw_default, execution_profile="full_fidelity")
 
     # FULL actor cognition — no per-run call budget cap (per-question wall-clock is the only limiter)
     os.environ.setdefault("SWM_ACTOR_MAX_CALLS", "1000000")

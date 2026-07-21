@@ -13,7 +13,12 @@ import pytest
 
 import swm.world_model_v2.unified_runtime as U
 import swm.world_model_v2.structural_runtime as SR
-from swm.world_model_v2.unified_runtime import simulate_world
+from swm.world_model_v2.unified_runtime import simulate_world as _simulate_world_default
+import functools
+# These tests pin the FULL-FIDELITY pipeline (PR-#127 semantics). Since the §25 default
+# switch, the bare entrypoint serves lean_adaptive, so the research-grade profile is
+# selected EXPLICITLY here — same pin, same behavior, now by name.
+simulate_world = functools.partial(_simulate_world_default, execution_profile="full_fidelity")
 from tests.test_structural_ensemble import (EnsembleLLM, FrozenBundle, HERMETIC, OMISSION_QUIET,
                                             critic_ok, decomp_payload, four_way_llm, recon_payload,
                                             run_default)

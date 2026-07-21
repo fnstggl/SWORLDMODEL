@@ -53,6 +53,34 @@ RUNTIME_VERSION = "unified-2.0-structural-ensemble"
 #: modes for execution_policy["structural_mode"]; "ensemble" is the ONLY default. The single-model mode
 #: is an explicit ablation/baseline label — tests enforce that ordinary calls never reach it silently.
 STRUCTURAL_MODES = ("ensemble", "single_structural_model")
+#: The two PERMANENT execution profiles. `full_fidelity` is the research-grade PR-#127 runtime,
+#: byte-for-byte the pre-profile behavior; `lean_adaptive` preserves the same causal architecture while
+#: removing duplicated computation (shared run artifacts, actor-state cohorts, decision-equivalence
+#: caching, reversal-triggered structural models, progressive particles). The product is world_model_v2;
+#: profiles are internal execution strategies, never product names.
+#:
+#: §25 DEFAULT SWITCH (evaluated on the COMPLETE five-question paired baseline, EXP-107 vs
+#: EXP-108; evidence in experiments/results/exp109_comparison.json + docs/LEAN_FINAL_REPORT.md):
+#: all seven switch conditions passed — safety invariants; controlled cache parity (byte-identical,
+#: 70→4 decision calls, 0 invalidations); no catastrophic paired-forecast degradation (lean Brier
+#: 0.337 vs 0.440, correct side 2/5 both); prediction changes explainable per row via
+#: probability_source; material savings (19× calls / 14.5× tokens / 12× cost / 17.7× time);
+#: unstable questions escalated to full budgets; full_fidelity remains available. `lean_adaptive`
+#: is therefore the default; `full_fidelity` is the explicit research-grade option.
+EXECUTION_PROFILES = ("full_fidelity", "lean_adaptive")
+DEFAULT_EXECUTION_PROFILE = "lean_adaptive"
+
+
+def resolve_execution_profile(execution_profile=None) -> str:
+    """One authority for profile resolution: explicit argument > SWM_EXECUTION_PROFILE env override >
+    module default. Unknown names fail loudly — a profile typo must never silently run the wrong
+    execution strategy."""
+    import os as _os
+    prof = str(execution_profile or _os.environ.get("SWM_EXECUTION_PROFILE", "").strip()
+               or DEFAULT_EXECUTION_PROFILE)
+    if prof not in EXECUTION_PROFILES:
+        raise ValueError(f"unknown execution_profile {prof!r}; one of {EXECUTION_PROFILES}")
+    return prof
 # Phases that are default-on and threaded through the one funnel.
 _PHASES = ["phase1_compiler", "phase2_evidence", "phase3_posterior", "phase4_actor_policy",
            "phase6_registry", "phase7_nonlinear", "phase8_persistence", "phase9_populations",
@@ -147,37 +175,57 @@ def simulate_world_stable(question: str, *, n_runs: int = 3, **kwargs):
 def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention: str = "",
                    user_context=None, prior_checkpoint=None, compute_budget=None, seed: int = 0,
                    llm=None, execution_policy: dict = None, trace_level: str = "standard",
-                   config=None, prebuilt_bundle=None, evidence: str = "") -> SimulationResult:
+                   config=None, prebuilt_bundle=None, evidence: str = "",
+                   execution_profile: str = None) -> SimulationResult:
     """THE canonical public V2 entry. One shared evidence bundle; one funnel; DEFAULT structural-model
     ensemble (several independently generated causal models, each fully simulated).
 
     `evidence` (caller-supplied as-of text, e.g. a frozen benchmark background) conditions the
     decomposition directly; the Phase-2 retrieval bundle still supersedes it downstream when built.
 
+    `execution_profile` selects an execution STRATEGY, never a different product: `full_fidelity`
+    (default) is the research-grade PR-#127 runtime unchanged; `lean_adaptive` runs the same causal
+    architecture through the lean runtime (shared artifacts, cohorts, decision-equivalence caching,
+    reversal-triggered structural models, progressive particles). See EXECUTION_PROFILES.
+
     The ordinary caller does NOT choose which phases run — the compiler selects causally-relevant
     subsystems — and does NOT enable the structural ensemble: it is the default. `execution_policy` may
     cap fidelity for the compute budget, force an ablation (removal of a named phase), or select the
     explicit `single_structural_model` ablation baseline; it is NOT how normal callers enable/disable
     behavior."""
+    profile = resolve_execution_profile(execution_profile)
     policy = execution_policy or {}
     mode = str(policy.get("structural_mode", "ensemble"))
     if mode not in STRUCTURAL_MODES:
         raise ValueError(f"unknown structural_mode {mode!r}; one of {STRUCTURAL_MODES} "
                          f"(single_structural_model is an explicit ablation, never a default)")
-    if mode == "single_structural_model":
-        return _simulate_single_structural_model(
+    if profile == "lean_adaptive":
+        from swm.world_model_v2.lean_runtime import simulate_world_lean
+        res = simulate_world_lean(
             question, as_of=as_of, horizon=horizon, intervention=intervention,
             user_context=user_context, prior_checkpoint=prior_checkpoint,
             compute_budget=compute_budget, seed=seed, llm=llm, execution_policy=policy,
             trace_level=trace_level, config=config, prebuilt_bundle=prebuilt_bundle,
             evidence=evidence)
-    from swm.world_model_v2.structural_runtime import simulate_structural_ensemble
-    return simulate_structural_ensemble(
-        question, as_of=as_of, horizon=horizon, intervention=intervention,
-        user_context=user_context, prior_checkpoint=prior_checkpoint,
-        compute_budget=compute_budget, seed=seed, llm=llm, execution_policy=policy,
-        trace_level=trace_level, config=config, prebuilt_bundle=prebuilt_bundle,
-        evidence=evidence)
+        res.provenance = {**(res.provenance or {}), "execution_profile": "lean_adaptive"}
+        return res
+    if mode == "single_structural_model":
+        res = _simulate_single_structural_model(
+            question, as_of=as_of, horizon=horizon, intervention=intervention,
+            user_context=user_context, prior_checkpoint=prior_checkpoint,
+            compute_budget=compute_budget, seed=seed, llm=llm, execution_policy=policy,
+            trace_level=trace_level, config=config, prebuilt_bundle=prebuilt_bundle,
+            evidence=evidence)
+    else:
+        from swm.world_model_v2.structural_runtime import simulate_structural_ensemble
+        res = simulate_structural_ensemble(
+            question, as_of=as_of, horizon=horizon, intervention=intervention,
+            user_context=user_context, prior_checkpoint=prior_checkpoint,
+            compute_budget=compute_budget, seed=seed, llm=llm, execution_policy=policy,
+            trace_level=trace_level, config=config, prebuilt_bundle=prebuilt_bundle,
+            evidence=evidence)
+    res.provenance = {**(res.provenance or {}), "execution_profile": "full_fidelity"}
+    return res
 
 
 def _simulate_single_structural_model(question: str, *, as_of: str, horizon: str = "",
@@ -664,9 +712,27 @@ def _apply_result_guards(res, *, posterior=None, prior_spec=None, evidence_suffi
     except Exception:  # noqa: BLE001 — telemetry attach must never break the forecast
         pass
     try:
-        exempt = res.simulation_status in ("clarification_required", "unresolved", "partially_resolved")
         no_p = res.raw_probability is None and res.calibrated_probability is None
-        if exempt or not no_p:
+        if res.simulation_status in ("unresolved", "partially_resolved") and no_p:
+            # FORECAST-AVAILABILITY CONTRACT: an honest refusal keeps its STATUS (never retried,
+            # never re-labeled completed) — but if a defensible probability source exists it is
+            # served, labeled. Recovery here covers refusals constructed upstream of
+            # result_from_run's own recovery pass.
+            from swm.world_model_v2.forecast_recovery import attach_recovery, recover_forecast
+            fb0 = _grounded_fallback_mean(posterior, prior_spec)
+            has_post = (posterior is not None
+                        and int(getattr(posterior, "n_effective_observations", 0) or 0) > 0)
+            if fb0 is not None:
+                rec0 = recover_forecast(
+                    distribution=dict(res.raw_distribution or {}), options=None,
+                    unresolved_mass=None,
+                    posterior_mean=(float(fb0) if has_post else None),
+                    posterior_n_eff=(1 if has_post else 0),
+                    prior_mean=(None if has_post else float(fb0)),
+                    prior_source_class=str(getattr(prior_spec, "source_class", "") or ""))
+                attach_recovery(res, rec0, override_probability=True)
+            return res
+        if res.simulation_status == "clarification_required" or not no_p:
             return res
         orig_status = res.simulation_status
         has_posterior = (posterior is not None
@@ -701,9 +767,13 @@ def _apply_result_guards(res, *, posterior=None, prior_spec=None, evidence_suffi
                 "used": True, "value": round(float(fb), 4), "source": "prior_explicitly_allowed",
                 "original_status": orig_status}
         else:
-            # §NAP: no evidence-updated posterior and no explicit prior door — the honest result is
-            # UNRESOLVED, with the missing mechanism named and the prior kept as a labelled,
-            # non-headline diagnostic. Never a silent None; never a manufactured probability.
+            # FORECAST AVAILABILITY ≠ GROUNDING (forecast_recovery contract): the honest status
+            # is UNRESOLVED with the missing mechanism named — and the best defensible
+            # probability still ships, labeled by its source and grade. The grounded prior mean
+            # serves as `grounded_reference_prior` (grade exploratory) or, when its provenance
+            # is lean/llm-estimated, as `exploratory_model_estimate` (grade ungrounded). Nothing
+            # here can produce a neutral-default 0.5; with NO prior of any kind the probability
+            # honestly stays None.
             rr = res.resolution_report if isinstance(getattr(res, "resolution_report", None), dict) \
                 else {}
             missing = list(rr.get("missing_mechanisms") or [])
@@ -715,34 +785,47 @@ def _apply_result_guards(res, *, posterior=None, prior_spec=None, evidence_suffi
             rr.update({"unresolved_share": rr.get("unresolved_share") or 1.0,
                        "missing_mechanisms": missing,
                        "note": rr.get("note") or
-                       "no probability was manufactured for a failed rollout without evidence (§NAP)"})
+                       "the headline probability (when present) is a labeled prior-driven "
+                       "estimate — see grounding_grade/probability_source; unresolved execution "
+                       "is fully disclosed"})
             res.resolution_report = rr
             res.simulation_status = "unresolved"
             if getattr(res, "recommendation_status", "") not in ("", "not_requested"):
-                res.recommendation_status = "withheld"      # §NAP: unresolved mass gates actions
+                res.recommendation_status = "withheld"      # unresolved mass still gates actions
             if res.support_grade not in ("empirically_supported", "transfer_supported",
                                          "exploratory", "highly_speculative"):
                 res.support_grade = "highly_speculative"
-            res.limitations = (list(res.limitations or []) + [
-                "Outcome unresolved under the current model: the rollout produced no bound outcome "
-                "even after retry and no evidence-updated posterior exists — no broad-prior or "
-                "neutral-default probability was manufactured (§NAP); the grounded prior mean is "
-                "recorded only as a labelled diagnostic (provenance.prior_driven_reference)"])
             if fb is not None:
+                from swm.world_model_v2.forecast_recovery import attach_recovery, recover_forecast
+                src_class = str(getattr(prior_spec, "source_class", "") or "")
+                rec = recover_forecast(distribution={}, options=None, unresolved_mass=1.0,
+                                       posterior_mean=None, posterior_n_eff=0,
+                                       prior_mean=float(fb), prior_source_class=src_class)
+                attach_recovery(res, rec, override_probability=True)
                 res.provenance["prior_driven_reference"] = {
                     "value": round(float(fb), 4), "source": "grounded_prior_mean",
-                    "headline": False,
-                    "note": "diagnostic only — NOT the forecast; provenance class llm_estimated is "
-                            "not approved to alter production output (§NAP)"}
-                _manifest_row(res, "rejected", {
+                    "headline": res.raw_probability is not None,
+                    "note": "served as the labeled headline probability under the "
+                            "forecast-availability contract (see forecast_recovery provenance); "
+                            "grounding_grade discloses its weakness"}
+                _manifest_row(res, "approved_and_consumed", {
                     "name": "prior_driven_reference", "value": round(float(fb), 4),
-                    "units": "probability", "causal_role": "grounded prior mean considered as a "
-                    "no-null fallback forecast", "source_class": "llm_estimated",
+                    "units": "probability", "causal_role": "grounded prior mean served as the "
+                    "labeled headline probability for an unresolved execution",
+                    "source_class": src_class or "llm_estimated",
                     "consumer": "unified_runtime._apply_result_guards",
-                    "production_eligible": False, "consumed": False,
-                    "rejection_reason": "no evidence-updated posterior and the generic-prior door "
-                                        "is closed — an LLM-estimated mean may not become the "
-                                        "headline probability (§NAP)"})
+                    "production_eligible": True, "consumed": True})
+                res.limitations = (list(res.limitations or []) + [
+                    "Execution unresolved under the current model (missing mechanisms named in "
+                    "resolution_report); the headline probability is a labeled "
+                    f"{res.probability_source or 'prior'}-driven estimate "
+                    f"(grounding_grade={res.grounding_grade or 'exploratory'}), not a simulated "
+                    "structural outcome"])
+            else:
+                res.limitations = (list(res.limitations or []) + [
+                    "Outcome unresolved under the current model and NO defensible probability "
+                    "source exists (no resolved mass, no evidence-updated posterior, no grounded "
+                    "prior) — probability honestly stays None; no neutral default was invented"])
     except Exception:  # noqa: BLE001 — the guard must never itself break the forecast
         pass
     return res

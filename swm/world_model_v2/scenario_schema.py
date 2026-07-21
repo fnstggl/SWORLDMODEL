@@ -436,7 +436,12 @@ def validate_initial_records(model: ScenarioSemanticModel, records: list) -> tup
 
 
 def evaluate_predicate(p: dict, records: list) -> bool:
-    """Executable predicate over record dicts/objects: exists / field comparison."""
+    """Executable predicate over record dicts/objects: exists / field comparison.
+
+    TYPE-TOLERANT BY CONTRACT (EXP-107 Hormuz crash): predicates and record fields are both
+    LLM-compiled, so shapes are untrusted — a list-valued field probed with `in` against a
+    string raised TypeError and killed a 4-hour run mid-rollout. An ill-typed comparison is
+    simply NOT SATISFIED (success is never assumed), never an exception."""
     rt, fieldname, op = str(p.get("record_type", "")), str(p.get("field", "")), \
         str(p.get("op", "exists"))
     value = p.get("value")
@@ -449,11 +454,14 @@ def evaluate_predicate(p: dict, records: list) -> bool:
                                                    else {}) or {}
         status = getattr(r, "status", None) or attrs.get("status")
         got = status if fieldname in ("", "status") else attrs.get(fieldname)
-        if op == "exists" or (op == "eq" and got == value) or (op == "ne" and got != value) \
-                or (op == "in" and got in (value or [])) \
-                or (op == "gte" and isinstance(got, (int, float)) and got >= float(value or 0)) \
-                or (op == "lte" and isinstance(got, (int, float)) and got <= float(value or 0)):
-            return True
+        try:
+            if op == "exists" or (op == "eq" and got == value) or (op == "ne" and got != value) \
+                    or (op == "in" and got in (value or [])) \
+                    or (op == "gte" and isinstance(got, (int, float)) and got >= float(value or 0)) \
+                    or (op == "lte" and isinstance(got, (int, float)) and got <= float(value or 0)):
+                return True
+        except (TypeError, ValueError):
+            continue                    # ill-typed comparison: this record does not satisfy it
     return False
 
 

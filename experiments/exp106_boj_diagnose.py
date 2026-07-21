@@ -19,7 +19,10 @@ OUT = Path("experiments/results/exp106_boj_diagnose.json")
 
 def run():
     from swm.api.deepseek_backend import default_chat_fn
-    from swm.world_model_v2.unified_runtime import simulate_world
+    import functools
+    from swm.world_model_v2.unified_runtime import simulate_world as _sw_default
+    # archival full-fidelity harness: pinned since the §25 default switch
+    simulate_world = functools.partial(_sw_default, execution_profile="full_fidelity")
     rows = {r["question_id"]: r for r in fetch_btf3()}
     q = _forecast_input(rows[QID])
     llm0 = default_chat_fn(system="Reply ONLY JSON.", max_tokens=8000, temperature=0.2)

@@ -17,9 +17,13 @@ DEEPSEEK_URL = "https://api.deepseek.com/chat/completions"
 
 
 def deepseek_chat_fn(model: str = "deepseek-v4-flash", *, system: str = "", max_tokens: int = 800,
-                     temperature: float = 0.0, thinking: bool = False):
+                     temperature: float = 0.0, thinking: bool = False, usage_sink=None):
     """Return a callable(prompt) -> text using the DeepSeek API. Reads DEEPSEEK_API_KEY from env only.
-    model: 'deepseek-chat' (flagship V3 chat) or 'deepseek-reasoner' (R1)."""
+    model: 'deepseek-chat' (flagship V3 chat) or 'deepseek-reasoner' (R1).
+
+    usage_sink: optional callable(dict) receiving the provider's per-call `usage` block verbatim
+    (prompt_tokens, completion_tokens, prompt_cache_hit_tokens, ...) plus {"model", "latency_s"} —
+    the cost/token manifests of the benchmark harnesses read real provider numbers, never estimates."""
     key = os.environ.get("DEEPSEEK_API_KEY", "").strip()
     # a pasted key can pick up non-ASCII junk (smart quotes, bullets, a trailing comment) → the HTTP header
     # crashes with an opaque latin-1 UnicodeEncodeError. Fail LOUDLY and clearly instead.
@@ -49,8 +53,15 @@ def deepseek_chat_fn(model: str = "deepseek-v4-flash", *, system: str = "", max_
                 req = urllib.request.Request(DEEPSEEK_URL, data=body,
                                              headers={"Authorization": f"Bearer {key}",
                                                       "Content-Type": "application/json"})
+                t0 = time.time()
                 with urllib.request.urlopen(req, timeout=120) as r:
                     data = json.loads(r.read())
+                if usage_sink is not None:
+                    try:
+                        usage_sink({**(data.get("usage") or {}), "model": model,
+                                    "latency_s": round(time.time() - t0, 3)})
+                    except Exception:  # noqa: BLE001 — metering must never break the call
+                        pass
                 return data["choices"][0]["message"]["content"]
             except urllib.error.HTTPError as e:
                 last = e
@@ -67,12 +78,14 @@ def deepseek_chat_fn(model: str = "deepseek-v4-flash", *, system: str = "", max_
     return fn
 
 
-def default_chat_fn(*, system: str = "", max_tokens: int = 800, temperature: float = 0.0):
+def default_chat_fn(*, system: str = "", max_tokens: int = 800, temperature: float = 0.0,
+                    usage_sink=None):
     """The standard backend selector, used going forward: DeepSeek if its key is set, else the HF router
     (Qwen), else None (callers fall back to their cached/committed judgments). One place to change the
     production model."""
     if os.environ.get("DEEPSEEK_API_KEY"):
-        return deepseek_chat_fn(system=system, max_tokens=max_tokens, temperature=temperature)
+        return deepseek_chat_fn(system=system, max_tokens=max_tokens, temperature=temperature,
+                                usage_sink=usage_sink)
     if os.environ.get("HF_TOKEN"):
         from swm.api.hf_backend import hf_chat_fn
         return hf_chat_fn(system=system, max_tokens=max_tokens, temperature=temperature)
