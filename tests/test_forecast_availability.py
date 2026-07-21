@@ -172,3 +172,25 @@ def test_all_five_lean_btf3_runs_recovered_scoreable_probabilities():
                                             "ungrounded")
         assert r["recovered_probability"] != 0.5 or r.get("probability_source") != "", \
             "a bare neutral default is not a source"
+
+
+def test_plan_prior_inputs_never_raises_on_tuple_particles():
+    """Regression (EXP-107 Hormuz, two multi-hour finalizes lost): event-time plans carry
+    TUPLES in posterior_rate_particles — input gathering must filter to numerics and may never
+    raise, whatever shape a live plan carries."""
+    from swm.world_model_v2.forecast_recovery import plan_prior_inputs
+    tuple_plan = SimpleNamespace(posterior_rate_particles=[(0.3, "w"), (0.5, "w")],
+                                 _outcome_prior_spec=SimpleNamespace(
+                                     mean=0.4, source_class="reference_class"))
+    d = plan_prior_inputs(tuple_plan)
+    assert d["posterior_mean"] is None and d["posterior_n_eff"] == 0
+    assert d["prior_mean"] == 0.4                       # the grounded prior still serves
+    mixed = SimpleNamespace(posterior_rate_particles=[0.2, (0.9,), 0.4],
+                            _outcome_prior_spec=None)
+    d2 = plan_prior_inputs(mixed)
+    assert d2["posterior_mean"] == 0.3                  # numeric subset only
+    hostile = SimpleNamespace(posterior_rate_particles=object(),
+                              _outcome_prior_spec=SimpleNamespace(mean="not_a_number"))
+    d3 = plan_prior_inputs(hostile)
+    assert d3 == {"posterior_mean": None, "posterior_n_eff": 0, "prior_mean": None,
+                  "prior_source_class": ""}

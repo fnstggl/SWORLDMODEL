@@ -192,12 +192,26 @@ def attach_recovery(res, rec: ForecastRecovery | None, *, override_probability: 
 
 
 def plan_prior_inputs(plan) -> dict:
-    """The posterior/prior inputs available on a conditioned plan (set by the phase-3 block)."""
-    particles = getattr(plan, "posterior_rate_particles", None) or []
-    posterior_mean = (sum(particles) / len(particles)) if particles else None
-    spec = getattr(plan, "_outcome_prior_spec", None)
-    return {"posterior_mean": (round(posterior_mean, 4) if posterior_mean is not None else None),
-            "posterior_n_eff": (1 if particles else 0),
-            "prior_mean": (round(float(spec.mean), 4) if spec is not None else None),
-            "prior_source_class": (str(getattr(spec, "source_class", "")) if spec is not None
-                                   else "")}
+    """The posterior/prior inputs available on a conditioned plan (set by the phase-3 block).
+
+    NEVER-RAISE + TYPE-TOLERANT (EXP-107 Hormuz regression: event-time plans carry TUPLES in
+    posterior_rate_particles, and the naive sum() TypeError killed two multi-hour finalizes
+    before the recovery try-blocks could catch it). Non-numeric particles are ignored; any
+    surprise degrades to empty inputs — input gathering may never cost a finalize."""
+    try:
+        raw = getattr(plan, "posterior_rate_particles", None) or []
+        particles = [float(x) for x in raw if isinstance(x, (int, float))]
+        posterior_mean = (sum(particles) / len(particles)) if particles else None
+        spec = getattr(plan, "_outcome_prior_spec", None)
+        prior_mean = None
+        if spec is not None and isinstance(getattr(spec, "mean", None), (int, float)):
+            prior_mean = round(float(spec.mean), 4)
+        return {"posterior_mean": (round(posterior_mean, 4) if posterior_mean is not None
+                                   else None),
+                "posterior_n_eff": (1 if particles else 0),
+                "prior_mean": prior_mean,
+                "prior_source_class": (str(getattr(spec, "source_class", ""))
+                                       if spec is not None else "")}
+    except Exception:  # noqa: BLE001
+        return {"posterior_mean": None, "posterior_n_eff": 0, "prior_mean": None,
+                "prior_source_class": ""}
