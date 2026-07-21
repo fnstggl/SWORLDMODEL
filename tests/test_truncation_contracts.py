@@ -231,10 +231,15 @@ def test_conditional_forecast_note_auto_set_on_partial_under_modeled():
 
 
 def test_has_forecast_semantics_for_every_status():
-    # completed family: forecast semantics unchanged
+    # forecast-availability contract: availability is decided by probability/distribution
+    # PRESENCE for every status uniformly — the completed family included. A live completed
+    # run always carries its numbers; a bare completed shell carries no forecast, and no
+    # status can bless one into existence (nor erase one that exists).
     for s in ("completed", "completed_with_degradation", "temporally_truncated"):
-        assert SimulationResult(question="q", simulation_status=s,
-                                support_grade="exploratory").has_forecast()
+        assert not SimulationResult(question="q", simulation_status=s,
+                                    support_grade="exploratory").has_forecast()
+        assert SimulationResult(question="q", simulation_status=s, support_grade="exploratory",
+                                raw_probability=0.62).has_forecast()
     assert not SimulationResult(question="q", simulation_status="clarification_required",
                                 clarification_reason="incoherent").has_forecast()
     assert not SimulationResult(question="q", simulation_status="execution_failed",
@@ -264,7 +269,12 @@ def test_abstain_mirror_never_set_for_under_modeled_or_truncated():
 def test_legacy_statuses_still_construct_unchanged():
     for s in ("completed", "completed_with_degradation", "temporally_truncated"):
         r = SimulationResult(question="q", simulation_status=s, support_grade="exploratory")
-        assert r.has_forecast() and r.as_dict()["abstain"] is False
+        # construction unchanged; abstain mirrors only genuine incoherence. Forecast
+        # availability follows the probability, not the status (forecast-availability
+        # contract) — a bare shell has none, a served number is one.
+        assert not r.has_forecast() and r.as_dict()["abstain"] is False
+        r.raw_probability = 0.4
+        assert r.has_forecast()
     clar = SimulationResult(question="q", simulation_status="clarification_required",
                             clarification_reason="no coherent outcome")
     assert clar.as_dict()["abstain"] is True                    # only genuine incoherence mirrors

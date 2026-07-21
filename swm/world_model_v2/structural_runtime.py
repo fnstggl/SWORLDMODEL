@@ -541,6 +541,65 @@ def _finalize_model(U, question, cand, rec, bundle, as_of, intervention, seed, t
 
 
 # ------------------------------------------------------------------ aggregation + result assembly
+def _attach_ensemble_recovery(res, model_results) -> None:
+    """Serve the labeled ensemble headline under the forecast-availability contract.
+
+    Per-model results already carry their recovered probabilities/labels; the ensemble headline
+    is the equal-weight mixture of them whenever NO LABELED headline exists yet — that means
+    raw_probability is None (all-unresolved suppression) OR the number present carries no
+    probability_source (EXP-107 Hormuz: the legacy binary projection wrote an unlabeled 0.0 on
+    a yes-keyed distribution it failed to read; an unlabeled number is legacy-projection output
+    by definition, and the contract requires every served probability to be labeled). Any
+    legacy number is preserved in provenance — replaced in the headline, never hidden. The
+    per-model conditionals remain the primary readout in the resolution report;
+    weight_sensitive is marked whenever plausible model-weight changes cross 0.5."""
+    if res.raw_probability is not None and res.probability_source:
+        return
+    per_model_p = {m: model_results[m].raw_probability for m in model_results
+                   if model_results[m].raw_probability is not None}
+    if not per_model_p:
+        return
+    legacy_p = res.raw_probability
+    ps = list(per_model_p.values())
+    res.raw_probability = round(sum(ps) / len(ps), 4)
+    res.uncertainty_interval = [round(min(ps), 4), round(max(ps), 4)]
+    res.weight_sensitive = (min(ps) < 0.5 < max(ps)) or len(per_model_p) < len(
+        model_results)
+    srcs = [model_results[m].probability_source for m in per_model_p]
+    grades = [model_results[m].grounding_grade for m in per_model_p]
+    order = ["grounded", "partially_grounded", "exploratory", "ungrounded"]
+    res.probability_source = ("mixed:" + "+".join(sorted(set(s for s in srcs if s)))
+                              if len(set(srcs)) > 1 else (srcs[0] if srcs else ""))
+    res.grounding_grade = max((g for g in grades if g), default="",
+                              key=lambda g: order.index(g) if g in order else 2)
+    res.unresolved_mass = round(sum(
+        float(model_results[m].unresolved_mass or 0.0) for m in per_model_p)
+        / len(per_model_p), 4)
+    res.confidence = "very_low" if res.weight_sensitive or res.grounding_grade in (
+        "exploratory", "ungrounded") else "low"
+    res.provenance["forecast_recovery_ensemble"] = {
+        "per_model_probability": {m: round(p, 4) for m, p in per_model_p.items()},
+        "per_model_source": {m: model_results[m].probability_source
+                             for m in per_model_p},
+        "per_model_grade": {m: model_results[m].grounding_grade for m in per_model_p},
+        "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities",
+        "note": "the headline is served under the forecast-availability contract; "
+                "per-model conditionals remain the primary readout when models "
+                "materially disagree (see resolution_report.aggregation)"}
+    if legacy_p is not None:
+        res.provenance["forecast_recovery_ensemble"]["legacy_projection_probability"] = legacy_p
+        res.provenance["forecast_recovery_ensemble"]["legacy_note"] = (
+            "an UNLABELED legacy projection value was present and is preserved here; the "
+            "labeled per-model mixture supersedes it in the headline")
+    res.limitations = (list(res.limitations or []) + [
+        f"headline probability {res.raw_probability:.3f} aggregates per-model recovered "
+        f"estimates (sources: {res.probability_source or 'n/a'}; grade "
+        f"{res.grounding_grade or 'n/a'}); interval "
+        f"[{res.uncertainty_interval[0]:.3f}, {res.uncertainty_interval[1]:.3f}]"
+        + (" — WEIGHT-SENSITIVE: plausible model-weight changes cross 0.5"
+           if res.weight_sensitive else "")])
+
+
 def _assemble_ensemble_result(U, question, ens, runs, model_results, promoted, bundle, ledger, t0):
     model_dists = {c.model_id: dict(model_results[c.model_id].raw_distribution or {})
                    for c in promoted}
@@ -943,48 +1002,7 @@ def _assemble_ensemble_result(U, question, ens, runs, model_results, promoted, b
                           "required before any calibrator may serve this runtime."}},
         latency_s=round(_time.time() - t0, 3))
     # ---------- ensemble-level forecast availability (forecast_recovery contract) ----------
-    # Per-model results already carry their recovered probabilities/labels; when the ensemble
-    # headline was suppressed (all-unresolved, or material disagreement), aggregate the
-    # per-model probabilities into the labeled equal-weight mixture: the per-model conditionals
-    # remain the primary readout in the resolution report, the headline is served with
-    # weight_sensitive marked whenever plausible model-weight changes cross 0.5.
-    if res.raw_probability is None:
-        per_model_p = {m: model_results[m].raw_probability for m in model_results
-                       if model_results[m].raw_probability is not None}
-        if per_model_p:
-            ps = list(per_model_p.values())
-            res.raw_probability = round(sum(ps) / len(ps), 4)
-            res.uncertainty_interval = [round(min(ps), 4), round(max(ps), 4)]
-            res.weight_sensitive = (min(ps) < 0.5 < max(ps)) or len(per_model_p) < len(
-                model_results)
-            srcs = [model_results[m].probability_source for m in per_model_p]
-            grades = [model_results[m].grounding_grade for m in per_model_p]
-            order = ["grounded", "partially_grounded", "exploratory", "ungrounded"]
-            res.probability_source = ("mixed:" + "+".join(sorted(set(s for s in srcs if s)))
-                                      if len(set(srcs)) > 1 else (srcs[0] if srcs else ""))
-            res.grounding_grade = max((g for g in grades if g), default="",
-                                      key=lambda g: order.index(g) if g in order else 2)
-            res.unresolved_mass = round(sum(
-                float(model_results[m].unresolved_mass or 0.0) for m in per_model_p)
-                / len(per_model_p), 4)
-            res.confidence = "very_low" if res.weight_sensitive or res.grounding_grade in (
-                "exploratory", "ungrounded") else "low"
-            res.provenance["forecast_recovery_ensemble"] = {
-                "per_model_probability": {m: round(p, 4) for m, p in per_model_p.items()},
-                "per_model_source": {m: model_results[m].probability_source
-                                     for m in per_model_p},
-                "per_model_grade": {m: model_results[m].grounding_grade for m in per_model_p},
-                "aggregation": "equal_weight_mixture_of_per_model_recovered_probabilities",
-                "note": "the headline is served under the forecast-availability contract; "
-                        "per-model conditionals remain the primary readout when models "
-                        "materially disagree (see resolution_report.aggregation)"}
-            res.limitations = (list(res.limitations or []) + [
-                f"headline probability {res.raw_probability:.3f} aggregates per-model recovered "
-                f"estimates (sources: {res.probability_source or 'n/a'}; grade "
-                f"{res.grounding_grade or 'n/a'}); interval "
-                f"[{res.uncertainty_interval[0]:.3f}, {res.uncertainty_interval[1]:.3f}]"
-                + (" — WEIGHT-SENSITIVE: plausible model-weight changes cross 0.5"
-                   if res.weight_sensitive else "")])
+    _attach_ensemble_recovery(res, model_results)
     # live handle for Phase 13: the SAME ensemble (its executable plans included) so decisions are
     # evaluated across these models by default. Deliberately a non-dataclass attribute — plans carry
     # callables and never belong in the serialized result dict.

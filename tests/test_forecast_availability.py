@@ -174,6 +174,43 @@ def test_all_five_lean_btf3_runs_recovered_scoreable_probabilities():
             "a bare neutral default is not a source"
 
 
+def test_ensemble_recovery_fires_on_unlabeled_legacy_zero():
+    """Regression (EXP-107 Hormuz): the legacy binary projection wrote an UNLABELED 0.0 on a
+    distribution whose yes-mass it failed to read, and the ensemble recovery — gated on
+    `raw_probability is None` — never fired. The gate is now 'no LABELED headline exists':
+    an unlabeled number is legacy-projection output by definition; the labeled per-model
+    mixture supersedes it in the headline and the legacy value is preserved in provenance."""
+    from swm.world_model_v2.structural_runtime import _attach_ensemble_recovery
+    def _model(p, src, grade, unres):
+        return SimpleNamespace(raw_probability=p, probability_source=src,
+                               grounding_grade=grade, unresolved_mass=unres)
+    models = {"m0": _model(0.78, "grounded_reference_prior", "exploratory", 1.0),
+              "m3": _model(0.9371, "partial_rollouts", "partially_grounded", 0.2857)}
+    res = SimpleNamespace(raw_probability=0.0, probability_source="", grounding_grade="",
+                          confidence="", unresolved_mass=None, uncertainty_interval=None,
+                          weight_sensitive=False, provenance={}, limitations=[])
+    _attach_ensemble_recovery(res, models)
+    assert res.raw_probability == round((0.78 + 0.9371) / 2, 4)
+    assert res.probability_source == "mixed:grounded_reference_prior+partial_rollouts"
+    ens = res.provenance["forecast_recovery_ensemble"]
+    assert ens["legacy_projection_probability"] == 0.0        # replaced, never hidden
+    # a LABELED headline (even 0.0) is never touched
+    labeled = SimpleNamespace(raw_probability=0.0, probability_source="completed_rollouts",
+                              provenance={}, limitations=[])
+    _attach_ensemble_recovery(labeled, models)
+    assert labeled.raw_probability == 0.0
+    assert labeled.probability_source == "completed_rollouts"
+    assert "forecast_recovery_ensemble" not in labeled.provenance
+    # the original None path still serves
+    none_res = SimpleNamespace(raw_probability=None, probability_source="", grounding_grade="",
+                               confidence="", unresolved_mass=None, uncertainty_interval=None,
+                               weight_sensitive=False, provenance={}, limitations=[])
+    _attach_ensemble_recovery(none_res, models)
+    assert none_res.raw_probability is not None
+    assert "legacy_projection_probability" not in none_res.provenance[
+        "forecast_recovery_ensemble"]
+
+
 def test_exp110_precedence_ladder_prefers_runtime_over_recomputation():
     """Regression (EXP-107 BoJ 1.0-vs-0.22, Banxico 0.0-suppression): the recovery harness
     serves, in order — (1) the checkpoint's native ensemble recovery fields; (2) the
