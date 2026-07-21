@@ -175,14 +175,14 @@ def test_default_route_is_ensemble_without_any_enable_flag():
 
 
 def test_facade_v2_route_carries_structural_ensemble():
-    """Since the §25 default switch the facade's DEFAULT route serves lean_adaptive; the
-    protection it keeps is the same: a REAL structural ensemble, never the single-model
-    ablation. The ≥3-independent-generation property is the research-grade profile's and is
-    pinned through the facade via the explicit profile pass-through."""
+    """The default profile is now `lean_v2` (owner decision); this test validates the STRUCTURAL
+    ENSEMBLE behavior of the lean_adaptive / full_fidelity profiles, so it selects them
+    explicitly. Both serve a REAL structural ensemble, never the single-model ablation; the
+    ≥3-independent-generation property is the research-grade profile's."""
     from swm.facade import forecast
     out = forecast("Will the initiative be approved?", architecture="world_model_v2",
                    llm=four_way_llm(), as_of="2025-06-01", horizon="2025-09-01",
-                   execution_policy=dict(HERMETIC))
+                   execution_policy=dict(HERMETIC), execution_profile="lean_adaptive")
     assert out["structural_ensemble"] is not None
     assert out["provenance"]["structural_mode"] == "ensemble"       # never the ablation
     assert out["provenance"]["execution_profile"] == "lean_adaptive"

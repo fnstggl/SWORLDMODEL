@@ -67,8 +67,17 @@ STRUCTURAL_MODES = ("ensemble", "single_structural_model")
 #: probability_source; material savings (19× calls / 14.5× tokens / 12× cost / 17.7× time);
 #: unstable questions escalated to full budgets; full_fidelity remains available. `lean_adaptive`
 #: is therefore the default; `full_fidelity` is the explicit research-grade option.
-EXECUTION_PROFILES = ("full_fidelity", "lean_adaptive")
-DEFAULT_EXECUTION_PROFILE = "lean_adaptive"
+#: `lean_v2` is the first-principles CONSUMER execution path (one blueprint call, answerability
+#: preflight, terminal-causal slicing, weighted world-state coalescing, conditional challenger,
+#: grounded counted-reference-class weighting, consumer compute budget). On the EXP-112 five-
+#: question evaluation it reached mean Brier 0.074 vs Lean V1 0.337 vs full_fidelity 0.440 (best
+#: on 4/5), at ~18 calls / ~105 s / ~$0.019 per question (docs/LEAN_V2_ACCURACY_REPORT.md).
+#: By owner decision `lean_v2` is now the DEFAULT; `lean_adaptive` (Lean V1) and `full_fidelity`
+#: remain explicitly selectable. (The report's §16 caveats — the reliability combiner is not yet
+#: trained and the accuracy is prior-dominated — are the standing follow-up work, not blockers
+#: on the default per the owner's call.)
+EXECUTION_PROFILES = ("full_fidelity", "lean_adaptive", "lean_v2")
+DEFAULT_EXECUTION_PROFILE = "lean_v2"
 
 
 def resolve_execution_profile(execution_profile=None) -> str:
@@ -208,6 +217,16 @@ def simulate_world(question: str, *, as_of: str, horizon: str = "", intervention
             trace_level=trace_level, config=config, prebuilt_bundle=prebuilt_bundle,
             evidence=evidence)
         res.provenance = {**(res.provenance or {}), "execution_profile": "lean_adaptive"}
+        return res
+    if profile == "lean_v2":
+        from swm.world_model_v2.lean_v2.runtime import simulate_world_lean_v2
+        res = simulate_world_lean_v2(
+            question, as_of=as_of, horizon=horizon, intervention=intervention,
+            user_context=user_context, prior_checkpoint=prior_checkpoint,
+            compute_budget=compute_budget, seed=seed, llm=llm, execution_policy=policy,
+            trace_level=trace_level, config=config, prebuilt_bundle=prebuilt_bundle,
+            evidence=evidence)
+        res.provenance = {**(res.provenance or {}), "execution_profile": "lean_v2"}
         return res
     if mode == "single_structural_model":
         res = _simulate_single_structural_model(
