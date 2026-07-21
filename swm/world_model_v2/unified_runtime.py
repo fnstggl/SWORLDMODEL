@@ -57,10 +57,18 @@ STRUCTURAL_MODES = ("ensemble", "single_structural_model")
 #: byte-for-byte the pre-profile behavior; `lean_adaptive` preserves the same causal architecture while
 #: removing duplicated computation (shared run artifacts, actor-state cohorts, decision-equivalence
 #: caching, reversal-triggered structural models, progressive particles). The product is world_model_v2;
-#: profiles are internal execution strategies, never product names. The default stays `full_fidelity`
-#: until the §25 acceptance checks pass (see lean_runtime.DEFAULT_SWITCH).
+#: profiles are internal execution strategies, never product names.
+#:
+#: §25 DEFAULT SWITCH (evaluated on the COMPLETE five-question paired baseline, EXP-107 vs
+#: EXP-108; evidence in experiments/results/exp109_comparison.json + docs/LEAN_FINAL_REPORT.md):
+#: all seven switch conditions passed — safety invariants; controlled cache parity (byte-identical,
+#: 70→4 decision calls, 0 invalidations); no catastrophic paired-forecast degradation (lean Brier
+#: 0.337 vs 0.440, correct side 2/5 both); prediction changes explainable per row via
+#: probability_source; material savings (19× calls / 14.5× tokens / 12× cost / 17.7× time);
+#: unstable questions escalated to full budgets; full_fidelity remains available. `lean_adaptive`
+#: is therefore the default; `full_fidelity` is the explicit research-grade option.
 EXECUTION_PROFILES = ("full_fidelity", "lean_adaptive")
-DEFAULT_EXECUTION_PROFILE = "full_fidelity"
+DEFAULT_EXECUTION_PROFILE = "lean_adaptive"
 
 
 def resolve_execution_profile(execution_profile=None) -> str:

@@ -132,7 +132,10 @@ def _verify(res_dict: dict, blob: str) -> dict:
 def run_case(case: dict, llm, llm_long=None) -> dict:
     t0 = time.time()
     wrapped = CountingLLM(llm, llm_long)
-    from swm.world_model_v2.unified_runtime import simulate_world
+    import functools
+    from swm.world_model_v2.unified_runtime import simulate_world as _sw_default
+    # archival full-fidelity harness: pinned since the §25 default switch
+    simulate_world = functools.partial(_sw_default, execution_profile="full_fidelity")
     uc = dict(case.get("user_context") or {})
     uc["_execution_policy"] = {"n_particles": 2}          # compute budget: MC resolution only
     res = simulate_world(case["question"], as_of=case["as_of"],

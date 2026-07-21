@@ -65,7 +65,10 @@ def _bundle_for(question, as_of, horizon, llm, seed=0):
 
 
 def run(limit=None, arms=ARMS, seed=0):
-    from swm.world_model_v2.unified_runtime import simulate_world
+    import functools
+    from swm.world_model_v2.unified_runtime import simulate_world as _sw_default
+    # archival full-fidelity harness: pinned since the §25 default switch
+    simulate_world = functools.partial(_sw_default, execution_profile="full_fidelity")
     from swm.world_model_v2.runtime_fingerprint import runtime_fingerprint
     OUT.mkdir(parents=True, exist_ok=True)
     llm = _make_llm()

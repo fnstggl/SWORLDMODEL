@@ -8,12 +8,14 @@ structural-sensitivity studies, escalation target). Entry:
 ```python
 from swm.world_model_v2.unified_runtime import simulate_world
 simulate_world(question, as_of=..., llm=..., execution_profile="full_fidelity")   # research grade
-simulate_world(question, as_of=..., llm=..., execution_profile="lean_adaptive")   # lean candidate
+simulate_world(question, as_of=..., llm=..., execution_profile="lean_adaptive")   # the default
 ```
 
 Resolution: explicit argument > `SWM_EXECUTION_PROFILE` env > module default
-(`unified_runtime.DEFAULT_EXECUTION_PROFILE`, currently `full_fidelity` pending the §25
-default-switch decision). Unknown names fail loudly. The profile is stamped into
+(`unified_runtime.DEFAULT_EXECUTION_PROFILE` = **`lean_adaptive`** since the §25 default
+switch, taken when all seven conditions passed on the complete five-question paired baseline —
+evidence in `experiments/results/exp109_acceptance_final.json`; `full_fidelity` remains the
+explicit research-grade option). Unknown names fail loudly. The profile is stamped into
 `result.provenance["execution_profile"]`.
 
 ## The governing principle

@@ -91,7 +91,8 @@ def forecast(question: str, *, architecture: str, llm=None, evidence: str = "", 
                              intervention=kw.get("intervention", ""), seed=kw.get("seed", 0),
                              user_context=kw.get("user_context"), prior_checkpoint=kw.get("prior_checkpoint"),
                              compute_budget=kw.get("compute_budget"),
-                             execution_policy=kw.get("execution_policy"))
+                             execution_policy=kw.get("execution_policy"),
+                             execution_profile=kw.get("execution_profile"))
         rec.plan_hash = res.plan_hash
         return {"question": question, **res.as_dict(), "run": rec.finalize().as_dict()}
     # ---- explicit baselines (deprecated for new development; preserved for science) ----

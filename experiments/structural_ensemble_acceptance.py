@@ -35,7 +35,10 @@ _UNSET = object()
 
 
 def _default_run(policy=None, llm=_UNSET, **kw):
-    from swm.world_model_v2.unified_runtime import simulate_world
+    import functools
+    from swm.world_model_v2.unified_runtime import simulate_world as _sw_default
+    # archival full-fidelity harness: pinned since the §25 default switch
+    simulate_world = functools.partial(_sw_default, execution_profile="full_fidelity")
     from test_structural_ensemble import HERMETIC, four_way_llm
     return simulate_world("Will the initiative be approved?", as_of="2025-06-01",
                           horizon="2025-09-01", llm=four_way_llm() if llm is _UNSET else llm,

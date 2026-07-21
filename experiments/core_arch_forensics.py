@@ -130,7 +130,10 @@ def _record(case, question, res, t0, llm, extra=None):
 
 
 def _run(question, llm, *, seed, as_of, horizon, user_context=None, n_particles=5):
-    from swm.world_model_v2.unified_runtime import simulate_world
+    import functools
+    from swm.world_model_v2.unified_runtime import simulate_world as _sw_default
+    # archival full-fidelity harness: pinned since the §25 default switch
+    simulate_world = functools.partial(_sw_default, execution_profile="full_fidelity")
     return simulate_world(question, as_of=as_of, horizon=horizon, llm=llm, seed=seed,
                           user_context={**(user_context or {}),
                                         "_execution_policy": {"n_particles": n_particles}})

@@ -21,7 +21,12 @@ from swm.world_model_v2.compiler import compile_world
 from swm.world_model_v2.events import Event, EventQueue
 from swm.world_model_v2.phase13 import api as p13
 from swm.world_model_v2.phase13.contracts import DecisionProblem
-from swm.world_model_v2.unified_runtime import simulate_world
+from swm.world_model_v2.unified_runtime import simulate_world as _simulate_world_default
+import functools
+# These tests pin the FULL-FIDELITY pipeline (PR-#127 semantics). Since the §25 default
+# switch, the bare entrypoint serves lean_adaptive, so the research-grade profile is
+# selected EXPLICITLY here — same pin, same behavior, now by name.
+simulate_world = functools.partial(_simulate_world_default, execution_profile="full_fidelity")
 
 from tests.test_structural_ensemble import (EnsembleLLM, HERMETIC, decomp_payload, four_way_llm,
                                             recon_payload, run_default)

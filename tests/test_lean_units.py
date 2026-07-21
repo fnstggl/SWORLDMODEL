@@ -671,3 +671,21 @@ def test_missing_fact_escalates_only_when_the_actor_is_blocked():
     src = inspect.getsource(LC.LeanActorController._fresh)
     assert 'act_or_wait in ("wait", "gather_information")' in src
     assert "actor_blocked_on_missing_decisive_fact" in src
+
+
+# ---------------------------------------------------------------- §25 default switch
+def test_default_execution_profile_is_lean_adaptive_after_section25(monkeypatch):
+    """The §25 switch, taken on the COMPLETE five-question paired baseline (all seven
+    conditions recorded in experiments/results/exp109_acceptance_final.json): lean_adaptive
+    is the default; full_fidelity remains the explicit, byte-untouched research-grade option;
+    the env override and explicit argument still take precedence in that order."""
+    from swm.world_model_v2 import unified_runtime as U
+    monkeypatch.delenv("SWM_EXECUTION_PROFILE", raising=False)
+    assert U.DEFAULT_EXECUTION_PROFILE == "lean_adaptive"
+    assert U.resolve_execution_profile() == "lean_adaptive"
+    assert U.resolve_execution_profile("full_fidelity") == "full_fidelity"
+    monkeypatch.setenv("SWM_EXECUTION_PROFILE", "full_fidelity")
+    assert U.resolve_execution_profile() == "full_fidelity"
+    assert U.resolve_execution_profile("lean_adaptive") == "lean_adaptive"
+    with pytest.raises(ValueError):
+        U.resolve_execution_profile("turbo")

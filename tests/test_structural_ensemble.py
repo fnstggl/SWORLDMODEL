@@ -11,7 +11,12 @@ import json
 
 import pytest
 
-from swm.world_model_v2.unified_runtime import simulate_world
+from swm.world_model_v2.unified_runtime import simulate_world as _simulate_world_default
+import functools
+# These tests pin the FULL-FIDELITY pipeline (PR-#127 semantics). Since the §25 default
+# switch, the bare entrypoint serves lean_adaptive, so the research-grade profile is
+# selected EXPLICITLY here — same pin, same behavior, now by name.
+simulate_world = functools.partial(_simulate_world_default, execution_profile="full_fidelity")
 from swm.world_model_v2 import ensemble_compiler as EC
 from swm.world_model_v2 import structural_runtime as SR
 from swm.world_model_v2.llm_call_cache import CachedLLM, CallLedger, ScopedActorCache
@@ -170,12 +175,22 @@ def test_default_route_is_ensemble_without_any_enable_flag():
 
 
 def test_facade_v2_route_carries_structural_ensemble():
+    """Since the §25 default switch the facade's DEFAULT route serves lean_adaptive; the
+    protection it keeps is the same: a REAL structural ensemble, never the single-model
+    ablation. The ≥3-independent-generation property is the research-grade profile's and is
+    pinned through the facade via the explicit profile pass-through."""
     from swm.facade import forecast
     out = forecast("Will the initiative be approved?", architecture="world_model_v2",
                    llm=four_way_llm(), as_of="2025-06-01", horizon="2025-09-01",
                    execution_policy=dict(HERMETIC))
     assert out["structural_ensemble"] is not None
-    assert out["structural_ensemble"]["n_independent_generation_calls"] >= 3
+    assert out["provenance"]["structural_mode"] == "ensemble"       # never the ablation
+    assert out["provenance"]["execution_profile"] == "lean_adaptive"
+    full = forecast("Will the initiative be approved?", architecture="world_model_v2",
+                    llm=four_way_llm(), as_of="2025-06-01", horizon="2025-09-01",
+                    execution_policy=dict(HERMETIC), execution_profile="full_fidelity")
+    assert full["structural_ensemble"]["n_independent_generation_calls"] >= 3
+    assert full["provenance"]["execution_profile"] == "full_fidelity"
 
 
 # ------------------------------------------------------------------ 24.3–24.5 independent generation

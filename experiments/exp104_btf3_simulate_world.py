@@ -22,7 +22,10 @@ CKPT_DIR = Path("experiments/results/exp104_checkpoints")            # per-quest
 
 def run(tag: str = "") -> dict:
     from swm.api.deepseek_backend import default_chat_fn
-    from swm.world_model_v2.unified_runtime import simulate_world
+    import functools
+    from swm.world_model_v2.unified_runtime import simulate_world as _sw_default
+    # archival full-fidelity harness: pinned since the §25 default switch
+    simulate_world = functools.partial(_sw_default, execution_profile="full_fidelity")
 
     ck = CKPT_DIR if not tag else CKPT_DIR.with_name(f"exp104_checkpoints_{tag}")
     ck.mkdir(parents=True, exist_ok=True)
