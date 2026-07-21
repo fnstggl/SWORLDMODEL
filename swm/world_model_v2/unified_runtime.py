@@ -69,10 +69,15 @@ STRUCTURAL_MODES = ("ensemble", "single_structural_model")
 #: is therefore the default; `full_fidelity` is the explicit research-grade option.
 #: `lean_v2` is the first-principles CONSUMER execution path (one blueprint call, answerability
 #: preflight, terminal-causal slicing, weighted world-state coalescing, conditional challenger,
-#: consumer compute budget). It is OPT-IN pending review of its live evaluation — Lean V1
-#: (`lean_adaptive`) remains the default; `full_fidelity` remains permanently available.
+#: grounded counted-reference-class weighting, consumer compute budget). On the EXP-112 five-
+#: question evaluation it reached mean Brier 0.074 vs Lean V1 0.337 vs full_fidelity 0.440 (best
+#: on 4/5), at ~18 calls / ~105 s / ~$0.019 per question (docs/LEAN_V2_ACCURACY_REPORT.md).
+#: By owner decision `lean_v2` is now the DEFAULT; `lean_adaptive` (Lean V1) and `full_fidelity`
+#: remain explicitly selectable. (The report's §16 caveats — the reliability combiner is not yet
+#: trained and the accuracy is prior-dominated — are the standing follow-up work, not blockers
+#: on the default per the owner's call.)
 EXECUTION_PROFILES = ("full_fidelity", "lean_adaptive", "lean_v2")
-DEFAULT_EXECUTION_PROFILE = "lean_adaptive"
+DEFAULT_EXECUTION_PROFILE = "lean_v2"
 
 
 def resolve_execution_profile(execution_profile=None) -> str:

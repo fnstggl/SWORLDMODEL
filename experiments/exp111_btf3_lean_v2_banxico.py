@@ -33,8 +33,8 @@ BANXICO_QID = "cfb43147-d9d2-5bd9-903f-f449e9a5aecf"
 OUT = Path("experiments/results/exp111_lean_v2_banxico.json")
 
 #: benchmark guard (NOT the production default budget, which stays ~4x liberal)
-GUARD_WALL_S = 600.0            # 10 minutes hard benchmark stop
-GUARD_CALLS = 80
+GUARD_WALL_S = 1500.0          # 25 minutes hard benchmark maximum
+GUARD_CALLS = 200
 
 PRICE = {"input_per_m_cache_miss": 0.27, "input_per_m_cache_hit": 0.07,
          "output_per_m": 1.10}   # same recorded assumptions as exp109

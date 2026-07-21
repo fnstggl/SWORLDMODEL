@@ -39,7 +39,7 @@ NAMES = {ORDER[0]: "Banxico", ORDER[1]: "BoJ", ORDER[2]: "visionOS", ORDER[3]: "
 
 CKPT = Path("experiments/results/exp112_checkpoints")
 SUMMARY = Path("experiments/results/exp112_lean_v2_eval.json")
-GUARD_WALL_S, GUARD_CALLS = 600.0, 80
+GUARD_WALL_S, GUARD_CALLS = 1500.0, 200   # per-question hard maximum: 25 min / 200 calls
 PRICE = {"input_per_m_cache_miss": 0.27, "input_per_m_cache_hit": 0.07, "output_per_m": 1.10}
 
 

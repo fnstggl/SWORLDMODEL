@@ -673,19 +673,20 @@ def test_missing_fact_escalates_only_when_the_actor_is_blocked():
     assert "actor_blocked_on_missing_decisive_fact" in src
 
 
-# ---------------------------------------------------------------- §25 default switch
-def test_default_execution_profile_is_lean_adaptive_after_section25(monkeypatch):
-    """The §25 switch, taken on the COMPLETE five-question paired baseline (all seven
-    conditions recorded in experiments/results/exp109_acceptance_final.json): lean_adaptive
-    is the default; full_fidelity remains the explicit, byte-untouched research-grade option;
-    the env override and explicit argument still take precedence in that order."""
+# ---------------------------------------------------------------- default switch → lean_v2
+def test_default_execution_profile_is_lean_v2(monkeypatch):
+    """Default switched to `lean_v2` (owner decision, on the EXP-112 five-question evaluation:
+    mean Brier 0.074 vs Lean V1 0.337 vs full_fidelity 0.440, best on 4/5). `lean_adaptive`
+    (Lean V1) and `full_fidelity` remain explicitly selectable; the env override and explicit
+    argument still take precedence in that order."""
     from swm.world_model_v2 import unified_runtime as U
     monkeypatch.delenv("SWM_EXECUTION_PROFILE", raising=False)
-    assert U.DEFAULT_EXECUTION_PROFILE == "lean_adaptive"
-    assert U.resolve_execution_profile() == "lean_adaptive"
+    assert U.DEFAULT_EXECUTION_PROFILE == "lean_v2"
+    assert U.resolve_execution_profile() == "lean_v2"
     assert U.resolve_execution_profile("full_fidelity") == "full_fidelity"
+    assert U.resolve_execution_profile("lean_adaptive") == "lean_adaptive"
     monkeypatch.setenv("SWM_EXECUTION_PROFILE", "full_fidelity")
     assert U.resolve_execution_profile() == "full_fidelity"
-    assert U.resolve_execution_profile("lean_adaptive") == "lean_adaptive"
+    assert U.resolve_execution_profile("lean_v2") == "lean_v2"
     with pytest.raises(ValueError):
         U.resolve_execution_profile("turbo")

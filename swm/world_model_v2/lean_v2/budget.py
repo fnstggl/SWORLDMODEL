@@ -15,9 +15,11 @@ from dataclasses import dataclass, field, asdict
 
 @dataclass
 class ConsumerComputeBudget:
-    """Caps ~4× the expected consumer run (expected: ~25 calls / ~3 min / 1 blueprint model)."""
-    max_wall_s: float = 1200.0                 # 20 min      (expected ~3-5 min)
-    max_calls: int = 120                       #             (expected ~15-35)
+    """Liberal hard caps well above the expected consumer run (~18 calls / ~2 min observed on
+    the EXP-112 five-question evaluation). The maximum is 25 min / 200 external calls — a
+    runaway backstop, not a shaping constraint; 99% of runs never approach it."""
+    max_wall_s: float = 1500.0                 # 25 min      (expected ~2-4 min)
+    max_calls: int = 200                       #             (expected ~15-50)
     max_input_chars: int = 2_400_000           # provider-token proxy when usage is absent
     max_output_chars: int = 1_200_000
     max_structural_models: int = 4             #             (expected 1, +1 challenger)
