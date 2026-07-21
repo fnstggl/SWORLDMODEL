@@ -521,13 +521,31 @@ def _assemble_result(question, bp, eng, ch_eng, unresolved_share, evidence_text,
     lean_v2_prov["combiner"] = combiner.manifest()
     lean_v2_prov["action_calibration"] = load_action_reliability().as_dict()
 
-    # ---- the headline probability: combined when the combiner is available; else the
-    #      simulation-conditional (the SIMULATION forecast is preserved, never replaced by the
-    #      prior). Unknown/unresolved mass disclosed, never renormalized into the headline. ----
-    headline = combo_report.combined if combo_report.combined is not None else sim.p
-    source = ("combined_calibrated" if combo_report.combined is not None
-              else ("simulation_conditional_partial_rollouts" if genuine_share > 0.001
-                    else "simulation_conditional_completed_rollouts"))
+    # ---- the headline probability ----
+    # (a) a TRAINED, leakage-audited combiner (if fitted) is authoritative;
+    # (b) otherwise the headline is the mass-based forecast-recovery blend: the resolved
+    #     simulation mass keeps its simulated conditional, the unresolved mass takes the
+    #     grounded prior — a DATA-DRIVEN split (by how much the simulation actually resolved),
+    #     never a fixed blend, the same principled mechanism both other profiles use. The
+    #     simulation forecast is preserved (it drives the resolved share); the prior is a
+    #     separate, disclosed input for the unresolved share — never a wholesale replacement.
+    if combo_report.combined is not None:
+        headline, source = combo_report.combined, "combined_calibrated"
+    elif sim.p is not None or prior.p is not None:
+        rec = recover_forecast(
+            distribution=dist, options=options,
+            unresolved_mass=eng.unresolved_mass + eng.truncated_mass,
+            prior_mean=prior.p, prior_source_class="reference_class" if prior.p is not None
+            else "")
+        if rec is not None and rec.probability is not None:
+            headline = rec.probability
+            source = ("mass_weighted:" + rec.probability_source
+                      + ("+grounded_prior" if prior.p is not None else ""))
+        else:
+            headline, source = (sim.p if sim.p is not None else prior.p), \
+                ("simulation_conditional" if sim.p is not None else "grounded_prior")
+    else:
+        headline, source = None, ""
     resolution_report = {}
     if status != "completed":
         resolution_report = {

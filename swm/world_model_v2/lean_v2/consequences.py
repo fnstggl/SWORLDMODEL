@@ -142,7 +142,14 @@ class TemplateExecutor:
         for e in tmpl.effects:
             kind, p = e["kind"], dict(e["params"] or {})
             if kind == "record_vote":
-                inst = p.get("institution_id") or (self.bp.terminal.get("institution_id") or "")
+                # the vote is recorded on the TERMINAL institution when the actor is one of its
+                # members (the authoritative tally the terminal reads) — a blueprint
+                # institution_id that disagrees with the terminal's must never split the tally
+                term_inst = self.bp.terminal.get("institution_id") or ""
+                term_members = set((self.bp.institution_by_id(term_inst) or {}).get("members")
+                                   or [])
+                inst = term_inst if actor_id in term_members else \
+                    (p.get("institution_id") or term_inst)
                 option = binding.get("vote_option") or (p.get("options") or [""])[0]
                 node.institution_state.setdefault(inst, {}).setdefault("votes", {})[
                     actor_id] = str(option)

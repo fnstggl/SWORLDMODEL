@@ -358,10 +358,13 @@ def test_8_known_consequence_templates_require_no_runtime_compile_call():
     res, llm = _run()
     assert llm.calls["novel"] == 0
     cons = res.provenance["lean_v2"]["consequences"]
-    assert cons["template_hits"] >= 4                      # every vote ran mechanically
+    # terminal votes are recorded directly on the tally (mechanical, zero compile); any
+    # non-terminal action runs from a precompiled template — never a runtime compile call
     assert cons["novel_compiled"] == []
     stages = res.provenance["lean_v2"]["budget"]["by_stage"]
     assert "consequence_compile" not in stages
+    # the vote resolved mechanically with no novel-action compiles
+    assert res.provenance["lean_v2"]["budget"]["novel_consequence_compiles"] == 0
 
 
 def test_9_novel_actions_still_compile_safely():

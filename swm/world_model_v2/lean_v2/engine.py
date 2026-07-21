@@ -258,6 +258,7 @@ class WaveEngine:
                                       "etype": "anchor",
                                       "what": norm(t.get("what"), 160),
                                       "certainty": str(t.get("certainty") or "expected")})
+        triggered_actors = set()
         for d in self.bp.decision_triggers:
             if d.get("actor_id") in self.kept and parse_day(d.get("when_day")):
                 n.event_queue.append({"day": str(d.get("when_day"))[:10], "order": 2,
@@ -265,6 +266,20 @@ class WaveEngine:
                                       "actor_id": d.get("actor_id"),
                                       "situation": norm(d.get("situation"), 300),
                                       "trigger_etype": str(d.get("etype") or "trigger")})
+                triggered_actors.add(d.get("actor_id"))
+        # MANDATORY PARTICIPATION: every required institution member MUST face the terminal
+        # decision even if the blueprint forgot to give them a trigger — schedule one at the
+        # deadline with the terminal feasible set (a member is never silently absent)
+        for ob in self.obligations.values():
+            for m in ob.required_participants:
+                if m in self.kept and m not in triggered_actors and ob.deadline_day \
+                        and parse_day(ob.deadline_day):
+                    n.event_queue.append({"day": str(ob.deadline_day)[:10], "order": 2,
+                                          "etype": "decision_trigger", "actor_id": m,
+                                          "situation": f"the {ob.institution_id} decision "
+                                                       f"deadline has arrived — cast your vote",
+                                          "trigger_etype": "mandatory_terminal"})
+                    triggered_actors.add(m)
         ev_day = str(self.bp.terminal.get("evaluation_day") or horizon)[:10]
         if parse_day(ev_day):
             n.event_queue.append({"day": ev_day, "order": 9, "etype": _TERMINAL_EVENT})
@@ -487,6 +502,15 @@ class WaveEngine:
             if actor_id in (ob.required_participants or []):
                 return ob
         return None
+
+    def _member_vote_options(self, actor_id: str) -> set:
+        opts = set()
+        for t in self.executor.templates.values():
+            if actor_id in (t.actor_ids or []):
+                for eff in t.effects:
+                    if eff["kind"] == "record_vote":
+                        opts |= {str(o) for o in (eff["params"].get("options") or [])}
+        return opts
 
     def _schedule_mandatory_terminal(self, nd: WeightedWorldNode, actor_id: str, day: str,
                                      *, current_trigger: dict) -> bool:
@@ -777,21 +801,42 @@ class WaveEngine:
                                           "observers": ["public"],
                                           "source": ctx.actor_id, "day": day})
             return
-        # mandatory-terminal non-vote actions (abstain/recuse/absent/delegate) are EXECUTED
-        # institutional actions when permitted — recorded directly on the vote tally
-        if e.get("trigger_etype") == "mandatory_terminal":
+        # TERMINAL VOTERS: whenever a member of the terminal voting institution reaches a
+        # terminal action (a vote option, or a permitted abstain/recuse/absence at the
+        # deadline), record it DIRECTLY on the terminal tally — never fuzzy-matched to a
+        # free-form template. This resolves the vote regardless of how the actor phrased it.
+        term_inst = self.bp.terminal.get("institution_id") or ""
+        allowed_opts = self._member_vote_options(ctx.actor_id)
+        is_terminal_voter = (self.bp.terminal.get("kind") == "institution_vote"
+                             and ctx.actor_id in set((self.bp.institution_by_id(term_inst)
+                                                      or {}).get("members") or []))
+        if is_terminal_voter and allowed_opts:
             ob = self._obligation_for(ctx.actor_id)
             terminal_kw = self._terminal_action_kind(chosen, dec)
-            if ob is not None and terminal_kw in ("abstain", "recuse", "be_absent",
-                                                  "delegate"):
-                allowed = {"abstain": ob.abstention_allowed, "recuse": ob.recusal_allowed,
-                           "be_absent": ob.absence_allowed,
-                           "delegate": ob.delegation_allowed}.get(terminal_kw, False)
+            at_deadline = e.get("trigger_etype") == "mandatory_terminal"
+            if terminal_kw in ("abstain", "recuse", "be_absent", "delegate") and at_deadline:
+                allowed = ob is not None and {
+                    "abstain": ob.abstention_allowed, "recuse": ob.recusal_allowed,
+                    "be_absent": ob.absence_allowed,
+                    "delegate": ob.delegation_allowed}.get(terminal_kw, False)
                 if allowed:
-                    nd.institution_state.setdefault(ob.institution_id, {}).setdefault(
+                    nd.institution_state.setdefault(term_inst, {}).setdefault(
                         "votes", {})[ctx.actor_id] = f"__{terminal_kw}__"
                     return
-                # not permitted → the actor must choose an allowed action; fall through to vote
+                # not permitted at the deadline → force a substantive option below
+            option = norm(dec.get("vote_option"), 40)
+            if option not in allowed_opts:
+                option = next((o for o in sorted(allowed_opts)
+                               if o in norm(chosen, 120).lower()
+                               or o in norm(dec.get("intended_effect"), 120).lower()), None)
+            if option is None and at_deadline:
+                option = sorted(allowed_opts)[0]     # deadline forces a choice; default lowest
+            if option is not None:
+                nd.institution_state.setdefault(term_inst, {}).setdefault(
+                    "votes", {})[ctx.actor_id] = str(option)
+                return
+            # before the deadline with no clear option → treat as waiting (handled above only
+            # if act was wait; an "act" with no parseable vote falls through to templates)
         # act: bind + validate + execute mechanically
         t = self.executor.find(chosen)
         if t is None:
